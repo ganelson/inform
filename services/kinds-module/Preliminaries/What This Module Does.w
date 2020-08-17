@@ -120,6 +120,25 @@ run-time, which it compiles explicit code to carry out. Because of this,
 Problem messages about safety violations can be issued either at compile
 time or at run-time.
 
+@h Dimensional analysis.
+Inform subjects all calculations with its "quasinumerical" kinds -- basically,
+all those on which calculation can be performed -- to dimensional checking.
+
+Dimension in this sense is a term drawn from physics. The idea is that when
+quantities are multiplied together, their natures are combined as well as
+the actual numbers involved. For instance, in
+$$ v = f\lambda $$
+if the frequency $f$ of a wave is measured in Hz (counts per second), and
+the wavelength $\lambda$ in m, then the velocity $v$ must be measured
+in m/s: and that is indeed a measure of velocity, so this looks right.
+We can tell that the formula
+$$ v = f^2\lambda $$
+must be wrong because it would result in an acceleration. Physicists use the
+term "dimensions" much as computer-scientists use the word "type", and Inform
+follows suit.
+
+See //Dimensions// for a much fuller discussion.
+
 @h Conformance and compatibility.
 One kind $K$ "conforms to" another kind $L$ if values of $K$ can always be used
 where values of $L$ are expected. For example, in a typical work of IF produced
@@ -206,11 +225,11 @@ other kinds are called "base kinds". Briefly:
 set equal to them, like |K_number| or |K_text|. See //Familiar Kinds//.
 
 (*) Kinds can otherwise be made with //Kinds::base_construction//,
-//Kinds::unary_construction// or //Kinds::binary_construction//. For example,
+//Kinds::unary_con// or //Kinds::binary_con//. For example,
 |list of numbers| and |relation of numbers to texts| can be made by:
 = (text)
-	Kinds::unary_construction(CON_list_of, K_number)
-	Kinds::binary_construction(CON_relation, K_number, K_text)
+	Kinds::unary_con(CON_list_of, K_number)
+	Kinds::binary_con(CON_relation, K_number, K_text)
 =
 
 (*) Kinds for functions are a bit laborious to put together, so //Kinds::function_kind//
@@ -240,14 +259,17 @@ given kinds have given properties. The most important is //Kinds::Behaviour::def
 which determines whether $K$ is definite.
 
 (*) New base kinds can be created either by calling //Kinds::new_base//,[2] or in
-the process of reading in kind configuration files.[3] New constructors can only
-be made the latter way. See //KindFiles::load//, which sends individual commands
+the process of reading in "Neptune files".[3] New constructors can only
+be made the latter way. See //NeptuneFiles::load//, which sends individual commands
 to //KindCommands::despatch//, which in turn deals with the low-level code in
 the //Kind Constructors// section.[4]
 
 (*) It is possible to move kinds within the lattice of kinds, i.e., to change
 their hierarchical relationship, even after creation. See //Kinds::make_subkind//.
 Inform does this very sparingly and only with kinds of object.[5]
+
+(*) Use //Kinds::Dimensions::arithmetic_on_kinds// to determine what kind, if
+any, results from performing an arithmetic operation.
 
 [1] "List of ..." is what is called a "kind constructor". This term follows the
 traditional usage of "type constructor", but note that Haskell and some other
@@ -259,9 +281,9 @@ calling //Kinds::new_base//.
 [3] Inform's built-in kinds like |number| or |text| all come from such files,
 not by calls to //Kinds::new_base//.
 
-[4] Inform stores these kind configuration files inside kits of Inter, because
-in practice built-in kinds always need run-time support written in Inter code,
-so the two naturally go together.
+[4] Inform stores Neptune files inside kits of Inter, because in practice
+built-in kinds always need run-time support written in Inter code, so the two
+naturally go together.
 
 [5] For instance, after "Puzzle is a kind of thing. Toy is a kind of thing.
 Puzzle is a kind of toy.", Inform moves |puzzle| to be a subkind of |toy|,

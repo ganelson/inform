@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-gt2.html#SP4">&#167;4. Multiple tokens</a></li><li><a href="5-gt2.html#SP5">&#167;5. Text</a></li><li><a href="5-gt2.html#SP6">&#167;6. The special tokens</a></li><li><a href="5-gt2.html#SP10">&#167;10. Phase II: Determining Grammar</a></li><li><a href="5-gt2.html#SP11">&#167;11. Phase IV: Compiling Grammar</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>I7 tokens are (at present) stored simply as parse tree nodes of type
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>I7 tokens are (at present) stored simply as parse tree nodes of type
 <span class="extract"><span class="extract-syntax">TOKEN_NT</span></span>, with meaningful information hidden in annotations. At one
 time I thought this was a simple arrangement, but it now seems obfuscatory,
 so at some point I plan to create a "grammar token" structure to avoid
@@ -115,7 +115,7 @@ that the special values below cannot arise.
 <span class="definition-keyword">define</span> <span class="constant-syntax">TOPIC_TOKEN_GTC</span><span class="plain-syntax"> -7 </span><span class="comment-syntax"> I6 </span><span class="extract"><span class="extract-syntax">topic</span></span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">MULTIEXCEPT_TOKEN_GTC</span><span class="plain-syntax"> -8 </span><span class="comment-syntax"> I6 </span><span class="extract"><span class="extract-syntax">multiexcept</span></span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Tokens are created when text such as "drill [something] with [something]"
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Tokens are created when text such as "drill [something] with [something]"
 is parsed, from an Understand sentence or elsewhere. What happens is much
 the same as when text with substitutions is read: that produces
 </p>
@@ -135,7 +135,7 @@ four constituent tokens.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">						</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We use a different punctuation set, in which forward slashes break words,
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We use a different punctuation set, in which forward slashes break words,
 to handle such as:
 </p>
 
@@ -187,7 +187,7 @@ out", a sequence of five lexical words.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">grammar_token_literal_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Multiple tokens. </b>A multiple token is one which permits multiple matches in the I6 parser: for
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Multiple tokens. </b>A multiple token is one which permits multiple matches in the I6 parser: for
 instance, permits the use of "all".
 </p>
 
@@ -203,7 +203,7 @@ instance, permits the use of "all".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Text. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Text. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Parsing::Tokens::is_text</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PL::Parsing::Tokens::is_text</span></span>:<br/>Grammar Lines - <a href="5-gl.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
@@ -214,7 +214,7 @@ instance, permits the use of "all".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. The special tokens. </b>Do not change any of these GTC numbers without first checking and updating
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The special tokens. </b>Do not change any of these GTC numbers without first checking and updating
 the discussion of GL sorting in Grammar Lines:
 </p>
 
@@ -234,7 +234,7 @@ the discussion of GL sorting in Grammar Lines:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> to prevent a gcc error: never reached</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>These translate into I6 as follows:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>These translate into I6 as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -283,7 +283,7 @@ the discussion of GL sorting in Grammar Lines:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">; </span><span class="comment-syntax"> to prevent a gcc error: never reached</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The special tokens all return a value in I6 which needs a kind
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The special tokens all return a value in I6 which needs a kind
 to be used in I7: these are defined by the following routine.
 </p>
 
@@ -293,7 +293,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The tokens which aren't literal words in double-quotes are parsed as follows:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The tokens which aren't literal words in double-quotes are parsed as follows:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -341,7 +341,7 @@ to be used in I7: these are defined by the following routine.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_GrammarBadRelation problem</span><span class="named-paragraph-number">9.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_GrammarBadRelation problem</span><span class="named-paragraph-number">9.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -356,7 +356,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">RELATED_GTC</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UseTextNotTopic problem</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UseTextNotTopic problem</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -377,7 +377,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">TOPIC_TOKEN_GTC</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UseThingNotObject problem</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UseThingNotObject problem</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -393,7 +393,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">MULTI_TOKEN_GTC</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue something held problem message</span><span class="named-paragraph-number">9.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue something held problem message</span><span class="named-paragraph-number">9.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -402,7 +402,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">HELD_TOKEN_GTC</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_5"></a><b>&#167;9.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue things held problem message</span><span class="named-paragraph-number">9.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_5" class="paragraph-anchor"></a><b>&#167;9.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue things held problem message</span><span class="named-paragraph-number">9.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -411,7 +411,7 @@ to be used in I7: these are defined by the following routine.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">MULTIHELD_TOKEN_GTC</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_6"></a><b>&#167;9.6.  </b>Something of an extended mea culpa: but it had the desired effect, in
+<p class="commentary firstcommentary"><a id="SP9_6" class="paragraph-anchor"></a><b>&#167;9.6.  </b>Something of an extended mea culpa: but it had the desired effect, in
 that nobody complained about what might have been a controversial change.
 </p>
 
@@ -442,7 +442,7 @@ that nobody complained about what might have been a controversial change.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_7"></a><b>&#167;9.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BizarreToken problem</span><span class="named-paragraph-number">9.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_7" class="paragraph-anchor"></a><b>&#167;9.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BizarreToken problem</span><span class="named-paragraph-number">9.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -459,7 +459,7 @@ that nobody complained about what might have been a controversial change.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">STUFF_GTC</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_8"></a><b>&#167;9.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownToken problem</span><span class="named-paragraph-number">9.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_8" class="paragraph-anchor"></a><b>&#167;9.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownToken problem</span><span class="named-paragraph-number">9.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -474,7 +474,7 @@ that nobody complained about what might have been a controversial change.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">STUFF_GTC</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Phase II: Determining Grammar. </b>Slashing does not recurse down to individual tokens, so the first time we
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Phase II: Determining Grammar. </b>Slashing does not recurse down to individual tokens, so the first time we
 look seriously at tokens is in Phase II.
 </p>
 
@@ -497,7 +497,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a named grammar token</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a named grammar token</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -506,7 +506,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_grammar_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine an any grammar token</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine an any grammar token</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -520,7 +520,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a related grammar token</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a related grammar token</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -528,7 +528,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp</span><span class="plain-syntax">) </span><span class="identifier-syntax">Node::set_grammar_token_relation</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">bp</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a kind grammar token</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a kind grammar token</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -541,7 +541,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_5"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a special grammar token</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine a special grammar token</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -554,7 +554,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">grammar_token_code_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6"></a><b>&#167;10.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Vet the grammar token determination for parseability at run-time</span><span class="named-paragraph-number">10.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Vet the grammar token determination for parseability at run-time</span><span class="named-paragraph-number">10.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -580,7 +580,7 @@ look seriously at tokens is in Phase II.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Phase IV: Compiling Grammar. </b>Tokens play no direct part in Phase III either, having made their contribution
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Phase IV: Compiling Grammar. </b>Tokens play no direct part in Phase III either, having made their contribution
 earlier by recording their GSB scores instead. So we next see them at
 compilation time.
 </p>
@@ -1459,7 +1459,7 @@ nothing else.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Then jump to our doom</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Then jump to our doom</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1469,7 +1469,7 @@ nothing else.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gt2.html#SP11">&#167;11</a> (15 times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Jump to our doom</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Jump to our doom</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -83,7 +83,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="14-ds2.html#SP3">&#167;3. The Dashboard</a></li><li><a href="14-ds2.html#SP7">&#167;7. Return values</a></li><li><a href="14-ds2.html#SP8">&#167;8. (1) Entering Dash</a></li><li><a href="14-ds2.html#SP9">&#167;9. (2) Recursion point</a></li><li><a href="14-ds2.html#SP10">&#167;10. (3) Context switching</a></li><li><a href="14-ds2.html#SP10_8">&#167;10.8. New variables</a></li><li><a href="14-ds2.html#SP10_9">&#167;10.9. (4) Typechecking within current context</a></li><li><a href="14-ds2.html#SP10_9_1_2">&#167;10.9.1.2. (4S) Verifying single non-invocation readings</a></li><li><a href="14-ds2.html#SP12">&#167;12. Arithmetic operands</a></li><li><a href="14-ds2.html#SP13">&#167;13. Local variable markers</a></li><li><a href="14-ds2.html#SP14">&#167;14. Problems, problems, problems</a></li><li><a href="14-ds2.html#SP18">&#167;18. (5) Single nodes</a></li><li><a href="14-ds2.html#SP18_2">&#167;18.2. Rule (5.a)</a></li><li><a href="14-ds2.html#SP18_3">&#167;18.3. Rule (5.b)</a></li><li><a href="14-ds2.html#SP18_4">&#167;18.4. Rule (5.c)</a></li><li><a href="14-ds2.html#SP18_5">&#167;18.5. Rule (5.d)</a></li><li><a href="14-ds2.html#SP18_6">&#167;18.6. Rule (5.e)</a></li><li><a href="14-ds2.html#SP21">&#167;21. Ambiguity testing flags</a></li><li><a href="14-ds2.html#SP26">&#167;26. Value checking</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Dash is the second typechecking algorithm to be used in Inform, installed in
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Dash is the second typechecking algorithm to be used in Inform, installed in
 early 2015: the first had served since 2003, but became unwieldy after so many
 exceptional cases had been added to it, and was impossible to adapt to the
 redesigned parse tree. Dash is not so called because it's faster (it's
@@ -126,7 +126,7 @@ interpretations. But we finally succeed in showing that "score" is an lvalue,
 gives a number, so we complete the proof and the phrase is proved correct.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>When issuing problems, we show a form of backtrace so that the user can
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>When issuing problems, we show a form of backtrace so that the user can
 see what we've considered, and this is used to accumulate data for that.
 </p>
 
@@ -140,7 +140,7 @@ see what we've considered, and this is used to accumulate data for that.
 <span class="plain-syntax">} </span><span class="reserved-syntax">inv_token_problem_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inv_token_problem_token is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. The Dashboard. </b>Dash uses a small suite of global variables to keep track of two decidedly
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The Dashboard. </b>Dash uses a small suite of global variables to keep track of two decidedly
 global side-effects of checking: the issuing of problem messages, and the
 setting of kind variables. This suite is called the "dashboard".
 </p>
@@ -166,7 +166,7 @@ a bitmap made up of the following modes:
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> **</span><span class="identifier-syntax">kind_of_var_to_create</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">dash_recursion_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Three grades of problem can appear: "ordinary", "gross" and "grosser than
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Three grades of problem can appear: "ordinary", "gross" and "grosser than
 gross". We distinguish these in order to produce a Problem message which
 reflects the biggest thing wrong, rather than being so esoteric that it misses
 the main point. Changing a particular error condition from an ordinary to a
@@ -194,7 +194,7 @@ only on the Problem messages given to the user.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Next, we keep track of the most recent set of meanings attached to the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Next, we keep track of the most recent set of meanings attached to the
 kind variables A, B, C, ..., Z, and the most recently looked-at list of
 invocations.
 </p>
@@ -203,7 +203,7 @@ invocations.
 <span class="identifier-syntax">kind_variable_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">most_recent_interpretation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Dash_ambiguity_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>We need careful debug logging of what Dash does. During Inform's infancy, it
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>We need careful debug logging of what Dash does. During Inform's infancy, it
 was not so much that this was the great habitat and breeding ground for bugs;
 more that those bugs which were here were by far the hardest to root out. So
 careful logging on demand is vital.
@@ -225,7 +225,7 @@ more legible.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unique_DR_call_identifier</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">DR_call_counter</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> solely to make the log more legible</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Return values. </b>Dash records the outcome of checking as one of three states.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Return values. </b>Dash records the outcome of checking as one of three states.
 </p>
 
 <p class="commentary">It is perhaps telling that we never need a <span class="extract"><span class="extract-syntax">Dash::best_case</span></span> routine.
@@ -239,7 +239,7 @@ Typecheckers are not allowed to be optimistic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. (1) Entering Dash. </b>Dash is structured into levels and this is level 1, the topmost.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. (1) Entering Dash. </b>Dash is structured into levels and this is level 1, the topmost.
 </p>
 
 <p class="commentary">Dash has three points of entry: to check a condition, check a value, or check
@@ -299,7 +299,7 @@ are used correctly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. (2) Recursion point. </b>Loosely speaking, Dash works by visiting every node in the parse tree being
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. (2) Recursion point. </b>Loosely speaking, Dash works by visiting every node in the parse tree being
 examined with the following routine, which is therefore recursive as Dash
 heads ever downward.
 </p>
@@ -353,7 +353,7 @@ possible order of operations).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">return_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>The backtrace is added to problem messages only if we have just been checking
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>The backtrace is added to problem messages only if we have just been checking
 a phrase, and if it produced problems not previously seen. The trick here is
 to ensure that if we have
 </p>
@@ -381,7 +381,7 @@ to ensure that if we have
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>We skip proven invocations, and those never needed because of them, since
+<p class="commentary firstcommentary"><a id="SP9_1_1" class="paragraph-anchor"></a><b>&#167;9.1.1.  </b>We skip proven invocations, and those never needed because of them, since
 those aren't in dispute; and we also skip groups not even reached, since they
 aren't where the problem lies. (This can happen when checking a compound "say",
 from a text substitution.)
@@ -414,7 +414,7 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">real_found</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP9_1_1_6" class="named-paragraph-link"><span class="named-paragraph">Produce a note about real versus integer</span><span class="named-paragraph-number">9.1.1.6</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1">&#167;9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_1"></a><b>&#167;9.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the I was trying... banner</span><span class="named-paragraph-number">9.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_1" class="paragraph-anchor"></a><b>&#167;9.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the I was trying... banner</span><span class="named-paragraph-number">9.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -426,7 +426,7 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_2"></a><b>&#167;9.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the list of possibilities</span><span class="named-paragraph-number">9.1.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_2" class="paragraph-anchor"></a><b>&#167;9.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the list of possibilities</span><span class="named-paragraph-number">9.1.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -449,7 +449,7 @@ from a text substitution.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_3"></a><b>&#167;9.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which were recognisable as something</span><span class="named-paragraph-number">9.1.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_3" class="paragraph-anchor"></a><b>&#167;9.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which were recognisable as something</span><span class="named-paragraph-number">9.1.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -469,7 +469,7 @@ from a text substitution.)
 <span class="plain-syntax">            }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_3_1"></a><b>&#167;9.1.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce this token</span><span class="named-paragraph-number">9.1.1.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_3_1" class="paragraph-anchor"></a><b>&#167;9.1.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce this token</span><span class="named-paragraph-number">9.1.1.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -492,14 +492,14 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1_3">&#167;9.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_1"></a><b>&#167;9.1.1.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for an lvalue</span><span class="named-paragraph-number">9.1.1.3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_1" class="paragraph-anchor"></a><b>&#167;9.1.1.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for an lvalue</span><span class="named-paragraph-number">9.1.1.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="string-syntax">"%1 = &lt;i&gt;%2&lt;/i&gt;, holding &lt;i&gt;%3&lt;/i&gt;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1_3_1">&#167;9.1.1.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_2"></a><b>&#167;9.1.1.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for a phrase deciding a value</span><span class="named-paragraph-number">9.1.1.3.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_2" class="paragraph-anchor"></a><b>&#167;9.1.1.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for a phrase deciding a value</span><span class="named-paragraph-number">9.1.1.3.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -526,7 +526,7 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="identifier-syntax">seg</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1_3_1">&#167;9.1.1.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_3"></a><b>&#167;9.1.1.3.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for a constant rvalue</span><span class="named-paragraph-number">9.1.1.3.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_3_1_3" class="paragraph-anchor"></a><b>&#167;9.1.1.3.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the token for a constant rvalue</span><span class="named-paragraph-number">9.1.1.3.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -545,7 +545,7 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span><span class="identifier-syntax">seg</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1_3_1">&#167;9.1.1.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_4"></a><b>&#167;9.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which were intentionally not recognisable as something</span><span class="named-paragraph-number">9.1.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_4" class="paragraph-anchor"></a><b>&#167;9.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which were intentionally not recognisable as something</span><span class="named-paragraph-number">9.1.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -575,7 +575,7 @@ from a text substitution.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_5"></a><b>&#167;9.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which weren't recognisable as something</span><span class="named-paragraph-number">9.1.1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_5" class="paragraph-anchor"></a><b>&#167;9.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce the tokens which weren't recognisable as something</span><span class="named-paragraph-number">9.1.1.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -606,7 +606,7 @@ from a text substitution.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1_6"></a><b>&#167;9.1.1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce a note about real versus integer</span><span class="named-paragraph-number">9.1.1.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1_6" class="paragraph-anchor"></a><b>&#167;9.1.1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Produce a note about real versus integer</span><span class="named-paragraph-number">9.1.1.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -620,7 +620,7 @@ from a text substitution.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP9_1_1">&#167;9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. (3) Context switching. </b>After those epic preliminaries, we finally do some typechecking.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. (3) Context switching. </b>After those epic preliminaries, we finally do some typechecking.
 </p>
 
 <p class="commentary">The scheme here is that our expectations of <span class="extract"><span class="extract-syntax">p</span></span> depend on the context, and
@@ -661,7 +661,7 @@ should be checked. For example, the subtree
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">; </span><span class="comment-syntax"> to prevent compiler warnings: unreachable in fact</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>When we find a node like <span class="extract"><span class="extract-syntax">CONDITION_CONTEXT_NT</span></span>, that becomes the new context
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>When we find a node like <span class="extract"><span class="extract-syntax">CONDITION_CONTEXT_NT</span></span>, that becomes the new context
 and we move down to its only child.
 </p>
 
@@ -674,7 +674,7 @@ and we move down to its only child.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">SWITCH_CONTEXT_AND_RECURSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b>Other context switches are essentially the same thing, plus a check that
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>Other context switches are essentially the same thing, plus a check that
 the value meets some extra requirement. For example:
 </p>
 
@@ -688,7 +688,7 @@ the value meets some extra requirement. For example:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b>More specifically:
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b>More specifically:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Switch context to a table reference lvalue</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
@@ -701,7 +701,7 @@ the value meets some extra requirement. For example:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Switch context to an existing local variable lvalue</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Switch context to an existing local variable lvalue</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -711,7 +711,7 @@ the value meets some extra requirement. For example:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_5"></a><b>&#167;10.5.  </b>Suppose we are matching the parameter of a phrase like this:
+<p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5.  </b>Suppose we are matching the parameter of a phrase like this:
 </p>
 
 <blockquote>
@@ -748,7 +748,7 @@ check afterwards, when we know the kinds at least must be right.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6"></a><b>&#167;10.6.  </b>This is something else that wouldn't appear in a typical typechecker.
+<p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6.  </b>This is something else that wouldn't appear in a typical typechecker.
 Here we are dealing with a phrase specification such as:
 </p>
 
@@ -789,7 +789,7 @@ compared are word values.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_7"></a><b>&#167;10.7.  </b>I would ideally like to remove void contexts from Dash entirely, but was
+<p class="commentary firstcommentary"><a id="SP10_7" class="paragraph-anchor"></a><b>&#167;10.7.  </b>I would ideally like to remove void contexts from Dash entirely, but was
 forced to retain them by the popularity of the Hypothetical Questions
 extension, which made use of the old undocumented <span class="extract"><span class="extract-syntax">phrase</span></span> token.
 </p>
@@ -807,7 +807,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_1"></a><b>&#167;10.2.1.  </b>A whole set of problem messages arise out of contextual failures:
+<p class="commentary firstcommentary"><a id="SP10_2_1" class="paragraph-anchor"></a><b>&#167;10.2.1.  </b>A whole set of problem messages arise out of contextual failures:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being an lvalue</span><span class="named-paragraph-number">10.2.1</span></span><span class="comment-syntax"> =</span>
@@ -830,7 +830,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3_1"></a><b>&#167;10.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being a table reference</span><span class="named-paragraph-number">10.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3_1" class="paragraph-anchor"></a><b>&#167;10.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being a table reference</span><span class="named-paragraph-number">10.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -845,7 +845,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_3">&#167;10.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4_1"></a><b>&#167;10.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being an existing local</span><span class="named-paragraph-number">10.4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_4_1" class="paragraph-anchor"></a><b>&#167;10.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being an existing local</span><span class="named-paragraph-number">10.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -866,7 +866,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_4">&#167;10.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6_1"></a><b>&#167;10.6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for being the wrong rvalue</span><span class="named-paragraph-number">10.6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_6_1" class="paragraph-anchor"></a><b>&#167;10.6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for being the wrong rvalue</span><span class="named-paragraph-number">10.6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -883,7 +883,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_6">&#167;10.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_7_1"></a><b>&#167;10.7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being a phrase</span><span class="named-paragraph-number">10.7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_7_1" class="paragraph-anchor"></a><b>&#167;10.7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for not being a phrase</span><span class="named-paragraph-number">10.7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -897,7 +897,7 @@ extension, which made use of the old undocumented <span class="extract"><span cl
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_7">&#167;10.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_8"></a><b>&#167;10.8. New variables. </b>The following doesn't switch context and recurse down: there's nothing
+<p class="commentary firstcommentary"><a id="SP10_8" class="paragraph-anchor"></a><b>&#167;10.8. New variables. </b>The following doesn't switch context and recurse down: there's nothing
 to recurse down to, since all we have is a name for a new variable. Instead
 we deal with that right away.
 </p>
@@ -936,7 +936,7 @@ subtly different forms of "let" is being used.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_8_1"></a><b>&#167;10.8.1.  </b>This problem message is never normally seen using the definitions in the
+<p class="commentary firstcommentary"><a id="SP10_8_1" class="paragraph-anchor"></a><b>&#167;10.8.1.  </b>This problem message is never normally seen using the definitions in the
 Standard Rules because the definitions made there are such that other
 problems appear first. So the only way to see this message is to declare an
 unambiguous phrase with one of its tokens requiring a variable of a
@@ -962,7 +962,7 @@ species; and then to misuse that phrase.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_8">&#167;10.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9"></a><b>&#167;10.9. (4) Typechecking within current context. </b>Everything else, then, passes through here, with the context now set either
+<p class="commentary firstcommentary"><a id="SP10_9" class="paragraph-anchor"></a><b>&#167;10.9. (4) Typechecking within current context. </b>Everything else, then, passes through here, with the context now set either
 to <span class="extract"><span class="extract-syntax">NULL</span></span> (meaning no expectations) or to some ancestor of <span class="extract"><span class="extract-syntax">p</span></span> in the parse
 tree.
 </p>
@@ -997,7 +997,7 @@ invocations. Here's the code which does the switching:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1"></a><b>&#167;10.9.1.  </b>For a phrase node, we pass the buck down to its invocation list. For an
+<p class="commentary firstcommentary"><a id="SP10_9_1" class="paragraph-anchor"></a><b>&#167;10.9.1.  </b>For a phrase node, we pass the buck down to its invocation list. For an
 invocation list, we pass the buck down to its invocation (which may or
 may not be the first in a chain of alternatives), which means we end up
 in (4I) either directly or via (4A). For everything else, it's (4S) for us.
@@ -1026,7 +1026,7 @@ in (4I) either directly or via (4A). For everything else, it's (4S) for us.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9">&#167;10.9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2"></a><b>&#167;10.9.2.  </b>(4A) Ambiguities.
+<p class="commentary firstcommentary"><a id="SP10_9_2" class="paragraph-anchor"></a><b>&#167;10.9.2.  </b>(4A) Ambiguities.
 Ambiguities presently consist of chains of invocation nodes listed in
 the tree as alternatives.
 </p>
@@ -1048,7 +1048,7 @@ the tree as alternatives.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Ambiguity resolved to: $E"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9">&#167;10.9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_1"></a><b>&#167;10.9.2.1.  </b>Phrase definitions are kept in a linked list with a total ordering which
+<p class="commentary firstcommentary"><a id="SP10_9_2_1" class="paragraph-anchor"></a><b>&#167;10.9.2.1.  </b>Phrase definitions are kept in a linked list with a total ordering which
 properly contains the partial ordering in which \(P_1\leq P_2\) if they are
 lexically identical and if each parameter of \(P_1\) provably, at compile time,
 also satisfies the requirements for the corresponding parameter of \(P_2\).
@@ -1079,7 +1079,7 @@ later rules can override earlier ones but still make use of them.
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Possibility (P%d) $e\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">list_of_possible_readings</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2">&#167;10.9.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_1_1"></a><b>&#167;10.9.2.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this reading to the list of test cases</span><span class="named-paragraph-number">10.9.2.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_2_1_1" class="paragraph-anchor"></a><b>&#167;10.9.2.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this reading to the list of test cases</span><span class="named-paragraph-number">10.9.2.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1088,7 +1088,7 @@ later rules can override earlier ones but still make use of them.
 <span class="plain-syntax">    </span><a href="14-ds2.html#SP22" class="function-link"><span class="function-syntax">Dash::clear_flags</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">alt</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2_1">&#167;10.9.2.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_2"></a><b>&#167;10.9.2.2.  </b>Now we work through the list of tests. We must produce at least one reading
+<p class="commentary firstcommentary"><a id="SP10_9_2_2" class="paragraph-anchor"></a><b>&#167;10.9.2.2.  </b>Now we work through the list of tests. We must produce at least one reading
 passing at least at the "sometimes" level marked by the <span class="extract"><span class="extract-syntax">UNPROVEN_DASHFLAG</span></span>, or
 else the whole specification fails its match. The first proven match stops our
 work, since we can never need lower-priority interpretations.
@@ -1119,7 +1119,7 @@ work, since we can never need lower-priority interpretations.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"|\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2">&#167;10.9.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_2_1"></a><b>&#167;10.9.2.2.1.  </b>We tell Dash to run silently unless grosser-than-gross problems arise, and
+<p class="commentary firstcommentary"><a id="SP10_9_2_2_1" class="paragraph-anchor"></a><b>&#167;10.9.2.2.1.  </b>We tell Dash to run silently unless grosser-than-gross problems arise, and
 also tell it to check the reading with no alternatives considered. (If we
 let it consider alternatives, that would be circular: we'd end up here
 again, and so on forever.)
@@ -1143,7 +1143,7 @@ again, and so on forever.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2_2">&#167;10.9.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_3"></a><b>&#167;10.9.2.3.  </b>This is the happy ending, in which the list can probably be passed, though
+<p class="commentary firstcommentary"><a id="SP10_9_2_3" class="paragraph-anchor"></a><b>&#167;10.9.2.3.  </b>This is the happy ending, in which the list can probably be passed, though
 there are still a handful of pitfalls.
 </p>
 
@@ -1156,7 +1156,7 @@ there are still a handful of pitfalls.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_2_3_2" class="named-paragraph-link"><span class="named-paragraph">Step (4A.c.2) Infer the kind of any requested local variable</span><span class="named-paragraph-number">10.9.2.3.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2">&#167;10.9.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_3_1"></a><b>&#167;10.9.2.3.1.  </b>To recap, after checking through the possible readings we have something
+<p class="commentary firstcommentary"><a id="SP10_9_2_3_1" class="paragraph-anchor"></a><b>&#167;10.9.2.3.1.  </b>To recap, after checking through the possible readings we have something
 like this as the result:
 </p>
 
@@ -1224,7 +1224,7 @@ checking.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"After winnowing, CS is $T\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2_3">&#167;10.9.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_3_1_1"></a><b>&#167;10.9.2.3.1.1.  </b>This is another sort of error which couldn't happen with a conventional
+<p class="commentary firstcommentary"><a id="SP10_9_2_3_1_1" class="paragraph-anchor"></a><b>&#167;10.9.2.3.1.1.  </b>This is another sort of error which couldn't happen with a conventional
 programming language &mdash; in C, for instance, it's syntactically obvious
 how many arguments a function call has, because the brackets and commas
 are unambiguous. But in Inform, there are no reserved tokens of syntax
@@ -1253,7 +1253,7 @@ no way safely to adjudicate that at run-time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2_3_1">&#167;10.9.2.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_3_2"></a><b>&#167;10.9.2.3.2.  </b>If an invocation passes, and asks to create a local variable, we need
+<p class="commentary firstcommentary"><a id="SP10_9_2_3_2" class="paragraph-anchor"></a><b>&#167;10.9.2.3.2.  </b>If an invocation passes, and asks to create a local variable, we need
 to mark the tree accordingly. If there's just one invocation then (4I)
 handles this, but if there's ambiguity, we handle it here, and only
 for the surviving nodes.
@@ -1271,7 +1271,7 @@ for the surviving nodes.
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2_3">&#167;10.9.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_4"></a><b>&#167;10.9.2.4.  </b>And this is the unhappy ending:
+<p class="commentary firstcommentary"><a id="SP10_9_2_4" class="paragraph-anchor"></a><b>&#167;10.9.2.4.  </b>And this is the unhappy ending:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4A.d) Give up with no readings possible</span><span class="named-paragraph-number">10.9.2.4</span></span><span class="comment-syntax"> =</span>
@@ -1287,7 +1287,7 @@ for the surviving nodes.
 <span class="plain-syntax">        </span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_needed</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_2">&#167;10.9.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1"></a><b>&#167;10.9.1.1.  </b>(4I) Invocations.
+<p class="commentary firstcommentary"><a id="SP10_9_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.  </b>(4I) Invocations.
 Invocations are the hardest nodes to check, but here at least we can forget
 all about the ambiguities arising from multiple possibilities, and look at
 just a single one.
@@ -1339,7 +1339,7 @@ the problem.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_1_1_12" class="named-paragraph-link"><span class="named-paragraph">Step (4I.k) Cope with success</span><span class="named-paragraph-number">10.9.1.1.12</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1">&#167;10.9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_1"></a><b>&#167;10.9.1.1.1.  </b>Most problem messages issued by (4I) will be of a sort called "interesting",
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.1.  </b>Most problem messages issued by (4I) will be of a sort called "interesting",
 and will use the following macro.
 </p>
 
@@ -1348,7 +1348,7 @@ and will use the following macro.
 <span class="plain-syntax">    </span><span class="identifier-syntax">no_interesting_problems_thrown</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TEST_DASH_MODE</span><span class="plain-syntax">(</span><span class="constant-syntax">ISSUE_INTERESTING_PROBLEMS_DMODE</span><span class="plain-syntax">))</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2"></a><b>&#167;10.9.1.1.2.  </b>"Polymorphic" here means that the phrase (i) produces a value, and (ii) that
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.  </b>"Polymorphic" here means that the phrase (i) produces a value, and (ii) that
 the kind of this value depends on the kinds of its arguments. Inform supports
 only a few polymorphic phrases, all clearly declared as such in the Standard
 Rules, and they come in two sorts: those marked with a "polymorphism exception",
@@ -1365,7 +1365,7 @@ and those marked as "arithmetic operations".
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="22-ptd.html#SP26" class="function-link"><span class="function-syntax">Phrases::TypeData::is_arithmetic_phrase</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">)) </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_1_1_2_2" class="named-paragraph-link"><span class="named-paragraph">Step (4I.a.2) Dimension-check arithmetic phrases</span><span class="named-paragraph-number">10.9.1.1.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_1"></a><b>&#167;10.9.1.1.2.1.  </b>For instance, the kind of "total carrying capacity of people in the Dining
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.1.  </b>For instance, the kind of "total carrying capacity of people in the Dining
 Room" is a number, because the kind of the property "carrying capacity" is
 "number".
 </p>
@@ -1391,7 +1391,7 @@ Room" is a number, because the kind of the property "carrying capacity" is
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_1_1_2_1_1" class="named-paragraph-link"><span class="named-paragraph">Fail the invocation for totalling something other than a property</span><span class="named-paragraph-number">10.9.1.1.2.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_2">&#167;10.9.1.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_1_1"></a><b>&#167;10.9.1.1.2.1.1.  </b>The problem message here is to help what turns out to be quite a popular
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.1.1.  </b>The problem message here is to help what turns out to be quite a popular
 mistake. (Perhaps we should simply implement column-totalling and be done
 with it.)
 </p>
@@ -1411,7 +1411,7 @@ with it.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_2_1">&#167;10.9.1.1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2"></a><b>&#167;10.9.1.1.2.2.  </b>For instance, the following blocks an attempt to add a number to a text.
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.2.  </b>For instance, the following blocks an attempt to add a number to a text.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.a.2) Dimension-check arithmetic phrases</span><span class="named-paragraph-number">10.9.1.1.2.2</span></span><span class="comment-syntax"> =</span>
@@ -1431,7 +1431,7 @@ with it.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_1_1_2_2_2" class="named-paragraph-link"><span class="named-paragraph">Fail the invocation for a dimensional problem</span><span class="named-paragraph-number">10.9.1.1.2.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_2">&#167;10.9.1.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2_1"></a><b>&#167;10.9.1.1.2.2.1.  </b>For the way this is actually worked out, see the section on "Dimensions".
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.2.1.  </b>For the way this is actually worked out, see the section on "Dimensions".
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the kinds of the operands, and what we want, and what we get</span><span class="named-paragraph-number">10.9.1.1.2.2.1</span></span><span class="comment-syntax"> =</span>
@@ -1454,7 +1454,7 @@ with it.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind_wanted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">kind_needed</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_2_2">&#167;10.9.1.1.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2_2"></a><b>&#167;10.9.1.1.2.2.2.  </b>Note that "value" &mdash; the vaguest kind of all &mdash; might come up here as
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_2_2_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.2.2.2.  </b>Note that "value" &mdash; the vaguest kind of all &mdash; might come up here as
 a result of some problem evaluating one of the operands, which has already been
 reported in a problem message; so we only issue this problem message when
 L and R are more definite.
@@ -1491,7 +1491,7 @@ L and R are more definite.
 <span class="plain-syntax">    </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_2_2">&#167;10.9.1.1.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_3"></a><b>&#167;10.9.1.1.3.  </b>This is the general case: almost all phrases fall into this category,
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_3" class="paragraph-anchor"></a><b>&#167;10.9.1.1.3.  </b>This is the general case: almost all phrases fall into this category,
 including all phrases created outside the Standard Rules.
 </p>
 
@@ -1525,7 +1525,7 @@ instance, if <span class="extract"><span class="extract-syntax">inv</span></span
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_3_1"></a><b>&#167;10.9.1.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Type-check a single token from the list</span><span class="named-paragraph-number">10.9.1.1.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_3_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Type-check a single token from the list</span><span class="named-paragraph-number">10.9.1.1.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1574,7 +1574,7 @@ instance, if <span class="extract"><span class="extract-syntax">inv</span></span
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_3">&#167;10.9.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_3_1_1"></a><b>&#167;10.9.1.1.3.1.1.  </b>The following is a delicate manoeuvre, but luckily it takes action only very
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_3_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.3.1.1.  </b>The following is a delicate manoeuvre, but luckily it takes action only very
 rarely and in very specific circumstances. We allow a very limited use
 of second-order logic in using the name of a kind as if it were a value,
 even though Inform is really not set up for this. The point is to allow:
@@ -1708,7 +1708,7 @@ in <span class="extract"><span class="extract-syntax">ith_token</span></span>, a
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_3_1">&#167;10.9.1.1.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_4"></a><b>&#167;10.9.1.1.4.  </b>For templates and the meaning of <span class="extract"><span class="extract-syntax">kind_checker_mode</span></span>, see the section
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_4" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.  </b>For templates and the meaning of <span class="extract"><span class="extract-syntax">kind_checker_mode</span></span>, see the section
 on "Kind Checking". But basically this handles the matching of an invocation
 against a definition like:
 </p>
@@ -1788,7 +1788,7 @@ against a definition like:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1"></a><b>&#167;10.9.1.1.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow an undeclared kind variable as return kind</span><span class="named-paragraph-number">10.9.1.1.4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_4_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow an undeclared kind variable as return kind</span><span class="named-paragraph-number">10.9.1.1.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1805,7 +1805,7 @@ against a definition like:
 <span class="plain-syntax">    </span><span class="identifier-syntax">outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_4">&#167;10.9.1.1.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5"></a><b>&#167;10.9.1.1.5.  </b>Although we don't implement it with prototypes as such, there's a
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.  </b>Although we don't implement it with prototypes as such, there's a
 similar constraint on the arguments of an assignment. If we are checking an
 invocation against:
 </p>
@@ -1866,7 +1866,7 @@ mistake having been made.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1"></a><b>&#167;10.9.1.1.5.1.  </b>It doesn't always look like an assignment, but a phrase such as:
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.1.  </b>It doesn't always look like an assignment, but a phrase such as:
 </p>
 
 <blockquote>
@@ -1892,7 +1892,7 @@ mistake having been made.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP10_9_1_1_5_1_3" class="named-paragraph-link"><span class="named-paragraph">Check that the property exists and that the object is allowed to have it</span><span class="named-paragraph-number">10.9.1.1.5.1.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_5">&#167;10.9.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_1"></a><b>&#167;10.9.1.1.5.1.1.  </b>There are actually two definitions like this in the Standard Rules:
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_1" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.1.1.  </b>There are actually two definitions like this in the Standard Rules:
 </p>
 
 <blockquote>
@@ -1929,7 +1929,7 @@ to the colour property of the canvas.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_5_1">&#167;10.9.1.1.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_2"></a><b>&#167;10.9.1.1.5.1.2.  </b>And here's the simpler case, (2). A small quirk here is that it will also pick
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.1.2.  </b>And here's the simpler case, (2). A small quirk here is that it will also pick
 up "change the Atrium to spiffy" in the following:
 </p>
 
@@ -1966,7 +1966,7 @@ against "value".)
 <span class="plain-syntax">    </span><span class="identifier-syntax">make_check</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_5_1">&#167;10.9.1.1.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_3"></a><b>&#167;10.9.1.1.5.1.3.  </b>We do something quite interesting here, if the object is not explicitly
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_1_3" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.1.3.  </b>We do something quite interesting here, if the object is not explicitly
 named: we deliberately allow an assignment which may not be type-safe, and
 without even dropping to the "sometimes" level. This is for phrases like so:
 </p>
@@ -2019,7 +2019,7 @@ this case in the type-checker is never exercised.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_5_1">&#167;10.9.1.1.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_2"></a><b>&#167;10.9.1.1.5.2.  </b>This is more straightforward, with just a tiny glitch to make the rules
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_5_2" class="paragraph-anchor"></a><b>&#167;10.9.1.1.5.2.  </b>This is more straightforward, with just a tiny glitch to make the rules
 tougher on variables which hold text to be parsed. (Because the regular rules
 for exchanging the subtly different forms of text which a double-quoted
 literal can mean are too generous.)
@@ -2069,7 +2069,7 @@ literal can mean are too generous.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1_5">&#167;10.9.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_6"></a><b>&#167;10.9.1.1.6.  </b>Suppose we have something like this:
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_6" class="paragraph-anchor"></a><b>&#167;10.9.1.1.6.  </b>Suppose we have something like this:
 </p>
 
 <blockquote>
@@ -2106,7 +2106,7 @@ to a number.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_7"></a><b>&#167;10.9.1.1.7.  </b>The final stage in type-checking a phrase is to ensure that any phrase
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_7" class="paragraph-anchor"></a><b>&#167;10.9.1.1.7.  </b>The final stage in type-checking a phrase is to ensure that any phrase
 options are properly used.
 </p>
 
@@ -2122,7 +2122,7 @@ options are properly used.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_8"></a><b>&#167;10.9.1.1.8.  </b>A say phrase which involves a property of something implicitly changes
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_8" class="paragraph-anchor"></a><b>&#167;10.9.1.1.8.  </b>A say phrase which involves a property of something implicitly changes
 the scope for any vaguely described properties within the text supplied
 as that property (if it is indeed text). We have to mark any such
 property, and any such say. For instance, suppose we are typechecking
@@ -2157,7 +2157,7 @@ of (1), we have to change <span class="extract"><span class="extract-syntax">sel
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_9"></a><b>&#167;10.9.1.1.9.  </b>Some phrases are defined with a notation making them allowable only inside
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_9" class="paragraph-anchor"></a><b>&#167;10.9.1.1.9.  </b>Some phrases are defined with a notation making them allowable only inside
 loops, or other control structures; for instance,
 </p>
 
@@ -2206,7 +2206,7 @@ loops, or other control structures; for instance,
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_10"></a><b>&#167;10.9.1.1.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.i) Disallow any phrases which are now deprecated</span><span class="named-paragraph-number">10.9.1.1.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_10" class="paragraph-anchor"></a><b>&#167;10.9.1.1.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.i) Disallow any phrases which are now deprecated</span><span class="named-paragraph-number">10.9.1.1.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2226,7 +2226,7 @@ loops, or other control structures; for instance,
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_11"></a><b>&#167;10.9.1.1.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.j) Cope with failure</span><span class="named-paragraph-number">10.9.1.1.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_11" class="paragraph-anchor"></a><b>&#167;10.9.1.1.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4I.j) Cope with failure</span><span class="named-paragraph-number">10.9.1.1.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2239,7 +2239,7 @@ loops, or other control structures; for instance,
 <span class="plain-syntax">        </span><a href="14-ds2.html#SP14" class="function-link"><span class="function-syntax">Dash::failed_one</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_needed</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_1_12"></a><b>&#167;10.9.1.1.12.  </b>Usage statistics are mainly interesting to the writers of Inform, to help us
+<p class="commentary firstcommentary"><a id="SP10_9_1_1_12" class="paragraph-anchor"></a><b>&#167;10.9.1.1.12.  </b>Usage statistics are mainly interesting to the writers of Inform, to help us
 to get some picture of how much phrases are used across a large corpus of
 existing source text (e.g., the documentation examples, or the public
 extensions).
@@ -2267,7 +2267,7 @@ extensions).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_1">&#167;10.9.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2"></a><b>&#167;10.9.1.2. (4S) Verifying single non-invocation readings. </b>This is much easier, though that's because a lot of the work is delegated
+<p class="commentary firstcommentary"><a id="SP10_9_1_2" class="paragraph-anchor"></a><b>&#167;10.9.1.2. (4S) Verifying single non-invocation readings. </b>This is much easier, though that's because a lot of the work is delegated
 to level 5.
 </p>
 
@@ -2298,7 +2298,7 @@ to level 5.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1">&#167;10.9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_1"></a><b>&#167;10.9.1.2.1.  </b>The "C listed in T" form of table reference is illegal as a general value,
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_1" class="paragraph-anchor"></a><b>&#167;10.9.1.2.1.  </b>The "C listed in T" form of table reference is illegal as a general value,
 and allowed only in phrases using the <span class="extract"><span class="extract-syntax">table-reference</span></span> token.
 </p>
 
@@ -2320,7 +2320,7 @@ and allowed only in phrases using the <span class="extract"><span class="extract
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2">&#167;10.9.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_2"></a><b>&#167;10.9.1.2.2.  </b>For a list entry, we have to have a list and an index.
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_2" class="paragraph-anchor"></a><b>&#167;10.9.1.2.2.  </b>For a list entry, we have to have a list and an index.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4S.c) Check arguments of a list entry</span><span class="named-paragraph-number">10.9.1.2.2</span></span><span class="comment-syntax"> =</span>
@@ -2348,7 +2348,7 @@ and allowed only in phrases using the <span class="extract"><span class="extract
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2">&#167;10.9.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_3"></a><b>&#167;10.9.1.2.3.  </b>For a property value, we have to have a property and an owner (perhaps an
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_3" class="paragraph-anchor"></a><b>&#167;10.9.1.2.3.  </b>For a property value, we have to have a property and an owner (perhaps an
 object, perhaps a value). If the owner is a value, we need to police the
 availability of the property carefully, since no run-time checking can help
 us there.
@@ -2382,7 +2382,7 @@ us there.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2">&#167;10.9.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_1"></a><b>&#167;10.9.1.2.3.1.  </b>Inform constructs property-value specifications quite carefully, and I think
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_1" class="paragraph-anchor"></a><b>&#167;10.9.1.2.3.1.  </b>Inform constructs property-value specifications quite carefully, and I think
 it's only possible for the typechecker to see one where the property isn't
 a property when recovering from other problems.
 </p>
@@ -2403,7 +2403,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_2"></a><b>&#167;10.9.1.2.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a "not a value property" problem message</span><span class="named-paragraph-number">10.9.1.2.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_2" class="paragraph-anchor"></a><b>&#167;10.9.1.2.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a "not a value property" problem message</span><span class="named-paragraph-number">10.9.1.2.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2419,7 +2419,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_3"></a><b>&#167;10.9.1.2.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for being too vague about the owner</span><span class="named-paragraph-number">10.9.1.2.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_3" class="paragraph-anchor"></a><b>&#167;10.9.1.2.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for being too vague about the owner</span><span class="named-paragraph-number">10.9.1.2.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2466,7 +2466,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_4"></a><b>&#167;10.9.1.2.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for not being allowed this property</span><span class="named-paragraph-number">10.9.1.2.3.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_3_4" class="paragraph-anchor"></a><b>&#167;10.9.1.2.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for not being allowed this property</span><span class="named-paragraph-number">10.9.1.2.3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2482,7 +2482,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_2_4"></a><b>&#167;10.9.1.2.4.  </b>For a table entry, we have to have a list and an index.
+<p class="commentary firstcommentary"><a id="SP10_9_1_2_4" class="paragraph-anchor"></a><b>&#167;10.9.1.2.4.  </b>For a table entry, we have to have a list and an index.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Step (4S.e) Check arguments of a table reference</span><span class="named-paragraph-number">10.9.1.2.4</span></span><span class="comment-syntax"> =</span>
@@ -2520,7 +2520,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1_2">&#167;10.9.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_1_3"></a><b>&#167;10.9.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as a command</span><span class="named-paragraph-number">10.9.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_1_3" class="paragraph-anchor"></a><b>&#167;10.9.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as a command</span><span class="named-paragraph-number">10.9.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2545,7 +2545,7 @@ a property when recovering from other problems.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP10_9_1">&#167;10.9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>"Diagnosis" nonterminals are used to parse syntax which is already known
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>"Diagnosis" nonterminals are used to parse syntax which is already known
 to be invalid: they simply choose between problem messages. This one picks
 up on misuse of structural phrases.
 </p>
@@ -2555,7 +2555,7 @@ up on misuse of structural phrases.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">continue</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_WrongContinue problem</span><span class="named-paragraph-number">11.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WrongContinue problem</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WrongContinue problem</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2567,7 +2567,7 @@ up on misuse of structural phrases.
 <span class="plain-syntax">        </span><span class="string-syntax">"and Inform 6)? If so, what you want is 'next'."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Arithmetic operands. </b>The following works out the kind of an operand for an arithmetic operation,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Arithmetic operands. </b>The following works out the kind of an operand for an arithmetic operation,
 which because of polymorphism is not as straightforward as it looks.
 </p>
 
@@ -2596,7 +2596,7 @@ which because of polymorphism is not as straightforward as it looks.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="14-sp.html#SP1" class="function-link"><span class="function-syntax">Specifications::to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">operand</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Local variable markers. </b>Branches (4A) and (4I) both make use of the following code, which is
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Local variable markers. </b>Branches (4A) and (4I) both make use of the following code, which is
 applied to any invocation surviving Dash.
 </p>
 
@@ -2638,7 +2638,7 @@ created &mdash; which is done if and when the invocation is ever compiled.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b>The following code is used to work out a good kind for the new variable,
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>The following code is used to work out a good kind for the new variable,
 instead of "value", based on looking at token 1 &mdash; the value being assigned.
 In the example above, we look at this initial value,
 </p>
@@ -2662,7 +2662,7 @@ In the example above, we look at this initial value,
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP13_1_1" class="named-paragraph-link"><span class="named-paragraph">Where no kind was explicitly stated, infer this from the supplied initial value</span><span class="named-paragraph-number">13.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1_1"></a><b>&#167;13.1.1.  </b>Unusually, it's legal for the initial value to be a generic constant &mdash;
+<p class="commentary firstcommentary"><a id="SP13_1_1" class="paragraph-anchor"></a><b>&#167;13.1.1.  </b>Unusually, it's legal for the initial value to be a generic constant &mdash;
 </p>
 
 <blockquote>
@@ -2723,7 +2723,7 @@ of a relation.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(4A.c.1) Local variable inferred to have kind: %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP13_1">&#167;13.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1_1_1"></a><b>&#167;13.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fail: the initial value of the local is unknown</span><span class="named-paragraph-number">13.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1_1_1" class="paragraph-anchor"></a><b>&#167;13.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fail: the initial value of the local is unknown</span><span class="named-paragraph-number">13.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2738,7 +2738,7 @@ of a relation.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP13_1_1">&#167;13.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1_1_2"></a><b>&#167;13.1.1.2.  </b>Bet you didn't think of this one. Actually, the kind of the list can also
+<p class="commentary firstcommentary"><a id="SP13_1_1_2" class="paragraph-anchor"></a><b>&#167;13.1.1.2.  </b>Bet you didn't think of this one. Actually, the kind of the list can also
 collapse to just "value" if the entries are incompatible, so we call the
 relevant code to issue a better problem message if it can.
 </p>
@@ -2763,7 +2763,7 @@ relevant code to issue a better problem message if it can.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP13_1_1">&#167;13.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1_1_3"></a><b>&#167;13.1.1.3.  </b>And some kinds are just forbidden in storage:
+<p class="commentary firstcommentary"><a id="SP13_1_1_3" class="paragraph-anchor"></a><b>&#167;13.1.1.3.  </b>And some kinds are just forbidden in storage:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fail: the initial value can't be stored</span><span class="named-paragraph-number">13.1.1.3</span></span><span class="comment-syntax"> =</span>
@@ -2781,7 +2781,7 @@ relevant code to issue a better problem message if it can.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP13_1_1">&#167;13.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Problems, problems, problems. </b>We are now in a situation where Dash has certainly failed, and on every
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Problems, problems, problems. </b>We are now in a situation where Dash has certainly failed, and on every
 possible alternative reading, so it would be legitimate to return <span class="extract"><span class="extract-syntax">NEVER_MATCH</span></span>
 here, which would likely result in some anodyne problem message from higher
 up in Dash.
@@ -2830,7 +2830,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan through the invocations in the problematic group, gathering information</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan through the invocations in the problematic group, gathering information</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2851,7 +2851,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_2"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide which invocation is the one most likely to have been intended</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_2" class="paragraph-anchor"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide which invocation is the one most likely to have been intended</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2865,7 +2865,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">        </span><span class="identifier-syntax">most_likely_to_have_been_intended</span><span class="plain-syntax"> = </span><span class="identifier-syntax">first_inv_in_group</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_3"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Re-type-check the first interesting invocation, allowing interesting problems this time</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_3" class="paragraph-anchor"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Re-type-check the first interesting invocation, allowing interesting problems this time</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2876,7 +2876,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">    </span><span class="constant-syntax">END_DASH_MODE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_4"></a><b>&#167;14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Re-type-check the tokens of the most likely invocation with silence off</span><span class="named-paragraph-number">14.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_4" class="paragraph-anchor"></a><b>&#167;14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Re-type-check the tokens of the most likely invocation with silence off</span><span class="named-paragraph-number">14.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2936,7 +2936,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_5"></a><b>&#167;14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a regular phrase with multiple failed possibilities</span><span class="named-paragraph-number">14.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_5" class="paragraph-anchor"></a><b>&#167;14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a regular phrase with multiple failed possibilities</span><span class="named-paragraph-number">14.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2948,7 +2948,7 @@ intended and to report the problem with that one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The following chooses a problem message for a text substitution which is
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The following chooses a problem message for a text substitution which is
 unrecognised.
 </p>
 
@@ -2958,7 +2958,7 @@ unrecognised.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph">Issue last-resort failed ts problem</span><span class="named-paragraph-number">15.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayAList problem</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayAList problem</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2970,7 +2970,7 @@ unrecognised.
 <span class="plain-syntax">        </span><span class="string-syntax">"a definite list of whatever matches the '...' part.)"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue last-resort failed ts problem</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue last-resort failed ts problem</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2979,7 +2979,7 @@ unrecognised.
 <span class="plain-syntax">        </span><span class="string-syntax">"either as a value or as one of the possible text substitutions."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>In the final checklist of doomed possibility, the code to quote an
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>In the final checklist of doomed possibility, the code to quote an
 invocation in a problem message will call the following routine for each
 parsed token. This remembers the token so that it can be explained in notes
 at the end of the big list; but each word range is remembered only once,
@@ -3004,7 +3004,7 @@ or <span class="extract"><span class="extract-syntax">"frog"</span></span> since
 <span class="plain-syntax">        (</span><a href="14-rv.html#SP19" class="function-link"><span class="function-syntax">Rvalues::is_CONSTANT_of_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_text</span><span class="plain-syntax">))) </span><span class="identifier-syntax">itpt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">already_described</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>This last little grammar diagnoses problems with a condition, and helps to
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>This last little grammar diagnoses problems with a condition, and helps to
 construct a problem message which will (usually) show which part of a compound
 condition caused the trouble:
 </p>
@@ -3026,7 +3026,7 @@ condition caused the trouble:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { INVALID_CP_BIT, - }; </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP17_4" class="named-paragraph-link"><span class="named-paragraph">Quote this-condition-bad segment</span><span class="named-paragraph-number">17.4</span></a></span><span class="Preform-constant-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-okay segment</span><span class="named-paragraph-number">17.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-okay segment</span><span class="named-paragraph-number">17.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3036,7 +3036,7 @@ condition caused the trouble:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_2"></a><b>&#167;17.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-value segment</span><span class="named-paragraph-number">17.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_2" class="paragraph-anchor"></a><b>&#167;17.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-value segment</span><span class="named-paragraph-number">17.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3047,7 +3047,7 @@ condition caused the trouble:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_3"></a><b>&#167;17.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote scene-begins-or-ends segment</span><span class="named-paragraph-number">17.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_3" class="paragraph-anchor"></a><b>&#167;17.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote scene-begins-or-ends segment</span><span class="named-paragraph-number">17.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3060,7 +3060,7 @@ condition caused the trouble:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_4"></a><b>&#167;17.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-bad segment</span><span class="named-paragraph-number">17.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_4" class="paragraph-anchor"></a><b>&#167;17.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote this-condition-bad segment</span><span class="named-paragraph-number">17.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3070,7 +3070,7 @@ condition caused the trouble:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP17">&#167;17</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. (5) Single nodes. </b>Here we typecheck a single non-invocation node on its own terms, ignoring
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. (5) Single nodes. </b>Here we typecheck a single non-invocation node on its own terms, ignoring
 any children it may have.
 </p>
 
@@ -3092,7 +3092,7 @@ any children it may have.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b>"You can't have/ Something for nothing," as Canadian power-trio Rush tell
+<p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1.  </b>"You can't have/ Something for nothing," as Canadian power-trio Rush tell
 us with the air of having just made a great discovery; well, you can't have
 "nothing" for something, either &mdash;
 </p>
@@ -3113,7 +3113,7 @@ us with the air of having just made a great discovery; well, you can't have
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2. Rule (5.a). </b>In all cases, unknown text in <span class="extract"><span class="extract-syntax">found</span></span> is incorrect. We can produce
+<p class="commentary firstcommentary"><a id="SP18_2" class="paragraph-anchor"></a><b>&#167;18.2. Rule (5.a). </b>In all cases, unknown text in <span class="extract"><span class="extract-syntax">found</span></span> is incorrect. We can produce
 any of more than twenty different problem messages here, in an attempt to be
 helpful about what exactly is wrong.
 </p>
@@ -3168,7 +3168,7 @@ helpful about what exactly is wrong.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_1"></a><b>&#167;18.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as an action to try</span><span class="named-paragraph-number">18.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2_1" class="paragraph-anchor"></a><b>&#167;18.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as an action to try</span><span class="named-paragraph-number">18.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3197,7 +3197,7 @@ helpful about what exactly is wrong.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_2">&#167;18.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>The &lt;unknown-text-shape&gt; is used purely in diagnosing problems; it helps
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The &lt;unknown-text-shape&gt; is used purely in diagnosing problems; it helps
 to decide, for instance, whether the errant phrase was intended to be a text
 substitution or not.
 </p>
@@ -3216,7 +3216,7 @@ substitution or not.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP19_5" class="named-paragraph-link"><span class="named-paragraph">Issue PM_SayUnknown problem</span><span class="named-paragraph-number">19.5</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_1"></a><b>&#167;19.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayComma problem</span><span class="named-paragraph-number">19.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayComma problem</span><span class="named-paragraph-number">19.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3229,7 +3229,7 @@ substitution or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_2"></a><b>&#167;19.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnicode problem</span><span class="named-paragraph-number">19.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_2" class="paragraph-anchor"></a><b>&#167;19.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnicode problem</span><span class="named-paragraph-number">19.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3249,7 +3249,7 @@ substitution or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_3"></a><b>&#167;19.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayElseMisplaced problem</span><span class="named-paragraph-number">19.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_3" class="paragraph-anchor"></a><b>&#167;19.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayElseMisplaced problem</span><span class="named-paragraph-number">19.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3262,7 +3262,7 @@ substitution or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_4"></a><b>&#167;19.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnknownCondition problem</span><span class="named-paragraph-number">19.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_4" class="paragraph-anchor"></a><b>&#167;19.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnknownCondition problem</span><span class="named-paragraph-number">19.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3289,7 +3289,7 @@ substitution or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_5"></a><b>&#167;19.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnknown problem</span><span class="named-paragraph-number">19.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_5" class="paragraph-anchor"></a><b>&#167;19.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_SayUnknown problem</span><span class="named-paragraph-number">19.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3305,14 +3305,14 @@ substitution or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_2"></a><b>&#167;18.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as a text substitution</span><span class="named-paragraph-number">18.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2_2" class="paragraph-anchor"></a><b>&#167;18.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unknown found text occurs as a text substitution</span><span class="named-paragraph-number">18.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">&lt;unknown-text-substitution-problem-diagnosis&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_2">&#167;18.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_3"></a><b>&#167;18.2.3.  </b>It's a bit unenlightening when an entire condition is rejected as
+<p class="commentary firstcommentary"><a id="SP18_2_3" class="paragraph-anchor"></a><b>&#167;18.2.3.  </b>It's a bit unenlightening when an entire condition is rejected as
 unknown if, in fact, only one of perhaps many clauses is broken. We
 therefore produce quite an elaborate problem message which goes through
 the clauses, summing up their status in turn:
@@ -3357,7 +3357,7 @@ the clauses, summing up their status in turn:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_2">&#167;18.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>These are cases where the wording used in the source text suggests some
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>These are cases where the wording used in the source text suggests some
 common misunderstanding.
 </p>
 
@@ -3379,7 +3379,7 @@ common misunderstanding.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP20_8" class="named-paragraph-link"><span class="named-paragraph">Issue PM_Unknown problem</span><span class="named-paragraph-number">20.8</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NumberOfTurns problem</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NumberOfTurns problem</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3391,7 +3391,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_OutOfPlay problem</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_OutOfPlay problem</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3407,7 +3407,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_OptionlessOption problem</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_OptionlessOption problem</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3422,7 +3422,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_4"></a><b>&#167;20.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActivityOf problem</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_4" class="paragraph-anchor"></a><b>&#167;20.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActivityOf problem</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3435,7 +3435,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_5"></a><b>&#167;20.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MidTextUnicode problem</span><span class="named-paragraph-number">20.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_5" class="paragraph-anchor"></a><b>&#167;20.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MidTextUnicode problem</span><span class="named-paragraph-number">20.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3453,7 +3453,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_6"></a><b>&#167;20.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownCondition problem</span><span class="named-paragraph-number">20.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_6" class="paragraph-anchor"></a><b>&#167;20.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownCondition problem</span><span class="named-paragraph-number">20.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3470,7 +3470,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_7"></a><b>&#167;20.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActivityWithFor problem</span><span class="named-paragraph-number">20.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_7" class="paragraph-anchor"></a><b>&#167;20.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActivityWithFor problem</span><span class="named-paragraph-number">20.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3483,7 +3483,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_8"></a><b>&#167;20.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_Unknown problem</span><span class="named-paragraph-number">20.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_8" class="paragraph-anchor"></a><b>&#167;20.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_Unknown problem</span><span class="named-paragraph-number">20.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3492,7 +3492,7 @@ common misunderstanding.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20">&#167;20</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1"></a><b>&#167;20.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue the generic unknown wording message</span><span class="named-paragraph-number">20.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1" class="paragraph-anchor"></a><b>&#167;20.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue the generic unknown wording message</span><span class="named-paragraph-number">20.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3501,7 +3501,7 @@ common misunderstanding.
 <span class="plain-syntax">        </span><span class="string-syntax">"text that I couldn't understand - '%2'. "</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP20_1">&#167;20.1</a>, <a href="14-ds2.html#SP20_2">&#167;20.2</a>, <a href="14-ds2.html#SP20_3">&#167;20.3</a>, <a href="14-ds2.html#SP20_4">&#167;20.4</a>, <a href="14-ds2.html#SP20_5">&#167;20.5</a>, <a href="14-ds2.html#SP20_6">&#167;20.6</a>, <a href="14-ds2.html#SP20_7">&#167;20.7</a>, <a href="14-ds2.html#SP20_8">&#167;20.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_4"></a><b>&#167;18.2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for miscellaneous suspicious wordings</span><span class="named-paragraph-number">18.2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2_4" class="paragraph-anchor"></a><b>&#167;18.2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for miscellaneous suspicious wordings</span><span class="named-paragraph-number">18.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3514,7 +3514,7 @@ common misunderstanding.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_2">&#167;18.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3"></a><b>&#167;18.3. Rule (5.b). </b>This is all concerned with a shorthand far more convenient to an Inform author
+<p class="commentary firstcommentary"><a id="SP18_3" class="paragraph-anchor"></a><b>&#167;18.3. Rule (5.b). </b>This is all concerned with a shorthand far more convenient to an Inform author
 than it is to us &mdash; where a property's name is used without any indication of
 its owner.
 </p>
@@ -3534,7 +3534,7 @@ its owner.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3_1"></a><b>&#167;18.3.1.  </b>But more often we want a value which just happens in this case to come
+<p class="commentary firstcommentary"><a id="SP18_3_1" class="paragraph-anchor"></a><b>&#167;18.3.1.  </b>But more often we want a value which just happens in this case to come
 from a property. For instance, in a text routine printing a description
 like "The cedarwood box could hold [carrying capacity in words]
 item[s].", we want "carrying capacity" to be a number value, and we
@@ -3577,7 +3577,7 @@ stack frame, and this is unlikely to be what anyone wanted.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_3">&#167;18.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3_1_1"></a><b>&#167;18.3.1.1.  </b>The tricky part is working out what the implicitly meant object is, a
+<p class="commentary firstcommentary"><a id="SP18_3_1_1" class="paragraph-anchor"></a><b>&#167;18.3.1.1.  </b>The tricky part is working out what the implicitly meant object is, a
 classic donkey anaphora-style problem in linguistics. We don't even begin
 to solve that here: indeed the decision is taken rather indirectly, because
 we simply compile code which uses Inform 6's <span class="extract"><span class="extract-syntax">self</span></span> variable to refer to
@@ -3599,7 +3599,7 @@ the owner. The I6 library and our own run-time code conspire to ensure that
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(5.b) coercing PROPERTY to PROPERTY VALUE: $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_3_1">&#167;18.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_4"></a><b>&#167;18.4. Rule (5.c). </b>An unchecked SP can contain a proposition which, though valid as a
+<p class="commentary firstcommentary"><a id="SP18_4" class="paragraph-anchor"></a><b>&#167;18.4. Rule (5.c). </b>An unchecked SP can contain a proposition which, though valid as a
 predicate calculus sentence, makes no sense for type reasons: for instance,
 "the Orange Room is 10" compiles to a valid sentence but one in which the
 binary predicate for equality is applied to incomparable SPs. To type-check,
@@ -3630,7 +3630,7 @@ delegate that to "Type Check Propositions.w".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5"></a><b>&#167;18.5. Rule (5.d). </b>Something of a grab-bag, this one. What these three situations have in common
+<p class="commentary firstcommentary"><a id="SP18_5" class="paragraph-anchor"></a><b>&#167;18.5. Rule (5.d). </b>Something of a grab-bag, this one. What these three situations have in common
 is that all use the typechecker to clarify ambiguities in syntax.
 </p>
 
@@ -3646,7 +3646,7 @@ is that all use the typechecker to clarify ambiguities in syntax.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP18_5_4" class="named-paragraph-link"><span class="named-paragraph">Step (5.d.4) Reject plausible but wrong uses due to use of inline-only types in phrases</span><span class="named-paragraph-number">18.5.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_1"></a><b>&#167;18.5.1.  </b>An action pattern can be an action if specific enough, and this is
+<p class="commentary firstcommentary"><a id="SP18_5_1" class="paragraph-anchor"></a><b>&#167;18.5.1.  </b>An action pattern can be an action if specific enough, and this is
 crucial: it enables phrases such as "try taking the box" to work. When
 such phrases are type-checked, they expect the argument to be a constant
 action value, which is a specific action.
@@ -3710,7 +3710,7 @@ action value, which is a specific action.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5">&#167;18.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_2"></a><b>&#167;18.5.2.  </b>The following applies only to literal text in double-quotes, which might
+<p class="commentary firstcommentary"><a id="SP18_5_2" class="paragraph-anchor"></a><b>&#167;18.5.2.  </b>The following applies only to literal text in double-quotes, which might
 or might not include text substitutions in square brackets: if we check it
 against "understanding", then we are trying to interpret it as a grammar
 to parse rather than text to print. We need to coerce since these have very
@@ -3728,7 +3728,7 @@ different representations at run-time.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5">&#167;18.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_3"></a><b>&#167;18.5.3.  </b>Another ambiguity is that the text "women who are in lighted rooms" in:
+<p class="commentary firstcommentary"><a id="SP18_5_3" class="paragraph-anchor"></a><b>&#167;18.5.3.  </b>Another ambiguity is that the text "women who are in lighted rooms" in:
 </p>
 
 <blockquote>
@@ -3770,7 +3770,7 @@ it to a constant value, using the "description of..." constructor.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5">&#167;18.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_3_1"></a><b>&#167;18.5.3.1.  </b>This is for undescriptive descriptions, really.
+<p class="commentary firstcommentary"><a id="SP18_5_3_1" class="paragraph-anchor"></a><b>&#167;18.5.3.1.  </b>This is for undescriptive descriptions, really.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for a quantified proposition in the description</span><span class="named-paragraph-number">18.5.3.1</span></span><span class="comment-syntax"> =</span>
@@ -3791,7 +3791,7 @@ it to a constant value, using the "description of..." constructor.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5_3">&#167;18.5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_3_2"></a><b>&#167;18.5.3.2.  </b>The following message is seldom seen since most phrases using descriptions
+<p class="commentary firstcommentary"><a id="SP18_5_3_2" class="paragraph-anchor"></a><b>&#167;18.5.3.2.  </b>The following message is seldom seen since most phrases using descriptions
 are set up with two parallel versions. As every description matches exactly one
 of these, there won't be a problem. But just in case the user has intentionally
 defined a phrase for only one case:
@@ -3816,7 +3816,7 @@ defined a phrase for only one case:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5_3">&#167;18.5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_3_3"></a><b>&#167;18.5.3.3.  </b>I can't see an easy proof that this can never occur, but nor can I make it
+<p class="commentary firstcommentary"><a id="SP18_5_3_3" class="paragraph-anchor"></a><b>&#167;18.5.3.3.  </b>I can't see an easy proof that this can never occur, but nor can I make it
 happen. The problem message is just in case someone finds a way. It appears
 if the description has a proposition with other than one free variable, once
 any universal quantifier ("all", etc.) is removed.
@@ -3839,7 +3839,7 @@ any universal quantifier ("all", etc.) is removed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5_3">&#167;18.5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_5_4"></a><b>&#167;18.5.4.  </b>It might look as if this ought to be checked when phrase definitions are
+<p class="commentary firstcommentary"><a id="SP18_5_4" class="paragraph-anchor"></a><b>&#167;18.5.4.  </b>It might look as if this ought to be checked when phrase definitions are
 made; the trouble is, "action", "condition" and so on are valid
 in phrase definitions, but only in inline-defined ones. We don't want to get
 into all that here, because the message is aimed more at Inform novices who
@@ -3872,7 +3872,7 @@ have made an understandable confusion.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_5">&#167;18.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6"></a><b>&#167;18.6. Rule (5.e). </b>The "main rule" is, as we shall see, that <span class="extract"><span class="extract-syntax">p</span></span> should have the same
+<p class="commentary firstcommentary"><a id="SP18_6" class="paragraph-anchor"></a><b>&#167;18.6. Rule (5.e). </b>The "main rule" is, as we shall see, that <span class="extract"><span class="extract-syntax">p</span></span> should have the same
 species as <span class="extract"><span class="extract-syntax">expected</span></span>, or if <span class="extract"><span class="extract-syntax">expected</span></span> give no species then at least it
 should have the same family. The two exceptional cases are when <span class="extract"><span class="extract-syntax">expected</span></span>
 is a description such as "an even number", or the name of a kind of value
@@ -3889,7 +3889,7 @@ meets these requirements.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">exceptional_case</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="14-ds2.html#SP18_6_2" class="named-paragraph-link"><span class="named-paragraph">Step (5.e.3) Main rule</span><span class="named-paragraph-number">18.6.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6_1"></a><b>&#167;18.6.1.  </b>Now for the related, but slightly simpler, case of matching the name of a
+<p class="commentary firstcommentary"><a id="SP18_6_1" class="paragraph-anchor"></a><b>&#167;18.6.1.  </b>Now for the related, but slightly simpler, case of matching the name of a
 kind. Suppose we are parsing "award 5 points" against
 </p>
 
@@ -3933,7 +3933,7 @@ conclusion about the return kind of the phrase.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_6">&#167;18.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6_1_1"></a><b>&#167;18.6.1.1.  </b>This is the error message a typical C compiler's type-checker would issue;
+<p class="commentary firstcommentary"><a id="SP18_6_1_1" class="paragraph-anchor"></a><b>&#167;18.6.1.1.  </b>This is the error message a typical C compiler's type-checker would issue;
 it says the value has the wrong kind.
 </p>
 
@@ -3985,7 +3985,7 @@ it says the value has the wrong kind.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_6_1">&#167;18.6.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6_2"></a><b>&#167;18.6.2.  </b>We now apply the main rule, supposing that neither of the exceptional cases
+<p class="commentary firstcommentary"><a id="SP18_6_2" class="paragraph-anchor"></a><b>&#167;18.6.2.  </b>We now apply the main rule, supposing that neither of the exceptional cases
 has intervened to stop us getting here. The found and expected specifications
 must have the same family and, unless the expected species is <span class="extract"><span class="extract-syntax">UNKNOWN_NT</span></span>, the
 same species as well.
@@ -4008,7 +4008,7 @@ same species as well.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_6">&#167;18.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6_2_1"></a><b>&#167;18.6.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fail with a warning about literal descriptions</span><span class="named-paragraph-number">18.6.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_6_2_1" class="paragraph-anchor"></a><b>&#167;18.6.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fail with a warning about literal descriptions</span><span class="named-paragraph-number">18.6.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -4048,7 +4048,7 @@ same species as well.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_6_2">&#167;18.6.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_6_2_2"></a><b>&#167;18.6.2.2.  </b>This is the general-purpose Problem message to which the type-checker
+<p class="commentary firstcommentary"><a id="SP18_6_2_2" class="paragraph-anchor"></a><b>&#167;18.6.2.2.  </b>This is the general-purpose Problem message to which the type-checker
 resorts when it has nothing more specific to say.
 </p>
 
@@ -4070,7 +4070,7 @@ resorts when it has nothing more specific to say.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-ds2.html#SP18_6_2">&#167;18.6.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Ambiguity testing flags. </b>To avoid filling the parse tree with unnecessary annotations, we apply these
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Ambiguity testing flags. </b>To avoid filling the parse tree with unnecessary annotations, we apply these
 only when resolving ambiguities, in (4A) above.
 </p>
 
@@ -4109,7 +4109,7 @@ only when resolving ambiguities, in (4A) above.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verdict</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>The bitmap holding the results of typechecking:
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>The bitmap holding the results of typechecking:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -4136,7 +4136,7 @@ only when resolving ambiguities, in (4A) above.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>A convenience sometimes needed for checking conditional clauses, like the
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>A convenience sometimes needed for checking conditional clauses, like the
 "when..." attached to action patterns:
 </p>
 
@@ -4149,7 +4149,7 @@ only when resolving ambiguities, in (4A) above.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>The exceptional treatment of the "property" kind below is to allow
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>The exceptional treatment of the "property" kind below is to allow
 "examining scenery" to be an action pattern, where an either/or property
 has a name which is really a noun rather than an adjective, luring people
 into treating it as such.
@@ -4227,7 +4227,7 @@ into treating it as such.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>This is the state of the <span class="extract"><span class="extract-syntax">***</span></span> pseudo-phrase used for debugging:
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>This is the state of the <span class="extract"><span class="extract-syntax">***</span></span> pseudo-phrase used for debugging:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -4252,7 +4252,7 @@ into treating it as such.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Value checking. </b>The following adapts the above test to attempt to match two specifications
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Value checking. </b>The following adapts the above test to attempt to match two specifications
 together: for example, to match "12" against "even number". This, rather
 surprisingly, returns <span class="extract"><span class="extract-syntax">SOMETIMES_MATCH</span></span>, since we find that the kinds
 are guaranteed &mdash; 12 is indeed a number &mdash; but Inform doesn't "know" the
@@ -4282,7 +4282,7 @@ at run time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b></p>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Dash::experiment</span><button class="popup" onclick="togglePopup('usagePopup28')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup28">Usage of <span class="code-font"><span class="function-syntax">Dash::experiment</span></span>:<br/>Internal Test Cases - <a href="26-itc.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">full</span><span class="plain-syntax">) {</span>
@@ -4328,7 +4328,7 @@ at run time.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b></p>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">AMBIGUITY_JOIN_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="14-ds2.html#SP28" class="function-link"><span class="function-syntax">Dash::ambiguity_join</span></a>
 </pre>

@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="11-tr.html#SP3">&#167;3. Creating new terms</a></li><li><a href="11-tr.html#SP4">&#167;4. Copying</a></li><li><a href="11-tr.html#SP5">&#167;5. Variable letters</a></li><li><a href="11-tr.html#SP6">&#167;6. Underlying terms</a></li><li><a href="11-tr.html#SP7">&#167;7. Adjective-noun conversions</a></li><li><a href="11-tr.html#SP9">&#167;9. Compiling terms</a></li><li><a href="11-tr.html#SP10">&#167;10. Debugging terms</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Recall that a "term" can be anything which is a constant, can be a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Recall that a "term" can be anything which is a constant, can be a
 variable, or can be a function \(f_B(t)\) of another term \(t\). Our
 representation of this as a data structure therefore falls into three
 cases. At all times exactly one of the three relevant fields, <span class="extract"><span class="extract-syntax">variable</span></span>,
@@ -117,7 +117,7 @@ to work it out once.
 <span class="plain-syntax">} </span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pcalc_term is accessed in 11/ap, 11/pr, 11/bas, 11/sc, 11/sm, 11/tcp, 12/ter, 12/ap, 12/is, 12/ca, 12/cad, 12/cdp, 15/tpr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The <span class="extract"><span class="extract-syntax">pcalc_func</span></span> structure represents a usage of a function inside a term.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The <span class="extract"><span class="extract-syntax">pcalc_func</span></span> structure represents a usage of a function inside a term.
 Terms such as \(f_A(f_B(f_C(x)))\) often occur, so a typical term might be
 stored as
 </p>
@@ -141,7 +141,7 @@ field is
 <span class="plain-syntax">} </span><span class="reserved-syntax">pcalc_func</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pcalc_func is accessed in 11/bas, 11/sm, 11/tcp, 12/ap, 12/ca, 12/cad, 12/cdp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Creating new terms. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Creating new terms. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Terms::new_variable</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Calculus::Terms::new_variable</span></span>:<br/><a href="11-tr.html#SP7">&#167;7</a><br/>Assertions - <a href="5-ass.html#SP6_3_39_5">&#167;6.3.39.5</a><br/>Implications - <a href="5-imp.html#SP6_1_3">&#167;6.1.3</a><br/>Atomic Propositions - <a href="11-ap.html#SP7">&#167;7</a>, <a href="11-ap.html#SP19">&#167;19</a>, <a href="11-ap.html#SP21">&#167;21</a><br/>Propositions - <a href="11-pr.html#SP25">&#167;25</a>, <a href="11-pr.html#SP26">&#167;26</a><br/>Tree Conversions - <a href="11-tc.html#SP1">&#167;1</a>, <a href="11-tc.html#SP2">&#167;2</a>, <a href="11-tc.html#SP3">&#167;3</a>, <a href="11-tc.html#SP4">&#167;4</a>, <a href="11-tc.html#SP5">&#167;5</a>, <a href="11-tc.html#SP7">&#167;7</a><br/>Sentence Conversions - <a href="11-sc.html#SP3_3">&#167;3.3</a>, <a href="11-sc.html#SP3_7">&#167;3.7</a><br/>Simplifications - <a href="11-sm.html#SP2_2">&#167;2.2</a>, <a href="11-sm.html#SP3">&#167;3</a>, <a href="11-sm.html#SP7">&#167;7</a>, <a href="11-sm.html#SP9_3_2">&#167;9.3.2</a><br/>Compile Atoms - <a href="12-ca.html#SP7">&#167;7</a><br/>Deciding to Defer - <a href="12-dtd.html#SP9">&#167;9</a>, <a href="12-dtd.html#SP12">&#167;12</a><br/>Compile Deferred Propositions - <a href="12-cdp.html#SP5">&#167;5</a><br/>Descriptions - <a href="14-ds.html#SP3">&#167;3</a>, <a href="14-ds.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">) {</span>
@@ -165,7 +165,7 @@ field is
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>Where, in all three cases:
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>Where, in all three cases:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make new blank term structure pt</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
@@ -179,7 +179,7 @@ field is
 <span class="plain-syntax">    </span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">term_checked_as_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-tr.html#SP3">&#167;3</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Copying. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Copying. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Terms::copy</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Calculus::Terms::copy</span></span>:<br/>Propositions - <a href="11-pr.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
@@ -189,7 +189,7 @@ field is
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Variable letters. </b>The variables 0 to 25 are referred to by the letters $x, y, z, a, b,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Variable letters. </b>The variables 0 to 25 are referred to by the letters $x, y, z, a, b,
 c, ..., w$: this convention is followed both in the debugging log and
 in functions compiled into I6 code.
 </p>
@@ -212,7 +212,7 @@ restriction, and it greatly simplifies the code.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pcalc_vars</span><span class="plain-syntax"> = </span><span class="string-syntax">"xyzabcdefghijklmnopqrstuvw"</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Underlying terms. </b>Routines to see if a term is a constant \(C\), or if it is a chain of functions
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Underlying terms. </b>Routines to see if a term is a constant \(C\), or if it is a chain of functions
 at the bottom of which is a constant \(C\); and similarly for variables.
 </p>
 
@@ -231,7 +231,7 @@ at the bottom of which is a constant \(C\); and similarly for variables.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Adjective-noun conversions. </b>As we shall see, a general unary predicate stores a type-reference
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Adjective-noun conversions. </b>As we shall see, a general unary predicate stores a type-reference
 pointer to an adjectival phrase &mdash; the adjective it tests. But
 sometimes the same word acts both as adjective and noun in English. In
 "the green door", clearly "green" is an adjective; in "the door
@@ -252,7 +252,7 @@ again.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_variable</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And conversely:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And conversely:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -271,7 +271,7 @@ again.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Compiling terms. </b>We are now ready to compile a general predicate-calculus term, which
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Compiling terms. </b>We are now ready to compile a general predicate-calculus term, which
 may be a constant (perhaps with a cinder marking), a variable or a function
 of another term.
 </p>
@@ -325,7 +325,7 @@ value, because this might not yet have been checked otherwise.
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Broken pcalc term"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Debugging terms. </b>The art of this is to be unobtrusive; when a proposition is being logged,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Debugging terms. </b>The art of this is to be unobtrusive; when a proposition is being logged,
 we don't much care about the constant terms, and want to display them
 concisely and without fuss.
 </p>

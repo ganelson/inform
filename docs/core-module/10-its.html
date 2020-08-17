@@ -72,7 +72,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#10">Chapter 10: The S-Parser</a></li><li><b>Introduction to Semantics</b></li></ul></div>
 <p class="purpose">A general introduction to the S-parser and the data structures it makes use of.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>At this point, the text read in by Inform is now a stream of words, each of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>At this point, the text read in by Inform is now a stream of words, each of
 which is identified by a pointer to a <span class="extract"><span class="extract-syntax">vocabulary_entry</span></span> structure in its
 dictionary. The words are numbered upwards from 0, and we refer to any
 contiguous run of words as an "excerpt", often writing <span class="extract"><span class="extract-syntax">(w1, w2)</span></span> to mean
@@ -114,7 +114,7 @@ the parse tree at all. We will then go back to the parse tree to write the
 A-parser.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The S-parser is similar to the expression parser in a regular compiler. It
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The S-parser is similar to the expression parser in a regular compiler. It
 is in some ways simpler because natural language tends not to form complex
 formulae, but in other ways more complicated, because performance issues
 are very significant when comparing excerpts of text, and because there are
@@ -136,7 +136,7 @@ of it, and then
 <span class="extract"><span class="extract-syntax">specification</span></span> structures appear all over Inform.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Consider the following contrived example.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Consider the following contrived example.
 </p>
 
 <blockquote>
@@ -224,7 +224,7 @@ explained above, it's really only an intermediate state used while the S-parser
 is working.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>One obvious category of word is missing: there are no adjectives in this
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>One obvious category of word is missing: there are no adjectives in this
 example. Inform currently supports many sorts of adjective &mdash; either/or
 properties, such as "open"; values of kinds of value which coincide with
 properties, such as "green" as a value of a "colour"; and adjectives
@@ -238,7 +238,7 @@ for scenes, for example. The identification of an adjective's name with
 its set of possible meanings is via a structure called <span class="extract"><span class="extract-syntax">adjective</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>To sum up. If we write "text" \(\rightarrow\) structure used for parsing
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>To sum up. If we write "text" \(\rightarrow\) structure used for parsing
 \(\rightarrow\) structure used to hold meaning, our example is parsed like so:
 </p>
 
@@ -265,7 +265,7 @@ by name only, with little attempt to detect which sense is meant, so they
 pass straight through the S-parser as pointers to <span class="extract"><span class="extract-syntax">adjective</span></span>
 structures.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>To sum up further still, <span class="extract"><span class="extract-syntax">excerpt_meaning</span></span> structures are used to parse
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>To sum up further still, <span class="extract"><span class="extract-syntax">excerpt_meaning</span></span> structures are used to parse
 simple nouns and imperative phrases, whereas other specialist structures
 (<span class="extract"><span class="extract-syntax">preposition</span></span>, <span class="extract"><span class="extract-syntax">determiner</span></span>, etc.) are used to parse the hinges
 which hold sentences together. Once parsed, individual excerpts tend to

@@ -82,13 +82,13 @@ MathJax = {
 
 <ul class="toc"><li><a href="8-hdn.html#SP1">&#167;1. World objects under each heading</a></li><li><a href="8-hdn.html#SP5">&#167;5. The noun search list</a></li><li><a href="8-hdn.html#SP13">&#167;13. Describing the heading structure, 1: to the debugging log</a></li><li><a href="8-hdn.html#SP15">&#167;15. Describing the heading structure, 2: to the index</a></li><li><a href="8-hdn.html#SP16">&#167;16. Describing the heading structure, 3: to a freestanding XML file</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. World objects under each heading. </b>Every heading must carry with it a linked list of the nouns created in
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. World objects under each heading. </b>Every heading must carry with it a linked list of the nouns created in
 sentences which belong to it. So when any noun is created, the following
 is called to let the current sentence's heading know that it has a new
 friend.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">name_resolution_data</span><span class="plain-syntax"> {</span>
@@ -99,7 +99,7 @@ friend.
 <span class="plain-syntax">} </span><span class="reserved-syntax">name_resolution_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure name_resolution_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_NOUNS_UNDER</span><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">=</span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">list_of_contents</span><span class="plain-syntax">; </span><span class="identifier-syntax">nt</span><span class="plain-syntax">; </span><span class="identifier-syntax">nt</span><span class="plain-syntax">=</span><a href="8-hdn.html#SP3" class="function-link"><span class="function-syntax">Sentences::Headings::name_resolution_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">next_under_heading</span><span class="plain-syntax">)</span>
@@ -131,7 +131,7 @@ friend.
 <span class="plain-syntax">    </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">last_in_list_of_contents</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_tag</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following verification checks that every noun is listed
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following verification checks that every noun is listed
 in the list for exactly one heading. The point of the check is not so much
 to make sure the tag lists are properly formed, as the code making those
 is pretty elementary: it's really a test that the source text is well-formed
@@ -163,7 +163,7 @@ through a crack.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">disaster</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error_tree_unsafe</span><span class="plain-syntax">(</span><span class="string-syntax">"heading contents list failed verification"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. The noun search list. </b>Identifying noun phrases is tricky. Many plausible phrases could refer in
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The noun search list. </b>Identifying noun phrases is tricky. Many plausible phrases could refer in
 principle to several different instances: "east", for instance, might
 mean the direction or, say, "east garden". And what if the source
 mentions many chairs, and now refers simply to "the chair"? This problem
@@ -222,7 +222,7 @@ in order that "door" will retain its generic meaning even if, say,
 "an oak door" is created.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This means that, under every heading, the search sequence is different.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This means that, under every heading, the search sequence is different.
 So for the sake of efficiency we construct a linked list of world
 objects in priority order the first time we search under a new heading,
 then simply use that thereafter: we also keep track of the tail of this
@@ -236,7 +236,7 @@ use the following definition to iterate through it.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt_search_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">nt_search_finish</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The search sequence is, in effect, a cache storing a former computation,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The search sequence is, in effect, a cache storing a former computation,
 and like all caches it can fall out of date if the circumstances change so
 that the same computation would now produce a different outcome. That can
 only happen here if a new noun is to be created: the assertion-maker
@@ -250,7 +250,7 @@ calls the following routine to let us know.
 <span class="plain-syntax">    </span><span class="identifier-syntax">noun_search_list_valid_for_this_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The headings and subheadings are formed into a tree in which each heading
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The headings and subheadings are formed into a tree in which each heading
 contains its lesser-order headings. The pseudo-heading exists to be the root
 of this tree; the entire text falls under it. It is not a real heading at all,
 and has no "level" or "indentation" as such.
@@ -265,7 +265,7 @@ and has no "level" or "indentation" as such.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Headings::root_of_tree</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">()-&gt;</span><span class="identifier-syntax">headings</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Leaving aside the cache, then, we build a list as initially empty, then
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Leaving aside the cache, then, we build a list as initially empty, then
 all nametags of priority 1 as found by recursively searching headings, then all
 nametags of priority 2, and so on.
 </p>
@@ -290,7 +290,7 @@ nametags of priority 2, and so on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">noun_search_list_valid_for_this_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>Basically, we calculate the search list from the point of view of the
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>Basically, we calculate the search list from the point of view of the
 current sentence:
 </p>
 
@@ -304,7 +304,7 @@ current sentence:
 <span class="plain-syntax">    </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Headings::of_location</span><span class="plain-syntax">(</span><span class="identifier-syntax">position_P</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b>The pseudo-heading has no list of contents because all objects are created in
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>The pseudo-heading has no list of contents because all objects are created in
 source files, each certainly underneath a File (0) heading, so nothing should
 ever get that far.
 </p>
@@ -319,7 +319,7 @@ ever get that far.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pseud</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">list_of_contents</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> should always be true, but just in case</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b>The potential for disaster if this algorithm should be incorrect is high,
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b>The potential for disaster if this algorithm should be incorrect is high,
 so we perform a quick count to see if everything made it onto the list
 and produce an internal error if not.
 </p>
@@ -341,7 +341,7 @@ and produce an internal error if not.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The following adds all nametags under heading H to the search list, using
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following adds all nametags under heading H to the search list, using
 its own list of contents, and then recurses to add all objects under
 subheadings of H other than the one which has just recursed up to H. With
 that done, we recurse up to the superheading of H.
@@ -393,7 +393,7 @@ number of nametags in the source text.
 <span class="plain-syntax">        </span><a href="8-hdn.html#SP10" class="function-link"><span class="function-syntax">Sentences::Headings::build_search_list_from</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">within</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">parent_heading</span><span class="plain-syntax">, </span><span class="identifier-syntax">within</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add tag to the end of the search list</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add tag to the end of the search list</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -408,7 +408,7 @@ number of nametags in the source text.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt_search_finish</span><span class="plain-syntax"> = </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The search list is used for finding best matches in a particular order, the
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The search list is used for finding best matches in a particular order, the
 order being used to break tie-breaks. Note that we return <span class="extract"><span class="extract-syntax">NULL</span></span> if no noun
 in the search list has a positive score.
 </p>
@@ -428,7 +428,7 @@ in the search list has a positive score.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">best_nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>It's a tricky task to choose from a list of possible nouns which might have
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>It's a tricky task to choose from a list of possible nouns which might have
 been intended by text such as "chair". If the list is empty or contains only
 one choice, no problem. Otherwise we will probably have to reorder the noun
 search list, and then run through it. The code below looks as if it picks out
@@ -462,7 +462,7 @@ important.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> should never in fact happen</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Describing the heading structure, 1: to the debugging log. </b>Finally, three ways to describe the run of headings: to the debugging log,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Describing the heading structure, 1: to the debugging log. </b>Finally, three ways to describe the run of headings: to the debugging log,
 to the index of the project, and to a freestanding XML file.
 </p>
 
@@ -480,7 +480,7 @@ to the index of the project, and to a freestanding XML file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">" level:%d indentation:%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">level</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">indentation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And here we log the whole heading tree by recursing through it, and
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And here we log the whole heading tree by recursing through it, and
 surreptitiously check that it is correctly formed at the same time.
 </p>
 
@@ -503,7 +503,7 @@ surreptitiously check that it is correctly formed at the same time.
 <span class="plain-syntax">    </span><a href="8-hdn.html#SP14" class="function-link"><span class="function-syntax">Sentences::Headings::log_headings_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_heading</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Describing the heading structure, 2: to the index. </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Describing the heading structure, 2: to the index. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">contents_entry</span><span class="plain-syntax"> {</span>
@@ -544,7 +544,7 @@ surreptitiously check that it is correctly formed at the same time.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure contents_entry is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 4/npr, 4/nvr, 4/nar2, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/lp, 6/ins, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index this entry in the contents</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index this entry in the contents</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -589,7 +589,7 @@ surreptitiously check that it is correctly formed at the same time.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="8-hdn.html#SP15_1_2" class="named-paragraph-link"><span class="named-paragraph">List all the objects and kinds created under the given heading, one tap stop deeper</span><span class="named-paragraph-number">15.1.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1_1"></a><b>&#167;15.1.1.  </b>We index only headings of level 1 and up &mdash; so, not the pseudo-heading or the
+<p class="commentary firstcommentary"><a id="SP15_1_1" class="paragraph-anchor"></a><b>&#167;15.1.1.  </b>We index only headings of level 1 and up &mdash; so, not the pseudo-heading or the
 File (0) ones &mdash; and which are not within any extensions &mdash; so, are in the
 primary source text written by the user.
 </p>
@@ -623,7 +623,7 @@ primary source text written by the user.
 <span class="plain-syntax">    </span><a href="8-hdn.html#SP15_1_1" class="function-link"><span class="function-syntax">Sentences::Headings::index_heading_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_heading</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1_2"></a><b>&#167;15.1.2.  </b>We skip any objects or kinds without names (i.e., whose <span class="extract"><span class="extract-syntax">creator</span></span> is null).
+<p class="commentary firstcommentary"><a id="SP15_1_2" class="paragraph-anchor"></a><b>&#167;15.1.2.  </b>We skip any objects or kinds without names (i.e., whose <span class="extract"><span class="extract-syntax">creator</span></span> is null).
 The rest appear in italic type, and without links to source text since this
 in practice strews distractingly many orange berries across the page.
 </p>
@@ -647,7 +647,7 @@ in practice strews distractingly many orange berries across the page.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">HTML::end_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">); </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP15_1">&#167;15.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Describing the heading structure, 3: to a freestanding XML file. </b>This is provided as a convenience to the application using Inform, which may want
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Describing the heading structure, 3: to a freestanding XML file. </b>This is provided as a convenience to the application using Inform, which may want
 to have a pull-down menu or similar gadget allowing the user to jump to a given
 heading. This tells the interface where every heading is, thus saving it from
 having to parse the source.
@@ -687,7 +687,7 @@ Version", contains the Inform build number in its usual form: "4Q34", for instan
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/dict&gt;&lt;/plist&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16_1"></a><b>&#167;16.1.  </b>We use a convenient Apple DTD:
+<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1.  </b>We use a convenient Apple DTD:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write DTD indication for XML headings file</span><span class="named-paragraph-number">16.1</span></span><span class="comment-syntax"> =</span>
@@ -699,7 +699,7 @@ Version", contains the Inform build number in its usual form: "4Q34", for instan
 <span class="string-syntax">        "</span><span class="plain-syntax">\</span><span class="string-syntax">"http:</span><span class="comment-syntax">www.apple.com/DTDs/PropertyList-1.0.dtd\"&gt;\n");</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-hdn.html#SP16">&#167;16</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16_2"></a><b>&#167;16.2.  </b>Note that a level of 0, and a title of <span class="extract"><span class="extract-syntax">--</span></span>, signifies a File (0) level
+<p class="commentary firstcommentary"><a id="SP16_2" class="paragraph-anchor"></a><b>&#167;16.2.  </b>Note that a level of 0, and a title of <span class="extract"><span class="extract-syntax">--</span></span>, signifies a File (0) level
 heading: external tools can probably ignore such records. Similarly, it is
 unlikely that they will ever see a record without a "Filename" key &mdash;
 this would mean a heading arising from text created internally within Inform,

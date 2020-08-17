@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#14">Chapter 14: Specifications</a></li><li><b>Compiling from Specifications</b></li></ul></div>
 <p class="purpose">To compile specifications into Inform 6 values, conditions or void expressions.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>In a more traditional compiler, the code-generator would be something of a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>In a more traditional compiler, the code-generator would be something of a
 landmark &mdash; one of the three or four most important stations. Here it's
 something of an anticlimax, partly because traditional "code" &mdash; values
 and statements &mdash; are only a small part of the I6 we have to generate,
@@ -78,7 +78,7 @@ specifications &mdash; phrases to do something, or to decide things; constants;
 variables; conditions &mdash; finally convert into I6 code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>For the most part this is "modeless" &mdash; that is, the I6 code generated
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>For the most part this is "modeless" &mdash; that is, the I6 code generated
 by a specification does not depend on any context. But not entirely so, and
 we have a small set of "C-modes", each of which slightly alters the result
 to fit some particular need.
@@ -117,7 +117,7 @@ enter or exit macros to switch a particular mode on or off.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">compilation_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">DEREFERENCE_POINTERS_CMODE</span><span class="plain-syntax"> + </span><span class="constant-syntax">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain-syntax">; </span><span class="comment-syntax"> default</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>These modes are all explained where they are used. The one used right here
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>These modes are all explained where they are used. The one used right here
 is <span class="extract"><span class="extract-syntax">DEREFERENCE_POINTERS_CMODE</span></span>. This applies only when compiling a specification
 which generates a pointer value &mdash; an I6 value which is a pointer to a larger
 block of data on the heap, such as a list or text.
@@ -138,14 +138,14 @@ therefore exists as a way of temporarily turning off dereferencing &mdash; by
 default, it is always on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The outer shell here has two purposes. One is to copy the specification
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The outer shell here has two purposes. One is to copy the specification
 onto the local stack frame and then compile that copy &mdash; useful since
 compilation may alter its contents. The other purpose, and this is not to
 be dismissed lightly, is to ensure correct indentation in the log when
 we exit unexpectedly, for instance due to a problem.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::Compiler::compile_inner</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Specifications::Compiler::compile_inner</span></span>:<br/><a href="14-cfs.html#SP8">&#167;8</a><br/>Valued Properties - <a href="15-vp.html#SP11">&#167;11</a><br/>Compile Invocations Inline - <a href="25-cii.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -161,7 +161,7 @@ we exit unexpectedly, for instance due to a problem.
 <span class="plain-syntax">    </span><span class="constant-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>So this is where the compilation is done, or rather, delegated:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>So this is where the compilation is done, or rather, delegated:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -194,7 +194,7 @@ we exit unexpectedly, for instance due to a problem.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>A variation on this is to compile a specification which represents
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A variation on this is to compile a specification which represents
 a value in a context where a particular kind of value is expected:
 </p>
 
@@ -218,7 +218,7 @@ a value in a context where a particular kind of value is expected:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">down</span><span class="plain-syntax">) </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And the same in a constant context:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And the same in a constant context:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

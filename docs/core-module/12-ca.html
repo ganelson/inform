@@ -82,7 +82,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="12-ca.html#SP4_1">&#167;4.1. Stage 1</a></li><li><a href="12-ca.html#SP4_2">&#167;4.2. Stage 2</a></li><li><a href="12-ca.html#SP5">&#167;5. Constructing the schema</a></li><li><a href="12-ca.html#SP7">&#167;7. An unannotated one</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The compilation method is to look at the atom, work out a suitable I6
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The compilation method is to look at the atom, work out a suitable I6
 schema involving code to be applied to the one or two terms attaching to
 the atom, and then expand this. In some circumstances, the process of
 finding the schema will reveal that we need to apply it to different terms
@@ -101,7 +101,7 @@ negatively.
 <span class="plain-syntax">} </span><span class="reserved-syntax">annotated_i6_schema</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure annotated_i6_schema is accessed in 7/bp, 7/tur, 12/ter, 12/qr, 15/tpr, 15/cr, 15/spr2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Some constants to enumerate the three cases of what we are to do. This
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Some constants to enumerate the three cases of what we are to do. This
 looks asymmetrical &mdash; shouldn't we also test to see whether an atom is false,
 a fourth case?
 </p>
@@ -116,7 +116,7 @@ true or false into a single operation.
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>For its internal purposes, Inform is sometimes able to compile atoms which
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>For its internal purposes, Inform is sometimes able to compile atoms which
 wouldn't be allowed in a typical use of "now" from the source text; so it
 can suppress the following problem messages:
 </p>
@@ -125,7 +125,7 @@ can suppress the following problem messages:
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">suppress_C14CantChangeKind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">suppress_C14ActionVarsPastTense</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>So, then:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>So, then:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -149,7 +149,7 @@ can suppress the following problem messages:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Stage 2: expand that schema to the output stream</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1. Stage 1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stage 1: make an annotated schema from the atom</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. Stage 1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stage 1: make an annotated schema from the atom</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -162,7 +162,7 @@ can suppress the following problem messages:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_1_2" class="named-paragraph-link"><span class="named-paragraph">Reject all discussion of the action variables in the past tense</span><span class="named-paragraph-number">4.1.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_1"></a><b>&#167;4.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a fallback problem message, since the schema-maker evidently didn't</span><span class="named-paragraph-number">4.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a fallback problem message, since the schema-maker evidently didn't</span><span class="named-paragraph-number">4.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -178,7 +178,7 @@ can suppress the following problem messages:
 <span class="plain-syntax">            </span><span class="string-syntax">"need to be arranged."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_2"></a><b>&#167;4.1.2.  </b>This is in the user's own best interest.
+<p class="commentary firstcommentary"><a id="SP4_1_2" class="paragraph-anchor"></a><b>&#167;4.1.2.  </b>This is in the user's own best interest.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject all discussion of the action variables in the past tense</span><span class="named-paragraph-number">4.1.2</span></span><span class="comment-syntax"> =</span>
@@ -204,7 +204,7 @@ can suppress the following problem messages:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2. Stage 2. </b>A valid I6 condition has to be bracketed, so we surround the output with
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2. Stage 2. </b>A valid I6 condition has to be bracketed, so we surround the output with
 brackets if testing; and a valid I6 statement has to end with a semicolon,
 so we terminate with that if making true or false.
 </p>
@@ -223,7 +223,7 @@ so we terminate with that if making true or false.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Constructing the schema. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Constructing the schema. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">annotated_i6_schema</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Atoms::Compile::i6_schema_of_atom</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Calculus::Atoms::Compile::i6_schema_of_atom</span></span>:<br/><a href="12-ca.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
@@ -252,7 +252,7 @@ so we terminate with that if making true or false.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>We are now able to look at the different types of atom one at a time.
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>We are now able to look at the different types of atom one at a time.
 </p>
 
 <p class="commentary">CALLED atoms cannot be asserted, and to test them, we simply copy the
@@ -281,7 +281,7 @@ to <span class="extract"><span class="extract-syntax">true</span></span>.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>In any type-checked proposition, a <span class="extract"><span class="extract-syntax">KIND</span></span> atom can only exist where it is
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>In any type-checked proposition, a <span class="extract"><span class="extract-syntax">KIND</span></span> atom can only exist where it is
 always at least sometimes true. In particular, if \(K\) is a kind of value, then
 the atom \(K(v)\) can only exist where \(v\) is of that kind of value, so that the
 atom is always true when tested. But if \(K\) is a kind of object, then \(K(O)\)
@@ -328,7 +328,7 @@ the I6 <span class="extract"><span class="extract-syntax">ofclass</span></span> 
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>An easy case. Note that <span class="extract"><span class="extract-syntax">FoundEverywhere</span></span> is a template routine existing
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b>An easy case. Note that <span class="extract"><span class="extract-syntax">FoundEverywhere</span></span> is a template routine existing
 to provide a common value of the I6 <span class="extract"><span class="extract-syntax">found_in</span></span> property &mdash; common that is
 to all backdrops which are currently everywhere.
 </p>
@@ -353,7 +353,7 @@ to all backdrops which are currently everywhere.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b>And another.
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b>And another.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a NOWHERE atom</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
@@ -373,7 +373,7 @@ to all backdrops which are currently everywhere.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5"></a><b>&#167;5.5.  </b>And another. (In fact, at present <span class="extract"><span class="extract-syntax">HERE</span></span> atoms are never included in
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5.  </b>And another. (In fact, at present <span class="extract"><span class="extract-syntax">HERE</span></span> atoms are never included in
 propositions to be compiled, so this code is never used.)
 </p>
 
@@ -394,7 +394,7 @@ propositions to be compiled, so this code is never used.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b>The last unary atom is an adjective, for which we hand over to the general
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6.  </b>The last unary atom is an adjective, for which we hand over to the general
 adjective apparatus.
 </p>
 
@@ -422,7 +422,7 @@ adjective apparatus.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7"></a><b>&#167;5.7.  </b>Delegation is similarly the art of compiling a BP:
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7.  </b>Delegation is similarly the art of compiling a BP:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a binary predicate</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
@@ -437,7 +437,7 @@ adjective apparatus.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7_1"></a><b>&#167;5.7.1.  </b>When a relation \(R(x, y)\) has been simplified to \(is(x, f_R(y))\)
+<p class="commentary firstcommentary"><a id="SP5_7_1" class="paragraph-anchor"></a><b>&#167;5.7.1.  </b>When a relation \(R(x, y)\) has been simplified to \(is(x, f_R(y))\)
 or \(is(g_R(x), y)\), it can be tested but not asserted true or false;
 we have to re-establish \(R(x, y)\) before we can proceed.
 </p>
@@ -460,7 +460,7 @@ we have to re-establish \(R(x, y)\) before we can proceed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax"> = </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP5_7">&#167;5.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Atoms::Compile::atom_involves_action_variables</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Calculus::Atoms::Compile::atom_involves_action_variables</span></span>:<br/><a href="12-ca.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
@@ -473,7 +473,7 @@ we have to re-establish \(R(x, y)\) before we can proceed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. An unannotated one. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. An unannotated one. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">annotated_i6_schema</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Atoms::Compile::blank_asch</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Calculus::Atoms::Compile::blank_asch</span></span>:<br/>Relations - <a href="7-rlt.html#SP9_2_2">&#167;9.2.2</a>, <a href="7-rlt.html#SP9_2_3">&#167;9.2.3</a>, <a href="7-rlt.html#SP9_2_4">&#167;9.2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

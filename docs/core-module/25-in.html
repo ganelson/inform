@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="25-in.html#SP8">&#167;8. Invocations themselves</a></li><li><a href="25-in.html#SP21">&#167;21. The implied newlines rule</a></li><li><a href="25-in.html#SP22">&#167;22. Invocation lists</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>An invocation is a request to perform a particular phrase with a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>An invocation is a request to perform a particular phrase with a
 particular set of parameters. For instance, to perform "award (N - a number)
 points" with \(N\) set to 100.
 </p>
@@ -131,7 +131,7 @@ is valid, but that we will be able to tell at run-time: so the
 code-generator must compile suitable disambiguation code to perform
 this run-time checking automatically.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>When necessary, and it usually isn't, an invocation has a packet of
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>When necessary, and it usually isn't, an invocation has a packet of
 details attached about any phrase options used; for instance, in
 </p>
 
@@ -150,7 +150,7 @@ as a run-time bitmap (with just one bit set, since only one option is used).
 <span class="plain-syntax">} </span><span class="reserved-syntax">invocation_options</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure invocation_options is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>An invocation can have an arbitrary number of "tokens". These are the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>An invocation can have an arbitrary number of "tokens". These are the
 arguments for the phrase being invoked; so for instance in
 </p>
 
@@ -164,7 +164,7 @@ we've parsed &mdash; these will each be constant <span class="extract"><span cla
 to be valid.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>At first sight, the <span class="extract"><span class="extract-syntax">invocation</span></span> structure appears to contain redundant
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>At first sight, the <span class="extract"><span class="extract-syntax">invocation</span></span> structure appears to contain redundant
 information. And two of the fields are, in a way, redundant: the word number
 fields holding the text will, of course, be common to every entry in its
 group, so it is wasteful to store them so many times. But not very wasteful,
@@ -184,7 +184,7 @@ token, and its parsing values, are different. So each invocation in
 the list records its own <span class="extract"><span class="extract-syntax">token_as_parsed</span></span> values.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>On the other hand, <span class="extract"><span class="extract-syntax">token_check_to_do</span></span> and <span class="extract"><span class="extract-syntax">kind_resulting</span></span>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>On the other hand, <span class="extract"><span class="extract-syntax">token_check_to_do</span></span> and <span class="extract"><span class="extract-syntax">kind_resulting</span></span>
 look as if they are purely a function of the <span class="extract"><span class="extract-syntax">phrase_invoked</span></span>, and
 therefore need not be in this structure at all. This is not true:
 </p>
@@ -212,11 +212,11 @@ for different invocations of, say, "+".
 <span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">lttpii_counter</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">lttpii_upto</span><span class="plain-syntax">)?</span>
 <span class="plain-syntax">            </span><a href="25-in.html#SP16" class="function-link"><span class="function-syntax">Invocations::get_token_as_parsed</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">lttpii_counter</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_INVOCATIONS_PER_PHRASE</span><span class="plain-syntax"> </span><span class="constant-syntax">4096</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">invocation_sort_block</span><span class="plain-syntax"> {</span>
@@ -225,7 +225,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">} </span><span class="reserved-syntax">invocation_sort_block</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure invocation_sort_block is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Invocations themselves. </b>Are created thus:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Invocations themselves. </b>Are created thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -242,7 +242,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And logging thus:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And logging thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -277,7 +277,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Two important flags:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Two important flags:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -297,7 +297,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="constant-syntax">unproven_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The word range:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The word range:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -306,7 +306,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The say verb:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The say verb:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -318,7 +318,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="constant-syntax">say_verb_negated_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">neg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The say adjective:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The say adjective:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -327,7 +327,7 @@ for different invocations of, say, "+".
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_say_adjective</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">aph</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The tokens. Recall that these are stored as a linked list; the following
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The tokens. Recall that these are stored as a linked list; the following
 creates a new entry structure.
 </p>
 
@@ -340,7 +340,7 @@ creates a new entry structure.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>However, we want to access it as if it were an array. (Speed is not too
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>However, we want to access it as if it were an array. (Speed is not too
 vital here, and the list sizes are almost always lower than 3.) So:
 </p>
 
@@ -405,7 +405,7 @@ vital here, and the list sizes are almost always lower than 3.) So:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And similarly for reading them:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And similarly for reading them:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -456,7 +456,7 @@ vital here, and the list sizes are almost always lower than 3.) So:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The following routine might become more interesting if we ever allowed
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The following routine might become more interesting if we ever allowed
 variable-argument phrases like C's <span class="extract"><span class="extract-syntax">printf</span></span>.
 </p>
 
@@ -469,7 +469,7 @@ variable-argument phrases like C's <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The phrase options invoked:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The phrase options invoked:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -483,7 +483,7 @@ variable-argument phrases like C's <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="identifier-syntax">invo</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">options_invoked_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>Reading the word range:
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Reading the word range:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -493,7 +493,7 @@ variable-argument phrases like C's <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">invo</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">options_invoked_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>The functional part is of course the bitmap, which we read and write thus.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>The functional part is of course the bitmap, which we read and write thus.
 When no options are set, the bitmap is always 0.
 </p>
 
@@ -516,7 +516,7 @@ When no options are set, the bitmap is always 0.
 <span class="plain-syntax">    </span><span class="identifier-syntax">invo</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">options</span><span class="plain-syntax"> |= </span><span class="identifier-syntax">further_bits</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. The implied newlines rule. </b>This is applied only when the invocation passes the following stringent test:
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. The implied newlines rule. </b>This is applied only when the invocation passes the following stringent test:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -526,7 +526,7 @@ When no options are set, the bitmap is always 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Invocation lists. </b>An invocation list is a chain of alternatives in the parse tree.
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Invocation lists. </b>An invocation list is a chain of alternatives in the parse tree.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -538,7 +538,7 @@ When no options are set, the bitmap is always 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">invl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>That completes the construction routines. Now, reading the length and first item:
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>That completes the construction routines. Now, reading the length and first item:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -548,7 +548,7 @@ When no options are set, the bitmap is always 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>That completes the construction routines. Now, reading the length and first item:
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>That completes the construction routines. Now, reading the length and first item:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -556,7 +556,7 @@ When no options are set, the bitmap is always 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">invl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Sorting the invocations in a list is much more important than it may
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Sorting the invocations in a list is much more important than it may
 at first appear, since the sorted order is a precedence order for parsing
 purposes: that is, the earliest type-checked match is the one accepted,
 so that being sorted up front gives a possible interpretation of a phrase
@@ -590,7 +590,7 @@ priority over those sorted to the back.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">invl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b>We allocate 1000 pigeonholes in the first instance, then double each time
+<p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1.  </b>We allocate 1000 pigeonholes in the first instance, then double each time
 we run out. (We will quite likely never run out, as 1000 is plenty. But we
 want to avoid all possible arbitrary limits.)
 </p>
@@ -608,7 +608,7 @@ want to avoid all possible arbitrary limits.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="25-in.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>So much for the mechanism. The sorting order is specified by the following.
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>So much for the mechanism. The sorting order is specified by the following.
 </p>
 
 <ul class="items"><li>(a) We first sort by logical priority. This is quite an expensive test, and
@@ -643,7 +643,7 @@ Inform prioritises phrases.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inv1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unsorted_position</span><span class="plain-syntax"> - </span><span class="identifier-syntax">inv2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unsorted_position</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>By contrast, this compares two invocations by their contents:
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>By contrast, this compares two invocations by their contents:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -669,14 +669,14 @@ Inform prioritises phrases.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>The following macro abstracts the process of looping through the invocations
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>The following macro abstracts the process of looping through the invocations
 in a list:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">invl</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_ALTERNATIVES</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">invl</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>The log routines demonstrate its use:
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The log routines demonstrate its use:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -688,7 +688,7 @@ in a list:
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"P%d: $e\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">++, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>A more detailed version, which hierarchically shows the lists inside the
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>A more detailed version, which hierarchically shows the lists inside the
 invocations listed:
 </p>
 

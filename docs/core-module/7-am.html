@@ -83,7 +83,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="7-am.html#SP6">&#167;6. Symbols</a></li><li><a href="7-am.html#SP8">&#167;8. The block of definitions</a></li><li><a href="7-am.html#SP12">&#167;12. Checking an adjective's applicability</a></li><li><a href="7-am.html#SP13">&#167;13. Broad applicability tests</a></li><li><a href="7-am.html#SP14">&#167;14. Asserting the initial state</a></li><li><a href="7-am.html#SP15">&#167;15. Sorting lists of meanings</a></li><li><a href="7-am.html#SP18">&#167;18. Individual meanings</a></li><li><a href="7-am.html#SP20">&#167;20. The domain of validity</a></li><li><a href="7-am.html#SP23">&#167;23. Specifying the domain of a new AM</a></li><li><a href="7-am.html#SP27">&#167;27. Comparing domains of validity</a></li><li><a href="7-am.html#SP28">&#167;28. Testing and asserting in play</a></li><li><a href="7-am.html#SP34">&#167;34. Support routines</a></li><li><a href="7-am.html#SP37">&#167;37. Kinds of adjectives</a></li><li><a href="7-am.html#SP43">&#167;43. Parsing for adaptive text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>An adjective can have a long list of meanings in different contexts:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>An adjective can have a long list of meanings in different contexts:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -93,7 +93,7 @@ MathJax = {
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_meaning_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Adjectives are simpler than verbs, since they define unary rather than
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Adjectives are simpler than verbs, since they define unary rather than
 binary predicates. The word "open" applies to only one term &mdash; logically, we
 regard it as <span class="extract"><span class="extract-syntax">open(x)</span></span>, whereas a verb like "suspects" would appear
 in formulae as <span class="extract"><span class="extract-syntax">suspects(x, y)</span></span>.
@@ -117,7 +117,7 @@ kind of value x has; for a text, the first sense applies, and for a table
 name, the second.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each individual sense of an adjective has its own <span class="extract"><span class="extract-syntax">adjective_meaning</span></span>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each individual sense of an adjective has its own <span class="extract"><span class="extract-syntax">adjective_meaning</span></span>
 structure, which we define next. It consists of some logistical data to keep
 its place in the linked lists (see above), some data to specify its domain
 (see below), some indexing data which is not very important, and then the
@@ -176,7 +176,7 @@ rather than <span class="extract"><span class="extract-syntax">TRUE</span></span
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_meaning is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>What are adjectives for? Since an adjective is a unary predicate, it can be
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>What are adjectives for? Since an adjective is a unary predicate, it can be
 thought of as an assignment from its domain set to the set of two possibilities:
 true, false. Thus one sense of "open" maps doors to true if they are currently
 open, false if they are closed.
@@ -237,14 +237,14 @@ which is why the <span class="extract"><span class="extract-syntax">adjective_me
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax"> assert now true</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax"> assert now false</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>For indexing (only) we need to run through the definitions of a given
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>For indexing (only) we need to run through the definitions of a given
 adjectival phrase in sorted order, so:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_SORTED_MEANINGS</span><span class="plain-syntax">(</span><span class="identifier-syntax">aph</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><a href="7-am.html#SP16" class="function-link"><span class="function-syntax">Adjectives::Meanings::get_sorted_definition_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">aph</span><span class="plain-syntax">); </span><span class="identifier-syntax">am</span><span class="plain-syntax">; </span><span class="identifier-syntax">am</span><span class="plain-syntax">=</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sorted</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Symbols. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Symbols. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_compilation_data</span><span class="plain-syntax"> {</span>
@@ -253,7 +253,7 @@ adjectival phrase in sorted order, so:
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_compilation_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_compilation_data is accessed in 7/vart and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="7-am.html#SP7" class="function-link"><span class="function-syntax">Adjectives::Meanings::initialise</span></a>
 </pre>
@@ -286,7 +286,7 @@ adjectival phrase in sorted order, so:
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_iname_holder is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. The block of definitions. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The block of definitions. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_MEANING_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="7-am.html#SP8" class="function-link"><span class="function-syntax">Adjectives::Meanings::new_block</span></a>
 </pre>
@@ -296,7 +296,7 @@ adjectival phrase in sorted order, so:
 <span class="plain-syntax">    </span><span class="identifier-syntax">adj</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">adjective_meanings</span><span class="plain-syntax">.</span><span class="element-syntax">sorted_meanings</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The following assigns a new meaning to a given word range: we find the
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following assigns a new meaning to a given word range: we find the
 appropriate APH (creating if necessary) and then add the new meaning to the
 end of its unsorted meaning list.
 </p>
@@ -324,7 +324,7 @@ memory to keep the sorted list as a second linked list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">aph</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Once declared, an AM stays with the same APH for the whole of Inform's run,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Once declared, an AM stays with the same APH for the whole of Inform's run,
 and it can only be declared once. So every AM belongs to one and only one
 APH, which we can read off as follows:
 </p>
@@ -334,7 +334,7 @@ APH, which we can read off as follows:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_adjective</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>And here we log the unsorted meaning list.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And here we log the unsorted meaning list.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -347,7 +347,7 @@ APH, which we can read off as follows:
 <span class="plain-syntax">            </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">domain_kind</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Checking an adjective's applicability. </b>If the source tries to apply the word "open", say, to a given value or
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Checking an adjective's applicability. </b>If the source tries to apply the word "open", say, to a given value or
 object \(X\), when does that make sense?
 </p>
 
@@ -410,7 +410,7 @@ early in the run when sorting cannot yet be done.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a circularity</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a circularity</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -426,7 +426,7 @@ early in the run when sorting cannot yet be done.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Broad applicability tests. </b>Does a given APH have any interpretation as an enumerated property value,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Broad applicability tests. </b>Does a given APH have any interpretation as an enumerated property value,
 or an either/or property? If so we return the earliest known.
 </p>
 
@@ -449,7 +449,7 @@ or an either/or property? If so we return the earliest known.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Asserting the initial state. </b>All that domain-checking machinery means we can begin to use an adjective.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Asserting the initial state. </b>All that domain-checking machinery means we can begin to use an adjective.
 </p>
 
 <p class="commentary">Suppose an assertion sentence in the source text claims that, in the initial
@@ -498,7 +498,7 @@ none of those which did could be asserted for it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Sorting lists of meanings. </b>After meanings have been declared, a typical APH will have a disordered
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Sorting lists of meanings. </b>After meanings have been declared, a typical APH will have a disordered
 "possible meaning" list and an empty "sorted meaning" list. The following
 sorts the possibles list into the sorted list.
 </p>
@@ -510,7 +510,7 @@ sorts the possibles list into the sorted list.
 <span class="plain-syntax">        </span><a href="7-am.html#SP17" class="function-link"><span class="function-syntax">Adjectives::Meanings::list_sort</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">aph</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">adjective_meanings</span><span class="plain-syntax">.</span><span class="element-syntax">possible_meanings</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And voil\`a, the result can be read here:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And voil\`a, the result can be read here:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -518,7 +518,7 @@ sorts the possibles list into the sorted list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">aph</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">adjective_meanings</span><span class="plain-syntax">.</span><span class="element-syntax">sorted_meanings</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Occasionally we just want one meaning:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Occasionally we just want one meaning:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -561,7 +561,7 @@ sorts the possibles list into the sorted list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Individual meanings. </b>So you want to define a new meaning for an adjective? Here's the procedure:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Individual meanings. </b>So you want to define a new meaning for an adjective? Here's the procedure:
 </p>
 
 <ul class="items"><li>(1) Call <span class="extract"><span class="extract-syntax">Adjectives::Meanings::new</span></span> to create it. The <span class="extract"><span class="extract-syntax">form</span></span> should
@@ -599,7 +599,7 @@ below) &mdash; this makes coding what the adjective compiles to much easier.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>Negating an AM.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Negating an AM.
 If you want to define an adjective as the logical negation of an existing one,
 take any AM which has been through stages (1) to (4) and then apply
 <span class="extract"><span class="extract-syntax">Adjectives::Meanings::negate</span></span> to create a new AM. Then use
@@ -641,7 +641,7 @@ those are inherited.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">adjective_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. The domain of validity. </b>Every AM has a clearly defined range of values or objects to which it applies.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. The domain of validity. </b>Every AM has a clearly defined range of values or objects to which it applies.
 For example, "odd" for numbers has <span class="extract"><span class="extract-syntax">domain_infs</span></span> equal to "number",
 while the sense of "odd" created by
 </p>
@@ -653,7 +653,7 @@ while the sense of "odd" created by
 <p class="commentary">would have <span class="extract"><span class="extract-syntax">domain_infs</span></span> equal to Mrs Spong herself.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>In comparing and testing domains, we use two different levels of matching:
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>In comparing and testing domains, we use two different levels of matching:
 weak and strong.
 </p>
 
@@ -676,7 +676,7 @@ make a weak match.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Whereas the following makes a strict check of whether a given subject is
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Whereas the following makes a strict check of whether a given subject is
 within the domain of an adjective meaning.
 </p>
 
@@ -692,7 +692,7 @@ within the domain of an adjective meaning.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Specifying the domain of a new AM. </b>In principle the domain should be set as soon as the AM is created, but in
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Specifying the domain of a new AM. </b>In principle the domain should be set as soon as the AM is created, but in
 practice some AMs &mdash; those coming from properties &mdash; might need to be
 created very early in Inform's run, at a time when objects and kinds of
 object do not exist. For those cases, an alternative is to give a word range &mdash;
@@ -730,7 +730,7 @@ over specific constructed kinds.
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Note that we round up the kind to "object" if it's more specialised than that
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Note that we round up the kind to "object" if it's more specialised than that
 &mdash; say, if it's "door" &mdash; because run-time rather than compile-time
 disambiguation is used when applying adjectives to objects.
 </p>
@@ -743,7 +743,7 @@ disambiguation is used when applying adjectives to objects.
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>And we can read the main domain thus:
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>And we can read the main domain thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -758,7 +758,7 @@ disambiguation is used when applying adjectives to objects.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_kind</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>In the case where the domain is declared as a word range, the following
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>In the case where the domain is declared as a word range, the following
 routine eventually converts it to the correct form. In effect, this is a
 lazy evaluation trick &mdash; the routine is called just before the domain is
 actually needed.
@@ -788,7 +788,7 @@ actually needed.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="7-am.html#SP26_6" class="named-paragraph-link"><span class="named-paragraph">Set the domain INFS as needed</span><span class="named-paragraph-number">26.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26_1"></a><b>&#167;26.1.  </b>Note that we throw only one problem message per AM, as otherwise duplication
+<p class="commentary firstcommentary"><a id="SP26_1" class="paragraph-anchor"></a><b>&#167;26.1.  </b>Note that we throw only one problem message per AM, as otherwise duplication
 can't be avoided.
 </p>
 
@@ -805,7 +805,7 @@ can't be avoided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_2"></a><b>&#167;26.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain as vague</span><span class="named-paragraph-number">26.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_2" class="paragraph-anchor"></a><b>&#167;26.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain as vague</span><span class="named-paragraph-number">26.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -818,7 +818,7 @@ can't be avoided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain as topic</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3" class="paragraph-anchor"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain as topic</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -832,7 +832,7 @@ can't be avoided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_4"></a><b>&#167;26.4.  </b>Similarly:
+<p class="commentary firstcommentary"><a id="SP26_4" class="paragraph-anchor"></a><b>&#167;26.4.  </b>Similarly:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain of adjective unless a kind of value or description of objects</span><span class="named-paragraph-number">26.4</span></span><span class="comment-syntax"> =</span>
@@ -856,7 +856,7 @@ can't be avoided.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_5"></a><b>&#167;26.5.  </b>And a final possible objection:
+<p class="commentary firstcommentary"><a id="SP26_5" class="paragraph-anchor"></a><b>&#167;26.5.  </b>And a final possible objection:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject domain of adjective if it is a set of objects which may vary in play</span><span class="named-paragraph-number">26.5</span></span><span class="comment-syntax"> =</span>
@@ -880,7 +880,7 @@ can't be avoided.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6"></a><b>&#167;26.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the domain INFS as needed</span><span class="named-paragraph-number">26.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_6" class="paragraph-anchor"></a><b>&#167;26.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the domain INFS as needed</span><span class="named-paragraph-number">26.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -892,7 +892,7 @@ can't be avoided.
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27. Comparing domains of validity. </b>In order to sort AMs into logical precedence order, we rely on the
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Comparing domains of validity. </b>In order to sort AMs into logical precedence order, we rely on the
 following routine, which like <span class="extract"><span class="extract-syntax">strcmp</span></span> returns a positive number to favour
 the first term, a negative to favour the second, and zero if they are
 equally good. Note that zero is only in fact returned when the two AMs
@@ -939,7 +939,7 @@ between them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax"> - </span><span class="identifier-syntax">am1</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27_1"></a><b>&#167;27.1.  </b>In general, it's an error to define the same adjective on the same domain
+<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1.  </b>In general, it's an error to define the same adjective on the same domain
 twice, except for a redefinition in the source text of a definition in an
 extension. (We exclude enumerative adjectives because they are defined
 internally by a method which involves occasional duplication but where
@@ -979,7 +979,7 @@ author's source text.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP27">&#167;27</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Testing and asserting in play. </b>Now for testing, making true and making false in play. We won't be there when
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Testing and asserting in play. </b>Now for testing, making true and making false in play. We won't be there when
 the story file is played, of course, so what we have to do is to compile code
 to perform the test or force the state.
 </p>
@@ -1021,7 +1021,7 @@ without repeating any side-effects produced by the calculation of this
 value. They also make the code simpler for human eyes to read.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>When an AM has been declared, the provider can choose to set an I6
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>When an AM has been declared, the provider can choose to set an I6
 schema for it, for any of the tasks, immediately; or can wait and do it
 later; or can choose not to do it, and instead provide code which
 generates a suitable schema on the fly. If at whatever stage the
@@ -1044,7 +1044,7 @@ can choose to go via a support routine or not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>When Inform's code-generator needs to compile one of the tasks, then, it
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>When Inform's code-generator needs to compile one of the tasks, then, it
 calls the following to obtain the correct I6 schema.
 </p>
 
@@ -1078,7 +1078,7 @@ that to issue a suitable problem message.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30_1"></a><b>&#167;30.1.  </b>Where the following is complicated by the need to respect negations; it may
+<p class="commentary firstcommentary"><a id="SP30_1" class="paragraph-anchor"></a><b>&#167;30.1.  </b>Where the following is complicated by the need to respect negations; it may
 be that the original adjective has a support routine defined, but that the
 negation does not, and so must use those of the original.
 </p>
@@ -1102,7 +1102,7 @@ negation does not, and so must use those of the original.
 <span class="plain-syntax">        </span><span class="identifier-syntax">negation_operator</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>The following is needed when making sense of the I6-to-I7 escape sequence
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>The following is needed when making sense of the I6-to-I7 escape sequence
 <span class="extract"><span class="extract-syntax">(+ adj +)</span></span>, where <span class="extract"><span class="extract-syntax">adj</span></span> is the name of an adjective. Since I6 is typeless,
 there's no good way to choose which sense of the adjective is meant, so we
 don't know which routine to expand out. The convention is: a meaning for
@@ -1127,7 +1127,7 @@ objects, if there is one; otherwise the first-declared meaning.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>The following instructs an AM to use a support routine to handle a given
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>The following instructs an AM to use a support routine to handle a given
 task.
 </p>
 
@@ -1137,7 +1137,7 @@ task.
 <span class="plain-syntax">    </span><a href="7-am.html#SP29" class="function-link"><span class="function-syntax">Adjectives::Meanings::set_i6_schema</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>Some kinds of adjective find it useful to do some preparation work just
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>Some kinds of adjective find it useful to do some preparation work just
 before first compilation, but only once. For those, the ready flag is available:
 </p>
 
@@ -1149,7 +1149,7 @@ before first compilation, but only once. For those, the ready flag is available:
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">am_ready_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34. Support routines. </b>Using these is only passing the buck: and the buck stops here.
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. Support routines. </b>Using these is only passing the buck: and the buck stops here.
 </p>
 
 <p class="commentary">The following utility is used to loop through the sorted meaning list,
@@ -1165,7 +1165,7 @@ skipping over any which have been dealt with already.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sorted</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>And this is where we do the iteration. The idea is that one adjective
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>And this is where we do the iteration. The idea is that one adjective
 definition routine is defined (for each task number) which covers all of
 the weakly-domain-equal definitions for the same adjective. Thus one
 routine might handle "detailed" for rulebooks, and another might handle
@@ -1193,7 +1193,7 @@ many AMs.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35_1"></a><b>&#167;35.1.  </b>It's unlikely that we have got this far without the domains for the AMs
+<p class="commentary firstcommentary"><a id="SP35_1" class="paragraph-anchor"></a><b>&#167;35.1.  </b>It's unlikely that we have got this far without the domains for the AMs
 having been established, but certainly possible. We need the domains to be
 known in order to sort.
 </p>
@@ -1213,7 +1213,7 @@ known in order to sort.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP35">&#167;35</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35_2"></a><b>&#167;35.2.  </b>The following is a standard way to compile a one-off routine.
+<p class="commentary firstcommentary"><a id="SP35_2" class="paragraph-anchor"></a><b>&#167;35.2.  </b>The following is a standard way to compile a one-off routine.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile adjective definition for this atomic kind of value</span><span class="named-paragraph-number">35.2</span></span><span class="comment-syntax"> =</span>
@@ -1246,7 +1246,7 @@ known in order to sort.
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP35">&#167;35</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35_2_1"></a><b>&#167;35.2.1.  </b>The stack frame has just one call parameter: the value \(x\) which might, or
+<p class="commentary firstcommentary"><a id="SP35_2_1" class="paragraph-anchor"></a><b>&#167;35.2.1.  </b>The stack frame has just one call parameter: the value \(x\) which might, or
 might not, be such that adjective(\(x\)) is true. We allow this to be called
 "it", though it can also have a calling name in some cases (see below).
 </p>
@@ -1295,7 +1295,7 @@ wasted allocating memory and copying the block value first.)
 <span class="plain-syntax">    </span><a href="24-lv.html#SP26" class="function-link"><span class="function-syntax">LocalVariables::enable_possessive_form_of_it</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP35_2">&#167;35.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>We run through possible meanings of the APH which share the current weak
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>We run through possible meanings of the APH which share the current weak
 domain, and compile code which performs the stronger part of the domain
 test at run-time. In practice, at present the only weak domain which might
 have multiple definitions is "object", but that may change.
@@ -1331,7 +1331,7 @@ have multiple definitions is "object", but that may change.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP37"></a><b>&#167;37. Kinds of adjectives. </b>This is where <span class="extract"><span class="extract-syntax">inweb</span></span>'s use of C rather than <span class="extract"><span class="extract-syntax">C++</span></span> or Python as a base
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Kinds of adjectives. </b>This is where <span class="extract"><span class="extract-syntax">inweb</span></span>'s use of C rather than <span class="extract"><span class="extract-syntax">C++</span></span> or Python as a base
 language becomes a little embarrassing: we really want to have seven or
 eight subclasses of an "adjective" class, and provide a group of methods.
 Instead we simulate this with the following clumsy code. (More elegant
@@ -1344,7 +1344,7 @@ constant (see above). Then declare functions to handle the following
 methods.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP38"></a><b>&#167;38.  </b>1. <span class="extract"><span class="extract-syntax">*_KADJ_parse</span></span>. This enables the kind of adjective to claim a definition
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>1. <span class="extract"><span class="extract-syntax">*_KADJ_parse</span></span>. This enables the kind of adjective to claim a definition
 which the user has explicitly written, like so:
 </p>
 
@@ -1376,7 +1376,7 @@ claim if the sense is \(1\); some never claim at all.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b>2. <span class="extract"><span class="extract-syntax">*_KADJ_compiling_soon</span></span>. This warns the adjective that it will shortly be
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b>2. <span class="extract"><span class="extract-syntax">*_KADJ_compiling_soon</span></span>. This warns the adjective that it will shortly be
 needed in compilation, that is, that code will soon be compiled which uses it.
 This advance warning is an opportunity to compile a schema for the adjective
 at the last minute, but there is no obligation. There is also no return value.
@@ -1402,7 +1402,7 @@ at the last minute, but there is no obligation. There is also no return value.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40"></a><b>&#167;40.  </b>3. <span class="extract"><span class="extract-syntax">*_KADJ_compile</span></span>. We should now either compile code which, in the
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>3. <span class="extract"><span class="extract-syntax">*_KADJ_compile</span></span>. We should now either compile code which, in the
 given stack frame and writing code to the given file handle, carries out the
 given task for the adjective, and return <span class="extract"><span class="extract-syntax">TRUE</span></span>; or return <span class="extract"><span class="extract-syntax">FALSE</span></span> to
 tell Inform that the task is impossible.
@@ -1444,7 +1444,7 @@ tell Inform that the task is impossible.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40_1"></a><b>&#167;40.1.  </b>We expand the I6 schema, placing the "it" variable &mdash; a nameless call
+<p class="commentary firstcommentary"><a id="SP40_1" class="paragraph-anchor"></a><b>&#167;40.1.  </b>We expand the I6 schema, placing the "it" variable &mdash; a nameless call
 parameter which is always local variable number 0 for this stack frame &mdash;
 into <span class="extract"><span class="extract-syntax">*1</span></span>.
 </p>
@@ -1464,7 +1464,7 @@ into <span class="extract"><span class="extract-syntax">*1</span></span>.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP40">&#167;40</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP41"></a><b>&#167;41.  </b>4. <span class="extract"><span class="extract-syntax">*_KADJ_assert</span></span>. We should now either take action to ensure that
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41.  </b>4. <span class="extract"><span class="extract-syntax">*_KADJ_assert</span></span>. We should now either take action to ensure that
 the adjective will hold (or not hold, according to <span class="extract"><span class="extract-syntax">parity</span></span>) for the given
 object or value; or return <span class="extract"><span class="extract-syntax">FALSE</span></span> to tell Inform that this cannot be
 asserted, which will trigger a problem message.
@@ -1503,7 +1503,7 @@ asserted, which will trigger a problem message.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42"></a><b>&#167;42.  </b>5. <span class="extract"><span class="extract-syntax">*_KADJ_index</span></span>. This should print a description of the adjective to the
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b>5. <span class="extract"><span class="extract-syntax">*_KADJ_index</span></span>. This should print a description of the adjective to the
 index, for use in the Phrasebook lexicon. Note that it is only needed where
 the AM has been constructed positively, that is, it is not needed if the
 AM was made as a negation of something else.
@@ -1545,7 +1545,7 @@ be printed if the routine does nothing better.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Index::link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">adjective_index_text</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42_1"></a><b>&#167;42.1.  </b>This is supposed to imitate dictionaries, distinguishing meanings by
+<p class="commentary firstcommentary"><a id="SP42_1" class="paragraph-anchor"></a><b>&#167;42.1.  </b>This is supposed to imitate dictionaries, distinguishing meanings by
 concisely showing their usage. Thus "empty" would have indexed entries
 prefaced "(of a rulebook)", "(of an activity)", and so on.
 </p>
@@ -1558,7 +1558,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(of &lt;/i&gt;%+W&lt;i&gt;) "</span><span class="plain-syntax">, </span><a href="16-is.html#SP23" class="function-link"><span class="function-syntax">InferenceSubjects::get_name_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain_infs</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-am.html#SP42">&#167;42</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP43"></a><b>&#167;43. Parsing for adaptive text. </b></p>
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. Parsing for adaptive text. </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;adaptive-adjective&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
@@ -1575,7 +1575,7 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44.  </b>Compiling to:
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>Compiling to:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

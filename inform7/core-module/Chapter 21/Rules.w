@@ -190,9 +190,9 @@ kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
 		if (Plugins::Manage::plugged_in(actions_plugin))
-			K = Kinds::binary_construction(CON_rule, K_action_name, K_void);
+			K = Kinds::binary_con(CON_rule, K_action_name, K_void);
 		else
-			K = Kinds::binary_construction(CON_rule, K_void, K_void);
+			K = Kinds::binary_con(CON_rule, K_void, K_void);
 	}
 	return K;
 }
@@ -485,8 +485,8 @@ void Rules::check_placement_safety(void) {
 				if (Kinds::eq(P1, NULL)) P1 = K_void;
 				if (Kinds::eq(P2, NULL)) P2 = K_void;
 				if (Kinds::eq(B2, K_void)) B2 = B1;
-				kind *K1 = Kinds::binary_construction(CON_rule, B1, P1);
-				kind *K2 = Kinds::binary_construction(CON_rule, B2, P2);
+				kind *K1 = Kinds::binary_con(CON_rule, B1, P1);
+				kind *K2 = Kinds::binary_con(CON_rule, B2, P2);
 				if (Kinds::compatible(K2, K1) != ALWAYS_MATCH) {
 					Problems::quote_source(1, ac->where_imposed);
 					Problems::quote_wording(2, ac->substituted_rule->name);

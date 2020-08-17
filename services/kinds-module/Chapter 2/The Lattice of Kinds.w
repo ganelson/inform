@@ -150,8 +150,8 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 				ka[i] = Latticework::j_or_m(K1->kc_args[i], K2->kc_args[i], direction);
 			else
 				ka[i] = Latticework::j_or_m(K1->kc_args[i], K2->kc_args[i], -direction);
-		if (a1 == 1) return Kinds::unary_construction(con, ka[0]);
-		else return Kinds::binary_construction(con, ka[0], ka[1]);
+		if (a1 == 1) return Kinds::unary_con(con, ka[0]);
+		else return Kinds::binary_con(con, ka[0], ka[1]);
 	} else {
 		@<Deal with nil@>;
 		@<Deal with floating-point promotions@>;

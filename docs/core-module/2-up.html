@@ -68,11 +68,11 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-up.html#SP3">&#167;3. Outcome images</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROBLEMS_HTML_EMITTER</span><span class="plain-syntax"> </span><span class="identifier-syntax">HTML::put</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Inform tops and tails its output of problem messages, and it also prints
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
 </p>
 
@@ -114,7 +114,7 @@ non-problem messages when everything was fine. That all happens here:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>One of the slightly annoying things about internal errors is that Inform's
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>One of the slightly annoying things about internal errors is that Inform's
 users persistently refer to them as "crashes" on bug report forms. I mean,
 the effort we go to! They are entirely clean exits from the program! The
 ingratitude of some &mdash; oh, all right.
@@ -138,7 +138,7 @@ ingratitude of some &mdash; oh, all right.
 <span class="plain-syntax">        </span><span class="string-syntax">"probably rephrasings which would achieve the same effect."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-up.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>Singular and plural versions of the same message, really:
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>Singular and plural versions of the same message, really:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem summary for a run with problem messages</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
@@ -165,7 +165,7 @@ ingratitude of some &mdash; oh, all right.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-up.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>The success message needs to take different forms in <span class="extract"><span class="extract-syntax">stdout</span></span> and in
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b>The success message needs to take different forms in <span class="extract"><span class="extract-syntax">stdout</span></span> and in
 the Problems log file. In the latter, we write as though the subsequent
 conversion of Inform's output to a story file via Inform 6 had already been
 completed successfully &mdash; this is because the Problems log is intended
@@ -227,7 +227,7 @@ command line &mdash; deserves the truth.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-up.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Outcome images. </b>These are the two images used on the Problems page to visually indicate
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Outcome images. </b>These are the two images used on the Problems page to visually indicate
 success or failure. We also use special images on special occasions.
 </p>
 
@@ -237,7 +237,7 @@ success or failure. We also use special images on special occasions.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome_image_style</span><span class="plain-syntax"> = </span><span class="constant-syntax">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This callback function is called just as the <a href="../problems-module/index.html" class="internal">problems</a> module is about
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>This callback function is called just as the <a href="../problems-module/index.html" class="internal">problems</a> module is about
 to issue its first problem of the run:
 </p>
 
@@ -296,7 +296,7 @@ to issue its first problem of the run:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>This is a more elaborate form of the standard <span class="extract"><span class="extract-syntax">StandardProblems::sentence_problem</span></span>,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>This is a more elaborate form of the standard <span class="extract"><span class="extract-syntax">StandardProblems::sentence_problem</span></span>,
 used when an assertion sentence has gone wrong. Experience from the early
 builds of the Public Beta showed that many people tried syntaxes which
 Inform did not recognise, and which cause Inform to misread the primary

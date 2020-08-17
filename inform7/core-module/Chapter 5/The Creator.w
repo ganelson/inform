@@ -702,7 +702,7 @@ them by asserting propositions to be true; we act directly.
 	Kinds::binary_construction_material(create_as, &basis, &producing);
 	if (Kinds::eq(basis, K_value)) basis = K_action_name;
 	if (Kinds::eq(producing, K_value)) producing = K_void;
-	create_as = Kinds::binary_construction(CON_rulebook, basis, producing);
+	create_as = Kinds::binary_con(CON_rulebook, basis, producing);
 	if (governor)
 		Node::set_evaluation(governor,
 			Specifications::from_kind(create_as));

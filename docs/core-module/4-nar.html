@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#4">Chapter 4: Requests</a></li><li><b>New Activity Requests</b></li></ul></div>
 <p class="purpose">Special sentences creating new activities.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This special meaning is only needed for one case. If activities are created
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This special meaning is only needed for one case. If activities are created
 by the sentence
 </p>
 
@@ -94,7 +94,7 @@ matches:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">activity</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ActivityRequests::new_activity_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ActivityRequests::new_activity_SMF</span></span>:<br/>Booting Verbs - <a href="3-bv.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
@@ -111,7 +111,7 @@ matches:
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PASS_1_SMFT:</span>
-<span class="plain-syntax">            </span><a href="21-ac.html#SP4" class="function-link"><span class="function-syntax">Activities::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_activity</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_nil</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><a href="21-ac.html#SP4" class="function-link"><span class="function-syntax">Activities::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_activity</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_nil</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>

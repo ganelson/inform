@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="22-tp.html#SP2">&#167;2. Logical priority of To phrases</a></li><li><a href="22-tp.html#SP5">&#167;5. Registering and compiling To phrases</a></li><li><a href="22-tp.html#SP6">&#167;6. Compilation requests</a></li><li><a href="22-tp.html#SP11">&#167;11. Phrase option parsing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>"To" phrases are compiled only when they are needed, and they can be
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"To" phrases are compiled only when they are needed, and they can be
 compiled in variant forms depending on the kinds of their arguments; so
 we use the following chits to keep track of what's outstanding:
 </p>
@@ -83,7 +83,7 @@ we use the following chits to keep track of what's outstanding:
 <span class="plain-syntax">} </span><span class="reserved-syntax">to_phrase_request</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure to_phrase_request is accessed in 25/cp, 26/ts and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Logical priority of To phrases. </b>"To" phrases are insertion-sorted, as they are defined, into a linked list
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Logical priority of To phrases. </b>"To" phrases are insertion-sorted, as they are defined, into a linked list
 held in logical priority order. This essentially means that two lexically
 indistinguishable phrases (e.g., "admire (OC - an open container)" and
 "admire (C - a container)") are placed such that the more specific, in
@@ -98,7 +98,7 @@ of ambiguity.
 and therefore has no effect on rule ordering within rulebooks.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The system for deciding which of two phrases is logically prior, if
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The system for deciding which of two phrases is logically prior, if
 either is. This is not quite compatible with the other comparison routines
 (for comparing action patterns, SPs, etc.) because it returns a wider
 variety of values:
@@ -147,7 +147,7 @@ variety of values:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following routine takes a phrase and makes it officially a To
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following routine takes a phrase and makes it officially a To
 phrase, which in particular means adding it to the list of To phrases in
 logical order.
 </p>
@@ -173,7 +173,7 @@ logical order.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_in_logical_order</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_phrase</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Registering and compiling To phrases. </b>These are the only places where the logical precedence list is directly used,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Registering and compiling To phrases. </b>These are the only places where the logical precedence list is directly used,
 but registration of the excerpts in precedence order ensures that this
 ordering has a profound effect on expression parsing throughout Inform.
 </p>
@@ -202,7 +202,7 @@ reasons, that is, to make the compiled code more legible.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sequence_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Compilation requests. </b>Here's how a request is made. The kind supplied should be that which the phrase
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Compilation requests. </b>Here's how a request is made. The kind supplied should be that which the phrase
 has in this version: for example, given the definition
 </p>
 
@@ -258,7 +258,7 @@ values in force, so that there is no possible ambiguity in how we read K.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>It's quite hard to get this, but if you supply the empty list written as
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>It's quite hard to get this, but if you supply the empty list written as
 a constant to a phrase which uses a kind variable in the form "list of K",
 then K would have be just "value", since Inform doesn't know what the empty
 list is a list of. The result would be:
@@ -284,7 +284,7 @@ list is a list of. The result would be:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-tp.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The following puts together an I6 identifier for a phrase, and also handles
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The following puts together an I6 identifier for a phrase, and also handles
 the case of an inline definition which happens to consist of a call to an
 I6 routine.
 </p>
@@ -326,7 +326,7 @@ I6 routine.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="25-cp.html#SP3" class="function-link"><span class="function-syntax">Routines::Compile::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following coroutine compiles any pending requests for phrase compilation
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The following coroutine compiles any pending requests for phrase compilation
 since the last time it was called.
 </p>
 
@@ -348,7 +348,7 @@ since the last time it was called.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>In the course of doing this, <span class="extract"><span class="extract-syntax">Phrases::compile</span></span> calls us back to ask us
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>In the course of doing this, <span class="extract"><span class="extract-syntax">Phrases::compile</span></span> calls us back to ask us
 to write a comment about this:
 </p>
 
@@ -364,7 +364,7 @@ to write a comment about this:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>It also needs access to:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>It also needs access to:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -378,7 +378,7 @@ to write a comment about this:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kind_variables_interpretation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Phrase option parsing. </b>These indirections are provided so that the implementation of phrase options
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Phrase option parsing. </b>These indirections are provided so that the implementation of phrase options
 is confined to the current Chapter.
 </p>
 

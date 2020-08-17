@@ -60,7 +60,7 @@
 
 <ul class="toc"><li><a href="5-itg.html#SP2">&#167;2. Phase I: Slash Grammar</a></li><li><a href="5-itg.html#SP3">&#167;3. Phase II: Determining Grammar</a></li><li><a href="5-itg.html#SP4">&#167;4. Phase III: Sort Grammar</a></li><li><a href="5-itg.html#SP5">&#167;5. Phase IV: Compile Grammar</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This is grammar in the sense of the parsing structures used at run-time,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This is grammar in the sense of the parsing structures used at run-time,
 and it occupies a chapter of its own in the source code since it is to some
 extent detached from the rest of Inform: what we create in this chapter is
 almost an independent compiler in its own right, but of a much simpler
@@ -104,11 +104,11 @@ and noun filter routines already exist when a <span class="extract"><span class=
 which uses them.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Phase I: Slash Grammar. </b>Slashing is the process of dealing with slashes <span class="extract"><span class="extract-syntax">/</span></span> used in grammar
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Phase I: Slash Grammar. </b>Slashing is the process of dealing with slashes <span class="extract"><span class="extract-syntax">/</span></span> used in grammar
 to indicate alternatives.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Phase II: Determining Grammar. </b>We check that the grammar is well-founded and find the types of values
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Phase II: Determining Grammar. </b>We check that the grammar is well-founded and find the types of values
 expressed by it, if any.
 </p>
 
@@ -142,14 +142,14 @@ compatible in that there is a type to which they can all always be cast.
 </li><li>(b) <span class="extract"><span class="extract-syntax">PL::Parsing::Lines::gl_determine</span></span> runs exactly once on each GL;
 </li><li>(c) <span class="extract"><span class="extract-syntax">PL::Parsing::Tokens::determine</span></span> runs exactly once on each token.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Phase III: Sort Grammar. </b>We must ensure that if grammar line L1 is logically impossible once L2
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Phase III: Sort Grammar. </b>We must ensure that if grammar line L1 is logically impossible once L2
 has been parsed, then L1 must be checked before L2, regardless of the
 ordering in the source code. Since the data sets are very small and
 time is not of the essence, we simply insertion-sort the original
 definition-order list into a second linked list.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Phase IV: Compile Grammar. </b>The final run-through, which uses the sorted order and not the original
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Phase IV: Compile Grammar. </b>The final run-through, which uses the sorted order and not the original
 declaration order, actually compiles the necessary I6 <span class="extract"><span class="extract-syntax">Verb</span></span> and
 <span class="extract"><span class="extract-syntax">Extend</span></span> directives.
 </p>

@@ -269,13 +269,13 @@ outcomes *Rulebooks::get_outcomes(rulebook *rb) {
 }
 
 kind *Rulebooks::contains_kind(rulebook *rb) {
-	return Kinds::binary_construction(CON_rule,
+	return Kinds::binary_con(CON_rule,
 		Rulebooks::get_parameter_kind(rb),
 		Rulebooks::Outcomes::get_outcome_kind(&(rb->my_outcomes)));
 }
 
 kind *Rulebooks::to_kind(rulebook *rb) {
-	return Kinds::binary_construction(CON_rulebook,
+	return Kinds::binary_con(CON_rulebook,
 		Rulebooks::get_parameter_kind(rb),
 		Rulebooks::Outcomes::get_outcome_kind(&(rb->my_outcomes)));
 }
@@ -283,7 +283,7 @@ kind *Rulebooks::to_kind(rulebook *rb) {
 rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 	int oc, int ata, int ubfaa, int rda, package_request *R) {
 	rulebook *rb = Rulebooks::new(
-		Kinds::binary_construction(CON_rulebook, basis, K_void), W, R);
+		Kinds::binary_con(CON_rulebook, basis, K_void), W, R);
 	Rulebooks::Outcomes::set_default_outcome(&(rb->my_outcomes), oc);
 	Rulebooks::Outcomes::set_focus_ata(&(rb->my_focus), ata);
 	rb->automatically_generated = TRUE;

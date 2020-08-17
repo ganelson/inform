@@ -63,12 +63,12 @@ void KindsModule::set_internal_NTIs(void) {
 	NTI::give_nt_reserved_incidence_bit(<k-kind-construction>, COMMON_NOUN_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<k-kind-variable-texts>, COMMON_NOUN_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<k-kind-variable>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-formal-kind-variable>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-formal-variable>, COMMON_NOUN_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<k-irregular-kind-construction>, COMMON_NOUN_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<k-variable-definition>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-single-material>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-optional-material>, COMMON_NOUN_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<k-tupled-material>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-single-term>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-optional-term>, COMMON_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<k-tupled-term>, COMMON_NOUN_RES_NT_BIT);
 	NTI::give_nt_reserved_incidence_bit(<k-tuple-list>, COMMON_NOUN_RES_NT_BIT);
 }
 

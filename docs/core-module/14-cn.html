@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="14-cn.html#SP1">&#167;1. Creation</a></li><li><a href="14-cn.html#SP12">&#167;12. Pretty-printing</a></li><li><a href="14-cn.html#SP13">&#167;13. Specificity</a></li><li><a href="14-cn.html#SP15">&#167;15. Compiling</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b>In Inform, conditions are not values, nor can values be used directly as
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>In Inform, conditions are not values, nor can values be used directly as
 conditions: we therefore need to provide the logical operations of AND, OR,
 and NOT structurally via the SP rather than implementing them as phrases
 like the arithmetic operators. (Conditions and values are kept separate
@@ -99,11 +99,11 @@ among programming languages is that it has a fourth: <span class="extract"><span
 which expresses that a condition holds at a different time from the present.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b><span class="extract"><span class="extract-syntax">TEST_PROPOSITION_NT</span></span> contains a predicate calculus sentence in the
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b><span class="extract"><span class="extract-syntax">TEST_PROPOSITION_NT</span></span> contains a predicate calculus sentence in the
 <span class="extract"><span class="extract-syntax">proposition</span></span> field of its SP: there are no arguments.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b><span class="extract"><span class="extract-syntax">TEST_PHRASE_OPTION_NT</span></span> tests the use of a phrase option, and is the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b><span class="extract"><span class="extract-syntax">TEST_PHRASE_OPTION_NT</span></span> tests the use of a phrase option, and is the
 actual SP parsed for the second usage of the word "thoroughly" in
 the following example:
 </p>
@@ -117,7 +117,7 @@ bitmap value of the option, which will usually be \(2^n\) where the option
 is the \(n\)-th in the list for this phrase, counting upwards from 0.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b><span class="extract"><span class="extract-syntax">TEST_VALUE_NT</span></span> tests the value beneath it in a condition context. For
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b><span class="extract"><span class="extract-syntax">TEST_VALUE_NT</span></span> tests the value beneath it in a condition context. For
 truth state values, this does the obvious thing: <span class="extract"><span class="extract-syntax">true</span></span> passes and
 <span class="extract"><span class="extract-syntax">false</span></span> fails. For stored actions or descriptions of actions, the current
 action is tested to see if it matches.
@@ -142,7 +142,7 @@ the actual I6 value. (Constants with the kind "description of K" cannot arise
 in any other way.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Now some creator routines.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Now some creator routines.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -152,7 +152,7 @@ in any other way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>So, some more specific creators. The operators are easy:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>So, some more specific creators. The operators are easy:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -170,7 +170,7 @@ in any other way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Conditions::negate</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Conditions::negate</span></span>:<br/>Verbal and Relative Clauses - <a href="10-varc.html#SP12_3">&#167;12.3</a><br/>Conditions and Phrases - <a href="10-cap.html#SP4">&#167;4</a>, <a href="10-cap.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cond</span><span class="plain-syntax">) {</span>
@@ -180,7 +180,7 @@ in any other way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Testing propositions is also straightforward. There's no creator for
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Testing propositions is also straightforward. There's no creator for
 <span class="extract"><span class="extract-syntax">NOW_PREPOSITION_VNT</span></span>, since this is formed only by coercion of one of these.
 </p>
 
@@ -191,7 +191,7 @@ in any other way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The option number here is actually \(2^i\), where \(0\leq i&lt;15\). This is just
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The option number here is actually \(2^i\), where \(0\leq i&lt;15\). This is just
 exactly feasible, since the specification data field is 16 bits wide.
 </p>
 
@@ -202,7 +202,7 @@ exactly feasible, since the specification data field is 16 bits wide.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
@@ -242,7 +242,7 @@ exactly feasible, since the specification data field is 16 bits wide.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The function Conditions::new_TEST_ACTION is used in Type Expressions and Values (<a href="10-teav.html#SP22">&#167;22</a>), Conditions and Phrases (<a href="10-cap.html#SP3">&#167;3</a>, <a href="10-cap.html#SP7">&#167;7</a>, <a href="10-cap.html#SP8_1">&#167;8.1</a>), Parse Invocations (<a href="25-pi.html#SP5_1">&#167;5.1</a>).</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Since, in principle, any condition might also have a time period attached
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Since, in principle, any condition might also have a time period attached
 to it, we need a follow-up routine to attach this as necessary to a newly
 created condition:
 </p>
@@ -286,7 +286,7 @@ created condition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Pretty-printing. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Pretty-printing. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Conditions::write_out_in_English</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Conditions::write_out_in_English</span></span>:<br/>Specifications - <a href="14-sp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -303,7 +303,7 @@ created condition:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Specificity. </b>We will need a way of determining which of two conditions is more complex,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Specificity. </b>We will need a way of determining which of two conditions is more complex,
 so that action-based rules with "when..." clauses tacked on can be sorted:
 the following is used to compare such "when..." conditions.
 </p>
@@ -322,7 +322,7 @@ beat shorter ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The only justification for the following complexity score is that it does
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The only justification for the following complexity score is that it does
 seem to accord well with what people expect. (There's clearly no theoretically
 perfect way to define complexity of conditions in a language as complex as
 Inform; this bit of scruffy, rather than neat, logic will have to do.)
@@ -351,7 +351,7 @@ Inform; this bit of scruffy, rather than neat, logic will have to do.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Compiling. </b>We clear two oddball cases out of the way, and then for the most part we
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Compiling. </b>We clear two oddball cases out of the way, and then for the most part we
 delegate to potent routines elsewhere. Note that in some situations a valid
 I6 condition must be enclosed in round brackets, and that a redundant pair
 of brackets never does any harm; so we always compile one.
@@ -387,7 +387,7 @@ of brackets never does any harm; so we always compile one.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>An easy case, running straight out to I6 operators:
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>An easy case, running straight out to I6 operators:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a logical negation</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
@@ -402,7 +402,7 @@ of brackets never does any harm; so we always compile one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-cn.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b>An easy case, running straight out to I6 operators:
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b>An easy case, running straight out to I6 operators:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a logical operator</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
@@ -424,7 +424,7 @@ of brackets never does any harm; so we always compile one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-cn.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_3"></a><b>&#167;15.3.  </b>Phrase options are stored as bits in a 16-bit map, so that each individual
+<p class="commentary firstcommentary"><a id="SP15_3" class="paragraph-anchor"></a><b>&#167;15.3.  </b>Phrase options are stored as bits in a 16-bit map, so that each individual
 option is a power of two from \(2^0\) to \(2^15\). We test if this is valid by
 performing logical-and against the I6 local variable <span class="extract"><span class="extract-syntax">phrase_options</span></span>, which
 exists if and only if the enclosing I6 routine takes phrase options. The

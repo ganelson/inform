@@ -5292,7 +5292,7 @@
     English:
         ( <k-kind-abbreviating> ) 
           (hits 0/1) constraint DS = {8} extremes [3, infinity)
-        <k-kind-of-kind> <k-formal-kind-variable> 
+        <k-kind-of-kind> <k-formal-variable> 
           (hits 19/20) (matched: 'enumerated value k') constraint (none) extremes [2, infinity)
         <k-kind> 
           (hits 5/5) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
@@ -5321,9 +5321,9 @@
 
 <k-variable-definition> hits 201/2474 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
     English:
-        <k-formal-kind-variable> 
+        <k-formal-variable> 
           (hits 120/607) (matched: 'k') constraint CW = {r2, r5} extremes [1, 1]
-        <k-kind-of-kind> of kind <k-formal-kind-variable> 
+        <k-kind-of-kind> of kind <k-formal-variable> 
           (hits 81/315) (matched: 'sayable value of kind k') constraint DS = {r5} & CW = {r2, r5} extremes [4, infinity)
 
 <k-base-kind> internal hits 3626/18486 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
@@ -5359,20 +5359,20 @@
 
 <k-kind-construction> internal hits 353/11230 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
 
-<k-single-material> hits 150/300 nti r5 constraint (none) extremes [1, infinity)
+<k-single-term> hits 150/300 nti r5 constraint (none) extremes [1, infinity)
     English:
-        ( <k-single-material> ) 
+        ( <k-single-term> ) 
           (hits 0/50) constraint DS = {r5} extremes [3, infinity)
-        <article> <k-single-material> 
+        <article> <k-single-term> 
           (hits 0/51) constraint (none) extremes [2, infinity)
         <k-kind> 
           (hits 150/150) (matched long text) constraint (none) extremes [1, infinity)
 
-<k-optional-material> hits 62/124 nti r5 constraint (none) extremes [1, infinity)
+<k-optional-term> hits 62/124 nti r5 constraint (none) extremes [1, infinity)
     English:
-        ( <k-optional-material> ) 
+        ( <k-optional-term> ) 
           (hits 0/21) constraint DS = {r5} extremes [3, infinity)
-        <article> <k-optional-material> 
+        <article> <k-optional-term> 
           (hits 9/28) (matched: 'a value of kind k') constraint (none) extremes [2, infinity)
         nothing 
           (hits 14/34) (matched: 'nothing') constraint CS = {r5} extremes [1, 1]
@@ -5381,20 +5381,20 @@
         <k-kind> 
           (hits 39/39) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
 
-<k-tupled-material> hits 15/30 nti r5 constraint (none) extremes [1, infinity)
+<k-tupled-term> hits 15/30 nti r5 constraint (none) extremes [1, infinity)
     English:
         ( <k-tuple-list> ) 
           (hits 7/10) (matched long text) constraint DS = {r5} extremes [3, infinity)
         nothing 
           (hits 3/5) (matched: 'nothing') constraint CS = {r5} extremes [1, 1]
-        <k-single-material> 
+        <k-single-term> 
           (hits 5/5) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
 
 <k-tuple-list> hits 17/34 nti r5 constraint (none) extremes [1, infinity)
     English:
-        <k-single-material> , <k-tuple-list> 
+        <k-single-term> , <k-tuple-list> 
           (hits 10/16) (matched long text) constraint DS = {r5} extremes [3, infinity)
-        <k-single-material> 
+        <k-single-term> 
           (hits 7/7) (matched: 'value of kind l') constraint (none) extremes [1, infinity)
 
 <k-kind-of-kind> hits 100/448 nti r5 constraint (none) extremes [1, infinity)
@@ -5404,9 +5404,9 @@
 
 <k-kind-variable> internal hits 1589/19592 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
-<k-formal-kind-variable> internal hits 220/1414 nti r5 constraint CW = {r2, r5} extremes [1, 1]
+<k-formal-variable> internal hits 220/1414 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
-<k-formal-kind-variable-singular> internal hits 0/772 nti 30 constraint (none) extremes [1, 1]
+<k-formal-variable-singular> internal hits 0/772 nti 30 constraint (none) extremes [1, 1]
 
 <k-kind-variable-texts> nti r5 constraint CS = {r5} extremes [1, 1]
     English:

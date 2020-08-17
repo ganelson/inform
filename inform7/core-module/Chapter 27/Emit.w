@@ -521,7 +521,7 @@ void Emit::array_end(packaging_state save) {
 	if (K) {
 		inter_symbol *con_kind = NULL;
 		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
-			con_kind = Produce::kind_to_symbol(Kinds::unary_construction(CON_list_of, K));
+			con_kind = Produce::kind_to_symbol(Kinds::unary_con(CON_list_of, K));
 		else
 			con_kind = Produce::kind_to_symbol(K);
 		CID = Inter::SymbolsTables::id_from_IRS_and_symbol(IBM, con_kind);

@@ -3,16 +3,232 @@
 To manage the scalings and offsets used when storing arithmetic
 values at run-time, and/or when using scaled units to refer to them.
 
-@ Some literal patterns allow us to give values using scaled units. For
-example, "1 g" and "1 kg" might both define constant values of the same
-kind, but the "1" is read differently in the two cases: it's worth 1000
-times as much in the second case.
+@h Scaling.
+Quasinumerical kinds are sometimes stored using scaled, fixed-point
+arithmetic. In general for each named unit $U$ (fundamental or derived) there
+is a positive integer $k_U$ such that the true value $v$ is stored at run-time
+as the I6 integer $k_U v$. We call this the scaled value.
 
+For example, if the text reads:
+
+>> Force is a kind of value. 1N specifies a force scaled up by 1000.
+
+then $k = 1000$ and the value 1N will be stored at run-time as |1000|;
+forces can thus be calculated to a true value accuracy of at best 0.001N,
+stored at run-time as |1|.
+
+It must be emphasised that this is scaled, fixed-point arithmetic: there
+are no mantissas or exponents. In such schemes the scale factor is usually
+$2^{16}$ or some similar power of 2, but here we want to use exactly the
+scale factors laid out by the source text -- partly because the user
+knows best, partly so that it is unambiguous how to print values, partly
+so that source text like "0.001N" determines an exact value rather than
+being approximated by a binary equivalent.
+
+@ Scaled values have no effect on how we add, subtract, approximate (that is,
+round off) or take remainder after division. If we have true values $v_1$ and
+$v_2$ with scaled values $s_1$ and $s_2$, and $s_o$ is the scaled value for
+true value $v_1+v_2$, then
+
+$$ s_1 + s_2 = k_Uv_1 + k_Uv_2 = k_U(v_1+v_2) = s_o. $$
+
+Multiplication is not so easy. This time the values $v_1$ and $v_2$ may have
+different kinds, which we'll call $X$ and $Y$, and the result in general
+will be a third kind, which we'll call $O$ (for outcome). Then:
+
+$$ s_1s_2 = k_Xv_1\cdot k_Yv_2 = k_Ov_1v_2\cdot\left({{k_Xk_Y}\over{k_O}}\right) = s_o\cdot\left({{k_Xk_Y}\over{k_O}}\right) $$
+
+so that simply multiplying the scaled values produces an answer which is
+too large by a factor of $k_Xk_Y/k_O$. We need to correct for that, which
+we do either by dividing by this factor or multiplying by its reciprocal.
+
+This is all a little delicate since rounding errors may be an issue and
+since $k_Xk_Y/k_O$ is itself evaluated in integer arithmetic. In an ideal
+world we might use the same $k$ for many units (e.g., $k=1000$ throughout)
+and then of course this cancels to just $1000$. But in practice people
+won't always do this -- they may use some Babylonian, base 60, units, such
+as minutes and degrees, for instance, where $k=3600$ would be more natural.
+
+=
+#ifdef CORE_MODULE
+void Kinds::Scalings::rescale_multiplication_emit_op(kind *kindx, kind *kindy) {
+	if ((kindx == NULL) || (kindy == NULL)) return;
+	kind *kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, kindy, TIMES_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_Y = Kinds::Behaviour::scale_factor(kindy);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+	if (k_X*k_Y > k_O) {
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+	}
+	if (k_X*k_Y < k_O) {
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+	}
+}
+
+void Kinds::Scalings::rescale_multiplication_emit_factor(kind *kindx, kind *kindy) {
+	if ((kindx == NULL) || (kindy == NULL)) return;
+	kind *kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, kindy, TIMES_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_Y = Kinds::Behaviour::scale_factor(kindy);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+	if (k_X*k_Y > k_O) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X*k_Y/k_O));
+		Produce::up(Emit::tree());
+	}
+	if (k_X*k_Y < k_O) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O/k_X/k_Y));
+		Produce::up(Emit::tree());
+	}
+}
+#endif
+
+@ Second, division, which is similar.
+$$ {{s_1}\over{s_2}} = {{k_Xv_1}\over{k_Yv_2}} = k_O{{v_1}\over{v_2}}\cdot\left({{k_X}\over{k_Ok_Y}}\right) = s_o\cdot\left({{k_X}\over{k_Ok_Y}\right) $$
+so this time the excess to correct is a factor of $k_X/k_Ok_Y$.
+
+=
+#ifdef CORE_MODULE
+void Kinds::Scalings::rescale_division_emit_op(kind *kindx, kind *kindy) {
+	if ((kindx == NULL) || (kindy == NULL)) return;
+	kind *kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, kindy, DIVIDE_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_Y = Kinds::Behaviour::scale_factor(kindy);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+	if (k_O*k_Y > k_X) {
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP);
+		Produce::down(Emit::tree());
+	}
+	if (k_O*k_Y < k_X) {
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP);
+		Produce::down(Emit::tree());
+	}
+}
+
+void Kinds::Scalings::rescale_division_emit_factor(kind *kindx, kind *kindy) {
+	if ((kindx == NULL) || (kindy == NULL)) return;
+	kind *kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, kindy, DIVIDE_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_Y = Kinds::Behaviour::scale_factor(kindy);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+	if (k_O*k_Y > k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_Y/k_X));
+		Produce::up(Emit::tree());
+	}
+	if (k_O*k_Y < k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_Y));
+		Produce::up(Emit::tree());
+	}
+}
+#endif
+
+@ Third, the taking of $p$th roots, at any rate for $p=2$ or $p=3$.
+
+=
+#ifdef CORE_MODULE
+void Kinds::Scalings::rescale_root_emit_op(kind *kindx, int power) {
+	if (kindx == NULL) return;
+	kind *kindo = NULL;
+	if (power == 2) kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, NULL, ROOT_OPERATION);
+	if (power == 3) kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, NULL, CUBEROOT_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+
+	if (power == 2) @<Emit a scaling correction for square roots@>
+	else if (power == 3) @<Emit a scaling correction for cube roots@>
+	else internal_error("can only scale square and cube roots");
+}
+#endif
+
+@ For square roots,
+$$ \sqrt{s} = \sqrt{k_Xv} = \sqrt{k_X}\sqrt{v} = k_O\sqrt{v}\cdot\left({{\sqrt{k_X}}\over{k_O}}\right) = s_o \cdot\left({{\sqrt{k_X}}\over{k_O}}\right) $$
+and now the overestimate is a factor of $k = \sqrt{k_X}/k_O$. However,
+rather than calculating $k\sqrt{x}$ we calculate $\sqrt{k^2 x}$, since
+this way accuracy losses in taking the square root are much reduced.
+Therefore this scaling operating is to be performed inside the root
+function, not outside, and it scales by $k^2$ not $k$:
+
+@<Emit a scaling correction for square roots@> =
+	if (k_O*k_O > k_X) {
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+	}
+	if (k_O*k_O < k_X) {
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+	}
+
+@ For cube roots,
+$$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot\left({{{}^3\sqrt{k_X}}\over{k_O}}\right) = s_o\cdot\left({{{}^3\sqrt{k_X}}\over{k_O}}\right) $$
+and the overestimate is $k = {}^3\sqrt{k_X}/k_O$. Scaling once again within
+the rooting function, we scale by $k^3$:
+
+@<Emit a scaling correction for cube roots@> =
+	if (k_O*k_O*k_O > k_X) {
+		Produce::inv_primitive(Emit::tree(), TIMES_BIP); Produce::down(Emit::tree());
+	}
+	if (k_O*k_O*k_O < k_X) {
+		Produce::inv_primitive(Emit::tree(), DIVIDE_BIP); Produce::down(Emit::tree());
+	}
+
+@ =
+#ifdef CORE_MODULE
+void Kinds::Scalings::rescale_root_emit_factor(kind *kindx, int power) {
+	if (kindx == NULL) return;
+	kind *kindo = NULL;
+	if (power == 2) kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, NULL, ROOT_OPERATION);
+	if (power == 3) kindo = Kinds::Dimensions::arithmetic_on_kinds(kindx, NULL, CUBEROOT_OPERATION);
+	if (kindo == NULL) return;
+	int k_X = Kinds::Behaviour::scale_factor(kindx);
+	int k_O = Kinds::Behaviour::scale_factor(kindo);
+
+	if (power == 2) @<Emit factor for a scaling correction for square roots@>
+	else if (power == 3) @<Emit factor for a scaling correction for cube roots@>
+	else internal_error("can only scale square and cube roots");
+}
+#endif
+
+@ For square roots,
+$$ \sqrt{s} = \sqrt{k_Xv} = \sqrt{k_X}\sqrt{v} = k_O\sqrt{v}\cdot \left({{\sqrt{k_X}}\over{k_O}}\right) = s_o \cdot \left({{\sqrt{k_X}}\over{k_O}}\right) $$
+and now the overestimate is a factor of $k = \sqrt{k_X}/k_O$. However,
+rather than calculating $k\sqrt{x}$ we calculate $\sqrt{k^2 x}$, since
+this way accuracy losses in taking the square root are much reduced.
+Therefore this scaling operating is to be performed inside the root
+function, not outside, and it scales by $k^2$ not $k$:
+
+@<Emit factor for a scaling correction for square roots@> =
+	if (k_O*k_O > k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O/k_X));
+		Produce::up(Emit::tree());
+	}
+	if (k_O*k_O < k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O)); 
+		Produce::up(Emit::tree());
+	}
+
+@ For cube roots,
+$$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot \left({{{}^3\sqrt{k_X}}\over{k_O}}\right) = s_o\cdot \left({{{}^3\sqrt{k_X}}\over{k_O}}\right) $$
+and the overestimate is $k = {}^3\sqrt{k_X}/k_O$. Scaling once again within
+the rooting function, we scale by $k^3$:
+
+@<Emit factor for a scaling correction for cube roots@> =
+	if (k_O*k_O*k_O > k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_O*k_O*k_O/k_X));
+		Produce::up(Emit::tree());
+	}
+	if (k_O*k_O*k_O < k_X) {
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (k_X/k_O/k_O/k_O));
+		Produce::up(Emit::tree());
+	}
+
+@h Scaling transformations.
 A "scaling transformation" defines the relationship between the number
 as written and the number stored at runtime. The conversion between the
 two is always a linear function: a number written as |x kg| is stored
 as |M*x + O| at run-time for constants |M| and |O|, the "multiplier"
-and "offset". |M| must be positive, |O| must be positive or zero.
+and the "offset". |M| must be positive, |O| must be positive or zero.
 
 Units typically have a range of different literal patterns with different
 scalings: for example, "1 mm", "1 cm", "1 m", "1 km". One of these patterns
@@ -815,12 +1031,3 @@ digit after the decimal point should be |R_var| times |10/M|, the second
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
-
-@ And finally:
-
-=
-void Kinds::Scalings::I6_real_literal(OUTPUT_STREAM, double x) {
-	WRITE("$");
-	if (x > 0) WRITE("+");
-	WRITE("%g", x);
-}

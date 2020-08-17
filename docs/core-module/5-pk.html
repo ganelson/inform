@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-pk.html#SP1">&#167;1. Asserting global variable values</a></li><li><a href="5-pk.html#SP3">&#167;3. Asserting properties, three different ways</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Asserting global variable values. </b>A global like "score" is in effect a property belonging to no single object,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Asserting global variable values. </b>A global like "score" is in effect a property belonging to no single object,
 and which therefore exists only once.
 </p>
 
@@ -82,7 +82,7 @@ and which therefore exists only once.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">init</span><span class="plain-syntax">) </span><a href="5-pk.html#SP2" class="function-link"><span class="function-syntax">Assertions::PropertyKnowledge::igv_dash</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">init</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::PropertyKnowledge::igv_dash</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Assertions::PropertyKnowledge::igv_dash</span></span>:<br/><a href="5-pk.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verification_stage</span><span class="plain-syntax">) {</span>
@@ -105,7 +105,7 @@ and which therefore exists only once.
 <span class="plain-syntax">    </span><a href="12-ap.html#SP4" class="function-link"><span class="function-syntax">Calculus::Propositions::Assert::assert_true</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>On the face of it, the following looks unnecessary, and it nearly is.
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>On the face of it, the following looks unnecessary, and it nearly is.
 </p>
 
 <p class="commentary">It looks unnecessary because the proposition machinery will later typecheck
@@ -169,7 +169,7 @@ equal. So the proposition has to pass typechecking.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Asserting properties, three different ways. </b>In these three alternative routines, we can assert that a given owner &mdash; specified
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Asserting properties, three different ways. </b>In these three alternative routines, we can assert that a given owner &mdash; specified
 either as an object, a value or a subtree &mdash; should have
 </p>
 
@@ -208,7 +208,7 @@ either as an object, a value or a subtree &mdash; should have
 <span class="plain-syntax">    </span><a href="12-ap.html#SP4" class="function-link"><span class="function-syntax">Calculus::Propositions::Assert::assert_true_about</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">prevailing_mood</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>We pass the "clue kind" to obtain a proposition which includes an atom
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>We pass the "clue kind" to obtain a proposition which includes an atom
 setting the kind of the free variable &mdash; not because we need to assert this,
 although it does no harm to, but because this enables the proposition
 asserter to know the kind of the free variable, which in turn affects the
@@ -230,7 +230,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the owner subtree isn't dangerously elaborate</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the owner subtree isn't dangerously elaborate</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -253,7 +253,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for an unrecognised property owner</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for an unrecognised property owner</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -266,7 +266,7 @@ are typechecked at run-time rather than compile-time in that domain.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP3">&#167;3</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following assumes that the subtree <span class="extract"><span class="extract-syntax">py</span></span> describes a value which the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following assumes that the subtree <span class="extract"><span class="extract-syntax">py</span></span> describes a value which the
 <span class="extract"><span class="extract-syntax">prn</span></span> property of something will have; it issues problem messages if this
 would be impossible, returning <span class="extract"><span class="extract-syntax">NULL</span></span>, or else silently returns the value.
 It's used both above and by the tree-conversion code in the predicate
@@ -295,7 +295,7 @@ the proposition machinery.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem, as this uses a bare adjective as if a value-property</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem, as this uses a bare adjective as if a value-property</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -311,7 +311,7 @@ the proposition machinery.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem, as this makes sense only for value properties</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem, as this makes sense only for value properties</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -326,7 +326,7 @@ the proposition machinery.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the subtree does indeed express a property value</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the subtree does indeed express a property value</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -381,7 +381,7 @@ the proposition machinery.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-pk.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a property value which isn't a constant</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for a property value which isn't a constant</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

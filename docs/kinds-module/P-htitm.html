@@ -60,7 +60,7 @@
 
 <ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li><li><a href="P-htitm.html#SP3">&#167;3. Using callbacks</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Status. </b>The kinds module is provided as one of the "services" suite of modules,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The kinds module is provided as one of the "services" suite of modules,
 which means that it was built with a view to potential incorporation in
 multiple tools. It can be found, for example, in <a href="../inform7/index.html" class="internal">inform7</a> and
 <a href="../kinds-test/index.html" class="internal">kinds-test</a>.
@@ -74,7 +74,7 @@ other modules except for <a href="../../../inweb/docs/foundation-module/index.ht
 <a href="../words-module/index.html" class="internal">words</a>, <a href="../syntax-module/index.html" class="internal">syntax</a>, <a href="../inflections-module/index.html" class="internal">inflections</a> and <a href="../linguistics-module/index.html" class="internal">linguistics</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Importing the module. </b>We'll use the term "parent" to mean the tool which is importing <a href="index.html" class="internal">kinds</a>,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Importing the module. </b>We'll use the term "parent" to mean the tool which is importing <a href="index.html" class="internal">kinds</a>,
 that is, which will include its code and be able to use it. As with any
 imported module,
 </p>
@@ -89,7 +89,7 @@ module:
 <a href="1-km.html#SP3" class="internal">KindsModule::end</a> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
 functions". This means that the parent might provide a function of its own
 which would answer a question put to it by the module, or take some action
 on behalf of the module: it's a callback in the sense that the parent is
@@ -127,7 +127,7 @@ the case of somebody making "region" a subkind of some other kind of object.)
 See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NEW_BASE_KINDS_CALLBACK</span></span> is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>
-and <a href="4-kc.html#SP13" class="internal">KindCommands::despatch</a> &mdash; there are two ways this can happen.
+and <a href="4-kc.html#SP12" class="internal">KindCommands::despatch</a> &mdash; there are two ways this can happen.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK</span></span> is called when the kind "natural
 language" is created (if it is): see <a href="2-fk.html#SP13" class="internal">FamiliarKinds::notice_new_kind</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_KINDS_CALLBACK</span></span> is called when a syntax error is found, and can
@@ -137,7 +137,7 @@ prevent this from being issued to the terminal as an error message: see
 for a new base kind with the lexicon itself. See <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-knd.html">2</a></li><li class="progresschapter"><a href="3-dmn.html">3</a></li><li class="progresschapter"><a href="4-kf.html">4</a></li><li class="progressnext"><a href="1-km.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-knd.html">2</a></li><li class="progresschapter"><a href="3-dmn.html">3</a></li><li class="progresschapter"><a href="4-nf.html">4</a></li><li class="progressnext"><a href="1-km.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

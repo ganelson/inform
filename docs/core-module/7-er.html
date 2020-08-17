@@ -82,7 +82,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="7-er.html#SP1">&#167;1. Managing the BPs generated</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Managing the BPs generated. </b>The relations created in this section belong to the <span class="extract"><span class="extract-syntax">EXPLICIT_KBP</span></span> family,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Managing the BPs generated. </b>The relations created in this section belong to the <span class="extract"><span class="extract-syntax">EXPLICIT_KBP</span></span> family,
 named so because their definitions are explicit in the source text. Initially,
 there are none.
 </p>
@@ -93,7 +93,7 @@ there are none.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Relations::Explicit::REL_create_second_stock</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Relations::Explicit::REL_create_second_stock</span></span>:<br/>Binary Predicates - <a href="7-bp.html#SP45">&#167;45</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>They typecheck by the default rule only:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>They typecheck by the default rule only:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -102,7 +102,7 @@ there are none.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">DECLINE_TO_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>They are asserted thus. Note that if we have a symmetric relation then we need
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>They are asserted thus. Note that if we have a symmetric relation then we need
 to behave as if \(B(y, x)\) had also been asserted whenever \(B(x, y)\) has, if
 \(x\neq y\).
 </p>
@@ -134,7 +134,7 @@ to behave as if \(B(y, x)\) had also been asserted whenever \(B(x, y)\) has, if
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>This is the point at which non-assertable relations are thrown out.
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>This is the point at which non-assertable relations are thrown out.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject non-assertable relations</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
@@ -152,7 +152,7 @@ to behave as if \(B(y, x)\) had also been asserted whenever \(B(x, y)\) has, if
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-er.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject relationship with nothing</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reject relationship with nothing</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -165,7 +165,7 @@ to behave as if \(B(y, x)\) had also been asserted whenever \(B(x, y)\) has, if
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-er.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This routine converts the knowledge that \(R(ox, oy)\) into a single
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>This routine converts the knowledge that \(R(ox, oy)\) into a single
 inference. It can only be used for a simple subclass of the relations:
 those which store <span class="extract"><span class="extract-syntax">oy</span></span>, the only thing related to <span class="extract"><span class="extract-syntax">ox</span></span>, in a given property
 of <span class="extract"><span class="extract-syntax">ox</span></span>. The beauty of this is that the "only thing related to" business
@@ -184,7 +184,7 @@ inferences for \(y\) and \(z\).
 <span class="plain-syntax">    </span><a href="16-in.html#SP8" class="function-link"><span class="function-syntax">World::Inferences::draw_property</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs0</span><span class="plain-syntax">, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">, </span><a href="16-is.html#SP17" class="function-link"><span class="function-syntax">InferenceSubjects::as_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs1</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We need do nothing special: these relations can be compiled from their schemas.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We need do nothing special: these relations can be compiled from their schemas.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -192,7 +192,7 @@ inferences for \(y\) and \(z\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Problem message text:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Problem message text:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

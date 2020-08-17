@@ -316,7 +316,7 @@ in the proposition.
 parse_node *Rvalues::constant_description(pcalc_prop *prop, wording W) {
 	parse_node *con = Node::new_with_words(CONSTANT_NT, W);
 	Node::set_kind_of_value(con,
-		Kinds::unary_construction(CON_description, K_object));
+		Kinds::unary_con(CON_description, K_object));
 	Rvalues::set_constant_description_proposition(con, prop);
 	return con;
 }
@@ -325,7 +325,7 @@ void Rvalues::set_constant_description_proposition(parse_node *spec, pcalc_prop 
 	if (Rvalues::is_CONSTANT_construction(spec, CON_description)) {
 		Node::set_proposition(spec, prop);
 		Node::set_kind_of_value(spec,
-			Kinds::unary_construction(CON_description,
+			Kinds::unary_con(CON_description,
 				Calculus::Variables::infer_kind_of_variable_0(prop)));
 	} else internal_error("set constant description proposition wrongly");
 }
@@ -506,14 +506,14 @@ as "room" (a kind of object), "animal" as itself (ditto).
 
 @<Work out the kind for a constant property name@> =
 	property *prn = Rvalues::to_property(spec);
-	if (prn->either_or) return Kinds::unary_construction(CON_property, K_truth_state);
-	return Kinds::unary_construction(CON_property, Properties::Valued::kind(prn));
+	if (prn->either_or) return Kinds::unary_con(CON_property, K_truth_state);
+	return Kinds::unary_con(CON_property, Properties::Valued::kind(prn));
 
 @<Work out the kind for a constant list@> =
 	return Lists::kind_of_list_at(Node::get_text(spec));
 
 @<Work out the kind for a table column@> =
-	return Kinds::unary_construction(CON_table_column,
+	return Kinds::unary_con(CON_table_column,
 		Tables::Columns::get_kind(Rvalues::to_table_column(spec)));
 
 @ A timing issue here means that the kind will be vague until the second

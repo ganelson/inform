@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-wtc.html#SP1">&#167;1. Timers</a></li><li><a href="1-wtc.html#SP2">&#167;2. Task data</a></li><li><a href="1-wtc.html#SP10">&#167;10. Project-related files and file paths</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Timers. </b>We keep track of about how long the compiler spends on each task, for the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Timers. </b>We keep track of about how long the compiler spends on each task, for the
 sake of better diagnostics.
 </p>
 
@@ -86,7 +86,7 @@ sake of better diagnostics.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Time::log_timing</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_timer</span><span class="plain-syntax">, </span><span class="identifier-syntax">inform7_timer</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">time_taken</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Task data. </b>When Inbuild (a copy of which is included in the Inform 7 executable) decides
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Task data. </b>When Inbuild (a copy of which is included in the Inform 7 executable) decides
 that an Inform source text must be compiled, it calls <span class="extract"><span class="extract-syntax">Task::carry_out</span></span>. By
 this point Inbuild will have set up an <span class="extract"><span class="extract-syntax">inform_project</span></span> structure to
 represent the program we have to compile; but we will need additional data
@@ -110,7 +110,7 @@ about that compilation, and it's stored in the following.
 <span class="plain-syntax">} </span><span class="reserved-syntax">compile_task_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure compile_task_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>An early and perhaps arguable design decision for inform7 was that it would
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>An early and perhaps arguable design decision for inform7 was that it would
 compile just one source text in its lifetime as a process: and because of that,
 <span class="extract"><span class="extract-syntax">Task::carry_out</span></span> can only in fact be called once, and Inbuild only does so
 once. But the following function allows in principle for multiple calls,
@@ -159,7 +159,7 @@ thing which is being compiled when it is.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>All manner of low-level problems emerge when reading in the text of the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>All manner of low-level problems emerge when reading in the text of the
 project, or any extensions it uses: these have already been found by inbuild
 and are attached to the relevant nodes in the build graph. We issue them
 here as Inform problem messages. (Inbuild wasn't able to do that for us
@@ -178,7 +178,7 @@ only issue stubby Unix-like command line errors.)
 <span class="plain-syntax">        </span><a href="1-wtc.html#SP4" class="function-link"><span class="function-syntax">Task::issue_problems_arising</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We will keep track of how far along the process has advanced, in very
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We will keep track of how far along the process has advanced, in very
 rough stages. Twenty is plenty.
 </p>
 
@@ -212,7 +212,7 @@ rough stages. Twenty is plenty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The current project and the virtual machine we want to compile it for:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The current project and the virtual machine we want to compile it for:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -239,7 +239,7 @@ rough stages. Twenty is plenty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Projects::get_language_of_syntax</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::project</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Resources in a Blorb file have unique ID numbers which are positive integers,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image
 is provided: it is legal for there to be figures but no cover, and vice versa).
@@ -257,7 +257,7 @@ number but a long or short beep. If a genuine sound effect had resource ID
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_resource_number</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>This seed is ordinarily 0, causing no fix to occur, but can be set to
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>This seed is ordinarily 0, causing no fix to occur, but can be set to
 a non-zero value to make testing Inform easier.
 </p>
 
@@ -267,7 +267,7 @@ a non-zero value to make testing Inform easier.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">fix_rng</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>These functions are for steps on the production line which involve
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>These functions are for steps on the production line which involve
 referring something back up to Inbuild.
 </p>
 
@@ -283,7 +283,7 @@ referring something back up to Inbuild.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Project-related files and file paths. </b>An Inform compilation can touch dozens of different files, and the rest
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Project-related files and file paths. </b>An Inform compilation can touch dozens of different files, and the rest
 of this section is a tour through the ones which are associated with the
 project itself. (Common resources, used for all compilations, or optional
 add-ins such as extensions are the business of Inbuild.)
@@ -339,7 +339,7 @@ the command line), but they take no time to generate so we make them anyway.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Release.blurb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The build folder for a project contains all of the working files created
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The build folder for a project contains all of the working files created
 during the compilation process. The debugging log and Inform problems report
 (its HTML file of error messages) are both written there: see the Main Routine
 section for details. In addition we have:
@@ -355,7 +355,7 @@ section for details. In addition we have:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">build</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Parse tree.txt"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The name of the unblorbed story file is chosen for us by Inbuild, so
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The name of the unblorbed story file is chosen for us by Inbuild, so
 we have to extract it from the build graph:
 </p>
 
@@ -367,7 +367,7 @@ we have to extract it from the build graph:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_file</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Deeper inside the<span class="extract"><span class="extract-syntax">Build</span></span> subfolder is an (also ephemeral) <span class="extract"><span class="extract-syntax">Index</span></span> subfolder,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Deeper inside the<span class="extract"><span class="extract-syntax">Build</span></span> subfolder is an (also ephemeral) <span class="extract"><span class="extract-syntax">Index</span></span> subfolder,
 which holds the mini-website of the Index for a project.
 </p>
 
@@ -383,7 +383,7 @@ details on actions live in the subfolder <span class="extract"><span class="extr
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>An oddity in the Index folder is an XML file recording where the headings
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>An oddity in the Index folder is an XML file recording where the headings
 are in the source text: this is for the benefit of the user interface
 application, if it wants it, but is not linked to or used by the HTML of
 the index as seen by the user.
@@ -394,7 +394,7 @@ the index as seen by the user.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Filenames::in</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP13" class="function-link"><span class="function-syntax">Task::index_path</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">I</span><span class="string-syntax">"Headings.xml"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Within the Index is a deeper level, into the weeds as it were, called
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Within the Index is a deeper level, into the weeds as it were, called
 <span class="extract"><span class="extract-syntax">Details</span></span>.
 </p>
 
@@ -405,7 +405,7 @@ the index as seen by the user.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And the following routine determines the filename for a page in this
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And the following routine determines the filename for a page in this
 mini-website. Filenames down in the <span class="extract"><span class="extract-syntax">Details</span></span> area have the form
 <span class="extract"><span class="extract-syntax">N_S</span></span> where <span class="extract"><span class="extract-syntax">N</span></span> is an integer supplied and <span class="extract"><span class="extract-syntax">S</span></span> the leafname; for instance,
 <span class="extract"><span class="extract-syntax">21_A.html</span></span> provides details page number 21 about actions, derived from the
@@ -425,7 +425,7 @@ leafname <span class="extract"><span class="extract-syntax">A.html</span></span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>That's it for the project folder, but other project-related stuff is in
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>That's it for the project folder, but other project-related stuff is in
 the materials folder, which we turn to next.
 </p>
 
@@ -463,7 +463,7 @@ level of materuals.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">existing_storyfile</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>Materials is also where cover art lives: it could have either the file
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Materials is also where cover art lives: it could have either the file
 extension <span class="extract"><span class="extract-syntax">.jpg</span></span> or <span class="extract"><span class="extract-syntax">.png</span></span>, and we generate both sets of filenames, even
 though at most one will actually work. This is also where we generate the EPS
 file of the map, if so requested; a bit anomalously, it's the only file in
@@ -494,7 +494,7 @@ and Sounds, if any, live: in their own subfolders.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">inform7_task</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">materials</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Sounds"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle
 is that everything in Release can always be thrown away without loss, because
 it can all be generated again.

@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="27-cm.html#SP6">&#167;6. Current unit</a></li><li><a href="27-cm.html#SP7">&#167;7. Relating to Inter</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Inform is a language in which it is semantically relevant which source file the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inform is a language in which it is semantically relevant which source file the
 source text is coming from: unlike, say, C, where <span class="extract"><span class="extract-syntax">#include</span></span> allows files to include
 each other in arbitrary ways. In Inform, all source text comes from one of the
 following places:
@@ -86,7 +86,7 @@ definition (of, say, a property or kind) belongs.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">compilation_unit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source_text_unit</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> the one for the main text</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We find these by performing a traverse of the parse tree, and looking for
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We find these by performing a traverse of the parse tree, and looking for
 level-0 headings, which are the nodes from which these blocks of source text hang:
 </p>
 
@@ -132,7 +132,7 @@ level-0 headings, which are the nodes from which these blocks of source text han
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>Here we must find a unique name, valid as an Inter identifier: the code
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Here we must find a unique name, valid as an Inter identifier: the code
 compiled from the compilation unit will go into a package of that name.
 </p>
 
@@ -152,7 +152,7 @@ compiled from the compilation unit will go into a package of that name.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="27-cm.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We are eventually going to need to be able to look at a given node in the parse
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We are eventually going to need to be able to look at a given node in the parse
 tree and say which compilation unit it belongs to. If there were a fast way
 to go up in the tree, that would be easy &mdash; we could simply run upward until we
 reach a level-0 heading. But the node links all run downwards. Instead, we'll
@@ -160,7 +160,7 @@ reach a level-0 heading. But the node links all run downwards. Instead, we'll
 them. This is done by "propagating downwards", as follows.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CompilationUnits::propagate_downwards</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">CompilationUnits::propagate_downwards</span></span>:<br/><a href="27-cm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">compilation_unit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
@@ -171,7 +171,7 @@ them. This is done by "propagating downwards", as follows.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>As promised, then, given a parse node, we have to return its compilation unit:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>As promised, then, given a parse node, we have to return its compilation unit:
 but that's now easy, as we just have to read off the annotation made above &mdash;
 </p>
 
@@ -181,7 +181,7 @@ but that's now easy, as we just have to read off the annotation made above &mdas
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Node::get_unit</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Current unit. </b>Inform has a concept of the "current unit" it's working on, much as it has
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Current unit. </b>Inform has a concept of the "current unit" it's working on, much as it has
 a concept of "current sentence".
 </p>
 
@@ -201,7 +201,7 @@ a concept of "current sentence".
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_CM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Relating to Inter. </b>Creating the necessary package, of type <span class="extract"><span class="extract-syntax">_module</span></span>, is the work of the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Relating to Inter. </b>Creating the necessary package, of type <span class="extract"><span class="extract-syntax">_module</span></span>, is the work of the
 Packaging code.
 </p>
 

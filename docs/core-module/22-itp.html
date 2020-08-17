@@ -58,7 +58,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#22">Chapter 22: Phrases</a></li><li><b>Introduction to Phrases</b></li></ul></div>
 <p class="purpose">An exposition of the data structures used inside Inform to hold phrases, rules and rulebooks.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>A good deal of Inform source text consists of phrase declarations of one
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>A good deal of Inform source text consists of phrase declarations of one
 kind or another, consisting of a preamble, then a colon (except in a few
 cases where commas are permitted) and then a list of instructions about what
 to do, which is normally a series of phrase invocations divided by
@@ -109,7 +109,7 @@ Inside Inform, "To..." phrases and rules have much in common, and both
 are stored in "phrase" structures.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Every phrase is defined either as a list of invocations of phrases to
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Every phrase is defined either as a list of invocations of phrases to
 do something, or as a piece of primitive I6 code. The latter case is rare,
 and mostly confined to the Standard Rules. But here is an example:
 </p>
@@ -144,7 +144,7 @@ phrases to get something done, or in a low-level way, as primitives written
 directly in I6 code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each declaration corresponds to a <span class="extract"><span class="extract-syntax">phrase</span></span> structure. This is an anthology
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each declaration corresponds to a <span class="extract"><span class="extract-syntax">phrase</span></span> structure. This is an anthology
 of five sub-structures for different purposes: PHUD, PHTD, PHSF, PHRCD and
 PHOD. The data in these structures is used to represent the information
 in the preamble, and also information needed during compilation of the
@@ -163,7 +163,7 @@ are in turn stored as <span class="extract"><span class="extract-syntax">ruleboo
 this much more fully.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>So the <span class="extract"><span class="extract-syntax">phrase</span></span> structure has five substructures, whose names are
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>So the <span class="extract"><span class="extract-syntax">phrase</span></span> structure has five substructures, whose names are
 abbreviated as PHUD, PHTD, PHSF, PHRCD and PHOD.
 </p>
 

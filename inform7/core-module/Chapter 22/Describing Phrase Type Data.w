@@ -891,7 +891,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 		"this phrase uses a kind variable which is not declared",
 		"which is not allowed.");
 	phtd->token_sequence[i].token_kind =
-		Kinds::binary_construction(CON_phrase, K_value, K_value);
+		Kinds::binary_con(CON_phrase, K_value, K_value);
 	problem_thrown = TRUE;
 
 @ This following process is much less mysterious than it sounds. Suppose we

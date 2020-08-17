@@ -118,7 +118,7 @@ parse_node *Descriptions::to_rvalue(parse_node *spec) {
 
 	parse_node *con = Node::new(CONSTANT_NT);
 	Node::set_kind_of_value(con,
-		Kinds::unary_construction(CON_description,
+		Kinds::unary_con(CON_description,
 			Calculus::Variables::infer_kind_of_variable_0(prop)));
 	Node::set_proposition(con, prop);
 	Node::set_text(con, Node::get_text(spec));

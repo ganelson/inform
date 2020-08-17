@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="6-ipw.html#SP1">&#167;1. The Kinds page</a></li><li><a href="6-ipw.html#SP2">&#167;2. The World page</a></li><li><a href="6-ipw.html#SP3">&#167;3. Indexing individual objects</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The Kinds page. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The Kinds page. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Data::Objects::page_Kinds</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
@@ -76,7 +76,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="13-ki.html#SP1" class="function-link"><span class="function-syntax">Kinds::Index::index_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b>The following routine looks at each kind of object, takes the first word
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>The following routine looks at each kind of object, takes the first word
 of its name, prefixes "kind" and looks to see if there is a documentation
 symbol of that name: if there is, it attaches it to the relevant field of
 the kind.
@@ -100,7 +100,7 @@ the kind.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. The World page. </b>This section belongs to the core of Inform, so it must work whatever plugins
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The World page. </b>This section belongs to the core of Inform, so it must work whatever plugins
 are present, but the World index will look pretty sketchy without (for
 instance) Spatial.
 </p>
@@ -130,7 +130,7 @@ instance) Spatial.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark parts, directions and kinds as ineligible for listing in the World index</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark parts, directions and kinds as ineligible for listing in the World index</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -141,7 +141,7 @@ instance) Spatial.
 <span class="plain-syntax">            </span><a href="6-ins.html#SP23" class="function-link"><span class="function-syntax">Instances::increment_indexing_count</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give room details within each region in turn in the World index</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give room details within each region in turn in the World index</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -167,7 +167,7 @@ instance) Spatial.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the name and super-region of the region</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the name and super-region of the region</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -177,7 +177,7 @@ instance) Spatial.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/b&gt;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give room details for rooms outside any region in the World index</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Give room details for rooms outside any region in the World index</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -190,7 +190,7 @@ instance) Spatial.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b>By this point we've accounted for rooms (and their contents and any parts
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b>By this point we've accounted for rooms (and their contents and any parts
 thereof), directions (which we excluded), regions (ditto), and the player
 object (which the Player plugin put in the right place). The only remainder
 will be things which are offstage (and their contents and any parts thereof):
@@ -216,7 +216,7 @@ will be things which are offstage (and their contents and any parts thereof):
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_panel_changes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_2"></a><b>&#167;2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a new details panel on the World index</span><span class="named-paragraph-number">2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_2" class="paragraph-anchor"></a><b>&#167;2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a new details panel on the World index</span><span class="named-paragraph-number">2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -224,7 +224,7 @@ will be things which are offstage (and their contents and any parts thereof):
 <span class="plain-syntax">    </span><span class="identifier-syntax">unruly</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP2_2">&#167;2.2</a>, <a href="6-ipw.html#SP2_3">&#167;2.3</a>, <a href="6-ipw.html#SP2_4">&#167;2.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Indexing individual objects. </b>Rather ingeniously, the following routine is used both to index instance objects,
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Indexing individual objects. </b>Rather ingeniously, the following routine is used both to index instance objects,
 in the World index, and to index kinds of object, as rows in the table on the
 Kinds index. The point of doing both together is to ensure a consistent layout.
 If <span class="extract"><span class="extract-syntax">details</span></span> is set, a whole paragraph of details follows; otherwise there is
@@ -273,7 +273,7 @@ table of Kinds.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ipw.html#SP3_6" class="named-paragraph-link"><span class="named-paragraph">Recurse the index citation for the object as necessary</span><span class="named-paragraph-number">3.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the object citation line</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the object citation line</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -288,7 +288,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End the object citation line</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End the object citation line</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -299,7 +299,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the name part of the object citation</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the name part of the object citation</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -315,7 +315,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_1"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote the name of the object being indexed</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_1" class="paragraph-anchor"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote the name of the object being indexed</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -338,7 +338,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3_3">&#167;3.3</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_1_1"></a><b>&#167;3.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Elaborate the name of the object being indexed</span><span class="named-paragraph-number">3.3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_1_1" class="paragraph-anchor"></a><b>&#167;3.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Elaborate the name of the object being indexed</span><span class="named-paragraph-number">3.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -355,7 +355,7 @@ table of Kinds.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">PW</span><span class="plain-syntax">)) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" (&lt;i&gt;plural&lt;/i&gt; %+W)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">PW</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3_3_1">&#167;3.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the kind attribution part of the object citation</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the kind attribution part of the object citation</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -375,7 +375,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_5"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the link icons part of the object citation</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_5" class="paragraph-anchor"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the link icons part of the object citation</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -389,7 +389,7 @@ table of Kinds.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Index::below_link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="6-un.html#SP1" class="function-link"><span class="function-syntax">UseNouns::identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_6"></a><b>&#167;3.6.  </b>This either recurses down through subkinds or through the spatial hierarchy.
+<p class="commentary firstcommentary"><a id="SP3_6" class="paragraph-anchor"></a><b>&#167;3.6.  </b>This either recurses down through subkinds or through the spatial hierarchy.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recurse the index citation for the object as necessary</span><span class="named-paragraph-number">3.6</span></span><span class="comment-syntax"> =</span>
@@ -408,7 +408,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_7"></a><b>&#167;3.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a subsidiary paragraph of details about this object</span><span class="named-paragraph-number">3.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_7" class="paragraph-anchor"></a><b>&#167;3.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a subsidiary paragraph of details about this object</span><span class="named-paragraph-number">3.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -421,7 +421,7 @@ table of Kinds.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_8"></a><b>&#167;3.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the chain of kinds</span><span class="named-paragraph-number">3.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_8" class="paragraph-anchor"></a><b>&#167;3.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the chain of kinds</span><span class="named-paragraph-number">3.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -448,14 +448,14 @@ table of Kinds.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_9"></a><b>&#167;3.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the catalogue of specific properties</span><span class="named-paragraph-number">3.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_9" class="paragraph-anchor"></a><b>&#167;3.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the catalogue of specific properties</span><span class="named-paragraph-number">3.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="16-in.html#SP16" class="function-link"><span class="function-syntax">World::Inferences::index_specific</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="6-ins.html#SP12" class="function-link"><span class="function-syntax">Instances::as_subject</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-ipw.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Data::Objects::index_instances</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Data::Objects::index_instances</span></span>:<br/><a href="6-ipw.html#SP3_7">&#167;3.7</a><br/>Kinds Index - <a href="13-ki.html#SP1_10">&#167;1.10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>

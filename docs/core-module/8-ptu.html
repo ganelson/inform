@@ -68,9 +68,9 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="8-ptu.html#SP1">&#167;1. Definitions</a></li><li><a href="8-ptu.html#SP13">&#167;13. The assertion-maker's invariant</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definitions. </b></p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ANNOTATION_COPY_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP2" class="function-link"><span class="function-syntax">ParseTreeUsage::copy_annotations</span></a>
 </pre>
@@ -84,7 +84,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">                        </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">annotation_pointer</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ALLOWED_NT</span><span class="plain-syntax">           			</span><span class="comment-syntax"> "An animal is allowed to have a description"</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">EVERY_NT</span><span class="plain-syntax">             			</span><span class="comment-syntax"> "every container"</span>
@@ -106,7 +106,7 @@ function togglePopup(material_id) {
 <span class="definition-keyword">enum</span> <span class="constant-syntax">LVALUE_LOCAL_CONTEXT_NT</span><span class="plain-syntax">		</span><span class="comment-syntax"> Argument which names a local</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">CONDITION_CONTEXT_NT</span><span class="plain-syntax">          </span><span class="comment-syntax"> Used for "now" conditions</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The next specification nodes are the rvalues. These express I6 values &mdash;
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The next specification nodes are the rvalues. These express I6 values &mdash;
 numbers, objects, text and so on &mdash; but cannot be assigned to, so that in an
 assignment of the form "change L to R" they can be used only as R, not L. This
 is not the same thing as a constant: for instance, "location of the player"
@@ -117,7 +117,7 @@ assignment.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CONSTANT_NT</span><span class="plain-syntax">					</span><span class="comment-syntax"> "7", "the can't lock a locked door rule", etc.</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain-syntax">		</span><span class="comment-syntax"> "holder of the black box"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Lvalue nodes represent stored I6 data at run-time, which means that they can
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Lvalue nodes represent stored I6 data at run-time, which means that they can
 be assigned to. (The traditional terms "lvalue" and "rvalue" refer to the left
 and right hand side of assignment statements written <span class="extract"><span class="extract-syntax">A = B</span></span>.) For instance, a
 table entry qualifies as an lvalue because it can be both read and changed. To
@@ -133,7 +133,7 @@ indicating an owner) is a mere rvalue.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TABLE_ENTRY_NT</span><span class="plain-syntax">				</span><span class="comment-syntax"> "tonnage in row X of the Table of Corvettes"</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">LIST_ENTRY_NT</span><span class="plain-syntax">					</span><span class="comment-syntax"> "item 4 in L"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Condition nodes represent atomic conditions, and also Boolean operations on
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Condition nodes represent atomic conditions, and also Boolean operations on
 them. It's convenient to represent these operations as nodes in their own right
 rather than as (for example) phrases: this reduces parsing ambiguities, but
 also makes it easier for us to manipulate the results.
@@ -147,13 +147,13 @@ also makes it easier for us to manipulate the results.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_PHRASE_OPTION_NT</span><span class="plain-syntax">			</span><span class="comment-syntax"> "giving full details", say</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_VALUE_NT</span><span class="plain-syntax">					</span><span class="comment-syntax"> when a value is used as a condition</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">LVALUE_NCAT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">RVALUE_NCAT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">COND_NCAT</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP8" class="function-link"><span class="function-syntax">ParseTreeUsage::md</span></a>
 </pre>
@@ -201,7 +201,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="identifier-syntax">NodeType::new</span><span class="plain-syntax">(</span><span class="constant-syntax">TEST_VALUE_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"TEST_VALUE_NT"</span><span class="plain-syntax">, 							</span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,		</span><span class="constant-syntax">COND_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP9" class="function-link"><span class="function-syntax">ParseTreeUsage::write_parentage_permissions</span></a>
 </pre>
@@ -231,7 +231,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="identifier-syntax">NodeType::allow_parentage_for_categories</span><span class="plain-syntax">(</span><span class="constant-syntax">COND_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">COND_NCAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP10" class="function-link"><span class="function-syntax">ParseTreeUsage::write_permissions</span></a>
 </pre>
@@ -377,7 +377,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="constant-syntax">COND_NCAT</span><span class="plain-syntax">, </span><span class="identifier-syntax">annot</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PARENTAGE_EXCEPTIONS_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP11" class="function-link"><span class="function-syntax">ParseTreeUsage::parentage_exceptions</span></a>
 </pre>
@@ -388,7 +388,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Further classification:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Further classification:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">IMMUTABLE_NODE</span><span class="plain-syntax"> </span><a href="8-ptu.html#SP12" class="function-link"><span class="function-syntax">ParseTreeUsage::immutable</span></a>
@@ -447,7 +447,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. The assertion-maker's invariant. </b>Hmm: "The Assertion-Maker's Invariant" might make a good magic-realism
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The assertion-maker's invariant. </b>Hmm: "The Assertion-Maker's Invariant" might make a good magic-realism
 novel, in which an enigmatic wise man of Samarkand builds an ingenious box
 from camphor-wood in which he traps the dreams of the people, who &mdash; However.
 When assertions are processed, the subtrees being compared will be required to
@@ -461,7 +461,7 @@ be such that their head nodes each pass this test:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ParseTreeUsage::verify</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">ParseTreeUsage::verify</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

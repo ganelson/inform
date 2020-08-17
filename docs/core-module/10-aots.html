@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="10-aots.html#SP1">&#167;1. Introduction</a></li><li><a href="10-aots.html#SP3">&#167;3. Top-level nonterminals</a></li><li><a href="10-aots.html#SP11">&#167;11. The cache</a></li><li><a href="10-aots.html#SP15">&#167;15. Void phrases</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>The purpose of the S-parser is to turn excerpts of text into specification
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>The purpose of the S-parser is to turn excerpts of text into specification
 nodes. Nonterminals here almost all have names beginning with the "s-" prefix,
 which indicates that their results are S-nodes.
 </p>
@@ -88,7 +88,7 @@ permanent structure, whereas &lt;s-plain-text&gt; makes an S-node.)
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And here is a curious variation, which is needed because equations are
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And here is a curious variation, which is needed because equations are
 parsed with completely different spacing rules, and don't respect words. It
 matches any non-empty text where one of the words contains an equals sign
 as one of its characters: thus
@@ -119,7 +119,7 @@ as one of its characters: thus
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Top-level nonterminals. </b>These five nonterminals are the most useful and powerful, so they're the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Top-level nonterminals. </b>These five nonterminals are the most useful and powerful, so they're the
 main junction between the S-parser and the rest of Inform.
 </p>
 
@@ -141,7 +141,7 @@ variable or other storage object, or a phrase to decide a value.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>&lt;s-condition&gt; looks for a condition &mdash; anything legal after an
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>&lt;s-condition&gt; looks for a condition &mdash; anything legal after an
 "if", in short. This includes sentence-like excerpts such as "six
 animals have been in the Stables".
 </p>
@@ -156,7 +156,7 @@ animals have been in the Stables".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>&lt;s-non-action-condition&gt; is the same, but disallowing action patterns
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>&lt;s-non-action-condition&gt; is the same, but disallowing action patterns
 as conditions, so for example "taking something" would not match.
 </p>
 
@@ -176,7 +176,7 @@ as conditions, so for example "taking something" would not match.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>&lt;s-type-expression&gt; is for where we expect to find the "type" of something
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>&lt;s-type-expression&gt; is for where we expect to find the "type" of something
 &mdash; for instance, the kind of value to be stored in a variable, or the
 specification of a phrase argument.
 </p>
@@ -190,7 +190,7 @@ specification of a phrase argument.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>&lt;s-descriptive-type-expression&gt; is the same thing, with one difference: it
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>&lt;s-descriptive-type-expression&gt; is the same thing, with one difference: it
 allows nounless descriptions, such as "open opaque fixed in place", and to
 this end it treats bare adjective names as descriptions rather than values. If
 we have said "Colour is a kind of value. The colours are red, green and taupe.
@@ -208,7 +208,7 @@ and &lt;s-value&gt; as a constant value of the kind "colour".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following internal is just a shell for &lt;s-descriptive-type-expression&gt;,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The following internal is just a shell for &lt;s-descriptive-type-expression&gt;,
 but it temporarily changes the parsing mode to phrase token parsing, so that
 kind variables will be read as formal prototypes.
 </p>
@@ -224,7 +224,7 @@ kind variables will be read as formal prototypes.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>That's it for the cached nonterminals, but we will also define a convenient
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>That's it for the cached nonterminals, but we will also define a convenient
 super-nonterminal which matches almost any meaningful reference to data, so
 it's frequently used as a way of finding out whether a new name will clash
 with some existing meaning.
@@ -236,7 +236,7 @@ with some existing meaning.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-value&gt;</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>One further convenience is for text which describes an explicit action in
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>One further convenience is for text which describes an explicit action in
 a noun-like way.
 </p>
 
@@ -289,14 +289,14 @@ a noun-like way.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. The cache. </b>The above nonterminals are called pretty frequently on overlapping or
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. The cache. </b>The above nonterminals are called pretty frequently on overlapping or
 coinciding runs of text. Inform runs substantially faster if the results of
 parsing the most recent expressions are cached; so, for instance, if Inform
 parses the text in words 507 to 511 once, it need not do so again in the same
 context.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The cache takes the form of a modest ring buffer for each of the contexts:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The cache takes the form of a modest ring buffer for each of the contexts:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">MAXIMUM_CACHE_SIZE</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">20</span><span class="Preform-plain-syntax"> </span><span class="Preform-comment-syntax"> a Goldilocks value: too high slows us down, too low doesn't cache enough</span>
@@ -318,7 +318,7 @@ context.
 <span class="reserved-syntax">expression_cache</span><span class="plain-syntax"> </span><span class="identifier-syntax">contextual_cache</span><span class="plain-syntax">[</span><span class="constant-syntax">NUMBER_OF_CACHED_NONTERMINALS</span><span class="plain-syntax">];</span>
 </pre>
 <ul class="endnotetexts"><li>The structure expression_cache is private to this section.</li><li>The structure expression_cache_entry is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExParser::parse_with_cache</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ExParser::parse_with_cache</span></span>:<br/><a href="10-aots.html#SP3">&#167;3</a>, <a href="10-aots.html#SP4">&#167;4</a>, <a href="10-aots.html#SP5">&#167;5</a>, <a href="10-aots.html#SP6">&#167;6</a>, <a href="10-aots.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
@@ -341,7 +341,7 @@ context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b>The following seeks a previously cached answer:
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>The following seeks a previously cached answer:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the expression cache to see if we already know the answer</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
@@ -358,7 +358,7 @@ context.
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ec</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pe_cache</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">cached_result</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-aots.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_2"></a><b>&#167;13.2.  </b>The cache expands until it reaches <span class="extract"><span class="extract-syntax">MAXIMUM_CACHE_SIZE</span></span>; after that,
+<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b>The cache expands until it reaches <span class="extract"><span class="extract-syntax">MAXIMUM_CACHE_SIZE</span></span>; after that,
 entries are written in a position cycling through the ring. In either case
 it takes <span class="extract"><span class="extract-syntax">MAXIMUM_CACHE_SIZE</span></span> further parses (not found in the cache) to
 overwrite the one we put down now.
@@ -376,7 +376,7 @@ overwrite the one we put down now.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ec</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pe_cache_posn</span><span class="plain-syntax"> == </span><span class="constant-syntax">MAXIMUM_CACHE_SIZE</span><span class="plain-syntax">) </span><span class="identifier-syntax">ec</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pe_cache_posn</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-aots.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>As with all caches, we have to be careful that the information does not fall
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>As with all caches, we have to be careful that the information does not fall
 out of date. There are two things which can go wrong: the S-node in the cache
 might be altered, perhaps as a result of the type-checker trying to force a
 round peg into a square hole; or the stock of Inform's defined names might
@@ -410,7 +410,7 @@ are made and unmade relatively rarely, so the performance hit is small.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Void phrases. </b>The S-parser is also used by the main code compiler to turn phrases into
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Void phrases. </b>The S-parser is also used by the main code compiler to turn phrases into
 S-nodes, using &lt;s-command&gt; and &lt;s-say-command&gt;. These however need a
 wrapper: instead of turning text into an S-node, we take text from an
 existing node (in the structural parse tree for a routine), turn that

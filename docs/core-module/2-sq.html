@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#2">Chapter 2: Problem Messages</a></li><li><b>Supplementary Quotes</b></li></ul></div>
 <p class="purpose">More things to quote in problem messages.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>We provide some simple extensions to the Problems module's stock of data
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>We provide some simple extensions to the Problems module's stock of data
 structures which can be quoted. (These routines look as if they ought to be
 automated with macros, but that would be a nuisance because the tangler then
 wouldn't auto-predeclare them; and there aren't so very many of them.)
@@ -113,7 +113,7 @@ wouldn't auto-predeclare them; and there aren't so very many of them.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::problem_quote</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><a href="2-sq.html#SP2" class="function-link"><span class="function-syntax">Problems::expand_object</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Since numerous instances are created without explicit and distinct
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Since numerous instances are created without explicit and distinct
 names, for instance by sentences like
 </p>
 
@@ -171,7 +171,7 @@ this as some kind of marginal will-never-happen case.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><a href="19-tb.html#SP11" class="function-link"><span class="function-syntax">Tables::get_headline</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tab</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>To quote a kind is straightforward enough:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>To quote a kind is straightforward enough:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -185,7 +185,7 @@ this as some kind of marginal will-never-happen case.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Kinds::Textual::write_articled</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, (</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>But we also provide another way to mention kinds within problem messages;
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>But we also provide another way to mention kinds within problem messages;
 we quote not a literal constant but its kind of value, changing (say) the
 actual constant 15 to the generic constant "number":
 </p>

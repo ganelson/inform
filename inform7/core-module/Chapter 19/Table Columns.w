@@ -96,7 +96,7 @@ kind *Tables::Columns::get_kind(table_column *tc) {
 }
 
 kind *Tables::Columns::to_kind(table_column *tc) {
-	return Kinds::unary_construction(CON_table_column, tc->kind_stored_in_column);
+	return Kinds::unary_con(CON_table_column, tc->kind_stored_in_column);
 }
 
 void Tables::Columns::set_kind(table_column *tc, table *t, kind *K) {

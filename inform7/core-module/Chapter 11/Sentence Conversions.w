@@ -560,7 +560,7 @@ it binds.)
 	}
 
 	if ((Calculus::Propositions::match(NP_prop, 2, KIND_ATOM, NULL, END_PROP_HERE, NULL)) &&
-		(<k-formal-kind-variable-singular>(W))) {
+		(<k-formal-variable-singular>(W))) {
 		Calculus::Atoms::set_unarticled(NP_prop, TRUE);
 	}
 

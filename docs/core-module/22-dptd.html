@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="22-dptd.html#SP1">&#167;1. Logging</a></li><li><a href="22-dptd.html#SP3">&#167;3. HTML forms</a></li><li><a href="22-dptd.html#SP4">&#167;4. Problem messages</a></li><li><a href="22-dptd.html#SP5">&#167;5. Indexing</a></li><li><a href="22-dptd.html#SP7">&#167;7. Comments in compiled code</a></li><li><a href="22-dptd.html#SP8">&#167;8. Parsing a PHTD</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Logging. </b>We begin with the problem of printing out a textual description of a PHTD.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Logging. </b>We begin with the problem of printing out a textual description of a PHTD.
 The debugging log is simple:
 </p>
 
@@ -85,7 +85,7 @@ The debugging log is simple:
 <span class="plain-syntax">    </span><a href="22-ptd.html#SP21" class="function-link"><span class="function-syntax">Phrases::TypeData::log_say_details</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_say</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the word sequence</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the word sequence</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -99,7 +99,7 @@ The debugging log is simple:
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"(%d words)\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_words</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the token sequence</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the token sequence</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -109,7 +109,7 @@ The debugging log is simple:
 <span class="plain-syntax">            </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">token_sequence</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">token_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">token_sequence</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">to_match</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Abbreviatedly:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Abbreviatedly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -122,7 +122,7 @@ The debugging log is simple:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. HTML forms. </b>But the debugging log isn't the only place we want to write out the phrase
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. HTML forms. </b>But the debugging log isn't the only place we want to write out the phrase
 type to: it also gets written to HTML, not just openly but also in the
 Javascript pasted form. One reason for this is to write entries in the
 Phrasebook Index, but another is to show what Inform was trying to do when
@@ -170,7 +170,7 @@ match is shown.
 <span class="plain-syntax">    </span><a href="22-ptd.html#SP21" class="function-link"><span class="function-syntax">Phrases::TypeData::epilogue_for_say_HTML</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_say</span><span class="plain-syntax">, </span><span class="identifier-syntax">paste_format</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe the word sequence</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe the word sequence</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -185,7 +185,7 @@ match is shown.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1"></a><b>&#167;3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe a fixed word in the word sequence</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe a fixed word in the word sequence</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -202,7 +202,7 @@ match is shown.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">paste_format</span><span class="plain-syntax"> != </span><span class="constant-syntax">PASTE_PHRASE_FORMAT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">tinted</span><span class="plain-syntax">)) </span><span class="identifier-syntax">HTML::end_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP3_1">&#167;3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_2"></a><b>&#167;3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe a token in the word sequence</span><span class="named-paragraph-number">3.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1_2" class="paragraph-anchor"></a><b>&#167;3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe a token in the word sequence</span><span class="named-paragraph-number">3.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -229,7 +229,7 @@ match is shown.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP3_1">&#167;3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_2_1"></a><b>&#167;3.1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe what the token matches</span><span class="named-paragraph-number">3.1.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1_2_1" class="paragraph-anchor"></a><b>&#167;3.1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe what the token matches</span><span class="named-paragraph-number">3.1.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -290,7 +290,7 @@ match is shown.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP3_1_2">&#167;3.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Problem messages. </b>Which enables this rather cool depiction used in Problem messages:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Problem messages. </b>Which enables this rather cool depiction used in Problem messages:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -316,7 +316,7 @@ match is shown.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Indexing. </b>And also this rather fine presentation in the Phrasebook index:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Indexing. </b>And also this rather fine presentation in the Phrasebook index:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -338,7 +338,7 @@ match is shown.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>In the Phrasebook index, listings are marked with plus sign buttons which,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>In the Phrasebook index, listings are marked with plus sign buttons which,
 when clicked, expand an otherwise hidden box of details about the phrase.
 This is the routine which prints those details.
 </p>
@@ -357,7 +357,7 @@ This is the routine which prints those details.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP6_6" class="named-paragraph-link"><span class="named-paragraph">Warn about deprecation, where necessary</span><span class="named-paragraph-number">6.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present a paste button containing the text of the phrase</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present a paste button containing the text of the phrase</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -368,7 +368,7 @@ This is the routine which prints those details.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b>This is only possible for phrases mentioned in the built-in manuals,
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b>This is only possible for phrases mentioned in the built-in manuals,
 of course.
 </p>
 
@@ -387,7 +387,7 @@ of course.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present the equation form of the phrase, if it has one</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present the equation form of the phrase, if it has one</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -401,7 +401,7 @@ of course.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_4"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present the name of the phrase regarded as a value, if it has one</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_4" class="paragraph-anchor"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Present the name of the phrase regarded as a value, if it has one</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -415,7 +415,7 @@ of course.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_5"></a><b>&#167;6.5.  </b>"Say" phrases are never used functionally and don't have interesting kinds,
+<p class="commentary firstcommentary"><a id="SP6_5" class="paragraph-anchor"></a><b>&#167;6.5.  </b>"Say" phrases are never used functionally and don't have interesting kinds,
 so we won't list them here.
 </p>
 
@@ -431,7 +431,7 @@ so we won't list them here.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_6"></a><b>&#167;6.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Warn about deprecation, where necessary</span><span class="named-paragraph-number">6.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_6" class="paragraph-anchor"></a><b>&#167;6.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Warn about deprecation, where necessary</span><span class="named-paragraph-number">6.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -447,7 +447,7 @@ so we won't list them here.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Comments in compiled code. </b>That's it for indexing. There's one last piece of describing to do: a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Comments in compiled code. </b>That's it for indexing. There's one last piece of describing to do: a
 convenient comment to go into the compiled I6 code, just above the routine
 a phrase has been compiled into:
 </p>
@@ -465,7 +465,7 @@ a phrase has been compiled into:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">":\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Parsing a PHTD. </b>And now the reverse process: given a preamble in the source text such as
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Parsing a PHTD. </b>And now the reverse process: given a preamble in the source text such as
 </p>
 
 <blockquote>
@@ -506,7 +506,7 @@ correctly set.
 <span class="plain-syntax">    </span><a href="22-dptd.html#SP20" class="function-link"><span class="function-syntax">Phrases::TypeData::Textual::phtd_parse_word_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">phtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">XW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the first comma outside of parentheses, if any exists</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the first comma outside of parentheses, if any exists</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -519,7 +519,7 @@ correctly set.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b>In some control structures, comma is implicitly a sort of "then".
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b>In some control structures, comma is implicitly a sort of "then".
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Does this comma presage phrase options?</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
@@ -531,7 +531,7 @@ correctly set.
 <span class="plain-syntax">        </span><span class="identifier-syntax">comma_presages_options</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3"></a><b>&#167;8.3.  </b>If you find the explanation in this message unconvincing, you're not alone.
+<p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3.  </b>If you find the explanation in this message unconvincing, you're not alone.
 To be honest my preferred fix would be to delete phrase options from the
 language altogether, but there we are; spilt milk.
 </p>
@@ -547,7 +547,7 @@ language altogether, but there we are; spilt milk.
 <span class="plain-syntax">        </span><span class="string-syntax">"and not needing clarification."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>We will need some constants for the annotations which the Preform grammar
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>We will need some constants for the annotations which the Preform grammar
 below will make. First, for the main phrase structure:
 </p>
 
@@ -560,7 +560,7 @@ below will make. First, for the main phrase structure:
 <span class="definition-keyword">define</span> <span class="constant-syntax">CONDITIONAL_ANN</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">LOOP_ANN</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And these are for the specialised "say" phrase grammar:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>And these are for the specialised "say" phrase grammar:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_SANN</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -570,7 +570,7 @@ below will make. First, for the main phrase structure:
 <span class="definition-keyword">define</span> <span class="constant-syntax">ENDM_SANN</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">END_SANN</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>And these for "return" annotations:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And these for "return" annotations:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DEC_RANN</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -579,7 +579,7 @@ below will make. First, for the main phrase structure:
 <span class="definition-keyword">define</span> <span class="constant-syntax">TOV_RANN</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">TO_RANN</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Now we come to the grammar for phrase definitions (not rules). This is
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Now we come to the grammar for phrase definitions (not rules). This is
 surprisingly complicated, but many of the options are reserved for the
 Standard Rules.
 </p>
@@ -607,7 +607,7 @@ word "to".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { NO_ANN, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The definition remaining after the preamble is removed is then vetted.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The definition remaining after the preamble is removed is then vetted.
 This is a possibly controversial point, in fact, because the check in question
 is to make sure the phrase definition doesn't mask off a relationship, which
 would almost certainly throw a cascade of other but less helpful problem
@@ -619,7 +619,7 @@ messages.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;copular-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{&lt;copular-preposition&gt;}</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, K_number, &lt;&lt;rel1&gt;&gt; = Wordings::first_wn(WR[2]), &lt;&lt;rel2&gt;&gt; = Wordings::last_wn(WR[2]), &lt;&lt;preposition:prep&gt;&gt; = RP[2] }; </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_MasksRelation problem</span><span class="named-paragraph-number">13.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MasksRelation problem</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_MasksRelation problem</span><span class="named-paragraph-number">13.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -641,7 +641,7 @@ messages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Phrases whose definitions begin "To say" are usually text substitutions,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Phrases whose definitions begin "To say" are usually text substitutions,
 the exception being the primordial phrase for saying text.
 </p>
 
@@ -659,7 +659,7 @@ the exception being the primordial phrase for saying text.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">{say</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span><span class="Preform-plain-syntax">                                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { NO_SANN, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The following is used on the same text as &lt;to-preamble&gt;, but later on,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The following is used on the same text as &lt;to-preamble&gt;, but later on,
 for timing reasons.
 </p>
 
@@ -691,7 +691,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, K_number}; </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_UnknownValueToDecide problem</span><span class="named-paragraph-number">15.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownValueToDecide problem</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnknownValueToDecide problem</span><span class="named-paragraph-number">15.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -705,7 +705,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The support code needed for the <span class="extract"><span class="extract-syntax">&lt;to-return-data&gt;</span></span> grammar.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>The support code needed for the <span class="extract"><span class="extract-syntax">&lt;to-return-data&gt;</span></span> grammar.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -734,7 +734,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The "doodads" are the special features of a phrase notated at the back of
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The "doodads" are the special features of a phrase notated at the back of
 the preamble, which is why the following routine may move the end of the
 preamble word range backwards &mdash; it returns the current last word number.
 </p>
@@ -769,7 +769,7 @@ preamble word range backwards &mdash; it returns the current last word number.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b>For example, if the preamble is "To while...", then this sets <span class="extract"><span class="extract-syntax">only_in</span></span>
+<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b>For example, if the preamble is "To while...", then this sets <span class="extract"><span class="extract-syntax">only_in</span></span>
 to the word number of "while".
 </p>
 
@@ -781,7 +781,7 @@ to the word number of "while".
 <span class="plain-syntax">    </span><span class="identifier-syntax">only_in</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">OW</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_2"></a><b>&#167;17.2.  </b>And similarly for the say annotations.
+<p class="commentary firstcommentary"><a id="SP17_2" class="paragraph-anchor"></a><b>&#167;17.2.  </b>And similarly for the say annotations.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">We seem to be parsing a "say" phrase</span><span class="named-paragraph-number">17.2</span></span><span class="comment-syntax"> =</span>
@@ -803,7 +803,7 @@ to the word number of "while".
 <span class="plain-syntax">    </span><a href="22-ptd.html#SP21" class="function-link"><span class="function-syntax">Phrases::TypeData::make_sd</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_say</span><span class="plain-syntax">), </span><span class="function-syntax">&lt;&lt;run-on&gt;&gt;</span><span class="plain-syntax">, </span><span class="identifier-syntax">cs</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">cat</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The syntax for the body of a phrase definition is that it's a sequence of
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The syntax for the body of a phrase definition is that it's a sequence of
 fixed single words, which are not brackets, and bracketed token definitions,
 occurring in any quantity and any order. For example:
 </p>
@@ -830,7 +830,7 @@ give problems for misuse of brackets.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">                               </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b>Phrase token declarations allow a variety of non-standard constructs.
+<p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1.  </b>Phrase token declarations allow a variety of non-standard constructs.
 </p>
 
 <p class="commentary">Note that nested brackets are allowed in the kind indication after
@@ -866,7 +866,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">                                                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP18_1_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TokenMisunderstood problem</span><span class="named-paragraph-number">18.1.3</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithEmptyBrackets problem</span><span class="named-paragraph-number">18.2</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2" class="paragraph-anchor"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithEmptyBrackets problem</span><span class="named-paragraph-number">18.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -878,7 +878,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithoutCloseBracket problem</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3" class="paragraph-anchor"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithoutCloseBracket problem</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -890,7 +890,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_4"></a><b>&#167;18.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithoutOpenBracket problem</span><span class="named-paragraph-number">18.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_4" class="paragraph-anchor"></a><b>&#167;18.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithoutOpenBracket problem</span><span class="named-paragraph-number">18.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -903,7 +903,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_1"></a><b>&#167;18.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithNestedBrackets problem</span><span class="named-paragraph-number">18.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_1" class="paragraph-anchor"></a><b>&#167;18.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenWithNestedBrackets problem</span><span class="named-paragraph-number">18.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -914,7 +914,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18_1">&#167;18.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_2"></a><b>&#167;18.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadTypeIndication problem</span><span class="named-paragraph-number">18.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_2" class="paragraph-anchor"></a><b>&#167;18.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadTypeIndication problem</span><span class="named-paragraph-number">18.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -929,7 +929,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18_1">&#167;18.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_3"></a><b>&#167;18.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenMisunderstood problem</span><span class="named-paragraph-number">18.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_3" class="paragraph-anchor"></a><b>&#167;18.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TokenMisunderstood problem</span><span class="named-paragraph-number">18.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -945,7 +945,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP18_1">&#167;18.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>This internal simply wraps &lt;k-kind-as-name-token&gt; up as a value.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>This internal simply wraps &lt;k-kind-as-name-token&gt; up as a value.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -964,7 +964,7 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>At this final stage of parsing, all annotations to do with inline or say
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>At this final stage of parsing, all annotations to do with inline or say
 behaviour have been stripped away, and what's left is the text which will
 form the word and token sequences:
 </p>
@@ -995,14 +995,14 @@ form the word and token sequences:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP20_3" class="named-paragraph-link"><span class="named-paragraph">Sort out the kind variables in this declaration</span><span class="named-paragraph-number">20.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a word next</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a word next</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">word_to_add</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a token next</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a token next</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1022,7 +1022,7 @@ form the word and token sequences:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="22-dptd.html#SP20_2_1" class="named-paragraph-link"><span class="named-paragraph">Fashion a suitable phrase token</span><span class="named-paragraph-number">20.2.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_1"></a><b>&#167;20.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fashion a suitable phrase token</span><span class="named-paragraph-number">20.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2_1" class="paragraph-anchor"></a><b>&#167;20.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fashion a suitable phrase token</span><span class="named-paragraph-number">20.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1051,7 +1051,7 @@ form the word and token sequences:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2"></a><b>&#167;20.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unless we are inline, phrase tokens have to be or describe values</span><span class="named-paragraph-number">20.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2_2" class="paragraph-anchor"></a><b>&#167;20.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unless we are inline, phrase tokens have to be or describe values</span><span class="named-paragraph-number">20.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1073,7 +1073,7 @@ form the word and token sequences:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_3"></a><b>&#167;20.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phrase tokens cannot be quantified</span><span class="named-paragraph-number">20.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2_3" class="paragraph-anchor"></a><b>&#167;20.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phrase tokens cannot be quantified</span><span class="named-paragraph-number">20.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1095,7 +1095,7 @@ form the word and token sequences:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Sort out the kind variables in this declaration</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Sort out the kind variables in this declaration</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1118,7 +1118,7 @@ form the word and token sequences:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3_1"></a><b>&#167;20.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for an undeclared kind variable</span><span class="named-paragraph-number">20.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_3_1" class="paragraph-anchor"></a><b>&#167;20.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for an undeclared kind variable</span><span class="named-paragraph-number">20.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1126,11 +1126,11 @@ form the word and token sequences:
 <span class="plain-syntax">        </span><span class="string-syntax">"this phrase uses a kind variable which is not declared"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which is not allowed."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">token_sequence</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">token_kind</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">problem_thrown</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20_3">&#167;20.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3_2"></a><b>&#167;20.3.2.  </b>This following process is much less mysterious than it sounds. Suppose we
+<p class="commentary firstcommentary"><a id="SP20_3_2" class="paragraph-anchor"></a><b>&#167;20.3.2.  </b>This following process is much less mysterious than it sounds. Suppose we
 have the phrase:
 </p>
 
@@ -1167,7 +1167,7 @@ this because the <span class="extract"><span class="extract-syntax">token_kind</
 <span class="plain-syntax">            </span><a href="14-sp.html#SP1" class="function-link"><span class="function-syntax">Specifications::from_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-dptd.html#SP20_3">&#167;20.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>The following recurses down through the tree structure of a kind, returning
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>The following recurses down through the tree structure of a kind, returning
 the number of kind variables it finds. (So for lots of straightforward kinds,
 such as "list of numbers", it returns 0.)
 </p>
@@ -1197,7 +1197,7 @@ such as "list of numbers", it returns 0.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21_1"></a><b>&#167;21.1.  </b>We count how many times each variable appears. It should be given a domain
+<p class="commentary firstcommentary"><a id="SP21_1" class="paragraph-anchor"></a><b>&#167;21.1.  </b>We count how many times each variable appears. It should be given a domain
 in exactly one place: for example,
 </p>
 

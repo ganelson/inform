@@ -83,7 +83,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="21-rl2.html#SP7">&#167;7. Construction</a></li><li><a href="21-rl2.html#SP10">&#167;10. Affected by placements</a></li><li><a href="21-rl2.html#SP11">&#167;11. Reading properties of rulebooks</a></li><li><a href="21-rl2.html#SP12">&#167;12. Rulebook variables</a></li><li><a href="21-rl2.html#SP14">&#167;14. Indexing and logging rulebooks</a></li><li><a href="21-rl2.html#SP15">&#167;15. Name parsing of rulebooks</a></li><li><a href="21-rl2.html#SP18">&#167;18. Rule attachments</a></li><li><a href="21-rl2.html#SP19">&#167;19. Compilation</a></li><li><a href="21-rl2.html#SP20">&#167;20. Parsing rulebook properties</a></li><li><a href="21-rl2.html#SP22">&#167;22. Rules index</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>A rulebook consists of some general properties together with a linked list
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>A rulebook consists of some general properties together with a linked list
 of booked rules, which constitute its entries. Some rulebooks are created
 explicitly by the user's source text, some are created explicitly by the
 Standard Rules, while others are "automatically generated" as a result
@@ -102,7 +102,7 @@ whose definition is stored in the <span class="extract"><span class="extract-syn
 resolved as a list of <span class="extract"><span class="extract-syntax">invocation</span></span>s.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The semantics of rulebooks have grown over time. At one time they looked
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The semantics of rulebooks have grown over time. At one time they looked
 only at the current action, and did something accordingly, but there was
 no real sense in which they passed information. They then began to apply
 to objects or actions (this was called the "focus") and, in a few cases,
@@ -145,7 +145,7 @@ language such as Haskell.
 <span class="plain-syntax">} </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure rulebook is accessed in 4/rpr, 21/rl, 25/cp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following is used only to store the result of parsing text as a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The following is used only to store the result of parsing text as a
 rulebook name:
 </p>
 
@@ -161,7 +161,7 @@ rulebook name:
 <span class="plain-syntax">} </span><span class="reserved-syntax">rulebook_match</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure rulebook_match is accessed in 22/pu and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The contents of rulebooks can be unexpected if sentences are used which
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The contents of rulebooks can be unexpected if sentences are used which
 explicitly list, or unlist, rules. To make the index more useful in these
 cases, we keep a linked list, for each rulebook, of all sentences which
 have affected it in this way:
@@ -175,7 +175,7 @@ have affected it in this way:
 <span class="plain-syntax">} </span><span class="reserved-syntax">placement_affecting</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure placement_affecting is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 4/npr, 4/nvr, 4/nar2, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/lp, 6/ins, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>As rulebooks are declared, the first few are quietly copied into
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>As rulebooks are declared, the first few are quietly copied into
 a small array: that way, we can always obtain a pointer to, say, the
 turn sequence rules by looking up <span class="extract"><span class="extract-syntax">built_in_rulebooks[TURN_SEQUENCE_RB]</span></span>.
 </p>
@@ -186,7 +186,7 @@ turn sequence rules by looking up <span class="extract"><span class="extract-syn
 <span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">built_in_rulebooks</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BUILT_IN_RULEBOOKS</span><span class="plain-syntax">];</span>
 <span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">stacked_variable_owner_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">all_action_processing_vars</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Many of the standard rulebooks need to have numbers which are
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Many of the standard rulebooks need to have numbers which are
 predictable, because they need to be referred to by number by the I6
 library code. Because of this, it is important not to change the numbers
 below without checking the corresponding I6 Constant declarations in the
@@ -223,7 +223,7 @@ in the Standard Rules file.
 <span class="definition-keyword">define</span> <span class="constant-syntax">DOES_THE_PLAYER_MEAN_RB</span><span class="plain-syntax"> </span><span class="constant-syntax">34</span><span class="plain-syntax"> </span><span class="comment-syntax"> Does the player mean...? rules</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain-syntax"> </span><span class="constant-syntax">35</span><span class="plain-syntax"> </span><span class="comment-syntax"> For changing or reordering multiple actions</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Construction. </b>When a rulebook is to be created, we do a little treatment on its name. We
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Construction. </b>When a rulebook is to be created, we do a little treatment on its name. We
 remove any article, and also strip off the suffix "rules" or "rulebook"
 as redundant &mdash; see below for why. Since we want to insure that phrase/rule
 preambles are unambiguous, we also want to make sure that keywords introducing
@@ -240,7 +240,7 @@ phrase definitions and timed events don't open the rulebook name.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithAt problem</span><span class="named-paragraph-number">7.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithAt problem</span><span class="named-paragraph-number">7.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -254,7 +254,7 @@ phrase definitions and timed events don't open the rulebook name.
 <span class="plain-syntax">        </span><span class="string-syntax">"a rule inscrutable."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithTo problem</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithTo problem</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -268,7 +268,7 @@ phrase definitions and timed events don't open the rulebook name.
 <span class="plain-syntax">            </span><span class="string-syntax">"a rule inscrutable."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithDefinition problem</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookWithDefinition problem</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -282,7 +282,7 @@ phrase definitions and timed events don't open the rulebook name.
 <span class="plain-syntax">        </span><span class="string-syntax">"a rule inscrutable."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>When a rulebook is created &mdash; say, "coordination" &mdash; Inform constructs
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>When a rulebook is created &mdash; say, "coordination" &mdash; Inform constructs
 alternative names for it using the following &mdash; say, making "coordination
 rules" and "coordination rulebook":
 </p>
@@ -293,7 +293,7 @@ rules" and "coordination rulebook":
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">rulebook</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Whereas, at run-time, rulebooks are special cases of rules (they have the
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Whereas, at run-time, rulebooks are special cases of rules (they have the
 same kind of value, though their I6 values are such as to make it possible
 to distinguish them), within I7 rulebooks and rules have entirely different
 data structures. There are two constructor functions: a basic one, used
@@ -369,13 +369,13 @@ built (for instance, scene endings).
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">Rulebooks::contains_kind</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::contains_kind</span></span>:<br/>Rules - <a href="21-rl.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rule</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rule</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="21-rl2.html#SP11" class="function-link"><span class="function-syntax">Rulebooks::get_parameter_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><a href="21-fao.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::Outcomes::get_outcome_kind</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">my_outcomes</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">Rulebooks::to_kind</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::to_kind</span></span>:<br/>RValues - <a href="14-rv.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rulebook</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rulebook</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="21-rl2.html#SP11" class="function-link"><span class="function-syntax">Rulebooks::get_parameter_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><a href="21-fao.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::Outcomes::get_outcome_kind</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">my_outcomes</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
@@ -383,7 +383,7 @@ built (for instance, scene endings).
 <span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="function-syntax">Rulebooks::new_automatic</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::new_automatic</span></span>:<br/>Activities - <a href="21-ac.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">basis</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">oc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ata</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ubfaa</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rda</span><span class="plain-syntax">, </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax"> = </span><a href="21-rl2.html#SP9" class="function-link"><span class="function-syntax">Rulebooks::new</span></a><span class="plain-syntax">(</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rulebook</span><span class="plain-syntax">, </span><span class="identifier-syntax">basis</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_rulebook</span><span class="plain-syntax">, </span><span class="identifier-syntax">basis</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="21-fao.html#SP4" class="function-link"><span class="function-syntax">Rulebooks::Outcomes::set_default_outcome</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">my_outcomes</span><span class="plain-syntax">), </span><span class="identifier-syntax">oc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="21-fao.html#SP11" class="function-link"><span class="function-syntax">Rulebooks::Outcomes::set_focus_ata</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">my_focus</span><span class="plain-syntax">), </span><span class="identifier-syntax">ata</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">automatically_generated</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -410,7 +410,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Affected by placements. </b>Needed to make a useful index.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Affected by placements. </b>Needed to make a useful index.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -441,7 +441,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Reading properties of rulebooks. </b>Those readable from outside the current section.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Reading properties of rulebooks. </b>Those readable from outside the current section.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -481,7 +481,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">runs_during_activities</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Rulebook variables. </b>Any new rulebook variable name is vetted by being run through this:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Rulebook variables. </b>Any new rulebook variable name is vetted by being run through this:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -490,7 +490,7 @@ built (for instance, scene endings).
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookVariableAnd problem</span><span class="named-paragraph-number">12.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_RulebookVariableAnd problem</span><span class="named-paragraph-number">12.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -507,7 +507,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Rulebooks::add_variable</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::add_variable</span></span>:<br/>Assertions - <a href="5-ass.html#SP6_3_25_2">&#167;6.3.25.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cnode</span><span class="plain-syntax">) {</span>
@@ -621,7 +621,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="21-rl2.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Make slow lookup routine</span><span class="named-paragraph-number">13.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make slow lookup routine</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make slow lookup routine</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -661,7 +661,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Indexing and logging rulebooks. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Indexing and logging rulebooks. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Rulebooks::log_name_only</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::log_name_only</span></span>:<br/>Phrase Usage - <a href="22-pu.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">) {</span>
@@ -742,7 +742,7 @@ built (for instance, scene endings).
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Name parsing of rulebooks. </b>The following internal finds the "stem" of a rule, that is, the part
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Name parsing of rulebooks. </b>The following internal finds the "stem" of a rule, that is, the part
 which identifies which rulebook it will go into. For example, in
 </p>
 
@@ -767,7 +767,7 @@ of &lt;rulebook-stem-inner&gt; below, and then does some direct parsing.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Suppose this is our rule:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Suppose this is our rule:
 </p>
 
 <blockquote>
@@ -816,7 +816,7 @@ of the two outer words and is discontiguous.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, -, &lt;&lt;rulebook:m&gt;&gt; = NULL }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b></p>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">rulebook_match</span><span class="plain-syntax"> </span><span class="function-syntax">Rulebooks::rb_match_from_description</span><button class="popup" onclick="togglePopup('usagePopup26')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup26">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::rb_match_from_description</span></span>:<br/><a href="21-rl2.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -882,7 +882,7 @@ of the two outer words and is discontiguous.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Rule attachments. </b>The following routine contains a bit of a surprise: that the act of
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Rule attachments. </b>The following routine contains a bit of a surprise: that the act of
 placing a BR within a given rulebook can change it, by altering the way
 it acts on its applicability test. This is a device needed to manage
 the parallel rulebooks for action processing for the main player character
@@ -968,7 +968,7 @@ sub-section on linked lists of booked rules in the section on Rules.
 <span class="plain-syntax">    </span><a href="21-rb.html#SP14" class="function-link"><span class="function-syntax">Rules::Bookings::list_remove</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rule_list</span><span class="plain-syntax">, </span><span class="identifier-syntax">the_new_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Compilation. </b>We do not actually compile the I6 routines for a rulebook here, but simply
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Compilation. </b>We do not actually compile the I6 routines for a rulebook here, but simply
 act as a proxy. The I6 arrays making the rulebooks available to run-time
 code are the real outcome of the code in this section.
 </p>
@@ -1027,7 +1027,7 @@ code are the real outcome of the code in this section.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Parsing rulebook properties. </b>Rulebooks do not have properties as such. The syntax which would create these
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Parsing rulebook properties. </b>Rulebooks do not have properties as such. The syntax which would create these
 creates rulebook variables instead, which are much more useful. However, we
 do allow the following syntax:
 </p>
@@ -1047,7 +1047,7 @@ parses the object noun phrase with the following:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">										</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="21-rl2.html#SP20_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonOutcomeProperty problem</span><span class="named-paragraph-number">20.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonOutcomeProperty problem</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonOutcomeProperty problem</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1057,7 +1057,7 @@ parses the object noun phrase with the following:
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">outcomes</span><span class="plain-syntax"> *</span><span class="identifier-syntax">outcomes_being_parsed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -1077,7 +1077,7 @@ parses the object noun phrase with the following:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Rules index. </b>The Rules page of the index is essentially a trawl through the more
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Rules index. </b>The Rules page of the index is essentially a trawl through the more
 popular rulebooks, showing their contents in logical order.
 </p>
 
@@ -1104,7 +1104,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22_1"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the top-level rulebooks</span><span class="named-paragraph-number">22.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the top-level rulebooks</span><span class="named-paragraph-number">22.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1127,7 +1127,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><a href="21-ac.html#SP7" class="function-link"><span class="function-syntax">Activities::index_by_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">DEALING_WITH_FINAL_QUESTION_ACT</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_2"></a><b>&#167;22.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the sequence of play rulebooks</span><span class="named-paragraph-number">22.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the sequence of play rulebooks</span><span class="named-paragraph-number">22.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1146,7 +1146,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">        </span><span class="identifier-syntax">built_in_rulebooks</span><span class="plain-syntax">[</span><span class="constant-syntax">WHEN_PLAY_ENDS_RB</span><span class="plain-syntax">], </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_3"></a><b>&#167;22.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the Understanding rulebooks</span><span class="named-paragraph-number">22.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_3" class="paragraph-anchor"></a><b>&#167;22.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the Understanding rulebooks</span><span class="named-paragraph-number">22.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1169,7 +1169,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><a href="21-ac.html#SP7" class="function-link"><span class="function-syntax">Activities::index_by_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">IMPLICITLY_TAKING_ACT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4"></a><b>&#167;22.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the main action rulebooks</span><span class="named-paragraph-number">22.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_4" class="paragraph-anchor"></a><b>&#167;22.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the main action rulebooks</span><span class="named-paragraph-number">22.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1201,7 +1201,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">        </span><span class="string-syntax">"to index here."</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_5"></a><b>&#167;22.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the action processing rulebooks</span><span class="named-paragraph-number">22.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_5" class="paragraph-anchor"></a><b>&#167;22.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the action processing rulebooks</span><span class="named-paragraph-number">22.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1216,7 +1216,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">        </span><span class="identifier-syntax">built_in_rulebooks</span><span class="plain-syntax">[</span><span class="constant-syntax">PLAYERS_ACTION_AWARENESS_RB</span><span class="plain-syntax">], </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_6"></a><b>&#167;22.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the responses</span><span class="named-paragraph-number">22.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_6" class="paragraph-anchor"></a><b>&#167;22.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the responses</span><span class="named-paragraph-number">22.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1226,7 +1226,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><a href="21-ac.html#SP7" class="function-link"><span class="function-syntax">Activities::index_by_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">PRINTING_RESPONSE_ACT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_7"></a><b>&#167;22.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the accessibility rulebooks</span><span class="named-paragraph-number">22.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_7" class="paragraph-anchor"></a><b>&#167;22.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the accessibility rulebooks</span><span class="named-paragraph-number">22.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1241,7 +1241,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">        </span><span class="identifier-syntax">built_in_rulebooks</span><span class="plain-syntax">[</span><span class="constant-syntax">VISIBILITY_RB</span><span class="plain-syntax">], </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_8"></a><b>&#167;22.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the light and darkness rulebooks</span><span class="named-paragraph-number">22.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_8" class="paragraph-anchor"></a><b>&#167;22.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the light and darkness rulebooks</span><span class="named-paragraph-number">22.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1254,7 +1254,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><a href="21-ac.html#SP7" class="function-link"><span class="function-syntax">Activities::index_by_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">REFUSAL_TO_ACT_IN_DARK_ACT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_9"></a><b>&#167;22.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the description rulebooks</span><span class="named-paragraph-number">22.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_9" class="paragraph-anchor"></a><b>&#167;22.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the description rulebooks</span><span class="named-paragraph-number">22.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1275,7 +1275,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><a href="21-ac.html#SP7" class="function-link"><span class="function-syntax">Activities::index_by_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">PRINTING_LOCALE_PARAGRAPH_ACT</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_10"></a><b>&#167;22.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for new rulebooks and activities</span><span class="named-paragraph-number">22.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_10" class="paragraph-anchor"></a><b>&#167;22.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for new rulebooks and activities</span><span class="named-paragraph-number">22.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1284,7 +1284,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="21-rl2.html#SP22_10_1" class="named-paragraph-link"><span class="named-paragraph">Index rulebooks occurring in this part of the source text</span><span class="named-paragraph-number">22.10.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_11"></a><b>&#167;22.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the rulebooks in this extension</span><span class="named-paragraph-number">22.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_11" class="paragraph-anchor"></a><b>&#167;22.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the segment for the rulebooks in this extension</span><span class="named-paragraph-number">22.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1294,7 +1294,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="21-rl2.html#SP22_10_1" class="named-paragraph-link"><span class="named-paragraph">Index rulebooks occurring in this part of the source text</span><span class="named-paragraph-number">22.10.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_10_1"></a><b>&#167;22.10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index rulebooks occurring in this part of the source text</span><span class="named-paragraph-number">22.10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_10_1" class="paragraph-anchor"></a><b>&#167;22.10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index rulebooks occurring in this part of the source text</span><span class="named-paragraph-number">22.10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1315,7 +1315,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="21-rl2.html#SP22_10">&#167;22.10</a>, <a href="21-rl2.html#SP22_11">&#167;22.11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Rulebooks::noteworthy_rulebooks</span><button class="popup" onclick="togglePopup('usagePopup35')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup35">Usage of <span class="code-font"><span class="function-syntax">Rulebooks::noteworthy_rulebooks</span></span>:<br/><a href="21-rl2.html#SP22">&#167;22</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
@@ -1436,7 +1436,7 @@ popular rulebooks, showing their contents in logical order.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23_1"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the titling line of an index rules box</span><span class="named-paragraph-number">23.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the titling line of an index rules box</span><span class="named-paragraph-number">23.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

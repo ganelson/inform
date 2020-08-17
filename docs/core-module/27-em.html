@@ -66,9 +66,9 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#27">Chapter 27: Bridge to Inter Module</a></li><li><b>Emitting Inter</b></li></ul></div>
 <ul class="toc"><li><a href="27-em.html#SP1">&#167;1. Definitions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definitions. </b></p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unchecked_interk</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -140,7 +140,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">symb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The Inter language allows pragmas, or code-generation hints, to be passed
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The Inter language allows pragmas, or code-generation hints, to be passed
 through. These are specific to the target of compilation. Here we generate
 only I6-target pragmas, which are commands in Inform Control Language.
 </p>
@@ -589,7 +589,7 @@ insert them into the Inter stream close to the top.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">array_form</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CONSTANT_INDIRECT_LIST</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">con_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Produce::kind_to_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">con_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Produce::kind_to_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">con_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Produce::kind_to_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::SymbolsTables::id_from_IRS_and_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">IBM</span><span class="plain-syntax">, </span><span class="identifier-syntax">con_kind</span><span class="plain-syntax">);</span>
@@ -725,7 +725,7 @@ insert them into the Inter stream close to the top.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure dval_written is private to this section.</li><li>The structure nascent_array is accessed in 2/up, 3/ptmn, 3/ar, 3/cs, 4/dlr, 4/tr, 4/uor, 4/dbtr, 4/rpr, 4/nlpr, 4/npr, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/un, 8/rs, 10/aots, 10/teav, 10/varc, 10/cap, 11/bas, 11/tc, 11/sc, 11/sm, 12/dtd, 14/sp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 17/ts, 18/lc, 19/tb, 19/rsft, 21/rl, 21/rl2, 21/ac, 22/cs, 22/ph, 23/ad, 24/lv, 24/ch, 25/in, 25/pi, 25/cp, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 

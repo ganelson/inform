@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="14-lv.html#SP1">&#167;1. Creation</a></li><li><a href="14-lv.html#SP7">&#167;7. Testing</a></li><li><a href="14-lv.html#SP10">&#167;10. Pretty-printing</a></li><li><a href="14-lv.html#SP11">&#167;11. Compilation</a></li><li><a href="14-lv.html#SP13">&#167;13. Rvalue compilation</a></li><li><a href="14-lv.html#SP14">&#167;14. Lvalue compilation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b>"Lvalues" can occur on the left of an assignment sign: they are values
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>"Lvalues" can occur on the left of an assignment sign: they are values
 which can be written to.
 </p>
 
@@ -126,7 +126,7 @@ items as such &mdash; they are places where storage items are found. They are
 all in the <span class="extract"><span class="extract-syntax">VALUE</span></span> family.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And here are some convenient creators. Variables:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And here are some convenient creators. Variables:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -145,7 +145,7 @@ all in the <span class="extract"><span class="extract-syntax">VALUE</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Table entries have their arguments filled in by the relevant routines in
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Table entries have their arguments filled in by the relevant routines in
 "Meaning List Conversion":
 </p>
 
@@ -155,7 +155,7 @@ all in the <span class="extract"><span class="extract-syntax">VALUE</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>List entries:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>List entries:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -166,7 +166,7 @@ all in the <span class="extract"><span class="extract-syntax">VALUE</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Property values are constructed out of what's often only implied text:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Property values are constructed out of what's often only implied text:
 for instance, "description" sometimes means "the description [of the
 <span class="extract"><span class="extract-syntax">self</span></span> object]". We give them a word range which is minimal such that it
 must contain word ranges of both property and owner, if given. Thus
@@ -185,7 +185,7 @@ make problem messages more readable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>On the other hand we sometimes want to refer to the property in abstract.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>On the other hand we sometimes want to refer to the property in abstract.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -198,7 +198,7 @@ make problem messages more readable.
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no underlying property"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Testing. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Testing. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="function-syntax">Lvalues::get_storage_form</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Lvalues::get_storage_form</span></span>:<br/>Assertions - <a href="5-ass.html#SP6_3_39">&#167;6.3.39</a>, <a href="5-ass.html#SP6_3_41_3">&#167;6.3.41.3</a><br/>Nonlocal Variables - <a href="6-nv.html#SP24">&#167;24</a><br/>Verbal and Relative Clauses - <a href="10-varc.html#SP12_4_1">&#167;12.4.1</a><br/>Binding and Substitution - <a href="11-bas.html#SP18">&#167;18</a><br/>Simplifications - <a href="11-sm.html#SP3">&#167;3</a><br/>The Equality Relation - <a href="12-ter.html#SP7">&#167;7</a><br/>Deciding to Defer - <a href="12-dtd.html#SP9">&#167;9</a><br/>Specifications - <a href="14-sp.html#SP7_5">&#167;7.5</a><br/>Dash - <a href="14-ds2.html#SP10_9_1_1_5_2">&#167;10.9.1.1.5.2</a>, <a href="14-ds2.html#SP10_9_1_1_8">&#167;10.9.1.1.8</a><br/>Phrase Type Data - <a href="22-ptd.html#SP17">&#167;17</a><br/>Compile Invocations Inline - <a href="25-cii.html#SP3_5_4">&#167;3.5.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -206,7 +206,7 @@ make problem messages more readable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>More specifically:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>More specifically:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -227,7 +227,7 @@ make problem messages more readable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Not all non-local variables are global &mdash; some have scope local to rulebooks,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Not all non-local variables are global &mdash; some have scope local to rulebooks,
 actions and the like:
 </p>
 
@@ -237,7 +237,7 @@ actions and the like:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Pretty-printing. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Pretty-printing. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Lvalues::write_out_in_English</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Lvalues::write_out_in_English</span></span>:<br/>Specifications - <a href="14-sp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -264,7 +264,7 @@ actions and the like:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Compilation. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Compilation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">Lvalues::to_kind</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Lvalues::to_kind</span></span>:<br/>Specifications - <a href="14-sp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -279,7 +279,7 @@ actions and the like:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">; </span><span class="comment-syntax"> a generic answer for storage of an unknown sort</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a local variable</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a local variable</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -288,7 +288,7 @@ actions and the like:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="24-lv.html#SP36" class="function-link"><span class="function-syntax">LocalVariables::unproblematic_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a non-local variable</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a non-local variable</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -296,7 +296,7 @@ actions and the like:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="6-nv.html#SP18" class="function-link"><span class="function-syntax">NonlocalVariables::kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_3"></a><b>&#167;11.3.  </b>In every form of table entry, argument 0 is the column, and the column
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b>In every form of table entry, argument 0 is the column, and the column
 is enough to determine the kind:
 </p>
 
@@ -312,7 +312,7 @@ is enough to determine the kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> can happen when scanning phrase arguments, which are generic</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_4"></a><b>&#167;11.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a list entry</span><span class="named-paragraph-number">11.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a list entry</span><span class="named-paragraph-number">11.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -324,7 +324,7 @@ is enough to determine the kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> can happen when scanning phrase arguments, which are generic</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_5"></a><b>&#167;11.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a property value</span><span class="named-paragraph-number">11.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_5" class="paragraph-anchor"></a><b>&#167;11.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Return the kind of a property value</span><span class="named-paragraph-number">11.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -336,7 +336,7 @@ is enough to determine the kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> can happen when scanning phrase arguments, which are generic</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">local_variable</span><span class="plain-syntax"> *</span><span class="function-syntax">Lvalues::get_local_variable_if_any</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Lvalues::get_local_variable_if_any</span></span>:<br/>Dash - <a href="14-ds2.html#SP10_9_1_1_5">&#167;10.9.1.1.5</a><br/>Compile Invocations Inline - <a href="25-cii.html#SP3_5_2">&#167;3.5.2</a>, <a href="25-cii.html#SP3_5_3">&#167;3.5.3</a>, <a href="25-cii.html#SP3_5_4_2">&#167;3.5.4.2</a>, <a href="25-cii.html#SP3_7">&#167;3.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -345,7 +345,7 @@ is enough to determine the kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Rvalue compilation. </b>We finally reach the compilation routine which produces an I6 expression
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Rvalue compilation. </b>We finally reach the compilation routine which produces an I6 expression
 evaluating to the contents of the storage item specified.
 </p>
 
@@ -362,7 +362,7 @@ evaluating to the contents of the storage item specified.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a local variable specification</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a local variable specification</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -376,7 +376,7 @@ evaluating to the contents of the storage item specified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_2"></a><b>&#167;13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a non-local variable specification</span><span class="named-paragraph-number">13.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a non-local variable specification</span><span class="named-paragraph-number">13.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -385,7 +385,7 @@ evaluating to the contents of the storage item specified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_3"></a><b>&#167;13.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a property value specification</span><span class="named-paragraph-number">13.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_3" class="paragraph-anchor"></a><b>&#167;13.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a property value specification</span><span class="named-paragraph-number">13.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,7 +417,7 @@ evaluating to the contents of the storage item specified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_3_1"></a><b>&#167;13.3.1.  </b>When Inform reads a text with a substitution like so:
+<p class="commentary firstcommentary"><a id="SP13_3_1" class="paragraph-anchor"></a><b>&#167;13.3.1.  </b>When Inform reads a text with a substitution like so:
 </p>
 
 <blockquote>
@@ -449,7 +449,7 @@ we use here. We replace "self" as a default owner by the only possible owner.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13_3">&#167;13.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_3_2"></a><b>&#167;13.3.2.  </b>During type-checking, a small number of <span class="extract"><span class="extract-syntax">PROPERTY_VALUE_NT</span></span> SPs are marked
+<p class="commentary firstcommentary"><a id="SP13_3_2" class="paragraph-anchor"></a><b>&#167;13.3.2.  </b>During type-checking, a small number of <span class="extract"><span class="extract-syntax">PROPERTY_VALUE_NT</span></span> SPs are marked
 with the <span class="extract"><span class="extract-syntax">record_as_self_ANNOT</span></span> flag. Such a SP compiles not only to code
 performing the property lookup, but also setting the <span class="extract"><span class="extract-syntax">self</span></span> I6 variable at
 run-time to the object whose property is being looked up. The point of this
@@ -475,7 +475,7 @@ object as produced the original text containing the substitution.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13_3">&#167;13.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_4"></a><b>&#167;13.4.  </b>List entries are blessedly simpler.
+<p class="commentary firstcommentary"><a id="SP13_4" class="paragraph-anchor"></a><b>&#167;13.4.  </b>List entries are blessedly simpler.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a list entry specification</span><span class="named-paragraph-number">13.4</span></span><span class="comment-syntax"> =</span>
@@ -505,7 +505,7 @@ object as produced the original text containing the substitution.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_5"></a><b>&#167;13.5.  </b>Table entries are simple too, but come in four variant forms:
+<p class="commentary firstcommentary"><a id="SP13_5" class="paragraph-anchor"></a><b>&#167;13.5.  </b>Table entries are simple too, but come in four variant forms:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a table entry specification</span><span class="named-paragraph-number">13.5</span></span><span class="comment-syntax"> =</span>
@@ -592,7 +592,7 @@ object as produced the original text containing the substitution.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="14-lv.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Lvalue compilation. </b>To recap, if an assignment takes the form "now X is Y" then X is the lvalue,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Lvalue compilation. </b>To recap, if an assignment takes the form "now X is Y" then X is the lvalue,
 Y is the rvalue. We only need to read Y, but we need to write X. Compilation
 applied to a STORAGE item produces code suitable for reading it, i.e., suitable
 for use in position Y &mdash; but not in general suitable for X.
@@ -717,7 +717,7 @@ change if arbitrary-precision integers are ever added to Inform, for instance.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Here we supply advice on whether shallow or deep copies are needed. <span class="extract"><span class="extract-syntax">inc</span></span> is
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Here we supply advice on whether shallow or deep copies are needed. <span class="extract"><span class="extract-syntax">inc</span></span> is
 positive if we're incrementing what's there, negative if decrementing, zero
 if simply setting.
 </p>

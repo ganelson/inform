@@ -80,9 +80,9 @@ kind *Kinds::base_construction(kind_constructor *con) {
 		internal_error("forbidden construction");
 	switch (Kinds::Constructors::arity(con)) {
 		case 1:
-			if (con == CON_list_of) return Kinds::unary_construction(con, NULL);
-			return Kinds::unary_construction(con, K_value);
-		case 2: return Kinds::binary_construction(con, K_value, K_value);
+			if (con == CON_list_of) return Kinds::unary_con(con, NULL);
+			return Kinds::unary_con(con, K_value);
+		case 2: return Kinds::binary_con(con, K_value, K_value);
 	}
 	kind **cache = Kinds::Constructors::cache_location(con);
 	if (cache) { if (*cache) return *cache; }
@@ -119,7 +119,7 @@ kind *Kinds::intermediate_construction(unit_sequence *ik) {
 kinds whose values will be stored in the kind variables |A| to |Z|.
 
 =
-kind *Kinds::variable_construction(int N, kind *declaration) {
+kind *Kinds::var_construction(int N, kind *declaration) {
 	if ((N == 0) || (N > MAX_KIND_VARIABLES)) internal_error("bad kind variable");
 	kind *K;
 	@<Create a raw kind structure@>;
@@ -132,7 +132,7 @@ kind *Kinds::variable_construction(int N, kind *declaration) {
 @ That completes the possible base constructions. Proper constructions are made
 using the following. For example,
 = (text)
-	Kinds::unary_construction(CON_list_of, K_number)
+	Kinds::unary_con(CON_list_of, K_number)
 =
 produces a kind structure meaning "list of numbers". This is not cached
 anywhere, so a second request for the same thing will produce a different copy
@@ -140,7 +140,7 @@ in memory of the same structure. Profiling shows that little memory is in
 practice wasted.
 
 =
-kind *Kinds::unary_construction(kind_constructor *con, kind *X) {
+kind *Kinds::unary_con(kind_constructor *con, kind *X) {
 	kind *K;
 	if (Kinds::Constructors::arity(con) != 1) internal_error("bad unary construction");
 	@<Create a raw kind structure@>;
@@ -149,7 +149,7 @@ kind *Kinds::unary_construction(kind_constructor *con, kind *X) {
 	return K;
 }
 
-kind *Kinds::binary_construction(kind_constructor *con, kind *X, kind *Y) {
+kind *Kinds::binary_con(kind_constructor *con, kind *X, kind *Y) {
 	kind *K;
 	if (Kinds::Constructors::arity(con) != 2) internal_error("bad binary construction");
 	@<Create a raw kind structure@>;
@@ -198,9 +198,9 @@ rather than as:
 kind *Kinds::function_kind(int no_args, kind **args, kind *return_K) {
 	kind *arguments_K = K_void;
 	for (int i=no_args-1; i>=0; i--)
-		arguments_K = Kinds::binary_construction(CON_TUPLE_ENTRY, args[i], arguments_K);
+		arguments_K = Kinds::binary_con(CON_TUPLE_ENTRY, args[i], arguments_K);
 	if (return_K == NULL) return_K = K_nil;
-	return Kinds::binary_construction(CON_phrase, arguments_K, return_K);
+	return Kinds::binary_con(CON_phrase, arguments_K, return_K);
 }
 
 @h Constructing kinds for pairs.
@@ -208,7 +208,7 @@ Similarly, but more simply, here is the kind for an ordered pair of values:
 
 =
 kind *Kinds::pair_kind(kind *X, kind *Y) {
-	return Kinds::binary_construction(CON_combination, X, Y);
+	return Kinds::binary_con(CON_combination, X, Y);
 }
 
 @h Iterating through kinds.
@@ -356,7 +356,7 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 				Kinds::Constructors::variance(Kinds::get_construct(K), 0));
 			if (tx) {
 				*changed = TRUE;
-				return Kinds::unary_construction(K->construct, X_after);
+				return Kinds::unary_con(K->construct, X_after);
 			}
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
@@ -369,7 +369,7 @@ kind *Kinds::substitute_inner(kind *K, kind **meanings, int *changed, int contra
 			Y_after = Kinds::substitute_inner(Y, meanings, &ty, contra, vy);
 			if ((tx) || (ty)) {
 				*changed = TRUE;
-				return Kinds::binary_construction(K->construct, X_after, Y_after);
+				return Kinds::binary_con(K->construct, X_after, Y_after);
 			}
 		}
 	}
@@ -387,10 +387,10 @@ kind *Kinds::weaken(kind *K, kind *W) {
 		int a = Kinds::arity_of_constructor(K);
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
-			return Kinds::unary_construction(K->construct, Kinds::weaken(X, W));
+			return Kinds::unary_con(K->construct, Kinds::weaken(X, W));
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			return Kinds::binary_construction(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
+			return Kinds::binary_con(K->construct, Kinds::weaken(X, W), Kinds::weaken(Y, W));
 		}
 	} else {
 		if ((K) && (Kinds::conforms_to(K, W)) && (Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE)) return W;
@@ -411,11 +411,11 @@ kind *Kinds::dereference_properties(kind *K) {
 		int a = Kinds::arity_of_constructor(K);
 		if (a == 1) {
 			X = Kinds::unary_construction_material(K);
-			return Kinds::unary_construction(K->construct,
+			return Kinds::unary_con(K->construct,
 				Kinds::dereference_properties(X));
 		} else {
 			Kinds::binary_construction_material(K, &X, &Y);
-			return Kinds::binary_construction(K->construct,
+			return Kinds::binary_con(K->construct,
 				Kinds::dereference_properties(X), Kinds::dereference_properties(Y));
 		}
 	}

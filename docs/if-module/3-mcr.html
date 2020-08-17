@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-mcr.html#SP2">&#167;2. The adjacency relation</a></li><li><a href="3-mcr.html#SP4">&#167;4. Initial stock</a></li><li><a href="3-mcr.html#SP5">&#167;5. Subsequent creations</a></li><li><a href="3-mcr.html#SP8">&#167;8. Second stock</a></li><li><a href="3-mcr.html#SP9">&#167;9. Typechecking</a></li><li><a href="3-mcr.html#SP10">&#167;10. Assertion</a></li><li><a href="3-mcr.html#SP11">&#167;11. Compilation</a></li><li><a href="3-mcr.html#SP12">&#167;12. Problem message text</a></li><li><a href="3-mcr.html#SP13">&#167;13. The correspondence with directions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This section creates a family of implicit relations (implemented as binary
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This section creates a family of implicit relations (implemented as binary
 predicates) corresponding to the different directions.
 </p>
 
@@ -82,7 +82,7 @@ built in:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R_adjacency</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. The adjacency relation. </b>We may as well do this here: creating the relation "X is adjacent to Y".
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The adjacency relation. </b>We may as well do this here: creating the relation "X is adjacent to Y".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -97,7 +97,7 @@ built in:
 
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>There is nothing special about asserting this, so we don't intervene:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>There is nothing special about asserting this, so we don't intervene:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -105,7 +105,7 @@ built in:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Initial stock. </b>There is none, since at the start of Inform's run no direction objects exist
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initial stock. </b>There is none, since at the start of Inform's run no direction objects exist
 yet.
 </p>
 
@@ -113,7 +113,7 @@ yet.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::MapDirections::REL_create_initial_stock</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Subsequent creations. </b>Every direction created has a relation associated with it: for instance,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Subsequent creations. </b>Every direction created has a relation associated with it: for instance,
 "north" has the relation "X is mapped north of Y". Now a direction is a
 kind of object, but objects aren't created until after relations used to
 parse sentences are needed. In fact, however, directions are "noticed"
@@ -127,7 +127,7 @@ at an earlier stage in Inform's run, so another two-step is needed:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>When each direction is created, so are corresponding relations and
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>When each direction is created, so are corresponding relations and
 prepositional uses: for example, "northeast" makes "mapping northeast"
 as a relation, and "mapped northeast of" as a prepositional usage.
 </p>
@@ -181,7 +181,7 @@ want to allow room names to contain direction names on occasion:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">from</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>Two of the directions are special to mapping, because they have to be parsed
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>Two of the directions are special to mapping, because they have to be parsed
 slighly differently. (These are the English names; there is no need to translate
 this to other languages.)
 </p>
@@ -192,7 +192,7 @@ this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">outside</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>Directions are detected in sentences having the form "D is a direction." This
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b>Directions are detected in sentences having the form "D is a direction." This
 is intentionally done very early on.
 </p>
 
@@ -203,7 +203,7 @@ is intentionally done very early on.
 <span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">direction_relations_noticed</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_DIRECTIONS</span><span class="plain-syntax">];</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_directions_noticed</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_MAPPING_RELATION_NAME_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">MAX_WORDS_IN_DIRECTION</span><span class="plain-syntax">*</span><span class="identifier-syntax">MAX_WORD_LENGTH</span><span class="plain-syntax">+10</span>
 </pre>
@@ -249,7 +249,7 @@ is intentionally done very early on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">relname</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-mcr.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>That was one step, and here's the second. At this point we have created the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>That was one step, and here's the second. At this point we have created the
 instance <span class="extract"><span class="extract-syntax">I</span></span> for the direction, and given it the kind "direction". That
 makes it possible to complete the details of the BP.
 </p>
@@ -288,7 +288,7 @@ names for I6 objects have not yet been settled.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">map</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">direction_relation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::MapDirections::look_for_direction_creation</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
@@ -311,14 +311,14 @@ names for I6 objects have not yet been settled.
 <span class="plain-syntax">    </span><span class="identifier-syntax">directions_noticed</span><span class="plain-syntax">[</span><span class="identifier-syntax">no_directions_noticed</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Second stock. </b>By this time, they all exist; there is nothing to add.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Second stock. </b>By this time, they all exist; there is nothing to add.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::MapDirections::REL_create_second_stock</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Typechecking. </b>This won't catch everything, but it will do. Run-time checking will pick up
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Typechecking. </b>This won't catch everything, but it will do. Run-time checking will pick up
 remaining anomalies.
 </p>
 
@@ -336,7 +336,7 @@ remaining anomalies.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Assertion. </b>Note that the following will infer <span class="extract"><span class="extract-syntax">IS_ROOM_INF</span></span> for any source of a map
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Assertion. </b>Note that the following will infer <span class="extract"><span class="extract-syntax">IS_ROOM_INF</span></span> for any source of a map
 connection &mdash; which will include doors. That doesn't matter, because the
 Spatial plugin uses these inferences only for objects whose kind is not
 explicitly given in the source text; and doors must always be specified as
@@ -360,7 +360,7 @@ such.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Compilation. </b>We need do nothing special: these relations can be compiled from their schemas.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Compilation. </b>We need do nothing special: these relations can be compiled from their schemas.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -368,14 +368,14 @@ such.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Problem message text. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Problem message text. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::MapDirections::REL_describe_for_problems</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. The correspondence with directions. </b>(Speed really does not matter here.)
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The correspondence with directions. </b>(Speed really does not matter here.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

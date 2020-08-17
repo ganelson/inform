@@ -277,7 +277,7 @@ kind *Properties::to_kind(property *prn) {
 	if (prn == NULL) internal_error("took kind of null property");
 	kind *stored = prn->property_value_kind;
 	if (prn->either_or) stored = K_truth_state;
-	return Kinds::unary_construction(CON_property, stored);
+	return Kinds::unary_con(CON_property, stored);
 }
 
 @ =

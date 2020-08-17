@@ -81,7 +81,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#4">Chapter 4: Requests</a></li><li><b>New Relation Requests</b></li></ul></div>
 <p class="purpose">Special sentences for creating new relations.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The following reads sentences like:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following reads sentences like:
 </p>
 
 <blockquote>
@@ -101,7 +101,7 @@ of subsequent sentences, which also happens in the pre-pass.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;np-unparsed&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-unparsed&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, Node::compose(RP[1], RP[2]) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RelationRequests::new_relation_SMF</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RelationRequests::new_relation_SMF</span></span>:<br/>Booting Verbs - <a href="3-bv.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
@@ -140,7 +140,7 @@ of subsequent sentences, which also happens in the pre-pass.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>We won't create the relation here, only submit a request in the form of
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>We won't create the relation here, only submit a request in the form of
 the following object. The terms 0 and 1 represent the part before the "to"
 and after; in "relates people to each other", they would derive from "people"
 and "each other" respectively.
@@ -163,7 +163,7 @@ and "each other" respectively.
 <span class="plain-syntax">} </span><span class="reserved-syntax">relation_request_term</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure relation_request is accessed in 7/rlt, 11/ap, 11/pr, 11/bas, 11/sm, 11/tcp, 12/ap, 12/ca, 12/cad, 12/cdp and here.</li><li>The structure relation_request_term is accessed in 7/rlt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>Syntax on the left (term 0) and right (term 1) slightly differs. The integer
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>Syntax on the left (term 0) and right (term 1) slightly differs. The integer
 result is a bitmap of these:
 </p>
 
@@ -202,7 +202,7 @@ result is a bitmap of these:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the request</span><span class="named-paragraph-number">2.3</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the request</span><span class="named-paragraph-number">2.3</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -234,7 +234,7 @@ result is a bitmap of these:
 <span class="plain-syntax">    </span><a href="7-rlt.html#SP4" class="function-link"><span class="function-syntax">Relations::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">RR</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_1"></a><b>&#167;2.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse left and right object phrases</span><span class="named-paragraph-number">2.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3_1" class="paragraph-anchor"></a><b>&#167;2.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse left and right object phrases</span><span class="named-paragraph-number">2.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -260,7 +260,7 @@ result is a bitmap of these:
 <span class="plain-syntax">        </span><span class="identifier-syntax">RR</span><span class="plain-syntax">.</span><span class="identifier-syntax">CONW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;relates-sentence-right-object&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_2"></a><b>&#167;2.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find term multiplicities and use of fast route-finding</span><span class="named-paragraph-number">2.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3_2" class="paragraph-anchor"></a><b>&#167;2.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find term multiplicities and use of fast route-finding</span><span class="named-paragraph-number">2.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -281,7 +281,7 @@ result is a bitmap of these:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_3"></a><b>&#167;2.3.3.  </b>The second term can be given in several special ways to indicate symmetry
+<p class="commentary firstcommentary"><a id="SP2_3_3" class="paragraph-anchor"></a><b>&#167;2.3.3.  </b>The second term can be given in several special ways to indicate symmetry
 between the two terms. This is more than a declaration that the left and
 right terms belong to the same domain set (though that is true): it says
 that \(R(x, y)\) is true if and only if \(R(y, x)\) is true.
@@ -311,7 +311,7 @@ that \(R(x, y)\) is true if and only if \(R(y, x)\) is true.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_4"></a><b>&#167;2.3.4.  </b>When a relation is said to hold depending on a condition to be tested at
+<p class="commentary firstcommentary"><a id="SP2_3_4" class="paragraph-anchor"></a><b>&#167;2.3.4.  </b>When a relation is said to hold depending on a condition to be tested at
 run-time, it is meaningless to tell Inform anything about the uniqueness of
 terms in the domain: a relation might be one-to-one at the start of play
 but become various-to-various later on, as the outcomes of these tests
@@ -333,7 +333,7 @@ change. So we reject any such misleading syntax.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_5"></a><b>&#167;2.3.5.  </b>To give a name to one term implies some degree of uniqueness about it.
+<p class="commentary firstcommentary"><a id="SP2_3_5" class="paragraph-anchor"></a><b>&#167;2.3.5.  </b>To give a name to one term implies some degree of uniqueness about it.
 But that only makes sense if there is indeed some uniqueness involved,
 because otherwise it is unclear what the name refers to. Who is "the
 greeter of the Queen of Sheba" given the following definition?
@@ -401,7 +401,7 @@ at this moment, and have no currency beyond that context.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_6"></a><b>&#167;2.3.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the left and right domain kinds</span><span class="named-paragraph-number">2.3.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3_6" class="paragraph-anchor"></a><b>&#167;2.3.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the left and right domain kinds</span><span class="named-paragraph-number">2.3.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -414,7 +414,7 @@ at this moment, and have no currency beyond that context.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">RR</span><span class="plain-syntax">.</span><span class="element-syntax">terms</span><span class="plain-syntax">[0].</span><span class="element-syntax">domain</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">RR</span><span class="plain-syntax">.</span><span class="element-syntax">terms</span><span class="plain-syntax">[1].</span><span class="element-syntax">domain</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3_7"></a><b>&#167;2.3.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Infer uniqueness if not specified</span><span class="named-paragraph-number">2.3.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3_7" class="paragraph-anchor"></a><b>&#167;2.3.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Infer uniqueness if not specified</span><span class="named-paragraph-number">2.3.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -430,7 +430,7 @@ at this moment, and have no currency beyond that context.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-nrr.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A term is specified as a kind:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A term is specified as a kind:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

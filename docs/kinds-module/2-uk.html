@@ -82,10 +82,10 @@ MathJax = {
 
 <ul class="toc"><li><a href="2-uk.html#SP1">&#167;1. Names of kinds</a></li><li><a href="2-uk.html#SP2">&#167;2. Being an object</a></li><li><a href="2-uk.html#SP3">&#167;3. Definiteness</a></li><li><a href="2-uk.html#SP5">&#167;5. (A) How this came into being</a></li><li><a href="2-uk.html#SP13">&#167;13. (B) Constructing kinds</a></li><li><a href="2-uk.html#SP14">&#167;14. (C) Compatibility with other kinds</a></li><li><a href="2-uk.html#SP15">&#167;15. (D) How constant values of this kind are expressed</a></li><li><a href="2-uk.html#SP18">&#167;18. (G) Performing arithmetic</a></li><li><a href="2-uk.html#SP21">&#167;21. (H) Representing this kind at run-time</a></li><li><a href="2-uk.html#SP23">&#167;23. (I) Storing values at run-time</a></li><li><a href="2-uk.html#SP28">&#167;28. (J) Printing and parsing values at run-time</a></li><li><a href="2-uk.html#SP34">&#167;34. (K) Indexing and documentation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Names of kinds. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Names of kinds. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::get_name</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_name</span></span>:<br/>Describing Kinds - <a href="2-dk.html#SP24_2">&#167;24.2</a>, <a href="2-dk.html#SP24_3">&#167;24.3</a><br/>Dimensions - <a href="3-dmn.html#SP27">&#167;27</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_form</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::get_name</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_name</span></span>:<br/>Describing Kinds - <a href="2-dk.html#SP24_2">&#167;24.2</a>, <a href="2-dk.html#SP24_3">&#167;24.3</a><br/>Dimensions - <a href="3-dmn.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plural_form</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP7" class="function-link"><span class="function-syntax">Kinds::Constructors::get_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural_form</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -111,7 +111,7 @@ MathJax = {
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">class_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Being an object. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Being an object. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::is_object</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -136,7 +136,7 @@ MathJax = {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Definiteness. </b>A kind like "number" is definite. One way to be indefinite is to be a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Definiteness. </b>A kind like "number" is definite. One way to be indefinite is to be a
 kind of kind, like "arithmetic value":
 </p>
 
@@ -147,7 +147,7 @@ kind of kind, like "arithmetic value":
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Another way is to be a kind variable, like "Q", or to be a construction
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Another way is to be a kind variable, like "Q", or to be a construction
 made from something indefinite, like "list of values". So the following
 checks that we aren't doing that:
 </p>
@@ -194,8 +194,8 @@ checks that we aren't doing that:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. (A) How this came into being. </b>A kind is "built in" if it was created via commands in a configuration file:
-see <a href="4-kf.html" class="internal">Kind Files</a>. It otherwise arises by being defined in source text.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. (A) How this came into being. </b>A kind is "built in" if it was created via commands in a Neptune file:
+see <a href="4-nf.html" class="internal">Neptune Files</a>. It otherwise arises by being defined in source text.
 </p>
 
 <p class="commentary">Note that a kind of object counts as built-in by this test, even though it
@@ -215,7 +215,7 @@ the day "object" is built in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_defined_in_source_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>When we read "Colour is a kind of value.", "colour" is uncertainly
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>When we read "Colour is a kind of value.", "colour" is uncertainly
 defined at first. Later we read either "The colours are blue and pink.",
 say, and then "colour" becomes an enumeration; or "450 nanometers
 specifies a colour.", say, and then it becomes a unit.	Initially, then,
@@ -229,7 +229,7 @@ has been used, the matter is settled and there is no going back.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_incompletely_defined</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Here we test for being an enumeration:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Here we test for being an enumeration:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -238,7 +238,7 @@ has been used, the matter is settled and there is no going back.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP14" class="function-link"><span class="function-syntax">Kinds::Constructors::is_enumeration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And here we perform the conversion to a unit. The return value is <span class="extract"><span class="extract-syntax">TRUE</span></span>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And here we perform the conversion to a unit. The return value is <span class="extract"><span class="extract-syntax">TRUE</span></span>
 if the kind was already a unit or was successfully converted into one,
 <span class="extract"><span class="extract-syntax">FALSE</span></span> if it's now too late.
 </p>
@@ -249,7 +249,7 @@ if the kind was already a unit or was successfully converted into one,
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP10" class="function-link"><span class="function-syntax">Kinds::Constructors::convert_to_unit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And similarly:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And similarly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -257,7 +257,7 @@ if the kind was already a unit or was successfully converted into one,
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) </span><a href="4-kc2.html#SP10" class="function-link"><span class="function-syntax">Kinds::Constructors::convert_to_enumeration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And similarly to switch from integer to real arithmetic.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>And similarly to switch from integer to real arithmetic.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -265,7 +265,7 @@ if the kind was already a unit or was successfully converted into one,
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) </span><a href="4-kc2.html#SP11" class="function-link"><span class="function-syntax">Kinds::Constructors::convert_to_real</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The instances of an enumeration have the values \(1, 2, 3, ..., N\) at
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The instances of an enumeration have the values \(1, 2, 3, ..., N\) at
 run-time; the following returns \(N+1\), that is, a value which can be held
 by the next instance to be created.
 </p>
@@ -277,7 +277,7 @@ by the next instance to be created.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>At present we aren't using named aliases for kinds, but we may in future.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>At present we aren't using named aliases for kinds, but we may in future.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -286,7 +286,7 @@ by the next instance to be created.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stored_as</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. (C) Compatibility with other kinds. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. (C) Compatibility with other kinds. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::set_superkind_set_at</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::set_superkind_set_at</span></span>:<br/>Kinds - <a href="2-knd.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
@@ -299,7 +299,7 @@ by the next instance to be created.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">superkind_set_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. (D) How constant values of this kind are expressed. </b>Some kinds have named constants, others use a quasi-numerical notation: for
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. (D) How constant values of this kind are expressed. </b>Some kinds have named constants, others use a quasi-numerical notation: for
 instance "maroon" might be an instance of kind "colour", while "234
 kilopascals" might be a notation for a kind where constants are not named.
 </p>
@@ -311,7 +311,7 @@ kilopascals" might be a notation for a kind where constants are not named.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The following returns the compilation method (a constant in the form <span class="extract"><span class="extract-syntax">*_CCM</span></span>,
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>The following returns the compilation method (a constant in the form <span class="extract"><span class="extract-syntax">*_CCM</span></span>,
 defined in "Data Types.w") used when compiling an actual constant value
 specification of this kind: in other words, when compiling an I6
 value for a constant of this kind.
@@ -323,7 +323,7 @@ value for a constant of this kind.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">constant_compilation_method</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The following is used only when the kind has named instances.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The following is used only when the kind has named instances.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -342,7 +342,7 @@ value for a constant of this kind.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. (G) Performing arithmetic. </b>Comparisons made by calling an I6 routine are slower in the VM than using the
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. (G) Performing arithmetic. </b>Comparisons made by calling an I6 routine are slower in the VM than using the
 standard <span class="extract"><span class="extract-syntax">&lt;</span></span> or <span class="extract"><span class="extract-syntax">&gt;</span></span> operators for signed comparison, so we use them only if
 we have to.
 </p>
@@ -356,7 +356,7 @@ we have to.
 
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_comparison_routine</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-fv.html#SP3" class="function-link"><span class="function-syntax">Kinds::FloatingPoint::uses_floating_point</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-fv.html#SP2" class="function-link"><span class="function-syntax">Kinds::FloatingPoint::uses_floating_point</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">comparison_routine</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">comparison_routine</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"signed"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">comparison_routine</span><span class="plain-syntax">;</span>
@@ -368,7 +368,7 @@ we have to.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>See "Dimensions.w" for a full account of these ideas. In theory, our
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>See "Dimensions.w" for a full account of these ideas. In theory, our
 polymorphic system of arithmetic allows us to add or multiply any kinds
 according to rules provided in the source text. In practice we have to keep
 track of dimensions, and the following routines connect the code in the
@@ -376,32 +376,32 @@ track of dimensions, and the following routines connect the code in the
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span></span>:<br/><a href="2-uk.html#SP28">&#167;28</a><br/>Dimensions - <a href="3-dmn.html#SP17">&#167;17</a>, <a href="3-dmn.html#SP29_3">&#167;29.3</a>, <a href="3-dmn.html#SP30">&#167;30</a>, <a href="3-dmn.html#SP31_2">&#167;31.2</a>, <a href="3-dmn.html#SP32">&#167;32</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span></span>:<br/><a href="2-uk.html#SP28">&#167;28</a><br/>Dimensions - <a href="3-dmn.html#SP15">&#167;15</a>, <a href="3-dmn.html#SP28_3">&#167;28.3</a>, <a href="3-dmn.html#SP29">&#167;29</a>, <a href="3-dmn.html#SP30_2">&#167;30.2</a>, <a href="3-dmn.html#SP31">&#167;31</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP14" class="function-link"><span class="function-syntax">Kinds::Constructors::is_arithmetic</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">unit_sequence</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span></span>:<br/>Describing Kinds - <a href="2-dk.html#SP24_1">&#167;24.1</a><br/>Dimensions - <a href="3-dmn.html#SP29_2">&#167;29.2</a>, <a href="3-dmn.html#SP29_3">&#167;29.3</a>, <a href="3-dmn.html#SP29_4">&#167;29.4</a>, <a href="3-dmn.html#SP30">&#167;30</a>, <a href="3-dmn.html#SP31_2">&#167;31.2</a>, <a href="3-dmn.html#SP32">&#167;32</a>, <a href="3-dmn.html#SP39">&#167;39</a>, <a href="3-dmn.html#SP39_3">&#167;39.3</a>, <a href="3-dmn.html#SP40">&#167;40</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">unit_sequence</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span></span>:<br/>Describing Kinds - <a href="2-dk.html#SP24_1">&#167;24.1</a><br/>Dimensions - <a href="3-dmn.html#SP23">&#167;23</a>, <a href="3-dmn.html#SP28_2">&#167;28.2</a>, <a href="3-dmn.html#SP28_3">&#167;28.3</a>, <a href="3-dmn.html#SP28_4">&#167;28.4</a>, <a href="3-dmn.html#SP29">&#167;29</a>, <a href="3-dmn.html#SP30_2">&#167;30.2</a>, <a href="3-dmn.html#SP31">&#167;31</a>, <a href="3-dmn.html#SP32">&#167;32</a>, <a href="3-dmn.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">construct</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CON_INTERMEDIATE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate_result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dimensional_form</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::test_if_derived</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::test_if_derived</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP29_1">&#167;29.1</a>, <a href="3-dmn.html#SP32">&#167;32</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::test_if_derived</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::test_if_derived</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP28_1">&#167;28.1</a>, <a href="3-dmn.html#SP29">&#167;29</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dimensional_form_fixed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::now_derived</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::now_derived</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP29_2">&#167;29.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::now_derived</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::now_derived</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP28_2">&#167;28.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"can't derive null kind"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dimensional_form_fixed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::scale_factor</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP34">&#167;34</a>, <a href="3-dmn.html#SP35">&#167;35</a>, <a href="3-dmn.html#SP36">&#167;36</a>, <a href="3-dmn.html#SP37">&#167;37</a>, <a href="3-dmn.html#SP38">&#167;38</a>, <a href="3-dmn.html#SP39_4">&#167;39.4</a><br/>Floating-Point Values - <a href="3-fv.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::scale_factor</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP32_4">&#167;32.4</a><br/>Floating-Point Values - <a href="3-fv.html#SP7">&#167;7</a><br/>Scaled Arithmetic Values - <a href="3-sav.html#SP2">&#167;2</a>, <a href="3-sav.html#SP3">&#167;3</a>, <a href="3-sav.html#SP4">&#167;4</a>, <a href="3-sav.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">intermediate_result</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-dmn.html#SP26" class="function-link"><span class="function-syntax">Kinds::Dimensions::us_get_scaling_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate_result</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-dmn.html#SP25" class="function-link"><span class="function-syntax">Kinds::Dimensions::us_get_scaling_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate_result</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">LITERAL_PATTERNS</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">LiteralPatterns::scale_factor</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="reserved-syntax">else</span>
@@ -409,17 +409,17 @@ track of dimensions, and the following routines connect the code in the
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>The dimensional rules for K are the conventions on whether arithmetic
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>The dimensional rules for K are the conventions on whether arithmetic
 operations can be applied, and if so, what kind the result has.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">dimensional_rules</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_dim_rules</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_dim_rules</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP15">&#167;15</a>, <a href="3-dmn.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">dimensional_rules</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_dim_rules</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_dim_rules</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP13">&#167;13</a>, <a href="3-dmn.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dim_rules</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. (H) Representing this kind at run-time. </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. (H) Representing this kind at run-time. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_name_in_template_code</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_name_in_template_code</span></span>:<br/>Kinds - <a href="2-knd.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -427,7 +427,7 @@ operations can be applied, and if so, what kind the result has.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_in_template_code</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Some kinds have a support routine:
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Some kinds have a support routine:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -447,7 +447,7 @@ operations can be applied, and if so, what kind the result has.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. (I) Storing values at run-time. </b>Recall that values are stored at run-time either as "word values" &mdash; a
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. (I) Storing values at run-time. </b>Recall that values are stored at run-time either as "word values" &mdash; a
 single I6 word &mdash; or "pointer values" (sometimes "block values"), where
 the I6 word is a pointer to a block of data on the heap. Numbers and times
 are word values, texts and lists are pointer values. Which form a value
@@ -460,7 +460,7 @@ takes depends on its kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP18" class="function-link"><span class="function-syntax">Kinds::Constructors::uses_pointer_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Exactly how large the small block is:
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Exactly how large the small block is:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -469,7 +469,7 @@ takes depends on its kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">small_block_size</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>A reasonable estimate of how large the (larger!) heap block needs to be,
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>A reasonable estimate of how large the (larger!) heap block needs to be,
 for a pointer-value kind, in bytes.
 </p>
 
@@ -479,7 +479,7 @@ for a pointer-value kind, in bytes.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heap_size_estimate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>And the following returns the name of an I6 routine to determine if two
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>And the following returns the name of an I6 routine to determine if two
 values of \(K\) are different from each other; or <span class="extract"><span class="extract-syntax">NULL</span></span> to say that it's
 sufficient to apply <span class="extract"><span class="extract-syntax">~=</span></span> to the values.
 </p>
@@ -498,7 +498,7 @@ sufficient to apply <span class="extract"><span class="extract-syntax">~=</span>
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Can values of this kind be serialised out to a file and read back in again
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Can values of this kind be serialised out to a file and read back in again
 by some other Inform story file, or by this one running on a different day?
 </p>
 
@@ -508,7 +508,7 @@ by some other Inform story file, or by this one running on a different day?
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">can_exchange</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. (J) Printing and parsing values at run-time. </b>Each kind can provide its own I6 routine to print out a value onto screen,
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. (J) Printing and parsing values at run-time. </b>Each kind can provide its own I6 routine to print out a value onto screen,
 in some human-readable format.
 </p>
 
@@ -627,7 +627,7 @@ in some human-readable format.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>Moving on to understanding: some kinds can be used as tokens in Understand
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>Moving on to understanding: some kinds can be used as tokens in Understand
 sentences, others can't. Thus "[time]" is a valid Understand token, but
 "[stored action]" is not.
 </p>
@@ -652,7 +652,7 @@ not, it returns <span class="extract"><span class="extract-syntax">NULL</span></
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>Can the kind have a GPR of any kind in the final code?
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>Can the kind have a GPR of any kind in the final code?
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -661,7 +661,7 @@ not, it returns <span class="extract"><span class="extract-syntax">NULL</span></
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">has_i6_GPR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>Request that a GPR be compiled for this kind; the return value tell us whether
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>Request that a GPR be compiled for this kind; the return value tell us whether
 this will be allowed or not.
 </p>
 
@@ -673,7 +673,7 @@ this will be allowed or not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>Do we need to compile a GPR of our own for this kind?
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>Do we need to compile a GPR of our own for this kind?
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -682,7 +682,7 @@ this will be allowed or not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">I6_GPR_needed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>A recognition-only GPR is used for matching specific data in the course of
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>A recognition-only GPR is used for matching specific data in the course of
 parsing names of objects, but not as a grammar token in its own right.
 </p>
 
@@ -700,7 +700,7 @@ parsing names of objects, but not as a grammar token in its own right.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34. (K) Indexing and documentation. </b></p>
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. (K) Indexing and documentation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_documentation_reference</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -713,7 +713,7 @@ parsing names of objects, but not as a grammar token in its own right.
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">documentation_reference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">dr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>The following is used in the Kinds index, in the table showing the default
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>The following is used in the Kinds index, in the table showing the default
 values for each kind:
 </p>
 
@@ -723,12 +723,12 @@ values for each kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index_default_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_index_minimum_value</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_index_minimum_value</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP31_2_1">&#167;31.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_index_minimum_value</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_index_minimum_value</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP30_2_1">&#167;30.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index_minimum_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_index_maximum_value</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_index_maximum_value</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP31_2_2">&#167;31.2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_index_maximum_value</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_index_maximum_value</span></span>:<br/>Dimensions - <a href="3-dmn.html#SP30_2_2">&#167;30.2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index_maximum_value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -743,7 +743,7 @@ values for each kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexed_grey_if_empty</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>And every kind is allowed to have the specification pseudo-property &mdash; a little
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>And every kind is allowed to have the specification pseudo-property &mdash; a little
 text used only on the index pages, and not existing at run-time.
 </p>
 
@@ -759,7 +759,7 @@ text used only on the index pages, and not existing at run-time.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-dk.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-knd.html">knd</a></li><li class="progresssection"><a href="2-fk.html">fk</a></li><li class="progresssection"><a href="2-tlok.html">tlok</a></li><li class="progresssection"><a href="2-dk.html">dk</a></li><li class="progresscurrent">uk</li><li class="progresschapter"><a href="3-dmn.html">3</a></li><li class="progresschapter"><a href="4-kf.html">4</a></li><li class="progressnext"><a href="3-dmn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-dk.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-knd.html">knd</a></li><li class="progresssection"><a href="2-fk.html">fk</a></li><li class="progresssection"><a href="2-tlok.html">tlok</a></li><li class="progresssection"><a href="2-dk.html">dk</a></li><li class="progresscurrent">uk</li><li class="progresschapter"><a href="3-dmn.html">3</a></li><li class="progresschapter"><a href="4-nf.html">4</a></li><li class="progressnext"><a href="3-dmn.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

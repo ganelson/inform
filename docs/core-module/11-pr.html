@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="11-pr.html#SP6">&#167;6. Implied conjunction</a></li><li><a href="11-pr.html#SP9">&#167;9. Validity</a></li><li><a href="11-pr.html#SP12">&#167;12. Complexity</a></li><li><a href="11-pr.html#SP13">&#167;13. Primitive operations on propositions</a></li><li><a href="11-pr.html#SP16">&#167;16. Inserting and deleting atoms</a></li><li><a href="11-pr.html#SP18">&#167;18. Inspecting contents</a></li><li><a href="11-pr.html#SP19">&#167;19. Matching sequences of atoms</a></li><li><a href="11-pr.html#SP20">&#167;20. Seeking atoms</a></li><li><a href="11-pr.html#SP28">&#167;28. Bracketed groups</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>We now begin on the data structures to hold propositions. Now a properly
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>We now begin on the data structures to hold propositions. Now a properly
 constructed proposition has a natural tree structure &mdash; one can regard
 quantification, negation, and conjunction as higher nodes, and predicates
 as leaves. So the idea of storing propositions as trees has a certain elegance.
@@ -124,7 +124,7 @@ their <span class="extract"><span class="extract-syntax">next</span></span> fiel
 and edit such lists.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>In particular:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>In particular:
 </p>
 
 <ul class="items"><li>(a) The empty list, a <span class="extract"><span class="extract-syntax">NULL</span></span> pointer, represents the universally true
@@ -141,7 +141,7 @@ where <span class="extract"><span class="extract-syntax">P</span></span> is the 
 matched brackets, like <span class="extract"><span class="extract-syntax">DOMAIN_OPEN --&gt; P --&gt; DOMAIN_CLOSE</span></span>, a "group".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We sometimes need to indicate a position within a proposition &mdash; a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We sometimes need to indicate a position within a proposition &mdash; a
 position not of an atom, but between atoms. Consider the possible places
 where letters could be inserted into the word "rap": before the "r"
 (trap), between "r" and "a" (reap), between "a" and "p" (ramp),
@@ -153,7 +153,7 @@ the position meant: and a <span class="extract"><span class="extract-syntax">NUL
 front position, before the opening atom.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The code needed to perform a depth-first traverse of a proposition is
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The code needed to perform a depth-first traverse of a proposition is
 abstracted by the following macros. Note that we often need to remember
 the atom before the current one, so we keep that in a spare variable
 during each traverse. (This saves us having to maintain the proposition
@@ -176,7 +176,7 @@ loop finds its ground cut out from under it.
 <span class="plain-syntax">        </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">p</span><span class="plain-syntax">##</span><span class="identifier-syntax">_repeat</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">p</span><span class="plain-syntax">##</span><span class="identifier-syntax">_prev</span><span class="plain-syntax">=</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">=(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">):0, </span><span class="identifier-syntax">p</span><span class="plain-syntax">##</span><span class="identifier-syntax">_repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>An edit which happens during a traverse is permitted to make any change
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>An edit which happens during a traverse is permitted to make any change
 to the proposition at and beyond the marker position <span class="extract"><span class="extract-syntax">p</span></span>, but not allowed
 to change what came before. Since such an edit might leave <span class="extract"><span class="extract-syntax">p</span></span> pointing
 to an atom which has been cut, or moved later, we must perform the following
@@ -206,7 +206,7 @@ should be set if and only if a change has been made to the proposition.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PROPOSITION_EDITED</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">##</span><span class="identifier-syntax">_repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Implied conjunction. </b>Conjunction (logical "and") occurs so densely in propositions arising from
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Implied conjunction. </b>Conjunction (logical "and") occurs so densely in propositions arising from
 natural language that our data structures would grow large and unmanageable
 if we wrote all of them out. So we adopt a convention similar to the one
 in algebra, where the formula
@@ -234,7 +234,7 @@ understood between them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Purely decoratively, we print some punctuation when logging a proposition;
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Purely decoratively, we print some punctuation when logging a proposition;
 this is chosen to look like standard mathematical notation.
 </p>
 
@@ -253,7 +253,7 @@ this is chosen to look like standard mathematical notation.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>So we may as well complete the debugging log code now. Note that \(\top\) is
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So we may as well complete the debugging log code now. Note that \(\top\) is
 logged as just <span class="extract"><span class="extract-syntax">[ ]</span></span>.
 </p>
 
@@ -275,7 +275,7 @@ logged as just <span class="extract"><span class="extract-syntax">[ ]</span></sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"]"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Validity. </b>Since the proposition data structure lets us build all kinds of nonsense,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Validity. </b>Since the proposition data structure lets us build all kinds of nonsense,
 we'll be much safer if we can check our working &mdash; if we can verify that a
 proposition is valid. But what does that mean? We might mean:
 </p>
@@ -298,7 +298,7 @@ have all four properties, but intermediate half-built states often satisfy
 only (i).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The following examples illustrate the differences. This one is not even
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following examples illustrate the differences. This one is not even
 syntactically valid:
 </p>
 
@@ -328,7 +328,7 @@ where clearly two different things have been called \(n\).)
 could <span class="extract"><span class="extract-syntax">EVERYWHERE(x)</span></span> possibly mean?)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Well-formedness and type safety are left to later sections in this chapter,
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Well-formedness and type safety are left to later sections in this chapter,
 but we can at least test syntactic validity here.
 </p>
 
@@ -371,7 +371,7 @@ but we can at least test syntactic validity here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Complexity. </b>Simple propositions contain only unary predicates or assertions that the
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Complexity. </b>Simple propositions contain only unary predicates or assertions that the
 free variable has a given kind, or a given value. For example, "a closed
 lockable door" is a simple proposition, but "four women in a lighted room"
 is complex.
@@ -395,7 +395,7 @@ is complex.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Primitive operations on propositions. </b>First, copying, which means copying not just the current atom, but all
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Primitive operations on propositions. </b>First, copying, which means copying not just the current atom, but all
 subsequent ones.
 </p>
 
@@ -416,7 +416,7 @@ subsequent ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Now to concatenate propositions. If \(E\) and \(T\) are both syntactically valid,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Now to concatenate propositions. If \(E\) and \(T\) are both syntactically valid,
 the result will be, too; but the same is not true of well-formedness, so we
 need to be careful in using this.
 </p>
@@ -434,7 +434,7 @@ need to be careful in using this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">existing_body</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And here is a version which protects us:
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And here is a version which protects us:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -456,7 +456,7 @@ need to be careful in using this.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">existing_body</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report failure to log</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report failure to log</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -466,7 +466,7 @@ need to be careful in using this.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Tail:          $D\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tail</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-pr.html#SP15">&#167;15</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Inserting and deleting atoms. </b>Here we insert an atom at a given position, or at the front if the position
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Inserting and deleting atoms. </b>Here we insert an atom at a given position, or at the front if the position
 is <span class="extract"><span class="extract-syntax">NULL</span></span>.
 </p>
 
@@ -484,7 +484,7 @@ is <span class="extract"><span class="extract-syntax">NULL</span></span>.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>And similarly, with the deleted atom the one after the position given:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>And similarly, with the deleted atom the one after the position given:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -499,7 +499,7 @@ is <span class="extract"><span class="extract-syntax">NULL</span></span>.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Inspecting contents. </b>First, we count the number of atoms in a given proposition. This is used by
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Inspecting contents. </b>First, we count the number of atoms in a given proposition. This is used by
 other parts of Inform as a crude measure of how complicated it is; though in
 fact it is not all that crude so long as it is applied to a proposition
 which has been simplified.
@@ -513,7 +513,7 @@ which has been simplified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Matching sequences of atoms. </b>The following sneakily variable-argument-length function can be used to
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Matching sequences of atoms. </b>The following sneakily variable-argument-length function can be used to
 detect subsequences within a proposition: say, the sequence
 </p>
 
@@ -559,7 +559,7 @@ four.) There are two special pseudo-element-numbers:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcome</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Seeking atoms. </b>Here we run through the proposition looking for either a given element, or
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Seeking atoms. </b>Here we run through the proposition looking for either a given element, or
 a given arity, or both:
 </p>
 
@@ -573,7 +573,7 @@ a given arity, or both:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Seeking different kinds of atom is now easy:
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Seeking different kinds of atom is now easy:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -604,7 +604,7 @@ a given arity, or both:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="11-pr.html#SP20" class="function-link"><span class="function-syntax">Calculus::Propositions::prop_seek_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="constant-syntax">CALLED_ATOM</span><span class="plain-syntax">, -1)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Here we try to find out the kind of value of variable 0 without the full
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Here we try to find out the kind of value of variable 0 without the full
 expense of typechecking the proposition:
 </p>
 
@@ -626,7 +626,7 @@ expense of typechecking the proposition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>And, similarly, the actual value it must have:
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And, similarly, the actual value it must have:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -652,7 +652,7 @@ expense of typechecking the proposition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Finding an adjective is easy: it's a predicate of arity 1.
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Finding an adjective is easy: it's a predicate of arity 1.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -671,7 +671,7 @@ expense of typechecking the proposition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ac</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>The following searches not for an atom, but for the lexically earliest
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>The following searches not for an atom, but for the lexically earliest
 term in the proposition:
 </p>
 
@@ -685,7 +685,7 @@ term in the proposition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_variable</span></a><span class="plain-syntax">(0); </span><span class="comment-syntax"> never executed, but needed to prevent </span><span class="extract"><span class="extract-syntax">gcc</span></span><span class="comment-syntax"> warnings</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>Here we attempt, if possible, to read a proposition as being either
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Here we attempt, if possible, to read a proposition as being either
 {\it adjective}(\(v\)) or \(\exists v: {\it adjective}(v)\), where the adjective
 can be also be read as a noun, and if so we return a constant term \(t\) for
 that noun; or if the proposition isn't in that form, we return \(t=x\), that
@@ -711,7 +711,7 @@ is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>We often form propositions which are really lists of adjectives, and the
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>We often form propositions which are really lists of adjectives, and the
 following are useful for looping through them:
 </p>
 
@@ -731,7 +731,7 @@ following are useful for looping through them:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="11-ap.html#SP19" class="function-link"><span class="function-syntax">Calculus::Atoms::au_from_unary_PREDICATE</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Bracketed groups. </b>The following routine tests whether the entire proposition is a single
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Bracketed groups. </b>The following routine tests whether the entire proposition is a single
 bracketed group. For instance:
 </p>
 
@@ -756,7 +756,7 @@ and that they may be nested.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>The following removes matched parentheses, leaving just the interior:
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The following removes matched parentheses, leaving just the interior:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -772,7 +772,7 @@ and that they may be nested.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>The main application of which is to remove negation:
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>The main application of which is to remove negation:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -782,7 +782,7 @@ and that they may be nested.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>More ambitiously, this removes matched parentheses found at any given
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>More ambitiously, this removes matched parentheses found at any given
 point in a proposition (which can continue after the close bracket).
 </p>
 
@@ -818,7 +818,7 @@ point in a proposition (which can continue after the close bracket).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>Occasionally we want to strip away a "for all", and since that is always
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>Occasionally we want to strip away a "for all", and since that is always
 followed by a domain specification, we must also ungroup this:
 </p>
 
@@ -833,7 +833,7 @@ followed by a domain specification, we must also ungroup this:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>Less ambitiously:
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>Less ambitiously:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -848,7 +848,7 @@ followed by a domain specification, we must also ungroup this:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34.  </b>The following routine takes a SP and returns the best proposition it can,
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>The following routine takes a SP and returns the best proposition it can,
 with a single unbound variable, to represent SP.
 </p>
 
@@ -867,7 +867,7 @@ with a single unbound variable, to represent SP.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="11-pr.html#SP34_3" class="named-paragraph-link"><span class="named-paragraph">It must be an ordinary noun</span><span class="named-paragraph-number">34.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34_1"></a><b>&#167;34.1.  </b>For example, if we have written:
+<p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1.  </b>For example, if we have written:
 </p>
 
 <blockquote>
@@ -892,7 +892,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}(\(x\)).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-pr.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34_2"></a><b>&#167;34.2.  </b>For example, if the SP is "scenery", we return the proposition {\it scenery}(\(x\)).
+<p class="commentary firstcommentary"><a id="SP34_2" class="paragraph-anchor"></a><b>&#167;34.2.  </b>For example, if the SP is "scenery", we return the proposition {\it scenery}(\(x\)).
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If it's an either-or property name, it must be being used adjectivally</span><span class="named-paragraph-number">34.2</span></span><span class="comment-syntax"> =</span>
@@ -909,7 +909,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}(\(x\)).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-pr.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34_3"></a><b>&#167;34.3.  </b>For example, if the SP is the number 17, we return the proposition {\it is}(\(x\), 17).
+<p class="commentary firstcommentary"><a id="SP34_3" class="paragraph-anchor"></a><b>&#167;34.3.  </b>For example, if the SP is the number 17, we return the proposition {\it is}(\(x\), 17).
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">It must be an ordinary noun</span><span class="named-paragraph-number">34.3</span></span><span class="comment-syntax"> =</span>
@@ -920,7 +920,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}(\(x\)).
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="11-pr.html#SP34_1_1" class="named-paragraph-link"><span class="named-paragraph">Typecheck the propositional form, and return</span><span class="named-paragraph-number">34.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-pr.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34_1_1"></a><b>&#167;34.1.1.  </b>In all cases, we finish by doing the following. In the one-atom noun cases
+<p class="commentary firstcommentary"><a id="SP34_1_1" class="paragraph-anchor"></a><b>&#167;34.1.1.  </b>In all cases, we finish by doing the following. In the one-atom noun cases
 it's a formality, but we want to enforce the rule that all propositions
 created in Inform go through type-checking, so:
 </p>

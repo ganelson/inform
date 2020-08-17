@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#26">Chapter 26: Compilation Utilities</a></li><li><b>Internal Test Cases</b></li></ul></div>
 <p class="purpose">Handling requests to compile internal tests.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>To exercise some of these, run the <a href="../../../intest/docs/index.html" class="internal">intest</a> test group <span class="extract"><span class="extract-syntax">:internal</span></span> through
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>To exercise some of these, run the <a href="../../../intest/docs/index.html" class="internal">intest</a> test group <span class="extract"><span class="extract-syntax">:internal</span></span> through
 Inform. The current roster is as follows:
 </p>
 
@@ -86,7 +86,7 @@ Inform. The current roster is as follows:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">DASHLOG_INTT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">REFINER_INTT</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The following are the names of the internal test cases, which are in English
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The following are the names of the internal test cases, which are in English
 only and may change at any time without notice.
 </p>
 
@@ -108,7 +108,7 @@ only and may change at any time without notice.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">refinery</span><span class="Preform-plain-syntax">       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { REFINER_INTT, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each request to run one of the above generates an <a href="26-itc.html#SP3" class="internal">internal_test_case</a> object:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each request to run one of the above generates an <a href="26-itc.html#SP3" class="internal">internal_test_case</a> object:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -120,7 +120,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">} </span><span class="reserved-syntax">internal_test_case</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure internal_test_case is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">internal_test_case</span><span class="plain-syntax"> *</span><span class="function-syntax">InternalTests::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InternalTests::new</span></span>:<br/>Test Requests - <a href="4-tr2.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -280,7 +280,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform an internal test of the sentence converter</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform an internal test of the sentence converter</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -307,7 +307,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Streams::disable_I6_escapes</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP4">&#167;4</a> (twice), <a href="26-itc.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform an internal test of the refinery</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform an internal test of the refinery</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -325,7 +325,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Streams::disable_I6_escapes</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin reporting on the internal test case</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin reporting on the internal test case</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -333,7 +333,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Streams::enable_debugging</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="comment-syntax"> Streams::enable_I6_escapes(DL);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP4">&#167;4</a> (6 times), <a href="26-itc.html#SP4_1">&#167;4.1</a>, <a href="26-itc.html#SP4_2">&#167;4.2</a>, <a href="26-itc.html#SP5">&#167;5</a>, <a href="26-itc.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -341,7 +341,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">itc_save_DL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP4">&#167;4</a> (6 times), <a href="26-itc.html#SP4_1">&#167;4.1</a>, <a href="26-itc.html#SP4_2">&#167;4.2</a>, <a href="26-itc.html#SP5">&#167;5</a>, <a href="26-itc.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InternalTests::emit_showme</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">InternalTests::emit_showme</span></span>:<br/>Compile Invocations Inline - <a href="25-cii.html#SP3_5_9">&#167;3.5.9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -383,7 +383,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Perform an internal test of the sentence converter</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Perform an internal test of the sentence converter</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -410,7 +410,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Streams::disable_I6_escapes</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="named-paragraph-container code-font"><a href="26-itc.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">End reporting on the internal test case</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is .</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And here's a test of the kinds system (though in practice test cases for the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And here's a test of the kinds system (though in practice test cases for the
 <a href="../kinds-test/index.html" class="internal">kinds-test</a> tool probably now does a better job):
 </p>
 
@@ -426,7 +426,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the subkind relation of base kinds</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the subkind relation of base kinds</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -444,7 +444,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the compatibility relation of base kinds</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the compatibility relation of base kinds</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -464,7 +464,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the results of the superkind function</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Display the results of the superkind function</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -477,7 +477,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_4"></a><b>&#167;7.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check for poset violations</span><span class="named-paragraph-number">7.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_4" class="paragraph-anchor"></a><b>&#167;7.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check for poset violations</span><span class="named-paragraph-number">7.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -497,7 +497,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">                    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Transitivity violated: %u, %u, %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_5"></a><b>&#167;7.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the maximum function</span><span class="named-paragraph-number">7.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_5" class="paragraph-anchor"></a><b>&#167;7.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the maximum function</span><span class="named-paragraph-number">7.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -522,7 +522,7 @@ only and may change at any time without notice.
 <span class="plain-syntax">                    </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">Latticework::join</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="26-itc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_6"></a><b>&#167;7.6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7_6" class="paragraph-anchor"></a><b>&#167;7.6.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">SIZE_OF_GRAB_BAG</span><span class="plain-syntax"> </span><span class="constant-syntax">11</span>
 </pre>
@@ -536,16 +536,16 @@ only and may change at any time without notice.
 <span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[1] = </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[2] = </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[3] = </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[4] = </span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[5] = </span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[6] = </span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[7] = </span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[8] = </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[9] = </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[10] = </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[4] = </span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_container</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[5] = </span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[6] = </span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_person</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[7] = </span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[8] = </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[9] = </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_door</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[10] = </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_TUPLE_ENTRY</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_void</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">SIZE_OF_GRAB_BAG</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+1; </span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">SIZE_OF_GRAB_BAG</span><span class="plain-syntax">; </span><span class="identifier-syntax">j</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::conforms_to</span><span class="plain-syntax">(</span><span class="identifier-syntax">tests</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">], </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">])) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%u &lt;= %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">], </span><span class="identifier-syntax">tests</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]);</span>

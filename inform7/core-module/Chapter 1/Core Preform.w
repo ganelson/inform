@@ -90,7 +90,7 @@ void CorePreform::set_core_internal_requirements(void) {
 	NTI::every_word_in_match_must_have_my_NTI_bit(<s-adjective>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<s-instance-name>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-kind-variable>);
-	CorePreform::mark_nt_as_requiring_itself_articled(<k-formal-kind-variable>);
+	CorePreform::mark_nt_as_requiring_itself_articled(<k-formal-variable>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-base-kind>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-kind-construction>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-kind>);

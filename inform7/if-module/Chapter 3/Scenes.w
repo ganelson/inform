@@ -1149,7 +1149,7 @@ void PL::Scenes::emit_during_clause(parse_node *spec) {
 			stuck = FALSE;
 		}
 	} else {
-		if (Dash::check_value(spec, Kinds::unary_construction(CON_description, K_scene)) == ALWAYS_MATCH) {
+		if (Dash::check_value(spec, Kinds::unary_con(CON_description, K_scene)) == ALWAYS_MATCH) {
 			parse_node *desc = Descriptions::to_rvalue(spec);
 			if (desc) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DURINGSCENEMATCHING_HL));

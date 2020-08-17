@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="15-tpr.html#SP2">&#167;2. Initial stock</a></li><li><a href="15-tpr.html#SP3">&#167;3. Second stock</a></li><li><a href="15-tpr.html#SP4">&#167;4. Typechecking</a></li><li><a href="15-tpr.html#SP5">&#167;5. Assertion</a></li><li><a href="15-tpr.html#SP6">&#167;6. Compilation</a></li><li><a href="15-tpr.html#SP7">&#167;7. Problem message text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>As we've seen, assertions assigning properties ("A scene has a time called
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>As we've seen, assertions assigning properties ("A scene has a time called
 the expected duration") result in properties being created &mdash; here "expected
 duration" &mdash; and then in suitable propositions being asserted as true.
 </p>
@@ -81,7 +81,7 @@ grant permission to hold a property within the world model.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R_provision</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Initial stock. </b>There's just one relation of this kind, and it's hard-wired in.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Initial stock. </b>There's just one relation of this kind, and it's hard-wired in.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -94,14 +94,14 @@ grant permission to hold a property within the world model.
 <span class="plain-syntax">    </span><a href="7-bp.html#SP25" class="function-link"><span class="function-syntax">BinaryPredicates::set_index_details</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R_provision</span><span class="plain-syntax">, </span><span class="string-syntax">"value"</span><span class="plain-syntax">, </span><span class="string-syntax">"property"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Second stock. </b>There is none, of course.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Second stock. </b>There is none, of course.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Properties::ProvisionRelation::REL_create_second_stock</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Properties::ProvisionRelation::REL_create_second_stock</span></span>:<br/>Binary Predicates - <a href="7-bp.html#SP45">&#167;45</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Typechecking. </b>Any property can in principle be assigned to any inference subject (as we'll
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Typechecking. </b>Any property can in principle be assigned to any inference subject (as we'll
 see in the next chapter), so there's really no restriction on the left term.
 The right term, of course, has to be a property.
 </p>
@@ -119,7 +119,7 @@ The right term, of course, has to be a property.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Assertion. </b>If we assert that, say, vehicles provide "colour", then we are implicitly
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Assertion. </b>If we assert that, say, vehicles provide "colour", then we are implicitly
 enabling adjectives like "green" or "blue" to apply to vehicles, so we
 must make sure any such meanings are defined.
 </p>
@@ -137,7 +137,7 @@ must make sure any such meanings are defined.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Compilation. </b>Run-time is too late to change which objects provide what, so this relation
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Compilation. </b>Run-time is too late to change which objects provide what, so this relation
 can't be changed at compile time.
 </p>
 
@@ -169,7 +169,7 @@ can't be changed at compile time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>Since type-checking for "object" is too weak to make it certain what kind
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>Since type-checking for "object" is too weak to make it certain what kind
 of object the left operand is, we can only test property provision at run-time:
 </p>
 
@@ -183,7 +183,7 @@ of object the left operand is, we can only test property provision at run-time:
 <span class="plain-syntax">        </span><a href="12-is.html#SP3_1" class="function-link"><span class="function-syntax">Calculus::Schemas::modify</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">asch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schema</span><span class="plain-syntax">, </span><span class="string-syntax">"WhetherProvides(*1, true, *2)"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-tpr.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b>For all other kinds, type-checking is strong enough that we can prove the
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b>For all other kinds, type-checking is strong enough that we can prove the
 answer now.
 </p>
 
@@ -197,7 +197,7 @@ answer now.
 <span class="plain-syntax">        </span><a href="12-is.html#SP3_1" class="function-link"><span class="function-syntax">Calculus::Schemas::modify</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">asch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schema</span><span class="plain-syntax">, </span><span class="string-syntax">"false"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-tpr.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Problem message text. </b>Nothing special is needed here.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Problem message text. </b>Nothing special is needed here.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

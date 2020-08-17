@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#4">Chapter 4: Requests</a></li><li><b>Pluralisation Requests</b></li></ul></div>
 <p class="purpose">Special sentences for setting exotic plural forms of nouns.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Sentences like "the plural of cherub is cherubim" are hardly needed now,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Sentences like "the plural of cherub is cherubim" are hardly needed now,
 because the <a href="../inflections-module/index.html" class="internal">inflections</a> module now contains a full implementation of
 Conway's algorithm. Still, we keep the syntax around, and it may one day be
 useful again for languages other than English.
@@ -82,7 +82,7 @@ useful again for languages other than English.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">plural</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;np-articled&gt;</span><span class="Preform-plain-syntax">              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Note that we are saved later grief by not allowing a plural form which
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Note that we are saved later grief by not allowing a plural form which
 would be illegal as a new noun: allowing "The plural of thing is ," would not
 end well.
 </p>
@@ -112,7 +112,7 @@ end well.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>In general names of things which we need plurals for cannot contain quoted
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>In general names of things which we need plurals for cannot contain quoted
 text anyway, so the following problem messages are not too gratuitous.
 </p>
 

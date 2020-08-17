@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="24-ch.html#SP2">&#167;2. Compiling chronology</a></li><li><a href="24-ch.html#SP4">&#167;4. The periodic monitoring</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Some conditions stored in SPs, and also some actions stored in APs, are
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Some conditions stored in SPs, and also some actions stored in APs, are
 evaluated in the past tense, and to do this we need to lodge them into
 storage: the following simple structures are used for this.
 </p>
@@ -93,7 +93,7 @@ storage: the following simple structures are used for this.
 <span class="plain-syntax">} </span><span class="reserved-syntax">past_tense_action_record</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure past_tense_condition_record is private to this section.</li><li>The structure past_tense_action_record is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Compiling chronology. </b>First, the here and now.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Compiling chronology. </b>First, the here and now.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -229,7 +229,7 @@ storage: the following simple structures are used for this.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit the op</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit the op</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -243,7 +243,7 @@ storage: the following simple structures are used for this.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP2">&#167;2</a> (twice), <a href="24-ch.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Chronology::compile_past_tense_condition</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Chronology::compile_past_tense_condition</span></span>:<br/>Conditions - <a href="14-cn.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
@@ -341,7 +341,7 @@ storage: the following simple structures are used for this.
 <span class="plain-syntax">    </span><span class="identifier-syntax">no_past_tenses</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The periodic monitoring. </b>As can be seen from the above routines, we depend on the array <span class="extract"><span class="extract-syntax">TrackedActions</span></span>,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The periodic monitoring. </b>As can be seen from the above routines, we depend on the array <span class="extract"><span class="extract-syntax">TrackedActions</span></span>,
 on a routine called <span class="extract"><span class="extract-syntax">TestSinglePastState</span></span> and on magical things happening at
 run-time at the start of every action. Once these are defined, it's too
 late to create any further past tense references, so:
@@ -352,7 +352,7 @@ late to create any further past tense references, so:
 <span class="plain-syntax">    </span><span class="identifier-syntax">too_late_for_past_tenses</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The <span class="extract"><span class="extract-syntax">{-A}</span></span> ("past actions") escape.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The <span class="extract"><span class="extract-syntax">{-A}</span></span> ("past actions") escape.
 A series of <span class="extract"><span class="extract-syntax">if</span></span> statements checking whether each past-tense action is now
 true, and updating the relevant array entries accordingly.
 </p>
@@ -425,7 +425,7 @@ ever tampered with.
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Chronology::past_tenses_i6_escape</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Chronology::past_tenses_i6_escape</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_8">&#167;2.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -469,7 +469,7 @@ ever tampered with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">TIME_PERIODS</span><span class="plain-syntax">, </span><span class="string-syntax">"Creation of past tense conditions complete\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unpack the past</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unpack the past</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -522,7 +522,7 @@ ever tampered with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unpack the present</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Unpack the present</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -575,7 +575,7 @@ ever tampered with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Repack the present</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Repack the present</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -606,7 +606,7 @@ ever tampered with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_4"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Swizzle</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_4" class="paragraph-anchor"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Swizzle</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -735,7 +735,7 @@ ever tampered with.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_4_1"></a><b>&#167;6.4.1.  </b>The following goes through the dance of writing to a temporary stream in
+<p class="commentary firstcommentary"><a id="SP6_4_1" class="paragraph-anchor"></a><b>&#167;6.4.1.  </b>The following goes through the dance of writing to a temporary stream in
 order to ensure that the compilation happens in a memory stream, rather than
 a file stream, thus allowing rewinding:
 </p>
@@ -774,7 +774,7 @@ a file stream, thus allowing rewinding:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6_4">&#167;6.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_5"></a><b>&#167;6.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Answer the question posed</span><span class="named-paragraph-number">6.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_5" class="paragraph-anchor"></a><b>&#167;6.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Answer the question posed</span><span class="named-paragraph-number">6.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -883,7 +883,7 @@ a file stream, thus allowing rewinding:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-ch.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The <span class="extract"><span class="extract-syntax">{-E}</span></span> ("extents") escape.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The <span class="extract"><span class="extract-syntax">{-E}</span></span> ("extents") escape.
 Sizes for the arrays. We need to do these after compiling the code in the
 escapes above, because they might continue to spawn each other as they
 compile: e.g. a past tense action pattern might itself refer to a condition

@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#22">Chapter 22: Phrases</a></li><li><b>Timed Phrases</b></li></ul></div>
 <p class="purpose">Another way phrases can be invoked is as timed events, which need no special Inform data structure and are simply compiled into a pair of timetable I6 arrays to be processed at run-time.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The timing of an event records the time at which a phrase should
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The timing of an event records the time at which a phrase should
 spontaneously happen. This is ordinarily a time value, in minutes from 12
 midnight, for a phrase happening at a specific time &mdash; for instance, one
 defined as "At 9:00 AM: ..." But two values are special:
@@ -76,7 +76,7 @@ defined as "At 9:00 AM: ..." But two values are special:
 <span class="definition-keyword">define</span> <span class="constant-syntax">NO_FIXED_TIME</span><span class="plain-syntax"> -2 </span><span class="comment-syntax"> for phrases like "When the clock strikes: ..."</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOT_AN_EVENT</span><span class="plain-syntax"> -3 </span><span class="comment-syntax"> not even syntactically</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And here we record where events are used:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And here we record where events are used:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -87,7 +87,7 @@ defined as "At 9:00 AM: ..." But two values are special:
 <span class="plain-syntax">} </span><span class="reserved-syntax">use_as_event</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure use_as_event is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 4/npr, 4/nvr, 4/nar2, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/lp, 6/ins, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Timed events are stored in two simple arrays, processed by run-time code.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Timed events are stored in two simple arrays, processed by run-time code.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -131,7 +131,7 @@ defined as "At 9:00 AM: ..." But two values are special:
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>That's it, really: everything else is just indexing.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>That's it, really: everything else is just indexing.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -150,7 +150,7 @@ defined as "At 9:00 AM: ..." But two values are special:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>An interesting case where the Problem is arguably only a warning and
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>An interesting case where the Problem is arguably only a warning and
 arguably shouldn't block compilation. Then again...
 </p>
 
@@ -170,7 +170,7 @@ arguably shouldn't block compilation. Then again...
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>And here's the actual index segment.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>And here's the actual index segment.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -183,7 +183,7 @@ arguably shouldn't block compilation. Then again...
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index events with no specific time</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index events with no specific time</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -212,7 +212,7 @@ arguably shouldn't block compilation. Then again...
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-tp2.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index timetabled events</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index timetabled events</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

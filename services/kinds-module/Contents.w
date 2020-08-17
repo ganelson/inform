@@ -24,6 +24,6 @@ Chapter 3: Arithmetic
 	Scaled Arithmetic Values
 
 Chapter 4: Constructors
-	Kind Files
+	Neptune Files
 	Kind Commands
 	Kind Constructors

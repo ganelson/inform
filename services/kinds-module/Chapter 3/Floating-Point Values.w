@@ -2,10 +2,33 @@
 
 To cope with promotions from integer to floating-point arithmetic.
 
-@ If we do have floating-point arithmetic available, we need to be able to
-play off between real and integer versions of the same kind -- for example,
-using real arithmetic to approximately carry out integer calculations, or vice
-versa.
+@ In principle, we could recognise integer and real versions of any
+dimensionless kind (if we really wanted, say, to distinguish "integer weight"
+from "real weight"), but at present we allow only one such pair: |number|
+and |real number|.
+
+=
+kind *Kinds::FloatingPoint::real_equivalent(kind *K) {
+	if (Kinds::eq(K, K_number)) return K_real_number;
+	return K;
+}
+
+kind *Kinds::FloatingPoint::integer_equivalent(kind *K) {
+	if (Kinds::eq(K, K_real_number)) return K_number;
+	return K;
+}
+
+@ There can be numerous other real-valued kinds; it's just that those don't
+have integer equivalents.
+
+=
+int Kinds::FloatingPoint::uses_floating_point(kind *K) {
+	if (K == NULL) return FALSE;
+	return Kinds::Constructors::is_arithmetic_and_real(K->construct);
+}
+
+@ Inform's equations system has to handle promotion (from int to real) or
+demotion (from real to int) quite carefully, and needs the following concept:
 
 =
 typedef struct generalised_kind {
@@ -28,6 +51,9 @@ void Kinds::FloatingPoint::log_gk(generalised_kind gK) {
 	if (gK.promotion == -1) { LOG("=>int"); }
 }
 
+@ Access to which:
+
+=
 kind *Kinds::FloatingPoint::underlying(generalised_kind gK) {
 	return gK.valid_kind;
 }
@@ -38,6 +64,9 @@ int Kinds::FloatingPoint::is_real(generalised_kind gK) {
 	return FALSE;
 }
 
+@ The following performs the operations "change to real" and "change to int":
+
+=
 generalised_kind Kinds::FloatingPoint::to_integer(generalised_kind gK) {
 	if (Kinds::FloatingPoint::is_real(gK)) {
 		if (gK.promotion == 1) gK.promotion = 0;
@@ -66,32 +95,12 @@ generalised_kind Kinds::FloatingPoint::to_real(generalised_kind gK) {
 	return gK;
 }
 
-@ =
-void Kinds::FloatingPoint::begin_flotation(OUTPUT_STREAM, kind *K) {
-	if (Kinds::Behaviour::scale_factor(K) != 1) WRITE("REAL_NUMBER_TY_Divide(");
-	WRITE("NUMBER_TY_to_REAL_NUMBER_TY");
-	WRITE("(");
-}
+@h Flotations.
+This is where we compile Inter code to perform "flotation" -- promotion to real --
+or "deflotation" -- demotion, but taking into account scale factors since the
+integer versions may have been scaled.
 
-void Kinds::FloatingPoint::end_flotation(OUTPUT_STREAM, kind *K) {
-	WRITE(")");
-	if (Kinds::Behaviour::scale_factor(K) != 1)
-		WRITE(", NUMBER_TY_to_REAL_NUMBER_TY(%d))",
-			Kinds::Behaviour::scale_factor(K));
-}
-
-void Kinds::FloatingPoint::begin_deflotation(OUTPUT_STREAM, kind *K) {
-	WRITE("REAL_NUMBER_TY_to_NUMBER_TY(");
-	if (Kinds::Behaviour::scale_factor(K) != 1) WRITE("REAL_NUMBER_TY_Times(");
-}
-
-void Kinds::FloatingPoint::end_deflotation(OUTPUT_STREAM, kind *K) {
-	if (Kinds::Behaviour::scale_factor(K) != 1)
-		WRITE(", NUMBER_TY_to_REAL_NUMBER_TY(%d))",
-			Kinds::Behaviour::scale_factor(K));
-	WRITE(")");
-}
-
+=
 #ifdef CORE_MODULE
 void Kinds::FloatingPoint::begin_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
@@ -107,7 +116,8 @@ void Kinds::FloatingPoint::end_flotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NUMBER_TY_TO_REAL_NUMBER_TY_HL));
 		Produce::down(Emit::tree());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Behaviour::scale_factor(K));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+				(inter_ti) Kinds::Behaviour::scale_factor(K));
 		Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
@@ -126,25 +136,11 @@ void Kinds::FloatingPoint::end_deflotation_emit(kind *K) {
 	if (Kinds::Behaviour::scale_factor(K) != 1) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(REAL_NUMBER_TY_TO_NUMBER_TY_HL));
 		Produce::down(Emit::tree());
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Kinds::Behaviour::scale_factor(K));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+				(inter_ti) Kinds::Behaviour::scale_factor(K));
 		Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
 	Produce::up(Emit::tree());
 }
 #endif
-
-int Kinds::FloatingPoint::uses_floating_point(kind *K) {
-	if (K == NULL) return FALSE;
-	return Kinds::Constructors::is_arithmetic_and_real(K->construct);
-}
-
-kind *Kinds::FloatingPoint::real_equivalent(kind *K) {
-	if (Kinds::eq(K, K_number)) return K_real_number;
-	return K;
-}
-
-kind *Kinds::FloatingPoint::integer_equivalent(kind *K) {
-	if (Kinds::eq(K, K_real_number)) return K_number;
-	return K;
-}

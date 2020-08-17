@@ -82,7 +82,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="11-sc.html#SP1">&#167;1. The meaning of a sentence</a></li><li><a href="11-sc.html#SP1_14">&#167;1.14. Simplification</a></li><li><a href="11-sc.html#SP3">&#167;3. The meaning of a noun phrase</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The meaning of a sentence. </b>This section provides a single, but crucial, function to the rest of Inform:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The meaning of a sentence. </b>This section provides a single, but crucial, function to the rest of Inform:
 it takes a sentence subtree output by the S-parser and turns it into a proposition.
 </p>
 
@@ -135,7 +135,7 @@ the meaning of the whole sentence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the tree position makes sense, and tell the debugging log</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the tree position makes sense, and tell the debugging log</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -145,7 +145,7 @@ the meaning of the whole sentence.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PREDICATE_CALCULUS</span><span class="plain-syntax">, </span><span class="string-syntax">"[%d] Starting fs on: &lt;%W&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b>And similarly, on the way out:
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b>And similarly, on the way out:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Tell the debugging log what the outcome of the sentence was</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
@@ -157,7 +157,7 @@ the meaning of the whole sentence.
 <span class="plain-syntax">    </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">--;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3"></a><b>&#167;1.3.  </b>The English verb "to be" has the syntactic quirk that it likes to have
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b>The English verb "to be" has the syntactic quirk that it likes to have
 both SP and OP, even when only when thing is being discussed. We say "it is
 raining" and "there are seven continents", inserting "it" and "there"
 even though they refer to nothing at all, because we don't like to say
@@ -181,7 +181,7 @@ making an S-proposition as required.
 <span class="plain-syntax">    </span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax"> = </span><a href="11-bas.html#SP11" class="function-link"><span class="function-syntax">Calculus::Variables::bind_existential</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4"></a><b>&#167;1.4.  </b>Here we only locate the subject and object subtrees &mdash; their meanings we
+<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b>Here we only locate the subject and object subtrees &mdash; their meanings we
 leave for later &mdash; but we do find the content of the verb phrase. Given
 the combination of verb and preposition usage (the latter optional), we
 extract a binary predicate \(B\). Note that we ignore the parity (whether
@@ -215,7 +215,7 @@ it can be applied.
 <span class="plain-syntax">    </span><span class="identifier-syntax">verb_phrase_relation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VerbUsages::get_regular_meaning</span><span class="plain-syntax">(</span><span class="identifier-syntax">vu</span><span class="plain-syntax">, </span><span class="identifier-syntax">prep</span><span class="plain-syntax">, </span><span class="identifier-syntax">second_prep</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4_1"></a><b>&#167;1.4.1.  </b>A sad necessity:
+<p class="commentary firstcommentary"><a id="SP1_4_1" class="paragraph-anchor"></a><b>&#167;1.4.1.  </b>A sad necessity:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow the past tenses in relative clauses</span><span class="named-paragraph-number">1.4.1</span></span><span class="comment-syntax"> =</span>
@@ -225,7 +225,7 @@ it can be applied.
 <span class="plain-syntax">    </span><a href="10-varc.html#SP13" class="function-link"><span class="function-syntax">ExParser::Subtrees::throw_past_problem</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1_4">&#167;1.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_5"></a><b>&#167;1.5.  </b>First Rule. The "meaning" of a noun phrase is a pair \((\phi, t)\),
+<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b>First Rule. The "meaning" of a noun phrase is a pair \((\phi, t)\),
 where \(\phi\) is a proposition and \(t\) is a term. We read this as "\(t\) such
 that \(\phi\) is true". Exactly one of the following will always be true:
 </p>
@@ -244,7 +244,7 @@ for some variable \(v\) and \(\phi = Qv : v\in\lbrace v\mid \psi(v)\rbrace\), wh
 \(v\) is the unique free variable of \(\psi\), and \(Q\) is a generalised quantifier which
 is not \(\exists\).
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP1_6"></a><b>&#167;1.6.  </b>As examples of all four cases:
+<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b>As examples of all four cases:
 </p>
 
 <ul class="items"><li>(a) "Reverend Green" returns $t=<span class="extract"><span class="extract-syntax">Green</span></span>\(, \)\phi = T$ &mdash; a single definite thing.
@@ -257,7 +257,7 @@ $\phi = {\it suspect}(x)\land{\it carries}(x, <span class="extract"><span class=
 $\phi = \forall x: x\in\lbrace x\mid {\it weapon}(x)\land{\it in}(x, <span class="extract"><span class="extract-syntax">Billiard</span></span>)\rbrace$ &mdash;
 a range of things.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP1_7"></a><b>&#167;1.7.  </b>Thus \(\phi\) can contain at most 1 free variable, and then only in case (c).
+<p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7.  </b>Thus \(\phi\) can contain at most 1 free variable, and then only in case (c).
 But why does it do so at all? Why do we return "an open door" as
 \({\it open}(x)\land{\it door}(x)\)? It would be more consistent with the way we
 handle "two open doors" to return it as \(\exists x: {\it open}(x)\land{\it door}(x)\).
@@ -291,7 +291,7 @@ than three open doors". So \(\phi\) contains a free variable if and only if
 the NP describes a single but vague thing.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP1_8"></a><b>&#167;1.8.  </b>The First Rule is implemented by <span class="extract"><span class="extract-syntax">Calculus::Propositions::FromSentences::NP_subtree_to_proposition</span></span> below, and
+<p class="commentary firstcommentary"><a id="SP1_8" class="paragraph-anchor"></a><b>&#167;1.8.  </b>The First Rule is implemented by <span class="extract"><span class="extract-syntax">Calculus::Propositions::FromSentences::NP_subtree_to_proposition</span></span> below, and
 we apply it independently to the SP and OP:
 </p>
 
@@ -318,7 +318,7 @@ we apply it independently to the SP and OP:
 <span class="plain-syntax">        </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">object_phrase_term</span><span class="plain-syntax">, </span><span class="identifier-syntax">object_phrase_prop</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_9"></a><b>&#167;1.9.  </b>The First Rule tells us that SP and OP are now each represented by
+<p class="commentary firstcommentary"><a id="SP1_9" class="paragraph-anchor"></a><b>&#167;1.9.  </b>The First Rule tells us that SP and OP are now each represented by
 propositions with either no free variables, or just one, and then only if
 the phrase refers to a single but vague thing.
 </p>
@@ -350,7 +350,7 @@ we produce \(\phi_S = {\it woman}(x)\) with \(x\) remaining free.
 <span class="plain-syntax">    </span><span class="identifier-syntax">object_phrase_prop</span><span class="plain-syntax"> = </span><a href="11-bas.html#SP11" class="function-link"><span class="function-syntax">Calculus::Variables::bind_existential</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">object_phrase_prop</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">object_phrase_term</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_10"></a><b>&#167;1.10.  </b>Of all the thousands of paragraphs of code in Inform, this is the one which
+<p class="commentary firstcommentary"><a id="SP1_10" class="paragraph-anchor"></a><b>&#167;1.10.  </b>Of all the thousands of paragraphs of code in Inform, this is the one which
 most sums up "how it works". We started with a sentence in
 the source text, and have now extracted the following components of its
 meaning: the subject phrase (SP) has become the term \(t_S\) subject to the
@@ -378,7 +378,7 @@ if not. Here \(\phi'_O\) and \(t'_O\) are \(\phi_O\) and \(t_O\) modified to rel
 variables so that there are no accidental clashes with variables named in
 \(\phi_S\).
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP1_11"></a><b>&#167;1.11.  </b>That simple rule took the author a long, long time to work out,
+<p class="commentary firstcommentary"><a id="SP1_11" class="paragraph-anchor"></a><b>&#167;1.11.  </b>That simple rule took the author a long, long time to work out,
 so it may be worth a little discussion:
 </p>
 
@@ -422,7 +422,7 @@ we don't mean the same \(x\) on both sides, so we relabel the OP to get \(y\)
 such that \({\it animal}(y)\). There is not really any asymmetry between the
 SP and OP here, because it would have been just as good to relabel the SP.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP1_12"></a><b>&#167;1.12.  </b>Lemma. The result \(\Sigma\) of the Second Rule is a proposition containing
+<p class="commentary firstcommentary"><a id="SP1_12" class="paragraph-anchor"></a><b>&#167;1.12.  </b>Lemma. The result \(\Sigma\) of the Second Rule is a proposition containing
 either 0 or 1 free variables; \(\Sigma\) has 1 free variable if and only if we
 are converting an SN-subtree, and the subject phrase of the sentence describes
 a single thing vaguely.
@@ -447,7 +447,7 @@ variables, and the lemma is proved.
 of quantification) then so is \(\Sigma\).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP1_13"></a><b>&#167;1.13.  </b>Now to implement the Second Rule:
+<p class="commentary firstcommentary"><a id="SP1_13" class="paragraph-anchor"></a><b>&#167;1.13.  </b>Now to implement the Second Rule:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Combine the SP, VP and OP meanings into a single proposition for the sentence</span><span class="named-paragraph-number">1.13</span></span><span class="comment-syntax"> =</span>
@@ -481,7 +481,7 @@ of quantification) then so is \(\Sigma\).
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PREDICATE_CALCULUS</span><span class="plain-syntax">, </span><span class="string-syntax">"[%d] Initial meaning: $D\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_13_1"></a><b>&#167;1.13.1.  </b>The following provides for the fact that when one says "X is somewhere",
+<p class="commentary firstcommentary"><a id="SP1_13_1" class="paragraph-anchor"></a><b>&#167;1.13.1.  </b>The following provides for the fact that when one says "X is somewhere",
 "X is anywhere", "X is nowhere", or "X is everywhere", one is talking about
 the location of X and not X itself. Thus, "the keys are somewhere" means
 that they have some location, not that they literally are a location. (This
@@ -504,7 +504,7 @@ is irregular because it differs from "something" and "someone".)
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1_13">&#167;1.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_14"></a><b>&#167;1.14. Simplification. </b>Every proposition generated here, whether it arises as "there is/are" plus a
+<p class="commentary firstcommentary"><a id="SP1_14" class="paragraph-anchor"></a><b>&#167;1.14. Simplification. </b>Every proposition generated here, whether it arises as "there is/are" plus a
 noun phrase or by the Second Rule, is simplified before being returned.
 Because of the way the recursion is set up, this means that intermediate
 propositions for relative clauses within a sentence are always simplified
@@ -581,7 +581,7 @@ Still, rule (iii) can only be ensured by writing the routines carefully.
 <span class="plain-syntax">    </span><a href="11-bas.html#SP9" class="function-link"><span class="function-syntax">Calculus::Variables::renumber</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">); </span><span class="comment-syntax"> just for the sake of tidiness</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Calculus::Propositions::FromSentences::simplify</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">) {</span>
@@ -608,7 +608,7 @@ Still, rule (iii) can only be ensured by writing the routines carefully.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. The meaning of a noun phrase. </b>The First Rule tells us to translate a noun phrase (NP) into a pair of a term \(t\)
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The meaning of a noun phrase. </b>The First Rule tells us to translate a noun phrase (NP) into a pair of a term \(t\)
 and a proposition \(\phi\). We read this as "\(t\) such that \(\phi\) is true".
 </p>
 
@@ -648,7 +648,7 @@ but missing noun.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>Just as for SV-subtrees, we tell the debugging log at the start...
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>Just as for SV-subtrees, we tell the debugging log at the start...
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Tell the debugging log about the NP-subtree</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
@@ -661,7 +661,7 @@ but missing noun.
 <span class="plain-syntax">        </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>...and also at the end.
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>...and also at the end.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Verify that the output satisfies the First Rule, throwing internal errors if not</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
@@ -683,7 +683,7 @@ but missing noun.
 <span class="plain-syntax">    </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">--;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b>Here we find a constant \(C\) and return \(t=C\) with a null \(\phi\), except
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b>Here we find a constant \(C\) and return \(t=C\) with a null \(\phi\), except
 in one case: where \(C\) is the name of an either/or property, such as
 "closed". In the context of a value, this is a noun &mdash; it identifies
 which property we are talking about &mdash; and this is why
@@ -719,7 +719,7 @@ one arising below, which is to do with enumerated value properties.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b>If <span class="extract"><span class="extract-syntax">Calculus::Propositions::from_spec</span></span> is given a constant value \(C\) then it returns the
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b>If <span class="extract"><span class="extract-syntax">Calculus::Propositions::from_spec</span></span> is given a constant value \(C\) then it returns the
 proposition \({\it is}(x, C)\): we look out for this and translate it to
 \(t=C, \phi = T\). Otherwise, \(\phi\) can be exactly the proposition returned,
 and the first term occurring in it will be chosen as the subject \(t\). (In
@@ -740,14 +740,14 @@ it binds.)
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="11-pr.html#SP19" class="function-link"><span class="function-syntax">Calculus::Propositions::match</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">KIND_ATOM</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">END_PROP_HERE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) &amp;&amp;</span>
-<span class="plain-syntax">        (</span><span class="function-syntax">&lt;k-formal-kind-variable-singular&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">        (</span><span class="function-syntax">&lt;k-formal-variable-singular&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><a href="11-ap.html#SP18" class="function-link"><span class="function-syntax">Calculus::Atoms::set_unarticled</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">) *</span><span class="identifier-syntax">subject_of_NP</span><span class="plain-syntax"> = </span><a href="11-pr.html#SP25" class="function-link"><span class="function-syntax">Calculus::Propositions::get_first_cited_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_5"></a><b>&#167;3.5.  </b>When Inform reads a condition so abbreviated that both the subject and
+<p class="commentary firstcommentary"><a id="SP3_5" class="paragraph-anchor"></a><b>&#167;3.5.  </b>When Inform reads a condition so abbreviated that both the subject and
 the verb have been left out, it assumes the verb is "to be" and that the
 subject will be whatever is being worked on. For instance,
 </p>
@@ -773,7 +773,7 @@ calculus point of view, this is just another constant.
 <span class="plain-syntax">    *</span><span class="identifier-syntax">subject_of_NP</span><span class="plain-syntax"> = </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_constant</span></a><span class="plain-syntax">(</span><a href="14-rv.html#SP5" class="function-link"><span class="function-syntax">Rvalues::new_self_object_constant</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_6"></a><b>&#167;3.6.  </b>Suppose we have a situation like this:
+<p class="commentary firstcommentary"><a id="SP3_6" class="paragraph-anchor"></a><b>&#167;3.6.  </b>Suppose we have a situation like this:
 </p>
 
 <blockquote>
@@ -835,7 +835,7 @@ show this. (Score values otherwise aren't used for property names.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_7"></a><b>&#167;3.7.  </b>If we have so far produced a constant term \(t = C\) and a non-null proposition
+<p class="commentary firstcommentary"><a id="SP3_7" class="paragraph-anchor"></a><b>&#167;3.7.  </b>If we have so far produced a constant term \(t = C\) and a non-null proposition
 \(\phi\), then we convert \(t\) to a new free variable, say \(t = y\), we then bind
 any free variable in the old \(\phi\) and then change to \(\exists y: {\it is}(y, C)\land\phi\).
 For instance, if we are working on the OP "the box in a room" from this:
@@ -868,7 +868,7 @@ $\phi = \exists x: {\it room}(x)\land{\it is}(x, <span class="extract"><span cla
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sc.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_8"></a><b>&#167;3.8.  </b>If the NP was something like "at least four open doors", we will so far
+<p class="commentary firstcommentary"><a id="SP3_8" class="paragraph-anchor"></a><b>&#167;3.8.  </b>If the NP was something like "at least four open doors", we will so far
 have built <span class="extract"><span class="extract-syntax">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; KIND --&gt; PREDICATE</span></span>, and now that
 we have reached the end of the noun phrase we need to add a <span class="extract"><span class="extract-syntax">DOMAIN_CLOSE</span></span>
 atom. The following is written in a way that guarantees all such open groups

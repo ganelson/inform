@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="11-bas.html#SP3">&#167;3. Well-formedness</a></li><li><a href="11-bas.html#SP8">&#167;8. Renumbering</a></li><li><a href="11-bas.html#SP11">&#167;11. Binding</a></li><li><a href="11-bas.html#SP12">&#167;12. Substitution</a></li><li><a href="11-bas.html#SP15">&#167;15. A footnote on variable 0</a></li><li><a href="11-bas.html#SP18">&#167;18. Detect locals</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>In any given proposition:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>In any given proposition:
 </p>
 
 <ul class="items"><li>(a) a variable is unused if it is never mentioned as, or in, any term,
@@ -115,7 +115,7 @@ could accidentally change "\(v\) is greater than \(w\)" into "\(w\) is greater
 than \(w\)". But provided \(w\) is unused, the proposition's truth or otherwise
 remains unchanged.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Propositions with free variables are vague, and we would like to get rid
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Propositions with free variables are vague, and we would like to get rid
 of them. It can be very difficult to guess their values, just as subtle
 human understanding seems to be needed to interpret pronouns like "it"
 (see the enormous literature on the donkey anaphora problem in
@@ -134,7 +134,7 @@ descriptions make SN-propositions. (By renumbering, any proposition with one
 free variable can be made into an SN-proposition.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Well-formedness. </b>It might seem logical to have a routine which takes a proposition \(\phi\)
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Well-formedness. </b>It might seem logical to have a routine which takes a proposition \(\phi\)
 and a variable \(v\) and returns its status &mdash; unused, free or bound. But this
 would be inefficient, since we want to work with all 26 at once, so instead
 we take a pointer to an array of <span class="extract"><span class="extract-syntax">int</span></span> which needs to have (at least, but
@@ -184,7 +184,7 @@ the quantifier has finished. We set the <span class="extract"><span class="extra
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>With just a little wrapping, this gives us the test of well-formedness.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>With just a little wrapping, this gives us the test of well-formedness.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -196,7 +196,7 @@ the quantifier has finished. We set the <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Occasionally we really do care only about one of the 26 variables:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Occasionally we really do care only about one of the 26 variables:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -207,7 +207,7 @@ the quantifier has finished. We set the <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">var_states</span><span class="plain-syntax">[</span><span class="identifier-syntax">v</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>To distinguish sentences from descriptions, the following can be informative:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>To distinguish sentences from descriptions, the following can be informative:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -220,7 +220,7 @@ the quantifier has finished. We set the <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>While this gives us a new variable which can safely be added to an existing
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>While this gives us a new variable which can safely be added to an existing
 proposition:
 </p>
 
@@ -232,7 +232,7 @@ proposition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">25</span><span class="plain-syntax">; </span><span class="comment-syntax"> the best we can do: it avoids crashes, at least...</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Renumbering. </b>Another "vector operation" on variables: to renumber them throughout a
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Renumbering. </b>Another "vector operation" on variables: to renumber them throughout a
 proposition according to a map array. If <span class="extract"><span class="extract-syntax">renumber_map[j]</span></span> is \(-1\), make
 no change; otherwise each instance of variable \(j\) should be changed to
 this new number.
@@ -264,7 +264,7 @@ predicate terms, which is as it should be.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The following takes any proposition and edits it so that the variables
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following takes any proposition and edits it so that the variables
 used are the lowest-numbered ones; moreover, variables are introduced
 in numerical order &mdash; that is, the first mentioned will be \(x\), then the
 next introduced will be \(y\), and so on.
@@ -287,7 +287,7 @@ next introduced will be \(y\), and so on.
 <span class="plain-syntax">    </span><a href="11-bas.html#SP8" class="function-link"><span class="function-syntax">Calculus::Variables::vars_map</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">renumber_map</span><span class="plain-syntax">, </span><span class="identifier-syntax">preserving</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This more complicated routine renumbers bound variables in one proposition
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This more complicated routine renumbers bound variables in one proposition
 in order to guarantee that none of them coincides with a variable used
 in a second proposition. This is needed in order to take the conjunction of
 two propositions, because "for all \(x\), \(x\) is a door" and "there exists \(x\)
@@ -330,7 +330,7 @@ returns its new identity when renumbered.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">renumber_map</span><span class="plain-syntax">[</span><span class="identifier-syntax">query</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>Again, we fall back on variable 25 if we run out. (This can only happen if
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>Again, we fall back on variable 25 if we run out. (This can only happen if
 the conjunction of the two propositions had 26 variables.)
 </p>
 
@@ -344,7 +344,7 @@ the conjunction of the two propositions had 26 variables.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> == </span><span class="constant-syntax">26</span><span class="plain-syntax">) </span><span class="identifier-syntax">next_unused</span><span class="plain-syntax"> = </span><span class="constant-syntax">25</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_unused</span><span class="plain-syntax"> = </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-bas.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Binding. </b>In this routine, we look for free variables and preface the proposition
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Binding. </b>In this routine, we look for free variables and preface the proposition
 with \(\exists\) quantifiers to bind them. For instance, \({\it open}(x)\) becomes
 \(\exists x: {\it open}(x)\).
 </p>
@@ -376,7 +376,7 @@ order. For instance:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Substitution. </b>In the following, we substitute term \(T\) (a constant or function) in place
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Substitution. </b>In the following, we substitute term \(T\) (a constant or function) in place
 of variable \(v\) in the given proposition. We begin with two utility routines
 to substitute into the variable "underneath" a given term.
 </p>
@@ -398,7 +398,7 @@ to substitute into the variable "underneath" a given term.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function</span><span class="plain-syntax">) </span><a href="11-bas.html#SP12" class="function-link"><span class="function-syntax">Calculus::Variables::substitute_term_in_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">fn_of</span><span class="plain-syntax">), </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Now the main procedure. This is one of those deceptive problems where the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Now the main procedure. This is one of those deceptive problems where the
 actual algorithm is obvious, but the circumstances when it can validly be
 applied are less so.
 </p>
@@ -416,7 +416,7 @@ which would make it invalid. If that happens, we run into this:
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="identifier-syntax">msg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>So the routine is intended to be called twice: once to ask if the situation
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>So the routine is intended to be called twice: once to ask if the situation
 looks viable, and once to perform the substitution itself.
 </p>
 
@@ -446,7 +446,7 @@ looks viable, and once to perform the substitution itself.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b>The problem we might find, then, is that setting \(v=T\) will be circular
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b>The problem we might find, then, is that setting \(v=T\) will be circular
 because \(T\) itself depends on \(v\). There are two ways this can happen: first,
 \(T\) might be directly a function of \(v\) itself, i.e., the VUT might be \(v\);
 second, \(T\) might be a function of some variable \(w\) which, by being quantified
@@ -486,7 +486,7 @@ check this condition pretty easily, it turns out:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-bas.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. A footnote on variable 0. </b>Because of the special status of \(x\) (variable 0) &mdash; the one allowed to be
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. A footnote on variable 0. </b>Because of the special status of \(x\) (variable 0) &mdash; the one allowed to be
 free in SN-propositions &mdash; we sometimes need to know about it. The range
 of a bound variable can be found by looking at its quantifier, but a free
 variable can remain ambiguous. The presence of a <span class="extract"><span class="extract-syntax">KIND</span></span> atom will explicitly
@@ -506,7 +506,7 @@ here, but that's the assumption which the caller will have to make.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And a quick way to substitute it:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And a quick way to substitute it:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -515,7 +515,7 @@ here, but that's the assumption which the caller will have to make.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="11-bas.html#SP14" class="function-link"><span class="function-syntax">Calculus::Variables::substitute_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">), </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">bogus</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>If we are willing to work a little harder:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>If we are willing to work a little harder:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -537,7 +537,7 @@ here, but that's the assumption which the caller will have to make.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Detect locals. </b>Properly speaking, this has nothing to do with variables,
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Detect locals. </b>Properly speaking, this has nothing to do with variables,
 but it solves a similar problem.
 </p>
 

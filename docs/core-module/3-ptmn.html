@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#3">Chapter 3: Top-Level Declarations</a></li><li><b>Passes through Major Nodes</b></li></ul></div>
 <p class="purpose">To manage the overall process of traversing the parse tree for top-level declarations and assertion sentences.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The first thing Inform does when compiling source text is to make three
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The first thing Inform does when compiling source text is to make three
 passes through its top-level definitions: a "pre-pass", in which names of
 things like tables and equations are discovered, and assertion sentences
 are diagrammed; "pass 1", when instance, kinds, properties and so on are
@@ -84,7 +84,7 @@ created; and "pass 2", when property values and relationships are found.
 <span class="plain-syntax">    </span><a href="3-ptmn.html#SP2" class="function-link"><span class="function-syntax">MajorNodes::traverse</span></a><span class="plain-syntax">(2);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>During these passes, some global state is kept here. This is not elegant,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>During these passes, some global state is kept here. This is not elegant,
 but saves a deal of passing parameters around.
 </p>
 
@@ -117,7 +117,7 @@ but saves a deal of passing parameters around.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pass_state is accessed in 3/ar, 4/tr, 4/uor, 4/dbtr, 5/ass, 5/ass2, 19/tc, 22/pav and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>Here's a tricky timing problem, or rather, here's the fix for it. Assemblies
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Here's a tricky timing problem, or rather, here's the fix for it. Assemblies
 are made when the kinds of objects are set, and they're made by inserting
 appropriate sentences. For instance, given the generalisation:
 </p>
@@ -150,7 +150,7 @@ any additional sentences generated.
 <span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse_nodep_from</span><span class="plain-syntax">(</span><span class="identifier-syntax">last</span><span class="plain-syntax">, </span><a href="3-ptmn.html#SP3" class="function-link"><span class="function-syntax">MajorNodes::visit</span></a><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">last</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Let us go, and make our visit:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Let us go, and make our visit:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -163,7 +163,7 @@ any additional sentences generated.
 <span class="plain-syntax">    </span><a href="27-cm.html#SP6" class="function-link"><span class="function-syntax">CompilationUnits::set_current_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>Headings cause us to begin a fresh topic of discussion, on a fresh piece of
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>Headings cause us to begin a fresh topic of discussion, on a fresh piece of
 paper, as it were: this wipes out any meanings of pronouns like "it" making
 anaphoric references to previous sentences. In other respects, headings are for
 organisation, and are not directly functional in themselves.
@@ -210,7 +210,7 @@ organisation, and are not directly functional in themselves.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1"></a><b>&#167;3.1.1.  </b>This is a little convoluted. The <a href="../linguistics-module/index.html" class="internal">linguistics</a> module turns sentences in
+<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b>This is a little convoluted. The <a href="../linguistics-module/index.html" class="internal">linguistics</a> module turns sentences in
 rule form into a <span class="extract"><span class="extract-syntax">RULE_NT</span></span> node followed by subsequent <span class="extract"><span class="extract-syntax">INVOCATION_NT</span></span> nodes,
 and the first call here makes them into a neat subtree. After that, we look
 out for adjectives defined by phrases, and for phrases with names, since
@@ -228,7 +228,7 @@ both will affect how we read sentences in passes 1 and 2.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3_1">&#167;3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_2"></a><b>&#167;3.1.2.  </b><span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> nodes are by far the most varied and difficult. In the pre-pass,
+<p class="commentary firstcommentary"><a id="SP3_1_2" class="paragraph-anchor"></a><b>&#167;3.1.2.  </b><span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> nodes are by far the most varied and difficult. In the pre-pass,
 we call <a href="3-cs.html#SP3" class="internal">Classifying::sentence</a> to have them diagrammed, which determines
 whether they have special or regular meanings.
 </p>
@@ -259,7 +259,7 @@ whether they have special or regular meanings.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3_1">&#167;3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_2_1"></a><b>&#167;3.1.2.1.  </b>Special meanings are handled just by calling the relevant SMF functions
+<p class="commentary firstcommentary"><a id="SP3_1_2_1" class="paragraph-anchor"></a><b>&#167;3.1.2.1.  </b>Special meanings are handled just by calling the relevant SMF functions
 with one of the following task codes. They don't get the benefit of
 "refinement" (see below) unless they arrange for it themselves.
 </p>
@@ -267,7 +267,7 @@ with one of the following task codes. They don't get the benefit of
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PASS_1_SMFT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PASS_2_SMFT</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1_2_2"></a><b>&#167;3.1.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on special meaning</span><span class="named-paragraph-number">3.1.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1_2_2" class="paragraph-anchor"></a><b>&#167;3.1.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on special meaning</span><span class="named-paragraph-number">3.1.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -277,7 +277,7 @@ with one of the following task codes. They don't get the benefit of
 <span class="plain-syntax">        </span><a href="3-ptmn.html#SP3_1_3" class="function-link"><span class="function-syntax">MajorNodes::try_special_meaning</span></a><span class="plain-syntax">(</span><span class="constant-syntax">PASS_2_SMFT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3_1_2">&#167;3.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_2_3"></a><b>&#167;3.1.2.3.  </b>Regular meanings are more subtle: on pass 1, we "refine" them, which means
+<p class="commentary firstcommentary"><a id="SP3_1_2_3" class="paragraph-anchor"></a><b>&#167;3.1.2.3.  </b>Regular meanings are more subtle: on pass 1, we "refine" them, which means
 identifying unparsed noun phrases. <a href="5-rpt.html#SP8" class="internal">Refiner::refine_coupling</a>
 returns <span class="extract"><span class="extract-syntax">TRUE</span></span> if it succeeds in this.
 </p>
@@ -304,14 +304,14 @@ two cases") and all others (such as "regular meaning are more subtle").
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3_1_2">&#167;3.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_3"></a><b>&#167;3.1.3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3_1_3" class="paragraph-anchor"></a><b>&#167;3.1.3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MajorNodes::try_special_meaning</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">MajorNodes::try_special_meaning</span></span>:<br/><a href="3-ptmn.html#SP3_1_2_2">&#167;3.1.2.2</a><br/>Using Nametags - <a href="6-un.html#SP2">&#167;2</a><br/>Construction Sequence - <a href="22-cs.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::call</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_special_meaning</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">), </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1_4"></a><b>&#167;3.1.4.  </b>A few "invention" sentences only come along later than the pre-pass, which
+<p class="commentary firstcommentary"><a id="SP3_1_4" class="paragraph-anchor"></a><b>&#167;3.1.4.  </b>A few "invention" sentences only come along later than the pre-pass, which
 means they miss out on being classified at that time. When that happens, the
 <a href="../syntax-module/index.html" class="internal">syntax</a> module signals us by calling this function:
 </p>
@@ -323,7 +323,7 @@ means they miss out on being classified at that time. When that happens, the
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="3-cs.html#SP3" class="function-link"><span class="function-syntax">Classifying::sentence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1_5"></a><b>&#167;3.1.5.  </b><span class="extract"><span class="extract-syntax">TRACE_NT</span></span> nodes result from asterisked sentences; this is a debugging feature of
+<p class="commentary firstcommentary"><a id="SP3_1_5" class="paragraph-anchor"></a><b>&#167;3.1.5.  </b><span class="extract"><span class="extract-syntax">TRACE_NT</span></span> nodes result from asterisked sentences; this is a debugging feature of
 Inform. An asterisk on its own toggles logging of work on sentences. An asterisk
 followed by double-quoted text is a note for the telemetry file.
 </p>
@@ -355,7 +355,7 @@ followed by double-quoted text is a note for the telemetry file.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-ptmn.html#SP3_1">&#167;3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">TRACING_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="3-ptmn.html#SP4" class="function-link"><span class="function-syntax">MajorNodes::trace_parsing</span></a>
 </pre>

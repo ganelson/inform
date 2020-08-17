@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#18">Chapter 18: List Data</a></li><li><b>List Constants</b></li></ul></div>
 <p class="purpose">In this section we compile I6 arrays for constant lists arising from braced literals.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Every literal list in the source text, such as
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Every literal list in the source text, such as
 </p>
 
 <blockquote>
@@ -100,7 +100,7 @@ braces and commas balance; and
 <span class="plain-syntax">} </span><span class="reserved-syntax">literal_list</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_list is accessed in 27/em and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>I believe "llath" is the Welsh word for "mile": not sure about "llist".
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>I believe "llath" is the Welsh word for "mile": not sure about "llist".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -111,7 +111,7 @@ braces and commas balance; and
 <span class="plain-syntax">} </span><span class="reserved-syntax">llist_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure llist_entry is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>One of the few pieces of Inform syntax which wouldn't look out of place in
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>One of the few pieces of Inform syntax which wouldn't look out of place in
 a conventional programming language; list constants are series of values,
 separated by commas, and enclosed in braces. The empty list <span class="extract"><span class="extract-syntax">{ }</span></span> is valid
 as a constant.
@@ -136,7 +136,7 @@ isn't expressed in this grammar.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, Specifications::new_UNKNOWN(W) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The grammar above builds our list structures from the bottom up. They begin
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The grammar above builds our list structures from the bottom up. They begin
 with a call to:
 </p>
 
@@ -158,7 +158,7 @@ with a call to:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ll</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Parsing is quadratic in the number of constant lists in the source text,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Parsing is quadratic in the number of constant lists in the source text,
 which is in principle a bad thing, but in practice the following causes no
 speed problems even on large-scale tests. If it becomes a problem, we can
 easily trade the time spent here for memory, by attaching a pointer to
@@ -175,7 +175,7 @@ of binary search tree.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Note that the entry kind is initially unknown, and it's not even decided
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Note that the entry kind is initially unknown, and it's not even decided
 for sure when we add the first entry. Here's how each entry is added,
 recursing right to left (i.e., reversing the direction of reading):
 </p>
@@ -193,7 +193,7 @@ recursing right to left (i.e., reversing the direction of reading):
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ll</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>With all the entries in place, we now have to reconcile their kinds, if
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>With all the entries in place, we now have to reconcile their kinds, if
 that's possible. Problems are only issued on request, and with the current
 sentence cut down to just the list itself &mdash; since otherwise we might be
 printing out an entire huge table to report a problem in a single entry
@@ -227,10 +227,10 @@ which happens to be a malformed list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kinds_known_to_be_inconsistent</span><span class="plain-syntax">) </span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_nil</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">entry_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cs</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::unary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::unary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_list_of</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the entry kind E</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the entry kind E</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -252,7 +252,7 @@ which happens to be a malformed list.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>The following broadens K to include E, if necessary, but never narrows K.
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>The following broadens K to include E, if necessary, but never narrows K.
 Thus a list containing a person, a woman and a door will see K become
 successively "person", "person" (E being narrower), then "thing" (E being
 incomparable, and "thing" being the max of "person" and "door").
@@ -271,7 +271,7 @@ incomparable, and "thing" being the max of "person" and "door").
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_1"></a><b>&#167;7.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a bad list entry problem</span><span class="named-paragraph-number">7.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1_1" class="paragraph-anchor"></a><b>&#167;7.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a bad list entry problem</span><span class="named-paragraph-number">7.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -287,7 +287,7 @@ incomparable, and "thing" being the max of "person" and "door").
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP7_1">&#167;7.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_2"></a><b>&#167;7.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a nonconstant list entry problem</span><span class="named-paragraph-number">7.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1_2" class="paragraph-anchor"></a><b>&#167;7.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a nonconstant list entry problem</span><span class="named-paragraph-number">7.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -302,7 +302,7 @@ incomparable, and "thing" being the max of "person" and "door").
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a list entry kind mismatch problem</span><span class="named-paragraph-number">7.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_1" class="paragraph-anchor"></a><b>&#167;7.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a list entry kind mismatch problem</span><span class="named-paragraph-number">7.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -318,7 +318,7 @@ incomparable, and "thing" being the max of "person" and "door").
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following allow other parts of Inform to find the kind of a constant
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The following allow other parts of Inform to find the kind of a constant
 list at a given word position; either to discover the answer, or to force
 problem messages out into the open &mdash;
 </p>
@@ -337,7 +337,7 @@ problem messages out into the open &mdash;
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ll</span><span class="plain-syntax">) </span><a href="18-lc.html#SP7" class="function-link"><span class="function-syntax">Lists::kind_of_ll</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ll</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And this checks every list, with problem messages on:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And this checks every list, with problem messages on:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -349,7 +349,7 @@ problem messages out into the open &mdash;
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>That leaves just the compilation of lists at run-time. This used to be a
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>That leaves just the compilation of lists at run-time. This used to be a
 complex dance with initialisation code interleaved with heap construction,
 so there was once a two-page explanation here, but it is now blessedly simple.
 </p>
@@ -379,7 +379,7 @@ so there was once a two-page explanation here, but it is now blessedly simple.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ll_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Using:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Using:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -396,7 +396,7 @@ so there was once a two-page explanation here, but it is now blessedly simple.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b>These are I6 word arrays, with the contents:
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>These are I6 word arrays, with the contents:
 </p>
 
 <ul class="items"><li>(a) a zero word, used as a flag at run-time;
@@ -425,7 +425,7 @@ the list!);
 <span class="plain-syntax">    </span><a href="27-em.html#SP3" class="function-link"><span class="function-syntax">Emit::array_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="18-lc.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The default list of any given kind is empty.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The default list of any given kind is empty.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

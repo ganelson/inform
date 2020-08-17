@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tnt.html#SP3">&#167;3. Plugin startup</a></li><li><a href="3-tnt.html#SP4">&#167;4. Recognising significant properties</a></li><li><a href="3-tnt.html#SP6">&#167;6. Proper named, plural named, definite article</a></li><li><a href="3-tnt.html#SP8">&#167;8. Transferring name details</a></li><li><a href="3-tnt.html#SP9">&#167;9. Private naming</a></li><li><a href="3-tnt.html#SP10">&#167;10. Model completion</a></li><li><a href="3-tnt.html#SP14">&#167;14. The adaptive person</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>A few properties are treated specially by Inform, and need to have their
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>A few properties are treated specially by Inform, and need to have their
 references stored in global variables. They are set as they are created,
 during the parsing of assertions in the Standard Rules.
 </p>
@@ -86,7 +86,7 @@ during the parsing of assertions in the Standard Rules.
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_cap_short_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_adaptive_text_viewpoint</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We need to accumulate routines used for naming properties in a separate
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We need to accumulate routines used for naming properties in a separate
 stream, though there aren't very many of them.
 </p>
 
@@ -101,7 +101,7 @@ stream, though there aren't very many of them.
 <span class="plain-syntax">} </span><span class="reserved-syntax">short_name_notice</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure short_name_notice is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Plugin startup. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Plugin startup. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Naming::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -109,7 +109,7 @@ stream, though there aren't very many of them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_COMPLETE_MODEL</span><span class="plain-syntax">, </span><a href="3-tnt.html#SP10" class="function-link"><span class="function-syntax">PL::Naming::naming_complete_model</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Recognising significant properties. </b>These are property names to do with naming which Inform provides special
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Recognising significant properties. </b>These are property names to do with naming which Inform provides special
 support for; it recognises the English names when they are defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
@@ -128,7 +128,7 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">female</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Naming::naming_new_property_notify</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Naming::naming_new_property_notify</span></span>:<br/><a href="3-tnt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
@@ -151,7 +151,7 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Proper named, plural named, definite article. </b>Only objects can be proper-named or plural-named, so we do nothing if told by
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Proper named, plural named, definite article. </b>Only objects can be proper-named or plural-named, so we do nothing if told by
 the Creator to make something else have a proper name.
 </p>
 
@@ -173,7 +173,7 @@ the Creator to make something else have a proper name.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">LIKELY_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>It's a rather ugly fact of Inform 6 life that we indicate something is
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>It's a rather ugly fact of Inform 6 life that we indicate something is
 unique, yet not proper-named, by giving it the indefinite article "the";
 thus the following routine is called for creations of directions ("the north")
 and where "called..." absolutely requires the definite article ("There is
@@ -191,7 +191,7 @@ a room called the Counting House").
 <span class="plain-syntax">    </span><span class="identifier-syntax">Properties::Valued::assert</span><span class="plain-syntax">(</span><span class="identifier-syntax">P_article</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_of_word_the</span><span class="plain-syntax">, </span><span class="identifier-syntax">LIKELY_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Transferring name details. </b>This is needed when assemblies name one new creation after another; for instance,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Transferring name details. </b>This is needed when assemblies name one new creation after another; for instance,
 "Cleopatra's nose" must be proper-named because "Cleopatra" is.
 </p>
 
@@ -212,7 +212,7 @@ a room called the Counting House").
 <span class="plain-syntax">            </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Private naming. </b>"Privately named" is a property which affects the parsing of commands; all
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Private naming. </b>"Privately named" is a property which affects the parsing of commands; all
 we do here is provide its state on request.
 </p>
 
@@ -224,7 +224,7 @@ we do here is provide its state on request.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Model completion. </b>Quite a lot of work is entailed in producing all of the necessary I6 properties
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Model completion. </b>Quite a lot of work is entailed in producing all of the necessary I6 properties
 to fill in the naming details for objects, so here goes.
 </p>
 
@@ -234,7 +234,7 @@ to fill in the naming details for objects, so here goes.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>Stage 3 of world model completion is adding properties not inferred directly
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>Stage 3 of world model completion is adding properties not inferred directly
 from sentences, and this can include I6 properties with no I7 analogue.
 </p>
 
@@ -269,7 +269,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_1"></a><b>&#167;10.1.1.  </b>This was added in beta-testing when it turned out that mistakes in coding
+<p class="commentary firstcommentary"><a id="SP10_1_1" class="paragraph-anchor"></a><b>&#167;10.1.1.  </b>This was added in beta-testing when it turned out that mistakes in coding
 sometimes created unlikely objects: for example, "In the Building is a
 person called Wallace, Gromit Too." creates a single object. Its name contains
 a comma, and that's caught here:
@@ -305,7 +305,7 @@ a comma, and that's caught here:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1">&#167;10.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2"></a><b>&#167;10.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the printed name property</span><span class="named-paragraph-number">10.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1_2" class="paragraph-anchor"></a><b>&#167;10.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the printed name property</span><span class="named-paragraph-number">10.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -325,7 +325,7 @@ a comma, and that's caught here:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_1"></a><b>&#167;10.1.2.1.  </b>The I7 property "printed name" translates to I6 <span class="extract"><span class="extract-syntax">short_name</span></span>.
+<p class="commentary firstcommentary"><a id="SP10_1_2_1" class="paragraph-anchor"></a><b>&#167;10.1.2.1.  </b>The I7 property "printed name" translates to I6 <span class="extract"><span class="extract-syntax">short_name</span></span>.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the I6 short-name property</span><span class="named-paragraph-number">10.1.2.1</span></span><span class="comment-syntax"> =</span>
@@ -347,7 +347,7 @@ a comma, and that's caught here:
 <span class="plain-syntax">            </span><span class="identifier-syntax">Rvalues::from_unescaped_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">Feeds::feed_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">PROP</span><span class="plain-syntax">)), </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2">&#167;10.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_2"></a><b>&#167;10.1.2.2.  </b>The I6 <span class="extract"><span class="extract-syntax">cap_short_name</span></span> has no corresponding property in I7. Note that it's
+<p class="commentary firstcommentary"><a id="SP10_1_2_2" class="paragraph-anchor"></a><b>&#167;10.1.2.2.  </b>The I6 <span class="extract"><span class="extract-syntax">cap_short_name</span></span> has no corresponding property in I7. Note that it's
 only needed if the object is named after something else which might need it,
 or if it's a proper-named object which begins with a lower-case letter. (This
 actually means it's rarely needed.)
@@ -384,7 +384,7 @@ actually means it's rarely needed.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2">&#167;10.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_1_1"></a><b>&#167;10.1.2.1.1.  </b>Note that it is important here to preserve the cases of the original
+<p class="commentary firstcommentary"><a id="SP10_1_2_1_1" class="paragraph-anchor"></a><b>&#167;10.1.2.1.1.  </b>Note that it is important here to preserve the cases of the original
 source text description, so that "Mr Beebe" will not be flattened to "mr
 beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
@@ -397,14 +397,14 @@ to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 <span class="plain-syntax">    </span><a href="3-tnt.html#SP12" class="function-link"><span class="function-syntax">PL::Naming::compose_words_to_I6_naming_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">PROP</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, (</span><span class="identifier-syntax">this_is_a_room</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2_1">&#167;10.1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_2_1"></a><b>&#167;10.1.2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose the I6 cap-short-name as a piece of text</span><span class="named-paragraph-number">10.1.2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1_2_2_1" class="paragraph-anchor"></a><b>&#167;10.1.2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose the I6 cap-short-name as a piece of text</span><span class="named-paragraph-number">10.1.2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="3-tnt.html#SP12" class="function-link"><span class="function-syntax">PL::Naming::compose_words_to_I6_naming_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">PROP</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, (</span><span class="identifier-syntax">this_is_a_room</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2_2">&#167;10.1.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_1_2"></a><b>&#167;10.1.2.1.2.  </b>The following need to be routines so that the printed name will dynamically
+<p class="commentary firstcommentary"><a id="SP10_1_2_1_2" class="paragraph-anchor"></a><b>&#167;10.1.2.1.2.  </b>The following need to be routines so that the printed name will dynamically
 change if the owner changes its own printed name during play: e.g. if the
 "masked maiden" changes to "Cleopatra", then "masked maiden's nose"
 must become "Cleopatra's nose", or at least several bug-reporters thought
@@ -424,7 +424,7 @@ so. These routines allow that to happen.
 <span class="plain-syntax">    </span><span class="identifier-syntax">faux</span><span class="plain-syntax"> = </span><span class="identifier-syntax">notice</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">snn_iname</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2_1">&#167;10.1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_2_2_2"></a><b>&#167;10.1.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name</span><span class="named-paragraph-number">10.1.2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1_2_2_2" class="paragraph-anchor"></a><b>&#167;10.1.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name</span><span class="named-paragraph-number">10.1.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -437,7 +437,7 @@ so. These routines allow that to happen.
 <span class="plain-syntax">    </span><span class="identifier-syntax">faux</span><span class="plain-syntax"> = </span><span class="identifier-syntax">notice</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">snn_iname</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1_2_2">&#167;10.1.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_3"></a><b>&#167;10.1.3.  </b>Lastly, then. We don't give this to kinds of room, because it's never necessary
+<p class="commentary firstcommentary"><a id="SP10_1_3" class="paragraph-anchor"></a><b>&#167;10.1.3.  </b>Lastly, then. We don't give this to kinds of room, because it's never necessary
 to pluralise them at run-time in practice, so it would carry an unnecessary cost
 in Z-machine memory. We don't give it to "thing" because this would be too
 vague, and might cause Inform at run-time to spuriously group unrelated things
@@ -461,7 +461,7 @@ together in lists.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1_4"></a><b>&#167;10.1.4.  </b>The following isn't done in English.
+<p class="commentary firstcommentary"><a id="SP10_1_4" class="paragraph-anchor"></a><b>&#167;10.1.4.  </b>The following isn't done in English.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert male, female, neuter adjectives from grammatical gender</span><span class="named-paragraph-number">10.1.4</span></span><span class="comment-syntax"> =</span>
@@ -488,7 +488,7 @@ together in lists.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tnt.html#SP10_1">&#167;10.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>We needed the following utility above. Note that only printed names
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>We needed the following utility above. Note that only printed names
 inferred from sentences count here &mdash; not printed names added in model
 completion. (This is important because we might be working on these objects
 in any order, and might have completed X but not Y where either X is named
@@ -508,7 +508,7 @@ after Y or vice versa.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And here we transcribe a word range to text suitable for an I6 property,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>And here we transcribe a word range to text suitable for an I6 property,
 capitalising and fixing "your" as needed.
 </p>
 
@@ -542,7 +542,7 @@ capitalising and fixing "your" as needed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Finally:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Finally:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -619,7 +619,7 @@ capitalising and fixing "your" as needed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. The adaptive person. </b>The following is only relevant for the language of play, whose extension will
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The adaptive person. </b>The following is only relevant for the language of play, whose extension will
 always be read in. That in turn is expected to contain a declaration like
 this one:
 </p>

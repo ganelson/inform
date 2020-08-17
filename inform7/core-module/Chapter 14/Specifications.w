@@ -112,7 +112,7 @@ is called "new-variable-like".
 
 =
 parse_node *Specifications::new_new_variable_like(kind *K) {
-	K = Kinds::unary_construction(CON_variable, K);
+	K = Kinds::unary_con(CON_variable, K);
 	parse_node *spec = Specifications::from_kind(K);
 	return spec;
 }

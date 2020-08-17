@@ -126,13 +126,13 @@ and the other operand is promoted from integer to real if necessary.
 			if (promote_Y) Kinds::FloatingPoint::end_flotation_emit(KY);
 		Produce::up(Emit::tree());
 	} else {
-		Kinds::Dimensions::kind_rescale_multiplication_emit_op(KX, KY);
+		Kinds::Scalings::rescale_multiplication_emit_op(KX, KY);
 		Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 		Produce::down(Emit::tree());
 			@<Emit the X-operand@>;
 			@<Emit the Y-operand@>;
 		Produce::up(Emit::tree());
-		Kinds::Dimensions::kind_rescale_multiplication_emit_factor(KX, KY);
+		Kinds::Scalings::rescale_multiplication_emit_factor(KX, KY);
 	}
 
 @<Emit divide@> =
@@ -149,9 +149,9 @@ and the other operand is promoted from integer to real if necessary.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(INTEGERDIVIDE_HL));
 		Produce::down(Emit::tree());
-			Kinds::Dimensions::kind_rescale_division_emit_op(KX, KY);
+			Kinds::Scalings::rescale_division_emit_op(KX, KY);
 			@<Emit the X-operand@>;
-			Kinds::Dimensions::kind_rescale_division_emit_factor(KX, KY);
+			Kinds::Scalings::rescale_division_emit_factor(KX, KY);
 			@<Emit the Y-operand@>;
 		Produce::up(Emit::tree());
 	}
@@ -203,9 +203,9 @@ and the other operand is promoted from integer to real if necessary.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(SQUAREROOT_HL));
 		Produce::down(Emit::tree());
-			Kinds::Dimensions::kind_rescale_root_emit_op(KX, 2);
+			Kinds::Scalings::rescale_root_emit_op(KX, 2);
 			@<Emit the X-operand@>;
-			Kinds::Dimensions::kind_rescale_root_emit_factor(KX, 2);
+			Kinds::Scalings::rescale_root_emit_factor(KX, 2);
 		Produce::up(Emit::tree());
 	}
 
@@ -218,9 +218,9 @@ and the other operand is promoted from integer to real if necessary.
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CUBEROOT_HL));
 		Produce::down(Emit::tree());
-			Kinds::Dimensions::kind_rescale_root_emit_op(KX, 3);
+			Kinds::Scalings::rescale_root_emit_op(KX, 3);
 			@<Emit the X-operand@>;
-			Kinds::Dimensions::kind_rescale_root_emit_factor(KX, 3);
+			Kinds::Scalings::rescale_root_emit_factor(KX, 3);
 		Produce::up(Emit::tree());
 	}
 
@@ -271,7 +271,7 @@ always be small, partly because of the need for scaling to come out right.
 		if (p <= 0) Equations::enode_compilation_error(eqn, EY);
 		else {
 			for (int i=1; i<p; i++) {
-				Kinds::Dimensions::kind_rescale_multiplication_emit_op(KX, KX);
+				Kinds::Scalings::rescale_multiplication_emit_op(KX, KX);
 				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
 				Produce::down(Emit::tree());
 					@<Emit the X-operand@>;
@@ -279,7 +279,7 @@ always be small, partly because of the need for scaling to come out right.
 			@<Emit the X-operand@>;
 			for (int i=1; i<p; i++) {
 				Produce::up(Emit::tree());
-				Kinds::Dimensions::kind_rescale_multiplication_emit_factor(KX, KX);
+				Kinds::Scalings::rescale_multiplication_emit_factor(KX, KX);
 			}
 		}
 	}

@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="12-is.html#SP3">&#167;3. Building schemas</a></li><li><a href="12-is.html#SP4">&#167;4. Emptiness</a></li><li><a href="12-is.html#SP5">&#167;5. Expansion</a></li><li><a href="12-is.html#SP9">&#167;9. Logging schemas</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>An I6 schema is an intermediate-level code for the final stages of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>An I6 schema is an intermediate-level code for the final stages of
 compiling to Inform 6 syntax. Its "prototype" is a C string encoded as
 ISO Latin-1, in which the asterisk <span class="extract"><span class="extract-syntax">*</span></span> acts as an escape character.
 </p>
@@ -106,7 +106,7 @@ legal in a schema. Attempting to expand it will cause an internal error.
 error.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The I6 schema structure is very simple, then:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The I6 schema structure is very simple, then:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">TYPICAL_I6_SCHEMA_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">128</span><span class="plain-syntax"> </span><span class="comment-syntax"> in fact 40 is plenty</span>
@@ -121,7 +121,7 @@ error.
 <span class="plain-syntax">} </span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure i6_schema is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Building schemas. </b>The following makes up a new schema from a <span class="extract"><span class="extract-syntax">printf</span></span>-style formatted string:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Building schemas. </b>The following makes up a new schema from a <span class="extract"><span class="extract-syntax">printf</span></span>-style formatted string:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_I6_SCHEMA_ATTEMPT</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span><span class="plain-syntax"> </span><span class="comment-syntax"> plenty of room for conjectural schema overruns</span>
@@ -141,7 +141,7 @@ error.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>And this is a variation for modifying an existing schema:
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>And this is a variation for modifying an existing schema:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -155,7 +155,7 @@ error.
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSchemas::from_i6s</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">), </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_quoted_inames</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">quoted_inames</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>And another:
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>And another:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -167,7 +167,7 @@ error.
 <span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterSchemas::from_i6s</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">prototype</span><span class="plain-syntax">), </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_quoted_inames</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">sch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">quoted_inames</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b>Either way, the schema's prototype is written as follows:
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b>Either way, the schema's prototype is written as follows:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Process the varargs into schema prototype text</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
@@ -184,7 +184,7 @@ error.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-is.html#SP3">&#167;3</a>, <a href="12-is.html#SP3_1">&#167;3.1</a>, <a href="12-is.html#SP3_2">&#167;3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_1"></a><b>&#167;3.3.1.  </b>We recognise only a few escapes here: <span class="extract"><span class="extract-syntax">%%</span></span>, a literal percentage sign; <span class="extract"><span class="extract-syntax">%d</span></span>,
+<p class="commentary firstcommentary"><a id="SP3_3_1" class="paragraph-anchor"></a><b>&#167;3.3.1.  </b>We recognise only a few escapes here: <span class="extract"><span class="extract-syntax">%%</span></span>, a literal percentage sign; <span class="extract"><span class="extract-syntax">%d</span></span>,
 an integer; <span class="extract"><span class="extract-syntax">%s</span></span>, a C string; <span class="extract"><span class="extract-syntax">%S</span></span>, a text stream; and <span class="extract"><span class="extract-syntax">%k</span></span>, a kind ID.
 </p>
 
@@ -215,7 +215,7 @@ an integer; <span class="extract"><span class="extract-syntax">%s</span></span>,
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-is.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Emptiness. </b>A schema is empty if its prototype is the null string.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Emptiness. </b>A schema is empty if its prototype is the null string.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -225,7 +225,7 @@ an integer; <span class="extract"><span class="extract-syntax">%s</span></span>,
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Expansion. </b>We provide two routines as a sort of API for expanding schemas. The user can
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Expansion. </b>We provide two routines as a sort of API for expanding schemas. The user can
 either specify two parameters, both of them terms...
 </p>
 
@@ -277,7 +277,7 @@ either specify two parameters, both of them terms...
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure i6s_emission_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::sch_emit_inner</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::sch_emit_inner</span></span>:<br/><a href="12-is.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="reserved-syntax">i6s_emission_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ems</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_mode</span><span class="plain-syntax">) {</span>
@@ -332,7 +332,7 @@ either specify two parameters, both of them terms...
 <span class="plain-syntax">    </span><span class="constant-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform substitution</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform substitution</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -367,14 +367,14 @@ either specify two parameters, both of them terms...
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-is.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform current sentence</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform current sentence</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Seems possible after all"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-is.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform combine</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform combine</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -405,7 +405,7 @@ either specify two parameters, both of them terms...
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-is.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::sch_emit_parameter</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::sch_emit_parameter</span></span>:<br/><a href="12-is.html#SP6_1">&#167;6.1</a>, <a href="12-is.html#SP6_3">&#167;6.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">,</span>
@@ -447,7 +447,7 @@ either specify two parameters, both of them terms...
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Last and very much least: in case we receive an untypechecked term, we fill
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Last and very much least: in case we receive an untypechecked term, we fill
 in its kind.
 </p>
 
@@ -457,7 +457,7 @@ in its kind.
 <span class="plain-syntax">        </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">term_checked_as_kind</span><span class="plain-syntax"> = </span><a href="14-sp.html#SP1" class="function-link"><span class="function-syntax">Specifications::to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Logging schemas. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Logging schemas. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Schemas::log</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Calculus::Schemas::log</span></span>:<br/>Core Module - <a href="1-cm.html#SP5">&#167;5</a>, <a href="1-cm.html#SP6_6">&#167;6.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) {</span>

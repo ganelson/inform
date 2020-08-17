@@ -74,7 +74,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="11-itpc.html#SP2">&#167;2. Why predicate calculus</a></li><li><a href="11-itpc.html#SP4">&#167;4. Formal description</a></li><li><a href="11-itpc.html#SP7">&#167;7. Free and bound variables, well-formedness</a></li><li><a href="11-itpc.html#SP8">&#167;8. The scope of quantifiers</a></li><li><a href="11-itpc.html#SP10">&#167;10. What is not in our calculus</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>"Again and again Haddon thought he had found the key to the strange writings,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"Again and again Haddon thought he had found the key to the strange writings,
 but always he was disappointed. And then one day &mdash; he was an old man of seventy
 now &mdash; he fed a trial programme into his computer, and for the first time a
 translated sentence was delivered &mdash; his life-long task was rewarded. Yes,
@@ -84,7 +84,7 @@ never have been given to the world. WHAT FOLLOWS IS THAT STORY."
 ("The Rise and Fall of the Trigan Empire", 1965)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Why predicate calculus. </b>Most attempts to codify the meaning of sentences in any systematic way
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Why predicate calculus. </b>Most attempts to codify the meaning of sentences in any systematic way
 involve predicate calculus, and most people generally seem to agree
 that linguistic concepts (like verbs, adjectives, and determiners)
 correspond uncannily well with logical ones (like binary predicates,
@@ -122,7 +122,7 @@ type-checker, a piece of the code for asserting the initial state of
 play, and so on. Well: but the overlap had to go somewhere.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A glimpse of Inform's inner workings can be made by writing a test
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A glimpse of Inform's inner workings can be made by writing a test
 instruction like so:
 </p>
 
@@ -148,7 +148,7 @@ One can similarly "Test description (internal) with..." for any description,
 such as "animals which are in lighted rooms".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Formal description. </b>There are many flavours of predicate calculus, and though they behave in
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Formal description. </b>There are many flavours of predicate calculus, and though they behave in
 broadly similar ways, the details vary in practice. Inform's calculus
 is unusual in several respects, so here is its definition.
 </p>
@@ -178,7 +178,7 @@ moments, this sentence is sometimes true and sometimes false. But its
 meaning does not change.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The propositions in our predicate calculus are those which can be made
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The propositions in our predicate calculus are those which can be made
 using the following ingredients and recipes.
 </p>
 
@@ -315,7 +315,7 @@ proposition \(\phi\) in which \(v\) is a "free" variable (see below),
 possible values of \(v\) matching the condition \(\phi(v)\), and this specifies
 the range of the quantifier.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Note that there are two ways in which propositions can appear in brackets
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Note that there are two ways in which propositions can appear in brackets
 in a bigger proposition: negation (d), and specifying a quantification
 domain (g). We sometimes call the bracketed part a "subexpression" of the
 whole.
@@ -353,7 +353,7 @@ $$ \exists x: {\it number}(x)\land {\it even}(x) $$
 specifies a domain for a \(\exists\) quantifier.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Free and bound variables, well-formedness. </b>In any proposition \(\phi\), we say that a variable \(v\) is "bound" if it
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Free and bound variables, well-formedness. </b>In any proposition \(\phi\), we say that a variable \(v\) is "bound" if it
 appears as the variable governed by a quantifier: it is "free" if it
 does appear somewhere in \(\phi\) &mdash; either directly as a term or indirectly
 through a function application &mdash; and is not bound. For instance, in
@@ -378,7 +378,7 @@ $$ \lnot ( \exists v : {\it closed}(v) ) \land {\it openable}(v) $$
 case, outside the negation brackets).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. The scope of quantifiers. </b>A quantifier introduces a variable into a proposition which would not
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The scope of quantifiers. </b>A quantifier introduces a variable into a proposition which would not
 otherwise be there, and it exists only for a limited range. For instance, in
 the proposition
 $$ {\it open}(x)\land\lnot(\exists y: {\it in}(x, y))\land {\it container}(x) $$
@@ -390,7 +390,7 @@ which it is created. If the quantifier is outside of any brackets, then the
 variable lasts until the end of the proposition.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Earlier drafts of Inform played games with moving quantifiers around, in
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Earlier drafts of Inform played games with moving quantifiers around, in
 order to try to achieve more efficiently compiled propositions. The same
 thing is now done by building propositions in a way which places quantifiers
 as far forwards as possible, so we no longer actively move them once they
@@ -415,7 +415,7 @@ only be satisfied if at least one case of \(x\) works, and here every case of
 the same evaluation in this case, too.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. What is not in our calculus. </b>The significant thing missing is disjunction. In general, the
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. What is not in our calculus. </b>The significant thing missing is disjunction. In general, the
 disjunction \(\phi\lor\psi\) &mdash; "at least one of \(\phi\) and \(\psi\)
 holds" &mdash; is not a proposition.
 </p>

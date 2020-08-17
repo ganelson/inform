@@ -380,12 +380,12 @@ i6_schema *BinaryPredicates::get_term_function(bp_term_details *bptd) {
 
 =
 kind *BinaryPredicates::kind(binary_predicate *bp) {
-	if (bp == R_equality) return Kinds::binary_construction(CON_relation, K_value, K_value);
+	if (bp == R_equality) return Kinds::binary_con(CON_relation, K_value, K_value);
 	kind *K0 = BinaryPredicates::kind_of_term(&(bp->term_details[0]));
 	kind *K1 = BinaryPredicates::kind_of_term(&(bp->term_details[1]));
 	if (K0 == NULL) K0 = K_object;
 	if (K1 == NULL) K1 = K_object;
-	return Kinds::binary_construction(CON_relation, K0, K1);
+	return Kinds::binary_con(CON_relation, K0, K1);
 }
 
 @ The kind of a term is:

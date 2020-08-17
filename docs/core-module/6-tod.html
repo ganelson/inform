@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="6-tod.html#SP5">&#167;5. Parsing</a></li><li><a href="6-tod.html#SP8">&#167;8. Parsing event rules</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>"Men can do nothing without the make-believe of a beginning. Even Science,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"Men can do nothing without the make-believe of a beginning. Even Science,
 the strict measurer, is obliged to start with a make-believe unit, and must fix
 on a point in the stars' unceasing journey when his sidereal clock shall pretend
 that time is at Nought. His less accurate grandmother Poetry has always been
@@ -104,14 +104,14 @@ have objected.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::TimesOfDay::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::TimesOfDay::start</span></span>:<br/>Plugins - <a href="26-pl.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_NEW_BASE_KIND_NOTIFY</span><span class="plain-syntax">, </span><a href="6-tod.html#SP3" class="function-link"><span class="function-syntax">PL::TimesOfDay::times_new_base_kind_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::TimesOfDay::times_new_base_kind_notify</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PL::TimesOfDay::times_new_base_kind_notify</span></span>:<br/><a href="6-tod.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_base</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -121,14 +121,14 @@ have objected.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="function-syntax">PL::TimesOfDay::kind</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PL::TimesOfDay::kind</span></span>:<br/>Compile Arithmetic - <a href="13-ca.html#SP1">&#167;1</a><br/>RValues - <a href="14-rv.html#SP12">&#167;12</a><br/>Lvalues - <a href="14-lv.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Parsing. </b>Although they are eventually stored in variables of the same kind ("time"),
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Parsing. </b>Although they are eventually stored in variables of the same kind ("time"),
 relative and absolute times are parsed differently &mdash; they really are not
 linguistically the same thing at all.
 </p>
@@ -153,7 +153,7 @@ linguistically the same thing at all.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">pm</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>Note that we allow "12:01 AM" (one minute past midnight) and "12:01 PM"
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>Note that we allow "12:01 AM" (one minute past midnight) and "12:01 PM"
 (ditto noon), and also "0:01 AM" and "00:01 AM", but not "0:01 PM".
 Lawrence Sanders's sci-fi thriller "The Tomorrow File", if that can be
 mentioned on the same page as "Daniel Deronda", had a terrific cover of
@@ -173,7 +173,7 @@ a digital clock glowing with "24:01" &mdash; but we won't allow that, either.
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">time_minutes</span><span class="plain-syntax"> + </span><span class="constant-syntax">60</span><span class="plain-syntax">*</span><span class="identifier-syntax">time_hours</span><span class="plain-syntax"> + </span><span class="identifier-syntax">time_cycles</span><span class="plain-syntax">, - };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-tod.html#SP5">&#167;5</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>These are times of day written in the style of a digital clock: "00:00",
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>These are times of day written in the style of a digital clock: "00:00",
 "5:21", "17:21". The syntax must be one or two digits, followed by a
 colon, followed by exactly two digits; it is permissible for the first of
 two digits to be zero; when that is discarded, the hours part must be in
@@ -205,7 +205,7 @@ the range 0 to 23, and the minutes part in the range 0 to 59.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And these are the Continental equivalent, with an "h" instead of
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And these are the Continental equivalent, with an "h" instead of
 the colon: thus "16h15" for quarter past four in the afternoon. (The
 standard English grammar doesn't use this, but translators might want to.)
 </p>
@@ -235,7 +235,7 @@ standard English grammar doesn't use this, but translators might want to.)
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Parsing event rules. </b>The following is used to parse the preamble to rules which take place at
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Parsing event rules. </b>The following is used to parse the preamble to rules which take place at
 a specific time of day, or when a named event occurs.
 </p>
 
@@ -247,7 +247,7 @@ a specific time of day, or when a named event occurs.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="6-tod.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_AtWithoutTime problem</span><span class="named-paragraph-number">8.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtTimeThat problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtTimeThat problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -259,7 +259,7 @@ a specific time of day, or when a named event occurs.
 <span class="plain-syntax">        </span><span class="string-syntax">"event takes place, as in 'At the time when the clock chimes: ...'.)"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-tod.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtWithoutTime problem</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtWithoutTime problem</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

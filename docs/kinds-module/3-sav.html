@@ -80,19 +80,268 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">kinds</a></li><li><a href="index.html#3">Chapter 3: Arithmetic</a></li><li><b>Scaled Arithmetic Values</b></li></ul></div>
 <p class="purpose">To manage the scalings and offsets used when storing arithmetic values at run-time, and/or when using scaled units to refer to them.</p>
 
-<ul class="toc"><li><a href="3-sav.html#SP5">&#167;5. Logging</a></li><li><a href="3-sav.html#SP6">&#167;6. Definition</a></li><li><a href="3-sav.html#SP9">&#167;9. Enlarging and contracting</a></li><li><a href="3-sav.html#SP10">&#167;10. Using scalings</a></li><li><a href="3-sav.html#SP13">&#167;13. Scaled arithmetic at compile-time</a></li><li><a href="3-sav.html#SP16">&#167;16. Scaled arithmetic at run-time</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-sav.html#SP1">&#167;1. Scaling</a></li><li><a href="3-sav.html#SP6">&#167;6. Scaling transformations</a></li><li><a href="3-sav.html#SP10">&#167;10. Logging</a></li><li><a href="3-sav.html#SP11">&#167;11. Definition</a></li><li><a href="3-sav.html#SP14">&#167;14. Enlarging and contracting</a></li><li><a href="3-sav.html#SP15">&#167;15. Using scalings</a></li><li><a href="3-sav.html#SP18">&#167;18. Scaled arithmetic at compile-time</a></li><li><a href="3-sav.html#SP21">&#167;21. Scaled arithmetic at run-time</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Some literal patterns allow us to give values using scaled units. For
-example, "1 g" and "1 kg" might both define constant values of the same
-kind, but the "1" is read differently in the two cases: it's worth 1000
-times as much in the second case.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scaling. </b>Quasinumerical kinds are sometimes stored using scaled, fixed-point
+arithmetic. In general for each named unit \(U\) (fundamental or derived) there
+is a positive integer \(k_U\) such that the true value \(v\) is stored at run-time
+as the I6 integer \(k_U v\). We call this the scaled value.
 </p>
 
-<p class="commentary">A "scaling transformation" defines the relationship between the number
+<p class="commentary">For example, if the text reads:
+</p>
+
+<blockquote>
+    <p>Force is a kind of value. 1N specifies a force scaled up by 1000.</p>
+</blockquote>
+
+<p class="commentary">then \(k = 1000\) and the value 1N will be stored at run-time as <span class="extract"><span class="extract-syntax">1000</span></span>;
+forces can thus be calculated to a true value accuracy of at best 0.001N,
+stored at run-time as <span class="extract"><span class="extract-syntax">1</span></span>.
+</p>
+
+<p class="commentary">It must be emphasised that this is scaled, fixed-point arithmetic: there
+are no mantissas or exponents. In such schemes the scale factor is usually
+\(2^{16}\) or some similar power of 2, but here we want to use exactly the
+scale factors laid out by the source text &mdash; partly because the user
+knows best, partly so that it is unambiguous how to print values, partly
+so that source text like "0.001N" determines an exact value rather than
+being approximated by a binary equivalent.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Scaled values have no effect on how we add, subtract, approximate (that is,
+round off) or take remainder after division. If we have true values \(v_1\) and
+\(v_2\) with scaled values \(s_1\) and \(s_2\), and \(s_o\) is the scaled value for
+true value \(v_1+v_2\), then
+</p>
+
+<p class="commentary">$$ s_1 + s_2 = k_Uv_1 + k_Uv_2 = k_U(v_1+v_2) = s_o. $$
+</p>
+
+<p class="commentary">Multiplication is not so easy. This time the values \(v_1\) and \(v_2\) may have
+different kinds, which we'll call \(X\) and \(Y\), and the result in general
+will be a third kind, which we'll call \(O\) (for outcome). Then:
+</p>
+
+<p class="commentary">$$ s_1s_2 = k_Xv_1\cdot k_Yv_2 = k_Ov_1v_2\cdot\left({{k_Xk_Y}\over{k_O}}\right) = s_o\cdot\left({{k_Xk_Y}\over{k_O}}\right) $$
+</p>
+
+<p class="commentary">so that simply multiplying the scaled values produces an answer which is
+too large by a factor of \(k_Xk_Y/k_O\). We need to correct for that, which
+we do either by dividing by this factor or multiplying by its reciprocal.
+</p>
+
+<p class="commentary">This is all a little delicate since rounding errors may be an issue and
+since \(k_Xk_Y/k_O\) is itself evaluated in integer arithmetic. In an ideal
+world we might use the same \(k\) for many units (e.g., \(k=1000\) throughout)
+and then of course this cancels to just \(1000\). But in practice people
+won't always do this &mdash; they may use some Babylonian, base 60, units, such
+as minutes and degrees, for instance, where \(k=3600\) would be more natural.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_multiplication_emit_op</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">kindy</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">kindy</span><span class="plain-syntax">, </span><span class="constant-syntax">TIMES_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_O</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">DIVIDE_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_O</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">TIMES_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_multiplication_emit_factor</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">kindy</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">kindy</span><span class="plain-syntax">, </span><span class="constant-syntax">TIMES_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_O</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_O</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Second, division, which is similar.
+$$ {{s_1}\over{s_2}} = {{k_Xv_1}\over{k_Yv_2}} = k_O{{v_1}\over{v_2}}\cdot\left({{k_X}\over{k_Ok_Y}}\right) = s_o\cdot\left({{k_X}\over{k_Ok_Y}\right) $$
+so this time the excess to correct is a factor of \(k_X/k_Ok_Y\).
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_division_emit_op</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">kindy</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">kindy</span><span class="plain-syntax">, </span><span class="constant-syntax">DIVIDE_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">TIMES_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">DIVIDE_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_division_emit_factor</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">kindy</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">kindy</span><span class="plain-syntax">, </span><span class="constant-syntax">DIVIDE_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindy</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_Y</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Third, the taking of \(p\)th roots, at any rate for \(p=2\) or \(p=3\).
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_root_emit_op</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">power</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">ROOT_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">CUBEROOT_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Emit a scaling correction for square roots</span><span class="named-paragraph-number">4.1</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Emit a scaling correction for cube roots</span><span class="named-paragraph-number">4.2</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"can only scale square and cube roots"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>For square roots,
+$$ \sqrt{s} = \sqrt{k_Xv} = \sqrt{k_X}\sqrt{v} = k_O\sqrt{v}\cdot\left({{\sqrt{k_X}}\over{k_O}}\right) = s_o \cdot\left({{\sqrt{k_X}}\over{k_O}}\right) $$
+and now the overestimate is a factor of \(k = \sqrt{k_X}/k_O\). However,
+rather than calculating \(k\sqrt{x}\) we calculate \(\sqrt{k^2 x}\), since
+this way accuracy losses in taking the square root are much reduced.
+Therefore this scaling operating is to be performed inside the root
+function, not outside, and it scales by \(k^2\) not \(k\):
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit a scaling correction for square roots</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">TIMES_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">DIVIDE_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>For cube roots,
+$$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot\left({{{}^3\sqrt{k_X}}\over{k_O}}\right) = s_o\cdot\left({{{}^3\sqrt{k_X}}\over{k_O}}\right) $$
+and the overestimate is \(k = {}^3\sqrt{k_X}/k_O\). Scaling once again within
+the rooting function, we scale by \(k^3\):
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit a scaling correction for cube roots</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">TIMES_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">DIVIDE_BIP</span><span class="plain-syntax">); </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::rescale_root_emit_factor</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">power</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindx</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">ROOT_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP32" class="function-link"><span class="function-syntax">Kinds::Dimensions::arithmetic_on_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">CUBEROOT_OPERATION</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kindo</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_X</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindx</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> = </span><a href="2-uk.html#SP19" class="function-link"><span class="function-syntax">Kinds::Behaviour::scale_factor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kindo</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Emit factor for a scaling correction for square roots</span><span class="named-paragraph-number">5.1</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">power</span><span class="plain-syntax"> == </span><span class="constant-syntax">3</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP5_2" class="named-paragraph-link"><span class="named-paragraph">Emit factor for a scaling correction for cube roots</span><span class="named-paragraph-number">5.2</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"can only scale square and cube roots"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>For square roots,
+$$ \sqrt{s} = \sqrt{k_Xv} = \sqrt{k_X}\sqrt{v} = k_O\sqrt{v}\cdot \left({{\sqrt{k_X}}\over{k_O}}\right) = s_o \cdot \left({{\sqrt{k_X}}\over{k_O}}\right) $$
+and now the overestimate is a factor of \(k = \sqrt{k_X}/k_O\). However,
+rather than calculating \(k\sqrt{x}\) we calculate \(\sqrt{k^2 x}\), since
+this way accuracy losses in taking the square root are much reduced.
+Therefore this scaling operating is to be performed inside the root
+function, not outside, and it scales by \(k^2\) not \(k\):
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit factor for a scaling correction for square roots</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP5">&#167;5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>For cube roots,
+$$ {}^3\sqrt{s} = {}^3\sqrt{k_Xv} = {}^3\sqrt{k_X}{}^3\sqrt{v} = k_O{}^3\sqrt{v}\cdot \left({{{}^3\sqrt{k_X}}\over{k_O}}\right) = s_o\cdot \left({{{}^3\sqrt{k_X}}\over{k_O}}\right) $$
+and the overestimate is \(k = {}^3\sqrt{k_X}/k_O\). Scaling once again within
+the rooting function, we scale by \(k^3\):
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit factor for a scaling correction for cube roots</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">*</span><span class="identifier-syntax">k_O</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">k_X</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">k_X</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">/</span><span class="identifier-syntax">k_O</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP5">&#167;5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scaling transformations. </b>A "scaling transformation" defines the relationship between the number
 as written and the number stored at runtime. The conversion between the
 two is always a linear function: a number written as <span class="extract"><span class="extract-syntax">x kg</span></span> is stored
 as <span class="extract"><span class="extract-syntax">M*x + O</span></span> at run-time for constants <span class="extract"><span class="extract-syntax">M</span></span> and <span class="extract"><span class="extract-syntax">O</span></span>, the "multiplier"
-and "offset". <span class="extract"><span class="extract-syntax">M</span></span> must be positive, <span class="extract"><span class="extract-syntax">O</span></span> must be positive or zero.
+and the "offset". <span class="extract"><span class="extract-syntax">M</span></span> must be positive, <span class="extract"><span class="extract-syntax">O</span></span> must be positive or zero.
 </p>
 
 <p class="commentary">Units typically have a range of different literal patterns with different
@@ -102,7 +351,7 @@ This is the one we think of abstractly as the natural notation to use
 when we don't know that the value is particularly large or small.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We have to implement all of this twice, in subtly different ways, to
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We have to implement all of this twice, in subtly different ways, to
 cope with the fact that some units use integer arithmetic and others
 use real.
 </p>
@@ -118,7 +367,7 @@ example, 1 mm. The <span class="extract"><span class="extract-syntax">M</span></
 in this example, it's 1000, because one benchmark unit (1 m) is stored
 as the integer 1000.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The benchmark <span class="extract"><span class="extract-syntax">M</span></span> has a special significance because it affects the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The benchmark <span class="extract"><span class="extract-syntax">M</span></span> has a special significance because it affects the
 result of arithmetic (unless it equals 1). For example, suppose we
 multiply 2 m by 3 m to get 6 square meters, and suppose the benchmark
 <span class="extract"><span class="extract-syntax">M</span></span> is 1000 for both length and area. Then the 2 m and 3 m are stored
@@ -131,7 +380,7 @@ multiplication must be rescaled to give the right answer.
 no need for rescaling with real arithmetic.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Scalings are defined one at a time, and usually in terms of each other.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Scalings are defined one at a time, and usually in terms of each other.
 We can't know the values of <span class="extract"><span class="extract-syntax">M</span></span> they end up with until all have been
 defined.
 </p>
@@ -157,7 +406,7 @@ defined.
 <span class="plain-syntax">} </span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure scaling_transformation is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::describe</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
@@ -175,7 +424,7 @@ defined.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%g)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">real_scalar</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Definition. </b>A new scaling is given with a scale factor either pegging it absolutely, or
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Definition. </b>A new scaling is given with a scale factor either pegging it absolutely, or
 relative to the benchmark. At initial definition time, we don't calculate <span class="extract"><span class="extract-syntax">M</span></span>:
 we just take notes for later.
 </p>
@@ -194,7 +443,7 @@ we just take notes for later.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Soon after definition, we may realise that real arithmetic is needed after
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Soon after definition, we may realise that real arithmetic is needed after
 all, even though we previously expected it to use integers. So:
 </p>
 
@@ -208,7 +457,7 @@ all, even though we previously expected it to use integers. So:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Each new scaling in turn is added to the list of those in use for a given
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Each new scaling in turn is added to the list of those in use for a given
 kind. For example, when the "1 km" scaling is added to those for lengths,
 perhaps "1 cm" and "1 m" (the benchmark) already exist, but "1 mm" doesn't.
 We call the following routine to calculate a suitable <span class="extract"><span class="extract-syntax">M</span></span> for the scaling.
@@ -221,12 +470,12 @@ to increase the <span class="extract"><span class="extract-syntax">M</span></spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">benchmark_sc</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">equiv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rescale_the_others_by_this</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax"> in effect, don't</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Determine M for the first scaling of the list</span><span class="named-paragraph-number">8.1</span></a></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Determine M for a subsequent scaling of the list</span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Determine M for the first scaling of the list</span><span class="named-paragraph-number">13.1</span></a></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP13_2" class="named-paragraph-link"><span class="named-paragraph">Determine M for a subsequent scaling of the list</span><span class="named-paragraph-number">13.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rescale_the_others_by_this</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b>This is the easy case &mdash; there's no list yet, and no benchmark yet. The <span class="extract"><span class="extract-syntax">M</span></span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>This is the easy case &mdash; there's no list yet, and no benchmark yet. The <span class="extract"><span class="extract-syntax">M</span></span>
 value will usually therefore be 1, unless the source text explicitly asked
 for it to be something else:
 </p>
@@ -241,7 +490,7 @@ benchmark; and similarly if the new notation is claimed to be equivalent to
 some existing notation, in which case the <span class="extract"><span class="extract-syntax">equiv</span></span> flag is set.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine M for the first scaling of the list</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine M for the first scaling of the list</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -253,14 +502,14 @@ some existing notation, in which case the <span class="extract"><span class="ext
 <span class="plain-syntax">        </span><a href="1-km.html#SP5" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleYet_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_scalar</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b>The harder case, when some scalings already exist for this kind. Firstly,
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13">&#167;13</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b>The harder case, when some scalings already exist for this kind. Firstly,
 you can't create an alternative set of scalings (e.g. Imperial units such
 as feet and inches) with its own absolute scale factor, because the existing
 scalings (metric units such as mm, km, etc.) already have their <span class="extract"><span class="extract-syntax">M</span></span> value.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine M for a subsequent scaling of the list</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine M for a subsequent scaling of the list</span><span class="named-paragraph-number">13.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -269,12 +518,12 @@ scalings (metric units such as mm, km, etc.) already have their <span class="ext
 <span class="plain-syntax">        </span><a href="1-km.html#SP5" class="function-link"><span class="function-syntax">KindsModule::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LPCantScaleTwice_KINDERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">equiv</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP8_2_1" class="named-paragraph-link"><span class="named-paragraph">Calculate the multiplier for this equivalent scaling</span><span class="named-paragraph-number">8.2.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP13_2_1" class="named-paragraph-link"><span class="named-paragraph">Calculate the multiplier for this equivalent scaling</span><span class="named-paragraph-number">13.2.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP8_2_2" class="named-paragraph-link"><span class="named-paragraph">Calculate the multiplier for the LP relative to the benchmark</span><span class="named-paragraph-number">8.2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP13_2_2" class="named-paragraph-link"><span class="named-paragraph">Calculate the multiplier for the LP relative to the benchmark</span><span class="named-paragraph-number">13.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2_1"></a><b>&#167;8.2.1.  </b>An equivalent unit exactly specifies its <span class="extract"><span class="extract-syntax">M</span></span>-value. For example:
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13">&#167;13</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP13_2_1" class="paragraph-anchor"></a><b>&#167;13.2.1.  </b>An equivalent unit exactly specifies its <span class="extract"><span class="extract-syntax">M</span></span>-value. For example:
 </p>
 
 <blockquote>
@@ -286,7 +535,7 @@ the "1 cm" scaling applied to 18, and that's the value in our scalar,
 which then becomes <span class="extract"><span class="extract-syntax">M</span></span>.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the multiplier for this equivalent scaling</span><span class="named-paragraph-number">8.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the multiplier for this equivalent scaling</span><span class="named-paragraph-number">13.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -295,8 +544,8 @@ which then becomes <span class="extract"><span class="extract-syntax">M</span></
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">real_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">real_scalar</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP8_2">&#167;8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2_2"></a><b>&#167;8.2.2.  </b>Finally the trickiest case. We calculate <span class="extract"><span class="extract-syntax">M</span></span> based on scaling the benchmark
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13_2">&#167;13.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP13_2_2" class="paragraph-anchor"></a><b>&#167;13.2.2.  </b>Finally the trickiest case. We calculate <span class="extract"><span class="extract-syntax">M</span></span> based on scaling the benchmark
 either up or down.
 </p>
 
@@ -332,7 +581,7 @@ That means that the new value of <span class="extract"><span class="extract-synt
 <p class="commentary">so this is what we set <span class="extract"><span class="extract-syntax">M</span></span> to.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the multiplier for the LP relative to the benchmark</span><span class="named-paragraph-number">8.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the multiplier for the LP relative to the benchmark</span><span class="named-paragraph-number">13.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -341,7 +590,7 @@ That means that the new value of <span class="extract"><span class="extract-synt
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">use_integer_scaling</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax"> = </span><span class="identifier-syntax">benchmark_sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_M</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_scalar</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP19" class="function-link"><span class="function-syntax">Kinds::Dimensions::gcd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP17" class="function-link"><span class="function-syntax">Kinds::Dimensions::gcd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">int_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B</span><span class="plain-syntax">/</span><span class="identifier-syntax">g</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">rescale_the_others_by_this</span><span class="plain-syntax"> = </span><span class="identifier-syntax">k</span><span class="plain-syntax">/</span><span class="identifier-syntax">g</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -361,8 +610,8 @@ That means that the new value of <span class="extract"><span class="extract-synt
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP8_2">&#167;8.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Enlarging and contracting. </b>Note that the offset values <span class="extract"><span class="extract-syntax">O</span></span> are not affected here. The idea is this:
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP13_2">&#167;13.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Enlarging and contracting. </b>Note that the offset values <span class="extract"><span class="extract-syntax">O</span></span> are not affected here. The idea is this:
 suppose we have a unit such as temperature, and have defined centigrade as
 a scaling with offset 273. Then suppose we want a unit equal to 0.1 of a
 degree centigrade: we want to scale down C by 10, but preserve offset 273,
@@ -393,7 +642,7 @@ this seldom arises.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Using scalings. </b>First, here's a <span class="extract"><span class="extract-syntax">strcmp</span></span>-like routine to report which scaling is smaller
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Using scalings. </b>First, here's a <span class="extract"><span class="extract-syntax">strcmp</span></span>-like routine to report which scaling is smaller
 out of two; it's used for sorting scalings into ascending order of magnitude.
 </p>
 
@@ -415,7 +664,7 @@ out of two; it's used for sorting scalings into ascending order of magnitude.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Second, the following returns <span class="extract"><span class="extract-syntax">M</span></span> unless we're in real mode, in which case it
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Second, the following returns <span class="extract"><span class="extract-syntax">M</span></span> unless we're in real mode, in which case it
 returns 1.
 </p>
 
@@ -424,7 +673,7 @@ returns 1.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_M</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Finally, this simply detects the presence of a scale factor, real or integer:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Finally, this simply detects the presence of a scale factor, real or integer:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -434,34 +683,34 @@ returns 1.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Scaled arithmetic at compile-time. </b>The "quantum" of a scaling is the run-time value corresponding to 1 unit:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Scaled arithmetic at compile-time. </b>The "quantum" of a scaling is the run-time value corresponding to 1 unit:
 for example, for kilometers, it's the run-time value which "1 km" translates
 into.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::quantum</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::quantum</span></span>:<br/><a href="3-sav.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><a href="3-sav.html#SP14" class="function-link"><span class="function-syntax">Kinds::Scalings::quanta_to_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::quantum</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::quantum</span></span>:<br/><a href="3-sav.html#SP24">&#167;24</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><a href="3-sav.html#SP19" class="function-link"><span class="function-syntax">Kinds::Scalings::quanta_to_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::real_quantum</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::real_quantum</span></span>:<br/><a href="3-sav.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-sav.html#SP14" class="function-link"><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">.0);</span>
+<span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::real_quantum</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::real_quantum</span></span>:<br/><a href="3-sav.html#SP24">&#167;24</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-sav.html#SP19" class="function-link"><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">.0);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>More generally, the following takes a number of quanta and turns it into
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>More generally, the following takes a number of quanta and turns it into
 the run-time value that stores as:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::quanta_to_value</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::quanta_to_value</span></span>:<br/><a href="3-sav.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::quanta_to_value</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::quanta_to_value</span></span>:<br/><a href="3-sav.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">*</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_M</span><span class="plain-syntax"> + </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_O</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span></span>:<br/><a href="3-sav.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::real_quanta_to_value</span></span>:<br/><a href="3-sav.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">q</span><span class="plain-syntax">*</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">real_M</span><span class="plain-syntax"> + </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">real_O</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>In integer arithmetic, the inverse of this function won't generally
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>In integer arithmetic, the inverse of this function won't generally
 exist, since division can't be performed exactly. The following is the
 best we can do.
 </p>
@@ -486,7 +735,7 @@ scaling is for "1 m", with offset 0 and multiplier 1000, then the value
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">v</span><span class="plain-syntax"> - </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">real_O</span><span class="plain-syntax">) / (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="identifier-syntax">real_M</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Scaled arithmetic at run-time. </b>We begin with routines to compile code which, at run-time, performs these
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Scaled arithmetic at run-time. </b>We begin with routines to compile code which, at run-time, performs these
 same operations: quanta to value, value to quanta and remainder. The
 value is held in the I6 variable named <span class="extract"><span class="extract-syntax">V_var</span></span>.
 </p>
@@ -496,7 +745,7 @@ value is held in the I6 variable named <span class="extract"><span class="extrac
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_quanta_to_value</span><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sgn_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">x_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="identifier-syntax">use_integer_scaling</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="3-sav.html#SP17" class="function-link"><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span></a><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><a href="3-sav.html#SP22" class="function-link"><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">InterNames::to_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">V_var</span><span class="plain-syntax">), </span><span class="identifier-syntax">sgn_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_M</span><span class="plain-syntax">, </span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_O</span><span class="plain-syntax">, </span><span class="identifier-syntax">x_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">real_M</span><span class="plain-syntax"> != </span><span class="constant-syntax">1</span><span class="plain-syntax">.0) {</span>
@@ -539,7 +788,7 @@ value is held in the I6 variable named <span class="extract"><span class="extrac
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The integer case of this is extracted as a utility routine because it's useful
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>The integer case of this is extracted as a utility routine because it's useful
 for other calculations too. This performs the operation
 </p>
 
@@ -560,7 +809,7 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span></span>:<br/><a href="3-sav.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sgn_var</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::compile_scale_and_add</span></span>:<br/><a href="3-sav.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sgn_var</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scale_factor</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_add</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var_to_add</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scale_factor</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">long</span><span class="plain-syntax"> </span><span class="reserved-syntax">long</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max</span><span class="plain-syntax"> = </span><span class="constant-syntax">2147483647</span><span class="identifier-syntax">LL</span><span class="plain-syntax">;</span>
@@ -574,12 +823,12 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP17_1" class="named-paragraph-link"><span class="named-paragraph">Compile the overflow check</span><span class="named-paragraph-number">17.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP22_1" class="named-paragraph-link"><span class="named-paragraph">Compile the overflow check</span><span class="named-paragraph-number">22.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">max</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP17_1" class="named-paragraph-link"><span class="named-paragraph">Compile the overflow check</span><span class="named-paragraph-number">17.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP22_1" class="named-paragraph-link"><span class="named-paragraph">Compile the overflow check</span><span class="named-paragraph-number">22.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    }</span>
@@ -603,7 +852,7 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the overflow check</span><span class="named-paragraph-number">17.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the overflow check</span><span class="named-paragraph-number">22.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -643,14 +892,14 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP17">&#167;17</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>And conversely... Note that in the real case, the remainder variable <span class="extract"><span class="extract-syntax">R_var</span></span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP22">&#167;22</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And conversely... Note that in the real case, the remainder variable <span class="extract"><span class="extract-syntax">R_var</span></span>
 is ignored, since the division can be performed "exactly".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span></span>:<br/><a href="3-sav.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span></span>:<br/><a href="3-sav.html#SP25">&#167;25</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R_var</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="identifier-syntax">use_integer_scaling</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="element-syntax">int_O</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -713,7 +962,7 @@ is ignored, since the division can be performed "exactly".
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>The following compiles a valid condition to test whether the value in the
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>The following compiles a valid condition to test whether the value in the
 named I6 variable is equal to, greater than, less than or equal to, etc., the
 quantum for the scaling. <span class="extract"><span class="extract-syntax">op</span></span> contains the textual form of the comparison
 operator to use: say, <span class="extract"><span class="extract-syntax">"&gt;="</span></span>.
@@ -730,7 +979,7 @@ operator to use: say, <span class="extract"><span class="extract-syntax">"&gt;="
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">V_var</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><a href="3-sav.html#SP13" class="function-link"><span class="function-syntax">Kinds::Scalings::quantum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><a href="3-sav.html#SP18" class="function-link"><span class="function-syntax">Kinds::Scalings::quantum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_call_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">REAL_NUMBER_TY_COMPARE_HL</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
@@ -738,7 +987,7 @@ operator to use: say, <span class="extract"><span class="extract-syntax">"&gt;="
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Produce::val_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">V_var</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val_real</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><a href="3-sav.html#SP13" class="function-link"><span class="function-syntax">Kinds::Scalings::real_quantum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Produce::val_real</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><a href="3-sav.html#SP18" class="function-link"><span class="function-syntax">Kinds::Scalings::real_quantum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -746,7 +995,7 @@ operator to use: say, <span class="extract"><span class="extract-syntax">"&gt;="
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>We now compile code to print the value in the variable <span class="extract"><span class="extract-syntax">V_var</span></span> with
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>We now compile code to print the value in the variable <span class="extract"><span class="extract-syntax">V_var</span></span> with
 respect to this scaling. We need two other variables at our disposal to
 do this: <span class="extract"><span class="extract-syntax">R_var</span></span>, which is temporary storage to hold the remainder part;
 and <span class="extract"><span class="extract-syntax">S_var</span></span>, which is a scratch variable used as a form of loop counter.
@@ -757,7 +1006,7 @@ and <span class="extract"><span class="extract-syntax">S_var</span></span>, whic
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::compile_print_in_quanta</span><span class="plain-syntax">(</span><span class="reserved-syntax">scaling_transformation</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S_var</span><span class="plain-syntax">) {</span>
 
-<span class="plain-syntax">    </span><a href="3-sav.html#SP18" class="function-link"><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">V_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">R_var</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-sav.html#SP23" class="function-link"><span class="function-syntax">Kinds::Scalings::compile_value_to_quanta</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">V_var</span><span class="plain-syntax">, </span><span class="identifier-syntax">R_var</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">.</span><span class="identifier-syntax">use_integer_scaling</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">PRINTNUMBER_BIP</span><span class="plain-syntax">);</span>
@@ -774,7 +1023,7 @@ and <span class="extract"><span class="extract-syntax">S_var</span></span>, whic
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::code</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP20_1" class="named-paragraph-link"><span class="named-paragraph">Print a decimal expansion for the remainder</span><span class="named-paragraph-number">20.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Print a decimal expansion for the remainder</span><span class="named-paragraph-number">25.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -786,7 +1035,7 @@ and <span class="extract"><span class="extract-syntax">S_var</span></span>, whic
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b>In the integer case, then, suppose we have determined that our value is
+<p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1.  </b>In the integer case, then, suppose we have determined that our value is
 2 quanta with remainder 26/Mths. We've already printed the 2, and it remains
 to print the best decimal expansion we can to represent 26/Mths.
 </p>
@@ -797,7 +1046,7 @@ that means the decimal expansion can be printed exactly: there are no
 recurring decimals. If it can't, then we must approximate.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print a decimal expansion for the remainder</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print a decimal expansion for the remainder</span><span class="named-paragraph-number">25.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -815,12 +1064,12 @@ recurring decimals. If it can't, then we must approximate.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cl10M</span><span class="plain-syntax"> % </span><span class="identifier-syntax">M</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP20_1_1" class="named-paragraph-link"><span class="named-paragraph">Use an exact method, since the multiplier divides a power of 10</span><span class="named-paragraph-number">20.1.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP25_1_1" class="named-paragraph-link"><span class="named-paragraph">Use an exact method, since the multiplier divides a power of 10</span><span class="named-paragraph-number">25.1.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP20_1_2" class="named-paragraph-link"><span class="named-paragraph">Use an approximate method, since we can't have an exact one in all cases</span><span class="named-paragraph-number">20.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sav.html#SP25_1_2" class="named-paragraph-link"><span class="named-paragraph">Use an approximate method, since we can't have an exact one in all cases</span><span class="named-paragraph-number">25.1.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1"></a><b>&#167;20.1.1.  </b>In this exact case,
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP25">&#167;25</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP25_1_1" class="paragraph-anchor"></a><b>&#167;25.1.1.  </b>In this exact case,
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -836,7 +1085,7 @@ recurring decimals. If it can't, then we must approximate.
 be; print that many zeroes; and then print <span class="extract"><span class="extract-syntax">26t</span></span> as if it's an integer.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use an exact method, since the multiplier divides a power of 10</span><span class="named-paragraph-number">20.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use an exact method, since the multiplier divides a power of 10</span><span class="named-paragraph-number">25.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -935,20 +1184,20 @@ be; print that many zeroes; and then print <span class="extract"><span class="ex
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">R_var</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP20_1">&#167;20.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_2"></a><b>&#167;20.1.2.  </b>In this approximation, <span class="extract"><span class="extract-syntax">R_var</span></span> is measured in units of <span class="extract"><span class="extract-syntax">1/M</span></span>. Thus the first
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP25_1">&#167;25.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP25_1_2" class="paragraph-anchor"></a><b>&#167;25.1.2.  </b>In this approximation, <span class="extract"><span class="extract-syntax">R_var</span></span> is measured in units of <span class="extract"><span class="extract-syntax">1/M</span></span>. Thus the first
 digit after the decimal point should be <span class="extract"><span class="extract-syntax">R_var</span></span> times <span class="extract"><span class="extract-syntax">10/M</span></span>, the second
 <span class="extract"><span class="extract-syntax">R_var</span></span> times <span class="extract"><span class="extract-syntax">100/M</span></span>, and so on.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use an approximate method, since we can't have an exact one in all cases</span><span class="named-paragraph-number">20.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use an approximate method, since we can't have an exact one in all cases</span><span class="named-paragraph-number">25.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">M</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="identifier-syntax">R</span><span class="plain-syntax">*10;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP19" class="function-link"><span class="function-syntax">Kinds::Dimensions::gcd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><a href="3-dmn.html#SP17" class="function-link"><span class="function-syntax">Kinds::Dimensions::gcd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">PRINTNUMBER_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">MODULO_BIP</span><span class="plain-syntax">);</span>
@@ -975,19 +1224,9 @@ digit after the decimal point should be <span class="extract"><span class="extra
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP20_1">&#167;20.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>And finally:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Scalings::I6_real_literal</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"+"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%g"</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-sav.html#SP25_1">&#167;25.1</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-fv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-knd.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-dmn.html">dmn</a></li><li class="progresssection"><a href="3-fv.html">fv</a></li><li class="progresscurrent">sav</li><li class="progresschapter"><a href="4-kf.html">4</a></li><li class="progressnext"><a href="4-kf.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-fv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-knd.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-dmn.html">dmn</a></li><li class="progresssection"><a href="3-fv.html">fv</a></li><li class="progresscurrent">sav</li><li class="progresschapter"><a href="4-nf.html">4</a></li><li class="progressnext"><a href="4-nf.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

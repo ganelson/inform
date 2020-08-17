@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="15-vp.html#SP1">&#167;1. Requesting new named properties</a></li><li><a href="15-vp.html#SP3">&#167;3. Requesting new nameless properties</a></li><li><a href="15-vp.html#SP4">&#167;4. Initialising details</a></li><li><a href="15-vp.html#SP5">&#167;5. Details</a></li><li><a href="15-vp.html#SP10">&#167;10. Assertion</a></li><li><a href="15-vp.html#SP11">&#167;11. Compilation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Requesting new named properties. </b>The following asserts that <span class="extract"><span class="extract-syntax">(w1, w2)</span></span> is certainly a property; if it does not
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Requesting new named properties. </b>The following asserts that <span class="extract"><span class="extract-syntax">(w1, w2)</span></span> is certainly a property; if it does not
 exist, it will be created.
 </p>
 
@@ -77,7 +77,7 @@ exist, it will be created.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="15-pr.html#SP3" class="function-link"><span class="function-syntax">Properties::obtain</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Now the same: except that we require the property to have a given kind of
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Now the same: except that we require the property to have a given kind of
 value, so that the process can go awry. (But we are allowed to avoid this
 possibility by widening the kind, when this can be done.)
 </p>
@@ -106,7 +106,7 @@ possibility by widening the kind, when this can be done.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue an incompatible property kind message</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue an incompatible property kind message</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -117,7 +117,7 @@ possibility by widening the kind, when this can be done.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-vp.html#SP2">&#167;2</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Requesting new nameless properties. </b>Sometimes we will want a property which exists at run-time but which
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Requesting new nameless properties. </b>Sometimes we will want a property which exists at run-time but which
 has no name or visible existence at the Inform source text level. For
 instance, the run-time code needs a property called <span class="extract"><span class="extract-syntax">vector</span></span> in which to
 store partial results when finding routes through maps, but <span class="extract"><span class="extract-syntax">vector</span></span> is
@@ -159,7 +159,7 @@ to the end user.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Initialising details. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialising details. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Properties::Valued::initialise</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Properties::Valued::initialise</span></span>:<br/>Properties - <a href="15-pr.html#SP4_3">&#167;4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
@@ -178,7 +178,7 @@ to the end user.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">setting_bp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Details. </b>The most important fact about a valued property is what the kind of value is:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Details. </b>The most important fact about a valued property is what the kind of value is:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -217,7 +217,7 @@ to the end user.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">property_value_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Sometimes the name of a property is the same as that of a kind of value.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Sometimes the name of a property is the same as that of a kind of value.
 For instance, we might define a kind of value called "weight", and
 then say that a thing has a weight: that makes a property also called
 "weight", which is a value property whose value is always a weight.
@@ -237,7 +237,7 @@ then say that a thing has a weight: that makes a property also called
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">also_a_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Every valued property has an associated relation to set its value.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Every valued property has an associated relation to set its value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -246,7 +246,7 @@ then say that a thing has a weight: that makes a property also called
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">setting_bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Some value properties are used for relation storage:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Some value properties are used for relation storage:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -260,7 +260,7 @@ then say that a thing has a weight: that makes a property also called
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stored_bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>When a property is used to store certain forms of relation, it then needs
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When a property is used to store certain forms of relation, it then needs
 to store either a value within one of the domains, or else a null value used
 to mean "this is not set at the moment". Since that null value isn't
 a member of the domain, it follows that the property is breaking type safety
@@ -279,7 +279,7 @@ all to work; the following keep a flag to mark that.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">used_for_non_typesafe_relation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Assertion. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Assertion. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Properties::Valued::assert</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup16">Usage of <span class="code-font"><span class="function-syntax">Properties::Valued::assert</span></span>:<br/>The Creator - <a href="5-tc.html#SP5_4_1_1">&#167;5.4.1.1</a><br/>Relations - <a href="7-rlt.html#SP20_1">&#167;20.1</a><br/>Indefinite Appearance - <a href="15-ia.html#SP1">&#167;1</a>, <a href="15-ia.html#SP2">&#167;2</a><br/>Instance Counting - <a href="16-ic.html#SP11_1">&#167;11.1</a>, <a href="16-ic.html#SP11_3_1">&#167;11.3.1</a>, <a href="16-ic.html#SP11_3_2">&#167;11.3.2</a>, <a href="16-ic.html#SP11_3_3">&#167;11.3.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">, </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner</span><span class="plain-syntax">,</span>
@@ -288,7 +288,7 @@ all to work; the following keep a flag to mark that.
 <span class="plain-syntax">    </span><a href="12-ap.html#SP4" class="function-link"><span class="function-syntax">Calculus::Propositions::Assert::assert_true_about</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">certainty</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Compilation. </b>When we compile the value of a valued property, the following is called.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Compilation. </b>When we compile the value of a valued property, the following is called.
 In theory the result could depend on the property name; in practice it doesn't.
 (But this would enable us to implement certain properties with different
 storage methods at run-time if we wanted.)

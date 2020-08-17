@@ -56,7 +56,7 @@ the following takes a patch-it-later approach.
 =
 kind *Phrases::Constants::kind(constant_phrase *cphr) {
 	if (cphr == NULL) return NULL;
-	if (global_pass_state.pass < 2) return Kinds::binary_construction(CON_phrase, K_value, K_value);
+	if (global_pass_state.pass < 2) return Kinds::binary_con(CON_phrase, K_value, K_value);
 	if (cphr->cphr_kind == NULL) {
 		wording OW = EMPTY_WORDING;
 		ph_type_data phtd = Phrases::TypeData::new();

@@ -1,7 +1,6 @@
 [KindCommands::] Kind Commands.
 
-To read in details of the built-in kinds from template files,
-setting them up ready for use.
+To parse and act upon individual commands from Neptune files.
 
 @ Everyone loves a mini-language, so here is one. At the top level:
 
@@ -163,6 +162,8 @@ typedef struct kind_command_definition {
 
 @ Macros and templates have their definitions stored in structures thus:
 
+@d MAX_KIND_MACRO_LENGTH 20 /* maximum number of commands in any one macro */
+
 =
 typedef struct kind_template_definition {
 	struct text_stream *template_name; /* including the asterisk, e.g., |"*PRINTING-ROUTINE"| */
@@ -187,28 +188,6 @@ typedef struct kind_template_obligation {
 	struct kind_constructor *remembered_constructor; /* ...concerning this kind */
 	CLASS_DEFINITION
 } kind_template_obligation;
-
-@h Errors and limitations.
-In implementing the interpreter, we have to ask: who is it for? It occupies
-a strange position in being not quite for end users -- the average Inform
-user will never know what the template is -- and yet not quite for internal
-use only, either. The main motivation for moving properties of kinds out of
-Inform's program logic and into an external text file was to make it easier
-to verify that they were correctly described; but it was certainly also
-meant to give future Inform hackers -- users who like to burrow into
-internals -- scope for play.
-
-The I6 template files supplied with Inform's standard distribution are,
-of course, correct. So how forgiving should we be, if errors are found in it?
-(These must result from mistakes by hackers.) To what extent should we allow
-arbitrarily complex constructions, as we would if it were a feature intended
-for end users?
-
-We strike a sort of middle position. Inform will probably not crash if an
-incorrect kind command is supplied, but it is free to throw internal
-errors or generate I6 code which fails to compile through I6.
-
-@d MAX_KIND_MACRO_LENGTH 20 /* maximum number of commands in any one macro */
 
 @h Setting up the interpreter.
 
@@ -325,7 +304,7 @@ begin with those characters, but that doesn't matter for the things we need.
 		Str::copy(argument, mr.exp[1]);
 		Regexp::dispose_of(&mr);
 	} else {
-		KindCommands::kind_command_error(whole_command, "kind command without argument");
+		NeptuneFiles::error(whole_command, "kind command without argument");
 	}
 
 @ The following is clearly inefficient, but is not worth optimising. It makes
@@ -340,19 +319,20 @@ so we neglect it.
 			stc.which_kind_command = &(table_of_kind_commands[i]);
 
 	if (stc.which_kind_command == NULL)
-		KindCommands::kind_command_error(command, "no such kind command");
+		NeptuneFiles::error(command, "no such kind command");
 
 @<Parse a boolean argument for a kind command@> =
 	if (Str::eq_wide_string(argument, L"yes")) stc.boolean_argument = TRUE;
 	else if (Str::eq_wide_string(argument, L"no")) stc.boolean_argument = FALSE;
-	else KindCommands::kind_command_error(command, "boolean kind command takes yes/no argument");
+	else NeptuneFiles::error(command, "boolean kind command takes yes/no argument");
 
 @<Parse a CCM argument for a kind command@> =
 	if (Str::eq_wide_string(argument, L"none")) stc.ccm_argument = NONE_CCM;
 	else if (Str::eq_wide_string(argument, L"literal")) stc.ccm_argument = LITERAL_CCM;
 	else if (Str::eq_wide_string(argument, L"quantitative")) stc.ccm_argument = NAMED_CONSTANT_CCM;
 	else if (Str::eq_wide_string(argument, L"special")) stc.ccm_argument = SPECIAL_CCM;
-	else KindCommands::kind_command_error(command, "kind command with unknown constant-compilation-method");
+	else NeptuneFiles::error(command,
+		"kind command with unknown constant-compilation-method");
 
 @<Parse a textual argument for a kind command@> =
 	Str::copy(stc.textual_argument, argument);
@@ -363,7 +343,7 @@ so we neglect it.
 	Feeds::feed_text(argument);
 	wording W = Feeds::end(id);
 	if (Wordings::length(W) >= 30)
-		KindCommands::kind_command_error(command, "too many words in kind command");
+		NeptuneFiles::error(command, "too many words in kind command");
 	else
 		stc.vocabulary_argument = WordAssemblages::from_wording(W);
 
@@ -382,12 +362,12 @@ so we neglect it.
 @<Parse a template name argument for a kind command@> =
 	stc.template_argument = KindCommands::parse_kind_template_name(argument);
 	if (stc.template_argument == NULL)
-		KindCommands::kind_command_error(command, "unknown template name in kind command");
+		NeptuneFiles::error(command, "unknown template name in kind command");
 
 @<Parse a macro name argument for a kind command@> =
 	stc.macro_argument = KindCommands::parse_kind_macro_name(argument);
 	if (stc.macro_argument == NULL)
-		KindCommands::kind_command_error(command, "unknown template name in kind command");
+		NeptuneFiles::error(command, "unknown template name in kind command");
 
 @h Source text templates.
 These are passages of I7 source text which can be inserted into the main
@@ -480,7 +460,8 @@ void KindCommands::transcribe_kind_template(parse_node_tree *T,
 	kind_template_definition *ttd, kind_constructor *con) {
 	if (ttd == NULL) internal_error("tried to transcribe missing source text template");
 	#ifdef CORE_MODULE
-	if ((Plugins::Manage::plugged_in(parsing_plugin) == FALSE) && (Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
+	if ((Plugins::Manage::plugged_in(parsing_plugin) == FALSE) &&
+		(Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
 		return;
 	#endif
 	text_stream *p = ttd->template_text;
@@ -511,7 +492,8 @@ not matter, since such things never come into kind definitions.
 		if (Str::get_at(p, i) == '<') {
 			TEMPORARY_TEXT(template_wildcard_buffer)
 			i++;
-			while ((Str::get_at(p, i) != 0) && (Str::get_at(p, i) != '\n') && (Str::get_at(p, i) != '>'))
+			while ((Str::get_at(p, i) != 0) && (Str::get_at(p, i) != '\n') &&
+				(Str::get_at(p, i) != '>'))
 				PUT_TO(template_wildcard_buffer, Str::get_at(p, i++));
 			i++;
 			@<Transcribe the template wildcard@>;
@@ -558,7 +540,8 @@ not matter, since such things never come into kind definitions.
 @ Where:
 
 =
-void KindCommands::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor *con, int lower_case) {
+void KindCommands::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor *con,
+	int lower_case) {
 	wording W = EMPTY_WORDING;
 	if (con->dt_tag) W = Kinds::Constructors::get_name(con, FALSE);
 	if (Wordings::nonempty(W)) {
@@ -632,7 +615,8 @@ void KindCommands::end_kind_macro(void) {
 commands in sequence to the relevant kind.
 
 =
-void KindCommands::play_back_kind_macro(parse_node_tree *T, kind_macro_definition *macro, kind_constructor *con) {
+void KindCommands::play_back_kind_macro(parse_node_tree *T, kind_macro_definition *macro,
+	kind_constructor *con) {
 	if (macro == NULL) internal_error("no such kind macro to play back");
 	LOGIF(KIND_CREATIONS, "Macro %S on %S (%d lines)\n",
 		macro->kind_macro_name, con->name_in_template_code, macro->kind_macro_line_count);
@@ -666,14 +650,6 @@ void KindCommands::record_kind_text(text_stream *line) {
 
 void KindCommands::end_recording_kind_text(void) {
 	kind_recording = NULL;
-}
-
-@h Error messages.
-
-=
-void KindCommands::kind_command_error(text_stream *command, char *error) {
-	LOG("Kind command error found at: %S\n", command);
-	internal_error(error);
 }
 
 @h Applying kind commands.
@@ -719,7 +695,8 @@ We take a single kind command and apply it to a given kind.
 @d template_variable_number_KCC 40
 
 =
-void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command stc, kind_constructor *con) {
+void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command stc,
+	kind_constructor *con) {
 	if (stc.which_kind_command == NULL) internal_error("null STC command");
 	LOGIF(KIND_CREATIONS, "apply: %s (%d/%d/%S/%S) to %d/%S\n",
 		stc.which_kind_command->text_of_command,
@@ -858,7 +835,8 @@ void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command st
 			wording LW = Feeds::end(id);
 			if (tcc == singular_KCC) {
 				int ro = 0;
-				if (con->group != PROPER_CONSTRUCTOR_GRP) ro = ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT;
+				if (con->group != PROPER_CONSTRUCTOR_GRP)
+					ro = ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT;
 				NATURAL_LANGUAGE_WORDS_TYPE *L = NULL;
 				#ifdef CORE_MODULE
 				L = Task::language_of_syntax();
@@ -890,7 +868,8 @@ void KindCommands::apply_kind_command(parse_node_tree *T, single_kind_command st
 		if (Str::get(pos) == ',') { c++; pos = Str::forward(pos); continue; }
 		if (c >= 2) { c=1; break; }
 		TEMPORARY_TEXT(wd)
-		while ((!Characters::is_space_or_tab(Str::get(pos))) && (Str::get(pos) != ',') && (Str::get(pos) != 0)) {
+		while ((!Characters::is_space_or_tab(Str::get(pos))) && (Str::get(pos) != ',')
+			&& (Str::get(pos) != 0)) {
 			PUT_TO(wd, Str::get(pos)); pos = Str::forward(pos);
 		}
 		if (Str::len(wd) > 0) {
@@ -914,5 +893,3 @@ commands, so the following hook was devised; but at present it's not needed.
 =
 void KindCommands::batch_done(void) {
 }
-
-@ And that completes the kind interpreter.

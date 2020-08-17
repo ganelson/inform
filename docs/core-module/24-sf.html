@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="24-sf.html#SP4">&#167;4. Creation</a></li><li><a href="24-sf.html#SP7">&#167;7. The current stack frame</a></li><li><a href="24-sf.html#SP8">&#167;8. Kinds</a></li><li><a href="24-sf.html#SP10">&#167;10. Stacked variables</a></li><li><a href="24-sf.html#SP11">&#167;11. Past tense</a></li><li><a href="24-sf.html#SP12">&#167;12. Logging</a></li><li><a href="24-sf.html#SP13">&#167;13. Formal parameter allocation</a></li><li><a href="24-sf.html#SP14">&#167;14. Pointer value allocation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>As we've seen, each phrase has its own stack frame, which is a structure
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>As we've seen, each phrase has its own stack frame, which is a structure
 inside the <span class="extract"><span class="extract-syntax">phrase</span></span> structure. But they can also exist independently, for
 other occasions when compilation occurs. They keep track of which variables
 are visible, and also of the current values of the kind variables A to Z,
@@ -89,7 +89,7 @@ if any, and the consequent return kind.
 <span class="plain-syntax">} </span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ph_stack_frame is accessed in 24/lv, 26/rt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Stack frames are often made fleetingly and then thrown away, but sometimes
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Stack frames are often made fleetingly and then thrown away, but sometimes
 we need to make one and keep it around. For this, we have the ability to box
 up a stack frame: by allocating an instance of the following structure, we
 can have a permanently valid pointer to a unique new PHSF.
@@ -102,7 +102,7 @@ can have a permanently valid pointer to a unique new PHSF.
 <span class="plain-syntax">} </span><span class="reserved-syntax">ph_stack_frame_box</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ph_stack_frame_box is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Within each stack frame is a linked list of notes about pointer values
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Within each stack frame is a linked list of notes about pointer values
 for which memory allocation and deallocation will be needed:
 </p>
 
@@ -119,7 +119,7 @@ for which memory allocation and deallocation will be needed:
 <span class="plain-syntax">} </span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pointer_allocation is accessed in 26/rt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Creation. </b>A completely black stack frame...
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Creation. </b>A completely black stack frame...
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -135,7 +135,7 @@ for which memory allocation and deallocation will be needed:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>...can be useful all by itself. The following is used to make a temporary
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>...can be useful all by itself. The following is used to make a temporary
 stack frame suitable for "nonphrasal" compilation, that is, for when Inform
 wants to compile an I6 routine for some purpose other than to define a phrase.
 </p>
@@ -159,7 +159,7 @@ wants to compile an I6 routine for some purpose other than to define a phrase.
 <span class="plain-syntax">    </span><a href="24-sf.html#SP7" class="function-link"><span class="function-syntax">Frames::remove_current</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Another way to get hold of a PHSF is to request a boxed one, as noted above:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Another way to get hold of a PHSF is to request a boxed one, as noted above:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -173,7 +173,7 @@ wants to compile an I6 routine for some purpose other than to define a phrase.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">phsfb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">boxed_phsf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The current stack frame. </b>At any given time, a single stack frame is valid for local variable names
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The current stack frame. </b>At any given time, a single stack frame is valid for local variable names
 and phrase option names used as conditions. It will be the nonphrasal one
 if that's active, and otherwise must be set as needed.
 </p>
@@ -194,7 +194,7 @@ if that's active, and otherwise must be set as needed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Kinds. </b>The kind of value we expect to return from within this stack frame, if any.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Kinds. </b>The kind of value we expect to return from within this stack frame, if any.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -208,7 +208,7 @@ if that's active, and otherwise must be set as needed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kind_returned</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And the values of the kind variables A to Z:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And the values of the kind variables A to Z:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">KIND_VARIABLE_FROM_CONTEXT</span><span class="plain-syntax"> </span><a href="24-sf.html#SP9" class="function-link"><span class="function-syntax">Frames::get_kind_variable</span></a>
@@ -233,7 +233,7 @@ if that's active, and otherwise must be set as needed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prev</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Stacked variables. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Stacked variables. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Frames::set_stvol</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Frames::set_stvol</span></span>:<br/>Phrase Usage - <a href="22-pu.html#SP20_1_1">&#167;20.1.1</a><br/>Phrase Runtime Context Data - <a href="22-prcd.html#SP8">&#167;8</a><br/>Compile Phrases - <a href="25-cp.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">, </span><span class="reserved-syntax">stacked_variable_owner_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stvol</span><span class="plain-syntax">) {</span>
@@ -246,7 +246,7 @@ if that's active, and otherwise must be set as needed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Past tense. </b>All we do here is to make a note if anything compiled in this context makes
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Past tense. </b>All we do here is to make a note if anything compiled in this context makes
 reference to the past.
 </p>
 
@@ -266,7 +266,7 @@ reference to the past.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Frames::log</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">Frames::log</span></span>:<br/>Text Substitutions - <a href="17-ts.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
@@ -288,7 +288,7 @@ reference to the past.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Formal parameter allocation. </b>Some stack frames need access to additional variables to handle run-time
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Formal parameter allocation. </b>Some stack frames need access to additional variables to handle run-time
 invocation ambiguities, and this is how they're requested:
 </p>
 
@@ -301,7 +301,7 @@ invocation ambiguities, and this is how they're requested:
 <span class="plain-syntax">        </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_formal_parameters_needed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Pointer value allocation. </b>Values such as lists, which have to stored in whole blocks rather than single
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Pointer value allocation. </b>Values such as lists, which have to stored in whole blocks rather than single
 words of memory, are sometimes called pointer values because all we can
 immediately handle is a pointer to the block. When these arise in the
 compilation of a routine, we have to make a note of this, because special
@@ -341,7 +341,7 @@ The following is the routine called to make this note.
 <span class="plain-syntax">    </span><a href="12-is.html#SP5" class="function-link"><span class="function-syntax">Calculus::Schemas::emit_expand_from_terms</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">all_sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b>The following works out a call to <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> which will return a
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b>The following works out a call to <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> which will return a
 default value of the given kind.
 </p>
 
@@ -352,7 +352,7 @@ default value of the given kind.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pall</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation</span><span class="plain-syntax"> = </span><a href="13-rsfk.html#SP21" class="function-link"><span class="function-syntax">Kinds::RunTime::make_heap_allocation</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">pall</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">offset_index</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-sf.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_2"></a><b>&#167;14.2.  </b>This is the storage used to hold the pointer. For each frame, we have
+<p class="commentary firstcommentary"><a id="SP14_2" class="paragraph-anchor"></a><b>&#167;14.2.  </b>This is the storage used to hold the pointer. For each frame, we have
 a subarray of short blocks, indexed by the offset.
 </p>
 
@@ -374,7 +374,7 @@ a subarray of short blocks, indexed by the offset.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-sf.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_3"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out promotion schema for this pointer value</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_3" class="paragraph-anchor"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out promotion schema for this pointer value</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -391,7 +391,7 @@ a subarray of short blocks, indexed by the offset.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="24-sf.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Frames::pall_get_local_reference</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Frames::pall_get_local_reference</span></span>:<br/><a href="24-sf.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pointer_allocation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pall</span><span class="plain-syntax">) {</span>

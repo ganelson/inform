@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#15">Chapter 15: Properties</a></li><li><b>Property Sentences</b></li></ul></div>
 <p class="purpose">To examine assertion sentences for property creation.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Inform's syntax for value properties is "X of Y": "the carrying capacity
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inform's syntax for value properties is "X of Y": "the carrying capacity
 of the box", say. Because of this, the word "of" is structurally significant
 when diagramming assertion sentences. Unfortunately "of" also occurs in many
 other situations:
@@ -83,7 +83,7 @@ only when it is preceded by a property name, but this means we need to know
 the property names early in Inform's run.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We therefore look for this configuration:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We therefore look for this configuration:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -127,7 +127,7 @@ sentence will be properly parsed later on.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A tricky point in detecting property declarations is that they share the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A tricky point in detecting property declarations is that they share the
 syntax used for action, activity and rulebook variables. For instance:
 </p>
 
@@ -146,7 +146,7 @@ of such owners have a distinctive look to them:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;rulebook-name-formal&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And this seems a good place to declare the grammar for our "formal names".
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And this seems a good place to declare the grammar for our "formal names".
 For instance, if we want to talk about the "taking" action in abstract as
 a noun, we write it in the formal way "taking action".
 </p>
@@ -168,7 +168,7 @@ a noun, we write it in the formal way "taking action".
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">rulebook</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Assuming the owner passes that sanity check, the following grammar is then
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Assuming the owner passes that sanity check, the following grammar is then
 applied to the presumed property name: note the side-effect of the final
 production of &lt;has-property-name&gt;.
 </p>
@@ -190,7 +190,7 @@ production of &lt;has-property-name&gt;.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, Properties::Valued::obtain(W) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyCalledArticle problem</span><span class="named-paragraph-number">5.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyCalledArticle problem</span><span class="named-paragraph-number">5.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -201,7 +201,7 @@ production of &lt;has-property-name&gt;.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">0</span><span class="plain-syntax">, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-ps.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyCalledPresence problem</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyCalledPresence problem</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -215,7 +215,7 @@ production of &lt;has-property-name&gt;.
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">0</span><span class="plain-syntax">, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="15-ps.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyNameForbidden problem</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PropertyNameForbidden problem</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

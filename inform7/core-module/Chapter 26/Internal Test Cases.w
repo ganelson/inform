@@ -418,16 +418,16 @@ void InternalTests::log_poset(int n) {
 	tests[1] = K_container;
 	tests[2] = K_door;
 	tests[3] = K_thing;
-	tests[4] = Kinds::unary_construction(CON_list_of, K_container);
-	tests[5] = Kinds::unary_construction(CON_list_of, K_door);
-	tests[6] = Kinds::unary_construction(CON_list_of, K_person);
-	tests[7] = Kinds::unary_construction(CON_list_of, K_thing);
-	tests[8] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_door, K_void), K_object);
-	tests[9] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_void), K_door);
-	tests[10] = Kinds::binary_construction(CON_phrase,
-		Kinds::binary_construction(CON_TUPLE_ENTRY, K_object, K_void), K_object);
+	tests[4] = Kinds::unary_con(CON_list_of, K_container);
+	tests[5] = Kinds::unary_con(CON_list_of, K_door);
+	tests[6] = Kinds::unary_con(CON_list_of, K_person);
+	tests[7] = Kinds::unary_con(CON_list_of, K_thing);
+	tests[8] = Kinds::binary_con(CON_phrase,
+		Kinds::binary_con(CON_TUPLE_ENTRY, K_door, K_void), K_object);
+	tests[9] = Kinds::binary_con(CON_phrase,
+		Kinds::binary_con(CON_TUPLE_ENTRY, K_object, K_void), K_door);
+	tests[10] = Kinds::binary_con(CON_phrase,
+		Kinds::binary_con(CON_TUPLE_ENTRY, K_object, K_void), K_object);
 	int i, j;
 	for (i=0; i<SIZE_OF_GRAB_BAG; i++) for (j=i+1; j<SIZE_OF_GRAB_BAG; j++) {
 		if (Kinds::conforms_to(tests[i], tests[j])) LOG("%u <= %u\n", tests[i], tests[j]);

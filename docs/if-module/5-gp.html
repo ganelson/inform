@@ -69,9 +69,9 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-gp.html#SP1">&#167;1. Definitions</a></li><li><a href="5-gp.html#SP5">&#167;5. Initialising</a></li><li><a href="5-gp.html#SP6">&#167;6. Plugin startup</a></li><li><a href="5-gp.html#SP11">&#167;11. Visible properties</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definitions. </b></p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -85,7 +85,7 @@ function togglePopup(material_id) {
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I6_second_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I6_actor_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Every inference subject (in particular, every object and every kind of object)
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Every inference subject (in particular, every object and every kind of object)
 contains a pointer to its own unique copy of the following structure:
 </p>
 
@@ -96,7 +96,7 @@ contains a pointer to its own unique copy of the following structure:
 <span class="plain-syntax">} </span><span class="reserved-syntax">parsing_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parsing_data is accessed in 5/gv, 5/gpr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And every property permission likewise:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And every property permission likewise:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -108,7 +108,7 @@ contains a pointer to its own unique copy of the following structure:
 <span class="plain-syntax">} </span><span class="reserved-syntax">parsing_pp_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parsing_pp_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Initialising. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Initialising. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">parsing_data</span><span class="plain-syntax"> *</span><span class="function-syntax">PL::Parsing::Visibility::new_data</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Parsing::Visibility::new_data</span></span>:<br/><a href="5-gp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
@@ -125,7 +125,7 @@ contains a pointer to its own unique copy of the following structure:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Plugin startup. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Plugin startup. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Parsing::Visibility::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -146,7 +146,7 @@ contains a pointer to its own unique copy of the following structure:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>These are variable names to do with "Understand..." which Inform provides
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>These are variable names to do with "Understand..." which Inform provides
 special support for; it recognises the English names when they are defined by
 the Standard Rules or, in the case of "the X understood", by Inform itself.
 (So there is no need to translate this to other languages.)
@@ -163,7 +163,7 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">maximum</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">score</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 6, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Parsing::Visibility::parsing_new_variable_notify</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PL::Parsing::Visibility::parsing_new_variable_notify</span></span>:<br/><a href="5-gp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">var</span><span class="plain-syntax">) {</span>
@@ -190,7 +190,7 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This is for <span class="extract"><span class="extract-syntax">name</span></span> and <span class="extract"><span class="extract-syntax">plural</span></span>.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This is for <span class="extract"><span class="extract-syntax">name</span></span> and <span class="extract"><span class="extract-syntax">plural</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -202,7 +202,7 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Once the traverse is done, we can infer values for the two key I6 properties
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Once the traverse is done, we can infer values for the two key I6 properties
 for parsing:
 </p>
 
@@ -240,7 +240,7 @@ for parsing:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Properties::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">P_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>The name property requires special care, partly over I6 eccentricities
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>The name property requires special care, partly over I6 eccentricities
 such as the way that single-letter dictionary words can be misinterpreted
 as characters (hence the double slash below), but also because something
 called "your ..." in the source text &mdash; "your nose", say &mdash; needs to
@@ -322,7 +322,7 @@ for the kinds we inherit from.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gp.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b>We attach numbered parse name routines as properties for any object
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>We attach numbered parse name routines as properties for any object
 where grammar has specified a need. (By default, this will not happen.)
 </p>
 
@@ -336,7 +336,7 @@ where grammar has specified a need. (By default, this will not happen.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">Rvalues::from_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">CERTAIN_CE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gp.html#SP10">&#167;10</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b>The action bitmap is an array of bits attached to each object, one
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b>The action bitmap is an array of bits attached to each object, one
 for each action, which records whether that action has yet applied
 successfully to that object. This is used at run-time to handle past
 tense conditions such as "the jewels have been taken". Note that
@@ -357,7 +357,7 @@ i.e., all I6 objects corresponding to I7 things.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-gp.html#SP10">&#167;10</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Visible properties. </b>A visible property is one which can be used to describe an object: for
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Visible properties. </b>A visible property is one which can be used to describe an object: for
 instance, if colour is a visible property of a car, then it can be called
 "green car" if and only if the current value of the colour of the car is
 "green".

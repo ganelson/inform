@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="11-sm.html#SP2">&#167;2. Simplify the nothing constant (fudge)</a></li><li><a href="11-sm.html#SP3">&#167;3. Use listed-in predicates (deduction)</a></li><li><a href="11-sm.html#SP4">&#167;4. Simplify negated determiners (deduction)</a></li><li><a href="11-sm.html#SP6">&#167;6. Simplify negated satisfiability (deduction)</a></li><li><a href="11-sm.html#SP7">&#167;7. Make kind requirements explicit (deduction)</a></li><li><a href="11-sm.html#SP8">&#167;8. Remove redundant kind predicates (deduction)</a></li><li><a href="11-sm.html#SP10">&#167;10. Turn binary predicates the right way round (deduction)</a></li><li><a href="11-sm.html#SP11">&#167;11. Simplify region containment (fudge)</a></li><li><a href="11-sm.html#SP12">&#167;12. Reduce binary predicates (deduction)</a></li><li><a href="11-sm.html#SP13">&#167;13. Eliminating determined variables (deduction)</a></li><li><a href="11-sm.html#SP14">&#167;14. Simplify non-relation (deduction)</a></li><li><a href="11-sm.html#SP15">&#167;15. Convert gerunds to nouns (deduction)</a></li><li><a href="11-sm.html#SP16">&#167;16. Eliminate to have meaning property ownership (fudge)</a></li><li><a href="11-sm.html#SP18">&#167;18. Turn all rooms to everywhere (fudge)</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Recall the three rules for simplification routines: they take a proposition
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Recall the three rules for simplification routines: they take a proposition
 \(\Sigma\) (which they are allowed to destroy or modify) and return \(\Sigma'\),
 but such that:
 </p>
@@ -108,7 +108,7 @@ of predicates, using the smallest possible number of variables (and hence
 quantifiers).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Simplify the nothing constant (fudge). </b>The word "nothing" is sometimes a noun ("the holder of the oak tree is
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Simplify the nothing constant (fudge). </b>The word "nothing" is sometimes a noun ("the holder of the oak tree is
 nothing"), sometimes a determiner ("nothing is in the box"). This
 doesn't arise with the other no- words, nowhere and nobody, since those are
 not allowed as nouns in Inform.
@@ -142,7 +142,7 @@ but Google finds 223,000 hits for it.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>Formally, if \(B\) is a predicate other than equality,
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Formally, if \(B\) is a predicate other than equality,
 \(\) \Sigma = \cdots B(t, f_X(f_Y(\cdots(<span class="extract"><span class="extract-syntax">nothing</span></span>))))\cdots \quad \longrightarrow \quad
 \Sigma' = \cdots \not\exists v\in\lbrace v\mid K_1(v)\rbrace: B(t, f_X(f_Y(\cdots(v))))\cdots \(\)
 where \(v\) is unused in \(\Sigma\), and &mdash; note the difference in placing &mdash;
@@ -186,7 +186,7 @@ their meaning is equivalent to "this is nothing, but...". Still, Inform takes
 the view that a double negative is a positive.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>The code is simpler than the explanation:
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>The code is simpler than the explanation:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Substitute for the term and quantify with does-not-exist</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
@@ -207,7 +207,7 @@ the view that a double negative is a positive.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="11-pr.html#SP16" class="function-link"><span class="function-syntax">Calculus::Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">position</span><span class="plain-syntax">, </span><a href="11-ap.html#SP7" class="function-link"><span class="function-syntax">Calculus::Atoms::QUANTIFIER_new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">not_exists_quantifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">nv</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Use listed-in predicates (deduction). </b>Specifications for entries in tables have a variety of forms (well, four
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Use listed-in predicates (deduction). </b>Specifications for entries in tables have a variety of forms (well, four
 of them), and one is by implication a condition: this is the 2-reference form
 of <span class="extract"><span class="extract-syntax">TABLE_ENTRY_NT</span></span> specification. Suppose the source text reads
 </p>
@@ -298,7 +298,7 @@ it's important that our code here should generate the correct proposition,
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Simplify negated determiners (deduction). </b>The negation atom is worth removing wherever possible, since we want to
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Simplify negated determiners (deduction). </b>The negation atom is worth removing wherever possible, since we want to
 keep propositions in a flat conjunction form if we can, and the negation
 of a string of atoms is therefore a bad thing. We therefore change thus:
 $$ \Sigma = \cdots \lnot (Qv\in\lbrace v\mid \phi(v)\rbrace: \psi)\cdots \quad \longrightarrow \quad \Sigma' = \cdots Q'v\in\lbrace v\mid \phi(v)\rbrace: \psi\cdots $$
@@ -338,7 +338,7 @@ they make some of our later simplifications more applicable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And the following useful routine actually performs the change. The only
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And the following useful routine actually performs the change. The only
 tricky point here is that we store \(\exists v\) without domain brackets; so
 if \(Q\) happens to be \(\exists v\) then we have to turn \(\lnot(\exists v: \cdots)\)
 into \(\not\exists v\in \lbrace v\mid \cdots\rbrace\cdots\), and it's not
@@ -388,7 +388,7 @@ the caller's responsibility to put that right.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Simplify negated satisfiability (deduction). </b>When simplifying converted sentences, we chose not to use the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Simplify negated satisfiability (deduction). </b>When simplifying converted sentences, we chose not to use the
 <span class="extract"><span class="extract-syntax">Calculus::Simplifications::negated_determiners</span></span> tactic on existence quantifiers \(\exists v\),
 partly because it's tricky to establish their domain in a way helpful to
 the rest of Inform.
@@ -425,7 +425,7 @@ substitution will later eliminate all of this anyway.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Make kind requirements explicit (deduction). </b>Many predicates contain implicit requirements about the kinds of their terms.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Make kind requirements explicit (deduction). </b>Many predicates contain implicit requirements about the kinds of their terms.
 For instance, if \(R\) relates a door to a number, then \(R(x,y)\) can only be
 true if \(x\) is a door and \(y\) is a number. We insert these requirements
 explicitly in order to defend the code testing \(R\); it ensures we never have
@@ -480,7 +480,7 @@ because the code testing them is written to cope properly with bogus values.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Remove redundant kind predicates (deduction). </b>Propositions often contain more <span class="extract"><span class="extract-syntax">KIND</span></span> atoms than they need, not least as a
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Remove redundant kind predicates (deduction). </b>Propositions often contain more <span class="extract"><span class="extract-syntax">KIND</span></span> atoms than they need, not least as a
 result of <span class="extract"><span class="extract-syntax">Calculus::Simplifications::make_kinds_of_value_explicit</span></span>. Here we remove (some of)
 those, and move the survivors to what we consider the best positions within
 the line. For reasons to be revealed below, we run this process twice over:
@@ -495,7 +495,7 @@ the line. For reasons to be revealed below, we run this process twice over:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This routine works recursively on subexpressions within the main
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This routine works recursively on subexpressions within the main
 proposition. These all begin and end with matched <span class="extract"><span class="extract-syntax">*_OPEN_ATOM</span></span> and
 <span class="extract"><span class="extract-syntax">*_CLOSED_ATOM</span></span> brackets, with one exception: the main proposition itself.
 <span class="extract"><span class="extract-syntax">start_group</span></span> represents the first atom of the expression (the open
@@ -521,7 +521,7 @@ know that it is &mdash; an internal error would have been thrown if not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>For all of the atoms in the body of the group we're working on, the bracket
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>For all of the atoms in the body of the group we're working on, the bracket
 level will be 1. When it raises to 2, then, we begin a subexpression, and
 we recurse into it. (We don't recurse at levels 3 and up because the level 2
 call will already have taken care of those sub-sub-expressions.)
@@ -543,7 +543,7 @@ call will already have taken care of those sub-sub-expressions.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b>Suppose we have a kind predicate \(K(v)\) applied to a variable. What would
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>Suppose we have a kind predicate \(K(v)\) applied to a variable. What would
 be the best place to put this? Generally speaking, we want it as early as
 possible, because tests of \(K\) are cheap and this will keep running time
 low in compiled code. On the other hand we must not move it outside the
@@ -617,7 +617,7 @@ marks the start of the statement following the quantifier.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b>The following looks at the predicates \(K(v)\) applied to variables which
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b>The following looks at the predicates \(K(v)\) applied to variables which
 are in the subexpression at the top level. It then does two things:
 </p>
 
@@ -685,7 +685,7 @@ doesn't matter, but it's tidy.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_1"></a><b>&#167;9.3.1.  </b>The noteworthy thing here is that we continue through the subexpression,
+<p class="commentary firstcommentary"><a id="SP9_3_1" class="paragraph-anchor"></a><b>&#167;9.3.1.  </b>The noteworthy thing here is that we continue through the subexpression,
 deleting any weaker form of \(K(v)\) that we find, but also allow ourselves
 to continue beyond the subexpression in one case. Suppose we have
 $$ Qv\in\lbrace v\mid K(v) \land... \rbrace : L(v) $$
@@ -719,7 +719,7 @@ outer subexpression &mdash; the one which is governed by the quantifier.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2"></a><b>&#167;9.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Move this predicate backwards to its optimal position</span><span class="named-paragraph-number">9.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Move this predicate backwards to its optimal position</span><span class="named-paragraph-number">9.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -736,7 +736,7 @@ outer subexpression &mdash; the one which is governed by the quantifier.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b>Suppose we find a term \(K(C)\), where \(C\) is a constant in the sense of
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b>Suppose we find a term \(K(C)\), where \(C\) is a constant in the sense of
 predicate calculus &mdash; that is, a <span class="extract"><span class="extract-syntax">specification</span></span>. There is no need to
 perform such a test at run-time because we can determine the kind of \(C\)
 and compare it against \(K\) right now. For instance, ${\it number}(<span class="extract"><span class="extract-syntax">score</span></span>)$
@@ -798,7 +798,7 @@ the proposition is going to fail type-checking anyway.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Turn binary predicates the right way round (deduction). </b>Recall that BPs are manufactured in pairs, each being the reversal of
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Turn binary predicates the right way round (deduction). </b>Recall that BPs are manufactured in pairs, each being the reversal of
 the other, in the sense of transposing their terms. Of each pair, one is
 considered the canonical way to represent the relation, and is "the right
 way round". This routine turns all BPs in the proposition the right way
@@ -836,7 +836,7 @@ would matter if they were.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Simplify region containment (fudge). </b>Most of Inform's prepositions are unambiguous, but "in" can mean two quite
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Simplify region containment (fudge). </b>Most of Inform's prepositions are unambiguous, but "in" can mean two quite
 different relations. Usually it means (direct) containment, but there is an
 alternative interpretation as regional containment. "The diamond is in the
 teddy bear" is direct containment, but "The diamond is in Northumberland"
@@ -890,7 +890,7 @@ direct and region containment, then
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Reduce binary predicates (deduction). </b>If we are able to reduce a binary to a unary predicate, we will probably
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Reduce binary predicates (deduction). </b>If we are able to reduce a binary to a unary predicate, we will probably
 gain considerably by being able to eliminate a variable altogether. For
 instance, suppose we have "Mme Cholet is in a burrow". This will
 initially come out as
@@ -938,7 +938,7 @@ why it was necessary to separate the two out.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Eliminating determined variables (deduction). </b>The above operations will try to get as many variables as possible into a
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Eliminating determined variables (deduction). </b>The above operations will try to get as many variables as possible into a
 form which makes their values explicit with a predicate \({\it is}(v, t)\).
 We detect such equations and use them to eliminate the variable concerned,
 where this is safe.
@@ -997,7 +997,7 @@ where this is safe.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b>The information-gathering stage:
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>The information-gathering stage:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find out where and how variables are bound</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
@@ -1026,7 +1026,7 @@ where this is safe.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_2"></a><b>&#167;13.2.  </b>At this point we have a predicate \({\it is}(t, f_A(f_B(\cdots s)))\). Should
+<p class="commentary firstcommentary"><a id="SP13_2" class="paragraph-anchor"></a><b>&#167;13.2.  </b>At this point we have a predicate \({\it is}(t, f_A(f_B(\cdots s)))\). Should
 the term \(t\) be a variable \(v\), which is bound by an \(\exists v\) atom at the
 same level in its subexpression, then we can consider eliminating \(v\) by
 substituting \(v = f_A(f_B(\cdots s))\).
@@ -1070,7 +1070,7 @@ if no variables are present in their respective terms.
 <span class="plain-syntax">            </span><span class="identifier-syntax">value_can_be_subbed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Simplify non-relation (deduction). </b>As a result of the previous simplifications, it fairly often happens that we
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Simplify non-relation (deduction). </b>As a result of the previous simplifications, it fairly often happens that we
 find a term like
 \(\) \lnot({\it thing}(t<span class="extract"><span class="extract-syntax">.component_parent</span></span>)) \(\)
 in the proposition. This comes out of text such as "... not part of something",
@@ -1129,7 +1129,7 @@ they have no "not a valid case" value analogous to the non-object <span class="e
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Convert gerunds to nouns (deduction). </b>Suppose we write:
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Convert gerunds to nouns (deduction). </b>Suppose we write:
 </p>
 
 <blockquote>
@@ -1161,7 +1161,7 @@ accordingly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Eliminate to have meaning property ownership (fudge). </b>The verb "to have" normally means ownership of a physical thing, but it
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Eliminate to have meaning property ownership (fudge). </b>The verb "to have" normally means ownership of a physical thing, but it
 can also arise from text such as
 </p>
 
@@ -1211,7 +1211,7 @@ sufficiently contrived sentences, this wouldn't be true.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16_1"></a><b>&#167;16.1.  </b>So the current atom is \({\it is}(f_H(P), C)\) or \({\it is}(C, f_H(P))\)
+<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1.  </b>So the current atom is \({\it is}(f_H(P), C)\) or \({\it is}(C, f_H(P))\)
 (according to whether \(i\) is 0 or 1), for a property \(P\) and a constant
 term \(C\).
 </p>
@@ -1232,7 +1232,7 @@ term \(C\).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-sm.html#SP16">&#167;16</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Here we make the necessary substitution of "P" with "the P of C",
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Here we make the necessary substitution of "P" with "the P of C",
 where \(P\) is a property and \(C\) the constant value of its owner. We make
 this to every occurrence throughout the proposition, except for the one
 in the original \({\it is}(f_H(P), C)\) atom, and we count the number of
@@ -1263,7 +1263,7 @@ changes made.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Turn all rooms to everywhere (fudge). </b>This rather special rule handles the consequences of the English word
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Turn all rooms to everywhere (fudge). </b>This rather special rule handles the consequences of the English word
 "everywhere". Inform reads that as "all rooms", literally "every where",
 which is logical but loses the connotation of place &mdash; by "everywhere", we
 usually mean "in all rooms", so that the sentence

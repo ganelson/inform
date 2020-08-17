@@ -83,7 +83,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="6-lp.html#SP8">&#167;8. Creating patterns, tokens and elements</a></li><li><a href="6-lp.html#SP11">&#167;11. Listing LPs</a></li><li><a href="6-lp.html#SP16">&#167;16. Optional break points</a></li><li><a href="6-lp.html#SP17">&#167;17. Matching an LP in the source text</a></li><li><a href="6-lp.html#SP18">&#167;18. Matching an LP at run-time</a></li><li><a href="6-lp.html#SP19">&#167;19. Indexing literal patterns for a given kind</a></li><li><a href="6-lp.html#SP22">&#167;22. Printing values in an LP's notation to the index at compile-time</a></li><li><a href="6-lp.html#SP26">&#167;26. Printing the I6 variable |value| out in an LP's notation at run-time</a></li><li><a href="6-lp.html#SP33">&#167;33. I7 phrases to print values in specified ways</a></li><li><a href="6-lp.html#SP34">&#167;34. I7 phrases to pack and unpack the value</a></li><li><a href="6-lp.html#SP35">&#167;35. The kind's list</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Literals are excerpts of text which explicitly specify values, rather than
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Literals are excerpts of text which explicitly specify values, rather than
 by indirectly naming them. "15" is a literal but "the score" is not, even
 if it happens to have the value 15. Inform contains specific code to parse
 literals such as
@@ -114,7 +114,7 @@ so with the following macro:
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">lp</span><span class="plain-syntax"> = </span><a href="6-lp.html#SP36" class="function-link"><span class="function-syntax">LiteralPatterns::list_of_literal_forms</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">); </span><span class="identifier-syntax">lp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">lp</span><span class="plain-syntax">=</span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_for_this_kind</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>LPs with just a single numerical part to them (like "20 yards" rather than
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>LPs with just a single numerical part to them (like "20 yards" rather than
 "16:9") are of special interest for holding scientific measurements, and
 we provide elaborate extra features for this form of LP.
 </p>
@@ -130,7 +130,7 @@ then be scaled down by 1000, or scaled up by 1000, as compared with the
 benchmark.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Syntactically, a literal pattern is a series of "tokens", of which more
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Syntactically, a literal pattern is a series of "tokens", of which more
 below. Some tokens are simply fixed lettering or wording, but others
 represent positions where "elements" &mdash; the numerical parts &mdash; appear. In
 the "16:9" notation, there are three tokens &mdash; an element token, a fixed
@@ -170,11 +170,11 @@ element token.
 <span class="plain-syntax">} </span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_pattern is accessed in 4/nlpr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LITERAL_PATTERNS</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>There are three sorts of token: character, word and element. Each token can
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>There are three sorts of token: character, word and element. Each token can
 be a whole word, or only part of a word. For instance, in
 </p>
 
@@ -202,7 +202,7 @@ match those in the specification, so this notation does not match the text
 <span class="plain-syntax">} </span><span class="reserved-syntax">literal_pattern_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_pattern_token is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>A value notated this way is like an old-school Pascal packed integer,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>A value notated this way is like an old-school Pascal packed integer,
 where a small data structure was joined into a single word of data. For
 instance, in the "16:9" example, \(e_0:e_1\) would be stored as
 \(e_0r_1+e_1\) where \(r_1 = 10\) is one more than the maximum value of \(e_1\).
@@ -238,7 +238,7 @@ The rightmost element \(e_{n-1}\) is the least significant numerically.
 <span class="plain-syntax">} </span><span class="reserved-syntax">literal_pattern_element</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_pattern_element is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>For the sake of printing, we can specify which notation is to be used in
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>For the sake of printing, we can specify which notation is to be used in
 printing a value back. For instance,
 </p>
 
@@ -270,7 +270,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 <span class="plain-syntax">} </span><span class="reserved-syntax">literal_pattern_name</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure literal_pattern_name is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 4/npr, 4/nvr, 4/nar2, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/ins, 8/rs, 10/teav, 10/cap, 11/ap, 11/pr, 11/bas, 11/tc, 11/sm, 12/dtd, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Creating patterns, tokens and elements. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Creating patterns, tokens and elements. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="function-syntax">LiteralPatterns::lp_new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::lp_new</span></span>:<br/><a href="6-lp.html#SP30_7">&#167;30.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -292,7 +292,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">literal_pattern_token</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::lpt_new</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::lpt_new</span></span>:<br/><a href="6-lp.html#SP30_8">&#167;30.8</a>, <a href="6-lp.html#SP30_8_1">&#167;30.8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nw</span><span class="plain-syntax">) {</span>
@@ -304,7 +304,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lpt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">literal_pattern_element</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::lpe_new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::lpe_new</span></span>:<br/><a href="6-lp.html#SP30_8_1">&#167;30.8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sgn</span><span class="plain-syntax">) {</span>
@@ -319,7 +319,7 @@ mass might also support "in kilograms" and "in grams", for instance.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lpe</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Listing LPs. </b>A routine to append a LP to the linked list of LPs for a given kind. But
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Listing LPs. </b>A routine to append a LP to the linked list of LPs for a given kind. But
 it's a little more involved because this is where we calculate the scale
 factors which relate LPs in the list, and also because we need to keep the
 list in a particular order.
@@ -339,7 +339,7 @@ list in a particular order.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b>When the new LP is the first one, it can only be scaled in absolute terms:
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>When the new LP is the first one, it can only be scaled in absolute terms:
 "scaled at", which specifies its \(M\) value.
 </p>
 
@@ -352,7 +352,7 @@ list in a particular order.
 <span class="plain-syntax">    </span><span class="identifier-syntax">list_head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_lp</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b>But if other LPs already exist, then absolute scalings are forbidden. The
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b>But if other LPs already exist, then absolute scalings are forbidden. The
 new LP must be scaled up or down relative to existing notations, or pegged
 equivalent to an exact value.
 </p>
@@ -390,7 +390,7 @@ equivalent to an exact value.
 <span class="plain-syntax">            }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_3"></a><b>&#167;11.3.  </b>Within the list, exactly one LP is marked with the <span class="extract"><span class="extract-syntax">last_resort</span></span> flag: the
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b>Within the list, exactly one LP is marked with the <span class="extract"><span class="extract-syntax">last_resort</span></span> flag: the
 last one not marked as an equivalent unit. (You can only be equivalent to
 something already there, so it's not possible for all the LPs in the list to
 be equivalent.)
@@ -408,7 +408,7 @@ be equivalent.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">last_resorter</span><span class="plain-syntax">) </span><span class="identifier-syntax">last_resorter</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_resort</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_4"></a><b>&#167;11.4.  </b>Inform is ordinarily a bit picky about not allowing negative values within
+<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4.  </b>Inform is ordinarily a bit picky about not allowing negative values within
 these notations, unless they have explicitly been defined to allow it. That
 makes sense for basically combinatorial notations (room 1 to room 64, say)
 but would be a nonsense for scientific measurements where we intend to perform
@@ -430,7 +430,7 @@ arithmetic. So:
 <span class="plain-syntax">            </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_signed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The actual insertion of the new LP into the list is carried out here, and
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The actual insertion of the new LP into the list is carried out here, and
 is complicated by the fact that we need to keep these in a special order.
 </p>
 
@@ -454,7 +454,7 @@ is complicated by the fact that we need to keep these in a special order.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Highly scaled values come before less scaled ones; otherwise plural forms
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Highly scaled values come before less scaled ones; otherwise plural forms
 come before singular ones; and otherwise an earlier-defined LP comes before
 a later one.
 </p>
@@ -474,7 +474,7 @@ a later one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>One member of the list is the "benchmark", as noted above.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>One member of the list is the "benchmark", as noted above.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -486,7 +486,7 @@ a later one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And this returns the multiplier of the benchmark, which is important for
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And this returns the multiplier of the benchmark, which is important for
 performing multiplications (see "Dimensions").
 </p>
 
@@ -497,7 +497,7 @@ performing multiplications (see "Dimensions").
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Optional break points. </b>Sometimes the pattern allows later numerical elements to be skipped, in which
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Optional break points. </b>Sometimes the pattern allows later numerical elements to be skipped, in which
 case they are understood to be 0.
 </p>
 
@@ -511,7 +511,7 @@ case they are understood to be 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Matching an LP in the source text. </b>Given an excerpt <span class="extract"><span class="extract-syntax">(w1, w2)</span></span>, we try to parse it as a constant value written
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Matching an LP in the source text. </b>Given an excerpt <span class="extract"><span class="extract-syntax">(w1, w2)</span></span>, we try to parse it as a constant value written
 in the LP notation: if it passes, we return the kind of value, and if not
 we return <span class="extract"><span class="extract-syntax">NULL</span></span>.
 </p>
@@ -545,7 +545,7 @@ we return <span class="extract"><span class="extract-syntax">NULL</span></span>.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kind_specified</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b>Scanning the tokens one at a time. The scan position is represented as a
+<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b>Scanning the tokens one at a time. The scan position is represented as a
 word number <span class="extract"><span class="extract-syntax">wn</span></span> together with a character position within the word, <span class="extract"><span class="extract-syntax">wpos</span></span>.
 The <span class="extract"><span class="extract-syntax">wpos</span></span> value \(-1\) means that word <span class="extract"><span class="extract-syntax">wn</span></span> has not yet been started.
 </p>
@@ -590,7 +590,7 @@ The <span class="extract"><span class="extract-syntax">wpos</span></span> value 
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_1"></a><b>&#167;17.1.1.  </b>A word token matches an exact word (but allowing for variation in casing).
+<p class="commentary firstcommentary"><a id="SP17_1_1" class="paragraph-anchor"></a><b>&#167;17.1.1.  </b>A word token matches an exact word (but allowing for variation in casing).
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Match a fixed word token within a literal pattern</span><span class="named-paragraph-number">17.1.1</span></span><span class="comment-syntax"> =</span>
@@ -602,7 +602,7 @@ The <span class="extract"><span class="extract-syntax">wpos</span></span> value 
 <span class="plain-syntax">    </span><span class="identifier-syntax">wn</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1">&#167;17.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_2"></a><b>&#167;17.1.2.  </b>A character token matches only a single character &mdash; note the case insensitivity
+<p class="commentary firstcommentary"><a id="SP17_1_2" class="paragraph-anchor"></a><b>&#167;17.1.2.  </b>A character token matches only a single character &mdash; note the case insensitivity
 here, because of the use of <span class="extract"><span class="extract-syntax">tolower</span></span>.
 </p>
 
@@ -615,7 +615,7 @@ here, because of the use of <span class="extract"><span class="extract-syntax">t
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wd</span><span class="plain-syntax">[</span><span class="identifier-syntax">wpos</span><span class="plain-syntax">] == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">wn</span><span class="plain-syntax">++; </span><span class="identifier-syntax">wpos</span><span class="plain-syntax"> = -1; } </span><span class="comment-syntax"> and stop parsing the interior of a word</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1">&#167;17.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_3"></a><b>&#167;17.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Match an element token within a literal pattern</span><span class="named-paragraph-number">17.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_1_3" class="paragraph-anchor"></a><b>&#167;17.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Match an element token within a literal pattern</span><span class="named-paragraph-number">17.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -627,7 +627,7 @@ here, because of the use of <span class="extract"><span class="extract-syntax">t
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wd</span><span class="plain-syntax">[</span><span class="identifier-syntax">wpos</span><span class="plain-syntax">] == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">wn</span><span class="plain-syntax">++; </span><span class="identifier-syntax">wpos</span><span class="plain-syntax"> = -1; } </span><span class="comment-syntax"> and stop parsing the interior of a word</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1">&#167;17.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_3_1"></a><b>&#167;17.1.3.1.  </b>There are three different sorts of overflow:
+<p class="commentary firstcommentary"><a id="SP17_1_3_1" class="paragraph-anchor"></a><b>&#167;17.1.3.1.  </b>There are three different sorts of overflow:
 </p>
 
 <ul class="items"><li>(1) The calculation of the packed value exceeding the range which an integer
@@ -677,7 +677,7 @@ this could cause trouble on unusual platforms.
 <span class="plain-syntax">    </span><span class="identifier-syntax">matched_number</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">tot</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1_3">&#167;17.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_3_2"></a><b>&#167;17.1.3.2.  </b>In real arithmetic, though, overflow isn't a problem, since we can use the
+<p class="commentary firstcommentary"><a id="SP17_1_3_2" class="paragraph-anchor"></a><b>&#167;17.1.3.2.  </b>In real arithmetic, though, overflow isn't a problem, since we can use the
 infinities to represent arbitrarily large numbers.
 </p>
 
@@ -729,7 +729,7 @@ infinities to represent arbitrarily large numbers.
 <span class="plain-syntax">    </span><span class="identifier-syntax">parsed_as_real</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1_3">&#167;17.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_2"></a><b>&#167;17.2.  </b>Problem messages here have a tendency to be repeated, in some situations,
+<p class="commentary firstcommentary"><a id="SP17_2" class="paragraph-anchor"></a><b>&#167;17.2.  </b>Problem messages here have a tendency to be repeated, in some situations,
 which is annoying. So we have a mechanism to suppress duplicates:
 </p>
 
@@ -761,7 +761,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_3"></a><b>&#167;17.3.  </b>The out of range problem messages:
+<p class="commentary firstcommentary"><a id="SP17_3" class="paragraph-anchor"></a><b>&#167;17.3.  </b>The out of range problem messages:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the value found lies within the range which the VM can hold</span><span class="named-paragraph-number">17.3</span></span><span class="comment-syntax"> =</span>
@@ -789,7 +789,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_4"></a><b>&#167;17.4.  </b>The more specific problem of an internal overflow:
+<p class="commentary firstcommentary"><a id="SP17_4" class="paragraph-anchor"></a><b>&#167;17.4.  </b>The more specific problem of an internal overflow:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report a problem because one element in the notation overflows</span><span class="named-paragraph-number">17.4</span></span><span class="comment-syntax"> =</span>
@@ -823,7 +823,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17_1_4"></a><b>&#167;17.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report a problem because not enough accuracy is available</span><span class="named-paragraph-number">17.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP17_1_4" class="paragraph-anchor"></a><b>&#167;17.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report a problem because not enough accuracy is available</span><span class="named-paragraph-number">17.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -839,7 +839,7 @@ which is annoying. So we have a mechanism to suppress duplicates:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP17_1">&#167;17.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Matching an LP at run-time. </b>The following routine compiles an I6 general parsing routine (GPR) to match
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Matching an LP at run-time. </b>The following routine compiles an I6 general parsing routine (GPR) to match
 typed input in the correct notation. It amounts to printing out a version of
 the above routine, but ported to I6, and with the token loop "rolled out"
 so that no <span class="extract"><span class="extract-syntax">tc</span></span> and <span class="extract"><span class="extract-syntax">ec</span></span> variables are needed at run-time, and simplified
@@ -1030,7 +1030,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::place_label</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">failed_label</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a fixed word token within a literal pattern</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a fixed word token within a literal pattern</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1071,7 +1071,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a character token within a literal pattern</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2" class="paragraph-anchor"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a character token within a literal pattern</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1122,7 +1122,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-lp.html#SP18_2_2" class="named-paragraph-link"><span class="named-paragraph">Compile I6 code to exit mid-word parsing if at end of a word</span><span class="named-paragraph-number">18.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match an element token within a literal pattern</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3" class="paragraph-anchor"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match an element token within a literal pattern</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1174,7 +1174,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-lp.html#SP18_2_2" class="named-paragraph-link"><span class="named-paragraph">Compile I6 code to exit mid-word parsing if at end of a word</span><span class="named-paragraph-number">18.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3_1"></a><b>&#167;18.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a real number here</span><span class="named-paragraph-number">18.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3_1" class="paragraph-anchor"></a><b>&#167;18.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match a real number here</span><span class="named-paragraph-number">18.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1555,7 +1555,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18_3">&#167;18.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3_1_1"></a><b>&#167;18.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">March forwards through decimal digits</span><span class="named-paragraph-number">18.3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3_1_1" class="paragraph-anchor"></a><b>&#167;18.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">March forwards through decimal digits</span><span class="named-paragraph-number">18.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1595,7 +1595,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18_3_1">&#167;18.3.1</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3_2"></a><b>&#167;18.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match an integer here</span><span class="named-paragraph-number">18.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3_2" class="paragraph-anchor"></a><b>&#167;18.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to match an integer here</span><span class="named-paragraph-number">18.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1843,7 +1843,7 @@ if we fail to make a match.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18_3">&#167;18.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_1"></a><b>&#167;18.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to enter mid-word parsing if not already in it</span><span class="named-paragraph-number">18.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2_1" class="paragraph-anchor"></a><b>&#167;18.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to enter mid-word parsing if not already in it</span><span class="named-paragraph-number">18.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1886,7 +1886,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18_2">&#167;18.2</a>, <a href="6-lp.html#SP18_3">&#167;18.3</a>, <a href="6-lp.html#SP18_3_1">&#167;18.3.1</a> (three times), <a href="6-lp.html#SP18_3_2">&#167;18.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2_2"></a><b>&#167;18.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to exit mid-word parsing if at end of a word</span><span class="named-paragraph-number">18.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2_2" class="paragraph-anchor"></a><b>&#167;18.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to exit mid-word parsing if at end of a word</span><span class="named-paragraph-number">18.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1912,7 +1912,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP18_2">&#167;18.2</a>, <a href="6-lp.html#SP18_3">&#167;18.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Indexing literal patterns for a given kind. </b></p>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Indexing literal patterns for a given kind. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::index_all</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::index_all</span></span>:<br/>Kinds Index - <a href="13-ki.html#SP1_8">&#167;1.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -1929,7 +1929,7 @@ if we fail to make a match.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-lp.html#SP19_3" class="named-paragraph-link"><span class="named-paragraph">Index the possible names for these notations, as ways of printing them back</span><span class="named-paragraph-number">19.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19_1"></a><b>&#167;19.1.  </b>Each entry in this list is, in principle, a list all by itself &mdash; of
+<p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b>Each entry in this list is, in principle, a list all by itself &mdash; of
 alternatives such as "1 tonne" vs "2 tonnes", which aren't different
 enough to be listed separately. Of these exactly one is the "primary"
 alternative.
@@ -1954,7 +1954,7 @@ alternative.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_2"></a><b>&#167;19.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the list of possible LPs for the kind, only counting equivalents</span><span class="named-paragraph-number">19.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_2" class="paragraph-anchor"></a><b>&#167;19.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the list of possible LPs for the kind, only counting equivalents</span><span class="named-paragraph-number">19.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1971,7 +1971,7 @@ alternative.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19_3"></a><b>&#167;19.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the possible names for these notations, as ways of printing them back</span><span class="named-paragraph-number">19.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP19_3" class="paragraph-anchor"></a><b>&#167;19.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the possible names for these notations, as ways of printing them back</span><span class="named-paragraph-number">19.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1999,7 +1999,7 @@ alternative.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>And here we list of alternatives followed by the relationship this notation
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And here we list of alternatives followed by the relationship this notation
 has to the benchmark, e.g., "where 1 tonne \(=\) 1000 kg".
 </p>
 
@@ -2028,7 +2028,7 @@ has to the benchmark, e.g., "where 1 tonne \(=\) 1000 kg".
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>This is where the list of alternatives, "1 tonne" followed by "2 tonnes",
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>This is where the list of alternatives, "1 tonne" followed by "2 tonnes",
 say, is produced:
 </p>
 
@@ -2046,7 +2046,7 @@ say, is produced:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Printing values in an LP's notation to the index at compile-time. </b>This front-end routine chooses the most appropriate notation to use when
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Printing values in an LP's notation to the index at compile-time. </b>This front-end routine chooses the most appropriate notation to use when
 indexing a given value. For instance, a mass of 1000000 is best expressed
 as "1 tonne", not "1000000 grams".
 </p>
@@ -2077,7 +2077,7 @@ as "1 tonne", not "1000000 grams".
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="6-lp.html#SP24" class="function-link"><span class="function-syntax">LiteralPatterns::lp_index_value_specific</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lp_list</span><span class="plain-syntax">, </span><span class="identifier-syntax">v</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>Here we index the benchmark value. Pursuing our example of mass, if the
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Here we index the benchmark value. Pursuing our example of mass, if the
 benchmark is 1 kilogram, then the following indexes the value 1000 in
 kilograms, resulting in "1 kg". (This will always effectively look like
 "1 something", whatever the something is.)
@@ -2094,7 +2094,7 @@ kilograms, resulting in "1 kg". (This will always effectively look like
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"1"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>We are rather formal when printing values to the index, so we choose not
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>We are rather formal when printing values to the index, so we choose not
 to make use of optional truncation.
 </p>
 
@@ -2129,7 +2129,7 @@ to make use of optional truncation.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24_1"></a><b>&#167;24.1.  </b>We parse in a case-insensitive way, but print back case-sensitively &mdash;
+<p class="commentary firstcommentary"><a id="SP24_1" class="paragraph-anchor"></a><b>&#167;24.1.  </b>We parse in a case-insensitive way, but print back case-sensitively &mdash;
 note that the following uses the raw text of the word.
 </p>
 
@@ -2141,14 +2141,14 @@ note that the following uses the raw text of the word.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%&lt;N"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lp_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">tc</span><span class="plain-syntax">].</span><span class="element-syntax">token_wn</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_2"></a><b>&#167;24.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index a character token within a literal pattern</span><span class="named-paragraph-number">24.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_2" class="paragraph-anchor"></a><b>&#167;24.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index a character token within a literal pattern</span><span class="named-paragraph-number">24.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::put</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lp_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">tc</span><span class="plain-syntax">].</span><span class="element-syntax">token_char</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_3"></a><b>&#167;24.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index an element token within a literal pattern</span><span class="named-paragraph-number">24.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_3" class="paragraph-anchor"></a><b>&#167;24.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index an element token within a literal pattern</span><span class="named-paragraph-number">24.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2170,7 +2170,7 @@ note that the following uses the raw text of the word.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ec</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_3_1"></a><b>&#167;24.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the fractional part of the value</span><span class="named-paragraph-number">24.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_3_1" class="paragraph-anchor"></a><b>&#167;24.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the fractional part of the value</span><span class="named-paragraph-number">24.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2186,7 +2186,7 @@ note that the following uses the raw text of the word.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP24_3">&#167;24.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Please don't mention the words "logarithm" or "shift". It works fine.
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Please don't mention the words "logarithm" or "shift". It works fine.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2203,7 +2203,7 @@ note that the following uses the raw text of the word.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">"%d"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Printing the I6 variable |value| out in an LP's notation at run-time. </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Printing the I6 variable |value| out in an LP's notation at run-time. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::printing_routine</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::printing_routine</span></span>:<br/>Runtime Support for Kinds - <a href="13-rsfk.html#SP26_2">&#167;26.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp_list</span><span class="plain-syntax">) {</span>
@@ -2261,7 +2261,7 @@ note that the following uses the raw text of the word.
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26_1"></a><b>&#167;26.1.  </b>This was at one time a more complicated criterion, which masked bugs in
+<p class="commentary firstcommentary"><a id="SP26_1" class="paragraph-anchor"></a><b>&#167;26.1.  </b>This was at one time a more complicated criterion, which masked bugs in
 the sorting measure.
 </p>
 
@@ -2277,7 +2277,7 @@ the sorting measure.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_2"></a><b>&#167;26.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile code to jump to the correct printing pattern</span><span class="named-paragraph-number">26.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_2" class="paragraph-anchor"></a><b>&#167;26.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile code to jump to the correct printing pattern</span><span class="named-paragraph-number">26.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2344,7 +2344,7 @@ the sorting measure.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26">&#167;26</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print according to this particular literal pattern</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3" class="paragraph-anchor"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print according to this particular literal pattern</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2371,7 +2371,7 @@ the sorting measure.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3_1"></a><b>&#167;26.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print a fixed word token within a literal pattern</span><span class="named-paragraph-number">26.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3_1" class="paragraph-anchor"></a><b>&#167;26.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print a fixed word token within a literal pattern</span><span class="named-paragraph-number">26.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2384,7 +2384,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26_3">&#167;26.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3_2"></a><b>&#167;26.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print a character token within a literal pattern</span><span class="named-paragraph-number">26.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3_2" class="paragraph-anchor"></a><b>&#167;26.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print a character token within a literal pattern</span><span class="named-paragraph-number">26.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2400,7 +2400,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26_3">&#167;26.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3_3"></a><b>&#167;26.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print an element token within a literal pattern</span><span class="named-paragraph-number">26.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3_3" class="paragraph-anchor"></a><b>&#167;26.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 code to print an element token within a literal pattern</span><span class="named-paragraph-number">26.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2520,7 +2520,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ec</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26_3">&#167;26.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3_4"></a><b>&#167;26.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Truncate the printed form here if subsequent numerical parts are zero</span><span class="named-paragraph-number">26.3.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3_4" class="paragraph-anchor"></a><b>&#167;26.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Truncate the printed form here if subsequent numerical parts are zero</span><span class="named-paragraph-number">26.3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2568,7 +2568,7 @@ the sorting measure.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP26_3">&#167;26.3</a>, <a href="6-lp.html#SP26_3_3">&#167;26.3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b></p>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="function-syntax">LiteralPatterns::jump_label</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::jump_label</span></span>:<br/><a href="6-lp.html#SP26_2">&#167;26.2</a>, <a href="6-lp.html#SP26_3">&#167;26.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp</span><span class="plain-syntax">) {</span>
@@ -2581,7 +2581,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">jump_label</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b></p>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::comment_use_of_lp</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">LiteralPatterns::comment_use_of_lp</span></span>:<br/><a href="6-lp.html#SP18">&#167;18</a>, <a href="6-lp.html#SP26_3">&#167;26.3</a>, <a href="6-lp.html#SP29">&#167;29</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp</span><span class="plain-syntax">) {</span>
@@ -2592,7 +2592,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b></p>
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LiteralPatterns::log_lp_debugging_data</span><span class="plain-syntax">(</span><span class="reserved-syntax">literal_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lp</span><span class="plain-syntax">) {</span>
@@ -2607,7 +2607,7 @@ the sorting measure.
 <span class="plain-syntax">    </span><a href="6-lp.html#SP28" class="function-link"><span class="function-syntax">LiteralPatterns::comment_use_of_lp</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>The grammars for the specify sentence are quite complicated, but aren't used
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>The grammars for the specify sentence are quite complicated, but aren't used
 recursively. So it's more convenient to have them set global variables than to
 form a big parse subtree and extract the data from that; these are what they
 set.
@@ -2647,7 +2647,7 @@ set.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">owner</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30_1"></a><b>&#167;30.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this new alternative to the list belonging to our owner</span><span class="named-paragraph-number">30.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP30_1" class="paragraph-anchor"></a><b>&#167;30.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this new alternative to the list belonging to our owner</span><span class="named-paragraph-number">30.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2656,14 +2656,14 @@ set.
 <span class="plain-syntax">    </span><span class="identifier-syntax">alt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_alternative_lp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">lp</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_2"></a><b>&#167;30.2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP30_2" class="paragraph-anchor"></a><b>&#167;30.2.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PARTS_LPC</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">SCALING_LPC</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">OFFSET_LPC</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">EQUIVALENT_LPC</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30_3"></a><b>&#167;30.3.  </b>That's it for syntax: now back to semantics.
+<p class="commentary firstcommentary"><a id="SP30_3" class="paragraph-anchor"></a><b>&#167;30.3.  </b>That's it for syntax: now back to semantics.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that any other value mentioned as an equivalent or scaled equivalent has the right kind</span><span class="named-paragraph-number">30.3</span></span><span class="comment-syntax"> =</span>
@@ -2697,7 +2697,7 @@ set.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_4"></a><b>&#167;30.4.  </b>We parse the specification text as if it were a constant value, hoping
+<p class="commentary firstcommentary"><a id="SP30_4" class="paragraph-anchor"></a><b>&#167;30.4.  </b>We parse the specification text as if it were a constant value, hoping
 for the result <span class="extract"><span class="extract-syntax">NULL</span></span> &mdash; so that it doesn't already mean something else.
 During this process, we waive checking of numerical overflows in matching
 an LP: this is done so that
@@ -2735,7 +2735,7 @@ does not throw a problem message as being a bar which is out of range
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_5"></a><b>&#167;30.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem message warning that real arithmetic is needed</span><span class="named-paragraph-number">30.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP30_5" class="paragraph-anchor"></a><b>&#167;30.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem message warning that real arithmetic is needed</span><span class="named-paragraph-number">30.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2753,7 +2753,7 @@ does not throw a problem message as being a bar which is out of range
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">owner</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_6"></a><b>&#167;30.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the kind is acceptable as the owner of a LP</span><span class="named-paragraph-number">30.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP30_6" class="paragraph-anchor"></a><b>&#167;30.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the kind is acceptable as the owner of a LP</span><span class="named-paragraph-number">30.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2780,7 +2780,7 @@ does not throw a problem message as being a bar which is out of range
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_7"></a><b>&#167;30.7.  </b>All the hard work here was done during parsing.
+<p class="commentary firstcommentary"><a id="SP30_7" class="paragraph-anchor"></a><b>&#167;30.7.  </b>All the hard work here was done during parsing.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the new literal pattern structure</span><span class="named-paragraph-number">30.7</span></span><span class="comment-syntax"> =</span>
@@ -2805,7 +2805,7 @@ does not throw a problem message as being a bar which is out of range
 <span class="plain-syntax">        </span><span class="identifier-syntax">lpn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">can_use_this_lp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">lp</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_8"></a><b>&#167;30.8.  </b>Each word is either a whole token in itself, or a stream of tokens representing
+<p class="commentary firstcommentary"><a id="SP30_8" class="paragraph-anchor"></a><b>&#167;30.8.  </b>Each word is either a whole token in itself, or a stream of tokens representing
 alphabetic vs numeric pieces of a word:
 </p>
 
@@ -2838,7 +2838,7 @@ alphabetic vs numeric pieces of a word:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_8_1"></a><b>&#167;30.8.1.  </b>Bounds checking is easier here since we know that a LP specification will
+<p class="commentary firstcommentary"><a id="SP30_8_1" class="paragraph-anchor"></a><b>&#167;30.8.1.  </b>Bounds checking is easier here since we know that a LP specification will
 not ever need to create the maximum conceivable value which a C integer can
 hold &mdash; so we need not fool around with long long ints.
 </p>
@@ -2892,7 +2892,7 @@ hold &mdash; so we need not fool around with long long ints.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30_8">&#167;30.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_8_2"></a><b>&#167;30.8.2.  </b>In fact counting tokens is not necessarily a good way to measure the
+<p class="commentary firstcommentary"><a id="SP30_8_2" class="paragraph-anchor"></a><b>&#167;30.8.2.  </b>In fact counting tokens is not necessarily a good way to measure the
 complexity of an LP, since any long run of characters in a word which
 also contains a number will splurge the number of tokens. So
 <span class="extract"><span class="extract-syntax">MAX_TOKENS_PER_LITERAL</span></span> is set to a high enough value that this will
@@ -2912,7 +2912,7 @@ not really distort matters.
 <span class="plain-syntax">    </span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lp_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">tc</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">new_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30_8">&#167;30.8</a>, <a href="6-lp.html#SP30_8_1">&#167;30.8.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_9"></a><b>&#167;30.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt real arithmetic if this is called for</span><span class="named-paragraph-number">30.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP30_9" class="paragraph-anchor"></a><b>&#167;30.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt real arithmetic if this is called for</span><span class="named-paragraph-number">30.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2922,7 +2922,7 @@ not really distort matters.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_10"></a><b>&#167;30.10.  </b>The elements are created in parsing order, that is, left to right. But
+<p class="commentary firstcommentary"><a id="SP30_10" class="paragraph-anchor"></a><b>&#167;30.10.  </b>The elements are created in parsing order, that is, left to right. But
 the multipliers can only be calculated by working from right to left, so
 this is deferred until all elements exist, at which point we &mdash;
 </p>
@@ -2939,7 +2939,7 @@ this is deferred until all elements exist, at which point we &mdash;
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_11"></a><b>&#167;30.11.  </b>Today, we have naming of parts:
+<p class="commentary firstcommentary"><a id="SP30_11" class="paragraph-anchor"></a><b>&#167;30.11.  </b>Today, we have naming of parts:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through parts text to assign names to the individual elements</span><span class="named-paragraph-number">30.11</span></span><span class="comment-syntax"> =</span>
@@ -2978,7 +2978,7 @@ this is deferred until all elements exist, at which point we &mdash;
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30_12"></a><b>&#167;30.12.  </b>In fact, the test is a simple one: there can be only one element declared
+<p class="commentary firstcommentary"><a id="SP30_12" class="paragraph-anchor"></a><b>&#167;30.12.  </b>In fact, the test is a simple one: there can be only one element declared
 optional, and it must not be the first.
 </p>
 
@@ -3004,7 +3004,7 @@ optional, and it must not be the first.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP30">&#167;30</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>Group names are created when first seen; the following recognises one which
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>Group names are created when first seen; the following recognises one which
 has been seen before.
 </p>
 
@@ -3020,7 +3020,7 @@ has been seen before.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>And this is the routine which does the creation. The text will actually be
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>And this is the routine which does the creation. The text will actually be
 empty where there's an existing literal pattern name. (For instance, each
 time we see a literal pattern given as "in Imperial units", we create a
 fresh LPN structure, but only the first one to be created contains the
@@ -3042,7 +3042,7 @@ wording.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">new</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33. I7 phrases to print values in specified ways. </b>When an LP has a name, it's a notation which the source text can request
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. I7 phrases to print values in specified ways. </b>When an LP has a name, it's a notation which the source text can request
 to be used in saying a value. This is where the corresponding text substitutions
 are declared.
 </p>
@@ -3063,7 +3063,7 @@ are declared.
 <span class="plain-syntax">    </span><a href="8-rs.html#SP2" class="function-link"><span class="function-syntax">RuleSubtrees::register_recently_lexed_phrases</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33_1"></a><b>&#167;33.1.  </b>These text substitutions correspond exactly neither to the LPs nor to the
+<p class="commentary firstcommentary"><a id="SP33_1" class="paragraph-anchor"></a><b>&#167;33.1.  </b>These text substitutions correspond exactly neither to the LPs nor to the
 names. For instance, "in tonnes" produces a text substitution which takes
 in both the LP for "1 tonne" and for "2 tonnes", deciding at run-time
 which to use. And on the other hand, "in metric units" may produce text
@@ -3114,7 +3114,7 @@ the LPs under each named possibility.
 <span class="plain-syntax">            </span><span class="identifier-syntax">lpn3</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lpn_compiled_already</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP33">&#167;33</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34. I7 phrases to pack and unpack the value. </b>Creating a LP implicitly defines further I7 source text, as follows.
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. I7 phrases to pack and unpack the value. </b>Creating a LP implicitly defines further I7 source text, as follows.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3127,7 +3127,7 @@ the LPs under each named possibility.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34_1"></a><b>&#167;34.1.  </b>First, we automatically create \(n\) phrases to unpack the elements given the value.
+<p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1.  </b>First, we automatically create \(n\) phrases to unpack the elements given the value.
 For instance, defining:
 </p>
 
@@ -3188,7 +3188,7 @@ For instance, defining:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34_2"></a><b>&#167;34.2.  </b>And similarly, a packing phrase to calculate the value given its elements.
+<p class="commentary firstcommentary"><a id="SP34_2" class="paragraph-anchor"></a><b>&#167;34.2.  </b>And similarly, a packing phrase to calculate the value given its elements.
 For instance, the dollars-and-cents example compiles:
 </p>
 
@@ -3243,7 +3243,7 @@ For instance, the dollars-and-cents example compiles:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34_1_1"></a><b>&#167;34.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for overly long part names</span><span class="named-paragraph-number">34.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP34_1_1" class="paragraph-anchor"></a><b>&#167;34.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem for overly long part names</span><span class="named-paragraph-number">34.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -3252,7 +3252,7 @@ For instance, the dollars-and-cents example compiles:
 <span class="plain-syntax">        </span><span class="string-syntax">"and will have to be cut down."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-lp.html#SP34_1">&#167;34.1</a>, <a href="6-lp.html#SP34_2">&#167;34.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35. The kind's list. </b>On reading "5 feet 4 inches specifies a height", Inform parses
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. The kind's list. </b>On reading "5 feet 4 inches specifies a height", Inform parses
 "5 feet 4 inches" into a <span class="extract"><span class="extract-syntax">literal_pattern</span></span> structure and then calls this
 routine to attach it to the kind "height". (Multiple patterns can be
 attached to the same kind, and they become alternative syntaxes.)
@@ -3267,7 +3267,7 @@ attached to the same kind, and they become alternative syntaxes.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">Kinds::FloatingPoint::uses_floating_point</span><span class="plain-syntax">(</span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">kind_specified</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>And here we find the list of such notations.
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>And here we find the list of such notations.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

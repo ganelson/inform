@@ -82,7 +82,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="11-ap.html#SP4">&#167;4. The elements</a></li><li><a href="11-ap.html#SP6">&#167;6. Creating atoms</a></li><li><a href="11-ap.html#SP7">&#167;7. The STRUCTURAL group</a></li><li><a href="11-ap.html#SP10">&#167;10. The PREDICATES group</a></li><li><a href="11-ap.html#SP23">&#167;23. Validating atoms</a></li><li><a href="11-ap.html#SP24">&#167;24. Debugging log</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>As the description in the Introduction showed, propositions are complicated
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>As the description in the Introduction showed, propositions are complicated
 data structures. Roughly speaking, they are made up of small independent pieces
 which can be combined in a variety of ways into larger assemblies. In this
 section, we look at the smallest pieces: some of these could be propositions in
@@ -112,7 +112,7 @@ a <span class="extract"><span class="extract-syntax">pcalc_prop</span></span> st
 <span class="plain-syntax">} </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pcalc_prop is accessed in 3/ptmn, 3/cs, 4/dlr, 4/pr, 4/tr, 4/nuor, 4/uor, 4/tr2, 4/dbtr, 4/rpr, 4/nar, 4/nlpr, 4/nrr, 4/npr, 4/nvr, 4/nar2, 5/rpt, 5/tc, 5/ass, 5/npa, 5/rk, 5/ass2, 5/imp, 6/lp, 6/ins, 7/rlt, 8/rs, 10/teav, 10/cap, 11/pr, 11/bas, 11/tc, 11/sc, 11/sm, 11/tcp, 12/ap, 12/ca, 12/dtd, 12/cad, 12/cdp, 14/rv, 14/lv, 14/cn, 14/ds, 14/ds2, 15/ps, 15/cp, 16/is, 16/in, 19/tb, 19/rsft, 20/eq, 21/rl, 21/rl2, 21/fao, 21/sv, 21/ac, 22/ph, 22/tp, 22/tp2, 23/ad, 24/lv, 24/sf, 25/in, 25/pi, 25/cii, 25/cp, 26/pc, 26/itc, 27/cm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The Universe is filled with atoms, but they come in different kinds, called
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The Universe is filled with atoms, but they come in different kinds, called
 elements. For us, an "element" is the identifying number, stored in the
 <span class="extract"><span class="extract-syntax">element</span></span> field, which tells Inform what kind of atom something is. The
 following is our Periodic Table of all possible elements:
@@ -133,7 +133,7 @@ following is our Periodic Table of all possible elements:
 <span class="definition-keyword">define</span> <span class="constant-syntax">DOMAIN_OPEN_ATOM</span><span class="plain-syntax"> </span><span class="constant-syntax">21</span><span class="plain-syntax"> </span><span class="comment-syntax"> logical negation </span>\(\lnot\)<span class="comment-syntax"> applied to contents of group</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">DOMAIN_CLOSE_ATOM</span><span class="plain-syntax"> </span><span class="constant-syntax">31</span><span class="plain-syntax"> </span><span class="comment-syntax"> end of logical negation </span>\(\lnot\)
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>And as with columns in the Periodic Table, these elements come in what are
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>And as with columns in the Periodic Table, these elements come in what are
 called "groups", because it often happens that atoms of different elements
 behave similarly when the elements have something in common.
 </p>
@@ -143,7 +143,7 @@ behave similarly when the elements have something in common.
 <span class="definition-keyword">define</span> <span class="constant-syntax">OPEN_OPERATORS_GROUP</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">CLOSE_OPERATORS_GROUP</span><span class="plain-syntax"> </span><span class="constant-syntax">40</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The elements. </b>Given an element, the following returns the group to which it belongs.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The elements. </b>Given an element, the following returns the group to which it belongs.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -156,7 +156,7 @@ behave similarly when the elements have something in common.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Some atoms occur in pairs, which have to match like opening and closing
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Some atoms occur in pairs, which have to match like opening and closing
 parentheses. The following returns 0 for an element code which does not behave
 like this, or else returns the opposite number to any element code which does.
 </p>
@@ -172,7 +172,7 @@ like this, or else returns the opposite number to any element code which does.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Creating atoms. </b>Every atom is created by the following routine:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Creating atoms. </b>Every atom is created by the following routine:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -189,7 +189,7 @@ like this, or else returns the opposite number to any element code which does.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The STRUCTURAL group. </b>Some convenient routines to handle atoms of specific elements now follow:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The STRUCTURAL group. </b>Some convenient routines to handle atoms of specific elements now follow:
 first, <span class="extract"><span class="extract-syntax">QUANTIFIER</span></span> atoms. These have arity 1, and the single term must always
 be a variable, the one which is being bound. The parameter is a number
 needed for some <span class="extract"><span class="extract-syntax">quantifier</span></span> types to identify the range: for instance,
@@ -219,7 +219,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Quantifier atoms can be detected as follows:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Quantifier atoms can be detected as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -272,7 +272,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>See "Determiners and Quantifiers" for what a now-assertable quantifier is:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>See "Determiners and Quantifiers" for what a now-assertable quantifier is:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -281,7 +281,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Quantifiers::is_now_assertable</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">quant</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. The PREDICATES group. </b>Next, unary predicates, beginning with the <span class="extract"><span class="extract-syntax">EVERYWHERE</span></span> special case.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The PREDICATES group. </b>Next, unary predicates, beginning with the <span class="extract"><span class="extract-syntax">EVERYWHERE</span></span> special case.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -292,7 +292,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>And <span class="extract"><span class="extract-syntax">NOWHERE</span></span>:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And <span class="extract"><span class="extract-syntax">NOWHERE</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -303,7 +303,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And <span class="extract"><span class="extract-syntax">HERE</span></span>:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>And <span class="extract"><span class="extract-syntax">HERE</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -314,7 +314,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>And <span class="extract"><span class="extract-syntax">ISAKIND</span></span>:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>And <span class="extract"><span class="extract-syntax">ISAKIND</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -326,7 +326,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And <span class="extract"><span class="extract-syntax">ISAVAR</span></span>:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And <span class="extract"><span class="extract-syntax">ISAVAR</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -337,7 +337,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And <span class="extract"><span class="extract-syntax">ISACONST</span></span>:
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And <span class="extract"><span class="extract-syntax">ISACONST</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -348,7 +348,7 @@ rather than \(\forall 1. P\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b><span class="extract"><span class="extract-syntax">CALLED</span></span> atoms are interesting because they exist only for their side-effects:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b><span class="extract"><span class="extract-syntax">CALLED</span></span> atoms are interesting because they exist only for their side-effects:
 they have no effect at all on the logical status of a proposition (well, except
 that they should not be applied to free variables referred to nowhere else).
 They can therefore be added or removed freely. In the phrase
@@ -381,7 +381,7 @@ will be called.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">calling_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Now for a <span class="extract"><span class="extract-syntax">KIND</span></span> atom. At first sight, it looks odd that a unary
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Now for a <span class="extract"><span class="extract-syntax">KIND</span></span> atom. At first sight, it looks odd that a unary
 predicate for a kind is represented differently from other predicates.
 Isn't it a unary predicate just like any other? Well: it is, but then
 again, we want to compile propositions to reasonably efficient I6 code
@@ -443,7 +443,7 @@ that case.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) </span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">composited</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>Likewise:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Likewise:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -456,7 +456,7 @@ that case.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) </span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unarticled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>That just leaves the general sort of unary predicate. In principle we ought
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>That just leaves the general sort of unary predicate. In principle we ought
 to be able to create \(U(t)\) for any term \(t\), but in practice we only ever
 need \(t=x\), that is, variable 0.
 </p>
@@ -475,7 +475,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_unary_predicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">predicate</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>And binary predicates are pretty well the same:
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And binary predicates are pretty well the same:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -501,7 +501,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Given \(C\), return the proposition {\it is}(\(x\), \(C\)):
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Given \(C\), return the proposition {\it is}(\(x\), \(C\)):
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -510,7 +510,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">        </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_variable</span></a><span class="plain-syntax">(0), </span><a href="11-tr.html#SP3" class="function-link"><span class="function-syntax">Calculus::Terms::new_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>And conversely:
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>And conversely:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -520,7 +520,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Validating atoms. </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Validating atoms. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="function-syntax">Calculus::Atoms::validate</span><button class="popup" onclick="togglePopup('usagePopup35')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup35">Usage of <span class="code-font"><span class="function-syntax">Calculus::Atoms::validate</span></span>:<br/>Propositions - <a href="11-pr.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
@@ -544,7 +544,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Debugging log. </b>Logging atomic propositions divides into cases:
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Debugging log. </b>Logging atomic propositions divides into cases:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -600,7 +600,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24_1"></a><b>&#167;24.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log some suitable textual name for this unary predicate</span><span class="named-paragraph-number">24.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_1" class="paragraph-anchor"></a><b>&#167;24.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log some suitable textual name for this unary predicate</span><span class="named-paragraph-number">24.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -609,7 +609,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Adjectives::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="7-up.html#SP4" class="function-link"><span class="function-syntax">UnaryPredicates::get_adj</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tr</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-ap.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_2"></a><b>&#167;24.2.  </b>And more easily:
+<p class="commentary firstcommentary"><a id="SP24_2" class="paragraph-anchor"></a><b>&#167;24.2.  </b>And more easily:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log some suitable textual name for this binary predicate</span><span class="named-paragraph-number">24.2</span></span><span class="comment-syntax"> =</span>
@@ -620,7 +620,7 @@ need \(t=x\), that is, variable 0.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"?bad-bp?"</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><a href="7-bp.html#SP35" class="function-link"><span class="function-syntax">BinaryPredicates::get_log_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="11-ap.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_3"></a><b>&#167;24.3.  </b>Just a diagnostic way of printing the terms in an atomic proposition, by
+<p class="commentary firstcommentary"><a id="SP24_3" class="paragraph-anchor"></a><b>&#167;24.3.  </b>Just a diagnostic way of printing the terms in an atomic proposition, by
 their index numbers. (They are numbered from 0 to \(A-1\), where \(A\) is the
 arity.)
 </p>

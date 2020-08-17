@@ -170,8 +170,8 @@ but will be the constructor for "door" for kinds like this one:
 >> Portal is a kind of door.
 
 =
-kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super, text_stream *source_name,
-	text_stream *initialisation_macro) {
+kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super,
+	text_stream *source_name, text_stream *initialisation_macro) {
 	kind_constructor *con = CREATE(kind_constructor);
 	kind_constructor **pC = FamiliarKinds::known_con(source_name);
 	if (pC) *pC = con;
@@ -376,7 +376,8 @@ void Kinds::Constructors::compile_I6_constants(void) {
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
 		if (Str::len(tn) > 0) {
-			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL, tn, Kinds::Constructors::package(con));
+			con->con_iname = Hierarchy::make_iname_with_specific_name(WEAK_ID_HL,
+				tn, Kinds::Constructors::package(con));
 			Hierarchy::make_available(Emit::tree(), con->con_iname);
 			Emit::named_numeric_constant(con->con_iname, (inter_ti) con->weak_kind_ID);
 		}
@@ -593,7 +594,8 @@ int Kinds::Constructors::find_instance(kind_constructor *from, kind_constructor 
 The following tests if |from| is compatible with |to|.
 
 =
-int Kinds::Constructors::compatible(kind_constructor *from, kind_constructor *to, int allow_casts) {
+int Kinds::Constructors::compatible(kind_constructor *from, kind_constructor *to,
+	int allow_casts) {
 	if (to == from) return TRUE;
 	if ((to == NULL) || (from == NULL)) return FALSE;
 	if ((allow_casts) && (Kinds::Constructors::find_cast(from, to))) return TRUE;
@@ -607,11 +609,13 @@ int Kinds::Constructors::compatible(kind_constructor *from, kind_constructor *to
 int Kinds::Constructors::uses_pointer_values(kind_constructor *con) {
 	if (con == NULL) return FALSE;
 	if ((Kinds::Constructors::is_definite(con)) &&
-		(Kinds::Constructors::compatible(con, Kinds::get_construct(K_pointer_value), FALSE))) return TRUE;
+		(Kinds::Constructors::compatible(con, Kinds::get_construct(K_pointer_value), FALSE)))
+			return TRUE;
 	return FALSE;
 }
 
-int Kinds::Constructors::allow_word_as_pointer(kind_constructor *left, kind_constructor *right) {
+int Kinds::Constructors::allow_word_as_pointer(kind_constructor *left,
+	kind_constructor *right) {
 	if (Kinds::Constructors::uses_pointer_values(left) == FALSE) return FALSE;
 	if (Kinds::Constructors::uses_pointer_values(right) == TRUE) return FALSE;
 	if (Kinds::Constructors::compatible(right, left, TRUE)) return TRUE;

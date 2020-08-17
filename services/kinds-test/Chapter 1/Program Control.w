@@ -51,7 +51,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 	DL = STDOUT;
 	Streams::enable_debugging(DL);
 	switch (id) {
-		case LOAD_CLSW: KindFiles::load(NULL, Filenames::from_text(arg)); break;
+		case LOAD_CLSW: NeptuneFiles::load(NULL, Filenames::from_text(arg)); break;
 		case INTERPRET_CLSW: Declarations::load_from_file(arg); break;
 	}
 	DL = save_DL;

@@ -115,8 +115,8 @@ int Kinds::Behaviour::involves_var(kind *K, int v) {
 }
 
 @h (A) How this came into being.
-A kind is "built in" if it was created via commands in a configuration file:
-see //Kind Files//. It otherwise arises by being defined in source text.
+A kind is "built in" if it was created via commands in a Neptune file:
+see //Neptune Files//. It otherwise arises by being defined in source text.
 
 Note that a kind of object counts as built-in by this test, even though it
 might be a kind of object created in the source text, because at the end of

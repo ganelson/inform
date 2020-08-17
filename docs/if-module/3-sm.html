@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-sm.html#SP6">&#167;6. Initialisation</a></li><li><a href="3-sm.html#SP10">&#167;10. Special inferences</a></li><li><a href="3-sm.html#SP11">&#167;11. Special kinds</a></li><li><a href="3-sm.html#SP17">&#167;17. Special properties</a></li><li><a href="3-sm.html#SP19">&#167;19. Default appearances</a></li><li><a href="3-sm.html#SP20">&#167;20. Composite noun-quantifiers</a></li><li><a href="3-sm.html#SP22">&#167;22. Nowhere</a></li><li><a href="3-sm.html#SP25">&#167;25. Here</a></li><li><a href="3-sm.html#SP28">&#167;28. Completing the model, stages I and II</a></li><li><a href="3-sm.html#SP34">&#167;34. Completing the model, stages III and IV</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The "spatial model" is the aspect of the IF model world which represents
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The "spatial model" is the aspect of the IF model world which represents
 containment, support, carrying, wearing, and incorporation; say, a button
 which is part of a shirt which is in a tumble-drier which is in a room
 called the Laundry, where there's also a man carrying a box of washing
@@ -85,7 +85,7 @@ of kinds and forms of containment; and then to compile an Inform 6
 representation of the result, which is quite a messy business.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Every inference subject contains a pointer to its own unique copy of the
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Every inference subject contains a pointer to its own unique copy of the
 following structure, though it will only be relevant for instances of
 "room" and "thing" &mdash; the raw materials of our model world. The
 fundamental spatial data we will keep for each object is its "progenitor",
@@ -114,7 +114,7 @@ carries, wears, supports or incorporates it.
 <span class="plain-syntax">} </span><span class="reserved-syntax">spatial_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure spatial_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Here, first, are the special kinds of inference needed to store these vague
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Here, first, are the special kinds of inference needed to store these vague
 indications of spatial structure:
 </p>
 
@@ -125,7 +125,7 @@ indications of spatial structure:
 <span class="definition-keyword">define</span> <span class="constant-syntax">PARENTAGE_NOWHERE_INF</span><span class="plain-syntax"> </span><span class="constant-syntax">54</span><span class="plain-syntax"> </span><span class="comment-syntax"> located vaguely as "nowhere"?</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PART_OF_INF</span><span class="plain-syntax"> </span><span class="constant-syntax">55</span><span class="plain-syntax"> </span><span class="comment-syntax"> is O a part of another object?</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The Spatial plugin also needs to know about a considerable number of special
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The Spatial plugin also needs to know about a considerable number of special
 kinds and properties:
 </p>
 
@@ -150,7 +150,7 @@ kinds and properties:
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_supporter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_matching_key</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We will also need constants to talk about the inference subjects which
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We will also need constants to talk about the inference subjects which
 correspond to four of the special kinds &mdash; ordinarily that would be redundant,
 since you can get the subject as a function of the kind, but there's a tricky
 timing issue to get around (see below).
@@ -162,7 +162,7 @@ timing issue to get around (see below).
 <span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_supporter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_person</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Initialisation. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Initialisation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -184,7 +184,7 @@ timing issue to get around (see below).
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_INTERVENE_IN_ASSERTION</span><span class="plain-syntax">, </span><a href="3-sm.html#SP24" class="function-link"><span class="function-syntax">PL::Spatial::spatial_intervene_in_assertion</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>In talking about some of the fundamental spatial domains we potentially have
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>In talking about some of the fundamental spatial domains we potentially have
 a vicious circle, because
 </p>
 
@@ -217,7 +217,7 @@ after stage (d) when they exist.
 <span class="plain-syntax">        </span><span class="identifier-syntax">FUND_SUB</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">, </span><span class="identifier-syntax">LIKELY_CE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And this is where those IOUs are redeemed. What happens is that, ordinarily,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And this is where those IOUs are redeemed. What happens is that, ordinarily,
 the machinery creating objects (and kinds) will allocate a new inference
 structure for each object, but it first invites plugins to choose an existing
 one instead. (The INFS structure is rewritten, but the important thing is that
@@ -238,7 +238,7 @@ pointers to it remain consistent and valid.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Here we initialise the data used by Spatial for each object:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Here we initialise the data used by Spatial for each object:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -252,7 +252,7 @@ pointers to it remain consistent and valid.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Special inferences. </b>Four of these are quite simple inferences, but <span class="extract"><span class="extract-syntax">PARENTAGE_INF</span></span> stores the
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Special inferences. </b>Four of these are quite simple inferences, but <span class="extract"><span class="extract-syntax">PARENTAGE_INF</span></span> stores the
 object to which a spatial relationship is being inferred; and this means that
 multiple <span class="extract"><span class="extract-syntax">PARENTAGE_INF</span></span>s can contradict each other.
 </p>
@@ -303,7 +303,7 @@ multiple <span class="extract"><span class="extract-syntax">PARENTAGE_INF</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Special kinds. </b>These are kind names to do with spatial layout which Inform provides special
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Special kinds. </b>These are kind names to do with spatial layout which Inform provides special
 support for; it recognises the Englishs name when defined by the Standard
 Rules. (So there is no need to translate this to other languages.)
 </p>
@@ -318,7 +318,7 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">player's</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">holdall</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::spatial_new_base_kind_notify</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">PL::Spatial::spatial_new_base_kind_notify</span></span>:<br/><a href="3-sm.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_base</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -340,7 +340,7 @@ Rules. (So there is no need to translate this to other languages.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>When the rest of Inform makes something a room, for instance in response to
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>When the rest of Inform makes something a room, for instance in response to
 an explicit sentence like "The Hall of Mirrors is a room.", we take notice;
 if it turns out to be news, we infer <span class="extract"><span class="extract-syntax">IS_ROOM_INF</span></span> with certainty.
 </p>
@@ -355,7 +355,7 @@ if it turns out to be news, we infer <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Nothing in the core Inform language prevents room from being made a kind
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Nothing in the core Inform language prevents room from being made a kind
 of vehicle, and so on, but this would cause mayhem in the model world. So:
 </p>
 
@@ -393,7 +393,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>This tests whether an object is an instance of "room":
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>This tests whether an object is an instance of "room":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -404,7 +404,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>This is where we give Inform the numbers it needs to write the "a world
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>This is where we give Inform the numbers it needs to write the "a world
 with 5 rooms and 27 things"-style text in a successful report on its run.
 </p>
 
@@ -416,7 +416,7 @@ with 5 rooms and 27 things"-style text in a successful report on its run.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_INSTANCES</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">) (*</span><span class="identifier-syntax">things</span><span class="plain-syntax">)++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Special properties. </b>These are property names to do with spatial layout which Inform provides
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Special properties. </b>These are property names to do with spatial layout which Inform provides
 special support for; it recognises the English names when they are defined by
 the Standard Rules. (So there is no need to translate this to other languages.)
 </p>
@@ -435,7 +435,7 @@ special with it at all.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">matching</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">key</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b></p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::spatial_new_property_notify</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">PL::Spatial::spatial_new_property_notify</span></span>:<br/><a href="3-sm.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
@@ -452,7 +452,7 @@ special with it at all.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Default appearances. </b>Spatial gets to decide here what raw text following a new object will be
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Default appearances. </b>Spatial gets to decide here what raw text following a new object will be
 taken to mean: for scenery it will be the "description" (i.e., the text
 produced on examining), for any other thing it will be the "initial
 appearance".
@@ -482,7 +482,7 @@ appearance".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19_1"></a><b>&#167;19.1.  </b>A lone string as a sentence is a description for a room, but an initial
+<p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b>A lone string as a sentence is a description for a room, but an initial
 description for an object. Only now can we know which, since we have only
 just decided whether <span class="extract"><span class="extract-syntax">I</span></span> is a room or not. We therefore draw the necessary
 inference.
@@ -502,7 +502,7 @@ inference.
 <span class="plain-syntax">        </span><span class="string-syntax">"which means we have a subtle little contradiction here."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Composite noun-quantifiers. </b>"Nothing" is conspicuously absent from the possibilities below. It gets
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Composite noun-quantifiers. </b>"Nothing" is conspicuously absent from the possibilities below. It gets
 special treatment elsewhere since it can also double as a value (the "not
 an object" pseudo-value).
 </p>
@@ -520,7 +520,7 @@ an object" pseudo-value).
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">_no</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">_one</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">***</span><span class="Preform-plain-syntax">                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, K_person, &lt;&lt;quantifier:q&gt;&gt; = not_exists_quantifier }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Words like "something" or "everywhere" combine a common noun &mdash; thing,
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Words like "something" or "everywhere" combine a common noun &mdash; thing,
 and implicitly room &mdash; with a determiner &mdash; one thing, all rooms. When we
 detect them, we set both <span class="extract"><span class="Preform-extract-syntax">quantifier_used</span></span> and <span class="extract"><span class="Preform-extract-syntax">some_kind</span></span> appropriately.
 None can be recognised if the basic kinds are not created yet, which we
@@ -550,7 +550,7 @@ that such a door exists &mdash; we needn't set the variable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Nowhere. </b>This means the same as "nothing", in a noun context, but we annotate a parse
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Nowhere. </b>This means the same as "nothing", in a noun context, but we annotate a parse
 node using this wording in order to produce better problem messages if need be.
 </p>
 
@@ -559,7 +559,7 @@ node using this wording in order to produce better problem messages if need be.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">nowhere</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::spatial_act_on_special_NPs</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">PL::Spatial::spatial_act_on_special_NPs</span></span>:<br/><a href="3-sm.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -573,7 +573,7 @@ node using this wording in order to produce better problem messages if need be.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Now in fact this often does get picked up:
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Now in fact this often does get picked up:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -596,7 +596,7 @@ node using this wording in order to produce better problem messages if need be.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25. Here. </b>A sentence like "The sonic screwdriver is here." is not copular, but instead
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Here. </b>A sentence like "The sonic screwdriver is here." is not copular, but instead
 expresses a relationship &mdash; "here" is not a value but a relation to an
 unstated object. That object is the room we're currently talking about, which
 sounds easy to work out, but isn't: we don't yet know which of the objects
@@ -615,7 +615,7 @@ with certainty read
 <p class="commentary">as creating a container called "washing machine", not a room.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::infer_presence_here</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
@@ -636,7 +636,7 @@ with certainty read
 <span class="plain-syntax">    </span><span class="identifier-syntax">World::Inferences::draw</span><span class="plain-syntax">(</span><span class="constant-syntax">IS_ROOM_INF</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">IMPOSSIBLE_CE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Similarly:
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Similarly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -647,7 +647,7 @@ with certainty read
 <span class="plain-syntax">        </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Completing the model, stages I and II. </b>That's enough preliminaries; time to get on with adding a sense of space
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Completing the model, stages I and II. </b>That's enough preliminaries; time to get on with adding a sense of space
 to the model world.
 </p>
 
@@ -662,7 +662,7 @@ to the model world.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>Recall that as we begin stage I of model creation, all objects are, of
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>Recall that as we begin stage I of model creation, all objects are, of
 course, created, and they have kinds associated with them if the source
 text has said explicitly what kind they have: but that is not good enough.
 It often happens that the source implicitly specifies a kind, and we need
@@ -679,7 +679,7 @@ that Y is the destination of a map connection &mdash; to see which.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29_1"></a><b>&#167;29.1.  </b>Our main problem in what follows is caused by "in" being so ambiguous,
+<p class="commentary firstcommentary"><a id="SP29_1" class="paragraph-anchor"></a><b>&#167;29.1.  </b>Our main problem in what follows is caused by "in" being so ambiguous,
 or perhaps it might be said that the real problem is that we choose to
 distinguish between rooms and containers on a world-modelling level &mdash; when it
 could well be argued that they are linguistically the same thing.
@@ -735,7 +735,7 @@ is the "geography choice" for its kind.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Propositions::Abstract::assert_kind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29">&#167;29</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_1"></a><b>&#167;29.1.1.  </b>By this point, any explicit information is reflected in the hierarchy of
+<p class="commentary firstcommentary"><a id="SP29_1_1" class="paragraph-anchor"></a><b>&#167;29.1.1.  </b>By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
 we simply take its broadest kind &mdash; usually "thing", "room", "direction"
 or "region".
@@ -762,7 +762,7 @@ or "region".
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">designers_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1">&#167;29.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_2"></a><b>&#167;29.1.2.  </b>If there is any positive information that this is a room, that's the
+<p class="commentary firstcommentary"><a id="SP29_1_2" class="paragraph-anchor"></a><b>&#167;29.1.2.  </b>If there is any positive information that this is a room, that's the
 geography choice; otherwise it's whichever of room or container is more
 probably suggested by inferences.
 </p>
@@ -787,7 +787,7 @@ probably suggested by inferences.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1">&#167;29.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3"></a><b>&#167;29.1.3.  </b>Since the designer choice is the one currently in force, we have basically
+<p class="commentary firstcommentary"><a id="SP29_1_3" class="paragraph-anchor"></a><b>&#167;29.1.3.  </b>Since the designer choice is the one currently in force, we have basically
 three choices here: impose the geography choice instead; do nothing; or issue
 a problem message. The case where we do nothing is if geography suggests
 something is a room, when it's actually a door: this is because sentences
@@ -810,7 +810,7 @@ when it's legitimately a door.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP29_1_3_2" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">29.1.3.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1">&#167;29.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3_1"></a><b>&#167;29.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">29.1.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP29_1_3_1" class="paragraph-anchor"></a><b>&#167;29.1.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Accept the geography choice, since it only refines what we already know</span><span class="named-paragraph-number">29.1.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -819,7 +819,7 @@ when it's legitimately a door.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Calculus::Propositions::Abstract::assert_kind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">geography_choice</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1_3">&#167;29.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3_2"></a><b>&#167;29.1.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">29.1.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP29_1_3_2" class="paragraph-anchor"></a><b>&#167;29.1.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message, since the choices are irreconcilable</span><span class="named-paragraph-number">29.1.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -835,7 +835,7 @@ when it's legitimately a door.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP29_1_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">29.1.3.2.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1_3">&#167;29.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3_2_1"></a><b>&#167;29.1.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">29.1.3.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP29_1_3_2_1" class="paragraph-anchor"></a><b>&#167;29.1.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for implied containment by a person</span><span class="named-paragraph-number">29.1.3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -848,7 +848,7 @@ when it's legitimately a door.
 <span class="plain-syntax">        </span><span class="string-syntax">"carried by Daphne.' is fine, or indeed 'Daphne carries the briefcase.'"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1_3_2">&#167;29.1.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3_2_2"></a><b>&#167;29.1.3.2.2.  </b>A notorious problem message for a notorious limitation of the traditional
+<p class="commentary firstcommentary"><a id="SP29_1_3_2_2" class="paragraph-anchor"></a><b>&#167;29.1.3.2.2.  </b>A notorious problem message for a notorious limitation of the traditional
 Inform spatial model:
 </p>
 
@@ -866,7 +866,7 @@ Inform spatial model:
 <span class="plain-syntax">        </span><span class="string-syntax">"stapler.'"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1_3_2">&#167;29.1.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29_1_3_2_3"></a><b>&#167;29.1.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">29.1.3.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP29_1_3_2_3" class="paragraph-anchor"></a><b>&#167;29.1.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a more generic problem message for irreconcilable kinds</span><span class="named-paragraph-number">29.1.3.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -878,7 +878,7 @@ Inform spatial model:
 <span class="plain-syntax">        </span><span class="string-syntax">"and this is a contradiction."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP29_1_3_2">&#167;29.1.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>Stage II at last. Now the kinds are all known, and it's time to work out
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>Stage II at last. Now the kinds are all known, and it's time to work out
 the spatial arrangements. Inform's spatial model assigns every instance object
 a unique "progenitor", which may be <span class="extract"><span class="extract-syntax">NULL</span></span>, representing the object which
 immediately contains, carries, wears, supports or incorporates it.
@@ -906,7 +906,7 @@ provide access routines to read and write:
 <span class="plain-syntax">        (</span><span class="identifier-syntax">reason</span><span class="plain-syntax">)?</span><span class="identifier-syntax">World::Inferences::where_inferred</span><span class="plain-syntax">(</span><span class="identifier-syntax">reason</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>This is used for error recovery only.
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>This is used for error recovery only.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -917,7 +917,7 @@ provide access routines to read and write:
 <span class="plain-syntax">    </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">of</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">progenitor_set_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>We need to establish what the rooms are before we worry about objects which
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>We need to establish what the rooms are before we worry about objects which
 are "here"; rooms are never "here", so there's no circularity in that,
 and we solve this problem by determining the kind of non-here objects before
 the kind of here-objects.
@@ -937,7 +937,7 @@ the kind of here-objects.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32_1"></a><b>&#167;32.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the here flag for all those objects whose parentage is only thus known</span><span class="named-paragraph-number">32.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_1" class="paragraph-anchor"></a><b>&#167;32.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the here flag for all those objects whose parentage is only thus known</span><span class="named-paragraph-number">32.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -950,7 +950,7 @@ the kind of here-objects.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32">&#167;32</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_2"></a><b>&#167;32.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem messages if non-physical objects are spatially enclosed</span><span class="named-paragraph-number">32.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_2" class="paragraph-anchor"></a><b>&#167;32.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem messages if non-physical objects are spatially enclosed</span><span class="named-paragraph-number">32.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -977,7 +977,7 @@ the kind of here-objects.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32">&#167;32</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3"></a><b>&#167;32.3.  </b>At last we come to it: determining the progenitor, and part-flag, for the
+<p class="commentary firstcommentary"><a id="SP32_3" class="paragraph-anchor"></a><b>&#167;32.3.  </b>At last we come to it: determining the progenitor, and part-flag, for the
 object under investigation.
 </p>
 
@@ -999,7 +999,7 @@ object under investigation.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP32_3_3" class="named-paragraph-link"><span class="named-paragraph">Determine whether the object in question is a component part</span><span class="named-paragraph-number">32.3.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32">&#167;32</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3_1"></a><b>&#167;32.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the inference which will decide the progenitor</span><span class="named-paragraph-number">32.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_3_1" class="paragraph-anchor"></a><b>&#167;32.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the inference which will decide the progenitor</span><span class="named-paragraph-number">32.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1012,7 +1012,7 @@ object under investigation.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP32_3_1_1" class="named-paragraph-link"><span class="named-paragraph">Make this the determining inference</span><span class="named-paragraph-number">32.3.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32_3">&#167;32.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3_1_1"></a><b>&#167;32.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this the determining inference</span><span class="named-paragraph-number">32.3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_3_1_1" class="paragraph-anchor"></a><b>&#167;32.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this the determining inference</span><span class="named-paragraph-number">32.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1027,7 +1027,7 @@ object under investigation.
 <span class="plain-syntax">    </span><span class="identifier-syntax">parent_setting_inference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32_3_1">&#167;32.3.1</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3_2"></a><b>&#167;32.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the whereabouts of something here</span><span class="named-paragraph-number">32.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_3_2" class="paragraph-anchor"></a><b>&#167;32.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the whereabouts of something here</span><span class="named-paragraph-number">32.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1047,7 +1047,7 @@ object under investigation.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32_3">&#167;32.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3_2_1"></a><b>&#167;32.3.2.1.  </b>This runs through the source text from the beginning up to the "here"
+<p class="commentary firstcommentary"><a id="SP32_3_2_1" class="paragraph-anchor"></a><b>&#167;32.3.2.1.  </b>This runs through the source text from the beginning up to the "here"
 sentence, setting <span class="extract"><span class="extract-syntax">whereabouts</span></span> to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.
 </p>
@@ -1060,7 +1060,7 @@ when it finishes this will be set to the most recently mentioned.
 <span class="plain-syntax">        </span><a href="3-sm.html#SP33" class="function-link"><span class="function-syntax">PL::Spatial::seek_room</span></a><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> **) &amp;</span><span class="identifier-syntax">whereabouts</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32_3_2">&#167;32.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32_3_3"></a><b>&#167;32.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine whether the object in question is a component part</span><span class="named-paragraph-number">32.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP32_3_3" class="paragraph-anchor"></a><b>&#167;32.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine whether the object in question is a component part</span><span class="named-paragraph-number">32.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1083,7 +1083,7 @@ when it finishes this will be set to the most recently mentioned.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP32_3">&#167;32.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b></p>
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::seek_room</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">PL::Spatial::seek_room</span></span>:<br/><a href="3-sm.html#SP32_3_2_1">&#167;32.3.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sent</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">v_I</span><span class="plain-syntax">) {</span>
@@ -1093,7 +1093,7 @@ when it finishes this will be set to the most recently mentioned.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-sm.html#SP15" class="function-link"><span class="function-syntax">PL::Spatial::object_is_a_room</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sub</span><span class="plain-syntax">)) *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sub</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34. Completing the model, stages III and IV. </b>By the beginning of Stage III, the progenitor of every object is known, and
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. Completing the model, stages III and IV. </b>By the beginning of Stage III, the progenitor of every object is known, and
 so is whether it is a part. It's time to start work on compiling the I6
 representation of all this, but unfortunately that will need to be quite a
 bit more complicated. So we're going to do this in two stages, the first
@@ -1110,7 +1110,7 @@ other: an object is not allowed to have a parent in both trees at once.
 If it has a parent in either one, then that parent is required to be its progenitor.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>The following logs the more interesting tree:
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>The following logs the more interesting tree:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1131,7 +1131,7 @@ If it has a parent in either one, then that parent is required to be its progeni
 <span class="plain-syntax">        </span><a href="3-sm.html#SP35" class="function-link"><span class="function-syntax">PL::Spatial::log_object_tree_recursively</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>The initial state of both trees is total disconnection. They are then produced
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>The initial state of both trees is total disconnection. They are then produced
 using only two operations, which we'll call "adoption" and "parting".
 </p>
 
@@ -1151,7 +1151,7 @@ The tree is grown entirely from its root by repeated use of this one operation.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_3" class="named-paragraph-link"><span class="named-paragraph">Adopt the object into the main object tree</span><span class="named-paragraph-number">36.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36_1"></a><b>&#167;36.1.  </b>"Parting" is the operation of being removed from the main tree and placed
+<p class="commentary firstcommentary"><a id="SP36_1" class="paragraph-anchor"></a><b>&#167;36.1.  </b>"Parting" is the operation of being removed from the main tree and placed
 in the incorporation tree instead, but with the same parent.
 </p>
 
@@ -1167,7 +1167,7 @@ in the incorporation tree instead, but with the same parent.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP36_1_1" class="named-paragraph-link"><span class="named-paragraph">Adopt the object into the incorporation tree</span><span class="named-paragraph-number">36.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36_2"></a><b>&#167;36.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove the object from the main object tree</span><span class="named-paragraph-number">36.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP36_2" class="paragraph-anchor"></a><b>&#167;36.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove the object from the main object tree</span><span class="named-paragraph-number">36.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1187,7 +1187,7 @@ in the incorporation tree instead, but with the same parent.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>, <a href="3-sm.html#SP36_1">&#167;36.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP36_3"></a><b>&#167;36.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the main object tree</span><span class="named-paragraph-number">36.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP36_3" class="paragraph-anchor"></a><b>&#167;36.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the main object tree</span><span class="named-paragraph-number">36.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1202,7 +1202,7 @@ in the incorporation tree instead, but with the same parent.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">foster</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36">&#167;36</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP36_1_1"></a><b>&#167;36.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the incorporation tree</span><span class="named-paragraph-number">36.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP36_1_1" class="paragraph-anchor"></a><b>&#167;36.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adopt the object into the incorporation tree</span><span class="named-paragraph-number">36.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1217,7 +1217,7 @@ in the incorporation tree instead, but with the same parent.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">orphan</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">incorp_tree_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">former_parent</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP36_1">&#167;36.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP37"></a><b>&#167;37.  </b>What will we use the trees for? Well, one use is to tell other plugins
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37.  </b>What will we use the trees for? Well, one use is to tell other plugins
 which depend on Spatial whether or not one object spatially contains another:
 </p>
 
@@ -1230,7 +1230,7 @@ which depend on Spatial whether or not one object spatially contains another:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38"></a><b>&#167;38.  </b>But the main use for the trees is, as noted above, to form a convenient
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>But the main use for the trees is, as noted above, to form a convenient
 intermediate state between the mass of progenitor data and the messy Inform 6
 code it turns into. Here goes:
 </p>
@@ -1248,7 +1248,7 @@ code it turns into. Here goes:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38_1"></a><b>&#167;38.1.  </b>To enable the use of player's holdalls, we must declare a constant
+<p class="commentary firstcommentary"><a id="SP38_1" class="paragraph-anchor"></a><b>&#167;38.1.  </b>To enable the use of player's holdalls, we must declare a constant
 <span class="extract"><span class="extract-syntax">RUCKSACK_CLASS</span></span> to tell some code in the template layer to use possessions
 with this I6 class as the rucksack pro tem. This is all a bit of a hack, to retrofit
 a degree of generality onto the original I6 library feature, and even then
@@ -1267,7 +1267,7 @@ holdall" (hence the name), with other actors oblivious.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_2"></a><b>&#167;38.2.  </b>The following verifies, in a brute-force way, that there are no cycles in
+<p class="commentary firstcommentary"><a id="SP38_2" class="paragraph-anchor"></a><b>&#167;38.2.  </b>The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
 now, rather than at Stage II above, because other plugins may also have
 changed progenitors at Stage II.)
@@ -1293,7 +1293,7 @@ changed progenitors at Stage II.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_2_1"></a><b>&#167;38.2.1.  </b>The cutest of all the object problem messages, really:
+<p class="commentary firstcommentary"><a id="SP38_2_1" class="paragraph-anchor"></a><b>&#167;38.2.1.  </b>The cutest of all the object problem messages, really:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose the ill-foundedness with a problem message</span><span class="named-paragraph-number">38.2.1</span></span><span class="comment-syntax"> =</span>
@@ -1319,7 +1319,7 @@ changed progenitors at Stage II.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_2">&#167;38.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_3"></a><b>&#167;38.3.  </b>Intermediate states are always suspect in program design, and we might
+<p class="commentary firstcommentary"><a id="SP38_3" class="paragraph-anchor"></a><b>&#167;38.3.  </b>Intermediate states are always suspect in program design, and we might
 ask what's wrong with simply making the trees as we go along, rather than
 storing all of those progenitors and then converting them into the trees.
 We don't do that because (for reasons to do with "here" and with how work
@@ -1351,7 +1351,7 @@ to the trees in creation order achieves this nicely:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_4"></a><b>&#167;38.4.  </b>As a brief aside: if something is carried by a living person, we can
+<p class="commentary firstcommentary"><a id="SP38_4" class="paragraph-anchor"></a><b>&#167;38.4.  </b>As a brief aside: if something is carried by a living person, we can
 reasonably assume it's portable. (This is needed in particular to ensure that
 supporters which are initially carried don't pick up "fixed in place" in
 the absence of other information.)
@@ -1379,7 +1379,7 @@ the absence of other information.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_5"></a><b>&#167;38.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert I6-level properties to express the spatial structure</span><span class="named-paragraph-number">38.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP38_5" class="paragraph-anchor"></a><b>&#167;38.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert I6-level properties to express the spatial structure</span><span class="named-paragraph-number">38.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1389,7 +1389,7 @@ the absence of other information.)
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-sm.html#SP38_5_4" class="named-paragraph-link"><span class="named-paragraph">Assert incorporation tree properties</span><span class="named-paragraph-number">38.5.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_5_1"></a><b>&#167;38.5.1.  </b>We need to make sure that every room does have an I6 <span class="extract"><span class="extract-syntax">description</span></span> value
+<p class="commentary firstcommentary"><a id="SP38_5_1" class="paragraph-anchor"></a><b>&#167;38.5.1.  </b>We need to make sure that every room does have an I6 <span class="extract"><span class="extract-syntax">description</span></span> value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
 that any room with no explicit description will inherit <span class="extract"><span class="extract-syntax">EMPTY_TEXT_VALUE</span></span>
@@ -1416,7 +1416,7 @@ as a value for <span class="extract"><span class="extract-syntax">description</s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_5">&#167;38.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_5_2"></a><b>&#167;38.5.2.  </b>These I6-only properties exist for speed. They're implemented in I6 as
+<p class="commentary firstcommentary"><a id="SP38_5_2" class="paragraph-anchor"></a><b>&#167;38.5.2.  </b>These I6-only properties exist for speed. They're implemented in I6 as
 attributes, which means that testing them is very fast and there is no memory
 overhead for their storage. That shaves a little time off route-finding in
 extensive maps.
@@ -1441,7 +1441,7 @@ extensive maps.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_5">&#167;38.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_5_3"></a><b>&#167;38.5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert container and supporter indicator properties</span><span class="named-paragraph-number">38.5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP38_5_3" class="paragraph-anchor"></a><b>&#167;38.5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert container and supporter indicator properties</span><span class="named-paragraph-number">38.5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1460,7 +1460,7 @@ extensive maps.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_5">&#167;38.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_5_4"></a><b>&#167;38.5.4.  </b>The main spatial tree is expressed in the compiled I6 code in an implicit
+<p class="commentary firstcommentary"><a id="SP38_5_4" class="paragraph-anchor"></a><b>&#167;38.5.4.  </b>The main spatial tree is expressed in the compiled I6 code in an implicit
 way, using the I6 object tree, but the incorporation tree is expressed using
 a triplet of I6-only properties:
 </p>
@@ -1500,7 +1500,7 @@ a triplet of I6-only properties:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38_5">&#167;38.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38_6"></a><b>&#167;38.6.  </b>Because Inform 6 requires objects to be defined in a traversal order for
+<p class="commentary firstcommentary"><a id="SP38_6" class="paragraph-anchor"></a><b>&#167;38.6.  </b>Because Inform 6 requires objects to be defined in a traversal order for
 the main spatial tree (only the main one because I6 has no concept of
 incorporation), we use the main tree to determine the compilation sequence
 for objects:
@@ -1517,7 +1517,7 @@ for objects:
 <span class="plain-syntax">            </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">PL::Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-sm.html#SP38">&#167;38</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b></p>
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::add_to_object_sequence</span><button class="popup" onclick="togglePopup('usagePopup29')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup29">Usage of <span class="code-font"><span class="function-syntax">PL::Spatial::add_to_object_sequence</span></span>:<br/><a href="3-sm.html#SP38_6">&#167;38.6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
@@ -1530,7 +1530,7 @@ for objects:
 <span class="plain-syntax">        </span><a href="3-sm.html#SP39" class="function-link"><span class="function-syntax">PL::Spatial::add_to_object_sequence</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40"></a><b>&#167;40.  </b>The "definition depth" is the same thing as the depth in the main tree;
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>The "definition depth" is the same thing as the depth in the main tree;
 0 for a room, 1 for a player standing in that room, 2 for his hat, and so on.
 </p>
 
@@ -1541,7 +1541,7 @@ for objects:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41"></a><b>&#167;41.  </b>At last, Stage IV. We're all done except for a little checking of the
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41.  </b>At last, Stage IV. We're all done except for a little checking of the
 degenerate case where Inform is just binding up an existing story file, so
 that there's really no spatial model at all &mdash; the world is, or should be,
 empty.
@@ -1566,7 +1566,7 @@ empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42"></a><b>&#167;42.  </b></p>
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Spatial::index_spatial_relationship</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
@@ -1585,7 +1585,7 @@ empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rel</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;i&gt;%s&lt;/i&gt; "</span><span class="plain-syntax">, </span><span class="identifier-syntax">rel</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP43"></a><b>&#167;43.  </b>If something is a part, we don't detail it on the World index page, since
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43.  </b>If something is a part, we don't detail it on the World index page, since
 it already turns up under its owner.
 </p>
 
@@ -1595,7 +1595,7 @@ it already turns up under its owner.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44.  </b>In the World index, we recurse to show the contents and parts:
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>In the World index, we recurse to show the contents and parts:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1629,7 +1629,7 @@ it already turns up under its owner.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Data::Objects::index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">PF_I</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">object_tree_sibling</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">details</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP45"></a><b>&#167;45.  </b>And also:
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45.  </b>And also:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

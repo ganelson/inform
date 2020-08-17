@@ -82,7 +82,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="13-rsfk.html#SP2">&#167;2. Kinds as tables</a></li><li><a href="13-rsfk.html#SP3">&#167;3. Kinds as I6 classes</a></li><li><a href="13-rsfk.html#SP5">&#167;5. Default values</a></li><li><a href="13-rsfk.html#SP7">&#167;7. Equality tests</a></li><li><a href="13-rsfk.html#SP8">&#167;8. Casts at runtime</a></li><li><a href="13-rsfk.html#SP10">&#167;10. IDs</a></li><li><a href="13-rsfk.html#SP19">&#167;19. The heap</a></li><li><a href="13-rsfk.html#SP23">&#167;23. Run-time support for units and enumerations</a></li><li><a href="13-rsfk.html#SP26_6">&#167;26.6. Further runtime support</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>In order to be able to give a reasonably complete description of a kind of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>In order to be able to give a reasonably complete description of a kind of
 value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:
 </p>
@@ -98,7 +98,7 @@ and the following keeps track of which ones we need to make:
 <span class="plain-syntax">} </span><span class="reserved-syntax">runtime_kind_structure</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure runtime_kind_structure is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Kinds as tables. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Kinds as tables. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">table</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::RunTime::defined_by_table</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Kinds::RunTime::defined_by_table</span></span>:<br/>The Creator - <a href="5-tc.html#SP5_4_2">&#167;5.4.2</a>, <a href="5-tc.html#SP5_4_2_7">&#167;5.4.2.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -111,7 +111,7 @@ and the following keeps track of which ones we need to make:
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">named_values_created_with_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Kinds as I6 classes. </b>The noun is used to store the "classname" and "class-number". In the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Kinds as I6 classes. </b>The noun is used to store the "classname" and "class-number". In the
 compiled I6 code, some kinds will correspond to classes with systematic
 names like <span class="extract"><span class="extract-syntax">K24_musical_instrument</span></span>. The number 24 appearing there is the
 class number; the whole text is the classname. These are used only for those
@@ -129,7 +129,7 @@ kinds being compiled to an I6 <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::Behaviour::get_range_number</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And here is where those range numbers come from:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And here is where those range numbers come from:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">REGISTER_NOUN_KINDS_CALLBACK</span><span class="plain-syntax"> </span><a href="13-rsfk.html#SP4" class="function-link"><span class="function-syntax">Kinds::RunTime::register</span></a>
@@ -146,7 +146,7 @@ kinds being compiled to an I6 <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Default values. </b>When we create a new variable (or other storage object) of a given kind, but
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Default values. </b>When we create a new variable (or other storage object) of a given kind, but
 never say what its value is to be, Inform tries to initialise it to the
 "default value" for that kind.
 </p>
@@ -261,7 +261,7 @@ chosen), but no problem message has been issued about this, or
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The kind must have no instances, or it would have worked</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The kind must have no instances, or it would have worked</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -285,7 +285,7 @@ chosen), but no problem message has been issued about this, or
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a kind not intended for end users at all</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a kind not intended for end users at all</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -316,7 +316,7 @@ chosen), but no problem message has been issued about this, or
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">"Value" is too vague to be the kind of a variable</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">"Value" is too vague to be the kind of a variable</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -330,7 +330,7 @@ chosen), but no problem message has been issued about this, or
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This returns either valid I6 code for the value which is the default for
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This returns either valid I6 code for the value which is the default for
 \(K\), or else <span class="extract"><span class="extract-syntax">NULL</span></span> if \(K\) has no values, or no default can be chosen.
 </p>
 
@@ -419,7 +419,7 @@ absence of rooms would otherwise result in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Equality tests. </b>For most word-value kinds, it's easy to compare two values to see if they are
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Equality tests. </b>For most word-value kinds, it's easy to compare two values to see if they are
 equal: all we need is the <span class="extract"><span class="extract-syntax">==</span></span> operator. But for pointer-value kinds, that
 would simply tell us whether they point to the same block of data on the
 heap, whereas we need in fact to compare the blocks they point to. So the
@@ -480,7 +480,7 @@ data, not merely the pointer to them, which is a "deep copy".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="string-syntax">"*=- *_1(*1, *2) == 0"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Casts at runtime. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Casts at runtime. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::RunTime::cast_possible</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Kinds::RunTime::cast_possible</span></span>:<br/><a href="13-rsfk.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
@@ -495,7 +495,7 @@ data, not merely the pointer to them, which is a "deep copy".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::RunTime::cast_call</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
@@ -547,7 +547,7 @@ data, not merely the pointer to them, which is a "deep copy".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. IDs. </b>Sometimes a kind has to be stored as an I6 integer value at run-time. I6 is
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. IDs. </b>Sometimes a kind has to be stored as an I6 integer value at run-time. I6 is
 typeless, so some of the routines and data structures in the I6 template need
 these integer values to tell them what they are looking at. For instance, the
 <span class="extract"><span class="extract-syntax">ActionData</span></span> table records the kinds of the noun and second noun to which an
@@ -590,7 +590,7 @@ like variables. That's what makes them intermediate.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::Constructors::get_weak_ID</span><span class="plain-syntax">(</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>And the following compiles an easier-on-the-eye form of the weak ID, but
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And the following compiles an easier-on-the-eye form of the weak ID, but
 which might occupy up to 31 characters, the maximum length of an I6 identifier:
 </p>
 
@@ -618,7 +618,7 @@ which might occupy up to 31 characters, the maximum length of an I6 identifier:
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) (</span><a href="13-rsfk.html#SP10" class="function-link"><span class="function-syntax">Kinds::RunTime::weak_id</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The strong ID is a faithful representation of the <span class="extract"><span class="extract-syntax">kind</span></span> structure,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The strong ID is a faithful representation of the <span class="extract"><span class="extract-syntax">kind</span></span> structure,
 so we don't need access to its value for comparison purposes; we just need
 to be able to compile it.
 </p>
@@ -647,7 +647,7 @@ But for a construction like "list of texts", the strong ID is a pointer to
 the array <span class="extract"><span class="extract-syntax">LIST_OF_TY 1 TEXT_TY</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Strong IDs are a superset of weak IDs for base kinds like "number", but not
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Strong IDs are a superset of weak IDs for base kinds like "number", but not
 for constructions like "list of numbers", where the strong and weak IDs are
 different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:
@@ -661,7 +661,7 @@ strong ID into a weak one:
 negative if it's a pointer into the upper half of virtual machine memory.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>In order to make sure each distinct kind has a unique strong ID, we must
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>In order to make sure each distinct kind has a unique strong ID, we must
 ensure that we always point to the same array every time the same construction
 turns up. This means remembering everything we've seen, using a new structure:
 </p>
@@ -685,7 +685,7 @@ turns up. This means remembering everything we've seen, using a new structure:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Thus the following routine must return <span class="extract"><span class="extract-syntax">NULL</span></span> if \(K\) is a kind whose weak
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Thus the following routine must return <span class="extract"><span class="extract-syntax">NULL</span></span> if \(K\) is a kind whose weak
 ID is the same as its strong ID &mdash; if it's a base kind, in other words &mdash;
 and otherwise return a pointer to a unique <span class="extract"><span class="extract-syntax">runtime_kind_structure</span></span> for \(K\).
 </p>
@@ -727,7 +727,7 @@ here except as a result of recursion.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rks</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>The following implies a quadratic running time in the number of distinct
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>The following implies a quadratic running time in the number of distinct
 constructed kinds of value seen across the source text, which may become a
 performance problem later on. But at present this number is surprisingly
 small &mdash; often less than 10. On the principle that premature optimisation
@@ -744,7 +744,7 @@ is the root of all evil, I'm leaving it quadratic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rks</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="13-rsfk.html#SP15_1_1" class="named-paragraph-link"><span class="named-paragraph">Create a new runtime kind ID structure</span><span class="named-paragraph-number">15.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1_1"></a><b>&#167;15.1.1.  </b>The following aims to provide helpful identifiers such as <span class="extract"><span class="extract-syntax">KD7_list_of_texts</span></span>.
+<p class="commentary firstcommentary"><a id="SP15_1_1" class="paragraph-anchor"></a><b>&#167;15.1.1.  </b>The following aims to provide helpful identifiers such as <span class="extract"><span class="extract-syntax">KD7_list_of_texts</span></span>.
 Sometime it succeeds. At all events it must provide unique ones which will
 compile under Inform 6.
 </p>
@@ -766,7 +766,7 @@ compile under Inform 6.
 <span class="plain-syntax">    </span><span class="identifier-syntax">rks</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rks_dv_iname</span><span class="plain-syntax"> = </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_iname_in</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DEFAULT_VALUE_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">PR</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP15_1">&#167;15.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>It's convenient to combine this system with one which constructs default
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>It's convenient to combine this system with one which constructs default
 values for kinds, since both involve tracking constructions uniquely.
 </p>
 
@@ -786,7 +786,7 @@ values for kinds, since both involve tracking constructions uniquely.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Convenient storage for some names.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Convenient storage for some names.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -810,7 +810,7 @@ values for kinds, since both involve tracking constructions uniquely.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">con</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">instance_GPR_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>At the end of Inform's run, then, we have seen various interesting kinds
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>At the end of Inform's run, then, we have seen various interesting kinds
 of value and compiled pointers to arrays representing them. But we haven't
 compiled the arrays themselves; so we do that now.
 </p>
@@ -834,7 +834,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="13-rsfk.html#SP18_3" class="named-paragraph-link"><span class="named-paragraph">Compile the default value finder</span><span class="named-paragraph-number">18.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18_1"></a><b>&#167;18.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the runtime ID structure for this kind</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the runtime ID structure for this kind</span><span class="named-paragraph-number">18.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -844,7 +844,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    </span><a href="27-em.html#SP3" class="function-link"><span class="function-syntax">Emit::array_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_1"></a><b>&#167;18.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the list of strong IDs for the bases</span><span class="named-paragraph-number">18.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_1" class="paragraph-anchor"></a><b>&#167;18.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the list of strong IDs for the bases</span><span class="named-paragraph-number">18.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -864,7 +864,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18_1">&#167;18.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_1_1"></a><b>&#167;18.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand out regular bases</span><span class="named-paragraph-number">18.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_1_1" class="paragraph-anchor"></a><b>&#167;18.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand out regular bases</span><span class="named-paragraph-number">18.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -885,7 +885,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18_1_1">&#167;18.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_1_1_2"></a><b>&#167;18.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand out a tuple subtree into a simple array</span><span class="named-paragraph-number">18.1.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_1_1_2" class="paragraph-anchor"></a><b>&#167;18.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand out a tuple subtree into a simple array</span><span class="named-paragraph-number">18.1.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -903,7 +903,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18_1_1">&#167;18.1.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_2"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a constructed default value for this kind</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_2" class="paragraph-anchor"></a><b>&#167;18.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile a constructed default value for this kind</span><span class="named-paragraph-number">18.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -926,7 +926,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18_3"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the default value finder</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP18_3" class="paragraph-anchor"></a><b>&#167;18.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile the default value finder</span><span class="named-paragraph-number">18.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -962,7 +962,7 @@ recursively scanned through for us, so that if we have seen a construction
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP18">&#167;18</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. The heap. </b>Texts, lists and other flexibly-sized structures make use of a pool of
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. The heap. </b>Texts, lists and other flexibly-sized structures make use of a pool of
 run-time storage called "the heap".
 </p>
 
@@ -978,7 +978,7 @@ how the job is done.
 <span class="plain-syntax">    </span><span class="identifier-syntax">total_heap_allocation</span><span class="plain-syntax"> += </span><span class="constant-syntax">256</span><span class="plain-syntax">; </span><span class="comment-syntax"> enough for the initial free-space block</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>We need to provide a start-up routine which creates initial blocks of
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>We need to provide a start-up routine which creates initial blocks of
 data on the heap for any permanent storage objects (global variables,
 property values, table entries, list items) of pointer-value kinds:
 </p>
@@ -988,7 +988,7 @@ property values, table entries, list items) of pointer-value kinds:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="13-rsfk.html#SP20_1" class="named-paragraph-link"><span class="named-paragraph">Compile a constant for the heap size needed</span><span class="named-paragraph-number">20.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b>By now, we know that we need at least <span class="extract"><span class="extract-syntax">total_heap_allocation</span></span> bytes on the
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b>By now, we know that we need at least <span class="extract"><span class="extract-syntax">total_heap_allocation</span></span> bytes on the
 heap, but the initial heap size has to be a power of 2, so we compute the
 smallest such which is big enough. On Glulx, we then multiply by 4: one factor
 of 2 is because the word size is twice as much &mdash; words are 4-byte, not 2-byte
@@ -1014,7 +1014,7 @@ has essentially no memory constraints compared with the Z-machine.
 <span class="plain-syntax">        </span><span class="identifier-syntax">max_heap</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_heap_allocation</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>The following routine both compiles code to create a pointer value, and
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>The following routine both compiles code to create a pointer value, and
 also increments the heap allocation suitably. Each pointer-value kind comes
 with an estimate of its likely size needs &mdash; its exact size needs if it is
 fixed in size, and a reasonable overestimate of typical usage if it is
@@ -1067,7 +1067,7 @@ list of 20 texts. For the cases above, it's always 1.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure heap_allocation is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b></p>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">BLK_FLAG_MULTIPLE</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00000001</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">BLK_FLAG_16_BIT</span><span class="plain-syntax">   </span><span class="constant-syntax">0x00000002</span>
@@ -1093,7 +1093,7 @@ list of 20 texts. For the cases above, it's always 1.
 <span class="plain-syntax">    </span><a href="27-em.html#SP3" class="function-link"><span class="function-syntax">Emit::array_MPN_entry</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Run-time support for units and enumerations. </b>The following generates a small suite of I6 routines associated with
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Run-time support for units and enumerations. </b>The following generates a small suite of I6 routines associated with
 each such kind, and needed at run-time.
 </p>
 
@@ -1114,7 +1114,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">} </span><span class="reserved-syntax">kind_interaction</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure kind_interaction is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b></p>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_KIND_ARITY</span><span class="plain-syntax"> </span><span class="constant-syntax">32</span>
 </pre>
@@ -1152,7 +1152,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24_1"></a><b>&#167;24.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for list</span><span class="named-paragraph-number">24.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_1" class="paragraph-anchor"></a><b>&#167;24.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for list</span><span class="named-paragraph-number">24.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1162,7 +1162,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">idt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LIST_IDT</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_2"></a><b>&#167;24.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for description</span><span class="named-paragraph-number">24.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_2" class="paragraph-anchor"></a><b>&#167;24.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for description</span><span class="named-paragraph-number">24.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1171,7 +1171,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DESCRIPTION_ICON</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_3"></a><b>&#167;24.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for column</span><span class="named-paragraph-number">24.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_3" class="paragraph-anchor"></a><b>&#167;24.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for column</span><span class="named-paragraph-number">24.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1180,7 +1180,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">COLUMN_ICON</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_4"></a><b>&#167;24.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for relation</span><span class="named-paragraph-number">24.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_4" class="paragraph-anchor"></a><b>&#167;24.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for relation</span><span class="named-paragraph-number">24.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1189,7 +1189,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RELATION_ICON</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_5"></a><b>&#167;24.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for phrase</span><span class="named-paragraph-number">24.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_5" class="paragraph-anchor"></a><b>&#167;24.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for phrase</span><span class="named-paragraph-number">24.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1207,7 +1207,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">operands</span><span class="plain-syntax">[</span><span class="identifier-syntax">arity</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_6"></a><b>&#167;24.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for rule</span><span class="named-paragraph-number">24.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_6" class="paragraph-anchor"></a><b>&#167;24.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for rule</span><span class="named-paragraph-number">24.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1216,18 +1216,18 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RULE_ICON</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24_7"></a><b>&#167;24.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for rulebook</span><span class="named-paragraph-number">24.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_7" class="paragraph-anchor"></a><b>&#167;24.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run out inter kind for rulebook</span><span class="named-paragraph-number">24.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">arity</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">Y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Kinds::binary_construction_material</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">X</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">Y</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">operands</span><span class="plain-syntax">[0] = </span><span class="identifier-syntax">Kinds::binary_construction</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">operands</span><span class="plain-syntax">[0] = </span><span class="identifier-syntax">Kinds::binary_con</span><span class="plain-syntax">(</span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RULEBOOK_ICON</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP24">&#167;24</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b></p>
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">object_kind_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -1263,7 +1263,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_iname_with_memo_and_value</span></a><span class="plain-syntax">(</span><span class="constant-syntax">KIND_CLASS_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">R2</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">v</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::RunTime::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -1363,7 +1363,7 @@ each such kind, and needed at run-time.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="13-rsfk.html#SP26_6" class="named-paragraph-link"><span class="named-paragraph">Compile a suite of I6 routines taking kind IDs as arguments</span><span class="named-paragraph-number">26.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26_1"></a><b>&#167;26.1.  </b>A slightly bogus case first. If the source text declares a kind but never
+<p class="commentary firstcommentary"><a id="SP26_1" class="paragraph-anchor"></a><b>&#167;26.1.  </b>A slightly bogus case first. If the source text declares a kind but never
 gives any enumerated values or literal patterns, then such values will never
 appear at run-time; but we need the printing routine to exist to avoid
 compilation errors.
@@ -1386,7 +1386,7 @@ compilation errors.
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_2"></a><b>&#167;26.2.  </b>A unit is printed back with its earliest-defined literal pattern used as
+<p class="commentary firstcommentary"><a id="SP26_2" class="paragraph-anchor"></a><b>&#167;26.2.  </b>A unit is printed back with its earliest-defined literal pattern used as
 notation. If it had no literal patterns, it would come out as decimal numbers,
 but at present this can't happen.
 </p>
@@ -1409,7 +1409,7 @@ but at present this can't happen.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_3"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 printing routine for an enumerated kind</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_3" class="paragraph-anchor"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile I6 printing routine for an enumerated kind</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1465,7 +1465,7 @@ but at present this can't happen.
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_4"></a><b>&#167;26.4.  </b>The suite of standard routines provided for enumerative types is a little
+<p class="commentary firstcommentary"><a id="SP26_4" class="paragraph-anchor"></a><b>&#167;26.4.  </b>The suite of standard routines provided for enumerative types is a little
 like the one in Ada (<span class="extract"><span class="extract-syntax">T'Succ</span></span>, <span class="extract"><span class="extract-syntax">T'Pred</span></span>, and so on).
 </p>
 
@@ -1497,7 +1497,7 @@ to <span class="extract"><span class="extract-syntax">A_T1_colour(v)</span></spa
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_4_1"></a><b>&#167;26.4.1.  </b>There should be a blue historical plaque on the wall here: this was the
+<p class="commentary firstcommentary"><a id="SP26_4_1" class="paragraph-anchor"></a><b>&#167;26.4.1.  </b>There should be a blue historical plaque on the wall here: this was the
 first routine implemented by emitting Inter code, on 12 November 2017.
 </p>
 
@@ -1533,7 +1533,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_4">&#167;26.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_4_2"></a><b>&#167;26.4.2.  </b>And this was the second, a few minutes later.
+<p class="commentary firstcommentary"><a id="SP26_4_2" class="paragraph-anchor"></a><b>&#167;26.4.2.  </b>And this was the second, a few minutes later.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Implement the B routine</span><span class="named-paragraph-number">26.4.2</span></span><span class="comment-syntax"> =</span>
@@ -1581,7 +1581,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_4">&#167;26.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_5"></a><b>&#167;26.5.  </b>And here we add:
+<p class="commentary firstcommentary"><a id="SP26_5" class="paragraph-anchor"></a><b>&#167;26.5.  </b>And here we add:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">R_T1_colour()</span></span> returns a uniformly random choice of the valid
@@ -1673,7 +1673,7 @@ and <span class="extract"><span class="extract-syntax">b</span></span> inclusive
 <span class="plain-syntax">    </span><a href="26-rt.html#SP4" class="function-link"><span class="function-syntax">Routines::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_5_1"></a><b>&#167;26.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Formula for range</span><span class="named-paragraph-number">26.5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_5_1" class="paragraph-anchor"></a><b>&#167;26.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Formula for range</span><span class="named-paragraph-number">26.5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1699,7 +1699,7 @@ and <span class="extract"><span class="extract-syntax">b</span></span> inclusive
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_5">&#167;26.5</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6"></a><b>&#167;26.6. Further runtime support. </b>These last routines are synoptic: they take the ID number of the kind as an
+<p class="commentary firstcommentary"><a id="SP26_6" class="paragraph-anchor"></a><b>&#167;26.6. Further runtime support. </b>These last routines are synoptic: they take the ID number of the kind as an
 argument, so there is only one of each routine.
 </p>
 
@@ -1715,7 +1715,7 @@ argument, so there is only one of each routine.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="13-rsfk.html#SP26_6_6" class="named-paragraph-link"><span class="named-paragraph">Compile KOVSupportFunction</span><span class="named-paragraph-number">26.6.6</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_1"></a><b>&#167;26.6.1.  </b><span class="extract"><span class="extract-syntax">PrintKindValuePair(K, V)</span></span> prints out the value <span class="extract"><span class="extract-syntax">V</span></span>, declaring its kind to
+<p class="commentary firstcommentary"><a id="SP26_6_1" class="paragraph-anchor"></a><b>&#167;26.6.1.  </b><span class="extract"><span class="extract-syntax">PrintKindValuePair(K, V)</span></span> prints out the value <span class="extract"><span class="extract-syntax">V</span></span>, declaring its kind to
 be <span class="extract"><span class="extract-syntax">K</span></span>. (Since I6 is typeless and in general the kind of <span class="extract"><span class="extract-syntax">V</span></span> cannot be
 deduced from its value alone, <span class="extract"><span class="extract-syntax">K</span></span> must explicitly be supplied.)
 </p>
@@ -1777,7 +1777,7 @@ deduced from its value alone, <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">pkvp_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_2"></a><b>&#167;26.6.2.  </b><span class="extract"><span class="extract-syntax">DefaultValueOfKOV(K)</span></span> returns the default value for kind <span class="extract"><span class="extract-syntax">K</span></span>: it's needed,
+<p class="commentary firstcommentary"><a id="SP26_6_2" class="paragraph-anchor"></a><b>&#167;26.6.2.  </b><span class="extract"><span class="extract-syntax">DefaultValueOfKOV(K)</span></span> returns the default value for kind <span class="extract"><span class="extract-syntax">K</span></span>: it's needed,
 for instance, when increasing the size of a list of \(K\) to include new entries,
 which have to be given some type-safe value to start out at.
 </p>
@@ -1849,7 +1849,7 @@ which have to be given some type-safe value to start out at.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">dvok_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_3"></a><b>&#167;26.6.3.  </b><span class="extract"><span class="extract-syntax">KOVComparisonFunction(K)</span></span> returns either the address of a function to
+<p class="commentary firstcommentary"><a id="SP26_6_3" class="paragraph-anchor"></a><b>&#167;26.6.3.  </b><span class="extract"><span class="extract-syntax">KOVComparisonFunction(K)</span></span> returns either the address of a function to
 perform a comparison between two values, or else 0 to signal that no
 special sort of comparison is needed. (In which case signed numerical
 comparison will be used.) The function <span class="extract"><span class="extract-syntax">F</span></span> may be used in a sorting algorithm,
@@ -1919,7 +1919,7 @@ unless the two values are genuinely equal.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">kcf_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_4"></a><b>&#167;26.6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile KOVDomainSize</span><span class="named-paragraph-number">26.6.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_6_4" class="paragraph-anchor"></a><b>&#167;26.6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile KOVDomainSize</span><span class="named-paragraph-number">26.6.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1978,7 +1978,7 @@ unless the two values are genuinely equal.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">kds_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_5"></a><b>&#167;26.6.5.  </b><span class="extract"><span class="extract-syntax">KOVIsBlockValue(K)</span></span> is true if and only if <span class="extract"><span class="extract-syntax">K</span></span> is the I6 ID of a kind
+<p class="commentary firstcommentary"><a id="SP26_6_5" class="paragraph-anchor"></a><b>&#167;26.6.5.  </b><span class="extract"><span class="extract-syntax">KOVIsBlockValue(K)</span></span> is true if and only if <span class="extract"><span class="extract-syntax">K</span></span> is the I6 ID of a kind
 storing pointers to blocks on the heap.
 </p>
 
@@ -2024,7 +2024,7 @@ storing pointers to blocks on the heap.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">kibv_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_6_6"></a><b>&#167;26.6.6.  </b><span class="extract"><span class="extract-syntax">KOVSupportFunction(K)</span></span> returns the address of the specific support function
+<p class="commentary firstcommentary"><a id="SP26_6_6" class="paragraph-anchor"></a><b>&#167;26.6.6.  </b><span class="extract"><span class="extract-syntax">KOVSupportFunction(K)</span></span> returns the address of the specific support function
 for a pointer-value kind <span class="extract"><span class="extract-syntax">K</span></span>, or returns 0 if <span class="extract"><span class="extract-syntax">K</span></span> is not such a kind. For what
 such a function does, see "BlockValues.i6t".
 </p>
@@ -2090,7 +2090,7 @@ such a function does, see "BlockValues.i6t".
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">ksf_iname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="13-rsfk.html#SP26_6">&#167;26.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Code for printing names of kinds at run-time. This needn't run quickly, and
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Code for printing names of kinds at run-time. This needn't run quickly, and
 making it a routine rather than using an array saves a few bytes of precious
 Z-machine array space.
 </p>
@@ -2126,7 +2126,7 @@ Z-machine array space.
 <span class="plain-syntax">    </span><a href="27-hr.html#SP4" class="function-link"><span class="function-syntax">Hierarchy::make_available</span></a><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b></p>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">VM_non_support_problem_issued</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>

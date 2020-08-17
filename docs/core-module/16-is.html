@@ -82,7 +82,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="16-is.html#SP7">&#167;7. The fundamentals</a></li><li><a href="16-is.html#SP8">&#167;8. Creation</a></li><li><a href="16-is.html#SP11">&#167;11. Aliasing</a></li><li><a href="16-is.html#SP12">&#167;12. Breadth</a></li><li><a href="16-is.html#SP17">&#167;17. Back conversions</a></li><li><a href="16-is.html#SP21">&#167;21. Logging</a></li><li><a href="16-is.html#SP23">&#167;23. Methods</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>"Creating a program often means that you have to create a small
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"Creating a program often means that you have to create a small
 universe" (Donald Knuth).
 </p>
 
@@ -102,7 +102,7 @@ inferences (such as that the ball is red). Inferences are elementary facts
 about properties and relations, believed with different levels of certainty.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>An "inference subject" is anything about which an inference can be drawn.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>An "inference subject" is anything about which an inference can be drawn.
 These subjects form a hierarchy. We say that I inherits from J if a fact about I
 is necessarily also a fact about J, unless directly contradicted by specific
 information about J. For example,
@@ -116,7 +116,7 @@ information about J. For example,
 without that final sentence, the bag would have been opaque.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>This is in effect a class with subclasses, but since we are using plain C
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This is in effect a class with subclasses, but since we are using plain C
 we indicate that with an enumeration of constants:
 </p>
 
@@ -127,7 +127,7 @@ we indicate that with an enumeration of constants:
 <span class="definition-keyword">define</span> <span class="constant-syntax">RELN_SUB</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax"> a binary predicate, i.e., a relation</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_SUB</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax"> must be the largest of the values above</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Technically the hierarchy of inference subjects is a spaghetti stack, not a
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Technically the hierarchy of inference subjects is a spaghetti stack, not a
 tree: that is, all of the links run upwards to a common root (<span class="extract"><span class="extract-syntax">model_world</span></span>).
 There is no direct way to access the links downwards from any node &mdash; in other
 words, we often want to know what a given subject S inherits from, but we never
@@ -152,7 +152,7 @@ ask what other subjects inherit from S.
 <span class="plain-syntax">} </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inference_subject is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Recall that plugins are pieces of Inform which provide specialist additions
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Recall that plugins are pieces of Inform which provide specialist additions
 to the core language; to do this, they often need to attach further data to
 </p>
 
@@ -178,7 +178,7 @@ are instances.
 <span class="definition-keyword">define</span> <span class="identifier-syntax">CREATE_PF_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">creator</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    (</span><span class="identifier-syntax">S</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">plugin_subj</span><span class="plain-syntax">[</span><span class="identifier-syntax">name</span><span class="plain-syntax">##</span><span class="identifier-syntax">_plugin</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">] = (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">creator</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">));</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The top of the inference hierarchy contains a number of "fundamental" subjects.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The top of the inference hierarchy contains a number of "fundamental" subjects.
 Thus we have:
 </p>
 
@@ -213,7 +213,7 @@ inheritance.
 <span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">global_constants</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The fundamentals. </b>At the start of Inform's run, the subject tree consists only of the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The fundamentals. </b>At the start of Inform's run, the subject tree consists only of the
 following.
 </p>
 
@@ -232,7 +232,7 @@ following.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">infs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Creation. </b>Other inference subjects are added during the run, thus:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Creation. </b>Other inference subjects are added during the run, thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -243,7 +243,7 @@ following.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">infs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Either means of creation uses the following:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Either means of creation uses the following:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -271,7 +271,7 @@ following.
 <span class="plain-syntax">    </span><a href="26-pc.html#SP7" class="function-link"><span class="function-syntax">Plugins::Call::new_subject_notify</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Renewal is needed to solve a timing problem early in Inform's run, since
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Renewal is needed to solve a timing problem early in Inform's run, since
 subjects for spatial kinds like "room" are needed before the kinds themselves
 can be made. Abusing this routine could clearly violate the rule that the
 subject tree must remain a connected DAG, so we don't abuse it.
@@ -283,7 +283,7 @@ subject tree must remain a connected DAG, so we don't abuse it.
 <span class="plain-syntax">    </span><a href="16-is.html#SP9" class="function-link"><span class="function-syntax">InferenceSubjects::infs_initialise</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">gp</span><span class="plain-syntax">, </span><span class="identifier-syntax">KOI</span><span class="plain-syntax">, </span><span class="identifier-syntax">cert</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Aliasing. </b>This is explained in the "The Player" plugin, which is the only place where
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Aliasing. </b>This is explained in the "The Player" plugin, which is the only place where
 it's needed at present.
 </p>
 
@@ -304,7 +304,7 @@ it's needed at present.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Breadth. </b>Some subjects are broad, covering many things, and others narrow &mdash; perhaps
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Breadth. </b>Some subjects are broad, covering many things, and others narrow &mdash; perhaps
 used to specify facts about only a single person or value.
 </p>
 
@@ -326,7 +326,7 @@ This makes testing for containment simple:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="16-is.html#SP12" class="function-link"><span class="function-syntax">InferenceSubjects::is_within</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">subj</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">broader_than</span><span class="plain-syntax">, </span><span class="identifier-syntax">larger</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Where possible, we use the above tests; where we need to perform other
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Where possible, we use the above tests; where we need to perform other
 operations scaling the subject tree, we use the following:
 </p>
 
@@ -336,7 +336,7 @@ operations scaling the subject tree, we use the following:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">narrow</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">broader_than</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The containment hierarchy is a fluid one, but subjects may only be demoted.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The containment hierarchy is a fluid one, but subjects may only be demoted.
 This means that any information derived from a subject's position relative to
 other subjects, before the change, continues to be valid. If \(S\subseteq T\)
 before, then this remains true afterwards.
@@ -349,7 +349,7 @@ before, then this remains true afterwards.
 <span class="plain-syntax">    </span><span class="identifier-syntax">narrow</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">broader_than</span><span class="plain-syntax"> = </span><span class="identifier-syntax">broad</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Now access to the knowledge we possess about subjects, all of which is
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Now access to the knowledge we possess about subjects, all of which is
 read and written from specialist sections of Inform rather than here.
 </p>
 
@@ -389,7 +389,7 @@ read and written from specialist sections of Inform rather than here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permissions_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Forward conversions.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Forward conversions.
 Suppose we have a constant value, or more generally, a specification. Does this
 correspond to a subject, and if so, which one?
 </p>
@@ -412,7 +412,7 @@ correspond to a subject, and if so, which one?
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">infs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Back conversions. </b>In the end subjects are, in part, wrappers to unify a range of other data
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Back conversions. </b>In the end subjects are, in part, wrappers to unify a range of other data
 structures, and sometimes we want to tear off the wrapper. The following is
 almost the inverse of the function above &mdash; for inference subjects or for
 specifications they correspond to, they are indeed inverses; for other
@@ -434,7 +434,7 @@ arise.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>More prosaically:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>More prosaically:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -492,7 +492,7 @@ arise.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>...and, because it makes conditions more legible,
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>...and, because it makes conditions more legible,
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -509,7 +509,7 @@ arise.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Finally, just as subjects can represent individual values, so they can
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Finally, just as subjects can represent individual values, so they can
 also represent collections of values. (At present, though, only the subjects
 from kinds actually do.)
 </p>
@@ -519,7 +519,7 @@ from kinds actually do.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="16-is.html#SP18" class="function-link"><span class="function-syntax">InferenceSubjects::as_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InferenceSubjects::log</span><button class="popup" onclick="togglePopup('usagePopup30')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup30">Usage of <span class="code-font"><span class="function-syntax">InferenceSubjects::log</span></span>:<br/>Core Module - <a href="1-cm.html#SP5">&#167;5</a>, <a href="1-cm.html#SP6_6">&#167;6.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">) {</span>
@@ -545,7 +545,7 @@ from kinds actually do.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG_OUTDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>The subjects hierarchy is unlikely to reach a depth of 20 except by a bug,
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>The subjects hierarchy is unlikely to reach a depth of 20 except by a bug,
 but that's exactly when we need the debugging log most, so the following is
 coded to ensure that it terminates whether or not the subjects form a connected
 DAG.
@@ -569,7 +569,7 @@ DAG.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Methods. </b>The first of these should fill in a name, if one is available, placing the
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Methods. </b>The first of these should fill in a name, if one is available, placing the
 word range into the variables pointed to by <span class="extract"><span class="extract-syntax">w1</span></span> and <span class="extract"><span class="extract-syntax">w2</span></span>.
 </p>
 
@@ -592,7 +592,7 @@ word range into the variables pointed to by <span class="extract"><span class="e
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>In general property permissions work just as well whatever subject is getting
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>In general property permissions work just as well whatever subject is getting
 the new property, but the following is called to give the subject a chance to
 react. It should return a general pointer to any extra data it wants to attach
 to the permission, or <span class="extract"><span class="extract-syntax">NULL_GENERAL_POINTER</span></span> if it has nothing to add.
@@ -611,7 +611,7 @@ to the permission, or <span class="extract"><span class="extract-syntax">NULL_GE
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Suppose there is an instance, such as "green", belonging to a kind of
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Suppose there is an instance, such as "green", belonging to a kind of
 value which coincides with a property of some subject. Then the following is
 called to tell the subject in question that it needs to become the domain
 of "green" as an adjective.
@@ -630,7 +630,7 @@ of "green" as an adjective.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>Part of the process of "completing" the model &mdash; that is, filling in detail
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Part of the process of "completing" the model &mdash; that is, filling in detail
 not spelled out explicitly in assertion sentences &mdash; is to ask each subject
 to fill in anything missing about itself:
 </p>
@@ -647,7 +647,7 @@ to fill in anything missing about itself:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Each subject also has a chance to check the knowledge about it for
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Each subject also has a chance to check the knowledge about it for
 consistency, and to issue problem messages if something is wrong:
 </p>
 
@@ -663,7 +663,7 @@ consistency, and to issue problem messages if something is wrong:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>Here we must compile run-time code which tests whether the value in <span class="extract"><span class="extract-syntax">t_0</span></span>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Here we must compile run-time code which tests whether the value in <span class="extract"><span class="extract-syntax">t_0</span></span>
 is a constant which the subject gives information about, given that we already
 know it has the right atomic kind. (In some cases there will be nothing to
 test &mdash; if we know that <span class="extract"><span class="extract-syntax">t_0</span></span> has kind "number" then it must be what we want.
@@ -689,7 +689,7 @@ condition blank.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>The model world needs to have its complex initial state stored somewhere
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The model world needs to have its complex initial state stored somewhere
 at run-time. Each subject may need its own data structure, and we want no
 part of thinking about what it looks like.
 </p>

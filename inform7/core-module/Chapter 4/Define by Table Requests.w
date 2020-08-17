@@ -357,7 +357,7 @@ table-stocking the column will have a kind for its entries.
 			kind *K1 = NULL, *K2 = NULL;
 			Kinds::binary_construction_material(CK, &K1, &K2);
 			if ((Kinds::eq(K1, K_value)) && (Kinds::eq(K1, K_value))) {
-				CK = Kinds::binary_construction(
+				CK = Kinds::binary_con(
 					Kinds::get_construct(CK), K_action_name, K_nil);
 				Tables::Columns::set_kind(tc, t, CK);
 			}

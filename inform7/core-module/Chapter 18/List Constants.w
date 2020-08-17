@@ -148,7 +148,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 	if (ll->kinds_known_to_be_inconsistent) K = K_nil;
 	ll->entry_kind = K;
 	current_sentence = cs;
-	return Kinds::unary_construction(CON_list_of, K);
+	return Kinds::unary_con(CON_list_of, K);
 }
 
 @<Work out the entry kind E@> =

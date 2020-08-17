@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="10-teav.html#SP2">&#167;2. Type expressions</a></li><li><a href="10-teav.html#SP9">&#167;9. Values</a></li><li><a href="10-teav.html#SP13">&#167;13. Variables</a></li><li><a href="10-teav.html#SP20">&#167;20. Table references</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Inform recognises many noun-like constructions, some of which &mdash; out of a noun
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inform recognises many noun-like constructions, some of which &mdash; out of a noun
 context &mdash; look like adjectives, actions or other excerpts which aren't at all
 evidently nouns. These many ways to describe nouns are gathered up into two
 central constructions. A "type expression" specifies what sort of excerpt
@@ -129,7 +129,7 @@ two, but they are not the same.
     <p>[11] The weight of the Space Shuttle is {\bf 68585 kg}.</p>
 </blockquote>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Type expressions. </b>A "type expression" specifies what sort of excerpt of text should appear
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Type expressions. </b>A "type expression" specifies what sort of excerpt of text should appear
 in a given context. Sometimes it asks for a particular value, sometimes any
 value matching a given description.
 </p>
@@ -176,7 +176,7 @@ type representing only its own value.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-description&gt;</span><span class="Preform-plain-syntax">                              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Note that a list of adjectives with no noun does not qualify as a type
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Note that a list of adjectives with no noun does not qualify as a type
 expression. It looks as if it never should, on the face of it &mdash; "opaque"
 does not make clear what kind of object is to be opaque &mdash; but once again we
 are up against the problem that Inform needs to allow some slightly noun-like
@@ -203,7 +203,7 @@ adjectives. For instance, this:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-type-expression-unarticled&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And now we parse descriptions of variables such as the one appearing in
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And now we parse descriptions of variables such as the one appearing in
 </p>
 
 <blockquote>
@@ -234,7 +234,7 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-description&gt;</span><span class="Preform-plain-syntax">                 </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="10-teav.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_TypeUnmaintainable problem</span><span class="named-paragraph-number">4.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TypeCantVary problem</span><span class="named-paragraph-number">4.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TypeCantVary problem</span><span class="named-paragraph-number">4.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -248,7 +248,7 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <span class="plain-syntax">    ==&gt; { -, </span><a href="14-sp.html#SP5" class="function-link"><span class="function-syntax">Specifications::new_new_variable_like</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP4">&#167;4</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TypeUnmaintainable problem</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_TypeUnmaintainable problem</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -263,14 +263,14 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <span class="plain-syntax">    ==&gt; { -, </span><a href="14-sp.html#SP5" class="function-link"><span class="function-syntax">Specifications::new_new_variable_like</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP4">&#167;4</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Two pieces of context:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Two pieces of context:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">let_equation_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">probable_noun_phrase_context</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>That's it for type expressions, and we move on to values. There are
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>That's it for type expressions, and we move on to values. There are
 three special circumstances in which we parse differently: while we could write
 variant grammars for these situations, they would be very large and almost
 identical to &lt;s-value&gt; anyway, so instead we simply use &lt;s-value&gt;.
@@ -294,7 +294,7 @@ for example,
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Next, we are sometimes in a situation where a local variable exists which
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Next, we are sometimes in a situation where a local variable exists which
 can be referred to by a pronoun like "it"; if so, we will enable the use
 of possessives like "its" to refer to properties.
 </p>
@@ -306,7 +306,7 @@ of possessives like "its" to refer to properties.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The other possible contexts are where we are expecting a table column or
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The other possible contexts are where we are expecting a table column or
 a property name. This enables us to resolve ambiguities in a helpful way,
 but otherwise changes little.
 </p>
@@ -325,7 +325,7 @@ but otherwise changes little.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Values. </b>The boldface terms here are all parsed as values:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Values. </b>The boldface terms here are all parsed as values:
 </p>
 
 <blockquote>
@@ -401,7 +401,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-value-phrase&gt;</span><span class="Preform-plain-syntax">                                                    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, ExParser::val(RP[1], W) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExParser::val</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ExParser::val</span></span>:<br/><a href="10-teav.html#SP9">&#167;9</a>, <a href="10-teav.html#SP11_1">&#167;11.1</a>, <a href="10-teav.html#SP11_2">&#167;11.2</a>, <a href="10-teav.html#SP11_3">&#167;11.3</a>, <a href="10-teav.html#SP9_1">&#167;9.1</a>, <a href="10-teav.html#SP9_2">&#167;9.2</a>, <a href="10-teav.html#SP9_3">&#167;9.3</a>, <a href="10-teav.html#SP13">&#167;13</a><br/>Verbal and Relative Clauses - <a href="10-varc.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -409,7 +409,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-equation-usage&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -418,7 +418,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-let-equation-mode&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-plain-text-with-equals&gt;</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="10-teav.html#SP11_3" class="named-paragraph-link"><span class="named-paragraph">Make an inline equation</span><span class="named-paragraph-number">11.3</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an equation</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an equation</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -430,7 +430,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eq</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an equation, if the kinds are right</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an equation, if the kinds are right</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -444,7 +444,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eq</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_3"></a><b>&#167;11.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an inline equation</span><span class="named-paragraph-number">11.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an inline equation</span><span class="named-paragraph-number">11.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -455,7 +455,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">eq</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a belonging-to-it property</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a belonging-to-it property</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -466,14 +466,14 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><a href="10-teav.html#SP12" class="function-link"><span class="function-syntax">ExParser::p_o_val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">RP</span><span class="plain-syntax">[3], </span><span class="identifier-syntax">val</span><span class="plain-syntax">), </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a belonging-to-V property</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a belonging-to-V property</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><a href="10-teav.html#SP12" class="function-link"><span class="function-syntax">ExParser::p_o_val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">RP</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">RP</span><span class="plain-syntax">[2]), </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list entry</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list entry</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -481,7 +481,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    ==&gt; { -, </span><a href="10-teav.html#SP10" class="function-link"><span class="function-syntax">ExParser::val</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExParser::p_o_val</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ExParser::p_o_val</span></span>:<br/><a href="10-teav.html#SP9_1">&#167;9.1</a>, <a href="10-teav.html#SP9_2">&#167;9.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">) {</span>
@@ -504,7 +504,7 @@ membership, which is to say, really just a syntactic difference.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Variables. </b>Internally there
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Variables. </b>Internally there
 are three sources of these: locals, defined by "let" or "repeat" phrases;
 stacked variables, which belong to rulebooks, actions or activities; and
 global variables. The narrower in scope take priority over the broader: so
@@ -528,7 +528,7 @@ the text "grand total" is parsed as the local.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-variable&gt;</span><span class="Preform-plain-syntax">                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, ExParser::val(RP[1], W) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>This requires three internals:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>This requires three internals:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -542,7 +542,7 @@ the text "grand total" is parsed as the local.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And similarly:
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And similarly:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -560,7 +560,7 @@ the text "grand total" is parsed as the local.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -571,7 +571,7 @@ the text "grand total" is parsed as the local.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>As noted above, we want to parse phrases containing "of" cautiously in
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>As noted above, we want to parse phrases containing "of" cautiously in
 cases where the excerpt being parsed looks as if it might be a property
 rather than use of a phrase. Here's how we tell whether it looks that way:
 </p>
@@ -581,14 +581,14 @@ rather than use of a phrase. Here's how we tell whether it looks that way:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-property-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>We implement this by telling the excerpt parser, temporarily, not to match
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>We implement this by telling the excerpt parser, temporarily, not to match
 anything including the word "of":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">property_word_to_suppress</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>And here are the relevant internals:
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>And here are the relevant internals:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -622,7 +622,7 @@ anything including the word "of":
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Table references. </b>Table references come in five different forms:
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Table references. </b>Table references come in five different forms:
 </p>
 
 <ul class="items"><li>(a) For instance, "atomic number entry", meaning the entry in that column
@@ -646,7 +646,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-table-column-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-value-uncached&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-value-uncached&gt;</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="10-teav.html#SP20_5" class="named-paragraph-link"><span class="named-paragraph">Make table of in value</span><span class="named-paragraph-number">20.5</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table entry value</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table entry value</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -670,7 +670,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table in row of value</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table in row of value</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -681,7 +681,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table listed in value</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table listed in value</span><span class="named-paragraph-number">20.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -691,7 +691,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_4"></a><b>&#167;20.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table corresponding to value</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_4" class="paragraph-anchor"></a><b>&#167;20.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table corresponding to value</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -703,7 +703,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_5"></a><b>&#167;20.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table of in value</span><span class="named-paragraph-number">20.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_5" class="paragraph-anchor"></a><b>&#167;20.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make table of in value</span><span class="named-paragraph-number">20.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -715,7 +715,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="10-teav.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">ExParser::arg</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ExParser::arg</span></span>:<br/><a href="10-teav.html#SP20_2">&#167;20.2</a>, <a href="10-teav.html#SP20_3">&#167;20.3</a>, <a href="10-teav.html#SP20_4">&#167;20.4</a>, <a href="10-teav.html#SP20_5">&#167;20.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
@@ -723,7 +723,7 @@ Again, this is part of a condition, and can't evaluate.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Node::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Action patterns, such as "taking a container" or "opening a closed door",
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Action patterns, such as "taking a container" or "opening a closed door",
 are parsed by code in the chapter on Actions; all we do here is to wrap the
 result.
 </p>

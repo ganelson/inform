@@ -2,12 +2,6 @@
 
 Translating kinds to and from textual descriptions.
 
-@ For speed, we parse some kind names as single words, and others as common
-nouns, which is slower:
-
-@d KIND_SLOW_MC				0x00000008 /* e.g., |weight| */
-@d KIND_FAST_MC				0x01000000 /* number, text, relation, rule, ... */
-
 @h The K-grammar.
 This is a Preform grammar for textual descriptions of kinds. In effect it's
 a mini-language of its own, with a specification closer to traditional
@@ -17,6 +11,12 @@ which vaguer natural language syntax would not.
 
 All K-grammar nonterminals begin with the "k-" prefix, and their pointer results
 are to //kind//| structures.
+
+@ For speed, we parse some kind names as single words, and others as common
+nouns, which is slower:
+
+@d KIND_SLOW_MC   0x00000008 /* e.g., |weight| */
+@d KIND_FAST_MC   0x01000000 /* number, text, relation, rule, ... */
 
 @ The K-grammar actually has two modes: normal, and phrase-token-mode. Normal
 mode is aptly named: it's almost always the one we're using. Phrase token
@@ -70,9 +70,9 @@ phrase tokens.
 	name of kind ...                         ==> { -, NULL }
 
 <k-kind-abbreviating> ::=
-	( <k-kind-abbreviating> ) |                  ==> { pass 1 }
-	<k-kind-of-kind> <k-formal-kind-variable> |  ==> { -, Kinds::variable_construction(R[2], RP[1]) }
-	<k-kind>                                     ==> { pass 1 }
+	( <k-kind-abbreviating> ) |              ==> { pass 1 }
+	<k-kind-of-kind> <k-formal-variable> |   ==> { -, Kinds::var_construction(R[2], RP[1]) }
+	<k-kind>                                 ==> { pass 1 }
 
 @ So now we can begin properly. Every valid kind matches <k-kind>:
 
@@ -97,8 +97,8 @@ the kinds which are their current values:
 
 =
 <k-variable-definition> ::=
-	<k-formal-kind-variable> |                         ==> { pass 1 }
-	<k-kind-of-kind> of kind <k-formal-kind-variable>  ==> { -, Kinds::variable_construction(R[2], RP[1]) }
+	<k-formal-variable> |                         ==> { pass 1 }
+	<k-kind-of-kind> of kind <k-formal-variable>  ==> { -, Kinds::var_construction(R[2], RP[1]) }
 
 @ Some base kinds with one-word names have that word flagged with a direct
 pointer to the kind, for speed of parsing. Names of base kinds, such as
@@ -143,36 +143,57 @@ built-in kinds had to have one-word names); then it became "object-based
 rulebook", when one-word adjectives were allowed to modify the names of
 built-in kinds; and now it is preferably "object based rulebook". But the
 previous syntax is permitted as an alias to keep old source text working. And
-similarly for the others here, except "either/or property", which is a 2010
+similarly for the others here, except "either-or property", which is a 2010
 addition.
 
 =
 <k-irregular-kind-construction> ::=
-	indexed text | 				                                     ==> { -, K_text }
-	indexed texts | 			                                     ==> { -, K_text }
-	stored action | 			                                     ==> @<Stored action if it exists@>
-	stored actions | 			                                     ==> @<Stored action if it exists@>
-	object-based rulebook producing <indefinite-article> <k-kind> |  ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[2]) }
-	object-based rulebook producing <k-kind> |                       ==> { -, Kinds::binary_construction(CON_rulebook, K_object, RP[1]) }
-	object-based rulebook |                                          ==> { -, Kinds::binary_construction(CON_rulebook, K_object, K_void) }
-	action-based rulebook |                                          ==> @<Action rulebook if it exists@>
-	object-based rule producing <indefinite-article> <k-kind> |      ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[2]) }
-	object-based rule producing <k-kind> |                           ==> { -, Kinds::binary_construction(CON_rule, K_object, RP[1]) }
-	object-based rule |                                              ==> { -, Kinds::binary_construction(CON_rule, K_object, K_void) }
-	action-based rule |                                              ==> @<Action rule if it exists@>
-	either-or property                                               ==> { -, Kinds::unary_construction(CON_property, K_truth_state) }
+	indexed text |                                                   ==> { -, K_text }
+	indexed texts |                                                  ==> { -, K_text }
+	stored action |                                                  ==> @<Stored action@>
+	stored actions |                                                 ==> @<Stored action@>
+	object-based rulebook producing <indefinite-article> <k-kind> |  ==> @<Rulebook obj on 2@>
+	object-based rulebook producing <k-kind> |                       ==> @<Rulebook obj on 1@>
+	object-based rulebook |                                          ==> @<Rulebook obj on void@>
+	action-based rulebook |                                          ==> @<Action rulebook@>
+	object-based rule producing <indefinite-article> <k-kind> |      ==> @<Rule obj on 2@>
+	object-based rule producing <k-kind> |                           ==> @<Rule obj on 1@>
+	object-based rule |                                              ==> @<Rule obj on void@>
+	action-based rule |                                              ==> @<Action rule@>
+	either-or property                                               ==> @<Property on truth state@>
 
-@<Stored action if it exists@> =
+@<Stored action@> =
 	if (K_stored_action == NULL) { ==> { fail production }; }
 	==> { -, K_stored_action };
 
-@<Action rulebook if it exists@> =
-	if (K_action_name == NULL) { ==> { fail production }; }
-	==> { -, Kinds::binary_construction(CON_rulebook, K_action_name, K_void) };
+@<Rulebook obj on 2@> =
+	==> { -, Kinds::binary_con(CON_rulebook, K_object, RP[2]) }
 
-@<Action rule if it exists@> =
+@<Rulebook obj on 1@> =
+	==> { -, Kinds::binary_con(CON_rulebook, K_object, RP[1]) }
+
+@<Rulebook obj on void@> =
+	==> { -, Kinds::binary_con(CON_rulebook, K_object, K_void) }
+
+@<Action rulebook@> =
 	if (K_action_name == NULL) { ==> { fail production }; }
-	==> { -, Kinds::binary_construction(CON_rule, K_action_name, K_void) };
+	==> { -, Kinds::binary_con(CON_rulebook, K_action_name, K_void) };
+
+@<Rule obj on 2@> =
+	==> { -, Kinds::binary_con(CON_rule, K_object, RP[2]) }
+
+@<Rule obj on 1@> =
+	==> { -, Kinds::binary_con(CON_rule, K_object, RP[1]) }
+
+@<Rule obj on void@> =
+	==> { -, Kinds::binary_con(CON_rule, K_object, K_void) }
+
+@<Action rule@> =
+	if (K_action_name == NULL) { ==> { fail production }; }
+	==> { -, Kinds::binary_con(CON_rule, K_action_name, K_void) };
+
+@<Property on truth state@> =
+	==> { -, Kinds::unary_con(CON_property, K_truth_state) }
 
 @ This loop looks a little slow, but there are only about 10 proper constructors.
 
@@ -209,25 +230,25 @@ unspecified because a short form of the constructor is used (e.g.,
 	@<The rule and rulebook constructors default to actions for X@>;
 	if (Wordings::nonempty(X)) {
 		int tupling = Kinds::Constructors::tupling(con, 0);
-		if ((tupling == 0) && (<k-single-material>(X))) KX = <<rp>>;
-		else if ((tupling == 1) && (<k-optional-material>(X))) KX = <<rp>>;
-		else if ((tupling >= 2) && (<k-tupled-material>(X))) KX = <<rp>>;
+		if ((tupling == 0) && (<k-single-term>(X))) KX = <<rp>>;
+		else if ((tupling == 1) && (<k-optional-term>(X))) KX = <<rp>>;
+		else if ((tupling >= 2) && (<k-tupled-term>(X))) KX = <<rp>>;
 		else KX = NULL;
 	}
 	if (Wordings::nonempty(Y)) {
 		int tupling = Kinds::Constructors::tupling(con, 1);
-		if ((tupling == 0) && (<k-single-material>(Y))) KY = <<rp>>;
-		else if ((tupling == 1) && (<k-optional-material>(Y))) KY = <<rp>>;
-		else if ((tupling >= 2) && (<k-tupled-material>(Y))) KY = <<rp>>;
+		if ((tupling == 0) && (<k-single-term>(Y))) KY = <<rp>>;
+		else if ((tupling == 1) && (<k-optional-term>(Y))) KY = <<rp>>;
+		else if ((tupling >= 2) && (<k-tupled-term>(Y))) KY = <<rp>>;
 		else KY = NULL;
 	}
 	@<The relation constructor defaults to Y matching X, if X is specified@>;
 
 	if ((Kinds::Constructors::arity(con) == 1) && (KX)) {
-		==> { -, Kinds::unary_construction(con, KX) }; return TRUE;
+		==> { -, Kinds::unary_con(con, KX) }; return TRUE;
 	}
 	if ((Kinds::Constructors::arity(con) == 2) && (KX) && (KY)) {
-		==> { -, Kinds::binary_construction(con, KX, KY) }; return TRUE;
+		==> { -, Kinds::binary_con(con, KX, KY) }; return TRUE;
 	}
 
 @ Ordinarily missing X or Y are filled in as "value", but...
@@ -247,26 +268,26 @@ unspecified because a short form of the constructor is used (e.g.,
 be more varied.
 
 =
-<k-single-material> ::=
-	( <k-single-material> ) |          ==> { pass 1 }
-	<article> <k-single-material> |    ==> { pass 2 }
+<k-single-term> ::=
+	( <k-single-term> ) |              ==> { pass 1 }
+	<article> <k-single-term> |        ==> { pass 2 }
 	<k-kind>                           ==> { pass 1 }
 
-<k-optional-material> ::=
-	( <k-optional-material> ) |        ==> { pass 1 }
-	<article> <k-optional-material> |  ==> { pass 2 }
+<k-optional-term> ::=
+	( <k-optional-term> ) |            ==> { pass 1 }
+	<article> <k-optional-term> |      ==> { pass 2 }
 	nothing |                          ==> { -, K_nil }
 	action |                           ==> { -, K_action_name }
 	<k-kind>                           ==> { pass 1 }
 
-<k-tupled-material> ::=
+<k-tupled-term> ::=
 	( <k-tuple-list> ) |               ==> { pass 1 }
 	nothing |                          ==> { -, K_void }
-	<k-single-material>                ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_void) }
+	<k-single-term>                    ==> { -, Kinds::binary_con(CON_TUPLE_ENTRY, RP[1], K_void) }
 
 <k-tuple-list> ::=
-	<k-single-material> , <k-tuple-list> |  ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], RP[2]) }
-	<k-single-material>                     ==> { -, Kinds::binary_construction(CON_TUPLE_ENTRY, RP[1], K_void) }
+	<k-single-term> , <k-tuple-list> | ==> { -, Kinds::binary_con(CON_TUPLE_ENTRY, RP[1], RP[2]) }
+	<k-single-term>                    ==> { -, Kinds::binary_con(CON_TUPLE_ENTRY, RP[1], K_void) }
 
 @ The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
@@ -384,7 +405,8 @@ parsed almost all of the time.
 
 =
 <k-kind-variable> internal 1 {
-	int k = Kinds::Textual::parse_kind_variable_name(Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
+	int k = Kinds::Textual::parse_kind_variable_name(
+		Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
 	if (k != 0) {
 		kind *K = Kinds::variable_from_context(k);
 		if (K) { ==> { k, K }; return TRUE; }
@@ -397,10 +419,11 @@ now they always parse, regardless of what might be stored in them, and
 they aren't replaced with their values (which they may not even have).
 
 =
-<k-formal-kind-variable> internal 1 {
-	int k = Kinds::Textual::parse_kind_variable_name(Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
+<k-formal-variable> internal 1 {
+	int k = Kinds::Textual::parse_kind_variable_name(
+		Lexer::word_raw_text(Wordings::first_wn(W)), FALSE);
 	if (k != 0) {
-		==> { k, Kinds::variable_construction(k, NULL) };
+		==> { k, Kinds::var_construction(k, NULL) };
 		return TRUE;
 	}
 	==> { fail nonterminal };
@@ -409,10 +432,11 @@ they aren't replaced with their values (which they may not even have).
 @ And it's also convenient to have:
 
 =
-<k-formal-kind-variable-singular> internal 1 {
-	int k = Kinds::Textual::parse_kind_variable_name_singular(Lexer::word_raw_text(Wordings::first_wn(W)));
+<k-formal-variable-singular> internal 1 {
+	int k = Kinds::Textual::parse_kind_variable_name_singular(
+		Lexer::word_raw_text(Wordings::first_wn(W)));
 	if (k != 0) {
-		==> { k, Kinds::variable_construction(k, NULL) };
+		==> { k, Kinds::var_construction(k, NULL) };
 		return TRUE;
 	}
 	==> { fail nonterminal };
@@ -523,7 +547,8 @@ to miss out on this detail.
 		if (OUT == DL)
 			LOG("$Q", Kinds::Behaviour::get_dimensional_form(K));
 		else
-			Kinds::Dimensions::index_unit_sequence(OUT, Kinds::Behaviour::get_dimensional_form(K), FALSE);
+			Kinds::Dimensions::index_unit_sequence(OUT,
+				Kinds::Behaviour::get_dimensional_form(K), FALSE);
 		return;
 	}
 
@@ -578,7 +603,7 @@ usage.
 	}
 
 @<Choose which form of the constructor to use when writing this out@> =
-	int k_present = 0, l_present = 0; /* these initialisations can have no effect but gcc requires them */
+	int k_present = 0, l_present = 0; /* these initialisations have no effect but avoid warnings */
 	int choice_from[2][2], choice_to[2][2];
 	@<Determine the possible forms for writing this constructor@>;
 	k_present = 1; l_present = 1;

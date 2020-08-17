@@ -69,13 +69,13 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="22-pu.html#SP4">&#167;4. The mid-morning predeclarations</a></li><li><a href="22-pu.html#SP5">&#167;5. The late-morning creations</a></li><li><a href="22-pu.html#SP6">&#167;6. Parsing</a></li><li><a href="22-pu.html#SP12">&#167;12. Extracting the stem</a></li><li><a href="22-pu.html#SP15">&#167;15. Miscellaneous</a></li><li><a href="22-pu.html#SP16">&#167;16. Logging and indexing</a></li><li><a href="22-pu.html#SP19">&#167;19. How the PHUD translates into a PHRCD</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>As we've seen, phrases can be categorised according to their "effect".
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>As we've seen, phrases can be categorised according to their "effect".
 We need one more code:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">AS_YET_UNKNOWN_EFF</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax"> used only temporarily during header parsing</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And here is the usage data.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And here is the usage data.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -101,13 +101,13 @@ We need one more code:
 <span class="plain-syntax">} </span><span class="reserved-syntax">ph_usage_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ph_usage_data is accessed in 22/ph, 22/dptd, 22/pav, 22/tp2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We will need to store values temporarily here while parsing:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We will need to store values temporarily here while parsing:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">rulebook_match</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsed_rm</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The mid-morning predeclarations. </b>Recall that early in Inform's run, we make a coarse parsing of the preamble
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The mid-morning predeclarations. </b>Recall that early in Inform's run, we make a coarse parsing of the preamble
 of each rule to look for a name: if we find it, we declare it as a rule;
 and in any event we throw away the PHUD produced. (We will make a better one
 just before noon.)
@@ -120,7 +120,7 @@ just before noon.)
 <span class="plain-syntax">        </span><a href="21-rl.html#SP4" class="function-link"><span class="function-syntax">Rules::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">phud</span><span class="plain-syntax">.</span><span class="element-syntax">explicit_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. The late-morning creations. </b>A little later on, we've made a rule phrase, and it now has a proper PHUD.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The late-morning creations. </b>A little later on, we've made a rule phrase, and it now has a proper PHUD.
 If the rule is an anonymous one, such as:
 </p>
 
@@ -162,7 +162,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the name of the phrase, and whether or not it's explicitly given</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the name of the phrase, and whether or not it's explicitly given</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -174,7 +174,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that this isn't duplicating the name of a rule already made</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that this isn't duplicating the name of a rule already made</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -190,7 +190,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>This is simply to make the rule's entry in the Index more helpful.
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b>This is simply to make the rule's entry in the Index more helpful.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Do some tedious business for indexing the rule later on</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
@@ -208,7 +208,7 @@ connect this existing one to the phrase.
 <span class="plain-syntax">    </span><a href="21-rl.html#SP22" class="function-link"><span class="function-syntax">Rules::set_italicised_index_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">IX</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Parsing. </b>For our purposes here, phrase definitions and rules are the same thing. Inform
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Parsing. </b>For our purposes here, phrase definitions and rules are the same thing. Inform
 detects these from the punctuation used, not from their wording, and divides
 them into a "preamble" (the part before the colon, or in limited cases a
 comma) and a "body". Early on in Inform's run, we parse the preamble in
@@ -237,7 +237,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { RULE_IN_RULEBOOK_EFF, -, &lt;&lt;named&gt;&gt; = FALSE }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NamelessRule problem</span><span class="named-paragraph-number">6.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NamelessRule problem</span><span class="named-paragraph-number">6.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -247,7 +247,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="plain-syntax">        </span><span class="string-syntax">"not just 'this is the rule'."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP6">&#167;6</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnarticledRule problem</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_UnarticledRule problem</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -258,7 +258,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="plain-syntax">        </span><span class="string-syntax">"'this is promote dancing rule'."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP6">&#167;6</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PluralisedRule problem</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_PluralisedRule problem</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -268,7 +268,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="plain-syntax">        </span><span class="string-syntax">"contain many rules at once."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP6">&#167;6</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_4"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BareTo problem</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_4" class="paragraph-anchor"></a><b>&#167;6.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BareTo problem</span><span class="named-paragraph-number">6.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -277,7 +277,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="plain-syntax">        </span><span class="string-syntax">"which means that this would not define a new phrase."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_5"></a><b>&#167;6.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_DontCallPhrasesWithCalled problem</span><span class="named-paragraph-number">6.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_5" class="paragraph-anchor"></a><b>&#167;6.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_DontCallPhrasesWithCalled problem</span><span class="named-paragraph-number">6.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -287,7 +287,7 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <span class="plain-syntax">        </span><span class="string-syntax">"isn't allowed, but 'To salute (this is saluting)' is."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>As a safety measure, to avoid ambiguities, Inform only allows one phrase
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>As a safety measure, to avoid ambiguities, Inform only allows one phrase
 definition to begin with "now". It recognises such phrases as those whose
 preambles match:
 </p>
@@ -297,7 +297,7 @@ preambles match:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">now</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>In basic mode (only), the To phrase "to begin" acts as something like
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>In basic mode (only), the To phrase "to begin" acts as something like
 <span class="extract"><span class="Preform-extract-syntax">main</span></span> in a C-like language, so we need to take note of where it's defined:
 </p>
 
@@ -306,7 +306,7 @@ preambles match:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begin</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Much later on, Inform returns to the definition. If the preamble matches
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Much later on, Inform returns to the definition. If the preamble matches
 either of the final two productions of &lt;rule-preamble&gt;, then we definitely
 have a rule rather than a phrase definition or a timed event; and in that
 case the rule's preamble (without its name, if given) has to match the
@@ -336,7 +336,7 @@ following grammar. (Parsing this is "fine mode".)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">rule</span><span class="Preform-plain-syntax">                                                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The following turns the preamble text into a PHUD. It can be used as often
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following turns the preamble text into a PHUD. It can be used as often
 as necessary in "coarse mode", but should be run once and once only on any
 given phrase when in "fine mode".
 </p>
@@ -377,7 +377,7 @@ effects &mdash; see below.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phud</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Empty the PHUD</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Empty the PHUD</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -401,7 +401,7 @@ effects &mdash; see below.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">phud</span><span class="plain-syntax">.</span><span class="element-syntax">explicit_name_for_inverse</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a To phrase</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a To phrase</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -423,7 +423,7 @@ effects &mdash; see below.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_1"></a><b>&#167;10.2.1.  </b>When we parse a named phrase in coarse mode, we need to make sure that
+<p class="commentary firstcommentary"><a id="SP10_2_1" class="paragraph-anchor"></a><b>&#167;10.2.1.  </b>When we parse a named phrase in coarse mode, we need to make sure that
 name is registered as a constant value; when we parse it again in fine
 mode, we can get that value back again if we look it up by name.
 </p>
@@ -475,7 +475,7 @@ mode, we can get that value back again if we look it up by name.
 <span class="plain-syntax">    </span><span class="identifier-syntax">phud</span><span class="plain-syntax">.</span><span class="element-syntax">rule_preamble</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RW</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a rule with a specified rulebook</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a rule with a specified rulebook</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -486,7 +486,7 @@ mode, we can get that value back again if we look it up by name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">coarse_mode</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP10_3_1" class="named-paragraph-link"><span class="named-paragraph">Parse the rulebook stem in fine mode</span><span class="named-paragraph-number">10.3.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a rule with no specified rulebook</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The preamble parses to a rule with no specified rulebook</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -501,7 +501,7 @@ mode, we can get that value back again if we look it up by name.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3_1"></a><b>&#167;10.3.1.  </b>That's it for coarse mode. The rest is what happens in fine mode, which
+<p class="commentary firstcommentary"><a id="SP10_3_1" class="paragraph-anchor"></a><b>&#167;10.3.1.  </b>That's it for coarse mode. The rest is what happens in fine mode, which
 affects rules giving a rulebook and some circumstances:
 </p>
 
@@ -534,7 +534,7 @@ affects rules giving a rulebook and some circumstances:
 <span class="plain-syntax">    </span><span class="identifier-syntax">phud</span><span class="plain-syntax">.</span><span class="element-syntax">rule_preamble</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10_3">&#167;10.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3_1_1"></a><b>&#167;10.3.1.1.  </b>The bud is not always present at all, and need not always be at the end
+<p class="commentary firstcommentary"><a id="SP10_3_1_1" class="paragraph-anchor"></a><b>&#167;10.3.1.1.  </b>The bud is not always present at all, and need not always be at the end
 of the stem, so we have to be very careful:
 </p>
 
@@ -595,7 +595,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10_3_1">&#167;10.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>If we can't find a stem, the following chooses which problem to issue:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>If we can't find a stem, the following chooses which problem to issue:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -604,7 +604,7 @@ of the stem, so we have to be very careful:
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadRulePreamble problem</span><span class="named-paragraph-number">11.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadRulePreambleWhen problem</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadRulePreambleWhen problem</span><span class="named-paragraph-number">11.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -631,7 +631,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadRulePreamble problem</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadRulePreamble problem</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -646,7 +646,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">        </span><span class="string-syntax">"'Instead of taking something:' or 'Every turn:')."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3_1_2"></a><b>&#167;10.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow the definite article for anonymous rules</span><span class="named-paragraph-number">10.3.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3_1_2" class="paragraph-anchor"></a><b>&#167;10.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow the definite article for anonymous rules</span><span class="named-paragraph-number">10.3.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -658,7 +658,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">            </span><span class="string-syntax">"write 'a before rule: ...' instead."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP10_3_1">&#167;10.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Extracting the stem. </b>A couple of routines to read but not really parse the stem and the bud.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Extracting the stem. </b>A couple of routines to read but not really parse the stem and the bud.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -667,7 +667,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phud</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">full_preamble</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>For example, for the rule
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>For example, for the rule
 </p>
 
 <blockquote>
@@ -687,14 +687,14 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;when-while-clause&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">when/while</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Miscellaneous. </b>Some access routines.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Miscellaneous. </b>Some access routines.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -745,7 +745,7 @@ of the stem, so we have to be very careful:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Logging and indexing. </b>The length and thoroughness of this may give some hint of how troublesome
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Logging and indexing. </b>The length and thoroughness of this may give some hint of how troublesome
 it was to debug the preamble-parsing code:
 </p>
 
@@ -801,7 +801,7 @@ it was to debug the preamble-parsing code:
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"(%W)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">phud</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>In our compiled code, it's useful to label routines with I6 comments:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>In our compiled code, it's useful to label routines with I6 comments:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -812,7 +812,7 @@ it was to debug the preamble-parsing code:
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>And similarly:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>And similarly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -820,7 +820,7 @@ it was to debug the preamble-parsing code:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">phud</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">full_preamble</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. How the PHUD translates into a PHRCD. </b>Recall that in the early afternoon, the PHUD for a rule phrase is translated
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. How the PHUD translates into a PHRCD. </b>Recall that in the early afternoon, the PHUD for a rule phrase is translated
 into a PHRCD, that is, a set of instructions about the circumstances for
 the rule to fire.
 </p>
@@ -834,7 +834,7 @@ seen problems in Inform. A couple of variables are needed just for that:
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">NAP_problem_explained</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> pertains to Named Action Patterns</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">issuing_ANL_problem</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> pertains to Action Name Lists</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b></p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">ph_runtime_context_data</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Usage::to_runtime_context_data</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Phrases::Usage::to_runtime_context_data</span></span>:<br/>Construction Sequence - <a href="22-cs.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ph_usage_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phud</span><span class="plain-syntax">) {</span>
@@ -849,7 +849,7 @@ seen problems in Inform. A couple of variables are needed just for that:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phrcd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b>All of this is just dumb copying...
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b>All of this is just dumb copying...
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Finish work parsing the conditions for the rule to fire</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
@@ -873,7 +873,7 @@ seen problems in Inform. A couple of variables are needed just for that:
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1"></a><b>&#167;20.1.1.  </b>...except for this:
+<p class="commentary firstcommentary"><a id="SP20_1_1" class="paragraph-anchor"></a><b>&#167;20.1.1.  </b>...except for this:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse what used to be the bud into the PHRCD</span><span class="named-paragraph-number">20.1.1</span></span><span class="comment-syntax"> =</span>
@@ -914,7 +914,7 @@ seen problems in Inform. A couple of variables are needed just for that:
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1">&#167;20.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1"></a><b>&#167;20.1.1.1.  </b>All that's left is to issue a "good" problem message, but this is quite
+<p class="commentary firstcommentary"><a id="SP20_1_1_1" class="paragraph-anchor"></a><b>&#167;20.1.1.1.  </b>All that's left is to issue a "good" problem message, but this is quite
 a large undertaking, because the situation as we currently know it is just
 that something's wrong with the rule preamble &mdash; which covers an enormous
 range of different faults.
@@ -943,7 +943,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1">&#167;20.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_1"></a><b>&#167;20.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">20.1.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_1" class="paragraph-anchor"></a><b>&#167;20.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithDisjunction problem</span><span class="named-paragraph-number">20.1.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -962,7 +962,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1">&#167;20.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_2"></a><b>&#167;20.1.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">20.1.1.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_2" class="paragraph-anchor"></a><b>&#167;20.1.1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithNoParticiple problem</span><span class="named-paragraph-number">20.1.1.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -976,7 +976,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1">&#167;20.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_3"></a><b>&#167;20.1.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">20.1.1.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_3" class="paragraph-anchor"></a><b>&#167;20.1.1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithImmiscible problem</span><span class="named-paragraph-number">20.1.1.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -993,7 +993,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1">&#167;20.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_4"></a><b>&#167;20.1.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">20.1.1.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_4" class="paragraph-anchor"></a><b>&#167;20.1.1.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APWithBadWhen problem</span><span class="named-paragraph-number">20.1.1.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1032,7 +1032,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1">&#167;20.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_5"></a><b>&#167;20.1.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APUnknown problem</span><span class="named-paragraph-number">20.1.1.1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_5" class="paragraph-anchor"></a><b>&#167;20.1.1.1.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_APUnknown problem</span><span class="named-paragraph-number">20.1.1.1.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1053,7 +1053,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1">&#167;20.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_1"></a><b>&#167;20.1.1.1.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">20.1.1.1.5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_1" class="paragraph-anchor"></a><b>&#167;20.1.1.1.5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if it starts with a valid action name, at least</span><span class="named-paragraph-number">20.1.1.1.5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1070,7 +1070,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1_5">&#167;20.1.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_2"></a><b>&#167;20.1.1.1.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this might be a when-for confusion</span><span class="named-paragraph-number">20.1.1.1.5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_2" class="paragraph-anchor"></a><b>&#167;20.1.1.1.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if this might be a when-for confusion</span><span class="named-paragraph-number">20.1.1.1.5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1086,7 +1086,7 @@ parser, recording how it most recently failed.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1_5">&#167;20.1.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_3"></a><b>&#167;20.1.1.1.5.3.  </b>If the action pattern contains what looks like a list of action names, as
+<p class="commentary firstcommentary"><a id="SP20_1_1_1_5_3" class="paragraph-anchor"></a><b>&#167;20.1.1.1.5.3.  </b>If the action pattern contains what looks like a list of action names, as
 for example
 </p>
 
@@ -1121,7 +1121,7 @@ allowing it to print comments on each apparent action name it sees.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1_1_5">&#167;20.1.1.1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1_1_2"></a><b>&#167;20.1.1.2.  </b>We have a much easier time if the rulebook was value-focused, so that
+<p class="commentary firstcommentary"><a id="SP20_1_1_2" class="paragraph-anchor"></a><b>&#167;20.1.1.2.  </b>We have a much easier time if the rulebook was value-focused, so that
 the only possible problem is that the value was wrong.
 </p>
 
@@ -1136,11 +1136,11 @@ the only possible problem is that the value was wrong.
 <span class="plain-syntax">    </span><span class="function-syntax">&lt;parametric-problem-diagnosis&gt;(phud-&gt;</span><span class="element-syntax">rule_preamble</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP20_1_1">&#167;20.1.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>And that is the end of the code as such, but we still have to define the
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>And that is the end of the code as such, but we still have to define the
 three diagnosis grammars we needed.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Parametric rules are those applying to values not actions, and the following
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Parametric rules are those applying to values not actions, and the following
 is used to choose a problem message if the value makes no sense.
 </p>
 
@@ -1150,7 +1150,7 @@ is used to choose a problem message if the value makes no sense.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">									</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP22_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadParameter problem</span><span class="named-paragraph-number">22.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_1"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">22.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenThePlay problem</span><span class="named-paragraph-number">22.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1161,7 +1161,7 @@ is used to choose a problem message if the value makes no sense.
 <span class="plain-syntax">        </span><span class="string-syntax">"and I think you probably mean to refer to one of those."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_2"></a><b>&#167;22.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadParameter problem</span><span class="named-paragraph-number">22.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadParameter problem</span><span class="named-paragraph-number">22.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1173,7 +1173,7 @@ is used to choose a problem message if the value makes no sense.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>And here we choose a problem message if a rule applying to an action is used,
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And here we choose a problem message if a rule applying to an action is used,
 but the action isn't one we recognise.
 </p>
 
@@ -1183,7 +1183,7 @@ but the action isn't one we recognise.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">in</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">							</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP23_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">23.2</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23_1"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">23.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionInPresenceOf problem</span><span class="named-paragraph-number">23.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1201,7 +1201,7 @@ but the action isn't one we recognise.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP23">&#167;23</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23_2"></a><b>&#167;23.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">23.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP23_2" class="paragraph-anchor"></a><b>&#167;23.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_NonActionIn problem</span><span class="named-paragraph-number">23.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1215,7 +1215,7 @@ but the action isn't one we recognise.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="22-pu.html#SP23">&#167;23</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>The following is used to choose a problem when the trouble with the rule
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>The following is used to choose a problem when the trouble with the rule
 occurred in a when/while condition at the end; while all five cases produce
 the PM_APWithBadWhen problem, they each provide different clues as to what
 might have gone wrong.
@@ -1230,7 +1230,7 @@ might have gone wrong.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{when/while</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">...}</span><span class="Preform-plain-syntax">                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 5, -, &lt;&lt;cw1&gt;&gt; = Wordings::first_wn(WR[2]), &lt;&lt;cw2&gt;&gt; = Wordings::last_wn(WR[2]) }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b></p>
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;anl-diagnosis&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
@@ -1249,7 +1249,7 @@ might have gone wrong.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="22-pu.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">25.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">25.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Diagnose problem with this ANL entry</span><span class="named-paragraph-number">25.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

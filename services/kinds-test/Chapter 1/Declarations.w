@@ -42,7 +42,7 @@ void Declarations::load_from_file(text_stream *arg) {
 	Sentences::break(syntax_tree, W);
 
 	for (int i=1; i<=26; i++) {
-		kind_vars[i] = Kinds::variable_construction(i, NULL);
+		kind_vars[i] = Kinds::var_construction(i, NULL);
 	}
 	kind_checker_mode = MATCH_KIND_VARIABLES_AS_UNIVERSAL;
 
@@ -88,7 +88,7 @@ typedef struct kind_relationship {
 	new enum ... |                             ==> @<Create new enum@>
 	new kind ... of <kind-eval> |              ==> @<Create new base@>
 	<kind-eval> * <kind-eval> = <kind-eval> |  ==> @<New arithmetic rule@>
-	<k-formal-kind-variable> = <kind-eval> |   ==> @<Set kind variable@>
+	<k-formal-variable> = <kind-eval> |   ==> @<Set kind variable@>
 	<kind-eval> |                              ==> @<Show REPL result@>
 	<kind-condition> |                         ==> @<Show kind condition@>
 	<kind-eval> compatible with <kind-eval> |  ==> @<Show compatibility@>
@@ -114,10 +114,10 @@ typedef struct kind_relationship {
 	dereference <kind-eval> |                  ==> @<Dereference kind@>
 	weaken <kind-eval> |                       ==> @<Weaken kind@>
 	super of <kind-eval> |                     ==> @<Super kind@>
-	substitute <kind-eval> for <k-formal-kind-variable> in <kind-eval> | ==> @<Substitute@>
+	substitute <kind-eval> for <k-formal-variable> in <kind-eval> | ==> @<Substitute@>
 	void |                                     ==> { -, K_void }
 	<k-kind> |                                 ==> { pass 1 }
-	<k-formal-kind-variable>                   ==> { pass 1 }
+	<k-formal-variable>                   ==> { pass 1 }
 
 <kind-condition> ::=
 	<kind-eval> <= <kind-eval> |               ==> @<Test le@>

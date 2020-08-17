@@ -219,7 +219,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 }
 
 kind *Activities::to_kind(activity *av) {
-	return Kinds::unary_construction(CON_activity,
+	return Kinds::unary_con(CON_activity,
 		av->activity_on_what_kind);
 }
 

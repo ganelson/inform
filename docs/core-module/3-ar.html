@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#3">Chapter 3: Top-Level Declarations</a></li><li><b>Anaphoric References</b></li></ul></div>
 <p class="purpose">To keep track of the current object and subject of discussion.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Inform is deliberately minimal when allowing the use of pronouns which carry
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inform is deliberately minimal when allowing the use of pronouns which carry
 meanings from one sentence to another. It is unclear exactly how natural
 language does this, and while some theories are more persuasive than others,
 all seem vulnerable to odd cases that they get "wrong". It's therefore
@@ -111,7 +111,7 @@ not to tangible things and kinds.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">subject_seems_to_be_plural</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The routine <span class="extract"><span class="extract-syntax">Anaphora::new_discussion</span></span> is called when we reach a
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The routine <span class="extract"><span class="extract-syntax">Anaphora::new_discussion</span></span> is called when we reach a
 heading or other barrier in the source text, to make clear that there has
 been a change of the topic discussed.
 </p>
@@ -144,7 +144,7 @@ subject carried over from previous sentences.
 <span class="plain-syntax">    </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">subject_seems_to_be_plural</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The slight asymmetry in what follows is partly pragmatic, partly the result
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The slight asymmetry in what follows is partly pragmatic, partly the result
 of subject-verb inversion ("in the bag is the ball" not "the ball is in the
 bag"). We extract a subject from a relationship node on the left, but not on
 the right, and we don't extract an object from one. Consider:
@@ -204,7 +204,7 @@ conclusion we would have reached.
 <span class="plain-syntax">            </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">object_of_sentences</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="function-syntax">Anaphora::discussed_at_node</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Anaphora::discussed_at_node</span></span>:<br/><a href="3-ar.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
@@ -219,7 +219,7 @@ conclusion we would have reached.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">infs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Occasionally we need to force the issue, though:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Occasionally we need to force the issue, though:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

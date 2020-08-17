@@ -83,7 +83,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="4-ap.html#SP26">&#167;26. Action pattern specificity</a></li><li><a href="4-ap.html#SP28">&#167;28. Compiling action tries</a></li><li><a href="4-ap.html#SP30">&#167;30. Compiling action patterns</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Action patterns are essentially a conjunction of specifications &mdash; the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Action patterns are essentially a conjunction of specifications &mdash; the
 action must be this, and the noun must be that, and... While
 they allow disjunction in the choice of action, all of that code is a
 matter for the action name list to handle. The AP structure is a list
@@ -146,7 +146,7 @@ not-really-action APs are used in no other context, and employ the
 <span class="plain-syntax">} </span><span class="reserved-syntax">ap_optional_clause</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure action_pattern is accessed in 2/ri, 3/mcr, 3/em, 3/scn, 3/tm2, 3/ts, 4/act, 4/anl, 4/nap, 5/tfg, 5/gl and here.</li><li>The structure ap_optional_clause is accessed in 2/ri, 3/mcr, 3/em, 3/scn, 3/tm2, 3/ts, 4/act, 4/anl, 4/nap, 5/tfg, 5/gl and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>When we parse action patterns, we record why they fail, in order to make
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>When we parse action patterns, we record why they fail, in order to make
 it easier to produce helpful error messages. (We can't simply fire off
 errors at the time they occur, because text is often parsed in several
 contexts at once, so just because it fails this one does not mean it is
@@ -165,7 +165,7 @@ wrong.) PAPF stands for "parse action pattern failure".
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permit_trying_omission</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> allow the keyword 'trying' to be omitted</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permit_nonconstant_action_parameters</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>NB: Next time this is rewritten - (1) handle in, in the presence of, with
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>NB: Next time this is rewritten - (1) handle in, in the presence of, with
 STV clauses; (2) get this right:
 </p>
 
@@ -176,7 +176,7 @@ STV clauses; (2) get this right:
 		say "Where did you want to go?"
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">action_pattern</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Actions::Patterns::new</span></span>:<br/><a href="4-ap.html#SP6">&#167;6</a>, <a href="4-ap.html#SP21_1">&#167;21.1</a>, <a href="4-ap.html#SP22">&#167;22</a>, <a href="4-ap.html#SP25">&#167;25</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -407,7 +407,7 @@ STV clauses; (2) get this right:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ap</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">duration</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">ap</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">test_anl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We are allowed to give names to certain kinds of behaviour by "categorising"
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We are allowed to give names to certain kinds of behaviour by "categorising"
 an action.
 </p>
 
@@ -476,7 +476,7 @@ an action.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>First a much easier, parametric form of parsing, used for the APs which
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>First a much easier, parametric form of parsing, used for the APs which
 form the usage conditions for rules in object-based rulebooks.
 </p>
 
@@ -489,7 +489,7 @@ form the usage conditions for rules in object-based rulebooks.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>A useful utility: parsing a parameter in an action pattern.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A useful utility: parsing a parameter in an action pattern.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -513,7 +513,7 @@ form the usage conditions for rules in object-based rulebooks.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The main action pattern parser is called only by the following shell
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The main action pattern parser is called only by the following shell
 routine, which exists in order to change some parsing rules.
 </p>
 
@@ -526,7 +526,7 @@ matched action pattern.
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_successful_wording</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING_INIT</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">prevailing_ap_tense</span><span class="plain-syntax"> = </span><span class="identifier-syntax">IS_TENSE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>In fact these codes aren't used any more:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>In fact these codes aren't used any more:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ACTOR_REQUESTED</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
@@ -535,7 +535,7 @@ matched action pattern.
 <span class="definition-keyword">define</span> <span class="constant-syntax">ACTOR_EXPLICITLY_PLAYER</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">ACTOR_IMPLICITLY_PLAYER</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Action patterns are textual descriptions which act as predicates on actions,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Action patterns are textual descriptions which act as predicates on actions,
 that is, they are descriptions which are true of some actions and false of
 others. For example,
 </p>
@@ -583,7 +583,7 @@ These are always present tense, and can't be negated.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-core-actor&gt;</span><span class="Preform-plain-syntax">															</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ACTOR_IMPLICITLY_PLAYER, RP[1] };</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The second version is for contexts where the AP occurs as a condition: e.g.,
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The second version is for contexts where the AP occurs as a condition: e.g.,
 in a sentence like "if we have taken a jewel". Since these can occur in
 both tenses and can be negated ("if we are not taking a jewel"), there are
 four combinations:
@@ -629,7 +629,7 @@ four combinations:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">we</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-past-core&gt;</span><span class="Preform-plain-syntax">												</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ACTOR_EXPLICITLY_PLAYER, RP[1] };</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>There is one more tweak at this top level. Inform allows an ambiguous but
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>There is one more tweak at this top level. Inform allows an ambiguous but
 shorter and more natural syntax in which the actor's name simply appears at
 the front of the AP:
 </p>
@@ -651,7 +651,7 @@ actorless possibility can always be written.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;actor-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;action-pattern-core&gt;</span><span class="Preform-plain-syntax"> 				</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ACTOR_NAMED, RP[2] }; action_pattern *ap = *XP; ap-&gt;request = FALSE; ap-&gt;actor_spec = RP[1];</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>And this voracious token matches the actor's name as an initial excerpt,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>And this voracious token matches the actor's name as an initial excerpt,
 which is much faster than exhaustive searching. It tries to break just before
 any "-ing" word (i.e., participle) which is not inside parentheses; but only
 if the resulting name matches &lt;action-parameter&gt; as a constant,
@@ -704,7 +704,7 @@ would match as an abbreviated form of the name of "angry waiting man".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::suppress</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">PL::Actions::Patterns::suppress</span></span>:<br/><a href="4-ap.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -717,7 +717,7 @@ would match as an abbreviated form of the name of "angry waiting man".
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_ap_parsing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">old_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>That completes the top level, and we can forget about actors. All of those
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>That completes the top level, and we can forget about actors. All of those
 productions come down now to just two nonterminals, one for the present tense,
 </p>
 
@@ -757,7 +757,7 @@ trimmed away;
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>"Doing it" is not the happiest of syntaxes. The idea is for this to be
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>"Doing it" is not the happiest of syntaxes. The idea is for this to be
 a sort of pronoun for actions, allowing for anaphora, but to parse such things
 naturally in all cases is wishful thinking. It enables us to write, e.g.:
 </p>
@@ -775,7 +775,7 @@ possibility for confusion is too great; perhaps we should just cut this idea.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">doing</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">it</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b></p>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="function-syntax">PL::Actions::Patterns::ap_parse_inner</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">PL::Actions::Patterns::ap_parse_inner</span></span>:<br/><a href="4-ap.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tense</span><span class="plain-syntax">) {</span>
@@ -818,7 +818,7 @@ possibility for confusion is too great; perhaps we should just cut this idea.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>Anyway, we are now down to level 3: all action patterns have been whittled
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Anyway, we are now down to level 3: all action patterns have been whittled
 down to a single use of &lt;ap-common-core&gt;. Our next step is to recognise
 a condition attached with "when":
 </p>
@@ -831,7 +831,7 @@ a condition attached with "when":
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">when/while</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                     </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, NULL }; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; </span><span class="Preform-comment-syntax"> used only to diagnose problems</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>&lt;condition-in-ap&gt; is really just &lt;spec-condition&gt; in disguise &mdash; i.e.,
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>&lt;condition-in-ap&gt; is really just &lt;spec-condition&gt; in disguise &mdash; i.e.,
 it matches a standard Inform condition &mdash; but it's implemented as an internal
 to enable Inform to set up a stack frame if there isn't one already, and so on.
 </p>
@@ -861,7 +861,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Level 4 now. The optional "in the presence of":
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Level 4 now. The optional "in the presence of":
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -870,7 +870,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;ap-common-core-inner-inner&gt;</span><span class="Preform-plain-syntax">											</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, RP[1] };</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
 special handling to prevent it from clashing with other interpretations of
 "in" elsewhere in the grammar. It's perhaps unexpected that "in the Pantry"
 is valid as an AP, but this enables many natural-looking rules to be written
@@ -883,7 +883,7 @@ is valid as an AP, but this enables many natural-looking rules to be written
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;ap-common-core-inner-inner-inner&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, RP[1] };</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21_1"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an actionless action pattern, specifying room only</span><span class="named-paragraph-number">21.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP21_1" class="paragraph-anchor"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an actionless action pattern, specifying room only</span><span class="named-paragraph-number">21.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -896,7 +896,7 @@ is valid as an AP, but this enables many natural-looking rules to be written
 <span class="plain-syntax">    ==&gt; { </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">PL::Actions::Patterns::ap_store</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">) };</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP21">&#167;21</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>And that's as far down as we go: to level 6. Most of the complexity is gone
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>And that's as far down as we go: to level 6. Most of the complexity is gone
 now, but what's left can't very efficiently be written in Preform. Essentially
 we apply &lt;action-list&gt; to the text and then parse the operands using
 &lt;action-operand&gt;, though it's a bit more involved because we also recognise
@@ -931,7 +931,7 @@ box" makes no sense since only one is transitive).
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>The "operands" of an action pattern are the nouns to which it applies: for
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>The "operands" of an action pattern are the nouns to which it applies: for
 example, in "Kevin taking or dropping something", the operand is "something".
 We treat words like "something" specially to avoid them being read as
 "some thing" and thus forcing the kind of the operand to be "thing".
@@ -952,7 +952,7 @@ We treat words like "something" specially to avoid them being read as
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">it</span><span class="Preform-plain-syntax">								</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Finally, then, &lt;action-parameter&gt;. Almost anything syntactically matches
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Finally, then, &lt;action-parameter&gt;. Almost anything syntactically matches
 here &mdash; a constant, a description, a table entry, a variable, and so on.
 </p>
 
@@ -969,7 +969,7 @@ here &mdash; a constant, a description, a table entry, a variable, and so on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>We can't put it off any longer. Here goes.
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>We can't put it off any longer. Here goes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -994,7 +994,7 @@ here &mdash; a constant, a description, a table entry, a variable, and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25_1"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">With one small proviso, a valid action pattern has been parsed</span><span class="named-paragraph-number">25.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">With one small proviso, a valid action pattern has been parsed</span><span class="named-paragraph-number">25.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1016,7 +1016,7 @@ here &mdash; a constant, a description, a table entry, a variable, and so on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACTION_PATTERN_PARSING</span><span class="plain-syntax">, </span><span class="string-syntax">"Matched action pattern: $A\n"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">ap</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_2"></a><b>&#167;25.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">No valid action pattern has been parsed</span><span class="named-paragraph-number">25.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_2" class="paragraph-anchor"></a><b>&#167;25.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">No valid action pattern has been parsed</span><span class="named-paragraph-number">25.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1028,7 +1028,7 @@ here &mdash; a constant, a description, a table entry, a variable, and so on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACTION_PATTERN_PARSING</span><span class="plain-syntax">, </span><span class="string-syntax">"Parse action failed: %W\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_3"></a><b>&#167;25.3.  </b>Special clauses are allowed after "going..."; trim them
+<p class="commentary firstcommentary"><a id="SP25_3" class="paragraph-anchor"></a><b>&#167;25.3.  </b>Special clauses are allowed after "going..."; trim them
 away as they are recorded.
 </p>
 
@@ -1070,7 +1070,7 @@ away as they are recorded.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_4"></a><b>&#167;25.4.  </b>Extract the information as to which actions are intended:
+<p class="commentary firstcommentary"><a id="SP25_4" class="paragraph-anchor"></a><b>&#167;25.4.  </b>Extract the information as to which actions are intended:
 e.g., from "taking or dropping something", that it will be
 taking or dropping.
 </p>
@@ -1084,7 +1084,7 @@ taking or dropping.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACTION_PATTERN_PARSING</span><span class="plain-syntax">, </span><span class="string-syntax">"ANL from PAR(i):\n$L\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">anl</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5"></a><b>&#167;25.5.  </b>Now to fill in the gaps. At this point we have the action name
+<p class="commentary firstcommentary"><a id="SP25_5" class="paragraph-anchor"></a><b>&#167;25.5.  </b>Now to fill in the gaps. At this point we have the action name
 list as a linked list of all possible lexical matches, but want to
 whittle it down to remove those which do not semantically make
 sense. For instance, "taking inventory" has two possible lexical
@@ -1136,7 +1136,7 @@ crucial word position except for the one matched.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">ACTION_PATTERN_PARSING</span><span class="plain-syntax">, </span><span class="string-syntax">"List after action winnowing:\n$L\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">anl</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_1"></a><b>&#167;25.5.1.  </b>For example, "taking inventory or waiting" produces two positions, words
+<p class="commentary firstcommentary"><a id="SP25_5_1" class="paragraph-anchor"></a><b>&#167;25.5.1.  </b>For example, "taking inventory or waiting" produces two positions, words
 0 and 3, and minimum parameter count 0 in each case. ("Taking inventory"
 can be read as "taking (inventory)", par-count 1, or "taking inventory",
 par-count 0, so the minimum is 0.)
@@ -1156,7 +1156,7 @@ par-count 0, so the minimum is 0.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_1_1"></a><b>&#167;25.5.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the position word of this particular action name</span><span class="named-paragraph-number">25.5.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_1_1" class="paragraph-anchor"></a><b>&#167;25.5.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the position word of this particular action name</span><span class="named-paragraph-number">25.5.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1172,7 +1172,7 @@ par-count 0, so the minimum is 0.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5_1">&#167;25.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_2"></a><b>&#167;25.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report to the debugging log on the action decomposition</span><span class="named-paragraph-number">25.5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_2" class="paragraph-anchor"></a><b>&#167;25.5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report to the debugging log on the action decomposition</span><span class="named-paragraph-number">25.5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1184,7 +1184,7 @@ par-count 0, so the minimum is 0.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_3"></a><b>&#167;25.5.3.  </b>The following test is done to reject patterns like "taking ball or dropping
+<p class="commentary firstcommentary"><a id="SP25_5_3" class="paragraph-anchor"></a><b>&#167;25.5.3.  </b>The following test is done to reject patterns like "taking ball or dropping
 bat", which have a positive minimum parameter count in more than one position;
 which means there couldn't be an action pattern which shared the same noun
 description.
@@ -1207,7 +1207,7 @@ description.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_4"></a><b>&#167;25.5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fill out the noun, second, room and nowhere fields of the AP as if this action were right</span><span class="named-paragraph-number">25.5.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_4" class="paragraph-anchor"></a><b>&#167;25.5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fill out the noun, second, room and nowhere fields of the AP as if this action were right</span><span class="named-paragraph-number">25.5.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1239,7 +1239,7 @@ description.
 <span class="plain-syntax">        </span><a href="4-ap.html#SP27" class="function-link"><span class="function-syntax">PL::Actions::Patterns::put_action_object_into_ap</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">trial_ap</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_clause</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_5"></a><b>&#167;25.5.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the validity of this speculative AP</span><span class="named-paragraph-number">25.5.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_5" class="paragraph-anchor"></a><b>&#167;25.5.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the validity of this speculative AP</span><span class="named-paragraph-number">25.5.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1261,7 +1261,7 @@ description.
 <span class="plain-syntax">        </span><span class="identifier-syntax">trial_ap</span><span class="plain-syntax">.</span><span class="element-syntax">valid</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_6"></a><b>&#167;25.5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adjudicate between topic and other actions</span><span class="named-paragraph-number">25.5.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_6" class="paragraph-anchor"></a><b>&#167;25.5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adjudicate between topic and other actions</span><span class="named-paragraph-number">25.5.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1304,7 +1304,7 @@ description.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5_7"></a><b>&#167;25.5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Delete those action names which are to be deleted</span><span class="named-paragraph-number">25.5.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP25_5_7" class="paragraph-anchor"></a><b>&#167;25.5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Delete those action names which are to be deleted</span><span class="named-paragraph-number">25.5.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1322,7 +1322,7 @@ description.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">anl</span><span class="plain-syntax">) </span><span class="identifier-syntax">anl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negate_pattern</span><span class="plain-syntax"> = </span><span class="identifier-syntax">negation_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25_5">&#167;25.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_6"></a><b>&#167;25.6.  </b>Not all actions can cohabit. We require that as far as the user has
+<p class="commentary firstcommentary"><a id="SP25_6" class="paragraph-anchor"></a><b>&#167;25.6.  </b>Not all actions can cohabit. We require that as far as the user has
 specified the parameters, the actions in the list must all agree (i) to be
 allowed to have such a parameter, and (ii) to be allowed to have a
 parameter of the same type. Thus "waiting or taking something" fails
@@ -1380,7 +1380,7 @@ the case when the first action name in the list is <span class="extract"><span c
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Action pattern specificity. </b>The following is one of Inform's standardised comparison routines, which
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Action pattern specificity. </b>The following is one of Inform's standardised comparison routines, which
 takes a pair of objects A, B and returns 1 if A makes a more specific
 description than B, 0 if they seem equally specific, or \(-1\) if B makes a
 more specific description than A. This is transitive, and intended to be
@@ -1544,7 +1544,7 @@ used in sorting algorithms.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>And an anticlimactic little routine for putting objects
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>And an anticlimactic little routine for putting objects
 into action patterns in the noun or second noun position.
 </p>
 
@@ -1568,7 +1568,7 @@ into action patterns in the noun or second noun position.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Compiling action tries. </b></p>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Compiling action tries. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::emit_try</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">PL::Actions::Patterns::emit_try</span></span>:<br/>Actions - <a href="4-act.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">store_instead</span><span class="plain-syntax">) {</span>
@@ -1613,7 +1613,7 @@ into action patterns in the noun or second noun position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>Which requires the following. As ever, there have to be hacks to ensure that
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>Which requires the following. As ever, there have to be hacks to ensure that
 text as an action parameter is correctly read as parsing grammar rather than
 text when the action expects that.
 </p>
@@ -1636,7 +1636,7 @@ text when the action expects that.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30. Compiling action patterns. </b>In the following routines, we compile a single clause in what may be a
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Compiling action patterns. </b>In the following routines, we compile a single clause in what may be a
 complex condition which determines whether a rule should fire. The flag
 <span class="extract"><span class="extract-syntax">f</span></span> indicates whether any condition has already been printed, and is
 updated as the return value of the routine. (Thus, it's permissible for
@@ -1651,7 +1651,7 @@ case first:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>The more complex clauses mostly act on a single I6 global variable.
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>The more complex clauses mostly act on a single I6 global variable.
 In almost all cases, this falls through to the standard method for
 testing a condition: we force it to propositional form, substituting the
 global in for the value of free variable 0. However, rule clauses are
@@ -1842,7 +1842,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b></p>
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::as_stored_action</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">PL::Actions::Patterns::as_stored_action</span></span>:<br/>Actions - <a href="4-act.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="reserved-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">) {</span>
@@ -1890,7 +1890,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><a href="4-ap.html#SP33" class="function-link"><span class="function-syntax">PL::Actions::Patterns::compile_pattern_match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">naming_mode</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b></p>
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ACTOR_IS_PLAYER_CPMC</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ACTOR_ISNT_PLAYER_CPMC</span>
@@ -2070,7 +2070,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33_1"></a><b>&#167;33.1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP33_1" class="paragraph-anchor"></a><b>&#167;33.1.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CPMC_RANGE</span><span class="plain-syntax">(</span><span class="identifier-syntax">ix</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ranges_from</span><span class="plain-syntax">[</span><span class="identifier-syntax">ix</span><span class="plain-syntax">] = </span><span class="identifier-syntax">F</span><span class="plain-syntax">; </span><span class="identifier-syntax">ranges_to</span><span class="plain-syntax">[</span><span class="identifier-syntax">ix</span><span class="plain-syntax">] = </span><span class="identifier-syntax">T</span><span class="plain-syntax">; </span><span class="identifier-syntax">ranges_count</span><span class="plain-syntax">[</span><span class="identifier-syntax">ix</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -2170,7 +2170,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="identifier-syntax">LocalVariables::end_condition_emit</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP33">&#167;33</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP33_1_1"></a><b>&#167;33.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit CPM range</span><span class="named-paragraph-number">33.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP33_1_1" class="paragraph-anchor"></a><b>&#167;33.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit CPM range</span><span class="named-paragraph-number">33.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2194,7 +2194,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">downs</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">()); </span><span class="identifier-syntax">downs</span><span class="plain-syntax">--; }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP33_1">&#167;33.1</a> (8 times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP33_1_1_1"></a><b>&#167;33.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit CPM condition piece</span><span class="named-paragraph-number">33.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP33_1_1_1" class="paragraph-anchor"></a><b>&#167;33.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Emit CPM condition piece</span><span class="named-paragraph-number">33.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2426,7 +2426,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP33_1_1">&#167;33.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34.  </b></p>
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::refers_to_past</span><span class="plain-syntax">(</span><span class="reserved-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">) {</span>
@@ -2488,7 +2488,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP34_1" class="named-paragraph-link"><span class="named-paragraph">Issue too complex PT problem</span><span class="named-paragraph-number">34.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34_1"></a><b>&#167;34.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue too complex PT problem</span><span class="named-paragraph-number">34.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP34_1" class="paragraph-anchor"></a><b>&#167;34.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue too complex PT problem</span><span class="named-paragraph-number">34.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2502,7 +2502,7 @@ and in this case we therefore ignore <span class="extract"><span class="extract-
 <span class="plain-syntax">        </span><span class="string-syntax">"else was then happening can be specified."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP34">&#167;34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b></p>
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Actions::Patterns::is_an_action_variable</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>

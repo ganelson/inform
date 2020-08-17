@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tp.html#SP3">&#167;3. Initialisation</a></li><li><a href="3-tp.html#SP4">&#167;4. Special objects</a></li><li><a href="3-tp.html#SP5_1">&#167;5.1. Special variables</a></li><li><a href="3-tp.html#SP5_3">&#167;5.3. Aliasing and bodysnatching</a></li><li><a href="3-tp.html#SP8">&#167;8. Linguistic variations</a></li><li><a href="3-tp.html#SP11">&#167;11. Model completion</a></li><li><a href="3-tp.html#SP12">&#167;12. Initial time and place</a></li><li><a href="3-tp.html#SP13">&#167;13. World Index details</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Altogether we keep track of four objects, though the first pair often coincide,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Altogether we keep track of four objects, though the first pair often coincide,
 and so do the second pair. (<span class="extract"><span class="extract-syntax">I_yourself</span></span> is constant once set, like <span class="extract"><span class="extract-syntax">K_room</span></span> and
 other such "constants" in the Inform source code.)
 </p>
@@ -83,7 +83,7 @@ other such "constants" in the Inform source code.)
 
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_saved_short_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Two variables are also special. The time of day might not look as if it belongs
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Two variables are also special. The time of day might not look as if it belongs
 to this plugin, but the idea is to position the player in both space and time.
 </p>
 
@@ -92,7 +92,7 @@ to this plugin, but the idea is to position the player in both space and time.
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">time_of_day_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">score_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Initialisation. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Initialisation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Player::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -106,7 +106,7 @@ to this plugin, but the idea is to position the player in both space and time.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_ANNOTATE_IN_WORLD_INDEX</span><span class="plain-syntax">, </span><a href="3-tp.html#SP13" class="function-link"><span class="function-syntax">PL::Player::player_annotate_in_World_index</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Special objects. </b>The "yourself" object is special in being tied, or "aliased", to the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Special objects. </b>The "yourself" object is special in being tied, or "aliased", to the
 "player" variable, so Inform needs to recognise it. (No need to translate; it
 is created in English.)
 </p>
@@ -116,7 +116,7 @@ is created in English.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">yourself</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Player::player_new_instance_notify</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Player::player_new_instance_notify</span></span>:<br/><a href="3-tp.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst</span><span class="plain-syntax">) {</span>
@@ -132,7 +132,7 @@ is created in English.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">start_room</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1. Special variables. </b>"Time of day" is a perfectly normal variable and we only note down its
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. Special variables. </b>"Time of day" is a perfectly normal variable and we only note down its
 identity in order to find out the initial time of day intended by the
 source text.
 </p>
@@ -164,7 +164,7 @@ schema which overrides the standard one for setting global variables:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">time</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">day</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Player::player_new_quantity_notify</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PL::Player::player_new_quantity_notify</span></span>:<br/><a href="3-tp.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">) {</span>
@@ -188,7 +188,7 @@ schema which overrides the standard one for setting global variables:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3. Aliasing and bodysnatching. </b>As can be seen, as soon as both "yourself" (object) and "player" (variable)
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3. Aliasing and bodysnatching. </b>As can be seen, as soon as both "yourself" (object) and "player" (variable)
 have been created, they are aliased together. This is a form of tacit pointer
 dereferencing, though authors probably don't think of it that way. A normal
 object variable is like a pointer to an object, rather than an object itself,
@@ -228,7 +228,7 @@ aliasing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">NonlocalVariables::set_alias</span><span class="plain-syntax">(</span><span class="identifier-syntax">player_VAR</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP5">&#167;5</a>, <a href="3-tp.html#SP5_2">&#167;5.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>We also, though, want to look out for this sort of thing:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>We also, though, want to look out for this sort of thing:
 </p>
 
 <blockquote>
@@ -251,7 +251,7 @@ here of course it becomes the Lord Collingwood object.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>But it gets worse: as well as aliasing, there is bodysnatching. Our problem
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>But it gets worse: as well as aliasing, there is bodysnatching. Our problem
 is that once the author has written "The player is Lord Collingwood.", it's
 clear that the "yourself" object shouldn't appear anywhere. But there are
 two problems with that: one, the I6 template code needs it to exist, even if
@@ -302,7 +302,7 @@ that is, when the source text explicitly sets a value for "player".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Linguistic variations. </b>Thankfully everything else is straightforward. The following is used to
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Linguistic variations. </b>Thankfully everything else is straightforward. The following is used to
 ensure that assemblies such as "A nose is part of every person" produces
 "your nose" rather than "yourself's nose":
 </p>
@@ -324,7 +324,7 @@ ensure that assemblies such as "A nose is part of every person" produces
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The adjectives "worn" and "carried" &mdash; as in, "The nautical chart is
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The adjectives "worn" and "carried" &mdash; as in, "The nautical chart is
 carried." &mdash; implicitly refer to the player as the unstated term in the
 relationship; that makes them our business here. "Initially carried" is
 now deprecated, but is provided as synonymous with "carried" because it
@@ -339,7 +339,7 @@ and people still sometimes type it.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">initially</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">carried</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Player::player_refine_implicit_noun</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">PL::Player::player_refine_implicit_noun</span></span>:<br/><a href="3-tp.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -350,7 +350,7 @@ and people still sometimes type it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Model completion. </b>At stage III, we add a property to make things work out nicely in the event
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Model completion. </b>At stage III, we add a property to make things work out nicely in the event
 of a change of player.
 </p>
 
@@ -379,7 +379,7 @@ we assume he is freestanding in the earliest defined room.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the start room to the earliest room defined in the source text</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the start room to the earliest room defined in the source text</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -394,7 +394,7 @@ we assume he is freestanding in the earliest defined room.
 <span class="plain-syntax">    </span><span class="identifier-syntax">start_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">start_room</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_2"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the start room is still null, there's no room, so issue a problem</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the start room is still null, there's no room, so issue a problem</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -410,7 +410,7 @@ we assume he is freestanding in the earliest defined room.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11_3"></a><b>&#167;11.3.  </b>If the source text said nothing about the player's location, then the
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b>If the source text said nothing about the player's location, then the
 player object will be a disconnected node in the containment tree: it will,
 in fact, have no progenitor. In that event, the start room already calculated
 will do. But otherwise:
@@ -447,7 +447,7 @@ will do. But otherwise:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Initial time and place. </b>Well: the point of tracking all of those variables was solely to be able to
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Initial time and place. </b>Well: the point of tracking all of those variables was solely to be able to
 compile this little array, which provides enough details for the I6 template
 code to set things up correctly at run-time.
 </p>
@@ -482,7 +482,7 @@ code to set things up correctly at run-time.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. World Index details. </b>We explicitly mention the player in the World index, since otherwise it won't
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. World Index details. </b>We explicitly mention the player in the World index, since otherwise it won't
 usually appear anywhere.
 </p>
 

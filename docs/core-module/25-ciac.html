@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#25">Chapter 25: Compilation</a></li><li><b>Compile Invocations As Calls</b></li></ul></div>
 <p class="purpose">Here we generate Inform 6 code to execute the phrase(s) called for by an invocation list.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Compiling an invocation by a function call is simple:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Compiling an invocation by a function call is simple:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -88,7 +88,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="25-ciac.html#SP2" class="function-link"><span class="function-syntax">Invocations::AsCalls::emit_function_call</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tokens</span><span class="plain-syntax">, </span><span class="identifier-syntax">IS</span><span class="plain-syntax">, </span><span class="identifier-syntax">options_supplied</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The following can be used to call any phrase compiled to an I6 routine,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The following can be used to call any phrase compiled to an I6 routine,
 and it's used not only by the code above, but also when calling a
 phrase value stored dynamically at run-time.
 </p>
@@ -135,7 +135,7 @@ phrase value stored dynamically at run-time.
 <span class="plain-syntax">    </span><span class="constant-syntax">END_COMPILATION_MODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>See the corresponding code for defining routines. If the return value of
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>See the corresponding code for defining routines. If the return value of
 the phrase is a block value, we must call it with a pointer to a new value
 of that kind as the first argument. Arguments corresponding to the tokens
 then follow, and finally the optional bitmap of phrase options.
@@ -153,7 +153,7 @@ then follow, and finally the optional bitmap of phrase options.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Produce::val</span><span class="plain-syntax">(</span><a href="27-em.html#SP2" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">phrase_options</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="25-ciac.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the return kind of the phrase</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the return kind of the phrase</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

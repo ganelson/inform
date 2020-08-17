@@ -1028,7 +1028,7 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 	arity = 1;
 	kind *X = NULL, *Y = NULL;
 	Kinds::binary_construction_material(K, &X, &Y);
-	operands[0] = Kinds::binary_construction(CON_phrase, X, Y);
+	operands[0] = Kinds::binary_con(CON_phrase, X, Y);
 	icon = RULEBOOK_ICON;
 
 @ =
