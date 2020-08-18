@@ -24,15 +24,14 @@ The variable |K_stored_action| will then remain |NULL|, but will also never
 be used for anything, so no harm is done.
 
 @ We begin with the protocol-like "kinds of kinds", the superheroes of the
-kinds world. There are seven, always a good number for this sort of thing:[1]
-
-[1] Compare Samurai, Seals, or Dwarfs.
+kinds world:
 
 = (early code)
 kind *K_value = NULL;
 kind *K_stored_value = NULL;
 kind *K_pointer_value = NULL;
 kind *K_sayable_value = NULL;
+kind *K_understandable_value = NULL;
 kind *K_arithmetic_value = NULL;
 kind *K_real_arithmetic_value = NULL;
 kind *K_enumerated_value = NULL;
@@ -191,6 +190,7 @@ kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("RESPONSE_TY", &K_response);
 	IDENTIFIERS_CORRESPOND("RULEBOOK_OUTCOME_TY", &K_rulebook_outcome);
 	IDENTIFIERS_CORRESPOND("SAYABLE_VALUE_TY", &K_sayable_value);
+	IDENTIFIERS_CORRESPOND("UNDERSTANDABLE_VALUE_TY", &K_understandable_value);
 	IDENTIFIERS_CORRESPOND("SNIPPET_TY", &K_snippet);
 	IDENTIFIERS_CORRESPOND("TABLE_TY", &K_table);
 	IDENTIFIERS_CORRESPOND("TRUTH_STATE_TY", &K_truth_state);

@@ -1,15 +1,14 @@
-+UNDERSTANDING_TY:
-apply-macro:#BASE-KIND
-singular:topic
-plural:topics
+builtin base UNDERSTANDING_TY {
+	conforms-to: STORED_VALUE_TY
+	singular: topic
+	plural: topics
 
-conforms-to:STORED_VALUE_TY
-cast:TEXT_TY
-default-value:DefaultTopic
+	cast: TEXT_TY
+	default-value: DefaultTopic
 
-i6-printing-routine-actions:DA_Topic
-constant-compilation-method:special
+	printing-routine-actions: DA_Topic
+	constant-compilation-method: special
 
-description:a topic
-index-priority:0
-
+	description: a topic
+	index-priority: 0
+}

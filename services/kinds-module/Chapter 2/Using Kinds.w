@@ -125,7 +125,7 @@ the day "object" is built in.
 =
 int Kinds::Behaviour::is_built_in(kind *K) {
 	if (K == NULL) return FALSE;
-	if (K->construct->defined_in_source_text) return FALSE;
+	if (K->construct->where_defined_in_source_text) return FALSE;
 	return TRUE;
 }
 
@@ -561,7 +561,7 @@ inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 =
 int Kinds::Behaviour::offers_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	return K->construct->has_GPR;
+	return Kinds::Constructors::offers_I6_GPR(K->construct);
 }
 
 @ Request that a GPR be compiled for this kind; the return value tell us whether
@@ -569,8 +569,7 @@ this will be allowed or not.
 
 =
 int Kinds::Behaviour::request_I6_GPR(kind *K) {
-	if (K == NULL) return FALSE;
-	if (K->construct->has_GPR == FALSE) return FALSE; /* can't oblige */
+	if (Kinds::Behaviour::offers_I6_GPR(K) == FALSE) return FALSE; /* can't oblige */
 	K->construct->needs_GPR = TRUE; /* make note to oblige later */
 	return TRUE;
 }

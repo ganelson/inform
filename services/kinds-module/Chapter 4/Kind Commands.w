@@ -28,7 +28,7 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 
 @<Apply kind macros or transcribe kind templates on request@> =
 	switch (tcc) {
-		case apply_template_KCC:
+		case invent_source_text_KCC:
 			StarTemplates::transcribe(T, stc.template_argument, con, stc.origin);
 			return;
 		case apply_macro_KCC:
@@ -47,14 +47,11 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 	switch (tcc) {
 		SET_BOOLEAN_FIELD(can_coincide_with_property)
 		SET_BOOLEAN_FIELD(can_exchange)
-		SET_BOOLEAN_FIELD(defined_in_source_text)
-		SET_BOOLEAN_FIELD(has_GPR)
 		SET_BOOLEAN_FIELD(indexed_grey_if_empty)
 		SET_BOOLEAN_FIELD(is_incompletely_defined)
 		SET_BOOLEAN_FIELD(multiple_block)
 		SET_BOOLEAN_FIELD(created_with_assertions)
 
-		SET_INTEGER_FIELD(group)
 		SET_INTEGER_FIELD(heap_size_estimate)
 		SET_INTEGER_FIELD(index_priority)
 		SET_INTEGER_FIELD(small_block_size)
@@ -106,7 +103,7 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 
 @<And the rest fill in fields in the constructor structure in miscellaneous other ways@> =
 	switch (tcc) {
-		case constructor_arity_KCC:
+		case terms_KCC:
 			@<Parse the constructor arity text@>;
 			return;
 		case description_KCC:
@@ -117,12 +114,12 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->comparison_routine = Str::duplicate(stc.textual_argument);
 			return;
-		case i6_printing_routine_KCC:
+		case printing_routine_KCC:
 			if (Str::len(stc.textual_argument) > 31) 
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->print_identifier = Str::duplicate(stc.textual_argument);
 			return;
-		case i6_printing_routine_actions_KCC:
+		case printing_routine_actions_KCC:
 			if (Str::len(stc.textual_argument) > 31)
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->ACTIONS_identifier = Str::duplicate(stc.textual_argument);

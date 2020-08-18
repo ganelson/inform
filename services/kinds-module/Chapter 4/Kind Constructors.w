@@ -5,7 +5,7 @@ kinds.
 
 @ Constructors are divided into four groups:
 
-@d KIND_VARIABLE_GRP 1 /* just |CON_KIND_VARIABLE| on its own */
+@d PUNCTUATION_GRP 1 /* used in the construction of other kinds only */
 @d KIND_OF_KIND_GRP 2 /* such as |arithmetic value| */
 @d BASE_CONSTRUCTOR_GRP 3 /* such as |number| */
 @d PROPER_CONSTRUCTOR_GRP 4 /* with positive arity, such as "list of ..." */
@@ -26,7 +26,6 @@ typedef struct kind_constructor {
 	int group; /* one of the four values above */
 
 	/* A: how this came into being */
-	int defined_in_source_text; /* rather than by Neptune files, i.e., by being built-in */
 	int is_incompletely_defined; /* newly defined and ambiguous as yet */
 	struct parse_node *where_defined_in_source_text; /* if so */
 	struct kind *stored_as; /* currently unused: if this is a typedef for some construction */
@@ -96,8 +95,7 @@ typedef struct kind_constructor {
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
 	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
 	struct grammar_verb *understand_as_values; /* used when parsing such values */
-	int has_GPR; /* a general parsing routine exists in the Inter code for this */
-	int needs_GPR; /* and is actually required */
+	int needs_GPR; /* a GPR is actually required to be compiled */
 	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
 	struct text_stream *recognition_only_GPR; /* for recognising an explicit value as preposition */
 
@@ -187,13 +185,14 @@ but will be the constructor for "door" for kinds like this one:
 
 =
 kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super,
-	text_stream *source_name, text_stream *initialisation_macro) {
+	text_stream *source_name, text_stream *initialisation_macro, int group) {
 	kind_constructor *con = CREATE(kind_constructor);
 	kind_constructor **pC = FamiliarKinds::known_con(source_name);
 	if (pC) *pC = con;
 
 	if (super == Kinds::get_construct(K_value)) @<Fill in a new constructor@>
 	else @<Copy the new constructor from its superconstructor@>;
+	con->group = group;
 
 	con->name_in_template_code = Str::new();
 	#ifdef CORE_MODULE
@@ -223,7 +222,6 @@ we apply any defaults set in Neptune files.
 	con->group = 0; /* which is invalid, so the interpreter needs to set it */
 
 	/* A: how this came into being */
-	con->defined_in_source_text = FALSE;
 	con->is_incompletely_defined = FALSE;
 	con->where_defined_in_source_text = NULL; /* but will be filled in imminently */
 	con->stored_as = NULL;
@@ -306,7 +304,6 @@ we apply any defaults set in Neptune files.
 	#endif
 
 	con->understand_as_values = NULL;
-	con->has_GPR = FALSE;
 	con->needs_GPR = FALSE;
 	con->explicit_GPR_identifier = NULL;
 	con->recognition_only_GPR = NULL;
@@ -318,12 +315,21 @@ we apply any defaults set in Neptune files.
 	con->index_maximum_value = I"--";
 	con->index_minimum_value = I"--";
 	con->index_priority = LOWEST_INDEX_PRIORITY;
+	if ((group == PUNCTUATION_GRP) || (group == KIND_OF_KIND_GRP))
+		con->index_priority = 0;
 	con->linguistic = FALSE;
 	con->indexed_grey_if_empty = FALSE;
 	con->documentation_reference = NULL;
 
-	NeptuneMacros::play_back(T,
-		NeptuneMacros::parse_name(I"#DEFAULTS"), con, NULL);
+	kind_macro_definition *set_defaults = NULL;
+	switch (group) {
+		case PUNCTUATION_GRP: set_defaults = NeptuneMacros::parse_name(I"#PUNCTUATION"); break;
+		case KIND_OF_KIND_GRP:set_defaults = NeptuneMacros::parse_name(I"#PROTOCOL"); break;
+		case BASE_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#BASE"); break;
+		case PROPER_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#CONSTRUCTOR"); break;
+	}
+	if (set_defaults) NeptuneMacros::play_back(T, set_defaults, con, NULL);
+
 	if (Str::len(initialisation_macro) > 0)
 		NeptuneMacros::play_back(T,
 			NeptuneMacros::parse_name(initialisation_macro), con, NULL);
@@ -409,7 +415,7 @@ inter_name *Kinds::Constructors::UNKNOWN_iname(void) {
 }
 package_request *Kinds::Constructors::package(kind_constructor *con) {
 	if (con->kc_package == NULL) {
-		if (con->defined_in_source_text) {
+		if (con->where_defined_in_source_text) {
 			compilation_unit *C = CompilationUnits::find(con->where_defined_in_source_text);
 			con->kc_package = Hierarchy::package(C, KIND_HAP);
 		} else if (con->superkind_set_at) {
@@ -537,12 +543,22 @@ int Kinds::Constructors::is_definite(kind_constructor *con) {
 	if ((con->group == BASE_CONSTRUCTOR_GRP) ||
 		(con->group == PROPER_CONSTRUCTOR_GRP))
 			return TRUE;
+	if ((con == CON_VOID) || (con == CON_NIL) || (con == CON_INTERMEDIATE))
+		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Constructors::get_weak_ID(kind_constructor *con) {
 	if (con == NULL) return 0;
 	return con->weak_kind_ID;
+}
+
+int Kinds::Constructors::offers_I6_GPR(kind_constructor *con) {
+	if (con == NULL) return FALSE;
+	if ((Kinds::Constructors::is_definite(con)) &&
+		(Kinds::Constructors::compatible(con,
+			Kinds::get_construct(K_understandable_value), FALSE))) return TRUE;
+	return FALSE;
 }
 
 int Kinds::Constructors::is_arithmetic(kind_constructor *con) {
@@ -603,6 +619,7 @@ int Kinds::Constructors::find_instance(kind_constructor *from, kind_constructor 
 			Str::clear(dti->instance_of_this_unparsed);
 		}
 		if (dti->instance_of_this == to) return TRUE;
+		if (Kinds::Constructors::find_instance(dti->instance_of_this, to)) return TRUE;
 	}
 	return FALSE;
 }

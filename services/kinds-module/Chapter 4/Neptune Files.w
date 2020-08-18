@@ -10,8 +10,11 @@ where these files were first conceived and implemented.
 
 =
 void NeptuneFiles::load(parse_node_tree *T, filename *F) {
+	parse_node *cs = current_sentence;
+	current_sentence = NULL;
 	TextFiles::read(F, FALSE, "unable to read kinds file", TRUE,
 		&NeptuneFiles::load_kinds_helper, NULL, T);
+	current_sentence = cs;
 }
 
 void NeptuneFiles::load_kinds_helper(text_stream *text, text_file_position *tfp, void *state) {
@@ -21,6 +24,7 @@ void NeptuneFiles::load_kinds_helper(text_stream *text, text_file_position *tfp,
 
 void NeptuneFiles::read_command(parse_node_tree *T, text_stream *command,
 	text_file_position *tfp) {
+	Str::trim_white_space(command);
 	if ((Str::get_first_char(command) == '!') ||
 		(Str::get_first_char(command) == 0)) return; /* skip blanks and comments */
 

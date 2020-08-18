@@ -1,23 +1,20 @@
-SCENE_TY:
-apply-macro:#BASE-KIND
-singular:scene
-plural:scenes
+new base SCENE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: scene
+	plural: scenes
 
-conforms-to:STORED_VALUE_TY
-conforms-to:ENUMERATED_VALUE_TY
-conforms-to:SAYABLE_VALUE_TY
-created-with-assertions:yes
-default-value: 0
+	created-with-assertions: yes
+	default-value: 0
 
-loop-domain-schema:for (*1=1: *1<=NUMBER_SCENES_CREATED: *1++)
-has-i6-GPR:yes
-i6-printing-routine:PrintSceneName
-constant-compilation-method:quantitative
-apply-template:*UNDERSTOOD-VARIABLE
+	loop-domain-schema: for (*1=1: *1<=NUMBER_SCENES_CREATED: *1++)
+	printing-routine: PrintSceneName
+	constant-compilation-method: quantitative
+	invent-source-text: *UNDERSTOOD-VARIABLE
 
-description:a scene
-documentation-reference:kind_scene
-index-priority:4
-index-default-value:the Entire Game
-indexed-grey-if-empty:yes
-specification-text:Like a scene in a play: a period of time which is usually tied to events in the plot. Scenes are created by sentences like 'Midnight Arrival is a scene.'
+	description: a scene
+	documentation-reference: kind_scene
+	index-priority: 4
+	index-default-value: the Entire Game
+	indexed-grey-if-empty: yes
+	specification-text: Like a scene in a play: a period of time which is usually tied to events in the plot. Scenes are created by sentences like 'Midnight Arrival is a scene.'
+}

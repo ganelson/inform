@@ -1,22 +1,19 @@
-EXTERNAL_FILE_TY:
-apply-macro:#BASE-KIND
-singular:external file
-plural:external files
+new base EXTERNAL_FILE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: external file
+	plural: external files
 
-conforms-to:STORED_VALUE_TY
-conforms-to:ENUMERATED_VALUE_TY
-conforms-to:SAYABLE_VALUE_TY
-created-with-assertions:yes
-default-value:0
-i6-printing-routine:PrintExternalFileName
+	created-with-assertions: yes
+	default-value: 0
+	printing-routine: PrintExternalFileName
 
-has-i6-GPR:yes
-apply-template:*UNDERSTOOD-VARIABLE
-constant-compilation-method:quantitative
+	invent-source-text: *UNDERSTOOD-VARIABLE
+	constant-compilation-method: quantitative
 
-description:the name of a file
-documentation-reference:kind_externalfile
-index-priority:6
-index-default-value:<i>a non-file</i>
-indexed-grey-if-empty:yes
-specification-text:When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).
+	description: the name of a file
+	documentation-reference: kind_externalfile
+	index-priority: 6
+	index-default-value: <i>a non-file</i>
+	indexed-grey-if-empty: yes
+	specification-text: When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).
+}

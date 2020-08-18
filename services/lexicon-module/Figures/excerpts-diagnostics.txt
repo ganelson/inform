@@ -1,6 +1,6 @@
-Size of lexicon: 3096 excerpt meanings
-  Stored among 839 words out of total vocabulary of 10547
-  709 words have a start list: longest belongs to report (with 293 meanings)
+Size of lexicon: 3098 excerpt meanings
+  Stored among 840 words out of total vocabulary of 10550
+  710 words have a start list: longest belongs to report (with 293 meanings)
   15 words have an end list: longest belongs to case (with 6 meanings)
   29 words have a middle list: longest belongs to to (with 4 meanings)
   108 words have a subset list: longest belongs to street (with 4 meanings)

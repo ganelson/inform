@@ -1,0 +1,44 @@
+builtin protocol VALUE_TY {
+	singular: value
+	plural: values
+}
+
+	builtin protocol STORED_VALUE_TY {
+		conforms-to: VALUE_TY
+		! for internal use only: cannot be named in source text
+	}
+
+		builtin protocol SAYABLE_VALUE_TY {
+			conforms-to: STORED_VALUE_TY
+			singular: sayable value
+			plural: sayable values
+		}
+
+			builtin protocol UNDERSTANDABLE_VALUE_TY {
+				conforms-to: SAYABLE_VALUE_TY
+				singular: understandable value
+				plural: understandable values
+			}
+
+				builtin protocol ARITHMETIC_VALUE_TY {
+					conforms-to: UNDERSTANDABLE_VALUE_TY
+					singular: arithmetic value
+					plural: arithmetic values
+				}
+
+					builtin protocol REAL_ARITHMETIC_VALUE_TY {
+						conforms-to: ARITHMETIC_VALUE_TY
+						singular: real arithmetic value
+						plural: real arithmetic values
+					}
+
+				builtin protocol ENUMERATED_VALUE_TY {
+					conforms-to: UNDERSTANDABLE_VALUE_TY
+					singular: enumerated value
+					plural: enumerated values
+				}
+
+			builtin protocol POINTER_VALUE_TY {
+				conforms-to: SAYABLE_VALUE_TY
+				! for internal use only: cannot be named in source text
+			}

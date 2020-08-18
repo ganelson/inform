@@ -1,26 +1,23 @@
-TIME_TY:
-apply-macro:#BASE-KIND
-singular:time
-plural:times
+new base TIME_TY {
+	conforms-to: ARITHMETIC_VALUE_TY
+	singular: time
+	plural: times
 
-conforms-to:STORED_VALUE_TY
-conforms-to:ARITHMETIC_VALUE_TY
-conforms-to:SAYABLE_VALUE_TY
-default-value:540
-comparison-routine:signed
-can-exchange:yes
+	default-value: 540
+	comparison-routine: signed
+	can-exchange: yes
 
-loop-domain-schema:for (*1=0: *1<TWENTY_FOUR_HOURS: *1++)
-has-i6-GPR:yes
-explicit-i6-GPR:TIME_TOKEN
-i6-printing-routine:PrintTimeOfDay
-i6-printing-routine-actions:PrintTimeOfDay
-constant-compilation-method:literal
+	loop-domain-schema: for (*1=0: *1<TWENTY_FOUR_HOURS: *1++)
+	parsing-routine: TIME_TOKEN
+	printing-routine: PrintTimeOfDay
+	printing-routine-actions: PrintTimeOfDay
+	constant-compilation-method: literal
 
-description:a time
-documentation-reference:kind_time
-index-default-value:9:00 AM
-index-minimum-value:1 minute
-index-maximum-value:23 hours 59 minutes
-index-priority:2
-specification-text:A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.
+	description: a time
+	documentation-reference: kind_time
+	index-default-value: 9:00 AM
+	index-minimum-value: 1 minute
+	index-maximum-value: 23 hours 59 minutes
+	index-priority: 2
+	specification-text: A time of day, written in the form '2:34 AM' or '12:51 PM', or a length of time such as '10 minutes' or '3 hours 31 minutes', which must be between 0 minutes and 23 hours 59 minutes inclusive.
+}

@@ -439,7 +439,8 @@ kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
 	#endif
 
 	kind *K = Kinds::base_construction(
-		Kinds::Constructors::new(T, Kinds::get_construct(super), NULL, I"#NEW"));
+		Kinds::Constructors::new(T, Kinds::get_construct(super), NULL, I"#NEW",
+			BASE_CONSTRUCTOR_GRP));
 
 	@<Use the source-text name to attach a noun to the constructor@>;
 

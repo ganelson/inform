@@ -87,7 +87,10 @@ void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wc
 				if ((Str::get_first_char(argument) == '!') ||
 					(Str::get_first_char(argument) == 0)) continue; /* skip blanks and comments */
 				text_file_position tfp = TextFiles::at(index_structure, lc);				
+				parse_node *cs = current_sentence;
+				current_sentence = NULL;
 				NeptuneFiles::read_command(T, argument, &tfp);
+				current_sentence = cs;
 				continue;
 			}
 			if (cr == '{') {

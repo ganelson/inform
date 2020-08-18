@@ -7544,7 +7544,7 @@
         property {...} 
           (hits 34/34) (matched: 'property initial appearance') constraint DS = {19} extremes [2, infinity)
 
-<property-name> internal hits 69/428 nti 23 constraint (none) extremes [1, infinity)
+<property-name> internal hits 69/430 nti 23 constraint (none) extremes [1, infinity)
 
 <either-or-property-name> internal hits 0/44 nti 24 constraint (none) extremes [1, infinity)
 
@@ -8791,7 +8791,7 @@
         female 
           (hits 1/4) (matched: 'female') constraint CS = {14} extremes [1, 1]
 
-<notable-spatial-kinds> hits 12/202 nti 15 constraint CS = {15} extremes [1, 2]
+<notable-spatial-kinds> hits 12/204 nti 15 constraint CS = {15} extremes [1, 2]
     English:
         room 
           (hits 2/10) (matched: 'room') constraint CS = {15} extremes [1, 1]
@@ -8848,7 +8848,7 @@
         yourself 
           (hits 1/1) (matched: 'yourself') constraint CS = {19} extremes [1, 1]
 
-<notable-player-variables> hits 6/6378 nti 20 constraint CS = {20} extremes [1, 3]
+<notable-player-variables> hits 6/6382 nti 20 constraint CS = {20} extremes [1, 3]
     English:
         player 
           (hits 2/9) (matched: 'player') constraint CS = {20} extremes [1, 1]
@@ -8866,12 +8866,12 @@
         initially carried 
           constraint CS = {21} extremes [2, 2]
 
-<notable-device-kinds> hits 1/122 nti 22 constraint CS = {22} extremes [1, 1]
+<notable-device-kinds> hits 1/124 nti 22 constraint CS = {22} extremes [1, 1]
     English:
         device 
           (hits 1/1) (matched: 'device') constraint CS = {22} extremes [1, 1]
 
-<notable-backdrops-kinds> hits 1/124 nti 23 constraint CS = {23} extremes [1, 1]
+<notable-backdrops-kinds> hits 1/126 nti 23 constraint CS = {23} extremes [1, 1]
     English:
         backdrop 
           (hits 1/1) (matched: 'backdrop') constraint CS = {23} extremes [1, 1]
@@ -8886,7 +8886,7 @@
         everywhere 
           constraint CS = {25} extremes [1, 1]
 
-<notable-regions-kinds> hits 2/186 nti 26 constraint CS = {26} extremes [1, 1]
+<notable-regions-kinds> hits 2/188 nti 26 constraint CS = {26} extremes [1, 1]
     English:
         region 
           (hits 2/2) (matched: 'region') constraint CS = {26} extremes [1, 1]
@@ -8896,7 +8896,7 @@
         map region 
           (hits 1/1) (matched: 'map region') constraint CS = {27} extremes [2, 2]
 
-<notable-map-kinds> hits 19/2124 nti 28 constraint CS = {28} extremes [1, 1]
+<notable-map-kinds> hits 19/2126 nti 28 constraint CS = {28} extremes [1, 1]
     English:
         direction 
           (hits 13/19) (matched: 'direction') constraint CS = {28} extremes [1, 1]

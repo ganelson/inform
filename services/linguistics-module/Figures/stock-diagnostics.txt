@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2378 items
+noun: 2379 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3314
+total in all categories: 3315
 
 adjective: 'even'
 adjective: 'odd'
@@ -150,10 +150,11 @@ article: definite
 article: indefinite
 
 noun: common: 'value'
+noun: common: 'sayable value'
+noun: common: 'understandable value'
 noun: common: 'arithmetic value'
 noun: common: 'real arithmetic value'
 noun: common: 'enumerated value'
-noun: common: 'sayable value'
 noun: common: 'object'
 noun: common: 'number'
 noun: common: 'real number'

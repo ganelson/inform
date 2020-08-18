@@ -207,8 +207,7 @@ void StarTemplates::transcribe_constructor_name(OUTPUT_STREAM, kind_constructor 
 	}
 }
 
-@h Spooling text.
-Large chunks of the text in the template will need to exist permanently in
+@ Large chunks of the text in the template will need to exist permanently in
 memory, and we go into recording mode to accept a series of them,
 concatenated with newlines dividing them, in a text stream.
 

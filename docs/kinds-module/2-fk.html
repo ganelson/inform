@@ -12,11 +12,6 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
 	tex: {
@@ -111,16 +106,15 @@ be used for anything, so no harm is done.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We begin with the protocol-like "kinds of kinds", the superheroes of the
-kinds world. There are seven, always a good number for this sort of thing:<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+kinds world:
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Compare Samurai, Seals, or Dwarfs.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_stored_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_pointer_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_sayable_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_understandable_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_arithmetic_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_real_arithmetic_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_enumerated_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -291,6 +285,7 @@ it is. There is no need for speed here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"RESPONSE_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_response</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"RULEBOOK_OUTCOME_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_rulebook_outcome</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"SAYABLE_VALUE_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_sayable_value</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"UNDERSTANDABLE_VALUE_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_understandable_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"SNIPPET_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_snippet</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"TABLE_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_table</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">IDENTIFIERS_CORRESPOND</span><span class="plain-syntax">(</span><span class="string-syntax">"TRUTH_STATE_TY"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax">);</span>

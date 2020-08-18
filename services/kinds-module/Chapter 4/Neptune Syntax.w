@@ -55,25 +55,21 @@ typedef struct kind_command_definition {
 @ And, to cut to the chase, here is the complete table of commands:
 
 @e apply_macro_KCC from 1
-@e apply_template_KCC
+@e invent_source_text_KCC
 @e can_coincide_with_property_KCC
 @e can_exchange_KCC
 @e cast_KCC
 @e comparison_routine_KCC
 @e comparison_schema_KCC
 @e constant_compilation_method_KCC
-@e constructor_arity_KCC
 @e default_value_KCC
-@e defined_in_source_text_KCC
 @e description_KCC
 @e distinguisher_KCC
 @e documentation_reference_KCC
 @e explicit_GPR_identifier_KCC
-@e group_KCC
-@e has_GPR_KCC
 @e heap_size_estimate_KCC
-@e i6_printing_routine_actions_KCC
-@e i6_printing_routine_KCC
+@e printing_routine_actions_KCC
+@e printing_routine_KCC
 @e index_default_value_KCC
 @e index_maximum_value_KCC
 @e index_minimum_value_KCC
@@ -92,13 +88,12 @@ typedef struct kind_command_definition {
 @e specification_text_KCC
 @e small_block_size_KCC
 @e template_variable_number_KCC
+@e terms_KCC
 
 =
 kind_command_definition table_of_kind_commands[] = {
 	{ "can-coincide-with-property",  can_coincide_with_property_KCC,   BOOLEAN_KCA },
 	{ "can-exchange",                can_exchange_KCC,                 BOOLEAN_KCA },
-	{ "defined-in-source-text",      defined_in_source_text_KCC,       BOOLEAN_KCA },
-	{ "has-i6-GPR",                  has_GPR_KCC,                      BOOLEAN_KCA },
 	{ "indexed-grey-if-empty",       indexed_grey_if_empty_KCC,        BOOLEAN_KCA },
 	{ "is-incompletely-defined",     is_incompletely_defined_KCC,      BOOLEAN_KCA },
 	{ "is-template-variable",        is_template_variable_KCC,         BOOLEAN_KCA },
@@ -112,9 +107,9 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "description",                 description_KCC,                  TEXT_KCA },
 	{ "distinguisher",               distinguisher_KCC,                TEXT_KCA },
 	{ "documentation-reference",     documentation_reference_KCC,      TEXT_KCA },
-	{ "explicit-i6-GPR",             explicit_GPR_identifier_KCC,      TEXT_KCA },
-	{ "i6-printing-routine",         i6_printing_routine_KCC,          TEXT_KCA },
-	{ "i6-printing-routine-actions", i6_printing_routine_actions_KCC,  TEXT_KCA },
+	{ "parsing-routine",             explicit_GPR_identifier_KCC,      TEXT_KCA },
+	{ "printing-routine",            printing_routine_KCC,             TEXT_KCA },
+	{ "printing-routine-actions",    printing_routine_actions_KCC,     TEXT_KCA },
 	{ "index-default-value",         index_default_value_KCC,          TEXT_KCA },
 	{ "index-maximum-value",         index_maximum_value_KCC,          TEXT_KCA },
 	{ "index-minimum-value",         index_minimum_value_KCC,          TEXT_KCA },
@@ -130,14 +125,13 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "plural",                      plural_KCC,                       VOCABULARY_KCA },
 	{ "singular",                    singular_KCC,                     VOCABULARY_KCA },
 
-	{ "constructor-arity",           constructor_arity_KCC,            TEXT_KCA },
-	{ "group",                       group_KCC,                        NUMERIC_KCA },
+	{ "terms",                       terms_KCC,                        TEXT_KCA },
 	{ "heap-size-estimate",          heap_size_estimate_KCC,           NUMERIC_KCA },
 	{ "index-priority",              index_priority_KCC,               NUMERIC_KCA },
 	{ "small-block-size",            small_block_size_KCC,             NUMERIC_KCA },
 	{ "template-variable-number",    template_variable_number_KCC,     NUMERIC_KCA },
 
-	{ "apply-template",              apply_template_KCC,               TEMPLATE_KCA },
+	{ "invent-source-text",          invent_source_text_KCC,           TEMPLATE_KCA },
 
 	{ "apply-macro",                 apply_macro_KCC,                  MACRO_KCA },
 
@@ -173,17 +167,54 @@ single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
 	single_kind_command stc;
 	@<Initialise the STC to a blank command@>;
 
-	Str::trim_white_space(whole_command);
-	if (StarTemplates::recording()) {
-		if (Str::eq(whole_command, I"*END")) StarTemplates::end(whole_command, tfp);
-		else StarTemplates::record_line(whole_command, tfp);
+	if (Str::eq(whole_command, I"}")) {
+		if (StarTemplates::recording()) StarTemplates::end(whole_command, tfp);
+		else if (NeptuneMacros::recording()) NeptuneMacros::end(tfp);
+		else constructor_described = NULL;
+		stc.completed = TRUE;
+	} else if (StarTemplates::recording()) {
+		StarTemplates::record_line(whole_command, tfp);
+		stc.completed = TRUE;
+	} else if (Str::get_last_char(whole_command) == '{') {
+		if (constructor_described) {
+			NeptuneFiles::error(whole_command,
+				I"previous declaration not closed with '}'", tfp);
+			constructor_described = NULL;
+		}
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, whole_command, L"invention (%C+) {")) {
+			StarTemplates::begin(mr.exp[0], tfp);
+		} else if (Regexp::match(&mr, whole_command, L"macro (#%C+) {")) {
+			NeptuneMacros::begin(mr.exp[0], tfp);
+		} else if (Regexp::match(&mr, whole_command, L"(%C+) (%C+) (%C+) {")) {
+			int should_know = NOT_APPLICABLE;
+			if (Str::eq(mr.exp[0], I"new")) should_know = FALSE;
+			else if (Str::eq(mr.exp[0], I"builtin")) should_know = TRUE;
+			if (should_know == NOT_APPLICABLE)
+				NeptuneFiles::error(whole_command,
+					I"declaration must begin 'new' or 'builtin'", tfp);
+			else {
+				int group = -1;
+				if (Str::eq(mr.exp[1], I"punctuation")) group = PUNCTUATION_GRP;
+				else if (Str::eq(mr.exp[1], I"protocol")) group = KIND_OF_KIND_GRP;
+				else if (Str::eq(mr.exp[1], I"base")) group = BASE_CONSTRUCTOR_GRP;
+				else if (Str::eq(mr.exp[1], I"constructor")) group = PROPER_CONSTRUCTOR_GRP;
+				if (group < 0)
+					NeptuneFiles::error(whole_command,
+						I"must declare 'variable', 'protocol', 'base' or 'constructor'", tfp);
+				else {
+					text_stream *name = mr.exp[2];
+					@<Create a new constructor@>;
+				}
+			}
+		} else {
+			NeptuneFiles::error(whole_command,
+				I"malformed declaration line", tfp);
+		}
+		Regexp::dispose_of(&mr);
 		stc.completed = TRUE;
 	} else if (Str::get_last_char(whole_command) == ':') {
-		if (NeptuneMacros::recording()) NeptuneMacros::end(tfp);
-		Str::delete_last_character(whole_command); /* remove the terminal colon */
-		if (Str::get_first_char(whole_command) == '#') NeptuneMacros::begin(whole_command, tfp);
-		else if (Str::get_first_char(whole_command) == '*') StarTemplates::begin(whole_command, tfp);
-		else @<Create a new constructor@>;
+		NeptuneFiles::error(whole_command, I"trailing colon was unexpected", tfp);
 		stc.completed = TRUE;
 	} else {
 		TEMPORARY_TEXT(command)
@@ -224,17 +255,13 @@ single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
 	stc.defined_for = constructor_described;
 
 @<Create a new constructor@> =
-	TEMPORARY_TEXT(name)
-	Str::copy(name, whole_command);
-	int should_know = FALSE;
-	if (Str::get_first_char(name) == '+') { Str::delete_first_character(name); should_know = TRUE; }
 	int do_know = FamiliarKinds::is_known(name);
 	if ((do_know == FALSE) && (should_know == TRUE))
 		NeptuneFiles::error(whole_command, I"kind command describes kind with no known name", tfp);
 	if ((do_know == TRUE) && (should_know == FALSE))
 		NeptuneFiles::error(whole_command, I"kind command describes already-known kind", tfp);
 	constructor_described =
-		Kinds::Constructors::new(T, Kinds::get_construct(K_value), name, NULL);
+		Kinds::Constructors::new(T, Kinds::get_construct(K_value), name, NULL, group);
 	#ifdef NEW_BASE_KINDS_CALLBACK
 	if ((constructor_described != CON_KIND_VARIABLE) &&
 		(constructor_described != CON_INTERMEDIATE)) {
@@ -242,7 +269,6 @@ single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
 			Kinds::base_construction(constructor_described), NULL, name, EMPTY_WORDING);
 	}
 	#endif
-	DISCARD_TEXT(name)
 
 @ Spaces and tabs after the colon are skipped; so a textual argument cannot
 begin with those characters, but that doesn't matter for the things we need.

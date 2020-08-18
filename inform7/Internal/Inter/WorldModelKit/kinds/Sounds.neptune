@@ -1,22 +1,19 @@
-SOUND_NAME_TY:
-apply-macro:#BASE-KIND
-singular:sound name
-plural:sound names
+new base SOUND_NAME_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: sound name
+	plural: sound names
 
-conforms-to:STORED_VALUE_TY
-conforms-to:ENUMERATED_VALUE_TY
-conforms-to:SAYABLE_VALUE_TY
-created-with-assertions:yes
-default-value:0
+	created-with-assertions: yes
+	default-value: 0
 
-i6-printing-routine:PrintSoundName
-has-i6-GPR:yes
-apply-template:*UNDERSTOOD-VARIABLE
-constant-compilation-method:quantitative
+	printing-routine: PrintSoundName
+	invent-source-text: *UNDERSTOOD-VARIABLE
+	constant-compilation-method: quantitative
 
-description:the name of a sound effect
-documentation-reference:kind_soundname
-index-priority:6
-index-default-value:<i>a silent non-sound</i>
-indexed-grey-if-empty:yes
-specification-text:When made with the Glulx setting, an Inform project can include sound effects or pieces of music. A sound name is just the name of one of these sounds in the current project.
+	description: the name of a sound effect
+	documentation-reference: kind_soundname
+	index-priority: 6
+	index-default-value: <i>a silent non-sound</i>
+	indexed-grey-if-empty: yes
+	specification-text: When made with the Glulx setting, an Inform project can include sound effects or pieces of music. A sound name is just the name of one of these sounds in the current project.
+}

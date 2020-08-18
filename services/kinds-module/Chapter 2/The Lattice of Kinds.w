@@ -88,8 +88,9 @@ function is what tells us that the superkind of |man| is |person|.
 =
 kind *Latticework::super(kind *K) {
 	if (Kinds::eq(K, K_real_arithmetic_value)) return K_arithmetic_value;
-	if (Kinds::eq(K, K_enumerated_value)) return K_sayable_value;
-	if (Kinds::eq(K, K_arithmetic_value)) return K_sayable_value;
+	if (Kinds::eq(K, K_enumerated_value)) return K_understandable_value;
+	if (Kinds::eq(K, K_arithmetic_value)) return K_understandable_value;
+	if (Kinds::eq(K, K_understandable_value)) return K_sayable_value;
 	if (Kinds::eq(K, K_pointer_value)) return K_sayable_value;
 	if (Kinds::eq(K, K_sayable_value)) return K_stored_value;
 	if (Kinds::eq(K, K_stored_value)) return K_value;
@@ -108,6 +109,8 @@ kind *Latticework::super(kind *K) {
 		return K_arithmetic_value;
 	if (Kinds::Constructors::compatible(K->construct, K_pointer_value->construct, FALSE))
 		return K_pointer_value;
+	if (Kinds::Constructors::compatible(K->construct, K_understandable_value->construct, FALSE))
+		return K_understandable_value;
 	if (Kinds::Constructors::compatible(K->construct, K_sayable_value->construct, FALSE))
 		return K_sayable_value;
 	if (Kinds::Constructors::compatible(K->construct, K_stored_value->construct, FALSE))
