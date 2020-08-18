@@ -222,7 +222,7 @@ kilopascals" might be a notation for a kind where constants are not named.
 =
 int Kinds::Behaviour::has_named_constant_values(kind *K) {
 	if (K == NULL) return FALSE;
-	if (K->construct->named_values_created_with_assertions) return TRUE;
+	if (K->construct->created_with_assertions) return TRUE;
 	return FALSE;
 }
 
@@ -475,7 +475,7 @@ inter_name *Kinds::Behaviour::get_iname(kind *K) {
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		R = Kinds::Behaviour::package(K); external = FALSE;
 	}
-	text_stream *X = K->construct->dt_I6_identifier;
+	text_stream *X = K->construct->print_identifier;
 	if (Kinds::Behaviour::is_quasinumerical(K)) {
 		R = Kinds::Behaviour::package(K); external = FALSE;
 	}
@@ -523,9 +523,9 @@ inter_name *Kinds::Behaviour::get_ranger_iname(kind *K) {
 inter_name *Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(kind *K) {
 	if (K == NULL) K = K_number;
 	if (K->construct->trace_iname) return K->construct->trace_iname;
-	if (Str::len(K->construct->name_of_printing_rule_ACTIONS) > 0)
+	if (Str::len(K->construct->ACTIONS_identifier) > 0)
 		K->construct->trace_iname = 
-			Produce::find_by_name(Emit::tree(), K->construct->name_of_printing_rule_ACTIONS);
+			Produce::find_by_name(Emit::tree(), K->construct->ACTIONS_identifier);
 	else
 		K->construct->trace_iname =
 			Produce::find_by_name(Emit::tree(), I"DA_Name");
@@ -544,14 +544,14 @@ not, it returns |NULL|.
 =
 text_stream *Kinds::Behaviour::get_explicit_I6_GPR(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	return K->construct->explicit_i6_GPR;
+	return K->construct->explicit_GPR_identifier;
 }
 
 #ifdef CORE_MODULE
 inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 	if (K == NULL) internal_error("Kinds::Behaviour::get_explicit_I6_GPR on null kind");
-	if (Str::len(K->construct->explicit_i6_GPR) > 0)
-		return Produce::find_by_name(Emit::tree(), K->construct->explicit_i6_GPR);
+	if (Str::len(K->construct->explicit_GPR_identifier) > 0)
+		return Produce::find_by_name(Emit::tree(), K->construct->explicit_GPR_identifier);
 	return NULL;
 }
 #endif
@@ -561,7 +561,7 @@ inter_name *Kinds::Behaviour::get_explicit_I6_GPR_iname(kind *K) {
 =
 int Kinds::Behaviour::offers_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	return K->construct->has_i6_GPR;
+	return K->construct->has_GPR;
 }
 
 @ Request that a GPR be compiled for this kind; the return value tell us whether
@@ -570,8 +570,8 @@ this will be allowed or not.
 =
 int Kinds::Behaviour::request_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	if (K->construct->has_i6_GPR == FALSE) return FALSE; /* can't oblige */
-	K->construct->I6_GPR_needed = TRUE; /* make note to oblige later */
+	if (K->construct->has_GPR == FALSE) return FALSE; /* can't oblige */
+	K->construct->needs_GPR = TRUE; /* make note to oblige later */
 	return TRUE;
 }
 
@@ -580,7 +580,7 @@ int Kinds::Behaviour::request_I6_GPR(kind *K) {
 =
 int Kinds::Behaviour::needs_I6_GPR(kind *K) {
 	if (K == NULL) return FALSE;
-	return K->construct->I6_GPR_needed;
+	return K->construct->needs_GPR;
 }
 
 @ A recognition-only GPR is used for matching specific data in the course of

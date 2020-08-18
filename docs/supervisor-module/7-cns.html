@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="7-cns.html#SP1">&#167;1. Beginning</a></li><li><a href="7-cns.html#SP4">&#167;4. Census data</a></li><li><a href="7-cns.html#SP7">&#167;7. Performing the census</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Beginning. </b>Each census begins by creating an object:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Beginning. </b>Each census begins by creating an object:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -81,7 +81,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">} </span><span class="reserved-syntax">extension_census</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure extension_census is accessed in 5/es, 5/ps2, 7/ip and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Here <span class="extract"><span class="extract-syntax">proj</span></span> will be null in case (a), and will be the project just
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Here <span class="extract"><span class="extract-syntax">proj</span></span> will be null in case (a), and will be the project just
 compiled in case (b).
 </p>
 
@@ -95,7 +95,7 @@ compiled in case (b).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each census object has its own search path for nests &mdash; for case (a) the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each census object has its own search path for nests &mdash; for case (a) the
 shared search path, for (b) the project's search path.
 </p>
 
@@ -116,7 +116,7 @@ shared search path, for (b) the project's search path.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Census data. </b>For each inhabitant found, so to speak, an instance of <a href="7-cns.html#SP4" class="internal">extension_census_datum</a>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Census data. </b>For each inhabitant found, so to speak, an instance of <a href="7-cns.html#SP4" class="internal">extension_census_datum</a>
 is created. (These are called ECDs below.)
 </p>
 
@@ -129,7 +129,7 @@ is created. (These are called ECDs below.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">extension_census_datum</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure extension_census_datum is accessed in 6/hdn, 6/inc, 7/dct, 7/ip, 7/ip2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>An ECD is actually a wrapper for an <a href="5-es.html#SP1" class="internal">inform_extension</a> object in disguise,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>An ECD is actually a wrapper for an <a href="5-es.html#SP1" class="internal">inform_extension</a> object in disguise,
 since the <a href="2-nst.html#SP5" class="internal">inbuild_search_result</a> found that.
 </p>
 
@@ -150,7 +150,7 @@ since the <a href="2-nst.html#SP5" class="internal">inbuild_search_result</a> fo
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">has_historically_been_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The following give some sorting criteria, and are functions fit to be
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The following give some sorting criteria, and are functions fit to be
 handed to <span class="extract"><span class="extract-syntax">qsort</span></span>.
 </p>
 
@@ -198,7 +198,7 @@ handed to <span class="extract"><span class="extract-syntax">qsort</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-es.html#SP3" class="function-link"><span class="function-syntax">Extensions::compare_by_length</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E1</span><span class="plain-syntax">, </span><span class="identifier-syntax">E2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Performing the census. </b>For some reason a census often makes a good story (cf. Luke 2:1-5), but here
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Performing the census. </b>For some reason a census often makes a good story (cf. Luke 2:1-5), but here
 there's disappointingly little to tell, because the work is all done by a
 single call to <a href="2-nst.html#SP7" class="internal">Nests::search_for</a>.
 </p>
@@ -220,7 +220,7 @@ single call to <a href="2-nst.html#SP7" class="internal">Nests::search_for</a>.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>Recall that the higher-priority materials and external nests are scanned
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Recall that the higher-priority materials and external nests are scanned
 first, so if we find that our new extension has the same title and author as
 one already known, it must be one that is overridden.
 </p>
@@ -240,7 +240,7 @@ one already known, it must be one that is overridden.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-cns.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>Assuming the new extension was not overridden in this way, we come here.
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>Assuming the new extension was not overridden in this way, we come here.
 Because we didn't check the version number text for validity, it might
 through being invalid be longer than we expect: in case this is so, we
 truncate it.

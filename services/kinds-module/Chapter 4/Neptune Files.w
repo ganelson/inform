@@ -16,9 +16,20 @@ void NeptuneFiles::load(parse_node_tree *T, filename *F) {
 
 void NeptuneFiles::load_kinds_helper(text_stream *text, text_file_position *tfp, void *state) {
 	parse_node_tree *T = (parse_node_tree *) state;
-	if ((Str::get_first_char(text) == '!') ||
-		(Str::get_first_char(text) == 0)) return; /* skip blanks and comments */
-	KindCommands::despatch(T, text);
+	NeptuneFiles::read_command(T, text, tfp);
+}
+
+void NeptuneFiles::read_command(parse_node_tree *T, text_stream *command,
+	text_file_position *tfp) {
+	if ((Str::get_first_char(command) == '!') ||
+		(Str::get_first_char(command) == 0)) return; /* skip blanks and comments */
+
+	single_kind_command stc = NeptuneSyntax::parse_command(T, command, tfp);
+	if (stc.completed) return;
+
+	if (NeptuneMacros::recording()) NeptuneMacros::record_into_macro(stc, tfp);
+	else if (stc.defined_for) KindCommands::apply(T, stc, stc.defined_for);
+	else NeptuneFiles::error(command, I"kind command describes unspecified kind", tfp);
 }
 
 @ Neptune files are in the strange position in being not quite for end users --
@@ -30,14 +41,21 @@ meant to give future Inform hackers -- users who like to burrow into
 internals -- scope for play.
 
 The Neptune files supplied with Inform's standard distribution are correct,
-so errors can only result from mistakes by such hackers. We strike a sort of
-middle position: when we fine errors, we won't feel obliged to produce
-elegant problem messages, and will instead throw internal errors or (in some
-cases) generate incorrect Inter code leading to internal errors later on.
-But we won't actually crash if we can help it.
+so errors can only result from mistakes by hackers. Until 2020 these simply
+threw internal errors; we now issue errors up to the user in such a way that
+the Inform GUI can at least display them, if not very elegantly.
 
 =
-void NeptuneFiles::error(text_stream *command, char *error) {
-	LOG("Kind command error found at: %S\n", command);
-	internal_error(error);
+void NeptuneFiles::error(text_stream *command, text_stream *error,
+	text_file_position *tfp) {
+	TEMPORARY_TEXT(E)
+	if (tfp)
+		WRITE_TO(E,
+			"error in Neptune file '%f', line %d ('%S'): %S",
+				tfp->text_file_filename, tfp->line_count, command, error);
+	else
+		WRITE_TO(E,
+			"error in Neptune command execution: %S", error);
+	KindsModule::problem_handler(NeptuneError_KINDERROR, NULL, E, NULL, NULL);
+	DISCARD_TEXT(E)
 }

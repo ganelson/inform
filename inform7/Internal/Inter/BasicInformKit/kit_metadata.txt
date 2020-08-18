@@ -2,8 +2,10 @@ priority: 0
 extension: Basic Inform by Graham Nelson
 extension: English Language by Graham Nelson
 dependency: if not WorldModelKit then BasicInformExtrasKit
-kinds: Core.kindt
-kinds: Files.kindt
+kinds: Macros.neptune
+kinds: KindsOfKinds.neptune
+kinds: Core.neptune
+kinds: Files.neptune
 activate: glulx external files
 defines Main: no
 index from: Basic.indext

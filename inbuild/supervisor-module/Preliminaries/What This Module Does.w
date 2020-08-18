@@ -24,7 +24,7 @@ be assimilated using pipelines, ... and so on. //supervisor// manages this:
 it finds such dependent resources, and sees that they are ready as needed.
 
 When included in //inform7//, the Supervisor is given a single task which
-is always the same: build the current Inform 7 project. (See //core: Main Routine//.)
+is always the same: build the current Inform 7 project.
 But when included in //inbuild//, it might be asked to perform quite a variety
 of tasks, sometimes several at once, as specified by the user at the command line.
 (See //inbuild: Main//.) In this discussion, "the parent" means the tool which

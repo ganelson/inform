@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-pfm.html#SP1">&#167;1. Genre definition</a></li><li><a href="4-pfm.html#SP3">&#167;3. Claiming</a></li><li><a href="4-pfm.html#SP4">&#167;4. Searching</a></li><li><a href="4-pfm.html#SP5">&#167;5. Copying</a></li><li><a href="4-pfm.html#SP6">&#167;6. Build graph</a></li><li><a href="4-pfm.html#SP7">&#167;7. Source text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Genre definition. </b>The <span class="extract"><span class="extract-syntax">project_file_genre</span></span> can be summarised as follows. Copies consist of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Genre definition. </b>The <span class="extract"><span class="extract-syntax">project_file_genre</span></span> can be summarised as follows. Copies consist of
 single files. These are recognised by having the filename extension <span class="extract"><span class="extract-syntax">.txt</span></span>,
 <span class="extract"><span class="extract-syntax">.ni</span></span> or <span class="extract"><span class="extract-syntax">.i7</span></span>. They cannot be stored in nests. Their build graphs are
 extensive, having "upstream" vertices representing possible ways to build or
@@ -96,7 +96,7 @@ However it is stored in the file system, a project is a project.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Project copies are annotated with a structure called an <span class="extract"><span class="extract-syntax">inform_project</span></span>,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Project copies are annotated with a structure called an <span class="extract"><span class="extract-syntax">inform_project</span></span>,
 which stores data about extensions used by the Inform compiler.
 </p>
 
@@ -116,7 +116,7 @@ which stores data about extensions used by the Inform compiler.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Claiming. </b>Here <span class="extract"><span class="extract-syntax">arg</span></span> is a textual form of a filename or pathname, such as may have been
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Claiming. </b>Here <span class="extract"><span class="extract-syntax">arg</span></span> is a textual form of a filename or pathname, such as may have been
 supplied at the command line; <span class="extract"><span class="extract-syntax">ext</span></span> is a substring of it, and is its extension
 (e.g., <span class="extract"><span class="extract-syntax">jpg</span></span> if <span class="extract"><span class="extract-syntax">arg</span></span> is <span class="extract"><span class="extract-syntax">Geraniums.jpg</span></span>), or is empty if there isn't one;
 <span class="extract"><span class="extract-syntax">directory_status</span></span> is true if we know for some reason that this is a directory
@@ -143,7 +143,7 @@ or <span class="extract"><span class="extract-syntax">.i7</span></span>.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-pfm.html#SP2" class="function-link"><span class="function-syntax">ProjectFileManager::new_copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Filenames::get_leafname</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">), </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Searching. </b>Here we look through a nest to find all projects matching the supplied
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Searching. </b>Here we look through a nest to find all projects matching the supplied
 requirements; though in fact... projects are not nesting birds.
 </p>
 
@@ -152,7 +152,7 @@ requirements; though in fact... projects are not nesting birds.
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_results</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Copying. </b>Now the task is to copy a project into place in a nest; or would be, if only
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Copying. </b>Now the task is to copy a project into place in a nest; or would be, if only
 projects lived there.
 </p>
 
@@ -163,7 +163,7 @@ projects lived there.
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Build graph. </b>As with extensions, the graph for a project is made only on demand, because to make
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Build graph. </b>As with extensions, the graph for a project is made only on demand, because to make
 it would mean fully parsing and partially syntax-analysing its source text.
 </p>
 
@@ -174,7 +174,7 @@ it would mean fully parsing and partially syntax-analysing its source text.
 <span class="plain-syntax">    *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chosen_build_target</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Source text. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Source text. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ProjectFileManager::read_source_text_for</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">ProjectFileManager::read_source_text_for</span></span>:<br/><a href="4-pfm.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">G</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>

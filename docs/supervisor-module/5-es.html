@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-es.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-es.html#SP3">&#167;3. Cached metadata</a></li><li><a href="5-es.html#SP4">&#167;4. Search list</a></li><li><a href="5-es.html#SP6">&#167;6. Graph</a></li><li><a href="5-es.html#SP7">&#167;7. Read source text</a></li><li><a href="5-es.html#SP9">&#167;9. Miscellaneous</a></li><li><a href="5-es.html#SP15">&#167;15. Version requirements</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Scanning metadata. </b>An extension has a title and an author name, each of which is limited in
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scanning metadata. </b>An extension has a title and an author name, each of which is limited in
 length to one character less than the following constants:
 </p>
 
@@ -101,7 +101,7 @@ length to one character less than the following constants:
 <span class="plain-syntax">} </span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inform_extension is accessed in 1/sm, 3/bg, 3/ib, 3/is2, 3/is3, 4/em, 5/ks, 5/ls, 5/ps, 5/ps2, 5/ts, 6/st, 6/hdn, 6/tbs, 6/inc, 7/tm, 7/dct, 7/cns, 7/ip2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This is called as soon as a new copy <span class="extract"><span class="extract-syntax">C</span></span> of the extension genre is created.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This is called as soon as a new copy <span class="extract"><span class="extract-syntax">C</span></span> of the extension genre is created.
 We scan the extension file for the title, author, version number and any
 compatibility notes given (such as "for Glulx only").
 </p>
@@ -124,7 +124,7 @@ compatibility notes given (such as "for Glulx only").
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">reqs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the extension docket</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the extension docket</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -150,7 +150,7 @@ compatibility notes given (such as "for Glulx only").
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sort_usage_date</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>The following scans a potential extension file. If it seems malformed, a
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>The following scans a potential extension file. If it seems malformed, a
 suitable error is written to the stream <span class="extract"><span class="extract-syntax">error_text</span></span>. If not, this is left
 alone, and the version number is returned.
 </p>
@@ -184,7 +184,7 @@ alone, and the version number is returned.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">version_text</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b>The titling line is terminated by any of <span class="extract"><span class="extract-syntax">0A</span></span>, <span class="extract"><span class="extract-syntax">0D</span></span>, <span class="extract"><span class="extract-syntax">0A 0D</span></span> or <span class="extract"><span class="extract-syntax">0D 0A</span></span>, or
+<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b>The titling line is terminated by any of <span class="extract"><span class="extract-syntax">0A</span></span>, <span class="extract"><span class="extract-syntax">0D</span></span>, <span class="extract"><span class="extract-syntax">0A 0D</span></span> or <span class="extract"><span class="extract-syntax">0D 0A</span></span>, or
 by the local <span class="extract"><span class="extract-syntax">\n</span></span> for good measure.
 </p>
 
@@ -201,7 +201,7 @@ by the local <span class="extract"><span class="extract-syntax">\n</span></span>
 <span class="plain-syntax">    </span><a href="2-wrk.html#SP4" class="function-link"><span class="function-syntax">Works::normalise_casing</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">titling_line</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_2"></a><b>&#167;2.2.2.  </b>In the following, all possible newlines are converted to white space, and
+<p class="commentary firstcommentary"><a id="SP2_2_2" class="paragraph-anchor"></a><b>&#167;2.2.2.  </b>In the following, all possible newlines are converted to white space, and
 all white space before a quoted rubric text is ignored. We need to do this
 partly because users have probably keyed a double line break before the
 rubric, but also because we might have stopped reading the titling line
@@ -226,7 +226,7 @@ thing we read here is a meaningless <span class="extract"><span class="extract-s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_3"></a><b>&#167;2.2.3.  </b>In general, once case-normalised, a titling line looks like this:
+<p class="commentary firstcommentary"><a id="SP2_2_3" class="paragraph-anchor"></a><b>&#167;2.2.3.  </b>In general, once case-normalised, a titling line looks like this:
 </p>
 
 <blockquote>
@@ -263,7 +263,7 @@ load the entire file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_3_1"></a><b>&#167;2.2.3.1.  </b>We make no attempt to check the version number for validity: the purpose
+<p class="commentary firstcommentary"><a id="SP2_2_3_1" class="paragraph-anchor"></a><b>&#167;2.2.3.1.  </b>We make no attempt to check the version number for validity: the purpose
 of the census is to identify extensions and reject accidentally included
 other files, not to syntax-check all extensions to see if they would work
 if used.
@@ -279,7 +279,7 @@ if used.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2_3">&#167;2.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_3_2"></a><b>&#167;2.2.3.2.  </b>The earliest "by" is the divider: note that extension titles are not
+<p class="commentary firstcommentary"><a id="SP2_2_3_2" class="paragraph-anchor"></a><b>&#167;2.2.3.2.  </b>The earliest "by" is the divider: note that extension titles are not
 allowed to contain this word, so "North By Northwest By Cary Grant" is
 not a situation we need to contend with.
 </p>
@@ -298,7 +298,7 @@ not a situation we need to contend with.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2_3">&#167;2.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_3_3"></a><b>&#167;2.2.3.3.  </b>Similarly, extension titles are not allowed to contain parentheses, so
+<p class="commentary firstcommentary"><a id="SP2_2_3_3" class="paragraph-anchor"></a><b>&#167;2.2.3.3.  </b>Similarly, extension titles are not allowed to contain parentheses, so
 this is unambiguous.
 </p>
 
@@ -312,7 +312,7 @@ this is unambiguous.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2_2_3">&#167;2.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>Note that we don't attempt to modify the <span class="extract"><span class="extract-syntax">inbuild_work</span></span> structure inside
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b>Note that we don't attempt to modify the <span class="extract"><span class="extract-syntax">inbuild_work</span></span> structure inside
 the edition; we create an entirely new <span class="extract"><span class="extract-syntax">inbuild_work</span></span>. That's because they
 are immutable, and need to be for the extensions dictionary to work.
 </p>
@@ -343,7 +343,7 @@ are immutable, and need to be for the extensions dictionary to work.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Cached metadata. </b>The following data hides between runs in the <a href="7-dct.html" class="internal">Dictionary</a>.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Cached metadata. </b>The following data hides between runs in the <a href="7-dct.html" class="internal">Dictionary</a>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -418,7 +418,7 @@ are immutable, and need to be for the extensions dictionary to work.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-es.html#SP3" class="function-link"><span class="function-syntax">Extensions::compare_by_edition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E1</span><span class="plain-syntax">, </span><span class="identifier-syntax">E2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Search list. </b>Sometimes ane extension is being looked at in isolation, and then <span class="extract"><span class="extract-syntax">read_into_project</span></span>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Search list. </b>Sometimes ane extension is being looked at in isolation, and then <span class="extract"><span class="extract-syntax">read_into_project</span></span>
 will be <span class="extract"><span class="extract-syntax">NULL</span></span>; but if it is being loaded to be included in the source text of a
 project, then...
 </p>
@@ -428,7 +428,7 @@ project, then...
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_into_project</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>...and this affects its search list, because now its own inclusions can see
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>...and this affects its search list, because now its own inclusions can see
 the Materials folder of the project in question:
 </p>
 
@@ -447,7 +447,7 @@ the Materials folder of the project in question:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">search_list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Graph. </b>The dependency graph is not so much constructed as discovered; dependencies
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Graph. </b>The dependency graph is not so much constructed as discovered; dependencies
 are made to each other extension as it's Included in this one, during the
 course of reading in the text.
 </p>
@@ -466,7 +466,7 @@ no project involved, we must take action ourselves.)
 <span class="plain-syntax">    </span><a href="6-inc.html#SP1" class="function-link"><span class="function-syntax">Inclusions::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">syntax_tree</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Read source text. </b>The scan only skimmed the surface of the file, and didn't try to parse it as
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Read source text. </b>The scan only skimmed the surface of the file, and didn't try to parse it as
 natural language text with Preform. But if the extension turns out to be one
 that we need to use for something, we'll need to read its full text eventually.
 This is that time.
@@ -493,7 +493,7 @@ This is that time.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>We concoct a textual synopsis in the form
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>We concoct a textual synopsis in the form
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -517,7 +517,7 @@ range, we flatten them from general ISO to plain ASCII.
 <span class="plain-syntax">                </span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>Note that if there is an active project, then we are reading the extension
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>Note that if there is an active project, then we are reading the extension
 in order to include it in that, and so we send it to the project's syntax tree,
 rather than to the extension's own one. But if we are simply examining the
 extension by running <span class="extract"><span class="extract-syntax">-graph</span></span> on it in the Inbuild command line, for example,
@@ -538,7 +538,7 @@ then its sentences will go to the extension's own tree.
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_text_unbroken</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b>If an extension file contains the special text (outside literal mode) of
+<p class="commentary firstcommentary"><a id="SP7_2_1" class="paragraph-anchor"></a><b>&#167;7.2.1.  </b>If an extension file contains the special text (outside literal mode) of
 <span class="extract"><span class="extract-syntax">---- Documentation ----</span></span> then this is taken as the end of the Inform source,
 and the beginning of a snippet of documentation about the extension; text from
 that point on is saved until later, but not broken into sentences for the
@@ -553,7 +553,7 @@ and no documentation.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break the extension's text into body and documentation</span><span class="named-paragraph-number">7.2.2</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_2" class="paragraph-anchor"></a><b>&#167;7.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break the extension's text into body and documentation</span><span class="named-paragraph-number">7.2.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -563,7 +563,7 @@ and no documentation.
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_text_unbroken</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax"> mark this to be sentence-broken</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-es.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>When the extension source text was read from its <span class="extract"><span class="extract-syntax">source_file</span></span>, we
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>When the extension source text was read from its <span class="extract"><span class="extract-syntax">source_file</span></span>, we
 attached a reference to say which <span class="extract"><span class="extract-syntax">inform_extension</span></span> it was, and here we
 make use of that:
 </p>
@@ -577,7 +577,7 @@ make use of that:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-em.html#SP4" class="function-link"><span class="function-syntax">ExtensionManager::from_copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Miscellaneous. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Miscellaneous. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Extensions::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">inform_extension</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
@@ -593,7 +593,7 @@ make use of that:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">raw_author_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Three pieces of information will be set later on, by other parts of Inform
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Three pieces of information will be set later on, by other parts of Inform
 calling the routines below.
 </p>
 
@@ -616,7 +616,7 @@ that happens, the following function will be called to set the rubric.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rubric_as_lexed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The optional extra credit line is used to acknowledge I6 sources,
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The optional extra credit line is used to acknowledge I6 sources,
 collaborators, translators and so on.
 </p>
 
@@ -627,7 +627,7 @@ collaborators, translators and so on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">EXTENSIONS_CENSUS</span><span class="plain-syntax">, </span><span class="string-syntax">"Extension extra credit: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">extra_credit_as_lexed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The use option "authorial modesty" is unusual in applying to the extension
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The use option "authorial modesty" is unusual in applying to the extension
 it is found in, not the whole source text. When we read it, we call one of
 the following routines, depending on whether it was in an extension or in
 the main source text:
@@ -643,7 +643,7 @@ the main source text:
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_authorial_modesty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The inclusion sentence for an extension is where it was Included in a
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The inclusion sentence for an extension is where it was Included in a
 project's syntax tree (if it was). It isn't used in compilation, only for
 problem messages and the index.
 </p>
@@ -657,7 +657,7 @@ problem messages and the index.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inclusion_sentence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>An extension is "standard" if it's either the Standard Rules or Basic Inform.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>An extension is "standard" if it's either the Standard Rules or Basic Inform.
 (This affects indexing and crediting.)
 </p>
 
@@ -667,7 +667,7 @@ problem messages and the index.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">standard</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Version requirements. </b>When it's known that an extension must satisfy a given version requirement &mdash;
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Version requirements. </b>When it's known that an extension must satisfy a given version requirement &mdash;
 say, being version 7.2.1 or better &mdash; the following is called. Note that
 if incompatible requirements are placed on it, the range in <span class="extract"><span class="extract-syntax">E-&gt;must_satisfy</span></span>
 becomes empty and stays that way.
@@ -679,7 +679,7 @@ becomes empty and stays that way.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">VersionNumberRanges::intersect_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">must_satisfy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">version_range</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">version_range</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>And it is certainly possible, if an extension is loaded for multiple
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>And it is certainly possible, if an extension is loaded for multiple
 reasons with different versioning needs, that the extension no longer meets
 its requirements (even though it did when first loaded). This tests for that:
 </p>

@@ -1,10 +1,10 @@
 priority: 2
 extension: Standard Rules by Graham Nelson
-kinds: Actions.kindt
-kinds: Times.kindt
-kinds: Scenes.kindt
-kinds: Figures.kindt
-kinds: Sounds.kindt
+kinds: Actions.neptune
+kinds: Times.neptune
+kinds: Scenes.neptune
+kinds: Figures.neptune
+kinds: Sounds.neptune
 activate: interactive fiction
 activate: multimedia
 defines Main: yes

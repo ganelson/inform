@@ -66,7 +66,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Supervisor and its Parent</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Genre, work, edition, copy</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Searches and requirements</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Discovery</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Build graph</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Reading source text</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Incremental builds</a></li><li><a href="P-wtmd.html#SP18">&#167;18. Extension census</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The supervisor module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The supervisor module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -80,7 +80,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. The Supervisor and its Parent. </b>The <a href="index.html" class="internal">supervisor</a> module is part of both <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inbuild/index.html" class="internal">inbuild</a>, and acts
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The Supervisor and its Parent. </b>The <a href="index.html" class="internal">supervisor</a> module is part of both <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inbuild/index.html" class="internal">inbuild</a>, and acts
 as a build manager. To compile an Inform project is not so atomic a task as
 it sounds, because the project involves not only the original source text but
 also some extensions, and they may need kits of Inter code, which may need to
@@ -89,14 +89,14 @@ it finds such dependent resources, and sees that they are ready as needed.
 </p>
 
 <p class="commentary">When included in <a href="../inform7/index.html" class="internal">inform7</a>, the Supervisor is given a single task which
-is always the same: build the current Inform 7 project. (See <a href="../core-module/1-mr.html" class="internal">Main Routine (in core)</a>.)
+is always the same: build the current Inform 7 project.
 But when included in <a href="../inbuild/index.html" class="internal">inbuild</a>, it might be asked to perform quite a variety
 of tasks, sometimes several at once, as specified by the user at the command line.
 (See <a href="../inbuild/1-mn.html" class="internal">Main (in inbuild)</a>.) In this discussion, "the parent" means the tool which
 is using <a href="index.html" class="internal">supervisor</a>, and might be either <a href="../inform7/index.html" class="internal">inform7</a> or <a href="../inbuild/index.html" class="internal">inbuild</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b><a href="index.html" class="internal">supervisor</a> has a relationship with its parent tool which involves to and
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b><a href="index.html" class="internal">supervisor</a> has a relationship with its parent tool which involves to and
 fro: it's not as simple as single one-time call from the parent to <a href="index.html" class="internal">supervisor</a>
 saying "now build this".
 </p>
@@ -126,7 +126,7 @@ is the parent, a variety of other functions may be made.
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Compare <a href="../inform7/M-rc.html" class="internal">Reference Card (in inform7)</a> and <a href="../inbuild/M-rc.html" class="internal">Reference Card (in inbuild)</a>
 to see the effect.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Genre, work, edition, copy. </b>A "genre" is a category of software or artistic work for us to manage. For
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Genre, work, edition, copy. </b>A "genre" is a category of software or artistic work for us to manage. For
 example, "Inform 7 extension" and "website template" are both genres. Each
 different genre is represented by an <a href="2-gnr.html#SP1" class="internal">inbuild_genre</a> object, whose method
 calls provide the behaviour distinctive to that genre. The currently seven
@@ -170,7 +170,7 @@ as will blunders in identifying extensions. In general, though, a copy which
 has no copy errors is not necessarily a correct program: only one which is
 in good enough condition for the compiler to look at.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Searches and requirements. </b>Copies may be strewn all over the user's file system, and it's not for us to
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Searches and requirements. </b>Copies may be strewn all over the user's file system, and it's not for us to
 go poking around without being asked.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Instead, the user will give the
 parent tool some locations at the command line: and those command-line
 instructions will be processed by <a href="index.html" class="internal">supervisor</a>. For example, if the user
@@ -207,7 +207,7 @@ when <a href="index.html" class="internal">supervisor</a> is running as part of 
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> A typical requirement might read, say, "genre=extension, author=Emily Short",
 which matches any extension by Emily Short.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Although such searches can be used with vague requirements to scan for,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Although such searches can be used with vague requirements to scan for,
 say, everything with a given genre, they can also be used to seek specific
 pieces of software which we will need. <a href="2-nst.html#SP8" class="internal">Nests::search_for_best</a> is a version
 of the search engine which returns a single result (or none): the best one.
@@ -224,7 +224,7 @@ For example, if an Inform project says
 extension to use.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Discovery. </b>A copy is "claimed" when it is found in the file system: either by being
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Discovery. </b>A copy is "claimed" when it is found in the file system: either by being
 right where the user said it would be, or by a search.
 </p>
 
@@ -272,7 +272,7 @@ however it is managed on disc.
 <span class="plain-syntax">    project_file_genre    </span><a href="4-pfm.html" class="internal">Project File Manager</a><span class="plain-syntax">     inform_project    </span><a href="5-ps2.html" class="internal">Project Services</a>
 <span class="plain-syntax">    template_genre        </span><a href="4-tm.html" class="internal">Template Manager</a><span class="plain-syntax">         inform_template   </span><a href="5-ts.html" class="internal">Template Services</a>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Build graph. </b>See <a href="3-bg.html" class="internal">Build Graphs</a> for the infrastructure of how a dependency graph is stored.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Build graph. </b>See <a href="3-bg.html" class="internal">Build Graphs</a> for the infrastructure of how a dependency graph is stored.
 Basically these consist of <a href="3-bg.html#SP1" class="internal">build_vertex</a> objects joined together by edges,
 represented by lists of other vertices &mdash; each vertex has two lists, one of
 "use edges", the other of "build edges". See the manual at <a href="../inbuild/M-ui.html" class="internal">Using Inbuild (in inbuild)</a>
@@ -292,7 +292,7 @@ such as extensions which could not be found.
 two colours of edge by <a href="3-bg.html#SP4" class="internal">Graphs::need_this_to_build</a> and <a href="3-bg.html#SP4" class="internal">Graphs::need_this_to_use</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>When are graphs actually built? It would be appealing to do this the moment a
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When are graphs actually built? It would be appealing to do this the moment a
 copy is claimed (i.e., as soon as the <a href="2-cps.html#SP1" class="internal">inbuild_copy</a> object is created),
 but this is impractical: it happens before we know enough about dependencies.
 So when a copy is claimed it gets an isolated copy vertex with no edges, as a
@@ -323,7 +323,7 @@ claimed during searches will not be compatible with the current VM at all,
 and that's fine, since they won't be used: but we can't read their text in
 without throwing copy errors. So we read only what we will use.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Reading source text. </b>For any copy, <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> will instruct the Supervisor to
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Reading source text. </b>For any copy, <a href="2-cps.html#SP7" class="internal">Copies::get_source_text</a> will instruct the Supervisor to
 read in the Inform source text associated with it &mdash; if any: this does nothing
 for languages, pipelines, website templates or kits. Text for a copy is read
 at most once, and is cached so that a second read produces the same result
@@ -363,7 +363,7 @@ dependencies, and (b) the syntax tree is only a rudimentary one at this stage,
 parsing only a few "structural sentences".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The definition of "structural sentence" is given in the form of Preform grammar
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The definition of "structural sentence" is given in the form of Preform grammar
 in <a href="6-st.html" class="internal">Source Text</a>. (Preform is the natural-language parsing engine provided
 by the <a href="../words-module/index.html" class="internal">words</a> module, and which the InC dialect of C provides a simple way
 to type into code.)
@@ -389,7 +389,7 @@ which we will soon need &mdash; this is done by another Preform grammar; and
 </li><li>(3) Move content around to satisfy annotations such as "in place of...",
 though this stage is performed only later &mdash; see below.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>What happens next involves is carefully timed. What we want is to look
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>What happens next involves is carefully timed. What we want is to look
 through for sentences like this one:
 </p>
 
@@ -434,7 +434,7 @@ is not present, Y is present, and vice versa, leaving it a matter of chance
 which of those states actually happens.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>At any rate, when <a href="6-inc.html#SP1" class="internal">Inclusions::traverse</a> finds an Include sentence which
 it decides is valid, it calls <a href="6-inc.html#SP4" class="internal">Inclusions::fulfill_request_to_include_extension</a>.
 This performs a search for the best compatible copy of the extension named &mdash;
 see above &mdash; and, once such a copy is found, calls <a href="6-inc.html#SP5" class="internal">Inclusions::load</a> to
@@ -455,7 +455,7 @@ build Existing Project unless you also have New Extension.
 will have been added to the build graph.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Finally comes the complicated business of rearranging the syntax tree due
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Finally comes the complicated business of rearranging the syntax tree due
 to headings like:
 </p>
 
@@ -470,7 +470,7 @@ made an isolated tree for a single extension, we don't bother, because we
 couldn't compile that in isolation anyway.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>This is all quite a long road, and the way is strewn with potential errors.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>This is all quite a long road, and the way is strewn with potential errors.
 What if a requested extension can't be found? Or is damaged? Or not compatible
 with our VM? Or if a heading is "in place of" one which isn't where it claimed?
 And so on. Such issues are converted into still more copy errors.
@@ -482,7 +482,7 @@ in the parent <a href="../inform7/index.html" class="internal">inform7</a>, they
 up later and issued as problem messages by <a href="../core-module/2-pwst.html" class="internal">Problems With Source Text (in core)</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Now that we have read in the text of a project/extension, we know all of its
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Now that we have read in the text of a project/extension, we know all of its
 dependencies on other extensions. If we were reading an extension, we now have
 its complete graph made, because it can only be dependent on other extensions.
 But a project also depends on kits of Inter codes, on a language definition,
@@ -490,7 +490,7 @@ and so forth: and also on the files it draws its source text from. See
 <a href="5-ps2.html#SP24" class="internal">Projects::construct_graph</a> for the details.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Incremental builds. </b>So, then, at this point we can determine the complete build graph for any copy.
 The parent can do several things:
 </p>
 
@@ -524,7 +524,7 @@ according to the <a href="3-bm.html#SP1" class="internal">build_methodology</a> 
 to configure how it should go about its business.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Extension census. </b>That's basically everything except for the lengthy but unimportant code in
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Extension census. </b>That's basically everything except for the lengthy but unimportant code in
 <a href="7-tm.html" class="internal">Chapter 7: Extension Indexing</a>, which constructs a mini-website of extension documentation for
 use inside the GUI app. None of this affects how builds are made. See
 <a href="7-tm.html" class="internal">The Mini-Website</a> for the site's makeup. A little metadata is cached

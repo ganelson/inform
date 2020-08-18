@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-bg.html#SP1">&#167;1. Build graphs</a></li><li><a href="3-bg.html#SP2">&#167;2. Creation</a></li><li><a href="3-bg.html#SP6">&#167;6. Writing</a></li><li><a href="3-bg.html#SP9">&#167;9. Archiving</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Build graphs. </b>See the Inbuild manual for an introduction to the build graph. Properly
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Build graphs. </b>See the Inbuild manual for an introduction to the build graph. Properly
 speaking, it is a directed acyclic multigraph which us usually disconnected.
 </p>
 
@@ -117,7 +117,7 @@ compiled, is a file vertex.
 <span class="plain-syntax">} </span><span class="reserved-syntax">build_vertex</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure build_vertex is accessed in 1/sm, 3/ib, 3/bs2, 3/is, 3/is2, 3/is3, 3/is4, 4/em, 5/es, 5/ks, 5/ls, 5/ps, 5/ps2, 5/ts, 6/st, 6/hdn, 6/tbs, 6/inc, 7/dct, 7/ip2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Creation. </b>First, the three colours of vertex.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Creation. </b>First, the three colours of vertex.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -151,7 +151,7 @@ compiled, is a file vertex.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Note that each copy is assigned exactly one copy vertex, when it is created.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Note that each copy is assigned exactly one copy vertex, when it is created.
 This function should never otherwise be called.
 </p>
 
@@ -165,7 +165,7 @@ This function should never otherwise be called.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vertex</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Next, the two colours of edge. Note that between A and B there can be
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Next, the two colours of edge. Note that between A and B there can be
 at most one edge of each colour.
 </p>
 
@@ -190,7 +190,7 @@ at most one edge of each colour.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">build_vertex</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">use_edges</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The script attached to a vertex is a list of instructions for how to build
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The script attached to a vertex is a list of instructions for how to build
 the resource it refers to. Some vertices have no instructions provided, so:
 </p>
 
@@ -200,7 +200,7 @@ the resource it refers to. Some vertices have no instructions provided, so:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Writing. </b>This is a suitably indented printout of the graph as seen from a given
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Writing. </b>This is a suitably indented printout of the graph as seen from a given
 vertex: it's used by the Inbuild command <span class="extract"><span class="extract-syntax">-graph</span></span>.
 </p>
 
@@ -255,7 +255,7 @@ vertex: it's used by the Inbuild command <span class="extract"><span class="extr
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>A similar but slightly different recursion for <span class="extract"><span class="extract-syntax">-build-needs</span></span> and <span class="extract"><span class="extract-syntax">-use-needs</span></span>.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A similar but slightly different recursion for <span class="extract"><span class="extract-syntax">-build-needs</span></span> and <span class="extract"><span class="extract-syntax">-use-needs</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -295,7 +295,7 @@ vertex: it's used by the Inbuild command <span class="extract"><span class="extr
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And for <span class="extract"><span class="extract-syntax">-build-missing</span></span> and <span class="extract"><span class="extract-syntax">-use-missing</span></span>.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And for <span class="extract"><span class="extract-syntax">-build-missing</span></span> and <span class="extract"><span class="extract-syntax">-use-missing</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -329,7 +329,7 @@ vertex: it's used by the Inbuild command <span class="extract"><span class="extr
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Archiving. </b>This isn't simply a matter of printing out, of course, but very similar code
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Archiving. </b>This isn't simply a matter of printing out, of course, but very similar code
 handles <span class="extract"><span class="extract-syntax">-archive</span></span> and <span class="extract"><span class="extract-syntax">-archive-to N</span></span>.
 </p>
 
@@ -361,7 +361,7 @@ cannot be read from any other nest &mdash; so we won't archive it.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b>The most delicate thing here is that we don't want to archive something
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>The most delicate thing here is that we don't want to archive something
 to <span class="extract"><span class="extract-syntax">N</span></span> if it's already there; but that is difficult to detect.
 </p>
 

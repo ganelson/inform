@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-ls.html#SP1">&#167;1. Scanning metadata</a></li><li><a href="5-ls.html#SP5">&#167;5. Logging</a></li><li><a href="5-ls.html#SP6">&#167;6. Language code</a></li><li><a href="5-ls.html#SP7">&#167;7. Kit</a></li><li><a href="5-ls.html#SP8">&#167;8. Finding by name</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Scanning metadata. </b>Metadata for natural languages is stored in the following structure.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scanning metadata. </b>Metadata for natural languages is stored in the following structure.
 Inform can read and write text in multiple natural languages, though it
 needs help to do so: each natural language known to Inform comes from a
 small resource folder called its "bundle". (This includes English.)
@@ -87,7 +87,7 @@ small resource folder called its "bundle". (This includes English.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">inform_language</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inform_language is accessed in 1/sm, 3/bg, 3/ib, 3/is2, 3/is3, 4/em, 5/es, 5/ks, 5/ps, 5/ps2, 5/ts, 6/st, 6/hdn, 6/tbs, 6/inc, 7/dct, 7/ip2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This is called as soon as a new copy <span class="extract"><span class="extract-syntax">C</span></span> of the language genre is created.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This is called as soon as a new copy <span class="extract"><span class="extract-syntax">C</span></span> of the language genre is created.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -110,7 +110,7 @@ small resource folder called its "bundle". (This includes English.)
 <span class="plain-syntax">        </span><a href="5-ls.html#SP4" class="function-link"><span class="function-syntax">Languages::path_to_bundle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>Within the bundle folder is a file called <span class="extract"><span class="extract-syntax">about.txt</span></span>, which sets numbered
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Within the bundle folder is a file called <span class="extract"><span class="extract-syntax">about.txt</span></span>, which sets numbered
 fields to excerpts of text. The following are the field numbers:
 </p>
 
@@ -122,7 +122,7 @@ fields to excerpts of text. The following are the field numbers:
 <span class="definition-keyword">define</span> <span class="constant-syntax">KIT_LFIELD</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax">					</span><span class="comment-syntax"> e.g. "GermanLanguageKit"</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_LANGUAGE_FIELDS</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax">		</span><span class="comment-syntax"> one more than the highest number above</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>If we can't find the file, it doesn't matter except that all of the excerpts
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>If we can't find the file, it doesn't matter except that all of the excerpts
 remain empty. But we may as well tell the debugging log.
 </p>
 
@@ -139,7 +139,7 @@ remain empty. But we may as well tell the debugging log.
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Can't find about file: %f\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">about_file</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-ls.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The format of the file is very simple. Each line is introduced by a number
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The format of the file is very simple. Each line is introduced by a number
 from 1 to <span class="extract"><span class="extract-syntax">MAX_LANGUAGE_FIELDS</span></span> minus one, and then contains text which
 extends for the rest of the line.
 </p>
@@ -161,14 +161,14 @@ extends for the rest of the line.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::path_to_bundle</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Languages::path_to_bundle</span></span>:<br/><a href="5-ls.html#SP2">&#167;2</a>, <a href="5-ls.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inform_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">location_if_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::log</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Languages::log</span></span>:<br/>Supervisor Module - <a href="1-sm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opts</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vL</span><span class="plain-syntax">) {</span>
@@ -177,7 +177,7 @@ extends for the rest of the line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Language code. </b>This is used when we write the bibliographic data for the work of IF we're
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Language code. </b>This is used when we write the bibliographic data for the work of IF we're
 making; this enables online databases like IFDB, and smart interpreters, to
 detect the language of play for a story file without actually running it.
 </p>
@@ -192,7 +192,7 @@ detect the language of play for a story file without actually running it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"en"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Kit. </b>Each language needs its own kit of Inter code, named as follows:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Kit. </b>Each language needs its own kit of Inter code, named as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -205,7 +205,7 @@ detect the language of play for a story file without actually running it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Finding by name. </b>Given the name of a natural language (e.g., "German") we find the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Finding by name. </b>Given the name of a natural language (e.g., "German") we find the
 corresponding definition. That will mean searching for a copy, and that
 raises the question of where to look &mdash; in particular, it's important to
 include the Materials folder for any relevant project.
@@ -222,7 +222,7 @@ include the Materials folder for any relevant project.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This function is called only from Preform...
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This function is called only from Preform...
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_LANGUAGE_FROM_NAME_WORDS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-ls.html#SP9" class="function-link"><span class="function-syntax">Languages::Preform_find</span></a>
@@ -232,7 +232,7 @@ include the Materials folder for any relevant project.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-ls.html#SP10" class="function-link"><span class="function-syntax">Languages::find_for</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_list_for_Preform_callback</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>...but this one is more generally available.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>...but this one is more generally available.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -244,7 +244,7 @@ include the Materials folder for any relevant project.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Finally, the following Preform nonterminal matches the English-language
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Finally, the following Preform nonterminal matches the English-language
 name of a language: for example, "French". Unlike the above functions, it
 looks only at languages already loaded, and doesn't scan nests for more.
 </p>

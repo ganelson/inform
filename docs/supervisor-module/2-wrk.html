@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-wrk.html#SP1">&#167;1. Works</a></li><li><a href="2-wrk.html#SP5">&#167;5. Printing</a></li><li><a href="2-wrk.html#SP8">&#167;8. Identification</a></li><li><a href="2-wrk.html#SP11">&#167;11. Documentation links</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Works. </b>A "work" is a single artistic or programming creation; for example, the IF
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Works. </b>A "work" is a single artistic or programming creation; for example, the IF
 story Bronze by Emily Short might be a work. Mamy versions of this IF story
 may exist over time, but they will all be versions of the same "work".
 Extensions are also works: for example, Epistemology by Eric Eve is a work.
@@ -94,7 +94,7 @@ combination of the textual names and the hash code:
 <span class="plain-syntax">} </span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inbuild_work is accessed in 1/ic, 2/edt, 2/cps, 2/rqr, 3/bg, 3/ib, 3/is2, 4/em, 4/km, 4/lm, 4/pm, 4/pbm, 4/pfm, 4/tm, 5/es, 5/ks, 5/ls, 5/ps2, 6/tbs, 6/inc, 7/tm, 7/dct, 7/ip and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Each work structure is written only once, and its title and author name are
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Each work structure is written only once, and its title and author name are
 not subsequently altered.
 </p>
 
@@ -106,7 +106,7 @@ not subsequently altered.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-wrk.html#SP3" class="function-link"><span class="function-syntax">Works::new_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">genre</span><span class="plain-syntax">, </span><span class="identifier-syntax">ti</span><span class="plain-syntax">, </span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Though it is probably the case that the author name and title supplied are
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Though it is probably the case that the author name and title supplied are
 already of normalised casing, we do not want to rely on that. Works intending
 to represent (e.g.) the same extension but named with different casing
 conventions would fail to match: and this could happen if a new build of
@@ -135,7 +135,7 @@ preserved for use in text output, but not identification.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">work</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>We hash-code all works on arrival, using the X 30011 algorithm, on the text
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>We hash-code all works on arrival, using the X 30011 algorithm, on the text
 of the pseudo-pathname <span class="extract"><span class="extract-syntax">Author/Title</span></span>. The result is an integer between 0 and
 the following constant minus 1.
 </p>
@@ -156,7 +156,7 @@ the following constant minus 1.
 <span class="plain-syntax">    </span><span class="identifier-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">inbuild_work_hash_code</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">hc</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-wrk.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Casing is normalised as follows. Every word is capitalised, where a word
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Casing is normalised as follows. Every word is capitalised, where a word
 begins at the start of the text, after a hyphen, or after a bracket. Thus
 "Every Word Counts", "Even Double-Barrelled Ones (And Even Parenthetically)".
 </p>
@@ -175,7 +175,7 @@ begins at the start of the text, after a hyphen, or after a bracket. Thus
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Printing. </b>As noted above, the raw forms are used for output.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Printing. </b>As noted above, the raw forms are used for output.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -191,7 +191,7 @@ begins at the start of the text, after a hyphen, or after a bracket. Thus
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">raw_author_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The following is only sensible for extensions, and is used when Inform
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The following is only sensible for extensions, and is used when Inform
 generates its Extensions index entries.
 </p>
 
@@ -206,7 +206,7 @@ generates its Extensions index entries.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The Inbuild module provides the <span class="extract"><span class="extract-syntax">%X</span></span> escape sequence for printing names of
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The Inbuild module provides the <span class="extract"><span class="extract-syntax">%X</span></span> escape sequence for printing names of
 works. (The X used to stand for Extension.) <span class="extract"><span class="extract-syntax">%&lt;X</span></span> ptovides an abbreviated form.
 </p>
 
@@ -232,7 +232,7 @@ works. (The X used to stand for Extension.) <span class="extract"><span class="e
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Identification. </b>Two works with different hash codes definitely identify different works;
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Identification. </b>Two works with different hash codes definitely identify different works;
 if the code is the same, we must use <span class="extract"><span class="extract-syntax">Str::eq</span></span> on the actual title and author
 name. This is in effect case insensitive, since we normalised casing when
 the works were created.
@@ -253,7 +253,7 @@ order-preserving. To emphasise this we return true or false rather than a
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This is quite a deal slower, but is trichotomous and can be used for sorting.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This is quite a deal slower, but is trichotomous and can be used for sorting.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -265,7 +265,7 @@ order-preserving. To emphasise this we return true or false rather than a
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Because Basic Inform and the Standard Rules extensions are treated slightly
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Because Basic Inform and the Standard Rules extensions are treated slightly
 differently by the documentation, and so forth, it's convenient to provide a
 single function testing if a work refers to them.
 </p>
@@ -289,7 +289,7 @@ single function testing if a work refers to them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-wrk.html#SP8" class="function-link"><span class="function-syntax">Works::match</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">work</span><span class="plain-syntax">, </span><span class="identifier-syntax">a_work_for_basic_inform</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Documentation links. </b>This is where HTML links to extension documentation are created; the URL for
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Documentation links. </b>This is where HTML links to extension documentation are created; the URL for
 each extension's page is generated from its <span class="extract"><span class="extract-syntax">inbuild_work</span></span>.
 </p>
 

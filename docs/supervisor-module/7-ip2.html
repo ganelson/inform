@@ -66,7 +66,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#7">Chapter 7: Extension Indexing</a></li><li><b>Individual Pages</b></li></ul></div>
 <p class="purpose">To generate the individual pages on extensions in the extension mini-website.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b><a href="7-tm.html#SP2" class="internal">ExtensionWebsite::go</a> calls the following function to make either a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b><a href="7-tm.html#SP2" class="internal">ExtensionWebsite::go</a> calls the following function to make either a
 detailed or a sketchy documentation page on an extension, supplying either
 a non-null <span class="extract"><span class="extract-syntax">E</span></span> for details, or a non-null <span class="extract"><span class="extract-syntax">ecd</span></span> for a sketch.
 </p>
@@ -86,7 +86,7 @@ associated files for each example.w
 <span class="plain-syntax">        </span><a href="7-ip2.html#SP2" class="function-link"><span class="function-syntax">ExtensionPages::write_page_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ecd</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">force_update</span><span class="plain-syntax">, </span><span class="identifier-syntax">proj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Here then is the nub of it. An ECD is not really enough information to go on.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Here then is the nub of it. An ECD is not really enough information to go on.
 We are not always obliged to make a sketchy page from an ECD: we decide against
 in a normal run where a page exists for it already, as otherwise a user with
 many extensions installed would detect an annoying slight delay on every run
@@ -129,7 +129,7 @@ is any, as well as the correct identifying headings and requirements.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_egs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>The reader may wonder why we perform the conversion in this slightly recursive
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>The reader may wonder why we perform the conversion in this slightly recursive
 way, by calling our parent function again. Wouldn't it be simpler just to set
 <span class="extract"><span class="extract-syntax">ecd</span></span> to null and let events take their course? The answer is that this would
 fail if there were examples, because we would return (say) 3 for the number
@@ -153,7 +153,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the actual extension documentation page</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the actual extension documentation page</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -166,7 +166,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::footer</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write documentation for a specific extension into the page</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write documentation for a specific extension into the page</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -199,7 +199,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_1"></a><b>&#167;2.2.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript paste icon for source text to include this extension</span><span class="named-paragraph-number">2.2.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1_1" class="paragraph-anchor"></a><b>&#167;2.2.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript paste icon for source text to include this extension</span><span class="named-paragraph-number">2.2.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -210,7 +210,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_2"></a><b>&#167;2.2.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up any restrictions on VM usage</span><span class="named-paragraph-number">2.2.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1_2" class="paragraph-anchor"></a><b>&#167;2.2.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up any restrictions on VM usage</span><span class="named-paragraph-number">2.2.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -221,7 +221,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_3"></a><b>&#167;2.2.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the version number, if any, and location</span><span class="named-paragraph-number">2.2.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1_3" class="paragraph-anchor"></a><b>&#167;2.2.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the version number, if any, and location</span><span class="named-paragraph-number">2.2.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -233,7 +233,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_4"></a><b>&#167;2.2.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the rubric, if any</span><span class="named-paragraph-number">2.2.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1_4" class="paragraph-anchor"></a><b>&#167;2.2.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the rubric, if any</span><span class="named-paragraph-number">2.2.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -245,7 +245,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_5"></a><b>&#167;2.2.1.5.  </b>This appears above the definition paragraphs because it tends to be only
+<p class="commentary firstcommentary"><a id="SP2_2_1_5" class="paragraph-anchor"></a><b>&#167;2.2.1.5.  </b>This appears above the definition paragraphs because it tends to be only
 large extensions which provide TOCs: and they, ipso facto, make many definitions.
 If the TOC were directly at the top of the supplied documentation, it might
 easily be scrolled down off screen when the user first visits the page.
@@ -262,7 +262,7 @@ easily be scrolled down off screen when the user first visits the page.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="7-ip2.html#SP2_2_1">&#167;2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1_6"></a><b>&#167;2.2.1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1_6" class="paragraph-anchor"></a><b>&#167;2.2.1.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write up the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

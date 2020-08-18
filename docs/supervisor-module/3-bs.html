@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-bs.html#SP1">&#167;1. Build scripts</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Build scripts. </b>Suppose the incremental build algorithm has decided it wants to build node
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Build scripts. </b>Suppose the incremental build algorithm has decided it wants to build node
 <span class="extract"><span class="extract-syntax">V</span></span> in the graph: it does so by calling <span class="extract"><span class="extract-syntax">BuildScripts::execute</span></span> on the script
 attached to <span class="extract"><span class="extract-syntax">V</span></span>. This is only a list of steps:
 </p>
@@ -95,7 +95,7 @@ attached to <span class="extract"><span class="extract-syntax">V</span></span>. 
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure build_script is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We execute the steps in sequence, of course. As soon as any step fails,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We execute the steps in sequence, of course. As soon as any step fails,
 returning <span class="extract"><span class="extract-syntax">FALSE</span></span>, the script halts and returns <span class="extract"><span class="extract-syntax">FALSE</span></span>. An empty script
 always succeeds and returns <span class="extract"><span class="extract-syntax">TRUE</span></span>.
 </p>

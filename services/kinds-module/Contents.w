@@ -25,5 +25,8 @@ Chapter 3: Arithmetic
 
 Chapter 4: Constructors
 	Neptune Files
+	Macros
+	Neptune Syntax
+	Star Templates
 	Kind Commands
 	Kind Constructors

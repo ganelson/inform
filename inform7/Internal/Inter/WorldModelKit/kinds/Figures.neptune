@@ -6,7 +6,7 @@ plural:figure names
 conforms-to:STORED_VALUE_TY
 conforms-to:ENUMERATED_VALUE_TY
 conforms-to:SAYABLE_VALUE_TY
-named-values-created-with-assertions:yes
+created-with-assertions:yes
 default-value:1
 
 i6-printing-routine:PrintFigureName

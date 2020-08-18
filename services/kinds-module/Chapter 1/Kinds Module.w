@@ -86,15 +86,18 @@ to some routine of her own, gazumping this one.
 @e KindsCircular_KINDERROR
 @e LPCantScaleYet_KINDERROR
 @e LPCantScaleTwice_KINDERROR
+@e NeptuneError_KINDERROR
 
 =
-void KindsModule::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
+void KindsModule::problem_handler(int err_no, parse_node *pn, text_stream *E,
+	kind *K1, kind *K2) {
 	#ifdef PROBLEM_KINDS_CALLBACK
-	PROBLEM_KINDS_CALLBACK(err_no, pn, K1, K2);
+	PROBLEM_KINDS_CALLBACK(err_no, pn, E, K1, K2);
 	#endif
 	#ifndef PROBLEM_KINDS_CALLBACK
 	TEMPORARY_TEXT(text)
-	WRITE_TO(text, "%+W", Node::get_text(pn));
+	if (pn) WRITE_TO(text, "%+W", Node::get_text(pn));
+	if (E) WRITE_TO(text, "%S", E);
 	switch (err_no) {
 		case DimensionRedundant_KINDERROR:
 			Errors::with_text("multiplication rule given twice: %S", text);
@@ -122,6 +125,9 @@ void KindsModule::problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2
 			break;
 		case LPCantScaleTwice_KINDERROR:
 			Errors::with_text("tries to scale a value which has already been scaled: %S", text);
+			break;
+		case NeptuneError_KINDERROR:
+			Errors::with_text("error in Neptune file: %S", text);
 			break;
 		default: internal_error("unimplemented problem message");
 	}

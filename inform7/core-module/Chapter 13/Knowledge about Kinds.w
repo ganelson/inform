@@ -157,7 +157,8 @@ int Kinds::Knowledge::allow_sometimes(kind *from) {
 @d PROBLEM_KINDS_CALLBACK Kinds::Knowledge::kinds_problem_handler
 
 =
-void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K1, kind *K2) {
+void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, text_stream *E,
+	kind *K1, kind *K2) {
 	switch (err_no) {
 		case DimensionRedundant_KINDERROR:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DimensionRedundant),
@@ -229,6 +230,16 @@ void Kinds::Knowledge::kinds_problem_handler(int err_no, parse_node *pn, kind *K
 				"this tries to specify the scaling for a kind of value whose "
 				"scaling is already established",
 				"which is impossible.");
+			break;
+		case NeptuneError_KINDERROR:
+			Problems::quote_stream(1, E);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+			Problems::issue_problem_segment(
+				"One of the so-called Neptune files used to configure the kinds of value "
+				"built into Inform contained an error. Either there is something wrong with "
+				"this installation of Inform, or new Neptune files are being tried out but "
+				"do not yet work. Specifically: '%1'.");
+			Problems::issue_problem_end();
 			break;
 		default: internal_error("unimplemented problem message");
 	}

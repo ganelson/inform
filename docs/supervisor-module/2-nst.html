@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-nst.html#SP1">&#167;1. Creation</a></li><li><a href="2-nst.html#SP4">&#167;4. Search list</a></li><li><a href="2-nst.html#SP5">&#167;5. Search results</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b>To "create" a nest here does not mean actually altering the file system, for
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>To "create" a nest here does not mean actually altering the file system, for
 example by making a directory: nests here are merely notes in memory of
 positions in the file system hierarchy which may or may not exist.
 </p>
@@ -89,7 +89,7 @@ positions in the file system hierarchy which may or may not exist.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inbuild_nest is accessed in 1/ic, 3/bg, 3/is2, 4/em, 4/km, 4/lm, 4/pm, 4/tm, 5/ps2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Nests used by the Inform and Inbuild tools are tagged with the following
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Nests used by the Inform and Inbuild tools are tagged with the following
 comstamts. (There used to be quite a good joke here, but refactoring of the
 code removed its premiss. Literate programming is like that sometimes.)
 </p>
@@ -114,14 +114,14 @@ see below for why. Lower-tag-numbered origins are better than later ones.
 <span class="plain-syntax">    </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tag_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nests::protect</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Nests::protect</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_only</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Search list. </b>When we search for copies, we do so by looking through nests in a list. The
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Search list. </b>When we search for copies, we do so by looking through nests in a list. The
 following builds such lists, removing duplicates &mdash; where duplicates are
 shown up by having the same textual form of pathname. (This is not foolproof
 by any means: Unix is replete with ways to describe the same directory, thanks
@@ -147,7 +147,7 @@ would just produce search results which were more copious than needed.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Search results. </b>When we search a list of nests for copies satisfying certain requirements,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Search results. </b>When we search a list of nests for copies satisfying certain requirements,
 we create one of these for each hit:
 </p>
 
@@ -159,7 +159,7 @@ we create one of these for each hit:
 <span class="plain-syntax">} </span><span class="reserved-syntax">inbuild_search_result</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inbuild_search_result is accessed in 2/ce, 3/is, 5/ks, 5/ls, 6/inc, 7/dct, 7/cns, 7/ip, 7/ip2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>These can be created only as entries in a list:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>These can be created only as entries in a list:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -173,7 +173,7 @@ we create one of these for each hit:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_search_result</span><span class="plain-syntax">, </span><span class="identifier-syntax">results</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And here is our search engine, such as it is. For each nest, we ask each
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And here is our search engine, such as it is. For each nest, we ask each
 genre's manager to look for copies of that genre:
 </p>
 
@@ -188,7 +188,7 @@ genre's manager to look for copies of that genre:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Oftentimes, we want only the single best result, and won't even look at the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Oftentimes, we want only the single best result, and won't even look at the
 others:
 </p>
 
@@ -204,7 +204,7 @@ others:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">best</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Where "better" is defined as follows. This innocent-looking function is
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Where "better" is defined as follows. This innocent-looking function is
 in fact critical to what Inbuild does. It uses tags on nests to prefer copies
 in the Materials folder to those in the external nest, and to prefer those in
 turn to copies in the internal nest; and within nests of equal importance,

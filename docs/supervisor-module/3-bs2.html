@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-bs2.html#SP1">&#167;1. Build skills</a></li><li><a href="3-bs2.html#SP3">&#167;3. Build steps</a></li><li><a href="3-bs2.html#SP5">&#167;5. Execution</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Build skills. </b>A "skill" is a single atomic task which we know how to perform. For example,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Build skills. </b>A "skill" is a single atomic task which we know how to perform. For example,
 assimilating a binary for a kit is a skill.
 </p>
 
@@ -90,7 +90,7 @@ assimilating a binary for a kit is a skill.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure build_skill is accessed in 2/gnr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Skills provide two method functions: one constructs a shell command to
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Skills provide two method functions: one constructs a shell command to
 perform the skill, and the other performs the skill directly by calling some
 function within the current executable. These methods are optional, and if
 one is absent then the skill can't be performed that way.
@@ -106,7 +106,7 @@ one is absent then the skill can't be performed that way.
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">BUILD_SKILL_INTERNAL_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">build_skill</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">build_step</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BS</span><span class="plain-syntax">, </span><span class="reserved-syntax">build_methodology</span><span class="plain-syntax"> *</span><span class="identifier-syntax">meth</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Build steps. </b>These are essentially just skills, but with a docket of contextual data. The
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Build steps. </b>These are essentially just skills, but with a docket of contextual data. The
 idea is that a function outside the <a href="index.html" class="internal">supervisor</a> module can carry out a skill
 for us using only the contextual information in this structure, without having
 to access any of <span class="extract"><span class="extract-syntax">inbuild</span></span>'s variables directly.
@@ -124,7 +124,7 @@ to access any of <span class="extract"><span class="extract-syntax">inbuild</spa
 <span class="plain-syntax">} </span><span class="reserved-syntax">build_step</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure build_step is accessed in 2/cps, 3/bg, 3/is, 3/is2, 3/is3, 3/is4, 4/em, 4/km, 5/ks, 5/ps2, 6/hdn, 6/inc and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>We build scripts for a vertex by attaching one step at a time to it:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>We build scripts for a vertex by attaching one step at a time to it:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -142,7 +142,7 @@ to access any of <span class="extract"><span class="extract-syntax">inbuild</spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Execution. </b>Note that this prints a log of shell commands generated to <span class="extract"><span class="extract-syntax">stdout</span></span> when
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Execution. </b>Note that this prints a log of shell commands generated to <span class="extract"><span class="extract-syntax">stdout</span></span> when
 we are running inside Inbuild at the command line, but not when we are running
 inside the <span class="extract"><span class="extract-syntax">inform7</span></span> executable, where we are silent throughout.
 </p>
@@ -161,7 +161,7 @@ inside the <span class="extract"><span class="extract-syntax">inform7</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out a shell command, and perhaps print or call it</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out a shell command, and perhaps print or call it</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -169,7 +169,7 @@ inside the <span class="extract"><span class="extract-syntax">inform7</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">command</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><a href="3-bs2.html#SP6" class="function-link"><span class="function-syntax">BuildSteps::shell</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">command</span><span class="plain-syntax">, </span><span class="identifier-syntax">BM</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-bs2.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the skill internally if that's called for</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the skill internally if that's called for</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -180,7 +180,7 @@ inside the <span class="extract"><span class="extract-syntax">inform7</span></sp
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-bs2.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This prints a shell command to <span class="extract"><span class="extract-syntax">stdout</span></span> (except when inside <span class="extract"><span class="extract-syntax">inform7</span></span>)
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This prints a shell command to <span class="extract"><span class="extract-syntax">stdout</span></span> (except when inside <span class="extract"><span class="extract-syntax">inform7</span></span>)
 and also executes it if the methodology allows, returning the result. Note
 that shell commands return 0 to indicate happiness.
 </p>

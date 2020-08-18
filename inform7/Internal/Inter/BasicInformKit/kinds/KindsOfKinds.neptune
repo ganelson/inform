@@ -1,0 +1,32 @@
++VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:value
+plural:values
+
++POINTER_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+! for internal use only: cannot be named in source text
+
++STORED_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+! for internal use only: cannot be named in source text
+
++ARITHMETIC_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:arithmetic value
+plural:arithmetic values
+
++REAL_ARITHMETIC_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:real arithmetic value
+plural:real arithmetic values
+
++ENUMERATED_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:enumerated value
+plural:enumerated values
+
++SAYABLE_VALUE_TY:
+apply-macro:#KIND-OF-KIND
+singular:sayable value
+plural:sayable values

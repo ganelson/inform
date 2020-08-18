@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-gnr.html#SP1">&#167;1. Genres</a></li><li><a href="2-gnr.html#SP5">&#167;5. Method functions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Genres. </b>Each different genre of work managed by Inbuild is represented by an instance
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Genres. </b>Each different genre of work managed by Inbuild is represented by an instance
 of the following structure. (At present, then, there are exactly seven
 instances of it: nothing the user can do at the command line can change
 that total.) A work unambiguously specifies what genre it has by means
@@ -104,7 +104,7 @@ the instance <span class="extract"><span class="extract-syntax">kit_genre</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inbuild_genre is accessed in 2/rqr, 3/bg, 3/bs2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Some genres of work, such as kits and extensions, can be stored in nests;
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Some genres of work, such as kits and extensions, can be stored in nests;
 others, such as Inform projects, cannot. Whether a copy can be stored in a
 nest depends only on its genre.
 </p>
@@ -115,7 +115,7 @@ nest depends only on its genre.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">G</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stored_in_nests</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The requirements parser needs to identify genres by name, so:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The requirements parser needs to identify genres by name, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -127,7 +127,7 @@ nest depends only on its genre.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>For sorting of search results:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>For sorting of search results:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -138,7 +138,7 @@ nest depends only on its genre.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Method functions. </b>And here are the method functions which a genre can, optionally, provide.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Method functions. </b>And here are the method functions which a genre can, optionally, provide.
 All of these act on a given work, or a given copy of a work, having the
 genre in question.
 </p>
@@ -153,7 +153,7 @@ by Emily Short".
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_WRITE_WORK_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_work</span><span class="plain-syntax"> *</span><span class="identifier-syntax">work</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This looks at a textual file locator, which might be a pathname or a
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This looks at a textual file locator, which might be a pathname or a
 filename, to see if it might refer to a copy of a work of the given genre.
 If it does, an <span class="extract"><span class="extract-syntax">inbuild_copy</span></span> is created, and the pointer <span class="extract"><span class="extract-syntax">*C</span></span> is set to
 point to it. If not, no error is issued, and <span class="extract"><span class="extract-syntax">*C</span></span> is left unchanged.
@@ -172,7 +172,7 @@ attached to the copy for later issuing.
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> **</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ext</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">directory_status</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>This searches the nest <span class="extract"><span class="extract-syntax">N</span></span> for anything which (a) looks like a copy of a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>This searches the nest <span class="extract"><span class="extract-syntax">N</span></span> for anything which (a) looks like a copy of a
 work of our genre, and (b) meets the given requirements. If a genre does
 not provide this method, then nothing of that genre can ever appear in
 <span class="extract"><span class="extract-syntax">-matching</span></span> search results.
@@ -185,7 +185,7 @@ not provide this method, then nothing of that genre can ever appear in
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_results</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Some genres of work involve Inform source text &mdash; Inform projects and
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Some genres of work involve Inform source text &mdash; Inform projects and
 extensions, for example. Reading in source text is fairly fast, but it's not
 an instant process, and we don't automatically perform it. (When an extension
 is scanned for metadata during claiming, only the opening line is looked at.)
@@ -205,7 +205,7 @@ of it from there.
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>At the Graph Construction phase of Inbuild, each copy is offered the chance
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>At the Graph Construction phase of Inbuild, each copy is offered the chance
 to finalise its internal representation. For example, this may be when its
 build graph is constructed, because we can now know for sure that there are
 no further unsuspected dependencies.
@@ -221,7 +221,7 @@ provides it) which has been claimed by Inbuild.
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This method is called when a copy is about to be built or have its graph
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This method is called when a copy is about to be built or have its graph
 described, for example by <span class="extract"><span class="extract-syntax">-graph</span></span>, <span class="extract"><span class="extract-syntax">-build</span></span> and <span class="extract"><span class="extract-syntax">-rebuild</span></span>. Nothing actually
 needs to be done, but if any work is needed before building can take place,
 now's the time; and the vertex to build from can be altered by setting <span class="extract"><span class="extract-syntax">*V</span></span>.
@@ -236,7 +236,7 @@ is ignored for other inspection options such as <span class="extract"><span clas
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENRE_BUILDING_SOON_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_genre</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="reserved-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">build_vertex</span><span class="plain-syntax"> **</span><span class="identifier-syntax">V</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>This duplicates, or syncs, a copy <span class="extract"><span class="extract-syntax">C</span></span> of a work in our genre, placing it
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>This duplicates, or syncs, a copy <span class="extract"><span class="extract-syntax">C</span></span> of a work in our genre, placing it
 at a canonical location inside the given nest <span class="extract"><span class="extract-syntax">N</span></span>. In effect, it implements
 the Inbuild command-line options <span class="extract"><span class="extract-syntax">-copy-to N</span></span> and <span class="extract"><span class="extract-syntax">-sync-to N</span></span>.
 </p>

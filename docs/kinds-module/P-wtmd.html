@@ -367,7 +367,7 @@ which determines whether \(K\) is definite.
 </li><li>&#9679; New base kinds can be created either by calling <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>,<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> or in
 the process of reading in "Neptune files".<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> New constructors can only
 be made the latter way. See <a href="4-nf.html#SP1" class="internal">NeptuneFiles::load</a>, which sends individual commands
-to <a href="4-kc.html#SP12" class="internal">KindCommands::despatch</a>, which in turn deals with the low-level code in
+to <a href="4-nf.html#SP1" class="internal">NeptuneFiles::read_command</a>, which in turn deals with the low-level code in
 the <a href="4-kc2.html" class="internal">Kind Constructors</a> section.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
 </li><li>&#9679; It is possible to move kinds within the lattice of kinds, i.e., to change
 their hierarchical relationship, even after creation. See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.

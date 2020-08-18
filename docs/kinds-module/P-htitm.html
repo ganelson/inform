@@ -127,7 +127,7 @@ the case of somebody making "region" a subkind of some other kind of object.)
 See <a href="2-knd.html#SP21" class="internal">Kinds::make_subkind</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NEW_BASE_KINDS_CALLBACK</span></span> is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See <a href="2-knd.html#SP20" class="internal">Kinds::new_base</a>
-and <a href="4-kc.html#SP12" class="internal">KindCommands::despatch</a> &mdash; there are two ways this can happen.
+and <a href="4-nf.html#SP1" class="internal">NeptuneFiles::read_command</a> &mdash; there are two ways this can happen.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK</span></span> is called when the kind "natural
 language" is created (if it is): see <a href="2-fk.html#SP13" class="internal">FamiliarKinds::notice_new_kind</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_KINDS_CALLBACK</span></span> is called when a syntax error is found, and can

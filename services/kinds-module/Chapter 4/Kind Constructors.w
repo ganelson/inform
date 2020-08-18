@@ -3,27 +3,20 @@
 The mechanism by which Inform records the characteristics of different
 kinds.
 
-@ Constructors are divided into four:
+@ Constructors are divided into four groups:
 
 @d KIND_VARIABLE_GRP 1 /* just |CON_KIND_VARIABLE| on its own */
-@d KIND_OF_KIND_GRP 2 /* an indefinite base constructor such as "arithmetic value" */
-@d BASE_CONSTRUCTOR_GRP 3 /* a definite one such as "number" */
-@d PROPER_CONSTRUCTOR_GRP 4 /* with positive arity, such as "list of K" */
+@d KIND_OF_KIND_GRP 2 /* such as |arithmetic value| */
+@d BASE_CONSTRUCTOR_GRP 3 /* such as |number| */
+@d PROPER_CONSTRUCTOR_GRP 4 /* with positive arity, such as "list of ..." */
 
-@ Inform provides much more extensive facilities for kinds than most
-programming languages do for their types. As far as possible, we want to
-write this code in a generalised way, rather than writing hacky routines
-which each apply to a fixed, named kind. This won't always be possible, it's
-true, but we can try. The only way to achieve this is to store an enormous
-rag-bag of properties for every kind constructor, showing exactly how it
-behaves.
+@ Besides all the properties of kinds used in this module, Inform also needs
+to store further metadata in order to be able to make the extensive run-time
+code needed to support all these kinds in actual programs. All of this means
+that a //kind_constructor// object is a great big rag-bag of properties, some
+set by commands in Neptune files, others set by calls from Inform.
 
-All of which is by way of apology for the enormous size of the |kind_constructor|
-structure. It looks impossibly large to fill out, and this is why we have the
-kind interpreter (see next section) to give the I6 template the ability to
-forge new kind constructors.
-
-@d LOWEST_INDEX_PRIORITY 100
+So, deep breath:
 
 @d MAX_KIND_CONSTRUCTION_ARITY 2
 
@@ -33,7 +26,7 @@ typedef struct kind_constructor {
 	int group; /* one of the four values above */
 
 	/* A: how this came into being */
-	int defined_in_source_text; /* rather than by I6 template files, i.e., by being built-in */
+	int defined_in_source_text; /* rather than by Neptune files, i.e., by being built-in */
 	int is_incompletely_defined; /* newly defined and ambiguous as yet */
 	struct parse_node *where_defined_in_source_text; /* if so */
 	struct kind *stored_as; /* currently unused: if this is a typedef for some construction */
@@ -51,7 +44,7 @@ typedef struct kind_constructor {
 
 	/* D: how constant values of this kind are expressed */
 	struct literal_pattern *ways_to_write_literals; /* list of ways to write this */
-	int named_values_created_with_assertions; /* such as "Train Arrival is a scene." */
+	int created_with_assertions; /* such as "Train Arrival is a scene." */
 	struct table *named_values_created_with_table; /* alternatively... */
 	int next_free_value; /* to make distinguishable instances of this kind */
 	int constant_compilation_method; /* one of the |*_CCM| values */
@@ -71,8 +64,8 @@ typedef struct kind_constructor {
 	int dimensional_form_fixed; /* whether they are derived */
 
 	/* H: representing this kind at run-time */
-	int weak_kind_ID; /* as used at run-time by the I6 template */
-	struct text_stream *name_in_template_code; /* an I6 identifier */
+	int weak_kind_ID; /* as used at run-time by Inter code */
+	struct text_stream *name_in_template_code; /* an Inter identifier */
 	int class_number; /* for classes of object */
 	#ifdef CORE_MODULE
 	struct inter_name *con_iname;
@@ -84,9 +77,9 @@ typedef struct kind_constructor {
 	int multiple_block; /* TRUE for flexible-size values stored on the heap */
 	int heap_size_estimate; /* typical number of bytes used */
 	int can_exchange; /* with external files and therefore other story files */
-	struct text_stream *distinguisher; /* I6 routine to see if values distinguishable */
+	struct text_stream *distinguisher; /* Inter routine to see if values distinguishable */
 	struct kind_constructor_comparison_schema *first_comparison_schema; /* list of these */
-	struct text_stream *loop_domain_schema; /* how to compile an I6 loop over the instances */
+	struct text_stream *loop_domain_schema; /* how to compile a loop over the instances */
 
 	/* J: printing and parsing values at run-time */
 	#ifdef BYTECODE_MODULE
@@ -100,12 +93,12 @@ typedef struct kind_constructor {
 	struct inter_name *ranger_iname;
 	struct inter_name *trace_iname;
 	#endif
-	struct text_stream *dt_I6_identifier; /* an I6 identifier used for compiling printing rules */
-	struct text_stream *name_of_printing_rule_ACTIONS; /* ditto but for ACTIONS testing command */
+	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
+	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
 	struct grammar_verb *understand_as_values; /* used when parsing such values */
-	int has_i6_GPR; /* a general parsing routine exists in the I6 code for this */
-	int I6_GPR_needed; /* and is actually required */
-	struct text_stream *explicit_i6_GPR; /* routine name, when not compiled automatically */
+	int has_GPR; /* a general parsing routine exists in the Inter code for this */
+	int needs_GPR; /* and is actually required */
+	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
 	struct text_stream *recognition_only_GPR; /* for recognising an explicit value as preposition */
 
 	/* K: indexing and documentation */
@@ -121,6 +114,37 @@ typedef struct kind_constructor {
 
 	CLASS_DEFINITION
 } kind_constructor;
+
+@ A few of the settings connect pairs of kinds together, so structures like
+the following are also needed.
+
+=
+typedef struct kind_constructor_casting_rule {
+	struct text_stream *cast_from_kind_unparsed; /* to the one which has the rule */
+	struct kind_constructor *cast_from_kind; /* to the one which has the rule */
+	struct kind_constructor_casting_rule *next_casting_rule;
+} kind_constructor_casting_rule;
+
+@ And this is the analogous structure for giving Inter schemas to compare
+data of two different kinds:
+
+=
+typedef struct kind_constructor_comparison_schema {
+	struct text_stream *comparator_unparsed;
+	struct kind_constructor *comparator;
+	struct text_stream *comparison_schema;
+	struct kind_constructor_comparison_schema *next_comparison_schema;
+} kind_constructor_comparison_schema;
+
+@ And this is the analogous structure for giving Inter schemas to compare
+data of two different kinds:
+
+=
+typedef struct kind_constructor_instance {
+	struct text_stream *instance_of_this_unparsed;
+	struct kind_constructor *instance_of_this;
+	struct kind_constructor_instance *next_instance_rule;
+} kind_constructor_instance;
 
 @ The "tupling" of an argument is the extent to which an argument can be
 allowed to hold a variable-length list of kinds, rather than a single one.
@@ -145,19 +169,11 @@ int next_free_data_type_ID = 2; /* i.e., leaving room for |UNKNOWN_TY| to be 1 a
 kind *latest_base_kind_of_value = NULL;
 
 @h Creation.
-Constructors come from two sources. Built-in ones like "number" or
-"list of K" mainly come from the commands given in the "Load-Core.i6t"
-template file, which consists almost entirely of commands for the kind
-interpreter, which sets up most of the above. (Similar files for other
-language plugins add the remainder.) Thus a great deal can be changed about
-the interplay of kinds without altering the compiler itself.
-
-New kinds created by the source text, by sentences like "Air pressure is a
-kind of value", are always base constructors (i.e., they have arity 0); at
-present there's no way to create new kinds of kinds, or new constructors, in
-Inform source text. (So an extension wanting to make new constructors, say
-to add new "collection classes" to Inform, will have to get its hands
-dirty with Inform 6 insertions and use of the kind interpreter.)
+Constructors come from two sources. Built-in ones like |number| or
+|list of K| come from commands in //Neptune Files//, while source-created
+ones ("Air pressure is a kind of value") result in calls here from
+//Kinds::new_base// -- which, as the name suggests, can only make
+base kinds, not proper constructors.
 
 Here |super| will be the super-constructor, the one which this will construct
 subkinds of. In practice this will be |NULL| when |CON_VALUE| is created, and
@@ -198,8 +214,9 @@ kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor 
 
 @ If our new constructor is wholly new, and isn't a subkind of something else,
 we need to initialise the entire data structure; but note that, having done so,
-we ask the kind interpreter to load it up with any defaults set in the
-I6 template files.
+we apply any defaults set in Neptune files.
+
+@d LOWEST_INDEX_PRIORITY 100
 
 @<Fill in a new constructor@> =
 	con->dt_tag = NULL;
@@ -227,7 +244,7 @@ I6 template files.
 
 	/* D: how constant values of this kind are expressed */
 	con->ways_to_write_literals = NULL;
-	con->named_values_created_with_assertions = FALSE;
+	con->created_with_assertions = FALSE;
 	con->named_values_created_with_table = NULL;
 	con->next_free_value = 1;
 	con->constant_compilation_method = NONE_CCM;
@@ -269,8 +286,8 @@ I6 template files.
 	con->loop_domain_schema = NULL;
 
 	/* J: printing and parsing values at run-time */
-	con->dt_I6_identifier = Str::new();
-	con->name_of_printing_rule_ACTIONS = Str::new();
+	con->print_identifier = Str::new();
+	con->ACTIONS_identifier = Str::new();
 	#ifdef BYTECODE_MODULE
 	con->kind_GPR_iname = NULL;
 	con->instance_GPR_iname = NULL;
@@ -289,9 +306,9 @@ I6 template files.
 	#endif
 
 	con->understand_as_values = NULL;
-	con->has_i6_GPR = FALSE;
-	con->I6_GPR_needed = FALSE;
-	con->explicit_i6_GPR = NULL;
+	con->has_GPR = FALSE;
+	con->needs_GPR = FALSE;
+	con->explicit_GPR_identifier = NULL;
 	con->recognition_only_GPR = NULL;
 
 	/* K: indexing and documentation */
@@ -305,11 +322,11 @@ I6 template files.
 	con->indexed_grey_if_empty = FALSE;
 	con->documentation_reference = NULL;
 
-	KindCommands::play_back_kind_macro(T,
-		KindCommands::parse_kind_macro_name(I"#DEFAULTS"), con);
+	NeptuneMacros::play_back(T,
+		NeptuneMacros::parse_name(I"#DEFAULTS"), con, NULL);
 	if (Str::len(initialisation_macro) > 0)
-		KindCommands::play_back_kind_macro(T,
-			KindCommands::parse_kind_macro_name(initialisation_macro), con);
+		NeptuneMacros::play_back(T,
+			NeptuneMacros::parse_name(initialisation_macro), con, NULL);
 
 @ However, if we create our constructor as a subkind, like so:
 
@@ -363,15 +380,15 @@ noun *Kinds::Constructors::get_noun(kind_constructor *con) {
 	return con->dt_tag;
 }
 
-@h Names in the I6 template.
+@h Inter identifiers.
 An identifier like |WHATEVER_TY|, then, begins life in a definition inside an
-I6 template file; becomes attached to a constructor here; and finally winds up
-back in I6 code, because we define it as the constant for the weak kind ID
+Neptune file; becomes attached to a constructor here; and finally winds up
+back in Inter code, because we define it as the constant for the weak kind ID
 of the kind which the constructor makes:
 
 =
 #ifdef CORE_MODULE
-void Kinds::Constructors::compile_I6_constants(void) {
+void Kinds::Constructors::emit_constants(void) {
 	kind_constructor *con;
 	LOOP_OVER(con, kind_constructor) {
 		text_stream *tn = Kinds::Constructors::name_in_template_code(con);
@@ -452,8 +469,8 @@ require running macros in the kind interpreter:
 =
 int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		KindCommands::play_back_kind_macro(T,
-			KindCommands::parse_kind_macro_name(I"#UNIT"), con);
+		NeptuneMacros::play_back(T,
+			NeptuneMacros::parse_name(I"#UNIT"), con, NULL);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_arithmetic(con)) return TRUE; /* i.e., if it succeeded */
@@ -462,11 +479,11 @@ int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *c
 
 int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		KindCommands::play_back_kind_macro(T,
-			KindCommands::parse_kind_macro_name(I"#ENUMERATION"), con);
+		NeptuneMacros::play_back(T,
+			NeptuneMacros::parse_name(I"#ENUMERATION"), con, NULL);
 		if (con->linguistic)
-			KindCommands::play_back_kind_macro(T,
-				KindCommands::parse_kind_macro_name(I"#LINGUISTIC"), con);
+			NeptuneMacros::play_back(T,
+				NeptuneMacros::parse_name(I"#LINGUISTIC"), con, NULL);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_enumeration(con)) return TRUE; /* i.e., if it succeeded */
@@ -477,8 +494,8 @@ int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constru
 
 =
 void Kinds::Constructors::convert_to_real(parse_node_tree *T, kind_constructor *con) {
-	KindCommands::play_back_kind_macro(T,
-		KindCommands::parse_kind_macro_name(I"#REAL"), con);
+	NeptuneMacros::play_back(T,
+		NeptuneMacros::parse_name(I"#REAL"), con, NULL);
 }
 
 @ A few base kinds are marked as "linguistic", which simply enables us to fence

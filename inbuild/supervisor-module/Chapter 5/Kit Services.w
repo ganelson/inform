@@ -222,7 +222,7 @@ void Kits::load_built_in_kind_constructors(inform_kit *K) {
 		pathname *P = Pathnames::down(K->as_copy->location_if_path, I"kinds");
 		filename *F = Filenames::in(P, segment);
 		LOG("Loading kinds definitions from %f\n", F);
-		I6T::interpret_kindt(F);
+		I6T::interpret_neptune(F);
 	}
 }
 #endif

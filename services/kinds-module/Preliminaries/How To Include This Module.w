@@ -66,7 +66,7 @@ See //Kinds::make_subkind//.
 
 (*) |NEW_BASE_KINDS_CALLBACK| is called when a new base kind (properly
 speaking, a new arity-0 kind constructor) is made. See //Kinds::new_base//
-and //KindCommands::despatch// -- there are two ways this can happen.
+and //NeptuneFiles::read_command// -- there are two ways this can happen.
 
 (*) |NOTIFY_NATURAL_LANGUAGE_KINDS_CALLBACK| is called when the kind "natural
 language" is created (if it is): see //FamiliarKinds::notice_new_kind//.

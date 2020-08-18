@@ -261,7 +261,7 @@ which determines whether $K$ is definite.
 (*) New base kinds can be created either by calling //Kinds::new_base//,[2] or in
 the process of reading in "Neptune files".[3] New constructors can only
 be made the latter way. See //NeptuneFiles::load//, which sends individual commands
-to //KindCommands::despatch//, which in turn deals with the low-level code in
+to //NeptuneFiles::read_command//, which in turn deals with the low-level code in
 the //Kind Constructors// section.[4]
 
 (*) It is possible to move kinds within the lattice of kinds, i.e., to change

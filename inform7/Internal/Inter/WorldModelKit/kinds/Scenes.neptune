@@ -6,7 +6,7 @@ plural:scenes
 conforms-to:STORED_VALUE_TY
 conforms-to:ENUMERATED_VALUE_TY
 conforms-to:SAYABLE_VALUE_TY
-named-values-created-with-assertions:yes
+created-with-assertions:yes
 default-value: 0
 
 loop-domain-schema:for (*1=1: *1<=NUMBER_SCENES_CREATED: *1++)

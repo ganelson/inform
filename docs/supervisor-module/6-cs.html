@@ -67,7 +67,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inbuild Modules</a></li><li><a href="index.html">supervisor</a></li><li><a href="index.html#6">Chapter 6: Inform Source Text</a></li><li><b>Control Structures</b></li></ul></div>
 <p class="purpose">To specify the syntax of control structures such as repeat, if and otherwise.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Certain phrases are "control structures": otherwise, if, repeat, while and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Certain phrases are "control structures": otherwise, if, repeat, while and
 so on. These have different expectations in terms of the layout of surrounding
 phrases in rule or phrase definitions, and the following structure defines
 the relevant behaviour. (The contents are static.)
@@ -88,7 +88,7 @@ the relevant behaviour. (The contents are static.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure control_structure_phrase is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">control_structure_phrase</span><span class="plain-syntax"> *</span><span class="function-syntax">ControlStructures::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ControlStructures::new</span></span>:<br/><a href="6-cs.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mnemonic</span><span class="plain-syntax">) {</span>
@@ -105,7 +105,7 @@ the relevant behaviour. (The contents are static.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">csp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Some cryptic mnemonics for logging the invocation tree:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Some cryptic mnemonics for logging the invocation tree:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -114,7 +114,7 @@ the relevant behaviour. (The contents are static.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">csp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mnemonic</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following set is built in to the Inform language; Basic Inform and such
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following set is built in to the Inform language; Basic Inform and such
 extensions cannot extend it.
 </p>
 
@@ -124,7 +124,7 @@ extensions cannot extend it.
 <span class="plain-syntax">    *</span><span class="identifier-syntax">otherwise_if_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">default_case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">case_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">say_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">now_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And this is where they are all created:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And this is where they are all created:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -177,7 +177,7 @@ extensions cannot extend it.
 <span class="plain-syntax">    </span><span class="identifier-syntax">instead_CSP</span><span class="plain-syntax"> = </span><a href="6-cs.html#SP2" class="function-link"><span class="function-syntax">ControlStructures::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"INS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Control structures such as "if" act as a sort of super-punctuation inside
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Control structures such as "if" act as a sort of super-punctuation inside
 rule and phrase definitions, and in particular they affect the actual
 punctuation of the sentences there (consider the rules about colons versus
 semicolons). So, though it's still early in Inform's run, we need to seek
@@ -216,7 +216,7 @@ overlapping with this, and they need to match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">now</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { NOW_SIGF, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>This is used to see if an "if" is being used with the comma notation:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>This is used to see if an "if" is being used with the comma notation:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -224,7 +224,7 @@ overlapping with this, and they need to match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">......</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">,</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">......</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>This is used to see if an "if" is being used with the comma notation:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>This is used to see if an "if" is being used with the comma notation:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -233,7 +233,7 @@ overlapping with this, and they need to match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">instead</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Finally, this is used to see if a control structure opens a block:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Finally, this is used to see if a control structure opens a block:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -241,7 +241,7 @@ overlapping with this, and they need to match.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begin</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And some miscellaneous provisions:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>And some miscellaneous provisions:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

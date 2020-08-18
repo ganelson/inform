@@ -488,7 +488,7 @@ void Kinds::make_subkind(kind *sub, kind *super) {
 			LOG("Tried to make %u a kind of %u\n", sub, super);
 			if (problem_count == 0)
 				KindsModule::problem_handler(KindUnalterable_KINDERROR,
-					Kinds::Behaviour::get_superkind_set_at(sub), super, existing);
+					Kinds::Behaviour::get_superkind_set_at(sub), NULL, super, existing);
 			break;
 		case SOMETIMES_MATCH:
 			Kinds::make_subkind_inner(sub, super);
@@ -502,7 +502,7 @@ void Kinds::make_subkind_inner(kind *sub, kind *super) {
 		if (Kinds::eq(K, sub)) {
 			if (problem_count == 0)
 				KindsModule::problem_handler(KindsCircular_KINDERROR,
-					Kinds::Behaviour::get_superkind_set_at(super), super,
+					Kinds::Behaviour::get_superkind_set_at(super), NULL, super,
 					Latticework::super(sub));
 			return;
 		}
