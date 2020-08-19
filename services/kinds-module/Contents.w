@@ -24,9 +24,10 @@ Chapter 3: Arithmetic
 	Scaled Arithmetic Values
 
 Chapter 4: Constructors
+	A Brief Guide to Neptune
 	Neptune Files
-	Macros
 	Neptune Syntax
+	Macros
 	Star Templates
 	Kind Commands
 	Kind Constructors

@@ -3,8 +3,7 @@
 To apply a given command to a given kind constructor.
 
 @ =
-void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
-	kind_constructor *con) {
+void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	if (stc.completed) return;
 	LOGIF(KIND_CREATIONS, "apply: %s (%d/%d/%S/%S) to %d/%S\n",
 		stc.which_kind_command->text_of_command,
@@ -29,10 +28,10 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 @<Apply kind macros or transcribe kind templates on request@> =
 	switch (tcc) {
 		case invent_source_text_KCC:
-			StarTemplates::transcribe(T, stc.template_argument, con, stc.origin);
+			StarTemplates::note(stc.template_argument, con, stc.origin);
 			return;
 		case apply_macro_KCC:
-			NeptuneMacros::play_back(T, stc.macro_argument, con, stc.origin);
+			NeptuneMacros::play_back(stc.macro_argument, con, stc.origin);
 			return;
 	}
 
@@ -50,7 +49,6 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 		SET_BOOLEAN_FIELD(indexed_grey_if_empty)
 		SET_BOOLEAN_FIELD(is_incompletely_defined)
 		SET_BOOLEAN_FIELD(multiple_block)
-		SET_BOOLEAN_FIELD(created_with_assertions)
 
 		SET_INTEGER_FIELD(heap_size_estimate)
 		SET_INTEGER_FIELD(index_priority)
@@ -59,19 +57,19 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 		SET_CCM_FIELD(constant_compilation_method)
 
 		SET_TEXTUAL_FIELD(default_value)
-		SET_TEXTUAL_FIELD(distinguisher)
+		SET_TEXTUAL_FIELD(distinguishing_routine)
 		SET_TEXTUAL_FIELD(documentation_reference)
 		SET_TEXTUAL_FIELD(explicit_GPR_identifier)
 		SET_TEXTUAL_FIELD(index_default_value)
 		SET_TEXTUAL_FIELD(index_maximum_value)
 		SET_TEXTUAL_FIELD(index_minimum_value)
 		SET_TEXTUAL_FIELD(loop_domain_schema)
-		SET_TEXTUAL_FIELD(recognition_only_GPR)
+		SET_TEXTUAL_FIELD(recognition_routine)
 		SET_TEXTUAL_FIELD(specification_text)
 	}
 
 @<A few kind commands contribute to linked lists in the constructor structure@> =
-	if (tcc == cast_KCC) {
+	if (tcc == compatible_with_KCC) {
 		#ifdef CORE_MODULE
 		if ((Str::eq(stc.constructor_argument, I"SNIPPET_TY")) &&
 			(Plugins::Manage::plugged_in(parsing_plugin) == FALSE)) return;
@@ -106,9 +104,6 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 		case terms_KCC:
 			@<Parse the constructor arity text@>;
 			return;
-		case description_KCC:
-			con->constructor_description = Str::duplicate(stc.textual_argument);
-			return;
 		case comparison_routine_KCC:
 			if (Str::len(stc.textual_argument) > 31)
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
@@ -119,7 +114,7 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->print_identifier = Str::duplicate(stc.textual_argument);
 			return;
-		case printing_routine_actions_KCC:
+		case printing_routine_for_debugging_KCC:
 			if (Str::len(stc.textual_argument) > 31)
 				NeptuneFiles::error(stc.textual_argument, I"overlong identifier", stc.origin);
 			else con->ACTIONS_identifier = Str::duplicate(stc.textual_argument);
@@ -130,8 +125,7 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 			if (length == 1) {
 				Kinds::mark_vocabulary_as_kind(array[0], Kinds::base_construction(con));
 			} else {
-				int i;
-				for (i=0; i<length; i++) {
+				for (int i=0; i<length; i++) {
 					Vocabulary::set_flags(array[i], KIND_SLOW_MC);
 					NTI::mark_vocabulary(array[i], <k-kind>);
 				}
@@ -165,10 +159,6 @@ void KindCommands::apply(parse_node_tree *T, single_kind_command stc,
 			}
 			return;
 		}
-		case modifying_adjective_KCC:
-			NeptuneFiles::error(NULL,
-				I"the modifying-adjective syntax has been withdrawn", stc.origin);
-			return;
 	}
 
 @<Parse the constructor arity text@> =

@@ -14,10 +14,18 @@ builtin protocol VALUE_TY {
 			plural: sayable values
 		}
 
+			! This invented sentence will be added, mutatum mutandis, for
+			! each understandable kind which is created:
+
+			invention *UNDERSTOOD-VARIABLE {
+				<kind> understood is a <kind> which varies.
+			}
+
 			builtin protocol UNDERSTANDABLE_VALUE_TY {
 				conforms-to: SAYABLE_VALUE_TY
 				singular: understandable value
 				plural: understandable values
+				invent-source-text: *UNDERSTOOD-VARIABLE
 			}
 
 				builtin protocol ARITHMETIC_VALUE_TY {

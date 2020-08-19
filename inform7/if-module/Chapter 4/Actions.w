@@ -259,7 +259,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 
 	Vocabulary::set_flags(Lexer::word(Wordings::first_wn(W)), ACTION_PARTICIPLE_MC);
 
-	Kinds::Behaviour::new_enumerated_value(Task::syntax_tree(), K_action_name);
+	Kinds::Behaviour::new_enumerated_value(K_action_name);
 
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
 

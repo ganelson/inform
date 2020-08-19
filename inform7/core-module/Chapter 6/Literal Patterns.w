@@ -2459,7 +2459,7 @@ does not throw a problem message as being a bar which is out of range
 				"and not the built-in ones like 'number' or 'time'.");
 		return owner;
 	}
-	if (Kinds::Behaviour::convert_to_unit(Task::syntax_tree(), K) == FALSE) {
+	if (Kinds::Behaviour::convert_to_unit(K) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPEnumeration),
 			"this is a kind of value which already has named values",
 			"so it can't have a basically numerical form as well.");
@@ -2580,7 +2580,7 @@ not really distort matters.
 
 @<Adopt real arithmetic if this is called for@> =
 	if (integer_scaling == FALSE) {
-		Kinds::Behaviour::convert_to_real(Task::syntax_tree(), K);
+		Kinds::Behaviour::convert_to_real(K);
 		Kinds::Scalings::convert_to_real(&(lp->scaling));
 	}
 

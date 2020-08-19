@@ -9,30 +9,28 @@ on those commands. The name derives from the Place Neptune, Carcassonne,
 where these files were first conceived and implemented.
 
 =
-void NeptuneFiles::load(parse_node_tree *T, filename *F) {
+void NeptuneFiles::load(filename *F) {
 	parse_node *cs = current_sentence;
 	current_sentence = NULL;
 	TextFiles::read(F, FALSE, "unable to read kinds file", TRUE,
-		&NeptuneFiles::load_kinds_helper, NULL, T);
+		&NeptuneFiles::load_kinds_helper, NULL, NULL);
 	current_sentence = cs;
 }
 
 void NeptuneFiles::load_kinds_helper(text_stream *text, text_file_position *tfp, void *state) {
-	parse_node_tree *T = (parse_node_tree *) state;
-	NeptuneFiles::read_command(T, text, tfp);
+	NeptuneFiles::read_command(text, tfp);
 }
 
-void NeptuneFiles::read_command(parse_node_tree *T, text_stream *command,
-	text_file_position *tfp) {
+void NeptuneFiles::read_command(text_stream *command, text_file_position *tfp) {
 	Str::trim_white_space(command);
 	if ((Str::get_first_char(command) == '!') ||
 		(Str::get_first_char(command) == 0)) return; /* skip blanks and comments */
 
-	single_kind_command stc = NeptuneSyntax::parse_command(T, command, tfp);
+	single_kind_command stc = NeptuneSyntax::parse_command(command, tfp);
 	if (stc.completed) return;
 
 	if (NeptuneMacros::recording()) NeptuneMacros::record_into_macro(stc, tfp);
-	else if (stc.defined_for) KindCommands::apply(T, stc, stc.defined_for);
+	else if (stc.defined_for) KindCommands::apply(stc, stc.defined_for);
 	else NeptuneFiles::error(command, I"kind command describes unspecified kind", tfp);
 }
 

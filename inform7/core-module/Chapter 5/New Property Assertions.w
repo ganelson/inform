@@ -47,7 +47,7 @@ automatically creates it.
 	}
 	inference_subject *owner_infs = Node::get_subject(owner_ref);
 	kind *K = InferenceSubjects::domain(owner_infs);
-	Kinds::Behaviour::convert_to_enumeration(Task::syntax_tree(), K);
+	Kinds::Behaviour::convert_to_enumeration(K);
 	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
 	property *prn = Properties::Valued::obtain(Node::get_text(p));

@@ -3,15 +3,12 @@ new base SCENE_TY {
 	singular: scene
 	plural: scenes
 
-	created-with-assertions: yes
 	default-value: 0
-
 	loop-domain-schema: for (*1=1: *1<=NUMBER_SCENES_CREATED: *1++)
-	printing-routine: PrintSceneName
 	constant-compilation-method: quantitative
-	invent-source-text: *UNDERSTOOD-VARIABLE
 
-	description: a scene
+	printing-routine: PrintSceneName
+
 	documentation-reference: kind_scene
 	index-priority: 4
 	index-default-value: the Entire Game

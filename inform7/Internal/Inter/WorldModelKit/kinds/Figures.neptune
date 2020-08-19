@@ -3,14 +3,11 @@ new base FIGURE_NAME_TY {
 	singular: figure name
 	plural: figure names
 
-	created-with-assertions: yes
 	default-value: 1
-
-	printing-routine: PrintFigureName
-	invent-source-text: *UNDERSTOOD-VARIABLE
 	constant-compilation-method: quantitative
 
-	description: the name of a figure
+	printing-routine: PrintFigureName
+
 	documentation-reference: kind_figurename
 	index-priority: 6
 	index-default-value: figure of cover

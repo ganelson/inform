@@ -5221,26 +5221,10 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'matched text' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'matched text' {nonlocal: 'matched text'(var)snippet}} {created here}
                                 COMMON_NOUN_NT'snippet that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=snippets variable-pointer(x) ]} {eval: TEST_VALUE_NT}
-                            SENTENCE_NT'the number understood -- documented at var_understood -- is '
-                                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                                PROPER_NOUN_NT'number understood' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}
-                                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
-                            SENTENCE_NT'the real number understood -- documented at var_understood -'
-                                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                                PROPER_NOUN_NT'real number understood' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'real number understood' {nonlocal: 'real number understood'(var)real number}} {created here}
-                                COMMON_NOUN_NT'real number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=real numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
-                            SENTENCE_NT'the time understood is a time that varies'
-                                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                                PROPER_NOUN_NT'time understood' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'time understood' {nonlocal: 'time understood'(var)time}} {created here}
-                                COMMON_NOUN_NT'time that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=times variable-pointer(x) ]} {eval: TEST_VALUE_NT}
                             SENTENCE_NT'the topic understood is a snippet that varies'
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'topic understood' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'topic understood' {nonlocal: 'topic understood'(var)snippet}} {created here}
                                 COMMON_NOUN_NT'snippet that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=snippets variable-pointer(x) ]} {eval: TEST_VALUE_NT}
-                            SENTENCE_NT'the truth state understood is a truth state that varies'
-                                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                                PROPER_NOUN_NT'truth state understood' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'truth state understood' {nonlocal: 'truth state understood'(var)truth state}} {created here}
-                                COMMON_NOUN_NT'truth state that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=truth states variable-pointer(x) ]} {eval: TEST_VALUE_NT}
                             SENTENCE_NT'the current item from the multiple object list is an object '
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                                 PROPER_NOUN_NT'current item from the multiple object list' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'current item from the multiple object list' {nonlocal: 'current item from the multiple object list'(var)object}} {created here}
@@ -21048,10 +21032,26 @@ ROOT_NT
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'fast route-finding'
     HEADING_NT'invented sentences' {under: H0'invented sentences'} {heading 0} {implied}
+        SENTENCE_NT'number understood is a number which varies'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'number understood' {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}
+            COMMON_NOUN_NT'number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+        SENTENCE_NT'real number understood is a real number which varies'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'real number understood' {eval: NONLOCAL_VARIABLE_NT'real number understood' {nonlocal: 'real number understood'(var)real number}} {created here}
+            COMMON_NOUN_NT'real number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=real numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+        SENTENCE_NT'truth state understood is a truth state which varies'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'truth state understood' {eval: NONLOCAL_VARIABLE_NT'truth state understood' {nonlocal: 'truth state understood'(var)truth state}} {created here}
+            COMMON_NOUN_NT'truth state which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=truth states variable-pointer(x) ]} {eval: TEST_VALUE_NT}
         SENTENCE_NT'external file understood is a external file which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'external file understood' {eval: NONLOCAL_VARIABLE_NT'external file understood' {nonlocal: 'external file understood'(var)external file}} {created here}
             COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=external files variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+        SENTENCE_NT'time understood is a time which varies'
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'time understood' {eval: NONLOCAL_VARIABLE_NT'time understood' {nonlocal: 'time understood'(var)time}} {created here}
+            COMMON_NOUN_NT'time which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=times variable-pointer(x) ]} {eval: TEST_VALUE_NT}
         SENTENCE_NT'scene understood is a scene which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'scene understood' {eval: NONLOCAL_VARIABLE_NT'scene understood' {nonlocal: 'scene understood'(var)scene}} {created here}

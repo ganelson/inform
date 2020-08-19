@@ -175,7 +175,7 @@ be done later on: see the "Instance Counts" plugin.
 	if (!(Kinds::Behaviour::is_object(K))) {
 		if (Kinds::Behaviour::has_named_constant_values(K) == FALSE)
 			internal_error("tried to make an instance value for impossible kind");
-		I->enumeration_index = Kinds::Behaviour::new_enumerated_value(Task::syntax_tree(), K);
+		I->enumeration_index = Kinds::Behaviour::new_enumerated_value(K);
 		if (cp) Instances::register_as_adjectival_constant(I, cp);
 	}
 

@@ -62,14 +62,14 @@ void NeptuneMacros::end(text_file_position *tfp) {
 commands in sequence to the relevant kind.
 
 =
-void NeptuneMacros::play_back(parse_node_tree *T, kind_macro_definition *macro,
+void NeptuneMacros::play_back(kind_macro_definition *macro,
 	kind_constructor *con, text_file_position *tfp) {
 	if (macro == NULL) NeptuneFiles::error(NULL, I"no such kind macro to play back", tfp);
 	LOGIF(KIND_CREATIONS, "Macro %S on %S (%d lines)\n",
 		macro->kind_macro_name, con->name_in_template_code, macro->kind_macro_line_count);
 	LOG_INDENT;
 	for (int i=0; i<macro->kind_macro_line_count; i++)
-		KindCommands::apply(T, macro->kind_macro_line[i], con);
+		KindCommands::apply(macro->kind_macro_line[i], con);
 	LOG_OUTDENT;
 	LOGIF(KIND_CREATIONS, "Macro %S ended\n", macro->kind_macro_name);
 }

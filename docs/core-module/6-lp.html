@@ -2772,7 +2772,7 @@ does not throw a problem message as being a bar which is out of range
 <span class="plain-syntax">                </span><span class="string-syntax">"and not the built-in ones like 'number' or 'time'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">owner</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::convert_to_unit</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::convert_to_unit</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_LPEnumeration</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"this is a kind of value which already has named values"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"so it can't have a basically numerical form as well."</span><span class="plain-syntax">);</span>
@@ -2917,7 +2917,7 @@ not really distort matters.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">integer_scaling</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Behaviour::convert_to_real</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Behaviour::convert_to_real</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Scalings::convert_to_real</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">lp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">scaling</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 </pre>

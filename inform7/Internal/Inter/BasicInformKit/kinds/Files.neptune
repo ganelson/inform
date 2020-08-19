@@ -3,14 +3,11 @@ new base EXTERNAL_FILE_TY {
 	singular: external file
 	plural: external files
 
-	created-with-assertions: yes
 	default-value: 0
-	printing-routine: PrintExternalFileName
-
-	invent-source-text: *UNDERSTOOD-VARIABLE
 	constant-compilation-method: quantitative
 
-	description: the name of a file
+	printing-routine: PrintExternalFileName
+
 	documentation-reference: kind_externalfile
 	index-priority: 6
 	index-default-value: <i>a non-file</i>

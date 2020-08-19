@@ -380,6 +380,10 @@ int ParseTreeUsage::is_phrasal(parse_node *pn) {
 	return FALSE;
 }
 
+void ParseTreeUsage::add_kind_inventions(void) {
+	StarTemplates::transcribe_all(Task::syntax_tree());
+}
+
 @h The assertion-maker's invariant.
 Hmm: "The Assertion-Maker's Invariant" might make a good magic-realism
 novel, in which an enigmatic wise man of Samarkand builds an ingenious box

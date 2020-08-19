@@ -145,18 +145,18 @@ typedef struct kind_relationship {
 	==> { fail }
 
 @<Create new unit@> =
-	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), K_value);
-	Kinds::Behaviour::convert_to_unit(syntax_tree, K);
+	kind *K = Kinds::new_base(GET_RW(<declaration-line>, 1), K_value);
+	Kinds::Behaviour::convert_to_unit(K);
 	PRINT("'%<W': ok\n", W);
 
 @<Create new enum@> =
-	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), K_value);
-	Kinds::Behaviour::convert_to_enumeration(syntax_tree, K);
+	kind *K = Kinds::new_base(GET_RW(<declaration-line>, 1), K_value);
+	Kinds::Behaviour::convert_to_enumeration(K);
 	PRINT("'%<W': ok\n", W);
 
 @<Create new base@> =
 	kind *X = RP[1];
-	kind *K = Kinds::new_base(syntax_tree, GET_RW(<declaration-line>, 1), X);
+	kind *K = Kinds::new_base(GET_RW(<declaration-line>, 1), X);
 	kind_relationship *KR = CREATE(kind_relationship);
 	KR->sub = K;
 	KR->super = X;

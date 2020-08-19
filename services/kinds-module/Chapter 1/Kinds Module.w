@@ -20,6 +20,7 @@ which use this module:
 @e kind_constructor_casting_rule_CLASS
 @e kind_constructor_instance_CLASS
 @e unit_sequence_CLASS
+@e star_invention_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dimensional_rule, 100)
@@ -32,6 +33,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_casting_rule, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_comparison_schema, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_instance, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unit_sequence, 50)
+DECLARE_CLASS(star_invention)
 
 @ Like all modules, this one must define a |start| and |end| function:
 

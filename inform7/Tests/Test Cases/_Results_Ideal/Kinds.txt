@@ -9,10 +9,10 @@
   stored value <= value
   sayable value <= value, stored value
   understandable value <= value, stored value, sayable value
-  pointer value <= value, stored value, sayable value
   arithmetic value <= value, stored value, sayable value, understandable value
   real arithmetic value <= value, stored value, sayable value, understandable value, arithmetic value
   enumerated value <= value, stored value, sayable value, understandable value
+  pointer value <= value, stored value, sayable value
   object <= value, stored value, sayable value
   number <= value, stored value, sayable value, understandable value, arithmetic value
   real number <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value
@@ -37,7 +37,7 @@
   property <= value, stored value
   table column <= value, stored value
   combination value and value <= value, stored value, sayable value, pointer value
-  nothing <= value, stored value, sayable value, understandable value, pointer value, arithmetic value, real arithmetic value, enumerated value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
+  nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, described action, action, action name, time, scene, figure name, sound name, topic, natural language, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, man, woman, animal, device, vehicle, player's holdall, command parser error
    <= value
   nothing <= value
   value, value <= value
@@ -85,10 +85,10 @@
   stored value -> value ->
   sayable value -> stored value -> value ->
   understandable value -> sayable value -> stored value -> value ->
-  pointer value -> sayable value -> stored value -> value ->
   arithmetic value -> understandable value -> sayable value -> stored value -> value ->
   real arithmetic value -> arithmetic value -> understandable value -> sayable value -> stored value -> value ->
   enumerated value -> understandable value -> sayable value -> stored value -> value ->
+  pointer value -> sayable value -> stored value -> value ->
   object -> sayable value -> stored value -> value ->
   number -> arithmetic value -> understandable value -> sayable value -> stored value -> value ->
   real number -> real arithmetic value -> arithmetic value -> understandable value -> sayable value -> stored value -> value ->

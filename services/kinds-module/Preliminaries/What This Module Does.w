@@ -262,7 +262,8 @@ which determines whether $K$ is definite.
 the process of reading in "Neptune files".[3] New constructors can only
 be made the latter way. See //NeptuneFiles::load//, which sends individual commands
 to //NeptuneFiles::read_command//, which in turn deals with the low-level code in
-the //Kind Constructors// section.[4]
+the //Kind Constructors// section.[4] See //A Brief Guide to Neptune// for a
+manual to the syntax.
 
 (*) It is possible to move kinds within the lattice of kinds, i.e., to change
 their hierarchical relationship, even after creation. See //Kinds::make_subkind//.

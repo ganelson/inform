@@ -1,14 +1,13 @@
 builtin base UNDERSTANDING_TY {
 	conforms-to: STORED_VALUE_TY
+	compatible-with: TEXT_TY
 	singular: topic
 	plural: topics
 
-	cast: TEXT_TY
 	default-value: DefaultTopic
-
-	printing-routine-actions: DA_Topic
 	constant-compilation-method: special
 
-	description: a topic
+	printing-routine-for-debugging: DA_Topic
+
 	index-priority: 0
 }

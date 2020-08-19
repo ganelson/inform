@@ -2,34 +2,6 @@
 
 To parse individual commands from Neptune files.
 
-@h Specification of the Neptune language.
-Everyone loves a mini-language, so here is one. At the top level:
-
-(a) Lines consisting of white space or whose first non-white space character is
-|!| are ignored as comments.
-
-(b) A line ending with a colon |:| opens a new block. The text before the colon
-is the title of the block, except that the first character indicates its type:
-(-1) An asterisk means that the block is a "star template": for instance,
-|*PRINTING-ROUTINE:| says the block defines a template called |PRINTING-ROUTINE|.
-A template consists of Inform 7 source text which extends as far as the next
-|*END| line.
-(-2) A sharp sign |#| means that the block is a macro definition. For
-instance, |#UNIT:| says the block defines a template called |UNIT|. A macro
-is just a sequence of lines holding kind commands which continues to
-the beginning of the next block, or the end of the file.
-(-3) And otherwise the block is a kind definition, but the optional opening
-character |+| marks the kind as one which Inform requires the existence of.
-Thus |+NUMBER_TY:|, since Inform will crash if the template doesn't set this
-kind up, but |BOOJUMS_TY:| would validly declare a new kind called
-|BOOJUMS_TY| which isn't special to any of Inform's internals. The |+| signs
-are there as a help for hackers looking at the I6 template and wondering what
-they can safely monkey with.
-
-(c) That just leaves the lines within blocks. Each of these is a usage of one
-of the commands, given in the form |operation: operand|, i.e., divided by a
-colon and some optional spacing.
-
 @h The command set.
 Each different operation is defined with a block like so:
 
@@ -58,17 +30,16 @@ typedef struct kind_command_definition {
 @e invent_source_text_KCC
 @e can_coincide_with_property_KCC
 @e can_exchange_KCC
-@e cast_KCC
+@e compatible_with_KCC
 @e comparison_routine_KCC
 @e comparison_schema_KCC
 @e constant_compilation_method_KCC
 @e default_value_KCC
-@e description_KCC
-@e distinguisher_KCC
+@e distinguishing_routine_KCC
 @e documentation_reference_KCC
 @e explicit_GPR_identifier_KCC
 @e heap_size_estimate_KCC
-@e printing_routine_actions_KCC
+@e printing_routine_for_debugging_KCC
 @e printing_routine_KCC
 @e index_default_value_KCC
 @e index_maximum_value_KCC
@@ -77,63 +48,55 @@ typedef struct kind_command_definition {
 @e index_priority_KCC
 @e conforms_to_KCC
 @e is_incompletely_defined_KCC
-@e is_template_variable_KCC
 @e loop_domain_schema_KCC
 @e modifying_adjective_KCC
 @e multiple_block_KCC
-@e created_with_assertions_KCC
 @e plural_KCC
-@e recognition_only_GPR_KCC
+@e recognition_routine_KCC
 @e singular_KCC
 @e specification_text_KCC
 @e small_block_size_KCC
-@e template_variable_number_KCC
 @e terms_KCC
 
 =
 kind_command_definition table_of_kind_commands[] = {
-	{ "can-coincide-with-property",  can_coincide_with_property_KCC,   BOOLEAN_KCA },
-	{ "can-exchange",                can_exchange_KCC,                 BOOLEAN_KCA },
-	{ "indexed-grey-if-empty",       indexed_grey_if_empty_KCC,        BOOLEAN_KCA },
-	{ "is-incompletely-defined",     is_incompletely_defined_KCC,      BOOLEAN_KCA },
-	{ "is-template-variable",        is_template_variable_KCC,         BOOLEAN_KCA },
-	{ "multiple-block",              multiple_block_KCC,               BOOLEAN_KCA },
-	{ "created-with-assertions",     created_with_assertions_KCC,      BOOLEAN_KCA },
+	{ "can-coincide-with-property",     can_coincide_with_property_KCC,     BOOLEAN_KCA },
+	{ "can-exchange",                   can_exchange_KCC,                   BOOLEAN_KCA },
+	{ "indexed-grey-if-empty",          indexed_grey_if_empty_KCC,          BOOLEAN_KCA },
+	{ "is-incompletely-defined",        is_incompletely_defined_KCC,        BOOLEAN_KCA },
+	{ "multiple-block",                 multiple_block_KCC,                 BOOLEAN_KCA },
 
-	{ "constant-compilation-method", constant_compilation_method_KCC,  CCM_KCA },
+	{ "constant-compilation-method",    constant_compilation_method_KCC,    CCM_KCA },
 
-	{ "comparison-routine",          comparison_routine_KCC,           TEXT_KCA },
-	{ "default-value",               default_value_KCC,                TEXT_KCA },
-	{ "description",                 description_KCC,                  TEXT_KCA },
-	{ "distinguisher",               distinguisher_KCC,                TEXT_KCA },
-	{ "documentation-reference",     documentation_reference_KCC,      TEXT_KCA },
-	{ "parsing-routine",             explicit_GPR_identifier_KCC,      TEXT_KCA },
-	{ "printing-routine",            printing_routine_KCC,             TEXT_KCA },
-	{ "printing-routine-actions",    printing_routine_actions_KCC,     TEXT_KCA },
-	{ "index-default-value",         index_default_value_KCC,          TEXT_KCA },
-	{ "index-maximum-value",         index_maximum_value_KCC,          TEXT_KCA },
-	{ "index-minimum-value",         index_minimum_value_KCC,          TEXT_KCA },
-	{ "loop-domain-schema",          loop_domain_schema_KCC,           TEXT_KCA },
-	{ "recognition-only-GPR",        recognition_only_GPR_KCC,         TEXT_KCA },
-	{ "specification-text",          specification_text_KCC,           TEXT_KCA },
+	{ "comparison-routine",             comparison_routine_KCC,             TEXT_KCA },
+	{ "default-value",                  default_value_KCC,                  TEXT_KCA },
+	{ "distinguishing-routine",         distinguishing_routine_KCC,         TEXT_KCA },
+	{ "documentation-reference",        documentation_reference_KCC,        TEXT_KCA },
+	{ "parsing-routine",                explicit_GPR_identifier_KCC,        TEXT_KCA },
+	{ "printing-routine",               printing_routine_KCC,               TEXT_KCA },
+	{ "printing-routine-for-debugging", printing_routine_for_debugging_KCC, TEXT_KCA },
+	{ "index-default-value",            index_default_value_KCC,            TEXT_KCA },
+	{ "index-maximum-value",            index_maximum_value_KCC,            TEXT_KCA },
+	{ "index-minimum-value",            index_minimum_value_KCC,            TEXT_KCA },
+	{ "loop-domain-schema",             loop_domain_schema_KCC,             TEXT_KCA },
+	{ "recognition-routine",            recognition_routine_KCC,            TEXT_KCA },
+	{ "specification-text",             specification_text_KCC,             TEXT_KCA },
 
-	{ "cast",                        cast_KCC,                         CONSTRUCTOR_KCA },
-	{ "comparison-schema",           comparison_schema_KCC,            CONSTRUCTOR_KCA },
-	{ "conforms-to",                 conforms_to_KCC,                  CONSTRUCTOR_KCA },
+	{ "comparison-schema",              comparison_schema_KCC,              CONSTRUCTOR_KCA },
+	{ "compatible-with",                compatible_with_KCC,                CONSTRUCTOR_KCA },
+	{ "conforms-to",                    conforms_to_KCC,                    CONSTRUCTOR_KCA },
 
-	{ "modifying-adjective",         modifying_adjective_KCC,          VOCABULARY_KCA },
-	{ "plural",                      plural_KCC,                       VOCABULARY_KCA },
-	{ "singular",                    singular_KCC,                     VOCABULARY_KCA },
+	{ "plural",                         plural_KCC,                         VOCABULARY_KCA },
+	{ "singular",                       singular_KCC,                       VOCABULARY_KCA },
 
-	{ "terms",                       terms_KCC,                        TEXT_KCA },
-	{ "heap-size-estimate",          heap_size_estimate_KCC,           NUMERIC_KCA },
-	{ "index-priority",              index_priority_KCC,               NUMERIC_KCA },
-	{ "small-block-size",            small_block_size_KCC,             NUMERIC_KCA },
-	{ "template-variable-number",    template_variable_number_KCC,     NUMERIC_KCA },
+	{ "terms",                          terms_KCC,                          TEXT_KCA },
+	{ "heap-size-estimate",             heap_size_estimate_KCC,             NUMERIC_KCA },
+	{ "index-priority",                 index_priority_KCC,                 NUMERIC_KCA },
+	{ "small-block-size",               small_block_size_KCC,               NUMERIC_KCA },
 
-	{ "invent-source-text",          invent_source_text_KCC,           TEMPLATE_KCA },
+	{ "invent-source-text",             invent_source_text_KCC,             TEMPLATE_KCA },
 
-	{ "apply-macro",                 apply_macro_KCC,                  MACRO_KCA },
+	{ "apply-macro",                    apply_macro_KCC,                    MACRO_KCA },
 
 	{ NULL, -1, NO_KCA }
 };
@@ -162,8 +125,8 @@ Each command is read in as text, parsed and stored into a modest structure.
 =
 kind_constructor *constructor_described = NULL;
 
-single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
-	text_stream *whole_command, text_file_position *tfp) {
+single_kind_command NeptuneSyntax::parse_command(text_stream *whole_command,
+	text_file_position *tfp) {
 	single_kind_command stc;
 	@<Initialise the STC to a blank command@>;
 
@@ -196,7 +159,7 @@ single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
 			else {
 				int group = -1;
 				if (Str::eq(mr.exp[1], I"punctuation")) group = PUNCTUATION_GRP;
-				else if (Str::eq(mr.exp[1], I"protocol")) group = KIND_OF_KIND_GRP;
+				else if (Str::eq(mr.exp[1], I"protocol")) group = PROTOCOL_GRP;
 				else if (Str::eq(mr.exp[1], I"base")) group = BASE_CONSTRUCTOR_GRP;
 				else if (Str::eq(mr.exp[1], I"constructor")) group = PROPER_CONSTRUCTOR_GRP;
 				if (group < 0)
@@ -261,7 +224,7 @@ single_kind_command NeptuneSyntax::parse_command(parse_node_tree *T,
 	if ((do_know == TRUE) && (should_know == FALSE))
 		NeptuneFiles::error(whole_command, I"kind command describes already-known kind", tfp);
 	constructor_described =
-		Kinds::Constructors::new(T, Kinds::get_construct(K_value), name, NULL, group);
+		Kinds::Constructors::new(Kinds::get_construct(K_value), name, NULL, group);
 	#ifdef NEW_BASE_KINDS_CALLBACK
 	if ((constructor_described != CON_KIND_VARIABLE) &&
 		(constructor_described != CON_INTERMEDIATE)) {

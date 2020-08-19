@@ -5,7 +5,6 @@ new base DESCRIPTION_OF_ACTION_TY {
 
 	constant-compilation-method: special
 
-	description: a stored action
 	index-priority: 0
 	! To represent an action test implicitly cast as a conditional rvalue
 }
@@ -19,13 +18,12 @@ new base STORED_ACTION_TY {
 	multiple-block: no
 	heap-size-estimate: 16
 	can-exchange: yes
-
-	distinguisher: STORED_ACTION_TY_Distinguish
-	printing-routine: STORED_ACTION_TY_Say
-	comparison-routine: BlkValueCompare
 	constant-compilation-method: special
 
-	description: a stored action
+	distinguishing-routine: STORED_ACTION_TY_Distinguish
+	printing-routine: STORED_ACTION_TY_Say
+	comparison-routine: BlkValueCompare
+
 	documentation-reference: kind_storedaction
 	index-default-value: waiting
 	specification-text: A stored action, which can later be tried.
@@ -37,12 +35,11 @@ new base ACTION_NAME_TY {
 	plural: action names
 
 	default-value: ##Wait
-
 	loop-domain-schema: for (*2=0,*1=ActionNumberIndexed(*2): *2<AD_RECORDS: *2++,*1=ActionNumberIndexed(*2))
-	printing-routine: SayActionName
 	constant-compilation-method: special
 
-	description: an action name
+	printing-routine: SayActionName
+
 	documentation-reference: kind_actionname
 	index-priority: 6
 	index-default-value: waiting action

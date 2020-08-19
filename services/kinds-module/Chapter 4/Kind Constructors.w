@@ -6,7 +6,7 @@ kinds.
 @ Constructors are divided into four groups:
 
 @d PUNCTUATION_GRP 1 /* used in the construction of other kinds only */
-@d KIND_OF_KIND_GRP 2 /* such as |arithmetic value| */
+@d PROTOCOL_GRP 2 /* such as |arithmetic value| */
 @d BASE_CONSTRUCTOR_GRP 3 /* such as |number| */
 @d PROPER_CONSTRUCTOR_GRP 4 /* with positive arity, such as "list of ..." */
 
@@ -43,7 +43,6 @@ typedef struct kind_constructor {
 
 	/* D: how constant values of this kind are expressed */
 	struct literal_pattern *ways_to_write_literals; /* list of ways to write this */
-	int created_with_assertions; /* such as "Train Arrival is a scene." */
 	struct table *named_values_created_with_table; /* alternatively... */
 	int next_free_value; /* to make distinguishable instances of this kind */
 	int constant_compilation_method; /* one of the |*_CCM| values */
@@ -76,7 +75,7 @@ typedef struct kind_constructor {
 	int multiple_block; /* TRUE for flexible-size values stored on the heap */
 	int heap_size_estimate; /* typical number of bytes used */
 	int can_exchange; /* with external files and therefore other story files */
-	struct text_stream *distinguisher; /* Inter routine to see if values distinguishable */
+	struct text_stream *distinguishing_routine; /* Inter routine to see if values distinguishable */
 	struct kind_constructor_comparison_schema *first_comparison_schema; /* list of these */
 	struct text_stream *loop_domain_schema; /* how to compile a loop over the instances */
 
@@ -97,11 +96,10 @@ typedef struct kind_constructor {
 	struct grammar_verb *understand_as_values; /* used when parsing such values */
 	int needs_GPR; /* a GPR is actually required to be compiled */
 	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
-	struct text_stream *recognition_only_GPR; /* for recognising an explicit value as preposition */
+	struct text_stream *recognition_routine; /* for recognising an explicit value as preposition */
 
 	/* K: indexing and documentation */
-	struct text_stream *specification_text; /* text for parse_node */
-	struct text_stream *constructor_description; /* text used in index pages */
+	struct text_stream *specification_text; /* text for pseudo-property */
 	struct text_stream *index_default_value; /* and its description in the Kinds index */
 	struct text_stream *index_maximum_value; /* ditto */
 	struct text_stream *index_minimum_value; /* ditto */
@@ -184,7 +182,7 @@ but will be the constructor for "door" for kinds like this one:
 >> Portal is a kind of door.
 
 =
-kind_constructor *Kinds::Constructors::new(parse_node_tree *T, kind_constructor *super,
+kind_constructor *Kinds::Constructors::new(kind_constructor *super,
 	text_stream *source_name, text_stream *initialisation_macro, int group) {
 	kind_constructor *con = CREATE(kind_constructor);
 	kind_constructor **pC = FamiliarKinds::known_con(source_name);
@@ -242,7 +240,6 @@ we apply any defaults set in Neptune files.
 
 	/* D: how constant values of this kind are expressed */
 	con->ways_to_write_literals = NULL;
-	con->created_with_assertions = FALSE;
 	con->named_values_created_with_table = NULL;
 	con->next_free_value = 1;
 	con->constant_compilation_method = NONE_CCM;
@@ -280,7 +277,7 @@ we apply any defaults set in Neptune files.
 	con->heap_size_estimate = 0;
 	con->can_exchange = FALSE;
 	con->first_comparison_schema = NULL;
-	con->distinguisher = NULL;
+	con->distinguishing_routine = NULL;
 	con->loop_domain_schema = NULL;
 
 	/* J: printing and parsing values at run-time */
@@ -306,16 +303,15 @@ we apply any defaults set in Neptune files.
 	con->understand_as_values = NULL;
 	con->needs_GPR = FALSE;
 	con->explicit_GPR_identifier = NULL;
-	con->recognition_only_GPR = NULL;
+	con->recognition_routine = NULL;
 
 	/* K: indexing and documentation */
 	con->specification_text = NULL;
-	con->constructor_description = NULL;
 	con->index_default_value = I"--";
 	con->index_maximum_value = I"--";
 	con->index_minimum_value = I"--";
 	con->index_priority = LOWEST_INDEX_PRIORITY;
-	if ((group == PUNCTUATION_GRP) || (group == KIND_OF_KIND_GRP))
+	if ((group == PUNCTUATION_GRP) || (group == PROTOCOL_GRP))
 		con->index_priority = 0;
 	con->linguistic = FALSE;
 	con->indexed_grey_if_empty = FALSE;
@@ -324,15 +320,14 @@ we apply any defaults set in Neptune files.
 	kind_macro_definition *set_defaults = NULL;
 	switch (group) {
 		case PUNCTUATION_GRP: set_defaults = NeptuneMacros::parse_name(I"#PUNCTUATION"); break;
-		case KIND_OF_KIND_GRP:set_defaults = NeptuneMacros::parse_name(I"#PROTOCOL"); break;
+		case PROTOCOL_GRP:set_defaults = NeptuneMacros::parse_name(I"#PROTOCOL"); break;
 		case BASE_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#BASE"); break;
 		case PROPER_CONSTRUCTOR_GRP: set_defaults = NeptuneMacros::parse_name(I"#CONSTRUCTOR"); break;
 	}
-	if (set_defaults) NeptuneMacros::play_back(T, set_defaults, con, NULL);
+	if (set_defaults) NeptuneMacros::play_back(set_defaults, con, NULL);
 
 	if (Str::len(initialisation_macro) > 0)
-		NeptuneMacros::play_back(T,
-			NeptuneMacros::parse_name(initialisation_macro), con, NULL);
+		NeptuneMacros::play_back(NeptuneMacros::parse_name(initialisation_macro), con, NULL);
 
 @ However, if we create our constructor as a subkind, like so:
 
@@ -473,23 +468,20 @@ Conversions of an existing constructor to make it a unit or enumeration also
 require running macros in the kind interpreter:
 
 =
-int Kinds::Constructors::convert_to_unit(parse_node_tree *T, kind_constructor *con) {
+int Kinds::Constructors::convert_to_unit(kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		NeptuneMacros::play_back(T,
-			NeptuneMacros::parse_name(I"#UNIT"), con, NULL);
+		NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#UNIT"), con, NULL);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_arithmetic(con)) return TRUE; /* i.e., if it succeeded */
 	return FALSE;
 }
 
-int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constructor *con) {
+int Kinds::Constructors::convert_to_enumeration(kind_constructor *con) {
 	if (con->is_incompletely_defined == TRUE) {
-		NeptuneMacros::play_back(T,
-			NeptuneMacros::parse_name(I"#ENUMERATION"), con, NULL);
+		NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#ENUMERATION"), con, NULL);
 		if (con->linguistic)
-			NeptuneMacros::play_back(T,
-				NeptuneMacros::parse_name(I"#LINGUISTIC"), con, NULL);
+			NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#LINGUISTIC"), con, NULL);
 		return TRUE;
 	}
 	if (Kinds::Constructors::is_enumeration(con)) return TRUE; /* i.e., if it succeeded */
@@ -499,9 +491,8 @@ int Kinds::Constructors::convert_to_enumeration(parse_node_tree *T, kind_constru
 @ And similarly:
 
 =
-void Kinds::Constructors::convert_to_real(parse_node_tree *T, kind_constructor *con) {
-	NeptuneMacros::play_back(T,
-		NeptuneMacros::parse_name(I"#REAL"), con, NULL);
+void Kinds::Constructors::convert_to_real(kind_constructor *con) {
+	NeptuneMacros::play_back(NeptuneMacros::parse_name(I"#REAL"), con, NULL);
 }
 
 @ A few base kinds are marked as "linguistic", which simply enables us to fence
@@ -586,7 +577,7 @@ int Kinds::Constructors::is_enumeration(kind_constructor *con) {
 }
 
 @h Cast and instance lists.
-Each constructor has a list of other constructors (all of the |KIND_OF_KIND_GRP|
+Each constructor has a list of other constructors (all of the |PROTOCOL_GRP|
 group) which it's an instance of: value, word value, arithmetic value, and so on.
 
 =

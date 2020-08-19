@@ -1,3 +1,10 @@
+! Neptune files can create whatever macros they like, and use the apply-macro
+! command to apply them; but the ones below are known to the compiler and are
+! applied automatically in certain circumstances.
+
+! If they exist, these four macros are run on each new base, constructor,
+! protocol or punctuation before any other properties are set:
+
 macro #BASE {
 	index-priority: 3
 }
@@ -11,55 +18,48 @@ macro #PROTOCOL {
 	index-priority: 0
 }
 
-! New kinds of value are initially given these settings:
-
-invention *UNDERSTOOD-VARIABLE {
-	<kind> understood is a <kind> which varies.
-}
+! When a sentence like "A whatsit is a kind of value" is read, this is applied:
 
 macro #NEW {
 	conforms-to: STORED_VALUE_TY
 	is-incompletely-defined: yes
-	created-with-assertions: yes
+	can-exchange: yes
 	can-coincide-with-property: yes
-	description: a designed type
+	comparison-routine: signed
 }
 
 ! When the source text specifies either a named constant value, or a literal
-! pattern, it decides whether the new type is to be an enumeration or a unit,
-! at which point one of the following macros is applied to the type:
+! pattern, it decides whether the new kind is to be an enumeration or a unit,
+! at which point either #ENUMERATION or #UNIT is applied:
 
 macro #ENUMERATION {
 	conforms-to: ENUMERATED_VALUE_TY
 	is-incompletely-defined: no
-	created-with-assertions: yes
 	default-value: 1
 	index-default-value: <first-constant>
 	index-priority: 5
-	comparison-routine: signed
-	can-exchange: yes
-	description: a designed type
 	constant-compilation-method: quantitative
-	invent-source-text: *UNDERSTOOD-VARIABLE
+}
+
+! #LINGUISTIC is applied immediately after #ENUMERATION if the kind is one
+! of those used grammatically in the English Language extenstion.
+
+macro #LINGUISTIC {
+	index-priority: 7
 }
 
 macro #UNIT {
 	conforms-to: ARITHMETIC_VALUE_TY
 	is-incompletely-defined: no
-	comparison-routine: signed
-	can-exchange: yes
-	created-with-assertions: no
 	default-value: 0
 	index-default-value: <0-in-literal-pattern>
 	index-priority: 2
 	constant-compilation-method: literal
-	invent-source-text: *UNDERSTOOD-VARIABLE
 }
+
+! #REAL is applied immediately after #UNIT if the kind needs to use real
+! rather than integer arithmetic.
 
 macro #REAL {
 	conforms-to: REAL_ARITHMETIC_VALUE_TY
-}
-
-macro #LINGUISTIC {
-	index-priority: 7
 }

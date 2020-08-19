@@ -433,13 +433,13 @@ The word range is the name ("texture", "musical instrument"), and |super|
 is the super-kind ("value", "thing").
 
 =
-kind *Kinds::new_base(parse_node_tree *T, wording W, kind *super) {
+kind *Kinds::new_base(wording W, kind *super) {
 	#ifdef PROTECTED_MODEL_PROCEDURE
 	PROTECTED_MODEL_PROCEDURE;
 	#endif
 
 	kind *K = Kinds::base_construction(
-		Kinds::Constructors::new(T, Kinds::get_construct(super), NULL, I"#NEW",
+		Kinds::Constructors::new(Kinds::get_construct(super), NULL, I"#NEW",
 			BASE_CONSTRUCTOR_GRP));
 
 	@<Use the source-text name to attach a noun to the constructor@>;

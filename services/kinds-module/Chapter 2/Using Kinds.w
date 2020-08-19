@@ -64,7 +64,7 @@ kind of kind, like "arithmetic value":
 =
 int Kinds::Behaviour::is_kind_of_kind(kind *K) {
 	if (K == NULL) return FALSE;
-	if (K->construct->group == KIND_OF_KIND_GRP) return TRUE;
+	if (K->construct->group == PROTOCOL_GRP) return TRUE;
 	return FALSE;
 }
 
@@ -160,23 +160,23 @@ if the kind was already a unit or was successfully converted into one,
 |FALSE| if it's now too late.
 
 =
-int Kinds::Behaviour::convert_to_unit(parse_node_tree *T, kind *K) {
+int Kinds::Behaviour::convert_to_unit(kind *K) {
 	if (K == NULL) return FALSE;
-	return Kinds::Constructors::convert_to_unit(T, K->construct);
+	return Kinds::Constructors::convert_to_unit(K->construct);
 }
 
 @ And similarly:
 
 =
-void Kinds::Behaviour::convert_to_enumeration(parse_node_tree *T, kind *K) {
-	if (K) Kinds::Constructors::convert_to_enumeration(T, K->construct);
+void Kinds::Behaviour::convert_to_enumeration(kind *K) {
+	if (K) Kinds::Constructors::convert_to_enumeration(K->construct);
 }
 
 @ And similarly to switch from integer to real arithmetic.
 
 =
-void Kinds::Behaviour::convert_to_real(parse_node_tree *T, kind *K) {
-	if (K) Kinds::Constructors::convert_to_real(T, K->construct);
+void Kinds::Behaviour::convert_to_real(kind *K) {
+	if (K) Kinds::Constructors::convert_to_real(K->construct);
 }
 
 @ The instances of an enumeration have the values $1, 2, 3, ..., N$ at
@@ -184,9 +184,9 @@ run-time; the following returns $N+1$, that is, a value which can be held
 by the next instance to be created.
 
 =
-int Kinds::Behaviour::new_enumerated_value(parse_node_tree *T, kind *K) {
+int Kinds::Behaviour::new_enumerated_value(kind *K) {
 	if (K == NULL) return 0;
-	Kinds::Behaviour::convert_to_enumeration(T, K);
+	Kinds::Behaviour::convert_to_enumeration(K);
 	return K->construct->next_free_value++;
 }
 
@@ -222,7 +222,8 @@ kilopascals" might be a notation for a kind where constants are not named.
 =
 int Kinds::Behaviour::has_named_constant_values(kind *K) {
 	if (K == NULL) return FALSE;
-	if (K->construct->created_with_assertions) return TRUE;
+	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
+	if (Kinds::Behaviour::is_uncertainly_defined(K)) return TRUE;
 	return FALSE;
 }
 
@@ -394,7 +395,7 @@ sufficient to apply |~=| to the values.
 =
 text_stream *Kinds::Behaviour::get_distinguisher(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->distinguisher;
+	return K->construct->distinguishing_routine;
 }
 
 #ifdef CORE_MODULE
@@ -588,7 +589,7 @@ parsing names of objects, but not as a grammar token in its own right.
 =
 text_stream *Kinds::Behaviour::get_recognition_only_GPR(kind *K) {
 	if (K == NULL) return NULL;
-	return K->construct->recognition_only_GPR;
+	return K->construct->recognition_routine;
 }
 
 #ifdef CORE_MODULE

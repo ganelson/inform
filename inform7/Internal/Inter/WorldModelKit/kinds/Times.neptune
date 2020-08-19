@@ -6,14 +6,13 @@ new base TIME_TY {
 	default-value: 540
 	comparison-routine: signed
 	can-exchange: yes
-
 	loop-domain-schema: for (*1=0: *1<TWENTY_FOUR_HOURS: *1++)
-	parsing-routine: TIME_TOKEN
-	printing-routine: PrintTimeOfDay
-	printing-routine-actions: PrintTimeOfDay
 	constant-compilation-method: literal
 
-	description: a time
+	parsing-routine: TIME_TOKEN
+	printing-routine: PrintTimeOfDay
+	printing-routine-for-debugging: PrintTimeOfDay
+
 	documentation-reference: kind_time
 	index-default-value: 9:00 AM
 	index-minimum-value: 1 minute

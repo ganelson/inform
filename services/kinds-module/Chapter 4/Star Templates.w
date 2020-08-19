@@ -2,42 +2,7 @@
 
 Allowing Neptune files to generate additional source text.
 
-@ These are passages of I7 source text which can be inserted into the main
-source text at the request of any kind. An example would be:
-= (text)
-	*UNDERSTOOD-VARIABLE:
-	<kind> understood is a <kind> which varies.
-	*END
-=
-The template |*UNDERSTOOD-VARIABLE| contains only a single sentence of source
-text, and the idea is to make a new global variable associated with a given
-kind. Note that the text is not quite literal, because it can contain
-wildcards like |<kind>|, which expands to the name of the kind of value in
-question: for instance, we might get
-
->> number understood is a number which varies.
-
-There are a few limitations on what template text can include. Firstly,
-nothing with angle brackets in, except where a wildcard appears. Secondly,
-each sentence must end at the end of a line, and similarly the colon for
-any rule or other definition. Thus this template would fail:
-= (text)
-	*UNDERSTOOD-VARIABLE:
-	<kind> understood is a <kind> which
-	varies. To judge <kind>: say "I judge [<kind> understood]."
-	*END
-=
-because the first sentence ends in the middle of the second line, and the
-colon dividing the phrase header from its definition is also mid-line. The
-template must be reformatted thus to work:
-= (text)
-	*UNDERSTOOD-VARIABLE:
-	<kind> understood is a <kind> which varies.
-	To judge <kind>:
-	    say "I judge [<kind> understood]."
-	*END
-=
-@ So, to begin:
+@ Each "recorded" invention, a.k.a., "star template", generates one of the following:
 
 =
 typedef struct kind_template_definition {
@@ -93,7 +58,49 @@ void StarTemplates::end(text_stream *command, text_file_position *tfp) {
 }
 
 @ So much for recording a template. To "play back", we need to take its text
-and squeeze it into the main source text.
+and squeeze it into the main source text. This happens in two stages: first,
+we simply record the user's intention:
+
+=
+typedef struct star_invention {
+	struct kind_template_definition *template;
+	struct kind_constructor *apropos;
+	struct text_file_position *origin;
+	CLASS_DEFINITION
+} star_invention;
+
+void StarTemplates::note(kind_template_definition *ttd, kind_constructor *con,
+	text_file_position *tfp) {
+	star_invention *I = CREATE(star_invention);
+	I->template = ttd;
+	I->apropos = con;
+	I->origin = tfp;
+}
+
+@ Later on, we act on these intentions. Note that a template applied to a
+protocol is applied to all of the base kinds conforming to that protocol.
+(Inform's standard installation uses this to construct variables of the
+"K understood" variety for each understandable kind K.)
+
+=
+void StarTemplates::transcribe_all(parse_node_tree *T) {
+	star_invention *I;
+	LOOP_OVER(I, star_invention) {
+		if (I->apropos->group == PROTOCOL_GRP) {
+			kind *K;
+			LOOP_OVER_BASE_KINDS(K)
+				if ((Kinds::Behaviour::definite(K)) &&
+					(Kinds::eq(K, K_nil) == FALSE) &&
+					(Kinds::eq(K, K_void) == FALSE) &&
+					(Kinds::conforms_to(K, Kinds::base_construction(I->apropos))))
+					StarTemplates::transcribe(T, I->template, K->construct, I->origin);
+		} else {
+			StarTemplates::transcribe(T, I->template, I->apropos, I->origin);
+		}
+	}
+}
+
+@ So this applies a single template to a definitely known kind constructor.
 
 =
 void StarTemplates::transcribe(parse_node_tree *T,

@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-var.html#SP1">&#167;1. The player's situation</a></li><li><a href="S-var.html#SP11">&#167;11. Rulebooks</a></li><li><a href="S-var.html#SP21">&#167;21. Rules</a></li><li><a href="S-var.html#SP22">&#167;22. Startup</a></li><li><a href="S-var.html#SP24">&#167;24. The turn sequence</a></li><li><a href="S-var.html#SP29">&#167;29. Shutdown</a></li><li><a href="S-var.html#SP30">&#167;30. Scene changing</a></li><li><a href="S-var.html#SP32">&#167;32. Action-processing</a></li><li><a href="S-var.html#SP37">&#167;37. Specific action-processing</a></li><li><a href="S-var.html#SP41">&#167;41. Player's action awareness</a></li><li><a href="S-var.html#SP42">&#167;42. Accessibility</a></li><li><a href="S-var.html#SP43">&#167;43. Reaching inside</a></li><li><a href="S-var.html#SP44">&#167;44. Reaching outside</a></li><li><a href="S-var.html#SP45">&#167;45. Visibility</a></li><li><a href="S-var.html#SP46">&#167;46. Does the player mean</a></li><li><a href="S-var.html#SP48">&#167;48. Adjectives applied to values</a></li><li><a href="S-var.html#SP49">&#167;49. Scene descriptions</a></li><li><a href="S-var.html#SP50">&#167;50. Command parser errors</a></li><li><a href="S-var.html#SP51">&#167;51. Internal rules</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The player's situation. </b>A set of global variables defines the player's current situation in
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The player's situation. </b>A set of global variables defines the player's current situation in
 space and time.
 </p>
 
@@ -84,7 +84,7 @@ has a "translates into Inter" sentence.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">person</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"player"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The I7 variable "location" corresponds to I6's <span class="extract"><span class="extract-syntax">real_location</span></span>, not
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The I7 variable "location" corresponds to I6's <span class="extract"><span class="extract-syntax">real_location</span></span>, not
 <span class="extract"><span class="extract-syntax">location</span></span>. Its value is never equal to a pseudo-room representing darkness:
 it is always an actual room, and I7 has nothing corresponding to I6's
 <span class="extract"><span class="extract-syntax">thedark</span></span> "room". Similarly, we use an I7 variable "darkness witnessed" for a
@@ -112,7 +112,7 @@ and this cannot be changed at run-time.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"turns"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">day</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"the_time"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>It is arguable that "noun", "second noun" and "person asked" ought
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>It is arguable that "noun", "second noun" and "person asked" ought
 to be rulebook variables belonging to the action-processing rules, so that
 they essentially did not exist outside of the context of an ongoing action.
 The reason this isn't done is partly historical (rulebook variables were a
@@ -146,7 +146,7 @@ meanings from sentence to sentence.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">failed</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"reason_the_action_failed"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">described</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"self"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>"Person reaching" turns out to have exactly the same meaning as "person
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>"Person reaching" turns out to have exactly the same meaning as "person
 asked" &mdash; they are both the <span class="extract"><span class="extract-syntax">actor</span></span>, in Inter terms, but are used in different
 situations.
 </p>
@@ -164,21 +164,16 @@ situations.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">supporter</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">question</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"parameter_object"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">particular</span><span class="plain-syntax"> </span><span class="identifier-syntax">possession</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"particular_possession"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Parsing variables follow. The I6 parser tends to put any data read as part
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Parsing variables follow. The I6 parser tends to put any data read as part
 of a command into the variable <span class="extract"><span class="extract-syntax">parsed_number</span></span>, but then, Inter is typeless:
 we can't have a single I7 variable for all these possibilities since it could
 then have no legal type. We solve this as follows. Whenever a kind of value
 \(K\) is created which can be parsed as part of a command, an I7 variable "the
 \(K\) understood" is also created, as a \(K\) that varies. All of these variables
 are translated into Inter's <span class="extract"><span class="extract-syntax">parsed_number</span></span>, so in effect they provide aliases
-of each possible type for the same underlying memory location. The four
-exceptional kinds of value not parsed by the systematic approaches in Inform
-for enumerated KOVs and units are "number", "time", "snippet" and "truth
-state": because of their exceptional status, they don't get "the \(K\)
-understood" variables created automatically for them, so we must construct
-those by hand. Hence "the number understood", "the time understood", "the
-topic understood" (for historical reasons this one is not called "the snippet
-understood"), "the truth state understood" but no others.
+of each possible type for the same underlying memory location. The one exception
+is for "the topic understood" (for historical reasons this one is not called
+"the snippet understood", and so we make it by hand).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -186,11 +181,7 @@ understood"), "the truth state understood" but no others.
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">var_command</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">snippet</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">matched</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">snippet</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">var_understood</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">var_understood</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">topic</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">snippet</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
-<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">truth</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax"> </span><span class="identifier-syntax">understood</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">truth</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">current</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiple</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"players_command"</span><span class="plain-syntax">.</span>
@@ -199,7 +190,7 @@ understood"), "the truth state understood" but no others.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">current</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiple</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"multiple_object_item"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> - </span><span class="identifier-syntax">Presentation</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">screen</span>
@@ -216,7 +207,7 @@ understood"), "the truth state understood" but no others.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">listing</span><span class="plain-syntax"> </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">listing</span><span class="plain-syntax"> </span><span class="identifier-syntax">group</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"listing_size"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Now some linguistic variables:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Now some linguistic variables:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -226,7 +217,7 @@ understood"), "the truth state understood" but no others.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">prior</span><span class="plain-syntax"> </span><span class="identifier-syntax">named</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"prior_named_noun"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">An</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">grouping</span><span class="plain-syntax"> </span><span class="identifier-syntax">key</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>...but they are not the last global variables created by the Standard Rules.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>...but they are not the last global variables created by the Standard Rules.
 </p>
 
 <p class="commentary">These bibliographic data variables are concealed because they are under a
@@ -268,7 +259,7 @@ can be sure that we are first, so everything works.
 
 <span class="identifier-syntax">Figure</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">cover</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">cover</span><span class="plain-syntax"> </span><span class="identifier-syntax">art</span><span class="plain-syntax"> (</span><span class="string-syntax">"The cover art."</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And we finish out the set with some "secret" variables used only by the
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And we finish out the set with some "secret" variables used only by the
 Standard Rules or by Inform, and which are therefore also unindexed. Their
 names are all hyphenated, to reduce the chance of anyone stumbling into
 them in a namespace clash.
@@ -317,7 +308,7 @@ run-time for what is in the end only a label.)
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6</span><span class="plain-syntax">-</span><span class="identifier-syntax">varying</span><span class="plain-syntax">-</span><span class="identifier-syntax">global</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">object</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">I6</span><span class="plain-syntax">-</span><span class="identifier-syntax">varying</span><span class="plain-syntax">-</span><span class="identifier-syntax">global</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"nothing"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The remaining secret variables are:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The remaining secret variables are:
 </p>
 
 <ul class="items"><li>(1) The "item-pushed-between-rooms" is needed to get the identity of
@@ -342,7 +333,7 @@ preambles to rules in object-based rulebooks.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">changed</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">. </span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">changed</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"parameter_value"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Rulebooks. </b>Whereas Basic Inform equips the language with only a handful of rulebooks
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Rulebooks. </b>Whereas Basic Inform equips the language with only a handful of rulebooks
 to start out, the Standard Rules are replete with them.
 </p>
 
@@ -358,7 +349,7 @@ Rulebooks of the Inform source code.
 </li><li>(c) The I6 <span class="extract"><span class="extract-syntax">Constant</span></span> definitions in the form <span class="extract"><span class="extract-syntax">TURN_SEQUENCE_RB</span></span> in the file
 <span class="extract"><span class="extract-syntax">Definitions.i6t</span></span> of the <span class="extract"><span class="extract-syntax">basicinform</span></span> template.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>When an interactive fiction project using the Standard Rules starts up,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>When an interactive fiction project using the Standard Rules starts up,
 it does the following:
 </p>
 
@@ -383,7 +374,7 @@ about quitting or restarting.
 
 <span class="identifier-syntax">Turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Now a set of rulebooks to do with the passage of time.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Now a set of rulebooks to do with the passage of time.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -394,7 +385,7 @@ about quitting or restarting.
 <span class="identifier-syntax">When</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">ends</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">based</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">Every</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The action machinery requires some 16 rulebooks to work, though that is
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The action machinery requires some 16 rulebooks to work, though that is
 the result of gradual simplification &mdash; in 2006 it required 25, for instance.
 The "action-processing" rulebook, like the turn sequence rulebook, is a
 master of ceremonies: it belongs to the Standard Rules and is only rarely if
@@ -426,7 +417,7 @@ what rulebooks we consult next depends on what the action is (hence "specific")
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">specific</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">truth</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax"> </span><span class="identifier-syntax">called</span><span class="plain-syntax"> </span><span class="identifier-syntax">within</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">sight</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">awareness</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The rules on accessibility and visibility, which control whether an action
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The rules on accessibility and visibility, which control whether an action
 is physically possible, have named outcomes as a taste of syntactic sugar.
 </p>
 
@@ -440,7 +431,7 @@ is physically possible, have named outcomes as a taste of syntactic sugar.
 <span class="identifier-syntax">Visibility</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">have</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcomes</span><span class="plain-syntax"> </span><span class="identifier-syntax">there</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">sufficient</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> (</span><span class="identifier-syntax">failure</span><span class="plain-syntax">) </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">there</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span>
 <span class="identifier-syntax">insufficient</span><span class="plain-syntax"> </span><span class="identifier-syntax">light</span><span class="plain-syntax"> (</span><span class="identifier-syntax">success</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Two rulebooks govern the processing of asking other people to carry out actions:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Two rulebooks govern the processing of asking other people to carry out actions:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -448,7 +439,7 @@ is physically possible, have named outcomes as a taste of syntactic sugar.
 <span class="identifier-syntax">Persuasion</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">have</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcomes</span><span class="plain-syntax"> </span><span class="identifier-syntax">persuasion</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeds</span><span class="plain-syntax"> (</span><span class="identifier-syntax">success</span><span class="plain-syntax">) </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">persuasion</span><span class="plain-syntax"> </span><span class="identifier-syntax">fails</span><span class="plain-syntax"> (</span><span class="identifier-syntax">failure</span><span class="plain-syntax">).</span>
 <span class="identifier-syntax">Unsuccessful</span><span class="plain-syntax"> </span><span class="identifier-syntax">attempt</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Next, the six classic rulebooks best known to users of Inform. It's
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Next, the six classic rulebooks best known to users of Inform. It's
 perhaps an unfortunate point of the design that there are so many as six:
 that seems rather a lot of stages to go through, and indeed means that there
 is sometimes some ambiguity about which rulebook to use if one wants to
@@ -510,7 +501,7 @@ have to be forbidden.
 <span class="identifier-syntax">After</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">Report</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The next rulebook in this roundup is one used for parsing ambiguous
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The next rulebook in this roundup is one used for parsing ambiguous
 commands during play. This looks like the job of an activity rather than a
 rulebook, but (i) we want information in the form of a nicely-named five point
 scale of responses, rather than wanting something to be done, and (ii) it
@@ -531,7 +522,7 @@ change the names of these outcomes.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">does</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">mean</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">have</span><span class="plain-syntax"> </span><span class="identifier-syntax">outcomes</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">very</span><span class="plain-syntax"> </span><span class="identifier-syntax">likely</span><span class="plain-syntax">, </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">likely</span><span class="plain-syntax">, </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">possible</span><span class="plain-syntax">,</span>
 <span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlikely</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">very</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlikely</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>The following rulebook was added at the (implied) suggestion of John
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The following rulebook was added at the (implied) suggestion of John
 Clemens, whose Consolidated Multiple Actions extension made use of
 something similar.
 </p>
@@ -539,14 +530,14 @@ something similar.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiple</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>And that's it: all of the named rulebooks now exist. There will, of
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities
 and actions are created &mdash; when we create the "dropping" action, for
 instance, we also create the "check dropping", "carry out dropping" and
 "report dropping" rulebooks &mdash; but there are no more stand-alone rulebooks.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Rules. </b>At run-time, the value of a rule is the (packed) address of an I6 routine.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Rules. </b>At run-time, the value of a rule is the (packed) address of an I6 routine.
 In the case of rules created in I7 source text, the body of the rule
 definition is compiled by Inform to a new I6 routine which carries it out.
 But there are also primitive rules which are implemented in the template
@@ -567,7 +558,7 @@ automatically to a safely neutral default value. It makes no decision.
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">little</span><span class="plain-syntax">-</span><span class="identifier-syntax">used</span><span class="plain-syntax"> </span><span class="identifier-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"LITTLE_USED_DO_NOTHING_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Startup. </b>Every rulebook contains a (possibly empty) run of "first" rules, then
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Startup. </b>Every rulebook contains a (possibly empty) run of "first" rules, then
 a (possibly empty) run of miscellaneous rules, then a (possibly empty)
 run of "last" rules. It's unusual to have more than one rule anchored
 to either end as "first" or "last", but entirely legal, and we make
@@ -634,7 +625,7 @@ ordinary I7 rules can be run.
 
 <span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">start</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">correct</span><span class="plain-syntax"> </span><span class="identifier-syntax">scenes</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">follow</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">changing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>The remaining rules, though, are fair game for alteration, and as if to
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>The remaining rules, though, are fair game for alteration, and as if to
 prove the point they are all written in standard I7 source text. Note that
 the baseline score is set only after the when play begins rulebook has
 finished, because games starting with a non-zero score normally do this
@@ -657,7 +648,7 @@ action.
 
 <span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax"> </span><span class="identifier-syntax">description</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">try</span><span class="plain-syntax"> </span><span class="identifier-syntax">looking</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. The turn sequence. </b>In each turn, a command is read and parsed from the keyboard, and any
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. The turn sequence. </b>In each turn, a command is read and parsed from the keyboard, and any
 action(s) that requested is or are processed. (And may in turn cause
 other actions, which must also be processed.) There is then a fair
 amount of business needed to end one turn and get ready for another.
@@ -672,7 +663,7 @@ fully processed. All the same, play basically consists of running down
 this list of rules over and over again.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>The "first" rules in the turn sequence cover us up to the end of the
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>The "first" rules in the turn sequence cover us up to the end of the
 events which take place in the model world during this turn's action(s).
 </p>
 
@@ -716,7 +707,7 @@ read and no consequent actions generated.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">declare</span><span class="plain-syntax"> </span><span class="identifier-syntax">everything</span><span class="plain-syntax"> </span><span class="identifier-syntax">initially</span><span class="plain-syntax"> </span><span class="identifier-syntax">unmentioned</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">. </span><span class="comment-syntax">nd.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">. </span><span class="comment-syntax">st.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>Three miscellaneous things then happen, all implemented by primitives
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Three miscellaneous things then happen, all implemented by primitives
 in the template I6 layer:
 </p>
 
@@ -738,7 +729,7 @@ points", which are strategic moments during play, and this is one of them.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">advance</span><span class="plain-syntax"> </span><span class="identifier-syntax">time</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">update</span><span class="plain-syntax"> </span><span class="identifier-syntax">chronological</span><span class="plain-syntax"> </span><span class="identifier-syntax">records</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">turn</span><span class="plain-syntax"> </span><span class="identifier-syntax">sequence</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>We now come to the rules anchored at the end, using "last". This part of
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>We now come to the rules anchored at the end, using "last". This part of
 the rulebook is reserved for book-keeping which has to happen positively
 at the end of the turn.
 </p>
@@ -777,7 +768,7 @@ out-of-world actions are not supposed to do that sort of thing.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">issue</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax"> </span><span class="identifier-syntax">notification</span><span class="plain-syntax"> </span><span class="identifier-syntax">message</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">now</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">notified</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>That's it, but we need to map these I7 rule names onto the names of their
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>That's it, but we need to map these I7 rule names onto the names of their
 I6 primitives in the template layer.
 </p>
 
@@ -794,7 +785,7 @@ I6 primitives in the template layer.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"PARSE_COMMAND_R"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">timed</span><span class="plain-syntax"> </span><span class="identifier-syntax">events</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"TIMED_EVENTS_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29. Shutdown. </b>Goodbye is not the hardest word to say, but it does involve a little bit of
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Shutdown. </b>Goodbye is not the hardest word to say, but it does involve a little bit of
 work. It might not actually be goodbye, for one thing: if this rulebook ends
 in success, then we go back to repeating the turn sequence rulebook just as
 if nothing had happened.
@@ -827,7 +818,7 @@ current execution context entirely.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">resurrect</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">asked</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"RESURRECT_PLAYER_IF_ASKED_R"</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">ask</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">final</span><span class="plain-syntax"> </span><span class="identifier-syntax">question</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"ASK_FINAL_QUESTION_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30. Scene changing. </b>Scene changing is handled by a routine called <span class="extract"><span class="extract-syntax">DetectSceneChange</span></span> which is
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Scene changing. </b>Scene changing is handled by a routine called <span class="extract"><span class="extract-syntax">DetectSceneChange</span></span> which is
 compiled directly by Inform: this is so primitive that it can't even be handled
 at the template layer. The rulebook is all a little elaborate given that
 it contains only one rule, but it's possible to imagine extensions which
@@ -840,7 +831,7 @@ use of this opportunity.
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">change</span><span class="plain-syntax"> </span><span class="identifier-syntax">machinery</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"SCENE_CHANGE_MACHINERY_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>We couldn't do this earlier (because creating a scene automatically generates
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>We couldn't do this earlier (because creating a scene automatically generates
 two rulebooks, and that would have thrown the rulebook numbering), so let's
 take this opportunity to define the "Entire Game" scene:
 </p>
@@ -852,7 +843,7 @@ take this opportunity to define the "Entire Game" scene:
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">Entire</span><span class="plain-syntax"> </span><span class="identifier-syntax">Game</span><span class="plain-syntax"> </span><span class="identifier-syntax">begins</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">story</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">ended</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">Entire</span><span class="plain-syntax"> </span><span class="identifier-syntax">Game</span><span class="plain-syntax"> </span><span class="identifier-syntax">ends</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">story</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">ended</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32. Action-processing. </b>Action-processing happens on two levels: an upper level, handled by the main
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Action-processing. </b>Action-processing happens on two levels: an upper level, handled by the main
 "action-processing" rulebook, and a lower level, "specific action-processing".
 This division clearly complicates matters, so why do we do it? It turns out be
 convenient for several reasons:
@@ -885,7 +876,7 @@ after the check stage (say) will fail &mdash; the before and check stages happen
 in different rulebooks, so no amount of rearranging will do this.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>The upper level of action-processing consists of seeing whether the actor's
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>The upper level of action-processing consists of seeing whether the actor's
 current situation forbids the action from being tried: does anybody or
 anything intervene to stop it? Are there are any basic reasons of physical
 realism why nobody could possibly try it? Does it require somebody else
@@ -928,7 +919,7 @@ rules created by the user or by extensions will go.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">descend</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">specific</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">success</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">listed</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax">. </span><span class="comment-syntax">ast.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34.  </b>As we shall see, most of these rules are primitives implemented by the
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>As we shall see, most of these rules are primitives implemented by the
 template I6 layer, but five are very straightforward.
 </p>
 
@@ -944,7 +935,7 @@ template I6 layer, but five are very straightforward.
 <span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">abide</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">abide</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">instead</span><span class="plain-syntax"> </span><span class="identifier-syntax">rules</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>The final rule in the rulebook always succeeds: this ensures that
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>The final rule in the rulebook always succeeds: this ensures that
 action-processing always makes a decision. (I7's doctrine is that an
 action "succeeds" if and only if its carry-out stage is reached, so
 any action getting right to the end of this rulebook must have
@@ -954,7 +945,7 @@ succeeded.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">success</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeds</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>The action-processing rulebook contains six primitives:
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>The action-processing rulebook contains six primitives:
 </p>
 
 <ul class="items"><li>(1) The "basic visibility rule" checks the action to see if it requires
@@ -1004,7 +995,7 @@ the names aren't so visible).
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">descend</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">specific</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
 <span class="string-syntax">"DESCEND_TO_SPECIFIC_ACTION_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP37"></a><b>&#167;37. Specific action-processing. </b>And now we descend to the lower level, which is much easier to understand.
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Specific action-processing. </b>And now we descend to the lower level, which is much easier to understand.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1038,7 +1029,7 @@ the names aren't so visible).
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">specific</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax">-</span><span class="identifier-syntax">processing</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">: </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeds</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38"></a><b>&#167;38.  </b>The unusual use of "anonymously abide by" above is a form of "abide
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>The unusual use of "anonymously abide by" above is a form of "abide
 by" which may be worth explaining. Suppose rule \(X\) consists of an
 instruction to abide by rulebook \(Y\), and suppose that \(Y\) in fact fails
 when it reaches \(Y_k\). If the ordinary "abide by" is used then the action
@@ -1050,7 +1041,7 @@ fail the action. (The after stage is allowed to end it, but not in
 failure.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b>The specific action-processing rulebook is probably more fruitful than the
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b>The specific action-processing rulebook is probably more fruitful than the
 main one if we want to modify what happens. For instance:
 </p>
 
@@ -1066,7 +1057,7 @@ main one if we want to modify what happens. For instance:
 will succeed, but before anything has been done.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP40"></a><b>&#167;40.  </b>The only rule not spelled out was the primitive "work out details of
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>The only rule not spelled out was the primitive "work out details of
 specific action rule", which initialises the rulebook variables so that
 they record the action's specific check, carry out and report rulebooks,
 and whether or not it is in world.
@@ -1076,7 +1067,7 @@ and whether or not it is in world.
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">work</span><span class="plain-syntax"> </span><span class="identifier-syntax">out</span><span class="plain-syntax"> </span><span class="identifier-syntax">details</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">specific</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span>
 <span class="string-syntax">"WORK_OUT_DETAILS_OF_SPECIFIC_R"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41"></a><b>&#167;41. Player's action awareness. </b>This rulebook decides whether or not an action by somebody should be routinely
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Player's action awareness. </b>This rulebook decides whether or not an action by somebody should be routinely
 reported to the player: is he aware of it having taken place? If the rulebook
 positively succeeds then he is, and otherwise not.
 </p>
@@ -1095,7 +1086,7 @@ positively succeeds then he is, and otherwise not.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">aware</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">actions</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">visible</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">nouns</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">player</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">noun</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeds</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42"></a><b>&#167;42. Accessibility. </b>The "accessibility" rulebook is not very visible to users: it's another
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. Accessibility. </b>The "accessibility" rulebook is not very visible to users: it's another
 behind-the-scenes rulebook for managing the decision as to whether the actor
 can touch any items which the intended action requires him to be able to
 reach.
@@ -1119,7 +1110,7 @@ we expect most users to work with one of the two reaching rulebooks instead.
 <span class="plain-syntax">    </span><span class="string-syntax">"ACCESS_THROUGH_BARRIERS_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"[regarding the noun][Those] [aren't] available."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP43"></a><b>&#167;43. Reaching inside. </b>What the access through barriers rule does is to try to construct a path
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. Reaching inside. </b>What the access through barriers rule does is to try to construct a path
 through the object containment tree from the actor to the item needed, and
 to apply the reaching inside or reaching outside rulebooks each time this
 path passes inside or outside of a container (or room). (Supporters never
@@ -1138,7 +1129,7 @@ form barriers.)
 <span class="plain-syntax">    </span><span class="string-syntax">"CANT_REACH_INSIDE_ROOMS_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"[We] [can't] reach into [the noun]."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44. Reaching outside. </b>And, not quite symmetrically since we don't need to block room-to-room
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. Reaching outside. </b>And, not quite symmetrically since we don't need to block room-to-room
 reaching on both the inbound and outbound directions,
 </p>
 
@@ -1149,7 +1140,7 @@ reaching on both the inbound and outbound directions,
 <span class="plain-syntax">    </span><span class="string-syntax">"CANT_REACH_OUTSIDE_CLOSED_R"</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span>
 <span class="plain-syntax">    </span><span class="string-syntax">"[The noun] [aren't] open."</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP45"></a><b>&#167;45. Visibility. </b>The visibility rulebook actually has the opposite sense to the one the name
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Visibility. </b>The visibility rulebook actually has the opposite sense to the one the name
 might suggest. It is applied only when the player (not any other actor) tries
 to perform an action which requires light to see by; the action is blocked
 if the rulebook succeeds. (Well, but we could hardly call it the invisibility
@@ -1163,7 +1154,7 @@ is being applied: rather the way cricket matches end with a declaration that
 
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">visibility</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax">'</span><span class="identifier-syntax">t</span><span class="plain-syntax"> </span><span class="identifier-syntax">act</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">dark</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">): </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">darkness</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> </span><span class="identifier-syntax">succeeds</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP46"></a><b>&#167;46. Does the player mean. </b>This rulebook is akin to a set of preferences about how to interpret the
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. Does the player mean. </b>This rulebook is akin to a set of preferences about how to interpret the
 player's commands in cases of ambiguity. No two Inform users are likely to
 agree about the best way to decide these, so we are fairly hands-off, and
 make only one rule as standard:
@@ -1174,14 +1165,14 @@ make only one rule as standard:
 <span class="plain-syntax">    (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">very</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlikely</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">mean</span><span class="plain-syntax"> </span><span class="identifier-syntax">taking</span><span class="plain-syntax"> </span><span class="identifier-syntax">what</span><span class="plain-syntax">'</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="identifier-syntax">already</span><span class="plain-syntax"> </span><span class="identifier-syntax">carried</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">it</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">very</span><span class="plain-syntax"> </span><span class="identifier-syntax">unlikely</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP47"></a><b>&#167;47.  </b>And that completes the creation and stocking of the 25 rulebooks. More than
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47.  </b>And that completes the creation and stocking of the 25 rulebooks. More than
 half of them are initially empty, including before, instead and after &mdash; at the
 end of the day, these rulebooks are hooks allowing the user to change the
 ordinary behaviour of things, but ordinariness is exactly what the Standard
 Rules is all about.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP48"></a><b>&#167;48. Adjectives applied to values. </b>There is a small stock of built-in adjectives for values.
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. Adjectives applied to values. </b>There is a small stock of built-in adjectives for values.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1190,7 +1181,7 @@ Rules is all about.
 <span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">recurring</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">recurring</span><span class="plain-syntax">. </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">scene</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">usually</span><span class="plain-syntax"> </span><span class="identifier-syntax">non</span><span class="plain-syntax">-</span><span class="identifier-syntax">recurring</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">Entire</span><span class="plain-syntax"> </span><span class="identifier-syntax">Game</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">recurring</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP49"></a><b>&#167;49. Scene descriptions. </b>And there is one build-in value property for values.
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Scene descriptions. </b>And there is one build-in value property for values.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1201,7 +1192,7 @@ Rules is all about.
 <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">description</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">event</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="string-syntax">"[description of the event][paragraph break]"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP50"></a><b>&#167;50. Command parser errors. </b>This abstracts a set of return codes from the I6 parser, which are written
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. Command parser errors. </b>This abstracts a set of return codes from the I6 parser, which are written
 there as constants with the notation <span class="extract"><span class="extract-syntax">*_ETYPE</span></span>.
 </p>
 
@@ -1238,7 +1229,7 @@ there as constants with the notation <span class="extract"><span class="extract-
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">latest</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser</span><span class="plain-syntax"> </span><span class="identifier-syntax">error</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">command</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser</span><span class="plain-syntax"> </span><span class="identifier-syntax">error</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
 <span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">latest</span><span class="plain-syntax"> </span><span class="identifier-syntax">parser</span><span class="plain-syntax"> </span><span class="identifier-syntax">error</span><span class="plain-syntax"> </span><span class="identifier-syntax">variable</span><span class="plain-syntax"> </span><span class="identifier-syntax">translates</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="string-syntax">"etype"</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP51"></a><b>&#167;51. Internal rules. </b>These rules do nothing in themselves, and are really just hooks on which
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. Internal rules. </b>These rules do nothing in themselves, and are really just hooks on which
 some response texts can be hung.
 </p>
 

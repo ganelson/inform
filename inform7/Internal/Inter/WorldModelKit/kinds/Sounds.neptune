@@ -3,14 +3,11 @@ new base SOUND_NAME_TY {
 	singular: sound name
 	plural: sound names
 
-	created-with-assertions: yes
 	default-value: 0
-
-	printing-routine: PrintSoundName
-	invent-source-text: *UNDERSTOOD-VARIABLE
 	constant-compilation-method: quantitative
 
-	description: the name of a sound effect
+	printing-routine: PrintSoundName
+
 	documentation-reference: kind_soundname
 	index-priority: 6
 	index-default-value: <i>a silent non-sound</i>

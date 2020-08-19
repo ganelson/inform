@@ -1,26 +1,22 @@
 builtin punctuation INTERMEDIATE_TY {
 	! Represents intermediate results of arithmetic in dimensional formulae
 	conforms-to: ARITHMETIC_VALUE_TY
-	description: the intermediate result of some complex calculation
 }
 		
 builtin punctuation NIL_TY {
-	description: nothing
 }
 
 builtin punctuation UNKNOWN_TY {
-	description: unknown
 }
 
 builtin punctuation VOID_TY {
-	description: nothing
 }
 
 builtin punctuation KIND_VARIABLE_TY {
-	description: a variable denoting a kind
 }
 
 builtin constructor TUPLE_ENTRY_TY {
 	terms: covariant, covariant
+
 	index-priority: 0
 }

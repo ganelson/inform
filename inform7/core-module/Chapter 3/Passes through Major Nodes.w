@@ -48,8 +48,21 @@ void MajorNodes::traverse(int pass) {
 	parse_node *last = NULL;
 	SyntaxTree::traverse_nodep(Task::syntax_tree(), MajorNodes::visit, &last);
 
+	if (pass == 1) @<Extend the pass to invented sentences from kinds@>;
 	if (pass == 2) @<Extend the pass to sentences needed when implicit kinds are set@>;
 }
+
+@<Extend the pass to invented sentences from kinds@> =
+	parse_node *extras = last;
+	ParseTreeUsage::add_kind_inventions();
+	current_sentence = extras;
+	global_pass_state.assembly_position = extras;
+	global_pass_state.pass = 0;
+	SyntaxTree::traverse_nodep_from(extras, MajorNodes::visit, &last);
+	current_sentence = extras;
+	global_pass_state.assembly_position = extras;
+	global_pass_state.pass = 1;
+	SyntaxTree::traverse_nodep_from(extras, MajorNodes::visit, &last);
 
 @ Here's a tricky timing problem, or rather, here's the fix for it. Assemblies
 are made when the kinds of objects are set, and they're made by inserting

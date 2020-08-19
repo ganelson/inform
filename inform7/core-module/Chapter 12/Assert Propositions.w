@@ -310,7 +310,7 @@ interpret no indication of a kind as meaning "object".
 
 @<Create the object and add to the identification slate@> =
 	if (is_a_kind) {
-		K = Kinds::new_base(Task::syntax_tree(), NW, K);
+		K = Kinds::new_base(NW, K);
 		current_interpretation_as_infs[v] = Kinds::Knowledge::as_subject(K);
 		current_interpretation_as_spec[v] = Specifications::from_kind(K);
 	} else if ((is_a_var) || (is_a_const)) {

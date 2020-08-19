@@ -109,25 +109,16 @@ then have no legal type. We solve this as follows. Whenever a kind of value
 $K$ is created which can be parsed as part of a command, an I7 variable "the
 $K$ understood" is also created, as a $K$ that varies. All of these variables
 are translated into Inter's |parsed_number|, so in effect they provide aliases
-of each possible type for the same underlying memory location. The four
-exceptional kinds of value not parsed by the systematic approaches in Inform
-for enumerated KOVs and units are "number", "time", "snippet" and "truth
-state": because of their exceptional status, they don't get "the $K$
-understood" variables created automatically for them, so we must construct
-those by hand. Hence "the number understood", "the time understood", "the
-topic understood" (for historical reasons this one is not called "the snippet
-understood"), "the truth state understood" but no others.
+of each possible type for the same underlying memory location. The one exception
+is for "the topic understood" (for historical reasons this one is not called
+"the snippet understood", and so we make it by hand).
 
 =
 Section 4 - Used when understanding typed commands
 
 The player's command -- documented at var_command -- is a snippet that varies.
 The matched text is a snippet that varies.
-The number understood -- documented at var_understood -- is a number that varies.
-The real number understood -- documented at var_understood -- is a real number that varies.
-The time understood is a time that varies.
 The topic understood is a snippet that varies.
-The truth state understood is a truth state that varies.
 The current item from the multiple object list is an object that varies.
 
 The player's command variable translates into Inter as "players_command".
