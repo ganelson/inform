@@ -30,9 +30,6 @@ which use this module:
 @e use_option_CLASS
 @e i6_memory_setting_CLASS
 @e definition_CLASS
-@e binary_predicate_CLASS
-@e pcalc_prop_CLASS
-@e pcalc_func_CLASS
 @e pcalc_prop_deferral_CLASS
 @e literal_pattern_CLASS
 @e generalisation_CLASS
@@ -78,7 +75,6 @@ which use this module:
 @e contents_entry_CLASS
 @e local_variable_CLASS
 @e relation_guard_CLASS
-@e pcalc_term_CLASS
 @e runtime_kind_structure_CLASS
 @e internal_test_case_CLASS
 @e test_scenario_CLASS
@@ -90,7 +86,6 @@ which use this module:
 @e adjective_iname_holder_CLASS
 @e label_namespace_CLASS
 @e compile_task_data_CLASS
-@e unary_predicate_CLASS
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -98,7 +93,6 @@ which use this module:
 DECLARE_CLASS(activity)
 DECLARE_CLASS(adjective_meaning)
 DECLARE_CLASS(applicability_condition)
-DECLARE_CLASS(binary_predicate)
 DECLARE_CLASS(booking)
 DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS(contents_entry)
@@ -154,7 +148,6 @@ DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(compile_task_data)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
 
 @ So much for the managed structures: now for the unmanaged structures.
 
@@ -166,9 +159,6 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(instance_usage, 200)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_func, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_term, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(plugin_call, 100)
@@ -296,8 +286,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e PHRASE_CREATIONS_DA
 @e PHRASE_REGISTRATION_DA
 @e PHRASE_USAGE_DA
-@e PREDICATE_CALCULUS_DA
-@e PREDICATE_CALCULUS_WORKINGS_DA
 @e PRONOUNS_DA
 @e PROPERTY_CREATIONS_DA
 @e PROPERTY_PROVISION_DA
@@ -340,8 +328,6 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(PHRASE_CREATIONS_DA, L"phrase creations", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_REGISTRATION_DA, L"phrase registration", FALSE, FALSE);
 	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
-	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
-	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
 	Log::declare_aspect(PRONOUNS_DA, L"pronouns", FALSE, FALSE);
 	Log::declare_aspect(PROPERTY_CREATIONS_DA, L"property creations", FALSE, FALSE);
 	Log::declare_aspect(PROPERTY_PROVISION_DA, L"property provision", FALSE, FALSE);

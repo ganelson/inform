@@ -74,7 +74,7 @@ pcalc_term Calculus::Terms::new_constant(parse_node *c) {
 	return pt;
 }
 
-pcalc_term Calculus::Terms::new_function(binary_predicate *bp, pcalc_term ptof, int t) {
+pcalc_term Calculus::Terms::new_function(struct binary_predicate *bp, pcalc_term ptof, int t) {
 	pcalc_term pt; @<Make new blank term structure pt@>;
 	pcalc_func *pf = CREATE(pcalc_func);
 	pf->bp = bp; pf->fn_of = ptof; pf->from_term = t;
@@ -154,6 +154,7 @@ adjectival form of such an adjective into its noun form, and back
 again.
 
 =
+#ifdef CORE_MODULE
 pcalc_term Calculus::Terms::adj_to_noun_conversion(unary_predicate *tr) {
 	adjective *aph = UnaryPredicates::get_adj(tr);
 	instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
@@ -162,10 +163,12 @@ pcalc_term Calculus::Terms::adj_to_noun_conversion(unary_predicate *tr) {
 	if (prn) return Calculus::Terms::new_constant(Rvalues::from_property(prn));
 	return Calculus::Terms::new_variable(0);
 }
+#endif
 
 @ And conversely:
 
 =
+#ifdef CORE_MODULE
 unary_predicate *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	kind *K;
 	adjective *aph;
@@ -180,6 +183,7 @@ unary_predicate *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
 	}
 	return NULL;
 }
+#endif
 
 @h Compiling terms.
 We are now ready to compile a general predicate-calculus term, which
@@ -199,6 +203,7 @@ One small wrinkle is that we type-check any use of a phrase to decide a
 value, because this might not yet have been checked otherwise.
 
 =
+#ifdef CORE_MODULE
 void Calculus::Terms::emit(pcalc_term pt) {
 	if (pt.variable >= 0) {
 		local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);
@@ -231,6 +236,7 @@ void Calculus::Terms::emit(pcalc_term pt) {
 	}
 	internal_error("Broken pcalc term");
 }
+#endif
 
 @h Debugging terms.
 The art of this is to be unobtrusive; when a proposition is being logged,
@@ -248,17 +254,24 @@ void Calculus::Terms::write(text_stream *OUT, pcalc_term *pt) {
 		parse_node *spec = pt->constant;
 		if (pt->cinder >= 0) { WRITE("const_%d", pt->cinder); return; }
 		if (Wordings::nonempty(Node::get_text(spec))) { WRITE("'%W'", Node::get_text(spec)); return; }
+		#ifdef CORE_MODULE
 		if (Node::is(spec, CONSTANT_NT)) {
 			instance *I = Rvalues::to_object_instance(spec);
 			if (I) { Instances::write(OUT, I); return; }
 		}
+		#endif
 		Node::log_node(OUT, spec);
 	} else if (pt->function) {
+		#ifdef CORE_MODULE
 		binary_predicate *bp = pt->function->bp;
 		i6_schema *fn = BinaryPredicates::get_term_as_function_of_other(bp, 0);
 		if (fn == NULL) fn = BinaryPredicates::get_term_as_function_of_other(bp, 1);
 		if (fn == NULL) internal_error("Function of non-functional predicate");
 		Calculus::Schemas::write_applied(OUT, fn, &(pt->function->fn_of));
+		#endif
+		#ifndef CORE_MODULE
+		WRITE("function");
+		#endif
 	} else if (pt->variable >= 0) {
 		int j = pt->variable;
 		if (j<26) WRITE("%c", pcalc_vars[j]); else WRITE("<bad-var=%d>", j);

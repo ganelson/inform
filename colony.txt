@@ -33,6 +33,7 @@ module: "html" at "services/html-module" in "docs/html-module"
 module: "inflections" at "services/inflections-module" in "docs/inflections-module"
 module: "lexicon" at "services/lexicon-module" in "docs/lexicon-module"
 module: "kinds" at "services/kinds-module" in "docs/kinds-module"
+module: "calculus" at "services/calculus-module" in "docs/calculus-module"
 module: "linguistics" at "services/linguistics-module" in "docs/linguistics-module"
 module: "problems" at "services/problems-module" in "docs/problems-module"
 
@@ -69,6 +70,7 @@ web: "linguistics-test" at "services/linguistics-test" in "docs/linguistics-test
 web: "problems-test" at "services/problems-test" in "docs/problems-test"
 web: "syntax-test" at "services/syntax-test" in "docs/syntax-test"
 web: "kinds-test" at "services/kinds-test" in "docs/kinds-test"
+web: "calculus-test" at "services/calculus-test" in "docs/calculus-test"
 web: "words-test" at "services/words-test" in "docs/words-test"
 
 # external to this repository, and here to facilitate cross-links

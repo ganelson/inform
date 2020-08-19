@@ -68,7 +68,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-mn.html#SP4">&#167;4. Command line processing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>On some platforms the core Inform compiler is a separate command-line tool,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>On some platforms the core Inform compiler is a separate command-line tool,
 so that execution should begin with <span class="extract"><span class="extract-syntax">main()</span></span>, as in all C programs. But some
 Inform UI applications need to compile it into the body of a larger program:
 those should define the symbol <span class="extract"><span class="extract-syntax">SUPPRESS_MAIN</span></span> and call <span class="extract"><span class="extract-syntax">Main::deputy</span></span>
@@ -84,7 +84,7 @@ when they want I7 to run.
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>And so the <a href="1-mn.html#SP2" class="internal">Main::deputy</a> function now has the opportunity to be head
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And so the <a href="1-mn.html#SP2" class="internal">Main::deputy</a> function now has the opportunity to be head
 honcho, and for the first fifteen years of Inform 7, it was exactly that. In
 2020, though, it was deposed in a boardroom coup by a new CEO, the <a href="../supervisor-module/index.html" class="internal">supervisor</a>
 module. High-level decisions on what to compile, where to put the result, and
@@ -116,7 +116,7 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start up the modules</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start up the modules</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -127,8 +127,9 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 <span class="plain-syntax">    </span><a href="../lexicon-module/1-lm.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../problems-module/1-pm.html#SP3" class="function-link"><span class="function-syntax">ProblemsModule::start</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../core-module/1-cm.html#SP6" class="function-link"><span class="function-syntax">CoreModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../core-module/1-cm2.html#SP6" class="function-link"><span class="function-syntax">CoreModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../if-module/1-im2.html#SP3" class="function-link"><span class="function-syntax">IFModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../multimedia-module/1-mm.html#SP3" class="function-link"><span class="function-syntax">MultimediaModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../html-module/1-hm.html#SP2" class="function-link"><span class="function-syntax">HTMLModule::start</span></a><span class="plain-syntax">();</span>
@@ -136,11 +137,11 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 <span class="plain-syntax">    </span><a href="../arch-module/1-am.html#SP3" class="function-link"><span class="function-syntax">ArchModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../bytecode-module/1-bm.html#SP3" class="function-link"><span class="function-syntax">BytecodeModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../building-module/1-bm2.html#SP4" class="function-link"><span class="function-syntax">BuildingModule::start</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../codegen-module/1-cm2.html#SP3" class="function-link"><span class="function-syntax">CodegenModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../codegen-module/1-cm3.html#SP3" class="function-link"><span class="function-syntax">CodegenModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../supervisor-module/1-sm2.html#SP3" class="function-link"><span class="function-syntax">SupervisorModule::start</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>The very first thing we do is to make sure internal errors, though they
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>The very first thing we do is to make sure internal errors, though they
 should never happen, are reported as problem messages (fed to our HTML
 problems report) rather than simply causing an abrupt exit with only a
 plain text error written to <span class="extract"><span class="extract-syntax">stderr</span></span>. See the <span class="extract"><span class="extract-syntax">problems</span></span> module for more.
@@ -156,7 +157,7 @@ plain text error written to <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><a href="../core-module/1-wtc.html#SP1" class="function-link"><span class="function-syntax">Task::start_timers</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>The <a href="../supervisor-module/index.html" class="internal">supervisor</a> would happily send us instructions to compile multiple
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b>The <a href="../supervisor-module/index.html" class="internal">supervisor</a> would happily send us instructions to compile multiple
 projects, but we can only accept one; and in fact the <a href="index.html" class="internal">inform7</a> command line
 isn't set up to allow more, so this error is not easy to generate.
 </p>
@@ -172,7 +173,7 @@ isn't set up to allow more, so this error is not easy to generate.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b><a href="../supervisor-module/index.html" class="internal">supervisor</a> supplies us with a folder in which to write the debugging log
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><a href="../supervisor-module/index.html" class="internal">supervisor</a> supplies us with a folder in which to write the debugging log
 and the Problems report (the HTML version of our error messages or success
 message, which is displayed in the Inform app when a compilation has finished).
 This folder will usually be the <span class="extract"><span class="extract-syntax">Build</span></span> subfolder of the project folder,
@@ -202,7 +203,7 @@ but we won't assume that. Remember, <a href="../supervisor-module/index.html" cl
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/5-htm.html#SP18" class="function-link"><span class="function-syntax">HTML::set_link_abbreviation_path</span></a><span class="plain-syntax">(</span><a href="../supervisor-module/5-ps2.html#SP4" class="function-link"><span class="function-syntax">Projects::path</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">proj</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5"></a><b>&#167;2.5.  </b>Telemetry is not as sinister as it sounds: the app isn't sending data out
+<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b>Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.
 This was provided for classroom use, so that teachers can see what their
 students have been getting stuck on. In any case, it needs to be activated
@@ -227,7 +228,7 @@ with a use option, so by default this file will never be written.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_6"></a><b>&#167;2.6.  </b>The compiler is now ready for use. We ask <a href="../supervisor-module/index.html" class="internal">supervisor</a> to go ahead and
+<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b>The compiler is now ready for use. We ask <a href="../supervisor-module/index.html" class="internal">supervisor</a> to go ahead and
 build that project: it will incrementally build some of the resources needed,
 if any of them are, and then call upon <a href="../core-module/index.html" class="internal">core</a> to perform the actual
 compilation.
@@ -244,7 +245,7 @@ compilation.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_7"></a><b>&#167;2.7.  </b>Diagnostics files fall into the category of "be careful what you wish for";
+<p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7.  </b>Diagnostics files fall into the category of "be careful what you wish for";
 they can be rather lengthy.
 </p>
 
@@ -268,7 +269,7 @@ they can be rather lengthy.
 <span class="plain-syntax">            </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"preform-summary.txt"</span><span class="plain-syntax">, &amp;</span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::log_preform_summary</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"documentation-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../index-module/2-dr2.html#SP10" class="function-link"><span class="function-syntax">Index::DocReferences::log_statistics</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"documentation-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../index-module/2-dr2.html#SP9" class="function-link"><span class="function-syntax">Index::DocReferences::log_statistics</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">I</span><span class="string-syntax">"verbs-diagnostics.txt"</span><span class="plain-syntax">, &amp;</span><a href="../core-module/7-vart.html#SP6" class="function-link"><span class="function-syntax">VerbsAtRunTime::log_all</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="1-mn.html#SP3" class="function-link"><span class="function-syntax">Main::write_diagnostics</span></a><span class="plain-syntax">(</span>
@@ -279,7 +280,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_8"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shutdown and rennab</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_8" class="paragraph-anchor"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shutdown and rennab</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -289,7 +290,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="string-syntax">"Inform 7 has finished.\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_9"></a><b>&#167;2.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_9" class="paragraph-anchor"></a><b>&#167;2.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -299,21 +300,22 @@ they can be rather lengthy.
 <span class="plain-syntax">    </span><a href="../lexicon-module/1-lm.html#SP3" class="function-link"><span class="function-syntax">LexiconModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../problems-module/1-pm.html#SP3" class="function-link"><span class="function-syntax">ProblemsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../multimedia-module/1-mm.html#SP3" class="function-link"><span class="function-syntax">MultimediaModule::end</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../core-module/1-cm.html#SP6" class="function-link"><span class="function-syntax">CoreModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../core-module/1-cm2.html#SP6" class="function-link"><span class="function-syntax">CoreModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../if-module/1-im2.html#SP3" class="function-link"><span class="function-syntax">IFModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../index-module/1-im3.html#SP3" class="function-link"><span class="function-syntax">IndexModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../html-module/1-hm.html#SP2" class="function-link"><span class="function-syntax">HTMLModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../bytecode-module/1-bm.html#SP3" class="function-link"><span class="function-syntax">BytecodeModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../arch-module/1-am.html#SP3" class="function-link"><span class="function-syntax">ArchModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../building-module/1-bm2.html#SP5" class="function-link"><span class="function-syntax">BuildingModule::end</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../codegen-module/1-cm2.html#SP3" class="function-link"><span class="function-syntax">CodegenModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../codegen-module/1-cm3.html#SP3" class="function-link"><span class="function-syntax">CodegenModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../supervisor-module/1-sm2.html#SP3" class="function-link"><span class="function-syntax">SupervisorModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">(); </span><span class="comment-syntax"> must be ended last</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::write_diagnostics</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Main::write_diagnostics</span></span>:<br/><a href="1-mn.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">write_fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">void</span><span class="plain-syntax">)) {</span>
@@ -341,7 +343,7 @@ they can be rather lengthy.
 <span class="plain-syntax">    </span><a href="../syntax-module/2-pn.html#SP16" class="function-link"><span class="function-syntax">Node::summarise_tree</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><a href="../core-module/1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">()-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Command line processing. </b>The bulk of the command-line options are both registered and processed by
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Command line processing. </b>The bulk of the command-line options are both registered and processed by
 <a href="../supervisor-module/index.html" class="internal">supervisor</a> rather than here: in particular, every switch ever used by the
 Inform UI apps is really a command to <a href="../supervisor-module/index.html" class="internal">supervisor</a> not to <span class="extract"><span class="extract-syntax">inform7</span></span>.
 </p>
@@ -359,7 +361,7 @@ Inform UI apps is really a command to <a href="../supervisor-module/index.html" 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">proceed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>What remains here are just some eldritch options for testing the <span class="extract"><span class="extract-syntax">inform7</span></span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>What remains here are just some eldritch options for testing the <span class="extract"><span class="extract-syntax">inform7</span></span>
 compiler via Delia scripts in <span class="extract"><span class="extract-syntax">intest</span></span>.
 </p>
 
@@ -373,7 +375,7 @@ compiler via Delia scripts in <span class="extract"><span class="extract-syntax"
 <span class="definition-keyword">enum</span> <span class="constant-syntax">SIGILS_CLSW</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_OUTPUT_CLSW</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register command-line arguments</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register command-line arguments</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -397,7 +399,7 @@ compiler via Delia scripts in <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::end_group</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Three of the five options here actually configure the <span class="extract"><span class="extract-syntax">problems</span></span> module
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Three of the five options here actually configure the <span class="extract"><span class="extract-syntax">problems</span></span> module
 rather than <span class="extract"><span class="extract-syntax">core</span></span>.
 </p>
 
@@ -407,7 +409,7 @@ rather than <span class="extract"><span class="extract-syntax">core</span></span
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CRASHALL_CLSW:</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugger_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="../problems-module/2-pl0.html#SP5" class="function-link"><span class="function-syntax">ProblemSigils::crash_on_problems</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">INDEX_CLSW:</span><span class="plain-syntax"> </span><a href="../core-module/26-iti.html#SP1" class="function-link"><span class="function-syntax">I6T::disable_or_enable_index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CENSUS_UPDATE_CLSW:</span><span class="plain-syntax"> </span><a href="../index-module/2-ifs.html#SP7" class="function-link"><span class="function-syntax">Index::disable_or_enable_census</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CENSUS_UPDATE_CLSW:</span><span class="plain-syntax"> </span><a href="../index-module/2-ifs.html#SP6" class="function-link"><span class="function-syntax">Index::disable_or_enable_census</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROGRESS_CLSW:</span><span class="plain-syntax"> </span><a href="../core-module/1-pp2.html#SP1" class="function-link"><span class="function-syntax">ProgressBar::enable_or_disable</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SIGILS_CLSW:</span><span class="plain-syntax"> </span><a href="../problems-module/2-pl0.html#SP4" class="function-link"><span class="function-syntax">ProblemSigils::echo_sigils</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">REQUIRE_PROBLEM_CLSW:</span><span class="plain-syntax"> </span><a href="../problems-module/2-pl0.html#SP3" class="function-link"><span class="function-syntax">ProblemSigils::require</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>

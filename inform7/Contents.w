@@ -17,6 +17,7 @@ Import: services/inflections
 Import: services/lexicon
 Import: services/linguistics
 Import: services/kinds
+Import: services/calculus
 Import: inter/bytecode
 Import: inbuild/supervisor
 Import: core

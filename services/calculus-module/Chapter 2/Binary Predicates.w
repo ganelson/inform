@@ -413,6 +413,7 @@ its kind indications are all blank, but verifying that the value supplied
 matches the specific necessary kind of object if there is one.
 
 =
+#ifdef CORE_MODULE
 void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_details bptd) {
 	kind *K = BinaryPredicates::kind_of_term(&bptd);
 	kind *PK = K;
@@ -437,6 +438,7 @@ void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_
 		Produce::up(Emit::tree());
 	}
 }
+#endif
 
 @ And as a convenience:
 
@@ -633,6 +635,7 @@ inter_name *BinaryPredicates::handler_iname(binary_predicate *bp) {
 @h As an INFS.
 
 =
+#ifdef CORE_MODULE
 wording BinaryPredicates::SUBJ_get_name_text(inference_subject *from) {
 	return EMPTY_WORDING; /* nameless */
 }
@@ -711,6 +714,7 @@ void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
 		}
 	}
 }
+#endif
 
 @h BP and term logging.
 

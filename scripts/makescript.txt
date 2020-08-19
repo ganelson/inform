@@ -55,6 +55,7 @@ INBUILDX = inbuild/Tangled/inbuild
 {module} LINGUISTICS linguistics services/linguistics-module modules
 {module} PROBLEMS problems services/problems-module modules
 {module} KINDS kinds services/kinds-module modules
+{module} CALCULUS calculus services/calculus-module modules
 
 {module} CORE core inform7/core-module modules
 {module} IF if inform7/if-module modules
@@ -93,6 +94,7 @@ INFORM6X = inform6/Tangled/inform6
 {tool} INFLECTIONSTEST inflections-test services/inflections-test utools
 {tool} LINGUISTICSTEST linguistics-test services/linguistics-test utools
 {tool} KINDSTEST kinds-test services/kinds-test utools
+{tool} CALCULUSTEST calculus-test services/calculus-test utools
 {tool} PROBLEMSTEST problems-test services/problems-test utools
 
 {tool} BUILDINGTEST building-test inter/building-test utools

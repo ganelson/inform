@@ -73,9 +73,7 @@ Chapter 6: Nouns
 Chapter 7: Verbs
 "Verbs which establish relationships between nouns, and which give meaning
 to binary predicates."
-	Unary Predicates
 	Adjective Meanings
-	Binary Predicates
 	Relations
 	Explicit Relations
 	The Universal Relation
@@ -115,9 +113,6 @@ in predicate calculus, so that verbs and prepositions become relations, while
 determiners express quantifiers; this produces a mathematical proposition
 which can be simplified according to logical rules which change its form
 but not its meaning."
-	Introduction to Predicate Calculus
-	Terms
-	Atomic Propositions
 	Propositions
 	Binding and Substitution
 	Tree Conversions
