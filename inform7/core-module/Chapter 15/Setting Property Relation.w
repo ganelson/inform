@@ -2,12 +2,32 @@
 
 Each value property has an associated relation to set its value.
 
-@h Initial stock.
-There is no initial stock of these, since there are no value properties yet
-when Inform starts up.
+@h Family.
 
 =
-void Properties::SettingRelations::REL_create_initial_stock(void) {
+bp_family *property_setting_bp_family = NULL;
+
+void Properties::SettingRelations::start(void) {
+	property_setting_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(property_setting_bp_family, STOCK_BPF_MTID, Properties::SettingRelations::stock);
+	METHOD_ADD(property_setting_bp_family, TYPECHECK_BPF_MTID, Properties::SettingRelations::REL_typecheck);
+	METHOD_ADD(property_setting_bp_family, ASSERT_BPF_MTID, Properties::SettingRelations::REL_assert);
+	METHOD_ADD(property_setting_bp_family, SCHEMA_BPF_MTID, Properties::SettingRelations::REL_compile);
+	METHOD_ADD(property_setting_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::SettingRelations::REL_describe_for_problems);
+}
+
+@h Initial stock.
+For |n == 2| the following is called after all properties have been created, making it
+the perfect opportunity to go over all of the property-setting BPs:
+
+=
+void Properties::SettingRelations::stock(bp_family *self, int n) {
+	if (n == 2) {
+		binary_predicate *bp;
+		LOOP_OVER(bp, binary_predicate)
+			if (Wordings::nonempty(bp->property_pending_text))
+				Properties::SettingRelations::fix_property_bp(bp);
+	}
 }
 
 @h Subsequent creations.
@@ -19,7 +39,7 @@ therefore store the text of the property name (say, "weight") in
 
 =
 binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) {
-	binary_predicate *bp = BinaryPredicates::make_pair(PROPERTY_SETTING_KBP,
+	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
 		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 		BinaryPredicates::new_term(NULL),
 		I"set-property", NULL, NULL, NULL, NULL, WordAssemblages::lit_0());
@@ -98,18 +118,6 @@ binary_predicate *Properties::SettingRelations::make_set_nameless_property_BP(pr
 	return bp;
 }
 
-@h Second stock.
-The following is called after all properties have been created, making it
-the perfect opportunity to go over all of the property-setting BPs:
-
-=
-void Properties::SettingRelations::REL_create_second_stock(void) {
-	binary_predicate *bp;
-	LOOP_OVER(bp, binary_predicate)
-		if (Wordings::nonempty(bp->property_pending_text))
-			Properties::SettingRelations::fix_property_bp(bp);
-}
-
 @ Note that we read and write to the property directly, without asking the
 template layer to check if the given object has permission to possess that
 property. We can afford to do this because type-checking at compile time
@@ -139,7 +147,7 @@ It might be an object which will eventually be deduced to be a room, for
 instance, but hasn't been yet.
 
 =
-int Properties::SettingRelations::REL_typecheck(binary_predicate *bp,
+int Properties::SettingRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	property *prn = bp->set_property;
 	kind *val_kind = Properties::Valued::kind(prn);
@@ -211,7 +219,7 @@ be caught later on Inform's run.
 @h Assertion.
 
 =
-int Properties::SettingRelations::REL_assert(binary_predicate *bp,
+int Properties::SettingRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	World::Inferences::draw_property(infs0, bp->set_property, spec1);
@@ -222,7 +230,7 @@ int Properties::SettingRelations::REL_assert(binary_predicate *bp,
 We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Properties::SettingRelations::REL_compile(int task,
+int Properties::SettingRelations::REL_compile(bp_family *self, int task,
 	binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 
@@ -253,6 +261,6 @@ int Properties::SettingRelations::bp_sets_a_property(binary_predicate *bp) {
 @h Problem message text.
 
 =
-int Properties::SettingRelations::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Properties::SettingRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }

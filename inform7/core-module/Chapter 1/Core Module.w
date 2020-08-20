@@ -221,6 +221,14 @@ void CoreModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	CorePreform::set_core_internal_NTIs();
+	Calculus::Equality::start();
+	Calculus::QuasinumericRelations::start();
+	Properties::SameRelations::start();
+	Properties::SettingRelations::start();
+	Properties::ComparativeRelations::start();
+	Tables::Relations::start();
+	Properties::ProvisionRelation::start();
+	Relations::Universal::start();
 	@<Declare the tree annotations@>;
 }
 void CoreModule::end(void) {

@@ -18,7 +18,7 @@ void Problems::quote_relation(int t, binary_predicate *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_relation);
 }
 void Problems::expand_relation(OUTPUT_STREAM, void *p) {
-	BinaryPredicates::describe_for_problems(OUT, (binary_predicate *) p);
+	BinaryPredicateFamilies::describe_for_problems(OUT, (binary_predicate *) p);
 }
 void Problems::quote_phrase(int t, phrase *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_phrase);

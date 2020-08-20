@@ -3,12 +3,18 @@
 Each value property has an associated relation to compare its value
 between two holders.
 
-@h Initial stock.
-There is no initial stock of these, since there are no value properties yet
-when Inform starts up.
+@h Family.
 
 =
-void Properties::SameRelations::REL_create_initial_stock(void) {
+bp_family *same_property_bp_family = NULL;
+
+void Properties::SameRelations::start(void) {
+	same_property_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(same_property_bp_family, STOCK_BPF_MTID, Properties::SameRelations::stock);
+	METHOD_ADD(same_property_bp_family, TYPECHECK_BPF_MTID, Properties::SameRelations::REL_typecheck);
+	METHOD_ADD(same_property_bp_family, ASSERT_BPF_MTID, Properties::SameRelations::REL_assert);
+	METHOD_ADD(same_property_bp_family, SCHEMA_BPF_MTID, Properties::SameRelations::REL_compile);
+	METHOD_ADD(same_property_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::SameRelations::REL_describe_for_problems);
 }
 
 @h Second stock.
@@ -28,25 +34,27 @@ than" because it is unclear just how much taller than Big Bird we would have
 to make C. J.)
 
 =
-void Properties::SameRelations::REL_create_second_stock(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if ((Properties::is_value_property(prn)) && (Wordings::nonempty(prn->name))) {
-			vocabulary_entry *rel_name;
-			inter_name *i6_pname = Properties::iname(prn);
-			@<Work out the name for the same-property-value-as relation@>;
+void Properties::SameRelations::stock(bp_family *self, int n) {
+	if (n == 2) {
+		property *prn;
+		LOOP_OVER(prn, property) {
+			if ((Properties::is_value_property(prn)) && (Wordings::nonempty(prn->name))) {
+				vocabulary_entry *rel_name;
+				inter_name *i6_pname = Properties::iname(prn);
+				@<Work out the name for the same-property-value-as relation@>;
 
-			TEMPORARY_TEXT(relname)
-			WRITE_TO(relname, "%V", rel_name);
-			binary_predicate *bp = BinaryPredicates::make_pair(PROPERTY_SAME_KBP,
-				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-				relname, NULL, NULL,
-				Calculus::Schemas::new("*1.%n = *2.%n", i6_pname, i6_pname),
-				Calculus::Schemas::new("*1.%n == *2.%n", i6_pname, i6_pname),
-				WordAssemblages::lit_1(rel_name));
-			DISCARD_TEXT(relname)
-			bp->same_property = prn;
-			Properties::SameRelations::register_same_property_as(bp, Properties::get_name(prn));
+				TEMPORARY_TEXT(relname)
+				WRITE_TO(relname, "%V", rel_name);
+				binary_predicate *bp = BinaryPredicates::make_pair(same_property_bp_family,
+					BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+					relname, NULL, NULL,
+					Calculus::Schemas::new("*1.%n = *2.%n", i6_pname, i6_pname),
+					Calculus::Schemas::new("*1.%n == *2.%n", i6_pname, i6_pname),
+					WordAssemblages::lit_1(rel_name));
+				DISCARD_TEXT(relname)
+				bp->same_property = prn;
+				Properties::SameRelations::register_same_property_as(bp, Properties::get_name(prn));
+			}
 		}
 	}
 }
@@ -91,7 +99,7 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 We just let the standard machinery do its work.
 
 =
-int Properties::SameRelations::REL_typecheck(binary_predicate *bp,
+int Properties::SameRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -99,7 +107,7 @@ int Properties::SameRelations::REL_typecheck(binary_predicate *bp,
 @h Assertion.
 
 =
-int Properties::SameRelations::REL_assert(binary_predicate *bp,
+int Properties::SameRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -109,7 +117,7 @@ int Properties::SameRelations::REL_assert(binary_predicate *bp,
 Again we need do nothing special.
 
 =
-int Properties::SameRelations::REL_compile(int task,
+int Properties::SameRelations::REL_compile(bp_family *self, int task,
 	binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
@@ -122,6 +130,6 @@ property *Properties::SameRelations::bp_get_same_as_property(binary_predicate *b
 @h Problem message text.
 
 =
-int Properties::SameRelations::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Properties::SameRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }

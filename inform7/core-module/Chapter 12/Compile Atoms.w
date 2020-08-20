@@ -299,7 +299,7 @@ adjective apparatus.
 	binary_predicate *bp_to_assert = NULL;
 
 	@<Undo any functional simplification of the relation@>;
-	asch.schema = BinaryPredicates::get_i6_schema(task, bp_to_assert, &asch);
+	asch.schema = BinaryPredicateFamilies::get_schema(task, bp_to_assert, &asch);
 	return asch;
 
 @ When a relation $R(x, y)$ has been simplified to $is(x, f_R(y))$

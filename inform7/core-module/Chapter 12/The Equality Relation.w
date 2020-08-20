@@ -6,41 +6,58 @@ To define that prince among predicates, the equality relation.
 in our calculus.
 
 = (early code)
+bp_family *equality_bp_family = NULL;
+bp_family *spatial_bp_family = NULL;
+
 binary_predicate *R_equality = NULL;
 binary_predicate *a_has_b_predicate = NULL;
+
+@h Family.
+
+=
+void Calculus::Equality::start(void) {
+	equality_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(equality_bp_family, STOCK_BPF_MTID, Calculus::Equality::stock);
+	METHOD_ADD(equality_bp_family, TYPECHECK_BPF_MTID, Calculus::Equality::REL_typecheck);
+	METHOD_ADD(equality_bp_family, ASSERT_BPF_MTID, Calculus::Equality::REL_assert);
+	METHOD_ADD(equality_bp_family, SCHEMA_BPF_MTID, Calculus::Equality::REL_compile);
+	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Calculus::Equality::REL_describe_for_problems);
+	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Calculus::Equality::REL_describe_briefly);
+
+	spatial_bp_family = BinaryPredicateFamilies::new();
+	#ifndef IF_MODULE
+	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, Calculus::Equality::stock_spatial);
+	#endif
+}
 
 @h Initial stock.
 This relation is hard-wired in, and it is made in a slightly special way
 since (alone among binary predicates) it has no distinct reversal.
 
 =
-void Calculus::Equality::REL_create_initial_stock(void) {
-	R_equality = BinaryPredicates::make_equality();
-	BinaryPredicates::set_index_details(R_equality, "value", "value");
+void Calculus::Equality::stock(bp_family *self, int n) {
+	if (n == 1) {
+		R_equality = BinaryPredicates::make_equality();
+		BinaryPredicates::set_index_details(R_equality, "value", "value");
 
-	word_assemblage wa = PreformUtilities::merge(<relation-name-formal>, 0,
-			PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
-	wording AW = WordAssemblages::to_wording(&wa);
-	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(R_equality),
-		Task::language_of_syntax());
-
-	#ifndef IF_MODULE
-	a_has_b_predicate =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
-			BinaryPredicates::full_new_term(NULL, NULL, EMPTY_WORDING, NULL),
-			BinaryPredicates::new_term(NULL),
-			I"has", I"is-had-by",
-			NULL, NULL, NULL,
-			PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
-	#endif
+		word_assemblage wa = PreformUtilities::merge(<relation-name-formal>, 0,
+				PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
+		wording AW = WordAssemblages::to_wording(&wa);
+		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+			MISCELLANEOUS_MC, Rvalues::from_binary_predicate(R_equality),
+			Task::language_of_syntax());
+	}
 }
-
-@h Second stock.
-There is none, of course.
-
-=
-void Calculus::Equality::REL_create_second_stock(void) {
+void Calculus::Equality::stock_spatial(bp_family *self, int n) {
+	if (n == 1) {
+		a_has_b_predicate =
+			BinaryPredicates::make_pair(spatial_bp_family,
+				BinaryPredicates::full_new_term(NULL, NULL, EMPTY_WORDING, NULL),
+				BinaryPredicates::new_term(NULL),
+				I"has", I"is-had-by",
+				NULL, NULL, NULL,
+				PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));
+	}
 }
 
 @h Typechecking.
@@ -48,7 +65,7 @@ This is a very polymorphic relation, in that it can accept terms of almost
 any kind.
 
 =
-int Calculus::Equality::REL_typecheck(binary_predicate *bp,
+int Calculus::Equality::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	LOGIF(MATCHING, "Typecheck %u '==' %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 	if ((K_understanding) && (Kinds::eq(kinds_of_terms[0], K_understanding)) &&
@@ -131,7 +148,7 @@ In general values differ, and cannot be equated by fiat. But an exception is
 setting a global variable.
 
 =
-int Calculus::Equality::REL_assert(binary_predicate *bp,
+int Calculus::Equality::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	if (Lvalues::is_actual_NONLOCAL_VARIABLE(spec0)) {
@@ -185,7 +202,7 @@ schema is a function of both the storage class of A and the kinds of value
 of both A and B.
 
 =
-int Calculus::Equality::REL_compile(int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Calculus::Equality::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *st[2];
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
@@ -347,6 +364,9 @@ one that's more helpfully specific and return |TRUE|.
 @h Problem message text.
 
 =
-int Calculus::Equality::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Calculus::Equality::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
+}
+void Calculus::Equality::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+	WRITE("equality");
 }

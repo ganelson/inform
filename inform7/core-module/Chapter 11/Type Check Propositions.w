@@ -471,13 +471,13 @@ int Calculus::Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl,
 	if (bp == R_universal) @<Adapt to the universal relation@>;
 	@<Work out what kinds we should have found@>;
 
-	int result = BinaryPredicates::typecheck(bp, kinds_of_terms, kinds_required, tck);
+	int result = BinaryPredicateFamilies::typecheck(bp, kinds_of_terms, kinds_required, tck);
 	if (result == NEVER_MATCH_SAYING_WHY_NOT) {
 		kind *kinds_dereferencing_properties[2];
 		LOG("0 = %u. 1 = %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 		kinds_dereferencing_properties[0] = Kinds::dereference_properties(kinds_of_terms[0]);
 		kinds_dereferencing_properties[1] = kinds_of_terms[1];
-		int r2 = BinaryPredicates::typecheck(bp, kinds_dereferencing_properties, kinds_required, tck);
+		int r2 = BinaryPredicateFamilies::typecheck(bp, kinds_dereferencing_properties, kinds_required, tck);
 		if ((r2 == ALWAYS_MATCH) || (r2 == SOMETIMES_MATCH)) {
 			result = r2;
 		}

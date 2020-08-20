@@ -130,7 +130,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(BUILT_IN_STUFF_CSEQ, I"Making built in infrastructure", -1);
 	BENCH(InferenceSubjects::make_built_in);
 	BENCH(Task::make_built_in_kind_constructors);
-	BENCH(BinaryPredicates::make_built_in)
+	BENCH(BinaryPredicateFamilies::first_stock)
 	BENCH(BootVerbs::make_built_in)
 
 @<Pass three times through the major nodes@> =
@@ -158,7 +158,7 @@ so on. Those absolute basics are made here.
 @<Tables and grammar@> =
 	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
 	BENCH(Properties::Measurement::validate_definitions)
-	BENCH(BinaryPredicates::make_built_in_further)
+	BENCH(BinaryPredicateFamilies::second_stock)
 	BENCH(PL::Bibliographic::IFID::define_UUID)
 	BENCH(PL::Figures::compile_ResourceIDsOfFigures_array)
 	BENCH(PL::Sounds::compile_ResourceIDsOfSounds_array)

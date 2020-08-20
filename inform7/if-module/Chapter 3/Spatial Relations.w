@@ -25,11 +25,22 @@ binary_predicate *R_enclosure = NULL;
 These relations are all hard-wired in.
 
 =
-void PL::SpatialRelations::REL_create_initial_stock(void) {
-	@<Make built-in spatial relationships@>;
-	@<Make built-in indirect spatial relationships@>;
-	PL::MapDirections::create_relations();
-	PL::Regions::create_relations();
+void PL::SpatialRelations::start(void) {
+	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, PL::SpatialRelations::stock);
+	METHOD_ADD(spatial_bp_family, TYPECHECK_BPF_MTID, PL::SpatialRelations::REL_typecheck);
+	METHOD_ADD(spatial_bp_family, ASSERT_BPF_MTID, PL::SpatialRelations::REL_assert);
+	METHOD_ADD(spatial_bp_family, SCHEMA_BPF_MTID, PL::SpatialRelations::REL_compile);
+	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::SpatialRelations::REL_describe_for_problems);
+	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::SpatialRelations::REL_describe_briefly);
+}
+
+void PL::SpatialRelations::stock(bp_family *self, int n) {
+	if (n == 1) {
+		@<Make built-in spatial relationships@>;
+		@<Make built-in indirect spatial relationships@>;
+		PL::MapDirections::create_relations();
+		PL::Regions::create_relations();
+	}
 }
 
 @ Containment, support, incorporation, carrying, holding, wearing and
@@ -43,7 +54,7 @@ a union of the others, and therefore includes incorporation.)
 
 @<Make built-in spatial relationships@> =
 	R_containment =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(NULL, NULL, EMPTY_WORDING, Calculus::Schemas::new("ContainerOf(*1)")),
 			BinaryPredicates::new_term(NULL),
 			I"contains", I"is-in",
@@ -53,7 +64,7 @@ a union of the others, and therefore includes incorporation.)
 	R_containment->loop_parent_optimisation_ranger = "TestContainmentRange";
 	BinaryPredicates::set_index_details(R_containment, "container/room", "thing");
 	R_support =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_supporter, NULL, EMPTY_WORDING, Calculus::Schemas::new("SupporterOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"supports", I"is-on",
@@ -61,14 +72,14 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, SUPPORT_RELATION_NAME));
 	R_support->loop_parent_optimisation_proviso = "SupporterOf";
 	R_incorporation =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_thing, NULL, EMPTY_WORDING, Calculus::Schemas::new("(*1.component_parent)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"incorporates", I"is-part-of",
 			NULL, Calculus::Schemas::new("MakePart(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, INCORPORATION_RELATION_NAME));
 	R_carrying =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("CarrierOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"carries", I"is-carried-by",
@@ -76,7 +87,7 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, CARRYING_RELATION_NAME));
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("HolderOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"holds", I"is-held-by",
@@ -84,7 +95,7 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, HOLDING_RELATION_NAME));
 	/* can't be optimised, because parts are also held */
 	R_wearing =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("WearerOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"wears", I"is-worn-by",
@@ -92,7 +103,7 @@ a union of the others, and therefore includes incorporation.)
 			PreformUtilities::wording(<relation-names>, WEARING_RELATION_NAME));
 	R_wearing->loop_parent_optimisation_proviso = "WearerOf";
 	a_has_b_predicate =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(NULL, NULL, EMPTY_WORDING, Calculus::Schemas::new("OwnerOf(*1)")),
 			BinaryPredicates::new_term(NULL),
 			I"has", I"is-had-by",
@@ -101,7 +112,7 @@ a union of the others, and therefore includes incorporation.)
 	a_has_b_predicate->loop_parent_optimisation_proviso = "OwnerOf";
 	BinaryPredicates::set_index_details(a_has_b_predicate, "person", "thing");
 	room_containment_predicate =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::full_new_term(infs_room, NULL, EMPTY_WORDING, Calculus::Schemas::new("LocationOf(*1)")),
 			BinaryPredicates::new_term(infs_thing),
 			I"is-room-of", I"is-in-room",
@@ -114,46 +125,39 @@ can be tested at run-time, but which can't be asserted or made true or false.
 
 @<Make built-in indirect spatial relationships@> =
 	R_visibility =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::new_term(infs_thing),
 			BinaryPredicates::new_term(infs_thing),
 			I"can-see", I"can-be-seen-by",
 			NULL, NULL, Calculus::Schemas::new("TestVisibility(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, VISIBILITY_RELATION_NAME));
 	R_touchability =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::new_term(infs_thing),
 			BinaryPredicates::new_term(infs_thing),
 			I"can-touch", I"can-be-touched-by",
 			NULL, NULL, Calculus::Schemas::new("TestTouchability(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, TOUCHABILITY_RELATION_NAME));
 	R_concealment =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::new_term(infs_thing),
 			BinaryPredicates::new_term(infs_thing),
 			I"conceals", I"is-concealed-by",
 			NULL, NULL, Calculus::Schemas::new("TestConcealment(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, CONCEALMENT_RELATION_NAME));
 	R_enclosure =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			I"encloses", I"is-enclosed-by",
 			NULL, NULL, Calculus::Schemas::new("IndirectlyContains(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, ENCLOSURE_RELATION_NAME));
 
-@h Second stock.
-There is none -- this is a family of relations which is all built in.
-
-=
-void PL::SpatialRelations::REL_create_second_stock(void) {
-}
-
 @h Typechecking.
 No special rules apply.
 
 =
-int PL::SpatialRelations::REL_typecheck(binary_predicate *bp,
+int PL::SpatialRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -165,7 +169,7 @@ sometimes transitively and sometimes not. "The passport is in the desk",
 place the same object in a container, a room or a region respectively.
 
 =
-int PL::SpatialRelations::REL_assert(binary_predicate *bp,
+int PL::SpatialRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	instance *I0 = InferenceSubjects::as_object_instance(infs0),
@@ -253,13 +257,16 @@ special to make it work, so this doesn't seem worth the trouble.)
 We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int PL::SpatialRelations::REL_compile(int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int PL::SpatialRelations::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @h Problem message text.
 
 =
-int PL::SpatialRelations::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int PL::SpatialRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
+}
+void PL::SpatialRelations::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+	WRITE("spatial");
 }

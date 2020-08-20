@@ -534,7 +534,7 @@ these kind atoms.
 	}
 	#endif
 
-	if (BinaryPredicates::assert(bp, subj0, spec0, subj1, spec1) == FALSE)
+	if (BinaryPredicateFamilies::assert(bp, subj0, spec0, subj1, spec1) == FALSE)
 		@<Issue a problem message for failure to assert@>;
 
 @<Issue a problem message for failure to assert@> =

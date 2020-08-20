@@ -188,7 +188,7 @@ and "inside" the wrong way round.
 
 =
 typedef struct binary_predicate {
-	int relation_family; /* one of the |*_KBP| constants defined below */
+	struct bp_family *relation_family;
 	int form_of_relation; /* one of the |Relation_*| constants defined below */
 	struct word_assemblage relation_name; /* (which might have length 0) */
 	struct parse_node *bp_created_at; /* where declared in the source text */
@@ -237,34 +237,6 @@ typedef struct binary_predicate {
 
 	CLASS_DEFINITION
 } binary_predicate;
-
-@ This seems a good point to lay out a classification of all of the BPs
-existing within Inform. Broadly, they divide into two: the ones explicitly
-created by the source text, in sentences like
-
->> Admiration relates various people to various people.
-
-These are called "explicit". The others are "implicit" and are either
-created automatically soon after Inform starts up, or else are created as
-a consequence of something else being created by the source text, such as
-
->> Definition: A woman is tall if her height is 68 or more.
-
-which implicitly creates a "taller than" relation. All explicit BPs are
-constructed in the "Relations.w" section of the source code.
-
-@d EQUALITY_KBP 1 /* there is exactly one of these: the $x=y$ predicate */
-@d QUASINUMERIC_KBP 2 /* the inequality comparison $\leq$, $<$ and so on */
-@d SPATIAL_KBP 3 /* a relation associated with a map connection */
-@d MAP_CONNECTING_KBP 4 /* a relation associated with a map connection */
-@d PROPERTY_SETTING_KBP 5 /* a relation associated with a value property */
-@d PROPERTY_SAME_KBP 6 /* another relation associated with a value property */
-@d PROPERTY_COMPARISON_KBP 7 /* another relation associated with a value property */
-@d LISTED_IN_KBP 8 /* a relation for indirect table lookups, one for each column name */
-@d PROVISION_KBP 9 /* a relation for specifying which objects provide which properties */
-@d UNIVERSAL_KBP 10 /* a relation for applying general other relations */
-
-@d EXPLICIT_KBP 100 /* defined explicitly in the source text; the others are all implicit */
 
 @ The following constants are used to identify the "form" of a BP (in that the
 |form_of_relation| field of any BP always equals one of these and never changes).
@@ -472,7 +444,7 @@ this effect. For now, we give $EQ$ entirely blank term details.
 
 =
 binary_predicate *BinaryPredicates::make_equality(void) {
-	binary_predicate *bp = BinaryPredicates::make_single(EQUALITY_KBP,
+	binary_predicate *bp = BinaryPredicates::make_single(equality_bp_family,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 		I"is", NULL, NULL, NULL,
 		PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
@@ -492,7 +464,7 @@ it will long before that have been reversed, so we only fill in details of
 how to compile the BP for the one which is the right way round.
 
 =
-binary_predicate *BinaryPredicates::make_pair(int family,
+binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 	bp_term_details left_term, bp_term_details right_term,
 	text_stream *name, text_stream *namer, property *pn,
 	i6_schema *mtf, i6_schema *tf, word_assemblage source_name) {
@@ -530,11 +502,22 @@ then fill in the correct details later. This is where such sketchy pairs are
 made:
 
 =
+bp_family *explicit_bp_family = NULL;
+
+void BinaryPredicates::start_explicit_relation(void) {
+	explicit_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::REL_typecheck);
+	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::REL_assert);
+	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::REL_compile);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::REL_describe_for_problems);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_describe_briefly);
+}
+
 binary_predicate *BinaryPredicates::make_pair_sketchily(word_assemblage wa, int f) {
 	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
 	binary_predicate *bp =
-		BinaryPredicates::make_pair(EXPLICIT_KBP,
+		BinaryPredicates::make_pair(explicit_bp_family,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
 		relname, NULL, NULL, NULL, NULL, wa);
 	DISCARD_TEXT(relname)
@@ -555,7 +538,7 @@ support making-true, but don't support making-false, so that such an argument
 would always be |NULL| in practice.
 
 =
-binary_predicate *BinaryPredicates::make_single(int family,
+binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp_term_details left_term, bp_term_details right_term,
 	text_stream *name, property *pn,
 	i6_schema *mtf, i6_schema *tf, word_assemblage rn) {
@@ -934,177 +917,3 @@ aren't being worn, or aren't even clothing.
 			bp->loop_parent_optimisation_proviso);
 		return TRUE;
 	}
-
-@h The built-in BPs.
-Here we create spatial relationships, numerical comparisons and a few others:
-all of the BPs in the "exceptional one-off cases" part of the classification
-above. This happens very early in compilation.
-
-=
-void BinaryPredicates::make_built_in(void) {
-	Calculus::Equality::REL_create_initial_stock();
-	Properties::ProvisionRelation::REL_create_initial_stock();
-	Relations::Universal::REL_create_initial_stock();
-	Calculus::QuasinumericRelations::REL_create_initial_stock();
-	#ifdef IF_MODULE
-	PL::SpatialRelations::REL_create_initial_stock();
-	PL::MapDirections::REL_create_initial_stock();
-	#endif
-	Properties::SettingRelations::REL_create_initial_stock();
-	Properties::SameRelations::REL_create_initial_stock();
-	Properties::ComparativeRelations::REL_create_initial_stock();
-	Tables::Relations::REL_create_initial_stock();
-	Relations::Explicit::REL_create_initial_stock();
-}
-
-@h Other property-based relations.
-
-=
-void BinaryPredicates::make_built_in_further(void) {
-	Calculus::Equality::REL_create_second_stock();
-	Properties::ProvisionRelation::REL_create_second_stock();
-	Relations::Universal::REL_create_second_stock();
-	Calculus::QuasinumericRelations::REL_create_second_stock();
-	#ifdef IF_MODULE
-	PL::SpatialRelations::REL_create_second_stock();
-	PL::MapDirections::REL_create_second_stock();
-	#endif
-	Properties::SettingRelations::REL_create_second_stock();
-	Properties::SameRelations::REL_create_second_stock();
-	Properties::ComparativeRelations::REL_create_second_stock();
-	Tables::Relations::REL_create_second_stock();
-	Relations::Explicit::REL_create_second_stock();
-}
-
-@
-
-@d DECLINE_TO_MATCH 1000 /* not one of the three legal |*_MATCH| values */
-@d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal |*_MATCH| values */
-
-=
-int BinaryPredicates::typecheck(binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	int result = DECLINE_TO_MATCH;
-	switch (bp->relation_family) {
-		case EQUALITY_KBP: result = Calculus::Equality::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case PROVISION_KBP: result = Properties::ProvisionRelation::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case UNIVERSAL_KBP: result = Relations::Universal::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case QUASINUMERIC_KBP: result = Calculus::QuasinumericRelations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		#ifdef IF_MODULE
-		case SPATIAL_KBP: result = PL::SpatialRelations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case MAP_CONNECTING_KBP: result = PL::MapDirections::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		#endif
-		#ifndef IF_MODULE
-		case SPATIAL_KBP: result = TRUE; break;
-		case MAP_CONNECTING_KBP: result = TRUE; break;
-		#endif
-		case PROPERTY_SETTING_KBP: result = Properties::SettingRelations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case PROPERTY_SAME_KBP: result = Properties::SameRelations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case PROPERTY_COMPARISON_KBP: result = Properties::ComparativeRelations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case LISTED_IN_KBP: result = Tables::Relations::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		case EXPLICIT_KBP: result = Relations::Explicit::REL_typecheck(bp, kinds_of_terms, kinds_required, tck); break;
-		default: internal_error("typechecked unknown KBP");
-	}
-	return result;
-}
-
-int BinaryPredicates::assert(binary_predicate *bp,
-		inference_subject *subj0, parse_node *spec0, inference_subject *subj1, parse_node *spec1) {
-	int success = FALSE;
-	switch (bp->relation_family) {
-		case EQUALITY_KBP: success = Calculus::Equality::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case PROVISION_KBP: success = Properties::ProvisionRelation::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case UNIVERSAL_KBP: success = Relations::Universal::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case QUASINUMERIC_KBP: success = Calculus::QuasinumericRelations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		#ifdef IF_MODULE
-		case SPATIAL_KBP: success = PL::SpatialRelations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case MAP_CONNECTING_KBP: success = PL::MapDirections::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		#endif
-		#ifndef IF_MODULE
-		case SPATIAL_KBP: success = FALSE; break;
-		case MAP_CONNECTING_KBP: success = FALSE; break;
-		#endif
-		case PROPERTY_SETTING_KBP: success = Properties::SettingRelations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case PROPERTY_SAME_KBP: success = Properties::SameRelations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case PROPERTY_COMPARISON_KBP: success = Properties::ComparativeRelations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case LISTED_IN_KBP: success = Tables::Relations::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		case EXPLICIT_KBP: success = Relations::Explicit::REL_assert(bp, subj0, spec0, subj1, spec1); break;
-		default: internal_error("asserted unknown KBP");
-	}
-	return success;
-}
-
-i6_schema *BinaryPredicates::get_i6_schema(int task, binary_predicate *bp, annotated_i6_schema *asch) {
-	int success = FALSE;
-	switch (bp->relation_family) {
-		case EQUALITY_KBP: success = Calculus::Equality::REL_compile(task, bp, asch); break;
-		case PROVISION_KBP: success = Properties::ProvisionRelation::REL_compile(task, bp, asch); break;
-		case UNIVERSAL_KBP: success = Relations::Universal::REL_compile(task, bp, asch); break;
-		case QUASINUMERIC_KBP: success = Calculus::QuasinumericRelations::REL_compile(task, bp, asch); break;
-		#ifdef IF_MODULE
-		case SPATIAL_KBP: success = PL::SpatialRelations::REL_compile(task, bp, asch); break;
-		case MAP_CONNECTING_KBP: success = PL::MapDirections::REL_compile(task, bp, asch); break;
-		#endif
-		#ifndef IF_MODULE
-		case SPATIAL_KBP: success = FALSE; break;
-		case MAP_CONNECTING_KBP: success = FALSE; break;
-		#endif
-		case PROPERTY_SETTING_KBP: success = Properties::SettingRelations::REL_compile(task, bp, asch); break;
-		case PROPERTY_SAME_KBP: success = Properties::SameRelations::REL_compile(task, bp, asch); break;
-		case PROPERTY_COMPARISON_KBP: success = Properties::ComparativeRelations::REL_compile(task, bp, asch); break;
-		case LISTED_IN_KBP: success = Tables::Relations::REL_compile(task, bp, asch); break;
-		case EXPLICIT_KBP: success = Relations::Explicit::REL_compile(task, bp, asch); break;
-		default: internal_error("compiled unknown KBP");
-	}
-
-	if (success == FALSE) {
-		switch(task) {
-			case TEST_ATOM_TASK: asch->schema = bp->test_function; break;
-			case NOW_ATOM_TRUE_TASK: asch->schema = bp->make_true_function; break;
-			case NOW_ATOM_FALSE_TASK: asch->schema = bp->make_false_function; break;
-		}
-	}
-
-	return asch->schema;
-}
-
-void BinaryPredicates::describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
-	int success = FALSE;
-	switch (bp->relation_family) {
-		case EQUALITY_KBP: success = Calculus::Equality::REL_describe_for_problems(OUT, bp); break;
-		case PROVISION_KBP: success = Properties::ProvisionRelation::REL_describe_for_problems(OUT, bp); break;
-		case UNIVERSAL_KBP: success = Relations::Universal::REL_describe_for_problems(OUT, bp); break;
-		case QUASINUMERIC_KBP: success = Calculus::QuasinumericRelations::REL_describe_for_problems(OUT, bp); break;
-		#ifdef IF_MODULE
-		case SPATIAL_KBP: success = PL::SpatialRelations::REL_describe_for_problems(OUT, bp); break;
-		case MAP_CONNECTING_KBP: success = PL::MapDirections::REL_describe_for_problems(OUT, bp); break;
-		#endif
-		#ifndef IF_MODULE
-		case SPATIAL_KBP: success = FALSE; break;
-		case MAP_CONNECTING_KBP: success = FALSE; break;
-		#endif
-		case PROPERTY_SETTING_KBP: success = Properties::SettingRelations::REL_describe_for_problems(OUT, bp); break;
-		case PROPERTY_SAME_KBP: success = Properties::SameRelations::REL_describe_for_problems(OUT, bp); break;
-		case PROPERTY_COMPARISON_KBP: success = Properties::ComparativeRelations::REL_describe_for_problems(OUT, bp); break;
-		case LISTED_IN_KBP: success = Tables::Relations::REL_describe_for_problems(OUT, bp); break;
-		case EXPLICIT_KBP: success = Relations::Explicit::REL_describe_for_problems(OUT, bp); break;
-		default: internal_error("found unknown KBP");
-	}
-	if (success == NOT_APPLICABLE) return;
-	if (success == FALSE) {
-		if (WordAssemblages::nonempty(bp->relation_name)) WRITE("the %A", &(bp->relation_name));
-		else WRITE("a");
-		WRITE(" relation");
-	}
-	kind *K0 = BinaryPredicates::term_kind(bp, 0); if (K0 == NULL) K0 = K_object;
-	kind *K1 = BinaryPredicates::term_kind(bp, 1); if (K1 == NULL) K1 = K_object;
-	WRITE(" (between ");
-	if (Kinds::eq(K0, K1)) {
-		Kinds::Textual::write_plural(OUT, K0);
-	} else {
-		Kinds::Textual::write_articled(OUT, K0);
-		WRITE(" and ");
-		Kinds::Textual::write_articled(OUT, K1);
-	}
-	WRITE(")");
-}

@@ -3,18 +3,22 @@
 When a measurement adjective like "tall" is defined, so is a
 comparative relation like "taller than".
 
-@ This section handles the |PROPERTY_COMPARISON_KBP| relations. Unlike the
-other relations to do with property values, these do not correspond exactly
-with the properties. Some properties, like "carrying capacity", might
+@h Family.
+Unlike the other relations to do with property values, these do not correspond
+exactly with the properties. Some properties, like "carrying capacity", might
 never be compared with measurement adjectives; others, like "height", might
 be compared with more than one ("short", "tall").
 
-@h Initial stock.
-There is no initial stock of these, since there are no value properties yet
-when Inform starts up.
-
 =
-void Properties::ComparativeRelations::REL_create_initial_stock(void) {
+bp_family *property_comparison_bp_family = NULL;
+
+void Properties::ComparativeRelations::start(void) {
+	property_comparison_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(property_comparison_bp_family, STOCK_BPF_MTID, Properties::ComparativeRelations::stock);
+	METHOD_ADD(property_comparison_bp_family, TYPECHECK_BPF_MTID, Properties::ComparativeRelations::REL_typecheck);
+	METHOD_ADD(property_comparison_bp_family, ASSERT_BPF_MTID, Properties::ComparativeRelations::REL_assert);
+	METHOD_ADD(property_comparison_bp_family, SCHEMA_BPF_MTID, Properties::ComparativeRelations::REL_compile);
+	METHOD_ADD(property_comparison_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::ComparativeRelations::REL_describe_for_problems);
 }
 
 @h Second stock.
@@ -28,8 +32,10 @@ This is where our comparative relations come from, but the work is done in
 the previous section.
 
 =
-void Properties::ComparativeRelations::REL_create_second_stock(void) {
-	Properties::Measurement::create_comparatives();
+void Properties::ComparativeRelations::stock(bp_family *self, int n) {
+	if (n == 2) {
+		Properties::Measurement::create_comparatives();
+	}
 }
 
 @h Typechecking.
@@ -38,7 +44,7 @@ below), we'll typecheck this asymmetrically; the left term is typechecked
 as usual, but the right is more leniently handled.
 
 =
-int Properties::ComparativeRelations::REL_typecheck(binary_predicate *bp,
+int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 
 	if ((kinds_required[0]) &&
@@ -65,7 +71,7 @@ int Properties::ComparativeRelations::REL_typecheck(binary_predicate *bp,
 @h Assertion.
 
 =
-int Properties::ComparativeRelations::REL_assert(binary_predicate *bp,
+int Properties::ComparativeRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -75,7 +81,7 @@ int Properties::ComparativeRelations::REL_assert(binary_predicate *bp,
 We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Properties::ComparativeRelations::REL_compile(int task, binary_predicate *bp,
+int Properties::ComparativeRelations::REL_compile(bp_family *self, int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
 	if (task == TEST_ATOM_TASK)
 		@<Rewrite the annotated schema if it turns out to be an absolute comparison@>;
@@ -108,6 +114,6 @@ so symmetrically; we rewrite the annotated schema on the fly.
 @h Problem message text.
 
 =
-int Properties::ComparativeRelations::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Properties::ComparativeRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }

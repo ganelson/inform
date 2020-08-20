@@ -164,8 +164,8 @@ objects, but also other enumerated constant values, and so on."
 	Condition Properties
 	Indefinite Appearance
 	The Provision Relation
-	Measurement Adjectives
 	Comparative Relations
+	Measurement Adjectives
 	Same Property Relation
 	Setting Property Relation
 	Properties of Values

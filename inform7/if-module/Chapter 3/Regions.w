@@ -207,7 +207,7 @@ int PL::Regions::regions_name_to_early_infs(wording W, inference_subject **infs)
 @ =
 void PL::Regions::create_relations(void) {
 	R_regional_containment =
-		BinaryPredicates::make_pair(SPATIAL_KBP,
+		BinaryPredicates::make_pair(spatial_bp_family,
 			BinaryPredicates::new_term(infs_region),
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			I"region-contains", I"in-region",

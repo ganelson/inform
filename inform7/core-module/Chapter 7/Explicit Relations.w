@@ -4,20 +4,14 @@ To draw inferences from the relations created explicitly by the
 source text.
 
 @h Managing the BPs generated.
-The relations created in this section belong to the |EXPLICIT_KBP| family,
+The relations created in this section belong to the | family,
 named so because their definitions are explicit in the source text. Initially,
 there are none.
-
-=
-void Relations::Explicit::REL_create_initial_stock(void) {
-}
-void Relations::Explicit::REL_create_second_stock(void) {
-}
 
 @ They typecheck by the default rule only:
 
 =
-int Relations::Explicit::REL_typecheck(binary_predicate *bp,
+int Relations::Explicit::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -27,7 +21,7 @@ to behave as if $B(y, x)$ had also been asserted whenever $B(x, y)$ has, if
 $x\neq y$.
 
 =
-int Relations::Explicit::REL_assert(binary_predicate *bp,
+int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 
@@ -96,13 +90,25 @@ void Relations::Explicit::infer_property_based_relation(binary_predicate *relati
 @ We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Relations::Explicit::REL_compile(int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Relations::Explicit::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @ Problem message text:
 
 =
-int Relations::Explicit::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Relations::Explicit::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
+}
+void Relations::Explicit::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+	switch (bp->form_of_relation) {
+		case Relation_OtoO: WRITE("one-to-one"); break;
+		case Relation_OtoV: WRITE("one-to-various"); break;
+		case Relation_VtoO: WRITE("various-to-one"); break;
+		case Relation_VtoV: WRITE("various-to-various"); break;
+		case Relation_Sym_OtoO: WRITE("one-to-another"); break;
+		case Relation_Sym_VtoV: WRITE("various-to-each-other"); break;
+		case Relation_Equiv: WRITE("in groups"); break;
+		case Relation_ByRoutine: WRITE("defined"); break;
+	}
 }

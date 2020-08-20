@@ -100,6 +100,8 @@ void IFModule::start(void) {
 	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	PL::SpatialRelations::start();
+	PL::MapDirections::start();
 }
 void IFModule::end(void) {
 }

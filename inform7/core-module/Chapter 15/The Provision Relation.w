@@ -14,24 +14,34 @@ grant permission to hold a property within the world model.
 = (early code)
 binary_predicate *R_provision = NULL;
 
+@h Family.
+
+=
+bp_family *provision_bp_family = NULL;
+
+void Properties::ProvisionRelation::start(void) {
+	provision_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(provision_bp_family, STOCK_BPF_MTID, Properties::ProvisionRelation::stock);
+	METHOD_ADD(provision_bp_family, TYPECHECK_BPF_MTID, Properties::ProvisionRelation::REL_typecheck);
+	METHOD_ADD(provision_bp_family, ASSERT_BPF_MTID, Properties::ProvisionRelation::REL_assert);
+	METHOD_ADD(provision_bp_family, SCHEMA_BPF_MTID, Properties::ProvisionRelation::REL_compile);
+	METHOD_ADD(provision_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::ProvisionRelation::REL_describe_for_problems);
+	METHOD_ADD(provision_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Properties::ProvisionRelation::REL_describe_briefly);
+}
+
 @h Initial stock.
 There's just one relation of this kind, and it's hard-wired in.
 
 =
-void Properties::ProvisionRelation::REL_create_initial_stock(void) {
-	R_provision =
-		BinaryPredicates::make_pair(PROVISION_KBP,
-			BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-			I"provides", NULL, NULL, NULL, NULL,
-			PreformUtilities::wording(<relation-names>, PROVISION_RELATION_NAME));
-	BinaryPredicates::set_index_details(R_provision, "value", "property");
-}
-
-@h Second stock.
-There is none, of course.
-
-=
-void Properties::ProvisionRelation::REL_create_second_stock(void) {
+void Properties::ProvisionRelation::stock(bp_family *self, int n) {
+	if (n == 1) {
+		R_provision =
+			BinaryPredicates::make_pair(provision_bp_family,
+				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+				I"provides", NULL, NULL, NULL, NULL,
+				PreformUtilities::wording(<relation-names>, PROVISION_RELATION_NAME));
+		BinaryPredicates::set_index_details(R_provision, "value", "property");
+	}
 }
 
 @h Typechecking.
@@ -40,7 +50,7 @@ see in the next chapter), so there's really no restriction on the left term.
 The right term, of course, has to be a property.
 
 =
-int Properties::ProvisionRelation::REL_typecheck(binary_predicate *bp,
+int Properties::ProvisionRelation::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if (Kinds::get_construct(kinds_of_terms[1]) == CON_property) return ALWAYS_MATCH;
 	Problems::quote_kind(4, kinds_of_terms[1]);
@@ -58,7 +68,7 @@ enabling adjectives like "green" or "blue" to apply to vehicles, so we
 must make sure any such meanings are defined.
 
 =
-int Properties::ProvisionRelation::REL_assert(binary_predicate *bp,
+int Properties::ProvisionRelation::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	property *prn = Rvalues::to_property(spec1);
@@ -75,7 +85,7 @@ Run-time is too late to change which objects provide what, so this relation
 can't be changed at compile time.
 
 =
-int Properties::ProvisionRelation::REL_compile(int task, binary_predicate *bp,
+int Properties::ProvisionRelation::REL_compile(bp_family *self, int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
 	if (task == TEST_ATOM_TASK) {
 		kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
@@ -124,6 +134,9 @@ answer now.
 Nothing special is needed here.
 
 =
-int Properties::ProvisionRelation::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Properties::ProvisionRelation::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
+}
+void Properties::ProvisionRelation::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+	WRITE("provision");
 }

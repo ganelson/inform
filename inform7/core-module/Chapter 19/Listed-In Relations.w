@@ -3,11 +3,17 @@
 To define the binary predicates corresponding to table columns,
 and which determine whether a given value is listed in that column.
 
-@h Initial stock.
-There is none, since no tables or columns exist when Inform starts up.
+@h Family.
 
 =
-void Tables::Relations::REL_create_initial_stock(void) {
+bp_family *listed_in_bp_family = NULL;
+
+void Tables::Relations::start(void) {
+	listed_in_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(listed_in_bp_family, TYPECHECK_BPF_MTID, Tables::Relations::REL_typecheck);
+	METHOD_ADD(listed_in_bp_family, ASSERT_BPF_MTID, Tables::Relations::REL_assert);
+	METHOD_ADD(listed_in_bp_family, SCHEMA_BPF_MTID, Tables::Relations::REL_compile);
+	METHOD_ADD(listed_in_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Tables::Relations::REL_describe_for_problems);
 }
 
 @h Subsequent creations.
@@ -24,7 +30,7 @@ predicates instead.
 
 =
 binary_predicate *Tables::Relations::make_listed_in_predicate(table_column *tc) {
-	binary_predicate *bp = BinaryPredicates::make_pair(LISTED_IN_KBP,
+	binary_predicate *bp = BinaryPredicates::make_pair(listed_in_bp_family,
 		BinaryPredicates::new_term(NULL),
 		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_table)),
 		I"listed_in", I"lists-in", NULL, NULL,
@@ -48,17 +54,10 @@ void Tables::Relations::supply_kind_for_listed_in_tc(binary_predicate *bp, kind 
 	BinaryPredicates::set_term_domain(&(bp->reversal->term_details[1]), K);
 }
 
-@h Second stock.
-By this time, they all exist.
-
-=
-void Tables::Relations::REL_create_second_stock(void) {
-}
-
 @h Typechecking.
 
 =
-int Tables::Relations::REL_typecheck(binary_predicate *bp,
+int Tables::Relations::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -67,7 +66,7 @@ int Tables::Relations::REL_typecheck(binary_predicate *bp,
 These relations cannot be asserted.
 
 =
-int Tables::Relations::REL_assert(binary_predicate *bp,
+int Tables::Relations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -79,7 +78,7 @@ present in the current stack frame, since we're going to need them to hold
 the table reference for any successful lookup.
 
 =
-int Tables::Relations::REL_compile(int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Tables::Relations::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	if (task == TEST_ATOM_TASK) LocalVariables::add_table_lookup();
 	return FALSE;
 }
@@ -87,7 +86,7 @@ int Tables::Relations::REL_compile(int task, binary_predicate *bp, annotated_i6_
 @h Problem message text.
 
 =
-int Tables::Relations::REL_describe_for_problems(OUTPUT_STREAM, binary_predicate *bp) {
+int Tables::Relations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("the listed in relation");
 	return TRUE;
 }

@@ -952,7 +952,7 @@ void Relations::compile_relation_records(void) {
 
 @<The ASSERT TRUE task@> =
 	asch = Calculus::Atoms::Compile::blank_asch();
-	i6s = BinaryPredicates::get_i6_schema(NOW_ATOM_TRUE_TASK, dbp, &asch);
+	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_TRUE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
 		Calculus::Schemas::emit_expand_from_locals(i6s, X_lv, Y_lv, TRUE);
@@ -961,7 +961,7 @@ void Relations::compile_relation_records(void) {
 
 @<The ASSERT FALSE task@> =
 	asch = Calculus::Atoms::Compile::blank_asch();
-	i6s = BinaryPredicates::get_i6_schema(NOW_ATOM_FALSE_TASK, dbp, &asch);
+	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_FALSE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
 		Calculus::Schemas::emit_expand_from_locals(i6s, X_lv, Y_lv, TRUE);
@@ -972,7 +972,7 @@ void Relations::compile_relation_records(void) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		asch = Calculus::Atoms::Compile::blank_asch();
-		i6s = BinaryPredicates::get_i6_schema(TEST_ATOM_TASK, dbp, &asch);
+		i6s = BinaryPredicateFamilies::get_schema(TEST_ATOM_TASK, dbp, &asch);
 		int adapted = FALSE;
 		for (int j=0; j<2; j++) {
 			i6_schema *fnsc = BinaryPredicates::get_term_as_function_of_other(bp, j);
@@ -2310,32 +2310,14 @@ void Relations::index_table(OUTPUT_STREAM) {
 	HTML::end_html_row(OUT);
 	LOOP_OVER(bp, binary_predicate)
 		if (bp->right_way_round) {
-			char *type = NULL, *left = NULL, *right = NULL;
-			switch (bp->relation_family) {
-				case EQUALITY_KBP: type = "equality"; left = "<i>any</i>"; right = left; break;
-				case QUASINUMERIC_KBP: type = "numeric"; break;
-				case SPATIAL_KBP: type = "spatial"; break;
-				case MAP_CONNECTING_KBP: type = "map"; left = "room/door"; right = left; break;
-				case PROVISION_KBP: type = "provision"; left = "<i>any</i>"; right = "property"; break;
-				case EXPLICIT_KBP:
-					switch (bp->form_of_relation) {
-						case Relation_OtoO: type = "one-to-one"; break;
-						case Relation_OtoV: type = "one-to-various"; break;
-						case Relation_VtoO: type = "various-to-one"; break;
-						case Relation_VtoV: type = "various-to-various"; break;
-						case Relation_Sym_OtoO: type = "one-to-another"; break;
-						case Relation_Sym_VtoV: type = "various-to-each-other"; break;
-						case Relation_Equiv: type = "in groups"; break;
-						case Relation_ByRoutine: type = "defined"; break;
-					}
-					break;
-			}
-			if ((type == NULL) || (WordAssemblages::nonempty(bp->relation_name) == FALSE)) continue;
+			TEMPORARY_TEXT(type)
+			BinaryPredicateFamilies::describe_for_index(type, bp);
+			if ((Str::len(type) == 0) || (WordAssemblages::nonempty(bp->relation_name) == FALSE)) continue;
 			HTML::first_html_column(OUT, 0);
 			WordAssemblages::index(OUT, &(bp->relation_name));
 			if (bp->bp_created_at) Index::link(OUT, Wordings::first_wn(Node::get_text(bp->bp_created_at)));
 			HTML::next_html_column(OUT, 0);
-			if (type) WRITE("%s", type); else WRITE("--");
+			if (Str::len(type) > 0) WRITE("%S", type); else WRITE("--");
 			HTML::next_html_column(OUT, 0);
 			BinaryPredicates::index_term_details(OUT, &(bp->term_details[0]));
 			HTML::next_html_column(OUT, 0);
