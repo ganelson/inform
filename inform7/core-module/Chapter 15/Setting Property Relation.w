@@ -42,7 +42,7 @@ binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) 
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
 		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 		BinaryPredicates::new_term(NULL),
-		I"set-property", NULL, NULL, NULL, NULL, WordAssemblages::lit_0());
+		I"set-property", NULL, NULL, NULL, WordAssemblages::lit_0());
 	bp->property_pending_text = W;
 	bp->reversal->property_pending_text = W;
 	return bp;

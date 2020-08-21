@@ -60,3 +60,28 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 void Main::ignore(int id, text_stream *arg, void *state) {
 	Errors::fatal("only switches may be used at the command line");
 }
+
+@
+
+@d TERM_DOMAIN_WORDING_FUNCTION Main::get_name_text
+@d TERM_DOMAIN_FROM_KIND_FUNCTION Main::get_kind
+@d TERM_DOMAIN_TO_KIND_FUNCTION Main::get_kind
+=
+wording Main::get_name_text(kind *K) {
+	return EMPTY_WORDING;
+}
+kind *Main::get_kind(kind *K) {
+	return K;
+}
+
+@
+
+@d EQUALITY_RELATION_NAME 0
+@d UNIVERSAL_RELATION_NAME 1
+@d POSSESSION_RELATION_NAME 2
+
+=
+<relation-names> ::=
+	equality |
+	universal |
+	possession

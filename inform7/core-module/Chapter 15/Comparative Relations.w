@@ -38,6 +38,19 @@ void Properties::ComparativeRelations::stock(bp_family *self, int n) {
 	}
 }
 
+typedef struct comparative_bp_data {
+	struct property *comparative_property; /* (if right way) if a comparative adjective */
+	int comparison_sign; /* ...and |+1| or |-1| according to sign of definition */
+	CLASS_DEFINITION
+} comparative_bp_data;
+
+void Properties::ComparativeRelations::initialise(binary_predicate *bp,
+	int sign, property *prn) {
+	comparative_bp_data *D = CREATE(comparative_bp_data);
+	D->comparison_sign = sign; D->comparative_property = prn;
+	bp->family_specific = STORE_POINTER_comparative_bp_data(D);
+}
+
 @h Typechecking.
 Because of the ambiguity between absolute and relative comparisons (see
 below), we'll typecheck this asymmetrically; the left term is typechecked
@@ -56,10 +69,11 @@ int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_pred
 	}
 
 	property *prn = Properties::Conditions::get_coinciding_property(kinds_of_terms[1]);
-	if ((prn) && (prn != bp->comparative_property)) {
+	comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
+	if ((prn) && (prn != D->comparative_property)) {
 		if (tck->log_to_I6_text)
-			LOG("Comparative misapplied to $Y not $Y\n", prn, bp->comparative_property);
-		Problems::quote_property(4, bp->comparative_property);
+			LOG("Comparative misapplied to $Y not $Y\n", prn, D->comparative_property);
+		Problems::quote_property(4, D->comparative_property);
 		Problems::quote_property(5, prn);
 		StandardProblems::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
 			"that ought to make a comparison of %4 not %5.");
@@ -104,9 +118,10 @@ so symmetrically; we rewrite the annotated schema on the fly.
 		(Properties::Conditions::name_can_coincide_with_property(st[1]))) {
 		property *prn = Properties::Conditions::get_coinciding_property(st[1]);
 		if (prn) {
+			comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 			Calculus::Schemas::modify(asch->schema,
 				"*1.%n %s *2", Properties::iname(prn),
-				Properties::Measurement::strict_comparison(bp->comparison_sign));
+				Properties::Measurement::strict_comparison(D->comparison_sign));
 			return TRUE;
 		}
 	}

@@ -14,7 +14,9 @@ Chapter 1: Setting Up
 Chapter 2: Propositions
 	Introduction to Predicate Calculus
 	Unary Predicates
+	Compilation Schemas
 	Binary Predicate Families
 	Binary Predicates
+	The Equality Relation
 	Terms
 	Atomic Propositions

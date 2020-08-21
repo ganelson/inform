@@ -11,8 +11,8 @@ Import: lexicon
 Import: inflections
 Import: linguistics
 Import: kinds
+Import: calculus
 
 Chapter 1: Scaffolding
 	Program Control
-	Relating
 	Declarations

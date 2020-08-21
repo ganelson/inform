@@ -4,9 +4,22 @@ To draw inferences from the relations created explicitly by the
 source text.
 
 @h Managing the BPs generated.
-The relations created in this section belong to the | family,
+The relations created in this section belong to the "explicit" family,
 named so because their definitions are explicit in the source text. Initially,
 there are none.
+
+= (early code)
+bp_family *explicit_bp_family = NULL;
+
+@ =
+void Relations::Explicit::start(void) {
+	explicit_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::REL_typecheck);
+	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::REL_assert);
+	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::REL_compile);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::REL_describe_for_problems);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_describe_briefly);
+}
 
 @ They typecheck by the default rule only:
 

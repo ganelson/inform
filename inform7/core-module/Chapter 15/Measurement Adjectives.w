@@ -482,10 +482,10 @@ behaviour despite being of mutually incompatible kinds.)
 	WRITE_TO(relname, "%V", quiddity);
 	bp = BinaryPredicates::make_pair(property_comparison_bp_family,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-		relname, NULL, NULL, NULL,
+		relname, NULL, NULL,
 		schema_to_compare_property_values, WordAssemblages::lit_1(quiddity));
 	DISCARD_TEXT(relname)
-	BinaryPredicates::set_comparison_details(bp, mdef->region_shape, mdef->prop);
+	Properties::ComparativeRelations::initialise(bp, mdef->region_shape, mdef->prop);
 	Properties::Measurement::register_comparative(comparative_form, bp);
 
 @h Late registration of prepositions comparing properties.

@@ -119,10 +119,15 @@ container (if any) is at present directly containing $y$.
 $f_i$ function. Every one of these details is optional. They are gathered
 together in a sub-structure called |bp_term_details|.
 
+(For Inform, the following will be an inference subject, which is a wider
+category than kinds.)
+
+@default TERM_DOMAIN_CALCULUS_TYPE struct kind
+
 =
 typedef struct bp_term_details {
 	struct wording called_name; /* "(called...)" name, if any exists */
-	struct inference_subject *implies_infs; /* the domain of values allowed */
+	TERM_DOMAIN_CALCULUS_TYPE *implies_infs; /* the domain of values allowed */
 	struct kind *implies_kind; /* the kind of these values */
 	struct i6_schema *function_of_other; /* the function $f_0$ or $f_1$ as above */
 	char *index_term_as; /* usually null, but if not, used in Phrasebook index */
@@ -193,10 +198,15 @@ typedef struct binary_predicate {
 	struct word_assemblage relation_name; /* (which might have length 0) */
 	struct parse_node *bp_created_at; /* where declared in the source text */
 	struct text_stream *debugging_log_name; /* used when printing propositions to the debug log */
+
+	#ifdef CORE_MODULE
 	struct package_request *bp_package;
 	struct inter_name *bp_iname; /* when referred to as a constant */
 	struct inter_name *handler_iname;
 	struct inter_name *v2v_bitmap_iname; /* only relevant for some relations */
+	struct inter_name *bp_by_routine_iname; /* for relations by routine */
+	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
+	#endif
 
 	struct bp_term_details term_details[2]; /* term 0 is the left term, 1 is the right */
 
@@ -204,7 +214,6 @@ typedef struct binary_predicate {
 	int right_way_round; /* was this BP created directly? or is it a reversal of another? */
 
 	/* how to compile code which tests or forces this BP to be true or false: */
-	struct inter_name *bp_by_routine_iname; /* for relations by routine */
 	struct i6_schema *test_function; /* I6 schema for (a) testing $B(x, y)$... */
 	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
 	struct i6_schema *make_true_function; /* I6 schema for (b) "now $B(x, y)$" */
@@ -215,12 +224,13 @@ typedef struct binary_predicate {
 	struct property *set_property; /* asserting $B(x, v)$ sets this prop. of $x$ to $v$ */
 	struct wording property_pending_text; /* temp. version used until props created */
 	int relates_values_not_objects; /* true if either term is necessarily a value... */
-	struct inference_subject *knowledge_about_bp; /* ...and if so, here's the list of known assertions */
+	TERM_DOMAIN_CALCULUS_TYPE *knowledge_about_bp; /* ...and if so, here's the list of known assertions */
 
 	/* for optimisation of run-time code: */
 	int dynamic_memory; /* stored in dynamically allocated memory */
-	struct inter_name *initialiser_iname; /* and if so, this is the name of its initialiser */
+	#ifdef CORE_MODULE
 	struct property *i6_storage_property; /* provides run-time storage */
+	#endif
 	struct kind *storage_kind; /* kind of property owner */
 	int allow_function_simplification; /* allow Inform to make use of any $f_i$ functions? */
 	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
@@ -230,10 +240,9 @@ typedef struct binary_predicate {
 
 	/* details, filled in for right-way-round BPs only, for particular kinds of BP: */
 	int a_listed_in_predicate; /* (if right way) was this generated from a table column? */
-	struct property *same_property; /* (if right way) if a "same property as..." */
-	struct property *comparative_property; /* (if right way) if a comparative adjective */
-	int comparison_sign; /* ...and |+1| or |-1| according to sign of definition */
 	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
+
+	general_pointer family_specific;
 
 	CLASS_DEFINITION
 } binary_predicate;
@@ -292,7 +301,6 @@ one of the tables which has a column of this name.
 @d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
 @d VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK BinaryPredicates::get_reversal
 @d VERB_MEANING_EQUALITY R_equality
-@d VERB_MEANING_UNIVERSAL R_universal
 @d VERB_MEANING_POSSESSION a_has_b_predicate
 
 @h Creating term details.
@@ -303,7 +311,7 @@ about; here it will almost always be a generality of things, such as "all
 numbers", or "all rooms".
 
 =
-bp_term_details BinaryPredicates::new_term(inference_subject *infs) {
+bp_term_details BinaryPredicates::new_term(TERM_DOMAIN_CALCULUS_TYPE *infs) {
 	bp_term_details bptd;
 	bptd.called_name = EMPTY_WORDING;
 	bptd.function_of_other = NULL;
@@ -316,7 +324,7 @@ bp_term_details BinaryPredicates::new_term(inference_subject *infs) {
 @ And there is also a fuller version, including the inessentials:
 
 =
-bp_term_details BinaryPredicates::full_new_term(inference_subject *infs, kind *K,
+bp_term_details BinaryPredicates::full_new_term(TERM_DOMAIN_CALCULUS_TYPE *infs, kind *K,
 	wording CW, i6_schema *f) {
 	bp_term_details bptd = BinaryPredicates::new_term(infs);
 	bptd.implies_kind = K;
@@ -332,7 +340,7 @@ so that we must fill them in later, using the following:
 void BinaryPredicates::set_term_domain(bp_term_details *bptd, kind *K) {
 	if (bptd == NULL) internal_error("no BPTD");
 	bptd->implies_kind = K;
-	bptd->implies_infs = Kinds::Knowledge::as_subject(K);
+	bptd->implies_infs = TERM_DOMAIN_FROM_KIND_FUNCTION(K);
 }
 
 @ Similarly:
@@ -366,7 +374,7 @@ kind *BinaryPredicates::kind(binary_predicate *bp) {
 kind *BinaryPredicates::kind_of_term(bp_term_details *bptd) {
 	if (bptd == NULL) return NULL;
 	if (bptd->implies_kind) return bptd->implies_kind;
-	return InferenceSubjects::domain(bptd->implies_infs);
+	return TERM_DOMAIN_TO_KIND_FUNCTION(bptd->implies_infs);
 }
 
 @ The table of relations in the index uses the textual name of an INFS, so:
@@ -375,7 +383,7 @@ kind *BinaryPredicates::kind_of_term(bp_term_details *bptd) {
 void BinaryPredicates::index_term_details(OUTPUT_STREAM, bp_term_details *bptd) {
 	if (bptd->index_term_as) { WRITE("%s", bptd->index_term_as); return; }
 	wording W = EMPTY_WORDING;
-	if (bptd->implies_infs) W = InferenceSubjects::get_name_text(bptd->implies_infs);
+	if (bptd->implies_infs) W = TERM_DOMAIN_WORDING_FUNCTION(bptd->implies_infs);
 	if (Wordings::nonempty(W)) WRITE("%W", W); else WRITE("--");
 }
 
@@ -443,13 +451,14 @@ It will take special handling in the type-checker to achieve
 this effect. For now, we give $EQ$ entirely blank term details.
 
 =
-binary_predicate *BinaryPredicates::make_equality(void) {
-	binary_predicate *bp = BinaryPredicates::make_single(equality_bp_family,
+binary_predicate *BinaryPredicates::make_equality(bp_family *family, word_assemblage WA) {
+	binary_predicate *bp = BinaryPredicates::make_single(family,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-		I"is", NULL, NULL, NULL,
-		PreformUtilities::wording(<relation-names>, EQUALITY_RELATION_NAME));
-
+		I"is", NULL, NULL, WA);
 	bp->reversal = bp; bp->right_way_round = TRUE;
+	#ifdef REGISTER_RELATIONS_CALCULUS_CALLBACK
+	REGISTER_RELATIONS_CALCULUS_CALLBACK(bp, WA);
+	#endif
 	return bp;
 }
 
@@ -466,7 +475,7 @@ how to compile the BP for the one which is the right way round.
 =
 binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 	bp_term_details left_term, bp_term_details right_term,
-	text_stream *name, text_stream *namer, property *pn,
+	text_stream *name, text_stream *namer,
 	i6_schema *mtf, i6_schema *tf, word_assemblage source_name) {
 	binary_predicate *bp, *bpr;
 	TEMPORARY_TEXT(n)
@@ -477,19 +486,17 @@ binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 	if (Str::len(nr) == 0) WRITE_TO(nr, "%S-r", n);
 
 	bp  = BinaryPredicates::make_single(family, left_term, right_term, n,
-		pn, mtf, tf, source_name);
+		mtf, tf, source_name);
 	bpr = BinaryPredicates::make_single(family, right_term, left_term, nr,
-		NULL, NULL, NULL, WordAssemblages::lit_0());
+		NULL, NULL, WordAssemblages::lit_0());
 
 	bp->reversal = bpr; bpr->reversal = bp;
 	bp->right_way_round = TRUE; bpr->right_way_round = FALSE;
 
 	if (WordAssemblages::nonempty(source_name)) {
-		word_assemblage wa =
-			PreformUtilities::merge(<relation-name-formal>, 0, source_name);
-		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp), Task::language_of_syntax());
+		#ifdef REGISTER_RELATIONS_CALCULUS_CALLBACK
+		REGISTER_RELATIONS_CALCULUS_CALLBACK(bp, source_name);
+		#endif
 	}
 
 	return bp;
@@ -502,24 +509,14 @@ then fill in the correct details later. This is where such sketchy pairs are
 made:
 
 =
-bp_family *explicit_bp_family = NULL;
-
-void BinaryPredicates::start_explicit_relation(void) {
-	explicit_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::REL_typecheck);
-	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::REL_assert);
-	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::REL_compile);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::REL_describe_for_problems);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_describe_briefly);
-}
-
-binary_predicate *BinaryPredicates::make_pair_sketchily(word_assemblage wa, int f) {
+binary_predicate *BinaryPredicates::make_pair_sketchily(bp_family *family,
+	word_assemblage wa, int f) {
 	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
 	binary_predicate *bp =
-		BinaryPredicates::make_pair(explicit_bp_family,
+		BinaryPredicates::make_pair(family,
 		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-		relname, NULL, NULL, NULL, NULL, wa);
+		relname, NULL, NULL, NULL, wa);
 	DISCARD_TEXT(relname)
 	bp->form_of_relation = f;
 	bp->reversal->form_of_relation = f;
@@ -540,7 +537,7 @@ would always be |NULL| in practice.
 =
 binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp_term_details left_term, bp_term_details right_term,
-	text_stream *name, property *pn,
+	text_stream *name,
 	i6_schema *mtf, i6_schema *tf, word_assemblage rn) {
 	binary_predicate *bp = CREATE(binary_predicate);
 	bp->relation_family = family;
@@ -548,17 +545,21 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->relation_name = rn;
 	bp->bp_created_at = current_sentence;
 	bp->debugging_log_name = Str::duplicate(name);
+	
+	#ifdef CORE_MODULE
 	bp->bp_package = NULL;
 	bp->bp_iname = NULL;
 	bp->handler_iname = NULL;
 	bp->v2v_bitmap_iname = NULL;
+	bp->bp_by_routine_iname = NULL;
+	bp->initialiser_iname = NULL;
+	#endif
 
 	bp->term_details[0] = left_term; bp->term_details[1] = right_term;
 
 	/* the |reversal| and the |right_way_round| field must be set by the caller */
 
 	/* for use in code compilation */
-	bp->bp_by_routine_iname = NULL;
 	bp->test_function = tf;
 	bp->condition_defn_text = EMPTY_WORDING;
 	bp->make_true_function = mtf;
@@ -569,14 +570,20 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->set_property = NULL;
 	bp->property_pending_text = EMPTY_WORDING;
 	bp->relates_values_not_objects = FALSE;
+	#ifdef CORE_MODULE
 	bp->knowledge_about_bp =
 		InferenceSubjects::new(relations,
 			RELN_SUB, STORE_POINTER_binary_predicate(bp), CERTAIN_CE);
-
+	#endif
+	#ifndef CORE_MODULE
+	bp->knowledge_about_bp = NULL;
+	#endif
+	
 	/* for optimisation of run-time code */
 	bp->dynamic_memory = FALSE;
-	bp->initialiser_iname = NULL;
-	bp->i6_storage_property = pn;
+	#ifdef CORE_MODULE
+	bp->i6_storage_property = NULL;
+	#endif
 	bp->storage_kind = NULL;
 	bp->allow_function_simplification = TRUE;
 	bp->fast_route_finding = FALSE;
@@ -586,10 +593,9 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	/* details for particular kinds of relation */
 	bp->a_listed_in_predicate = FALSE;
-	bp->same_property = NULL;
-	bp->comparative_property = NULL;
-	bp->comparison_sign = 0;
 	bp->equivalence_partition = NULL;
+
+	bp->family_specific = NULL_GENERAL_POINTER;
 
 	return bp;
 }
@@ -597,105 +603,25 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 @h The package.
 
 =
+#ifdef CORE_MODULE
 package_request *BinaryPredicates::package(binary_predicate *bp) {
 	if (bp == NULL) internal_error("null bp");
 	if (bp->bp_package == NULL)
 		bp->bp_package = Hierarchy::package(CompilationUnits::find(bp->bp_created_at), RELATIONS_HAP);
 	return bp->bp_package;
 }
+#endif
 
 @h The handler.
 
 =
+#ifdef CORE_MODULE
 inter_name *BinaryPredicates::handler_iname(binary_predicate *bp) {
 	if (bp->handler_iname == NULL) {
 		package_request *R = BinaryPredicates::package(bp);
 		bp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
 	}
 	return bp->handler_iname;
-}
-
-@h As an INFS.
-
-=
-#ifdef CORE_MODULE
-wording BinaryPredicates::SUBJ_get_name_text(inference_subject *from) {
-	return EMPTY_WORDING; /* nameless */
-}
-
-general_pointer BinaryPredicates::SUBJ_new_permission_granted(inference_subject *from) {
-	return NULL_GENERAL_POINTER;
-}
-
-void BinaryPredicates::SUBJ_make_adj_const_domain(inference_subject *infs,
-	instance *nc, property *prn) {
-}
-
-void BinaryPredicates::SUBJ_complete_model(inference_subject *infs) {
-	int domain_size = NUMBER_CREATED(inference_subject);
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
-
-	if (BinaryPredicates::store_dynamically(bp)) return; /* handled at run-time instead */
-	if ((BinaryPredicates::get_form_of_relation(bp) == Relation_Equiv) && (bp->right_way_round)) {
-		Relations::equivalence_relation_make_singleton_partitions(bp, domain_size);
-		inference *i;
-		POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
-			inference_subject *infs0, *infs1;
-			World::Inferences::get_references(i, &infs0, &infs1);
-			Relations::equivalence_relation_merge_classes(bp, domain_size,
-				infs0->allocation_id, infs1->allocation_id);
-		}
-		Relations::equivalence_relation_add_properties(bp);
-	}
-}
-
-void BinaryPredicates::SUBJ_check_model(inference_subject *infs) {
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
-	if ((bp->right_way_round) &&
-		((bp->form_of_relation == Relation_OtoO) ||
-			(bp->form_of_relation == Relation_Sym_OtoO)))
-		Relations::check_OtoO_relation(bp);
-	if ((bp->right_way_round) &&
-		((bp->form_of_relation == Relation_OtoV) ||
-			(bp->form_of_relation == Relation_VtoO)))
-		Relations::check_OtoV_relation(bp);
-}
-
-int BinaryPredicates::SUBJ_emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
-	internal_error("BP in runtime match condition");
-	return FALSE;
-}
-
-int BinaryPredicates::SUBJ_compile_all(void) {
-	return FALSE;
-}
-
-void BinaryPredicates::SUBJ_compile(inference_subject *infs) {
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
-	if (bp->right_way_round) {
-		if (BinaryPredicates::store_dynamically(bp)) {
-			packaging_state save = Routines::begin(bp->initialiser_iname);
-			inference *i;
-			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
-				parse_node *spec0, *spec1;
-				World::Inferences::get_references_spec(i, &spec0, &spec1);
-				BinaryPredicates::mark_as_needed(bp);
-				Produce::inv_call_iname(Emit::tree(), rtiname);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, bp->bp_iname);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
-					Specifications::Compiler::emit_as_val(K_value, spec0);
-					Specifications::Compiler::emit_as_val(K_value, spec1);
-				Produce::up(Emit::tree());
-			}
-			Routines::end(save);
-		} else {
-			if ((bp->form_of_relation == Relation_VtoV) ||
-				(bp->form_of_relation == Relation_Sym_VtoV))
-				Relations::compile_vtov_storage(bp);
-		}
-	}
 }
 #endif
 
@@ -706,7 +632,7 @@ void BinaryPredicates::log_term_details(bp_term_details *bptd, int i) {
 	LOG("  function(%d): $i\n", i, bptd->function_of_other);
 	if (Wordings::nonempty(bptd->called_name)) LOG("  term %d is '%W'\n", i, bptd->called_name);
 	if (bptd->implies_infs) {
-		wording W = InferenceSubjects::get_name_text(bptd->implies_infs);
+		wording W = TERM_DOMAIN_WORDING_FUNCTION(bptd->implies_infs);
 		if (Wordings::nonempty(W)) LOG("  term %d has domain %W\n", i, W);
 	}
 }
@@ -721,7 +647,9 @@ void BinaryPredicates::log(binary_predicate *bp) {
 	LOG("  test: $i\n", bp->test_function);
 	LOG("  make true: $i\n", bp->make_true_function);
 	LOG("  make false: $i\n", bp->make_false_function);
+	#ifdef CORE_MODULE
 	LOG("  storage property: $Y\n", bp->i6_storage_property);
+	#endif
 }
 
 @h Relation names.
@@ -829,19 +757,22 @@ int BinaryPredicates::store_dynamically(binary_predicate *bp) {
 int BinaryPredicates::relates_values_not_objects(binary_predicate *bp) {
 	return bp->relates_values_not_objects;
 }
-inference_subject *BinaryPredicates::as_subject(binary_predicate *bp) {
+TERM_DOMAIN_CALCULUS_TYPE *BinaryPredicates::as_subject(binary_predicate *bp) {
 	return bp->knowledge_about_bp;
 }
 
 @ For use when optimising code.
 
 =
+#ifdef CORE_MODULE
 property *BinaryPredicates::get_i6_storage_property(binary_predicate *bp) {
 	return bp->i6_storage_property;
 }
+#endif
 int BinaryPredicates::allows_function_simplification(binary_predicate *bp) {
 	return bp->allow_function_simplification;
 }
+#ifdef CORE_MODULE
 inter_name *default_rr = NULL;
 void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 	if (bp->record_needed == FALSE) {
@@ -855,19 +786,14 @@ void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
 	}
 	bp->record_needed = TRUE;
 }
+#endif
 
+#ifdef CORE_MODULE
 inter_name *BinaryPredicates::iname(binary_predicate *bp) {
 	if (bp == NULL) return NULL;
 	return bp->bp_iname;
 }
-
-@ For use with comparative relations.
-
-=
-void BinaryPredicates::set_comparison_details(binary_predicate *bp,
-	int sign, property *prn) {
-	bp->comparison_sign = sign; bp->comparative_property = prn;
-}
+#endif
 
 @ The predicate-calculus engine compiles much better loops if
 we can help it by providing an I6 schema of a loop header solving the

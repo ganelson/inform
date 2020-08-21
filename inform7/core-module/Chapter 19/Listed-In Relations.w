@@ -33,7 +33,7 @@ binary_predicate *Tables::Relations::make_listed_in_predicate(table_column *tc) 
 	binary_predicate *bp = BinaryPredicates::make_pair(listed_in_bp_family,
 		BinaryPredicates::new_term(NULL),
 		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_table)),
-		I"listed_in", I"lists-in", NULL, NULL,
+		I"listed_in", I"lists-in", NULL,
 		Calculus::Schemas::new("(ct_1=ExistsTableRowCorr(ct_0=*2,%d,*1))",
 			Tables::Columns::get_id(tc)),
 		WordAssemblages::lit_0());

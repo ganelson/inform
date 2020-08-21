@@ -1,4 +1,4 @@
-[Calculus::Schemas::] I6 Schemas.
+[Calculus::Schemas::] Compilation Schemas.
 
 To create, and later expand upon, short prototypes of I6 syntax for
 such run-time tasks as the setting, unsetting or testing of a relation.
@@ -48,10 +48,23 @@ error.
 typedef struct i6_schema {
 	wchar_t prototype_storage[TYPICAL_I6_SCHEMA_LENGTH];
 	struct text_stream prototype;
-	struct inter_schema *compiled;
 	int no_quoted_inames;
+	#ifdef CORE_MODULE
+	struct inter_schema *compiled;
 	struct inter_name *quoted_inames[2];
+	#endif
 } i6_schema;
+
+@
+
+=
+typedef struct annotated_i6_schema {
+	struct i6_schema *schema;
+	int negate_schema; /* true if atom is to be tested with the opposite parity */
+	struct pcalc_term pt0; /* terms on which the I6 schema is to be expanded */
+	struct pcalc_term pt1;
+	int involves_action_variables;
+} annotated_i6_schema;
 
 @h Building schemas.
 The following makes up a new schema from a |printf|-style formatted string:
@@ -69,7 +82,9 @@ i6_schema *Calculus::Schemas::new(char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
+	#ifdef CORE_MODULE
 	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
+	#endif
 	return sch;
 }
 
@@ -83,7 +98,9 @@ void Calculus::Schemas::modify(i6_schema *sch, char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
+	#ifdef CORE_MODULE
 	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
+	#endif
 }
 
 @ And another:
@@ -94,7 +111,9 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 	text_stream *OUT = &(sch->prototype);
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
+	#ifdef CORE_MODULE
 	sch->compiled = InterSchemas::from_i6s(&(sch->prototype), sch->no_quoted_inames, (void **) sch->quoted_inames);
+	#endif
 }
 
 @ Either way, the schema's prototype is written as follows:
@@ -116,13 +135,28 @@ an integer; |%s|, a C string; |%S|, a text stream; and |%k|, a kind ID.
 	p++;
 	switch (*p) {
 		case 'd': WRITE("%d", va_arg(ap, int)); break;
-		case 'k': Kinds::RunTime::compile_weak_id(OUT, va_arg(ap, kind *)); break;
-		case 'L': WRITE("%~L", va_arg(ap, local_variable *)); break;
+		case 'k':
+			#ifdef CORE_MODULE
+			Kinds::RunTime::compile_weak_id(OUT, va_arg(ap, kind *));
+			#endif
+			#ifndef CORE_MODULE
+			WRITE("{%u}", va_arg(ap, kind *));
+			#endif
+			break;
+		case 'L':
+			#ifdef CORE_MODULE
+			WRITE("%~L", va_arg(ap, local_variable *)); break;
+			#endif
+			#ifndef CORE_MODULE
+			WRITE("%08x", va_arg(ap, void *)); break;
+			#endif
+			break;
 		case 'n': {
-			inter_name *iname = (inter_name *) va_arg(ap, inter_name *);
 			int N = sch->no_quoted_inames++;
 			if (N >= 2) internal_error("too many inter_name quotes");
-			sch->quoted_inames[N] = iname;
+			#ifdef CORE_MODULE
+			sch->quoted_inames[N] = (inter_name *) va_arg(ap, inter_name *);
+			#endif
 			WRITE("QUOTED_INAME_%d_%08x", N, unique_qi_counter++);
 			break;
 		}
@@ -150,6 +184,7 @@ We provide two routines as a sort of API for expanding schemas. The user can
 either specify two parameters, both of them terms...
 
 =
+#ifdef CORE_MODULE
 void Calculus::Schemas::emit_expand_from_terms(i6_schema *sch,
 	pcalc_term *pt1, pcalc_term *pt2, int semicolon) {
 	i6s_emission_state ems = Calculus::Schemas::state(pt1, pt2, NULL, NULL);
@@ -181,6 +216,7 @@ void Calculus::Schemas::emit_val_expand_from_terms(i6_schema *sch,
 
 	Calculus::Schemas::sch_emit_inner(sch, &ems, FALSE);
 }
+#endif
 
 typedef struct i6s_emission_state {
 	struct text_stream *ops_textual[2];
@@ -197,6 +233,7 @@ i6s_emission_state Calculus::Schemas::state(pcalc_term *pt1, pcalc_term *pt2, te
 }
 
 @ =
+#ifdef CORE_MODULE
 void Calculus::Schemas::sch_emit_inner(i6_schema *sch, i6s_emission_state *ems, int code_mode) {
 
 	if ((ems->ops_textual[0]) || (ems->ops_textual[1])) internal_error("Zap");
@@ -349,15 +386,18 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 		}
 	}
 }
+#endif
 
 @ Last and very much least: in case we receive an untypechecked term, we fill
 in its kind.
 
 =
+#ifdef CORE_MODULE
 void Calculus::Schemas::sch_type_parameter(pcalc_term *pt) {
 	if ((pt) && (pt->constant) && (pt->term_checked_as_kind == NULL))
 		pt->term_checked_as_kind = Specifications::to_kind(pt->constant);
 }
+#endif
 
 @h Logging schemas.
 

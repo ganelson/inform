@@ -48,6 +48,11 @@ There is no direct way to access the links downwards from any node -- in other
 words, we often want to know what a given subject S inherits from, but we never
 ask what other subjects inherit from S.
 
+@d TERM_DOMAIN_CALCULUS_TYPE struct inference_subject
+@d TERM_DOMAIN_WORDING_FUNCTION InferenceSubjects::get_name_text
+@d TERM_DOMAIN_TO_KIND_FUNCTION InferenceSubjects::domain
+@d TERM_DOMAIN_FROM_KIND_FUNCTION Kinds::Knowledge::as_subject
+
 =
 typedef struct inference_subject {
 	int kind_of_infs; /* one of the |*_SUB| constants above */
@@ -478,7 +483,7 @@ wording InferenceSubjects::get_name_text(inference_subject *infs) {
 		case KIND_SUB: W = Kinds::Knowledge::get_name_text(infs); break;
 		case INST_SUB: W = Instances::SUBJ_get_name_text(infs); break;
 		case VARI_SUB: W = NonlocalVariables::SUBJ_get_name_text(infs); break;
-		case RELN_SUB: W = BinaryPredicates::SUBJ_get_name_text(infs); break;
+		case RELN_SUB: W = KnowledgeAboutRelations::SUBJ_get_name_text(infs); break;
 	}
 	LOOP_THROUGH_WORDING(i, W)
 		if (Lexer::word(i) == STROKE_V) {
@@ -501,7 +506,7 @@ general_pointer InferenceSubjects::new_permission_granted(inference_subject *inf
 		case KIND_SUB: return Kinds::Knowledge::new_permission_granted(infs);
 		case INST_SUB: return Instances::SUBJ_new_permission_granted(infs);
 		case VARI_SUB: return NonlocalVariables::SUBJ_new_permission_granted(infs);
-		case RELN_SUB: return BinaryPredicates::SUBJ_new_permission_granted(infs);
+		case RELN_SUB: return KnowledgeAboutRelations::SUBJ_new_permission_granted(infs);
 	}
 	return NULL_GENERAL_POINTER;
 }
@@ -520,7 +525,7 @@ void InferenceSubjects::make_adj_const_domain(inference_subject *infs,
 		case KIND_SUB: Kinds::Knowledge::make_adj_const_domain(infs, nc, prn); break;
 		case INST_SUB: Instances::SUBJ_make_adj_const_domain(infs, nc, prn); break;
 		case VARI_SUB: NonlocalVariables::SUBJ_make_adj_const_domain(infs, nc, prn); break;
-		case RELN_SUB: BinaryPredicates::SUBJ_make_adj_const_domain(infs, nc, prn); break;
+		case RELN_SUB: KnowledgeAboutRelations::SUBJ_make_adj_const_domain(infs, nc, prn); break;
 	}
 }
 
@@ -536,7 +541,7 @@ void InferenceSubjects::complete_model(inference_subject *infs) {
 		case KIND_SUB: Kinds::Knowledge::complete_model(infs); break;
 		case INST_SUB: Instances::SUBJ_complete_model(infs); break;
 		case VARI_SUB: NonlocalVariables::SUBJ_complete_model(infs); break;
-		case RELN_SUB: BinaryPredicates::SUBJ_complete_model(infs); break;
+		case RELN_SUB: KnowledgeAboutRelations::SUBJ_complete_model(infs); break;
 	}
 }
 
@@ -551,7 +556,7 @@ void InferenceSubjects::check_model(inference_subject *infs) {
 		case KIND_SUB: Kinds::Knowledge::check_model(infs); break;
 		case INST_SUB: Instances::SUBJ_check_model(infs); break;
 		case VARI_SUB: NonlocalVariables::SUBJ_check_model(infs); break;
-		case RELN_SUB: BinaryPredicates::SUBJ_check_model(infs); break;
+		case RELN_SUB: KnowledgeAboutRelations::SUBJ_check_model(infs); break;
 	}
 }
 
@@ -573,7 +578,7 @@ void InferenceSubjects::emit_element_of_condition(inference_subject *infs, inter
 		case KIND_SUB: written = Kinds::Knowledge::emit_element_of_condition(infs, t0_s); break;
 		case INST_SUB: written = Instances::SUBJ_emit_element_of_condition(infs, t0_s); break;
 		case VARI_SUB: written = NonlocalVariables::SUBJ_emit_element_of_condition(infs, t0_s); break;
-		case RELN_SUB: written = BinaryPredicates::SUBJ_emit_element_of_condition(infs, t0_s); break;
+		case RELN_SUB: written = KnowledgeAboutRelations::SUBJ_emit_element_of_condition(infs, t0_s); break;
 	}
 	if (written == FALSE) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
@@ -604,7 +609,7 @@ void InferenceSubjects::compile_all(void) {
 			case KIND_SUB: done = Kinds::Knowledge::emit_all(); break;
 			case INST_SUB: done = Instances::SUBJ_compile_all(); break;
 			case VARI_SUB: done = NonlocalVariables::SUBJ_compile_all(); break;
-			case RELN_SUB: done = BinaryPredicates::SUBJ_compile_all(); break;
+			case RELN_SUB: done = KnowledgeAboutRelations::SUBJ_compile_all(); break;
 		}
 		if (done) continue;
 		inference_subject *infs;
@@ -615,7 +620,7 @@ void InferenceSubjects::compile_all(void) {
 					case KIND_SUB: Kinds::Knowledge::emit(infs); break;
 					case INST_SUB: Instances::SUBJ_compile(infs); break;
 					case VARI_SUB: NonlocalVariables::SUBJ_compile(infs); break;
-					case RELN_SUB: BinaryPredicates::SUBJ_compile(infs); break;
+					case RELN_SUB: KnowledgeAboutRelations::SUBJ_compile(infs); break;
 				}
 			}
 	}

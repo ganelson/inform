@@ -38,7 +38,7 @@ void PL::MapDirections::create_relations(void) {
 			BinaryPredicates::new_term(infs_room),
 			BinaryPredicates::new_term(infs_room),
 			I"adjacent-to", I"adjacent-from",
-			NULL, NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
+			NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, ADJACENCY_RELATION_NAME));
 
 }
@@ -138,7 +138,7 @@ int no_directions_noticed = 0;
 		if (Str::get(pos) == ' ') Str::put(pos, '-');
 	bp_term_details room_term = BinaryPredicates::new_term(NULL);
 	bp = BinaryPredicates::make_pair(map_connecting_bp_family,
-		room_term, room_term, relname, NULL, NULL, NULL, NULL,
+		room_term, room_term, relname, NULL, NULL, NULL,
 		PreformUtilities::merge(<mapping-relation-construction>, 0,
 			WordAssemblages::from_wording(W)));
 

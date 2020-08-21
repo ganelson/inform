@@ -21,17 +21,6 @@ typedef struct variable_type_assignment {
 	struct kind *assigned_kinds[26]; /* one for each of the 26 variables */
 } variable_type_assignment;
 
-@ Another convenience is a sort of kit for preparing problem messages:
-
-=
-typedef struct tc_problem_kit {
-	int issue_error;
-	struct wording ew_text;
-	char *intention;
-	int log_to_I6_text;
-	int flag_problem;
-} tc_problem_kit;
-
 @h Problem reporting kit.
 The caller to |Calculus::Propositions::Checker::type_check| has to fill this form out first. Paperwork,
 what can you do, eh?

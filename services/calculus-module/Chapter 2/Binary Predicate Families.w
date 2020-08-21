@@ -56,6 +56,14 @@ such as "if 19 is false", where the terms of the relation do not fit.
 @d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal |*_MATCH| values */
 
 =
+typedef struct tc_problem_kit {
+	int issue_error;
+	struct wording ew_text;
+	char *intention;
+	int log_to_I6_text;
+	int flag_problem;
+} tc_problem_kit;
+
 INT_METHOD_TYPE(TYPECHECK_BPF_MTID, bp_family *f, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck)
 
@@ -74,16 +82,30 @@ world.
 
 =
 INT_METHOD_TYPE(ASSERT_BPF_MTID, bp_family *f, binary_predicate *bp,
-	inference_subject *subj0, parse_node *spec0, inference_subject *subj1, parse_node *spec1) 
+	TERM_DOMAIN_CALCULUS_TYPE *subj0, parse_node *spec0,
+	TERM_DOMAIN_CALCULUS_TYPE *subj1, parse_node *spec1) 
 
 int BinaryPredicateFamilies::assert(binary_predicate *bp,
-	inference_subject *subj0, parse_node *spec0, inference_subject *subj1, parse_node *spec1) {
+	TERM_DOMAIN_CALCULUS_TYPE *subj0, parse_node *spec0,
+	TERM_DOMAIN_CALCULUS_TYPE *subj1, parse_node *spec1) {
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, bp->relation_family, ASSERT_BPF_MTID, bp, subj0, spec0, subj1, spec1);
 	return rv;
 }
 
 @ This is for compiling run-time code to either test, make true, or make false.
+
+Some constants here enumerate the three cases of what we are to do. This
+looks asymmetrical -- shouldn't we also test to see whether an atom is false,
+a fourth case?
+
+The answer is that there's no need, since "test false" can be done by
+compiling "test true" and then negating. No similar trick can be used to
+combine making something true or false into a single operation.
+
+@d TEST_ATOM_TASK 1
+@d NOW_ATOM_TRUE_TASK 2
+@d NOW_ATOM_FALSE_TASK 3
 
 @e SCHEMA_BPF_MTID
 

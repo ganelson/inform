@@ -125,10 +125,9 @@ Chapter 12: Use of Propositions
 are at last acted upon, either immediately (generating inferences) or at
 run-time (by causing code to be compiled which will some day test or assert
 the truth of the proposition)."
-	The Equality Relation
+	The Equality Relation Revisited
 	Quasinumeric Relations
 	Assert Propositions
-	I6 Schemas
 	Compile Atoms
 	Deciding to Defer
 	Cinders and Deferrals
@@ -178,6 +177,7 @@ about the model world, we must now resolve this mass of facts, applying
 Occam's Razor to construct the simplest explicit model of the world which
 fits this knowledge."
 	Inference Subjects
+	Knowledge about Relations
 	Property Permissions
 	Inferences
 	Complete Model World

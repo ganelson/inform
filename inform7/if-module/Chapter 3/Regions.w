@@ -211,7 +211,7 @@ void PL::Regions::create_relations(void) {
 			BinaryPredicates::new_term(infs_region),
 			BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
 			I"region-contains", I"in-region",
-			NULL, NULL, Calculus::Schemas::new("TestRegionalContainment(*2,*1)"),
+			NULL, Calculus::Schemas::new("TestRegionalContainment(*2,*1)"),
 			PreformUtilities::wording(<relation-names>,
 				REGIONAL_CONTAINMENT_RELATION_NAME));
 	BinaryPredicates::set_index_details(R_regional_containment, NULL, "room/region");

@@ -12,28 +12,6 @@ from those originally found in the atom, however, so we also need to keep
 track of that; and also of whether a condition is being regarded
 negatively.
 
-=
-typedef struct annotated_i6_schema {
-	struct i6_schema *schema;
-	int negate_schema; /* true if atom is to be tested with the opposite parity */
-	struct pcalc_term pt0; /* terms on which the I6 schema is to be expanded */
-	struct pcalc_term pt1;
-	int involves_action_variables;
-} annotated_i6_schema;
-
-@ Some constants to enumerate the three cases of what we are to do. This
-looks asymmetrical -- shouldn't we also test to see whether an atom is false,
-a fourth case?
-
-The answer is that there's no need, since "test false" can be done by
-compiling "test true" and applying the I7 negation operator |~~| to the
-result. No similar trick can be used to combine making something
-true or false into a single operation.
-
-@d TEST_ATOM_TASK 1
-@d NOW_ATOM_TRUE_TASK 2
-@d NOW_ATOM_FALSE_TASK 3
-
 @ For its internal purposes, Inform is sometimes able to compile atoms which
 wouldn't be allowed in a typical use of "now" from the source text; so it
 can suppress the following problem messages:

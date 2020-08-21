@@ -47,12 +47,12 @@ void Properties::SameRelations::stock(bp_family *self, int n) {
 				WRITE_TO(relname, "%V", rel_name);
 				binary_predicate *bp = BinaryPredicates::make_pair(same_property_bp_family,
 					BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-					relname, NULL, NULL,
+					relname, NULL,
 					Calculus::Schemas::new("*1.%n = *2.%n", i6_pname, i6_pname),
 					Calculus::Schemas::new("*1.%n == *2.%n", i6_pname, i6_pname),
 					WordAssemblages::lit_1(rel_name));
 				DISCARD_TEXT(relname)
-				bp->same_property = prn;
+				bp->family_specific = STORE_POINTER_property(prn);
 				Properties::SameRelations::register_same_property_as(bp, Properties::get_name(prn));
 			}
 		}
@@ -124,7 +124,9 @@ int Properties::SameRelations::REL_compile(bp_family *self, int task,
 
 @ =
 property *Properties::SameRelations::bp_get_same_as_property(binary_predicate *bp) {
-	return bp->same_property;
+	if (bp->relation_family != same_property_bp_family) return NULL;
+	if (bp->right_way_round == FALSE) return NULL;
+	return RETRIEVE_POINTER_property(bp->family_specific);
 }
 
 @h Problem message text.

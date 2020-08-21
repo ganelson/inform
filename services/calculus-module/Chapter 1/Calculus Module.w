@@ -10,6 +10,7 @@ which use this module:
 
 @ This module defines the following classes:
 
+@e i6_schema_CLASS
 @e binary_predicate_CLASS
 @e bp_family_CLASS
 @e pcalc_term_CLASS
@@ -24,6 +25,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_func, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_term, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
@@ -34,7 +36,16 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unary_predicate, 1000)
 void CalculusModule::start(void) {
 	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
 	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
-	BinaryPredicates::start_explicit_relation();
+	Calculus::Equality::start();
 }
 void CalculusModule::end(void) {
 }
+
+@ We also have to make annotation functions for one special annotation needed
+by //linguistics//:
+
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
+
+@ =
+MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)

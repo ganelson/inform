@@ -2343,3 +2343,22 @@ void Relations::index_for_verbs(OUTPUT_STREAM, binary_predicate *bp) {
 	}
 	WRITE("</i>");
 }
+
+@h Registering names of relations.
+
+=
+<relation-name-formal> ::=
+	... relation
+
+@ 
+
+@d REGISTER_RELATIONS_CALCULUS_CALLBACK Relations::register_name
+
+=
+void Relations::register_name(binary_predicate *bp, word_assemblage source_name) {
+	word_assemblage wa =
+		PreformUtilities::merge(<relation-name-formal>, 0, source_name);
+	wording AW = WordAssemblages::to_wording(&wa);
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp), Task::language_of_syntax());
+}

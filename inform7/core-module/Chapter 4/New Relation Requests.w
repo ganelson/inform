@@ -39,7 +39,7 @@ int RelationRequests::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 						"this is too long a name for a single relation to have",
 						"and would become unwieldy.");
 				else Node::set_new_relation_here(V->next,
-						BinaryPredicates::make_pair_sketchily(
+						BinaryPredicates::make_pair_sketchily(explicit_bp_family,
 							WordAssemblages::from_wording(RW), Relation_OtoO));
 				return TRUE;
 			}

@@ -21,3 +21,6 @@ Import: somepath/calculus
 (*) The parent must call |CalculusModule::start()| just after it starts up, and
 |CalculusModule::end()| just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
+
+
+@ |REGISTER_RELATIONS_CALCULUS_CALLBACK|.

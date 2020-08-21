@@ -33,7 +33,6 @@ which use this module:
 @e pcalc_prop_deferral_CLASS
 @e literal_pattern_CLASS
 @e generalisation_CLASS
-@e i6_schema_CLASS
 @e list_together_routine_CLASS
 @e past_tense_condition_record_CLASS
 @e past_tense_action_record_CLASS
@@ -86,6 +85,7 @@ which use this module:
 @e adjective_iname_holder_CLASS
 @e label_namespace_CLASS
 @e compile_task_data_CLASS
+@e comparative_bp_data_CLASS
 
 @ Deep breath, then: the following macros define several hundred functions.
 
@@ -148,6 +148,7 @@ DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(compile_task_data)
+DECLARE_CLASS(comparative_bp_data)
 
 @ So much for the managed structures: now for the unmanaged structures.
 
@@ -155,7 +156,6 @@ DECLARE_CLASS(compile_task_data)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(instance_usage, 200)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
@@ -221,7 +221,6 @@ void CoreModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	CorePreform::set_core_internal_NTIs();
-	Calculus::Equality::start();
 	Calculus::QuasinumericRelations::start();
 	Properties::SameRelations::start();
 	Properties::SettingRelations::start();
@@ -229,6 +228,8 @@ void CoreModule::start(void) {
 	Tables::Relations::start();
 	Properties::ProvisionRelation::start();
 	Relations::Universal::start();
+	Relations::Explicit::start();
+	EqualityDetails::start();
 	@<Declare the tree annotations@>;
 }
 void CoreModule::end(void) {
@@ -602,15 +603,6 @@ MAKE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
-
-@ We also have to make annotation functions for one special annotation needed
-by //linguistics//:
-
-= (early code)
-DECLARE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
-
-@ =
-MAKE_ANNOTATION_FUNCTIONS(relationship, binary_predicate)
 
 @ And we have declare all of those:
 

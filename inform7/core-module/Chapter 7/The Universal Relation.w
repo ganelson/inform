@@ -5,7 +5,7 @@ subsumes all other relations.
 
 @h Definitions.
 
-@
+@d VERB_MEANING_UNIVERSAL R_universal
 
 = (early code)
 binary_predicate *R_universal = NULL;
@@ -34,12 +34,12 @@ void Relations::Universal::stock(bp_family *self, int n) {
 		R_universal =
 			BinaryPredicates::make_pair(universal_bp_family,
 				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-				I"relates", NULL, NULL, NULL, NULL,
+				I"relates", NULL, NULL, NULL,
 				PreformUtilities::wording(<relation-names>, UNIVERSAL_RELATION_NAME));
 		R_meaning =
 			BinaryPredicates::make_pair(universal_bp_family,
 				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
-				I"means", NULL, NULL, NULL, NULL,
+				I"means", NULL, NULL, NULL,
 				PreformUtilities::wording(<relation-names>, MEANING_RELATION_NAME));
 	}
 }
