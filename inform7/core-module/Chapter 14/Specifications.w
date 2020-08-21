@@ -9,6 +9,8 @@ for creating and using them.
 
 Kinds can be faithfully represented as specifications, but not vice versa:
 
+@d VALUE_TO_KIND_FUNCTION Specifications::to_kind
+
 =
 parse_node *Specifications::from_kind(kind *K) {
 	return Descriptions::from_kind(K, FALSE);

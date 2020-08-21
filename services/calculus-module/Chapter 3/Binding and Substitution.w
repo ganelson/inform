@@ -294,10 +294,12 @@ int Calculus::Variables::substitute_v_in_term(pcalc_term *pt, int v, pcalc_term 
 	return FALSE;
 }
 
+#ifdef CORE_MODULE
 void Calculus::Variables::substitute_nothing_in_term(pcalc_term *pt, pcalc_term *t) {
 	if ((pt->constant) && (Rvalues::is_nothing_object_constant(pt->constant))) { *pt = *t; return; }
 	if (pt->function) Calculus::Variables::substitute_nothing_in_term(&(pt->function->fn_of), t);
 }
+#endif
 
 void Calculus::Variables::substitute_term_in_term(pcalc_term *pt, pcalc_term *t) {
 	if (pt->constant) { *pt = *t; return; }
@@ -414,6 +416,7 @@ pcalc_prop *Calculus::Variables::substitute_var_0_in(pcalc_prop *prop, parse_nod
 @ If we are willing to work a little harder:
 
 =
+#ifdef CORE_MODULE
 kind *Calculus::Variables::infer_kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop) {
@@ -431,6 +434,7 @@ kind *Calculus::Variables::infer_kind_of_variable_0(pcalc_prop *prop) {
 	}
 	return NULL;
 }
+#endif
 
 @h Detect locals.
 Properly speaking, this has nothing to do with variables,
@@ -442,6 +446,7 @@ values because their contents may have been wiped and reused many times
 since the time with which the proposition is concerned.
 
 =
+#ifdef CORE_MODULE
 int Calculus::Variables::detect_locals(pcalc_prop *prop, parse_node **example) {
 	TRAVERSE_VARIABLE(pl);
 	int i, locals_count = 0;
@@ -489,3 +494,4 @@ int Calculus::Variables::detect_local_in_spec(parse_node *spec, int locals_count
 			Calculus::Variables::detect_local_in_spec(p, locals_count, example);
 	return locals_count;
 }
+#endif

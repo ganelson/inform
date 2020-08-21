@@ -113,8 +113,6 @@ in predicate calculus, so that verbs and prepositions become relations, while
 determiners express quantifiers; this produces a mathematical proposition
 which can be simplified according to logical rules which change its form
 but not its meaning."
-	Propositions
-	Binding and Substitution
 	Tree Conversions
 	Sentence Conversions
 	Simplifications

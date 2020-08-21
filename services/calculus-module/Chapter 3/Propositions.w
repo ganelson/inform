@@ -506,7 +506,7 @@ kind *Calculus::Propositions::describes_kind(pcalc_prop *prop) {
 		p = p->next;
 	}
 	parse_node *val = Calculus::Propositions::describes_value(prop);
-	if (val) return Specifications::to_kind(val);
+	if (val) return VALUE_TO_KIND_FUNCTION(val);
 	return NULL;
 }
 
@@ -573,6 +573,7 @@ that noun; or if the proposition isn't in that form, we return $t=x$, that
 is, variable 0.
 
 =
+#ifdef CORE_MODULE
 pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	pcalc_term pct = Calculus::Terms::new_variable(0);
 	if (prop == NULL) return pct;
@@ -590,6 +591,7 @@ pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	}
 	return pct;
 }
+#endif
 
 @ We often form propositions which are really lists of adjectives, and the
 following are useful for looping through them:
@@ -724,6 +726,7 @@ pcalc_prop *Calculus::Propositions::remove_final_close_domain(pcalc_prop *prop, 
 with a single unbound variable, to represent SP.
 
 =
+#ifdef CORE_MODULE
 pcalc_prop *Calculus::Propositions::from_spec(parse_node *spec) {
 	if (spec == NULL) return NULL; /* the null description is universally true */
 
@@ -737,6 +740,7 @@ pcalc_prop *Calculus::Propositions::from_spec(parse_node *spec) {
 	@<If it's an either-or property name, it must be being used adjectivally@>;
 	@<It must be an ordinary noun@>;
 }
+#endif
 
 @ For example, if we have written:
 

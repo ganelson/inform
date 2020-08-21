@@ -7,16 +7,20 @@ Licence: Artistic License 2.0
 Preliminaries
 	What This Module Does
 	How To Include This Module
+	Introduction to Predicate Calculus
 
 Chapter 1: Setting Up
 	Calculus Module
 
-Chapter 2: Propositions
-	Introduction to Predicate Calculus
-	Unary Predicates
+Chapter 2: Predicates
 	Compilation Schemas
+	Unary Predicates
 	Binary Predicate Families
 	Binary Predicates
 	The Equality Relation
+
+Chapter 3: Propositions
 	Terms
 	Atomic Propositions
+	Propositions
+	Binding and Substitution
