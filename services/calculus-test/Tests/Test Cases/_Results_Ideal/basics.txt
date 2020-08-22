@@ -1,6 +1,0 @@
-'number': number
-'list of texts': list of texts
-'phrase number -> text': phrase number -> text
-'arithmetic value': arithmetic value
-'relation of numbers to truth states': relation of numbers to truth states
-'relation of numbers to numbers': relation of numbers

@@ -264,6 +264,12 @@ range being sentence-broken, so that it is safe to examine both the word
 before and the word after the current position.
 
 @<Consider if a colon divides a sentence@> =
+	#ifdef DIVIDE_AT_COLON_SYNTAX_CALLBACK
+	if (DIVIDE_AT_COLON_SYNTAX_CALLBACK(at)) {
+		stop_character = ':'; stopped = TRUE;
+	}
+	#endif
+	#ifndef DIVIDE_AT_COLON_SYNTAX_CALLBACK
 	if ((Lexer::word(at) == COLON_V) &&
 		(Lexer::file_of_origin(at-1) == Lexer::file_of_origin(at)) &&
 		(no_stop_words == 0) &&
@@ -272,6 +278,7 @@ before and the word after the current position.
 			(Lexer::indentation_level(at+1) > 0))) {
 		stop_character = ':'; stopped = TRUE;
 	}
+	#endif
 
 @ Inform authors habitually use the punctuation in quoted text to end
 sentences, just as other writers of English do. The text

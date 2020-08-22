@@ -162,7 +162,7 @@ char *Calculus::Propositions::debugging_log_text_between(pcalc_prop *p1, pcalc_p
 }
 
 @ So we may as well complete the debugging log code now. Note that $\top$ is
-logged as just |[ ]|.
+logged as just |<< >>|.
 
 =
 int log_addresses = FALSE;
@@ -171,7 +171,7 @@ void Calculus::Propositions::log(pcalc_prop *prop) {
 }
 void Calculus::Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
-	WRITE("[ ");
+	WRITE("<< ");
 	TRAVERSE_PROPOSITION(p, prop) {
 		char *bridge = Calculus::Propositions::debugging_log_text_between(p_prev, p);
 		if (bridge[0]) WRITE("%s ", bridge);
@@ -179,7 +179,7 @@ void Calculus::Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 		Calculus::Atoms::write(OUT, p);
 		WRITE(" ");
 	}
-	WRITE("]");
+	WRITE(">>");
 }
 
 @h Validity.

@@ -358,13 +358,17 @@ to be able to create $U(t)$ for any term $t$, but in practice we only ever
 need $t=x$, that is, variable 0.
 
 =
-pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph(adjective *aph, int negated) {
+pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph_term(adjective *aph, int negated, pcalc_term t) {
 	pcalc_prop *prop = Calculus::Atoms::new(PREDICATE_ATOM);
 	prop->arity = 1;
-	prop->terms[0] = Calculus::Terms::new_variable(0);
+	prop->terms[0] = t;
 	prop->predicate = STORE_POINTER_unary_predicate(
 		UnaryPredicates::new(aph, (negated)?FALSE:TRUE));
 	return prop;
+}
+
+pcalc_prop *Calculus::Atoms::unary_PREDICATE_from_aph(adjective *aph, int negated) {
+	return Calculus::Atoms::unary_PREDICATE_from_aph_term(aph, negated, Calculus::Terms::new_variable(0));
 }
 
 unary_predicate *Calculus::Atoms::au_from_unary_PREDICATE(pcalc_prop *prop) {
@@ -446,6 +450,15 @@ void Calculus::Atoms::log(pcalc_prop *prop) {
 }
 void Calculus::Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 	if (prop == NULL) { WRITE("<null-atom>"); return; }
+	if ((prop->element == PREDICATE_ATOM) && (prop->arity == 2) &&
+		(RETRIEVE_POINTER_binary_predicate(prop->predicate) == R_equality)) {
+		WRITE("(");
+		Calculus::Terms::write(OUT, &(prop->terms[0]));
+		WRITE(" == ");
+		Calculus::Terms::write(OUT, &(prop->terms[1]));
+		WRITE(")");
+		return;
+	}
 	switch(prop->element) {
 		case PREDICATE_ATOM:
 			switch(prop->arity) {
@@ -496,7 +509,8 @@ void Calculus::Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 @<Log some suitable textual name for this unary predicate@> =
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
 	if (UnaryPredicates::get_parity(tr) == FALSE) WRITE("not-");
-	Adjectives::write(OUT, UnaryPredicates::get_adj(tr));
+	wording W = Adjectives::get_nominative_singular(UnaryPredicates::get_adj(tr));
+	WRITE("%W", W);
 
 @ And more easily:
 

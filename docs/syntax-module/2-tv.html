@@ -40,7 +40,6 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +49,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-tv.html#SP1">&#167;1. Verify integrity</a></li><li><a href="2-tv.html#SP3">&#167;3. Verify structure</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Verify integrity. </b>We can perform two different checks.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verify integrity. </b>We can perform two different checks.
 </p>
 
 <p class="commentary">The first duty of a tree is to contain no loops, and the following checks
@@ -89,7 +90,7 @@ node has an enumerated node type, rather than a meaning code.
 <span class="plain-syntax">        </span><a href="2-st.html#SP21" class="function-link"><span class="function-syntax">SyntaxTree::new_traverse_token</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The verification traverse is a very cautious manoeuvre: we step through
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The verification traverse is a very cautious manoeuvre: we step through
 the tree, testing each branch with our outstretched foot. At the first sign
 of trouble we panic.
 </p>
@@ -122,7 +123,7 @@ of trouble we panic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">depth</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">tree_stats_depth</span><span class="plain-syntax">) </span><span class="identifier-syntax">tree_stats_depth</span><span class="plain-syntax"> = </span><span class="identifier-syntax">depth</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Verify structure. </b>The parse tree is a complicated structure, arbitrarily wide and deep, and
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Verify structure. </b>The parse tree is a complicated structure, arbitrarily wide and deep, and
 containing many different node types, each subject to its own rules of usage.
 In this second check, we ensure that nodes have acceptable parentage and
 annotations &mdash; that is, parentage and annotations which fall within the
@@ -158,7 +159,7 @@ about counting branches with impunity.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Note that on every call to the following routine, (i) <span class="extract"><span class="extract-syntax">p</span></span> is a valid
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Note that on every call to the following routine, (i) <span class="extract"><span class="extract-syntax">p</span></span> is a valid
 parse node and (ii) either <span class="extract"><span class="extract-syntax">p</span></span> is the tree root, in which case <span class="extract"><span class="extract-syntax">parent</span></span> is
 <span class="extract"><span class="extract-syntax">NULL</span></span>, or <span class="extract"><span class="extract-syntax">parent</span></span> is the unique node having <span class="extract"><span class="extract-syntax">p</span></span> (or an alternative to <span class="extract"><span class="extract-syntax">p</span></span>)
 among its children.
@@ -185,7 +186,7 @@ among its children.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>Rule (1): no INVALID nodes.
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>Rule (1): no INVALID nodes.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check rule (1) of the invariant</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
@@ -199,7 +200,7 @@ among its children.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b>Rule (2): all annotations must be legal for the given node type.
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>Rule (2): all annotations must be legal for the given node type.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check rule (2) of the invariant</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
@@ -215,7 +216,7 @@ among its children.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b>Rule (3): can this combination of parent and child exist?
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>Rule (3): can this combination of parent and child exist?
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check rule (3) of the invariant</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
@@ -231,7 +232,7 @@ among its children.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b>Rule (4): The number of children has to be within the given extrema.
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b>Rule (4): The number of children has to be within the given extrema.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check rule (4) of the invariant</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
@@ -250,7 +251,7 @@ among its children.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_1"></a><b>&#167;4.1.1.  </b>(Logging the root node produces an absolutely enormous output.)
+<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.  </b>(Logging the root node produces an absolutely enormous output.)
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log this invariant failure</span><span class="named-paragraph-number">4.1.1</span></span><span class="comment-syntax"> =</span>

@@ -255,7 +255,7 @@ this is chosen to look like standard mathematical notation.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So we may as well complete the debugging log code now. Note that \(\top\) is
-logged as just <span class="extract"><span class="extract-syntax">[ ]</span></span>.
+logged as just <span class="extract"><span class="extract-syntax">&lt;&lt; &gt;&gt;</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -265,7 +265,7 @@ logged as just <span class="extract"><span class="extract-syntax">[ ]</span></sp
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Calculus::Propositions::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;&lt; "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TRAVERSE_PROPOSITION</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bridge</span><span class="plain-syntax"> = </span><a href="3-prp.html#SP7" class="function-link"><span class="function-syntax">Calculus::Propositions::debugging_log_text_between</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p_prev</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bridge</span><span class="plain-syntax">[0]) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%s "</span><span class="plain-syntax">, </span><span class="identifier-syntax">bridge</span><span class="plain-syntax">);</span>
@@ -273,7 +273,7 @@ logged as just <span class="extract"><span class="extract-syntax">[ ]</span></sp
 <span class="plain-syntax">        </span><a href="3-ap.html#SP24" class="function-link"><span class="function-syntax">Calculus::Atoms::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"]"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&gt;&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Validity. </b>Since the proposition data structure lets us build all kinds of nonsense,

@@ -1,0 +1,19 @@
+'<< >>': << >>
+'<< is-a-kind (x) >>': << is-a-kind(x) >>
+'<< is-a-var (x) >>': << is-a-var(x) >>
+'<< is-a-const (x) >>': << is-a-const(x) >>
+'<< everywhere (x) >>': << everywhere(x) >>
+'<< nowhere (x) >>': << nowhere(x) >>
+'<< here (x) >>': << here(x) >>
+'<< called = magic passcode (x) >>': << called='magic passcode'(x) >>
+'<< kind = number (x) >>': << kind=number(x) >>
+'new unary blue': ok
+'<< blue (x) >>': << blue(x) >>
+'<< (x == y) >>': << (x == y) >>
+'new binary sees': ok
+'<< sees (x, y) >>': << sees(x, y) >>
+'<< Exists x >>': << Exists x >>
+'<< ForAll x >>': << ForAll x >>
+'<< kind = number (x) ^ blue (x) >>': << kind=number(x) ^ blue(x) >>
+'<< Exists x: blue (x) >>': << Exists x : blue(x) >>
+'<< ForAll x: blue (x) >>': << ForAll x : blue(x) >>

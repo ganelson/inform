@@ -40,7 +40,6 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +49,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-na.html#SP1">&#167;1. Annotation types</a></li><li><a href="2-na.html#SP3">&#167;3. Annotations</a></li><li><a href="2-na.html#SP6">&#167;6. Reading annotations</a></li><li><a href="2-na.html#SP8">&#167;8. Writing annotations</a></li><li><a href="2-na.html#SP10">&#167;10. Setters and getters</a></li><li><a href="2-na.html#SP12">&#167;12. Copying annotations</a></li><li><a href="2-na.html#SP13">&#167;13. Annotation permissions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Annotation types. </b>The parse tree annotations are miscellaneous, and many are needed only at a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Annotation types. </b>The parse tree annotations are miscellaneous, and many are needed only at a
 few unusual nodes. Rather than have the structure grow large, we store
 annotations, allowing each node in principle to have an arbitrary set (though
 see below).
@@ -116,7 +117,7 @@ see below).
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" {implied}"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Annotations are identified by type, which are enumerated constants, and
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Annotations are identified by type, which are enumerated constants, and
 these must be declared before use.
 </p>
 
@@ -153,7 +154,7 @@ these must be declared before use.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parse_node_annotation_type is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Annotations. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Annotations. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node_annotation</span><span class="plain-syntax"> {</span>
@@ -164,7 +165,7 @@ these must be declared before use.
 <span class="plain-syntax">} </span><span class="reserved-syntax">parse_node_annotation</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parse_node_annotation is accessed in 2/tv and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>A new annotation is like a blank luggage ticket, waiting to be filled out
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>A new annotation is like a blank luggage ticket, waiting to be filled out
 and attached to some suitcase. All is has is its ID:
 </p>
 
@@ -180,7 +181,7 @@ and attached to some suitcase. All is has is its ID:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pna</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Each node has a linked list of <a href="2-na.html#SP3" class="internal">parse_node_annotation</a> objects, but for
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Each node has a linked list of <a href="2-na.html#SP3" class="internal">parse_node_annotation</a> objects, but for
 speed and to reduce memory usage we implement this by hand rather than using
 the linked list class from <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>. A node <span class="extract"><span class="extract-syntax">N</span></span> has a list <span class="extract"><span class="extract-syntax">N-&gt;annotations</span></span>,
 which points to its first <a href="2-na.html#SP3" class="internal">parse_node_annotation</a>, or is <span class="extract"><span class="extract-syntax">NULL</span></span> if the node
@@ -192,7 +193,7 @@ is unannotated.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PN</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">annotations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Reading annotations. </b>Though there will be many such lists, each one will always be short (worst case
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Reading annotations. </b>Though there will be many such lists, each one will always be short (worst case
 about 5), so a more efficient search algorithm would not pay its overheads.
 </p>
 
@@ -206,7 +207,7 @@ about 5), so a more efficient search algorithm would not pay its overheads.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Reading annotations is similar. We need two variant forms: one for reading
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Reading annotations is similar. We need two variant forms: one for reading
 integer-valued annotations (which is most of them, as it happens) and the
 other for reading pointers to objects.
 </p>
@@ -230,7 +231,7 @@ other for reading pointers to objects.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Writing annotations. </b>Note that any second or subsequent annotation with the same ID as an existing
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Writing annotations. </b>Note that any second or subsequent annotation with the same ID as an existing
 one (on the same node) overwrites it, but this is not an error.
 </p>
 
@@ -254,7 +255,7 @@ one (on the same node) overwrites it, but this is not an error.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final</span><span class="plain-syntax">) </span><span class="identifier-syntax">final</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_annotation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">newpna</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PN</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">annotations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">newpna</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And now objects:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And now objects:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -274,7 +275,7 @@ one (on the same node) overwrites it, but this is not an error.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">final</span><span class="plain-syntax">) </span><span class="identifier-syntax">final</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_annotation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">newpna</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PN</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">annotations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">newpna</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Setters and getters. </b>It's a nuisance to use <a href="2-na.html#SP7" class="internal">Annotations::read_object</a> and <a href="2-na.html#SP9" class="internal">Annotations::write_object</a>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Setters and getters. </b>It's a nuisance to use <a href="2-na.html#SP7" class="internal">Annotations::read_object</a> and <a href="2-na.html#SP9" class="internal">Annotations::write_object</a>
 directly because of the need to wrap and unwrap the objects into <span class="extract"><span class="extract-syntax">general_pointers</span></span>s,
 so we use macros to make convenient get and set functions.
 </p>
@@ -292,7 +293,7 @@ so we use macros to make convenient get and set functions.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Access routines will be needed for some of these, and the following
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Access routines will be needed for some of these, and the following
 constructs them:
 </p>
 
@@ -300,7 +301,7 @@ constructs them:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Node::set_</span><span class="plain-syntax">##</span><span class="identifier-syntax">annotation_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">pointer_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">pointer_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Node::get_</span><span class="plain-syntax">##</span><span class="identifier-syntax">annotation_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">);</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Copying annotations. </b>For the most part, an annotation can be copied directly from one node to
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Copying annotations. </b>For the most part, an annotation can be copied directly from one node to
 another: if it's an integer, or a pointer to an immutable sort of object.
 But this sort of shallow copy won't always suffice, and so we allow for
 a callback function to deep-copy the data inside the annotation if it
@@ -324,7 +325,7 @@ wants to.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Annotation permissions. </b>As a piece of defensive coding, <a href="index.html" class="internal">syntax</a> will not allow arbitrary annotations
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Annotation permissions. </b>As a piece of defensive coding, <a href="index.html" class="internal">syntax</a> will not allow arbitrary annotations
 to be made: only annotations appropriate to the type of the node in question.
 For example, attempting to give an <span class="extract"><span class="extract-syntax">heading_level_ANNOT</span></span> to a <span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span>
 node will throw an internal error &mdash; it must mean a bug in Inform.
@@ -345,7 +346,7 @@ node will throw an internal error &mdash; it must mean a bug in Inform.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The <span class="extract"><span class="extract-syntax">ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK</span></span> function, if it exists, is
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The <span class="extract"><span class="extract-syntax">ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK</span></span> function, if it exists, is
 expected also to call the following:
 </p>
 
@@ -361,7 +362,7 @@ expected also to call the following:
 <span class="plain-syntax">            </span><a href="2-na.html#SP14" class="function-link"><span class="function-syntax">Annotations::allow</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="identifier-syntax">annot</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And this allows the following. Note that nodes with the temporary <span class="extract"><span class="extract-syntax">*_MC</span></span>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And this allows the following. Note that nodes with the temporary <span class="extract"><span class="extract-syntax">*_MC</span></span>
 types (i.e., those of an unenumerated node type) cannot be annotated.
 </p>
 
@@ -374,7 +375,7 @@ types (i.e., those of an unenumerated node type) cannot be annotated.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>The following removes any annotation not currently valid for the node; this
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>The following removes any annotation not currently valid for the node; this
 is rarely used by Inform, but is needed when a node changes its type.
 </p>
 

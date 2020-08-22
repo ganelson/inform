@@ -40,7 +40,6 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +49,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-nt.html#SP1">&#167;1. Node types</a></li><li><a href="2-nt.html#SP3">&#167;3. Metadata on node types</a></li><li><a href="2-nt.html#SP8">&#167;8. Logging</a></li><li><a href="2-nt.html#SP9">&#167;9. Creation</a></li><li><a href="2-nt.html#SP10">&#167;10. Basic properties</a></li><li><a href="2-nt.html#SP12">&#167;12. Node types used by the syntax module</a></li><li><a href="2-nt.html#SP13">&#167;13. Parentage rules</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Node types. </b>Each node has a "node type". Some of those are defined here with <span class="extract"><span class="extract-syntax">*_NT</span></span>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Node types. </b>Each node has a "node type". Some of those are defined here with <span class="extract"><span class="extract-syntax">*_NT</span></span>
 names &mdash; these are the "enumerated" node types. But every <span class="extract"><span class="extract-syntax">*_MC</span></span> code,
 as defined in the <a href="../words-module/index.html" class="internal">words</a> module and by its clients, is also a valid
 node type. (See <a href="../words-module/2-vcb.html" class="internal">Vocabulary (in words)</a>.) The following is guaranteed to
@@ -77,7 +78,7 @@ be able to hold any node type:
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="comment-syntax"> (not a typedef because it makes trouble for </span><a href="../../../inweb/docs/index.html" class="internal">inweb</a><span class="comment-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>In practice, then, we hold node types as unsigned integers, and we will
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>In practice, then, we hold node types as unsigned integers, and we will
 assume that these are at least 32 bits wide but perhaps no wider. Our
 enumerated codes all have bit 32 set, and therefore no <span class="extract"><span class="extract-syntax">*_MC</span></span> can have.
 </p>
@@ -94,7 +95,7 @@ enumerated codes all have bit 32 set, and therefore no <span class="extract"><sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Metadata on node types. </b>With what will be a profusion of node types, we need a systematic way to organise
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Metadata on node types. </b>With what will be a profusion of node types, we need a systematic way to organise
 information about them, and here it is:
 </p>
 
@@ -111,7 +112,7 @@ information about them, and here it is:
 <span class="plain-syntax">} </span><span class="reserved-syntax">node_type_metadata</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure node_type_metadata is accessed in 2/tv and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following categories certainly exist, and <a href="../core-module/8-ptu.html" class="internal">Parse Tree Usage (in core)</a> adds
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following categories certainly exist, and <a href="../core-module/8-ptu.html" class="internal">Parse Tree Usage (in core)</a> adds
 further ones. The idea is that <span class="extract"><span class="extract-syntax">L1_NCAT</span></span>, <span class="extract"><span class="extract-syntax">L2_NCAT</span></span> and so on down are nodes
 of different "levels", with lower numbers being higher in the tree and more
 structurally significant. Categories are used to decide which nodes are allowed
@@ -144,7 +145,7 @@ to be children of which others, thus enforcing this hierarchy.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The callback function <span class="extract"><span class="extract-syntax">PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK</span></span> should
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The callback function <span class="extract"><span class="extract-syntax">PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK</span></span> should
 call this as needed to fill in more permissions:
 </p>
 
@@ -153,7 +154,7 @@ call this as needed to fill in more permissions:
 <span class="plain-syntax">    </span><span class="identifier-syntax">parentage_allowed</span><span class="plain-syntax">[</span><span class="identifier-syntax">A</span><span class="plain-syntax">][</span><span class="identifier-syntax">B</span><span class="plain-syntax">] = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The bitmap of node flags currently contains only two which are used by
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The bitmap of node flags currently contains only two which are used by
 the syntax module, but we'll reserve two others for use by other modules:
 </p>
 
@@ -162,7 +163,7 @@ the syntax module, but we'll reserve two others for use by other modules:
 <span class="definition-keyword">define</span> <span class="constant-syntax">PHRASAL_NFLAG</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax"> compiles to a function call</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">ASSERT_NFLAG</span><span class="plain-syntax">     </span><span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment-syntax"> allow this on either side of an assertion?</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And the metadata is stored in this table, whose indexes are offset by
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And the metadata is stored in this table, whose indexes are offset by
 <span class="extract"><span class="extract-syntax">ENUMERATED_NT_BASE</span></span>. We can therefore only retrieve metadata on
 enumerated node types, not on meaning codes such as <span class="extract"><span class="extract-syntax">RULE_MC</span></span>, for which
 the following function will return <span class="extract"><span class="extract-syntax">NULL</span></span>.
@@ -184,7 +185,7 @@ the following function will return <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Logging. </b>In the event that metadata isn't available, because the node is not
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Logging. </b>In the event that metadata isn't available, because the node is not
 enumerated, we allow a callback function (if provided) to do the job for us.
 </p>
 
@@ -203,7 +204,7 @@ enumerated, we allow a callback function (if provided) to do the job for us.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Creation. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Creation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">NodeType::new</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">NodeType::new</span></span>:<br/><a href="2-nt.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">identity</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">min_children</span><span class="plain-syntax">,</span>
@@ -219,7 +220,7 @@ enumerated, we allow a callback function (if provided) to do the job for us.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ptnt</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">node_flags</span><span class="plain-syntax"> = </span><span class="identifier-syntax">node_flags</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Basic properties. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Basic properties. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NodeType::category</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">NodeType::category</span></span>:<br/>Node Annotations - <a href="2-na.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
@@ -245,7 +246,7 @@ enumerated, we allow a callback function (if provided) to do the job for us.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">metadata</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">node_type_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>This provides a way for users of the module to indicate what's a sentence:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>This provides a way for users of the module to indicate what's a sentence:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -258,7 +259,7 @@ enumerated, we allow a callback function (if provided) to do the job for us.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Node types used by the syntax module. </b>The <a href="index.html" class="internal">syntax</a> module uses only the following node types, but our client modules
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Node types used by the syntax module. </b>The <a href="index.html" class="internal">syntax</a> module uses only the following node types, but our client modules
 add substantially more. The three callback functions provide opportunities to
 do this. All a bit clumsy, but it works.
 </p>
@@ -298,7 +299,7 @@ do this. All a bit clumsy, but it works.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Parentage rules. </b>It's mostly the case that node category determines whether one node can be
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Parentage rules. </b>It's mostly the case that node category determines whether one node can be
 parent to another, but there are exceptions.
 </p>
 

@@ -70,6 +70,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../inflections-module/1-im.html#SP3" class="function-link"><span class="function-syntax">InflectionsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::start</span></a><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"services"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"calculus-test"</span><span class="plain-syntax">);</span>
@@ -93,6 +94,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../inflections-module/1-im.html#SP3" class="function-link"><span class="function-syntax">InflectionsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../linguistics-module/1-lm2.html#SP3" class="function-link"><span class="function-syntax">LinguisticsModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../kinds-module/1-km.html#SP3" class="function-link"><span class="function-syntax">KindsModule::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../calculus-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -117,10 +119,19 @@ function togglePopup(material_id) {
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_WORDING_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP3" class="function-link"><span class="function-syntax">Main::get_name_text</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_FROM_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP3" class="function-link"><span class="function-syntax">Main::get_kind</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_TO_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP3" class="function-link"><span class="function-syntax">Main::get_kind</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">VALUE_TO_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP3" class="function-link"><span class="function-syntax">Main::value_to_kind</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DIVIDE_AT_COLON_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="1-pc.html#SP3" class="function-link"><span class="function-syntax">Main::dont</span></a>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Main::dont</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_WORDING_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP4" class="function-link"><span class="function-syntax">Main::get_name_text</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_FROM_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP4" class="function-link"><span class="function-syntax">Main::get_kind</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">TERM_DOMAIN_TO_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP4" class="function-link"><span class="function-syntax">Main::get_kind</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">VALUE_TO_KIND_FUNCTION</span><span class="plain-syntax"> </span><a href="1-pc.html#SP4" class="function-link"><span class="function-syntax">Main::value_to_kind</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Main::get_name_text</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -133,7 +144,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">EQUALITY_RELATION_NAME</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">UNIVERSAL_RELATION_NAME</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>

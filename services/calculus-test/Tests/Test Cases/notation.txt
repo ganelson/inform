@@ -1,4 +1,3 @@
-new unary blue.
 << >>.
 << is-a-kind(x) >>.
 << is-a-var(x) >>.
@@ -22,6 +21,3 @@ new binary sees.
 << kind = number(x) ^ blue(x) >>.
 << Exists x : blue(x) >>.
 << ForAll x : blue(x) >>.
-
-<< Exists x >> concatenate << blue(x) >>.
-<< kind = number(x) >> conjoin << blue(x) >>.

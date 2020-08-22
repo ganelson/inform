@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
 	InflectionsModule::start();
 	LinguisticsModule::start();
 	KindsModule::start();
+	CalculusModule::start();
 
 	pathname *P = Pathnames::from_text(I"services");
 	P = Pathnames::down(P, I"calculus-test");
@@ -41,6 +42,7 @@ int main(int argc, char **argv) {
 	InflectionsModule::end();
 	LinguisticsModule::end();
 	KindsModule::end();
+	CalculusModule::end();
 	Foundation::end();
 	return 0;
 }
@@ -59,6 +61,15 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 
 void Main::ignore(int id, text_stream *arg, void *state) {
 	Errors::fatal("only switches may be used at the command line");
+}
+
+@
+
+@d DIVIDE_AT_COLON_SYNTAX_CALLBACK Main::dont
+
+=
+int Main::dont(int wn) {
+	return FALSE;
 }
 
 @

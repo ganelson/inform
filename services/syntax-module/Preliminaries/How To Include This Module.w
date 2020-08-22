@@ -77,6 +77,9 @@ way to create custom annotations: see //Annotations::make_annotation_allowed_tab
 or ending sentence is found in the source text being broken into sentences:
 see //Sentences::make_node//.
 
+(*) |DIVIDE_AT_COLON_SYNTAX_CALLBACK| is called to ask permission to break a
+sentence at a colon. See //Sentences::break_inner//.
+
 (*) |LANGUAGE_ELEMENT_SYNTAX_CALLBACK| is called when a sentence is found matching
 the nonterminal |<language-modifying-sentence>|: see //Sentences::make_node//.
 

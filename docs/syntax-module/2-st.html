@@ -40,7 +40,6 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +49,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +69,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-st.html#SP1">&#167;1. Optional headings tree</a></li><li><a href="2-st.html#SP2">&#167;2. Syntax trees</a></li><li><a href="2-st.html#SP3">&#167;3. Buds and grafts</a></li><li><a href="2-st.html#SP9">&#167;9. Where we currently are in the text</a></li><li><a href="2-st.html#SP10">&#167;10. General traversals</a></li><li><a href="2-st.html#SP19">&#167;19. Unconditional traverses</a></li><li><a href="2-st.html#SP21">&#167;21. Cautious traverses</a></li><li><a href="2-st.html#SP22">&#167;22. Toggling log output</a></li><li><a href="2-st.html#SP23">&#167;23. Ambiguity subtrees</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Optional headings tree. </b>Within <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inbuild/index.html" class="internal">inbuild</a>, the code in this section is augmented by
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Optional headings tree. </b>Within <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inbuild/index.html" class="internal">inbuild</a>, the code in this section is augmented by
 <a href="../supervisor-module/6-hdn.html" class="internal">Headings (in supervisor)</a>, which gives every syntax tree an associated tree of
 source headings; but as far as <a href="index.html" class="internal">syntax</a> is concerned, that's all an optional
 extra.
@@ -82,7 +83,7 @@ initialise and add to it.
 
 <pre class="definitions code-font"><span class="definition-keyword">default</span> <span class="constant-syntax">HEADING_TREE_SYNTAX_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="comment-syntax"> in which case, never used</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Syntax trees. </b>Each <a href="2-st.html#SP2" class="internal">parse_node_tree</a> object represents a different syntax tree; typically
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Syntax trees. </b>Each <a href="2-st.html#SP2" class="internal">parse_node_tree</a> object represents a different syntax tree; typically
 the entire source text being compiled by <a href="../inform7/index.html" class="internal">inform7</a>, including any extensions
 it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_node_tree</a>.
 </p>
@@ -116,7 +117,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parse_node_tree is accessed in 2/tv and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Buds and grafts. </b>"Buds" are positions in the tree to which new sentence subtrees can be grafted:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Buds and grafts. </b>"Buds" are positions in the tree to which new sentence subtrees can be grafted:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -131,7 +132,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bud_parent_sp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">l</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Sentences are grafted onto the bud position at the top of the stack.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Sentences are grafted onto the bud position at the top of the stack.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -143,7 +144,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-pn.html#SP5" class="function-link"><span class="function-syntax">Node::get_type</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">) == </span><span class="constant-syntax">HEADING_NT</span><span class="plain-syntax">) </span><a href="2-st.html#SP3" class="function-link"><span class="function-syntax">SyntaxTree::push_bud</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">new</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>When what's attached is a heading node, that changes the stack. The idea
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>When what's attached is a heading node, that changes the stack. The idea
 here is that sentences graft beneath the heading to which they belong. If the
 current bud point is a heading called "Section 22", and then we reach the
 heading sentence "Part 2", this no longer belongs under Section 22, and we
@@ -164,7 +165,7 @@ pop the bud stack until we're beneath a heading node superior to Parts.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-st.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Syntax trees for Inform source text have a tendency to be wide. If a source
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Syntax trees for Inform source text have a tendency to be wide. If a source
 text is basically a list of 5000 sentences, then there may be a node with 5000
 children, even though the maximum depth of the tree might be as low as 10.
 </p>
@@ -185,7 +186,7 @@ so the optimisation should be enabled only when needed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allow_last_sentence_cacheing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The function <span class="extract"><span class="extract-syntax">SyntaxTree::graft</span></span> is named by analogy with gardening, where the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The function <span class="extract"><span class="extract-syntax">SyntaxTree::graft</span></span> is named by analogy with gardening, where the
 rootstock of one plant is joined to a scion (or cutting) of another, so that a
 root chosen for strength can be combined with the fruits or blossom of the scion.
 </p>
@@ -219,7 +220,7 @@ if it previously had no children).
 <span class="plain-syntax">    </span><span class="identifier-syntax">elder</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">scion</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">elder</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>No speed worries on the much smaller trees with alternative readings:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>No speed worries on the much smaller trees with alternative readings:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -235,13 +236,13 @@ if it previously had no children).
 <span class="plain-syntax">    </span><span class="identifier-syntax">elder</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_alternative</span><span class="plain-syntax"> = </span><span class="identifier-syntax">scion</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">elder</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And we can loop through these like so:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And we can loop through these like so:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_THROUGH_ALTERNATIVES</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_alternative</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Where we currently are in the text. </b>Inform makes many traverses through the big parse tree, often modifying as it
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Where we currently are in the text. </b>Inform makes many traverses through the big parse tree, often modifying as it
 goes, and keeps track of its position so that it can make any problem messages
 correctly refer to the location of the faulty text in the original source files.
 </p>
@@ -254,7 +255,7 @@ node, hence the name.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. General traversals. </b>It's convenient to have a general system for traversing a syntax tree, visiting
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. General traversals. </b>It's convenient to have a general system for traversing a syntax tree, visiting
 each node in the connected component of the tree root. C doesn't make this sort
 of thing easy, though, so there follows a welter of boringly similar functions
 with convoluted type signatures.
@@ -296,7 +297,7 @@ chosen start position, rather than the root of the tree.
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Note that any node not "visitable" is omitted, where the following function
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Note that any node not "visitable" is omitted, where the following function
 is the sole arbiter. This depends only on its node type.
 </p>
 
@@ -306,7 +307,7 @@ is the sole arbiter. This depends only on its node type.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And now the same thing, but where the visitor function has the type
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>And now the same thing, but where the visitor function has the type
 signature <span class="extract"><span class="extract-syntax">text_stream *, parse_node * -&gt; void</span></span>.
 </p>
 
@@ -329,7 +330,7 @@ signature <span class="extract"><span class="extract-syntax">text_stream *, pars
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>And now the same thing, but where the visitor function has the type
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>And now the same thing, but where the visitor function has the type
 signature <span class="extract"><span class="extract-syntax">parse_node *, int * -&gt; void</span></span>.
 </p>
 
@@ -352,7 +353,7 @@ signature <span class="extract"><span class="extract-syntax">parse_node *, int *
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And the same thing, but where the visitor function has the type signature
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And the same thing, but where the visitor function has the type signature
 <span class="extract"><span class="extract-syntax">parse_node *, int *, int * -&gt; void</span></span>.
 </p>
 
@@ -375,7 +376,7 @@ signature <span class="extract"><span class="extract-syntax">parse_node *, int *
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And now for <span class="extract"><span class="extract-syntax">parse_node *, parse_node ** -&gt; void</span></span>.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And now for <span class="extract"><span class="extract-syntax">parse_node *, parse_node ** -&gt; void</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -397,7 +398,7 @@ signature <span class="extract"><span class="extract-syntax">parse_node *, int *
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>This is a tricksier sort of traverse, which tells the visitor function the
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>This is a tricksier sort of traverse, which tells the visitor function the
 heading node it belongs to. The visitor function now has type signature
 <span class="extract"><span class="extract-syntax">parse_node_tree *, parse_node *, parse_node *, int * -&gt; void</span></span>, where the
 two nodes are the one being visited and its heading, respectively.
@@ -428,7 +429,7 @@ two nodes are the one being visited and its heading, respectively.
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>And this is another variation: a traverse to find a node with a particular
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>And this is another variation: a traverse to find a node with a particular
 property. The process halts as soon as the visitor function, which has
 signature <span class="extract"><span class="extract-syntax">parse_node *, parse_node *, parse_node ** -&gt; int</span></span>, returns <span class="extract"><span class="extract-syntax">TRUE</span></span>,
 and the idea is that the visitor will store its result in the <span class="extract"><span class="extract-syntax">parse_node *</span></span>
@@ -461,7 +462,7 @@ because no visitable nodes would ever be reached.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>And still another. This one traverses only up to a given stop position,
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>And still another. This one traverses only up to a given stop position,
 and the visitor has signature <span class="extract"><span class="extract-syntax">parse_node *, void ** -&gt; void</span></span>, the idea
 being that the final <span class="extract"><span class="extract-syntax">void **</span></span> is a pointer to a general object pointer.
 This is the sort of thing which brings C into disrepute, but we don't use
@@ -492,7 +493,7 @@ it very much.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Unconditional traverses. </b>Finally, here are two traverses which visit every node, not just the "visitable"
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Unconditional traverses. </b>Finally, here are two traverses which visit every node, not just the "visitable"
 ones. Here is a depth-first version (like all of the functions above):
 </p>
 
@@ -510,7 +511,7 @@ ones. Here is a depth-first version (like all of the functions above):
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>And this is a width-first variant (unlike all of the functions above).
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And this is a width-first variant (unlike all of the functions above).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -527,7 +528,7 @@ ones. Here is a depth-first version (like all of the functions above):
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SCS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Cautious traverses. </b>When logging or verifying the tree, we cannot use the carefree functions
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Cautious traverses. </b>When logging or verifying the tree, we cannot use the carefree functions
 above: the tree might be malformed. As a way to detect cycles, we call for
 a new "traverse token" &mdash; just a unique integer value &mdash; and mark all nodes
 visited with that value.
@@ -540,7 +541,7 @@ visited with that value.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ++</span><span class="identifier-syntax">pn_log_token</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Toggling log output. </b>Various modules conventionally use this global setting to toggle debugging
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Toggling log output. </b>Various modules conventionally use this global setting to toggle debugging
 log output:
 </p>
 
@@ -561,7 +562,7 @@ log output:
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">trace_sentences</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">trace_sentences</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Ambiguity subtrees. </b>The following function adds a new <span class="extract"><span class="extract-syntax">reading</span></span> to an <span class="extract"><span class="extract-syntax">existing</span></span> interpretation
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Ambiguity subtrees. </b>The following function adds a new <span class="extract"><span class="extract-syntax">reading</span></span> to an <span class="extract"><span class="extract-syntax">existing</span></span> interpretation
 of some wording <span class="extract"><span class="extract-syntax">W</span></span>, and return the node now representing. For example,
 suppose the text "orange" can be read as a noun for fruit, a noun for colour,
 or an adjective, resulting in nodes <span class="extract"><span class="extract-syntax">fruit_node</span></span> and <span class="extract"><span class="extract-syntax">colour_node</span></span> and <span class="extract"><span class="extract-syntax">adj_node</span></span>.

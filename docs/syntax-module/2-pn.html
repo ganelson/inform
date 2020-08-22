@@ -54,7 +54,6 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -64,12 +63,14 @@ MathJax = {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="index.html"><span class="selectedlink">syntax</span></a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -82,7 +83,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="2-pn.html#SP1">&#167;1. Nodes themselves</a></li><li><a href="2-pn.html#SP2">&#167;2. Creation</a></li><li><a href="2-pn.html#SP5">&#167;5. Annotations</a></li><li><a href="2-pn.html#SP8">&#167;8. Composition</a></li><li><a href="2-pn.html#SP9">&#167;9. Copying parse nodes</a></li><li><a href="2-pn.html#SP12">&#167;12. Child count</a></li><li><a href="2-pn.html#SP13">&#167;13. Detection of subnodes</a></li><li><a href="2-pn.html#SP14">&#167;14. The word range beneath a given node</a></li><li><a href="2-pn.html#SP16">&#167;16. Logging the parse tree</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Nodes themselves. </b>Each node is an instance of this:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Nodes themselves. </b>Each node is an instance of this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -101,7 +102,7 @@ MathJax = {
 <span class="plain-syntax">} </span><span class="reserved-syntax">parse_node</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure parse_node is accessed in 2/st, 2/na, 2/tv and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Creation. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Creation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Node::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Node::new</span></span>:<br/><a href="2-pn.html#SP3">&#167;3</a>, <a href="2-pn.html#SP9">&#167;9</a>, <a href="2-pn.html#SP11">&#167;11</a><br/>Syntax Trees - <a href="2-st.html#SP2">&#167;2</a><br/>Sentences - <a href="3-snt.html#SP6_1">&#167;6.1</a>, <a href="3-snt.html#SP6_6">&#167;6.6</a>, <a href="3-snt.html#SP6_9_3">&#167;6.9.3</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
@@ -115,7 +116,7 @@ MathJax = {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following constructor routines fill out the fields in useful ways.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The following constructor routines fill out the fields in useful ways.
 Here's one if a word range is to be attached:
 </p>
 
@@ -126,7 +127,7 @@ Here's one if a word range is to be attached:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The attached text.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The attached text.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -140,7 +141,7 @@ Here's one if a word range is to be attached:
 <span class="plain-syntax">    </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_parsed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Annotations. </b>It's easily overlooked that the single most useful piece of information
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Annotations. </b>It's easily overlooked that the single most useful piece of information
 at each node is its node type, accessed as follows:
 </p>
 
@@ -154,7 +155,7 @@ at each node is its node type, accessed as follows:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>When setting, we have to preserve the invariant, so we clear away any
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>When setting, we have to preserve the invariant, so we clear away any
 annotations no longer relevant to the node's new identity.
 </p>
 
@@ -176,14 +177,14 @@ annotations no longer relevant to the node's new identity.
 <span class="plain-syntax">    </span><a href="2-na.html#SP5" class="function-link"><span class="function-syntax">Annotations::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The integer score, used in choosing best matches:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The integer score, used in choosing best matches:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Node::get_score</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Node::get_score</span></span>:<br/><a href="2-pn.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) { </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">score</span><span class="plain-syntax">; }</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Node::set_score</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Node::set_score</span></span>:<br/><a href="2-pn.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax">) { </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">score</span><span class="plain-syntax"> = </span><span class="identifier-syntax">s</span><span class="plain-syntax">; }</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Composition. </b>This simply means stringing two nodes together into a list.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Composition. </b>This simply means stringing two nodes together into a list.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -193,7 +194,7 @@ annotations no longer relevant to the node's new identity.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Copying parse nodes. </b>If we want to duplicate a parse node, we cannot do so with a shallow bit copy:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Copying parse nodes. </b>If we want to duplicate a parse node, we cannot do so with a shallow bit copy:
 the node points to a list of its annotations, and the duplicated node would
 therefore point to the same list. If, subsequently, one of the two nodes
 were annotated further, then the other would change in synchrony, which
@@ -213,7 +214,7 @@ deep copy which duplicates not only the node, but also its annotation list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">dup</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This variation preserves links out.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This variation preserves links out.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -227,7 +228,7 @@ deep copy which duplicates not only the node, but also its annotation list.
 <span class="plain-syntax">    </span><span class="identifier-syntax">to</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">down_link</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>And to deep-copy a whole subtree:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>And to deep-copy a whole subtree:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -248,7 +249,7 @@ deep copy which duplicates not only the node, but also its annotation list.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Child count. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Child count. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Node::no_children</span><span class="plain-syntax">(</span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) {</span>
@@ -257,7 +258,7 @@ deep copy which duplicates not only the node, but also its annotation list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Detection of subnodes. </b>This is needed when producing problem messages: we may need to work up from
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Detection of subnodes. </b>This is needed when producing problem messages: we may need to work up from
 an arbitrary leaf to the main sentence branch containing it. At any rate,
 given a node <span class="extract"><span class="extract-syntax">PN</span></span>, we want to know if another node <span class="extract"><span class="extract-syntax">to_find</span></span> lies beneath
 it. (This will never be called when <span class="extract"><span class="extract-syntax">PN</span></span> is the root, and from all other
@@ -275,7 +276,7 @@ wide nor deep.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. The word range beneath a given node. </b>Any given node may be the root of a subtree concerning the structure of
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The word range beneath a given node. </b>Any given node may be the root of a subtree concerning the structure of
 a given contiguous range of words in the original source text. The
 "left edge" of a node <span class="extract"><span class="extract-syntax">PN</span></span> is the least-numbered word considered by any
 node at or below <span class="extract"><span class="extract-syntax">PN</span></span> in the tree; the "right edge" is the highest-numbered
@@ -298,7 +299,7 @@ for <span class="extract"><span class="extract-syntax">PN</span></span> and the 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Symmetrically, the right edge is found by taking the maximum word number
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Symmetrically, the right edge is found by taking the maximum word number
 for <span class="extract"><span class="extract-syntax">PN</span></span> and the right edges of its children.
 </p>
 
@@ -314,7 +315,7 @@ for <span class="extract"><span class="extract-syntax">PN</span></span> and the 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Logging the parse tree. </b>For most trees, logging is a fearsome prospect, but here we only mean printing
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Logging the parse tree. </b>For most trees, logging is a fearsome prospect, but here we only mean printing
 out a textual representation to the debugging log.
 </p>
 
@@ -353,7 +354,7 @@ logging is a diagnostic tool, we want it to work even when Inform is sick.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Either way, we recurse as follows, being careful not to make recursive calls
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Either way, we recurse as follows, being careful not to make recursive calls
 to pursue <span class="extract"><span class="extract-syntax">next</span></span> links, since otherwise a source text with more than 100,000
 sentences or so will exceed the typical stack size Inform has to run in.
 </p>
@@ -404,7 +405,7 @@ sentences or so will exceed the typical stack size Inform has to run in.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1"></a><b>&#167;17.1.  </b>When the first alternative is called, <span class="extract"><span class="extract-syntax">Node::log_subtree_recursively</span></span>
+<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b>When the first alternative is called, <span class="extract"><span class="extract-syntax">Node::log_subtree_recursively</span></span>
 has arguments 0 and 0 for the possibility. The following code finds out the
 correct value for <span class="extract"><span class="extract-syntax">of</span></span>, setting this possibility to be <span class="extract"><span class="extract-syntax">[1/of]</span></span>. When we later
 iterate through other alternatives, we pass on correct values of <span class="extract"><span class="extract-syntax">num</span></span> and <span class="extract"><span class="extract-syntax">of</span></span>,
@@ -422,7 +423,7 @@ so that this code won't be used again on the same horizontal list of possibiliti
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pn.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>All of those routines make use of the following, which actually performs
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>All of those routines make use of the following, which actually performs
 the log of a parse node. Note that this always produces exactly one line of
 text in the debugging log.
 </p>
