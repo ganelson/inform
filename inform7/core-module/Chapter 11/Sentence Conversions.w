@@ -4,6 +4,15 @@ The third of the three sources of propositions to conjure with:
 those which arise by the parsing of complex sentence trees in the S-grammar.
 
 @h The meaning of a sentence.
+"Again and again Haddon thought he had found the key to the strange writings,
+but always he was disappointed. And then one day -- he was an old man of seventy
+now -- he fed a trial programme into his computer, and for the first time a
+translated sentence was delivered -- his life-long task was rewarded. Yes,
+but for the fact that one man had been prepared to devote every spare hour of
+his life to solving the riddle, the amazing story of the Trigan Empire would
+never have been given to the world. WHAT FOLLOWS IS THAT STORY."
+("The Rise and Fall of the Trigan Empire", 1965)
+
 This section provides a single, but crucial, function to the rest of Inform:
 it takes a sentence subtree output by the S-parser and turns it into a proposition.
 
@@ -392,7 +401,7 @@ The simplification routines can all be found in "Simplifications".
 	int changed = FALSE, NF = Calculus::Variables::number_free(proposition);
 	if (proposition) proposition = simp(proposition, &changed);
 	if (changed) LOGIF(PREDICATE_CALCULUS, "[%d] %s: $D\n", conv_log_depth, #simp, proposition);
-	if ((Calculus::Variables::is_well_formed(proposition) == FALSE) ||
+	if ((Calculus::Variables::is_well_formed(proposition, NULL) == FALSE) ||
 		(NF != Calculus::Variables::number_free(proposition))) {
 		LOG("Failed after applying %s: $D", #simp, proposition);
 		internal_error(#simp " simplified proposition into one which is not well-formed");
@@ -400,7 +409,7 @@ The simplification routines can all be found in "Simplifications".
 }
 
 @<Simplify the resultant proposition@> =
-	if (Calculus::Variables::is_well_formed(sentence_prop) == FALSE) {
+	if (Calculus::Variables::is_well_formed(sentence_prop, NULL) == FALSE) {
 		LOG("Failed before simplification: $D", sentence_prop);
 		internal_error("tried to simplify proposition which is not well-formed");
 	}
@@ -499,7 +508,8 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 @ ...and also at the end.
 
 @<Verify that the output satisfies the First Rule, throwing internal errors if not@> =
-	if (Calculus::Variables::is_well_formed(NP_prop) == FALSE) internal_error("malformed NP proposition");
+	if (Calculus::Variables::is_well_formed(NP_prop, NULL) == FALSE)
+		internal_error("malformed NP proposition");
 	int NF = Calculus::Variables::number_free(NP_prop);
 	if (NF >= 2) internal_error("two or more free variables from NP");
 	if (subject_of_NP->constant) {

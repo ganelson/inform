@@ -49,8 +49,8 @@ following is our Periodic Table of all possible elements:
 
 @d NEGATION_OPEN_ATOM 20 /* logical negation $\lnot$ applied to contents of group */
 @d NEGATION_CLOSE_ATOM 30 /* end of logical negation $\lnot$ */
-@d DOMAIN_OPEN_ATOM 21 /* logical negation $\lnot$ applied to contents of group */
-@d DOMAIN_CLOSE_ATOM 31 /* end of logical negation $\lnot$ */
+@d DOMAIN_OPEN_ATOM 21 /* this holds the domain of a quantifier */
+@d DOMAIN_CLOSE_ATOM 31
 
 @ And as with columns in the Periodic Table, these elements come in what are
 called "groups", because it often happens that atoms of different elements
@@ -495,10 +495,10 @@ void Calculus::Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 		case EVERYWHERE_ATOM: WRITE("everywhere"); break;
 		case NOWHERE_ATOM: WRITE("nowhere"); break;
 		case HERE_ATOM: WRITE("here"); break;
-		case NEGATION_OPEN_ATOM: WRITE("NOT["); break;
-		case NEGATION_CLOSE_ATOM: WRITE("NOT]"); break;
-		case DOMAIN_OPEN_ATOM: WRITE("IN["); break;
-		case DOMAIN_CLOSE_ATOM: WRITE("IN]"); break;
+		case NEGATION_OPEN_ATOM: WRITE("NOT<"); break;
+		case NEGATION_CLOSE_ATOM: WRITE("NOT>"); break;
+		case DOMAIN_OPEN_ATOM: WRITE("IN<"); break;
+		case DOMAIN_CLOSE_ATOM: WRITE("IN>"); break;
 		default: WRITE("?bad-atom?"); break;
 	}
 	if (prop->arity > 0) {

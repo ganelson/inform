@@ -257,6 +257,7 @@ which is by now inside the "creation proposition".
 	if (UnaryPredicates::get_parity(pred) == FALSE) negate_me = TRUE;
 	if (Node::get_creation_proposition(p))
 		prop = Calculus::Propositions::conjoin(prop, Node::get_creation_proposition(p));
-	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));
-	prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::unary_PREDICATE_from_aph(UnaryPredicates::get_adj(pred), FALSE));
-	if (negate_me) prop = Calculus::Propositions::conjoin(prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));
+	pcalc_prop *adj_prop = Calculus::Atoms::unary_PREDICATE_from_aph(
+		UnaryPredicates::get_adj(pred), FALSE);
+	if (negate_me) adj_prop = Calculus::Propositions::negate(adj_prop);
+	prop = Calculus::Propositions::conjoin(prop, adj_prop);

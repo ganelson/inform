@@ -66,7 +66,7 @@ int Calculus::Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit
 
 	int j;
 	if (prop == NULL) return ALWAYS_MATCH;
-	if (Calculus::Variables::is_well_formed(prop) == FALSE)
+	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
 		internal_error("type-checking malformed proposition");
 
 	@<First make sure any constants in the proposition have themselves been typechecked@>;
@@ -347,9 +347,9 @@ prints the log to an I6 string. This is the type-checking report in the case
 of success.
 
 @<Show the variable assignment in the debugging log@> =
-	int j, var_states[26], c=0;
+	int var_states[26], c=0;
 	Calculus::Variables::determine_status(prop, var_states, NULL);
-	for (j=0; j<26; j++)
+	for (int j=0; j<26; j++)
 		if (var_states[j] != UNUSED_VST) {
 			LOG("%c%s - %u. ", pcalc_vars[j],
 				(var_states[j] == FREE_VST)?" (free)":"",

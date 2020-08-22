@@ -12,8 +12,9 @@
 '<< (x == y) >>': << (x == y) >>
 'new binary sees': ok
 '<< sees (x, y) >>': << sees(x, y) >>
+'<< NOT< ^ blue (x) ^ NOT> >>': << NOT< blue(x) NOT> >>
+'<< Forall x IN< kind = number (x) IN>: blue (x) >>': << ForAll x IN< kind=number(x) IN> : blue(x) >>
 '<< Exists x >>': << Exists x >>
-'<< ForAll x >>': << ForAll x >>
-'<< kind = number (x) ^ blue (x) >>': << kind=number(x) ^ blue(x) >>
-'<< Exists x: blue (x) >>': << Exists x : blue(x) >>
-'<< ForAll x: blue (x) >>': << ForAll x : blue(x) >>
+'<< DoesNotExist x IN< kind = number (x) IN>: blue (x) >>': << DoesNotExist x IN< kind=number(x) IN> : blue(x) >>
+'<< Forall x IN< kind = number (x) IN>: blue (x) >>': << ForAll x IN< kind=number(x) IN> : blue(x) >>
+'<< Card= 6 x IN< kind = number (x) IN>: blue (x) >>': << Card=6 x IN< kind=number(x) IN> : blue(x) >>

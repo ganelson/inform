@@ -15,9 +15,10 @@ new unary blue.
 new binary sees.
 << sees(x, y) >>.
 
-<< Exists x >>.
-<< ForAll x >>.
+<< NOT< ^ blue(x) ^ NOT> >>.
+<< Forall x IN< kind = number(x) IN> : blue(x) >>.
 
-<< kind = number(x) ^ blue(x) >>.
-<< Exists x : blue(x) >>.
-<< ForAll x : blue(x) >>.
+<< Exists x >>.
+<< DoesNotExist x IN< kind = number(x) IN> : blue(x) >>.
+<< Forall x IN< kind = number(x) IN> : blue(x) >>.
+<< Card= 6 x IN< kind = number(x) IN> : blue(x) >>.

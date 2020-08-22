@@ -1,18 +1,13 @@
 new unary even.
 
+<< NOT> >> is syntactically valid.
 << Exists x >> is syntactically valid.
 << ForAll x >> is syntactically valid.
-<< ForAll x : in< ^ kind = number(x) ^ in> >> is syntactically valid.
-
-<< kind = number(x) >> concatenate << even(x) >>.
-<< Exists x >> concatenate << even(x) >>.
-<< Exists x >> concatenate << Exists x : even(x) >>.
-<< Exists x >> conjoin << even(x) >>.
+<< ForAll x IN< kind = number(x) IN> : even(x) >> is syntactically valid.
+<< Forall x IN< kind = number(x) IN> : even(x) >> is syntactically valid.
 
 set A to << Exists x >>.
 set B to << Exists x : even(x) >>.
-b.
-
 A concatenate B.
 A conjoin B.
 A concatenate B is syntactically valid.

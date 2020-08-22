@@ -254,10 +254,10 @@ proposition. So we require that the slate identify exactly the free
 variables, and no others.
 
 @<Check the identification slate against variable usage in the proposition@> =
-	int i, valid = TRUE, var_states[26];
-	Calculus::Variables::determine_status(prop, var_states, &valid);
+	int var_states[26];
+	int valid = Calculus::Variables::determine_status(prop, var_states, NULL);
 	if (valid == FALSE) internal_error("tried to assert malformed proposition");
-	for (i=0; i<26; i++) {
+	for (int i=0; i<26; i++) {
 		int set = FALSE;
 		if (current_interpretation_as_spec[i]) set = TRUE;
 		if (current_interpretation_as_infs[i]) {

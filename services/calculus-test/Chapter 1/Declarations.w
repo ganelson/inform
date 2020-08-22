@@ -21,6 +21,40 @@ match any text.
 <comma-divisible-sentence> ::=
 	... ==> { fail }
 
+@h REPL variables.
+
+@e repl_var_CLASS
+
+=
+DECLARE_CLASS(repl_var)
+
+typedef struct repl_var {
+	struct wording name;
+	struct pcalc_prop *val;
+	CLASS_DEFINITION
+} repl_var;
+
+<new-repl-variable> internal {
+	repl_var *rv;
+	LOOP_OVER(rv, repl_var)
+		if (Wordings::match(rv->name, W)) {
+			==> { -, rv }; return TRUE;
+		}
+	rv = CREATE(repl_var);
+	rv->val = NULL;
+	rv->name = W;
+	==> { -, rv }; return TRUE;
+}
+
+<repl-variable> internal {
+	repl_var *rv;
+	LOOP_OVER(rv, repl_var)
+		if (Wordings::match(rv->name, W)) {
+			==> { -, rv }; return TRUE;
+		}
+	return FALSE;
+}
+
 @h A sort of REPL.
 The following function reads a file whose name is in |arg|, feeds it into
 the lexer, builds a syntax tree of its sentences, and then walks through
@@ -29,6 +63,7 @@ sentence. In effect, this is a read-evaluate-print loop.
 
 =
 parse_node_tree *syntax_tree = NULL;
+text_stream *test_err = NULL;
 
 void Declarations::load_from_file(text_stream *arg) {
 	filename *F = Filenames::from_text(arg);
@@ -39,6 +74,7 @@ void Declarations::load_from_file(text_stream *arg) {
 	syntax_tree = SyntaxTree::new();
 	Sentences::break(syntax_tree, W);
 	BinaryPredicateFamilies::first_stock();
+	test_err = Str::new();
 	SyntaxTree::traverse(syntax_tree, Declarations::parse);
 }
 
@@ -53,22 +89,32 @@ void Declarations::parse(parse_node *p) {
 <declaration-line> ::=
 	new unary ... |                            ==> @<Create new unary@>
 	new binary ... |                           ==> @<Create new binary@>
-	<result> |                                 ==> @<Show result@>
+	set <new-repl-variable> to <evaluation> |  ==> @<Set REPL var@>
+	<evaluation> |                             ==> @<Show result@>
+	<test> |                                   ==> @<Show result of test@>
 	...                                        ==> @<Fail with error@>
 
-<result> ::=
-	<proposition> concatenate <proposition> |  ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
-	<proposition> conjoin <proposition> |      ==> { -, Calculus::Propositions::conjoin(RP[1], RP[2]) }
+<evaluation> ::=
+	( <evaluation> ) |                         ==> { pass 1 }
+	<evaluation> concatenate <evaluation> |    ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
+	<evaluation> conjoin <evaluation> |        ==> { -, Calculus::Propositions::conjoin(RP[1], RP[2]) }
+	<repl-variable> |                          ==> { -, Calculus::Propositions::copy(((repl_var *) RP[1])->val) }
 	<proposition>                              ==> { pass 1 }
 
+<test> ::=
+	<evaluation> is syntactically valid |      ==> { Calculus::Propositions::is_syntactically_valid(RP[1], test_err), - }
+	<evaluation> is well-formed                ==> { Calculus::Variables::is_well_formed(RP[1], test_err), - }
+
 <proposition> ::=
-	<< <atomic-propositions> >> |              ==> { pass 1 }
+	<< <atoms> >> |              ==> { pass 1 }
 	<< <quantification> >> |                   ==> { pass 1 }
 	<< >>                                      ==> { -, NULL }
 
-<atomic-propositions> ::=
-	<quantification> \: <atomic-propositions> |      ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
-	<atomic-proposition> \^ <atomic-propositions> |  ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
+<atoms> ::=
+	<quantification> \: <atoms> |      ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
+	<quantification> in< <atoms> in> \: <atoms> |  ==> @<Make domain@>;
+	not< <atoms> not> |                ==> { -, Calculus::Propositions::negate(RP[1]) }
+	<atomic-proposition> \^ <atoms> |  ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
 	<atomic-proposition>                             ==> { pass 1 }
 
 <atomic-proposition> ::=
@@ -82,7 +128,11 @@ void Declarations::parse(parse_node *p) {
 	here ( <term> ) |                          ==> { -, Calculus::Atoms::HERE_new(*((pcalc_term *) RP[1])) }
 	is-a-kind ( <term> ) |                     ==> { -, Calculus::Atoms::ISAKIND_new(*((pcalc_term *) RP[1]), NULL) }
 	is-a-var ( <term> ) |                      ==> { -, Calculus::Atoms::ISAVAR_new(*((pcalc_term *) RP[1])) }
-	is-a-const ( <term> )                      ==> { -, Calculus::Atoms::ISACONST_new(*((pcalc_term *) RP[1])) }
+	is-a-const ( <term> ) |                    ==> { -, Calculus::Atoms::ISACONST_new(*((pcalc_term *) RP[1])) }
+	not< |                                     ==> { -, Calculus::Atoms::new(NEGATION_OPEN_ATOM) }
+	not> |                                     ==> { -, Calculus::Atoms::new(NEGATION_CLOSE_ATOM) }
+	in< |                                      ==> { -, Calculus::Atoms::new(DOMAIN_OPEN_ATOM) }
+	in>                                        ==> { -, Calculus::Atoms::new(DOMAIN_CLOSE_ATOM) }
 
 <term> ::=
 	<pcvar>                                    ==> { -, Declarations::stash(Calculus::Terms::new_variable(R[1])) }
@@ -91,13 +141,30 @@ void Declarations::parse(parse_node *p) {
 	<quantifier> <pcvar>                       ==> { -, Calculus::Atoms::QUANTIFIER_new(RP[1], R[2], R[1]) }
 
 <quantifier> ::=
-	exists |                                   ==> { 0, exists_quantifier }
-	forall                                     ==> { 0, for_all_quantifier }
+	ForAll |                                   ==> { 0, for_all_quantifier }
+	NotAll |                                   ==> { 0, not_for_all_quantifier }
+	Exists |                                   ==> { 0, exists_quantifier }
+	DoesNotExist |                             ==> { 0, not_exists_quantifier }
+	AllBut <cardinal-number> |                 ==> { R[1], all_but_quantifier }
+	NotAllBut <cardinal-number> |              ==> { R[1], not_all_but_quantifier }
+	Proportion>=80% |                          ==> { R[1], almost_all_quantifier }
+	Proportion<20% |                           ==> { R[1], almost_no_quantifier }
+	Proportion>50% |                           ==> { R[1], most_quantifier }
+	Proportion<=50% |                          ==> { R[1], under_half_quantifier }
+	Card>= <cardinal-number> |                 ==> { R[1], at_least_quantifier }
+	Card<= <cardinal-number> |                 ==> { R[1], at_most_quantifier }
+	Card= <cardinal-number> |                  ==> { R[1], exactly_quantifier }
+	Card< <cardinal-number> |                  ==> { R[1], less_than_quantifier }
+	Card> <cardinal-number> |                  ==> { R[1], more_than_quantifier }
+	Card~= <cardinal-number>                   ==> { R[1], other_than_quantifier }
 
 <pcvar> ::=
 	x |                                        ==> { 0, - }
 	y |                                        ==> { 1, - }
 	z                                          ==> { 2, - }
+
+@<Make domain@> =
+	==> { -, Calculus::Propositions::quantify_using(RP[1], RP[2], RP[3]) }
 
 @<Create new unary@> =
 	Adjectives::declare(GET_RW(<declaration-line>, 1), NULL);
@@ -107,10 +174,27 @@ void Declarations::parse(parse_node *p) {
 	Declarations::new(GET_RW(<declaration-line>, 1));
 	PRINT("'%<W': ok\n", W);
 
+@<Set REPL var@> =
+	pcalc_prop *P = RP[2];
+	repl_var *rv = RP[1];
+	rv->val = P;
+	PRINT("'%<W': %W set to ", W, rv->name);
+	Calculus::Propositions::write(STDOUT, P);
+	PRINT("\n");
+
 @<Show result@> =
 	pcalc_prop *P = RP[1];
 	PRINT("'%<W': ", W);
 	Calculus::Propositions::write(STDOUT, P);
+	PRINT("\n");
+
+@<Show result of test@> =
+	PRINT("'%<W': ", W);
+	if (R[1]) PRINT("true"); else {
+		PRINT("false");
+		if (Str::len(test_err) > 0) PRINT(" - %S", test_err);
+	}
+	Str::clear(test_err);
 	PRINT("\n");
 
 @<Fail with error@> =

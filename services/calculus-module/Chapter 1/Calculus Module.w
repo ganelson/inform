@@ -33,7 +33,18 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(i6_schema, 100)
 @e PREDICATE_CALCULUS_WORKINGS_DA
 
 =
+COMPILE_WRITER(pcalc_prop *, Calculus::Propositions::log)
+COMPILE_WRITER(pcalc_prop *, Calculus::Atoms::log)
+COMPILE_WRITER(pcalc_term *, Calculus::Terms::log)
+COMPILE_WRITER(binary_predicate *, BinaryPredicates::log)
+COMPILE_WRITER(unary_predicate *, UnaryPredicates::log)
+
 void CalculusModule::start(void) {
+	REGISTER_WRITER('D', Calculus::Propositions::log);
+	REGISTER_WRITER('o', Calculus::Atoms::log);
+	REGISTER_WRITER('0', Calculus::Terms::log);
+	REGISTER_WRITER('2', BinaryPredicates::log);
+	REGISTER_WRITER('r', UnaryPredicates::log);
 	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
 	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
 	Calculus::Equality::start();

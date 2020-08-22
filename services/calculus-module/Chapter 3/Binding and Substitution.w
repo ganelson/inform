@@ -71,11 +71,10 @@ the quantifier has finished. We set the |valid| flag if all is well.
 @d BOUND_VST 3
 
 =
-void Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states, int *valid) {
+int Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states,
+	text_stream *err) {
 	TRAVERSE_VARIABLE(p);
-	int j, unavailable[26], blevel = 0, dummy;
-	if (valid == NULL) valid = &dummy;
-	*valid = TRUE;
+	int j, unavailable[26], blevel = 0, valid = TRUE;
 	for (j=0; j<26; j++) { var_states[j] = UNUSED_VST; unavailable[j] = 0; }
 	TRAVERSE_PROPOSITION(p, prop) {
 		if (Calculus::Atoms::element_get_group(p->element) == OPEN_OPERATORS_GROUP) blevel++;
@@ -85,16 +84,18 @@ void Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states, in
 		}
 		for (j=0; j<p->arity; j++) {
 			int v = Calculus::Terms::variable_underlying(&(p->terms[j]));
-			if (v >= 26) internal_error("corrupted variable term");
-			if (v >= 0) {
+			if (v >= 26) {
+				WRITE_TO(err, "corrupted variable term");
+				valid = FALSE;
+			} else if (v >= 0) {
 				if (unavailable[v] == -1) {
-					*valid = FALSE;
-					LOG("$o invalid because of %c unavailable\n", p, pcalc_vars[v]);
+					valid = FALSE;
+					WRITE_TO(err, "%c unavailable", pcalc_vars[v]);
 				}
 				if (p->element == QUANTIFIER_ATOM) {
 					if (var_states[v] != UNUSED_VST) {
-						*valid = FALSE;
-						LOG("$D: $o invalid because of %c Q for F\n", prop, p, pcalc_vars[v]);
+						valid = FALSE;
+						WRITE_TO(err, "%c used outside its binding", pcalc_vars[v]);
 					}
 					var_states[v] = BOUND_VST; unavailable[v] = blevel;
 				} else {
@@ -103,17 +104,16 @@ void Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states, in
 			}
 		}
 	}
+	return valid;
 }
 
 @ With just a little wrapping, this gives us the test of well-formedness.
 
 =
-int Calculus::Variables::is_well_formed(pcalc_prop *prop) {
-	int status, var_states[26];
-	if (Calculus::Propositions::is_syntactically_valid(prop) == FALSE) return FALSE;
-	Calculus::Variables::determine_status(prop, var_states, &status);
-	if (status == FALSE) { LOG("Variable usage malformed\n"); return FALSE; }
-	return TRUE;
+int Calculus::Variables::is_well_formed(pcalc_prop *prop, text_stream *err) {
+	int var_states[26];
+	if (Calculus::Propositions::is_syntactically_valid(prop, err) == FALSE) return FALSE;
+	return Calculus::Variables::determine_status(prop, var_states, err);
 }
 
 @ Occasionally we really do care only about one of the 26 variables:
@@ -332,7 +332,7 @@ pcalc_prop *Calculus::Variables::substitute_term(pcalc_prop *prop, int v, pcalc_
 
 	if (verify_only) *allowed = TRUE;
 	if ((v<0) || (v>=26)) DISALLOW("variable substitution out of range");
-	if (Calculus::Variables::is_well_formed(prop) == FALSE)
+	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
 		DISALLOW("substituting into malformed prop");
 	@<Make sure the substitution would not fail because of a circularity@>;
 	if (verify_only) return prop;
@@ -346,7 +346,7 @@ pcalc_prop *Calculus::Variables::substitute_term(pcalc_prop *prop, int v, pcalc_
 				*changed = TRUE;
 	}
 
-	if (Calculus::Variables::is_well_formed(prop) == FALSE)
+	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
 		internal_error("substitution made malformed prop");
 	return prop;
 }

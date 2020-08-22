@@ -172,25 +172,14 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(value_holster, 100)
 @ Next we define some functions, by macro, which write to the debugging log
 or other text streams.
 
-@d REGISTER_WRITER(c, f) Writers::register_logger(c, &f##_writer);
-@d COMPILE_WRITER(t, f)
-	void f##_writer(text_stream *format, void *obj) { text_stream *SDL = DL; DL = format; if (DL) f((t) obj); DL = SDL; }
-
-@d REGISTER_WRITER_I(c, f) Writers::register_logger_I(c, &f##_writer);
-@d COMPILE_WRITER_I(t, f)
-	void f##_writer(text_stream *format, int I) { text_stream *SDL = DL; DL = format; if (DL) f((t) I); DL = SDL; }
-
 @d REGISTER_WRITER_W(c, f) Writers::register_logger_W(c, &f##_writer);
 @d COMPILE_WRITER_W(f)
 	void f##_writer(text_stream *format, wording W) { text_stream *SDL = DL; DL = format; if (DL) f(W); DL = SDL; }
 
 =
-COMPILE_WRITER(pcalc_term *, Calculus::Terms::log)
-COMPILE_WRITER(binary_predicate *, BinaryPredicates::log)
 COMPILE_WRITER(table *, Tables::log)
 COMPILE_WRITER(booking *, Rules::Bookings::log)
 COMPILE_WRITER(table_column *, Tables::Columns::log)
-COMPILE_WRITER(pcalc_prop *, Calculus::Propositions::log)
 COMPILE_WRITER(extension_dictionary_entry *, ExtensionDictionary::log_entry)
 COMPILE_WRITER(parse_node *, Invocations::log_list)
 COMPILE_WRITER(parse_node *, Invocations::log)
@@ -203,10 +192,8 @@ COMPILE_WRITER(rulebook *, Rulebooks::log)
 COMPILE_WRITER(local_variable *, LocalVariables::log)
 COMPILE_WRITER_I(int, World::Inferences::log_kind)
 COMPILE_WRITER(instance *, Instances::log)
-COMPILE_WRITER(pcalc_prop *, Calculus::Atoms::log)
 COMPILE_WRITER(equation *, Equations::log)
 COMPILE_WRITER(phrase *, Phrases::log)
-COMPILE_WRITER(unary_predicate *, UnaryPredicates::log)
 COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
@@ -354,12 +341,9 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	Log::declare_aspect(VARIABLE_CREATIONS_DA, L"variable creations", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
-	REGISTER_WRITER('0', Calculus::Terms::log);
-	REGISTER_WRITER('2', BinaryPredicates::log);
 	REGISTER_WRITER('B', Tables::log);
 	REGISTER_WRITER('b', Rules::Bookings::log);
 	REGISTER_WRITER('C', Tables::Columns::log);
-	REGISTER_WRITER('D', Calculus::Propositions::log);
 	REGISTER_WRITER('d', ExtensionDictionary::log_entry);
 	REGISTER_WRITER('E', Invocations::log_list);
 	REGISTER_WRITER('e', Invocations::log);
@@ -372,10 +356,8 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 	REGISTER_WRITER('k', LocalVariables::log);
 	REGISTER_WRITER_I('n', World::Inferences::log_kind)
 	REGISTER_WRITER('O', Instances::log);
-	REGISTER_WRITER('o', Calculus::Atoms::log);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('R', Phrases::log);
-	REGISTER_WRITER('r', UnaryPredicates::log);
 	REGISTER_WRITER('U', Phrases::Usage::log);
 	REGISTER_WRITER('Y', Properties::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);

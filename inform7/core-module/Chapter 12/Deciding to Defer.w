@@ -1226,7 +1226,7 @@ void Calculus::Deferrals::prop_verify_descriptive(pcalc_prop *prop, char *billin
 	if ((Wordings::empty(EW)) && (constructor->down))
 		EW = Node::get_text(constructor->down);
 
-	if (Calculus::Variables::is_well_formed(prop) == FALSE)
+	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
 		internal_error("malformed proposition in description verification");
 
 	int N = Calculus::Variables::number_free(prop);

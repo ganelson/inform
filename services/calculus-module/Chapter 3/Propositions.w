@@ -232,39 +232,39 @@ but we can at least test syntactic validity here.
 @d MAX_PROPOSITION_GROUP_NESTING 100 /* vastly more than could realistically be used */
 
 =
-int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop) {
+int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream *err) {
 	TRAVERSE_VARIABLE(p);
 	int groups_stack[MAX_PROPOSITION_GROUP_NESTING], group_sp = 0;
 	TRAVERSE_PROPOSITION(p, prop) {
 		/* (1) each individual atom has to be properly built: */
-		char *err = Calculus::Atoms::validate(p);
-		if (err) { LOG("Atom error: %s: $o\n", err, p); return FALSE; }
+		char *v_err = Calculus::Atoms::validate(p);
+		if (v_err) { WRITE_TO(err, "atom error: %s", err); return FALSE; }
 		/* (2) every open bracket must be matched by a close bracket of the same kind: */
 		if (Calculus::Atoms::element_get_group(p->element) == OPEN_OPERATORS_GROUP) {
 			if (group_sp >= MAX_PROPOSITION_GROUP_NESTING) {
-				LOG("Group nesting too deep\n"); return FALSE;
+				WRITE_TO(err, "group nesting too deep"); return FALSE;
 			}
 			groups_stack[group_sp++] = p->element;
 		}
 		if (Calculus::Atoms::element_get_group(p->element) == CLOSE_OPERATORS_GROUP) {
-			if (group_sp <= 0) { LOG("Too many close groups\n"); return FALSE; }
+			if (group_sp <= 0) { WRITE_TO(err, "too many close groups"); return FALSE; }
 			if (Calculus::Atoms::element_get_match(groups_stack[--group_sp]) != p->element) {
-				LOG("Group open/close doesn't match\n"); return FALSE;
+				WRITE_TO(err, "group open/close doesn't match"); return FALSE;
 			}
 		}
 		/* (3) every quantifier except "exists" must be followed by domain brackets, which occur nowhere else: */
 		if ((Calculus::Atoms::is_quantifier(p_prev)) && (Calculus::Atoms::is_existence_quantifier(p_prev) == FALSE)) {
-			if (p->element != DOMAIN_OPEN_ATOM) { LOG("Quant without domain\n"); return FALSE; }
+			if (p->element != DOMAIN_OPEN_ATOM) { WRITE_TO(err, "quant without domain"); return FALSE; }
 		} else {
-			if (p->element == DOMAIN_OPEN_ATOM) { LOG("Domain without quant\n"); return FALSE; }
+			if (p->element == DOMAIN_OPEN_ATOM) { WRITE_TO(err, "domain without quant"); return FALSE; }
 		}
 		if ((p->next == NULL) &&
 			(Calculus::Atoms::is_quantifier(p)) && (Calculus::Atoms::is_existence_quantifier(p) == FALSE)) {
-			LOG("Ends without domain of final quantifier\n"); return FALSE;
+			WRITE_TO(err, "ends without domain of final quantifier"); return FALSE;
 		}
 	}
 	/* (4) a proposition must end with all its brackets closed: */
-	if (group_sp != 0) { LOG("%d group(s) open\n", group_sp); return FALSE; }
+	if (group_sp != 0) { WRITE_TO(err, "%d group(s) open", group_sp); return FALSE; }
 	return TRUE;
 }
 
@@ -356,6 +356,37 @@ pcalc_prop *Calculus::Propositions::conjoin(pcalc_prop *existing_body, pcalc_pro
 	log_addresses = TRUE;
 	LOG("Existing body: $D\n", existing_body);
 	LOG("Tail:          $D\n", tail);
+
+@h Negation.
+
+=
+pcalc_prop *Calculus::Propositions::negate(pcalc_prop *prop) {
+	return Calculus::Propositions::concatenate(
+		Calculus::Atoms::new(NEGATION_OPEN_ATOM),
+			Calculus::Propositions::concatenate(
+				prop,
+				Calculus::Atoms::new(NEGATION_CLOSE_ATOM)));
+}
+
+@h Quantification.
+
+=
+pcalc_prop *Calculus::Propositions::quantify(quantifier *quant, int v, int parameter, pcalc_prop *domain, pcalc_prop *prop) {
+	pcalc_prop *Q = Calculus::Atoms::QUANTIFIER_new(quant, v, parameter);
+	return Calculus::Propositions::quantify_using(Q, domain, prop);
+}
+
+pcalc_prop *Calculus::Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *domain, pcalc_prop *prop) {
+	if (domain)
+		Q = Calculus::Propositions::concatenate(
+			Q,
+			Calculus::Propositions::concatenate(
+				Calculus::Atoms::new(DOMAIN_OPEN_ATOM),
+				Calculus::Propositions::concatenate(
+					domain,
+					Calculus::Atoms::new(DOMAIN_CLOSE_ATOM))));
+	return Calculus::Propositions::concatenate(Q, prop);
+}
 
 @h Inserting and deleting atoms.
 Here we insert an atom at a given position, or at the front if the position

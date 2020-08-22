@@ -83,7 +83,17 @@ MathJax = {
 
 <ul class="toc"><li><a href="11-sc.html#SP1">&#167;1. The meaning of a sentence</a></li><li><a href="11-sc.html#SP1_14">&#167;1.14. Simplification</a></li><li><a href="11-sc.html#SP3">&#167;3. The meaning of a noun phrase</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The meaning of a sentence. </b>This section provides a single, but crucial, function to the rest of Inform:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The meaning of a sentence. </b>"Again and again Haddon thought he had found the key to the strange writings,
+but always he was disappointed. And then one day &mdash; he was an old man of seventy
+now &mdash; he fed a trial programme into his computer, and for the first time a
+translated sentence was delivered &mdash; his life-long task was rewarded. Yes,
+but for the fact that one man had been prepared to devote every spare hour of
+his life to solving the riddle, the amazing story of the Trigan Empire would
+never have been given to the world. WHAT FOLLOWS IS THAT STORY."
+("The Rise and Fall of the Trigan Empire", 1965)
+</p>
+
+<p class="commentary">This section provides a single, but crucial, function to the rest of Inform:
 it takes a sentence subtree output by the S-parser and turns it into a proposition.
 </p>
 
@@ -545,7 +555,7 @@ Still, rule (iii) can only be ensured by writing the routines carefully.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">changed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NF</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Calculus::Variables::number_free</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">) </span><span class="identifier-syntax">proposition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">simp</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">changed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">changed</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PREDICATE_CALCULUS</span><span class="plain-syntax">, </span><span class="string-syntax">"[%d] %s: $D\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">conv_log_depth</span><span class="plain-syntax">, #</span><span class="identifier-syntax">simp</span><span class="plain-syntax">, </span><span class="identifier-syntax">proposition</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) ||</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">NF</span><span class="plain-syntax"> != </span><span class="identifier-syntax">Calculus::Variables::number_free</span><span class="plain-syntax">(</span><span class="identifier-syntax">proposition</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Failed after applying %s: $D"</span><span class="plain-syntax">, #</span><span class="identifier-syntax">simp</span><span class="plain-syntax">, </span><span class="identifier-syntax">proposition</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(#</span><span class="identifier-syntax">simp</span><span class="plain-syntax"> </span><span class="string-syntax">" simplified proposition into one which is not well-formed"</span><span class="plain-syntax">);</span>
@@ -556,7 +566,7 @@ Still, rule (iii) can only be ensured by writing the routines carefully.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Failed before simplification: $D"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sentence_prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to simplify proposition which is not well-formed"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -669,7 +679,8 @@ but missing noun.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"malformed NP proposition"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Variables::is_well_formed</span><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"malformed NP proposition"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">NF</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Calculus::Variables::number_free</span><span class="plain-syntax">(</span><span class="identifier-syntax">NP_prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">NF</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"two or more free variables from NP"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">subject_of_NP</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">constant</span><span class="plain-syntax">) {</span>

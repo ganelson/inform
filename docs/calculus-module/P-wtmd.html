@@ -12,6 +12,25 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+	tex: {
+		inlineMath: '$', '$'], ['\\(', '\\)'
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -59,7 +78,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the calculus module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Notation</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What predicate calculus is</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Notation</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Formal description</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Unary predicates</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Binary predicates</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Making propositions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The calculus module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -75,22 +94,60 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Notation. </b>This module deals with propositions in predicate calculus, that is, with
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What predicate calculus is. </b>The word "calculus" is often used to mean differentiating and integrating
+functions, but properly speaking that is "infinitesimal calculus", and there
+are many others.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> In logic, different sets of rules for making deductions
+tend to be given such names, and we will use (a form of) one of the most
+popular simple systems, "predicate calculus".<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+</p>
+
+<p class="commentary">Most attempts to codify the meaning of sentences in any systematic way involve
+predicate calculus, and most people generally seem to agree that linguistic
+concepts (like verbs, adjectives, and determiners) correspond uncannily well
+with logical ones (like binary predicates, unary predicates, and quantifiers).<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+All the same, it is striking how good the fit is, considering that human language
+is so haphazard at first sight.
+</p>
+
+<p class="commentary">At any rate Inform goes along with this consensus, and converts the difficult
+passages in its source text into logical "propositions" &mdash; lines written in
+logical notation. This is useful partly as a tidy way to store complicated
+meanings inside the program, but also because these propositions can then be
+simplified by logical rules, without changing their meaning. Without such
+simplifications, Inform would generate much less efficient code.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> At time of writing, <a href="https://en.wikipedia.org/wiki/Calculus_(disambiguation)" class="external">nearly 40 can be found here</a>,
+though admittedly that includes a genus of spider and a Tintin character.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Specifically, first order predicate calculus with equality, but with
+generalised quantifiers added, and disjunction removed.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> This is not altogether a coincidence since the pioneers of mathematical
+logic, and in particular Frege and Wittgenstein, began by thinking about
+natural language.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Notation. </b>This module deals with propositions in predicate calculus, that is, with
 logical statements which are normally written in mathematical notation. To
 the end user of Inform, these are invisible: they exist only inside the
 compiler and are never typed in or printed out. But for the debugging log,
 for unit testing, and for the literate source, we need to do both of these.
 </p>
 
-<p class="commentary">The following demonstrates the notation being read in, and then written back
-out, by the <a href="../calculus-test/index.html" class="internal">calculus-test</a> module. As with <a href="../kinds-test/index.html" class="internal">kinds-test</a>, this is a REPL:
-a read-evaluate-print-loop tool, which reads in calculations, performs them,
-and prints the result. Here, the "calculations" consist only of being told
-exactly what the proposition is, and then printing it back.
+<p class="commentary">A glimpse of the propositions generated by Inform can be had by running this
+test, whose output uses our notation:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">'</span><span class="element-syntax">new unary blue</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="identifier-syntax">Laboratory</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">room</span><span class="plain-syntax">. </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">container</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">Test</span><span class="plain-syntax"> </span><span class="identifier-syntax">sentence</span><span class="plain-syntax"> (</span><span class="identifier-syntax">internal</span><span class="plain-syntax">) </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">man</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">box</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Laboratory</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">Test</span><span class="plain-syntax"> </span><span class="identifier-syntax">description</span><span class="plain-syntax"> (</span><span class="identifier-syntax">internal</span><span class="plain-syntax">) </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">animals</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">lighted</span><span class="plain-syntax"> </span><span class="identifier-syntax">rooms</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary">But a much easier way to test the functions in this module is to use the
+<a href="../calculus-test/index.html" class="internal">calculus-test</a> tool. As with <a href="../kinds-test/index.html" class="internal">kinds-test</a>, this is a REPL: that is,
+a read-evaluate-print-loop tool, which reads in calculations, performs them,
+and prints the result.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; is-a-kind (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; is-a-kind(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; is-a-var (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; is-a-var(x) &gt;&gt;</span>
@@ -105,11 +162,190 @@ exactly what the proposition is, and then printing it back.
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; (x == y) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">new binary sees</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; sees (x, y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; sees(x, y) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ blue (x) ^ NOT&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; blue(x) NOT&gt; &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) ^ blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) ^ blue(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : blue(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x : blue(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; DoesNotExist x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; DoesNotExist x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Card= 6 x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Card=6 x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Formal description. </b>1. A "term" is any of the following:
+</p>
+
+<ul class="items"><li>&#9679; A constant, corresponding to anything which can be evaluated to Inform &mdash;
+a number, a text, etc. &mdash; and which has a definite kind.
+</li><li>&#9679; One of 26 variables, which we print to the debugging log as <span class="extract"><span class="extract-syntax">x</span></span>, <span class="extract"><span class="extract-syntax">y</span></span>,
+<span class="extract"><span class="extract-syntax">z</span></span>, <span class="extract"><span class="extract-syntax">a</span></span>, <span class="extract"><span class="extract-syntax">b</span></span>, <span class="extract"><span class="extract-syntax">c</span></span>, ..., <span class="extract"><span class="extract-syntax">w</span></span>.
+</li><li>&#9679; A function \(f\) applied to another term.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
+</li></ul>
+<p class="commentary">Note that if we have given values to the necessary variables, then any term
+can be evaluated to a value, and its kind determined. For example, if <span class="extract"><span class="extract-syntax">x</span></span> is 7,
+then the terms <span class="extract"><span class="extract-syntax">17</span></span>, <span class="extract"><span class="extract-syntax">x</span></span> and <span class="extract"><span class="extract-syntax">f(x)</span></span> evaluate to 17, 7 and \(f(7)\) respectively.
+</p>
+
+<p class="commentary">2. An "atomic proposition" is any of the following:
+</p>
+
+<ul class="items"><li>&#9679; A "unary predicate" \(U(t)\), where \(t\) is a term, which is either true or
+false depending on the evaluation of \(t\).
+</li><li>&#9679; A "binary predicate" \(B(t_1, t_2)\) depending on two terms.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+</li><li>&#9679; A "quantifier" \(Q(v, n)\) applying to a variable \(v\), optionally with a
+parameter \(n\). See <a href="../linguistics-module/2-daq.html" class="internal">Determiners and Quantifiers (in linguistics)</a> for the range
+of quantifiers available.
+</li></ul>
+<p class="commentary">3. A "proposition" is a sequence of 0 or more of the following:
+</p>
+
+<ul class="items"><li>&#9679; A conjunction \(P_1\land P_2\), where \(P_1\) and \(P_2\) are propositions.
+</li><li>&#9679; A negation \(\lnot P\), where \(P\) is a proposition.
+</li><li>&#9679; A quantification \(Q v\in D: P\), where \(Q\) is a quantifier, optionally
+also with a numerical parameter, \(v\) is a variable, \(D\) is a set
+specifying the domain of \(v\), and \(P\) is a proposition.<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>
+</li><li>&#9679; An existential quantification \(\exists v: P\) without a domain.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In this module we use words such as "constant", "variable" and "function" in
+their predicate-calculus senses, not their Inform ones. For example, if we are
+to decide whether it is true that "a container in the location of Nicole contains
+the prize", we have to forget about the passage of time and think only about a
+single moment. In the resultant proposition, "the location of Nicole" and
+"the prize" lead to constant terms, "a container" leads to a variable term (since
+we do not know its identity) and there are no functions.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> We do not support higher arities of predicates as such, but they can be
+simulated. The universal relation in Inform is in effect a ternary predicate,
+but is achieved by combining two of its terms into an ordered pair.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Some quantifiers also carry a numerical parameter, to express, e.g.,
+"at least 7" &mdash; the parameter for that being 7.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The implementation uses the term "atom" a little more loosely, to include
+four punctuation marks: <span class="extract"><span class="extract-syntax">NOT&lt;</span></span>, <span class="extract"><span class="extract-syntax">NOT&gt;</span></span>, <span class="extract"><span class="extract-syntax">IN&lt;</span></span>, <span class="extract"><span class="extract-syntax">IN&gt;</span></span>, which act like
+opening and closing parentheses. These are considered atoms purely for
+convenience when building more complicated constructions &mdash; they make no sense
+standing alone. Thus:
+</p>
+
+<ul class="items"><li>&#9679; \(\lnot P\) is implemented as <span class="extract"><span class="extract-syntax">NOT&lt; P NOT&gt;</span></span>.
+</li><li>&#9679; \(Q v\in D: P\) is implemented as <span class="extract"><span class="extract-syntax">Q IN&lt; D IN&gt;</span></span>.
+</li></ul>
+<p class="commentary">Note that the domain \(D\) of a quantifier is itself expressed as a proposition.
+Thus "for all numbers \(n\)" is implemented as <span class="extract"><span class="extract-syntax">ForAll n IN&lt; kind=number(n) IN&gt;</span></span>.
+</p>
+
+<p class="commentary">In all other cases, adjacent atoms in a sequence are considered to be conjoined:
+i.e., <span class="extract"><span class="extract-syntax">X Y</span></span> means \(X\land Y\), the proposition which is true if \(X\) and \(Y\) are
+both true. To emphasise this, the textual notation uses the <span class="extract"><span class="extract-syntax">^</span></span> sign. For
+example, <span class="extract"><span class="extract-syntax">odd(n) ^ prime(n)</span></span> is the notation for two consecutive atoms <span class="extract"><span class="extract-syntax">odd(n)</span></span>
+and <span class="extract"><span class="extract-syntax">prime(n)</span></span>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Unary predicates. </b>We have a mixed bag of unary predicates, as follows.
+</p>
+
+<ul class="items"><li>&#9679; For each adjective defined in the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module, there is a
+predicate <span class="extract"><span class="extract-syntax">A(t)</span></span>, true if the adjective currently applies to \(t\).
+</li><li>&#9679; For each kind \(K\), there is a predicate <span class="extract"><span class="extract-syntax">kind=K(t)</span></span>, which is true if \(t\)
+is of the kind \(K\).
+</li><li>&#9679; For any wording <span class="extract"><span class="extract-syntax">W</span></span>, there is a predicate <span class="extract"><span class="extract-syntax">called=W(t)</span></span>, which is asserts
+that the current value of \(t\) is something with the name <span class="extract"><span class="extract-syntax">W</span></span>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-kind(t)</span></span> asserts that \(t\) represents a kind, not a value.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-var(t)</span></span> asserts that \(t\) represents a variable, not a value.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-const(t)</span></span> asserts that \(t\) represents a constant, not a value.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">everywhere(t)</span></span> asserts that \(t\) is an object found everywhere.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">nowhere(t)</span></span> asserts that \(t\) is an object found nowhere.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">here(t)</span></span> asserts that \(t\) is an object found in the current room.
+</li></ul>
+<p class="commentary">As is apparent, the <span class="extract"><span class="extract-syntax">is-a-...</span></span> predicates are a cheat: they exist purely to
+make it easier to write propositions which change the state of the world,
+rather than discuss that state. For example, Inform might create the kind
+"animal" by asserting <span class="extract"><span class="extract-syntax">Exists x : is-a-kind(x) ^ called=animal(x)</span></span>.
+</p>
+
+<p class="commentary">Otherwise, while these are all conceptually unary predicates, only the first
+is a <span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span> in our implementation: the others are <span class="extract"><span class="extract-syntax">KIND_ATOM</span></span>,
+<span class="extract"><span class="extract-syntax">CALLED_ATOM</span></span>,
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Binary predicates. </b>By contrast all binary predicate atoms use <span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span>, and there is only
+one set of them &mdash; but with that said,
+</p>
+
+<ul class="items"><li>(a) They can be organised into "families" with shared implementations &mdash; see
+<a href="2-bpf.html" class="internal">Binary Predicate Families</a>.
+</li><li>(b) The equality predicate \(=\) is predefined by the <a href="index.html" class="internal">calculus</a> module, and
+its special meaning is used when simplifying propositions. See <a href="2-ter.html" class="internal">The Equality Relation</a>.
+It is written with the special notation <span class="extract"><span class="extract-syntax">(x == y)</span></span>, though this is just syntactic
+sugar.
+</li></ul>
+<p class="commentary">New BPs can be constructed with <a href="2-bp.html#SP26" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
+is used because every \(B\) has a "reversal" \(B^r\), such that \(B^r(s, t)\) is true
+if and only if \(B(t, s)\). \(B\) and \(B^r\) are created in pairs.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="2-bp.html#SP25" class="internal">BinaryPredicates::make_equality</a>.
+<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making propositions. </b>Propositions are built incrementally, like Lego, with a sequence of function
+calls.
+</p>
+
+<p class="commentary">1. Terms are made using the functions <a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_constant</a>,
+<a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_variable</a> and <a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_function</a>.
+</p>
+
+<p class="commentary">2. Unary predicate atoms are made using:
+</p>
+
+<ul class="items"><li>&#9679; <a href="3-ap.html#SP19" class="internal">Calculus::Atoms::unary_PREDICATE_from_aph_term</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP17" class="internal">Calculus::Atoms::KIND_new</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP16" class="internal">Calculus::Atoms::CALLED_new</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP6" class="internal">Calculus::Atoms::new</a> for the six oddball unaries,
+supplying atom types <span class="extract"><span class="extract-syntax">ISAKIND_ATOM</span></span>, <span class="extract"><span class="extract-syntax">ISAVAR_ATOM</span></span>, <span class="extract"><span class="extract-syntax">ISACONST_ATOM</span></span>,
+<span class="extract"><span class="extract-syntax">EVERYWHERE_ATOM</span></span>, <span class="extract"><span class="extract-syntax">NOWHERE_ATOM</span></span> and <span class="extract"><span class="extract-syntax">HERE_ATOM</span></span>.
+</li></ul>
+<p class="commentary">Binary predicate atoms are made using <a href="3-ap.html#SP20" class="internal">Calculus::Atoms::binary_PREDICATE_new</a>.
+</p>
+
+<p class="commentary">3. Propositions are then built up from atoms or other propositions<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> by calling:
+</p>
+
+<ul class="items"><li>&#9679; <a href="3-prp.html#SP15" class="internal">Calculus::Propositions::conjoin</a>.
+</li><li>&#9679; <a href="3-prp.html#SP16" class="internal">Calculus::Propositions::negate</a>.
+</li><li>&#9679; <a href="3-prp.html#SP17" class="internal">Calculus::Propositions::quantify</a>.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> But beware that propositions are passed by reference not value. Use
+<a href="3-prp.html#SP13" class="internal">Calculus::Propositions::copy</a> before changing one, if you need to use it
+again.
+<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>There are two senses in which it's possible to make an impossible proposition:
+</p>
+
+<ul class="items"><li>(1) You could make a mess of the punctuation markers improperly, or fail to
+give a domain set for a quantifier.
+</li><li>(2) More subtly, you could concatenate two propositions in which the same
+variable is used with a different meaning in each.
+</li></ul>
+<p class="commentary">The functions <a href="3-prp.html#SP11" class="internal">Calculus::Propositions::is_syntactically_valid</a> and
+<a href="3-bas.html#SP4" class="internal">Calculus::Variables::is_well_formed</a> test that (1) and (2) have not happened.
+It's because of (2) that it's important to use <a href="3-prp.html#SP15" class="internal">Calculus::Propositions::conjoin</a>
+and not the simpler <a href="3-prp.html#SP14" class="internal">Calculus::Propositions::concatenate</a>.
+</p>
+
+<p class="commentary">To illustrate:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&gt; &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - too many close groups</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> false - ends without domain of final quantifier</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; ForAll x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt; is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">set A to &lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> a set to &lt;&lt; Exists x &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">set B to &lt;&lt; Exists x: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> b set to &lt;&lt; Exists x : even(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists x : even(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x : Exists y : even(y) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B is syntactically valid</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A concatenate B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> false - x used outside its binding</span>
+<span class="plain-syntax">'</span><span class="element-syntax">A conjoin B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresssection"><a href="P-itpc.html">itpc</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-cs.html">2</a></li><li class="progresschapter"><a href="3-trm.html">3</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>

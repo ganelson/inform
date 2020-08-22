@@ -73,113 +73,9 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>Introduction to Predicate Calculus</b></li></ul></div>
 <p class="purpose">An exposition of the form of predicate calculus used by Inform.</p>
 
-<ul class="toc"><li><a href="P-itpc.html#SP2">&#167;2. Why predicate calculus</a></li><li><a href="P-itpc.html#SP4">&#167;4. Formal description</a></li><li><a href="P-itpc.html#SP7">&#167;7. Free and bound variables, well-formedness</a></li><li><a href="P-itpc.html#SP8">&#167;8. The scope of quantifiers</a></li><li><a href="P-itpc.html#SP10">&#167;10. What is not in our calculus</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-itpc.html#SP3">&#167;3. Free and bound variables, well-formedness</a></li><li><a href="P-itpc.html#SP4">&#167;4. The scope of quantifiers</a></li><li><a href="P-itpc.html#SP6">&#167;6. What is not in our calculus</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"Again and again Haddon thought he had found the key to the strange writings,
-but always he was disappointed. And then one day &mdash; he was an old man of seventy
-now &mdash; he fed a trial programme into his computer, and for the first time a
-translated sentence was delivered &mdash; his life-long task was rewarded. Yes,
-but for the fact that one man had been prepared to devote every spare hour of
-his life to solving the riddle, the amazing story of the Trigan Empire would
-never have been given to the world. WHAT FOLLOWS IS THAT STORY."
-("The Rise and Fall of the Trigan Empire", 1965)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Why predicate calculus. </b>Most attempts to codify the meaning of sentences in any systematic way
-involve predicate calculus, and most people generally seem to agree
-that linguistic concepts (like verbs, adjectives, and determiners)
-correspond uncannily well with logical ones (like binary predicates,
-unary predicates, and quantifiers). Since today's mathematical logic
-has its roots in work on the philosophy of language (chiefly by Frege and
-Wittgenstein), this is not altogether a coincidence. All the same, it is
-striking how good the fit is, considering that human language is so
-haphazard and logic so regular.
-</p>
-
-<p class="commentary">At any rate Inform goes along with this consensus, and converts the
-difficult passages in its source text into mathematical propositions
-&mdash; lines written in logical notation. This is useful partly as a
-well-defined way to store complicated meanings inside the program, but
-also because these propositions can then be simplified by logical
-rules. We can change their form so long as we do not change their
-meaning, in the hope of finding ways to carry out the same tasks but
-more efficiently than a simple-minded reading of the text would
-suggest.
-</p>
-
-<p class="commentary">There are four main tasks to perform:
-</p>
-
-<ul class="items"><li>(a) Building propositions from the other Inform data structures;
-</li><li>(b) Simplifying, rearranging and type-checking propositions;
-</li><li>(c) Asserting that certain propositions are true at the start of play;
-</li><li>(d) Compiling certain propositions to I6 code which can test them, make them
-true, or make them false.
-</li></ul>
-<p class="commentary">In this chapter, we take these tasks in order. Because it contains all
-of Inform's predicate calculus lore in one place, it necessarily contains
-little pieces of algorithms from other chapters: a piece of the
-type-checker, a piece of the code for asserting the initial state of
-play, and so on. Well: but the overlap had to go somewhere.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A glimpse of Inform's inner workings can be made by writing a test
-instruction like so:
-</p>
-
-<blockquote>
-    <p>Laboratory is a room. The box is a container.</p>
-</blockquote>
-
-<blockquote>
-    <p>Test sentence (internal) with a man can see the box in the Laboratory.</p>
-</blockquote>
-
-<p class="commentary">At the start of play, the compiled story file will print a textual form of
-the proposition in predicate calculus which that became:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    1. a man can see the box in the Laboratory</span>
-<span class="plain-syntax">    [ Exists x : man(x) &amp; thing('box') &amp; is('laboratory', ContainerOf('box')) &amp; can-see(x, 'box') ]</span>
-<span class="plain-syntax">    x - object.</span>
-</pre>
-<p class="commentary">(The <span class="extract"><span class="extract-syntax">intest</span></span> test case <span class="extract"><span class="extract-syntax">Calculus</span></span> runs about 200 sentences like this.)
-One can similarly "Test description (internal) with..." for any description,
-such as "animals which are in lighted rooms".
-</p>
-
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Formal description. </b>There are many flavours of predicate calculus, and though they behave in
-broadly similar ways, the details vary in practice. Inform's calculus
-is unusual in several respects, so here is its definition.
-</p>
-
-<p class="commentary">The terms "constant", "variable" and "function" below are used in
-their predicate-calculus senses, not their Inform ones. In the excerpt
-</p>
-
-<blockquote>
-    <p>a container in the location of Nicole contains the second noun</p>
-</blockquote>
-
-<p class="commentary">the text "location of Nicole" is a phrase deciding an object &mdash; a function &mdash;
-and "the second noun" is an object that varies &mdash; a variable. But if we are
-looking at the sentence only for its logical meaning, we have to forget about
-the passage of time and think about what the sentence means at any single
-moment. "Location of Nicole" and "the second noun" are both fixed, in
-this instant; the only thing which varies is the identity of the possible
-container, because we might have to look at hundreds of different containers
-to see if the sentence is true. One logical translation might be
-$$ \exists x: {\it container}(x)\land {\it in}(x, C_1) \land {\it in}(C_2, x) $$
-where \(C_1\) and \(C_2\) are constants ("location of Nicole" and "second noun"
-respectively), while the only variable is \(x\), the mysterious container.
-(The symbol \(\exists\) means "there exists".) Because objects move
-around in play, and \(C_1\) and \(C_2\) have different values at different
-moments, this sentence is sometimes true and sometimes false. But its
-meaning does not change.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The propositions in our predicate calculus are those which can be made
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The propositions in our predicate calculus are those which can be made
 using the following ingredients and recipes.
 </p>
 
@@ -316,7 +212,7 @@ proposition \(\phi\) in which \(v\) is a "free" variable (see below),
 possible values of \(v\) matching the condition \(\phi(v)\), and this specifies
 the range of the quantifier.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Note that there are two ways in which propositions can appear in brackets
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Note that there are two ways in which propositions can appear in brackets
 in a bigger proposition: negation (d), and specifying a quantification
 domain (g). We sometimes call the bracketed part a "subexpression" of the
 whole.
@@ -354,7 +250,7 @@ $$ \exists x: {\it number}(x)\land {\it even}(x) $$
 specifies a domain for a \(\exists\) quantifier.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Free and bound variables, well-formedness. </b>In any proposition \(\phi\), we say that a variable \(v\) is "bound" if it
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Free and bound variables, well-formedness. </b>In any proposition \(\phi\), we say that a variable \(v\) is "bound" if it
 appears as the variable governed by a quantifier: it is "free" if it
 does appear somewhere in \(\phi\) &mdash; either directly as a term or indirectly
 through a function application &mdash; and is not bound. For instance, in
@@ -379,7 +275,7 @@ $$ \lnot ( \exists v : {\it closed}(v) ) \land {\it openable}(v) $$
 case, outside the negation brackets).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. The scope of quantifiers. </b>A quantifier introduces a variable into a proposition which would not
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The scope of quantifiers. </b>A quantifier introduces a variable into a proposition which would not
 otherwise be there, and it exists only for a limited range. For instance, in
 the proposition
 $$ {\it open}(x)\land\lnot(\exists y: {\it in}(x, y))\land {\it container}(x) $$
@@ -391,7 +287,7 @@ which it is created. If the quantifier is outside of any brackets, then the
 variable lasts until the end of the proposition.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Earlier drafts of Inform played games with moving quantifiers around, in
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Earlier drafts of Inform played games with moving quantifiers around, in
 order to try to achieve more efficiently compiled propositions. The same
 thing is now done by building propositions in a way which places quantifiers
 as far forwards as possible, so we no longer actively move them once they
@@ -416,7 +312,7 @@ only be satisfied if at least one case of \(x\) works, and here every case of
 the same evaluation in this case, too.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. What is not in our calculus. </b>The significant thing missing is disjunction. In general, the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. What is not in our calculus. </b>The significant thing missing is disjunction. In general, the
 disjunction \(\phi\lor\psi\) &mdash; "at least one of \(\phi\) and \(\psi\)
 holds" &mdash; is not a proposition.
 </p>
