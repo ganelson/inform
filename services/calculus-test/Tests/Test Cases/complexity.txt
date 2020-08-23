@@ -1,0 +1,14 @@
+new unary even.
+new binary sees(none, none).
+
+<< >> is complex.
+<< even(x) >> is complex.
+<< kind = number(x) ^ even(x) >> is complex.
+<< sees(4, 10) >> is complex.
+<< (4 == 10) >> is complex.
+<< (x == 10) >> is complex.
+<< (10 == x) >> is complex.
+<< (y == x) >> is complex.
+<< not< kind = number(x) ^ even(x) not> >> is complex.
+<< Exists x : even(x) >> is complex.
+<< Forall x IN< kind = number(x) IN> : even(x) >> is complex.

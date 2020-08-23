@@ -1604,11 +1604,11 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		LOGIF(ACTION_PATTERN_COMPILATION, "Storage has $D\n", prop);
 
 	if ((force_proposition) && (prop == NULL)) {
-		prop = Calculus::Propositions::from_spec(spec);
+		prop = Propositions::FromSentences::from_spec(spec);
 		LOGIF(ACTION_PATTERN_COMPILATION, "[MPE forced proposition: $D]\n", prop);
 		if (prop == NULL) internal_error("MPE unable to force proposition");
 		if (verify_as_kind) {
-			prop = Calculus::Propositions::concatenate(prop,
+			prop = Propositions::concatenate(prop,
 				Atoms::KIND_new(
 					verify_as_kind, Terms::new_variable(0)));
 			Calculus::Deferrals::prop_verify_descriptive(prop,
@@ -1619,7 +1619,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 
 	if (prop) {
 		LOGIF(ACTION_PATTERN_COMPILATION, "[MPE faces proposition: $D]\n", prop);
-		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
+		Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 		Calculus::Deferrals::emit_test_of_proposition(I6_var_TS, prop);
 	}
 

@@ -960,7 +960,7 @@ void CoreModule::write_property_name_used_as_noun_ANNOT(text_stream *OUT, parse_
 void CoreModule::write_proposition_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_proposition(p)) {
 		WRITE(" {proposition: ");
-		Calculus::Propositions::write(OUT, Node::get_proposition(p));
+		Propositions::write(OUT, Node::get_proposition(p));
 		WRITE("}");
 	}
 }

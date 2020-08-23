@@ -326,7 +326,7 @@ void Rvalues::set_constant_description_proposition(parse_node *spec, pcalc_prop 
 		Node::set_proposition(spec, prop);
 		Node::set_kind_of_value(spec,
 			Kinds::unary_con(CON_description,
-				Calculus::Variables::infer_kind_of_variable_0(prop)));
+				Binding::infer_kind_of_variable_0(prop)));
 	} else internal_error("set constant description proposition wrongly");
 }
 

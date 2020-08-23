@@ -852,7 +852,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 @<Phrase tokens cannot be quantified@> =
 	if (Node::is(spec, TEST_VALUE_NT)) {
 		pcalc_prop *prop = Descriptions::to_proposition(spec);
-		if (Calculus::Variables::number_free(prop) != 1) {
+		if (Binding::number_free(prop) != 1) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(spec));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseTokenQuantified));

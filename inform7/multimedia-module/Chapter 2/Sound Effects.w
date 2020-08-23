@@ -138,9 +138,9 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 	}
 
 	allow_sound_creations = TRUE;
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(
 		K_sound_name, F);
-	Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+	Propositions::Assert::assert_true(prop, CERTAIN_CE);
 	allow_sound_creations = FALSE;
 	blorb_sound *bs = RETRIEVE_POINTER_blorb_sound(
 		Instances::get_connection(latest_instance));

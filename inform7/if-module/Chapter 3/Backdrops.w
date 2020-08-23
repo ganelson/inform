@@ -205,8 +205,8 @@ int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *
 				"which doesn't make sense. An individual backdrop can be 'everywhere', "
 				"but here we're talking about a whole kind, and it's not allowed "
 				"to talk about general locations of a whole kind of things at once.");
-		else Calculus::Propositions::Assert::assert_true_about(
-			Calculus::Propositions::Abstract::to_put_everywhere(), left_subject, prevailing_mood);
+		else Propositions::Assert::assert_true_about(
+			Propositions::Abstract::to_put_everywhere(), left_subject, prevailing_mood);
 		return TRUE;
 	}
 	return FALSE;

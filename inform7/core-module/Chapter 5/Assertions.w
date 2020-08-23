@@ -467,7 +467,7 @@ specifying its edibility.
 				subject_to = Specifications::to_proposition(Node::get_evaluation(py->down));
 		}
 
-		Calculus::Propositions::Abstract::assert_kind_of_subject(inst, kind_of_what, subject_to);
+		Propositions::Abstract::assert_kind_of_subject(inst, kind_of_what, subject_to);
 		return;
 	}
 
@@ -1481,7 +1481,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 	inference_subject *left_object = Node::get_subject(px);
 	pcalc_prop *prop = Node::get_creation_proposition(py);
 	if (prop) {
-		if ((Calculus::Variables::number_free(prop) == 0) && (left_object)) {
+		if ((Binding::number_free(prop) == 0) && (left_object)) {
 			LOG("Proposition is: $D\n", prop);
 			StandardProblems::subject_problem_at_sentence(_p_(PM_SubjectNotFree),
 				left_object,
@@ -1491,12 +1491,12 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 				"at once, and it would be clearer to write it as two sentences?");
 			return;
 		}
-		Calculus::Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
+		Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
 	} else {
 		kind *K = Specifications::to_kind(Node::get_evaluation(py));
 		if (K) {
 			pcalc_prop *prop = Atoms::KIND_new(K, Terms::new_variable(0));
-			Calculus::Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
+			Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
 		}
 	}
 

@@ -34,8 +34,8 @@ void Assertions::PropertyKnowledge::igv_dash(nonlocal_variable *q, parse_node *v
 	if (verification_stage) return;
 
 	parse_node *var = Lvalues::new_actual_NONLOCAL_VARIABLE(q);
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_set_relation(R_equality, NULL, var, NULL, val);
-	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+	pcalc_prop *prop = Propositions::Abstract::to_set_relation(R_equality, NULL, var, NULL, val);
+	Propositions::Assert::assert_true(prop, prevailing_mood);
 }
 
 @ On the face of it, the following looks unnecessary, and it nearly is.
@@ -100,9 +100,9 @@ either as an object, a value or a subtree -- should have
 =
 void Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(property *prn,
 	inference_subject *owner, parse_node *val_subtree) {
-	pcalc_prop *prop = Calculus::Propositions::Abstract::from_property_subtree(prn, val_subtree);
+	pcalc_prop *prop = Propositions::Abstract::from_property_subtree(prn, val_subtree);
 	if (owner == NULL) @<Issue a problem for an unrecognised property owner@>;
-	Calculus::Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
+	Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
 }
 
 void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtree, parse_node *list_subtree) {
@@ -124,8 +124,8 @@ void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtr
 	}
 	kind *kind_clue = NULL;
 	@<Work out the clue kind@>;
-	pcalc_prop *prop = Calculus::Propositions::Abstract::from_property_list(list_subtree, kind_clue);
-	Calculus::Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
+	pcalc_prop *prop = Propositions::Abstract::from_property_list(list_subtree, kind_clue);
+	Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
 }
 
 @ We pass the "clue kind" to obtain a proposition which includes an atom
@@ -148,9 +148,9 @@ are typechecked at run-time rather than compile-time in that domain.)
 @<Check that the owner subtree isn't dangerously elaborate@> =
 	parse_node *owner_spec = Node::get_evaluation(owner_subtree);
 	if (Specifications::is_description(owner_spec)) {
-		if ((Calculus::Propositions::contains_binary_predicate(Specifications::to_proposition(owner_spec))) ||
+		if ((Propositions::contains_binary_predicate(Specifications::to_proposition(owner_spec))) ||
 			(Descriptions::number_of_adjectives_applied_to(owner_spec) > 0) ||
-			(Calculus::Propositions::contains_adjective(Specifications::to_proposition(owner_spec)))) {
+			(Propositions::contains_adjective(Specifications::to_proposition(owner_spec)))) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_spec(2, owner_spec);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RelationAPL));

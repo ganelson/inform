@@ -487,8 +487,8 @@ int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) 
 					"which doesn't make sense. An individual thing can be 'nowhere', "
 					"but here we're talking about a whole kind, and it's not allowed "
 					"to talk about general locations of a whole kind of things at once.");
-			else Calculus::Propositions::Assert::assert_true_about(
-				Calculus::Propositions::Abstract::to_put_nowhere(), left_subject, prevailing_mood);
+			else Propositions::Assert::assert_true_about(
+				Propositions::Abstract::to_put_nowhere(), left_subject, prevailing_mood);
 			return TRUE;
 		}
 	}
@@ -610,7 +610,7 @@ is the "geography choice" for its kind.
 		@<Attempt to reconcile the two choices@>;
 
 	if (Kinds::eq(Instances::to_kind(I), K_object))
-		Calculus::Propositions::Abstract::assert_kind_of_object(I, K_thing);
+		Propositions::Abstract::assert_kind_of_object(I, K_thing);
 
 @ By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
@@ -675,7 +675,7 @@ when it's legitimately a door.
 @<Accept the geography choice, since it only refines what we already know@> =
 	LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as %u\n",
 		I, geography_choice);
-	Calculus::Propositions::Abstract::assert_kind_of_object(I, geography_choice);
+	Propositions::Abstract::assert_kind_of_object(I, geography_choice);
 
 @<Issue a problem message, since the choices are irreconcilable@> =
 	LOG("Choices: designer %u, geography %u.\n", designers_choice, geography_choice);

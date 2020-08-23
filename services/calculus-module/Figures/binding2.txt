@@ -1,0 +1,6 @@
+'new unary even': ok
+'set P to << Forall x IN< kind = number (x) IN>: (x == y) ^ Exists z: (y == z) >>': p set to << ForAll x IN< kind=number(x) IN> : (x == y) ^ Exists z : (y == z) >>
+'variables in P': valid: x bound y free z bound
+'binding of P': << Exists y : ForAll x IN< kind=number(x) IN> : (x == y) ^ Exists z : (y == z) >>
+'variables in binding of P': valid: x bound y bound z bound
+'substitution of y = 777 in P': << ForAll x IN< kind=number(x) IN> : (x == '777') ^ Exists z : ('777' == z) >>

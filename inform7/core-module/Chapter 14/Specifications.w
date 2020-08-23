@@ -79,11 +79,11 @@ inference_subject *Specifications::to_subject(parse_node *spec) {
 	inference_subject *infs = NULL;
 	pcalc_prop *prop = Specifications::to_proposition(spec);
 	if (prop) {
-		parse_node *val = Calculus::Propositions::describes_value(prop);
+		parse_node *val = Propositions::describes_value(prop);
 		if (val) {
 			infs = InferenceSubjects::from_specification(val);
 		} else {
-			kind *K = Calculus::Variables::kind_of_variable_0(prop);
+			kind *K = Binding::kind_of_variable_0(prop);
 			if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) K = K_object;
 			infs = Kinds::Knowledge::as_subject(K);
 		}

@@ -47,8 +47,8 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 			"than positive information. There's no need to tell me something "
 			"like 'Here is nothing.': just don't put anything there.");
 	} else {
-		Calculus::Propositions::Assert::assert_true_about(
-			Calculus::Propositions::Abstract::to_put_here(),
+		Propositions::Assert::assert_true_about(
+			Propositions::Abstract::to_put_here(),
 			Node::get_subject(value), prevailing_mood);
 	}
 	return;
@@ -139,8 +139,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 	@<Normalise the two noun leaves@>;
 	@<Impose a tedious restriction on relations between objects and values@>;
 
-	Calculus::Propositions::Assert::assert_true(
-		Calculus::Propositions::Abstract::to_set_relation(bp, Node::get_subject(px), Node::get_evaluation(px), Node::get_subject(py), Node::get_evaluation(py)),
+	Propositions::Assert::assert_true(
+		Propositions::Abstract::to_set_relation(bp, Node::get_subject(px), Node::get_evaluation(px), Node::get_subject(py), Node::get_evaluation(py)),
 		prevailing_mood);
 }
 

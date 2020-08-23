@@ -1,0 +1,21 @@
+new unary even.
+new binary sees(none, sees-f1).
+
+set P to << Forall x IN< kind = number(x) IN> : even(x) >>.
+copy of P.
+set Q to negation of P.
+P is a group.
+Q is a group.
+unnegation of Q.
+remove universal quantifier from P.
+set R to delete 4 from P.
+remove close domain from R.
+P contains quantifier.
+P contains relation.
+<< (1 == 2) >> contains relation.
+P contains adjective.
+<< (1 == 2) >> contains adjective.
+<< (1 == 2) ^ even(x) >> contains adjective.
+<< (1 == 2) ^ even(x) >> contains quantifier.
+term first cited in << even(x) >>.
+term first cited in << not< sees(56, 2) not> >>.

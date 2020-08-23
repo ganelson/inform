@@ -1,0 +1,19 @@
+'new unary even': ok
+'new binary sees (none, none)': ok
+'<< >> is syntactically valid': true
+'<< even (x) >> is syntactically valid': true
+'<< kind = number (x) ^ even (x) >> is syntactically valid': true
+'<< sees (4, 10) >> is syntactically valid': true
+'<< (4 == 10) >> is syntactically valid': true
+'<< (x == 10) >> is syntactically valid': true
+'<< (10 == x) >> is syntactically valid': true
+'<< (y == x) >> is syntactically valid': true
+'<< NOT< kind = number (x) ^ even (x) NOT> >> is syntactically valid': true
+'<< Exists x: even (x) >> is syntactically valid': true
+'<< NOT> >> is syntactically valid': false - too many close groups
+'<< Exists x >> is syntactically valid': true
+'<< ForAll x >> is syntactically valid': false - ends without domain of final quantifier
+'<< ForAll x IN< kind = number (x) IN>: even (x) >> is syntactically valid': true
+'<< NOT< ^ NOT> ^ NOT> ^ NOT< ^ even (x) >> is syntactically valid': false - too many close groups
+'<< NOT< ^ NOT< ^ even (x) >> is syntactically valid': false - 2 group(s) open
+'<< NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ even (x) >> is syntactically valid': false - group nesting too deep

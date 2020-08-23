@@ -192,7 +192,7 @@ void Properties::EitherOr::assert(property *prn,
 	inference_subject *owner, int parity, int certainty) {
 	pcalc_prop *prop = Atoms::from_adjective_on_x(
 		Properties::EitherOr::get_aph(prn), (parity)?FALSE:TRUE);
-	Calculus::Propositions::Assert::assert_true_about(prop, owner, certainty);
+	Propositions::Assert::assert_true_about(prop, owner, certainty);
 }
 
 @h Compilation.

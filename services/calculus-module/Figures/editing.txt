@@ -1,0 +1,6 @@
+'new unary even': ok
+'set P to << Forall x IN< kind = number (x) IN>: even (x) >>': p set to << ForAll x IN< kind=number(x) IN> : even(x) >>
+'insert << (1 == 2) >> at 0 in P': << ('1' == '2') ^ ForAll x IN< kind=number(x) IN> : even(x) >>
+'insert << even (x) >> at 2 in P': << ForAll x IN< even(x) ^ kind=number(x) IN> : even(x) >>
+'delete 0 from P': << IN< kind=number(x) IN> : even(x) >>
+'delete 4 from P': << ForAll x IN< kind=number(x) IN> >>

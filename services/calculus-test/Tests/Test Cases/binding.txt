@@ -1,0 +1,11 @@
+new unary even.
+
+variables in << >>.
+variables in << even(x) >>.
+set P to << Forall x IN< kind = number(x) IN> : (x == y) ^ Exists z : (y == z) >>.
+variables in P.
+variable unused in << >>.
+variable unused in P.
+renumbering of << even(x) >>.
+renumbering of << even(z) >>.
+renumbering of << Exists z : even(z) ^ (z == y) >>.

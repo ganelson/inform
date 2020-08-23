@@ -43,7 +43,7 @@ the details of a description to the node.
 void Refiner::apply_description(parse_node *p, parse_node *desc) {
 	if (Specifications::is_description(desc)) {
 		pcalc_prop *prop = Descriptions::get_quantified_prop(desc);
-		Node::set_creation_proposition(p, Calculus::Propositions::copy(prop));
+		Node::set_creation_proposition(p, Propositions::copy(prop));
 		int N = Descriptions::get_quantification_parameter(desc);
 		if (N > 0) Annotations::write_int(p, multiplicity_ANNOT, N);
 	}

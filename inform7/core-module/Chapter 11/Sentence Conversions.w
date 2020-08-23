@@ -1,4 +1,4 @@
-[Calculus::Propositions::FromSentences::] Sentence Conversions.
+[Propositions::FromSentences::] Sentence Conversions.
 
 The third of the three sources of propositions to conjure with:
 those which arise by the parsing of complex sentence trees in the S-grammar.
@@ -37,7 +37,7 @@ the meaning of the whole sentence.
 =
 int conv_log_depth = 0; /* recursion depth: used only to clarify the debugging log */
 
-pcalc_prop *Calculus::Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, parse_node *A, parse_node *B, pcalc_term *subject_of_sentence, int verb_phrase_negated) {
+pcalc_prop *Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, parse_node *A, parse_node *B, pcalc_term *subject_of_sentence, int verb_phrase_negated) {
 	parse_node *subject_phrase_subtree = NULL, *object_phrase_subtree = NULL;
 	pcalc_prop *subject_phrase_prop, *object_phrase_prop;
 	pcalc_term subject_phrase_term = Terms::new_constant(NULL); /* unnecessary initialization to pacify clang, which can't prove it's unnecessary */
@@ -91,8 +91,8 @@ making an S-proposition as required.
 @<Handle a THERE subtree, used for "there is/are NP"@> =
 	if (SV_not_SN == FALSE) internal_error("THERE subtree misplaced");
 	parse_node *spec = B->down;
-	sentence_prop = Calculus::Propositions::from_spec(spec);
-	sentence_prop = Calculus::Variables::bind_existential(sentence_prop, NULL);
+	sentence_prop = Propositions::FromSentences::from_spec(spec);
+	sentence_prop = Binding::bind_existential(sentence_prop, NULL);
 
 @ Here we only locate the subject and object subtrees -- their meanings we
 leave for later -- but we do find the content of the verb phrase. Given
@@ -181,20 +181,20 @@ Or to put this more informally: it's possible for a single item to be an
 than three open doors". So $\phi$ contains a free variable if and only if
 the NP describes a single but vague thing.
 
-@ The First Rule is implemented by |Calculus::Propositions::FromSentences::NP_subtree_to_proposition| below, and
+@ The First Rule is implemented by |Propositions::FromSentences::NP_subtree_to_proposition| below, and
 we apply it independently to the SP and OP:
 
 @<Find meanings of the SP and OP as propositions and terms@> =
 	kind *subject_K = BinaryPredicates::term_kind(verb_phrase_relation, 0);
 	if (Kinds::Behaviour::is_subkind_of_object(subject_K)) subject_K = NULL;
  	subject_phrase_prop =
- 		Calculus::Propositions::FromSentences::NP_subtree_to_proposition(&subject_phrase_term, subject_phrase_subtree,
+ 		Propositions::FromSentences::NP_subtree_to_proposition(&subject_phrase_term, subject_phrase_subtree,
 			subject_K);
 
 	kind *object_K = BinaryPredicates::term_kind(verb_phrase_relation, 1);
 	if (Kinds::Behaviour::is_subkind_of_object(object_K)) object_K = NULL;
 	object_phrase_prop =
-		Calculus::Propositions::FromSentences::NP_subtree_to_proposition(&object_phrase_term, object_phrase_subtree,
+		Propositions::FromSentences::NP_subtree_to_proposition(&object_phrase_term, object_phrase_subtree,
 			object_K);
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] subject NP: $0 such that: $D\n",
@@ -225,8 +225,8 @@ describes something, in a way that can be tested for any given candidate $x$ --
 we produce $\phi_S = {\it woman}(x)$ with $x$ remaining free.
 
 @<Bind up any free variable in the OP and sometimes the SP, too@> =
-	if (SV_not_SN) subject_phrase_prop = Calculus::Variables::bind_existential(subject_phrase_prop, &subject_phrase_term);
-	object_phrase_prop = Calculus::Variables::bind_existential(object_phrase_prop, &object_phrase_term);
+	if (SV_not_SN) subject_phrase_prop = Binding::bind_existential(subject_phrase_prop, &subject_phrase_term);
+	object_phrase_prop = Binding::bind_existential(object_phrase_prop, &object_phrase_term);
 
 @ Of all the thousands of paragraphs of code in Inform, this is the one which
 most sums up "how it works". We started with a sentence in
@@ -323,27 +323,27 @@ of quantification) then so is $\Sigma$.
 @<Combine the SP, VP and OP meanings into a single proposition for the sentence@> =
 	int use_case_2 = FALSE;
 	if (SV_not_SN == FALSE)
-		subject_phrase_prop = Calculus::Propositions::remove_final_close_domain(subject_phrase_prop, &use_case_2);
+		subject_phrase_prop = Propositions::remove_final_close_domain(subject_phrase_prop, &use_case_2);
 
 	@<Deal with the English irregularity concerning -where words@>;
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] Before renumbering of OP: t = $0, phi = $D\n", conv_log_depth, &object_phrase_term, object_phrase_prop);
 	object_phrase_term.variable =
-		Calculus::Variables::renumber_bound(object_phrase_prop, subject_phrase_prop, object_phrase_term.variable);
+		Binding::renumber_bound(object_phrase_prop, subject_phrase_prop, object_phrase_term.variable);
 	if (object_phrase_term.variable >= 26) internal_error("bad OP renumbering");
 	LOGIF(PREDICATE_CALCULUS, "[%d] After renumbering of OP: t = $0, phi = $D\n", conv_log_depth, &object_phrase_term, object_phrase_prop);
 
 	sentence_prop = subject_phrase_prop;
 	if (verb_phrase_negated)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_OPEN_ATOM));
-	sentence_prop = Calculus::Propositions::concatenate(sentence_prop, object_phrase_prop);
-	sentence_prop = Calculus::Propositions::concatenate(sentence_prop,
+		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_OPEN_ATOM));
+	sentence_prop = Propositions::concatenate(sentence_prop, object_phrase_prop);
+	sentence_prop = Propositions::concatenate(sentence_prop,
 		Atoms::binary_PREDICATE_new(verb_phrase_relation, subject_phrase_term, object_phrase_term));
 	if (verb_phrase_negated)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_CLOSE_ATOM));
+		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_CLOSE_ATOM));
 
 	if (use_case_2)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
+		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] Initial meaning: $D\n", conv_log_depth, sentence_prop);
 
@@ -355,7 +355,7 @@ is irregular because it differs from "something" and "someone".)
 
 @<Deal with the English irregularity concerning -where words@> =
 	#ifdef IF_MODULE
-	pcalc_prop *k_atom = Calculus::Propositions::composited_kind(object_phrase_prop);
+	pcalc_prop *k_atom = Propositions::composited_kind(object_phrase_prop);
 	if ((k_atom) && (Kinds::eq(k_atom->assert_kind, K_room)) &&
 		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
 		Atoms::set_composited(k_atom, FALSE);
@@ -398,18 +398,18 @@ Still, rule (iii) can only be ensured by writing the routines carefully.
 The simplification routines can all be found in "Simplifications".
 
 @d APPLY_SIMPLIFICATION(proposition, simp) {
-	int changed = FALSE, NF = Calculus::Variables::number_free(proposition);
+	int changed = FALSE, NF = Binding::number_free(proposition);
 	if (proposition) proposition = simp(proposition, &changed);
 	if (changed) LOGIF(PREDICATE_CALCULUS, "[%d] %s: $D\n", conv_log_depth, #simp, proposition);
-	if ((Calculus::Variables::is_well_formed(proposition, NULL) == FALSE) ||
-		(NF != Calculus::Variables::number_free(proposition))) {
+	if ((Binding::is_well_formed(proposition, NULL) == FALSE) ||
+		(NF != Binding::number_free(proposition))) {
 		LOG("Failed after applying %s: $D", #simp, proposition);
 		internal_error(#simp " simplified proposition into one which is not well-formed");
 	}
 }
 
 @<Simplify the resultant proposition@> =
-	if (Calculus::Variables::is_well_formed(sentence_prop, NULL) == FALSE) {
+	if (Binding::is_well_formed(sentence_prop, NULL) == FALSE) {
 		LOG("Failed before simplification: $D", sentence_prop);
 		internal_error("tried to simplify proposition which is not well-formed");
 	}
@@ -432,32 +432,7 @@ The simplification routines can all be found in "Simplifications".
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::is_all_rooms);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
 
-	Calculus::Variables::renumber(sentence_prop, NULL); /* just for the sake of tidiness */
-
-@ =
-pcalc_prop *Calculus::Propositions::FromSentences::simplify(pcalc_prop *sentence_prop) {
-	int conv_log_depth = 1;
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::nothing_constant);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::use_listed_in);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_determiners_nonex);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_satisfiable);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::make_kinds_of_value_explicit);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
-
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::turn_right_way_round);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::region_containment);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::everywhere_and_nowhere);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::reduce_predicates);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_redundant_variables);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::not_related_to_something);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::convert_gerunds);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_to_have);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::is_all_rooms);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
-
-	Calculus::Variables::renumber(sentence_prop, NULL); /* just for the sake of tidiness */
-	return sentence_prop;
-}
+	Binding::renumber(sentence_prop, NULL); /* just for the sake of tidiness */
 
 @h The meaning of a noun phrase.
 The First Rule tells us to translate a noun phrase (NP) into a pair of a term $t$
@@ -474,7 +449,7 @@ three basic noun phrases: a value, a description, or a marker for an implied
 but missing noun.
 
 =
-pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *subject_of_NP, parse_node *p,
+pcalc_prop *Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *subject_of_NP, parse_node *p,
 	kind *K) {
 	pcalc_prop *NP_prop = NULL; wording W;
 	@<Tell the debugging log about the NP-subtree@>;
@@ -482,7 +457,7 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 	pcalc_term *st = Node::get_subject_term(p);
 	if (st) {
 		*subject_of_NP = *st;
-		NP_prop = Calculus::Propositions::copy(Specifications::to_proposition(p));
+		NP_prop = Propositions::copy(Specifications::to_proposition(p));
 	} else {
 		if (Specifications::is_description_like(p)) @<This NP was parsed as a description@>
 		else if (Node::get_type(p) == UNKNOWN_NT) @<This NP is only a ghostly presence@>
@@ -502,24 +477,24 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 @<Tell the debugging log about the NP-subtree@> =
 	W = Node::get_text(p);
 	conv_log_depth++;
-	LOGIF(PREDICATE_CALCULUS, "[%d] Starting Calculus::Propositions::FromSentences::NP_subtree_to_proposition on: <%W>\n",
+	LOGIF(PREDICATE_CALCULUS, "[%d] Starting Propositions::FromSentences::NP_subtree_to_proposition on: <%W>\n",
 		conv_log_depth, W);
 
 @ ...and also at the end.
 
 @<Verify that the output satisfies the First Rule, throwing internal errors if not@> =
-	if (Calculus::Variables::is_well_formed(NP_prop, NULL) == FALSE)
+	if (Binding::is_well_formed(NP_prop, NULL) == FALSE)
 		internal_error("malformed NP proposition");
-	int NF = Calculus::Variables::number_free(NP_prop);
+	int NF = Binding::number_free(NP_prop);
 	if (NF >= 2) internal_error("two or more free variables from NP");
 	if (subject_of_NP->constant) {
 		if (NP_prop) internal_error("constant plus substantive prop from NP");
 	} else if (NF == 1) {
 		int v = Terms::variable_underlying(subject_of_NP);
-		if (Calculus::Variables::status(NP_prop, v) != FREE_VST)
+		if (Binding::status(NP_prop, v) != FREE_VST)
 			internal_error("free variable from NP but not the preferred term");
 	}
-	LOGIF(PREDICATE_CALCULUS, "[%d] Calculus::Propositions::FromSentences::NP_subtree_to_proposition: %W --> t = $0, phi = $D\n",
+	LOGIF(PREDICATE_CALCULUS, "[%d] Propositions::FromSentences::NP_subtree_to_proposition: %W --> t = $0, phi = $D\n",
 		conv_log_depth, W, subject_of_NP, NP_prop);
 	conv_log_depth--;
 
@@ -553,7 +528,7 @@ one arising below, which is to do with enumerated value properties.)
 		}
 	}
 
-@ If |Calculus::Propositions::from_spec| is given a constant value $C$ then it returns the
+@ If |Propositions::FromSentences::from_spec| is given a constant value $C$ then it returns the
 proposition ${\it is}(x, C)$: we look out for this and translate it to
 $t=C, \phi = T$. Otherwise, $\phi$ can be exactly the proposition returned,
 and the first term occurring in it will be chosen as the subject $t$. (In
@@ -562,19 +537,19 @@ it binds.)
 
 @<This NP was parsed as a description@> =
 	parse_node *spec = p;
-	NP_prop = Calculus::Propositions::copy(Calculus::Propositions::from_spec(spec));
+	NP_prop = Propositions::copy(Propositions::FromSentences::from_spec(spec));
 
-	if (Calculus::Propositions::match(NP_prop, 2, PREDICATE_ATOM, NULL, END_PROP_HERE, NULL)) {
+	if (Propositions::match(NP_prop, 2, PREDICATE_ATOM, NULL, END_PROP_HERE, NULL)) {
 		pcalc_term *pt = Atoms::is_x_equals(NP_prop);
 		if (pt) { *subject_of_NP = *pt; NP_prop = NULL; }
 	}
 
-	if ((Calculus::Propositions::match(NP_prop, 2, KIND_ATOM, NULL, END_PROP_HERE, NULL)) &&
+	if ((Propositions::match(NP_prop, 2, KIND_ATOM, NULL, END_PROP_HERE, NULL)) &&
 		(<k-formal-variable-singular>(W))) {
 		Atoms::set_unarticled(NP_prop, TRUE);
 	}
 
-	if (NP_prop) *subject_of_NP = Calculus::Propositions::get_first_cited_term(NP_prop);
+	if (NP_prop) *subject_of_NP = Propositions::get_first_cited_term(NP_prop);
 
 @ When Inform reads a condition so abbreviated that both the subject and
 the verb have been left out, it assumes the verb is "to be" and that the
@@ -631,7 +606,7 @@ show this. (Score values otherwise aren't used for property names.)
 @<If we have a single adjective which could also be a noun, and a value is required, convert it to a noun@> =
 	if (((Rvalues::is_CONSTANT_construction(p, CON_property)) &&
 		(Annotations::read_int(p, property_name_used_as_noun_ANNOT))) || (K)) {
-		pcalc_term pct = Calculus::Propositions::convert_adj_to_noun(NP_prop);
+		pcalc_term pct = Propositions::convert_adj_to_noun(NP_prop);
 		if (pct.constant) { *subject_of_NP = pct; NP_prop = NULL; }
 	}
 
@@ -648,14 +623,14 @@ $\phi = \exists x: {\it room}(x)\land{\it is}(x, |ContainerOf(box)|)$.
 
 @<If we have a constant qualified by a substantive proposition, rewrite in terms of variable@> =
 	if ((subject_of_NP->constant) && (NP_prop)) {
-		int y = Calculus::Variables::find_unused(NP_prop);
+		int y = Binding::find_unused(NP_prop);
 		LOGIF(PREDICATE_CALCULUS,
 			"[%d] Rewriting qualified constant t = $0 (new var %d)\n", conv_log_depth, subject_of_NP, y);
-		NP_prop = Calculus::Propositions::concatenate(
+		NP_prop = Propositions::concatenate(
 			Atoms::binary_PREDICATE_new(R_equality, *subject_of_NP, Terms::new_variable(y)),
 			NP_prop);
 		*subject_of_NP = Terms::new_variable(y);
-		NP_prop = Calculus::Variables::bind_existential(NP_prop, subject_of_NP);
+		NP_prop = Binding::bind_existential(NP_prop, subject_of_NP);
 		LOGIF(PREDICATE_CALCULUS,
 			"[%d] Rewriting qualified constant: <%W> --> t = $0, phi = $D\n",
 			conv_log_depth, W, subject_of_NP, NP_prop);
@@ -678,4 +653,69 @@ always evaluate to 0 or 1.
 		}
 	if (nq < 0) internal_error("malformed proposition with too many domain ends");
 	for (i=1; i<=nq; i++)
-		NP_prop = Calculus::Propositions::concatenate(NP_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
+		NP_prop = Propositions::concatenate(NP_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
+
+
+@ The following routine takes a SP and returns the best proposition it can,
+with a single unbound variable, to represent SP.
+
+=
+#ifdef CORE_MODULE
+pcalc_prop *Propositions::FromSentences::from_spec(parse_node *spec) {
+	if (spec == NULL) return NULL; /* the null description is universally true */
+
+	if (Specifications::is_description(spec))
+		return Descriptions::to_proposition(spec);
+
+	pcalc_prop *prop = Specifications::to_proposition(spec);
+	if (prop) return prop; /* a propositional form is already made */
+
+	@<If this is an instance of a kind, but can be used adjectivally, convert it as such@>;
+	@<If it's an either-or property name, it must be being used adjectivally@>;
+	@<It must be an ordinary noun@>;
+}
+#endif
+
+@ For example, if we have written:
+
+>> Colour is a kind of value. The colours are pink, green and black. A thing has a colour.
+
+then "pink" is both a noun and an adjective. If SP is its representation as a
+noun, we return the proposition testing it adjectivally: {\it pink}($x$).
+
+@<If this is an instance of a kind, but can be used adjectivally, convert it as such@> =
+	instance *I = Rvalues::to_instance(spec);
+	if (I) {
+		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
+		if (pname) {
+			prop = Atoms::from_adjective_on_x(Instances::get_adjective(I), FALSE);
+			@<Typecheck the propositional form, and return@>;
+		}
+	}
+
+@ For example, if the SP is "scenery", we return the proposition {\it scenery}($x$).
+
+@<If it's an either-or property name, it must be being used adjectivally@> =
+	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
+		property *prn = Rvalues::to_property(spec);
+		if (Properties::is_either_or(prn)) {
+			prop = Atoms::from_adjective_on_x(
+					Properties::EitherOr::get_aph(prn), FALSE);
+			@<Typecheck the propositional form, and return@>;
+		}
+	}
+
+@ For example, if the SP is the number 17, we return the proposition {\it is}($x$, 17).
+
+@<It must be an ordinary noun@> =
+	prop = Atoms::prop_x_is_constant(Node::duplicate(spec));
+	@<Typecheck the propositional form, and return@>;
+
+@ In all cases, we finish by doing the following. In the one-atom noun cases
+it's a formality, but we want to enforce the rule that all propositions
+created in Inform go through type-checking, so:
+
+@<Typecheck the propositional form, and return@> =
+	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
+	return prop;
+

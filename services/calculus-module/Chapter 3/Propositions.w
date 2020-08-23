@@ -1,77 +1,96 @@
-[Calculus::Propositions::] Propositions.
+[Propositions::] Propositions.
 
 To build and modify structures representing propositions in
 predicate calculus.
 
-@ We now begin on the data structures to hold propositions. Now a properly
-constructed proposition has a natural tree structure -- one can regard
-quantification, negation, and conjunction as higher nodes, and predicates
-as leaves. So the idea of storing propositions as trees has a certain elegance.
-At first it seems an advantage that any such tree is necessarily a valid
-proposition. But in fact this is not so helpful, because we want to build
-propositions gradually, and in particular intermediate states need to exist
-which are not yet valid but will be. If we used a tree representation, we
-would also need some cursor-position-like marker for the region of current
-growth, and that could all become complicated. We will also find that the
-main operation we need to perform is a depth-first traverse of the tree,
-which is a little tiresome to do in a conventional loop (it lends itself to
-recursion, but that's inconvenient).
+@h Internal representation.
+There is no perfectly convenient way to represent propositions. The two
+obvious strategies are:
 
-So we will instead store propositions in a linked list, imitating the notation
-used by mathematicians who write them along in a single line. Now there's a
-natural way to store incomplete propositions and a natural build-point (at
-the end), and depth-first traverses are easy -- just work along from left
-to right. The disadvantage is that it's also easy to make malformed
-propositions, so we have to build carefully.
+(a) Hold them more or less as written, in a flat sequence of atoms.
+(b) Hold them in a tree which branches at each logical operation.
 
-For instance, "Test sentence (internal) with no man can see the box."
-produces:
-= (text)
-	1. no man can see the box
-	[ DoesNotExist x IN[ man(x) IN] : can-see(x, 'box') ]
-=
-The proposition is stored as a linked list of atoms, of elements like so:
-= (text)
-	QUANTIFIER --> DOMAIN_OPEN --> PREDICATE --> DOMAIN_CLOSE --> PREDICATE
-=
-In short: a proposition is a linked list of |pcalc_prop| atoms, joined by
-their |next| fields. The present section contains routines to help build
-and edit such lists.
+We follow (a), which is easier to iterate through without tiresome amounts
+of recursion, but comes at the cost of extra complexity when it comes to
+grouping the terms -- this is why we need the awkward |NOT<| and |NOT>|
+atoms, for example. (b) would almost certainly be better if we needed to
+accommodate disjunction as well as conjunction, but we do not. The main
+demerit of (a) is that it is easy to make malformed propositions, so we have
+to build and edit carefully.
+
+So propositions are represented by the //pcalc_prop// object at the front, an
+atomic proposition, and this leads via its |next| field to a second atomit
+proposition, and so on. Now there's a natural way to store incomplete
+propositions and a natural build-point (at the end), and depth-first traverses
+are easy -- just work along from left to right.
 
 @ In particular:
 
-(a) The empty list, a |NULL| pointer, represents the universally true
+(1) The empty list, a |NULL| pointer, represents the universally true
 proposition $\top$. Asserting it does nothing; testing it at run-time always
 evaluates to |true|.
-
-(b) The conjunction $\phi\land\psi$ is just the concatenation of their
-linked lists.
-
-(c) Negation $\lnot(\phi)$ is the concatenation |NEGATION_OPEN --> P --> NEGATION_CLOSE|,
+(2) The conjunction $\alpha\land\beta$ is almost the concatenation of their
+linked lists |A --> B|, except that we must be careful if they appear to have
+variables in common.
+(3) Negation $\lnot(\phi)$ is the concatenation |NOT< --> P --> NOT>|,
 where |P| is the linked list for $\phi$.
+(4) The quantifier $Q v\in \lbrace v\mid\phi(v)\rbrace$ is
+|QUANTIFIER --> IN< --> P --> IN>|, where |P| is the linked list for $\phi$.
 
-(d) The quantifier $Q v\in \lbrace v\mid\phi(v)\rbrace$ is
-|QUANTIFIER --> DOMAIN_OPEN --> P --> DOMAIN_CLOSE|.
+Conjunction occurs so densely in propositions arising from
+natural language that we save a lot of memory and fuss by simply implying it:
+thus "great green dragon" is |PREDICATE --> PREDICATE --> KIND|, rather than
+something like |PREDICATE --> AND_SIGN --> PREDICATE --> AND_SIGN --> KIND|.
+Disjunction hardly ever occurs, so although the above scheme could simulate
+it with $\alpha\lor\beta = \lnot((\lnot\alpha)\land(\lnot\beta))$, we never do.
 
-In this section, we'll call a segment of the list representing a pair of
-matched brackets, like |DOMAIN_OPEN --> P --> DOMAIN_CLOSE|, a "group".
+The following function determines whether or not |P1 --> P2| should be
+understood as a conjunction.
+=
+int Propositions::implied_conjunction_between(pcalc_prop *p1, pcalc_prop *p2) {
+	if ((p1 == NULL) || (p2 == NULL)) return FALSE;
+	if (Atoms::group(p1->element) == OPEN_OPERATORS_GROUP) return FALSE;
+	if (Atoms::group(p2->element) == CLOSE_OPERATORS_GROUP) return FALSE;
+	if (p1->element == QUANTIFIER_ATOM) return FALSE;
+	if (p1->element == DOMAIN_CLOSE_ATOM) return FALSE;
+	return TRUE;
+}
 
-@ We sometimes need to indicate a position within a proposition -- a
-position not of an atom, but between atoms. Consider the possible places
-where letters could be inserted into the word "rap": before the "r"
-(trap), between "r" and "a" (reap), between "a" and "p" (ramp),
-after the "p" (rapt). Though "rap" is a three-letter word, there are
-four possible insertion points -- so they can't exactly correspond to
-letters. The convention used with Inform propositions is that a position
-marker points to the |pcalc_prop| structure for the atom before
-the position meant: and a |NULL| pointer in this context means the
-front position, before the opening atom.
+@ Purely decoratively, we print some punctuation when logging a proposition;
+this is chosen to look like standard mathematical notation.
 
-@ The code needed to perform a depth-first traverse of a proposition is
-abstracted by the following macros. Note that we often need to remember
-the atom before the current one, so we keep that in a spare variable
-during each traverse. (This saves us having to maintain the proposition
-data structure as a doubly linked list, which would be harder to edit.)
+=
+char *Propositions::debugging_log_text_between(pcalc_prop *p1, pcalc_prop *p2) {
+	if ((p1 == NULL) || (p2 == NULL)) return "";
+	if (p1->element == QUANTIFIER_ATOM) {
+		if (p2->element == DOMAIN_OPEN_ATOM) return "";
+		return ":";
+	}
+	if (p1->element == DOMAIN_CLOSE_ATOM) return ":";
+	if (Propositions::implied_conjunction_between(p1, p2)) {
+		if (Streams::I6_escapes_enabled(DL))
+			return("&"); /* since |^| in Inter strings means newline */
+		return ("^");
+	}
+	return "";
+}
+
+@h Walking through propositions.
+We sometimes need to indicate a position within a proposition -- a position
+not of an atom, but between atoms. Consider the possible places where letters
+could be inserted into the word "rap": before the "r" (trap), between "r" and
+"a" (reap), between "a" and "p" (ramp), after the "p" (rapt). Though "rap" is
+a three-letter word, there are four possible insertion points -- so they can't
+exactly correspond to letters. The convention we use is that a position marker
+points to the //|pcalc_prop// structure for the atom before the position
+meant: and a |NULL| pointer in this context means the front position, before
+the opening atom.
+
+@ The code needed to walk through a proposition is abstracted by the following
+macros. Note that we often need to remember the atom before the current one,
+so we keep that in a spare variable during each traverse. (This saves us
+having to maintain the proposition data structure as a doubly linked list,
+which would be harder to edit.)
 
 One macro declares the name of a marker variable to be used when traversing;
 the other is the necessary loop head. Note that we do not assume that |p|
@@ -117,63 +136,19 @@ should be set if and only if a change has been made to the proposition.
 	PROPOSITION_EDITED(p, prop)
 	p##_repeat = TRUE;
 
-@h Implied conjunction.
-Conjunction (logical "and") occurs so densely in propositions arising from
-natural language that our data structures would grow large and unmanageable
-if we wrote all of them out. So we adopt a convention similar to the one
-in algebra, where the formula
-$$ xy+w(v-1) $$
-is understood to mean multiplication of $x$ by $y$, and of $w$ by $(v-1)$.
-Note that if we were to write it out as a sequence of symbols
-= (text)
-	x y + w ( v - 1 )
-=
-then multiplication would only be understood at two positions, not between
-every pair of symbols. In the same way, the following routine looks at a
-pair of adjacent atoms and decides whether or not conjunction should be
-understood between them.
-
-=
-int Calculus::Propositions::implied_conjunction_between(pcalc_prop *p1, pcalc_prop *p2) {
-	if ((p1 == NULL) || (p2 == NULL)) return FALSE;
-	if (Atoms::group(p1->element) == OPEN_OPERATORS_GROUP) return FALSE;
-	if (Atoms::group(p2->element) == CLOSE_OPERATORS_GROUP) return FALSE;
-	if (p1->element == QUANTIFIER_ATOM) return FALSE;
-	if (p1->element == DOMAIN_CLOSE_ATOM) return FALSE;
-	return TRUE;
-}
-
-@ Purely decoratively, we print some punctuation when logging a proposition;
-this is chosen to look like standard mathematical notation.
-
-=
-char *Calculus::Propositions::debugging_log_text_between(pcalc_prop *p1, pcalc_prop *p2) {
-	if ((p1 == NULL) || (p2 == NULL)) return "";
-	if (p1->element == QUANTIFIER_ATOM) {
-		if (p2->element == DOMAIN_OPEN_ATOM) return "";
-		return ":";
-	}
-	if (p1->element == DOMAIN_CLOSE_ATOM) return ":";
-	if (Calculus::Propositions::implied_conjunction_between(p1, p2)) {
-		if (Streams::I6_escapes_enabled(DL)) return("&"); /* since |^| in I6 strings means newline */
-		return ("^");
-	}
-	return "";
-}
-
 @ So we may as well complete the debugging log code now. Note that $\top$ is
 logged as just |<< >>|.
 
 =
 int log_addresses = FALSE;
-void Calculus::Propositions::log(pcalc_prop *prop) {
-	Calculus::Propositions::write(DL, prop);
+void Propositions::log(pcalc_prop *prop) {
+	Propositions::write(DL, prop);
 }
-void Calculus::Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
+void Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	WRITE("<< ");
 	TRAVERSE_PROPOSITION(p, prop) {
-		char *bridge = Calculus::Propositions::debugging_log_text_between(p_prev, p);
+		char *bridge = Propositions::debugging_log_text_between(p_prev, p);
 		if (bridge[0]) WRITE("%s ", bridge);
 		if (log_addresses) WRITE("%08x=", (unsigned int) p);
 		Atoms::write(OUT, p);
@@ -199,19 +174,18 @@ kind of value each variable ranges over.
 These are steadily stronger conditions. The first is a basic invariant of
 our data structures: nothing failing (i) will ever be allowed to exist,
 provided the routines in this section are free of bugs. Condition (ii) is
-called syntactic validity; (iii) is well-formedness; (iv) is
-type safety. Correct source text eventually makes propositions which
-have all four properties, but intermediate half-built states often satisfy
-only (i).
+called syntactic validity; (iii) is well-formedness; (iv) is type safety.
+Correct source text eventually makes propositions which have all four
+properties, but intermediate half-built states often satisfy only (i).
 
 @ The following examples illustrate the differences. This one is not even
 syntactically valid:
 = (text)
-|DOMAIN_OPEN_ATOM --> NEGATION_CLOSE_ATOM --> NEGATION_CLOSE_ATOM|
+|IN< --> NOT> --> NOT>|
 =
 This one is syntactically valid, but not well-formed:
 = (text)
-|EVERYWHERE_ATOM(x) --> QUANTIFIER=for-all(x) --> PREDICATE=open(x)|
+|EVERYWHERE(x) --> QUANTIFIER x --> PREDICATE(x)|
 =
 (If |x| ranges over all objects at the middle of the proposition, it had
 better not already have a value, but if it doesn't, what can that first
@@ -220,19 +194,21 @@ where clearly two different things have been called $n$.)
 
 And this proposition is well-formed but not type-safe:
 = (text)
-|QUANTIFIER=for-all(x) --> KIND=number(x) --> EVERYWHERE(x)|
+|QUANTIFIER(x) --> KIND=number(x) --> EVERYWHERE(x)|
 =
 (Here |x| is supposed to be a number, and therefore has no location, but
 |EVERYWHERE| can validly be applied only to backdrop objects, so what
 could |EVERYWHERE(x)| possibly mean?)
 
-@ Well-formedness and type safety are left to later sections in this chapter,
-but we can at least test syntactic validity here.
+@ The following tests only (ii), validity. //calculus-test// is unable to make
+atoms which fail to pass //Atoms::validate//, nor can it make some of the
+misconstructions tested for below, but numerous other defects can be tested:
+= (text from Figures/validity.txt as REPL)
 
 @d MAX_PROPOSITION_GROUP_NESTING 100 /* vastly more than could realistically be used */
 
 =
-int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream *err) {
+int Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream *err) {
 	TRAVERSE_VARIABLE(p);
 	int groups_stack[MAX_PROPOSITION_GROUP_NESTING], group_sp = 0;
 	TRAVERSE_PROPOSITION(p, prop) {
@@ -252,15 +228,19 @@ int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream
 				WRITE_TO(err, "group open/close doesn't match"); return FALSE;
 			}
 		}
-		/* (3) every quantifier except "exists" must be followed by domain brackets, which occur nowhere else: */
+		/* (3) every quantifier except "exists" must be followed by domain brackets: */
 		if ((Atoms::is_quantifier(p_prev)) && (Atoms::is_existence_quantifier(p_prev) == FALSE)) {
-			if (p->element != DOMAIN_OPEN_ATOM) { WRITE_TO(err, "quant without domain"); return FALSE; }
+			if (p->element != DOMAIN_OPEN_ATOM) {
+				WRITE_TO(err, "quantifier without domain"); return FALSE;
+			}
 		} else {
-			if (p->element == DOMAIN_OPEN_ATOM) { WRITE_TO(err, "domain without quant"); return FALSE; }
+			if (p->element == DOMAIN_OPEN_ATOM) {
+				WRITE_TO(err, "domain without quantifier"); return FALSE;
+			}
 		}
 		if ((p->next == NULL) &&
 			(Atoms::is_quantifier(p)) && (Atoms::is_existence_quantifier(p) == FALSE)) {
-			WRITE_TO(err, "ends without domain of final quantifier"); return FALSE;
+			WRITE_TO(err, "nonexistential quantifier without domain"); return FALSE;
 		}
 	}
 	/* (4) a proposition must end with all its brackets closed: */
@@ -272,10 +252,12 @@ int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream
 Simple propositions contain only unary predicates or assertions that the
 free variable has a given kind, or a given value. For example, "a closed
 lockable door" is a simple proposition, but "four women in a lighted room"
-is complex.
+is complex. The only simple binary predicate is one which assigns a definite
+value to |x|. Examples:
+= (text from Figures/complexity.txt as REPL)
 
 =
-int Calculus::Propositions::is_complex(pcalc_prop *prop) {
+int Propositions::is_complex(pcalc_prop *prop) {
 	pcalc_prop *p;
 	for (p = prop; p; p = p->next) {
 		if (p->element == QUANTIFIER_ATOM) return TRUE;
@@ -293,11 +275,18 @@ int Calculus::Propositions::is_complex(pcalc_prop *prop) {
 }
 
 @h Primitive operations on propositions.
-First, copying, which means copying not just the current atom, but all
+Now for some basic operations, as shown in the following examoles:
+= (text from Figures/operations.txt as REPL)
+
+Note that the conjunction of A and B renamed the variable |x| in B to |y|,
+so that it no longer clashed with the meaning of |x| in A. The concatenation
+did not, simply writing one after the other.
+
+@ First, copying, which means copying not just the current atom, but all
 subsequent ones.
 
 =
-pcalc_prop *Calculus::Propositions::copy(pcalc_prop *original) {
+pcalc_prop *Propositions::copy(pcalc_prop *original) {
 	pcalc_prop *first = NULL, *last = NULL, *prop = original;
 	while (prop) {
 		pcalc_prop *copied_atom = Atoms::new(0);
@@ -318,7 +307,7 @@ the result will be, too; but the same is not true of well-formedness, so we
 need to be careful in using this.
 
 =
-pcalc_prop *Calculus::Propositions::concatenate(pcalc_prop *existing_body, pcalc_prop *tail) {
+pcalc_prop *Propositions::concatenate(pcalc_prop *existing_body, pcalc_prop *tail) {
 	pcalc_prop *end = existing_body;
 	if (end == NULL) return tail;
 	int sc = 0;
@@ -333,7 +322,7 @@ pcalc_prop *Calculus::Propositions::concatenate(pcalc_prop *existing_body, pcalc
 @ And here is a version which protects us:
 
 =
-pcalc_prop *Calculus::Propositions::conjoin(pcalc_prop *existing_body, pcalc_prop *tail) {
+pcalc_prop *Propositions::conjoin(pcalc_prop *existing_body, pcalc_prop *tail) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, existing_body)
 		if (p == tail) {
@@ -346,8 +335,8 @@ pcalc_prop *Calculus::Propositions::conjoin(pcalc_prop *existing_body, pcalc_pro
 			internal_error("conjoin proposition to a superset of itself");
 		}
 
-	Calculus::Variables::renumber_bound(tail, existing_body, -1);
-	existing_body = Calculus::Propositions::concatenate(existing_body, tail);
+	Binding::renumber_bound(tail, existing_body, -1);
+	existing_body = Propositions::concatenate(existing_body, tail);
 	return existing_body;
 }
 
@@ -357,43 +346,46 @@ pcalc_prop *Calculus::Propositions::conjoin(pcalc_prop *existing_body, pcalc_pro
 	LOG("Existing body: $D\n", existing_body);
 	LOG("Tail:          $D\n", tail);
 
-@h Negation.
+@ Negation and quantification can be done with these shorthand functions:
 
 =
-pcalc_prop *Calculus::Propositions::negate(pcalc_prop *prop) {
-	return Calculus::Propositions::concatenate(
+pcalc_prop *Propositions::negate(pcalc_prop *prop) {
+	return Propositions::concatenate(
 		Atoms::new(NEGATION_OPEN_ATOM),
-			Calculus::Propositions::concatenate(
+			Propositions::concatenate(
 				prop,
 				Atoms::new(NEGATION_CLOSE_ATOM)));
 }
 
-@h Quantification.
-
-=
-pcalc_prop *Calculus::Propositions::quantify(quantifier *quant, int v, int parameter, pcalc_prop *domain, pcalc_prop *prop) {
+pcalc_prop *Propositions::quantify(quantifier *quant, int v, int parameter,
+	pcalc_prop *domain, pcalc_prop *prop) {
 	pcalc_prop *Q = Atoms::QUANTIFIER_new(quant, v, parameter);
-	return Calculus::Propositions::quantify_using(Q, domain, prop);
+	return Propositions::quantify_using(Q, domain, prop);
 }
 
-pcalc_prop *Calculus::Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *domain, pcalc_prop *prop) {
+pcalc_prop *Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *domain,
+	pcalc_prop *prop) {
 	if (domain)
-		Q = Calculus::Propositions::concatenate(
+		Q = Propositions::concatenate(
 			Q,
-			Calculus::Propositions::concatenate(
+			Propositions::concatenate(
 				Atoms::new(DOMAIN_OPEN_ATOM),
-				Calculus::Propositions::concatenate(
+				Propositions::concatenate(
 					domain,
 					Atoms::new(DOMAIN_CLOSE_ATOM))));
-	return Calculus::Propositions::concatenate(Q, prop);
+	return Propositions::concatenate(Q, prop);
 }
 
 @h Inserting and deleting atoms.
-Here we insert an atom at a given position, or at the front if the position
+These operations do what they say, but the result is often syntactically
+invalid. Handle with care.
+= (text from Figures/editing.txt as REPL)
+
+@ Here we insert an atom at a given position, or at the front if the position
 is |NULL|.
 
 =
-pcalc_prop *Calculus::Propositions::insert_atom(pcalc_prop *prop, pcalc_prop *position,
+pcalc_prop *Propositions::insert_atom(pcalc_prop *prop, pcalc_prop *position,
 	pcalc_prop *new_atom) {
 	if (position == NULL) {
 		new_atom->next = prop;
@@ -409,7 +401,7 @@ pcalc_prop *Calculus::Propositions::insert_atom(pcalc_prop *prop, pcalc_prop *po
 @ And similarly, with the deleted atom the one after the position given:
 
 =
-pcalc_prop *Calculus::Propositions::delete_atom(pcalc_prop *prop, pcalc_prop *position) {
+pcalc_prop *Propositions::delete_atom(pcalc_prop *prop, pcalc_prop *position) {
 	if (position == NULL) {
 		if (prop == NULL) internal_error("deleting atom nowhere");
 		return prop->next;
@@ -420,6 +412,10 @@ pcalc_prop *Calculus::Propositions::delete_atom(pcalc_prop *prop, pcalc_prop *po
 	}
 }
 
+@h Miscellaneous further operations.
+The rest of this section is given over to miscellaneous utility functions:
+= (text from Figures/miscellaneous.txt as REPL)
+
 @h Inspecting contents.
 First, we count the number of atoms in a given proposition. This is used by
 other parts of Inform as a crude measure of how complicated it is; though in
@@ -427,7 +423,7 @@ fact it is not all that crude so long as it is applied to a proposition
 which has been simplified.
 
 =
-int Calculus::Propositions::length(pcalc_prop *prop) {
+int Propositions::length(pcalc_prop *prop) {
 	int n = 0;
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop) n++;
@@ -442,7 +438,7 @@ detect subsequences within a proposition: say, the sequence
 =
 starting at the current position, which could be tested with:
 = (text)
-	Calculus::Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,
+	Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,
 		ANY_ATOM_HERE, NULL, CALLED_ATOM, &cp);
 =
 As can be seen, each atom is tested with an element number and an optional
@@ -455,7 +451,7 @@ four.) There are two special pseudo-element-numbers:
 @d END_PROP_HERE -1 /* a sentinel meaning "the proposition must end at this point" */
 
 =
-int Calculus::Propositions::match(pcalc_prop *prop, int c, ...) {
+int Propositions::match(pcalc_prop *prop, int c, ...) {
 	int i, outcome = TRUE;
 	va_list ap; /* the variable argument list signified by the dots */
 	va_start(ap, c); /* macro to begin variable argument processing */
@@ -476,12 +472,11 @@ int Calculus::Propositions::match(pcalc_prop *prop, int c, ...) {
 	return outcome;
 }
 
-@h Seeking atoms.
-Here we run through the proposition looking for either a given element, or
+@ Here we run through the proposition looking for either a given element, or
 a given arity, or both:
 
 =
-pcalc_prop *Calculus::Propositions::prop_seek_atom(pcalc_prop *prop, int atom_req, int arity_req) {
+pcalc_prop *Propositions::prop_seek_atom(pcalc_prop *prop, int atom_req, int arity_req) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop)
 		if (((atom_req < 0) || (p->element == atom_req)) &&
@@ -493,22 +488,22 @@ pcalc_prop *Calculus::Propositions::prop_seek_atom(pcalc_prop *prop, int atom_re
 @ Seeking different kinds of atom is now easy:
 
 =
-int Calculus::Propositions::contains_binary_predicate(pcalc_prop *prop) {
-	if (Calculus::Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 2)) return TRUE; return FALSE;
+int Propositions::contains_binary_predicate(pcalc_prop *prop) {
+	if (Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 2)) return TRUE; return FALSE;
 }
 
-int Calculus::Propositions::contains_quantifier(pcalc_prop *prop) {
-	if (Calculus::Propositions::prop_seek_atom(prop, QUANTIFIER_ATOM, -1)) return TRUE; return FALSE;
+int Propositions::contains_quantifier(pcalc_prop *prop) {
+	if (Propositions::prop_seek_atom(prop, QUANTIFIER_ATOM, -1)) return TRUE; return FALSE;
 }
 
-pcalc_prop *Calculus::Propositions::composited_kind(pcalc_prop *prop) {
-	pcalc_prop *k_atom = Calculus::Propositions::prop_seek_atom(prop, KIND_ATOM, -1);
+pcalc_prop *Propositions::composited_kind(pcalc_prop *prop) {
+	pcalc_prop *k_atom = Propositions::prop_seek_atom(prop, KIND_ATOM, -1);
 	if ((k_atom) && (k_atom->composited == FALSE)) k_atom = NULL;
 	return k_atom;
 }
 
-int Calculus::Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
-	while ((prop = Calculus::Propositions::prop_seek_atom(prop, QUANTIFIER_ATOM, 1)) != NULL) {
+int Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
+	while ((prop = Propositions::prop_seek_atom(prop, QUANTIFIER_ATOM, 1)) != NULL) {
 		quantifier *quant = prop->quant;
 		if (quant != exists_quantifier) return TRUE;
 		prop = prop->next;
@@ -516,27 +511,27 @@ int Calculus::Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
 	return FALSE;
 }
 
-int Calculus::Propositions::contains_callings(pcalc_prop *prop) {
-	if (Calculus::Propositions::prop_seek_atom(prop, CALLED_ATOM, -1)) return TRUE; return FALSE;
+int Propositions::contains_callings(pcalc_prop *prop) {
+	if (Propositions::prop_seek_atom(prop, CALLED_ATOM, -1)) return TRUE; return FALSE;
 }
 
 @ Here we try to find out the kind of value of variable 0 without the full
 expense of typechecking the proposition:
 
 =
-kind *Calculus::Propositions::describes_kind(pcalc_prop *prop) {
+kind *Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
-	while ((p = Calculus::Propositions::prop_seek_atom(p, ISAKIND_ATOM, 1)) != NULL) {
+	while ((p = Propositions::prop_seek_atom(p, ISAKIND_ATOM, 1)) != NULL) {
 		if ((Terms::variable_underlying(&(p->terms[0])) == 0) &&
 			(Kinds::eq(p->assert_kind, K_value))) return p->assert_kind;
 		p = p->next;
 	}
 	p = prop;
-	while ((p = Calculus::Propositions::prop_seek_atom(p, KIND_ATOM, 1)) != NULL) {
+	while ((p = Propositions::prop_seek_atom(p, KIND_ATOM, 1)) != NULL) {
 		if (Terms::variable_underlying(&(p->terms[0])) == 0) return p->assert_kind;
 		p = p->next;
 	}
-	parse_node *val = Calculus::Propositions::describes_value(prop);
+	parse_node *val = Propositions::describes_value(prop);
 	if (val) return VALUE_TO_KIND_FUNCTION(val);
 	return NULL;
 }
@@ -544,7 +539,7 @@ kind *Calculus::Propositions::describes_kind(pcalc_prop *prop) {
 @ And, similarly, the actual value it must have:
 
 =
-parse_node *Calculus::Propositions::describes_value(pcalc_prop *prop) {
+parse_node *Propositions::describes_value(pcalc_prop *prop) {
 	pcalc_prop *p; int bl = 0;
 	for (p = prop; p; p = p->next)
 		switch (p->element) {
@@ -569,15 +564,15 @@ parse_node *Calculus::Propositions::describes_value(pcalc_prop *prop) {
 @ Finding an adjective is easy: it's a predicate of arity 1.
 
 =
-int Calculus::Propositions::contains_adjective(pcalc_prop *prop) {
-	if (Calculus::Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1)) return TRUE;
+int Propositions::contains_adjective(pcalc_prop *prop) {
+	if (Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1)) return TRUE;
 	return FALSE;
 }
 
-int Calculus::Propositions::count_unary_predicates(pcalc_prop *prop) {
+int Propositions::count_unary_predicates(pcalc_prop *prop) {
 	int ac = 0;
 	pcalc_prop *p = prop;
-	while ((p = Calculus::Propositions::prop_seek_atom(p, PREDICATE_ATOM, 1)) != NULL) {
+	while ((p = Propositions::prop_seek_atom(p, PREDICATE_ATOM, 1)) != NULL) {
 		if (Terms::variable_underlying(&(p->terms[0])) == 0) ac++;
 		p = p->next;
 	}
@@ -588,12 +583,12 @@ int Calculus::Propositions::count_unary_predicates(pcalc_prop *prop) {
 term in the proposition:
 
 =
-pcalc_term Calculus::Propositions::get_first_cited_term(pcalc_prop *prop) {
+pcalc_term Propositions::get_first_cited_term(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop)
 		if (p->arity > 0)
 			return p->terms[0];
-	internal_error("Calculus::Propositions::get_first_cited_term on termless proposition");
+	internal_error("Propositions::get_first_cited_term on termless proposition");
 	return Terms::new_variable(0); /* never executed, but needed to prevent |gcc| warnings */
 }
 
@@ -605,7 +600,7 @@ is, variable 0.
 
 =
 #ifdef CORE_MODULE
-pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
+pcalc_term Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	pcalc_term pct = Terms::new_variable(0);
 	if (prop == NULL) return pct;
 	if (Atoms::is_existence_quantifier(prop)) prop = prop->next;
@@ -628,16 +623,16 @@ pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 following are useful for looping through them:
 
 =
-unary_predicate *Calculus::Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_prop **ppp) {
-	prop = Calculus::Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1);
+unary_predicate *Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_prop **ppp) {
+	prop = Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1);
 	if (ppp) *ppp = prop;
 	if (prop == NULL) return NULL;
 	return Atoms::to_adjectival_usage(prop);
 }
 
-unary_predicate *Calculus::Propositions::next_unary_predicate(pcalc_prop **ppp) {
+unary_predicate *Propositions::next_unary_predicate(pcalc_prop **ppp) {
 	if (ppp == NULL) internal_error("bad ppp");
-	pcalc_prop *prop = Calculus::Propositions::prop_seek_atom((*ppp)->next, PREDICATE_ATOM, 1);
+	pcalc_prop *prop = Propositions::prop_seek_atom((*ppp)->next, PREDICATE_ATOM, 1);
 	*ppp = prop;
 	if (prop == NULL) return NULL;
 	return Atoms::to_adjectival_usage(prop);
@@ -647,15 +642,15 @@ unary_predicate *Calculus::Propositions::next_unary_predicate(pcalc_prop **ppp) 
 The following routine tests whether the entire proposition is a single
 bracketed group. For instance:
 = (text)
-	NEGATION_OPEN --> PREDICATE --> KIND --> NEGATION_CLOSE
+	NOT< --> PREDICATE --> KIND --> NOT>
 =
 would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.
 
 =
-int Calculus::Propositions::is_a_group(pcalc_prop *prop, int governing) {
+int Propositions::is_a_group(pcalc_prop *prop, int governing) {
 	int match = Atoms::counterpart(governing), level = 0;
-	if (match == 0) internal_error("Calculus::Propositions::is_a_group called on unmatchable");
+	if (match == 0) internal_error("Propositions::is_a_group called on unmatchable");
 	TRAVERSE_VARIABLE(p);
 	if ((prop == NULL) || (prop->element != governing)) return FALSE;
 	TRAVERSE_PROPOSITION(p, prop) {
@@ -669,9 +664,9 @@ int Calculus::Propositions::is_a_group(pcalc_prop *prop, int governing) {
 @ The following removes matched parentheses, leaving just the interior:
 
 =
-pcalc_prop *Calculus::Propositions::remove_topmost_group(pcalc_prop *prop) {
+pcalc_prop *Propositions::remove_topmost_group(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
-	if ((prop == NULL) || (Calculus::Propositions::is_a_group(prop, prop->element) == FALSE))
+	if ((prop == NULL) || (Propositions::is_a_group(prop, prop->element) == FALSE))
 		internal_error("tried to remove topmost group which wasn't there");
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "ungrouping proposition: $D\n", prop);
 	prop = prop->next;
@@ -684,9 +679,9 @@ pcalc_prop *Calculus::Propositions::remove_topmost_group(pcalc_prop *prop) {
 @ The main application of which is to remove negation:
 
 =
-pcalc_prop *Calculus::Propositions::unnegate(pcalc_prop *prop) {
-	if (Calculus::Propositions::is_a_group(prop, NEGATION_OPEN_ATOM))
-		return Calculus::Propositions::remove_topmost_group(prop);
+pcalc_prop *Propositions::unnegate(pcalc_prop *prop) {
+	if (Propositions::is_a_group(prop, NEGATION_OPEN_ATOM))
+		return Propositions::remove_topmost_group(prop);
 	return NULL;
 }
 
@@ -694,7 +689,7 @@ pcalc_prop *Calculus::Propositions::unnegate(pcalc_prop *prop) {
 point in a proposition (which can continue after the close bracket).
 
 =
-pcalc_prop *Calculus::Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *position, pcalc_prop **last) {
+pcalc_prop *Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *position, pcalc_prop **last) {
 	TRAVERSE_VARIABLE(p);
 	pcalc_prop *from;
 	int opener, closer, level;
@@ -704,9 +699,9 @@ pcalc_prop *Calculus::Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *
 	closer = Atoms::counterpart(opener);
 	if (closer == 0) internal_error("tried to remove frontmost group which doesn't open");
 	from = from->next;
-	prop = Calculus::Propositions::delete_atom(prop, position); /* remove opening atom */
+	prop = Propositions::delete_atom(prop, position); /* remove opening atom */
 	if (from->element == closer) { /* the special case of an empty group */
-		prop = Calculus::Propositions::delete_atom(prop, position); /* remove opening atom */
+		prop = Propositions::delete_atom(prop, position); /* remove opening atom */
 		goto Ungrouped;
 	}
 	level = 0;
@@ -715,7 +710,7 @@ pcalc_prop *Calculus::Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *
 		if (p->element == closer) level--;
 		if (level < 0) {
 			if (last) *last = p_prev;
-			prop = Calculus::Propositions::delete_atom(prop, p_prev); /* remove closing atom */
+			prop = Propositions::delete_atom(prop, p_prev); /* remove closing atom */
 			goto Ungrouped;
 		}
 	}
@@ -729,12 +724,12 @@ pcalc_prop *Calculus::Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *
 followed by a domain specification, we must also ungroup this:
 
 =
-pcalc_prop *Calculus::Propositions::trim_universal_quantifier(pcalc_prop *prop) {
+pcalc_prop *Propositions::trim_universal_quantifier(pcalc_prop *prop) {
 	if ((Atoms::is_for_all_x(prop)) &&
-		(Calculus::Propositions::match(prop, 2, QUANTIFIER_ATOM, NULL, DOMAIN_OPEN_ATOM, NULL))) {
-		prop = Calculus::Propositions::ungroup_after(prop, prop, NULL);
-		prop = Calculus::Propositions::delete_atom(prop, NULL);
-		LOGIF(PREDICATE_CALCULUS_WORKINGS, "Calculus::Propositions::trim_universal_quantifier: $D\n", prop);
+		(Propositions::match(prop, 2, QUANTIFIER_ATOM, NULL, DOMAIN_OPEN_ATOM, NULL))) {
+		prop = Propositions::ungroup_after(prop, prop, NULL);
+		prop = Propositions::delete_atom(prop, NULL);
+		LOGIF(PREDICATE_CALCULUS_WORKINGS, "Propositions::trim_universal_quantifier: $D\n", prop);
 	}
 	return prop;
 }
@@ -742,76 +737,13 @@ pcalc_prop *Calculus::Propositions::trim_universal_quantifier(pcalc_prop *prop) 
 @ Less ambitiously:
 
 =
-pcalc_prop *Calculus::Propositions::remove_final_close_domain(pcalc_prop *prop, int *move_domain) {
-	*move_domain = FALSE;
-		TRAVERSE_VARIABLE(p);
-		TRAVERSE_PROPOSITION(p, prop)
-			if ((p->next == NULL) && (p->element == DOMAIN_CLOSE_ATOM)) {
-				*move_domain = TRUE;
-				return Calculus::Propositions::delete_atom(prop, p_prev);
-			}
+pcalc_prop *Propositions::remove_final_close_domain(pcalc_prop *prop, int *move_domain) {
+	if (move_domain) *move_domain = FALSE;
+	TRAVERSE_VARIABLE(p);
+	TRAVERSE_PROPOSITION(p, prop)
+		if ((p->next == NULL) && (p->element == DOMAIN_CLOSE_ATOM)) {
+			if (move_domain) *move_domain = TRUE;
+			return Propositions::delete_atom(prop, p_prev);
+		}
 	return prop;
 }
-
-@ The following routine takes a SP and returns the best proposition it can,
-with a single unbound variable, to represent SP.
-
-=
-#ifdef CORE_MODULE
-pcalc_prop *Calculus::Propositions::from_spec(parse_node *spec) {
-	if (spec == NULL) return NULL; /* the null description is universally true */
-
-	if (Specifications::is_description(spec))
-		return Descriptions::to_proposition(spec);
-
-	pcalc_prop *prop = Specifications::to_proposition(spec);
-	if (prop) return prop; /* a propositional form is already made */
-
-	@<If this is an instance of a kind, but can be used adjectivally, convert it as such@>;
-	@<If it's an either-or property name, it must be being used adjectivally@>;
-	@<It must be an ordinary noun@>;
-}
-#endif
-
-@ For example, if we have written:
-
->> Colour is a kind of value. The colours are pink, green and black. A thing has a colour.
-
-then "pink" is both a noun and an adjective. If SP is its representation as a
-noun, we return the proposition testing it adjectivally: {\it pink}($x$).
-
-@<If this is an instance of a kind, but can be used adjectivally, convert it as such@> =
-	instance *I = Rvalues::to_instance(spec);
-	if (I) {
-		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
-		if (pname) {
-			prop = Atoms::from_adjective_on_x(Instances::get_adjective(I), FALSE);
-			@<Typecheck the propositional form, and return@>;
-		}
-	}
-
-@ For example, if the SP is "scenery", we return the proposition {\it scenery}($x$).
-
-@<If it's an either-or property name, it must be being used adjectivally@> =
-	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
-		property *prn = Rvalues::to_property(spec);
-		if (Properties::is_either_or(prn)) {
-			prop = Atoms::from_adjective_on_x(
-					Properties::EitherOr::get_aph(prn), FALSE);
-			@<Typecheck the propositional form, and return@>;
-		}
-	}
-
-@ For example, if the SP is the number 17, we return the proposition {\it is}($x$, 17).
-
-@<It must be an ordinary noun@> =
-	prop = Atoms::prop_x_is_constant(Node::duplicate(spec));
-	@<Typecheck the propositional form, and return@>;
-
-@ In all cases, we finish by doing the following. In the one-atom noun cases
-it's a formality, but we want to enforce the rule that all propositions
-created in Inform go through type-checking, so:
-
-@<Typecheck the propositional form, and return@> =
-	Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
-	return prop;

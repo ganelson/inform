@@ -526,7 +526,7 @@ In case we test if X is 10, in the other that X matches the description
 		Calculus::Deferrals::emit_test_if_var_matches_description(
 			spec, check_against);
 	} else if (ParseTreeUsage::is_value(check_against)) {
-		pcalc_prop *prop = Calculus::Propositions::Abstract::to_set_relation(R_equality,
+		pcalc_prop *prop = Propositions::Abstract::to_set_relation(R_equality,
 			NULL, spec, NULL, check_against);
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
 	} else {

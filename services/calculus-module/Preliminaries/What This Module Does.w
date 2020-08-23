@@ -186,12 +186,12 @@ supplying atom types |ISAKIND_ATOM|, |ISAVAR_ATOM|, |ISACONST_ATOM|,
 Binary predicate atoms are made using //Atoms::binary_PREDICATE_new//.
 
 3. Propositions are then built up from atoms or other propositions[1] by calling:
-(*) //Calculus::Propositions::conjoin//.
-(*) //Calculus::Propositions::negate//.
-(*) //Calculus::Propositions::quantify//.
+(*) //Propositions::conjoin//.
+(*) //Propositions::negate//.
+(*) //Propositions::quantify//.
 
 [1] But beware that propositions are passed by reference not value. Use
-//Calculus::Propositions::copy// before changing one, if you need to use it
+//Propositions::copy// before changing one, if you need to use it
 again.
 
 @ There are two senses in which it's possible to make an impossible proposition:
@@ -201,13 +201,7 @@ give a domain set for a quantifier.
 (2) More subtly, you could concatenate two propositions in which the same
 variable is used with a different meaning in each.
 
-The functions //Calculus::Propositions::is_syntactically_valid// and
-//Calculus::Variables::is_well_formed// test that (1) and (2) have not happened.
-It's because of (2) that it's important to use //Calculus::Propositions::conjoin//
-and not the simpler //Calculus::Propositions::concatenate//.
-
-To illustrate:
-= (text from Figures/conjunction.txt as REPL)
-Note that the conjunction of A and B renamed the variable |x| in B to |y|,
-so that it no longer clashed with the meaning of |x| in A. The concatenation
-did not, simply writing one after the other.
+The functions //Propositions::is_syntactically_valid// and
+//Binding::is_well_formed// test that (1) and (2) have not happened.
+It's because of (2) that it's important to use //Propositions::conjoin//
+and not the simpler //Propositions::concatenate//.

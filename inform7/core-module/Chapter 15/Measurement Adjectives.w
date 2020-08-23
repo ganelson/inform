@@ -417,8 +417,8 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 				Properties::Measurement::weak_comparison_bp(mdef->region_shape),
 				Terms::new_constant(evaluated_prop),
 				Terms::new_constant(val));
-			if (Calculus::Propositions::Checker::type_check(prop,
-				Calculus::Propositions::Checker::tc_problem_reporting(
+			if (Propositions::Checker::type_check(prop,
+				Propositions::Checker::tc_problem_reporting(
 					mdef->region_threshold_text,
 					"be giving the boundary of the definition")) == ALWAYS_MATCH) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);

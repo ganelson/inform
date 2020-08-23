@@ -25,7 +25,7 @@ their names (used as I6 tokens), and compile their routines.
 =
 noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int global_scope, int any_things) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
-	if ((prop) && (Calculus::Variables::number_free(prop) != 1)) {
+	if ((prop) && (Binding::number_free(prop) != 1)) {
 		LOG("So $P and $D\n", spec, prop);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilterQuantified),
 			"the [any ...] doesn't clearly give a description in the '...' part",
@@ -234,7 +234,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			if (Specifications::to_proposition(nft->the_filter)) {
-				Calculus::Propositions::Checker::type_check(Specifications::to_proposition(nft->the_filter), Calculus::Propositions::Checker::tc_no_problem_reporting());
+				Propositions::Checker::type_check(Specifications::to_proposition(nft->the_filter), Propositions::Checker::tc_no_problem_reporting());
 				Calculus::Deferrals::emit_test_of_proposition(
 					noun_var, Specifications::to_proposition(nft->the_filter));
 			} else

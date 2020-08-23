@@ -226,9 +226,9 @@ void PL::Files::register_file(wording F, wording FN) {
 	}
 
 	allow_exf_creations = TRUE;
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(
 		K_external_file, F);
-	Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+	Propositions::Assert::assert_true(prop, CERTAIN_CE);
 	allow_exf_creations = FALSE;
 	external_file *exf = RETRIEVE_POINTER_external_file(
 		Instances::get_connection(latest_instance));

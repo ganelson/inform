@@ -1,0 +1,10 @@
+'new unary even': ok
+'variables in << >>': valid:
+'variables in << even (x) >>': valid: x free
+'set P to << Forall x IN< kind = number (x) IN>: (x == y) ^ Exists z: (y == z) >>': p set to << ForAll x IN< kind=number(x) IN> : (x == y) ^ Exists z : (y == z) >>
+'variables in P': valid: x bound y free z bound
+'variable unused in << >>': x
+'variable unused in P': a
+'renumbering of << even (x) >>': << even(x) >>
+'renumbering of << even (z) >>': << even(x) >>
+'renumbering of << Exists z: even (z) ^ (z == y) >>': << Exists x : even(x) ^ (x == y) >>

@@ -86,7 +86,7 @@ that the resulting routine will be called |Prop_n|.
 =
 inter_name *Calculus::Deferrals::compile_deferred_description_test(parse_node *spec) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
-	if (Calculus::Propositions::contains_callings(prop)) {
+	if (Propositions::contains_callings(prop)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallDeferredDescs),
 			"'called' can't be used when testing a description",
 			"since it would make a name for something which existed only "
@@ -117,14 +117,14 @@ void Calculus::Deferrals::compile_test_of_proposition_inner(value_holster *VH,
 	parse_node *substitution, pcalc_prop *prop) {
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Compiling as test: $D\n", prop);
 
-	prop = Calculus::Propositions::copy(prop);
+	prop = Propositions::copy(prop);
 
 	if (prop == NULL) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
-	} else if (Calculus::Propositions::contains_quantifier(prop)) {
+	} else if (Propositions::contains_quantifier(prop)) {
 		@<Defer test of proposition instead@>;
 	} else {
-		if (substitution) Calculus::Variables::substitute_var_0_in(prop, substitution);
+		if (substitution) Binding::substitute_var_0_in(prop, substitution);
 		TRAVERSE_VARIABLE(pl);
 		pcalc_prop *last_pl = NULL;
 		TRAVERSE_PROPOSITION(pl, prop) last_pl = pl;
@@ -160,8 +160,8 @@ of deferral; for the sake of example, we'll suppose ours in number 19.)
 then we defer $\psi$ instead, negating the result of testing it.
 
 @<If the proposition is a negation, take care of that now@> =
-	if (Calculus::Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
-		prop = Calculus::Propositions::remove_topmost_group(prop);
+	if (Propositions::is_a_group(prop, NEGATION_OPEN_ATOM)) {
+		prop = Propositions::remove_topmost_group(prop);
 		Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); go_up = TRUE;
 	}
 
@@ -205,7 +205,7 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 		if (pl == from_pl) active = TRUE;
 		if (active) {
 			if ((bl == 0) && (pl != from_pl) &&
-				(Calculus::Propositions::implied_conjunction_between(pl_prev, pl))) {
+				(Propositions::implied_conjunction_between(pl_prev, pl))) {
 				Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree());
 				Calculus::Deferrals::ctop_recurse(VH, prop, from_pl, pl_prev);
 				Calculus::Deferrals::ctop_recurse(VH, prop, pl, to_pl);
@@ -359,13 +359,13 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 
 =
 void Calculus::Deferrals::prepare_to_retrieve_callings(OUTPUT_STREAM, pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (Calculus::Propositions::contains_callings(prop))) {
+	if ((condition_context == FALSE) && (Propositions::contains_callings(prop))) {
 		WRITE("deferred_calling_list-->26 = ");
 	}
 }
 
 int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (Calculus::Propositions::contains_callings(prop))) {
+	if ((condition_context == FALSE) && (Propositions::contains_callings(prop))) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
@@ -397,13 +397,13 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 		internal_error("VMD on non-variable");
 
 	LOG_INDENT;
-	pcalc_prop *prop = Calculus::Propositions::from_spec(matches);
+	pcalc_prop *prop = Propositions::FromSentences::from_spec(matches);
 	kind *K = Specifications::to_kind(var);
-	prop = Calculus::Propositions::concatenate(
+	prop = Propositions::concatenate(
 		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
 	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P (%u) matches $D]\n", var, K, prop);
-	if (Calculus::Propositions::Checker::type_check(prop,
-		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
+	if (Propositions::Checker::type_check(prop,
+		Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(var, prop);
@@ -550,17 +550,17 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 			"as a description value, but not 'three numbers' or 'most numbers'.");
 		Problems::issue_problem_end();
 	}
-	pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+	pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 	if (negate) {
-		prop = Calculus::Propositions::concatenate(Atoms::new(NEGATION_OPEN_ATOM), prop);
-		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
+		prop = Propositions::concatenate(Atoms::new(NEGATION_OPEN_ATOM), prop);
+		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	}
-	prop = Calculus::Propositions::concatenate(
+	prop = Propositions::concatenate(
 		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
-	if (Calculus::Propositions::Checker::type_check(prop,
-		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) return;
+	if (Propositions::Checker::type_check(prop,
+		Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) return;
 	parse_node *example = NULL;
-	if (Calculus::Variables::detect_locals(prop, &example) > 0) {
+	if (Binding::detect_locals(prop, &example) > 0) {
 		LOG("Offending proposition: $D\n", prop);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(example));
@@ -612,7 +612,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a number of things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, NUMBER_OF_DEFER, NULL_GENERAL_POINTER, NULL);
 	}
@@ -632,7 +632,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	int reason, general_pointer data, kind *K) {
 	pcalc_prop_deferral *pdef = Calculus::Deferrals::new_deferred_proposition(prop, reason);
 	pdef->defn_ref = data;
-	int with_callings = Calculus::Propositions::contains_callings(prop);
+	int with_callings = Propositions::contains_callings(prop);
 	if (with_callings) {
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
@@ -676,7 +676,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 			Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a list of things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, LIST_OF_DEFER, NULL_GENERAL_POINTER, K);
 	}
@@ -708,9 +708,9 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a random thing matching a description", spec);
-		kind *K = Calculus::Propositions::describes_kind(prop);
+		kind *K = Propositions::describes_kind(prop);
 		if ((K) && (Calculus::Deferrals::has_finite_domain(K) == FALSE))
 			@<Issue random impossible problem@>
 		else
@@ -760,7 +760,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop,
 			"a total property value for things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, TOTAL_DEFER,
@@ -783,7 +783,7 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 		Produce::up(Emit::tree());
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(
-			in, Calculus::Propositions::from_spec(spec));
+			in, Propositions::FromSentences::from_spec(spec));
 	}
 }
 
@@ -792,10 +792,10 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 =
 void Calculus::Deferrals::emit_substitution_now(parse_node *in,
 	parse_node *spec) {
-	pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
-	Calculus::Variables::substitute_var_0_in(prop, in);
-	Calculus::Propositions::Checker::type_check(prop,
-		Calculus::Propositions::Checker::tc_no_problem_reporting());
+	pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+	Binding::substitute_var_0_in(prop, in);
+	Propositions::Checker::type_check(prop,
+		Propositions::Checker::tc_no_problem_reporting());
 	int save_cck = suppress_C14CantChangeKind;
 	suppress_C14CantChangeKind = TRUE;
 	Calculus::Deferrals::emit_now_proposition(prop);
@@ -838,7 +838,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 	} else {
 		measurement_definition *mdef_found = Properties::Measurement::retrieve(prn, sign);
 		if (mdef_found) {
-			pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
+			pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
 			Calculus::Deferrals::prop_verify_descriptive(prop,
 				"an extreme case of something matching a description", spec);
 			Calculus::Deferrals::emit_call_to_deferred_desc(prop, EXTREMAL_DEFER,
@@ -895,8 +895,8 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 		pcalc_prop *domain_prop = NULL; int use_as_is = FALSE;
 		if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) use_as_is = TRUE;
 		else {
-			domain_prop = Calculus::Propositions::from_spec(spec);
-			if (Calculus::Propositions::contains_callings(domain_prop))
+			domain_prop = Propositions::FromSentences::from_spec(spec);
+			if (Propositions::contains_callings(domain_prop))
 				@<Issue called in repeat problem@>;
 		}
 
@@ -1226,14 +1226,14 @@ void Calculus::Deferrals::prop_verify_descriptive(pcalc_prop *prop, char *billin
 	if ((Wordings::empty(EW)) && (constructor->down))
 		EW = Node::get_text(constructor->down);
 
-	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
+	if (Binding::is_well_formed(prop, NULL) == FALSE)
 		internal_error("malformed proposition in description verification");
 
-	int N = Calculus::Variables::number_free(prop);
+	int N = Binding::number_free(prop);
 
 	if (N == 1)
-		Calculus::Propositions::Checker::type_check(prop,
-			Calculus::Propositions::Checker::tc_problem_reporting(EW,
+		Propositions::Checker::type_check(prop,
+			Propositions::Checker::tc_problem_reporting(EW,
 			"involve a range of objects matching a description"));
 
 	if (N > 1) {

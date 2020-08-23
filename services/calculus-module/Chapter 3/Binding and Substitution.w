@@ -1,77 +1,39 @@
-[Calculus::Variables::] Binding and Substitution.
+[Binding::] Binding and Substitution.
 
 To substitute constants into propositions in place of variables,
 and to apply quantifiers to bind any unbound variables.
 
-@ In any given proposition:
+@h Status of variables.
+In any given proposition, each of the 26 variables always satisfies exactly
+one of the following:
 
-(a) a variable is unused if it is never mentioned as, or in, any term,
-and is not the variable of any quantifier;
+(a) it is unused if it is never mentioned as, or in, any term, and is not the
+variable of any quantifier;
+(b) it is bound if it appears as the variable of any |QUANTIFIER_ATOM|;
+(c) it is free if it is used but not bound.
 
-(b) a variable is bound if it appears as the variable of any |QUANTIFIER_ATOM|;
+The following shows some examples of operations on variables:
+= (text from Figures/binding.txt as REPL)
 
-(c) a variable is free if it is used but not bound.
-
-These are mutually exclusive (no two can be true at the same time), and in
-any given proposition, each of the 26 variables is always either unused, bound
-or free.
-
-In this section we are concerned with three operations applied to propositions:
-
-(a) substitution means replacing each mention of a given variable
-with a given constant: for instance, changing $x$ to 3 throughout
-("substituting $x=3$"). This has no effect if $x$ is unused, and is
-illegal if $x$ is bound, since it could produce nonsense like "for all 3,
-3 is odd".
-
-(b) binding means adding a new quantifier to a proposition, ranging
-some variable $v$. If $v$ were unused this would be unlikely to be sensible
-(it would just make an inefficient way to test the size of the domain set),
-whereas if $v$ were already a bound variable then the result would be a
-proposition which is no longer well-formed. So binding can only be done to
-free variables.
-
-(c) renumbering means replacing each mention of a given variable $v$
-with another variable $w$. Clearly $w$ needs to be initially unused, or we
-could accidentally change "$v$ is greater than $w$" into "$w$ is greater
-than $w$". But provided $w$ is unused, the proposition's truth or otherwise
-remains unchanged.
-
-@ Propositions with free variables are vague, and we would like to get rid
-of them. It can be very difficult to guess their values, just as subtle
-human understanding seems to be needed to interpret pronouns like "it"
-(see the enormous literature on the donkey anaphora problem in
-linguistics). So we aim to translate excerpts of source text into just two
-kinds of proposition:
-
-(a) an S-proposition which has no free variables -- such as the result
-of translating "The tree is in the Courtyard" or "Every door is open";
-
-(b) an SN-proposition in which only variable 0 ($x$) is free -- such
-as the result of translating "open containers which are in lighted rooms",
-which comes out to a proposition $\phi(x)$ testing whether $x$ is one.
-
-Whole English sentences or conditions make S-propositions, but
-descriptions make SN-propositions. (By renumbering, any proposition with one
-free variable can be made into an SN-proposition.)
-
-@h Well-formedness.
-It might seem logical to have a routine which takes a proposition $\phi$
+It might seem logical to have a function which takes a proposition $\phi$
 and a variable $v$ and returns its status -- unused, free or bound. But this
 would be inefficient, since we want to work with all 26 at once, so instead
 we take a pointer to an array of |int| which needs to have (at least, but
 probably exactly) 26 entries, and on exit each entry is set to one of the
-following. In the course of doing that, it's easy to test whether variables
-are used properly -- a bound variable should occur for the first time in
-its quantification, and should not reoccur once the subexpression holding
-the quantifier has finished. We set the |valid| flag if all is well.
+following.
+
+In the course of doing that, it's easy to test whether variables are used
+properly -- a bound variable should occur for the first time in its
+quantification, and should not reoccur once the subexpression holding the
+quantifier has finished. We return |TRUE| if all is well, or |FALSE| if not,
+writing the reason why not to |err|.
 
 @d UNUSED_VST 1
 @d FREE_VST 2
 @d BOUND_VST 3
 
 =
-int Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states,
+int Binding::determine_status(pcalc_prop *prop, int *var_states,
 	text_stream *err) {
 	TRAVERSE_VARIABLE(p);
 	int j, unavailable[26], blevel = 0, valid = TRUE;
@@ -110,28 +72,28 @@ int Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states,
 @ With just a little wrapping, this gives us the test of well-formedness.
 
 =
-int Calculus::Variables::is_well_formed(pcalc_prop *prop, text_stream *err) {
+int Binding::is_well_formed(pcalc_prop *prop, text_stream *err) {
 	int var_states[26];
-	if (Calculus::Propositions::is_syntactically_valid(prop, err) == FALSE) return FALSE;
-	return Calculus::Variables::determine_status(prop, var_states, err);
+	if (Propositions::is_syntactically_valid(prop, err) == FALSE) return FALSE;
+	return Binding::determine_status(prop, var_states, err);
 }
 
 @ Occasionally we really do care only about one of the 26 variables:
 
 =
-int Calculus::Variables::status(pcalc_prop *prop, int v) {
+int Binding::status(pcalc_prop *prop, int v) {
 	int var_states[26];
 	if (v == -1) return UNUSED_VST;
-	Calculus::Variables::determine_status(prop, var_states, NULL);
+	Binding::determine_status(prop, var_states, NULL);
 	return var_states[v];
 }
 
 @ To distinguish sentences from descriptions, the following can be informative:
 
 =
-int Calculus::Variables::number_free(pcalc_prop *prop) {
+int Binding::number_free(pcalc_prop *prop) {
 	int var_states[26], j, c;
-	Calculus::Variables::determine_status(prop, var_states, NULL);
+	Binding::determine_status(prop, var_states, NULL);
 	for (j=0, c=0; j<26; j++) if (var_states[j] == FREE_VST) c++;
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "There %s %d free variable%s in $D\n",
 		(c==1)?"is":"are", c, (c==1)?"":"s", prop);
@@ -142,36 +104,40 @@ int Calculus::Variables::number_free(pcalc_prop *prop) {
 proposition:
 
 =
-int Calculus::Variables::find_unused(pcalc_prop *prop) {
+int Binding::find_unused(pcalc_prop *prop) {
 	int var_states[26], j;
-	Calculus::Variables::determine_status(prop, var_states, NULL);
+	Binding::determine_status(prop, var_states, NULL);
 	for (j=0; j<26; j++) if (var_states[j] == UNUSED_VST) return j;
 	return 25; /* the best we can do: it avoids crashes, at least... */
 }
 
-@h Renumbering.
-Another "vector operation" on variables: to renumber them throughout a
+@ Another "vector operation" on variables: to renumber them throughout a
 proposition according to a map array. If |renumber_map[j]| is $-1$, make
 no change; otherwise each instance of variable $j$ should be changed to
 this new number.
+
+In general, it is dangerous to renumber any variable to another which is
+already used in the same proposition: that way we could accidentally change
+"$v$ is greater than $w$" into "$w$ is greater than $w$", thus changing the
+meaning.
 
 Note that because |QUANTIFIER_ATOM|s store the variable being quantified
 as a term, the following changes quantification variables as well as
 predicate terms, which is as it should be.
 
 =
-void Calculus::Variables::vars_map(pcalc_prop *prop, int *renumber_map, pcalc_term *preserving) {
+pcalc_prop *Binding::vars_map(pcalc_prop *prop, int *renumber_map, pcalc_term *preserving) {
 	TRAVERSE_VARIABLE(p);
-	int j;
 	TRAVERSE_PROPOSITION(p, prop)
-		for (j=0; j<p->arity; j++) {
+		for (int j=0; j<p->arity; j++) {
 			pcalc_term *pt = &(p->terms[j]);
-			Calculus::Variables::term_map(pt, renumber_map);
+			Binding::term_map(pt, renumber_map);
 		}
-	if (preserving) Calculus::Variables::term_map(preserving, renumber_map);
+	if (preserving) Binding::term_map(preserving, renumber_map);
+	return prop;
 }
 
-void Calculus::Variables::term_map(pcalc_term *pt, int *renumber_map) {
+void Binding::term_map(pcalc_term *pt, int *renumber_map) {
 	while (pt->function) pt=&(pt->function->fn_of);
 	int nv = renumber_map[pt->variable];
 	if ((pt->variable >= 0) && (nv >= 0)) {
@@ -186,20 +152,17 @@ in numerical order -- that is, the first mentioned will be $x$, then the
 next introduced will be $y$, and so on.
 
 =
-void Calculus::Variables::renumber(pcalc_prop *prop, pcalc_term *preserving) {
+pcalc_prop *Binding::renumber(pcalc_prop *prop, pcalc_term *preserving) {
 	TRAVERSE_VARIABLE(p);
-	int j, k, renumber_map[26];
-
-	for (j=0; j<26; j++) renumber_map[j] = -1;
-
-	k = 0;
+	int renumber_map[26];
+	for (int j=0; j<26; j++) renumber_map[j] = -1;
+	int k = 0;
 	TRAVERSE_PROPOSITION(p, prop)
-		for (j=0; j<p->arity; j++) {
+		for (int j=0; j<p->arity; j++) {
 			int v = Terms::variable_underlying(&(p->terms[j]));
 			if ((v >= 0) && (renumber_map[v] == -1)) renumber_map[v] = k++;
 		}
-
-	Calculus::Variables::vars_map(prop, renumber_map, preserving);
+	return Binding::vars_map(prop, renumber_map, preserving);
 }
 
 @ This more complicated routine renumbers bound variables in one proposition
@@ -224,11 +187,11 @@ If we pass a |query| parameter which is a valid variable number, the routine
 returns its new identity when renumbered.
 
 =
-int Calculus::Variables::renumber_bound(pcalc_prop *prop, pcalc_prop *not_to_overlap, int query) {
+int Binding::renumber_bound(pcalc_prop *prop, pcalc_prop *not_to_overlap, int query) {
 	int prop_vstates[26], nto_vstates[26], renumber_map[26];
 	int j, next_unused;
-	Calculus::Variables::determine_status(prop, prop_vstates, NULL);
-	Calculus::Variables::determine_status(not_to_overlap, nto_vstates, NULL);
+	Binding::determine_status(prop, prop_vstates, NULL);
+	Binding::determine_status(not_to_overlap, nto_vstates, NULL);
 
 	for (j=0, next_unused=0; j<26; j++)
 		if ((prop_vstates[j] == BOUND_VST) && (nto_vstates[j] != UNUSED_VST)) {
@@ -236,7 +199,7 @@ int Calculus::Variables::renumber_bound(pcalc_prop *prop, pcalc_prop *not_to_ove
 			renumber_map[j] = next_unused++;
 		} else renumber_map[j] = -1;
 
-	Calculus::Variables::vars_map(prop, renumber_map, NULL);
+	Binding::vars_map(prop, renumber_map, NULL);
 	if (query == -1) return -1;
 	if (renumber_map[query] == -1) return query;
 	return renumber_map[query];
@@ -251,59 +214,62 @@ the conjunction of the two propositions had 26 variables.)
 		(!((prop_vstates[k] == UNUSED_VST) && (nto_vstates[k] == UNUSED_VST))); k++) ;
 	if (k == 26) next_unused = 25; else next_unused = k;
 
-@h Binding.
-In this routine, we look for free variables and preface the proposition
-with $\exists$ quantifiers to bind them. For instance, ${\it open}(x)$ becomes
-$\exists x: {\it open}(x)$.
+@h Getting rid of free variables.
+Propositions with free variables are vague, and Inforn tries to minimise its
+use of them. Whole verb phrases such as "the tree is in the Courtyard" can in
+general become propositions with no free variables, while descriptions such as
+"open containers which are in lighted rooms" will become propositions in which
+only variable 0, |x|, is free.
 
-We first renumber the proposition's variables from left to right, and
-then quantify in reverse order -- thus starting with the innermost free
-variable and working outwards (i.e., towards the left). Since at each
-stage we are prefacing the proposition, though, the net effect is that in
-the final proposition the previously free variables are bound in increasing
-order. For instance:
-$$ {\it in}(x, y) \quad\rightarrow\quad
-\exists y: {\it in}(x, y) \quad\rightarrow\quad
-\exists x: \exists y: {\it in}(x, y) $$
+Here we see two ways to remove a free variable from a proposition:
+= (text from Figures/binding2.txt as REPL)
+
+@ The first way is "binding". Suppose |x| is free and we do not know its
+value. We can at least put |Exists x :| at the front of the proposition, thus
+saying only "well, it's something". This does the equivalent of turning "open
+containers which are in lighted rooms" into "an open container is in a lighted
+room", by applying the existential quantifier to anything free.
 
 =
-pcalc_prop *Calculus::Variables::bind_existential(pcalc_prop *prop,
+pcalc_prop *Binding::bind_existential(pcalc_prop *prop,
 	pcalc_term *preserving) {
 	int var_states[26], j;
 
-	Calculus::Variables::renumber(prop, preserving);
-	Calculus::Variables::determine_status(prop, var_states, NULL);
+	Binding::renumber(prop, preserving);
+	Binding::determine_status(prop, var_states, NULL);
 
 	for (j=25; j>=0; j--)
 		if (var_states[j] == FREE_VST)
-			prop = Calculus::Propositions::insert_atom(prop, NULL,
+			prop = Propositions::insert_atom(prop, NULL,
 				Atoms::QUANTIFIER_new(exists_quantifier, j, 0));
 
 	return prop;
 }
 
-@h Substitution.
-In the following, we substitute term $T$ (a constant or function) in place
-of variable $v$ in the given proposition. We begin with two utility routines
-to substitute into the variable "underneath" a given term.
+@ The second way is "substitution", for use when we do know the value of the
+free variable we want to remove. We replace every mention of it with sone
+other term: but as we shall see, this is trickier than it seems.
+
+We begin with two utility routines to substitute into the variable "underneath"
+a given term.
 
 =
-int Calculus::Variables::substitute_v_in_term(pcalc_term *pt, int v, pcalc_term *t) {
+int Binding::substitute_v_in_term(pcalc_term *pt, int v, pcalc_term *t) {
 	if (pt->variable == v) { *pt = *t; return TRUE; }
-	if (pt->function) return Calculus::Variables::substitute_v_in_term(&(pt->function->fn_of), v, t);
+	if (pt->function) return Binding::substitute_v_in_term(&(pt->function->fn_of), v, t);
 	return FALSE;
 }
 
 #ifdef CORE_MODULE
-void Calculus::Variables::substitute_nothing_in_term(pcalc_term *pt, pcalc_term *t) {
+void Binding::substitute_nothing_in_term(pcalc_term *pt, pcalc_term *t) {
 	if ((pt->constant) && (Rvalues::is_nothing_object_constant(pt->constant))) { *pt = *t; return; }
-	if (pt->function) Calculus::Variables::substitute_nothing_in_term(&(pt->function->fn_of), t);
+	if (pt->function) Binding::substitute_nothing_in_term(&(pt->function->fn_of), t);
 }
 #endif
 
-void Calculus::Variables::substitute_term_in_term(pcalc_term *pt, pcalc_term *t) {
+void Binding::substitute_term_in_term(pcalc_term *pt, pcalc_term *t) {
 	if (pt->constant) { *pt = *t; return; }
-	if (pt->function) Calculus::Variables::substitute_term_in_term(&(pt->function->fn_of), t);
+	if (pt->function) Binding::substitute_term_in_term(&(pt->function->fn_of), t);
 }
 
 @ Now the main procedure. This is one of those deceptive problems where the
@@ -326,27 +292,28 @@ which would make it invalid. If that happens, we run into this:
 looks viable, and once to perform the substitution itself.
 
 =
-pcalc_prop *Calculus::Variables::substitute_term(pcalc_prop *prop, int v, pcalc_term t,
+pcalc_prop *Binding::substitute_term(pcalc_prop *prop, int v, pcalc_term t,
 	int verify_only, int *allowed, int *changed) {
 	TRAVERSE_VARIABLE(p);
 
 	if (verify_only) *allowed = TRUE;
 	if ((v<0) || (v>=26)) DISALLOW("variable substitution out of range");
-	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
+	if (Binding::is_well_formed(prop, NULL) == FALSE)
 		DISALLOW("substituting into malformed prop");
 	@<Make sure the substitution would not fail because of a circularity@>;
 	if (verify_only) return prop;
 
-	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Substituting %c = $0 in: $D\n", pcalc_vars[v], &t, prop);
+	LOGIF(PREDICATE_CALCULUS_WORKINGS,
+		"Substituting %c = $0 in: $D\n", pcalc_vars[v], &t, prop);
 
 	TRAVERSE_PROPOSITION(p, prop) {
 		int i;
 		for (i=0; i<p->arity; i++)
-			if (Calculus::Variables::substitute_v_in_term(&(p->terms[i]), v, &t))
+			if (Binding::substitute_v_in_term(&(p->terms[i]), v, &t))
 				*changed = TRUE;
 	}
 
-	if (Calculus::Variables::is_well_formed(prop, NULL) == FALSE)
+	if (Binding::is_well_formed(prop, NULL) == FALSE)
 		internal_error("substitution made malformed prop");
 	return prop;
 }
@@ -356,7 +323,6 @@ because $T$ itself depends on $v$. There are two ways this can happen: first,
 $T$ might be directly a function of $v$ itself, i.e., the VUT might be $v$;
 second, $T$ might be a function of some variable $w$ which, by being quantified
 after $v$, is allowed to depend on it, in some way that we can't determine.
-(For examples of this, see "Simplifications".)
 
 The general rule, then, is that $T$ can contain only constants or variables
 which are free within and after the scope of $v$. (If $w$ is bound
@@ -366,7 +332,7 @@ which isn't well-formed -- $w$ would occur before its quantifier.) We can
 check this condition pretty easily, it turns out:
 
 @<Make sure the substitution would not fail because of a circularity@> =
-	if ((verify_only == FALSE) && (Calculus::Variables::status(prop, v) == BOUND_VST))
+	if ((verify_only == FALSE) && (Binding::status(prop, v) == BOUND_VST))
 		DISALLOW("substituting bound variable");
 	int vut = Terms::variable_underlying(&t);
 	if (vut >= 0) {
@@ -395,29 +361,28 @@ to assume that the set of objects is the domain of $x$. (We return |NULL|
 here, but that's the assumption which the caller will have to make.)
 
 =
-kind *Calculus::Variables::kind_of_variable_0(pcalc_prop *prop) {
+kind *Binding::kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop)
-		if ((p->element == KIND_ATOM) && (p->terms[0].variable == 0)) {
-			kind *K = p->assert_kind;
-			if (K) return K;
-		}
+		if ((p->element == KIND_ATOM) && (p->terms[0].variable == 0))
+			if (p->assert_kind)
+				return p->assert_kind;
 	return NULL;
 }
 
 @ And a quick way to substitute it:
 
 =
-pcalc_prop *Calculus::Variables::substitute_var_0_in(pcalc_prop *prop, parse_node *spec) {
+pcalc_prop *Binding::substitute_var_0_in(pcalc_prop *prop, parse_node *spec) {
 	int bogus;
-	return Calculus::Variables::substitute_term(prop, 0, Terms::new_constant(spec), FALSE, NULL, &bogus);
+	return Binding::substitute_term(prop, 0, Terms::new_constant(spec), FALSE, NULL, &bogus);
 }
 
 @ If we are willing to work a little harder:
 
 =
 #ifdef CORE_MODULE
-kind *Calculus::Variables::infer_kind_of_variable_0(pcalc_prop *prop) {
+kind *Binding::infer_kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop) {
 		if ((p->element == KIND_ATOM) && (p->terms[0].variable == 0)) {
@@ -447,27 +412,27 @@ since the time with which the proposition is concerned.
 
 =
 #ifdef CORE_MODULE
-int Calculus::Variables::detect_locals(pcalc_prop *prop, parse_node **example) {
+int Binding::detect_locals(pcalc_prop *prop, parse_node **example) {
 	TRAVERSE_VARIABLE(pl);
 	int i, locals_count = 0;
 
 	TRAVERSE_PROPOSITION(pl, prop)
 		for (i=0; i<pl->arity; i++)
 			locals_count =
-				Calculus::Variables::detect_local_in_term(&(pl->terms[i]), locals_count, example);
+				Binding::detect_local_in_term(&(pl->terms[i]), locals_count, example);
 
 	return locals_count;
 }
 
-int Calculus::Variables::detect_local_in_term(pcalc_term *pt, int locals_count, parse_node **example) {
+int Binding::detect_local_in_term(pcalc_term *pt, int locals_count, parse_node **example) {
 	if (pt->function)
-		locals_count += Calculus::Variables::detect_local_in_term(&(pt->function->fn_of), locals_count, example);
+		locals_count += Binding::detect_local_in_term(&(pt->function->fn_of), locals_count, example);
 	if (pt->constant)
-		locals_count += Calculus::Variables::detect_local_in_spec(pt->constant, locals_count, example);
+		locals_count += Binding::detect_local_in_spec(pt->constant, locals_count, example);
 	return locals_count;
 }
 
-int Calculus::Variables::detect_local_in_spec(parse_node *spec, int locals_count, parse_node **example) {
+int Binding::detect_local_in_spec(parse_node *spec, int locals_count, parse_node **example) {
 	if (spec == NULL) return locals_count;
 	if (Lvalues::get_storage_form(spec) == LOCAL_VARIABLE_NT) {
 		if ((example) && (*example == NULL)) *example = spec;
@@ -486,12 +451,12 @@ int Calculus::Variables::detect_local_in_spec(parse_node *spec, int locals_count
 			parse_node *param;
 			LOOP_THROUGH_TOKENS_PARSED_IN_INV(inv, param)
 				locals_count +=
-					Calculus::Variables::detect_local_in_spec(param, locals_count, example);
+					Binding::detect_local_in_spec(param, locals_count, example);
 		}
 	}
 	for (parse_node *p = spec->down; p; p = p->next)
 		locals_count +=
-			Calculus::Variables::detect_local_in_spec(p, locals_count, example);
+			Binding::detect_local_in_spec(p, locals_count, example);
 	return locals_count;
 }
 #endif

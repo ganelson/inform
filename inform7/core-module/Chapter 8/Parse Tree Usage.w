@@ -13,7 +13,7 @@ void ParseTreeUsage::copy_annotations(parse_node_annotation *to, parse_node_anno
 	if (from->annotation_id == proposition_ANNOT)
 		to->annotation_pointer =
 			STORE_POINTER_pcalc_prop(
-				Calculus::Propositions::copy(
+				Propositions::copy(
 					RETRIEVE_POINTER_pcalc_prop(
 						from->annotation_pointer)));
 }

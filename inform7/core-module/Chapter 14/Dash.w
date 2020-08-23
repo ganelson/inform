@@ -2878,14 +2878,14 @@ delegate that to "Type Check Propositions.w".
 	if (Descriptions::is_complex(p)) desired_to = "be a description";
 
 	if (desired_to) {
-		if (Calculus::Propositions::Checker::type_check(Specifications::to_proposition(p),
-			Calculus::Propositions::Checker::tc_no_problem_reporting())
+		if (Propositions::Checker::type_check(Specifications::to_proposition(p),
+			Propositions::Checker::tc_no_problem_reporting())
 			== NEVER_MATCH) {
 			LOGIF(MATCHING, "(5.c) on $P failed proposition type-checking: $D\n",
 				p, Specifications::to_proposition(p));
 			THIS_IS_A_GROSS_PROBLEM;
-			Calculus::Propositions::Checker::type_check(Specifications::to_proposition(p),
-				Calculus::Propositions::Checker::tc_problem_reporting(Node::get_text(p), desired_to));
+			Propositions::Checker::type_check(Specifications::to_proposition(p),
+				Propositions::Checker::tc_problem_reporting(Node::get_text(p), desired_to));
 			return NEVER_MATCH;
 		} else { LOG_DASH("(5.c) Okay!"); }
 	}
@@ -3373,7 +3373,7 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 
 	if (Specifications::is_description(spec)) {
 		pcalc_prop *prop = Descriptions::to_proposition(spec);
-		if ((prop) && (Calculus::Variables::number_free(prop) != 1)) return FALSE;
+		if ((prop) && (Binding::number_free(prop) != 1)) return FALSE;
 	}
 
 	if (ap_validation_suspended) return TRUE;

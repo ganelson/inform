@@ -1,0 +1,16 @@
+'new unary even': ok
+'<< NOT> >> is syntactically valid': false - too many close groups
+'<< Exists x >> is syntactically valid': true
+'<< ForAll x >> is syntactically valid': false - ends without domain of final quantifier
+'<< ForAll x IN< kind = number (x) IN>: even (x) >> is syntactically valid': true
+'set A to << Exists x >>': a set to << Exists x >>
+'set B to << Exists x: even (x) >>': b set to << Exists x : even(x) >>
+'A concatenate B': << Exists x : Exists x : even(x) >>
+'A conjoin B': << Exists x : Exists y : even(y) >>
+'A concatenate B is syntactically valid': true
+'A conjoin B is syntactically valid': true
+'A concatenate B is well-formed': false - x used outside its binding
+'A conjoin B is well-formed': true
+'set P to << Forall x IN< kind = number (x) IN>: even (x) >>': p set to << ForAll x IN< kind=number(x) IN> : even(x) >>
+'copy of P': << ForAll x IN< kind=number(x) IN> : even(x) >>
+'negation of P': << NOT< ForAll x IN< kind=number(x) IN> : even(x) NOT> >>

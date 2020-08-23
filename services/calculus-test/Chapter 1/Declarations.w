@@ -111,20 +111,37 @@ void Declarations::parse(parse_node *p) {
 	term <term> |                              ==> @<Show term@>
 	constant underlying <term> |               ==> @<Show const underlying@>
 	variable underlying <term> |               ==> @<Show var underlying@>
+	variable unused in <evaluation> |          ==> @<Show var unused@>
+	variables in <evaluation> |                ==> @<Show variable status@>
 	<evaluation> |                             ==> @<Show result@>
 	<test> |                                   ==> @<Show result of test@>
 	...                                        ==> @<Fail with error@>
 
 <evaluation> ::=
 	( <evaluation> ) |                         ==> { pass 1 }
-	<evaluation> concatenate <evaluation> |    ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
-	<evaluation> conjoin <evaluation> |        ==> { -, Calculus::Propositions::conjoin(RP[1], RP[2]) }
-	<repl-variable> |                          ==> { -, Calculus::Propositions::copy(((repl_var *) RP[1])->val) }
+	<evaluation> concatenate <evaluation> |    ==> { -, Propositions::concatenate(RP[1], RP[2]) }
+	<evaluation> conjoin <evaluation> |        ==> { -, Propositions::conjoin(RP[1], RP[2]) }
+	copy of <evaluation> |                     ==> { -, Propositions::copy(RP[1]) }
+	negation of <evaluation> |                 ==> { -, Propositions::negate(RP[1]) }
+	unnegation of <evaluation> |               ==> { -, Propositions::unnegate(RP[1]) }
+	renumbering of <evaluation> |              ==> { -, Binding::renumber(RP[1], NULL) }
+	binding of <evaluation> |                  ==> { -, Binding::bind_existential(RP[1], NULL) }
+	substitution of <term> = <term> in <evaluation> | ==> @<Substitution@>
+	insert <evaluation> at <cardinal-number> in <evaluation> | ==> @<Insert@>
+	delete <cardinal-number> from <evaluation> | ==> @<Delete@>
+	remove universal quantifier from <evaluation> |   ==> { -, Propositions::trim_universal_quantifier(RP[1]) }
+	remove close domain from <evaluation> |    ==> { -, Propositions::remove_final_close_domain(RP[1], NULL) }
+	<repl-variable> |                          ==> { -, Propositions::copy(((repl_var *) RP[1])->val) }
 	<proposition>                              ==> { pass 1 }
 
 <test> ::=
-	<evaluation> is syntactically valid |      ==> { Calculus::Propositions::is_syntactically_valid(RP[1], test_err), - }
-	<evaluation> is well-formed                ==> { Calculus::Variables::is_well_formed(RP[1], test_err), - }
+	<evaluation> is syntactically valid |      ==> { Propositions::is_syntactically_valid(RP[1], test_err), - }
+	<evaluation> is well-formed  |             ==> { Binding::is_well_formed(RP[1], test_err), - }
+	<evaluation> is complex |                  ==> { Propositions::is_complex(RP[1]), - }
+	<evaluation> contains relation |           ==> { Propositions::contains_binary_predicate(RP[1]), - }
+	<evaluation> contains quantifier |         ==> { Propositions::contains_quantifier(RP[1]), - }
+	<evaluation> contains adjective |          ==> { Propositions::contains_adjective(RP[1]), - }
+	<evaluation> is a group                    ==> { Propositions::is_a_group(RP[1], NEGATION_OPEN_ATOM), - }
 
 <proposition> ::=
 	<< <atoms> >> |              ==> { pass 1 }
@@ -132,10 +149,10 @@ void Declarations::parse(parse_node *p) {
 	<< >>                                      ==> { -, NULL }
 
 <atoms> ::=
-	<quantification> \: <atoms> |      ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
+	<quantification> \: <atoms> |      ==> { -, Propositions::concatenate(RP[1], RP[2]) }
 	<quantification> in< <atoms> in> \: <atoms> |  ==> @<Make domain@>;
-	not< <atoms> not> |                ==> { -, Calculus::Propositions::negate(RP[1]) }
-	<atomic-proposition> \^ <atoms> |  ==> { -, Calculus::Propositions::concatenate(RP[1], RP[2]) }
+	not< <atoms> not> |                ==> { -, Propositions::negate(RP[1]) }
+	<atomic-proposition> \^ <atoms> |  ==> { -, Propositions::concatenate(RP[1], RP[2]) }
 	<atomic-proposition>                             ==> { pass 1 }
 
 <atomic-proposition> ::=
@@ -158,7 +175,8 @@ void Declarations::parse(parse_node *p) {
 <term> ::=
 	<pcvar> |                                  ==> { -, Declarations::stash(Terms::new_variable(R[1])) }
 	<cardinal-number> |                        ==> { -, Declarations::stash(Terms::new_constant(Declarations::number_to_value(W, R[1]))) }
-	<named-function> ( <term> )                ==> { -, Declarations::stash(Terms::new_function(((named_function *) RP[1])->bp, *((pcalc_term *) RP[2]), ((named_function *) RP[1])->side)) }
+	<named-function> ( <term> ) |              ==> { -, Declarations::stash(Terms::new_function(((named_function *) RP[1])->bp, *((pcalc_term *) RP[2]), ((named_function *) RP[1])->side)) }
+	first cited in <evaluation>                ==> { -, Declarations::stash(Propositions::get_first_cited_term(RP[1])) }
 
 <quantification> ::=
 	<quantifier> <pcvar>                       ==> { -, Atoms::QUANTIFIER_new(RP[1], R[2], R[1]) }
@@ -186,8 +204,27 @@ void Declarations::parse(parse_node *p) {
 	y |                                        ==> { 1, - }
 	z                                          ==> { 2, - }
 
+@<Substitution@> =
+	pcalc_term *V = RP[1];
+	pcalc_term *T = RP[2];
+	pcalc_prop *P = RP[3];
+	int bogus = 0;
+	==> { -, Binding::substitute_term(P, V->variable, *T, FALSE, &bogus, &bogus) }
+
+@<Insert@> =
+	pcalc_prop *P = RP[3];
+	pcalc_prop *pos = NULL;
+	for (int i=0; i<R[2]; i++) pos = (pos == NULL)?P:(pos->next);
+	==> { -, Propositions::insert_atom(P, pos, RP[1]) }
+
+@<Delete@> =
+	pcalc_prop *P = RP[2];
+	pcalc_prop *pos = NULL;
+	for (int i=0; i<R[1]; i++) pos = (pos == NULL)?P:(pos->next);
+	==> { -, Propositions::delete_atom(P, pos) }
+
 @<Make domain@> =
-	==> { -, Calculus::Propositions::quantify_using(RP[1], RP[2], RP[3]) }
+	==> { -, Propositions::quantify_using(RP[1], RP[2], RP[3]) }
 
 @<Create new unary@> =
 	Adjectives::declare(GET_RW(<declaration-line>, 1), NULL);
@@ -203,7 +240,7 @@ void Declarations::parse(parse_node *p) {
 	repl_var *rv = RP[1];
 	rv->val = P;
 	PRINT("'%<W': %W set to ", W, rv->name);
-	Calculus::Propositions::write(STDOUT, P);
+	Propositions::write(STDOUT, P);
 	PRINT("\n");
 
 @<Show term@> =
@@ -226,10 +263,17 @@ void Declarations::parse(parse_node *p) {
 	if (v < 0) PRINT("--"); else PRINT("%c", pcalc_vars[v]);
 	PRINT("\n");
 
+@<Show var unused@> =
+	pcalc_prop *P = RP[1];
+	PRINT("'%<W': ", W);
+	int v = Binding::find_unused(P);
+	if (v < 0) PRINT("--"); else PRINT("%c", pcalc_vars[v]);
+	PRINT("\n");
+
 @<Show result@> =
 	pcalc_prop *P = RP[1];
 	PRINT("'%<W': ", W);
-	Calculus::Propositions::write(STDOUT, P);
+	Propositions::write(STDOUT, P);
 	PRINT("\n");
 
 @<Show result of test@> =
@@ -239,6 +283,23 @@ void Declarations::parse(parse_node *p) {
 		if (Str::len(test_err) > 0) PRINT(" - %S", test_err);
 	}
 	Str::clear(test_err);
+	PRINT("\n");
+
+@<Show variable status@> =
+	int var_states[26];
+	TEMPORARY_TEXT(err)
+	int happy = Binding::determine_status(RP[1], var_states, err);
+	PRINT("'%<W':", W);
+	if (happy) {
+		PRINT(" valid:");
+		for (int v=0; v<26; v++) {
+			if (var_states[v] == FREE_VST) PRINT(" %c free", pcalc_vars[v]);
+			if (var_states[v] == BOUND_VST) PRINT(" %c bound", pcalc_vars[v]);
+		}
+	} else {
+		PRINT(" invalid: %S", err);
+	}
+	DISCARD_TEXT(err)
 	PRINT("\n");
 
 @<Fail with error@> =

@@ -145,8 +145,8 @@ void Relations::new(binary_predicate *bp,
 		Kinds::RunTime::ensure_basic_heap_present();
 	} else {
 		if (provide_prn)
-			Calculus::Propositions::Assert::assert_true_about(
-				Calculus::Propositions::Abstract::to_provide_property(prn), storage_infs, prevailing_mood);
+			Propositions::Assert::assert_true_about(
+				Propositions::Abstract::to_provide_property(prn), storage_infs, prevailing_mood);
 		@<Add in the reducing functions@>;
 	}
 

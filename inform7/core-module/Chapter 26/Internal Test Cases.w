@@ -220,14 +220,14 @@ void InternalTests::end_internal_reporting(void) {
 	}
 	if (p) {
 		prop = Specifications::to_proposition(p);
-		tc = Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
+		tc = Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 	}
 	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
 	if (p == NULL) LOG("Failed: not a condition");
 	else {
 		LOG("$D\n", prop);
 		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
-		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_problem_logging());
+		Propositions::Checker::type_check(prop, Propositions::Checker::tc_problem_logging());
 	}
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
 
@@ -305,14 +305,14 @@ void InternalTests::emit_showme(parse_node *spec) {
 	}
 	if (p) {
 		prop = Specifications::to_proposition(p);
-		tc = Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
+		tc = Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 	}
 	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
 	if (p == NULL) LOG("Failed: not a condition");
 	else {
 		LOG("$D\n", prop);
 		if (tc == FALSE) LOG("Failed: proposition would not type-check\n");
-		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_problem_logging());
+		Propositions::Checker::type_check(prop, Propositions::Checker::tc_problem_logging());
 	}
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;
 

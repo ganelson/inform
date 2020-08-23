@@ -1,4 +1,4 @@
-[Calculus::Propositions::Assert::] Assert Propositions.
+[Propositions::Assert::] Assert Propositions.
 
 To declare that a given proposition is a true statement about the
 state of the world when play begins.
@@ -39,8 +39,8 @@ declared as literals in the source text: there is no need to analyse their
 meaning.
 
 To build or change the model, we assert that propositions about it are true,
-using |Calculus::Propositions::Assert::assert_true| or
-|Calculus::Propositions::Assert::assert_true_about|. This is the only way to
+using |Propositions::Assert::assert_true| or
+|Propositions::Assert::assert_true_about|. This is the only way to
 create kinds, instances, global variables, and constant values, and also the
 only way to attach properties to objects, to set property values or
 the kind of a given object or the value of a global variable, or to declare
@@ -53,8 +53,8 @@ not to attach scent to anything or to relate any objects by admiring. The
 model world would then not have changed at all.) So creating new properties
 and new relations is not done by asserting propositions.
 
-@ |Calculus::Propositions::Assert::assert_true| asserts propositions in which all variables are
-bound (or which have no variables); |Calculus::Propositions::Assert::assert_true_about| asserts
+@ |Propositions::Assert::assert_true| asserts propositions in which all variables are
+bound (or which have no variables); |Propositions::Assert::assert_true_about| asserts
 propositions in which $x$ is free but all other variables are bound, and
 substitutes either an object $O$ or a value $V$ into $x$ before asserting.
 These two procedures are the entire API, so to speak, for growing or changing
@@ -63,8 +63,8 @@ which takes assertion sentences in the source text and
 converts them into a series of propositions which it would like to make true.
 
 Either way those requests come in, they all end up in the central
-|Calculus::Propositions::Assert::prop_true_in_model| procedure, one of the most important choke points within
-Inform. |Calculus::Propositions::Assert::prop_true_in_model| and its delegates -- routines to assert the
+|Propositions::Assert::prop_true_in_model| procedure, one of the most important choke points within
+Inform. |Propositions::Assert::prop_true_in_model| and its delegates -- routines to assert the
 truth of various adjectives or relations -- are allowed to call routines such
 as |Instances::set_kind| and |Instances::new| which are forbidden for use in the
 rest of Inform. These are guarded with the following macro, to ensure that
@@ -75,19 +75,19 @@ we don't accidentally break this rule:
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
 = (early code)
-int ptim_recursion_depth = 0; /* depth of recursion of |Calculus::Propositions::Assert::prop_true_in_model| */
+int ptim_recursion_depth = 0; /* depth of recursion of |Propositions::Assert::prop_true_in_model| */
 
 @h Entrance.
 This first entrance is a mere alias for the second.
 
 =
-void Calculus::Propositions::Assert::assert_true(pcalc_prop *prop, int certitude) {
-	Calculus::Propositions::Assert::prop_true_in_world_model_inner(prop, NULL, certitude);
+void Propositions::Assert::assert_true(pcalc_prop *prop, int certitude) {
+	Propositions::Assert::prop_true_in_world_model_inner(prop, NULL, certitude);
 }
 
-void Calculus::Propositions::Assert::assert_true_about(pcalc_prop *prop, inference_subject *infs,
+void Propositions::Assert::assert_true_about(pcalc_prop *prop, inference_subject *infs,
 	int certitude) {
-	Calculus::Propositions::Assert::prop_true_in_world_model_inner(prop, infs, certitude);
+	Propositions::Assert::prop_true_in_world_model_inner(prop, infs, certitude);
 }
 
 @ If we are working along a proposition and reach, say, $door(x)$, we
@@ -106,11 +106,11 @@ parse_node *last_couldnt_assert_at = NULL;
 
 @ The second entrance, then, keeps track of the recursion depth but also
 ensures that the identification slate is always correct, stacking them
-so that an inner |Calculus::Propositions::Assert::prop_true_in_model| has an independent slate from an outer
+so that an inner |Propositions::Assert::prop_true_in_model| has an independent slate from an outer
 one.
 
 =
-void Calculus::Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject *subject,
+void Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject *subject,
 	int certainty) {
 	inference_subject **saved_interpretation_as_infs = current_interpretation_as_infs;
 	parse_node **saved_interpretation_as_spec = current_interpretation_as_spec;
@@ -122,7 +122,7 @@ void Calculus::Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *
 
 	ptim_recursion_depth++;
 
-	Calculus::Propositions::Assert::prop_true_in_model(prop);
+	Propositions::Assert::prop_true_in_model(prop);
 
 	ptim_recursion_depth--;
 
@@ -141,7 +141,7 @@ been supplied; $x$ of course is variable number 0.
 	current_interpretation_as_infs = ciawo; current_interpretation_as_spec = ciats;
 
 @h Main procedure.
-As can be seen, |Calculus::Propositions::Assert::prop_true_in_model| is a simple procedure. After a little
+As can be seen, |Propositions::Assert::prop_true_in_model| is a simple procedure. After a little
 fuss to check that everything is set up right, we simply run through the
 proposition one atom at a time.
 
@@ -159,10 +159,10 @@ That means we can simply assert each atom in turn, with a parity depending on
 its nesting in negation brackets, which is nice and easy to write:
 
 =
-void Calculus::Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
+void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
 	if (prop == NULL) return;
 	@<Record the proposition in the debugging log@>;
-	if (Calculus::Propositions::contains_nonexistence_quantifier(prop))
+	if (Propositions::contains_nonexistence_quantifier(prop))
 		@<Issue a problem message explaining that the proposition isn't exact enough@>;
 	@<Typecheck the proposition, in case this has not already been done@>;
 	@<Check the identification slate against variable usage in the proposition@>;
@@ -237,8 +237,8 @@ in any case, so it doesn't matter that we wouldn't know what text to use in them
 @<Typecheck the proposition, in case this has not already been done@> =
 	wording W = EMPTY_WORDING;
 	if (current_sentence) W = Node::get_text(current_sentence);
-	if (Calculus::Propositions::Checker::type_check(prop,
-			Calculus::Propositions::Checker::tc_problem_reporting(W, "be asserting something"))
+	if (Propositions::Checker::type_check(prop,
+			Propositions::Checker::tc_problem_reporting(W, "be asserting something"))
 		!= ALWAYS_MATCH)
 		return;
 
@@ -255,7 +255,7 @@ variables, and no others.
 
 @<Check the identification slate against variable usage in the proposition@> =
 	int var_states[26];
-	int valid = Calculus::Variables::determine_status(prop, var_states, NULL);
+	int valid = Binding::determine_status(prop, var_states, NULL);
 	if (valid == FALSE) internal_error("tried to assert malformed proposition");
 	for (int i=0; i<26; i++) {
 		int set = FALSE;
@@ -355,7 +355,7 @@ through here, but it isn't exactly an everyday sentence.
 		return;
 	}
 
-	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (ox) Instances::set_kind(ox, pl->assert_kind);
 	else {
@@ -378,7 +378,7 @@ we're dealing with a backdrop. So we play dumb.
 		return;
 	}
 	#ifdef IF_MODULE
-	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	PL::Backdrops::infer_presence_everywhere(ox);
 	#endif
@@ -386,7 +386,7 @@ we're dealing with a backdrop. So we play dumb.
 @ NOWHERE is similar:
 
 @<Assert the truth or falsity of a NOWHERE atom@> =
-	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
@@ -410,7 +410,7 @@ will be a room and what won't. So we record a special inference and put the
 problem aside for now.
 
 @<Assert the truth or falsity of a HERE atom@> =
-	inference_subject *subj = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
@@ -441,8 +441,8 @@ success flag.
 	adjective *aph = UnaryPredicates::get_adj(tr);
 	int parity = (now_negated)?FALSE:TRUE, found;
 	if (UnaryPredicates::get_parity(tr) == FALSE) parity = (parity)?FALSE:TRUE;
-	inference_subject *ox = Calculus::Propositions::Assert::subject_of_term(pl->terms[0]);
-	parse_node *ots = Calculus::Propositions::Assert::spec_of_term(pl->terms[0]);
+	inference_subject *ox = Propositions::Assert::subject_of_term(pl->terms[0]);
+	parse_node *ots = Propositions::Assert::spec_of_term(pl->terms[0]);
 
 	kind *domain_of_definition = InferenceSubjects::domain(ox);
 	if (domain_of_definition == NULL) {
@@ -518,8 +518,8 @@ these kind atoms.
 
 	@<Determine the BP and terms to be asserted@>;
 
-	parse_node *spec0 = Calculus::Propositions::Assert::spec_of_term(pt0), *spec1 = Calculus::Propositions::Assert::spec_of_term(pt1);
-	inference_subject *subj0 = Calculus::Propositions::Assert::subject_of_term(pt0), *subj1 = Calculus::Propositions::Assert::subject_of_term(pt1);
+	parse_node *spec0 = Propositions::Assert::spec_of_term(pt0), *spec1 = Propositions::Assert::spec_of_term(pt1);
+	inference_subject *subj0 = Propositions::Assert::subject_of_term(pt0), *subj1 = Propositions::Assert::subject_of_term(pt1);
 	if ((subj0) && (spec0 == NULL)) spec0 = InferenceSubjects::as_constant(subj0);
 	if ((subj1) && (spec1 == NULL)) spec1 = InferenceSubjects::as_constant(subj1);
 
@@ -528,8 +528,8 @@ these kind atoms.
 	#endif
 		kind *K0 = BinaryPredicates::term_kind(bp, 0);
 		kind *K1 = BinaryPredicates::term_kind(bp, 1);
-		if (Kinds::Behaviour::is_subkind_of_object(K0)) Calculus::Propositions::Assert::cautiously_set_kind(subj0, K0);
-		if (Kinds::Behaviour::is_subkind_of_object(K1)) Calculus::Propositions::Assert::cautiously_set_kind(subj1, K1);
+		if (Kinds::Behaviour::is_subkind_of_object(K0)) Propositions::Assert::cautiously_set_kind(subj0, K0);
+		if (Kinds::Behaviour::is_subkind_of_object(K1)) Propositions::Assert::cautiously_set_kind(subj1, K1);
 	#ifdef IF_MODULE
 	}
 	#endif
@@ -599,7 +599,7 @@ things by default when we complete the model world anyway; so there is no
 need to risk setting the kind here at this stage.
 
 =
-void Calculus::Propositions::Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
+void Propositions::Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
 	if ((inst == NULL) || (k == NULL)) return;
 	#ifdef IF_MODULE
 	if (Kinds::eq(k, K_thing)) return;
@@ -623,7 +623,7 @@ and won't even try. We can evaluate a variable using the interpretation
 slate -- that was its whole purpose. So the only case left is a constant:
 
 =
-parse_node *Calculus::Propositions::Assert::spec_of_term(pcalc_term pt) {
+parse_node *Propositions::Assert::spec_of_term(pcalc_term pt) {
 	if (pt.function) return NULL;
 	if (pt.variable >= 0) return current_interpretation_as_spec[pt.variable];
 	return pt.constant;
@@ -643,7 +643,7 @@ type with a problem message. In practice the A-parser gets there first,
 but just in case.
 
 =
-inference_subject *Calculus::Propositions::Assert::subject_of_term(pcalc_term pt) {
+inference_subject *Propositions::Assert::subject_of_term(pcalc_term pt) {
 	if (pt.function) return NULL;
 	if (pt.variable >= 0) return current_interpretation_as_infs[pt.variable];
 
@@ -674,7 +674,7 @@ of a given inference subject at the current stage of the world model. (This is
 necessary for the implications code to work.)
 
 =
-int Calculus::Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
+int Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {
@@ -700,8 +700,8 @@ int Calculus::Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 @ And the actual test:
 
 =
-int Calculus::Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subject *about) {
-	if (Calculus::Propositions::Assert::testable_at_compile_time(prop) == FALSE) return NOT_APPLICABLE;
+int Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subject *about) {
+	if (Propositions::Assert::testable_at_compile_time(prop) == FALSE) return NOT_APPLICABLE;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {

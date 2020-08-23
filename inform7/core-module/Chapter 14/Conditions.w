@@ -240,7 +240,7 @@ int Conditions::count(parse_node *spec) {
 		case LOGICAL_TENSE_NT:
 			return Conditions::count(spec->down);
 		case TEST_PROPOSITION_NT:
-			return Calculus::Propositions::length(Specifications::to_proposition(spec));
+			return Propositions::length(Specifications::to_proposition(spec));
 		case TEST_PHRASE_OPTION_NT:
 		case TEST_VALUE_NT:
 			return 1;

@@ -1,0 +1,30 @@
+new unary even.
+new binary sees(none, none).
+
+<< >> is syntactically valid.
+<< even(x) >> is syntactically valid.
+<< kind = number(x) ^ even(x) >> is syntactically valid.
+<< sees(4, 10) >> is syntactically valid.
+<< (4 == 10) >> is syntactically valid.
+<< (x == 10) >> is syntactically valid.
+<< (10 == x) >> is syntactically valid.
+<< (y == x) >> is syntactically valid.
+<< NOT< kind = number(x) ^ even(x) NOT> >> is syntactically valid.
+<< Exists x : even(x) >> is syntactically valid.
+<< NOT> >> is syntactically valid.
+<< Exists x >> is syntactically valid.
+<< ForAll x >> is syntactically valid.
+<< ForAll x IN< kind = number(x) IN> : even(x) >> is syntactically valid.
+<< NOT< ^ NOT> ^ NOT> ^ NOT< ^ even(x) >> is syntactically valid.
+<< NOT< ^ NOT< ^ even(x) >> is syntactically valid.
+<< NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT<
+^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^ NOT< ^
+NOT< ^ NOT< ^ NOT< ^ even(x) >> is syntactically valid.

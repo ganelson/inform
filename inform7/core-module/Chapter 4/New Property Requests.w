@@ -361,14 +361,14 @@ differently as a result.
 	if (count <= 2) prn = Properties::EitherOr::obtain(FW, owner_infs);
 	else prn = Properties::Conditions::new(owner_infs, CNW, the_list,
 		&already_created_instances);
-	Calculus::Propositions::Assert::assert_true_about(
-		Calculus::Propositions::Abstract::to_provide_property(prn),
+	Propositions::Assert::assert_true_about(
+		Propositions::Abstract::to_provide_property(prn),
 		owner_infs, prevailing_mood);
 
 @<Make the second option an either/or property which negates the first@> =
 	property *prnbar = Properties::EitherOr::obtain(SW, owner_infs);
-	Calculus::Propositions::Assert::assert_true_about(
-		Calculus::Propositions::Abstract::to_provide_property(prnbar),
+	Propositions::Assert::assert_true_about(
+		Propositions::Abstract::to_provide_property(prnbar),
 		owner_infs, prevailing_mood);
 	Properties::EitherOr::make_negations(prn, prnbar);
 
@@ -413,8 +413,8 @@ or sky blue pink".
 			PW = Node::get_text(option);
 		@<Disallow this option name if it clashes with something non-adjectival@>;
 		@<Disallow this option name if it clashes with an either-or@>;
-		pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(cnd_kind, PW);
-		Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+		pcalc_prop *prop = Propositions::Abstract::to_create_something(cnd_kind, PW);
+		Propositions::Assert::assert_true(prop, prevailing_mood);
 	}
 
 @ The interesting thing here is that we do allow name-clashes with either/or

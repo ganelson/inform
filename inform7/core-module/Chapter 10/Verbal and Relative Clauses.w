@@ -370,11 +370,11 @@ using a tense other than the present, and all is well.
 		explicit_negation = TRUE; pass = FALSE;
 	}
 	spec = Conditions::new_TEST_PROPOSITION(
-		Calculus::Propositions::FromSentences::S_subtree(TRUE, W, A, B, subj, pass));
+		Propositions::FromSentences::S_subtree(TRUE, W, A, B, subj, pass));
 	Node::set_subject_term(spec, subj);
 	if (Wordings::nonempty(W)) Node::set_text(spec, W);
 	if (VerbUsages::get_tense_used(vu) != IS_TENSE) {
-		if (Calculus::Variables::detect_locals(Specifications::to_proposition(spec), NULL) > 0)
+		if (Binding::detect_locals(Specifications::to_proposition(spec), NULL) > 0)
 			@<Issue a problem for referring to temporary values at a time when they did not exist@>;
 		spec = Conditions::attach_tense(spec, VerbUsages::get_tense_used(vu));
 	}
@@ -396,7 +396,7 @@ using a tense other than the present, and all is well.
 
 @<Convert an SN subtree@> =
 	spec = Descriptions::from_proposition(
-		Calculus::Propositions::FromSentences::S_subtree(FALSE, W, A, B, subj, verb_phrase_negated), W);
+		Propositions::FromSentences::S_subtree(FALSE, W, A, B, subj, verb_phrase_negated), W);
 	Node::set_subject_term(spec, subj);
 	Annotations::write_int(spec, converted_SN_ANNOT, TRUE);
 	if (A) @<Veto certain cases where text was misunderstood as a description@>;

@@ -1,4 +1,4 @@
-[Calculus::Propositions::Deferred::] Compile Deferred Propositions.
+[Propositions::Deferred::] Compile Deferred Propositions.
 
 To compile the I6 routines needed to perform the tests or tasks
 deferred as being too difficult in their original contexts.
@@ -7,7 +7,7 @@ deferred as being too difficult in their original contexts.
 The following compiles an I6 comment noting the reason for a deferral.
 
 =
-void Calculus::Propositions::Deferred::compile_comment_about_deferral_reason(int reason) {
+void Propositions::Deferred::compile_comment_about_deferral_reason(int reason) {
 	switch(reason) {
 		case CONDITION_DEFER:
 			Emit::code_comment(I"! True or false?"); break;
@@ -39,12 +39,12 @@ funny things can happen when we compile: we can create new text substitutions
 which create routines which... and so on.
 
 =
-void Calculus::Propositions::Deferred::compile_remaining_deferred(void) {
-	Calculus::Propositions::Deferred::compilation_coroutine();
+void Propositions::Deferred::compile_remaining_deferred(void) {
+	Propositions::Deferred::compilation_coroutine();
 }
 
 pcalc_prop_deferral *latest_pcd = NULL;
-int Calculus::Propositions::Deferred::compilation_coroutine(void) {
+int Propositions::Deferred::compilation_coroutine(void) {
 	int N = 0;
 	while (TRUE) {
 		pcalc_prop_deferral *pdef;
@@ -76,7 +76,7 @@ quantifiers, either.
 
 	int ct_locals_problem_thrown = FALSE, negated_quantifier_found = FALSE;
 	current_sentence = pdef->deferred_from;
-	pcalc_prop *proposition = Calculus::Propositions::copy(pdef->proposition_to_defer);
+	pcalc_prop *proposition = Propositions::copy(pdef->proposition_to_defer);
 	int multipurpose_routine = (pdef->reason == MULTIPURPOSE_DEFER)?TRUE:FALSE;
 	int reason = CONDITION_DEFER; /* redundant assignment to appease |gcc -O2| */
 
@@ -189,7 +189,7 @@ specific to particular deferral reasons.
 
 	@<Declare the I6 call parameters needed by adaptations to particular deferral cases@>;
 
-	Calculus::Variables::determine_status(proposition, var_states, NULL);
+	Binding::determine_status(proposition, var_states, NULL);
 	for (j=0; j<26; j++)
 		if (var_states[j] != UNUSED_VST) {
 			TEMPORARY_TEXT(letter_var)
@@ -251,9 +251,9 @@ specific to particular deferral reasons.
 			Produce::val_symbol(Emit::tree(), K_value, reason_s);
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
-				pcalc_prop *safety_copy = Calculus::Propositions::copy(proposition);
+				pcalc_prop *safety_copy = Propositions::copy(proposition);
 				for (int use = EXTREMAL_DUSAGE; use <= CONDITION_DUSAGE; use++) {
-					if (use > EXTREMAL_DUSAGE) proposition = Calculus::Propositions::copy(safety_copy);
+					if (use > EXTREMAL_DUSAGE) proposition = Propositions::copy(safety_copy);
 					switch (use) {
 						case CONDITION_DUSAGE: reason = CONDITION_DEFER; break;
 						case LOOP_DOMAIN_DUSAGE: reason = LOOP_DOMAIN_DEFER; break;
@@ -268,7 +268,7 @@ specific to particular deferral reasons.
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) use);
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
-							Calculus::Propositions::Deferred::compile_comment_about_deferral_reason(reason);
+							Propositions::Deferred::compile_comment_about_deferral_reason(reason);
 							@<Compile body of deferred proposition for the given reason@>;
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
@@ -655,7 +655,7 @@ pretty much requires that this is what we compile.
 
 @<Compile a loop through possible values of the variable quantified@> =
 	int level_back_to = Produce::level(Emit::tree());
-	pl = Calculus::Propositions::Deferred::compile_loop_header(
+	pl = Propositions::Deferred::compile_loop_header(
 		pl->terms[0].variable, var_ix_lv[pl->terms[0].variable],
 		pl,
 		(R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)?TRUE:FALSE,
@@ -943,7 +943,7 @@ is true. The local |counter| holds the count so far; it starts out automatically
 at 0, since all I6 locals do.
 
 @<Initialisation before NUMBER search@> =
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
@@ -1014,7 +1014,7 @@ is true. The local |list| holds the list so far, and already exists.
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
@@ -1131,7 +1131,7 @@ its random $x$ than it ideally would, but we accept the trade-off.
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	Produce::up(Emit::tree());
 
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @ Again we exit the searcher as soon as a match is found, since that guarantees
 that $\phi(x)$.
@@ -1212,7 +1212,7 @@ Here the task is to sum the values of property $P$ attached to each object
 in the domain $\lbrace x\mid \phi(x)\rbrace$.
 
 @<Initialisation before TOTAL search@> =
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @ The only wrinkle here is the way the compiled code knows which property it
 should be totalling. If we know that ourselves, we can compile in a direct
@@ -1315,7 +1315,7 @@ we don't, and have to look that up at run-time.
 			Produce::up(Emit::tree());
 		}
 	}
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @ It might look as if we could speed up the multipurpose case by
 multiplying by |property_loop_sign|, thus combining the max and min
@@ -1494,7 +1494,7 @@ proved to be entered and exited cleanly.)
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	proposition = Calculus::Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
+	proposition = Propositions::Deferred::compile_loop_header(0, var_ix_lv[0], proposition, FALSE, FALSE, pdef);
 
 @<Act on successful match in LOOP search@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1572,7 +1572,7 @@ then expand it into the output.
 
 =
 i6_schema loop_schema;
-pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local_variable *index_var,
+pcalc_prop *Propositions::Deferred::compile_loop_header(int var, local_variable *index_var,
 	pcalc_prop *proposition,
 	int avoid_parent_optimisation, int grouped, pcalc_prop_deferral *pdef) {
 
@@ -1597,7 +1597,7 @@ pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local
 			Calculus::Schemas::modify(&loop_schema, "if (RunTimeProblem(RTP_CANTITERATE, %n))",
 				pdef->rtp_iname);
 		}
-		proposition = Calculus::Propositions::delete_atom(proposition, kind_position);
+		proposition = Propositions::delete_atom(proposition, kind_position);
 	}
 
 	Calculus::Schemas::emit_expand_from_terms(&loop_schema, &var_term, &second_term, TRUE);
@@ -1676,7 +1676,7 @@ simplifications. We set |optimise_on| to $R$ and |parent| to $t$.
 				(BinaryPredicates::write_optimised_loop_schema(&loop_schema, pf->bp))) {
 				second_term = pl->terms[1-chk];
 				parent_optimised = TRUE;
-				proposition = Calculus::Propositions::delete_atom(proposition, pl_prev);
+				proposition = Propositions::delete_atom(proposition, pl_prev);
 				break;
 			}
 		}
@@ -1684,7 +1684,7 @@ simplifications. We set |optimise_on| to $R$ and |parent| to $t$.
 		(BinaryPredicates::write_optimised_loop_schema(&loop_schema, bp))) {
 		second_term = pl->terms[1];
 		parent_optimised = TRUE;
-		proposition = Calculus::Propositions::delete_atom(proposition, pl_prev);
+		proposition = Propositions::delete_atom(proposition, pl_prev);
 	}
 
 @ And that concludes the predicate-calculus engine at the heart of Inform.

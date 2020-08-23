@@ -346,7 +346,7 @@ or adjectives specified in the |what_to_make_node| side.
 	inference_subject *its_domain = Node::get_subject(what_to_make_node);
 
 	if ((new_creation) && (its_domain))
-		Calculus::Propositions::Abstract::assert_kind_of_subject(new_creation, its_domain,
+		Propositions::Abstract::assert_kind_of_subject(new_creation, its_domain,
 			Specifications::to_proposition(Node::get_evaluation(what_to_make_node)));
 
 	if (Node::get_type(what_to_make_node) == WITH_NT)
@@ -599,10 +599,10 @@ to abbreviated forms of object names are normally allowed.
 	int is_a_kind = FALSE;
 	if ((governor) && (Node::get_type(governor) == KIND_NT)) is_a_kind = TRUE;
 
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(K_object, W);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_object, W);
 	if (is_a_kind)
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Propositions::Abstract::to_make_a_kind(K_object));
-	Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_kind(K_object));
+	Propositions::Assert::assert_true(prop, CERTAIN_CE);
 
 	if (is_a_kind == FALSE) {
 		recent_creation = latest_instance;
@@ -664,9 +664,9 @@ to abbreviated forms of object names are normally allowed.
 	Node::set_text(p, W);
 
 @<Create a new kind of value@> =
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(NULL, W);
-	prop = Calculus::Propositions::concatenate(prop, Calculus::Propositions::Abstract::to_make_a_kind(K_value));
-	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(NULL, W);
+	prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_kind(K_value));
+	Propositions::Assert::assert_true(prop, prevailing_mood);
 	val = Specifications::from_kind(latest_base_kind_of_value);
 
 @<Create a new variable@> =
@@ -677,19 +677,19 @@ to abbreviated forms of object names are normally allowed.
 		domain = Specifications::kind_of_new_variable_like(governing_spec);
 	if ((K_understanding) && (Kinds::contains(domain, Kinds::get_construct(K_understanding))))
 		@<Issue a problem for topics that vary@>;
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(domain, W);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(domain, W);
 	if (prevailing_mood == CERTAIN_CE)
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Propositions::Abstract::to_make_a_const());
+		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_const());
 	else
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Propositions::Abstract::to_make_a_var());
-	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_var());
+	Propositions::Assert::assert_true(prop, prevailing_mood);
 	val = Lvalues::new_actual_NONLOCAL_VARIABLE(NonlocalVariables::get_latest());
 
 @<Create an instance of an enumerated kind@> =
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(create_as, W);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(create_as, W);
 	pcalc_prop *such_that = Node::get_creation_proposition(governor);
-	if (such_that) prop = Calculus::Propositions::concatenate(prop, such_that);
-	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+	if (such_that) prop = Propositions::concatenate(prop, such_that);
+	Propositions::Assert::assert_true(prop, prevailing_mood);
 	val = Rvalues::from_instance(latest_instance);
 
 @ Lastly: rulebooks and activities are not part of the model, because they would
@@ -928,8 +928,8 @@ to a different vehicle object.
 		@<Check that the new name is non-empty and distinct from all existing ones@>;
 	NW = Wordings::truncate(NW, 32); /* truncate to the maximum length */
 	parse_node *pz = Node::new(PROPER_NOUN_NT);
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(instance_kind, NW);
-	Calculus::Propositions::Assert::assert_true(prop, prevailing_mood);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(instance_kind, NW);
+	Propositions::Assert::assert_true(prop, prevailing_mood);
 	new_instance = Instances::as_subject(latest_instance);
 	if (named_after) {
 		#ifdef IF_MODULE
@@ -1082,8 +1082,8 @@ void Assertions::Creator::stock_nl_kind(kind *K) {
 	inform_language *L;
 	LOOP_OVER(L, inform_language) {
 		pcalc_prop *prop =
-			Calculus::Propositions::Abstract::to_create_something(K, L->instance_name);
-		Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+			Propositions::Abstract::to_create_something(K, L->instance_name);
+		Propositions::Assert::assert_true(prop, CERTAIN_CE);
 		L->nl_instance = latest_instance;
 	}
 }

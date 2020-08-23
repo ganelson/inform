@@ -152,8 +152,8 @@ void PL::Figures::register_figure(wording F, wording FN) {
 	}
 
 	allow_figure_creations = TRUE;
-	pcalc_prop *prop = Calculus::Propositions::Abstract::to_create_something(K_figure_name, F);
-	Calculus::Propositions::Assert::assert_true(prop, CERTAIN_CE);
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_figure_name, F);
+	Propositions::Assert::assert_true(prop, CERTAIN_CE);
 	allow_figure_creations = FALSE;
 	blorb_figure *bf = RETRIEVE_POINTER_blorb_figure(
 		Instances::get_connection(latest_instance));

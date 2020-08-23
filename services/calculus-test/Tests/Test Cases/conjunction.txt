@@ -14,3 +14,7 @@ A concatenate B is syntactically valid.
 A conjoin B is syntactically valid.
 A concatenate B is well-formed.
 A conjoin B is well-formed.
+
+set P to << Forall x IN< kind = number(x) IN> : even(x) >>.
+copy of P.
+negation of P.

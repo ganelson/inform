@@ -1,0 +1,20 @@
+'new unary even': ok
+'new binary sees (none, sees-f1)': ok
+'set P to << Forall x IN< kind = number (x) IN>: even (x) >>': p set to << ForAll x IN< kind=number(x) IN> : even(x) >>
+'copy of P': << ForAll x IN< kind=number(x) IN> : even(x) >>
+'set Q to negation of P': q set to << NOT< ForAll x IN< kind=number(x) IN> : even(x) NOT> >>
+'P is a group': false
+'Q is a group': true
+'unnegation of Q': << ForAll x IN< kind=number(x) IN> : even(x) >>
+'remove universal quantifier from P': << kind=number(x) ^ even(x) >>
+'set R to delete 4 from P': r set to << ForAll x IN< kind=number(x) IN> >>
+'remove close domain from R': << ForAll x IN< kind=number(x) >>
+'P contains quantifier': true
+'P contains relation': false
+'<< (1 == 2) >> contains relation': true
+'P contains adjective': true
+'<< (1 == 2) >> contains adjective': false
+'<< (1 == 2) ^ even (x) >> contains adjective': true
+'<< (1 == 2) ^ even (x) >> contains quantifier': false
+'term first cited in << even (x) >>': x
+'term first cited in << not< sees (56, 2) not> >>': '56'

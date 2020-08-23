@@ -83,7 +83,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	#endif
 
 @<Check that the premiss involves only either/or properties and/or a kind@> =
-	if (Calculus::Propositions::Assert::testable_at_compile_time(premiss) == FALSE) {
+	if (Propositions::Assert::testable_at_compile_time(premiss) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadImplicationDomain),
 			"that's an implication where the condition to qualify is not "
 			"one that I can determine in advance of the start of play",
@@ -227,7 +227,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 	possession_marker *pom = Properties::get_possession_marker(conclusion_prop);
 	@<Check that the conclusion is not redundant or irrelevant@>;
 
-	int candidate_qualifies = Calculus::Propositions::Assert::test_at_compile_time(imp->if_spec, candidate);
+	int candidate_qualifies = Propositions::Assert::test_at_compile_time(imp->if_spec, candidate);
 
 	if (candidate_qualifies) {
 		LOGIF(IMPLICATIONS, "PASS: changing property $Y of $j\n", conclusion_prop, candidate);
@@ -258,11 +258,11 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
 	pcalc_prop *prop = Atoms::KIND_new(InferenceSubjects::domain(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
-		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
-		prop = Calculus::Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
-		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
+		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
+		prop = Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
+		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	} else {
-		prop = Calculus::Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
+		prop = Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
 	}
-	Calculus::Propositions::Assert::assert_true_about(prop, candidate, CERTAIN_CE);
+	Propositions::Assert::assert_true_about(prop, candidate, CERTAIN_CE);
 	return TRUE;

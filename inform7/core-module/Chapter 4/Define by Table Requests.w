@@ -194,7 +194,7 @@ void DefineByTable::kind_defined_by_table(parse_node *V) {
 	}
 
 @<Check that this is a description which in principle can be asserted@> =
-	if (Calculus::Propositions::contains_quantifier(
+	if (Propositions::contains_quantifier(
 		Specifications::to_proposition(what))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_TableOfQuantifiedKind),
@@ -332,8 +332,8 @@ table: do they get permission as well? We're going to say that they do.
 		property *P = NULL;
 		@<Ensure that a property with the same name as the column name exists@>;
 		if (global_pass_state.pass == 1)
-			Calculus::Propositions::Assert::assert_true_about(
-				Calculus::Propositions::Abstract::to_provide_property(P),
+			Propositions::Assert::assert_true_about(
+				Propositions::Abstract::to_provide_property(P),
 				Kinds::Knowledge::as_subject(t->kind_defined_in_this_table),
 				prevailing_mood);
 		if (t->contains_property_values_at_run_time)

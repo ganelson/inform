@@ -63,7 +63,7 @@ int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_pred
 	if ((kinds_required[0]) &&
 		(Kinds::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
 		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
-		Calculus::Propositions::Checker::issue_bp_typecheck_error(bp,
+		Propositions::Checker::issue_bp_typecheck_error(bp,
 			kinds_of_terms[0], kinds_of_terms[1], tck);
 		return NEVER_MATCH;
 	}

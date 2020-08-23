@@ -481,9 +481,9 @@ henceforth to be true, so we simply compile empty code in that case.
 	Produce::down(Emit::tree());
 		LocalVariables::set_kind(lvar, switch_kind);
 		parse_node *sw_v = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lvar);
-		pcalc_prop *prop = Calculus::Propositions::Abstract::to_set_relation(
+		pcalc_prop *prop = Propositions::Abstract::to_set_relation(
 			R_equality, NULL, sw_v, NULL, case_spec);
-		Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
+		Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 		Calculus::Deferrals::emit_test_of_proposition(NULL, prop);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());

@@ -459,7 +459,7 @@ void Phrases::Manager::compile_as_needed(void) {
 		#endif
 		if (Strings::TextSubstitutions::compilation_coroutine(FALSE) > 0)
 			repeat = TRUE;
-		if (Calculus::Propositions::Deferred::compilation_coroutine() > 0)
+		if (Propositions::Deferred::compilation_coroutine() > 0)
 			repeat = TRUE;
 	}
 }

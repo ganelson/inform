@@ -1,0 +1,13 @@
+'new unary even': ok
+'new binary sees (none, none)': ok
+'<< >> is complex': false
+'<< even (x) >> is complex': false
+'<< kind = number (x) ^ even (x) >> is complex': false
+'<< sees (4, 10) >> is complex': true
+'<< (4 == 10) >> is complex': true
+'<< (x == 10) >> is complex': false
+'<< (10 == x) >> is complex': false
+'<< (y == x) >> is complex': true
+'<< not< kind = number (x) ^ even (x) not> >> is complex': true
+'<< Exists x: even (x) >> is complex': true
+'<< Forall x IN< kind = number (x) IN>: even (x) >> is complex': true

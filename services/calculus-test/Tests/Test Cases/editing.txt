@@ -1,0 +1,7 @@
+new unary even.
+
+set P to << Forall x IN< kind = number(x) IN> : even(x) >>.
+insert << (1 == 2) >> at 0 in P.
+insert << even(x) >> at 2 in P.
+delete 0 from P.
+delete 4 from P.
