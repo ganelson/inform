@@ -37,12 +37,14 @@ and gives an opportunity to make, say, one relation for every value property.
 VOID_METHOD_TYPE(STOCK_BPF_MTID, bp_family *f, int n)
 
 void BinaryPredicateFamilies::first_stock(void) {
+	UnaryPredicateFamilies::stock(1);
 	bp_family *f;
 	LOOP_OVER(f, bp_family)
 		VOID_METHOD_CALL(f, STOCK_BPF_MTID, 1);
 }
 
 void BinaryPredicateFamilies::second_stock(void) {
+	UnaryPredicateFamilies::stock(2);
 	bp_family *f;
 	LOOP_OVER(f, bp_family)
 		VOID_METHOD_CALL(f, STOCK_BPF_MTID, 2);

@@ -13,6 +13,7 @@ which use this module:
 @e i6_schema_CLASS
 @e binary_predicate_CLASS
 @e bp_family_CLASS
+@e up_family_CLASS
 @e pcalc_term_CLASS
 @e pcalc_func_CLASS
 @e pcalc_prop_CLASS
@@ -21,6 +22,7 @@ which use this module:
 =
 DECLARE_CLASS(binary_predicate)
 DECLARE_CLASS(bp_family)
+DECLARE_CLASS(up_family)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_func, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_term, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(pcalc_prop, 1000)
@@ -47,6 +49,8 @@ void CalculusModule::start(void) {
 	REGISTER_WRITER('r', UnaryPredicates::log);
 	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
 	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
+	Calculus::Adjectival::start();
+	Calculus::Creation::start();
 	Calculus::Equality::start();
 }
 void CalculusModule::end(void) {

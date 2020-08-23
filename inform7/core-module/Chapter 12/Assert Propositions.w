@@ -104,6 +104,34 @@ parse_node **current_interpretation_as_spec = NULL; /* must point to a 26-elemen
 =
 parse_node *last_couldnt_assert_at = NULL;
 
+void Propositions::Assert::issue_couldnt_problem(adjective *aph, int parity) {
+	if (last_couldnt_assert_at != current_sentence) {
+		wording W = Adjectives::get_nominative_singular(aph);
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, W);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantAssertAdjective));
+		if (parity == FALSE) Problems::issue_problem_segment(
+			"In the sentence %1, you ask me to arrange for something not to be "
+			"'%2' at the start of play. This is only possible when an adjective "
+			"talks about an either/or property, like 'open'/'closed' - if there "
+			"are three or more possibilities then it's ambiguous. Even if there "
+			"are only two possibilities, I can't always fix them just on your "
+			"request - 'visible'/'invisible', for instance, is something I can "
+			"test during play at any time, but not something I can arrange at "
+			"the start.");
+		else Problems::issue_problem_segment(
+			"In the sentence %1, you ask me to arrange for something to be '%2' "
+			"at the start of play. There are some adjectives ('open' or 'dark', "
+			"for instance) which I can fix, but others are just too vague. For "
+			"example, saying 'Peter is visible.' isn't allowed, because it "
+			"doesn't tell me where Peter is. Like 'visible', being '%2' is "
+			"something I can test during play at any time, but not something "
+			"I can arrange at the start.");
+		Problems::issue_problem_end();
+		last_couldnt_assert_at = current_sentence;
+	}
+}
+
 @ The second entrance, then, keeps track of the recursion depth but also
 ensures that the identification slate is always correct, stacking them
 so that an inner |Propositions::Assert::prop_true_in_model| has an independent slate from an outer
@@ -184,9 +212,6 @@ void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
 			case HERE_ATOM: @<Assert the truth or falsity of a HERE atom@>; break;
 			case EVERYWHERE_ATOM: @<Assert the truth or falsity of an EVERYWHERE atom@>; break;
 			case NOWHERE_ATOM: @<Assert the truth or falsity of a NOWHERE atom@>; break;
-			case ISAKIND_ATOM: case ISAVAR_ATOM: case ISACONST_ATOM:
-				if (now_negated) internal_error("ISA... atoms cannot be negated");
-				break;
 		}
 	}
 }
@@ -297,9 +322,10 @@ interpret no indication of a kind as meaning "object".
 	TRAVERSE_VARIABLE(lookahead);
 	TRAVERSE_PROPOSITION(lookahead, pl)
 		if ((lookahead->arity == 1) && (lookahead->terms[0].variable == v)) {
-			switch(lookahead->element) {
+			if (Atoms::is_CALLED(lookahead)) {
+				NW = Atoms::CALLED_get_name(lookahead);
+			} else switch(lookahead->element) {
 				case KIND_ATOM: K = lookahead->assert_kind; break;
-				case CALLED_ATOM: NW = Atoms::CALLED_get_name(lookahead); break;
 				case ISAKIND_ATOM: is_a_kind = TRUE; K = lookahead->assert_kind; break;
 				case ISAVAR_ATOM: is_a_var = TRUE; break;
 				case ISACONST_ATOM: is_a_const = TRUE; break;
@@ -430,64 +456,10 @@ problem aside for now.
 	#endif
 
 @h Asserting predicates.
-First, asserting $adjective(t)$. We know that $t$ evaluates to a kind
-of value over which $adjective$ is defined, or the proposition would
-not have survived type-checking. But only some adjectives can be asserted;
-"open" can, but "visible" can't, for instance. |Adjectives::Meanings::assert| returns a
-success flag.
 
 @<Assert the truth or falsity of a unary predicate@> =
-	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = UnaryPredicates::get_adj(tr);
-	int parity = (now_negated)?FALSE:TRUE, found;
-	if (UnaryPredicates::get_parity(tr) == FALSE) parity = (parity)?FALSE:TRUE;
-	inference_subject *ox = Propositions::Assert::subject_of_term(pl->terms[0]);
-	parse_node *ots = Propositions::Assert::spec_of_term(pl->terms[0]);
-
-	kind *domain_of_definition = InferenceSubjects::domain(ox);
-	if (domain_of_definition == NULL) {
-		instance *inst = InferenceSubjects::as_object_instance(ox);
-		if (inst) domain_of_definition = Instances::to_kind(inst);
-	}
-
-	inference_subject *try = ox;
-	while ((domain_of_definition == NULL) && (try)) {
-		domain_of_definition = InferenceSubjects::domain(try);
-		try = InferenceSubjects::narrowest_broader_subject(try);
-	}
-	if (domain_of_definition == NULL)
-		domain_of_definition = Node::get_kind_of_value(ots);
-
-	if (ox) found = Adjectives::Meanings::assert(aph, domain_of_definition, ox, NULL, parity);
-	else found = Adjectives::Meanings::assert(aph, domain_of_definition, NULL, ots, parity);
-
-	if (found == FALSE) {
-		if (last_couldnt_assert_at != current_sentence) {
-			wording W = Adjectives::get_nominative_singular(aph);
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, W);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantAssertAdjective));
-			if (parity == FALSE) Problems::issue_problem_segment(
-				"In the sentence %1, you ask me to arrange for something not to be "
-				"'%2' at the start of play. This is only possible when an adjective "
-				"talks about an either/or property, like 'open'/'closed' - if there "
-				"are three or more possibilities then it's ambiguous. Even if there "
-				"are only two possibilities, I can't always fix them just on your "
-				"request - 'visible'/'invisible', for instance, is something I can "
-				"test during play at any time, but not something I can arrange at "
-				"the start.");
-			else Problems::issue_problem_segment(
-				"In the sentence %1, you ask me to arrange for something to be '%2' "
-				"at the start of play. There are some adjectives ('open' or 'dark', "
-				"for instance) which I can fix, but others are just too vague. For "
-				"example, saying 'Peter is visible.' isn't allowed, because it "
-				"doesn't tell me where Peter is. Like 'visible', being '%2' is "
-				"something I can test during play at any time, but not something "
-				"I can arrange at the start.");
-			Problems::issue_problem_end();
-			last_couldnt_assert_at = current_sentence;
-		}
-	}
+	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	UnaryPredicateFamilies::assert(up, now_negated, pl);
 
 @ Binary predicates, unlike unary ones, can only be asserted positively. This
 is because $\lnot P(x)$ tells you something fairly definite, whereas $\lnot Q(x, y)$
@@ -692,10 +664,8 @@ int Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 }
 
 @<See if this unary predicate can be tested@> =
-	unary_predicate *ale = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = UnaryPredicates::get_adj(ale);
-	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
-	if (prn == NULL) return FALSE;
+	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	if (UnaryPredicateFamilies::testable(up) == FALSE) return FALSE;
 
 @ And the actual test:
 
@@ -720,15 +690,5 @@ int Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subje
 	;
 
 @<Test if this unary predicate is true@> =
-	unary_predicate *ale = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = UnaryPredicates::get_adj(ale);
-	int sense = UnaryPredicates::get_parity(ale);
-	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
-	if (prn) {
-		possession_marker *adj = Properties::get_possession_marker(prn);
-		if (sense) {
-			if (adj->possessed == FALSE) return FALSE;
-		} else {
-			if (adj->possessed == TRUE) return FALSE;
-		}
-	}
+	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	if (UnaryPredicateFamilies::test(up, about) == FALSE) return FALSE;

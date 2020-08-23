@@ -381,7 +381,6 @@ pcalc_prop *Binding::substitute_var_0_in(pcalc_prop *prop, parse_node *spec) {
 @ If we are willing to work a little harder:
 
 =
-#ifdef CORE_MODULE
 kind *Binding::infer_kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop) {
@@ -390,16 +389,13 @@ kind *Binding::infer_kind_of_variable_0(pcalc_prop *prop) {
 			if (K) return K;
 		}
 		if ((p->element == PREDICATE_ATOM) && (p->arity == 1) && (p->terms[0].variable == 0)) {
-			unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(p->predicate);
-			adjective *aph = UnaryPredicates::get_adj(tr);
-			adjective_meaning *am = Adjectives::Meanings::first_meaning(aph);
-			kind *K = Adjectives::Meanings::get_domain(am);
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			kind *K = UnaryPredicateFamilies::infer_kind(up);
 			if (K) return K;
 		}
 	}
 	return NULL;
 }
-#endif
 
 @h Detect locals.
 Properly speaking, this has nothing to do with variables,

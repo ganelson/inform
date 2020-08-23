@@ -1093,7 +1093,7 @@ We don't do that because (for reasons to do with "here" and with how work
 is shared among the plugins) the progenitors are determined in an undefined
 order; if we made the object tree as we went along, the spatial model would
 be perfectly correct, but siblings -- say, the three things on the grass in
-the Croquet Lawn -- would be compiled in the I6 code in some undefined
+the Croquet Lawn -- would be compiled in the Inter code in some undefined
 order. This order matters because it affects the text produced by typical
 room descriptions: "You can also see a box, a ball and a peg here." might
 become "You can also see a ball, a box and a peg here."
@@ -1130,9 +1130,10 @@ the absence of other information.)
 					break;
 				}
 			}
-		if (portable)
+		if (portable) {
 			Properties::EitherOr::assert(
 				P_fixed_in_place, Instances::as_subject(I), FALSE, CERTAIN_CE);
+		}
 	}
 
 @<Assert I6-level properties to express the spatial structure@> =

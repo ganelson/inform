@@ -178,7 +178,7 @@ a list. It's sometimes convenient to loop through this list:
 
 =
 int Descriptions::number_of_adjectives_applied_to(parse_node *spec) {
-	return Propositions::count_unary_predicates(
+	return Propositions::count_adjectives(
 		Descriptions::to_proposition(spec));
 }
 
@@ -280,7 +280,7 @@ void Descriptions::attach_calling(parse_node *spec, wording C) {
 wording Descriptions::get_calling(parse_node *spec) {
 	if (Specifications::is_description(spec))
 		for (pcalc_prop *pp = Descriptions::to_proposition(spec); pp; pp = pp->next)
-			if (pp->element == CALLED_ATOM)
+			if (Atoms::is_CALLED(pp))
 				return Atoms::CALLED_get_name(pp);
 	return EMPTY_WORDING;
 }
@@ -289,7 +289,7 @@ void Descriptions::clear_calling(parse_node *spec) {
 	if (spec == NULL) return;
 	pcalc_prop *pp, *prev_pp = NULL;
 	for (pp = Descriptions::to_proposition(spec); pp; prev_pp = pp, pp = pp->next)
-		if (pp->element == CALLED_ATOM) {
+		if (Atoms::is_CALLED(pp)) {
 			Descriptions::set_proposition(spec,
 				Propositions::delete_atom(
 					Descriptions::to_proposition(spec), prev_pp));

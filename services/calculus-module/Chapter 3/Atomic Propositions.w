@@ -238,6 +238,11 @@ The calling data for a |CALLED| atom is the textual name by which the variable
 will be called.
 
 =
+int Atoms::is_CALLED(pcalc_prop *prop) {
+	if (prop->element == CALLED_ATOM) return TRUE;
+	return FALSE;
+}
+
 pcalc_prop *Atoms::CALLED_new(wording W, pcalc_term pt, kind *K) {
 	pcalc_prop *prop = Atoms::new(CALLED_ATOM);
 	prop->terms[prop->arity++] = pt;
@@ -408,6 +413,15 @@ void Atoms::log(pcalc_prop *prop) {
 void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 	if (prop == NULL) { WRITE("<null-atom>"); return; }
 	@<Use a special notation for equality@>;
+	if (Atoms::is_CALLED(prop)) {
+		wording W = Atoms::CALLED_get_name(prop);
+		WRITE("called='%W'", W);
+		if (prop->assert_kind) {
+			WRITE("(");
+			Kinds::Textual::write(OUT, prop->assert_kind);
+			WRITE(")");
+		}
+	} else
 	switch(prop->element) {
 		case PREDICATE_ATOM:
 			switch(prop->arity) {
@@ -421,16 +435,6 @@ void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 			Quantifiers::log(OUT, quant, prop->quantification_parameter);
 			WRITE(" "); @<Log a comma-separated list of terms for this atomic proposition@>;
 			return;
-		}
-		case CALLED_ATOM: {
-			wording W = Atoms::CALLED_get_name(prop);
-			WRITE("called='%W'", W);
-			if (prop->assert_kind) {
-				WRITE("(");
-				Kinds::Textual::write(OUT, prop->assert_kind);
-				WRITE(")");
-			}
-			break;
 		}
 		case KIND_ATOM:
 			if (Streams::I6_escapes_enabled(DL) == FALSE) WRITE("kind=");
@@ -470,9 +474,7 @@ void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 
 @<Log some suitable textual name for this unary predicate@> =
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
-	if (UnaryPredicates::get_parity(tr) == FALSE) WRITE("not-");
-	wording W = Adjectives::get_nominative_singular(UnaryPredicates::get_adj(tr));
-	WRITE("%W", W);
+	UnaryPredicateFamilies::log(OUT, tr);
 
 @<Log some suitable textual name for this binary predicate@> =
 	binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(prop->predicate);

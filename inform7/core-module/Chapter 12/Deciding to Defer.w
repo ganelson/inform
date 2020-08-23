@@ -276,16 +276,11 @@ get to the setting of |t_2| and |t_3|.
 
 =
 int Calculus::Deferrals::count_callings_in_condition(pcalc_prop *prop) {
-	int calling_count=0;
+	int calling_count = 0;
 	TRAVERSE_VARIABLE(pl);
-	TRAVERSE_PROPOSITION(pl, prop) {
-		switch(pl->element) {
-			case CALLED_ATOM: {
-				calling_count++;
-				break;
-			}
-		}
-	}
+	TRAVERSE_PROPOSITION(pl, prop)
+		if (Atoms::is_CALLED(pl))
+			calling_count++;
 	return calling_count;
 }
 
@@ -295,25 +290,22 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 		int calling_count = 0, downs = 0;
 		TRAVERSE_VARIABLE(pl);
 		TRAVERSE_PROPOSITION(pl, prop) {
-			switch(pl->element) {
-				case CALLED_ATOM: {
-					local_variable *local;
-					@<Find which local variable in R needs the value, creating it if necessary@>;
-					calling_count++;
-					if (calling_count < NC) { Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); Produce::down(Emit::tree()); downs++; }
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			if (Atoms::is_CALLED(pl)) {
+				local_variable *local;
+				@<Find which local variable in R needs the value, creating it if necessary@>;
+				calling_count++;
+				if (calling_count < NC) { Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP); Produce::down(Emit::tree()); downs++; }
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
+					Produce::ref_symbol(Emit::tree(), K_value, local_s);
+					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
-						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
-						Produce::ref_symbol(Emit::tree(), K_value, local_s);
-						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (calling_count - 1));
-						Produce::up(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (calling_count - 1));
 					Produce::up(Emit::tree());
-					LocalVariables::add_calling_to_condition(local);
-					break;
-				}
+				Produce::up(Emit::tree());
+				LocalVariables::add_calling_to_condition(local);
 			}
 		}
 		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
@@ -326,24 +318,21 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 	int calling_count=0;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
-		switch(pl->element) {
-			case CALLED_ATOM: {
-				local_variable *local;
-				@<Find which local variable in R needs the value, creating it if necessary@>;
-				Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+		if (Atoms::is_CALLED(pl)) {
+			local_variable *local;
+			@<Find which local variable in R needs the value, creating it if necessary@>;
+			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
+					inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
+					Produce::ref_symbol(Emit::tree(), K_value, local_s);
+					Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
 					Produce::down(Emit::tree());
-						inter_symbol *local_s = LocalVariables::declare_this(local, FALSE, 8);
-						Produce::ref_symbol(Emit::tree(), K_value, local_s);
-						Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
-						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) calling_count++);
-						Produce::up(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) calling_count++);
 					Produce::up(Emit::tree());
-				break;
-			}
+				Produce::up(Emit::tree());
 		}
 	}
 	if (calling_count > 0) {
@@ -494,17 +483,18 @@ does not have run-time object or value creation.
 				}
 				quantifier_count++;
 				break;
-			case CALLED_ATOM:
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
-					"a 'now' is not allowed to call names",
-					"and it wouldn't really make sense to do so anyway. 'if "
-					"a person (called the victim) is in the Trap Room' makes "
-					"sense, because it gives a name - 'victim' - to someone "
-					"whose identity we don't know. But 'now a person (called "
-					"the victim) is in the Trap Room' won't be allowed, "
-					"because 'now' can only talk about people or things whose "
-					"identities we do know.");
-				return;
+		}
+		if (Atoms::is_CALLED(pl)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
+				"a 'now' is not allowed to call names",
+				"and it wouldn't really make sense to do so anyway. 'if "
+				"a person (called the victim) is in the Trap Room' makes "
+				"sense, because it gives a name - 'victim' - to someone "
+				"whose identity we don't know. But 'now a person (called "
+				"the victim) is in the Trap Room' won't be allowed, "
+				"because 'now' can only talk about people or things whose "
+				"identities we do know.");
+			return;
 		}
 	}
 

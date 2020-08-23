@@ -72,6 +72,7 @@ which use this module:
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">i6_schema_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">binary_predicate_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">bp_family_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">up_family_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_term_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_func_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_CLASS</span>
@@ -80,6 +81,7 @@ which use this module:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">binary_predicate</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">bp_family</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">up_family</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_func</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
@@ -107,6 +109,8 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'r'</span><span class="plain-syntax">, </span><a href="2-up.html#SP3" class="function-link"><span class="function-syntax">UnaryPredicates::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"predicate calculus"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_WORKINGS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"predicate calculus workings"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-tap.html#SP2" class="function-link"><span class="function-syntax">Calculus::Adjectival::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-tcp.html#SP2" class="function-link"><span class="function-syntax">Calculus::Creation::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-ter.html#SP2" class="function-link"><span class="function-syntax">Calculus::Equality::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

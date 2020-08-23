@@ -14,7 +14,10 @@ Chapter 1: Setting Up
 
 Chapter 2: Predicates
 	Compilation Schemas
+	Unary Predicate Families
 	Unary Predicates
+	The Adjectival Predicates
+	The Creation Predicates
 	Binary Predicate Families
 	Binary Predicates
 	The Equality Relation

@@ -12,7 +12,7 @@
 '<< Exists x: even (x) >> is syntactically valid': true
 '<< NOT> >> is syntactically valid': false - too many close groups
 '<< Exists x >> is syntactically valid': true
-'<< ForAll x >> is syntactically valid': false - ends without domain of final quantifier
+'<< ForAll x >> is syntactically valid': false - nonexistential quantifier without domain
 '<< ForAll x IN< kind = number (x) IN>: even (x) >> is syntactically valid': true
 '<< NOT< ^ NOT> ^ NOT> ^ NOT< ^ even (x) >> is syntactically valid': false - too many close groups
 '<< NOT< ^ NOT< ^ even (x) >> is syntactically valid': false - 2 group(s) open

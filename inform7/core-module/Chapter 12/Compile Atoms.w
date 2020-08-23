@@ -113,9 +113,9 @@ annotated_i6_schema Atoms::Compile::i6_schema_of_atom(i6_schema *sch, pcalc_prop
 	asch.negate_schema = FALSE;
 	asch.pt0 = pl->terms[0]; asch.pt1 = pl->terms[1];
 	asch.involves_action_variables = Atoms::Compile::atom_involves_action_variables(pl);
-
-	switch(pl->element) {
-		case CALLED_ATOM: @<Make an annotated schema for a CALLED atom@>;
+	if (Atoms::is_CALLED(pl)) {
+		@<Make an annotated schema for a CALLED atom@>;
+	} else switch(pl->element) {
 		case KIND_ATOM: @<Make an annotated schema for a KIND atom@>;
 		case EVERYWHERE_ATOM: @<Make an annotated schema for an EVERYWHERE atom@>;
 		case NOWHERE_ATOM: @<Make an annotated schema for a NOWHERE atom@>;
@@ -251,23 +251,11 @@ propositions to be compiled, so this code is never used.)
 adjective apparatus.
 
 @<Make an annotated schema for a unary predicate@> =
-	int atask = 0; /* redundant assignment to appease |gcc -O2| */
-	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = UnaryPredicates::get_adj(tr);
-
-	if (UnaryPredicates::get_parity(tr) == FALSE) asch.negate_schema = TRUE;
-
 	if ((pl->terms[0].constant) && (pl->terms[0].term_checked_as_kind == NULL))
 		pl->terms[0].term_checked_as_kind = Specifications::to_kind(pl->terms[0].constant);
-
-	switch(task) {
-		case TEST_ATOM_TASK: atask = TEST_ADJECTIVE_TASK; break;
-		case NOW_ATOM_TRUE_TASK: atask = NOW_ADJECTIVE_TRUE_TASK; break;
-		case NOW_ATOM_FALSE_TASK: atask = NOW_ADJECTIVE_FALSE_TASK; break;
-	}
-
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "Unary predicate: $o, on: %u\n", pl, pl->terms[0].term_checked_as_kind);
-	asch.schema = Adjectives::Meanings::get_i6_schema(aph, pl->terms[0].term_checked_as_kind, atask);
+	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	UnaryPredicateFamilies::get_schema(task, tr, &asch, pl->terms[0].term_checked_as_kind);
 	return asch;
 
 @ Delegation is similarly the art of compiling a BP:

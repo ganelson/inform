@@ -1,7 +1,7 @@
 'new unary even': ok
 '<< NOT> >> is syntactically valid': false - too many close groups
 '<< Exists x >> is syntactically valid': true
-'<< ForAll x >> is syntactically valid': false - ends without domain of final quantifier
+'<< ForAll x >> is syntactically valid': false - nonexistential quantifier without domain
 '<< ForAll x IN< kind = number (x) IN>: even (x) >> is syntactically valid': true
 'set A to << Exists x >>': a set to << Exists x >>
 'set B to << Exists x: even (x) >>': b set to << Exists x : even(x) >>

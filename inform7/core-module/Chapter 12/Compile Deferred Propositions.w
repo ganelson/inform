@@ -508,6 +508,9 @@ I6 code as we go, but preserving the Invariant.
 	int no_deferred_callings = 0; /* how many |CALLED| atoms have been found to date */
 
 	TRAVERSE_PROPOSITION(pl, proposition) {
+		if (Atoms::is_CALLED(pl)) {
+			@<Push the C-stack@>;
+		} else
 		switch (pl->element) {
 			case NEGATION_OPEN_ATOM:
 			case NEGATION_CLOSE_ATOM:
@@ -530,9 +533,6 @@ I6 code as we go, but preserving the Invariant.
 				@<End a run of predicate-like conditions, if one is under way@>;
 				@<Pop the R-stack@>;
 				break;
-			case CALLED_ATOM:
-				@<Push the C-stack@>;
-				break;
 			default: {
 				if (R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)
 					@<Compile code to force the atom@>
@@ -540,7 +540,7 @@ I6 code as we go, but preserving the Invariant.
 					int last_in_run = TRUE, first_in_run = TRUE;
 					if (run_of_conditions++ > 0) first_in_run = FALSE;
 					pcalc_prop *ex = pl->next;
-					while ((ex) && (ex->element == CALLED_ATOM)) ex = ex->next;
+					while ((ex) && (Atoms::is_CALLED(ex))) ex = ex->next;
 					if (ex) {
 						switch(ex->element) {
 							case NEGATION_OPEN_ATOM:

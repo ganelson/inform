@@ -17,9 +17,6 @@ of value for the contents of the variables; such structures exist temporarily
 on the stack while we work.
 
 =
-typedef struct variable_type_assignment {
-	struct kind *assigned_kinds[26]; /* one for each of the 26 variables */
-} variable_type_assignment;
 
 @h Problem reporting kit.
 The caller to |Propositions::Checker::type_check| has to fill this form out first. Paperwork,
@@ -255,7 +252,8 @@ but not meaningless.
 @ See below, of course.
 
 @<A unary predicate is required to have an interpretation matching the kind of its term@> =
-	if (Propositions::Checker::type_check_unary_predicate(pl, &vta, tck) == NEVER_MATCH) {
+	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
+	if (UnaryPredicateFamilies::typecheck(up, pl, &vta, tck) == NEVER_MATCH) {
 		if (tck->log_to_I6_text) LOG("Adjective $o cannot be applied\n", pl);
 		return NEVER_MATCH;
 	}

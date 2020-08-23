@@ -485,6 +485,16 @@ pcalc_prop *Propositions::prop_seek_atom(pcalc_prop *prop, int atom_req, int ari
 	return NULL;
 }
 
+pcalc_prop *Propositions::prop_seek_up_family(pcalc_prop *prop, up_family *f) {
+	TRAVERSE_VARIABLE(p);
+	TRAVERSE_PROPOSITION(p, prop)
+		if ((p->element == PREDICATE_ATOM) && (p->arity == 1)) {
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			if (up->family == f) return p;
+		}
+	return NULL;
+}
+
 @ Seeking different kinds of atom is now easy:
 
 =
@@ -512,7 +522,10 @@ int Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
 }
 
 int Propositions::contains_callings(pcalc_prop *prop) {
-	if (Propositions::prop_seek_atom(prop, CALLED_ATOM, -1)) return TRUE; return FALSE;
+	for (pcalc_prop *p = prop; p; p = p->next)
+		if (Atoms::is_CALLED(p))
+			return TRUE;
+	return FALSE;
 }
 
 @ Here we try to find out the kind of value of variable 0 without the full
@@ -565,17 +578,23 @@ parse_node *Propositions::describes_value(pcalc_prop *prop) {
 
 =
 int Propositions::contains_adjective(pcalc_prop *prop) {
-	if (Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1)) return TRUE;
+	for (pcalc_prop *p = prop; p; p = p->next)
+		if ((p->element == PREDICATE_ATOM) && (p->arity == 1)) {
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			if (up->family == adjectival_up_family)
+				return TRUE;
+		}
 	return FALSE;
 }
 
-int Propositions::count_unary_predicates(pcalc_prop *prop) {
+int Propositions::count_adjectives(pcalc_prop *prop) {
 	int ac = 0;
-	pcalc_prop *p = prop;
-	while ((p = Propositions::prop_seek_atom(p, PREDICATE_ATOM, 1)) != NULL) {
-		if (Terms::variable_underlying(&(p->terms[0])) == 0) ac++;
-		p = p->next;
-	}
+	for (pcalc_prop *p = prop; p; p = p->next)
+		if ((p->element == PREDICATE_ATOM) && (p->arity == 1) &&
+			(Terms::variable_underlying(&(p->terms[0])) == 0)) {
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			if (up->family == adjectival_up_family) ac++;
+		}
 	return ac;
 }
 
@@ -607,8 +626,9 @@ pcalc_term Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	if (prop == NULL) return pct;
 	if (prop->next != NULL) return pct;
 	if ((prop->element == PREDICATE_ATOM) && (prop->arity == 1)) {
- 		unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
-		return Terms::adj_to_noun_conversion(tr);
+ 		unary_predicate *up = RETRIEVE_POINTER_unary_predicate(prop->predicate);
+ 		if (up->family == adjectival_up_family)
+			return Terms::adj_to_noun_conversion(up);
 	}
 	if (prop->element == KIND_ATOM) {
  		kind *K = prop->assert_kind;
@@ -624,7 +644,7 @@ following are useful for looping through them:
 
 =
 unary_predicate *Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_prop **ppp) {
-	prop = Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1);
+	prop = Propositions::prop_seek_up_family(prop, adjectival_up_family);
 	if (ppp) *ppp = prop;
 	if (prop == NULL) return NULL;
 	return Atoms::to_adjectival_usage(prop);
@@ -632,7 +652,7 @@ unary_predicate *Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_pro
 
 unary_predicate *Propositions::next_unary_predicate(pcalc_prop **ppp) {
 	if (ppp == NULL) internal_error("bad ppp");
-	pcalc_prop *prop = Propositions::prop_seek_atom((*ppp)->next, PREDICATE_ATOM, 1);
+	pcalc_prop *prop = Propositions::prop_seek_up_family((*ppp)->next, adjectival_up_family);
 	*ppp = prop;
 	if (prop == NULL) return NULL;
 	return Atoms::to_adjectival_usage(prop);
