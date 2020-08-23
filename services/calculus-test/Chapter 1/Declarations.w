@@ -24,15 +24,24 @@ match any text.
 @h REPL variables.
 
 @e repl_var_CLASS
+@e named_function_CLASS
 
 =
 DECLARE_CLASS(repl_var)
+DECLARE_CLASS(named_function)
 
 typedef struct repl_var {
 	struct wording name;
 	struct pcalc_prop *val;
 	CLASS_DEFINITION
 } repl_var;
+
+typedef struct named_function {
+	struct wording name;
+	struct binary_predicate *bp;
+	int side;
+	CLASS_DEFINITION
+} named_function;
 
 <new-repl-variable> internal {
 	repl_var *rv;
@@ -51,6 +60,15 @@ typedef struct repl_var {
 	LOOP_OVER(rv, repl_var)
 		if (Wordings::match(rv->name, W)) {
 			==> { -, rv }; return TRUE;
+		}
+	return FALSE;
+}
+
+<named-function> internal {
+	named_function *nf;
+	LOOP_OVER(nf, named_function)
+		if (Wordings::match(nf->name, W)) {
+			==> { -, nf }; return TRUE;
 		}
 	return FALSE;
 }
@@ -87,9 +105,12 @@ void Declarations::parse(parse_node *p) {
 
 @ =
 <declaration-line> ::=
-	new unary ... |                            ==> @<Create new unary@>
-	new binary ... |                           ==> @<Create new binary@>
+	new unary ### |                            ==> @<Create new unary@>
+	new binary ### ( ### , ### ) |             ==> @<Create new binary@>
 	set <new-repl-variable> to <evaluation> |  ==> @<Set REPL var@>
+	term <term> |                              ==> @<Show term@>
+	constant underlying <term> |               ==> @<Show const underlying@>
+	variable underlying <term> |               ==> @<Show var underlying@>
 	<evaluation> |                             ==> @<Show result@>
 	<test> |                                   ==> @<Show result of test@>
 	...                                        ==> @<Fail with error@>
@@ -118,27 +139,29 @@ void Declarations::parse(parse_node *p) {
 	<atomic-proposition>                             ==> { pass 1 }
 
 <atomic-proposition> ::=
-	<adjective-name> ( <term> ) |              ==> { -, Calculus::Atoms::unary_PREDICATE_from_aph_term(RP[1], FALSE, *((pcalc_term *) RP[2])) }
-	( <term> == <term> ) |                     ==> { -, Calculus::Atoms::binary_PREDICATE_new(R_equality, *((pcalc_term *) RP[1]), *((pcalc_term *) RP[2])) }
-	<relation-name> ( <term> , <term> ) |      ==> { -, Calculus::Atoms::binary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2]), *((pcalc_term *) RP[3])) }
-	kind = <k-kind> ( <term> ) |               ==> { -, Calculus::Atoms::KIND_new(RP[1], *((pcalc_term *) RP[2])) }
-	called = ... ( <term> ) |                  ==> { -, Calculus::Atoms::CALLED_new(WR[1], *((pcalc_term *) RP[1]), NULL) }
-	everywhere ( <term> ) |                    ==> { -, Calculus::Atoms::EVERYWHERE_new(*((pcalc_term *) RP[1])) }
-	nowhere ( <term> ) |                       ==> { -, Calculus::Atoms::NOWHERE_new(*((pcalc_term *) RP[1])) }
-	here ( <term> ) |                          ==> { -, Calculus::Atoms::HERE_new(*((pcalc_term *) RP[1])) }
-	is-a-kind ( <term> ) |                     ==> { -, Calculus::Atoms::ISAKIND_new(*((pcalc_term *) RP[1]), NULL) }
-	is-a-var ( <term> ) |                      ==> { -, Calculus::Atoms::ISAVAR_new(*((pcalc_term *) RP[1])) }
-	is-a-const ( <term> ) |                    ==> { -, Calculus::Atoms::ISACONST_new(*((pcalc_term *) RP[1])) }
-	not< |                                     ==> { -, Calculus::Atoms::new(NEGATION_OPEN_ATOM) }
-	not> |                                     ==> { -, Calculus::Atoms::new(NEGATION_CLOSE_ATOM) }
-	in< |                                      ==> { -, Calculus::Atoms::new(DOMAIN_OPEN_ATOM) }
-	in>                                        ==> { -, Calculus::Atoms::new(DOMAIN_CLOSE_ATOM) }
+	<adjective-name> ( <term> ) |              ==> { -, Atoms::from_adjective(RP[1], FALSE, *((pcalc_term *) RP[2])) }
+	( <term> == <term> ) |                     ==> { -, Atoms::binary_PREDICATE_new(R_equality, *((pcalc_term *) RP[1]), *((pcalc_term *) RP[2])) }
+	<relation-name> ( <term> , <term> ) |      ==> { -, Atoms::binary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2]), *((pcalc_term *) RP[3])) }
+	kind = <k-kind> ( <term> ) |               ==> { -, Atoms::KIND_new(RP[1], *((pcalc_term *) RP[2])) }
+	called = ... ( <term> ) |                  ==> { -, Atoms::CALLED_new(WR[1], *((pcalc_term *) RP[1]), NULL) }
+	everywhere ( <term> ) |                    ==> { -, Atoms::EVERYWHERE_new(*((pcalc_term *) RP[1])) }
+	nowhere ( <term> ) |                       ==> { -, Atoms::NOWHERE_new(*((pcalc_term *) RP[1])) }
+	here ( <term> ) |                          ==> { -, Atoms::HERE_new(*((pcalc_term *) RP[1])) }
+	is-a-kind ( <term> ) |                     ==> { -, Atoms::ISAKIND_new(*((pcalc_term *) RP[1]), NULL) }
+	is-a-var ( <term> ) |                      ==> { -, Atoms::ISAVAR_new(*((pcalc_term *) RP[1])) }
+	is-a-const ( <term> ) |                    ==> { -, Atoms::ISACONST_new(*((pcalc_term *) RP[1])) }
+	not< |                                     ==> { -, Atoms::new(NEGATION_OPEN_ATOM) }
+	not> |                                     ==> { -, Atoms::new(NEGATION_CLOSE_ATOM) }
+	in< |                                      ==> { -, Atoms::new(DOMAIN_OPEN_ATOM) }
+	in>                                        ==> { -, Atoms::new(DOMAIN_CLOSE_ATOM) }
 
 <term> ::=
-	<pcvar>                                    ==> { -, Declarations::stash(Calculus::Terms::new_variable(R[1])) }
+	<pcvar> |                                  ==> { -, Declarations::stash(Terms::new_variable(R[1])) }
+	<cardinal-number> |                        ==> { -, Declarations::stash(Terms::new_constant(Declarations::number_to_value(W, R[1]))) }
+	<named-function> ( <term> )                ==> { -, Declarations::stash(Terms::new_function(((named_function *) RP[1])->bp, *((pcalc_term *) RP[2]), ((named_function *) RP[1])->side)) }
 
 <quantification> ::=
-	<quantifier> <pcvar>                       ==> { -, Calculus::Atoms::QUANTIFIER_new(RP[1], R[2], R[1]) }
+	<quantifier> <pcvar>                       ==> { -, Atoms::QUANTIFIER_new(RP[1], R[2], R[1]) }
 
 <quantifier> ::=
 	ForAll |                                   ==> { 0, for_all_quantifier }
@@ -171,7 +194,8 @@ void Declarations::parse(parse_node *p) {
 	PRINT("'%<W': ok\n", W);
 
 @<Create new binary@> =
-	Declarations::new(GET_RW(<declaration-line>, 1));
+	Declarations::new(GET_RW(<declaration-line>, 1),
+		K_number, GET_RW(<declaration-line>, 2), K_number, GET_RW(<declaration-line>, 3));
 	PRINT("'%<W': ok\n", W);
 
 @<Set REPL var@> =
@@ -180,6 +204,26 @@ void Declarations::parse(parse_node *p) {
 	rv->val = P;
 	PRINT("'%<W': %W set to ", W, rv->name);
 	Calculus::Propositions::write(STDOUT, P);
+	PRINT("\n");
+
+@<Show term@> =
+	pcalc_term *T = RP[1];
+	PRINT("'%<W': ", W);
+	Terms::write(STDOUT, T);
+	PRINT("\n");
+
+@<Show const underlying@> =
+	pcalc_term *T = RP[1];
+	PRINT("'%<W': ", W);
+	parse_node *val = Terms::constant_underlying(T);
+	if (val == NULL) PRINT("--"); else PRINT("'%W'", Node::get_text(val));
+	PRINT("\n");
+
+@<Show var underlying@> =
+	pcalc_term *T = RP[1];
+	PRINT("'%<W': ", W);
+	int v = Terms::variable_underlying(T);
+	if (v < 0) PRINT("--"); else PRINT("%c", pcalc_vars[v]);
 	PRINT("\n");
 
 @<Show result@> =
@@ -204,17 +248,41 @@ void Declarations::parse(parse_node *p) {
 @ =
 bp_family *test_bp_family = NULL;
 
-void Declarations::new(wording W) {
+void Declarations::new(wording W, kind *k0, wording f0, kind *k1, wording f1) {
 	if (test_bp_family == NULL)
 		test_bp_family = BinaryPredicateFamilies::new();
-	bp_term_details number_term =
-		BinaryPredicates::new_term(TERM_DOMAIN_FROM_KIND_FUNCTION(K_number));
+	bp_term_details t0 =
+		BinaryPredicates::new_term(TERM_DOMAIN_FROM_KIND_FUNCTION(k0));
+	bp_term_details t1 =
+		BinaryPredicates::new_term(TERM_DOMAIN_FROM_KIND_FUNCTION(k1));
 	text_stream *S = Str::new();
 	WRITE_TO(S, "%W", W);
-	BinaryPredicates::make_pair(test_bp_family,
-		number_term, number_term,
-		S, NULL, NULL, Calculus::Schemas::new("%S(*1, *2)", S),
-		WordAssemblages::from_wording(W));
+	binary_predicate *bp =
+		BinaryPredicates::make_pair(test_bp_family, t0, t1, S, NULL, NULL,
+			Calculus::Schemas::new("%S(*1, *2)", S),
+			WordAssemblages::from_wording(W));
+	TEMPORARY_TEXT(f0n)
+	TEMPORARY_TEXT(f1n)
+	WRITE_TO(f0n, "%W", f0);
+	WRITE_TO(f1n, "%W", f1);
+	if (Str::ne(f0n, I"none")) {
+		named_function *nf = CREATE(named_function);
+		nf->bp = bp;
+		nf->name = f0;
+		nf->side = 1;
+		BinaryPredicates::set_term_function(&(bp->term_details[0]),
+			Calculus::Schemas::new("%S(*1)", f0n));
+	}
+	if (Str::ne(f1n, I"none")) {
+		named_function *nf = CREATE(named_function);
+		nf->bp = bp;
+		nf->name = f1;
+		nf->side = 0;
+		BinaryPredicates::set_term_function(&(bp->term_details[1]),
+			Calculus::Schemas::new("%S(*1)", f1n));
+	}
+	DISCARD_TEXT(f0n)
+	DISCARD_TEXT(f1n)
 }
 
 int stashed = 0;
@@ -224,4 +292,8 @@ pcalc_term *Declarations::stash(pcalc_term t) {
 	if (stashed == 1000) internal_error("too many terms in test case");
 	stashed_terms[stashed] = t;
 	return &(stashed_terms[stashed++]);
+}
+
+parse_node *Declarations::number_to_value(wording W, int n) {
+	return Diagrams::new_UNPARSED_NOUN(W);
 }

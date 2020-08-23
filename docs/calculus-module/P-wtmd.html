@@ -157,17 +157,18 @@ and prints the result.
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; here (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; here(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; called = magic passcode (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; called='magic passcode'(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new unary blue</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; blue(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; (x == y) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">new binary sees</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (12) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even('12') &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; (x == 7) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; (x == '7') &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new binary sees (none, sees-f1)</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; sees (x, y) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; sees(x, y) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ blue (x) ^ NOT&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; blue(x) NOT&gt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; NOT&lt; ^ even (x) ^ NOT&gt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; NOT&lt; even(x) NOT&gt; &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Exists x &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Exists x &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; DoesNotExist x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; DoesNotExist x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Card= 6 x IN&lt; kind = number (x) IN&gt;: blue (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Card=6 x IN&lt; kind=number(x) IN&gt; : blue(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; DoesNotExist x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; DoesNotExist x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Forall x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; ForAll x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
+<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; Card= 6 x IN&lt; kind = number (x) IN&gt;: even (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; Card=6 x IN&lt; kind=number(x) IN&gt; : even(x) &gt;&gt;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Formal description. </b>1. A "term" is any of the following:
 </p>
@@ -244,8 +245,8 @@ and <span class="extract"><span class="extract-syntax">prime(n)</span></span>.
 predicate <span class="extract"><span class="extract-syntax">A(t)</span></span>, true if the adjective currently applies to \(t\).
 </li><li>&#9679; For each kind \(K\), there is a predicate <span class="extract"><span class="extract-syntax">kind=K(t)</span></span>, which is true if \(t\)
 is of the kind \(K\).
-</li><li>&#9679; For any wording <span class="extract"><span class="extract-syntax">W</span></span>, there is a predicate <span class="extract"><span class="extract-syntax">called=W(t)</span></span>, which is asserts
-that the current value of \(t\) is something with the name <span class="extract"><span class="extract-syntax">W</span></span>.
+</li><li>&#9679; For any wording <span class="extract"><span class="extract-syntax">W</span></span>, there is a predicate <span class="extract"><span class="extract-syntax">called=W(t)</span></span>, which asserts
+that the current value of \(t\) is something named <span class="extract"><span class="extract-syntax">W</span></span>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-kind(t)</span></span> asserts that \(t\) represents a kind, not a value.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-var(t)</span></span> asserts that \(t\) represents a variable, not a value.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-const(t)</span></span> asserts that \(t\) represents a constant, not a value.
@@ -286,21 +287,21 @@ if and only if \(B(t, s)\). \(B\) and \(B^r\) are created in pairs.<sup id="fnre
 calls.
 </p>
 
-<p class="commentary">1. Terms are made using the functions <a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_constant</a>,
-<a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_variable</a> and <a href="3-trm.html#SP3" class="internal">Calculus::Terms::new_function</a>.
+<p class="commentary">1. Terms are made using the functions <a href="3-trm.html#SP4" class="internal">Terms::new_constant</a>,
+<a href="3-trm.html#SP4" class="internal">Terms::new_variable</a> and <a href="3-trm.html#SP4" class="internal">Terms::new_function</a>.
 </p>
 
 <p class="commentary">2. Unary predicate atoms are made using:
 </p>
 
-<ul class="items"><li>&#9679; <a href="3-ap.html#SP19" class="internal">Calculus::Atoms::unary_PREDICATE_from_aph_term</a>, or
-</li><li>&#9679; <a href="3-ap.html#SP17" class="internal">Calculus::Atoms::KIND_new</a>, or
-</li><li>&#9679; <a href="3-ap.html#SP16" class="internal">Calculus::Atoms::CALLED_new</a>, or
-</li><li>&#9679; <a href="3-ap.html#SP6" class="internal">Calculus::Atoms::new</a> for the six oddball unaries,
+<ul class="items"><li>&#9679; <a href="3-ap.html#SP15" class="internal">Atoms::from_adjective</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP12" class="internal">Atoms::KIND_new</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP11" class="internal">Atoms::CALLED_new</a>, or
+</li><li>&#9679; <a href="3-ap.html#SP4" class="internal">Atoms::new</a> for the six oddball unaries,
 supplying atom types <span class="extract"><span class="extract-syntax">ISAKIND_ATOM</span></span>, <span class="extract"><span class="extract-syntax">ISAVAR_ATOM</span></span>, <span class="extract"><span class="extract-syntax">ISACONST_ATOM</span></span>,
 <span class="extract"><span class="extract-syntax">EVERYWHERE_ATOM</span></span>, <span class="extract"><span class="extract-syntax">NOWHERE_ATOM</span></span> and <span class="extract"><span class="extract-syntax">HERE_ATOM</span></span>.
 </li></ul>
-<p class="commentary">Binary predicate atoms are made using <a href="3-ap.html#SP20" class="internal">Calculus::Atoms::binary_PREDICATE_new</a>.
+<p class="commentary">Binary predicate atoms are made using <a href="3-ap.html#SP16" class="internal">Atoms::binary_PREDICATE_new</a>.
 </p>
 
 <p class="commentary">3. Propositions are then built up from atoms or other propositions<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> by calling:
@@ -347,6 +348,11 @@ and not the simpler <a href="3-prp.html#SP14" class="internal">Calculus::Proposi
 <span class="plain-syntax">'</span><span class="element-syntax">A concatenate B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> false - x used outside its binding</span>
 <span class="plain-syntax">'</span><span class="element-syntax">A conjoin B is well-formed</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
+<p class="commentary">Note that the conjunction of A and B renamed the variable <span class="extract"><span class="extract-syntax">x</span></span> in B to <span class="extract"><span class="extract-syntax">y</span></span>,
+so that it no longer clashed with the meaning of <span class="extract"><span class="extract-syntax">x</span></span> in A. The concatenation
+did not, simply writing one after the other.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresssection"><a href="P-itpc.html">itpc</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-cs.html">2</a></li><li class="progresschapter"><a href="3-trm.html">3</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

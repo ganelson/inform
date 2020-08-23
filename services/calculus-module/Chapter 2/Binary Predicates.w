@@ -711,7 +711,7 @@ kind *BinaryPredicates::term_kind(binary_predicate *bp, int t) {
 	if (bp == NULL) internal_error("tried to find kind of null relation");
 	return BinaryPredicates::kind_of_term(&(bp->term_details[t]));
 }
-i6_schema *BinaryPredicates::get_term_as_function_of_other(binary_predicate *bp, int t) {
+i6_schema *BinaryPredicates::get_term_as_fn_of_other(binary_predicate *bp, int t) {
 	if (bp == NULL) internal_error("tried to find function of null relation");
 	return bp->term_details[t].function_of_other;
 }

@@ -5,10 +5,10 @@ SENTENCE_NT'jane is a woman'
     UNPARSED_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s}
 Refined:
     CREATED_NT'jane'
-    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: [ woman(x) ]} {eval: TEST_VALUE_NT}
+    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: << woman(x) >>} {eval: TEST_VALUE_NT}
 After creation:
 SENTENCE_NT'jane is a woman'
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     PROPER_NOUN_NT'jane' {eval: CONSTANT_NT'jane' {kind: object} {instance: 'jane'}} {created here}
-    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: [ woman(x) ]} {eval: TEST_VALUE_NT}
+    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: << woman(x) >>} {eval: TEST_VALUE_NT}
 

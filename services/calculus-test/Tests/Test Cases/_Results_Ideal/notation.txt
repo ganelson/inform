@@ -7,14 +7,15 @@
 '<< here (x) >>': << here(x) >>
 '<< called = magic passcode (x) >>': << called='magic passcode'(x) >>
 '<< kind = number (x) >>': << kind=number(x) >>
-'new unary blue': ok
-'<< blue (x) >>': << blue(x) >>
-'<< (x == y) >>': << (x == y) >>
-'new binary sees': ok
+'new unary even': ok
+'<< even (12) >>': << even('12') >>
+'<< even (x) >>': << even(x) >>
+'<< (x == 7) >>': << (x == '7') >>
+'new binary sees (none, sees-f1)': ok
 '<< sees (x, y) >>': << sees(x, y) >>
-'<< NOT< ^ blue (x) ^ NOT> >>': << NOT< blue(x) NOT> >>
-'<< Forall x IN< kind = number (x) IN>: blue (x) >>': << ForAll x IN< kind=number(x) IN> : blue(x) >>
+'<< NOT< ^ even (x) ^ NOT> >>': << NOT< even(x) NOT> >>
+'<< Forall x IN< kind = number (x) IN>: even (x) >>': << ForAll x IN< kind=number(x) IN> : even(x) >>
 '<< Exists x >>': << Exists x >>
-'<< DoesNotExist x IN< kind = number (x) IN>: blue (x) >>': << DoesNotExist x IN< kind=number(x) IN> : blue(x) >>
-'<< Forall x IN< kind = number (x) IN>: blue (x) >>': << ForAll x IN< kind=number(x) IN> : blue(x) >>
-'<< Card= 6 x IN< kind = number (x) IN>: blue (x) >>': << Card=6 x IN< kind=number(x) IN> : blue(x) >>
+'<< DoesNotExist x IN< kind = number (x) IN>: even (x) >>': << DoesNotExist x IN< kind=number(x) IN> : even(x) >>
+'<< Forall x IN< kind = number (x) IN>: even (x) >>': << ForAll x IN< kind=number(x) IN> : even(x) >>
+'<< Card= 6 x IN< kind = number (x) IN>: even (x) >>': << Card=6 x IN< kind=number(x) IN> : even(x) >>

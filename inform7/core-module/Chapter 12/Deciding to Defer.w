@@ -240,7 +240,7 @@ void Calculus::Deferrals::ctop_recurse(value_holster *VH, pcalc_prop *prop, pcal
 				case NEGATION_CLOSE_ATOM: internal_error("blundered");
 					break;
 				default:
-					Calculus::Atoms::Compile::compile(VH, TEST_ATOM_TASK, pl, TRUE);
+					Atoms::Compile::compile(VH, TEST_ATOM_TASK, pl, TRUE);
 					break;
 			}
 		}
@@ -382,7 +382,7 @@ int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int
 right name and kind of value exists in |R|.
 
 @<Find which local variable in R needs the value, creating it if necessary@> =
-	wording W = Calculus::Atoms::CALLED_get_name(pl);
+	wording W = Atoms::CALLED_get_name(pl);
 	local = LocalVariables::ensure_called_local(W, pl->assert_kind);
 
 @ The following wrapper contributes almost nothing, but it checks some
@@ -400,7 +400,7 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 	pcalc_prop *prop = Calculus::Propositions::from_spec(matches);
 	kind *K = Specifications::to_kind(var);
 	prop = Calculus::Propositions::concatenate(
-		Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)), prop);
+		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
 	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P (%u) matches $D]\n", var, K, prop);
 	if (Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
@@ -455,7 +455,7 @@ void Calculus::Deferrals::emit_now_proposition(pcalc_prop *prop) {
 					parity = (parity)?FALSE:TRUE;
 					break;
 				default:
-					Calculus::Atoms::Compile::emit(
+					Atoms::Compile::emit(
 						(parity)?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl, TRUE);
 					break;
 			}
@@ -473,7 +473,7 @@ does not have run-time object or value creation.
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {
 			case QUANTIFIER_ATOM:
-				if (Calculus::Atoms::is_existence_quantifier(pl)) {
+				if (Atoms::is_existence_quantifier(pl)) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceExistence),
 						"this is not explicit enough",
 						"and should set out definite relationships between specific "
@@ -482,7 +482,7 @@ does not have run-time object or value creation.
 						"(Which woman? That's the trouble.)");
 					return;
 				}
-				if (Calculus::Atoms::is_now_assertable_quantifier(pl) == FALSE) {
+				if (Atoms::is_now_assertable_quantifier(pl) == FALSE) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceGeneralised),
 						"this can't be made true with 'now'",
 						"because it is too vague about what it applies to. It's fine "
@@ -552,11 +552,11 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 	}
 	pcalc_prop *prop = Calculus::Propositions::from_spec(spec);
 	if (negate) {
-		prop = Calculus::Propositions::concatenate(Calculus::Atoms::new(NEGATION_OPEN_ATOM), prop);
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));
+		prop = Calculus::Propositions::concatenate(Atoms::new(NEGATION_OPEN_ATOM), prop);
+		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	}
 	prop = Calculus::Propositions::concatenate(
-		Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)), prop);
+		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
 	if (Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) return;
 	parse_node *example = NULL;

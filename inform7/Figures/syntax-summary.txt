@@ -34,16 +34,16 @@ ROOT_NT
             SENTENCE_NT'the current actor is a person which varies'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current actor' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}} {created here}
-                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the current owner is a person which varies'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}
-                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'every turn'
             RULE_NT'every turn'
             SENTENCE_NT'a person can be active or passive'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
-                COMMON_NOUN_NT'a person' {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'a person' {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 UNPARSED_NOUN_NT'active or passive'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'active'
@@ -51,11 +51,11 @@ ROOT_NT
             SENTENCE_NT'the player is passive'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I34'yourself'}}
-                ADJECTIVE_NT'passive' {creation: [ 'passive'(x) ^ 'passive'(x) ]}
+                ADJECTIVE_NT'passive' {creation: << passive(x) ^ passive(x) >>}
             SENTENCE_NT'the character movement rules are a rulebook'
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}
-                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'the first character movement rule'
             RULE_NT'a character movement rule'
             RULE_NT'a character movement rule'
@@ -65,7 +65,7 @@ ROOT_NT
             SENTENCE_NT'the shopowner rules is a rulebook'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}
-                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'a shopowner rule'
             RULE_NT'report someone closing a door when the person asked owns the'
             RULE_NT'report vanessa closing the metal door when the metal door is'
@@ -80,7 +80,7 @@ ROOT_NT
             SENTENCE_NT'the shopper rules is a rulebook'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}
-                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'a shopper rule'
             RULE_NT'a shopper rule'
             RULE_NT'definition'
@@ -108,23 +108,23 @@ ROOT_NT
                 UNPARSED_NOUN_NT'applying to one thing'
             SENTENCE_NT'an artwork is a kind of thing'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing'
-                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'thing' {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before printing the name of an artwork'
             RULE_NT'after printing the name of an artwork'
             SENTENCE_NT'an artwork can be submitted or reserved'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
-                COMMON_NOUN_NT'an artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'an artwork' {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
                 UNPARSED_NOUN_NT'submitted or reserved'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'submitted'
                         UNPARSED_NOUN_NT'reserved'
             SENTENCE_NT'a book is a kind of artwork'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=book(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=book(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork'
-                    COMMON_NOUN_NT'artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'artwork' {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before someone resolving a book when the person asked is not'
             RULE_NT'carry out someone resolving a book'
             RULE_NT'report someone resolving a book'
@@ -132,18 +132,18 @@ ROOT_NT
             RULE_NT'before grouping together books'
             SENTENCE_NT'a stamped envelope is a kind of thing'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=stamped envelope(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=stamped envelope(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing'
-                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'thing' {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before someone resolving a stamped envelope when the person '
             RULE_NT'carry out someone resolving a stamped envelope'
             RULE_NT'report someone resolving a stamped envelope'
             RULE_NT'instead of someone resolving a stamped envelope when the per'
             SENTENCE_NT'a dvd is a kind of artwork'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=dvd(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=dvd(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork'
-                    COMMON_NOUN_NT'artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'artwork' {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before someone resolving a dvd when the person asked is not '
             RULE_NT'carry out someone resolving a dvd'
             RULE_NT'report someone resolving a dvd'
@@ -157,9 +157,9 @@ ROOT_NT
             RULE_NT'carry out someone approaching'
             SENTENCE_NT'a coupon is a kind of thing'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=coupon(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=coupon(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing'
-                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'thing' {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'carry out someone resolving a coupon'
             SENTENCE_NT'the block giving rule is not listed in any rulebook'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}
@@ -170,12 +170,12 @@ ROOT_NT
             RULE_NT'after someone giving a coupon to vanessa'
             SENTENCE_NT'infection color is a kind of value'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'infection color' {creation: [ kind=infection color(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'infection color' {creation: << kind=infection color(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of value'
-                    COMMON_NOUN_NT'value' {creation: [ kind=value(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'value' {creation: << kind=value(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the infection colors are french vanilla , whole-bean vanilla'
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
-                COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc} {creation: [ kind=infection color(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc} {creation: << kind=infection color(x) >>} {eval: TEST_VALUE_NT}
                 AND_NT','
                     PROPER_NOUN_NT'french vanilla' {eval: CONSTANT_NT'french vanilla' {kind: infection color} {instance: I62'french vanilla'[infection color]}} {created here}
                     AND_NT','
@@ -252,21 +252,21 @@ ROOT_NT
                 UNPARSED_NOUN_NT'"[flavored ice cream]"'
             SENTENCE_NT'an ice cream cone is a kind of thing'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT} {created here}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: << kind=ice cream cone(x) >>} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing'
-                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'thing' {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'an ice cream cone is always edible'
                 VERB_NT'is always' {certainty:certain} {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}
-                ADJECTIVE_NT'edible' {creation: [ 'edible'(x) ^ 'edible'(x) ]}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: << kind=ice cream cone(x) >>} {eval: TEST_VALUE_NT}
+                ADJECTIVE_NT'edible' {creation: << edible(x) ^ edible(x) >>}
             SENTENCE_NT'an ice cream cone has an infection color'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: << kind=ice cream cone(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has'
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             SENTENCE_NT'an ice cream cone can be half-eaten or fresh'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
-                COMMON_NOUN_NT'an ice cream cone' {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'an ice cream cone' {creation: << kind=ice cream cone(x) >>} {eval: TEST_VALUE_NT}
                 UNPARSED_NOUN_NT'half-eaten or fresh'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'half-eaten'
@@ -283,14 +283,14 @@ ROOT_NT
             RULE_NT'this is the infection rule'
             SENTENCE_NT'a person can be infected or clean'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
-                COMMON_NOUN_NT'a person' {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'a person' {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 UNPARSED_NOUN_NT'infected or clean'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'infected'
                         UNPARSED_NOUN_NT'clean'
             SENTENCE_NT'a person has an infection color'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has'
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}
             RULE_NT'every turn'
@@ -350,7 +350,7 @@ ROOT_NT
                 UNPARSED_NOUN_NT'going toward'
             SENTENCE_NT'a person has a room called the destination'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s}
@@ -378,12 +378,12 @@ ROOT_NT
             SENTENCE_NT'the alfred cralle pool hall is a room'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I88'alfred cralle pool hall'}} {created here}
-                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=room(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'"The town's most popular gathering-place, the pool hall is d'
             SENTENCE_NT'the air conditioner is a device in the pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'air conditioner' {kind: object} {instance: I89'air conditioner'}} {created here}
-                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=device(x) ^ is('the pool hall', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'device in the pool hall'}
+                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=device(x) ^ ('the pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'device in the pool hall'}
             SENTENCE_NT'"[if switched off]An air conditioner sits in the corner, unh'
             SENTENCE_NT'the felt door is west of the pool hall'
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
@@ -394,17 +394,17 @@ ROOT_NT
             SENTENCE_NT'the felt door is a door'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I90'felt door'}}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the felt door is open'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}
-                ADJECTIVE_NT'open' {creation: [ 'open'(x) ^ 'open'(x) ]}
+                ADJECTIVE_NT'open' {creation: << open(x) ^ open(x) >>}
             SENTENCE_NT'the felt door is lockable and unlocked'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}
-                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}
+                    ADJECTIVE_NT'lockable' {creation: << lockable(x) ^ lockable(x) >>}
+                    ADJECTIVE_NT'unlocked' {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the felt door'
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}} {created here}
@@ -432,7 +432,7 @@ ROOT_NT
             SENTENCE_NT'the statue is scenery in memorial square'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'statue' {kind: object} {instance: I93'statue'}} {created here}
-                COMMON_NOUN_NT'scenery in memorial square' {creation: [ 'scenery'(x) ^ is('memorial square', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'scenery in memorial square'}
+                COMMON_NOUN_NT'scenery in memorial square' {creation: << scenery(x) ^ ('memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in memorial square'}
             SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue'
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"nancy" or "johnson" or "mrs"'
@@ -473,11 +473,11 @@ ROOT_NT
             SENTENCE_NT'the slot is scenery in the post office'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}} {created here}
-                COMMON_NOUN_NT'scenery in the post office' {creation: [ 'scenery'(x) ^ is('the post office', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'scenery in the post office'}
+                COMMON_NOUN_NT'scenery in the post office' {creation: << scenery(x) ^ ('the post office' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the post office'}
             SENTENCE_NT'the slot is a container'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}}
-                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=container(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=container(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'carry out inserting something into the slot'
             RULE_NT'report inserting something into the slot'
             SENTENCE_NT'hamwi street is northeast of an iron gate'
@@ -496,13 +496,13 @@ ROOT_NT
             SENTENCE_NT'the iron gate is a door'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I99'iron gate'}}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'it is lockable and unlocked'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'it' {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I99'iron gate'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}
-                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}
+                    ADJECTIVE_NT'lockable' {creation: << lockable(x) ^ lockable(x) >>}
+                    ADJECTIVE_NT'unlocked' {creation: << unlocked(x) ^ unlocked(x) >>}
             RULE_NT'before printing the name of the iron gate while not opening '
             SENTENCE_NT'cold comfort ice cream is north of a metal door'
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
@@ -519,7 +519,7 @@ ROOT_NT
             SENTENCE_NT'a poster is fixed in place in cold comfort'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {eval: CONSTANT_NT'poster' {kind: object} {instance: I102'poster'}} {created here}
-                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: [ 'fixed in place'(x) ^ is('cold comfort', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}
+                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: << fixed in place(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}
             SENTENCE_NT'"A poster fills one wall with the blazing promise of treats '
             SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -530,14 +530,14 @@ ROOT_NT
             SENTENCE_NT'the metal door is a door'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I101'metal door'}}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'"A frosty metallic door separates [the location] from [the o'
             SENTENCE_NT'the metal door is lockable and unlocked'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I101'metal door'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}
-                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}
+                    ADJECTIVE_NT'lockable' {creation: << lockable(x) ^ lockable(x) >>}
+                    ADJECTIVE_NT'unlocked' {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the metal door'
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}
@@ -559,7 +559,7 @@ ROOT_NT
             SENTENCE_NT'the glass door is a door'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I105'glass door'}}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'it is west of marciony street'
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
                 PROPER_NOUN_NT'it' {eval: CONSTANT_NT'glass door' {kind: door} {instance: I105'glass door'}}
@@ -570,8 +570,8 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I105'glass door'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}
-                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}
+                    ADJECTIVE_NT'lockable' {creation: << lockable(x) ^ lockable(x) >>}
+                    ADJECTIVE_NT'unlocked' {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the key to the city unlocks the glass door'
                 VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}
@@ -597,14 +597,14 @@ ROOT_NT
             SENTENCE_NT'the emergency box is fixed in place'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}
-                ADJECTIVE_NT'fixed in place' {creation: [ 'fixed in place'(x) ^ 'fixed in place'(x) ]}
+                ADJECTIVE_NT'fixed in place' {creation: << fixed in place(x) ^ fixed in place(x) >>}
             SENTENCE_NT'"A fire-red box with a glass front faces the sidewalk, with '
             SENTENCE_NT'the emergency box is closed and transparent'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'closed' {creation: [ 'closed'(x) ^ 'closed'(x) ]}
-                    ADJECTIVE_NT'transparent' {creation: [ 'transparent'(x) ^ 'transparent'(x) ]}
+                    ADJECTIVE_NT'closed' {creation: << closed(x) ^ closed(x) >>}
+                    ADJECTIVE_NT'transparent' {creation: << transparent(x) ^ transparent(x) >>}
             SENTENCE_NT'understand "glass" as the box'
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
@@ -631,13 +631,13 @@ ROOT_NT
             SENTENCE_NT'the bronze gates are a door'
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I107'bronze gates'}}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the bronze gates are lockable and unlocked'
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I107'bronze gates'}}
                 AND_NT'and'
-                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}
-                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}
+                    ADJECTIVE_NT'lockable' {creation: << lockable(x) ^ lockable(x) >>}
+                    ADJECTIVE_NT'unlocked' {creation: << unlocked(x) ^ unlocked(x) >>}
             SENTENCE_NT'the description of the bronze gates is "Erected during the m'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the bronze gates' {definite 'the' n/m/f s/p nom/acc}
@@ -654,7 +654,7 @@ ROOT_NT
             SENTENCE_NT'the incongruous sign is scenery in the public library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I111'incongruous sign'}} {created here}
-                COMMON_NOUN_NT'scenery in the public library' {creation: [ 'scenery'(x) ^ is('the public library', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'scenery in the public library'}
+                COMMON_NOUN_NT'scenery in the public library' {creation: << scenery(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the public library'}
             SENTENCE_NT'the description of the incongruous sign is "Eating and drink'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the incongruous sign' {definite 'the' n/m/f s/p nom/acc}
@@ -691,7 +691,7 @@ ROOT_NT
                 PROPER_NOUN_NT'"A skeleton key."' {eval: CONSTANT_NT'"A skeleton key."' {kind: text}}
             SENTENCE_NT'a room can be indoors or outdoors'
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
-                COMMON_NOUN_NT'a room' {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'a room' {creation: << kind=room(x) >>} {eval: TEST_VALUE_NT}
                 UNPARSED_NOUN_NT'indoors or outdoors'
                     AND_NT'or'
                         UNPARSED_NOUN_NT'indoors'
@@ -709,7 +709,7 @@ ROOT_NT
                                 AND_NT','
                                     PROPER_NOUN_NT'town hall' {eval: CONSTANT_NT'town hall' {kind: object} {instance: I112'town hall'}}
                                     PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'public library' {kind: object} {instance: I110'public library'}}
-                ADJECTIVE_NT'indoors' {creation: [ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ]}
+                ADJECTIVE_NT'indoors' {creation: << indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) >>}
             SENTENCE_NT'use full-length room descriptions'
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
@@ -719,7 +719,7 @@ ROOT_NT
             SENTENCE_NT'blank is a room'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'blank' {eval: CONSTANT_NT'blank' {kind: object} {instance: I113'blank'}} {created here}
-                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=room(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'the destination of the player is blank'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'destination of the player' {definite 'the' n/m/f s/p nom/acc}
@@ -763,7 +763,7 @@ ROOT_NT
             SENTENCE_NT'vanessa is a woman in cold comfort'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: object} {instance: I129'vanessa'}} {created here}
-                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('cold comfort', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'woman in cold comfort'}
+                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in cold comfort'}
             SENTENCE_NT'vanessa owns cold comfort'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'}}
@@ -772,7 +772,7 @@ ROOT_NT
             SENTENCE_NT'francine is a woman in the public library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: object} {instance: I130'francine'}} {created here}
-                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('the public library', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'woman in the public library'}
+                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the public library'}
             SENTENCE_NT'francine carries a book called phlox for phyllis'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: woman} {instance: I130'francine'}}
@@ -786,7 +786,7 @@ ROOT_NT
             SENTENCE_NT'lewis is a man in the alfred cralle pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: object} {instance: I133'lewis'}} {created here}
-                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the alfred cralle pool hall', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall'}
+                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall'}
             SENTENCE_NT'lewis carries 3 stamped envelopes'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: man} {instance: I133'lewis'}}
@@ -819,7 +819,7 @@ ROOT_NT
             SENTENCE_NT'gene is a man in nancy johnson memorial square'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: object} {instance: I141'gene'}} {created here}
-                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('nancy johnson memorial square', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in nancy johnson memorial square'}
+                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('nancy johnson memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in nancy johnson memorial square'}
             SENTENCE_NT'gene carries a stamped envelope'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: man} {instance: I141'gene'}}
@@ -838,7 +838,7 @@ ROOT_NT
             SENTENCE_NT'rhoda is a woman in marciony street'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I145'rhoda'}} {created here}
-                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('marciony street', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'woman in marciony street'}
+                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('marciony street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in marciony street'}
             SENTENCE_NT'rhoda carries a book called the marciony street murders'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I145'rhoda'}}
@@ -857,7 +857,7 @@ ROOT_NT
             SENTENCE_NT'martin is a man in main street'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: object} {instance: I149'martin'}} {created here}
-                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('main street', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in main street'}
+                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('main street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in main street'}
             SENTENCE_NT'martin carries a dvd called the lifecycle of the south sea t'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: man} {instance: I149'martin'}}
@@ -871,7 +871,7 @@ ROOT_NT
             SENTENCE_NT'antony is a man in movie rental'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: object} {instance: I152'antony'}} {created here}
-                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('movie rental', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in movie rental'}
+                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('movie rental' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in movie rental'}
             SENTENCE_NT'antony carries a coupon'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: man} {instance: I152'antony'}}
@@ -885,7 +885,7 @@ ROOT_NT
             SENTENCE_NT'shelby is a man in the town hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: object} {instance: I155'shelby'}} {created here}
-                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the town hall', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in the town hall'}
+                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the town hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the town hall'}
             SENTENCE_NT'shelby carries a dvd called conducting an orderly meeting'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: man} {instance: I155'shelby'}}
@@ -917,7 +917,7 @@ ROOT_NT
             SENTENCE_NT'christopher is a man in the library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: object} {instance: I164'christopher'}} {created here}
-                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the library', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in the library'}
+                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the library'}
             SENTENCE_NT'christopher owns the library'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: man} {instance: I164'christopher'}}
@@ -926,7 +926,7 @@ ROOT_NT
             SENTENCE_NT'linnea is a woman in the alfred cralle pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: object} {instance: I165'linnea'}} {created here}
-                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('the alfred cralle pool hall', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall'}
+                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall'}
             SENTENCE_NT'linnea owns the alfred cralle pool hall'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: woman} {instance: I165'linnea'}}
@@ -935,7 +935,7 @@ ROOT_NT
             SENTENCE_NT'ned is a man in the movie rental store'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: object} {instance: I166'ned'}} {created here}
-                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the movie rental store', <ContainerOf(*1) : x>) ]} {eval: TEST_VALUE_NT'man in the movie rental store'}
+                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the movie rental store' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the movie rental store'}
             SENTENCE_NT'ned owns the movie rental'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: man} {instance: I166'ned'}}
@@ -945,7 +945,7 @@ ROOT_NT
             SENTENCE_NT'the description of a person is usually "[The noun] [if the n'
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc}
-                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'description' {eval: CONSTANT_NT {kind: texts valued property}}
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}
             RULE_NT'after examining another person who is carrying something'
@@ -953,7 +953,7 @@ ROOT_NT
         HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'}
             SENTENCE_NT'a person has a table name called conversation'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
@@ -972,7 +972,7 @@ ROOT_NT
             SENTENCE_NT'the conversation of a person is usually table of general chi'
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc}
-                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'conversation' {eval: CONSTANT_NT {kind: table names valued property}}
                 PROPER_NOUN_NT'table of general chitchat' {eval: CONSTANT_NT'table of general chitchat' {kind: table name}{meaning: {table of general chitchat = TABLE_MC}}}
             TABLE_NT'table of general chitchat topic reply summary turn stamp cha'
@@ -987,7 +987,7 @@ ROOT_NT
         HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'}
             SENTENCE_NT'a person has some text called walk style'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'text' {indefinite 'some' n/m/f nom/acc p}
@@ -995,13 +995,13 @@ ROOT_NT
             SENTENCE_NT'the walk style of a man is usually "stride"'
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of a man' {definite 'the' n/m/f s/p nom/acc}
-                    COMMON_NOUN_NT'man' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'man' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'walk style' {eval: CONSTANT_NT {kind: texts valued property}}
                 PROPER_NOUN_NT'"stride"' {eval: CONSTANT_NT'"stride"' {kind: text}}
             SENTENCE_NT'the walk style of a woman is usually "strut"'
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'walk style of a woman' {definite 'the' n/m/f s/p nom/acc}
-                    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ]} {eval: TEST_VALUE_NT}
+                    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'walk style' {eval: CONSTANT_NT {kind: texts valued property}}
                 PROPER_NOUN_NT'"strut"' {eval: CONSTANT_NT'"strut"' {kind: text}}
             SENTENCE_NT'the walk style of gene is "[one of]wander[or]stroll[purely a'
@@ -1034,7 +1034,7 @@ ROOT_NT
             RULE_NT'to tidy departures of ( current table - a table name )'
             SENTENCE_NT'a door has a person called last opener'
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
@@ -1044,7 +1044,7 @@ ROOT_NT
             SENTENCE_NT'the last thing named is a thing that varies'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}
-                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=things variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=things variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before printing the name of something ( called target ) whic'
             RULE_NT'report someone going a direction'
             RULE_NT'this is the movement reporting rule'
@@ -1052,12 +1052,12 @@ ROOT_NT
             SENTENCE_NT'the last person named is a person that varies'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}
-                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             RULE_NT'before printing the name of a person ( called target )'
             SENTENCE_NT'group size is a number that varies'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}
-                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=numbers variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'group size is 1'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}{meaning: {group size = VARIABLE_MC}}}
@@ -1071,8 +1071,8 @@ ROOT_NT
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"'
             SENTENCE_NT'a door is usually scenery'
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
-                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}
-                ADJECTIVE_NT'scenery' {creation: [ 'scenery'(x) ^ 'scenery'(x) ]}
+                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
+                ADJECTIVE_NT'scenery' {creation: << scenery(x) ^ scenery(x) >>}
             RULE_NT'to make delimiter ( index - a number ) of ( count - a number'
             RULE_NT'to say optional comma'
             SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness'
@@ -1086,60 +1086,60 @@ ROOT_NT
         SENTENCE_NT'number understood is a number which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'number understood' {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}
-            COMMON_NOUN_NT'number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=numbers variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'real number understood is a real number which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'real number understood' {eval: NONLOCAL_VARIABLE_NT'real number understood' {nonlocal: 'real number understood'(var)real number}} {created here}
-            COMMON_NOUN_NT'real number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=real numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'real number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=real numbers variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'truth state understood is a truth state which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'truth state understood' {eval: NONLOCAL_VARIABLE_NT'truth state understood' {nonlocal: 'truth state understood'(var)truth state}} {created here}
-            COMMON_NOUN_NT'truth state which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=truth states variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'truth state which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=truth states variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'external file understood is a external file which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'external file understood' {eval: NONLOCAL_VARIABLE_NT'external file understood' {nonlocal: 'external file understood'(var)external file}} {created here}
-            COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=external files variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=external files variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'time understood is a time which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'time understood' {eval: NONLOCAL_VARIABLE_NT'time understood' {nonlocal: 'time understood'(var)time}} {created here}
-            COMMON_NOUN_NT'time which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=times variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'time which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=times variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'scene understood is a scene which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'scene understood' {eval: NONLOCAL_VARIABLE_NT'scene understood' {nonlocal: 'scene understood'(var)scene}} {created here}
-            COMMON_NOUN_NT'scene which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=scenes variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'scene which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=scenes variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'figure name understood is a figure name which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'figure name understood' {eval: NONLOCAL_VARIABLE_NT'figure name understood' {nonlocal: 'figure name understood'(var)figure name}} {created here}
-            COMMON_NOUN_NT'figure name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=figure names variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'figure name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=figure names variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'sound name understood is a sound name which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'sound name understood' {eval: NONLOCAL_VARIABLE_NT'sound name understood' {nonlocal: 'sound name understood'(var)sound name}} {created here}
-            COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=sound names variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=sound names variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'natural language understood is a natural language which vari'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'natural language understood' {eval: NONLOCAL_VARIABLE_NT'natural language understood' {nonlocal: 'natural language understood'(var)natural language}} {created here}
-            COMMON_NOUN_NT'natural language which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=natural languages variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'natural language which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=natural languages variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'grammatical tense understood is a grammatical tense which va'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical tense understood' {eval: NONLOCAL_VARIABLE_NT'grammatical tense understood' {nonlocal: 'grammatical tense understood'(var)grammatical tense}} {created here}
-            COMMON_NOUN_NT'grammatical tense which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical tenses variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'grammatical tense which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=grammatical tenses variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'narrative viewpoint understood is a narrative viewpoint whic'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'narrative viewpoint understood' {eval: NONLOCAL_VARIABLE_NT'narrative viewpoint understood' {nonlocal: 'narrative viewpoint understood'(var)narrative viewpoint}} {created here}
-            COMMON_NOUN_NT'narrative viewpoint which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=narrative viewpoints variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'narrative viewpoint which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=narrative viewpoints variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'grammatical case understood is a grammatical case which vari'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical case understood' {eval: NONLOCAL_VARIABLE_NT'grammatical case understood' {nonlocal: 'grammatical case understood'(var)grammatical case}} {created here}
-            COMMON_NOUN_NT'grammatical case which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical cases variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'grammatical case which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=grammatical cases variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'grammatical gender understood is a grammatical gender which '
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical gender understood' {eval: NONLOCAL_VARIABLE_NT'grammatical gender understood' {nonlocal: 'grammatical gender understood'(var)grammatical gender}} {created here}
-            COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical genders variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=grammatical genders variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'command parser error understood is a command parser error wh'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'command parser error understood' {eval: NONLOCAL_VARIABLE_NT'command parser error understood' {nonlocal: 'command parser error understood'(var)command parser error}} {created here}
-            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=command parser errors variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=command parser errors variable-pointer(x) >>} {eval: TEST_VALUE_NT}
         SENTENCE_NT'infection color understood is a infection color which varies'
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'infection color understood' {eval: NONLOCAL_VARIABLE_NT'infection color understood' {nonlocal: 'infection color understood'(var)infection color}} {created here}
-            COMMON_NOUN_NT'infection color which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=infection colors variable-pointer(x) ]} {eval: TEST_VALUE_NT}
+            COMMON_NOUN_NT'infection color which varies' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=infection colors variable-pointer(x) >>} {eval: TEST_VALUE_NT}

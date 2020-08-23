@@ -308,7 +308,7 @@ parse_node *ExParser::Subtrees::to_specification_inner(int SV_not_SN, wording W,
 	@<Check that the top structure of the tree is in order, and obtain the verb@>;
 
 	pcalc_term *subj = CREATE(pcalc_term);
-	*subj = Calculus::Terms::new_constant(NULL);
+	*subj = Terms::new_constant(NULL);
 
 	if (SV_not_SN) @<Convert an SV subtree@>
 	else @<Convert an SN subtree@>;

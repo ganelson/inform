@@ -43,9 +43,9 @@ parse_node *Descriptions::from_kind(kind *K, int composited) {
 	if (K) { /* a test made only for error recovery */
 		pcalc_prop *prop;
 		if (composited)
-			prop = Calculus::Atoms::KIND_new_composited(K, Calculus::Terms::new_variable(0));
+			prop = Atoms::KIND_new_composited(K, Terms::new_variable(0));
 		else
-			prop = Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0));
+			prop = Atoms::KIND_new(K, Terms::new_variable(0));
 		Calculus::Propositions::Checker::type_check(prop,
 			Calculus::Propositions::Checker::tc_no_problem_reporting());
 		Descriptions::set_proposition(spec, prop);
@@ -81,7 +81,7 @@ a named object or similar, so:
 parse_node *Descriptions::from_instance(instance *I, wording W) {
 	if (I == NULL) internal_error("description of null instance");
 	parse_node *val = Rvalues::from_instance(I);
-	pcalc_prop *prop = Calculus::Atoms::prop_x_is_constant(val);
+	pcalc_prop *prop = Atoms::prop_x_is_constant(val);
 	Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting());
 	return Descriptions::from_proposition(prop, W);
@@ -193,7 +193,7 @@ void Descriptions::add_to_adjective_list(unary_predicate *au, parse_node *spec) 
 	int negated = FALSE;
 	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,
-		Calculus::Atoms::unary_PREDICATE_from_aph(aph, negated));
+		Atoms::from_adjective_on_x(aph, negated));
 	Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
@@ -207,7 +207,7 @@ void Descriptions::add_to_adjective_list_w(unary_predicate *au, parse_node *spec
 	int negated = FALSE;
 	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
 	prop = Calculus::Propositions::concatenate(prop,
-		Calculus::Atoms::unary_PREDICATE_from_aph(aph, negated));
+		Atoms::from_adjective_on_x(aph, negated));
 	Calculus::Propositions::Checker::type_check(prop,
 		Calculus::Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
@@ -221,17 +221,17 @@ For example, the "all" in "all of the open doors".
 void Descriptions::quantify(parse_node *spec, quantifier *q, int par) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
 	if (q != exists_quantifier)
-		prop = Calculus::Propositions::concatenate(Calculus::Atoms::new(DOMAIN_OPEN_ATOM), prop);
-	prop = Calculus::Propositions::concatenate(Calculus::Atoms::QUANTIFIER_new(q, 0, par), prop);
+		prop = Calculus::Propositions::concatenate(Atoms::new(DOMAIN_OPEN_ATOM), prop);
+	prop = Calculus::Propositions::concatenate(Atoms::QUANTIFIER_new(q, 0, par), prop);
 	if (q != exists_quantifier)
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::new(DOMAIN_CLOSE_ATOM));
+		prop = Calculus::Propositions::concatenate(prop, Atoms::new(DOMAIN_CLOSE_ATOM));
 	Descriptions::set_proposition(spec, prop);
 	Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
 }
 
 pcalc_prop *Descriptions::get_inner_prop(parse_node *spec) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
-	if ((prop) && (Calculus::Atoms::get_quantifier(prop))) {
+	if ((prop) && (Atoms::get_quantifier(prop))) {
 		prop = Calculus::Propositions::copy(prop);
 		prop = Calculus::Propositions::ungroup_after(prop, prop, NULL);
 		return prop->next;
@@ -241,8 +241,8 @@ pcalc_prop *Descriptions::get_inner_prop(parse_node *spec) {
 
 pcalc_prop *Descriptions::get_quantified_prop(parse_node *spec) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
-	if ((prop) && (Calculus::Atoms::get_quantifier(prop)) &&
-		(Calculus::Atoms::get_quantification_parameter(prop) > 0)) {
+	if ((prop) && (Atoms::get_quantifier(prop)) &&
+		(Atoms::get_quantification_parameter(prop) > 0)) {
 		prop = Calculus::Propositions::copy(prop);
 		prop = Calculus::Propositions::ungroup_after(prop, prop, NULL);
 		return prop->next;
@@ -252,13 +252,13 @@ pcalc_prop *Descriptions::get_quantified_prop(parse_node *spec) {
 
 quantifier *Descriptions::get_quantifier(parse_node *spec) {
 	if (Specifications::is_description(spec))
-		return Calculus::Atoms::get_quantifier(Descriptions::to_proposition(spec));
+		return Atoms::get_quantifier(Descriptions::to_proposition(spec));
 	return NULL;
 }
 
 int Descriptions::get_quantification_parameter(parse_node *spec) {
 	if (Specifications::is_description(spec))
-		return Calculus::Atoms::get_quantification_parameter(Descriptions::to_proposition(spec));
+		return Atoms::get_quantification_parameter(Descriptions::to_proposition(spec));
 	return 0;
 }
 
@@ -272,7 +272,7 @@ void Descriptions::attach_calling(parse_node *spec, wording C) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
 	prop = Calculus::Propositions::concatenate(
 		prop,
-		Calculus::Atoms::CALLED_new(C, Calculus::Terms::new_variable(0), K));
+		Atoms::CALLED_new(C, Terms::new_variable(0), K));
 	Calculus::Propositions::Checker::type_check(prop, Calculus::Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
 }
@@ -281,7 +281,7 @@ wording Descriptions::get_calling(parse_node *spec) {
 	if (Specifications::is_description(spec))
 		for (pcalc_prop *pp = Descriptions::to_proposition(spec); pp; pp = pp->next)
 			if (pp->element == CALLED_ATOM)
-				return Calculus::Atoms::CALLED_get_name(pp);
+				return Atoms::CALLED_get_name(pp);
 	return EMPTY_WORDING;
 }
 

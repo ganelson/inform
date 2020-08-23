@@ -77,13 +77,13 @@ int Calculus::Variables::determine_status(pcalc_prop *prop, int *var_states,
 	int j, unavailable[26], blevel = 0, valid = TRUE;
 	for (j=0; j<26; j++) { var_states[j] = UNUSED_VST; unavailable[j] = 0; }
 	TRAVERSE_PROPOSITION(p, prop) {
-		if (Calculus::Atoms::element_get_group(p->element) == OPEN_OPERATORS_GROUP) blevel++;
-		if (Calculus::Atoms::element_get_group(p->element) == CLOSE_OPERATORS_GROUP) {
+		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) blevel++;
+		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) {
 			blevel--;
 			for (j=0; j<26; j++) if (unavailable[j] > blevel) unavailable[j] = -1;
 		}
 		for (j=0; j<p->arity; j++) {
-			int v = Calculus::Terms::variable_underlying(&(p->terms[j]));
+			int v = Terms::variable_underlying(&(p->terms[j]));
 			if (v >= 26) {
 				WRITE_TO(err, "corrupted variable term");
 				valid = FALSE;
@@ -195,7 +195,7 @@ void Calculus::Variables::renumber(pcalc_prop *prop, pcalc_term *preserving) {
 	k = 0;
 	TRAVERSE_PROPOSITION(p, prop)
 		for (j=0; j<p->arity; j++) {
-			int v = Calculus::Terms::variable_underlying(&(p->terms[j]));
+			int v = Terms::variable_underlying(&(p->terms[j]));
 			if ((v >= 0) && (renumber_map[v] == -1)) renumber_map[v] = k++;
 		}
 
@@ -277,7 +277,7 @@ pcalc_prop *Calculus::Variables::bind_existential(pcalc_prop *prop,
 	for (j=25; j>=0; j--)
 		if (var_states[j] == FREE_VST)
 			prop = Calculus::Propositions::insert_atom(prop, NULL,
-				Calculus::Atoms::QUANTIFIER_new(exists_quantifier, j, 0));
+				Atoms::QUANTIFIER_new(exists_quantifier, j, 0));
 
 	return prop;
 }
@@ -368,7 +368,7 @@ check this condition pretty easily, it turns out:
 @<Make sure the substitution would not fail because of a circularity@> =
 	if ((verify_only == FALSE) && (Calculus::Variables::status(prop, v) == BOUND_VST))
 		DISALLOW("substituting bound variable");
-	int vut = Calculus::Terms::variable_underlying(&t);
+	int vut = Terms::variable_underlying(&t);
 	if (vut >= 0) {
 		int v_has_been_seen = FALSE;
 		if (v == vut) DISALLOW("resubstituting same variable");
@@ -376,7 +376,7 @@ check this condition pretty easily, it turns out:
 			if (v_has_been_seen == FALSE) {
 				int i;
 				for (i=0; i<p->arity; i++)
-					if (Calculus::Terms::variable_underlying(&(p->terms[i])) == v)
+					if (Terms::variable_underlying(&(p->terms[i])) == v)
 						v_has_been_seen = TRUE;
 			}
 			if ((p->element == QUANTIFIER_ATOM) && (p->terms[0].variable == vut) &&
@@ -410,7 +410,7 @@ kind *Calculus::Variables::kind_of_variable_0(pcalc_prop *prop) {
 =
 pcalc_prop *Calculus::Variables::substitute_var_0_in(pcalc_prop *prop, parse_node *spec) {
 	int bogus;
-	return Calculus::Variables::substitute_term(prop, 0, Calculus::Terms::new_constant(spec), FALSE, NULL, &bogus);
+	return Calculus::Variables::substitute_term(prop, 0, Terms::new_constant(spec), FALSE, NULL, &bogus);
 }
 
 @ If we are willing to work a little harder:

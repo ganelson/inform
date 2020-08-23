@@ -172,18 +172,18 @@ if and only if $B(t, s)$. $B$ and $B^r$ are created in pairs.[1]
 Propositions are built incrementally, like Lego, with a sequence of function
 calls.
 
-1. Terms are made using the functions //Calculus::Terms::new_constant//,
-//Calculus::Terms::new_variable// and //Calculus::Terms::new_function//.
+1. Terms are made using the functions //Terms::new_constant//,
+//Terms::new_variable// and //Terms::new_function//.
 
 2. Unary predicate atoms are made using:
-(*) //Calculus::Atoms::unary_PREDICATE_from_aph_term//, or
-(*) //Calculus::Atoms::KIND_new//, or
-(*) //Calculus::Atoms::CALLED_new//, or
-(*) //Calculus::Atoms::new// for the six oddball unaries,
+(*) //Atoms::from_adjective//, or
+(*) //Atoms::KIND_new//, or
+(*) //Atoms::CALLED_new//, or
+(*) //Atoms::new// for the six oddball unaries,
 supplying atom types |ISAKIND_ATOM|, |ISAVAR_ATOM|, |ISACONST_ATOM|,
 |EVERYWHERE_ATOM|, |NOWHERE_ATOM| and |HERE_ATOM|.
 
-Binary predicate atoms are made using //Calculus::Atoms::binary_PREDICATE_new//.
+Binary predicate atoms are made using //Atoms::binary_PREDICATE_new//.
 
 3. Propositions are then built up from atoms or other propositions[1] by calling:
 (*) //Calculus::Propositions::conjoin//.

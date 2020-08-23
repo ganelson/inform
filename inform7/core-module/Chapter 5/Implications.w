@@ -256,13 +256,13 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 
 @<Apply the conclusion to the candidate@> =
 	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
-	pcalc_prop *prop = Calculus::Atoms::KIND_new(InferenceSubjects::domain(domain), Calculus::Terms::new_variable(0));
+	pcalc_prop *prop = Atoms::KIND_new(InferenceSubjects::domain(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::unary_PREDICATE_from_aph(aph, FALSE));
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));
+		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
+		prop = Calculus::Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
+		prop = Calculus::Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	} else {
-		prop = Calculus::Propositions::concatenate(prop, Calculus::Atoms::unary_PREDICATE_from_aph(aph, FALSE));
+		prop = Calculus::Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
 	}
 	Calculus::Propositions::Assert::assert_true_about(prop, candidate, CERTAIN_CE);
 	return TRUE;

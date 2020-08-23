@@ -1122,8 +1122,8 @@ dynamic lists, since Y is a block value not a word value. The point of the
 	@<Find what we are copying from, to and how@>;
 	@<Check that we're not copying to something the user isn't allowed to change@>;
 
-	pcalc_term pt1 = Calculus::Terms::new_constant(to);
-	pcalc_term pt2 = Calculus::Terms::new_constant(from);
+	pcalc_term pt1 = Terms::new_constant(to);
+	pcalc_term pt2 = Terms::new_constant(from);
 	kind *K1 = Specifications::to_kind(to);
 	kind *K2 = Specifications::to_kind(from);
 	node_type_t storage_class = Lvalues::get_storage_form(to);

@@ -951,7 +951,7 @@ void Relations::compile_relation_records(void) {
 	Produce::up(Emit::tree());
 
 @<The ASSERT TRUE task@> =
-	asch = Calculus::Atoms::Compile::blank_asch();
+	asch = Atoms::Compile::blank_asch();
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_TRUE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
@@ -960,7 +960,7 @@ void Relations::compile_relation_records(void) {
 	}
 
 @<The ASSERT FALSE task@> =
-	asch = Calculus::Atoms::Compile::blank_asch();
+	asch = Atoms::Compile::blank_asch();
 	i6s = BinaryPredicateFamilies::get_schema(NOW_ATOM_FALSE_TASK, dbp, &asch);
 	if (i6s == NULL) Produce::rfalse(Emit::tree());
 	else {
@@ -971,11 +971,11 @@ void Relations::compile_relation_records(void) {
 @<The TEST task@> =
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
-		asch = Calculus::Atoms::Compile::blank_asch();
+		asch = Atoms::Compile::blank_asch();
 		i6s = BinaryPredicateFamilies::get_schema(TEST_ATOM_TASK, dbp, &asch);
 		int adapted = FALSE;
 		for (int j=0; j<2; j++) {
-			i6_schema *fnsc = BinaryPredicates::get_term_as_function_of_other(bp, j);
+			i6_schema *fnsc = BinaryPredicates::get_term_as_fn_of_other(bp, j);
 			if (fnsc) {
 				if (j == 0) {
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);

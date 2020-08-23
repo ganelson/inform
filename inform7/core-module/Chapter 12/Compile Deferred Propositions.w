@@ -518,7 +518,7 @@ I6 code as we go, but preserving the Invariant.
 				@<End a run of predicate-like conditions, if one is under way@>;
 				if (R_stack_parity[R_sp-1] == FALSE) negated_quantifier_found = TRUE;
 				quantifier *quant = pl->quant;
-				int param = Calculus::Atoms::get_quantification_parameter(pl);
+				int param = Atoms::get_quantification_parameter(pl);
 				if (quant != exists_quantifier) @<Push the Q-stack@>;
 				@<Compile a loop through possible values of the variable quantified@>;
 				break;
@@ -613,7 +613,7 @@ statement properly:
 		Produce::inv_primitive(Emit::tree(), AND_BIP);
 		Produce::down(Emit::tree());
 	}
-	Calculus::Atoms::Compile::emit(TEST_ATOM_TASK, pl, TRUE);
+	Atoms::Compile::emit(TEST_ATOM_TASK, pl, TRUE);
 
 @<End a run of predicate-like conditions, if one is under way@> =
 	if (run_of_conditions > 0) {
@@ -626,7 +626,7 @@ statement properly:
 @ The |NOW_ASSERTION_DEFER| reason is different from all of the others,
 because rather than searching for a given situation it tries force it to
 happen (or not to). Forcing rather than testing is easy here: we just supply
-a different task when calling |Calculus::Atoms::Compile::compile|.
+a different task when calling |Atoms::Compile::compile|.
 
 In the negated case, we again cheat de Morgan, by falsifying $\phi$ more
 aggressively than we need: we force $\lnot(X)\land\lnot(Y)\land\lnot(Z)$ to
@@ -638,7 +638,7 @@ We don't need to consider runs of predicates for that; we can take the atoms
 one at a time.
 
 @<Compile code to force the atom@> =
-	Calculus::Atoms::Compile::emit((R_stack_parity[R_sp-1])?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl, TRUE);
+	Atoms::Compile::emit((R_stack_parity[R_sp-1])?NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK, pl, TRUE);
 
 @h Quantifiers and the Q-stack.
 It remains to deal with quantifiers, and to show that the Invariant is
@@ -845,7 +845,7 @@ quantifier.
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEFERRED_CALLING_LIST_HL));
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) C_stack_index[C_sp]);
 		Produce::up(Emit::tree());
-		Calculus::Terms::emit(C_stack_term[C_sp]);
+		Terms::emit(C_stack_term[C_sp]);
 	Produce::up(Emit::tree());
 
 @ That just leaves the blocking, which follows the One True Brace Style. Thus:
@@ -1578,8 +1578,8 @@ pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local
 
 	kind *K = NULL;
 	pcalc_prop *kind_position = NULL;
-	pcalc_term var_term = Calculus::Terms::new_variable(var);
-	pcalc_term second_term = Calculus::Terms::new_constant(
+	pcalc_term var_term = Terms::new_variable(var);
+	pcalc_term second_term = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, index_var));
 
 	int parent_optimised = FALSE;
@@ -1620,7 +1620,7 @@ proposition makes up $\psi$, and now |grouped| is clear.
 	int bl = 0, enabled = FALSE;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, proposition) {
-		switch (Calculus::Atoms::element_get_group(pl->element)) {
+		switch (Atoms::group(pl->element)) {
 			case OPEN_OPERATORS_GROUP: bl++; break;
 			case CLOSE_OPERATORS_GROUP: bl--; break;
 		}

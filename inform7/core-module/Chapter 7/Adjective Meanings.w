@@ -1216,7 +1216,7 @@ into |*1|.
 		if (emit_flag) {
 			parse_node *it_var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 				LocalVariables::it_variable());
-			pcalc_term it_term = Calculus::Terms::new_constant(it_var);
+			pcalc_term it_term = Terms::new_constant(it_var);
 			Calculus::Schemas::emit_expand_from_terms(&(am->i6s_for_runtime_task[T]), &it_term, NULL, FALSE);
 		}
 		return TRUE;

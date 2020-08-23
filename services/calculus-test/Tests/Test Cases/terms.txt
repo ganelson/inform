@@ -1,0 +1,12 @@
+new binary sees(none, sees-f1).
+new binary knows(knows-f0, none).
+term 7.
+term z.
+term sees-f1( 7 ).
+term knows-f0( sees-f1( x ) ).
+constant underlying 7.
+constant underlying y.
+constant underlying sees-f1( 7 ).
+variable underlying 7.
+variable underlying y.
+variable underlying knows-f0( sees-f1( x ) ).

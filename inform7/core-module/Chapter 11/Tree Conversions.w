@@ -14,25 +14,25 @@ their existence.
 
 =
 pcalc_prop *Calculus::Propositions::Abstract::to_make_a_kind(kind *K) {
-	return Calculus::Atoms::ISAKIND_new(Calculus::Terms::new_variable(0), K);
+	return Atoms::ISAKIND_new(Terms::new_variable(0), K);
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_make_a_var(void) {
-	return Calculus::Atoms::ISAVAR_new(Calculus::Terms::new_variable(0));
+	return Atoms::ISAVAR_new(Terms::new_variable(0));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_make_a_const(void) {
-	return Calculus::Atoms::ISACONST_new(Calculus::Terms::new_variable(0));
+	return Atoms::ISACONST_new(Terms::new_variable(0));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_create_something(kind *K, wording W) {
-	pcalc_prop *prop = Calculus::Atoms::QUANTIFIER_new(exists_quantifier, 0, 0);
+	pcalc_prop *prop = Atoms::QUANTIFIER_new(exists_quantifier, 0, 0);
 	if ((K) && (Kinds::eq(K, K_object) == FALSE))
 		prop = Calculus::Propositions::concatenate(prop,
-			Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)));
+			Atoms::KIND_new(K, Terms::new_variable(0)));
 	if (Wordings::nonempty(W))
 		prop = Calculus::Propositions::concatenate(prop,
-			Calculus::Atoms::CALLED_new(W, Calculus::Terms::new_variable(0), K));
+			Atoms::CALLED_new(W, Terms::new_variable(0), K));
 	return prop;
 }
 
@@ -40,7 +40,7 @@ pcalc_prop *Calculus::Propositions::Abstract::to_create_something(kind *K, wordi
 
 =
 pcalc_prop *Calculus::Propositions::Abstract::prop_to_set_kind(instance *I, kind *k) {
-	return Calculus::Atoms::KIND_new(k, Calculus::Terms::new_variable(0));
+	return Atoms::KIND_new(k, Terms::new_variable(0));
 }
 
 void Calculus::Propositions::Abstract::assert_kind_of_object(instance *I, kind *k) {
@@ -51,7 +51,7 @@ void Calculus::Propositions::Abstract::assert_kind_of_object(instance *I, kind *
 void Calculus::Propositions::Abstract::assert_kind_of_subject(inference_subject *inst, inference_subject *new,
 	pcalc_prop *subject_to) {
 	kind *K = InferenceSubjects::domain(new);
-	pcalc_prop *prop = Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0));
+	pcalc_prop *prop = Atoms::KIND_new(K, Terms::new_variable(0));
 	if (subject_to) prop = Calculus::Propositions::concatenate(prop, subject_to);
 	Calculus::Propositions::Assert::assert_true_about(prop, inst, prevailing_mood);
 }
@@ -63,18 +63,18 @@ pcalc_prop *Calculus::Propositions::Abstract::to_set_simple_relation(binary_pred
 	parse_node *spec;
 	if (I) spec = Rvalues::from_instance(I);
 	else spec = Rvalues::new_nothing_object_constant();
-	return Calculus::Atoms::binary_PREDICATE_new(bp,
-		Calculus::Terms::new_variable(0), Calculus::Terms::new_constant(spec));
+	return Atoms::binary_PREDICATE_new(bp,
+		Terms::new_variable(0), Terms::new_constant(spec));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_set_relation(binary_predicate *bp,
 	inference_subject *infs0, parse_node *spec0, inference_subject *infs1, parse_node *spec1) {
 	pcalc_term pt0, pt1;
-	if (infs0) pt0 = Calculus::Terms::new_constant(InferenceSubjects::as_constant(infs0));
-	else pt0 = Calculus::Terms::new_constant(spec0);
-	if (infs1) pt1 = Calculus::Terms::new_constant(InferenceSubjects::as_constant(infs1));
-	else pt1 = Calculus::Terms::new_constant(spec1);
-	pcalc_prop *prop = Calculus::Atoms::binary_PREDICATE_new(bp, pt0, pt1);
+	if (infs0) pt0 = Terms::new_constant(InferenceSubjects::as_constant(infs0));
+	else pt0 = Terms::new_constant(spec0);
+	if (infs1) pt1 = Terms::new_constant(InferenceSubjects::as_constant(infs1));
+	else pt1 = Terms::new_constant(spec1);
+	pcalc_prop *prop = Atoms::binary_PREDICATE_new(bp, pt0, pt1);
 	int dummy;
 	prop = Calculus::Simplifications::make_kinds_of_value_explicit(prop, &dummy);
 	return prop;
@@ -84,30 +84,30 @@ pcalc_prop *Calculus::Propositions::Abstract::to_set_relation(binary_predicate *
 
 =
 pcalc_prop *Calculus::Propositions::Abstract::to_provide_property(property *prn) {
-	return Calculus::Atoms::binary_PREDICATE_new(R_provision,
-		Calculus::Terms::new_variable(0), Calculus::Terms::new_constant(Rvalues::from_property(prn)));
+	return Atoms::binary_PREDICATE_new(R_provision,
+		Terms::new_variable(0), Terms::new_constant(Rvalues::from_property(prn)));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_set_property(property *prn, parse_node *val) {
 	if (val == NULL) return NULL;
 	if (Properties::Valued::get_setting_bp(prn) == NULL) internal_error("no BP for this property");
-	return Calculus::Atoms::binary_PREDICATE_new(Properties::Valued::get_setting_bp(prn),
-		Calculus::Terms::new_variable(0), Calculus::Terms::new_constant(val));
+	return Atoms::binary_PREDICATE_new(Properties::Valued::get_setting_bp(prn),
+		Terms::new_variable(0), Terms::new_constant(val));
 }
 
 @ "Everywhere", "nowhere" and "here":
 
 =
 pcalc_prop *Calculus::Propositions::Abstract::to_put_everywhere(void) {
-	return Calculus::Atoms::EVERYWHERE_new(Calculus::Terms::new_variable(0));
+	return Atoms::EVERYWHERE_new(Terms::new_variable(0));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_put_nowhere(void) {
-	return Calculus::Atoms::NOWHERE_new(Calculus::Terms::new_variable(0));
+	return Atoms::NOWHERE_new(Terms::new_variable(0));
 }
 
 pcalc_prop *Calculus::Propositions::Abstract::to_put_here(void) {
-	return Calculus::Atoms::HERE_new(Calculus::Terms::new_variable(0));
+	return Atoms::HERE_new(Terms::new_variable(0));
 }
 
 @h Property setting.
@@ -145,7 +145,7 @@ pcalc_prop *Calculus::Propositions::Abstract::from_property_list(parse_node *p, 
 
 	if ((prop) && (K)) {
 		prop = Calculus::Propositions::conjoin(
-			Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0)), prop);
+			Atoms::KIND_new(K, Terms::new_variable(0)), prop);
 	}
 	return prop;
 }
@@ -257,7 +257,7 @@ which is by now inside the "creation proposition".
 	if (UnaryPredicates::get_parity(pred) == FALSE) negate_me = TRUE;
 	if (Node::get_creation_proposition(p))
 		prop = Calculus::Propositions::conjoin(prop, Node::get_creation_proposition(p));
-	pcalc_prop *adj_prop = Calculus::Atoms::unary_PREDICATE_from_aph(
+	pcalc_prop *adj_prop = Atoms::from_adjective_on_x(
 		UnaryPredicates::get_adj(pred), FALSE);
 	if (negate_me) adj_prop = Calculus::Propositions::negate(adj_prop);
 	prop = Calculus::Propositions::conjoin(prop, adj_prop);

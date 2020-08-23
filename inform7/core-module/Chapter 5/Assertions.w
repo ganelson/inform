@@ -1495,7 +1495,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 	} else {
 		kind *K = Specifications::to_kind(Node::get_evaluation(py));
 		if (K) {
-			pcalc_prop *prop = Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0));
+			pcalc_prop *prop = Atoms::KIND_new(K, Terms::new_variable(0));
 			Calculus::Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
 		}
 	}

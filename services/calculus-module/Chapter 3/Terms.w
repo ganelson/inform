@@ -1,31 +1,27 @@
-[Calculus::Terms::] Terms.
+[Terms::] Terms.
 
 Terms are the representations of values in predicate calculus:
 variables, constants or functions of other terms.
 
-@ Recall that a "term" can be anything which is a constant, can be a
-variable, or can be a function $f_B(t)$ of another term $t$. Our
-representation of this as a data structure therefore falls into three
+@h About terms.
+A "term" can be a constant, a variable, or a function of another term: see
+//What This Module Does//. Our data structure therefore falls into three
 cases. At all times exactly one of the three relevant fields, |variable|,
 |constant| and |function| is used.
-
 (a) Variables are represented by the numbers 0 to 25, and |-1| means
 "not a variable".
-
 (b) Constants are pointers to |specification| structures of main
 type |VALUE|, and |NULL| means "not a constant".
-
 (c) Functions are pointers to |pcalc_func| structures (see below), and
 |NULL| means "not a function".
 
-Cinders are discussed in "Cinders and Deferrals", and can be ignored for now.
+Cinders are discussed in //core: Cinders and Deferrals//, and can be ignored for now.
 
 In order to verify that a proposition makes sense and does not mix up
 incompatible kinds of value, we will need to type-check it, and one part
 of that involves assigning a kind of value $K$ to every term $t$ occurring
 in the proposition. This calculation does involve some work, so we cache
-the result in the |term_checked_as_kind| field, in order that we only have
-to work it out once.
+the result in the |term_checked_as_kind| field.
 
 =
 typedef struct pcalc_term {
@@ -37,8 +33,8 @@ typedef struct pcalc_term {
 } pcalc_term;
 
 @ The |pcalc_func| structure represents a usage of a function inside a term.
-Terms such as $f_A(f_B(f_C(x)))$ often occur, so a typical term might be
-stored as
+Terms such as $f_A(f_B(f_C(x)))$ often occur, an example which would be stored
+as:
 
 (1) A |pcalc_term| structure which has a |function| field pointing to
 (2) A |pcalc_func| structure whose |bp| field points to A, and whose |fn_of|
@@ -53,28 +49,32 @@ field is
 
 =
 typedef struct pcalc_func {
-	struct binary_predicate *bp; /* the predicate $B$ such that this is $f_B(t)$ */
-	struct pcalc_term fn_of; /* the term $t$ such that this is $f_B(t)$ */
-	int from_term; /* whether $t$ is term 0 or 1 of $B$ */
+	struct binary_predicate *bp; /* the predicate B */
+	int from_term; /* which term of the predicate this derives from */
+	struct pcalc_term fn_of; /* the term to which we apply the function */
 } pcalc_func;
+
+@ Terms are really quite simple, as the following //calculus-test// exercise shows:
+= (text from Figures/terms.txt as REPL)
 
 @h Creating new terms.
 
 =
-pcalc_term Calculus::Terms::new_variable(int v) {
+pcalc_term Terms::new_variable(int v) {
 	pcalc_term pt; @<Make new blank term structure pt@>;
 	if ((v < 0) || (v >= 26)) internal_error("bad variable term created");
 	pt.variable = v;
 	return pt;
 }
 
-pcalc_term Calculus::Terms::new_constant(parse_node *c) {
+pcalc_term Terms::new_constant(parse_node *c) {
 	pcalc_term pt; @<Make new blank term structure pt@>;
 	pt.constant = c;
 	return pt;
 }
 
-pcalc_term Calculus::Terms::new_function(struct binary_predicate *bp, pcalc_term ptof, int t) {
+pcalc_term Terms::new_function(struct binary_predicate *bp, pcalc_term ptof, int t) {
+	if ((t < 0) || (t >= MAX_ATOM_ARITY)) internal_error("term out of range");
 	pcalc_term pt; @<Make new blank term structure pt@>;
 	pcalc_func *pf = CREATE(pcalc_func);
 	pf->bp = bp; pf->fn_of = ptof; pf->from_term = t;
@@ -94,31 +94,32 @@ pcalc_term Calculus::Terms::new_function(struct binary_predicate *bp, pcalc_term
 @h Copying.
 
 =
-pcalc_term Calculus::Terms::copy(pcalc_term pt) {
+pcalc_term Terms::copy(pcalc_term pt) {
 	if (pt.constant) pt.constant = Node::duplicate(pt.constant);
-	if (pt.function) pt = Calculus::Terms::new_function(pt.function->bp,
-		Calculus::Terms::copy(pt.function->fn_of), pt.function->from_term);
+	if (pt.function) pt = Terms::new_function(pt.function->bp,
+		Terms::copy(pt.function->fn_of), pt.function->from_term);
 	return pt;
 }
 
 @h Variable letters.
-The variables 0 to 25 are referred to by the letters $x, y, z, a, b,
-c, ..., w$: this convention is followed both in the debugging log and
-in functions compiled into I6 code.
+The number 26 turns up quite often in this chapter, and while it's normally
+good style to define named constants, here we're not going to. 26 is a number
+which anyone[1] will immediately associate with the size of the alphabet.
+Moreover, we can't really raise the total, because we will want to compile
+these with single-character identifier names, |a| to |z|.[2] To have a
+variable limit lower than 26 would be artificial, since there are no memory
+constraints arguing for it; but a proposition with 27 or more variables would
+be too huge to evaluate at run-time in any remotely plausible length of time.
+So although the 26-variables-only limit is embedded in Inform, it really is
+not any restriction, and it greatly simplifies the code.
 
-The number 26 turns up quite often in this chapter, and while it's
-normally good style to define named constants, here we're not going
-to. 26 is a number which anyone other than a string theorist will
-immediately associate with the size of the alphabet. Moreover, we
-can't really raise the total, because there are only 26
-single-character local variable names in I6, |a| to |z|. (Well,
-strictly speaking there is also |_|, but we won't go there.) To have a
-variable limit lower than 26 would be artificial, since there are no
-memory constraints arguing for it; and in any case a proposition with
-27 or more variables would be so huge that it could not be evaluated
-at run-time in any remotely plausible length of time. So although the
-26-variables-only limit is embedded in Inform, it really is not any
-restriction, and it greatly simplifies the code.
+[1] Well, perhaps not a string theorist. "There aren't enough small numbers to
+meet the many demands made of them" (Richard Guy).
+
+[2] Strictly speaking there is also |_|, but we won't go there.
+
+@ The variables 0 to 25 are referred to by the letters $x, y, z, a, b, c, ..., w$,
+as provided for by this lookup array:
 
 =
 char *pcalc_vars = "xyzabcdefghijklmnopqrstuvw";
@@ -128,17 +129,17 @@ Routines to see if a term is a constant $C$, or if it is a chain of functions
 at the bottom of which is a constant $C$; and similarly for variables.
 
 =
-parse_node *Calculus::Terms::constant_underlying(pcalc_term *t) {
+parse_node *Terms::constant_underlying(pcalc_term *t) {
 	if (t == NULL) internal_error("null term");
 	if (t->constant) return t->constant;
-	if (t->function) return Calculus::Terms::constant_underlying(&(t->function->fn_of));
+	if (t->function) return Terms::constant_underlying(&(t->function->fn_of));
 	return NULL;
 }
 
-int Calculus::Terms::variable_underlying(pcalc_term *t) {
+int Terms::variable_underlying(pcalc_term *t) {
 	if (t == NULL) internal_error("null term");
 	if (t->variable >= 0) return t->variable;
-	if (t->function) return Calculus::Terms::variable_underlying(&(t->function->fn_of));
+	if (t->function) return Terms::variable_underlying(&(t->function->fn_of));
 	return -1;
 }
 
@@ -155,13 +156,13 @@ again.
 
 =
 #ifdef CORE_MODULE
-pcalc_term Calculus::Terms::adj_to_noun_conversion(unary_predicate *tr) {
+pcalc_term Terms::adj_to_noun_conversion(unary_predicate *tr) {
 	adjective *aph = UnaryPredicates::get_adj(tr);
 	instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
-	if (I) return Calculus::Terms::new_constant(Rvalues::from_instance(I));
+	if (I) return Terms::new_constant(Rvalues::from_instance(I));
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
-	if (prn) return Calculus::Terms::new_constant(Rvalues::from_property(prn));
-	return Calculus::Terms::new_variable(0);
+	if (prn) return Terms::new_constant(Rvalues::from_property(prn));
+	return Terms::new_variable(0);
 }
 #endif
 
@@ -169,17 +170,14 @@ pcalc_term Calculus::Terms::adj_to_noun_conversion(unary_predicate *tr) {
 
 =
 #ifdef CORE_MODULE
-unary_predicate *Calculus::Terms::noun_to_adj_conversion(pcalc_term pt) {
-	kind *K;
-	adjective *aph;
-	parse_node *spec = pt.constant;
-	if (Node::is(spec, CONSTANT_NT) == FALSE) return NULL;
-	K = Node::get_kind_of_value(spec);
+unary_predicate *Terms::noun_to_adj_conversion(pcalc_term pt) {
+	parse_node *C = pt.constant;
+	if (Node::is(C, CONSTANT_NT) == FALSE) return NULL;
+	kind *K = Node::get_kind_of_value(C);
 	if (Properties::Conditions::get_coinciding_property(K) == NULL) return NULL;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
-		instance *I = Node::get_constant_instance(spec);
-		aph = Instances::get_adjective(I);
-		return UnaryPredicates::new(aph, TRUE);
+		instance *I = Node::get_constant_instance(C);
+		return UnaryPredicates::new(Instances::get_adjective(I), TRUE);
 	}
 	return NULL;
 }
@@ -204,7 +202,7 @@ value, because this might not yet have been checked otherwise.
 
 =
 #ifdef CORE_MODULE
-void Calculus::Terms::emit(pcalc_term pt) {
+void Terms::emit(pcalc_term pt) {
 	if (pt.variable >= 0) {
 		local_variable *lvar = LocalVariables::find_pcalc_var(pt.variable);
 		if (lvar == NULL) {
@@ -226,11 +224,9 @@ void Calculus::Terms::emit(pcalc_term pt) {
 		return;
 	}
 	if (pt.function) {
-		i6_schema *fn;
 		binary_predicate *bp = (pt.function)->bp;
-		fn = BinaryPredicates::get_term_as_function_of_other(bp, 0);
-		if (fn == NULL) fn = BinaryPredicates::get_term_as_function_of_other(bp, 1);
-		if (fn == NULL) internal_error("Function of non-functional predicate");
+		i6_schema *fn = BinaryPredicates::get_term_as_fn_of_other(bp, 1-pt.function->from_term);
+		if (fn == NULL) internal_error("function of non-functional predicate");
 		Calculus::Schemas::emit_expand_from_terms(fn, &(pt.function->fn_of), NULL, FALSE);
 		return;
 	}
@@ -238,40 +234,34 @@ void Calculus::Terms::emit(pcalc_term pt) {
 }
 #endif
 
-@h Debugging terms.
+@h Writing to text.
 The art of this is to be unobtrusive; when a proposition is being logged,
 we don't much care about the constant terms, and want to display them
 concisely and without fuss.
 
 =
-void Calculus::Terms::log(pcalc_term *pt) {
-	Calculus::Terms::write(DL, pt);
+void Terms::log(pcalc_term *pt) {
+	Terms::write(DL, pt);
 }
-void Calculus::Terms::write(text_stream *OUT, pcalc_term *pt) {
+void Terms::write(text_stream *OUT, pcalc_term *pt) {
 	if (pt == NULL) {
 		WRITE("<null-term>");
 	} else if (pt->constant) {
-		parse_node *spec = pt->constant;
+		parse_node *C = pt->constant;
 		if (pt->cinder >= 0) { WRITE("const_%d", pt->cinder); return; }
-		if (Wordings::nonempty(Node::get_text(spec))) { WRITE("'%W'", Node::get_text(spec)); return; }
+		if (Wordings::nonempty(Node::get_text(C))) { WRITE("'%W'", Node::get_text(C)); return; }
 		#ifdef CORE_MODULE
-		if (Node::is(spec, CONSTANT_NT)) {
-			instance *I = Rvalues::to_object_instance(spec);
+		if (Node::is(C, CONSTANT_NT)) {
+			instance *I = Rvalues::to_object_instance(C);
 			if (I) { Instances::write(OUT, I); return; }
 		}
 		#endif
-		Node::log_node(OUT, spec);
+		Node::log_node(OUT, C);
 	} else if (pt->function) {
-		#ifdef CORE_MODULE
 		binary_predicate *bp = pt->function->bp;
-		i6_schema *fn = BinaryPredicates::get_term_as_function_of_other(bp, 0);
-		if (fn == NULL) fn = BinaryPredicates::get_term_as_function_of_other(bp, 1);
-		if (fn == NULL) internal_error("Function of non-functional predicate");
+		i6_schema *fn = BinaryPredicates::get_term_as_fn_of_other(bp, 1-pt->function->from_term);
+		if (fn == NULL) internal_error("function of non-functional predicate");
 		Calculus::Schemas::write_applied(OUT, fn, &(pt->function->fn_of));
-		#endif
-		#ifndef CORE_MODULE
-		WRITE("function");
-		#endif
 	} else if (pt->variable >= 0) {
 		int j = pt->variable;
 		if (j<26) WRITE("%c", pcalc_vars[j]); else WRITE("<bad-var=%d>", j);

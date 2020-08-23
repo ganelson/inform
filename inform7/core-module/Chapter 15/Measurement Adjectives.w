@@ -413,10 +413,10 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 			parse_node *val = NULL;
 			if (<s-literal>(mdef->region_threshold_text)) val = <<rp>>;
 			else internal_error("literal unreadable");
-			pcalc_prop *prop = Calculus::Atoms::binary_PREDICATE_new(
+			pcalc_prop *prop = Atoms::binary_PREDICATE_new(
 				Properties::Measurement::weak_comparison_bp(mdef->region_shape),
-				Calculus::Terms::new_constant(evaluated_prop),
-				Calculus::Terms::new_constant(val));
+				Terms::new_constant(evaluated_prop),
+				Terms::new_constant(val));
 			if (Calculus::Propositions::Checker::type_check(prop,
 				Calculus::Propositions::Checker::tc_problem_reporting(
 					mdef->region_threshold_text,

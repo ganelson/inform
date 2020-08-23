@@ -1,7 +1,7 @@
   
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
   
   Laboratory
   You can see Peter, Jane and Missee here.
@@ -9,718 +9,718 @@
   
   Basic relations
   1. Peter is Jane
-  [ is('peter', 'jane') ]
+  << ('peter' == 'jane') >>
   
   2. Peter carries the box
-  [ is('peter', <CarrierOf(*1) : 'the box'>) ]
+  << ('peter' == <CarrierOf(*1) : 'the box'>) >>
   
   3. the box is carried by Peter
-  [ is('peter', <CarrierOf(*1) : 'the box'>) ]
+  << ('peter' == <CarrierOf(*1) : 'the box'>) >>
   
   4. Peter likes Jane
-  [ amity('peter', 'jane') ]
+  << amity('peter', 'jane') >>
   
   5. Jane is liked by Peter
-  [ amity('peter', 'jane') ]
+  << amity('peter', 'jane') >>
   
   
   Negated basic relations
   1. Peter is not Jane
-  [ NOT[ is('peter', 'jane') NOT] ]
+  << NOT< ('peter' == 'jane') NOT> >>
   
   2. Peter does not carry the box
-  [ NOT[ is('peter', <CarrierOf(*1) : 'the box'>) NOT] ]
+  << NOT< ('peter' == <CarrierOf(*1) : 'the box'>) NOT> >>
   
   3. the box is not carried by Peter
-  [ NOT[ is('peter', <CarrierOf(*1) : 'the box'>) NOT] ]
+  << NOT< ('peter' == <CarrierOf(*1) : 'the box'>) NOT> >>
   
   4. Peter does not like Jane
-  [ NOT[ amity('peter', 'jane') NOT] ]
+  << NOT< amity('peter', 'jane') NOT> >>
   
   5. Jane is not liked by Peter
-  [ NOT[ amity('peter', 'jane') NOT] ]
+  << NOT< amity('peter', 'jane') NOT> >>
   
   
   Adjectives from KOVs coinciding with properties
   1. blue is red
-  [ is('blue', 'red') ]
+  << ('blue' == 'red') >>
   
   2. Peter is red
-  [ 'red'('peter') ]
+  << red('peter') >>
   
   3. the fashionable hue is red
-  [ is('the fashionable hue', 'red') ]
+  << ('the fashionable hue' == 'red') >>
   
   4. Peter is annoyed by green
-  [ annoying('green', 'peter') ]
+  << annoying('green', 'peter') >>
   
   5. green annoys Peter
-  [ annoying('green', 'peter') ]
+  << annoying('green', 'peter') >>
   
   
   Negated adjectives from KOVs coinciding with properties
   1. blue is not red
-  [ NOT[ is('blue', 'red') NOT] ]
+  << NOT< ('blue' == 'red') NOT> >>
   
   2. Peter is not red
-  [ NOT[ 'red'('peter') NOT] ]
+  << NOT< red('peter') NOT> >>
   
   3. the fashionable hue is not red
-  [ NOT[ is('the fashionable hue', 'red') NOT] ]
+  << NOT< ('the fashionable hue' == 'red') NOT> >>
   
   4. Peter is not annoyed by green
-  [ NOT[ annoying('green', 'peter') NOT] ]
+  << NOT< annoying('green', 'peter') NOT> >>
   
   5. green does not annoy Peter
-  [ NOT[ annoying('green', 'peter') NOT] ]
+  << NOT< annoying('green', 'peter') NOT> >>
   
   
   Use of adjectives and kinds
   1. Peter is friendly
-  [ 'friendly'('peter') ]
+  << friendly('peter') >>
   
   2. Peter is tidy
-  [ 'tidy'('peter') ]
+  << tidy('peter') >>
   
   3. Peter is tall
-  [ 'tall'('peter') ]
+  << tall('peter') >>
   
   4. Peter is a man
-  [ man('peter') ]
+  << man('peter') >>
   
   5. Peter is a friendly man
-  [ man('peter') & 'friendly'('peter') ]
+  << man('peter') & friendly('peter') >>
   
   6. Peter is a tidy man
-  [ man('peter') & 'tidy'('peter') ]
+  << man('peter') & tidy('peter') >>
   
   7. Peter is a tall tidy green visible man
-  [ man('peter') & 'tall'('peter') & 'tidy'('peter') & 'green'('peter') & 'visible'('peter') ]
+  << man('peter') & tall('peter') & tidy('peter') & green('peter') & visible('peter') >>
   
   8. the score is a number
-  [ number('the score') ]
+  << number('the score') >>
   
   9. the score is an odd number
-  [ number('the score') & 'odd'('the score') ]
+  << number('the score') & odd('the score') >>
   
   10. the fashionable hue is bright
-  [ 'bright'('the fashionable hue') ]
+  << bright('the fashionable hue') >>
   
   11. the fashionable hue is a colour
-  [ colour('the fashionable hue') ]
+  << colour('the fashionable hue') >>
   
   12. the fashionable hue is a bright colour
-  [ colour('the fashionable hue') & 'bright'('the fashionable hue') ]
+  << colour('the fashionable hue') & bright('the fashionable hue') >>
   
   
   Negated use of adjectives and kinds
   1. Peter is not friendly
-  [ NOT[ 'friendly'('peter') NOT] ]
+  << NOT< friendly('peter') NOT> >>
   
   2. Peter is not tidy
-  [ NOT[ 'tidy'('peter') NOT] ]
+  << NOT< tidy('peter') NOT> >>
   
   3. Peter is not tall
-  [ NOT[ 'tall'('peter') NOT] ]
+  << NOT< tall('peter') NOT> >>
   
   4. Peter is not a man
-  [ NOT[ man('peter') NOT] ]
+  << NOT< man('peter') NOT> >>
   
   5. Peter is not a friendly man
-  [ NOT[ man('peter') & 'friendly'('peter') NOT] ]
+  << NOT< man('peter') & friendly('peter') NOT> >>
   
   6. Peter is not a tidy man
-  [ NOT[ man('peter') & 'tidy'('peter') NOT] ]
+  << NOT< man('peter') & tidy('peter') NOT> >>
   
   7. Peter is not a tall tidy green visible man
-  [ NOT[ man('peter') & 'tall'('peter') & 'tidy'('peter') & 'green'('peter') & 'visible'('peter') NOT] ]
+  << NOT< man('peter') & tall('peter') & tidy('peter') & green('peter') & visible('peter') NOT> >>
   
   8. the score is not a number
-  [ NOT[ number('the score') NOT] ]
+  << NOT< number('the score') NOT> >>
   
   9. the score is not an odd number
-  [ NOT[ number('the score') & 'odd'('the score') NOT] ]
+  << NOT< number('the score') & odd('the score') NOT> >>
   
   10. the fashionable hue is not bright
-  [ NOT[ 'bright'('the fashionable hue') NOT] ]
+  << NOT< bright('the fashionable hue') NOT> >>
   
   11. the fashionable hue is not a colour
-  [ NOT[ colour('the fashionable hue') NOT] ]
+  << NOT< colour('the fashionable hue') NOT> >>
   
   12. the fashionable hue is not a bright colour
-  [ NOT[ colour('the fashionable hue') & 'bright'('the fashionable hue') NOT] ]
+  << NOT< colour('the fashionable hue') & bright('the fashionable hue') NOT> >>
   
   
   Single quantification
   1. Peter likes someone
-  [ Exists x : person(x) & amity('peter', x) ]
+  << Exists x : person(x) & amity('peter', x) >>
   x - object.
   
   2. someone likes Peter
-  [ Exists x : person(x) & amity(x, 'peter') ]
+  << Exists x : person(x) & amity(x, 'peter') >>
   x - object.
   
   3. Peter likes everyone
-  [ ForAll x IN[ person(x) IN] : amity('peter', x) ]
+  << ForAll x IN< person(x) IN> : amity('peter', x) >>
   x - object.
   
   4. everyone likes Peter
-  [ ForAll x IN[ person(x) IN] : amity(x, 'peter') ]
+  << ForAll x IN< person(x) IN> : amity(x, 'peter') >>
   x - object.
   
   5. Peter owns something
-  [ Exists x : animal(x) & owning('peter', x) ]
+  << Exists x : animal(x) & owning('peter', x) >>
   x - object.
   
   6. someone owns Missee
-  [ Exists x : person(x) & owning(x, 'missee') ]
+  << Exists x : person(x) & owning(x, 'missee') >>
   x - object.
   
   
   Negated single quantification
   1. Peter does not like someone
-  [ DoesNotExist x IN[ person(x) IN] : amity('peter', x) ]
+  << DoesNotExist x IN< person(x) IN> : amity('peter', x) >>
   x - object.
   
   2. someone does not like Peter
-  [ Exists x : person(x) & NOT[ amity(x, 'peter') NOT] ]
+  << Exists x : person(x) & NOT< amity(x, 'peter') NOT> >>
   x - object.
   
   3. Peter does not like everyone
-  [ NotAll x IN[ person(x) IN] : amity('peter', x) ]
+  << NotAll x IN< person(x) IN> : amity('peter', x) >>
   x - object.
   
   4. everyone does not like Peter
-  [ ForAll x IN[ person(x) IN] : NOT[ amity(x, 'peter') NOT] ]
+  << ForAll x IN< person(x) IN> : NOT< amity(x, 'peter') NOT> >>
   x - object.
   
   5. Peter does not own anything
-  [ DoesNotExist x IN[ animal(x) IN] : owning('peter', x) ]
+  << DoesNotExist x IN< animal(x) IN> : owning('peter', x) >>
   x - object.
   
   6. someone does not own Missee
-  [ Exists x : person(x) & NOT[ owning(x, 'missee') NOT] ]
+  << Exists x : person(x) & NOT< owning(x, 'missee') NOT> >>
   x - object.
   
   
   Double quantification
   1. someone likes someone
-  [ Exists x : person(x) & Exists y : person(y) & amity(x, y) ]
+  << Exists x : person(x) & Exists y : person(y) & amity(x, y) >>
   x - object. y - object.
   
   2. someone likes everyone
-  [ Exists x : person(x) & ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << Exists x : person(x) & ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   3. everyone likes everyone
-  [ ForAll x IN[ person(x) IN] : ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   4. a man likes a woman
-  [ Exists x : man(x) & Exists y : woman(y) & amity(x, y) ]
+  << Exists x : man(x) & Exists y : woman(y) & amity(x, y) >>
   x - object. y - object.
   
   5. a woman is liked by a man
-  [ Exists x : woman(x) & Exists y : man(y) & amity(y, x) ]
+  << Exists x : woman(x) & Exists y : man(y) & amity(y, x) >>
   x - object. y - object.
   
   6. a man who likes a woman
-  [ man(x) & Exists y : woman(y) & amity(x, y) ]
+  << man(x) & Exists y : woman(y) & amity(x, y) >>
   x (free) - object. y - object.
   
   7. a woman who is liked by a man
-  [ woman(x) & Exists y : man(y) & amity(y, x) ]
+  << woman(x) & Exists y : man(y) & amity(y, x) >>
   x (free) - object. y - object.
   
   
   Negated double quantification
   1. someone does not like someone
-  [ Exists x : person(x) & NOT[ Exists y : person(y) & amity(x, y) NOT] ]
+  << Exists x : person(x) & NOT< Exists y : person(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   2. someone does not like everyone
-  [ Exists x : person(x) & NotAll y IN[ person(y) IN] : amity(x, y) ]
+  << Exists x : person(x) & NotAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   3. everyone does not like everyone
-  [ ForAll x IN[ person(x) IN] : NotAll y IN[ person(y) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : NotAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   4. a man does not like a woman
-  [ Exists x : man(x) & NOT[ Exists y : woman(y) & amity(x, y) NOT] ]
+  << Exists x : man(x) & NOT< Exists y : woman(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   5. a woman is not liked by a man
-  [ Exists x : woman(x) & NOT[ Exists y : man(y) & amity(y, x) NOT] ]
+  << Exists x : woman(x) & NOT< Exists y : man(y) & amity(y, x) NOT> >>
   x - object. y - object.
   
   6. a man who does not like a woman
-  [ man(x) & NOT[ Exists y : woman(y) & amity(x, y) NOT] ]
+  << man(x) & NOT< Exists y : woman(y) & amity(x, y) NOT> >>
   x (free) - object. y - object.
   
   7. a woman who is not liked by a man
-  [ woman(x) & NOT[ Exists y : man(y) & amity(y, x) NOT] ]
+  << woman(x) & NOT< Exists y : man(y) & amity(y, x) NOT> >>
   x (free) - object. y - object.
   
   
   Unquantified relative clauses
   1. a man in the Laboratory
-  [ man(x) & is('the laboratory', <ContainerOf(*1) : x>) ]
+  << man(x) & ('the laboratory' == <ContainerOf(*1) : x>) >>
   x (free) - object.
   
   2. a man carrying the box
-  [ man(x) & is(x, <CarrierOf(*1) : 'the box'>) ]
+  << man(x) & (x == <CarrierOf(*1) : 'the box'>) >>
   x (free) - object.
   
   3. a man can see the box in the Laboratory
-  [ Exists x : man(x) & thing('box') & is('laboratory', <ContainerOf(*1) : 'box'>) & can-see(x, 'box') ]
+  << Exists x : man(x) & thing('box') & ('laboratory' == <ContainerOf(*1) : 'box'>) & can-see(x, 'box') >>
   x - object.
   
   4. a man can see the marble in the box in the Laboratory
-  [ Exists x : man(x) & thing('marble') & is('laboratory', <ContainerOf(*1) : 'box'>) & is('box', <ContainerOf(*1) : 'marble'>) & can-see(x, 'marble') ]
+  << Exists x : man(x) & thing('marble') & ('laboratory' == <ContainerOf(*1) : 'box'>) & ('box' == <ContainerOf(*1) : 'marble'>) & can-see(x, 'marble') >>
   x - object.
   
   
   Quantification in sentences with relative clauses
   1. Peter likes someone who is a woman
-  [ Exists x : woman(x) & amity('peter', x) ]
+  << Exists x : woman(x) & amity('peter', x) >>
   x - object.
   
   2. Peter likes everyone who is a woman
-  [ ForAll x IN[ woman(x) IN] : amity('peter', x) ]
+  << ForAll x IN< woman(x) IN> : amity('peter', x) >>
   x - object.
   
   3. Peter likes everyone who likes every man
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : amity('peter', x) ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : amity('peter', x) >>
   x - object. y - object.
   
   4. someone likes someone who is a woman
-  [ Exists x : person(x) & Exists y : woman(y) & amity(x, y) ]
+  << Exists x : person(x) & Exists y : woman(y) & amity(x, y) >>
   x - object. y - object.
   
   5. someone likes everyone who is a woman
-  [ Exists x : person(x) & ForAll y IN[ woman(y) IN] : amity(x, y) ]
+  << Exists x : person(x) & ForAll y IN< woman(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   6. someone likes everyone who likes every man
-  [ Exists x : person(x) & ForAll y IN[ person(y) & ForAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << Exists x : person(x) & ForAll y IN< person(y) & ForAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   7. everyone likes someone who is a woman
-  [ ForAll x IN[ person(x) IN] : Exists y : woman(y) & amity(x, y) ]
+  << ForAll x IN< person(x) IN> : Exists y : woman(y) & amity(x, y) >>
   x - object. y - object.
   
   8. everyone likes everyone who is a woman
-  [ ForAll x IN[ person(x) IN] : ForAll y IN[ woman(y) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : ForAll y IN< woman(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   9. everyone likes everyone who likes every man
-  [ ForAll x IN[ person(x) IN] : ForAll y IN[ person(y) & ForAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : ForAll y IN< person(y) & ForAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   10. someone who is a woman likes Peter
-  [ Exists x : woman(x) & amity(x, 'peter') ]
+  << Exists x : woman(x) & amity(x, 'peter') >>
   x - object.
   
   11. everyone who is a woman likes Peter
-  [ ForAll x IN[ woman(x) IN] : amity(x, 'peter') ]
+  << ForAll x IN< woman(x) IN> : amity(x, 'peter') >>
   x - object.
   
   12. everyone who likes every man likes Peter
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : amity(x, 'peter') ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : amity(x, 'peter') >>
   x - object. y - object.
   
   13. someone who is a woman likes someone
-  [ Exists x : woman(x) & Exists y : person(y) & amity(x, y) ]
+  << Exists x : woman(x) & Exists y : person(y) & amity(x, y) >>
   x - object. y - object.
   
   14. everyone who is a woman likes someone
-  [ ForAll x IN[ woman(x) IN] : Exists y : person(y) & amity(x, y) ]
+  << ForAll x IN< woman(x) IN> : Exists y : person(y) & amity(x, y) >>
   x - object. y - object.
   
   15. everyone who likes every man likes someone
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : Exists z : person(z) & amity(x, z) ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : Exists z : person(z) & amity(x, z) >>
   x - object. y - object. z - object.
   
   16. someone who is a woman likes everyone
-  [ Exists x : woman(x) & ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << Exists x : woman(x) & ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   17. everyone who is a woman likes everyone
-  [ ForAll x IN[ woman(x) IN] : ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << ForAll x IN< woman(x) IN> : ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   18. everyone who likes every man likes everyone
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : ForAll z IN[ person(z) IN] : amity(x, z) ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : ForAll z IN< person(z) IN> : amity(x, z) >>
   x - object. y - object. z - object.
   
   
   Negated quantification in sentences with relative clauses
   1. Peter does not like someone who is a woman
-  [ DoesNotExist x IN[ woman(x) IN] : amity('peter', x) ]
+  << DoesNotExist x IN< woman(x) IN> : amity('peter', x) >>
   x - object.
   
   2. Peter does not like everyone who is a woman
-  [ NotAll x IN[ woman(x) IN] : amity('peter', x) ]
+  << NotAll x IN< woman(x) IN> : amity('peter', x) >>
   x - object.
   
   3. Peter does not like everyone who does likes every man
   Failed: not a condition
   4. someone does not like someone who is a woman
-  [ Exists x : person(x) & NOT[ Exists y : woman(y) & amity(x, y) NOT] ]
+  << Exists x : person(x) & NOT< Exists y : woman(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   5. someone does not like everyone who is a woman
-  [ Exists x : person(x) & NotAll y IN[ woman(y) IN] : amity(x, y) ]
+  << Exists x : person(x) & NotAll y IN< woman(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   6. someone does not like everyone who likes every man
-  [ Exists x : person(x) & NotAll y IN[ person(y) & ForAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << Exists x : person(x) & NotAll y IN< person(y) & ForAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   7. everyone does not like someone who is a woman
-  [ ForAll x IN[ person(x) IN] : NOT[ Exists y : woman(y) & amity(x, y) NOT] ]
+  << ForAll x IN< person(x) IN> : NOT< Exists y : woman(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   8. everyone does not like everyone who is a woman
-  [ ForAll x IN[ person(x) IN] : NotAll y IN[ woman(y) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : NotAll y IN< woman(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   9. everyone does not like everyone who likes every man
-  [ ForAll x IN[ person(x) IN] : NotAll y IN[ person(y) & ForAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : NotAll y IN< person(y) & ForAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   10. someone who is not a woman likes Peter
-  [ Exists x : person(x) & NOT[ woman(x) NOT] & amity(x, 'peter') ]
+  << Exists x : person(x) & NOT< woman(x) NOT> & amity(x, 'peter') >>
   x - object.
   
   11. everyone who is not a woman likes Peter
-  [ ForAll x IN[ person(x) & NOT[ woman(x) NOT] IN] : amity(x, 'peter') ]
+  << ForAll x IN< person(x) & NOT< woman(x) NOT> IN> : amity(x, 'peter') >>
   x - object.
   
   12. everyone who does not like every man likes Peter
-  [ ForAll x IN[ person(x) & NotAll y IN[ man(y) IN] : amity(x, y) IN] : amity(x, 'peter') ]
+  << ForAll x IN< person(x) & NotAll y IN< man(y) IN> : amity(x, y) IN> : amity(x, 'peter') >>
   x - object. y - object.
   
   13. someone who is not a woman likes someone
-  [ Exists x : person(x) & NOT[ woman(x) NOT] & Exists y : person(y) & amity(x, y) ]
+  << Exists x : person(x) & NOT< woman(x) NOT> & Exists y : person(y) & amity(x, y) >>
   x - object. y - object.
   
   14. everyone who is not a woman likes someone
-  [ ForAll x IN[ person(x) & NOT[ woman(x) NOT] IN] : Exists y : person(y) & amity(x, y) ]
+  << ForAll x IN< person(x) & NOT< woman(x) NOT> IN> : Exists y : person(y) & amity(x, y) >>
   x - object. y - object.
   
   15. everyone who does not like every man likes someone
-  [ ForAll x IN[ person(x) & NotAll y IN[ man(y) IN] : amity(x, y) IN] : Exists z : person(z) & amity(x, z) ]
+  << ForAll x IN< person(x) & NotAll y IN< man(y) IN> : amity(x, y) IN> : Exists z : person(z) & amity(x, z) >>
   x - object. y - object. z - object.
   
   16. someone who is not a woman likes everyone
-  [ Exists x : person(x) & NOT[ woman(x) NOT] & ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << Exists x : person(x) & NOT< woman(x) NOT> & ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   17. everyone who is not a woman likes everyone
-  [ ForAll x IN[ person(x) & NOT[ woman(x) NOT] IN] : ForAll y IN[ person(y) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) & NOT< woman(x) NOT> IN> : ForAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   18. everyone who does not like every man likes everyone
-  [ ForAll x IN[ person(x) & NotAll y IN[ man(y) IN] : amity(x, y) IN] : ForAll z IN[ person(z) IN] : amity(x, z) ]
+  << ForAll x IN< person(x) & NotAll y IN< man(y) IN> : amity(x, y) IN> : ForAll z IN< person(z) IN> : amity(x, z) >>
   x - object. y - object. z - object.
   
   
   Quantification in sentences with negated relative clauses
   1. Peter likes someone who is not a woman
-  [ Exists x : person(x) & NOT[ woman(x) NOT] & amity('peter', x) ]
+  << Exists x : person(x) & NOT< woman(x) NOT> & amity('peter', x) >>
   x - object.
   
   2. Peter likes everyone who is not a woman
-  [ ForAll x IN[ person(x) & NOT[ woman(x) NOT] IN] : amity('peter', x) ]
+  << ForAll x IN< person(x) & NOT< woman(x) NOT> IN> : amity('peter', x) >>
   x - object.
   
   3. Peter likes everyone who does not like every man
-  [ ForAll x IN[ person(x) & NotAll y IN[ man(y) IN] : amity(x, y) IN] : amity('peter', x) ]
+  << ForAll x IN< person(x) & NotAll y IN< man(y) IN> : amity(x, y) IN> : amity('peter', x) >>
   x - object. y - object.
   
   4. someone likes someone who is not a woman
-  [ Exists x : person(x) & Exists y : person(y) & NOT[ woman(y) NOT] & amity(x, y) ]
+  << Exists x : person(x) & Exists y : person(y) & NOT< woman(y) NOT> & amity(x, y) >>
   x - object. y - object.
   
   5. someone likes everyone who is not a woman
-  [ Exists x : person(x) & ForAll y IN[ person(y) & NOT[ woman(y) NOT] IN] : amity(x, y) ]
+  << Exists x : person(x) & ForAll y IN< person(y) & NOT< woman(y) NOT> IN> : amity(x, y) >>
   x - object. y - object.
   
   6. someone likes everyone who does not like every man
-  [ Exists x : person(x) & ForAll y IN[ person(y) & NotAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << Exists x : person(x) & ForAll y IN< person(y) & NotAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   7. everyone likes someone who is not a woman
-  [ ForAll x IN[ person(x) IN] : Exists y : person(y) & NOT[ woman(y) NOT] & amity(x, y) ]
+  << ForAll x IN< person(x) IN> : Exists y : person(y) & NOT< woman(y) NOT> & amity(x, y) >>
   x - object. y - object.
   
   8. everyone likes everyone who is not a woman
-  [ ForAll x IN[ person(x) IN] : ForAll y IN[ person(y) & NOT[ woman(y) NOT] IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : ForAll y IN< person(y) & NOT< woman(y) NOT> IN> : amity(x, y) >>
   x - object. y - object.
   
   9. everyone likes everyone who does not like every man
-  [ ForAll x IN[ person(x) IN] : ForAll y IN[ person(y) & NotAll z IN[ man(z) IN] : amity(y, z) IN] : amity(x, y) ]
+  << ForAll x IN< person(x) IN> : ForAll y IN< person(y) & NotAll z IN< man(z) IN> : amity(y, z) IN> : amity(x, y) >>
   x - object. y - object. z - object.
   
   10. someone who is a woman does not like Peter
-  [ Exists x : woman(x) & NOT[ amity(x, 'peter') NOT] ]
+  << Exists x : woman(x) & NOT< amity(x, 'peter') NOT> >>
   x - object.
   
   11. everyone who is a woman does not like Peter
-  [ ForAll x IN[ woman(x) IN] : NOT[ amity(x, 'peter') NOT] ]
+  << ForAll x IN< woman(x) IN> : NOT< amity(x, 'peter') NOT> >>
   x - object.
   
   12. everyone who likes every man does not like Peter
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : NOT[ amity(x, 'peter') NOT] ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : NOT< amity(x, 'peter') NOT> >>
   x - object. y - object.
   
   13. someone who is a woman does not like someone
-  [ Exists x : woman(x) & NOT[ Exists y : person(y) & amity(x, y) NOT] ]
+  << Exists x : woman(x) & NOT< Exists y : person(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   14. everyone who is a woman does not like someone
-  [ ForAll x IN[ woman(x) IN] : NOT[ Exists y : person(y) & amity(x, y) NOT] ]
+  << ForAll x IN< woman(x) IN> : NOT< Exists y : person(y) & amity(x, y) NOT> >>
   x - object. y - object.
   
   15. everyone who likes every man does not like someone
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : NOT[ Exists z : person(z) & amity(x, z) NOT] ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : NOT< Exists z : person(z) & amity(x, z) NOT> >>
   x - object. y - object. z - object.
   
   16. someone who is a woman does not like everyone
-  [ Exists x : woman(x) & NotAll y IN[ person(y) IN] : amity(x, y) ]
+  << Exists x : woman(x) & NotAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   17. everyone who is a woman does not like everyone
-  [ ForAll x IN[ woman(x) IN] : NotAll y IN[ person(y) IN] : amity(x, y) ]
+  << ForAll x IN< woman(x) IN> : NotAll y IN< person(y) IN> : amity(x, y) >>
   x - object. y - object.
   
   18. everyone who likes every man does not like everyone
-  [ ForAll x IN[ person(x) & ForAll y IN[ man(y) IN] : amity(x, y) IN] : NotAll z IN[ person(z) IN] : amity(x, z) ]
+  << ForAll x IN< person(x) & ForAll y IN< man(y) IN> : amity(x, y) IN> : NotAll z IN< person(z) IN> : amity(x, z) >>
   x - object. y - object. z - object.
   
   
   Listed-in predication
   1. 4 is a density listed in the Table of Solid Stuff
-  [ listed_in('4', 'the table of solid stuff') ]
+  << listed_in('4', 'the table of solid stuff') >>
   
   2. nothing is a statue listed in the Table of Stolid Stuff
-  [ listed_in('nothing', 'the table of stolid stuff') ]
+  << listed_in('nothing', 'the table of stolid stuff') >>
   
   3. a crispiness listed in the Table of Salad Stuff is a density listed in the Table of Solid Stuff
-  [ Exists x : number(x) & listed_in(x, 'the table of salad stuff') & listed_in(x, 'the table of solid stuff') ]
+  << Exists x : number(x) & listed_in(x, 'the table of salad stuff') & listed_in(x, 'the table of solid stuff') >>
   x - number.
   
   
   Scenery as a noun
   1. the box in scenery
-  [ 'scenery'(<ContainerOf(*1) : 'the box'>) ]
+  << scenery(<ContainerOf(*1) : 'the box'>) >>
   
   2. all of the scenery parts of Peter are in the Laboratory
-  [ ForAll x IN[ thing(x) & 'scenery'(x) & is('peter', <(*1.component_parent) : x>) IN] : is('the laboratory', <ContainerOf(*1) : x>) ]
+  << ForAll x IN< thing(x) & scenery(x) & ('peter' == <(*1.component_parent) : x>) IN> : ('the laboratory' == <ContainerOf(*1) : x>) >>
   x - object.
   
   
   Region containment
   1. the box is in the Laboratory
-  [ is('the laboratory', <ContainerOf(*1) : 'the box'>) ]
+  << ('the laboratory' == <ContainerOf(*1) : 'the box'>) >>
   
   2. the box is in Transylvania
-  [ region-contains('transylvania', 'the box') ]
+  << region-contains('transylvania', 'the box') >>
   
   3. Transylvania is in the Balkans
-  [ region-contains('the balkans', 'transylvania') ]
+  << region-contains('the balkans', 'transylvania') >>
   
   4. Transylvania is in the doubtful item
-  [ region-contains('the doubtful item', 'transylvania') ]
+  << region-contains('the doubtful item', 'transylvania') >>
   
   5. the box is in the doubtful item
-  [ is('the doubtful item', <ContainerOf(*1) : 'the box'>) ]
+  << ('the doubtful item' == <ContainerOf(*1) : 'the box'>) >>
   
   6. the doubtful item is in the Balkans
-  [ region-contains('the balkans', 'the doubtful item') ]
+  << region-contains('the balkans', 'the doubtful item') >>
   
   
   Use of everywhere
   1. a backdrop which is everywhere
-  [ backdrop(x) & everywhere(x) ]
+  << backdrop(x) & everywhere(x) >>
   x (free) - object.
   
   2. a backdrop which is not everywhere
-  [ backdrop(x) & NOT[ everywhere(x) NOT] ]
+  << backdrop(x) & NOT< everywhere(x) NOT> >>
   x (free) - object.
   
   
   Double negatives
   1. the box does not contain nothing
-  [ Exists x : is('the box', <ContainerOf(*1) : x>) ]
+  << Exists x : ('the box' == <ContainerOf(*1) : x>) >>
   x - object.
   
   2. Peter is not lured by nothing
-  [ Exists x : thing(x) & luring(x, 'peter') ]
+  << Exists x : thing(x) & luring(x, 'peter') >>
   x - object.
   
   3. Peter does not like nobody
-  [ Exists x : person(x) & amity('peter', x) ]
+  << Exists x : person(x) & amity('peter', x) >>
   x - object.
   
   4. nobody does not like Peter
-  [ DoesNotExist x IN[ person(x) IN] : NOT[ amity(x, 'peter') NOT] ]
+  << DoesNotExist x IN< person(x) IN> : NOT< amity(x, 'peter') NOT> >>
   x - object.
   
   5. no colour does not annoy Peter
-  [ DoesNotExist x IN[ colour(x) IN] : NOT[ annoying(x, 'peter') NOT] ]
+  << DoesNotExist x IN< colour(x) IN> : NOT< annoying(x, 'peter') NOT> >>
   x - colour.
   
   6. nothing does not annoy Peter
-  [ DoesNotExist x IN[ colour(x) IN] : NOT[ annoying(x, 'peter') NOT] ]
+  << DoesNotExist x IN< colour(x) IN> : NOT< annoying(x, 'peter') NOT> >>
   x - colour.
   
   7. no coin is not enclosed by a person
-  [ DoesNotExist x IN[ coin(x) IN] : NOT[ Exists y : person(y) & encloses(y, x) NOT] ]
+  << DoesNotExist x IN< coin(x) IN> : NOT< Exists y : person(y) & encloses(y, x) NOT> >>
   x - object. y - object.
   
   
   Having value properties
   1. the noun has weight
-  [ is('the noun', <OwnerOf(*1) : 'weight'>) ]
+  << ('the noun' == <OwnerOf(*1) : 'weight'>) >>
   Failed: proposition would not type-check
   Term <OwnerOf(*1) : 'weight'> applies function to numbers valued property not object
   
   2. the noun has weight at most 1
-  [ at-most('weight', '1') ]
+  << at-most('weight', '1') >>
   
   3. the weight of the noun is at most 1
-  [ at-most('the weight of the noun', '1') ]
+  << at-most('the weight of the noun', '1') >>
   
   
   Type-checking
   1. a number which is even
-  [ number(x) & 'even'(x) ]
+  << number(x) & even(x) >>
   x (free) - number.
   
   2. empty which is empty
-  [ 'empty'(x) & 'empty'(x) ]
+  << empty(x) & empty(x) >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on object
-  Adjective 'empty'(x) cannot be applied
+  Adjective empty(x) cannot be applied
   
   3. a scene which is not a number
-  [ scene(x) & NOT[ number(x) NOT] ]
+  << scene(x) & NOT< number(x) NOT> >>
   Failed: proposition would not type-check
   x is both scene and number
   
   4. 100 which is not a text
-  [ NOT[ text('100') NOT] ]
+  << NOT< text('100') NOT> >>
   Failed: proposition would not type-check
   Term '100' is number not text
   
   5. a number which is empty
-  [ number(x) & 'empty'(x) ]
+  << number(x) & empty(x) >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on number
-  Adjective 'empty'(x) cannot be applied
+  Adjective empty(x) cannot be applied
   
   6. 100 which is empty
-  [ 'empty'('100') ]
+  << empty('100') >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on number
-  Adjective 'empty'('100') cannot be applied
+  Adjective empty('100') cannot be applied
   
   7. a number which is inside a scene
-  [ number(x) & scene(<ContainerOf(*1) : x>) ]
+  << number(x) & scene(<ContainerOf(*1) : x>) >>
   Failed: proposition would not type-check
   Term <ContainerOf(*1) : x> applies function to number not object
   
   8. a scene which is inside a number
-  [ scene(x) & number(<ContainerOf(*1) : x>) ]
+  << scene(x) & number(<ContainerOf(*1) : x>) >>
   Failed: proposition would not type-check
   Term <ContainerOf(*1) : x> applies function to scene not object
   
   9. a number which is inside a vehicle
-  [ number(x) & vehicle(<ContainerOf(*1) : x>) ]
+  << number(x) & vehicle(<ContainerOf(*1) : x>) >>
   Failed: proposition would not type-check
   Term <ContainerOf(*1) : x> applies function to number not object
   
   10. a vehicle which is inside a number
-  [ vehicle(x) & number(<ContainerOf(*1) : x>) ]
+  << vehicle(x) & number(<ContainerOf(*1) : x>) >>
   Failed: proposition would not type-check
   Term <ContainerOf(*1) : x> is object not number
   
   11. a woman who likes a number
-  [ woman(x) & Exists y : number(y) & person(y) & amity(x, y) ]
+  << woman(x) & Exists y : number(y) & person(y) & amity(x, y) >>
   Failed: proposition would not type-check
   y is both number and object
   
   12. a number which likes a man
-  [ number(x) & person(x) & Exists y : man(y) & amity(x, y) ]
+  << number(x) & person(x) & Exists y : man(y) & amity(x, y) >>
   Failed: proposition would not type-check
   x is both number and object
   
   13. a woman who is a number
-  [ woman(x) & number(x) ]
+  << woman(x) & number(x) >>
   Failed: proposition would not type-check
   x is both object and number
   
   14. a number which is a man
-  [ number(x) & man(x) ]
+  << number(x) & man(x) >>
   Failed: proposition would not type-check
   x is both number and object
   
   15. Peter is 20
-  [ is('peter', '20') ]
+  << ('peter' == '20') >>
   Failed: proposition would not type-check
   Unable to compare thing with number
   0 = thing. 1 = number
   Unable to compare thing with number
-  BP is('peter', '20') cannot be applied
+  BP ('peter' == '20') cannot be applied
   
   16. Peter is less than 20
-  [ less-than('peter', '20') ]
+  << less-than('peter', '20') >>
   Failed: proposition would not type-check
   Unable to apply inequality of thing and number
   BP less-than('peter', '20') cannot be applied
   
   17. 10 which is opaque
-  [ 'opaque'('10') ]
+  << opaque('10') >>
   Failed: proposition would not type-check
   Adjective 'opaque' undefined on number
-  Adjective 'opaque'('10') cannot be applied
+  Adjective opaque('10') cannot be applied
   
   18. the Entire Game is empty
-  [ 'empty'('the entire game') ]
+  << empty('the entire game') >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on scene
-  Adjective 'empty'('the entire game') cannot be applied
+  Adjective empty('the entire game') cannot be applied
   
   19. funky todo is the action of waiting
-  [ is('funky todo', 'the action of waiting') ]
+  << ('funky todo' == 'the action of waiting') >>
   
   20. funky todo is waiting
-  [ is('funky todo', 'waiting') ]
+  << ('funky todo' == 'waiting') >>
   
   21. the player is heavier than 70kg
-  [ heaviness('the player', '70kg') ]
+  << heaviness('the player', '70kg') >>
   
   22. the player is heavier than 6 feet 2 inches
-  [ heaviness('the player', '6 feet 2 inches') ]
+  << heaviness('the player', '6 feet 2 inches') >>
   Failed: proposition would not type-check
   Comparative misapplied to 'height' not 'mass'
   BP heaviness('the player', '6 feet 2 inches') cannot be applied
   
   23. Entire Game is a density listed in the Table of Solid Stuff
-  [ number('entire game') & listed_in('entire game', 'the table of solid stuff') ]
+  << number('entire game') & listed_in('entire game', 'the table of solid stuff') >>
   Failed: proposition would not type-check
    Laboratory
   Term 'entire game' is scene not number
   
   24. things enclosing the player that encloses something
-  [ thing(x) & object('the player') & Exists y : thing(y) & encloses('the player', y) & encloses(x, 'the player') ]
+  << thing(x) & object('the player') & Exists y : thing(y) & encloses('the player', y) & encloses(x, 'the player') >>
   x (free) - object. y - object.
   
   25. things that enclose something enclosed by the player
-  [ thing(x) & Exists y : thing(y) & encloses(x, y) & encloses('the player', x) ]
+  << thing(x) & Exists y : thing(y) & encloses(x, y) & encloses('the player', x) >>
   x (free) - object. y - object.
   
 > >   Laboratory

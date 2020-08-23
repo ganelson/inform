@@ -121,7 +121,7 @@ be a term in a proposition.
 	TRAVERSE_PROPOSITION(pl, prop) {
 		int j;
 		for (j=0; j<pl->arity; j++) {
-			parse_node *spec = Calculus::Terms::constant_underlying(&(pl->terms[j]));
+			parse_node *spec = Terms::constant_underlying(&(pl->terms[j]));
 			if (spec) {
 				int rv = NEVER_MATCH;
 				if (!(Node::is(spec, UNKNOWN_NT))) {
@@ -275,7 +275,7 @@ would work instead. If it would, we make the change within the proposition.
 	if (BinaryPredicates::is_the_wrong_way_round(bp)) internal_error("BP wrong way round");
 	if (Calculus::Propositions::Checker::type_check_binary_predicate(pl, &vta, tck) == NEVER_MATCH) {
 		if (bp == R_equality) {
-			unary_predicate *alt = Calculus::Terms::noun_to_adj_conversion(pl->terms[1]);
+			unary_predicate *alt = Terms::noun_to_adj_conversion(pl->terms[1]);
 			if (alt) {
 				pcalc_prop test_unary = *pl;
 				test_unary.arity = 1;

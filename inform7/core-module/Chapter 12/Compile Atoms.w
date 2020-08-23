@@ -1,4 +1,4 @@
-[Calculus::Atoms::Compile::] Compile Atoms.
+[Atoms::Compile::] Compile Atoms.
 
 In this section, given an atom of a proposition we compile I6 code
 as required for any of three possible outcomes: (i) to test whether it is
@@ -23,12 +23,12 @@ int suppress_C14ActionVarsPastTense = FALSE;
 @ So, then:
 
 =
-void Calculus::Atoms::Compile::emit(int task, pcalc_prop *pl, int with_semicolon) {
+void Atoms::Compile::emit(int task, pcalc_prop *pl, int with_semicolon) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	Calculus::Atoms::Compile::compile(&VH, task, pl, with_semicolon);
+	Atoms::Compile::compile(&VH, task, pl, with_semicolon);
 }
 
-void Calculus::Atoms::Compile::compile(value_holster *VH, int task, pcalc_prop *pl, int with_semicolon) {
+void Atoms::Compile::compile(value_holster *VH, int task, pcalc_prop *pl, int with_semicolon) {
 	i6_schema sch;
 	annotated_i6_schema asch;
 
@@ -46,7 +46,7 @@ void Calculus::Atoms::Compile::compile(value_holster *VH, int task, pcalc_prop *
 @h Stage 1.
 
 @<Stage 1: make an annotated schema from the atom@> =
-	asch = Calculus::Atoms::Compile::i6_schema_of_atom(&sch, pl, task);
+	asch = Atoms::Compile::i6_schema_of_atom(&sch, pl, task);
 	if (asch.schema == NULL) {
 		if (problem_count == 0)
 			@<Issue a fallback problem message, since the schema-maker evidently didn't@>;
@@ -105,14 +105,14 @@ so we terminate with that if making true or false.
 @h Constructing the schema.
 
 =
-annotated_i6_schema Calculus::Atoms::Compile::i6_schema_of_atom(i6_schema *sch, pcalc_prop *pl, int task) {
+annotated_i6_schema Atoms::Compile::i6_schema_of_atom(i6_schema *sch, pcalc_prop *pl, int task) {
 	annotated_i6_schema asch;
 
 	Calculus::Schemas::modify(sch, " "); /* a non-NULL return in case problems occur */
 	asch.schema = sch;
 	asch.negate_schema = FALSE;
 	asch.pt0 = pl->terms[0]; asch.pt1 = pl->terms[1];
-	asch.involves_action_variables = Calculus::Atoms::Compile::atom_involves_action_variables(pl);
+	asch.involves_action_variables = Atoms::Compile::atom_involves_action_variables(pl);
 
 	switch(pl->element) {
 		case CALLED_ATOM: @<Make an annotated schema for a CALLED atom@>;
@@ -146,7 +146,7 @@ to |true|.
 @<Make an annotated schema for a CALLED atom@> =
 	switch(task) {
 		case TEST_ATOM_TASK: {
-			wording W = Calculus::Atoms::CALLED_get_name(pl);
+			wording W = Atoms::CALLED_get_name(pl);
 			Calculus::Schemas::modify(sch, "(%L=(*1), true)",
 				LocalVariables::ensure_called_local(W, pl->assert_kind));
 			return asch;
@@ -299,10 +299,10 @@ we have to re-establish $R(x, y)$ before we can proceed.
 	if (bp_to_assert == NULL) bp_to_assert = bp;
 
 @ =
-int Calculus::Atoms::Compile::atom_involves_action_variables(pcalc_prop *pl) {
+int Atoms::Compile::atom_involves_action_variables(pcalc_prop *pl) {
 	#ifdef IF_MODULE
 	for (int i=0; i<pl->arity; i++) {
-		parse_node *operand = Calculus::Terms::constant_underlying(&(pl->terms[i]));
+		parse_node *operand = Terms::constant_underlying(&(pl->terms[i]));
 		if (PL::Actions::Patterns::is_an_action_variable(operand)) return TRUE;
 	}
 	#endif
@@ -312,12 +312,12 @@ int Calculus::Atoms::Compile::atom_involves_action_variables(pcalc_prop *pl) {
 @h An unannotated one.
 
 =
-annotated_i6_schema Calculus::Atoms::Compile::blank_asch(void) {
+annotated_i6_schema Atoms::Compile::blank_asch(void) {
 	annotated_i6_schema asch;
 	asch.schema = Calculus::Schemas::new(" ");
 	asch.negate_schema = FALSE;
-	asch.pt0 = Calculus::Terms::new_variable(0);
-	asch.pt1 = Calculus::Terms::new_variable(0);
+	asch.pt0 = Terms::new_variable(0);
+	asch.pt1 = Terms::new_variable(0);
 	asch.involves_action_variables = FALSE;
 	return asch;
 }

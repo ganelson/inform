@@ -1609,8 +1609,8 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		if (prop == NULL) internal_error("MPE unable to force proposition");
 		if (verify_as_kind) {
 			prop = Calculus::Propositions::concatenate(prop,
-				Calculus::Atoms::KIND_new(
-					verify_as_kind, Calculus::Terms::new_variable(0)));
+				Atoms::KIND_new(
+					verify_as_kind, Terms::new_variable(0)));
 			Calculus::Deferrals::prop_verify_descriptive(prop,
 				"an action or activity to apply to things matching a given "
 				"description", spec);

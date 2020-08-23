@@ -136,8 +136,8 @@ understood between them.
 =
 int Calculus::Propositions::implied_conjunction_between(pcalc_prop *p1, pcalc_prop *p2) {
 	if ((p1 == NULL) || (p2 == NULL)) return FALSE;
-	if (Calculus::Atoms::element_get_group(p1->element) == OPEN_OPERATORS_GROUP) return FALSE;
-	if (Calculus::Atoms::element_get_group(p2->element) == CLOSE_OPERATORS_GROUP) return FALSE;
+	if (Atoms::group(p1->element) == OPEN_OPERATORS_GROUP) return FALSE;
+	if (Atoms::group(p2->element) == CLOSE_OPERATORS_GROUP) return FALSE;
 	if (p1->element == QUANTIFIER_ATOM) return FALSE;
 	if (p1->element == DOMAIN_CLOSE_ATOM) return FALSE;
 	return TRUE;
@@ -176,7 +176,7 @@ void Calculus::Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 		char *bridge = Calculus::Propositions::debugging_log_text_between(p_prev, p);
 		if (bridge[0]) WRITE("%s ", bridge);
 		if (log_addresses) WRITE("%08x=", (unsigned int) p);
-		Calculus::Atoms::write(OUT, p);
+		Atoms::write(OUT, p);
 		WRITE(" ");
 	}
 	WRITE(">>");
@@ -237,29 +237,29 @@ int Calculus::Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream
 	int groups_stack[MAX_PROPOSITION_GROUP_NESTING], group_sp = 0;
 	TRAVERSE_PROPOSITION(p, prop) {
 		/* (1) each individual atom has to be properly built: */
-		char *v_err = Calculus::Atoms::validate(p);
+		char *v_err = Atoms::validate(p);
 		if (v_err) { WRITE_TO(err, "atom error: %s", err); return FALSE; }
 		/* (2) every open bracket must be matched by a close bracket of the same kind: */
-		if (Calculus::Atoms::element_get_group(p->element) == OPEN_OPERATORS_GROUP) {
+		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) {
 			if (group_sp >= MAX_PROPOSITION_GROUP_NESTING) {
 				WRITE_TO(err, "group nesting too deep"); return FALSE;
 			}
 			groups_stack[group_sp++] = p->element;
 		}
-		if (Calculus::Atoms::element_get_group(p->element) == CLOSE_OPERATORS_GROUP) {
+		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) {
 			if (group_sp <= 0) { WRITE_TO(err, "too many close groups"); return FALSE; }
-			if (Calculus::Atoms::element_get_match(groups_stack[--group_sp]) != p->element) {
+			if (Atoms::counterpart(groups_stack[--group_sp]) != p->element) {
 				WRITE_TO(err, "group open/close doesn't match"); return FALSE;
 			}
 		}
 		/* (3) every quantifier except "exists" must be followed by domain brackets, which occur nowhere else: */
-		if ((Calculus::Atoms::is_quantifier(p_prev)) && (Calculus::Atoms::is_existence_quantifier(p_prev) == FALSE)) {
+		if ((Atoms::is_quantifier(p_prev)) && (Atoms::is_existence_quantifier(p_prev) == FALSE)) {
 			if (p->element != DOMAIN_OPEN_ATOM) { WRITE_TO(err, "quant without domain"); return FALSE; }
 		} else {
 			if (p->element == DOMAIN_OPEN_ATOM) { WRITE_TO(err, "domain without quant"); return FALSE; }
 		}
 		if ((p->next == NULL) &&
-			(Calculus::Atoms::is_quantifier(p)) && (Calculus::Atoms::is_existence_quantifier(p) == FALSE)) {
+			(Atoms::is_quantifier(p)) && (Atoms::is_existence_quantifier(p) == FALSE)) {
 			WRITE_TO(err, "ends without domain of final quantifier"); return FALSE;
 		}
 	}
@@ -284,7 +284,7 @@ int Calculus::Propositions::is_complex(pcalc_prop *prop) {
 		if (p->element == DOMAIN_OPEN_ATOM) return TRUE;
 		if (p->element == DOMAIN_CLOSE_ATOM) return TRUE;
 		if ((p->element == PREDICATE_ATOM) && (p->arity == 2)) {
-			if (Calculus::Atoms::is_equality_predicate(p) == FALSE) return TRUE;
+			if (Atoms::is_equality_predicate(p) == FALSE) return TRUE;
 			if (!(((p->terms[0].variable == 0) && (p->terms[1].constant)) ||
 				((p->terms[1].variable == 0) && (p->terms[0].constant)))) return TRUE;
 		}
@@ -300,10 +300,10 @@ subsequent ones.
 pcalc_prop *Calculus::Propositions::copy(pcalc_prop *original) {
 	pcalc_prop *first = NULL, *last = NULL, *prop = original;
 	while (prop) {
-		pcalc_prop *copied_atom = Calculus::Atoms::new(0);
+		pcalc_prop *copied_atom = Atoms::new(0);
 		*copied_atom = *prop;
 		for (int j=0; j<prop->arity; j++)
-			copied_atom->terms[j] = Calculus::Terms::copy(prop->terms[j]);
+			copied_atom->terms[j] = Terms::copy(prop->terms[j]);
 		copied_atom->next = NULL;
 		if (first) last->next = copied_atom;
 		else first = copied_atom;
@@ -362,17 +362,17 @@ pcalc_prop *Calculus::Propositions::conjoin(pcalc_prop *existing_body, pcalc_pro
 =
 pcalc_prop *Calculus::Propositions::negate(pcalc_prop *prop) {
 	return Calculus::Propositions::concatenate(
-		Calculus::Atoms::new(NEGATION_OPEN_ATOM),
+		Atoms::new(NEGATION_OPEN_ATOM),
 			Calculus::Propositions::concatenate(
 				prop,
-				Calculus::Atoms::new(NEGATION_CLOSE_ATOM)));
+				Atoms::new(NEGATION_CLOSE_ATOM)));
 }
 
 @h Quantification.
 
 =
 pcalc_prop *Calculus::Propositions::quantify(quantifier *quant, int v, int parameter, pcalc_prop *domain, pcalc_prop *prop) {
-	pcalc_prop *Q = Calculus::Atoms::QUANTIFIER_new(quant, v, parameter);
+	pcalc_prop *Q = Atoms::QUANTIFIER_new(quant, v, parameter);
 	return Calculus::Propositions::quantify_using(Q, domain, prop);
 }
 
@@ -381,10 +381,10 @@ pcalc_prop *Calculus::Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *do
 		Q = Calculus::Propositions::concatenate(
 			Q,
 			Calculus::Propositions::concatenate(
-				Calculus::Atoms::new(DOMAIN_OPEN_ATOM),
+				Atoms::new(DOMAIN_OPEN_ATOM),
 				Calculus::Propositions::concatenate(
 					domain,
-					Calculus::Atoms::new(DOMAIN_CLOSE_ATOM))));
+					Atoms::new(DOMAIN_CLOSE_ATOM))));
 	return Calculus::Propositions::concatenate(Q, prop);
 }
 
@@ -527,13 +527,13 @@ expense of typechecking the proposition:
 kind *Calculus::Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
 	while ((p = Calculus::Propositions::prop_seek_atom(p, ISAKIND_ATOM, 1)) != NULL) {
-		if ((Calculus::Terms::variable_underlying(&(p->terms[0])) == 0) &&
+		if ((Terms::variable_underlying(&(p->terms[0])) == 0) &&
 			(Kinds::eq(p->assert_kind, K_value))) return p->assert_kind;
 		p = p->next;
 	}
 	p = prop;
 	while ((p = Calculus::Propositions::prop_seek_atom(p, KIND_ATOM, 1)) != NULL) {
-		if (Calculus::Terms::variable_underlying(&(p->terms[0])) == 0) return p->assert_kind;
+		if (Terms::variable_underlying(&(p->terms[0])) == 0) return p->assert_kind;
 		p = p->next;
 	}
 	parse_node *val = Calculus::Propositions::describes_value(prop);
@@ -554,7 +554,7 @@ parse_node *Calculus::Propositions::describes_value(pcalc_prop *prop) {
 			case DOMAIN_CLOSE_ATOM: bl--; break;
 			default:
 				if (bl == 0) {
-					if (Calculus::Atoms::is_equality_predicate(p)) {
+					if (Atoms::is_equality_predicate(p)) {
 						if ((p->terms[0].variable == 0) && (p->terms[1].constant))
 							return p->terms[1].constant;
 						if ((p->terms[1].variable == 0) && (p->terms[0].constant))
@@ -578,7 +578,7 @@ int Calculus::Propositions::count_unary_predicates(pcalc_prop *prop) {
 	int ac = 0;
 	pcalc_prop *p = prop;
 	while ((p = Calculus::Propositions::prop_seek_atom(p, PREDICATE_ATOM, 1)) != NULL) {
-		if (Calculus::Terms::variable_underlying(&(p->terms[0])) == 0) ac++;
+		if (Terms::variable_underlying(&(p->terms[0])) == 0) ac++;
 		p = p->next;
 	}
 	return ac;
@@ -594,7 +594,7 @@ pcalc_term Calculus::Propositions::get_first_cited_term(pcalc_prop *prop) {
 		if (p->arity > 0)
 			return p->terms[0];
 	internal_error("Calculus::Propositions::get_first_cited_term on termless proposition");
-	return Calculus::Terms::new_variable(0); /* never executed, but needed to prevent |gcc| warnings */
+	return Terms::new_variable(0); /* never executed, but needed to prevent |gcc| warnings */
 }
 
 @ Here we attempt, if possible, to read a proposition as being either
@@ -606,19 +606,19 @@ is, variable 0.
 =
 #ifdef CORE_MODULE
 pcalc_term Calculus::Propositions::convert_adj_to_noun(pcalc_prop *prop) {
-	pcalc_term pct = Calculus::Terms::new_variable(0);
+	pcalc_term pct = Terms::new_variable(0);
 	if (prop == NULL) return pct;
-	if (Calculus::Atoms::is_existence_quantifier(prop)) prop = prop->next;
+	if (Atoms::is_existence_quantifier(prop)) prop = prop->next;
 	if (prop == NULL) return pct;
 	if (prop->next != NULL) return pct;
 	if ((prop->element == PREDICATE_ATOM) && (prop->arity == 1)) {
  		unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(prop->predicate);
-		return Calculus::Terms::adj_to_noun_conversion(tr);
+		return Terms::adj_to_noun_conversion(tr);
 	}
 	if (prop->element == KIND_ATOM) {
  		kind *K = prop->assert_kind;
  		property *pname = Properties::Conditions::get_coinciding_property(K);
-		if (pname) return Calculus::Terms::new_constant(Rvalues::from_property(pname));
+		if (pname) return Terms::new_constant(Rvalues::from_property(pname));
 	}
 	return pct;
 }
@@ -632,7 +632,7 @@ unary_predicate *Calculus::Propositions::first_unary_predicate(pcalc_prop *prop,
 	prop = Calculus::Propositions::prop_seek_atom(prop, PREDICATE_ATOM, 1);
 	if (ppp) *ppp = prop;
 	if (prop == NULL) return NULL;
-	return Calculus::Atoms::au_from_unary_PREDICATE(prop);
+	return Atoms::to_adjectival_usage(prop);
 }
 
 unary_predicate *Calculus::Propositions::next_unary_predicate(pcalc_prop **ppp) {
@@ -640,7 +640,7 @@ unary_predicate *Calculus::Propositions::next_unary_predicate(pcalc_prop **ppp) 
 	pcalc_prop *prop = Calculus::Propositions::prop_seek_atom((*ppp)->next, PREDICATE_ATOM, 1);
 	*ppp = prop;
 	if (prop == NULL) return NULL;
-	return Calculus::Atoms::au_from_unary_PREDICATE(prop);
+	return Atoms::to_adjectival_usage(prop);
 }
 
 @h Bracketed groups.
@@ -654,13 +654,13 @@ and that they may be nested.
 
 =
 int Calculus::Propositions::is_a_group(pcalc_prop *prop, int governing) {
-	int match = Calculus::Atoms::element_get_match(governing), level = 0;
+	int match = Atoms::counterpart(governing), level = 0;
 	if (match == 0) internal_error("Calculus::Propositions::is_a_group called on unmatchable");
 	TRAVERSE_VARIABLE(p);
 	if ((prop == NULL) || (prop->element != governing)) return FALSE;
 	TRAVERSE_PROPOSITION(p, prop) {
-		if (Calculus::Atoms::element_get_group(p->element) == OPEN_OPERATORS_GROUP) level++;
-		if (Calculus::Atoms::element_get_group(p->element) == CLOSE_OPERATORS_GROUP) level--;
+		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) level++;
+		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) level--;
 	}
 	if ((p_prev->element == match) && (level == 0)) return TRUE;
 	return FALSE;
@@ -701,7 +701,7 @@ pcalc_prop *Calculus::Propositions::ungroup_after(pcalc_prop *prop, pcalc_prop *
 	LOGIF(PREDICATE_CALCULUS_WORKINGS, "removing frontmost group from proposition: $D\n", prop);
 	if (position == NULL) from = prop; else from = position->next;
 	opener = from->element;
-	closer = Calculus::Atoms::element_get_match(opener);
+	closer = Atoms::counterpart(opener);
 	if (closer == 0) internal_error("tried to remove frontmost group which doesn't open");
 	from = from->next;
 	prop = Calculus::Propositions::delete_atom(prop, position); /* remove opening atom */
@@ -730,7 +730,7 @@ followed by a domain specification, we must also ungroup this:
 
 =
 pcalc_prop *Calculus::Propositions::trim_universal_quantifier(pcalc_prop *prop) {
-	if ((Calculus::Atoms::is_for_all_x(prop)) &&
+	if ((Atoms::is_for_all_x(prop)) &&
 		(Calculus::Propositions::match(prop, 2, QUANTIFIER_ATOM, NULL, DOMAIN_OPEN_ATOM, NULL))) {
 		prop = Calculus::Propositions::ungroup_after(prop, prop, NULL);
 		prop = Calculus::Propositions::delete_atom(prop, NULL);
@@ -785,7 +785,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 	if (I) {
 		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 		if (pname) {
-			prop = Calculus::Atoms::unary_PREDICATE_from_aph(Instances::get_adjective(I), FALSE);
+			prop = Atoms::from_adjective_on_x(Instances::get_adjective(I), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}
 	}
@@ -796,7 +796,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
-			prop = Calculus::Atoms::unary_PREDICATE_from_aph(
+			prop = Atoms::from_adjective_on_x(
 					Properties::EitherOr::get_aph(prn), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}
@@ -805,7 +805,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 @ For example, if the SP is the number 17, we return the proposition {\it is}($x$, 17).
 
 @<It must be an ordinary noun@> =
-	prop = Calculus::Atoms::prop_x_is_constant(Node::duplicate(spec));
+	prop = Atoms::prop_x_is_constant(Node::duplicate(spec));
 	@<Typecheck the propositional form, and return@>;
 
 @ In all cases, we finish by doing the following. In the one-atom noun cases

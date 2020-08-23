@@ -853,9 +853,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::down(Emit::tree());
 								Produce::inv_primitive(Emit::tree(), EQ_BIP);
 								Produce::down(Emit::tree());
-									pcalc_term rv_term = Calculus::Terms::new_constant(
+									pcalc_term rv_term = Terms::new_constant(
 										Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, gprk->rv_lv));
-									pcalc_term self_term = Calculus::Terms::new_constant(
+									pcalc_term self_term = Terms::new_constant(
 										Rvalues::new_self_object_constant());
 									if (reverse)
 										Calculus::Schemas::emit_val_expand_from_terms(i6s, &rv_term, &self_term);

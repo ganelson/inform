@@ -194,18 +194,18 @@ void Calculus::Schemas::emit_expand_from_terms(i6_schema *sch,
 
 void Calculus::Schemas::emit_expand_from_locals(i6_schema *sch,
 	local_variable *v1, local_variable *v2, int semicolon) {
-	pcalc_term pt1 = Calculus::Terms::new_constant(
+	pcalc_term pt1 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
-	pcalc_term pt2 = Calculus::Terms::new_constant(
+	pcalc_term pt2 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v2));
 	Calculus::Schemas::emit_expand_from_terms(sch, &pt1, &pt2, semicolon);
 }
 
 void Calculus::Schemas::emit_val_expand_from_locals(i6_schema *sch,
 	local_variable *v1, local_variable *v2) {
-	pcalc_term pt1 = Calculus::Terms::new_constant(
+	pcalc_term pt1 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v1));
-	pcalc_term pt2 = Calculus::Terms::new_constant(
+	pcalc_term pt2 = Terms::new_constant(
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, v2));
 	Calculus::Schemas::emit_val_expand_from_terms(sch, &pt1, &pt2);
 }
@@ -366,7 +366,7 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 			BEGIN_COMPILATION_MODE;
 			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 			pcalc_term cpt = *pt;
-			Calculus::Terms::emit(cpt);
+			Terms::emit(cpt);
 			END_COMPILATION_MODE;
 		} else {
 			int down = FALSE;
@@ -376,12 +376,12 @@ void Calculus::Schemas::sch_emit_parameter(pcalc_term *pt,
 				(Node::is(cpt.constant, CONSTANT_NT))) {
 				kind *K = Specifications::to_kind(cpt.constant);
 				if (Kinds::get_construct(K) == CON_property)
-					cpt = Calculus::Terms::new_constant(
+					cpt = Terms::new_constant(
 						Lvalues::new_PROPERTY_VALUE(
 							Node::duplicate(cpt.constant),
 							Rvalues::new_self_object_constant()));
 			}
-			Calculus::Terms::emit(cpt);
+			Terms::emit(cpt);
 			if (down) Produce::up(Emit::tree());
 		}
 	}
@@ -419,7 +419,7 @@ void Calculus::Schemas::write_applied(OUTPUT_STREAM, i6_schema *sch, pcalc_term 
 	if (sch == NULL) { WRITE("<null schema>"); return; }
 	else {
 		WRITE("<%S : ", &(sch->prototype));
-		Calculus::Terms::write(OUT, pt1);
+		Terms::write(OUT, pt1);
 		WRITE(">");
 	}
 }

@@ -8,17 +8,18 @@
 << called = magic passcode(x) >>.
 << kind = number(x) >>.
 
-new unary blue.
-<< blue(x) >>.
+new unary even.
+<< even(12) >>.
+<< even(x) >>.
 
-<< (x == y) >>.
-new binary sees.
+<< (x == 7) >>.
+new binary sees(none, sees-f1).
 << sees(x, y) >>.
 
-<< NOT< ^ blue(x) ^ NOT> >>.
-<< Forall x IN< kind = number(x) IN> : blue(x) >>.
+<< NOT< ^ even(x) ^ NOT> >>.
+<< Forall x IN< kind = number(x) IN> : even(x) >>.
 
 << Exists x >>.
-<< DoesNotExist x IN< kind = number(x) IN> : blue(x) >>.
-<< Forall x IN< kind = number(x) IN> : blue(x) >>.
-<< Card= 6 x IN< kind = number(x) IN> : blue(x) >>.
+<< DoesNotExist x IN< kind = number(x) IN> : even(x) >>.
+<< Forall x IN< kind = number(x) IN> : even(x) >>.
+<< Card= 6 x IN< kind = number(x) IN> : even(x) >>.

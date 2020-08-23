@@ -299,7 +299,7 @@ interpret no indication of a kind as meaning "object".
 		if ((lookahead->arity == 1) && (lookahead->terms[0].variable == v)) {
 			switch(lookahead->element) {
 				case KIND_ATOM: K = lookahead->assert_kind; break;
-				case CALLED_ATOM: NW = Calculus::Atoms::CALLED_get_name(lookahead); break;
+				case CALLED_ATOM: NW = Atoms::CALLED_get_name(lookahead); break;
 				case ISAKIND_ATOM: is_a_kind = TRUE; K = lookahead->assert_kind; break;
 				case ISAVAR_ATOM: is_a_var = TRUE; break;
 				case ISACONST_ATOM: is_a_const = TRUE; break;

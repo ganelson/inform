@@ -40,8 +40,8 @@ int conv_log_depth = 0; /* recursion depth: used only to clarify the debugging l
 pcalc_prop *Calculus::Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, parse_node *A, parse_node *B, pcalc_term *subject_of_sentence, int verb_phrase_negated) {
 	parse_node *subject_phrase_subtree = NULL, *object_phrase_subtree = NULL;
 	pcalc_prop *subject_phrase_prop, *object_phrase_prop;
-	pcalc_term subject_phrase_term = Calculus::Terms::new_constant(NULL); /* unnecessary initialization to pacify clang, which can't prove it's unnecessary */
-	pcalc_term object_phrase_term = Calculus::Terms::new_constant(NULL);
+	pcalc_term subject_phrase_term = Terms::new_constant(NULL); /* unnecessary initialization to pacify clang, which can't prove it's unnecessary */
+	pcalc_term object_phrase_term = Terms::new_constant(NULL);
 	binary_predicate *verb_phrase_relation = NULL;
 	pcalc_prop *sentence_prop = NULL;
 
@@ -335,15 +335,15 @@ of quantification) then so is $\Sigma$.
 
 	sentence_prop = subject_phrase_prop;
 	if (verb_phrase_negated)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Calculus::Atoms::new(NEGATION_OPEN_ATOM));
+		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_OPEN_ATOM));
 	sentence_prop = Calculus::Propositions::concatenate(sentence_prop, object_phrase_prop);
 	sentence_prop = Calculus::Propositions::concatenate(sentence_prop,
-		Calculus::Atoms::binary_PREDICATE_new(verb_phrase_relation, subject_phrase_term, object_phrase_term));
+		Atoms::binary_PREDICATE_new(verb_phrase_relation, subject_phrase_term, object_phrase_term));
 	if (verb_phrase_negated)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Calculus::Atoms::new(NEGATION_CLOSE_ATOM));
+		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_CLOSE_ATOM));
 
 	if (use_case_2)
-		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Calculus::Atoms::new(DOMAIN_CLOSE_ATOM));
+		sentence_prop = Calculus::Propositions::concatenate(sentence_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] Initial meaning: $D\n", conv_log_depth, sentence_prop);
 
@@ -358,7 +358,7 @@ is irregular because it differs from "something" and "someone".)
 	pcalc_prop *k_atom = Calculus::Propositions::composited_kind(object_phrase_prop);
 	if ((k_atom) && (Kinds::eq(k_atom->assert_kind, K_room)) &&
 		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
-		Calculus::Atoms::set_composited(k_atom, FALSE);
+		Atoms::set_composited(k_atom, FALSE);
 		verb_phrase_relation = BinaryPredicates::get_reversal(room_containment_predicate);
 		LOGIF(PREDICATE_CALCULUS, "[%d] Decompositing object: $D\n",
 			conv_log_depth, object_phrase_prop);
@@ -515,7 +515,7 @@ pcalc_prop *Calculus::Propositions::FromSentences::NP_subtree_to_proposition(pca
 	if (subject_of_NP->constant) {
 		if (NP_prop) internal_error("constant plus substantive prop from NP");
 	} else if (NF == 1) {
-		int v = Calculus::Terms::variable_underlying(subject_of_NP);
+		int v = Terms::variable_underlying(subject_of_NP);
 		if (Calculus::Variables::status(NP_prop, v) != FREE_VST)
 			internal_error("free variable from NP but not the preferred term");
 	}
@@ -539,17 +539,17 @@ one arising below, which is to do with enumerated value properties.)
 
 @<This NP was parsed as a value@> =
 	parse_node *spec = p;
-	*subject_of_NP = Calculus::Terms::new_constant(spec);
+	*subject_of_NP = Terms::new_constant(spec);
 
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
-			*subject_of_NP = Calculus::Terms::new_variable(0);
-			NP_prop = Calculus::Atoms::unary_PREDICATE_from_aph(Properties::EitherOr::get_aph(prn), FALSE);
+			*subject_of_NP = Terms::new_variable(0);
+			NP_prop = Atoms::from_adjective_on_x(Properties::EitherOr::get_aph(prn), FALSE);
 		} else if (Properties::Valued::coincides_with_kind(prn)) {
-			*subject_of_NP = Calculus::Terms::new_variable(0);
+			*subject_of_NP = Terms::new_variable(0);
 			kind *K = Properties::Valued::kind(prn);
-			NP_prop = Calculus::Atoms::KIND_new(K, Calculus::Terms::new_variable(0));
+			NP_prop = Atoms::KIND_new(K, Terms::new_variable(0));
 		}
 	}
 
@@ -565,13 +565,13 @@ it binds.)
 	NP_prop = Calculus::Propositions::copy(Calculus::Propositions::from_spec(spec));
 
 	if (Calculus::Propositions::match(NP_prop, 2, PREDICATE_ATOM, NULL, END_PROP_HERE, NULL)) {
-		pcalc_term *pt = Calculus::Atoms::is_x_equals(NP_prop);
+		pcalc_term *pt = Atoms::is_x_equals(NP_prop);
 		if (pt) { *subject_of_NP = *pt; NP_prop = NULL; }
 	}
 
 	if ((Calculus::Propositions::match(NP_prop, 2, KIND_ATOM, NULL, END_PROP_HERE, NULL)) &&
 		(<k-formal-variable-singular>(W))) {
-		Calculus::Atoms::set_unarticled(NP_prop, TRUE);
+		Atoms::set_unarticled(NP_prop, TRUE);
 	}
 
 	if (NP_prop) *subject_of_NP = Calculus::Propositions::get_first_cited_term(NP_prop);
@@ -591,7 +591,7 @@ returns a specification which refers to this. From a predicate
 calculus point of view, this is just another constant.
 
 @<This NP is only a ghostly presence@> =
-	*subject_of_NP = Calculus::Terms::new_constant(Rvalues::new_self_object_constant());
+	*subject_of_NP = Terms::new_constant(Rvalues::new_self_object_constant());
 
 @ Suppose we have a situation like this:
 
@@ -652,9 +652,9 @@ $\phi = \exists x: {\it room}(x)\land{\it is}(x, |ContainerOf(box)|)$.
 		LOGIF(PREDICATE_CALCULUS,
 			"[%d] Rewriting qualified constant t = $0 (new var %d)\n", conv_log_depth, subject_of_NP, y);
 		NP_prop = Calculus::Propositions::concatenate(
-			Calculus::Atoms::binary_PREDICATE_new(R_equality, *subject_of_NP, Calculus::Terms::new_variable(y)),
+			Atoms::binary_PREDICATE_new(R_equality, *subject_of_NP, Terms::new_variable(y)),
 			NP_prop);
-		*subject_of_NP = Calculus::Terms::new_variable(y);
+		*subject_of_NP = Terms::new_variable(y);
 		NP_prop = Calculus::Variables::bind_existential(NP_prop, subject_of_NP);
 		LOGIF(PREDICATE_CALCULUS,
 			"[%d] Rewriting qualified constant: <%W> --> t = $0, phi = $D\n",
@@ -678,4 +678,4 @@ always evaluate to 0 or 1.
 		}
 	if (nq < 0) internal_error("malformed proposition with too many domain ends");
 	for (i=1; i<=nq; i++)
-		NP_prop = Calculus::Propositions::concatenate(NP_prop, Calculus::Atoms::new(DOMAIN_CLOSE_ATOM));
+		NP_prop = Calculus::Propositions::concatenate(NP_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
