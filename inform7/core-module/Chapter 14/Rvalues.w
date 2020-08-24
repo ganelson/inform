@@ -74,6 +74,10 @@ table_column *Rvalues::to_table_column(parse_node *spec) { CONV_TO(table_column)
 use_option *Rvalues::to_use_option(parse_node *spec) { CONV_TO(use_option) }
 verb_form *Rvalues::to_verb_form(parse_node *spec) { CONV_TO(verb_form) }
 
+@
+
+@d VALUE_TO_RELATION_FUNCTION Rvalues::to_binary_predicate
+
 @ With enumerated kinds, the possible values are in general stored as instance
 objects.
 

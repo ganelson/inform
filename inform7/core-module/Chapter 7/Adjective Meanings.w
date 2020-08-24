@@ -258,9 +258,10 @@ It makes no difference what order we check the AMs in, so we can use the
 unsorted list, which is helpful since we may need to call this routine
 early in the run when sorting cannot yet be done.
 
+@d ADJECTIVE_APPLICABLE_FUNCTION Adjectives::Meanings::applicable_to
+
 =
-int Adjectives::Meanings::applicable_to(adjective *aph,
-	kind *K) {
+int Adjectives::Meanings::applicable_to(adjective *aph, kind *K) {
 	if (aph) {
 		adjective_meaning *am;
 		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {

@@ -29,3 +29,4 @@ Chapter 3: Propositions
 	Atomic Propositions
 	Propositions
 	Binding and Substitution
+	Type Check Propositions

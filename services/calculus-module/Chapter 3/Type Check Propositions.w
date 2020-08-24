@@ -106,16 +106,21 @@ be a term in a proposition.
 
 @<First make sure any constants in the proposition have themselves been typechecked@> =
 	TRAVERSE_PROPOSITION(pl, prop) {
-		int j;
-		for (j=0; j<pl->arity; j++) {
+		for (int j=0; j<pl->arity; j++) {
 			parse_node *spec = Terms::constant_underlying(&(pl->terms[j]));
 			if (spec) {
+				#ifdef CORE_MODULE
 				int rv = NEVER_MATCH;
 				if (!(Node::is(spec, UNKNOWN_NT))) {
 					if (tck->issue_error) rv = Dash::check_value(spec, NULL);
 					else rv = Dash::check_value_silently(spec, NULL);
 				}
-				if (rv == NEVER_MATCH) @<Recover from problem in S-parser by not issuing problem@>;
+				#endif
+				#ifndef CORE_MODULE
+				int rv = ALWAYS_MATCH;
+				#endif
+				if (rv == NEVER_MATCH)
+					@<Recover from problem in S-parser by not issuing problem@>;
 			}
 		}
 	}
@@ -162,16 +167,8 @@ but it's a very subtle one, and we want to use it only when everything else
 		if (KindPredicates::is_unarticled_atom(pl)) {
 			if (tck->log_to_I6_text) LOG("Rejecting as unarticled\n");
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
-			Problems::quote_source(1, current_sentence);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BareKindVariable));
-			Problems::issue_problem_segment(
-				"The sentence %1 seems to use a kind variable by its letter "
-				"alone in the context of a noun, which Inform doesn't allow. "
-				"It's fine to say 'if the noun is a K', for example, but "
-				"not 'if K is number'. By putting 'a' or 'an' in front of the "
-				"kind variable, you make clear that I'm supposed to perform "
-				"matching against a description.");
-			Problems::issue_problem_end();
+			Propositions::Checker::problem(BareKindVariable_CALCERROR,
+				NULL, EMPTY_WORDING, NULL, NULL, NULL, tck);
 			return NEVER_MATCH;
 		}
 
@@ -203,14 +200,8 @@ problem message has already been issued, but just in case not...
 	if (problem_count == 0) {
 		if (tck->log_to_I6_text) LOG("Atom $o contains failed constant\n", pl);
 		if (tck->issue_error == FALSE) return NEVER_MATCH;
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Node::get_text(spec));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-		Problems::issue_problem_segment(
-			"The sentence %1 seems to contain a value '%2' which I can't make "
-			"any sense of.");
-		Problems::issue_problem_end();
-		LOG("Stare at this, then: $P\n", spec);
+		Propositions::Checker::problem(ConstantFailed_CALCERROR, spec,
+			EMPTY_WORDING, NULL, NULL, NULL, tck);
 	}
 	return NEVER_MATCH;
 
@@ -292,7 +283,7 @@ versa; so we have to check that $s$ lies in $R$ (or $S$, respectively).
 =
 kind *Propositions::Checker::kind_of_term_inner(pcalc_term *pt, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
-	if (pt->constant) return Specifications::to_kind(pt->constant);
+	if (pt->constant) return VALUE_TO_KIND_FUNCTION(pt->constant);
 	if (pt->variable >= 0) return vta->assigned_kinds[pt->variable];
 	if (pt->function) {
 		binary_predicate *bp = pt->function->bp;
@@ -339,17 +330,11 @@ int Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_t
 	adjective *aph = AdjectivalPredicates::to_adjective(tr);
 	kind *K = Propositions::Checker::kind_of_term(&(pl->terms[0]), vta, tck);
 
-	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {
-	wording W = Adjectives::get_nominative_singular(aph);
-	if (tck->log_to_I6_text)
-			LOG("Adjective '%W' undefined on %u\n", W, K);
-		Problems::quote_wording(4, W);
-		Problems::quote_kind(5, K);
-		StandardProblems::tcp_problem(_p_(PM_AdjectiveMisapplied), tck,
-			"that seems to involve applying the adjective '%4' to %5 - and I "
-			"have no definition of it which would apply in that situation. "
-			"(Try looking it up in the Lexicon part of the Phrasebook index "
-			"to see what definition(s) '%4' has.)");
+	if ((aph) && (ADJECTIVE_APPLICABLE_FUNCTION(aph, K) == FALSE)) {
+		wording W = Adjectives::get_nominative_singular(aph);
+		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
+		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
+			NULL, W, K, NULL, NULL, tck);
 		return NEVER_MATCH;
 	}
 
@@ -368,7 +353,9 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 	kind *kinds_of_terms[2], *kinds_required[2];
 
 	@<Work out what kinds we find@>;
-	if (bp == R_universal) @<Adapt to the universal relation@>;
+	#ifdef VERB_MEANING_UNIVERSAL
+	if (bp == VERB_MEANING_UNIVERSAL) @<Adapt to the universal relation@>;
+	#endif
 	@<Work out what kinds we should have found@>;
 
 	int result = BinaryPredicateFamilies::typecheck(bp, kinds_of_terms, kinds_required, tck);
@@ -378,9 +365,7 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 		kinds_dereferencing_properties[0] = Kinds::dereference_properties(kinds_of_terms[0]);
 		kinds_dereferencing_properties[1] = kinds_of_terms[1];
 		int r2 = BinaryPredicateFamilies::typecheck(bp, kinds_dereferencing_properties, kinds_required, tck);
-		if ((r2 == ALWAYS_MATCH) || (r2 == SOMETIMES_MATCH)) {
-			result = r2;
-		}
+		if ((r2 == ALWAYS_MATCH) || (r2 == SOMETIMES_MATCH)) result = r2;
 	}
 
 	if (result != DECLINE_TO_MATCH) {
@@ -397,11 +382,8 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 					tck);
 			else {
 				LOG("(%u, %u) failed in $2\n", kinds_of_terms[0], kinds_of_terms[1], bp);
-				Problems::quote_kind(4, kinds_of_terms[0]);
-				Problems::quote_kind(5, kinds_of_terms[1]);
-				StandardProblems::tcp_problem(_p_(PM_ComparisonFailed), tck,
-					"that would mean comparing two kinds of value which cannot mix - "
-					"%4 and %5 - so this must be incorrect.");
+				Propositions::Checker::problem(ComparisonFailed_CALCERROR, NULL, EMPTY_WORDING,
+					kinds_of_terms[0], kinds_of_terms[1], NULL, tck);
 			}
 			return NEVER_MATCH;
 		}
@@ -431,25 +413,19 @@ produce a |kinds_required| which is |NULL|.
 
 @<Adapt to the universal relation@> =
 	if (Kinds::get_construct(kinds_of_terms[0]) != CON_relation) {
-		Problems::quote_kind(4, kinds_of_terms[0]);
-		StandardProblems::tcp_problem(_p_(PM_BadUniversal1), tck,
-			"that asks whether something relates something, and in Inform 'to relate' "
-			"means that a particular relation applies between two things. Here, though, "
-			"we have %4 rather than the name of a relation.");
+		Propositions::Checker::problem(BadUniversal1_CALCERROR, NULL, EMPTY_WORDING,
+			kinds_of_terms[0], NULL, NULL, tck);
 		return NEVER_MATCH;
 	}
 	if (Kinds::get_construct(kinds_of_terms[1]) != CON_combination) {
-		Problems::quote_kind(4, kinds_of_terms[1]);
-		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
-			"that asks whether something relates something, and in Inform 'to relate' "
-			"means that a particular relation applies between two things. Here, though, "
-			"we have %4 rather than the combination of the two things.");
+		Propositions::Checker::problem(BadUniversal2_CALCERROR, NULL, EMPTY_WORDING,
+			kinds_of_terms[1], NULL, NULL, tck);
 		return NEVER_MATCH;
 	}
 
 	parse_node *left = pl->terms[0].constant;
 	if (Node::is(left, CONSTANT_NT)) {
-		bp = Rvalues::to_binary_predicate(left);
+		bp = VALUE_TO_RELATION_FUNCTION(left);
 		kind *cleft = NULL, *cright = NULL;
 		Kinds::binary_construction_material(kinds_of_terms[1], &cleft, &cright);
 		kinds_of_terms[0] = cleft;
@@ -477,25 +453,75 @@ required.
 =
 void Propositions::Checker::issue_bp_typecheck_error(binary_predicate *bp,
 	kind *t0, kind *t1, tc_problem_kit *tck) {
-	Problems::quote_kind(4, t0);
-	Problems::quote_kind(5, t1);
-	Problems::quote_relation(6, bp);
-	StandardProblems::tcp_problem(_p_(PM_TypeCheckBP2), tck,
-		"that would mean applying %6 to kinds of value which do not "
-		"fit - %4 and %5 - so this must be incorrect.");
+	Propositions::Checker::problem(BinaryMisapplied2_CALCERROR, NULL, EMPTY_WORDING,
+		t0, t1, bp, tck);
 }
 
 void Propositions::Checker::issue_kind_typecheck_error(kind *actually_find,
 	kind *need_to_find, tc_problem_kit *tck, pcalc_prop *ka) {
 	binary_predicate *bp = (ka)?(ka->saved_bp):NULL;
-	Problems::quote_kind(4, actually_find);
-	Problems::quote_kind(5, need_to_find);
 	if (bp) {
-		Problems::quote_relation(6, bp);
-		StandardProblems::tcp_problem(_p_(PM_TypeCheckBP2a), tck,
-			"that doesn't work because you use %6 with %4 instead of %5.");
+		Propositions::Checker::problem(BinaryMisapplied1_CALCERROR, NULL, EMPTY_WORDING,
+			actually_find, need_to_find, bp, tck);
 	} else {
-		StandardProblems::tcp_problem(_p_(PM_TypeCheckKind), tck,
-			"%4 cannot be %5, so this must be incorrect.");
+		Propositions::Checker::problem(KindMismatch_CALCERROR, NULL, EMPTY_WORDING,
+			actually_find, need_to_find, bp, tck);
 	}
+}
+
+@ Some tools using this module will want to push simple error messages out to
+the command line; others will want to translate them into elaborate problem
+texts in HTML. So the client is allowed to define |PROBLEM_SYNTAX_CALLBACK|
+to some routine of her own, gazumping this one.
+
+@e BareKindVariable_CALCERROR from 1
+@e ConstantFailed_CALCERROR
+@e UnaryMisapplied_CALCERROR
+@e ComparisonFailed_CALCERROR
+@e BadUniversal1_CALCERROR
+@e BadUniversal2_CALCERROR
+@e BinaryMisapplied1_CALCERROR
+@e BinaryMisapplied2_CALCERROR
+@e KindMismatch_CALCERROR
+
+=
+void Propositions::Checker::problem(int err_no, parse_node *spec, wording W,
+	kind *K1, kind *K2, binary_predicate *bp, tc_problem_kit *tck) {
+	#ifdef PROBLEM_CALCULUS_CALLBACK
+	PROBLEM_CALCULUS_CALLBACK(err_no, spec, W, K1, K2, bp, tck);
+	#endif
+	#ifndef PROBLEM_CALCULUS_CALLBACK
+	TEMPORARY_TEXT(text)
+	WRITE_TO(text, "%+W", Node::get_text(current_sentence));
+	switch (err_no) {
+		case BareKindVariable_CALCERROR:
+			Errors::with_text("letter variable used where noun expected: %S", text);
+			break;
+		case ConstantFailed_CALCERROR:
+			Errors::with_text("constant made no sense: %S", text);
+			break;
+		case UnaryMisapplied_CALCERROR:
+			Errors::with_text("unary predicate misapplied: %S", text);
+			break;
+		case ComparisonFailed_CALCERROR:
+			Errors::with_text("compared incomparable values: %S", text);
+			break;
+		case BadUniversal1_CALCERROR:
+			Errors::with_text("not a relation: %S", text);
+			break;
+		case BadUniversal2_CALCERROR:
+			Errors::with_text("not a combination: %S", text);
+			break;
+		case BinaryMisapplied1_CALCERROR:
+			Errors::with_text("binary predicate misapplied: %S", text);
+			break;
+		case BinaryMisapplied2_CALCERROR:
+			Errors::with_text("binary predicate misapplied: %S", text);
+			break;
+		case KindMismatch_CALCERROR:
+			Errors::with_text("kind mismatch: %S", text);
+			break;
+	}
+	DISCARD_TEXT(text)
+	#endif
 }
