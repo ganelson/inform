@@ -117,9 +117,6 @@ annotated_i6_schema Atoms::Compile::i6_schema_of_atom(i6_schema *sch, pcalc_prop
 		@<Make an annotated schema for a CALLED atom@>;
 	} else switch(pl->element) {
 		case KIND_ATOM: @<Make an annotated schema for a KIND atom@>;
-		case EVERYWHERE_ATOM: @<Make an annotated schema for an EVERYWHERE atom@>;
-		case NOWHERE_ATOM: @<Make an annotated schema for a NOWHERE atom@>;
-		case HERE_ATOM: @<Make an annotated schema for a HERE atom@>;
 		case PREDICATE_ATOM:
 			switch(pl->arity) {
 				case 1: @<Make an annotated schema for a unary predicate@>;
@@ -194,57 +191,6 @@ the I6 |ofclass| operator.
 				asch.schema = NULL;
 			} else Calculus::Schemas::modify(sch, " ");
 			return asch;
-	}
-
-@ An easy case. Note that |FoundEverywhere| is a template routine existing
-to provide a common value of the I6 |found_in| property -- common that is
-to all backdrops which are currently everywhere.
-
-@<Make an annotated schema for an EVERYWHERE atom@> =
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(sch, "BackdropEverywhere(*1)");
-			return asch;
-		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(sch, "MoveObject(*1, FoundEverywhere); MoveFloatingObjects();");
-			return asch;
-		case NOW_ATOM_FALSE_TASK:
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeEverywhere),
-				"not being 'everywhere' is not something which can be changed "
-				"during play using 'now'",
-				"because it's not exact enough about what needs to be done.");
-			asch.schema = NULL; return asch;
-	}
-
-@ And another.
-
-@<Make an annotated schema for a NOWHERE atom@> =
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(sch, "LocationOf(*1) == nothing");
-			return asch;
-		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(sch, "RemoveFromPlay(*1);");
-			return asch;
-		case NOW_ATOM_FALSE_TASK:
-			Calculus::Schemas::modify(sch, "MoveObject(*1, real_location, 1, false);");
-			return asch;
-	}
-
-@ And another. (In fact, at present |HERE| atoms are never included in
-propositions to be compiled, so this code is never used.)
-
-@<Make an annotated schema for a HERE atom@> =
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(sch, "LocationOf(*1) == location");
-			return asch;
-		case NOW_ATOM_TRUE_TASK:
-		case NOW_ATOM_FALSE_TASK:
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-				"being 'here' is not something which can be changed during play",
-				"so it cannot be brought about or cancelled out with 'now'.");
-			asch.schema = NULL; return asch;
 	}
 
 @ The last unary atom is an adjective, for which we hand over to the general

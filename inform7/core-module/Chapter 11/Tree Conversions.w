@@ -99,15 +99,15 @@ pcalc_prop *Propositions::Abstract::to_set_property(property *prn, parse_node *v
 
 =
 pcalc_prop *Propositions::Abstract::to_put_everywhere(void) {
-	return Atoms::EVERYWHERE_new(Terms::new_variable(0));
+	return WherePredicates::everywhere_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_put_nowhere(void) {
-	return Atoms::NOWHERE_new(Terms::new_variable(0));
+	return WherePredicates::nowhere_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_put_here(void) {
-	return Atoms::HERE_new(Terms::new_variable(0));
+	return WherePredicates::here_up(Terms::new_variable(0));
 }
 
 @h Property setting.

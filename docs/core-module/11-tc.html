@@ -170,15 +170,15 @@ their existence.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Abstract::to_put_everywhere</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Atoms::EVERYWHERE_new</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">WherePredicates::everywhere_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Abstract::to_put_nowhere</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Atoms::NOWHERE_new</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">WherePredicates::nowhere_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
 <span class="plain-syntax">}</span>
 
 <span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Abstract::to_put_here</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Propositions::Abstract::to_put_here</span></span>:<br/>Relation Knowledge - <a href="5-rk.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Atoms::HERE_new</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">WherePredicates::here_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">Terms::new_variable</span><span class="plain-syntax">(0));</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Property setting. </b>Sometimes the A-parser wants to assert that a given property has the value

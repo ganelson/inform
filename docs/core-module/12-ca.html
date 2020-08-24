@@ -214,13 +214,10 @@ so we terminate with that if making true or false.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a CALLED atom</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">element</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">KIND_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a KIND atom</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">EVERYWHERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for an EVERYWHERE atom</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOWHERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a NOWHERE atom</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">HERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_5" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a HERE atom</span><span class="named-paragraph-number">4.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREDICATE_ATOM:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">arity</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_6" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a unary predicate</span><span class="named-paragraph-number">4.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_7" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a binary predicate</span><span class="named-paragraph-number">4.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a unary predicate</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Make an annotated schema for a binary predicate</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">    }</span>
 
@@ -304,77 +301,11 @@ the I6 <span class="extract"><span class="extract-syntax">ofclass</span></span> 
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>An easy case. Note that <span class="extract"><span class="extract-syntax">FoundEverywhere</span></span> is a template routine existing
-to provide a common value of the I6 <span class="extract"><span class="extract-syntax">found_in</span></span> property &mdash; common that is
-to all backdrops which are currently everywhere.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for an EVERYWHERE atom</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_ATOM_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"BackdropEverywhere(*1)"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"MoveObject(*1, FoundEverywhere); MoveFloatingObjects();"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_CantChangeEverywhere</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"not being 'everywhere' is not something which can be changed "</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"during play using 'now'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"because it's not exact enough about what needs to be done."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">asch</span><span class="plain-syntax">.</span><span class="identifier-syntax">schema</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b>And another.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a NOWHERE atom</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_ATOM_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"LocationOf(*1) == nothing"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"RemoveFromPlay(*1);"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"MoveObject(*1, real_location, 1, false);"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_5" class="paragraph-anchor"></a><b>&#167;4.5.  </b>And another. (In fact, at present <span class="extract"><span class="extract-syntax">HERE</span></span> atoms are never included in
-propositions to be compiled, so this code is never used.)
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a HERE atom</span><span class="named-paragraph-number">4.5</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_ATOM_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="string-syntax">"LocationOf(*1) == location"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">BelievedImpossible</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"being 'here' is not something which can be changed during play"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"so it cannot be brought about or cancelled out with 'now'."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">asch</span><span class="plain-syntax">.</span><span class="identifier-syntax">schema</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_6" class="paragraph-anchor"></a><b>&#167;4.6.  </b>The last unary atom is an adjective, for which we hand over to the general
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>The last unary atom is an adjective, for which we hand over to the general
 adjective apparatus.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a unary predicate</span><span class="named-paragraph-number">4.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a unary predicate</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -386,27 +317,27 @@ adjective apparatus.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_7" class="paragraph-anchor"></a><b>&#167;4.7.  </b>Delegation is similarly the art of compiling a BP:
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b>Delegation is similarly the art of compiling a BP:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a binary predicate</span><span class="named-paragraph-number">4.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make an annotated schema for a binary predicate</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_binary_predicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">predicate</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_7_1" class="named-paragraph-link"><span class="named-paragraph">Undo any functional simplification of the relation</span><span class="named-paragraph-number">4.7.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ca.html#SP4_4_1" class="named-paragraph-link"><span class="named-paragraph">Undo any functional simplification of the relation</span><span class="named-paragraph-number">4.4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">asch</span><span class="plain-syntax">.</span><span class="identifier-syntax">schema</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BinaryPredicateFamilies::get_schema</span><span class="plain-syntax">(</span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">asch</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">asch</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_7_1" class="paragraph-anchor"></a><b>&#167;4.7.1.  </b>When a relation \(R(x, y)\) has been simplified to \(is(x, f_R(y))\)
+<p class="commentary firstcommentary"><a id="SP4_4_1" class="paragraph-anchor"></a><b>&#167;4.4.1.  </b>When a relation \(R(x, y)\) has been simplified to \(is(x, f_R(y))\)
 or \(is(g_R(x), y)\), it can be tested but not asserted true or false;
 we have to re-establish \(R(x, y)\) before we can proceed.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Undo any functional simplification of the relation</span><span class="named-paragraph-number">4.7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Undo any functional simplification of the relation</span><span class="named-paragraph-number">4.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -423,7 +354,7 @@ we have to re-establish \(R(x, y)\) before we can proceed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">bp_to_assert</span><span class="plain-syntax"> = </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4_7">&#167;4.7</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="12-ca.html#SP4_4">&#167;4.4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">

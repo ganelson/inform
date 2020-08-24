@@ -434,17 +434,17 @@ int Propositions::length(pcalc_prop *prop) {
 The following sneakily variable-argument-length function can be used to
 detect subsequences within a proposition: say, the sequence
 = (text)
-	QUANTIFIER --> PREDICATE --> anything --> CALLED
+	QUANTIFIER --> PREDICATE --> anything --> PREDICATE
 =
 starting at the current position, which could be tested with:
 = (text)
 	Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,
-		ANY_ATOM_HERE, NULL, CALLED_ATOM, &cp);
+		ANY_ATOM_HERE, NULL, PREDICATE_ATOM, &pp);
 =
 As can be seen, each atom is tested with an element number and an optional
 pointer; when a successful match is made, the optional pointer is set to
 the atom making the match. (So if the routine returns |TRUE| then we can
-be certain that |cp| points to the |CALLED_ATOM| at the end of the run of
+be certain that |pp| points to the |PREDICATE_ATOM| at the end of the run of
 four.) There are two special pseudo-element-numbers:
 
 @d ANY_ATOM_HERE 0 /* match any atom, but don't match beyond the end of the proposition */

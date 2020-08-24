@@ -82,12 +82,6 @@ int Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
 			@<A binary predicate is required to apply to terms of the right kinds@>;
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 1))
 			@<A unary predicate is required to have an interpretation matching the kind of its term@>;
-		if (pl->element == EVERYWHERE_ATOM)
-			@<An EVERYWHERE atom needs its term to be an object@>;
-		if (pl->element == NOWHERE_ATOM)
-			@<A NOWHERE atom needs its term to be an object@>;
-		if (pl->element == HERE_ATOM)
-			@<A HERE atom needs its term to be an object@>;
 	}
 
 	if (tck->log_to_I6_text) @<Show the variable assignment in the debugging log@>;
@@ -287,51 +281,6 @@ would work instead. If it would, we make the change within the proposition.
 @<The BP fails type-checking@> =
 	if (tck->log_to_I6_text) LOG("BP $o cannot be applied\n", pl);
 	return NEVER_MATCH;
-
-@<An EVERYWHERE atom needs its term to be an object@> =
-	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
-		if (tck->log_to_I6_text)
-			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
-		Problems::quote_kind(4, actually_find);
-		StandardProblems::tcp_problem(_p_(PM_EverywhereMisapplied), tck,
-			"that seems to say that a value - specifically, %4 - is everywhere. "
-			"To Inform, everywhere means 'in every room', and only objects "
-			"can be everywhere - in fact not even all of those, as it's a "
-			"privilege reserved for backdrops. (For instance, 'The sky is a "
-			"backdrop. The sky is everywhere.' is allowed.)");
-		return NEVER_MATCH;
-	}
-
-@<A NOWHERE atom needs its term to be an object@> =
-	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
-		if (tck->log_to_I6_text)
-			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
-		Problems::quote_kind(4, actually_find);
-		StandardProblems::tcp_problem(_p_(PM_NowhereMisapplied), tck,
-			"that seems to say that a value - specifically, %4 - is nowhere. "
-			"To Inform, nowhere means 'in no room', and only things can be "
-			"nowhere. (For instance, 'Godot is nowhere.' is allowed - it means "
-			"Godot exists, but is not initially part of the drama.)");
-		return NEVER_MATCH;
-	}
-
-@ It seems to be true that the A-parser never generates propositions which
-apply |HERE| incorrectly, but just in case:
-
-@<A HERE atom needs its term to be an object@> =
-	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH) {
-		if (tck->log_to_I6_text)
-			LOG("Term $0 is %u not an object\n", &(pl->terms[0]), actually_find);
-		Problems::quote_kind(4, actually_find);
-		StandardProblems::tcp_problem(_p_(BelievedImpossible), tck,
-			"that seems to say that a value - specifically, %4 - is here. "
-			"To Inform, here means 'in the room we're talking about', so only "
-			"objects can be 'here'.");
-		return NEVER_MATCH;
-	}
 
 @ Not so much for the debugging log as for the internal test, in fact, which
 prints the log to an I6 string. This is the type-checking report in the case

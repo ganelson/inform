@@ -175,13 +175,7 @@ calls.
 1. Terms are made using the functions //Terms::new_constant//,
 //Terms::new_variable// and //Terms::new_function//.
 
-2. Unary predicate atoms are made using:
-(*) //Atoms::from_adjective//, or
-(*) //Atoms::KIND_new//, or
-(*) //Atoms::CALLED_new//, or
-(*) //Atoms::new// for the oddball unaries,
-|EVERYWHERE_ATOM|, |NOWHERE_ATOM| and |HERE_ATOM|.
-
+2. Unary predicate atoms are made using //Atoms::binary_PREDICATE_new//.
 Binary predicate atoms are made using //Atoms::binary_PREDICATE_new//.
 
 3. Propositions are then built up from atoms or other propositions[1] by calling:

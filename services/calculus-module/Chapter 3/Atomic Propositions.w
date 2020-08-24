@@ -34,9 +34,6 @@ of the |*_ATOM| numbers below. Those elements in turn occur in "groups".
 @d PREDICATES_GROUP 20
 @d PREDICATE_ATOM 10 /* a regular predicate, rather than these special cases -- */
 @d KIND_ATOM 11 /* a unary predicate asserting that $x$ has kind $K$ */
-@d EVERYWHERE_ATOM 15 /* a unary predicate asserting omnipresence */
-@d NOWHERE_ATOM 16 /* a unary predicate asserting nonpresence */
-@d HERE_ATOM 17 /* a unary predicate asserting presence "here" */
 @d CALLED_ATOM 18 /* to keep track of "(called the intruder)"-style names */
 
 @d OPEN_OPERATORS_GROUP 30
@@ -173,29 +170,6 @@ quantifier is:
 int Atoms::is_now_assertable_quantifier(pcalc_prop *prop) {
 	if (prop->element != QUANTIFIER_ATOM) return FALSE;
 	return Quantifiers::is_now_assertable(prop->quant);
-}
-
-@h The PREDICATES group.
-Next, unary predicates, beginning with the |EVERYWHERE|, |NOWHERE|, |HERE|
-special cases.
-
-=
-pcalc_prop *Atoms::EVERYWHERE_new(pcalc_term pt) {
-	pcalc_prop *prop = Atoms::new(EVERYWHERE_ATOM);
-	prop->terms[prop->arity++] = pt;
-	return prop;
-}
-
-pcalc_prop *Atoms::NOWHERE_new(pcalc_term pt) {
-	pcalc_prop *prop = Atoms::new(NOWHERE_ATOM);
-	prop->terms[prop->arity++] = pt;
-	return prop;
-}
-
-pcalc_prop *Atoms::HERE_new(pcalc_term pt) {
-	pcalc_prop *prop = Atoms::new(HERE_ATOM);
-	prop->terms[prop->arity++] = pt;
-	return prop;
 }
 
 @ |CALLED| atoms are interesting because they exist only for their side-effects:
@@ -420,9 +394,6 @@ void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->composited)) WRITE("_c");
 			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->unarticled)) WRITE("_u");
 			break;
-		case EVERYWHERE_ATOM: WRITE("everywhere"); break;
-		case NOWHERE_ATOM: WRITE("nowhere"); break;
-		case HERE_ATOM: WRITE("here"); break;
 		case NEGATION_OPEN_ATOM: WRITE("NOT<"); break;
 		case NEGATION_CLOSE_ATOM: WRITE("NOT>"); break;
 		case DOMAIN_OPEN_ATOM: WRITE("IN<"); break;

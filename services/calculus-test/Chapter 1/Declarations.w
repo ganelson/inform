@@ -161,9 +161,9 @@ void Declarations::parse(parse_node *p) {
 	<relation-name> ( <term> , <term> ) |      ==> { -, Atoms::binary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2]), *((pcalc_term *) RP[3])) }
 	kind = <k-kind> ( <term> ) |               ==> { -, Atoms::KIND_new(RP[1], *((pcalc_term *) RP[2])) }
 	called = ... ( <term> ) |                  ==> { -, Atoms::CALLED_new(WR[1], *((pcalc_term *) RP[1]), NULL) }
-	everywhere ( <term> ) |                    ==> { -, Atoms::EVERYWHERE_new(*((pcalc_term *) RP[1])) }
-	nowhere ( <term> ) |                       ==> { -, Atoms::NOWHERE_new(*((pcalc_term *) RP[1])) }
-	here ( <term> ) |                          ==> { -, Atoms::HERE_new(*((pcalc_term *) RP[1])) }
+	everywhere ( <term> ) |                    ==> { -, WherePredicates::everywhere_up(*((pcalc_term *) RP[1])) }
+	nowhere ( <term> ) |                       ==> { -, WherePredicates::nowhere_up(*((pcalc_term *) RP[1])) }
+	here ( <term> ) |                          ==> { -, WherePredicates::here_up(*((pcalc_term *) RP[1])) }
 	is-a-kind ( <term> ) |                     ==> { -, Calculus::Creation::is_a_kind_up(*((pcalc_term *) RP[1]), NULL) }
 	is-a-var ( <term> ) |                      ==> { -, Calculus::Creation::is_a_var_up(*((pcalc_term *) RP[1])) }
 	is-a-const ( <term> ) |                    ==> { -, Calculus::Creation::is_a_const_up(*((pcalc_term *) RP[1])) }

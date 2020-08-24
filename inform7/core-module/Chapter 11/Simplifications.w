@@ -1126,7 +1126,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 					if (Atoms::is_notall_quantifier(q_atom))
 						prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_CLOSE_ATOM));
 					prop = Propositions::insert_atom(prop, pl_prev,
-						Atoms::EVERYWHERE_new(bp_atom->terms[j]));
+						WherePredicates::everywhere_up(bp_atom->terms[j]));
 					if (Atoms::is_notall_quantifier(q_atom))
 						prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_OPEN_ATOM));
 					PROPOSITION_EDITED(pl, prop);
@@ -1155,7 +1155,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 					prop = Propositions::insert_atom(prop, pl_prev,
-						Atoms::NOWHERE_new(bp_atom->terms[j]));
+						WherePredicates::nowhere_up(bp_atom->terms[j]));
 					PROPOSITION_EDITED(pl, prop);
 					break;
 				}
@@ -1198,9 +1198,9 @@ pcalc_prop *Calculus::Simplifications::everywhere_and_nowhere(pcalc_prop *prop, 
 							prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_CLOSE_ATOM));
 						pcalc_prop *new_atom;
 						if (Atoms::is_nonexistence_quantifier(q_atom))
-							new_atom = Atoms::NOWHERE_new(bp_atom->terms[j]);
+							new_atom = WherePredicates::nowhere_up(bp_atom->terms[j]);
 						else
-							new_atom = Atoms::EVERYWHERE_new(bp_atom->terms[j]);
+							new_atom = WherePredicates::everywhere_up(bp_atom->terms[j]);
 						prop = Propositions::insert_atom(prop, pl_prev, new_atom);
 						if (Atoms::is_notall_quantifier(q_atom))
 							prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_OPEN_ATOM));

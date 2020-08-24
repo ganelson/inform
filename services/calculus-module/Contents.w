@@ -18,6 +18,7 @@ Chapter 2: Predicates
 	Unary Predicates
 	The Adjectival Predicates
 	The Creation Predicates
+	Everywhere, Nowhere and Here
 	Binary Predicate Families
 	Binary Predicates
 	The Equality Relation

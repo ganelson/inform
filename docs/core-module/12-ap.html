@@ -81,7 +81,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">core</a></li><li><a href="index.html#12">Chapter 12: Use of Propositions</a></li><li><b>Assert Propositions</b></li></ul></div>
 <p class="purpose">To declare that a given proposition is a true statement about the state of the world when play begins.</p>
 
-<ul class="toc"><li><a href="12-ap.html#SP4">&#167;4. Entrance</a></li><li><a href="12-ap.html#SP8">&#167;8. Main procedure</a></li><li><a href="12-ap.html#SP8_5">&#167;8.5. Creations</a></li><li><a href="12-ap.html#SP8_6">&#167;8.6. Asserting kinds</a></li><li><a href="12-ap.html#SP8_7">&#167;8.7. Asserting HERE, NOWHERE and EVERYWHERE</a></li><li><a href="12-ap.html#SP8_10">&#167;8.10. Asserting predicates</a></li><li><a href="12-ap.html#SP10">&#167;10. Evaluating terms</a></li><li><a href="12-ap.html#SP12">&#167;12. Testing at compile-time</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="12-ap.html#SP4">&#167;4. Entrance</a></li><li><a href="12-ap.html#SP8">&#167;8. Main procedure</a></li><li><a href="12-ap.html#SP8_5">&#167;8.5. Creations</a></li><li><a href="12-ap.html#SP8_6">&#167;8.6. Asserting kinds</a></li><li><a href="12-ap.html#SP8_7">&#167;8.7. Asserting predicates</a></li><li><a href="12-ap.html#SP10">&#167;10. Evaluating terms</a></li><li><a href="12-ap.html#SP12">&#167;12. Testing at compile-time</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inside Inform, the term "the model" means the collection of the following:
 </p>
@@ -303,13 +303,10 @@ its nesting in negation brackets, which is nice and easy to write:
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">KIND_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_6" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a KIND atom</span><span class="named-paragraph-number">8.6</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PREDICATE_ATOM:</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">arity</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_10" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a unary predicate</span><span class="named-paragraph-number">8.10</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_11" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a binary predicate</span><span class="named-paragraph-number">8.11</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_7" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a unary predicate</span><span class="named-paragraph-number">8.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_8" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a binary predicate</span><span class="named-paragraph-number">8.8</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">HERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_9" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a HERE atom</span><span class="named-paragraph-number">8.9</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">EVERYWHERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_7" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of an EVERYWHERE atom</span><span class="named-paragraph-number">8.7</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOWHERE_ATOM:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_8" class="named-paragraph-link"><span class="named-paragraph">Assert the truth or falsity of a NOWHERE atom</span><span class="named-paragraph-number">8.8</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -539,87 +536,7 @@ through here, but it isn't exactly an everyday sentence.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_7" class="paragraph-anchor"></a><b>&#167;8.7. Asserting HERE, NOWHERE and EVERYWHERE. </b>Three special cases. The first, EVERYWHERE, declares that something is found
-in every room. While we could simply deduce that the object must be a
-backdrop (and set the kind to make it so), this is such an extreme business,
-so rarely needed, that it seems better to make the user spell out that
-we're dealing with a backdrop. So we play dumb.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of an EVERYWHERE atom</span><span class="named-paragraph-number">8.7</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_CantAssertNegatedEverywhere</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"that seems to say that something isn't everywhere"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which is too vague. You must say where it is."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP11" class="function-link"><span class="function-syntax">Propositions::Assert::subject_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ox</span><span class="plain-syntax"> = </span><a href="16-is.html#SP18" class="function-link"><span class="function-syntax">InferenceSubjects::as_object_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PL::Backdrops::infer_presence_everywhere</span><span class="plain-syntax">(</span><span class="identifier-syntax">ox</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_8" class="paragraph-anchor"></a><b>&#167;8.8.  </b>NOWHERE is similar:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a NOWHERE atom</span><span class="named-paragraph-number">8.8</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP11" class="function-link"><span class="function-syntax">Propositions::Assert::subject_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ox</span><span class="plain-syntax"> = </span><a href="16-is.html#SP18" class="function-link"><span class="function-syntax">InferenceSubjects::as_object_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">BelievedImpossible</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"that seems to say that something isn't nowhere"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which is too vague. You must say where it is."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ox</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">BelievedImpossible</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"that seems to say that something generic is 'nowhere'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which suggests it could some day have a physical location."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PL::Spatial::infer_presence_nowhere</span><span class="plain-syntax">(</span><span class="identifier-syntax">ox</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_9" class="paragraph-anchor"></a><b>&#167;8.9.  </b>HERE means "this object is in the current room", which is not as easy to
-resolve as it looks, because at this point we don't know for certain what
-will be a room and what won't. So we record a special inference and put the
-problem aside for now.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a HERE atom</span><span class="named-paragraph-number">8.9</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP11" class="function-link"><span class="function-syntax">Propositions::Assert::subject_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ox</span><span class="plain-syntax"> = </span><a href="16-is.html#SP18" class="function-link"><span class="function-syntax">InferenceSubjects::as_object_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">BelievedImpossible</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"that seems to say that something isn't here"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which is too vague. You must say where it is."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ox</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonInstanceHere</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"that seems to say that something generic is 'here'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which would give it a physical location. (It would be like saying "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"'A number is here' - well, numbers are everywhere and nowhere.)"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PL::Spatial::infer_presence_here</span><span class="plain-syntax">(</span><span class="identifier-syntax">ox</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_10" class="paragraph-anchor"></a><b>&#167;8.10. Asserting predicates. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a unary predicate</span><span class="named-paragraph-number">8.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_7" class="paragraph-anchor"></a><b>&#167;8.7. Asserting predicates. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a unary predicate</span><span class="named-paragraph-number">8.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -627,7 +544,7 @@ problem aside for now.
 <span class="plain-syntax">    </span><span class="identifier-syntax">UnaryPredicateFamilies::assert</span><span class="plain-syntax">(</span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_11" class="paragraph-anchor"></a><b>&#167;8.11.  </b>Binary predicates, unlike unary ones, can only be asserted positively. This
+<p class="commentary firstcommentary"><a id="SP8_8" class="paragraph-anchor"></a><b>&#167;8.8.  </b>Binary predicates, unlike unary ones, can only be asserted positively. This
 is because \(\lnot P(x)\) tells you something fairly definite, whereas \(\lnot Q(x, y)\)
 gives no information about what \(z\) might exist, if any, such that \(Q(x, z)\).
 For instance, knowing that X is not part of Y gives us no help in determining
@@ -645,7 +562,7 @@ also assert propositions generated from tree conversion, which don't have
 these kind atoms.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a binary predicate</span><span class="named-paragraph-number">8.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Assert the truth or falsity of a binary predicate</span><span class="named-paragraph-number">8.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -659,7 +576,7 @@ these kind atoms.
 <span class="plain-syntax">    </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt0</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt1</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_11_2" class="named-paragraph-link"><span class="named-paragraph">Determine the BP and terms to be asserted</span><span class="named-paragraph-number">8.11.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_8_2" class="named-paragraph-link"><span class="named-paragraph">Determine the BP and terms to be asserted</span><span class="named-paragraph-number">8.8.2</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec0</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP10" class="function-link"><span class="function-syntax">Propositions::Assert::spec_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt0</span><span class="plain-syntax">), *</span><span class="identifier-syntax">spec1</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP10" class="function-link"><span class="function-syntax">Propositions::Assert::spec_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj0</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP11" class="function-link"><span class="function-syntax">Propositions::Assert::subject_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt0</span><span class="plain-syntax">), *</span><span class="identifier-syntax">subj1</span><span class="plain-syntax"> = </span><a href="12-ap.html#SP11" class="function-link"><span class="function-syntax">Propositions::Assert::subject_of_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pt1</span><span class="plain-syntax">);</span>
@@ -678,10 +595,10 @@ these kind atoms.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BinaryPredicateFamilies::assert</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj0</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec0</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj1</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec1</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_11_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for failure to assert</span><span class="named-paragraph-number">8.11.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="12-ap.html#SP8_8_1" class="named-paragraph-link"><span class="named-paragraph">Issue a problem message for failure to assert</span><span class="named-paragraph-number">8.8.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_11_1" class="paragraph-anchor"></a><b>&#167;8.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for failure to assert</span><span class="named-paragraph-number">8.11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_8_1" class="paragraph-anchor"></a><b>&#167;8.8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a problem message for failure to assert</span><span class="named-paragraph-number">8.8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -703,8 +620,8 @@ these kind atoms.
 <span class="plain-syntax">            </span><span class="string-syntax">"sentence is too complicatedly phrased, and could be broken up "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"into two or more sentences?"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8_11">&#167;8.11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_11_2" class="paragraph-anchor"></a><b>&#167;8.11.2.  </b>The "is" predicate is not usually assertable, but \(is(x, f_R(y))\)
+<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8_8">&#167;8.8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8_8_2" class="paragraph-anchor"></a><b>&#167;8.8.2.  </b>The "is" predicate is not usually assertable, but \(is(x, f_R(y))\)
 can be asserted since it is equivalent to \(R(x, y)\) &mdash; this is where we
 unravel that. We reject compound uses of functions in this way, but in
 practice they hardly ever arise, and could only do so with quite complex
@@ -712,7 +629,7 @@ sentences where it seems reasonable to tell the user to write something
 simpler and clearer.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the BP and terms to be asserted</span><span class="named-paragraph-number">8.11.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Determine the BP and terms to be asserted</span><span class="named-paragraph-number">8.8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -735,7 +652,7 @@ simpler and clearer.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8_11">&#167;8.11</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="12-ap.html#SP8_8">&#167;8.8</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>As we've already seen, we have to be cautious about the mechanism to draw
 inferences about kinds based on the relationships which objects have. Some
 cases are easy: if A is worn by B, then B is a person. But "in" can be
@@ -754,7 +671,7 @@ need to risk setting the kind here at this stage.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::Assert::cautiously_set_kind</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::cautiously_set_kind</span></span>:<br/><a href="12-ap.html#SP8_11">&#167;8.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Propositions::Assert::cautiously_set_kind</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::cautiously_set_kind</span></span>:<br/><a href="12-ap.html#SP8_8">&#167;8.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inst</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">k</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">inst</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
@@ -779,7 +696,7 @@ slate &mdash; that was its whole purpose. So the only case left is a constant:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Assert::spec_of_term</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::spec_of_term</span></span>:<br/><a href="12-ap.html#SP8_11">&#167;8.11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Assert::spec_of_term</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::spec_of_term</span></span>:<br/><a href="12-ap.html#SP8_8">&#167;8.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">function</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">variable</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_interpretation_as_spec</span><span class="plain-syntax">[</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">variable</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">constant</span><span class="plain-syntax">;</span>
@@ -801,7 +718,7 @@ but just in case.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Assert::subject_of_term</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::subject_of_term</span></span>:<br/><a href="12-ap.html#SP8_6">&#167;8.6</a>, <a href="12-ap.html#SP8_7">&#167;8.7</a>, <a href="12-ap.html#SP8_8">&#167;8.8</a>, <a href="12-ap.html#SP8_9">&#167;8.9</a>, <a href="12-ap.html#SP8_11">&#167;8.11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="function-syntax">Propositions::Assert::subject_of_term</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Propositions::Assert::subject_of_term</span></span>:<br/><a href="12-ap.html#SP8_6">&#167;8.6</a>, <a href="12-ap.html#SP8_8">&#167;8.8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">function</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">variable</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_interpretation_as_infs</span><span class="plain-syntax">[</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="identifier-syntax">variable</span><span class="plain-syntax">];</span>
 

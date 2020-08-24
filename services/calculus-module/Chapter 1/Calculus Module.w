@@ -51,6 +51,7 @@ void CalculusModule::start(void) {
 	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
 	Calculus::Adjectival::start();
 	Calculus::Creation::start();
+	WherePredicates::start();
 	Calculus::Equality::start();
 }
 void CalculusModule::end(void) {

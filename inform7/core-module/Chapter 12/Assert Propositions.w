@@ -209,9 +209,6 @@ void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
 					case 2: @<Assert the truth or falsity of a binary predicate@>; break;
 				}
 				break;
-			case HERE_ATOM: @<Assert the truth or falsity of a HERE atom@>; break;
-			case EVERYWHERE_ATOM: @<Assert the truth or falsity of an EVERYWHERE atom@>; break;
-			case NOWHERE_ATOM: @<Assert the truth or falsity of a NOWHERE atom@>; break;
 		}
 	}
 }
@@ -395,72 +392,6 @@ through here, but it isn't exactly an everyday sentence.
 		kind *K = InferenceSubjects::as_kind(subj);
 		if (K) Kinds::make_subkind(K, pl->assert_kind);
 	}
-
-@h Asserting HERE, NOWHERE and EVERYWHERE.
-Three special cases. The first, EVERYWHERE, declares that something is found
-in every room. While we could simply deduce that the object must be a
-backdrop (and set the kind to make it so), this is such an extreme business,
-so rarely needed, that it seems better to make the user spell out that
-we're dealing with a backdrop. So we play dumb.
-
-@<Assert the truth or falsity of an EVERYWHERE atom@> =
-	if (now_negated) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNegatedEverywhere),
-			"that seems to say that something isn't everywhere",
-			"which is too vague. You must say where it is.");
-		return;
-	}
-	#ifdef IF_MODULE
-	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
-	instance *ox = InferenceSubjects::as_object_instance(subj);
-	PL::Backdrops::infer_presence_everywhere(ox);
-	#endif
-
-@ NOWHERE is similar:
-
-@<Assert the truth or falsity of a NOWHERE atom@> =
-	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
-	instance *ox = InferenceSubjects::as_object_instance(subj);
-	if (now_negated) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"that seems to say that something isn't nowhere",
-			"which is too vague. You must say where it is.");
-		return;
-	}
-	if (ox == NULL) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"that seems to say that something generic is 'nowhere'",
-			"which suggests it could some day have a physical location.");
-		return;
-	}
-	#ifdef IF_MODULE
-	PL::Spatial::infer_presence_nowhere(ox);
-	#endif
-
-@ HERE means "this object is in the current room", which is not as easy to
-resolve as it looks, because at this point we don't know for certain what
-will be a room and what won't. So we record a special inference and put the
-problem aside for now.
-
-@<Assert the truth or falsity of a HERE atom@> =
-	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
-	instance *ox = InferenceSubjects::as_object_instance(subj);
-	if (now_negated) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"that seems to say that something isn't here",
-			"which is too vague. You must say where it is.");
-		return;
-	}
-	if (ox == NULL) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonInstanceHere),
-			"that seems to say that something generic is 'here'",
-			"which would give it a physical location. (It would be like saying "
-			"'A number is here' - well, numbers are everywhere and nowhere.)");
-		return;
-	}
-	#ifdef IF_MODULE
-	PL::Spatial::infer_presence_here(ox);
-	#endif
 
 @h Asserting predicates.
 
