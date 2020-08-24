@@ -14,15 +14,15 @@ their existence.
 
 =
 pcalc_prop *Propositions::Abstract::to_make_a_kind(kind *K) {
-	return Atoms::ISAKIND_new(Terms::new_variable(0), K);
+	return Calculus::Creation::is_a_kind_up(Terms::new_variable(0), K);
 }
 
 pcalc_prop *Propositions::Abstract::to_make_a_var(void) {
-	return Atoms::ISAVAR_new(Terms::new_variable(0));
+	return Calculus::Creation::is_a_var_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_make_a_const(void) {
-	return Atoms::ISACONST_new(Terms::new_variable(0));
+	return Calculus::Creation::is_a_const_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_create_something(kind *K, wording W) {

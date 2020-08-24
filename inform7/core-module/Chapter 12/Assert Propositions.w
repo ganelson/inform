@@ -324,11 +324,18 @@ interpret no indication of a kind as meaning "object".
 		if ((lookahead->arity == 1) && (lookahead->terms[0].variable == v)) {
 			if (Atoms::is_CALLED(lookahead)) {
 				NW = Atoms::CALLED_get_name(lookahead);
-			} else switch(lookahead->element) {
-				case KIND_ATOM: K = lookahead->assert_kind; break;
-				case ISAKIND_ATOM: is_a_kind = TRUE; K = lookahead->assert_kind; break;
-				case ISAVAR_ATOM: is_a_var = TRUE; break;
-				case ISACONST_ATOM: is_a_const = TRUE; break;
+			} else if (lookahead->element == KIND_ATOM) K = lookahead->assert_kind;
+			else if ((lookahead->element == PREDICATE_ATOM) && (lookahead->arity == 1)) {
+				unary_predicate *up = RETRIEVE_POINTER_unary_predicate(lookahead->predicate);
+				if (up->family == is_a_kind_up_family) {
+					is_a_kind = TRUE; K = up->assert_kind;
+				}
+				if (up->family == is_a_var_up_family) {
+					is_a_var = TRUE;
+				}
+				if (up->family == is_a_const_up_family) {
+					is_a_const = TRUE;
+				}
 			}
 		}
 

@@ -164,9 +164,9 @@ void Declarations::parse(parse_node *p) {
 	everywhere ( <term> ) |                    ==> { -, Atoms::EVERYWHERE_new(*((pcalc_term *) RP[1])) }
 	nowhere ( <term> ) |                       ==> { -, Atoms::NOWHERE_new(*((pcalc_term *) RP[1])) }
 	here ( <term> ) |                          ==> { -, Atoms::HERE_new(*((pcalc_term *) RP[1])) }
-	is-a-kind ( <term> ) |                     ==> { -, Atoms::ISAKIND_new(*((pcalc_term *) RP[1]), NULL) }
-	is-a-var ( <term> ) |                      ==> { -, Atoms::ISAVAR_new(*((pcalc_term *) RP[1])) }
-	is-a-const ( <term> ) |                    ==> { -, Atoms::ISACONST_new(*((pcalc_term *) RP[1])) }
+	is-a-kind ( <term> ) |                     ==> { -, Calculus::Creation::is_a_kind_up(*((pcalc_term *) RP[1]), NULL) }
+	is-a-var ( <term> ) |                      ==> { -, Calculus::Creation::is_a_var_up(*((pcalc_term *) RP[1])) }
+	is-a-const ( <term> ) |                    ==> { -, Calculus::Creation::is_a_const_up(*((pcalc_term *) RP[1])) }
 	not< |                                     ==> { -, Atoms::new(NEGATION_OPEN_ATOM) }
 	not> |                                     ==> { -, Atoms::new(NEGATION_CLOSE_ATOM) }
 	in< |                                      ==> { -, Atoms::new(DOMAIN_OPEN_ATOM) }

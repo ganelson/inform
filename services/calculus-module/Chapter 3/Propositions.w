@@ -534,9 +534,12 @@ expense of typechecking the proposition:
 =
 kind *Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
-	while ((p = Propositions::prop_seek_atom(p, ISAKIND_ATOM, 1)) != NULL) {
+	while ((p = Propositions::prop_seek_up_family(p, is_a_kind_up_family)) != NULL) {
 		if ((Terms::variable_underlying(&(p->terms[0])) == 0) &&
-			(Kinds::eq(p->assert_kind, K_value))) return p->assert_kind;
+			(Kinds::eq(p->assert_kind, K_value))) {
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
+			return up->assert_kind;
+		}
 		p = p->next;
 	}
 	p = prop;

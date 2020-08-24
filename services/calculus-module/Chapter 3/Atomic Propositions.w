@@ -34,9 +34,6 @@ of the |*_ATOM| numbers below. Those elements in turn occur in "groups".
 @d PREDICATES_GROUP 20
 @d PREDICATE_ATOM 10 /* a regular predicate, rather than these special cases -- */
 @d KIND_ATOM 11 /* a unary predicate asserting that $x$ has kind $K$ */
-@d ISAKIND_ATOM 12 /* a unary predicate asserting that $x$ is itself a kind */
-@d ISAVAR_ATOM 13 /* a unary predicate asserting that $x$ is a global variable */
-@d ISACONST_ATOM 14 /* a unary predicate asserting that $x$ is a named constant */
 @d EVERYWHERE_ATOM 15 /* a unary predicate asserting omnipresence */
 @d NOWHERE_ATOM 16 /* a unary predicate asserting nonpresence */
 @d HERE_ATOM 17 /* a unary predicate asserting presence "here" */
@@ -201,28 +198,6 @@ pcalc_prop *Atoms::HERE_new(pcalc_term pt) {
 	return prop;
 }
 
-@ And the |ISAKIND|, |ISAVAR| and |ISACONST| creation predicates:
-
-=
-pcalc_prop *Atoms::ISAKIND_new(pcalc_term pt, kind *K) {
-	pcalc_prop *prop = Atoms::new(ISAKIND_ATOM);
-	prop->terms[prop->arity++] = pt;
-	prop->assert_kind = K;
-	return prop;
-}
-
-pcalc_prop *Atoms::ISAVAR_new(pcalc_term pt) {
-	pcalc_prop *prop = Atoms::new(ISAVAR_ATOM);
-	prop->terms[prop->arity++] = pt;
-	return prop;
-}
-
-pcalc_prop *Atoms::ISACONST_new(pcalc_term pt) {
-	pcalc_prop *prop = Atoms::new(ISACONST_ATOM);
-	prop->terms[prop->arity++] = pt;
-	return prop;
-}
-
 @ |CALLED| atoms are interesting because they exist only for their side-effects:
 they have no effect at all on the logical status of a proposition (well, except
 that they should not be applied to free variables referred to nowhere else).
@@ -320,13 +295,16 @@ to be able to create $U(t)$ for any term $t$, but in practice we only ever
 need $t=x$, that is, variable 0.
 
 =
-pcalc_prop *Atoms::from_adjective(adjective *aph, int negated, pcalc_term t) {
+pcalc_prop *Atoms::unary_PREDICATE_new(unary_predicate *up, pcalc_term t) {
 	pcalc_prop *prop = Atoms::new(PREDICATE_ATOM);
 	prop->arity = 1;
 	prop->terms[0] = t;
-	prop->predicate = STORE_POINTER_unary_predicate(
-		UnaryPredicates::new(aph, (negated)?FALSE:TRUE));
+	prop->predicate = STORE_POINTER_unary_predicate(up);
 	return prop;
+}
+
+pcalc_prop *Atoms::from_adjective(adjective *aph, int negated, pcalc_term t) {
+	return Atoms::unary_PREDICATE_new(UnaryPredicates::new(aph, (negated)?FALSE:TRUE), t);
 }
 
 pcalc_prop *Atoms::from_adjective_on_x(adjective *aph, int negated) {
@@ -442,9 +420,6 @@ void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->composited)) WRITE("_c");
 			if ((Streams::I6_escapes_enabled(DL) == FALSE) && (prop->unarticled)) WRITE("_u");
 			break;
-		case ISAKIND_ATOM: WRITE("is-a-kind"); break;
-		case ISAVAR_ATOM: WRITE("is-a-var"); break;
-		case ISACONST_ATOM: WRITE("is-a-const"); break;
 		case EVERYWHERE_ATOM: WRITE("everywhere"); break;
 		case NOWHERE_ATOM: WRITE("nowhere"); break;
 		case HERE_ATOM: WRITE("here"); break;

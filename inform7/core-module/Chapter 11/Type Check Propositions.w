@@ -86,8 +86,6 @@ int Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
 			@<An EVERYWHERE atom needs its term to be an object@>;
 		if (pl->element == NOWHERE_ATOM)
 			@<A NOWHERE atom needs its term to be an object@>;
-		if (pl->element == ISAKIND_ATOM)
-			@<An ISAKIND atom needs its term to be an object@>;
 		if (pl->element == HERE_ATOM)
 			@<A HERE atom needs its term to be an object@>;
 	}
@@ -289,11 +287,6 @@ would work instead. If it would, we make the change within the proposition.
 @<The BP fails type-checking@> =
 	if (tck->log_to_I6_text) LOG("BP $o cannot be applied\n", pl);
 	return NEVER_MATCH;
-
-@<An ISAKIND atom needs its term to be an object@> =
-	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::compatible(actually_find, K_object) == NEVER_MATCH)
-		internal_error("ISAKIND atom misapplied");
 
 @<An EVERYWHERE atom needs its term to be an object@> =
 	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);

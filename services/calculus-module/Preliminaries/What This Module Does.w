@@ -179,8 +179,7 @@ calls.
 (*) //Atoms::from_adjective//, or
 (*) //Atoms::KIND_new//, or
 (*) //Atoms::CALLED_new//, or
-(*) //Atoms::new// for the six oddball unaries,
-supplying atom types |ISAKIND_ATOM|, |ISAVAR_ATOM|, |ISACONST_ATOM|,
+(*) //Atoms::new// for the oddball unaries,
 |EVERYWHERE_ATOM|, |NOWHERE_ATOM| and |HERE_ATOM|.
 
 Binary predicate atoms are made using //Atoms::binary_PREDICATE_new//.

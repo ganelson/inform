@@ -9,16 +9,16 @@ also records its sense, i.e., positive or negative:
 =
 typedef struct unary_predicate {
 	struct up_family *family;
+	struct kind *assert_kind;
 	lcon_ti lcon;
 } unary_predicate;
 
 @ =
-unary_predicate *UnaryPredicates::new(adjective *aph, int pos) {
+unary_predicate *UnaryPredicates::blank(up_family *f) {
 	unary_predicate *au = CREATE(unary_predicate);
-	au->family = adjectival_up_family;
-	au->lcon = Stock::to_lcon(aph->in_stock);
-	if (pos) au->lcon = Lcon::set_sense(au->lcon, POSITIVE_SENSE);
-	else au->lcon = Lcon::set_sense(au->lcon, NEGATIVE_SENSE);
+	au->family = f;
+	au->assert_kind = NULL;
+	au->lcon = 0;
 	return au;
 }
 
@@ -26,6 +26,14 @@ unary_predicate *UnaryPredicates::copy(unary_predicate *au_from) {
 	unary_predicate *au = CREATE(unary_predicate);
 	au->family = au_from->family;
 	au->lcon = au_from->lcon;
+	return au;
+}
+
+unary_predicate *UnaryPredicates::new(adjective *aph, int pos) {
+	unary_predicate *au = UnaryPredicates::blank(adjectival_up_family);
+	au->lcon = Stock::to_lcon(aph->in_stock);
+	if (pos) au->lcon = Lcon::set_sense(au->lcon, POSITIVE_SENSE);
+	else au->lcon = Lcon::set_sense(au->lcon, NEGATIVE_SENSE);
 	return au;
 }
 

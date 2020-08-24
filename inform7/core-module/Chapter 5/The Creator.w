@@ -683,6 +683,7 @@ to abbreviated forms of object names are normally allowed.
 	else
 		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_var());
 	Propositions::Assert::assert_true(prop, prevailing_mood);
+	if (NonlocalVariables::get_latest() == NULL) internal_error("failed to create");
 	val = Lvalues::new_actual_NONLOCAL_VARIABLE(NonlocalVariables::get_latest());
 
 @<Create an instance of an enumerated kind@> =
