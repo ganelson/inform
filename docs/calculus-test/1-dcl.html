@@ -128,7 +128,7 @@ match any text.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li><li>The structure repl_var is accessed in 2/trs, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn and here.</li><li>The structure named_function is accessed in 2/trs, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 3/trm, 3/tcp and here.</li></ul>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li><li>The structure repl_var is accessed in 2/trs, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 3/smp and here.</li><li>The structure named_function is accessed in 2/trs, 3/tff, 1/sc, 2/art, 2/prn, 3/dmn, 3/trm, 3/tcp, 3/smp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. A sort of REPL. </b>The following function reads a file whose name is in <span class="extract"><span class="Preform-extract-syntax">arg</span></span>, feeds it into
 the lexer, builds a syntax tree of its sentences, and then walks through
 that tree, applying the Preform nonterminal &lt;declaration-line&gt; to each

@@ -259,6 +259,7 @@ void Atoms::write(text_stream *OUT, pcalc_prop *prop) {
 		case QUANTIFIER_ATOM: {
 			quantifier *quant = prop->quant;
 			Quantifiers::log(OUT, quant, prop->quantification_parameter);
+			WRITE(" ");
 			break;
 		}
 		case NEGATION_OPEN_ATOM: WRITE("NOT<"); break;

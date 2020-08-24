@@ -168,7 +168,7 @@ ul.toc {
 }
 
 ul.toc li {
-	float:left;
+	display:inline-block;
 	margin-left: 15px;
 	color:#000;
 }

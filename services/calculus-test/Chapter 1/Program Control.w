@@ -78,6 +78,7 @@ int Main::dont(int wn) {
 @d TERM_DOMAIN_FROM_KIND_FUNCTION Main::get_kind
 @d TERM_DOMAIN_TO_KIND_FUNCTION Main::get_kind
 @d VALUE_TO_KIND_FUNCTION Main::value_to_kind
+@d RVALUE_TO_KIND_FUNCTION Main::value_to_kind
 @d VALUE_TO_RELATION_FUNCTION Main::value_to_relation
 @d ADJECTIVE_APPLICABLE_FUNCTION Main::adjective_applicable
 

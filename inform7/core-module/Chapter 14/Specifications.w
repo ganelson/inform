@@ -10,6 +10,7 @@ for creating and using them.
 Kinds can be faithfully represented as specifications, but not vice versa:
 
 @d VALUE_TO_KIND_FUNCTION Specifications::to_kind
+@d RVALUE_TO_KIND_FUNCTION Specifications::rvalue_to_kind
 
 =
 parse_node *Specifications::from_kind(kind *K) {
@@ -22,6 +23,12 @@ kind *Specifications::to_kind(parse_node *spec) {
 		return Descriptions::to_kind(spec);
 	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
 	else if (ParseTreeUsage::is_rvalue(spec)) return Rvalues::to_kind(spec);
+	return NULL;
+}
+
+kind *Specifications::rvalue_to_kind(parse_node *spec) {
+	if (ParseTreeUsage::is_rvalue(spec))
+		return Rvalues::to_kind(spec);
 	return NULL;
 }
 
@@ -282,6 +289,16 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 @<When is a description more specific than a non-description?@> =
 	if (I1) { if (a == TRUE) return 1; else return -1; }
 	else { if (a == TRUE) return -1; else return 1; }
+
+@h Nothingness.
+
+@d DETECT_NOTHING_VALUE Rvalues::is_nothing_object_constant
+@d PRODUCE_NOTHING_VALUE Specifications::nothing
+
+=
+parse_node *Specifications::nothing(void) {
+	return Lvalues::new_actual_NONLOCAL_VARIABLE(i6_nothing_VAR);
+}
 
 @h The Unknown.
 We begin with s-nodes used to represent text not yet parsed, or for which no

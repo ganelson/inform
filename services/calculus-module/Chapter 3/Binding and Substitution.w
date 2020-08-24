@@ -260,12 +260,12 @@ int Binding::substitute_v_in_term(pcalc_term *pt, int v, pcalc_term *t) {
 	return FALSE;
 }
 
-#ifdef CORE_MODULE
 void Binding::substitute_nothing_in_term(pcalc_term *pt, pcalc_term *t) {
-	if ((pt->constant) && (Rvalues::is_nothing_object_constant(pt->constant))) { *pt = *t; return; }
+#ifdef DETECT_NOTHING_VALUE
+	if ((pt->constant) && (DETECT_NOTHING_VALUE(pt->constant))) { *pt = *t; return; }
 	if (pt->function) Binding::substitute_nothing_in_term(&(pt->function->fn_of), t);
-}
 #endif
+}
 
 void Binding::substitute_term_in_term(pcalc_term *pt, pcalc_term *t) {
 	if (pt->constant) { *pt = *t; return; }

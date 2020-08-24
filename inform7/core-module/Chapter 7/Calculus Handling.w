@@ -1,6 +1,7 @@
 [CalculusHandling::] Calculus Handling.
 
-@
+@ The |:calculus| group of tests for //inform7// generates all of the problems
+below.
 
 @d PROBLEM_CALCULUS_CALLBACK CalculusHandling::issue_problem
 

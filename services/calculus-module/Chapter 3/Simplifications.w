@@ -42,21 +42,21 @@ but Google finds 223,000 hits for it.)
 
 =
 pcalc_prop *Calculus::Simplifications::nothing_constant(pcalc_prop *prop, int *changed) {
-	TRAVERSE_VARIABLE(pl);
-
 	*changed = FALSE;
+	#ifdef DETECT_NOTHING_VALUE
+	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop)
 		if ((Atoms::is_binary_predicate(pl)) && (Atoms::is_equality_predicate(pl) == FALSE)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(pl->predicate);
-			int i;
-			for (i=0; i<2; i++) {
-				if (Rvalues::is_nothing_object_constant(Terms::constant_underlying(&(pl->terms[i])))) {
+			for (int i=0; i<2; i++) {
+				if (DETECT_NOTHING_VALUE(Terms::constant_underlying(&(pl->terms[i])))) {
 					@<Substitute for the term and quantify with does-not-exist@>;
 					PROPOSITION_EDITED(pl, prop);
 					break;
 				}
 			}
 		}
+	#endif
 	return prop;
 }
 
@@ -156,6 +156,7 @@ $$ \exists x: {\it number}(x)\land {\hbox{\it listed-in-PM_-column}}(x, T_1)\lan
 {\hbox{\it listed-in-PM_-column}}(x, T_2). $$
 
 =
+#ifdef CORE_MODULE
 pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 
@@ -191,6 +192,7 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 
 	return prop;
 }
+#endif
 
 @h Simplify negated determiners (deduction).
 The negation atom is worth removing wherever possible, since we want to
@@ -637,13 +639,11 @@ the proposition is going to fail type-checking anyway.)
 			if (KindPredicates::is_kind_atom(pl)) {
 				kind *early_kind = KindPredicates::get_kind(pl);
 				parse_node *spec = pl->terms[0].constant;
-				if (ParseTreeUsage::is_rvalue(spec)) {
-					kind *K = Rvalues::to_kind(spec);
-					if ((K) && (Kinds::Behaviour::is_subkind_of_object(early_kind) == FALSE) &&
-						(Kinds::conforms_to(early_kind, K))) {
-						prop = Propositions::delete_atom(prop, pl_prev);
-						PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
-					}
+				kind *K = RVALUE_TO_KIND_FUNCTION(spec);
+				if ((K) && (Kinds::Behaviour::is_subkind_of_object(early_kind) == FALSE) &&
+					(Kinds::conforms_to(early_kind, K))) {
+					prop = Propositions::delete_atom(prop, pl_prev);
+					PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
 				}
 			}
 		}
@@ -927,9 +927,9 @@ they have no "not a valid case" value analogous to the non-object |nothing|.
 
 =
 pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop, int *changed) {
-	TRAVERSE_VARIABLE(pl);
-
 	*changed = FALSE;
+	#ifdef PRODUCE_NOTHING_VALUE 
+	TRAVERSE_VARIABLE(pl);
 
 	TRAVERSE_PROPOSITION(pl, prop) {
 		pcalc_prop *kind_atom;
@@ -943,19 +943,18 @@ pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop
 				pcalc_term KIND_term = kind_atom->terms[0];
 				if (KIND_term.function) bp = KIND_term.function->bp;
 				if ((bp) && (Kinds::eq(K, BinaryPredicates::term_kind(bp, 1)))) {
-					parse_node *new_nothing =
-						Lvalues::new_actual_NONLOCAL_VARIABLE(i6_nothing_VAR);
 					prop = Propositions::ungroup_after(prop, pl_prev, NULL); /* remove negation grouping */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 					/* now insert equality predicate: */
 					prop = Propositions::insert_atom(prop, pl_prev,
 						Atoms::binary_PREDICATE_new(R_equality,
-							KIND_term, Terms::new_constant(new_nothing)));
+							KIND_term, Terms::new_constant(PRODUCE_NOTHING_VALUE())));
 					PROPOSITION_EDITED(pl, prop);
 				}
 			}
 		}
 	}
+	#endif
 	return prop;
 }
 
@@ -973,6 +972,7 @@ noun (thus a value) rather than a condition. We coerce its constant value
 accordingly.
 
 =
+#ifdef IF_MODULE
 pcalc_prop *Calculus::Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 
@@ -984,6 +984,7 @@ pcalc_prop *Calculus::Simplifications::convert_gerunds(pcalc_prop *prop, int *ch
 					pl->terms[i].constant = Conditions::action_tested(pl->terms[i].constant);
 	return prop;
 }
+#endif
 
 @h Eliminate to have meaning property ownership (fudge).
 The verb "to have" normally means ownership of a physical thing, but it
@@ -1010,6 +1011,7 @@ references to the weight are to the weight of the same thing. In
 sufficiently contrived sentences, this wouldn't be true.
 
 =
+#ifdef CORE_MODULE
 pcalc_prop *Calculus::Simplifications::eliminate_to_have(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 
@@ -1029,6 +1031,7 @@ pcalc_prop *Calculus::Simplifications::eliminate_to_have(pcalc_prop *prop, int *
 
 	return prop;
 }
+#endif
 
 @ So the current atom is ${\it is}(f_H(P), C)$ or ${\it is}(C, f_H(P))$
 (according to whether $i$ is 0 or 1), for a property $P$ and a constant
@@ -1053,6 +1056,7 @@ in the original ${\it is}(f_H(P), C)$ atom, and we count the number of
 changes made.
 
 =
+#ifdef CORE_MODULE
 pcalc_prop *Calculus::Simplifications::prop_substitute_prop_cons(pcalc_prop *prop, property *prn,
 	parse_node *po_spec, int *count, pcalc_prop *not_this) {
 	TRAVERSE_VARIABLE(pl);
@@ -1075,6 +1079,7 @@ pcalc_prop *Calculus::Simplifications::prop_substitute_prop_cons(pcalc_prop *pro
 	*count = c;
 	return prop;
 }
+#endif
 
 @h Turn all rooms to everywhere (fudge).
 This rather special rule handles the consequences of the English word
