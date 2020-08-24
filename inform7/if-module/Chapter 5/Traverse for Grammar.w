@@ -695,9 +695,9 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 						if ((Descriptions::to_instance(spec) == NULL) &&
 							(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE)
 							&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
-							&& (UnaryPredicates::get_parity(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
+							&& (AdjectivalPredicates::parity(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
 							adjective *aph =
-								UnaryPredicates::get_adj(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
+								AdjectivalPredicates::to_adjective(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
 							instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 							if (q) {
 								spec = Rvalues::from_instance(q);

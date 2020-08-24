@@ -17,7 +17,6 @@ wouldn't be allowed in a typical use of "now" from the source text; so it
 can suppress the following problem messages:
 
 =
-int suppress_C14CantChangeKind = FALSE;
 int suppress_C14ActionVarsPastTense = FALSE;
 
 @ So, then:
@@ -113,88 +112,17 @@ annotated_i6_schema Atoms::Compile::i6_schema_of_atom(i6_schema *sch, pcalc_prop
 	asch.negate_schema = FALSE;
 	asch.pt0 = pl->terms[0]; asch.pt1 = pl->terms[1];
 	asch.involves_action_variables = Atoms::Compile::atom_involves_action_variables(pl);
-	if (Atoms::is_CALLED(pl)) {
-		@<Make an annotated schema for a CALLED atom@>;
-	} else switch(pl->element) {
-		case KIND_ATOM: @<Make an annotated schema for a KIND atom@>;
-		case PREDICATE_ATOM:
-			switch(pl->arity) {
-				case 1: @<Make an annotated schema for a unary predicate@>;
-				case 2: @<Make an annotated schema for a binary predicate@>;
-			}
+	if (pl->element == PREDICATE_ATOM) {
+		switch(pl->arity) {
+			case 1: @<Make an annotated schema for a unary predicate@>;
+			case 2: @<Make an annotated schema for a binary predicate@>;
+		}
 	}
-
 	asch.schema = NULL; /* signal that the atom cannot be compiled simply */
 	return asch;
 }
 
-@ We are now able to look at the different types of atom one at a time.
-
-CALLED atoms cannot be asserted, and to test them, we simply copy the
-value into the local variable of the given name. Note then that here
-the I6 |=| (set equal) operator is being used in a condition context:
-there's a good chance that the value set is non-zero (since all objects
-and enumerated values are non-zero), but it isn't necessarily so --
-in Inform it's legal to quantify over times and truth states, for
-instance, where 0 is a legal I6 value. So we use the comma operator
-to throw away the result of the assignment, and evaluate the condition
-to |true|.
-
-@<Make an annotated schema for a CALLED atom@> =
-	switch(task) {
-		case TEST_ATOM_TASK: {
-			wording W = Atoms::CALLED_get_name(pl);
-			Calculus::Schemas::modify(sch, "(%L=(*1), true)",
-				LocalVariables::ensure_called_local(W, pl->assert_kind));
-			return asch;
-		}
-		default: asch.schema = NULL; return asch;
-	}
-
-@ In any type-checked proposition, a |KIND| atom can only exist where it is
-always at least sometimes true. In particular, if $K$ is a kind of value, then
-the atom $K(v)$ can only exist where $v$ is of that kind of value, so that the
-atom is always true when tested. But if $K$ is a kind of object, then $K(O)$
-may occur in the proposition for any object $O$, where $O$ need not belong
-to $K$ at all: so there is something substantive to check, which we do using
-the I6 |ofclass| operator.
-
-@<Make an annotated schema for a KIND atom@> =
-	switch(task) {
-		case TEST_ATOM_TASK:
-			if (Kinds::Behaviour::is_subkind_of_object(pl->assert_kind))
-				Calculus::Schemas::modify(sch, "*1 ofclass %n",
-					Kinds::RunTime::I6_classname(pl->assert_kind));
-			else {
-				if ((Kinds::get_construct(pl->assert_kind) == CON_list_of) && (problem_count == 0)) {
-					Problems::quote_source(1, current_sentence);
-					Problems::quote_kind(2, pl->assert_kind);
-					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantCheckListContents));
-					Problems::issue_problem_segment(
-						"In %1, you use a list which might or might not match a "
-						"definition requiring %2. But there's no efficient way to "
-						"tell during play whether the list actually contains that, "
-						"without laboriously checking every entry. Because "
-						"in general this would be a bad idea, this usage is "
-						"not allowed.");
-					Problems::issue_problem_end();
-				}
-				Calculus::Schemas::modify(sch, "true");
-			}
-			return asch;
-		case NOW_ATOM_TRUE_TASK:
-		case NOW_ATOM_FALSE_TASK:
-			if (suppress_C14CantChangeKind == FALSE) {
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeKind),
-					"the kind of something is fixed",
-					"and cannot be changed during play with a 'now'.");
-				asch.schema = NULL;
-			} else Calculus::Schemas::modify(sch, " ");
-			return asch;
-	}
-
-@ The last unary atom is an adjective, for which we hand over to the general
-adjective apparatus.
+@ We hand over to the general UP apparatus for this.
 
 @<Make an annotated schema for a unary predicate@> =
 	if ((pl->terms[0].constant) && (pl->terms[0].term_checked_as_kind == NULL))

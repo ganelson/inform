@@ -39,8 +39,8 @@ where |P| is the linked list for $\phi$.
 
 Conjunction occurs so densely in propositions arising from
 natural language that we save a lot of memory and fuss by simply implying it:
-thus "great green dragon" is |PREDICATE --> PREDICATE --> KIND|, rather than
-something like |PREDICATE --> AND_SIGN --> PREDICATE --> AND_SIGN --> KIND|.
+thus "great green dragon" is |PREDICATE --> PREDICATE --> PREDICATE|, rather than
+something like |PREDICATE --> AND_SIGN --> PREDICATE --> AND_SIGN --> PREDICATE|.
 Disjunction hardly ever occurs, so although the above scheme could simulate
 it with $\alpha\lor\beta = \lnot((\lnot\alpha)\land(\lnot\beta))$, we never do.
 
@@ -49,8 +49,8 @@ understood as a conjunction.
 =
 int Propositions::implied_conjunction_between(pcalc_prop *p1, pcalc_prop *p2) {
 	if ((p1 == NULL) || (p2 == NULL)) return FALSE;
-	if (Atoms::group(p1->element) == OPEN_OPERATORS_GROUP) return FALSE;
-	if (Atoms::group(p2->element) == CLOSE_OPERATORS_GROUP) return FALSE;
+	if (Atoms::is_opener(p1->element)) return FALSE;
+	if (Atoms::is_closer(p2->element)) return FALSE;
 	if (p1->element == QUANTIFIER_ATOM) return FALSE;
 	if (p1->element == DOMAIN_CLOSE_ATOM) return FALSE;
 	return TRUE;
@@ -194,7 +194,7 @@ where clearly two different things have been called $n$.)
 
 And this proposition is well-formed but not type-safe:
 = (text)
-|QUANTIFIER(x) --> KIND=number(x) --> EVERYWHERE(x)|
+|QUANTIFIER(x) --> kind=number(x) --> EVERYWHERE(x)|
 =
 (Here |x| is supposed to be a number, and therefore has no location, but
 |EVERYWHERE| can validly be applied only to backdrop objects, so what
@@ -216,13 +216,13 @@ int Propositions::is_syntactically_valid(pcalc_prop *prop, text_stream *err) {
 		char *v_err = Atoms::validate(p);
 		if (v_err) { WRITE_TO(err, "atom error: %s", err); return FALSE; }
 		/* (2) every open bracket must be matched by a close bracket of the same kind: */
-		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) {
+		if (Atoms::is_opener(p->element)) {
 			if (group_sp >= MAX_PROPOSITION_GROUP_NESTING) {
 				WRITE_TO(err, "group nesting too deep"); return FALSE;
 			}
 			groups_stack[group_sp++] = p->element;
 		}
-		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) {
+		if (Atoms::is_closer(p->element)) {
 			if (group_sp <= 0) { WRITE_TO(err, "too many close groups"); return FALSE; }
 			if (Atoms::counterpart(groups_stack[--group_sp]) != p->element) {
 				WRITE_TO(err, "group open/close doesn't match"); return FALSE;
@@ -438,32 +438,46 @@ detect subsequences within a proposition: say, the sequence
 =
 starting at the current position, which could be tested with:
 = (text)
-	Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,
-		ANY_ATOM_HERE, NULL, PREDICATE_ATOM, &pp);
+	Propositions::match(p, 4,
+		QUANTIFIER_ATOM, NULL,
+		PREDICATE_ATOM, NULL, NULL,
+		ANY_ATOM_HERE, NULL,
+		PREDICATE_ATOM, &pp, NULL);
 =
 As can be seen, each atom is tested with an element number and an optional
 pointer; when a successful match is made, the optional pointer is set to
-the atom making the match. (So if the routine returns |TRUE| then we can
-be certain that |pp| points to the |PREDICATE_ATOM| at the end of the run of
-four.) There are two special pseudo-element-numbers:
+the atom making the match. |PREDICATE_ATOM| atoms are followed by a third
+parameter, which if not |NULL| requires it to be a unary predicate of that
+family. (So if the routine returns |TRUE| then we can be certain that |pp|
+points to the |PREDICATE_ATOM| at the end of the run of four.) There are
+two special pseudo-element-numbers:
 
 @d ANY_ATOM_HERE 0 /* match any atom, but don't match beyond the end of the proposition */
 @d END_PROP_HERE -1 /* a sentinel meaning "the proposition must end at this point" */
 
 =
 int Propositions::match(pcalc_prop *prop, int c, ...) {
-	int i, outcome = TRUE;
+	int outcome = TRUE;
 	va_list ap; /* the variable argument list signified by the dots */
 	va_start(ap, c); /* macro to begin variable argument processing */
-	for (i = 0; i < c; i++) {
+	for (int i = 0; i < c; i++) {
 		int a = va_arg(ap, int);
 		pcalc_prop **atom_p = va_arg(ap, pcalc_prop **);
 		if (atom_p != NULL) *atom_p = prop;
+		up_family *req_up = NULL;
+		if (a == PREDICATE_ATOM) req_up = va_arg(ap, up_family *);
 		switch (a) {
 			case ANY_ATOM_HERE: if (prop == NULL) outcome = FALSE; break;
 			case END_PROP_HERE: if (prop != NULL) outcome = FALSE; break;
 			default: if (prop == NULL) outcome = FALSE;
 				else if (prop->element != a) outcome = FALSE;
+				else if (req_up) {
+					if (prop->arity == 1) {
+						unary_predicate *up =
+							RETRIEVE_POINTER_unary_predicate(prop->predicate);
+						if (up->family != req_up) outcome = FALSE;
+					} else outcome = FALSE;
+				}
 				break;
 		}
 		if (prop) prop = prop->next;
@@ -507,8 +521,8 @@ int Propositions::contains_quantifier(pcalc_prop *prop) {
 }
 
 pcalc_prop *Propositions::composited_kind(pcalc_prop *prop) {
-	pcalc_prop *k_atom = Propositions::prop_seek_atom(prop, KIND_ATOM, -1);
-	if ((k_atom) && (k_atom->composited == FALSE)) k_atom = NULL;
+	pcalc_prop *k_atom = Propositions::prop_seek_up_family(prop, kind_up_family);
+	if (KindPredicates::is_composited_atom(k_atom) == FALSE) k_atom = NULL;
 	return k_atom;
 }
 
@@ -523,7 +537,7 @@ int Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
 
 int Propositions::contains_callings(pcalc_prop *prop) {
 	for (pcalc_prop *p = prop; p; p = p->next)
-		if (Atoms::is_CALLED(p))
+		if (CreationPredicates::is_calling_up_atom(p))
 			return TRUE;
 	return FALSE;
 }
@@ -535,16 +549,15 @@ expense of typechecking the proposition:
 kind *Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
 	while ((p = Propositions::prop_seek_up_family(p, is_a_kind_up_family)) != NULL) {
-		if ((Terms::variable_underlying(&(p->terms[0])) == 0) &&
-			(Kinds::eq(p->assert_kind, K_value))) {
-			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
-			return up->assert_kind;
-		}
+		kind *K = CreationPredicates::what_kind(p);
+		if ((Terms::variable_underlying(&(p->terms[0])) == 0) && (Kinds::eq(K, K_value)))
+			return K;
 		p = p->next;
 	}
 	p = prop;
-	while ((p = Propositions::prop_seek_atom(p, KIND_ATOM, 1)) != NULL) {
-		if (Terms::variable_underlying(&(p->terms[0])) == 0) return p->assert_kind;
+	while ((p = Propositions::prop_seek_up_family(p, kind_up_family)) != NULL) {
+		if (Terms::variable_underlying(&(p->terms[0])) == 0)
+			return KindPredicates::get_kind(p);
 		p = p->next;
 	}
 	parse_node *val = Propositions::describes_value(prop);
@@ -633,8 +646,8 @@ pcalc_term Propositions::convert_adj_to_noun(pcalc_prop *prop) {
  		if (up->family == adjectival_up_family)
 			return Terms::adj_to_noun_conversion(up);
 	}
-	if (prop->element == KIND_ATOM) {
- 		kind *K = prop->assert_kind;
+	if (KindPredicates::is_kind_atom(prop)) {
+ 		kind *K = KindPredicates::get_kind(prop);
  		property *pname = Properties::Conditions::get_coinciding_property(K);
 		if (pname) return Terms::new_constant(Rvalues::from_property(pname));
 	}
@@ -665,7 +678,7 @@ unary_predicate *Propositions::next_unary_predicate(pcalc_prop **ppp) {
 The following routine tests whether the entire proposition is a single
 bracketed group. For instance:
 = (text)
-	NOT< --> PREDICATE --> KIND --> NOT>
+	NOT< --> PREDICATE --> NOT>
 =
 would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.
@@ -677,8 +690,8 @@ int Propositions::is_a_group(pcalc_prop *prop, int governing) {
 	TRAVERSE_VARIABLE(p);
 	if ((prop == NULL) || (prop->element != governing)) return FALSE;
 	TRAVERSE_PROPOSITION(p, prop) {
-		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) level++;
-		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) level--;
+		if (Atoms::is_opener(p->element)) level++;
+		if (Atoms::is_closer(p->element)) level--;
 	}
 	if ((p_prev->element == match) && (level == 0)) return TRUE;
 	return FALSE;
@@ -749,7 +762,9 @@ followed by a domain specification, we must also ungroup this:
 =
 pcalc_prop *Propositions::trim_universal_quantifier(pcalc_prop *prop) {
 	if ((Atoms::is_for_all_x(prop)) &&
-		(Propositions::match(prop, 2, QUANTIFIER_ATOM, NULL, DOMAIN_OPEN_ATOM, NULL))) {
+		(Propositions::match(prop, 2,
+			QUANTIFIER_ATOM, NULL,
+			DOMAIN_OPEN_ATOM, NULL))) {
 		prop = Propositions::ungroup_after(prop, prop, NULL);
 		prop = Propositions::delete_atom(prop, NULL);
 		LOGIF(PREDICATE_CALCULUS_WORKINGS, "Propositions::trim_universal_quantifier: $D\n", prop);

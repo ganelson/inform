@@ -46,17 +46,17 @@ since (alone among binary predicates) it has no distinct reversal.
 =
 void WherePredicates::stock_everywhere(up_family *self, int n) {
 	if (n == 1) {
-		everywhere_up = UnaryPredicates::blank(everywhere_up_family);
+		everywhere_up = UnaryPredicates::new(everywhere_up_family);
 	}
 }
 void WherePredicates::stock_nowhere(up_family *self, int n) {
 	if (n == 1) {
-		nowhere_up = UnaryPredicates::blank(nowhere_up_family);
+		nowhere_up = UnaryPredicates::new(nowhere_up_family);
 	}
 }
 void WherePredicates::stock_here(up_family *self, int n) {
 	if (n == 1) {
-		here_up = UnaryPredicates::blank(here_up_family);
+		here_up = UnaryPredicates::new(here_up_family);
 	}
 }
 

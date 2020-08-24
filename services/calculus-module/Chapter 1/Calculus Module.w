@@ -49,8 +49,9 @@ void CalculusModule::start(void) {
 	REGISTER_WRITER('r', UnaryPredicates::log);
 	Log::declare_aspect(PREDICATE_CALCULUS_DA, L"predicate calculus", FALSE, FALSE);
 	Log::declare_aspect(PREDICATE_CALCULUS_WORKINGS_DA, L"predicate calculus workings", FALSE, FALSE);
-	Calculus::Adjectival::start();
-	Calculus::Creation::start();
+	KindPredicates::start();
+	AdjectivalPredicates::start();
+	CreationPredicates::start();
 	WherePredicates::start();
 	Calculus::Equality::start();
 }

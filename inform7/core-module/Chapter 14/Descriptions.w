@@ -43,9 +43,9 @@ parse_node *Descriptions::from_kind(kind *K, int composited) {
 	if (K) { /* a test made only for error recovery */
 		pcalc_prop *prop;
 		if (composited)
-			prop = Atoms::KIND_new_composited(K, Terms::new_variable(0));
+			prop = KindPredicates::new_composited_atom(K, Terms::new_variable(0));
 		else
-			prop = Atoms::KIND_new(K, Terms::new_variable(0));
+			prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 		Propositions::Checker::type_check(prop,
 			Propositions::Checker::tc_no_problem_reporting());
 		Descriptions::set_proposition(spec, prop);
@@ -189,11 +189,11 @@ unary_predicate *Descriptions::first_unary_predicate(parse_node *spec) {
 
 void Descriptions::add_to_adjective_list(unary_predicate *au, parse_node *spec) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
-	adjective *aph = UnaryPredicates::get_adj(au);
+	adjective *aph = AdjectivalPredicates::to_adjective(au);
 	int negated = FALSE;
-	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
+	if (AdjectivalPredicates::parity(au) == FALSE) negated = TRUE;
 	prop = Propositions::concatenate(prop,
-		Atoms::from_adjective_on_x(aph, negated));
+		AdjectivalPredicates::new_atom_on_x(aph, negated));
 	Propositions::Checker::type_check(prop,
 		Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
@@ -203,11 +203,11 @@ void Descriptions::add_to_adjective_list_w(unary_predicate *au, parse_node *spec
 	quantifier *Q = Descriptions::get_quantifier(spec);
 	int N = Descriptions::get_quantification_parameter(spec);
 	pcalc_prop *prop = Descriptions::get_inner_prop(spec);
-	adjective *aph = UnaryPredicates::get_adj(au);
+	adjective *aph = AdjectivalPredicates::to_adjective(au);
 	int negated = FALSE;
-	if (UnaryPredicates::get_parity(au) == FALSE) negated = TRUE;
+	if (AdjectivalPredicates::parity(au) == FALSE) negated = TRUE;
 	prop = Propositions::concatenate(prop,
-		Atoms::from_adjective_on_x(aph, negated));
+		AdjectivalPredicates::new_atom_on_x(aph, negated));
 	Propositions::Checker::type_check(prop,
 		Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
@@ -272,7 +272,7 @@ void Descriptions::attach_calling(parse_node *spec, wording C) {
 	pcalc_prop *prop = Descriptions::to_proposition(spec);
 	prop = Propositions::concatenate(
 		prop,
-		Atoms::CALLED_new(C, Terms::new_variable(0), K));
+		CreationPredicates::calling_up(C, Terms::new_variable(0), K));
 	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 	Descriptions::set_proposition(spec, prop);
 }
@@ -280,8 +280,8 @@ void Descriptions::attach_calling(parse_node *spec, wording C) {
 wording Descriptions::get_calling(parse_node *spec) {
 	if (Specifications::is_description(spec))
 		for (pcalc_prop *pp = Descriptions::to_proposition(spec); pp; pp = pp->next)
-			if (Atoms::is_CALLED(pp))
-				return Atoms::CALLED_get_name(pp);
+			if (CreationPredicates::is_calling_up_atom(pp))
+				return CreationPredicates::get_calling_name(pp);
 	return EMPTY_WORDING;
 }
 
@@ -289,7 +289,7 @@ void Descriptions::clear_calling(parse_node *spec) {
 	if (spec == NULL) return;
 	pcalc_prop *pp, *prev_pp = NULL;
 	for (pp = Descriptions::to_proposition(spec); pp; prev_pp = pp, pp = pp->next)
-		if (Atoms::is_CALLED(pp)) {
+		if (CreationPredicates::is_calling_up_atom(pp)) {
 			Descriptions::set_proposition(spec,
 				Propositions::delete_atom(
 					Descriptions::to_proposition(spec), prev_pp));

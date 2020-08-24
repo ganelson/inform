@@ -148,10 +148,6 @@ make it easier to write propositions which change the state of the world,
 rather than discuss that state. For example, Inform might create the kind
 "animal" by asserting |Exists x : is-a-kind(x) ^ called=animal(x)|.
 
-Otherwise, while these are all conceptually unary predicates, only the first
-is a |PREDICATE_ATOM| in our implementation: the others are |KIND_ATOM|,
-|CALLED_ATOM|, 
-
 @h Binary predicates.
 By contrast all binary predicate atoms use |PREDICATE_ATOM|, and there is only
 one set of them -- but with that said,

@@ -260,7 +260,7 @@ possible adjective name it can see.
 	parse_node *p = Lexicon::retrieve_longest_initial_segment(ADJECTIVE_MC, W);
 	if (p) {
 		parse_node *a = Descriptions::from_proposition(NULL, W);
-		unary_predicate *ale = UnaryPredicates::new(
+		unary_predicate *ale = AdjectivalPredicates::new_up(
 			RETRIEVE_POINTER_adjective(Lexicon::get_data(Node::get_meaning(p))),
 				TRUE);
 		Descriptions::add_to_adjective_list(ale, a);
@@ -298,7 +298,7 @@ parse_node *Node::AdjectiveLists::negate_adjlist(parse_node *A) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A)
-		UnaryPredicates::flip_parity(au);
+		AdjectivalPredicates::flip_parity(au);
 	return A;
 }
 
@@ -328,7 +328,7 @@ int Node::AdjectiveLists::adjlist_applies_to_kind(parse_node *A, kind *K) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A) {
-		adjective *aph = UnaryPredicates::get_adj(au);
+		adjective *aph = AdjectivalPredicates::to_adjective(au);
 		if (Adjectives::Meanings::applicable_to(aph, K) == FALSE) return FALSE;
 	}
 	return TRUE;

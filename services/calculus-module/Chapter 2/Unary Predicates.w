@@ -1,74 +1,43 @@
 [UnaryPredicates::] Unary Predicates.
 
-A lightweight structure to record uses of an adjective, either
-positively or negatively.
+A lightweight structure to represent a unary predicate, which is either true
+or false when applied to a single term.
 
-@ We store this as a linguistic constant, which points to the adjective and
-also records its sense, i.e., positive or negative:
+@ These are relatively small and quick to make, and are parametrised in various
+ways. For example, there is no single |kind=K| unary predicate; there is one
+for every possible kind |K|.
 
 =
 typedef struct unary_predicate {
 	struct up_family *family;
 	struct kind *assert_kind;
-	lcon_ti lcon;
+	int composited; /* for kind UPs only: arises from a composite determiner/noun like "somewhere" */
+	int unarticled; /* for kind UPs only: arises from an unarticled usage like "vehicle", not "a vehicle" */
+	struct wording calling_name; /* for calling UPs only */
+	lcon_ti lcon; /* for adjectival UPs only */
 } unary_predicate;
 
 @ =
-unary_predicate *UnaryPredicates::blank(up_family *f) {
+unary_predicate *UnaryPredicates::new(up_family *f) {
 	unary_predicate *au = CREATE(unary_predicate);
 	au->family = f;
 	au->assert_kind = NULL;
 	au->lcon = 0;
+	au->calling_name = EMPTY_WORDING;
 	return au;
 }
 
 unary_predicate *UnaryPredicates::copy(unary_predicate *au_from) {
 	unary_predicate *au = CREATE(unary_predicate);
 	au->family = au_from->family;
+	au->assert_kind = au_from->assert_kind;
+	au->composited = au_from->composited;
+	au->unarticled = au_from->unarticled;
+	au->calling_name = au_from->calling_name;
 	au->lcon = au_from->lcon;
 	return au;
 }
 
-unary_predicate *UnaryPredicates::new(adjective *aph, int pos) {
-	unary_predicate *au = UnaryPredicates::blank(adjectival_up_family);
-	au->lcon = Stock::to_lcon(aph->in_stock);
-	if (pos) au->lcon = Lcon::set_sense(au->lcon, POSITIVE_SENSE);
-	else au->lcon = Lcon::set_sense(au->lcon, NEGATIVE_SENSE);
-	return au;
-}
-
-@ Logging:
-
-=
 void UnaryPredicates::log(unary_predicate *au) {
-	adjective *aph = UnaryPredicates::get_adj(au);
-	if (Lcon::get_sense(au->lcon) == NEGATIVE_SENSE) LOG("~");
-	wording W = Adjectives::get_nominative_singular(aph);
-	LOG("<adj:%W>", W);
-}
-
-@ Access:
-
-=
-adjective *UnaryPredicates::get_adj(unary_predicate *au) {
-	if (au == NULL) return NULL;
-	return Adjectives::from_lcon(au->lcon);
-}
-
-int UnaryPredicates::get_parity(unary_predicate *au) {
-	if (au == NULL) internal_error("null adjective tested for positivity");
-	if (Lcon::get_sense(au->lcon) == NEGATIVE_SENSE) return FALSE;
-	return TRUE;
-}
-
-@ And this is the only non-trivial thing one can do with an adjective use:
-reverse its sense.
-
-=
-void UnaryPredicates::flip_parity(unary_predicate *au) {
-	if (au == NULL) internal_error("null adjective flipped");
-	if (Lcon::get_sense(au->lcon) == NEGATIVE_SENSE)
-		au->lcon = Lcon::set_sense(au->lcon, POSITIVE_SENSE);
-	else
-		au->lcon = Lcon::set_sense(au->lcon, NEGATIVE_SENSE);
+	UnaryPredicateFamilies::log(DL, au);
 }

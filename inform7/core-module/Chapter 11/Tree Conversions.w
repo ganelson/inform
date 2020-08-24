@@ -14,25 +14,25 @@ their existence.
 
 =
 pcalc_prop *Propositions::Abstract::to_make_a_kind(kind *K) {
-	return Calculus::Creation::is_a_kind_up(Terms::new_variable(0), K);
+	return CreationPredicates::is_a_kind_up(Terms::new_variable(0), K);
 }
 
 pcalc_prop *Propositions::Abstract::to_make_a_var(void) {
-	return Calculus::Creation::is_a_var_up(Terms::new_variable(0));
+	return CreationPredicates::is_a_var_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_make_a_const(void) {
-	return Calculus::Creation::is_a_const_up(Terms::new_variable(0));
+	return CreationPredicates::is_a_const_up(Terms::new_variable(0));
 }
 
 pcalc_prop *Propositions::Abstract::to_create_something(kind *K, wording W) {
 	pcalc_prop *prop = Atoms::QUANTIFIER_new(exists_quantifier, 0, 0);
 	if ((K) && (Kinds::eq(K, K_object) == FALSE))
 		prop = Propositions::concatenate(prop,
-			Atoms::KIND_new(K, Terms::new_variable(0)));
+			KindPredicates::new_atom(K, Terms::new_variable(0)));
 	if (Wordings::nonempty(W))
 		prop = Propositions::concatenate(prop,
-			Atoms::CALLED_new(W, Terms::new_variable(0), K));
+			CreationPredicates::calling_up(W, Terms::new_variable(0), K));
 	return prop;
 }
 
@@ -40,7 +40,7 @@ pcalc_prop *Propositions::Abstract::to_create_something(kind *K, wording W) {
 
 =
 pcalc_prop *Propositions::Abstract::prop_to_set_kind(kind *k) {
-	return Atoms::KIND_new(k, Terms::new_variable(0));
+	return KindPredicates::new_atom(k, Terms::new_variable(0));
 }
 
 void Propositions::Abstract::assert_kind_of_object(instance *I, kind *k) {
@@ -51,7 +51,7 @@ void Propositions::Abstract::assert_kind_of_object(instance *I, kind *k) {
 void Propositions::Abstract::assert_kind_of_subject(inference_subject *inst, inference_subject *new,
 	pcalc_prop *subject_to) {
 	kind *K = InferenceSubjects::domain(new);
-	pcalc_prop *prop = Atoms::KIND_new(K, Terms::new_variable(0));
+	pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 	if (subject_to) prop = Propositions::concatenate(prop, subject_to);
 	Propositions::Assert::assert_true_about(prop, inst, prevailing_mood);
 }
@@ -145,7 +145,7 @@ pcalc_prop *Propositions::Abstract::from_property_list(parse_node *p, kind *K) {
 
 	if ((prop) && (K)) {
 		prop = Propositions::conjoin(
-			Atoms::KIND_new(K, Terms::new_variable(0)), prop);
+			KindPredicates::new_atom(K, Terms::new_variable(0)), prop);
 	}
 	return prop;
 }
@@ -254,10 +254,10 @@ which is by now inside the "creation proposition".
 	int negate_me = FALSE;
 	unary_predicate *pred = Node::get_predicate(p);
 	if (pred == NULL) internal_error("adjective without predicate");
-	if (UnaryPredicates::get_parity(pred) == FALSE) negate_me = TRUE;
+	if (AdjectivalPredicates::parity(pred) == FALSE) negate_me = TRUE;
 	if (Node::get_creation_proposition(p))
 		prop = Propositions::conjoin(prop, Node::get_creation_proposition(p));
-	pcalc_prop *adj_prop = Atoms::from_adjective_on_x(
-		UnaryPredicates::get_adj(pred), FALSE);
+	pcalc_prop *adj_prop = AdjectivalPredicates::new_atom_on_x(
+		AdjectivalPredicates::to_adjective(pred), FALSE);
 	if (negate_me) adj_prop = Propositions::negate(adj_prop);
 	prop = Propositions::conjoin(prop, adj_prop);

@@ -156,17 +156,17 @@ void Declarations::parse(parse_node *p) {
 	<atomic-proposition>                             ==> { pass 1 }
 
 <atomic-proposition> ::=
-	<adjective-name> ( <term> ) |              ==> { -, Atoms::from_adjective(RP[1], FALSE, *((pcalc_term *) RP[2])) }
+	<adjective-name> ( <term> ) |              ==> { -, AdjectivalPredicates::new_atom(RP[1], FALSE, *((pcalc_term *) RP[2])) }
 	( <term> == <term> ) |                     ==> { -, Atoms::binary_PREDICATE_new(R_equality, *((pcalc_term *) RP[1]), *((pcalc_term *) RP[2])) }
 	<relation-name> ( <term> , <term> ) |      ==> { -, Atoms::binary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2]), *((pcalc_term *) RP[3])) }
-	kind = <k-kind> ( <term> ) |               ==> { -, Atoms::KIND_new(RP[1], *((pcalc_term *) RP[2])) }
-	called = ... ( <term> ) |                  ==> { -, Atoms::CALLED_new(WR[1], *((pcalc_term *) RP[1]), NULL) }
+	kind = <k-kind> ( <term> ) |               ==> { -, KindPredicates::new_atom(RP[1], *((pcalc_term *) RP[2])) }
+	called = ... ( <term> ) |                  ==> { -, CreationPredicates::calling_up(WR[1], *((pcalc_term *) RP[1]), NULL) }
 	everywhere ( <term> ) |                    ==> { -, WherePredicates::everywhere_up(*((pcalc_term *) RP[1])) }
 	nowhere ( <term> ) |                       ==> { -, WherePredicates::nowhere_up(*((pcalc_term *) RP[1])) }
 	here ( <term> ) |                          ==> { -, WherePredicates::here_up(*((pcalc_term *) RP[1])) }
-	is-a-kind ( <term> ) |                     ==> { -, Calculus::Creation::is_a_kind_up(*((pcalc_term *) RP[1]), NULL) }
-	is-a-var ( <term> ) |                      ==> { -, Calculus::Creation::is_a_var_up(*((pcalc_term *) RP[1])) }
-	is-a-const ( <term> ) |                    ==> { -, Calculus::Creation::is_a_const_up(*((pcalc_term *) RP[1])) }
+	is-a-kind ( <term> ) |                     ==> { -, CreationPredicates::is_a_kind_up(*((pcalc_term *) RP[1]), NULL) }
+	is-a-var ( <term> ) |                      ==> { -, CreationPredicates::is_a_var_up(*((pcalc_term *) RP[1])) }
+	is-a-const ( <term> ) |                    ==> { -, CreationPredicates::is_a_const_up(*((pcalc_term *) RP[1])) }
 	not< |                                     ==> { -, Atoms::new(NEGATION_OPEN_ATOM) }
 	not> |                                     ==> { -, Atoms::new(NEGATION_CLOSE_ATOM) }
 	in< |                                      ==> { -, Atoms::new(DOMAIN_OPEN_ATOM) }

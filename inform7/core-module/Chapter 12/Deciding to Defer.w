@@ -279,7 +279,7 @@ int Calculus::Deferrals::count_callings_in_condition(pcalc_prop *prop) {
 	int calling_count = 0;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop)
-		if (Atoms::is_CALLED(pl))
+		if (CreationPredicates::is_calling_up_atom(pl))
 			calling_count++;
 	return calling_count;
 }
@@ -290,7 +290,7 @@ void Calculus::Deferrals::emit_retrieve_callings_in_condition(pcalc_prop *prop, 
 		int calling_count = 0, downs = 0;
 		TRAVERSE_VARIABLE(pl);
 		TRAVERSE_PROPOSITION(pl, prop) {
-			if (Atoms::is_CALLED(pl)) {
+			if (CreationPredicates::is_calling_up_atom(pl)) {
 				local_variable *local;
 				@<Find which local variable in R needs the value, creating it if necessary@>;
 				calling_count++;
@@ -318,7 +318,7 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 	int calling_count=0;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
-		if (Atoms::is_CALLED(pl)) {
+		if (CreationPredicates::is_calling_up_atom(pl)) {
 			local_variable *local;
 			@<Find which local variable in R needs the value, creating it if necessary@>;
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
@@ -371,8 +371,8 @@ int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int
 right name and kind of value exists in |R|.
 
 @<Find which local variable in R needs the value, creating it if necessary@> =
-	wording W = Atoms::CALLED_get_name(pl);
-	local = LocalVariables::ensure_called_local(W, pl->assert_kind);
+	wording W = CreationPredicates::get_calling_name(pl);
+	local = LocalVariables::ensure_called_local(W, CreationPredicates::what_kind_of_calling(pl));
 
 @ The following wrapper contributes almost nothing, but it checks some
 consistency assertions and writes to the debugging log.
@@ -389,7 +389,7 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 	pcalc_prop *prop = Propositions::FromSentences::from_spec(matches);
 	kind *K = Specifications::to_kind(var);
 	prop = Propositions::concatenate(
-		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
+		KindPredicates::new_atom(K, Terms::new_variable(0)), prop);
 	LOGIF(DESCRIPTION_COMPILATION, "[VMD: $P (%u) matches $D]\n", var, K, prop);
 	if (Propositions::Checker::type_check(prop,
 		Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) {
@@ -484,7 +484,7 @@ does not have run-time object or value creation.
 				quantifier_count++;
 				break;
 		}
-		if (Atoms::is_CALLED(pl)) {
+		if (CreationPredicates::is_calling_up_atom(pl)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantForceCalling),
 				"a 'now' is not allowed to call names",
 				"and it wouldn't really make sense to do so anyway. 'if "
@@ -546,7 +546,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	}
 	prop = Propositions::concatenate(
-		Atoms::KIND_new(K, Terms::new_variable(0)), prop);
+		KindPredicates::new_atom(K, Terms::new_variable(0)), prop);
 	if (Propositions::Checker::type_check(prop,
 		Propositions::Checker::tc_no_problem_reporting()) == NEVER_MATCH) return;
 	parse_node *example = NULL;

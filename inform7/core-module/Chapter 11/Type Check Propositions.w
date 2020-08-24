@@ -76,8 +76,6 @@ int Propositions::Checker::type_check(pcalc_prop *prop, tc_problem_kit tck_s) {
 	TRAVERSE_PROPOSITION(pl, prop) {
 		for (j=0; j<pl->arity; j++) Propositions::Checker::kind_of_term(&(pl->terms[j]), &vta, tck);
 		if (tck->flag_problem) return NEVER_MATCH;
-		if (pl->element == KIND_ATOM)
-			@<A KIND atom is not allowed if it can be proved to be false@>;
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 2))
 			@<A binary predicate is required to apply to terms of the right kinds@>;
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 1))
@@ -136,10 +134,10 @@ treat it as a piece of nonsense, like "if Wednesday is not custard".
 
 @<Look at KIND atoms to see what kinds of value are asserted for the variables@> =
 	TRAVERSE_PROPOSITION(pl, prop)
-		if (pl->element == KIND_ATOM) {
+		if (KindPredicates::is_kind_atom(pl)) {
 			int v = pl->terms[0].variable;
 			if (v >= 0) {
-				kind *new_kind = pl->assert_kind;
+				kind *new_kind = KindPredicates::get_kind(pl);
 				if (Kinds::Behaviour::is_object(new_kind)) new_kind = K_object;
 				kind *old_kind = vta.assigned_kinds[v];
 				if (old_kind) {
@@ -161,9 +159,8 @@ but it's a very subtle one, and we want to use it only when everything else
 
 @<Look at KIND atoms to reject unarticled shockers@> =
 	TRAVERSE_PROPOSITION(pl, prop)
-		if ((pl->element == KIND_ATOM) && (pl->unarticled)) {
-			if (tck->log_to_I6_text)
-				LOG("Rejecting as unarticled\n");
+		if (KindPredicates::is_unarticled_atom(pl)) {
+			if (tck->log_to_I6_text) LOG("Rejecting as unarticled\n");
 			if (tck->issue_error == FALSE) return NEVER_MATCH;
 			Problems::quote_source(1, current_sentence);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BareKindVariable));
@@ -217,36 +214,10 @@ problem message has already been issued, but just in case not...
 	}
 	return NEVER_MATCH;
 
-@h Type-checking enforced on predicate-like atoms.
-As with contradictory |KIND| atoms applied to variables, we will reject any
-|KIND| atom applied to a constant if it necessarily fails -- even when the
-sense of the proposition is arguably correct. For example:
-= (text)
-	1. 100 is not a text
-	[ NOT[ text('100') NOT] ]
-	Failed: proposition would not type-check
-	Term '100' is number not text
-=
-"100 is not a number" would pass, on the other hand. It is obviously false,
-but not meaningless.
-
-@<A KIND atom is not allowed if it can be proved to be false@> =
-	kind *need_to_find = pl->assert_kind;
-	if (Kinds::Behaviour::is_object(need_to_find)) need_to_find = K_object;
-	kind *actually_find = Propositions::Checker::kind_of_term(&(pl->terms[0]), &vta, tck);
-	if (Kinds::compatible(actually_find, need_to_find) == NEVER_MATCH) {
-		if (tck->log_to_I6_text)
-			LOG("Term $0 is %u not %u\n", &(pl->terms[0]), actually_find, need_to_find);
-		Propositions::Checker::issue_kind_typecheck_error(actually_find, need_to_find, tck, pl);
-		return NEVER_MATCH;
-	}
-
-@ See below, of course.
-
 @<A unary predicate is required to have an interpretation matching the kind of its term@> =
 	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
 	if (UnaryPredicateFamilies::typecheck(up, pl, &vta, tck) == NEVER_MATCH) {
-		if (tck->log_to_I6_text) LOG("Adjective $o cannot be applied\n", pl);
+		if (tck->log_to_I6_text) LOG("UP $o cannot be applied\n", pl);
 		return NEVER_MATCH;
 	}
 
@@ -365,7 +336,7 @@ only produce a problem message when the worst happens.
 int Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = UnaryPredicates::get_adj(tr);
+	adjective *aph = AdjectivalPredicates::to_adjective(tr);
 	kind *K = Propositions::Checker::kind_of_term(&(pl->terms[0]), vta, tck);
 
 	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {
@@ -516,9 +487,7 @@ void Propositions::Checker::issue_bp_typecheck_error(binary_predicate *bp,
 
 void Propositions::Checker::issue_kind_typecheck_error(kind *actually_find,
 	kind *need_to_find, tc_problem_kit *tck, pcalc_prop *ka) {
-	binary_predicate *bp = NULL;
-	if ((ka) && (GENERAL_POINTER_IS_NULL(ka->predicate) == FALSE))
-		bp = RETRIEVE_POINTER_binary_predicate(ka->predicate);
+	binary_predicate *bp = (ka)?(ka->saved_bp):NULL;
 	Problems::quote_kind(4, actually_find);
 	Problems::quote_kind(5, need_to_find);
 	if (bp) {

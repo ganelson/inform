@@ -157,7 +157,7 @@ again.
 =
 #ifdef CORE_MODULE
 pcalc_term Terms::adj_to_noun_conversion(unary_predicate *tr) {
-	adjective *aph = UnaryPredicates::get_adj(tr);
+	adjective *aph = AdjectivalPredicates::to_adjective(tr);
 	instance *I = Adjectives::Meanings::has_ENUMERATIVE_meaning(aph);
 	if (I) return Terms::new_constant(Rvalues::from_instance(I));
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
@@ -177,7 +177,7 @@ unary_predicate *Terms::noun_to_adj_conversion(pcalc_term pt) {
 	if (Properties::Conditions::get_coinciding_property(K) == NULL) return NULL;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		instance *I = Node::get_constant_instance(C);
-		return UnaryPredicates::new(Instances::get_adjective(I), TRUE);
+		return AdjectivalPredicates::new_up(Instances::get_adjective(I), TRUE);
 	}
 	return NULL;
 }

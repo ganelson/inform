@@ -39,8 +39,8 @@ int Binding::determine_status(pcalc_prop *prop, int *var_states,
 	int j, unavailable[26], blevel = 0, valid = TRUE;
 	for (j=0; j<26; j++) { var_states[j] = UNUSED_VST; unavailable[j] = 0; }
 	TRAVERSE_PROPOSITION(p, prop) {
-		if (Atoms::group(p->element) == OPEN_OPERATORS_GROUP) blevel++;
-		if (Atoms::group(p->element) == CLOSE_OPERATORS_GROUP) {
+		if (Atoms::is_opener(p->element)) blevel++;
+		if (Atoms::is_closer(p->element)) {
 			blevel--;
 			for (j=0; j<26; j++) if (unavailable[j] > blevel) unavailable[j] = -1;
 		}
@@ -355,7 +355,7 @@ check this condition pretty easily, it turns out:
 Because of the special status of $x$ (variable 0) -- the one allowed to be
 free in SN-propositions -- we sometimes need to know about it. The range
 of a bound variable can be found by looking at its quantifier, but a free
-variable can remain ambiguous. The presence of a |KIND| atom will explicitly
+variable can remain ambiguous. The presence of a "kind" atom will explicitly
 solve the problem for us; if we don't find one, though, we will simply have
 to assume that the set of objects is the domain of $x$. (We return |NULL|
 here, but that's the assumption which the caller will have to make.)
@@ -364,9 +364,8 @@ here, but that's the assumption which the caller will have to make.)
 kind *Binding::kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop)
-		if ((p->element == KIND_ATOM) && (p->terms[0].variable == 0))
-			if (p->assert_kind)
-				return p->assert_kind;
+		if ((KindPredicates::is_kind_atom(p)) && (p->terms[0].variable == 0))
+			return KindPredicates::get_kind(p);
 	return NULL;
 }
 
@@ -384,10 +383,6 @@ pcalc_prop *Binding::substitute_var_0_in(pcalc_prop *prop, parse_node *spec) {
 kind *Binding::infer_kind_of_variable_0(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(p);
 	TRAVERSE_PROPOSITION(p, prop) {
-		if ((p->element == KIND_ATOM) && (p->terms[0].variable == 0)) {
-			kind *K = p->assert_kind;
-			if (K) return K;
-		}
 		if ((p->element == PREDICATE_ATOM) && (p->arity == 1) && (p->terms[0].variable == 0)) {
 			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(p->predicate);
 			kind *K = UnaryPredicateFamilies::infer_kind(up);

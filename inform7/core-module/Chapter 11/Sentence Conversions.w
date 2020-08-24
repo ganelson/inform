@@ -356,9 +356,9 @@ is irregular because it differs from "something" and "someone".)
 @<Deal with the English irregularity concerning -where words@> =
 	#ifdef IF_MODULE
 	pcalc_prop *k_atom = Propositions::composited_kind(object_phrase_prop);
-	if ((k_atom) && (Kinds::eq(k_atom->assert_kind, K_room)) &&
+	if ((k_atom) && (Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
 		(verb_phrase_relation == R_equality) && (room_containment_predicate)) {
-		Atoms::set_composited(k_atom, FALSE);
+		KindPredicates::set_composited(k_atom, FALSE);
 		verb_phrase_relation = BinaryPredicates::get_reversal(room_containment_predicate);
 		LOGIF(PREDICATE_CALCULUS, "[%d] Decompositing object: $D\n",
 			conv_log_depth, object_phrase_prop);
@@ -520,11 +520,11 @@ one arising below, which is to do with enumerated value properties.)
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
 			*subject_of_NP = Terms::new_variable(0);
-			NP_prop = Atoms::from_adjective_on_x(Properties::EitherOr::get_aph(prn), FALSE);
+			NP_prop = AdjectivalPredicates::new_atom_on_x(Properties::EitherOr::get_aph(prn), FALSE);
 		} else if (Properties::Valued::coincides_with_kind(prn)) {
 			*subject_of_NP = Terms::new_variable(0);
 			kind *K = Properties::Valued::kind(prn);
-			NP_prop = Atoms::KIND_new(K, Terms::new_variable(0));
+			NP_prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 		}
 	}
 
@@ -539,14 +539,18 @@ it binds.)
 	parse_node *spec = p;
 	NP_prop = Propositions::copy(Propositions::FromSentences::from_spec(spec));
 
-	if (Propositions::match(NP_prop, 2, PREDICATE_ATOM, NULL, END_PROP_HERE, NULL)) {
+	if (Propositions::match(NP_prop, 2,
+		PREDICATE_ATOM, NULL, NULL,
+		END_PROP_HERE, NULL)) {
 		pcalc_term *pt = Atoms::is_x_equals(NP_prop);
 		if (pt) { *subject_of_NP = *pt; NP_prop = NULL; }
 	}
 
-	if ((Propositions::match(NP_prop, 2, KIND_ATOM, NULL, END_PROP_HERE, NULL)) &&
+	if ((Propositions::match(NP_prop, 2,
+		PREDICATE_ATOM, NULL, kind_up_family,
+		END_PROP_HERE, NULL)) &&
 		(<k-formal-variable-singular>(W))) {
-		Atoms::set_unarticled(NP_prop, TRUE);
+		KindPredicates::set_unarticled(NP_prop, TRUE);
 	}
 
 	if (NP_prop) *subject_of_NP = Propositions::get_first_cited_term(NP_prop);
@@ -688,7 +692,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 	if (I) {
 		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 		if (pname) {
-			prop = Atoms::from_adjective_on_x(Instances::get_adjective(I), FALSE);
+			prop = AdjectivalPredicates::new_atom_on_x(Instances::get_adjective(I), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}
 	}
@@ -699,7 +703,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
-			prop = Atoms::from_adjective_on_x(
+			prop = AdjectivalPredicates::new_atom_on_x(
 					Properties::EitherOr::get_aph(prn), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}

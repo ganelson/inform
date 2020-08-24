@@ -14,8 +14,9 @@ Chapter 1: Setting Up
 
 Chapter 2: Predicates
 	Compilation Schemas
-	Unary Predicate Families
 	Unary Predicates
+	Unary Predicate Families
+	Kind Predicates
 	The Adjectival Predicates
 	The Creation Predicates
 	Everywhere, Nowhere and Here

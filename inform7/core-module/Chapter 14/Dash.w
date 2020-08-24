@@ -1526,7 +1526,7 @@ against "value".)
 	if (Rvalues::is_CONSTANT_construction(new_value, CON_property))
 		prn = Rvalues::to_property(new_value);
 	else if (Descriptions::number_of_adjectives_applied_to(new_value) == 1) {
-		adjective *aph = UnaryPredicates::get_adj(Descriptions::first_unary_predicate(new_value));
+		adjective *aph = AdjectivalPredicates::to_adjective(Descriptions::first_unary_predicate(new_value));
 		if (Adjectives::Meanings::has_ENUMERATIVE_meaning(aph))
 			prn = Properties::Conditions::get_coinciding_property(Instances::to_kind(Adjectives::Meanings::has_ENUMERATIVE_meaning(aph)));
 		else if (Adjectives::Meanings::has_EORP_meaning(aph, NULL))

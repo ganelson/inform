@@ -7568,7 +7568,7 @@ ROOT_NT
                                                     INVOCATION_LIST_NT'if a locale-supportable thing is on the item' {indent: 3}
                                                         INVOCATION_NT'if a locale-supportable thing is on the item'
                                                             CONDITION_CONTEXT_NT'a locale-supportable thing is on the item'
-                                                                TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Exists x : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
+                                                                TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Existsx : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
                                                     CODE_BLOCK_NT
                                                         CODE_BLOCK_NT {RPT}
                                                             INVOCATION_LIST_NT'repeat with possibility running through things on the item' {indent: 4}
@@ -7657,7 +7657,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if a locale-supportable thing is on the item' {indent: 2}
                                                 INVOCATION_NT'if a locale-supportable thing is on the item'
                                                     CONDITION_CONTEXT_NT'a locale-supportable thing is on the item'
-                                                        TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Exists x : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
+                                                        TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Existsx : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'set pronouns from the item' {indent: 3}
                                                     INVOCATION_NT'set pronouns from the item'
@@ -7723,7 +7723,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if a locale-supportable thing is on the item' {indent: 2}
                                                 INVOCATION_NT'if a locale-supportable thing is on the item'
                                                     CONDITION_CONTEXT_NT'a locale-supportable thing is on the item'
-                                                        TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Exists x : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
+                                                        TEST_PROPOSITION_NT'a locale-supportable thing is on the item' {proposition: << Existsx : kind=thing(x) ^ locale-supportable(x) ^ ('the item' == <SupporterOf(*1) : x>) >>}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'set pronouns from the item' {indent: 3}
                                                     INVOCATION_NT'set pronouns from the item'
@@ -8044,7 +8044,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the noun is part of something ( called the whole )' {indent: 1}
                                         INVOCATION_NT'if the noun is part of something ( called the whole )'
                                             CONDITION_CONTEXT_NT'noun is part of something ( called the whole )'
-                                                TEST_PROPOSITION_NT'noun is part of something ( called the whole )' {proposition: << kind=thing_c(<(*1.component_parent) : 'noun'>) ^ called='whole'(thing)(<(*1.component_parent) : 'noun'>) >>}
+                                                TEST_PROPOSITION_NT'noun is part of something ( called the whole )' {proposition: << kind=thing_c(<(*1.component_parent) : 'noun'>) ^ called='whole':thing(<(*1.component_parent) : 'noun'>) >>}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {IF}
                                             INVOCATION_LIST_NT'if the actor is the player' {indent: 2}
@@ -8301,7 +8301,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if the actor is holding a player's holdall ( called the curr' {indent: 2}
                                                 INVOCATION_NT'if the actor is holding a player's holdall ( called the curr'
                                                     CONDITION_CONTEXT_NT'actor is holding a player's holdall ( called the current wor'
-                                                        TEST_PROPOSITION_NT'actor is holding a player's holdall ( called the current wor' {proposition: << Exists x : kind=player's holdall(x) ^ called='current working sack'(player's holdall)(x) ^ ('actor' == <HolderOf(*1) : x>) >>}
+                                                        TEST_PROPOSITION_NT'actor is holding a player's holdall ( called the current wor' {proposition: << Existsx : kind=player's holdall(x) ^ called='current working sack':player's holdall(x) ^ ('actor' == <HolderOf(*1) : x>) >>}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'let the transferred item be nothing' {indent: 3}
                                                     INVOCATION_NT'let the transferred item be nothing'
@@ -9358,7 +9358,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the noun is enclosed by a person ( called the owner ) who' {indent: 1}
                                         INVOCATION_NT'if the noun is enclosed by a person ( called the owner ) who'
                                             CONDITION_CONTEXT_NT'noun is enclosed by a person ( called the owner ) who is not'
-                                                TEST_PROPOSITION_NT'noun is enclosed by a person ( called the owner ) who is not' {proposition: << Exists x : kind=person(x) ^ called='owner'(person)(x) ^ NOT< (x == 'the actor') NOT> ^ encloses(x, 'noun') >>}
+                                                TEST_PROPOSITION_NT'noun is enclosed by a person ( called the owner ) who is not' {proposition: << Existsx : kind=person(x) ^ called='owner':person(x) ^ NOT< (x == 'the actor') NOT> ^ encloses(x, 'noun') >>}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {IF}
                                             INVOCATION_LIST_NT'if the actor is the player' {indent: 2}
@@ -9491,7 +9491,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the actor is in an enterable vehicle ( called the carriag' {indent: 1}
                                         INVOCATION_NT'if the actor is in an enterable vehicle ( called the carriag'
                                             CONDITION_CONTEXT_NT'actor is in an enterable vehicle ( called the carriage )'
-                                                TEST_PROPOSITION_NT'actor is in an enterable vehicle ( called the carriage )' {proposition: << kind=vehicle(<ContainerOf(*1) : 'actor'>) ^ enterable(<ContainerOf(*1) : 'actor'>) ^ called='carriage'(vehicle)(<ContainerOf(*1) : 'actor'>) >>}
+                                                TEST_PROPOSITION_NT'actor is in an enterable vehicle ( called the carriage )' {proposition: << kind=vehicle(<ContainerOf(*1) : 'actor'>) ^ enterable(<ContainerOf(*1) : 'actor'>) ^ called='carriage':vehicle(<ContainerOf(*1) : 'actor'>) >>}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the vehicle gone by is the carriage' {indent: 2} {NOW}
                                             CONDITION_CONTEXT_NT'the vehicle gone by is the carriage'
@@ -10160,7 +10160,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if something enterable ( called the box ) is in the location'
                                         INVOCATION_NT'if something enterable ( called the box ) is in the location'
                                             CONDITION_CONTEXT_NT'something enterable ( called the box ) is in the location'
-                                                TEST_PROPOSITION_NT'something enterable ( called the box ) is in the location' {proposition: << Exists x : kind=thing_c(x) ^ enterable(x) ^ called='box'(thing)(x) ^ ('the location' == <ContainerOf(*1) : x>) >>}
+                                                TEST_PROPOSITION_NT'something enterable ( called the box ) is in the location' {proposition: << Existsx : kind=thing_c(x) ^ enterable(x) ^ called='box':thing(x) ^ ('the location' == <ContainerOf(*1) : x>) >>}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the noun is the box' {indent: 1} {NOW}
                                             CONDITION_CONTEXT_NT'the noun is the box'
@@ -10809,7 +10809,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the actor is in a closed container ( called the cage )' {indent: 1}
                                         INVOCATION_NT'if the actor is in a closed container ( called the cage )'
                                             CONDITION_CONTEXT_NT'actor is in a closed container ( called the cage )'
-                                                TEST_PROPOSITION_NT'actor is in a closed container ( called the cage )' {proposition: << kind=container(<ContainerOf(*1) : 'actor'>) ^ closed(<ContainerOf(*1) : 'actor'>) ^ called='cage'(container)(<ContainerOf(*1) : 'actor'>) >>}
+                                                TEST_PROPOSITION_NT'actor is in a closed container ( called the cage )' {proposition: << kind=container(<ContainerOf(*1) : 'actor'>) ^ closed(<ContainerOf(*1) : 'actor'>) ^ called='cage':container(<ContainerOf(*1) : 'actor'>) >>}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {IF}
                                             INVOCATION_LIST_NT'if the player is the actor' {indent: 2}
@@ -10830,7 +10830,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the actor is on a supporter ( called the platform )'
                                         INVOCATION_NT'if the actor is on a supporter ( called the platform )'
                                             CONDITION_CONTEXT_NT'actor is on a supporter ( called the platform )'
-                                                TEST_PROPOSITION_NT'actor is on a supporter ( called the platform )' {proposition: << kind=supporter(<SupporterOf(*1) : 'actor'>) ^ called='platform'(supporter)(<SupporterOf(*1) : 'actor'>) >>}
+                                                TEST_PROPOSITION_NT'actor is on a supporter ( called the platform )' {proposition: << kind=supporter(<SupporterOf(*1) : 'actor'>) ^ called='platform':supporter(<SupporterOf(*1) : 'actor'>) >>}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'convert to the getting off action on the platform' {indent: 1}
                                             INVOCATION_NT'convert to the getting off action on the platform'
@@ -11499,8 +11499,8 @@ ROOT_NT
                                                         INVOCATION_NT'if something described which is not scenery is in the noun a'
                                                             CONDITION_CONTEXT_NT'something described which is not scenery is in the noun and '
                                                                 LOGICAL_AND_NT'something described which is not scenery is in the noun and '
-                                                                    TEST_PROPOSITION_NT'something described which is not scenery is in the noun' {proposition: << Exists x : kind=thing_c(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('the noun' == <ContainerOf(*1) : x>) >>}
-                                                                    TEST_PROPOSITION_NT'something which is not the player is in the noun' {proposition: << Exists x : kind=thing_c(x) ^ NOT< (x == 'the player') NOT> ^ ('the noun' == <ContainerOf(*1) : x>) >>}
+                                                                    TEST_PROPOSITION_NT'something described which is not scenery is in the noun' {proposition: << Existsx : kind=thing_c(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('the noun' == <ContainerOf(*1) : x>) >>}
+                                                                    TEST_PROPOSITION_NT'something which is not the player is in the noun' {proposition: << Existsx : kind=thing_c(x) ^ NOT< (x == 'the player') NOT> ^ ('the noun' == <ContainerOf(*1) : x>) >>}
                                                     CODE_BLOCK_NT
                                                         CODE_BLOCK_NT'say "In [the noun] " ( a )' {SAY}
                                                             INVOCATION_LIST_SAY_NT'"In [the noun] " ( a )'
@@ -11553,8 +11553,8 @@ ROOT_NT
                                                 INVOCATION_NT'if something described which is not scenery is on the noun a'
                                                     CONDITION_CONTEXT_NT'something described which is not scenery is on the noun and '
                                                         LOGICAL_AND_NT'something described which is not scenery is on the noun and '
-                                                            TEST_PROPOSITION_NT'something described which is not scenery is on the noun' {proposition: << Exists x : kind=thing_c(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('the noun' == <SupporterOf(*1) : x>) >>}
-                                                            TEST_PROPOSITION_NT'something which is not the player is on the noun' {proposition: << Exists x : kind=thing_c(x) ^ NOT< (x == 'the player') NOT> ^ ('the noun' == <SupporterOf(*1) : x>) >>}
+                                                            TEST_PROPOSITION_NT'something described which is not scenery is on the noun' {proposition: << Existsx : kind=thing_c(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('the noun' == <SupporterOf(*1) : x>) >>}
+                                                            TEST_PROPOSITION_NT'something which is not the player is on the noun' {proposition: << Existsx : kind=thing_c(x) ^ NOT< (x == 'the player') NOT> ^ ('the noun' == <SupporterOf(*1) : x>) >>}
                                             CODE_BLOCK_NT
                                                 CODE_BLOCK_NT'say "On [the noun] " ( a )' {SAY}
                                                     INVOCATION_LIST_SAY_NT'"On [the noun] " ( a )'
@@ -11732,7 +11732,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the noun contains a described thing which is not scenery' {indent: 1}
                                         INVOCATION_NT'if the noun contains a described thing which is not scenery'
                                             CONDITION_CONTEXT_NT'noun contains a described thing which is not scenery'
-                                                TEST_PROPOSITION_NT'noun contains a described thing which is not scenery' {proposition: << Exists x : kind=thing(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('noun' == <ContainerOf(*1) : x>) >>}
+                                                TEST_PROPOSITION_NT'noun contains a described thing which is not scenery' {proposition: << Existsx : kind=thing(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('noun' == <ContainerOf(*1) : x>) >>}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT'say "In [the noun] " ( a )' {SAY}
                                             INVOCATION_LIST_SAY_NT'"In [the noun] " ( a )'
@@ -11760,7 +11760,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'if the noun supports a described thing which is not scenery' {indent: 1}
                                         INVOCATION_NT'if the noun supports a described thing which is not scenery'
                                             CONDITION_CONTEXT_NT'noun supports a described thing which is not scenery'
-                                                TEST_PROPOSITION_NT'noun supports a described thing which is not scenery' {proposition: << Exists x : kind=thing(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('noun' == <SupporterOf(*1) : x>) >>}
+                                                TEST_PROPOSITION_NT'noun supports a described thing which is not scenery' {proposition: << Existsx : kind=thing(x) ^ described(x) ^ NOT< scenery(x) NOT> ^ ('noun' == <SupporterOf(*1) : x>) >>}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT'say "On [the noun] " ( a )' {SAY}
                                             INVOCATION_LIST_SAY_NT'"On [the noun] " ( a )'
@@ -16492,7 +16492,7 @@ ROOT_NT
                                 CONDITION_CONTEXT_NT'shop is air-conditioned and an open door ( called the escape'
                                     LOGICAL_AND_NT'shop is air-conditioned and an open door ( called the escape'
                                         TEST_PROPOSITION_NT'shop is air-conditioned' {proposition: << air-conditioned('shop') >>}
-                                        TEST_PROPOSITION_NT'an open door ( called the escape ) protects the shop' {proposition: << Exists x : kind=door(x) ^ open(x) ^ called='escape'(door)(x) ^ protection(x, 'the shop') >>}
+                                        TEST_PROPOSITION_NT'an open door ( called the escape ) protects the shop' {proposition: << Existsx : kind=door(x) ^ open(x) ^ called='escape':door(x) ^ protection(x, 'the shop') >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'try the current owner closing the escape' {indent: 1}
                                 INVOCATION_NT'try the current owner closing the escape'
@@ -16546,7 +16546,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if the location of the current owner encloses a submitted ar' {indent: 1}
                             INVOCATION_NT'if the location of the current owner encloses a submitted ar'
                                 CONDITION_CONTEXT_NT'location of the current owner encloses a submitted artwork ('
-                                    TEST_PROPOSITION_NT'location of the current owner encloses a submitted artwork (' {proposition: << Exists x : kind=artwork(x) ^ submitted(x) ^ called='target'(artwork)(x) ^ encloses('location of the current owner', x) >>}
+                                    TEST_PROPOSITION_NT'location of the current owner encloses a submitted artwork (' {proposition: << Existsx : kind=artwork(x) ^ submitted(x) ^ called='target':artwork(x) ^ encloses('location of the current owner', x) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'try the current owner filing the target' {indent: 2}
                                 INVOCATION_NT'try the current owner filing the target'
@@ -16622,7 +16622,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if the current actor carries something ( called the problem '
                             INVOCATION_NT'if the current actor carries something ( called the problem '
                                 CONDITION_CONTEXT_NT'current actor carries something ( called the problem )'
-                                    TEST_PROPOSITION_NT'current actor carries something ( called the problem )' {proposition: << Exists x : kind=thing_c(x) ^ called='problem'(thing)(x) ^ ('current actor' == <CarrierOf(*1) : x>) >>}
+                                    TEST_PROPOSITION_NT'current actor carries something ( called the problem )' {proposition: << Existsx : kind=thing_c(x) ^ called='problem':thing(x) ^ ('current actor' == <CarrierOf(*1) : x>) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'try the current actor resolving the problem' {indent: 1}
                                 INVOCATION_NT'try the current actor resolving the problem'
@@ -16682,7 +16682,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if it is protected by a door'
                             INVOCATION_NT'if it is protected by a door'
                                 CONDITION_CONTEXT_NT'it is protected by a door'
-                                    TEST_PROPOSITION_NT'it is protected by a door' {proposition: << Exists x : kind=door(x) ^ protection(x, 'it') >>}
+                                    TEST_PROPOSITION_NT'it is protected by a door' {proposition: << Existsx : kind=door(x) ^ protection(x, 'it') >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'yes' {indent: 1}
                                 INVOCATION_NT'yes'
@@ -17337,7 +17337,7 @@ ROOT_NT
                             INVOCATION_NT'if an infected person ( called typhoid mary ) can see a clea'
                                 CONDITION_CONTEXT_NT'an infected person ( called typhoid mary ) can see a clean p'
                                     LOGICAL_AND_NT'an infected person ( called typhoid mary ) can see a clean p'
-                                        TEST_PROPOSITION_NT'an infected person ( called typhoid mary ) can see a clean p' {proposition: << Exists x : kind=person(x) ^ infected(x) ^ called='typhoid mary'(person)(x) ^ Exists y : kind=person(y) ^ clean(y) ^ called='random bystander'(person)(y) ^ can-see(x, y) >>}
+                                        TEST_PROPOSITION_NT'an infected person ( called typhoid mary ) can see a clean p' {proposition: << Existsx : kind=person(x) ^ infected(x) ^ called='typhoid mary':person(x) ^ Existsy : kind=person(y) ^ clean(y) ^ called='random bystander':person(y) ^ can-see(x, y) >>}
                                         TEST_VALUE_NT'a random chance of 1 in 3 succeeds'
                                             PHRASE_TO_DECIDE_VALUE_NT'a random chance of 1 in 3 succeeds'
                                                 INVOCATION_LIST_NT'a random chance of 1 in 3 succeeds'
@@ -17388,7 +17388,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if every person is infected'
                             INVOCATION_NT'if every person is infected'
                                 CONDITION_CONTEXT_NT'every person is infected'
-                                    TEST_PROPOSITION_NT'every person is infected' {proposition: << ForAll x IN< kind=person(x) IN> : infected(x) >>}
+                                    TEST_PROPOSITION_NT'every person is infected' {proposition: << ForAllx IN< kind=person(x) IN> : infected(x) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'end the story saying "Everyone succumbs"' {indent: 1}
                                 INVOCATION_NT'end the story saying "Everyone succumbs"'
@@ -17398,7 +17398,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if every person is clean'
                             INVOCATION_NT'if every person is clean'
                                 CONDITION_CONTEXT_NT'every person is clean'
-                                    TEST_PROPOSITION_NT'every person is clean' {proposition: << ForAll x IN< kind=person(x) IN> : clean(x) >>}
+                                    TEST_PROPOSITION_NT'every person is clean' {proposition: << ForAllx IN< kind=person(x) IN> : clean(x) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'end the story finally saying "The Syndrome is eradicated"' {indent: 1}
                                 INVOCATION_NT'end the story finally saying "The Syndrome is eradicated"'
@@ -17816,7 +17816,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'if the person asked encloses something ( called item ) which' {indent: 1}
                                             INVOCATION_NT'if the person asked encloses something ( called item ) which'
                                                 CONDITION_CONTEXT_NT'person asked encloses something ( called item ) which unlock'
-                                                    TEST_PROPOSITION_NT'person asked encloses something ( called item ) which unlock' {proposition: << kind=thing_c(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ called='item'(thing)(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ encloses('person asked', <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) >>}
+                                                    TEST_PROPOSITION_NT'person asked encloses something ( called item ) which unlock' {proposition: << kind=thing_c(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ called='item':thing(<(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) ^ encloses('person asked', <(QUOTED_INAME_0_00000053(*1)) : 'the noun'>) >>}
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'now the second noun is the item' {indent: 2} {NOW}
                                                 CONDITION_CONTEXT_NT'the second noun is the item'
@@ -17829,7 +17829,7 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'if a visible passkey ( called item ) unbolts the noun' {indent: 1}
                                                     INVOCATION_NT'if a visible passkey ( called item ) unbolts the noun'
                                                         CONDITION_CONTEXT_NT'a visible passkey ( called item ) unbolts the noun'
-                                                            TEST_PROPOSITION_NT'a visible passkey ( called item ) unbolts the noun' {proposition: << kind=passkey(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ visible(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ called='item'(passkey)(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) >>}
+                                                            TEST_PROPOSITION_NT'a visible passkey ( called item ) unbolts the noun' {proposition: << kind=passkey(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ visible(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) ^ called='item':passkey(<(QUOTED_INAME_0_00000103(*1)) : 'the noun'>) >>}
                                                 CODE_BLOCK_NT
                                                     INVOCATION_LIST_NT'now the second noun is the item' {indent: 2} {NOW}
                                                         CONDITION_CONTEXT_NT'the second noun is the item'
@@ -18376,7 +18376,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if the noun is on a keychain ( called the containing keychai' {indent: 2}
                                                 INVOCATION_NT'if the noun is on a keychain ( called the containing keychai'
                                                     CONDITION_CONTEXT_NT'noun is on a keychain ( called the containing keychain )'
-                                                        TEST_PROPOSITION_NT'noun is on a keychain ( called the containing keychain )' {proposition: << kind=keychain(<SupporterOf(*1) : 'noun'>) ^ called='containing keychain'(keychain)(<SupporterOf(*1) : 'noun'>) >>}
+                                                        TEST_PROPOSITION_NT'noun is on a keychain ( called the containing keychain )' {proposition: << kind=keychain(<SupporterOf(*1) : 'noun'>) ^ called='containing keychain':keychain(<SupporterOf(*1) : 'noun'>) >>}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now the noun is the containing keychain' {indent: 3} {NOW}
                                                     CONDITION_CONTEXT_NT'the noun is the containing keychain'
@@ -18423,7 +18423,7 @@ ROOT_NT
                                             INVOCATION_LIST_NT'if the second noun is on a keychain ( called the containing ' {indent: 2}
                                                 INVOCATION_NT'if the second noun is on a keychain ( called the containing '
                                                     CONDITION_CONTEXT_NT'second noun is on a keychain ( called the containing keychai'
-                                                        TEST_PROPOSITION_NT'second noun is on a keychain ( called the containing keychai' {proposition: << kind=keychain(<SupporterOf(*1) : 'second noun'>) ^ called='containing keychain'(keychain)(<SupporterOf(*1) : 'second noun'>) >>}
+                                                        TEST_PROPOSITION_NT'second noun is on a keychain ( called the containing keychai' {proposition: << kind=keychain(<SupporterOf(*1) : 'second noun'>) ^ called='containing keychain':keychain(<SupporterOf(*1) : 'second noun'>) >>}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now the second noun is the containing keychain' {indent: 3} {NOW}
                                                     CONDITION_CONTEXT_NT'the second noun is the containing keychain'
@@ -19075,7 +19075,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if an indoors room is adjacent' {indent: 1}
                             INVOCATION_NT'if an indoors room is adjacent'
                                 CONDITION_CONTEXT_NT'an indoors room is adjacent'
-                                    TEST_PROPOSITION_NT'an indoors room is adjacent' {proposition: << Exists x : kind=room(x) ^ indoors(x) ^ adjacent(x) >>}
+                                    TEST_PROPOSITION_NT'an indoors room is adjacent' {proposition: << Existsx : kind=room(x) ^ indoors(x) ^ adjacent(x) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'let started printing be true' {indent: 2}
                                 INVOCATION_NT'let started printing be true'
@@ -19095,7 +19095,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'if a proximate door is not mentioned'
                                     INVOCATION_NT'if a proximate door is not mentioned'
                                         CONDITION_CONTEXT_NT'a proximate door is not mentioned'
-                                            TEST_PROPOSITION_NT'a proximate door is not mentioned' {proposition: << Exists x : kind=door(x) ^ proximate(x) ^ NOT< mentioned(x) NOT> >>}
+                                            TEST_PROPOSITION_NT'a proximate door is not mentioned' {proposition: << Existsx : kind=door(x) ^ proximate(x) ^ NOT< mentioned(x) NOT> >>}
                                 INVOCATION_LIST_SAY_NT'", or go through "'
                                     INVOCATION_NT'", or go through "'
                                         RVALUE_CONTEXT_NT'", or go through "' {required: sayable value}
@@ -19116,7 +19116,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if an outdoors room is adjacent' {indent: 1}
                             INVOCATION_NT'if an outdoors room is adjacent'
                                 CONDITION_CONTEXT_NT'an outdoors room is adjacent'
-                                    TEST_PROPOSITION_NT'an outdoors room is adjacent' {proposition: << Exists x : kind=room(x) ^ outdoors(x) ^ adjacent(x) >>}
+                                    TEST_PROPOSITION_NT'an outdoors room is adjacent' {proposition: << Existsx : kind=room(x) ^ outdoors(x) ^ adjacent(x) >>}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "You could[if started printing is true] also[end if] go ' {SAY}
                                 INVOCATION_LIST_SAY_NT'"You could"'
@@ -19200,7 +19200,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if a proximate door is not mentioned' {indent: 1}
                             INVOCATION_NT'if a proximate door is not mentioned'
                                 CONDITION_CONTEXT_NT'a proximate door is not mentioned'
-                                    TEST_PROPOSITION_NT'a proximate door is not mentioned' {proposition: << Exists x : kind=door(x) ^ proximate(x) ^ NOT< mentioned(x) NOT> >>}
+                                    TEST_PROPOSITION_NT'a proximate door is not mentioned' {proposition: << Existsx : kind=door(x) ^ proximate(x) ^ NOT< mentioned(x) NOT> >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'let started printing be true' {indent: 2}
                                 INVOCATION_NT'let started printing be true'
@@ -19273,7 +19273,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if the player can see a door ( called nearest exit )' {indent: 1}
                             INVOCATION_NT'if the player can see a door ( called nearest exit )'
                                 CONDITION_CONTEXT_NT'player can see a door ( called nearest exit )'
-                                    TEST_PROPOSITION_NT'player can see a door ( called nearest exit )' {proposition: << Exists x : kind=door(x) ^ called='nearest exit'(door)(x) ^ can-see('player', x) >>}
+                                    TEST_PROPOSITION_NT'player can see a door ( called nearest exit )' {proposition: << Existsx : kind=door(x) ^ called='nearest exit':door(x) ^ can-see('player', x) >>}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'try entering the nearest exit' {indent: 2}
                                 INVOCATION_NT'try entering the nearest exit'
@@ -20513,7 +20513,7 @@ ROOT_NT
                                                 INVOCATION_LIST_SAY_NT'if a door is visible'
                                                     INVOCATION_NT'if a door is visible'
                                                         CONDITION_CONTEXT_NT'a door is visible'
-                                                            TEST_PROPOSITION_NT'a door is visible' {proposition: << Exists x : kind=door(x) ^ visible(x) >>}
+                                                            TEST_PROPOSITION_NT'a door is visible' {proposition: << Existsx : kind=door(x) ^ visible(x) >>}
                                                 INVOCATION_LIST_SAY_NT'the random visible door'
                                                     INVOCATION_NT'the random visible door'
                                                         RVALUE_CONTEXT_NT'random visible door' {required: object}
@@ -20567,7 +20567,7 @@ ROOT_NT
                                                 TEST_PROPOSITION_NT'total entry is 1' {proposition: << ('total entry' == '1') >>}
                                                 LOGICAL_AND_NT
                                                     TEST_PROPOSITION_NT'count is 1' {proposition: << ('count' == '1') >>}
-                                                    TEST_PROPOSITION_NT'accomplice carries something' {proposition: << Exists x : kind=thing_c(x) ^ ('accomplice' == <CarrierOf(*1) : x>) >>}
+                                                    TEST_PROPOSITION_NT'accomplice carries something' {proposition: << Existsx : kind=thing_c(x) ^ ('accomplice' == <CarrierOf(*1) : x>) >>}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT'say ", carrying [a list of things carried by the accomplice]' {SAY}
                                         INVOCATION_LIST_SAY_NT'", carrying "'
@@ -20594,7 +20594,7 @@ ROOT_NT
                         INVOCATION_LIST_NT'if a marked for listing person is infected' {indent: 1}
                             INVOCATION_NT'if a marked for listing person is infected'
                                 CONDITION_CONTEXT_NT'a marked for listing person is infected'
-                                    TEST_PROPOSITION_NT'a marked for listing person is infected' {proposition: << Exists x : kind=person(x) ^ marked for listing(x) ^ infected(x) >>}
+                                    TEST_PROPOSITION_NT'a marked for listing person is infected' {proposition: << Existsx : kind=person(x) ^ marked for listing(x) ^ infected(x) >>}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT {IF}
                                 INVOCATION_LIST_NT'if looking and a marked for listing person is not in the loc' {indent: 2}
@@ -20603,7 +20603,7 @@ ROOT_NT
                                             LOGICAL_AND_NT'looking and a marked for listing person is not in the locati'
                                                 TEST_VALUE_NT'looking'
                                                     CONSTANT_NT'looking' {kind: action}
-                                                TEST_PROPOSITION_NT'a marked for listing person is not in the location' {proposition: << Exists x : kind=person(x) ^ marked for listing(x) ^ NOT< ('the location' == <ContainerOf(*1) : x>) NOT> >>}
+                                                TEST_PROPOSITION_NT'a marked for listing person is not in the location' {proposition: << Existsx : kind=person(x) ^ marked for listing(x) ^ NOT< ('the location' == <ContainerOf(*1) : x>) NOT> >>}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'clear marked people' {indent: 3}
                                         INVOCATION_NT'clear marked people'
@@ -20683,8 +20683,8 @@ ROOT_NT
                             INVOCATION_NT'if every marked for listing person is infected and at least '
                                 CONDITION_CONTEXT_NT'every marked for listing person is infected and at least thr'
                                     LOGICAL_AND_NT'every marked for listing person is infected and at least thr'
-                                        TEST_PROPOSITION_NT'every marked for listing person is infected' {proposition: << ForAll x IN< kind=person(x) ^ marked for listing(x) IN> : infected(x) >>}
-                                        TEST_PROPOSITION_NT'at least three people are marked for listing' {proposition: << Card>=3 x IN< kind=person(x) IN> : marked for listing(x) >>}
+                                        TEST_PROPOSITION_NT'every marked for listing person is infected' {proposition: << ForAllx IN< kind=person(x) ^ marked for listing(x) IN> : infected(x) >>}
+                                        TEST_PROPOSITION_NT'at least three people are marked for listing' {proposition: << Card>=3x IN< kind=person(x) IN> : marked for listing(x) >>}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "They are all sick as dogs, every one."' {SAY}
                                 INVOCATION_LIST_SAY_NT'"They are all sick as dogs, every one."'

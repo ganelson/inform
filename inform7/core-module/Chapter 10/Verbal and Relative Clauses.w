@@ -184,7 +184,7 @@ is orange" so that "orange" will be used not as a noun but as an adjective.
 		parse_node *adjq = object_phrase_subtree;
 		instance *I = Rvalues::to_instance(adjq);
 		if (Instances::get_adjective(I)) {
-			unary_predicate *ale = UnaryPredicates::new(Instances::get_adjective(I), TRUE);
+			unary_predicate *ale = AdjectivalPredicates::new_up(Instances::get_adjective(I), TRUE);
 			parse_node *spec = Descriptions::from_proposition(NULL, Node::get_text(adjq));
 			Descriptions::add_to_adjective_list(ale, spec);
 			verb_phrase_subtree->down = spec;

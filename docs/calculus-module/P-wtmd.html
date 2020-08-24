@@ -260,11 +260,6 @@ rather than discuss that state. For example, Inform might create the kind
 "animal" by asserting <span class="extract"><span class="extract-syntax">Exists x : is-a-kind(x) ^ called=animal(x)</span></span>.
 </p>
 
-<p class="commentary">Otherwise, while these are all conceptually unary predicates, only the first
-is a <span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span> in our implementation: the others are <span class="extract"><span class="extract-syntax">KIND_ATOM</span></span>,
-<span class="extract"><span class="extract-syntax">CALLED_ATOM</span></span>,
-</p>
-
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Binary predicates. </b>By contrast all binary predicate atoms use <span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span>, and there is only
 one set of them &mdash; but with that said,
 </p>
@@ -291,8 +286,8 @@ calls.
 <a href="3-trm.html#SP4" class="internal">Terms::new_variable</a> and <a href="3-trm.html#SP4" class="internal">Terms::new_function</a>.
 </p>
 
-<p class="commentary">2. Unary predicate atoms are made using <a href="3-ap.html#SP14" class="internal">Atoms::binary_PREDICATE_new</a>.
-Binary predicate atoms are made using <a href="3-ap.html#SP14" class="internal">Atoms::binary_PREDICATE_new</a>.
+<p class="commentary">2. Unary predicate atoms are made using <a href="3-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
+Binary predicate atoms are made using <a href="3-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
 </p>
 
 <p class="commentary">3. Propositions are then built up from atoms or other propositions<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> by calling:

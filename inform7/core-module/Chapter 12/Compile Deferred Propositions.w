@@ -508,9 +508,6 @@ I6 code as we go, but preserving the Invariant.
 	int no_deferred_callings = 0; /* how many |CALLED| atoms have been found to date */
 
 	TRAVERSE_PROPOSITION(pl, proposition) {
-		if (Atoms::is_CALLED(pl)) {
-			@<Push the C-stack@>;
-		} else
 		switch (pl->element) {
 			case NEGATION_OPEN_ATOM:
 			case NEGATION_CLOSE_ATOM:
@@ -534,13 +531,15 @@ I6 code as we go, but preserving the Invariant.
 				@<Pop the R-stack@>;
 				break;
 			default: {
-				if (R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)
+				if (CreationPredicates::is_calling_up_atom(pl))
+					@<Push the C-stack@>
+				else if (R_stack_reason[R_sp-1] == NOW_ASSERTION_DEFER)
 					@<Compile code to force the atom@>
 				else {
 					int last_in_run = TRUE, first_in_run = TRUE;
 					if (run_of_conditions++ > 0) first_in_run = FALSE;
 					pcalc_prop *ex = pl->next;
-					while ((ex) && (Atoms::is_CALLED(ex))) ex = ex->next;
+					while ((ex) && (CreationPredicates::is_calling_up_atom(ex))) ex = ex->next;
 					if (ex) {
 						switch(ex->element) {
 							case NEGATION_OPEN_ATOM:
@@ -1620,10 +1619,8 @@ proposition makes up $\psi$, and now |grouped| is clear.
 	int bl = 0, enabled = FALSE;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, proposition) {
-		switch (Atoms::group(pl->element)) {
-			case OPEN_OPERATORS_GROUP: bl++; break;
-			case CLOSE_OPERATORS_GROUP: bl--; break;
-		}
+		if (Atoms::is_opener(pl->element)) bl++;
+		if (Atoms::is_closer(pl->element)) bl--;
 		if (grouped) {
 			if (pl->element == DOMAIN_OPEN_ATOM) enabled = TRUE;
 			if (pl->element == DOMAIN_CLOSE_ATOM) enabled = FALSE;
@@ -1642,8 +1639,8 @@ us the domain set for the variable $v$, or for $R(v, t)$ atoms for
 parent-optimisable relations $R$.
 
 @<Scan $\psi$, the part of the proposition establishing the domain@> =
-	if ((pl->element == KIND_ATOM) && (pl->terms[0].variable == var)) {
-		K = pl->assert_kind;
+	if ((KindPredicates::is_kind_atom(pl)) && (pl->terms[0].variable == var)) {
+		K = KindPredicates::get_kind(pl);
 		kind_position = pl_prev;
 	}
 

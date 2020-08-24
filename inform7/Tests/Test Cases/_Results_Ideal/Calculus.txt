@@ -604,7 +604,7 @@
   << empty(x) & empty(x) >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on object
-  Adjective empty(x) cannot be applied
+  UP empty(x) cannot be applied
   
   3. a scene which is not a number
   << scene(x) & NOT< number(x) NOT> >>
@@ -615,18 +615,19 @@
   << NOT< text('100') NOT> >>
   Failed: proposition would not type-check
   Term '100' is number not text
+  UP text('100') cannot be applied
   
   5. a number which is empty
   << number(x) & empty(x) >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on number
-  Adjective empty(x) cannot be applied
+  UP empty(x) cannot be applied
   
   6. 100 which is empty
   << empty('100') >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on number
-  Adjective empty('100') cannot be applied
+  UP empty('100') cannot be applied
   
   7. a number which is inside a scene
   << number(x) & scene(<ContainerOf(*1) : x>) >>
@@ -647,6 +648,7 @@
   << vehicle(x) & number(<ContainerOf(*1) : x>) >>
   Failed: proposition would not type-check
   Term <ContainerOf(*1) : x> is object not number
+  UP number(<ContainerOf(*1) : x>) cannot be applied
   
   11. a woman who likes a number
   << woman(x) & Exists y : number(y) & person(y) & amity(x, y) >>
@@ -686,13 +688,13 @@
   << opaque('10') >>
   Failed: proposition would not type-check
   Adjective 'opaque' undefined on number
-  Adjective opaque('10') cannot be applied
+  UP opaque('10') cannot be applied
   
   18. the Entire Game is empty
   << empty('the entire game') >>
   Failed: proposition would not type-check
   Adjective 'empty' undefined on scene
-  Adjective empty('the entire game') cannot be applied
+  UP empty('the entire game') cannot be applied
   
   19. funky todo is the action of waiting
   << ('funky todo' == 'the action of waiting') >>
@@ -710,10 +712,11 @@
   BP heaviness('the player', '6 feet 2 inches') cannot be applied
   
   23. Entire Game is a density listed in the Table of Solid Stuff
+   Laboratory
   << number('entire game') & listed_in('entire game', 'the table of solid stuff') >>
   Failed: proposition would not type-check
-   Laboratory
   Term 'entire game' is scene not number
+  UP number('entire game') cannot be applied
   
   24. things enclosing the player that encloses something
   << thing(x) & object('the player') & Exists y : thing(y) & encloses('the player', y) & encloses(x, 'the player') >>

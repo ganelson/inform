@@ -618,7 +618,7 @@ further sub-cases later.
 @<Case 13 - X OF Y vs ADJECTIVE@> =
 	if (global_pass_state.pass == 1) return;
 	unary_predicate *pred = Node::get_predicate(py);
-	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(UnaryPredicates::get_adj(pred))) {
+	if (Adjectives::Meanings::has_ENUMERATIVE_meaning(AdjectivalPredicates::to_adjective(pred))) {
 		property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 		if (Node::get_type(px->down) == WITH_NT) {
 			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
@@ -1495,7 +1495,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 	} else {
 		kind *K = Specifications::to_kind(Node::get_evaluation(py));
 		if (K) {
-			pcalc_prop *prop = Atoms::KIND_new(K, Terms::new_variable(0));
+			pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 			Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
 		}
 	}

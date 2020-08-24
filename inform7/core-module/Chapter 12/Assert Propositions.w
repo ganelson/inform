@@ -202,7 +202,6 @@ void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
 			case NEGATION_OPEN_ATOM: case NEGATION_CLOSE_ATOM:
 				now_negated = (now_negated)?FALSE:TRUE; break;
 			case QUANTIFIER_ATOM: @<Assert the truth or falsity of a QUANTIFIER atom@>; break;
-			case KIND_ATOM: @<Assert the truth or falsity of a KIND atom@>; break;
 			case PREDICATE_ATOM:
 				switch (pl->arity) {
 					case 1: @<Assert the truth or falsity of a unary predicate@>; break;
@@ -318,21 +317,23 @@ interpret no indication of a kind as meaning "object".
 @<Scan subsequent atoms to find the name, nature and kind of what is to be created@> =
 	TRAVERSE_VARIABLE(lookahead);
 	TRAVERSE_PROPOSITION(lookahead, pl)
-		if ((lookahead->arity == 1) && (lookahead->terms[0].variable == v)) {
-			if (Atoms::is_CALLED(lookahead)) {
-				NW = Atoms::CALLED_get_name(lookahead);
-			} else if (lookahead->element == KIND_ATOM) K = lookahead->assert_kind;
-			else if ((lookahead->element == PREDICATE_ATOM) && (lookahead->arity == 1)) {
-				unary_predicate *up = RETRIEVE_POINTER_unary_predicate(lookahead->predicate);
-				if (up->family == is_a_kind_up_family) {
-					is_a_kind = TRUE; K = up->assert_kind;
-				}
-				if (up->family == is_a_var_up_family) {
-					is_a_var = TRUE;
-				}
-				if (up->family == is_a_const_up_family) {
-					is_a_const = TRUE;
-				}
+		if ((lookahead->arity == 1) && (lookahead->terms[0].variable == v) &&
+			(lookahead->element == PREDICATE_ATOM)) {
+			unary_predicate *up = RETRIEVE_POINTER_unary_predicate(lookahead->predicate);
+			if (up->family == calling_up_family) {
+				NW = up->calling_name;
+			}
+			if (up->family == kind_up_family) {
+				K = up->assert_kind;
+			}
+			if (up->family == is_a_kind_up_family) {
+				is_a_kind = TRUE; K = up->assert_kind;
+			}
+			if (up->family == is_a_var_up_family) {
+				is_a_var = TRUE;
+			}
+			if (up->family == is_a_const_up_family) {
+				is_a_const = TRUE;
 			}
 		}
 
@@ -366,31 +367,6 @@ duplicate names to others already made:
 		LOGIF(ASSERTIONS, ":: %c <-- $P\n", pcalc_vars[v], current_interpretation_as_spec[v]);
 	} else if (current_interpretation_as_infs[v]) {
 		LOGIF(ASSERTIONS, ":: %c <-- $j\n", pcalc_vars[v], current_interpretation_as_infs[v]);
-	}
-
-@h Asserting kinds.
-Note that we never assert the kind of non-objects. Typechecking won't allow such
-an atom to exist unless it states something already true, so there is no need.
-
-Once again, the problem messages in this section for negated attempts are
-really quite hard to generate, because the A-parser usually gets there first.
-"There is a banana which is something which is not a door." will fall
-through here, but it isn't exactly an everyday sentence.
-
-@<Assert the truth or falsity of a KIND atom@> =
-	if (now_negated) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNonKind),
-			"that seems to say what kind something doesn't have",
-			"which is too vague. You must say what kind it does have.");
-		return;
-	}
-
-	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
-	instance *ox = InferenceSubjects::as_object_instance(subj);
-	if (ox) Instances::set_kind(ox, pl->assert_kind);
-	else {
-		kind *K = InferenceSubjects::as_kind(subj);
-		if (K) Kinds::make_subkind(K, pl->assert_kind);
 	}
 
 @h Asserting predicates.
@@ -588,7 +564,6 @@ int Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {
-			case KIND_ATOM: break;
 			case PREDICATE_ATOM:
 				switch (pl->arity) {
 					case 1: @<See if this unary predicate can be tested@>; break;
@@ -613,7 +588,6 @@ int Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subje
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {
-			case KIND_ATOM: @<Test if this kind atom is true@>; break;
 			case PREDICATE_ATOM:
 				switch (pl->arity) {
 					case 1: @<Test if this unary predicate is true@>; break;
@@ -623,9 +597,6 @@ int Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subje
 	}
 	return TRUE;
 }
-
-@<Test if this kind atom is true@> =
-	;
 
 @<Test if this unary predicate is true@> =
 	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);

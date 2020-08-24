@@ -107,7 +107,7 @@ the view that a double negative is a positive.
 	prop = Propositions::insert_atom(prop, position, Atoms::new(DOMAIN_CLOSE_ATOM));
 	if (BinaryPredicates::term_kind(bp, i))
 		prop = Propositions::insert_atom(prop, position,
-			Atoms::KIND_new(BinaryPredicates::term_kind(bp, i), new_var));
+			KindPredicates::new_atom(BinaryPredicates::term_kind(bp, i), new_var));
 	prop = Propositions::insert_atom(prop, position, Atoms::new(DOMAIN_OPEN_ATOM));
 	prop = Propositions::insert_atom(prop, position, Atoms::QUANTIFIER_new(not_exists_quantifier, nv, 0));
 
@@ -177,9 +177,8 @@ pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *chan
 				prop = Propositions::insert_atom(prop, pl_prev,
 					Atoms::binary_PREDICATE_new(Tables::Columns::get_listed_in_predicate(tc),
 						nv_term, Terms::new_constant(tab)));
-				pcalc_prop *new_KIND = Atoms::KIND_new(K, nv_term);
-				new_KIND->predicate =
-					STORE_POINTER_binary_predicate(Tables::Columns::get_listed_in_predicate(tc));
+				pcalc_prop *new_KIND = KindPredicates::new_atom(K, nv_term);
+				new_KIND->saved_bp = Tables::Columns::get_listed_in_predicate(tc);
 				prop = Propositions::insert_atom(prop, pl_prev, new_KIND);
 				prop = Propositions::insert_atom(prop, pl_prev,
 					Atoms::QUANTIFIER_new(exists_quantifier, nv, 0));
@@ -221,7 +220,8 @@ pcalc_prop *Calculus::Simplifications::negated_determiners(pcalc_prop *prop, int
 	TRAVERSE_PROPOSITION(pl, prop) {
 		pcalc_prop *quant_atom;
 		if (Propositions::match(pl, 2,
-			NEGATION_OPEN_ATOM, NULL, QUANTIFIER_ATOM, &quant_atom)) {
+			NEGATION_OPEN_ATOM, NULL,
+			QUANTIFIER_ATOM, &quant_atom)) {
 			if ((negate_existence_too) ||
 				((Atoms::is_existence_quantifier(quant_atom) == FALSE))) {
 				prop = Calculus::Simplifications::prop_ungroup_and_negate_determiner(prop, pl_prev, TRUE);
@@ -259,10 +259,12 @@ pcalc_prop *Calculus::Simplifications::prop_ungroup_and_negate_determiner(pcalc_
 	int fnd;
 	if (after == NULL)
 		fnd = Propositions::match(prop, 2,
-			NEGATION_OPEN_ATOM, NULL, QUANTIFIER_ATOM, &quant_atom);
+			NEGATION_OPEN_ATOM, NULL,
+			QUANTIFIER_ATOM, &quant_atom);
 	else
 		fnd = Propositions::match(after, 3, ANY_ATOM_HERE, NULL,
-			NEGATION_OPEN_ATOM, NULL, QUANTIFIER_ATOM, &quant_atom);
+			NEGATION_OPEN_ATOM, NULL,
+			QUANTIFIER_ATOM, &quant_atom);
 	if (fnd) {
 		quantifier *quant = quant_atom->quant;
 		quantifier *antiquant = Quantifiers::get_negation(quant);
@@ -301,8 +303,8 @@ pcalc_prop *Calculus::Simplifications::negated_satisfiable(pcalc_prop *prop, int
 	if ((Propositions::match(prop, 6,
 		NEGATION_OPEN_ATOM, NULL,
 		QUANTIFIER_ATOM, &quant_atom,
-		KIND_ATOM, &kind_atom,
-		PREDICATE_ATOM, &predicate_atom,
+		PREDICATE_ATOM, &kind_atom, kind_up_family,
+		PREDICATE_ATOM, &predicate_atom, NULL,
 		NEGATION_CLOSE_ATOM, NULL,
 		END_PROP_HERE, NULL)) &&
 		(Atoms::is_existence_quantifier(quant_atom)) &&
@@ -357,8 +359,8 @@ pcalc_prop *Calculus::Simplifications::make_kinds_of_value_explicit(pcalc_prop *
 				if (v >= 0) {
 					kind *K = BinaryPredicates::term_kind(bp, i);
 					if (K) {
-						pcalc_prop *new_KIND = Atoms::KIND_new(K, Terms::new_variable(v));
-						new_KIND->predicate = STORE_POINTER_binary_predicate(bp);
+						pcalc_prop *new_KIND = KindPredicates::new_atom(K, Terms::new_variable(v));
+						new_KIND->saved_bp = bp;
 						prop = Propositions::insert_atom(prop, pl_prev, new_KIND);
 					}
 					*changed = TRUE;
@@ -416,11 +418,11 @@ call will already have taken care of those sub-sub-expressions.)
 	TRAVERSE_VARIABLE(pl);
 	int blevel = start_level;
 	TRAVERSE_PROPOSITION(pl, start_group) {
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) {
+		if (Atoms::is_opener(pl->element)) {
 			blevel++;
 			if (blevel == 2) prop = Calculus::Simplifications::simp_redundant_kinds_dash(prop, pl, 0, changed);
 		}
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) blevel--;
+		if (Atoms::is_closer(pl->element)) blevel--;
 		if (blevel == 0) break;
 	}
 
@@ -468,12 +470,13 @@ marks the start of the statement following the quantifier.
 	}
 
 	TRAVERSE_PROPOSITION(pl, start_group) {
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) blevel++;
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) blevel--;
+		if (Atoms::is_opener(pl->element)) blevel++;
+		if (Atoms::is_closer(pl->element)) blevel--;
 		if (blevel == 0) break;
 		pcalc_prop *dom;
 		if (Propositions::match(pl, 2,
-				QUANTIFIER_ATOM, NULL, DOMAIN_OPEN_ATOM, &dom)) {
+				QUANTIFIER_ATOM, NULL,
+				DOMAIN_OPEN_ATOM, &dom)) {
 			if ((Atoms::is_existence_quantifier(pl)) ||
 				(Atoms::is_nonexistence_quantifier(pl)))
 				bound_vars_stack[bvsp++] = -1;
@@ -535,11 +538,11 @@ doesn't matter, but it's tidy.)
 		for (j=0; j<26; j++)
 			if (pl == optimal_kind_placings_statement[j])
 				domain_passed[j] = TRUE;
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) blevel++;
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) blevel--;
+		if (Atoms::is_opener(pl->element)) blevel++;
+		if (Atoms::is_closer(pl->element)) blevel--;
 		if (blevel == 1) {
-			if (pl->element == KIND_ATOM) {
-				kind *early_kind = pl->assert_kind;
+			if (KindPredicates::is_kind_atom(pl)) {
+				kind *early_kind = KindPredicates::get_kind(pl);
 				int v = pl->terms[0].variable;
 				if ((v >= 0) && (early_kind)) {
 					@<Strike out any subsequent but weaker kind predicate on the same variable@>;
@@ -564,14 +567,14 @@ outer subexpression -- the one which is governed by the quantifier.
 	TRAVERSE_VARIABLE(gpl);
 	int glevel = 1;
 	TRAVERSE_PROPOSITION(gpl, pl) {
-		if (Atoms::group(gpl->element) == OPEN_OPERATORS_GROUP) glevel++;
+		if (Atoms::is_opener(gpl->element)) glevel++;
 		if (gpl->element == DOMAIN_CLOSE_ATOM) {
 			if (glevel > 1) glevel--;
-		} else if (Atoms::group(gpl->element) == CLOSE_OPERATORS_GROUP) glevel--;
+		} else if (Atoms::is_closer(gpl->element)) glevel--;
 		if (glevel == 0) break;
-		if ((gpl != pl) && (gpl->element == KIND_ATOM) && (v == gpl->terms[0].variable)) {
+		if ((gpl != pl) && (KindPredicates::is_kind_atom(gpl)) && (v == gpl->terms[0].variable)) {
 			/* i.e., |gpl| now points to a different kind atom on the same variable */
-			kind *later_kind = gpl->assert_kind;
+			kind *later_kind = KindPredicates::get_kind(gpl);
 			if ((later_kind) && (Kinds::conforms_to(early_kind, later_kind))) {
 				prop = Propositions::delete_atom(prop, gpl_prev);
 				PROPOSITION_EDITED_REPEATING_CURRENT(gpl, prop);
@@ -583,11 +586,11 @@ outer subexpression -- the one which is governed by the quantifier.
 	pcalc_prop *best_place = optimal_kind_placings_domain[v];
 	if (domain_passed[v]) best_place = optimal_kind_placings_statement[v];
 	if (pl_prev != best_place) {
-		int state = Atoms::is_unarticled(pl_prev);
+		int state = KindPredicates::is_unarticled_atom(pl_prev);
 		prop = Propositions::delete_atom(prop, pl_prev); /* that is, delete the current $K(v)$ */
-		pcalc_prop *new_K = Atoms::KIND_new(early_kind,
+		pcalc_prop *new_K = KindPredicates::new_atom(early_kind,
 			Terms::new_variable(v));
-		Atoms::set_unarticled(new_K, state);
+		KindPredicates::set_unarticled(new_K, state);
 		prop = Propositions::insert_atom(prop, best_place, new_K); /* insert a new one */
 		PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
 	}
@@ -628,11 +631,11 @@ the proposition is going to fail type-checking anyway.)
 	TRAVERSE_VARIABLE(pl);
 	int blevel = start_level;
 	TRAVERSE_PROPOSITION(pl, start_group) {
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) blevel++;
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) blevel--;
+		if (Atoms::is_opener(pl->element)) blevel++;
+		if (Atoms::is_closer(pl->element)) blevel--;
 		if (blevel == 1) {
-			if (pl->element == KIND_ATOM) {
-				kind *early_kind = pl->assert_kind;
+			if (KindPredicates::is_kind_atom(pl)) {
+				kind *early_kind = KindPredicates::get_kind(pl);
 				parse_node *spec = pl->terms[0].constant;
 				if (ParseTreeUsage::is_rvalue(spec)) {
 					kind *K = Rvalues::to_kind(spec);
@@ -802,8 +805,8 @@ pcalc_prop *Calculus::Simplifications::eliminate_redundant_variables(pcalc_prop 
 	@<Find out where and how variables are bound@>;
 	level = 0;
 	TRAVERSE_PROPOSITION(pl, prop) {
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) level++;
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) level--;
+		if (Atoms::is_opener(pl->element)) level++;
+		if (Atoms::is_closer(pl->element)) level--;
 		if (Atoms::is_equality_predicate(pl)) {
 			int j;
 			for (j=1; j>=0; j--) {
@@ -850,8 +853,8 @@ pcalc_prop *Calculus::Simplifications::eliminate_redundant_variables(pcalc_prop 
 	}
 
 	TRAVERSE_PROPOSITION(pl, prop) {
-		if (Atoms::group(pl->element) == OPEN_OPERATORS_GROUP) level++;
-		if (Atoms::group(pl->element) == CLOSE_OPERATORS_GROUP) level--;
+		if (Atoms::is_opener(pl->element)) level++;
+		if (Atoms::is_closer(pl->element)) level--;
 		if (Atoms::is_quantifier(pl)) {
 			int v = pl->terms[0].variable;
 			if (Atoms::is_existence_quantifier(pl)) binding_status[v] = BOUND_BY_EXISTS;
@@ -932,9 +935,9 @@ pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop
 		pcalc_prop *kind_atom;
 		if (Propositions::match(pl, 3,
 			NEGATION_OPEN_ATOM, NULL,
-			KIND_ATOM, &kind_atom,
+			PREDICATE_ATOM, &kind_atom, kind_up_family,
 			NEGATION_CLOSE_ATOM, NULL)) {
-			kind *K = kind_atom->assert_kind;
+			kind *K = KindPredicates::get_kind(kind_atom);
 			if (Kinds::Behaviour::is_subkind_of_object(K)) {
 				binary_predicate *bp = NULL;
 				pcalc_term KIND_term = kind_atom->terms[0];
@@ -943,7 +946,7 @@ pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop
 					parse_node *new_nothing =
 						Lvalues::new_actual_NONLOCAL_VARIABLE(i6_nothing_VAR);
 					prop = Propositions::ungroup_after(prop, pl_prev, NULL); /* remove negation grouping */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |KIND_ATOM| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 					/* now insert equality predicate: */
 					prop = Propositions::insert_atom(prop, pl_prev,
 						Atoms::binary_PREDICATE_new(R_equality,
@@ -1107,12 +1110,12 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 		if ((Propositions::match(pl, 6,
 			QUANTIFIER_ATOM, &q_atom,
 			DOMAIN_OPEN_ATOM, NULL,
-			KIND_ATOM, &k_atom,
+			PREDICATE_ATOM, &k_atom, kind_up_family,
 			DOMAIN_CLOSE_ATOM, NULL,
-			PREDICATE_ATOM, &bp_atom,
+			PREDICATE_ATOM, &bp_atom, NULL,
 			END_PROP_HERE, NULL)) &&
 			((Atoms::is_forall_quantifier(q_atom)) || (Atoms::is_notall_quantifier(q_atom))) &&
-			(Kinds::eq(k_atom->assert_kind, K_room)) &&
+			(Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
 			(bp_atom->arity == 2) &&
 			(RETRIEVE_POINTER_binary_predicate(bp_atom->predicate) == R_equality)) {
 			int j, v = k_atom->terms[0].variable;
@@ -1120,7 +1123,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 				if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |KIND_ATOM| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 					if (Atoms::is_notall_quantifier(q_atom))
@@ -1137,13 +1140,13 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 		if ((Propositions::match(pl, 6,
 			QUANTIFIER_ATOM, &q_atom,
 			DOMAIN_OPEN_ATOM, NULL,
-			KIND_ATOM, &k_atom,
+			PREDICATE_ATOM, &k_atom, kind_up_family,
 			DOMAIN_CLOSE_ATOM, NULL,
-			PREDICATE_ATOM, &bp_atom,
+			PREDICATE_ATOM, &bp_atom, NULL,
 			END_PROP_HERE, NULL)) &&
 			(Atoms::is_nonexistence_quantifier(q_atom)) &&
-			(Kinds::eq(k_atom->assert_kind, K_room)) &&
-			(Atoms::is_composited(k_atom)) &&
+			(Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
+			(KindPredicates::is_composited_atom(k_atom)) &&
 			(bp_atom->arity == 2) &&
 			(RETRIEVE_POINTER_binary_predicate(bp_atom->predicate) == R_equality)) {
 			int j, v = k_atom->terms[0].variable;
@@ -1151,7 +1154,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 				if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-					prop = Propositions::delete_atom(prop, pl_prev); /* remove |KIND_ATOM| */
+					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 					prop = Propositions::insert_atom(prop, pl_prev,
@@ -1174,14 +1177,14 @@ pcalc_prop *Calculus::Simplifications::everywhere_and_nowhere(pcalc_prop *prop, 
 		if ((Propositions::match(pl, 6,
 			QUANTIFIER_ATOM, &q_atom,
 			DOMAIN_OPEN_ATOM, NULL,
-			KIND_ATOM, &k_atom,
+			PREDICATE_ATOM, &k_atom, kind_up_family,
 			DOMAIN_CLOSE_ATOM, NULL,
-			PREDICATE_ATOM, &bp_atom,
+			PREDICATE_ATOM, &bp_atom, NULL,
 			END_PROP_HERE, NULL)) &&
 			((Atoms::is_forall_quantifier(q_atom)) ||
 				(Atoms::is_notall_quantifier(q_atom)) ||
 				(Atoms::is_nonexistence_quantifier(q_atom))) &&
-			(Kinds::eq(k_atom->assert_kind, K_room)) &&
+			(Kinds::eq(KindPredicates::get_kind(k_atom), K_room)) &&
 			(bp_atom->arity == 2)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(bp_atom->predicate);
 			if (((Atoms::is_nonexistence_quantifier(q_atom) == FALSE) && (bp == R_containment)) ||
@@ -1191,7 +1194,7 @@ pcalc_prop *Calculus::Simplifications::everywhere_and_nowhere(pcalc_prop *prop, 
 					if ((bp_atom->terms[1-j].variable == v) && (v >= 0)) {
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |QUANTIFIER_ATOM| */
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_OPEN_ATOM| */
-						prop = Propositions::delete_atom(prop, pl_prev); /* remove |KIND_ATOM| */
+						prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 						if (Atoms::is_notall_quantifier(q_atom))

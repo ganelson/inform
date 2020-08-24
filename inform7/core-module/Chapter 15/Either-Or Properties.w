@@ -190,7 +190,7 @@ adjective *Properties::EitherOr::get_aph(property *prn) {
 =
 void Properties::EitherOr::assert(property *prn,
 	inference_subject *owner, int parity, int certainty) {
-	pcalc_prop *prop = Atoms::from_adjective_on_x(
+	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
 		Properties::EitherOr::get_aph(prn), (parity)?FALSE:TRUE);
 	Propositions::Assert::assert_true_about(prop, owner, certainty);
 }

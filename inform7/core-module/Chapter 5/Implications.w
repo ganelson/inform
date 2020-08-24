@@ -95,7 +95,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 
 @<Check that the conclusion involves only a single either/or property@> =
 	unary_predicate *pred = Node::get_predicate(py);
-	property *prn = Adjectives::Meanings::has_EORP_meaning(UnaryPredicates::get_adj(pred), NULL);
+	property *prn = Adjectives::Meanings::has_EORP_meaning(AdjectivalPredicates::to_adjective(pred), NULL);
 	if (prn == NULL) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ImplicationValueProperty),
 			"that's an implication where the outcome is an adjective other than "
@@ -214,14 +214,14 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 @<Consider this individual implication as it applies to the candidate@> =
 	unary_predicate *pred = Node::get_predicate(imp->then_pn);
 	int conclusion_state = TRUE;
-	if (UnaryPredicates::get_parity(pred) == FALSE) conclusion_state = FALSE;
+	if (AdjectivalPredicates::parity(pred) == FALSE) conclusion_state = FALSE;
 	if (imp->implied_likelihood < 0) conclusion_state = (conclusion_state)?FALSE:TRUE;
 
 	LOGIF(IMPLICATIONS, "$D => $T (certainty %d; changed state %d)\n",
 		imp->if_spec, imp->then_pn, imp->implied_likelihood, conclusion_state);
 
 	property *conclusion_prop = Adjectives::Meanings::has_EORP_meaning(
-		UnaryPredicates::get_adj(pred), NULL);
+		AdjectivalPredicates::to_adjective(pred), NULL);
 	@<Check that the conclusion is not impossible@>;
 
 	possession_marker *pom = Properties::get_possession_marker(conclusion_prop);
@@ -256,13 +256,13 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 
 @<Apply the conclusion to the candidate@> =
 	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
-	pcalc_prop *prop = Atoms::KIND_new(InferenceSubjects::domain(domain), Terms::new_variable(0));
+	pcalc_prop *prop = KindPredicates::new_atom(InferenceSubjects::domain(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
-		prop = Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
+		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
 	} else {
-		prop = Propositions::concatenate(prop, Atoms::from_adjective_on_x(aph, FALSE));
+		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));
 	}
 	Propositions::Assert::assert_true_about(prop, candidate, CERTAIN_CE);
 	return TRUE;
