@@ -446,7 +446,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e phrase_options_invoked_ANNOT /* |invocation_options|: details of any options used */
 @e property_name_used_as_noun_ANNOT /* |int|: in ambiguous cases such as "open" */
 @e proposition_ANNOT /* |pcalc_prop|: for specification nodes */
-@e prep_ANNOT /* |preposition|: for e.g. "is on" */
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */
 @e record_as_self_ANNOT /* |int|: record recipient as |self| when writing this */
@@ -464,7 +463,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e ssp_closing_segment_wn_ANNOT /* |int|: identifier for the last of these, or |-1| */
 @e ssp_segment_count_ANNOT /* |int|: number of subsequent complex-say phrases in stream */
 @e subject_ANNOT /* |inference_subject|: what this node describes */
-@e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
 @e suppress_newlines_ANNOT /* |int|: whether the next say term runs on */
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
 @e tense_marker_ANNOT /* |grammatical_usage|: for specification nodes */
@@ -476,7 +474,6 @@ tree; though it's a little like itemising the baubles on a Christmas tree.
 @e unit_ANNOT /* |compilation_unit|: set only for headings, routines and sentences */
 @e unproven_ANNOT /* |int|: this invocation needs run-time typechecking */
 @e verb_problem_issued_ANNOT /* |int|: has a problem message about the primary verb been issued already? */
-@e vu_ANNOT /* |verb_usage|: for e.g. "does not carry" */
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
@@ -519,18 +516,15 @@ DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 DECLARE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
-DECLARE_ANNOTATION_FUNCTIONS(prep, preposition)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
 DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
-DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
 DECLARE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 DECLARE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(unit, compilation_unit)
-DECLARE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 
 @ So we itemise the pointer-valued annotations below, and the macro expands
 to provide their get and set functions:
@@ -574,17 +568,14 @@ MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
 MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 MAKE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(proposition, pcalc_prop)
-MAKE_ANNOTATION_FUNCTIONS(prep, preposition)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
 MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
-MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 MAKE_ANNOTATION_FUNCTIONS(subject, inference_subject)
 MAKE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 MAKE_ANNOTATION_FUNCTIONS(token_as_parsed, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_check_to_do, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
-MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 
 @ And we have declare all of those:
 
@@ -674,7 +665,6 @@ MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 	Annotations::declare_type(property_name_used_as_noun_ANNOT, NULL);
 	Annotations::declare_type(proposition_ANNOT,
 		CoreModule::write_proposition_ANNOT);
-	Annotations::declare_type(prep_ANNOT, NULL);
 	Annotations::declare_type(quant_ANNOT, NULL);
 	Annotations::declare_type(quantification_parameter_ANNOT, NULL);
 	Annotations::declare_type(record_as_self_ANNOT, NULL);
@@ -695,8 +685,6 @@ MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 	Annotations::declare_type(ssp_closing_segment_wn_ANNOT, NULL);
 	Annotations::declare_type(ssp_segment_count_ANNOT, NULL);
 	Annotations::declare_type(subject_ANNOT, NULL);
-	Annotations::declare_type(subject_term_ANNOT,
-		CoreModule::write_subject_term_ANNOT);
 	Annotations::declare_type(suppress_newlines_ANNOT, NULL);
 	Annotations::declare_type(table_cell_unspecified_ANNOT, NULL);
 	Annotations::declare_type(tense_marker_ANNOT, NULL);
@@ -708,7 +696,6 @@ MAKE_ANNOTATION_FUNCTIONS(vu, verb_usage)
 	Annotations::declare_type(unit_ANNOT, NULL);
 	Annotations::declare_type(unproven_ANNOT, NULL);
 	Annotations::declare_type(verb_problem_issued_ANNOT, NULL);
-	Annotations::declare_type(vu_ANNOT, CoreModule::write_vu_ANNOT);
 	Annotations::declare_type(you_can_ignore_ANNOT, NULL);
 
 @ =
@@ -964,9 +951,6 @@ void CoreModule::write_proposition_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE("}");
 	}
 }
-void CoreModule::write_prep_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
-}
 void CoreModule::write_quant_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
@@ -1018,9 +1002,6 @@ void CoreModule::write_ssp_segment_count_ANNOT(text_stream *OUT, parse_node *p) 
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
 }
 void CoreModule::write_subject_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
-}
-void CoreModule::write_subject_term_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_subject(p))
 		WRITE(" {refers: $j}", Node::get_subject(p));
 }
@@ -1056,10 +1037,6 @@ void CoreModule::write_unproven_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void CoreModule::write_verb_problem_issued_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));
-}
-void CoreModule::write_vu_ANNOT(text_stream *OUT, parse_node *p) {
-	if (Node::get_vu(p))
-		VerbUsages::write_usage(OUT, Node::get_vu(p));
 }
 void CoreModule::write_you_can_ignore_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE("{}", Annotations::read_int(p, heading_level_ANNOT));

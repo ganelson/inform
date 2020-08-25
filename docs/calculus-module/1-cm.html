@@ -109,6 +109,8 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER_WRITER</span><span class="plain-syntax">(</span><span class="character-syntax">'r'</span><span class="plain-syntax">, </span><a href="2-up.html#SP2" class="function-link"><span class="function-syntax">UnaryPredicates::log</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"predicate calculus"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PREDICATE_CALCULUS_WORKINGS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"predicate calculus workings"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::declare_type</span><span class="plain-syntax">(</span><span class="constant-syntax">subject_term_ANNOT</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><a href="1-cm.html#SP3" class="function-link"><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-kp.html#SP2" class="function-link"><span class="function-syntax">KindPredicates::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-tap.html#SP2" class="function-link"><span class="function-syntax">AdjectivalPredicates::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-tcp.html#SP2" class="function-link"><span class="function-syntax">CreationPredicates::start</span></a><span class="plain-syntax">();</span>
@@ -117,15 +119,30 @@ which use this module:
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">subject_term</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">subject_term</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax">)</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CalculusModule::write_subject_term_ANNOT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_subject_term</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" {term: "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-trm.html#SP12" class="function-link"><span class="function-syntax">Terms::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_subject_term</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>We also have to make annotation functions for one special annotation needed
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">subject_term_ANNOT</span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">pcalc_term</span></span><span class="comment-syntax">: what the subject of the subtree was</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We also have to make annotation functions for one special annotation needed
 by <a href="../linguistics-module/index.html" class="internal">linguistics</a>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relationship</span><span class="plain-syntax">, </span><span class="reserved-syntax">binary_predicate</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relationship</span><span class="plain-syntax">, </span><span class="reserved-syntax">binary_predicate</span><span class="plain-syntax">)</span>

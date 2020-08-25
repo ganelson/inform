@@ -64,7 +64,7 @@ pcalc_prop *Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, par
 }
 
 @<Check the tree position makes sense, and tell the debugging log@> =
-	if (A) StandardProblems::s_subtree_error_set_position(Task::syntax_tree(), A);
+	if (A) Propositions::FromSentences::set_position(A);
 	if (conv_log_depth == 0) LOGIF(PREDICATE_CALCULUS, "-----------\n");
 	conv_log_depth++;
 	LOGIF(PREDICATE_CALCULUS, "[%d] Starting fs on: <%W>\n", conv_log_depth, W);
@@ -106,26 +106,28 @@ it can be applied.
 
 @<Find meaning of the VP as a relation and a parity@> =
 	subject_phrase_subtree = A;
-	if (subject_phrase_subtree == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "SP subtree null");
+	if (subject_phrase_subtree == NULL) Propositions::FromSentences::error("SP subtree null");
 	parse_node *verb_phrase_subtree = B;
-	if (verb_phrase_subtree == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "VP subtree null");
-	if (verb_phrase_subtree->down == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "VP subtree broken");
+	if (verb_phrase_subtree == NULL) Propositions::FromSentences::error("VP subtree null");
+	if (verb_phrase_subtree->down == NULL) Propositions::FromSentences::error("VP subtree broken");
 	object_phrase_subtree = verb_phrase_subtree->down;
 
-	verb_usage *vu = Node::get_vu(verb_phrase_subtree);
-	if (vu == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "verb null");
+	verb_usage *vu = Node::get_verb(verb_phrase_subtree);
+	if (vu == NULL) Propositions::FromSentences::error("verb null");
 	if ((SV_not_SN == FALSE) && (VerbUsages::get_tense_used(vu) != IS_TENSE))
 		@<Disallow the past tenses in relative clauses@>;
 
-	preposition *prep = Node::get_prep(verb_phrase_subtree);
+	preposition *prep = Node::get_preposition(verb_phrase_subtree);
 	preposition *second_prep = Node::get_second_preposition(verb_phrase_subtree);
 
 	verb_phrase_relation = VerbUsages::get_regular_meaning(vu, prep, second_prep);
 
-@ A sad necessity:
+@ A sad necessity for Inform, at least:
 
 @<Disallow the past tenses in relative clauses@> =
+	#ifdef CORE_MODULE
 	ExParser::Subtrees::throw_past_problem(FALSE);
+	#endif
 
 @ First Rule. The "meaning" of a noun phrase is a pair $(\phi, t)$,
 where $\phi$ is a proposition and $t$ is a term. We read this as "$t$ such
@@ -415,7 +417,9 @@ The simplification routines can all be found in "Simplifications".
 	}
 
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::nothing_constant);
+	#ifdef CORE_MODULE
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::use_listed_in);
+	#endif
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_determiners_nonex);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_satisfiable);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::make_kinds_of_value_explicit);
@@ -427,8 +431,10 @@ The simplification routines can all be found in "Simplifications".
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::reduce_predicates);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_redundant_variables);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::not_related_to_something);
+	#ifdef CORE_MODULE
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::convert_gerunds);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_to_have);
+	#endif
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::is_all_rooms);
 	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
 
@@ -457,9 +463,9 @@ pcalc_prop *Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *s
 	pcalc_term *st = Node::get_subject_term(p);
 	if (st) {
 		*subject_of_NP = *st;
-		NP_prop = Propositions::copy(Specifications::to_proposition(p));
+		NP_prop = Propositions::copy(NP_TO_PROPOSITION(p));
 	} else {
-		if (Specifications::is_description_like(p)) @<This NP was parsed as a description@>
+		if (NP_IS_DESCRIPTIVE(p)) @<This NP was parsed as a description@>
 		else if (Node::get_type(p) == UNKNOWN_NT) @<This NP is only a ghostly presence@>
 		else @<This NP was parsed as a value@>;
 	}
@@ -516,6 +522,7 @@ one arising below, which is to do with enumerated value properties.)
 	parse_node *spec = p;
 	*subject_of_NP = Terms::new_constant(spec);
 
+	#ifdef CORE_MODULE
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
@@ -527,6 +534,7 @@ one arising below, which is to do with enumerated value properties.)
 			NP_prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 		}
 	}
+	#endif
 
 @ If |Propositions::FromSentences::from_spec| is given a constant value $C$ then it returns the
 proposition ${\it is}(x, C)$: we look out for this and translate it to
@@ -570,7 +578,9 @@ returns a specification which refers to this. From a predicate
 calculus point of view, this is just another constant.
 
 @<This NP is only a ghostly presence@> =
+	#ifdef CORE_MODULE
 	*subject_of_NP = Terms::new_constant(Rvalues::new_self_object_constant());
+	#endif
 
 @ Suppose we have a situation like this:
 
@@ -608,12 +618,13 @@ that way, it assigns a score value of |TRUE| to the relevant ML entry to
 show this. (Score values otherwise aren't used for property names.)
 
 @<If we have a single adjective which could also be a noun, and a value is required, convert it to a noun@> =
+	#ifdef CORE_MODULE
 	if (((Rvalues::is_CONSTANT_construction(p, CON_property)) &&
 		(Annotations::read_int(p, property_name_used_as_noun_ANNOT))) || (K)) {
 		pcalc_term pct = Propositions::convert_adj_to_noun(NP_prop);
 		if (pct.constant) { *subject_of_NP = pct; NP_prop = NULL; }
 	}
-
+	#endif
 
 @ If we have so far produced a constant term $t = C$ and a non-null proposition
 $\phi$, then we convert $t$ to a new free variable, say $t = y$, we then bind
@@ -664,21 +675,18 @@ always evaluate to 0 or 1.
 with a single unbound variable, to represent SP.
 
 =
-#ifdef CORE_MODULE
 pcalc_prop *Propositions::FromSentences::from_spec(parse_node *spec) {
 	if (spec == NULL) return NULL; /* the null description is universally true */
 
-	if (Specifications::is_description(spec))
-		return Descriptions::to_proposition(spec);
-
-	pcalc_prop *prop = Specifications::to_proposition(spec);
+	pcalc_prop *prop = NP_TO_PROPOSITION(spec);
 	if (prop) return prop; /* a propositional form is already made */
 
+	#ifdef CORE_MODULE
 	@<If this is an instance of a kind, but can be used adjectivally, convert it as such@>;
 	@<If it's an either-or property name, it must be being used adjectivally@>;
+	#endif
 	@<It must be an ordinary noun@>;
 }
-#endif
 
 @ For example, if we have written:
 
@@ -723,3 +731,20 @@ created in Inform go through type-checking, so:
 	Propositions::Checker::type_check(prop, Propositions::Checker::tc_no_problem_reporting());
 	return prop;
 
+@ These are failed assertions, not for problem messages the user will ever see,
+touch wood.
+
+=
+void Propositions::FromSentences::set_position(parse_node *A) {
+	#ifdef CORE_MODULE
+	StandardProblems::s_subtree_error_set_position(Task::syntax_tree(), A);
+	#endif
+}
+void Propositions::FromSentences::error(char *plaint) {
+	#ifdef CORE_MODULE
+	StandardProblems::s_subtree_error(Task::syntax_tree(), plaint);
+	#endif
+	#ifndef CORE_MODULE
+	internal_error(plaint);
+	#endif
+}

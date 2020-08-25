@@ -60,6 +60,8 @@ int Specifications::is_kind_like(parse_node *spec) {
 description-like, but names of objects are. Thus "Mrs Jones" is description-like,
 but "12" is not.
 
+@d NP_IS_DESCRIPTIVE Specifications::is_description_like
+
 =
 int Specifications::is_description_like(parse_node *p) {
 	int g = FALSE;
@@ -75,6 +77,11 @@ int Specifications::is_description(parse_node *p) {
 	return FALSE;
 }
 
+@
+
+@d NP_TO_PROPOSITION Specifications::to_proposition
+
+=
 pcalc_prop *Specifications::to_proposition(parse_node *p) {
 	if (p == NULL) return NULL;
 	if (Specifications::is_description(p))

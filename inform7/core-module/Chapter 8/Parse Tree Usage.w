@@ -301,8 +301,8 @@ void ParseTreeUsage::write_permissions(void) {
 	Annotations::allow(PROPERTY_VALUE_NT, record_as_self_ANNOT);
 	Annotations::allow(TEST_PHRASE_OPTION_NT, phrase_option_ANNOT);
 	Annotations::allow(TEST_PROPOSITION_NT, proposition_ANNOT);
-	Annotations::allow(UNKNOWN_NT, prep_ANNOT);
-	Annotations::allow(UNKNOWN_NT, vu_ANNOT);
+	Annotations::allow(UNKNOWN_NT, preposition_ANNOT);
+	Annotations::allow(UNKNOWN_NT, verb_ANNOT);
 }
 void ParseTreeUsage::allow_annotation_to_specification(int annot) {
 	Annotations::allow(UNKNOWN_NT, annot);

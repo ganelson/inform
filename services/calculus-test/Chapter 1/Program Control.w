@@ -81,6 +81,8 @@ int Main::dont(int wn) {
 @d RVALUE_TO_KIND_FUNCTION Main::value_to_kind
 @d VALUE_TO_RELATION_FUNCTION Main::value_to_relation
 @d ADJECTIVE_APPLICABLE_FUNCTION Main::adjective_applicable
+@d NP_IS_DESCRIPTIVE Main::is_descriptive
+@d NP_TO_PROPOSITION Main::to_proposition
 
 =
 wording Main::get_name_text(kind *K) {
@@ -97,6 +99,12 @@ binary_predicate *Main::value_to_relation(parse_node *val) {
 }
 int Main::adjective_applicable(adjective *aph, kind *K) {
 	return TRUE;
+}
+int Main::is_descriptive(parse_node *val) {
+	return FALSE;
+}
+pcalc_prop *Main::to_proposition(parse_node *val) {
+	return NULL;
 }
 
 @

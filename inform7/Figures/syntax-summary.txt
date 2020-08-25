@@ -383,7 +383,7 @@ ROOT_NT
             SENTENCE_NT'the air conditioner is a device in the pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'air conditioner' {kind: object} {instance: I89'air conditioner'}} {created here}
-                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=device(x) ^ ('the pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'device in the pool hall'}
+                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=device(x) ^ ('the pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'device in the pool hall' {term: x}}
             SENTENCE_NT'"[if switched off]An air conditioner sits in the corner, unh'
             SENTENCE_NT'the felt door is west of the pool hall'
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
@@ -432,7 +432,7 @@ ROOT_NT
             SENTENCE_NT'the statue is scenery in memorial square'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'statue' {kind: object} {instance: I93'statue'}} {created here}
-                COMMON_NOUN_NT'scenery in memorial square' {creation: << scenery(x) ^ ('memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in memorial square'}
+                COMMON_NOUN_NT'scenery in memorial square' {creation: << scenery(x) ^ ('memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in memorial square' {term: x}}
             SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue'
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"nancy" or "johnson" or "mrs"'
@@ -473,7 +473,7 @@ ROOT_NT
             SENTENCE_NT'the slot is scenery in the post office'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}} {created here}
-                COMMON_NOUN_NT'scenery in the post office' {creation: << scenery(x) ^ ('the post office' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the post office'}
+                COMMON_NOUN_NT'scenery in the post office' {creation: << scenery(x) ^ ('the post office' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the post office' {term: x}}
             SENTENCE_NT'the slot is a container'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}}
@@ -519,7 +519,7 @@ ROOT_NT
             SENTENCE_NT'a poster is fixed in place in cold comfort'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {eval: CONSTANT_NT'poster' {kind: object} {instance: I102'poster'}} {created here}
-                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: << fixed in place(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}
+                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: << fixed in place(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'fixed in place in cold comfort' {term: x}}
             SENTENCE_NT'"A poster fills one wall with the blazing promise of treats '
             SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -654,7 +654,7 @@ ROOT_NT
             SENTENCE_NT'the incongruous sign is scenery in the public library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I111'incongruous sign'}} {created here}
-                COMMON_NOUN_NT'scenery in the public library' {creation: << scenery(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the public library'}
+                COMMON_NOUN_NT'scenery in the public library' {creation: << scenery(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'scenery in the public library' {term: x}}
             SENTENCE_NT'the description of the incongruous sign is "Eating and drink'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of the incongruous sign' {definite 'the' n/m/f s/p nom/acc}
@@ -763,7 +763,7 @@ ROOT_NT
             SENTENCE_NT'vanessa is a woman in cold comfort'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: object} {instance: I129'vanessa'}} {created here}
-                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in cold comfort'}
+                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('cold comfort' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in cold comfort' {term: x}}
             SENTENCE_NT'vanessa owns cold comfort'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'}}
@@ -772,7 +772,7 @@ ROOT_NT
             SENTENCE_NT'francine is a woman in the public library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: object} {instance: I130'francine'}} {created here}
-                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the public library'}
+                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the public library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the public library' {term: x}}
             SENTENCE_NT'francine carries a book called phlox for phyllis'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: woman} {instance: I130'francine'}}
@@ -786,7 +786,7 @@ ROOT_NT
             SENTENCE_NT'lewis is a man in the alfred cralle pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: object} {instance: I133'lewis'}} {created here}
-                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall'}
+                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall' {term: x}}
             SENTENCE_NT'lewis carries 3 stamped envelopes'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: man} {instance: I133'lewis'}}
@@ -819,7 +819,7 @@ ROOT_NT
             SENTENCE_NT'gene is a man in nancy johnson memorial square'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: object} {instance: I141'gene'}} {created here}
-                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('nancy johnson memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in nancy johnson memorial square'}
+                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('nancy johnson memorial square' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in nancy johnson memorial square' {term: x}}
             SENTENCE_NT'gene carries a stamped envelope'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: man} {instance: I141'gene'}}
@@ -838,7 +838,7 @@ ROOT_NT
             SENTENCE_NT'rhoda is a woman in marciony street'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I145'rhoda'}} {created here}
-                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('marciony street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in marciony street'}
+                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('marciony street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in marciony street' {term: x}}
             SENTENCE_NT'rhoda carries a book called the marciony street murders'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I145'rhoda'}}
@@ -857,7 +857,7 @@ ROOT_NT
             SENTENCE_NT'martin is a man in main street'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: object} {instance: I149'martin'}} {created here}
-                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('main street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in main street'}
+                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('main street' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in main street' {term: x}}
             SENTENCE_NT'martin carries a dvd called the lifecycle of the south sea t'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: man} {instance: I149'martin'}}
@@ -871,7 +871,7 @@ ROOT_NT
             SENTENCE_NT'antony is a man in movie rental'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: object} {instance: I152'antony'}} {created here}
-                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('movie rental' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in movie rental'}
+                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('movie rental' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in movie rental' {term: x}}
             SENTENCE_NT'antony carries a coupon'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: man} {instance: I152'antony'}}
@@ -885,7 +885,7 @@ ROOT_NT
             SENTENCE_NT'shelby is a man in the town hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: object} {instance: I155'shelby'}} {created here}
-                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the town hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the town hall'}
+                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the town hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the town hall' {term: x}}
             SENTENCE_NT'shelby carries a dvd called conducting an orderly meeting'
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: man} {instance: I155'shelby'}}
@@ -917,7 +917,7 @@ ROOT_NT
             SENTENCE_NT'christopher is a man in the library'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: object} {instance: I164'christopher'}} {created here}
-                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the library'}
+                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the library' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the library' {term: x}}
             SENTENCE_NT'christopher owns the library'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: man} {instance: I164'christopher'}}
@@ -926,7 +926,7 @@ ROOT_NT
             SENTENCE_NT'linnea is a woman in the alfred cralle pool hall'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: object} {instance: I165'linnea'}} {created here}
-                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall'}
+                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=woman(x) ^ ('the alfred cralle pool hall' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall' {term: x}}
             SENTENCE_NT'linnea owns the alfred cralle pool hall'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: woman} {instance: I165'linnea'}}
@@ -935,7 +935,7 @@ ROOT_NT
             SENTENCE_NT'ned is a man in the movie rental store'
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: object} {instance: I166'ned'}} {created here}
-                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the movie rental store' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the movie rental store'}
+                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: << kind=man(x) ^ ('the movie rental store' == <ContainerOf(*1) : x>) >>} {eval: TEST_VALUE_NT'man in the movie rental store' {term: x}}
             SENTENCE_NT'ned owns the movie rental'
                 VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: man} {instance: I166'ned'}}

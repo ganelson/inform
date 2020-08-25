@@ -94,8 +94,8 @@ removes it again.
 =
 parse_node *ExParser::Subtrees::verb_marker(verb_usage *vu, preposition *prep, parse_node *np) {
 	parse_node *VP_part = Node::new(UNKNOWN_NT);
-	Node::set_vu(VP_part, vu);
-	Node::set_prep(VP_part, prep);
+	Node::set_verb(VP_part, vu);
+	Node::set_preposition(VP_part, prep);
 	VP_part->down = np;
 	return VP_part;
 }
@@ -340,7 +340,7 @@ has the standard form, but we check it anyway.
 	if (Node::get_type(verb_phrase) != UNKNOWN_NT)
 		StandardProblems::s_subtree_error(Task::syntax_tree(), "VP not a VP");
 
-	vu = Node::get_vu(verb_phrase);
+	vu = Node::get_verb(verb_phrase);
 	if (vu == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "verb null");
 	verb_phrase_negated = (VerbUsages::is_used_negatively(vu))?TRUE:FALSE;
 

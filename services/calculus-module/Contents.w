@@ -31,3 +31,4 @@ Chapter 3: Propositions
 	Binding and Substitution
 	Type Check Propositions
 	Simplifications
+	Sentence Conversions

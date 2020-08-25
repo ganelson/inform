@@ -201,9 +201,6 @@ kind *Calculus::Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
 }
 
 @ =
-void Calculus::Deferrals::Cinders::compile(OUTPUT_STREAM, int c) {
-	WRITE("const_%d", c);
-}
 void Calculus::Deferrals::Cinders::emit(int c) {
 	local_variable *lvar = LocalVariables::find_const_var(c);
 	if (lvar == NULL) internal_error("absent calculus variable");

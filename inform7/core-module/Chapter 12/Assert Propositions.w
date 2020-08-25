@@ -163,8 +163,7 @@ void Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *prop, infe
 been supplied; $x$ of course is variable number 0.
 
 @<Establish a new identification slate for the variables in the proposition@> =
-	int k;
-	for (k=0; k<26; k++) { ciawo[k] = NULL; ciats[k] = NULL; }
+	for (int k=0; k<26; k++) { ciawo[k] = NULL; ciats[k] = NULL; }
 	ciawo[0] = subject; ciats[0] = NULL;
 	current_interpretation_as_infs = ciawo; current_interpretation_as_spec = ciats;
 
@@ -216,7 +215,6 @@ void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
 combined into a single line in the log:
 
 @<Record the proposition in the debugging log@> =
-	int i;
 	LOGIF(ASSERTIONS, "::");
 	switch(prevailing_mood) {
 		case IMPOSSIBLE_CE: LOGIF(ASSERTIONS, " (impossible)"); break;
@@ -227,7 +225,7 @@ combined into a single line in the log:
 		case CERTAIN_CE: break;
 		default: LOG(" (unknown certainty)"); break;
 	}
-	for (i=0; i<26; i++) {
+	for (int i=0; i<26; i++) {
 		if (current_interpretation_as_infs[i]) {
 			LOGIF(ASSERTIONS, " %c = $j", pcalc_vars[i], current_interpretation_as_infs[i]);
 		} else if (current_interpretation_as_spec[i]) {
