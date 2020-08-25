@@ -33,7 +33,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -43,12 +47,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -77,29 +83,29 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     66.6% in compilation to Inter</span>
-<span class="plain-syntax">         24.9% in </span><a href="../core-module/22-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
-<span class="plain-syntax">          8.2% in </span><a href="../core-module/22-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
-<span class="plain-syntax">          7.1% in </span><a href="../core-module/17-rs.html#SP6" class="internal">Strings::compile_responses</a>
-<span class="plain-syntax">          6.2% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
-<span class="plain-syntax">          4.5% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">     67.2% in compilation to Inter</span>
+<span class="plain-syntax">         25.7% in </span><a href="../core-module/22-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
+<span class="plain-syntax">          8.8% in </span><a href="../core-module/22-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
+<span class="plain-syntax">          6.9% in </span><a href="../core-module/17-rs.html#SP6" class="internal">Strings::compile_responses</a>
+<span class="plain-syntax">          6.1% in </span><a href="../core-module/16-cmw2.html#SP2" class="internal">World::Compile::compile</a>
+<span class="plain-syntax">          4.4% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
 <span class="plain-syntax">          3.4% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
 <span class="plain-syntax">          2.0% in </span><a href="../core-module/22-cs.html#SP14" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
-<span class="plain-syntax">          2.0% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::rulebooks_array</a>
+<span class="plain-syntax">          1.8% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::rulebooks_array</a>
 <span class="plain-syntax">          1.0% in </span><a href="../core-module/7-vart.html#SP4" class="internal">VerbsAtRunTime::ConjugateVerb</a>
-<span class="plain-syntax">          0.7% in </span><a href="../core-module/22-cs.html#SP4" class="internal">Phrases::Manager::traverse</a>
+<span class="plain-syntax">          0.8% in </span><a href="../core-module/22-cs.html#SP4" class="internal">Phrases::Manager::traverse</a>
+<span class="plain-syntax">          0.5% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::compile_rulebooks</a>
 <span class="plain-syntax">          0.5% in </span><a href="../core-module/22-cs.html#SP7" class="internal">Phrases::Manager::parse_rule_parameters</a>
 <span class="plain-syntax">          0.5% in </span><a href="../core-module/16-cmw.html#SP1" class="internal">World::complete</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/3-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
-<span class="plain-syntax">          0.3% in </span><a href="../core-module/22-cs.html#SP13" class="internal">Phrases::Manager::compile_rulebooks</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/7-rlt.html#SP23" class="internal">Relations::compile_defined_relations</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/13-rsfk.html#SP26" class="internal">Kinds::RunTime::compile_data_type_support_routines</a>
 <span class="plain-syntax">          0.1% in </span><a href="../if-module/5-gv.html#SP25" class="internal">PL::Parsing::Verbs::compile_all</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
-<span class="plain-syntax">          3.5% not specifically accounted for</span>
-<span class="plain-syntax">     30.9% in running Inter pipeline</span>
-<span class="plain-syntax">          9.8% in inter step 2/12: link</span>
-<span class="plain-syntax">          9.8% in step preparation</span>
+<span class="plain-syntax">          3.2% not specifically accounted for</span>
+<span class="plain-syntax">     30.3% in running Inter pipeline</span>
+<span class="plain-syntax">         10.7% in step preparation</span>
+<span class="plain-syntax">          9.7% in inter step 2/12: link</span>
 <span class="plain-syntax">          7.1% in inter step 12/12: generate inform6 -&gt; auto.inf</span>
 <span class="plain-syntax">          0.3% in inter step 9/12: make-identifiers-unique</span>
 <span class="plain-syntax">          0.1% in inter step 10/12: reconcile-verbs</span>
@@ -109,7 +115,7 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.1% in inter step 6/12: assimilate</span>
 <span class="plain-syntax">          0.1% in inter step 7/12: resolve-external-symbols</span>
 <span class="plain-syntax">          0.1% in inter step 8/12: inspect-plugs</span>
-<span class="plain-syntax">          2.4% not specifically accounted for</span>
+<span class="plain-syntax">          1.2% not specifically accounted for</span>
 <span class="plain-syntax">      2.0% in supervisor</span>
 <span class="plain-syntax">      0.4% not specifically accounted for</span>
 </pre>
@@ -122,7 +128,7 @@ represent less than 1/1000th of the total.
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">Total memory consumption was 256343K = 250 MB</span>
 
-<span class="plain-syntax">62.4% was used for 1330154 objects, in 273349 frames in 200 x 800K = 160000K = 156 MB:</span>
+<span class="plain-syntax">62.4% was used for 1338290 objects, in 273493 frames in 200 x 800K = 160000K = 156 MB:</span>
 
 <span class="plain-syntax">     9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes</span>
 <span class="plain-syntax">     5.5%  text_stream_array                        2567 x 100 = 256700 objects, 14457344 bytes</span>
@@ -131,7 +137,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes</span>
 <span class="plain-syntax">     2.4%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes</span>
 <span class="plain-syntax">     1.8%  linked_list                              8904 objects, 4986240 bytes</span>
-<span class="plain-syntax">     1.3%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3648768 bytes</span>
+<span class="plain-syntax">     1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes</span>
 <span class="plain-syntax">     1.2%  map_data                                 668 objects, 3168992 bytes</span>
 <span class="plain-syntax">     0.9%  kind_array                               65 x 1000 = 65000 objects, 2602080 bytes</span>
 <span class="plain-syntax">     0.7%  inter_schema_token                       13492 objects, 1942848 bytes</span>
@@ -151,6 +157,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     0.2%  dictionary                               16347 objects, 784656 bytes</span>
 <span class="plain-syntax">     0.2%  dict_entry_array                         233 x 100 = 23300 objects, 753056 bytes</span>
 <span class="plain-syntax">     0.2%  package_request                          7931 objects, 697928 bytes</span>
+<span class="plain-syntax">     0.2%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes</span>
 <span class="plain-syntax">     0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes</span>
 <span class="plain-syntax">     0.1%  local_variable_array                     45 x 100 = 4500 objects, 505440 bytes</span>
 <span class="plain-syntax">     0.1%  inference_subject                        664 objects, 435584 bytes</span>
@@ -195,7 +202,6 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  activity_list_array                      1 x 1000 objects, 40032 bytes</span>
 <span class="plain-syntax">     ----  response_message                         407 objects, 35816 bytes</span>
 <span class="plain-syntax">     ----  production_list                          617 objects, 34552 bytes</span>
-<span class="plain-syntax">     ----  unary_predicate_array                    8 x 1000 = 8000 objects, 32192 bytes</span>
 <span class="plain-syntax">     ----  regions_data                             668 objects, 32064 bytes</span>
 <span class="plain-syntax">     ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes</span>
 <span class="plain-syntax">     ----  property                                 146 objects, 31536 bytes</span>
@@ -214,12 +220,12 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  to_phrase_request                        59 objects, 15576 bytes</span>
 <span class="plain-syntax">     ----  adjective_iname_holder                   320 objects, 15360 bytes</span>
 <span class="plain-syntax">     ----  plugin                                   23 objects, 13432 bytes</span>
+<span class="plain-syntax">     ----  method                                   275 objects, 13200 bytes</span>
 <span class="plain-syntax">     ----  literal_text                             147 objects, 12936 bytes</span>
 <span class="plain-syntax">     ----  stopwatch_timer                          148 objects, 11840 bytes</span>
 <span class="plain-syntax">     ----  understanding_reference_array            2 x 100 = 200 objects, 11264 bytes</span>
 <span class="plain-syntax">     ----  pathname                                 262 objects, 10480 bytes</span>
 <span class="plain-syntax">     ----  adjective                                137 objects, 9864 bytes</span>
-<span class="plain-syntax">     ----  method                                   177 objects, 8496 bytes</span>
 <span class="plain-syntax">     ----  filename                                 208 objects, 8320 bytes</span>
 <span class="plain-syntax">     ----  equation_node                            68 objects, 7616 bytes</span>
 <span class="plain-syntax">     ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes</span>
@@ -233,31 +239,31 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  parsing_pp_data                          96 objects, 4608 bytes</span>
 <span class="plain-syntax">     ----  build_vertex                             40 objects, 4480 bytes</span>
 <span class="plain-syntax">     ----  hierarchy_attachment_point               48 objects, 4224 bytes</span>
-<span class="plain-syntax">     ----  stacked_variable_list_array              1 x 100 objects, 4032 bytes</span>
 <span class="plain-syntax">     ----  placement_affecting_array                1 x 100 objects, 4032 bytes</span>
+<span class="plain-syntax">     ----  stacked_variable_list_array              1 x 100 objects, 4032 bytes</span>
 <span class="plain-syntax">     ----  activity                                 35 objects, 3920 bytes</span>
 <span class="plain-syntax">     ----  inbuild_edition                          54 objects, 3888 bytes</span>
-<span class="plain-syntax">     ----  parse_node_annotation_type               121 objects, 3872 bytes</span>
+<span class="plain-syntax">     ----  parse_node_annotation_type               119 objects, 3808 bytes</span>
 <span class="plain-syntax">     ----  inbuild_copy                             35 objects, 3640 bytes</span>
 <span class="plain-syntax">     ----  command_line_switch                      43 objects, 3440 bytes</span>
-<span class="plain-syntax">     ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes</span>
 <span class="plain-syntax">     ----  instance_usage_array                     1 x 200 objects, 3232 bytes</span>
+<span class="plain-syntax">     ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes</span>
 <span class="plain-syntax">     ----  compatibility_specification              66 objects, 3168 bytes</span>
 <span class="plain-syntax">     ----  definition                               44 objects, 3168 bytes</span>
 <span class="plain-syntax">     ----  inform_extension                         19 objects, 3040 bytes</span>
 <span class="plain-syntax">     ----  property_of_value_storage                93 objects, 2976 bytes</span>
 <span class="plain-syntax">     ----  submodule_request                        72 objects, 2880 bytes</span>
 <span class="plain-syntax">     ----  inter_construct                          32 objects, 2560 bytes</span>
-<span class="plain-syntax">     ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes</span>
+<span class="plain-syntax">     ----  method_set                               76 objects, 2432 bytes</span>
 <span class="plain-syntax">     ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes</span>
+<span class="plain-syntax">     ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes</span>
 <span class="plain-syntax">     ----  equation_symbol                          30 objects, 2400 bytes</span>
 <span class="plain-syntax">     ----  semver_range                             22 objects, 2288 bytes</span>
 <span class="plain-syntax">     ----  use_option                               29 objects, 1856 bytes</span>
-<span class="plain-syntax">     ----  method_set                               56 objects, 1792 bytes</span>
 <span class="plain-syntax">     ----  pronoun_usage                            42 objects, 1680 bytes</span>
-<span class="plain-syntax">     ----  table_contribution_array                 1 x 100 objects, 1632 bytes</span>
 <span class="plain-syntax">     ----  activity_crossref_array                  1 x 100 objects, 1632 bytes</span>
 <span class="plain-syntax">     ----  plugin_call_array                        1 x 100 objects, 1632 bytes</span>
+<span class="plain-syntax">     ----  table_contribution_array                 1 x 100 objects, 1632 bytes</span>
 <span class="plain-syntax">     ----  kind_interaction                         39 objects, 1560 bytes</span>
 <span class="plain-syntax">     ----  inter_annotation_form                    37 objects, 1480 bytes</span>
 <span class="plain-syntax">     ----  pipeline_step                            12 objects, 1440 bytes</span>
@@ -271,71 +277,73 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  quantifier                               16 objects, 1024 bytes</span>
 <span class="plain-syntax">     ----  table_column                             16 objects, 896 bytes</span>
 <span class="plain-syntax">     ----  inbuild_requirement                      22 objects, 880 bytes</span>
-<span class="plain-syntax">     ----  control_structure_phrase                 12 objects, 864 bytes</span>
 <span class="plain-syntax">     ----  code_generation                          1 object, 864 bytes</span>
+<span class="plain-syntax">     ----  control_structure_phrase                 12 objects, 864 bytes</span>
 <span class="plain-syntax">     ----  cached_understanding                     21 objects, 840 bytes</span>
 <span class="plain-syntax">     ----  runtime_kind_structure                   13 objects, 832 bytes</span>
 <span class="plain-syntax">     ----  phrase_option_array                      1 x 100 objects, 824 bytes</span>
-<span class="plain-syntax">     ----  pipeline_stage                           17 objects, 816 bytes</span>
 <span class="plain-syntax">     ----  target_vm                                6 objects, 816 bytes</span>
+<span class="plain-syntax">     ----  pipeline_stage                           17 objects, 816 bytes</span>
 <span class="plain-syntax">     ----  generated_segment                        25 objects, 800 bytes</span>
 <span class="plain-syntax">     ----  inter_data_type                          14 objects, 784 bytes</span>
 <span class="plain-syntax">     ----  submodule_identity                       23 objects, 736 bytes</span>
 <span class="plain-syntax">     ----  implication                              13 objects, 728 bytes</span>
 <span class="plain-syntax">     ----  rulebook_outcome                         17 objects, 680 bytes</span>
 <span class="plain-syntax">     ----  inform_language                          6 objects, 672 bytes</span>
-<span class="plain-syntax">     ----  relation_guard                           5 objects, 640 bytes</span>
 <span class="plain-syntax">     ----  inter_warehouse_room                     10 objects, 640 bytes</span>
 <span class="plain-syntax">     ----  I6T_intervention                         8 objects, 640 bytes</span>
+<span class="plain-syntax">     ----  relation_guard                           5 objects, 640 bytes</span>
 <span class="plain-syntax">     ----  nascent_array                            7 objects, 616 bytes</span>
-<span class="plain-syntax">     ----  named_rulebook_outcome                   15 objects, 600 bytes</span>
 <span class="plain-syntax">     ----  inbuild_search_result                    15 objects, 600 bytes</span>
+<span class="plain-syntax">     ----  named_rulebook_outcome                   15 objects, 600 bytes</span>
 <span class="plain-syntax">     ----  label_namespace                          10 objects, 560 bytes</span>
 <span class="plain-syntax">     ----  small_word_set                           11 objects, 528 bytes</span>
 <span class="plain-syntax">     ----  inform_kit                               5 objects, 520 bytes</span>
-<span class="plain-syntax">     ----  i6_memory_setting                        13 objects, 416 bytes</span>
 <span class="plain-syntax">     ----  equation                                 4 objects, 416 bytes</span>
+<span class="plain-syntax">     ----  i6_memory_setting                        13 objects, 416 bytes</span>
 <span class="plain-syntax">     ----  dval_written                             10 objects, 400 bytes</span>
 <span class="plain-syntax">     ----  module_package                           10 objects, 400 bytes</span>
 <span class="plain-syntax">     ----  article_usage                            8 objects, 384 bytes</span>
 <span class="plain-syntax">     ----  source_file                              5 objects, 360 bytes</span>
+<span class="plain-syntax">     ----  bp_family                                11 objects, 352 bytes</span>
 <span class="plain-syntax">     ----  inbuild_genre                            7 objects, 336 bytes</span>
-<span class="plain-syntax">     ----  door_dir_notice                          5 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  pronoun                                  8 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  grammatical_category                     8 objects, 320 bytes</span>
+<span class="plain-syntax">     ----  door_dir_notice                          5 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  build_step                               4 objects, 288 bytes</span>
+<span class="plain-syntax">     ----  up_family                                9 objects, 288 bytes</span>
 <span class="plain-syntax">     ----  door_to_notice                           5 objects, 280 bytes</span>
 <span class="plain-syntax">     ----  inform_pipeline                          4 objects, 256 bytes</span>
 <span class="plain-syntax">     ----  verb_usage_tier                          5 objects, 240 bytes</span>
 <span class="plain-syntax">     ----  test_scenario                            1 object, 208 bytes</span>
 <span class="plain-syntax">     ----  build_skill                              5 objects, 200 bytes</span>
 <span class="plain-syntax">     ----  compilation_unit                         5 objects, 200 bytes</span>
-<span class="plain-syntax">     ----  plural_dictionary_entry                  4 objects, 192 bytes</span>
 <span class="plain-syntax">     ----  kit_dependency                           4 objects, 192 bytes</span>
+<span class="plain-syntax">     ----  plural_dictionary_entry                  4 objects, 192 bytes</span>
 <span class="plain-syntax">     ----  inform_project                           1 object, 176 bytes</span>
-<span class="plain-syntax">     ----  pointer_allocation                       2 objects, 160 bytes</span>
 <span class="plain-syntax">     ----  code_generation_target                   4 objects, 160 bytes</span>
-<span class="plain-syntax">     ----  link_instruction                         4 objects, 160 bytes</span>
+<span class="plain-syntax">     ----  pointer_allocation                       2 objects, 160 bytes</span>
 <span class="plain-syntax">     ----  inter_architecture                       4 objects, 160 bytes</span>
-<span class="plain-syntax">     ----  element_activation                       4 objects, 128 bytes</span>
+<span class="plain-syntax">     ----  link_instruction                         4 objects, 160 bytes</span>
 <span class="plain-syntax">     ----  codegen_pipeline                         1 object, 128 bytes</span>
+<span class="plain-syntax">     ----  element_activation                       4 objects, 128 bytes</span>
 <span class="plain-syntax">     ----  inbuild_nest                             3 objects, 120 bytes</span>
 <span class="plain-syntax">     ----  inform_kit_ittt                          2 objects, 96 bytes</span>
+<span class="plain-syntax">     ----  compile_task_data                        1 object, 80 bytes</span>
 <span class="plain-syntax">     ----  list_together_routine                    2 objects, 80 bytes</span>
 <span class="plain-syntax">     ----  article                                  2 objects, 80 bytes</span>
-<span class="plain-syntax">     ----  compile_task_data                        1 object, 80 bytes</span>
-<span class="plain-syntax">     ----  inter_warehouse                          1 object, 56 bytes</span>
 <span class="plain-syntax">     ----  build_methodology                        1 object, 56 bytes</span>
-<span class="plain-syntax">     ----  star_invention                           1 object, 48 bytes</span>
+<span class="plain-syntax">     ----  inter_warehouse                          1 object, 56 bytes</span>
 <span class="plain-syntax">     ----  blorb_figure                             1 object, 48 bytes</span>
+<span class="plain-syntax">     ----  star_invention                           1 object, 48 bytes</span>
 <span class="plain-syntax">     ----  HTML_file_state                          1 object, 48 bytes</span>
-<span class="plain-syntax">     ----  parse_name_notice                        1 object, 40 bytes</span>
 <span class="plain-syntax">     ----  loop_over_scope                          1 object, 40 bytes</span>
 <span class="plain-syntax">     ----  kind_template_definition                 1 object, 40 bytes</span>
+<span class="plain-syntax">     ----  parse_name_notice                        1 object, 40 bytes</span>
 
 <span class="plain-syntax">37.5% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    15.9%  text stream storage                      41840936 bytes in 263039 claims</span>
+<span class="plain-syntax">    15.9%  text stream storage                      41840888 bytes in 263039 claims</span>
 <span class="plain-syntax">     3.5%  dictionary storage                       9265664 bytes in 16347 claims</span>
 <span class="plain-syntax">     ----  sorting                                  1048 bytes in 3 claims</span>
 <span class="plain-syntax">     2.7%  source text                              7200000 bytes in 3 claims</span>
@@ -352,7 +360,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  emitter array storage                    14368 bytes in 8 claims</span>
 <span class="plain-syntax">     ----  code generation workspace for objects    9200 bytes in 9 claims</span>
 
-<span class="plain-syntax">20.1% was overhead - 52790816 bytes = 51553K = 50 MB</span>
+<span class="plain-syntax">20.0% was overhead - 52560576 bytes = 51328K = 50 MB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Preform grammar. </b>The full annotated description of the Preform grammar (see <a href="../words-module/4-ap.html" class="internal">About Preform (in words)</a>),
 with optimisation details and hit/miss statistics added, is also long: it's
@@ -368,7 +376,7 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 <span class="plain-syntax">        (@1)minus (@2)&lt;cardinal-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 0/1235) constraint DS = {6} extremes [2, 2]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 (@2)( (@3)&lt;response-letter&gt;=2 (@4)) </span>
-<span class="plain-syntax">          (hits 273/815) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {6} extremes [4, 4]</span>
+<span class="plain-syntax">          (hits 273/816) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {6} extremes [4, 4]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 </span>
 <span class="plain-syntax">          (hits 1564/5548) (matched: 'Represents geographical locations, both indoor</span>
 <span class="plain-syntax">        and outdoor, which are not necessarily areas in a building. A player in one</span>
@@ -379,11 +387,11 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 <span class="plain-syntax">        (@1)&lt;s-literal-truth-state&gt;=1 </span>
 <span class="plain-syntax">          (hits 78/103) (matched: 'false') constraint CS = {26} extremes [1, 1]</span>
 <span class="plain-syntax">        &lt;s-literal-list&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/1568) constraint DS = {28} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/1977) constraint DS = {28} extremes [2, infinity)</span>
 <span class="plain-syntax">        (@1)unicode &lt;s-unicode-character&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3241) constraint DS = {6} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3243) constraint DS = {6} extremes [2, infinity)</span>
 <span class="plain-syntax">        &lt;s-literal-time&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3563) constraint DW = {29, 30, 31} extremes [2, 5]</span>
+<span class="plain-syntax">          (hits 0/3567) constraint DW = {29, 30, 31} extremes [2, 5]</span>
 <span class="plain-syntax">        &lt;s-literal-unit-notation&gt;=1 </span>
 <span class="plain-syntax">          (hits 0/9820) constraint (none) extremes [1, infinity)</span>
 </pre>
@@ -392,10 +400,10 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 
 <div class="download-container">
 	<p>
-		<a href="../../inform7/Downloads/preform-diagnostics.txt" download>
+		<a href="preform-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
-				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 392.8kB)
+				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 392.9kB)
 			</button>
 		</a>
 	</p>
@@ -446,16 +454,16 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the current actor is a person which varies'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'current actor' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'the current owner is a person which varies'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'every turn'</span>
 <span class="plain-syntax">            RULE_NT'every turn'</span>
 <span class="plain-syntax">            SENTENCE_NT'a person can be active or passive'</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'a person' {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'a person' {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'active or passive'</span>
 <span class="plain-syntax">                    AND_NT'or'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'active'</span>
@@ -463,11 +471,11 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the player is passive'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I34'yourself'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'passive' {creation: [ 'passive'(x) ^ 'passive'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'passive' {creation: &lt;&lt; passive(x) ^ passive(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the character movement rules are a rulebook'</span>
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'the first character movement rule'</span>
 <span class="plain-syntax">            RULE_NT'a character movement rule'</span>
 <span class="plain-syntax">            RULE_NT'a character movement rule'</span>
@@ -477,7 +485,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the shopowner rules is a rulebook'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'a shopowner rule'</span>
 <span class="plain-syntax">            RULE_NT'report someone closing a door when the person asked owns the'</span>
 <span class="plain-syntax">            RULE_NT'report vanessa closing the metal door when the metal door is'</span>
@@ -492,7 +500,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the shopper rules is a rulebook'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT {kind: rulebook}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=rulebook(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'a shopper rule'</span>
 <span class="plain-syntax">            RULE_NT'a shopper rule'</span>
 <span class="plain-syntax">            RULE_NT'definition'</span>
@@ -520,23 +528,23 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one thing'</span>
 <span class="plain-syntax">            SENTENCE_NT'an artwork is a kind of thing'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before printing the name of an artwork'</span>
 <span class="plain-syntax">            RULE_NT'after printing the name of an artwork'</span>
 <span class="plain-syntax">            SENTENCE_NT'an artwork can be submitted or reserved'</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'an artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'an artwork' {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'submitted or reserved'</span>
 <span class="plain-syntax">                    AND_NT'or'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'submitted'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'reserved'</span>
 <span class="plain-syntax">            SENTENCE_NT'a book is a kind of artwork'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=book(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=book(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of artwork'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before someone resolving a book when the person asked is not'</span>
 <span class="plain-syntax">            RULE_NT'carry out someone resolving a book'</span>
 <span class="plain-syntax">            RULE_NT'report someone resolving a book'</span>
@@ -544,18 +552,18 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            RULE_NT'before grouping together books'</span>
 <span class="plain-syntax">            SENTENCE_NT'a stamped envelope is a kind of thing'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=stamped envelope(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=stamped envelope(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before someone resolving a stamped envelope when the person '</span>
 <span class="plain-syntax">            RULE_NT'carry out someone resolving a stamped envelope'</span>
 <span class="plain-syntax">            RULE_NT'report someone resolving a stamped envelope'</span>
 <span class="plain-syntax">            RULE_NT'instead of someone resolving a stamped envelope when the per'</span>
 <span class="plain-syntax">            SENTENCE_NT'a dvd is a kind of artwork'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=dvd(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=dvd(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of artwork'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {creation: [ kind=artwork(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before someone resolving a dvd when the person asked is not '</span>
 <span class="plain-syntax">            RULE_NT'carry out someone resolving a dvd'</span>
 <span class="plain-syntax">            RULE_NT'report someone resolving a dvd'</span>
@@ -569,9 +577,9 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            RULE_NT'carry out someone approaching'</span>
 <span class="plain-syntax">            SENTENCE_NT'a coupon is a kind of thing'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=coupon(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=coupon(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'carry out someone resolving a coupon'</span>
 <span class="plain-syntax">            SENTENCE_NT'the block giving rule is not listed in any rulebook'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: rule-listed-in}</span>
@@ -582,12 +590,12 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            RULE_NT'after someone giving a coupon to vanessa'</span>
 <span class="plain-syntax">            SENTENCE_NT'infection color is a kind of value'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'infection color' {creation: [ kind=infection color(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'infection color' {creation: &lt;&lt; kind=infection color(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of value'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'value' {creation: [ kind=value(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'value' {creation: &lt;&lt; kind=value(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'the infection colors are french vanilla , whole-bean vanilla'</span>
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc} {creation: [ kind=infection color(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'infection colors' {definite 'the' n/m/f s/p nom/acc} {creation: &lt;&lt; kind=infection color(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                AND_NT','</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'french vanilla' {eval: CONSTANT_NT'french vanilla' {kind: infection color} {instance: I62'french vanilla'[infection color]}} {created here}</span>
 <span class="plain-syntax">                    AND_NT','</span>
@@ -664,21 +672,21 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"[flavored ice cream]"'</span>
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone is a kind of thing'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT} {created here}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: &lt;&lt; kind=ice cream cone(x) &gt;&gt;} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing'</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: [ kind=thing(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'thing' {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone is always edible'</span>
 <span class="plain-syntax">                VERB_NT'is always' {certainty:certain} {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'edible' {creation: [ 'edible'(x) ^ 'edible'(x) ]}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: &lt;&lt; kind=ice cream cone(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'edible' {creation: &lt;&lt; edible(x) ^ edible(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone has an infection color'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'ice cream cone' {indefinite 'an' n/m/f nom/acc s} {creation: &lt;&lt; kind=ice cream cone(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT'has'</span>
 <span class="plain-syntax">                    UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}</span>
 <span class="plain-syntax">            SENTENCE_NT'an ice cream cone can be half-eaten or fresh'</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'an ice cream cone' {creation: [ kind=ice cream cone(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'an ice cream cone' {creation: &lt;&lt; kind=ice cream cone(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'half-eaten or fresh'</span>
 <span class="plain-syntax">                    AND_NT'or'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'half-eaten'</span>
@@ -695,14 +703,14 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            RULE_NT'this is the infection rule'</span>
 <span class="plain-syntax">            SENTENCE_NT'a person can be infected or clean'</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'a person' {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'a person' {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'infected or clean'</span>
 <span class="plain-syntax">                    AND_NT'or'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'infected'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'clean'</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has an infection color'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT'has'</span>
 <span class="plain-syntax">                    UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s}</span>
 <span class="plain-syntax">            RULE_NT'every turn'</span>
@@ -762,7 +770,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                UNPARSED_NOUN_NT'going toward'</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has a room called the destination'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT</span>
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s}</span>
@@ -790,12 +798,12 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the alfred cralle pool hall is a room'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I88'alfred cralle pool hall'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=room(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'"The town's most popular gathering-place, the pool hall is d'</span>
 <span class="plain-syntax">            SENTENCE_NT'the air conditioner is a device in the pool hall'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'air conditioner' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'air conditioner' {kind: object} {instance: I89'air conditioner'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=device(x) ^ is('the pool hall', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'device in the pool hall'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'device in the pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=device(x) ^ ('the pool hall' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'device in the pool hall' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'"[if switched off]An air conditioner sits in the corner, unh'</span>
 <span class="plain-syntax">            SENTENCE_NT'the felt door is west of the pool hall'</span>
 <span class="plain-syntax">                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}</span>
@@ -806,17 +814,17 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the felt door is a door'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I90'felt door'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'the felt door is open'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'open' {creation: [ 'open'(x) ^ 'open'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'open' {creation: &lt;&lt; open(x) ^ open(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the felt door is lockable and unlocked'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the felt door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}} {created here}</span>
@@ -844,7 +852,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the statue is scenery in memorial square'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'statue' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'statue' {kind: object} {instance: I93'statue'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in memorial square' {creation: [ 'scenery'(x) ^ is('memorial square', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in memorial square'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in memorial square' {creation: &lt;&lt; scenery(x) ^ ('memorial square' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'scenery in memorial square' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "nancy" or "johnson" or "mrs" as the statue'</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"nancy" or "johnson" or "mrs"'</span>
@@ -885,11 +893,11 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the slot is scenery in the post office'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the post office' {creation: [ 'scenery'(x) ^ is('the post office', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the post office'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the post office' {creation: &lt;&lt; scenery(x) ^ ('the post office' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'scenery in the post office' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'the slot is a container'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=container(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=container(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'carry out inserting something into the slot'</span>
 <span class="plain-syntax">            RULE_NT'report inserting something into the slot'</span>
 <span class="plain-syntax">            SENTENCE_NT'hamwi street is northeast of an iron gate'</span>
@@ -908,13 +916,13 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the iron gate is a door'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I99'iron gate'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'it is lockable and unlocked'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'it' {eval: CONSTANT_NT'iron gate' {kind: door} {instance: I99'iron gate'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
 <span class="plain-syntax">            RULE_NT'before printing the name of the iron gate while not opening '</span>
 <span class="plain-syntax">            SENTENCE_NT'cold comfort ice cream is north of a metal door'</span>
 <span class="plain-syntax">                VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}</span>
@@ -931,7 +939,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'a poster is fixed in place in cold comfort'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {eval: CONSTANT_NT'poster' {kind: object} {instance: I102'poster'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: [ 'fixed in place'(x) ^ is('cold comfort', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'fixed in place in cold comfort'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'fixed in place in cold comfort' {creation: &lt;&lt; fixed in place(x) ^ ('cold comfort' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'fixed in place in cold comfort' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'"A poster fills one wall with the blazing promise of treats '</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the poster is "Coming soon! Thai ice crea'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
@@ -942,14 +950,14 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the metal door is a door'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I101'metal door'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'"A frosty metallic door separates [the location] from [the o'</span>
 <span class="plain-syntax">            SENTENCE_NT'the metal door is lockable and unlocked'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'metal door' {kind: door} {instance: I101'metal door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the metal door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}</span>
@@ -971,7 +979,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the glass door is a door'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I105'glass door'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'it is west of marciony street'</span>
 <span class="plain-syntax">                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'it' {eval: CONSTANT_NT'glass door' {kind: door} {instance: I105'glass door'}}</span>
@@ -982,8 +990,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I105'glass door'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the key to the city unlocks the glass door'</span>
 <span class="plain-syntax">                VERB_NT'unlocks' {verb 'unlock' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'key to the city' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'key to the city' {kind: object} {instance: I91'key to the city'}}</span>
@@ -1009,14 +1017,14 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the emergency box is fixed in place'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'fixed in place' {creation: [ 'fixed in place'(x) ^ 'fixed in place'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'fixed in place' {creation: &lt;&lt; fixed in place(x) ^ fixed in place(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'"A fire-red box with a glass front faces the sidewalk, with '</span>
 <span class="plain-syntax">            SENTENCE_NT'the emergency box is closed and transparent'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I108'emergency box'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'closed' {creation: [ 'closed'(x) ^ 'closed'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'transparent' {creation: [ 'transparent'(x) ^ 'transparent'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'closed' {creation: &lt;&lt; closed(x) ^ closed(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'transparent' {creation: &lt;&lt; transparent(x) ^ transparent(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "glass" as the box'</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"glass"'</span>
@@ -1043,13 +1051,13 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the bronze gates are a door'</span>
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I107'bronze gates'}}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'the bronze gates are lockable and unlocked'</span>
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'bronze gates' {kind: door} {instance: I107'bronze gates'}}</span>
 <span class="plain-syntax">                AND_NT'and'</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: [ 'lockable'(x) ^ 'lockable'(x) ]}</span>
-<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: [ 'unlocked'(x) ^ 'unlocked'(x) ]}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'lockable' {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
+<span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the bronze gates is "Erected during the m'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of the bronze gates' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -1066,7 +1074,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the incongruous sign is scenery in the public library'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'incongruous sign' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'incongruous sign' {kind: object} {instance: I111'incongruous sign'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the public library' {creation: [ 'scenery'(x) ^ is('the public library', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'scenery in the public library'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'scenery in the public library' {creation: &lt;&lt; scenery(x) ^ ('the public library' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'scenery in the public library' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of the incongruous sign is "Eating and drink'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of the incongruous sign' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -1103,7 +1111,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                PROPER_NOUN_NT'"A skeleton key."' {eval: CONSTANT_NT'"A skeleton key."' {kind: text}}</span>
 <span class="plain-syntax">            SENTENCE_NT'a room can be indoors or outdoors'</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'a room' {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'a room' {creation: &lt;&lt; kind=room(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'indoors or outdoors'</span>
 <span class="plain-syntax">                    AND_NT'or'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'indoors'</span>
@@ -1121,7 +1129,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">                                AND_NT','</span>
 <span class="plain-syntax">                                    PROPER_NOUN_NT'town hall' {eval: CONSTANT_NT'town hall' {kind: object} {instance: I112'town hall'}}</span>
 <span class="plain-syntax">                                    PROPER_NOUN_NT'library' {definite 'the' n/m/f s/p nom/acc} {eval: CONSTANT_NT'public library' {kind: object} {instance: I110'public library'}}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'indoors' {creation: [ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ^ 'indoors'(x) ]}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'indoors' {creation: &lt;&lt; indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) ^ indoors(x) &gt;&gt;}</span>
 <span class="plain-syntax">            SENTENCE_NT'use full-length room descriptions'</span>
 <span class="plain-syntax">                VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'full-length room descriptions'</span>
@@ -1131,7 +1139,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'blank is a room'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'blank' {eval: CONSTANT_NT'blank' {kind: object} {instance: I113'blank'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=room(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'room' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=room(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'the destination of the player is blank'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'destination of the player' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -1175,7 +1183,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'vanessa is a woman in cold comfort'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: object} {instance: I129'vanessa'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('cold comfort', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'woman in cold comfort'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'woman in cold comfort' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=woman(x) ^ ('cold comfort' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'woman in cold comfort' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'vanessa owns cold comfort'</span>
 <span class="plain-syntax">                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'vanessa' {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'}}</span>
@@ -1184,7 +1192,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'francine is a woman in the public library'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: object} {instance: I130'francine'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('the public library', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'woman in the public library'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'woman in the public library' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=woman(x) ^ ('the public library' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'woman in the public library' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'francine carries a book called phlox for phyllis'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'francine' {eval: CONSTANT_NT'francine' {kind: woman} {instance: I130'francine'}}</span>
@@ -1198,7 +1206,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'lewis is a man in the alfred cralle pool hall'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: object} {instance: I133'lewis'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the alfred cralle pool hall', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('the alfred cralle pool hall' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in the alfred cralle pool hall' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'lewis carries 3 stamped envelopes'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'lewis' {eval: CONSTANT_NT'lewis' {kind: man} {instance: I133'lewis'}}</span>
@@ -1231,7 +1239,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'gene is a man in nancy johnson memorial square'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: object} {instance: I141'gene'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('nancy johnson memorial square', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in nancy johnson memorial square'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in nancy johnson memorial square' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('nancy johnson memorial square' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in nancy johnson memorial square' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'gene carries a stamped envelope'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'gene' {eval: CONSTANT_NT'gene' {kind: man} {instance: I141'gene'}}</span>
@@ -1250,7 +1258,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'rhoda is a woman in marciony street'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I145'rhoda'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('marciony street', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'woman in marciony street'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'woman in marciony street' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=woman(x) ^ ('marciony street' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'woman in marciony street' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'rhoda carries a book called the marciony street murders'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'rhoda' {eval: CONSTANT_NT'rhoda' {kind: woman} {instance: I145'rhoda'}}</span>
@@ -1269,7 +1277,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'martin is a man in main street'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: object} {instance: I149'martin'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('main street', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in main street'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in main street' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('main street' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in main street' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'martin carries a dvd called the lifecycle of the south sea t'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'martin' {eval: CONSTANT_NT'martin' {kind: man} {instance: I149'martin'}}</span>
@@ -1283,7 +1291,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'antony is a man in movie rental'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: object} {instance: I152'antony'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('movie rental', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in movie rental'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in movie rental' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('movie rental' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in movie rental' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'antony carries a coupon'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'antony' {eval: CONSTANT_NT'antony' {kind: man} {instance: I152'antony'}}</span>
@@ -1297,7 +1305,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'shelby is a man in the town hall'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: object} {instance: I155'shelby'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the town hall', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in the town hall'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in the town hall' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('the town hall' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in the town hall' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'shelby carries a dvd called conducting an orderly meeting'</span>
 <span class="plain-syntax">                VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shelby' {eval: CONSTANT_NT'shelby' {kind: man} {instance: I155'shelby'}}</span>
@@ -1329,7 +1337,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'christopher is a man in the library'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: object} {instance: I164'christopher'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the library', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in the library'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in the library' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('the library' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in the library' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'christopher owns the library'</span>
 <span class="plain-syntax">                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'christopher' {eval: CONSTANT_NT'christopher' {kind: man} {instance: I164'christopher'}}</span>
@@ -1338,7 +1346,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'linnea is a woman in the alfred cralle pool hall'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: object} {instance: I165'linnea'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ^ is('the alfred cralle pool hall', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'woman in the alfred cralle pool hall' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=woman(x) ^ ('the alfred cralle pool hall' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'woman in the alfred cralle pool hall' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'linnea owns the alfred cralle pool hall'</span>
 <span class="plain-syntax">                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'linnea' {eval: CONSTANT_NT'linnea' {kind: woman} {instance: I165'linnea'}}</span>
@@ -1347,7 +1355,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'ned is a man in the movie rental store'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: object} {instance: I166'ned'}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ^ is('the movie rental store', &lt;ContainerOf(*1) : x&gt;) ]} {eval: TEST_VALUE_NT'man in the movie rental store'}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'man in the movie rental store' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) ^ ('the movie rental store' == &lt;ContainerOf(*1) : x&gt;) &gt;&gt;} {eval: TEST_VALUE_NT'man in the movie rental store' {term: x}}</span>
 <span class="plain-syntax">            SENTENCE_NT'ned owns the movie rental'</span>
 <span class="plain-syntax">                VERB_NT'owns' {verb 'own' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'ned' {eval: CONSTANT_NT'ned' {kind: man} {instance: I166'ned'}}</span>
@@ -1357,7 +1365,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the description of a person is usually "[The noun] [if the n'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc}</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'description' {eval: CONSTANT_NT {kind: texts valued property}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}</span>
 <span class="plain-syntax">            RULE_NT'after examining another person who is carrying something'</span>
@@ -1365,7 +1373,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">        HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has a table name called conversation'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT</span>
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}</span>
@@ -1384,7 +1392,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the conversation of a person is usually table of general chi'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc}</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'conversation' {eval: CONSTANT_NT {kind: table names valued property}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'table of general chitchat' {eval: CONSTANT_NT'table of general chitchat' {kind: table name}{meaning: {table of general chitchat = TABLE_MC}}}</span>
 <span class="plain-syntax">            TABLE_NT'table of general chitchat topic reply summary turn stamp cha'</span>
@@ -1399,7 +1407,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">        HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has some text called walk style'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=person(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT</span>
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'text' {indefinite 'some' n/m/f nom/acc p}</span>
@@ -1407,13 +1415,13 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the walk style of a man is usually "stride"'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'walk style of a man' {definite 'the' n/m/f s/p nom/acc}</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'man' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=man(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'man' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=man(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'walk style' {eval: CONSTANT_NT {kind: texts valued property}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'"stride"' {eval: CONSTANT_NT'"stride"' {kind: text}}</span>
 <span class="plain-syntax">            SENTENCE_NT'the walk style of a woman is usually "strut"'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'walk style of a woman' {definite 'the' n/m/f s/p nom/acc}</span>
-<span class="plain-syntax">                    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=woman(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=woman(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'walk style' {eval: CONSTANT_NT {kind: texts valued property}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'"strut"' {eval: CONSTANT_NT'"strut"' {kind: text}}</span>
 <span class="plain-syntax">            SENTENCE_NT'the walk style of gene is "[one of]wander[or]stroll[purely a'</span>
@@ -1446,7 +1454,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            RULE_NT'to tidy departures of ( current table - a table name )'</span>
 <span class="plain-syntax">            SENTENCE_NT'a door has a person called last opener'</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT</span>
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}</span>
@@ -1456,7 +1464,7 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the last thing named is a thing that varies'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=things variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=things variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before printing the name of something ( called target ) whic'</span>
 <span class="plain-syntax">            RULE_NT'report someone going a direction'</span>
 <span class="plain-syntax">            RULE_NT'this is the movement reporting rule'</span>
@@ -1464,12 +1472,12 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            SENTENCE_NT'the last person named is a person that varies'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=people variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            RULE_NT'before printing the name of a person ( called target )'</span>
 <span class="plain-syntax">            SENTENCE_NT'group size is a number that varies'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'group size' {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=numbers variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'group size is 1'</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'group size' {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}{meaning: {group size = VARIABLE_MC}}}</span>
@@ -1483,8 +1491,8 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">            TABLE_NT'table of dipping phrases dipping "looks as though dipped in"'</span>
 <span class="plain-syntax">            SENTENCE_NT'a door is usually scenery'</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=door(x) ]} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">                ADJECTIVE_NT'scenery' {creation: [ 'scenery'(x) ^ 'scenery'(x) ]}</span>
+<span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">                ADJECTIVE_NT'scenery' {creation: &lt;&lt; scenery(x) ^ scenery(x) &gt;&gt;}</span>
 <span class="plain-syntax">            RULE_NT'to make delimiter ( index - a number ) of ( count - a number'</span>
 <span class="plain-syntax">            RULE_NT'to say optional comma'</span>
 <span class="plain-syntax">            SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness'</span>
@@ -1498,70 +1506,70 @@ that is, with the content of extensions excluded, and with the content of
 <span class="plain-syntax">        SENTENCE_NT'number understood is a number which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'number understood' {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=numbers variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'real number understood is a real number which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'real number understood' {eval: NONLOCAL_VARIABLE_NT'real number understood' {nonlocal: 'real number understood'(var)real number}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'real number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=real numbers variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'real number which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=real numbers variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'truth state understood is a truth state which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'truth state understood' {eval: NONLOCAL_VARIABLE_NT'truth state understood' {nonlocal: 'truth state understood'(var)truth state}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'truth state which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=truth states variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'truth state which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=truth states variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'external file understood is a external file which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'external file understood' {eval: NONLOCAL_VARIABLE_NT'external file understood' {nonlocal: 'external file understood'(var)external file}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=external files variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'external file which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=external files variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'time understood is a time which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'time understood' {eval: NONLOCAL_VARIABLE_NT'time understood' {nonlocal: 'time understood'(var)time}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'time which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=times variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'time which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=times variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'scene understood is a scene which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'scene understood' {eval: NONLOCAL_VARIABLE_NT'scene understood' {nonlocal: 'scene understood'(var)scene}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'scene which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=scenes variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'scene which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=scenes variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'figure name understood is a figure name which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'figure name understood' {eval: NONLOCAL_VARIABLE_NT'figure name understood' {nonlocal: 'figure name understood'(var)figure name}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'figure name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=figure names variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'figure name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=figure names variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'sound name understood is a sound name which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'sound name understood' {eval: NONLOCAL_VARIABLE_NT'sound name understood' {nonlocal: 'sound name understood'(var)sound name}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=sound names variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=sound names variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'natural language understood is a natural language which vari'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'natural language understood' {eval: NONLOCAL_VARIABLE_NT'natural language understood' {nonlocal: 'natural language understood'(var)natural language}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'natural language which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=natural languages variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'natural language which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=natural languages variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'grammatical tense understood is a grammatical tense which va'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'grammatical tense understood' {eval: NONLOCAL_VARIABLE_NT'grammatical tense understood' {nonlocal: 'grammatical tense understood'(var)grammatical tense}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'grammatical tense which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical tenses variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'grammatical tense which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=grammatical tenses variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'narrative viewpoint understood is a narrative viewpoint whic'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'narrative viewpoint understood' {eval: NONLOCAL_VARIABLE_NT'narrative viewpoint understood' {nonlocal: 'narrative viewpoint understood'(var)narrative viewpoint}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'narrative viewpoint which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=narrative viewpoints variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'narrative viewpoint which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=narrative viewpoints variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'grammatical case understood is a grammatical case which vari'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'grammatical case understood' {eval: NONLOCAL_VARIABLE_NT'grammatical case understood' {nonlocal: 'grammatical case understood'(var)grammatical case}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'grammatical case which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical cases variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'grammatical case which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=grammatical cases variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'grammatical gender understood is a grammatical gender which '</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'grammatical gender understood' {eval: NONLOCAL_VARIABLE_NT'grammatical gender understood' {nonlocal: 'grammatical gender understood'(var)grammatical gender}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=grammatical genders variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=grammatical genders variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'command parser error understood is a command parser error wh'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'command parser error understood' {eval: NONLOCAL_VARIABLE_NT'command parser error understood' {nonlocal: 'command parser error understood'(var)command parser error}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=command parser errors variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=command parser errors variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">        SENTENCE_NT'infection color understood is a infection color which varies'</span>
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">            PROPER_NOUN_NT'infection color understood' {eval: NONLOCAL_VARIABLE_NT'infection color understood' {nonlocal: 'infection color understood'(var)infection color}} {created here}</span>
-<span class="plain-syntax">            COMMON_NOUN_NT'infection color which varies' {indefinite 'a' n/m/f nom/acc s} {creation: [ kind=infection colors variable-pointer(x) ]} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">            COMMON_NOUN_NT'infection color which varies' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; kind=infection colors variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 </pre>
 <p class="commentary">The unabridged tree is here:
 </p>
 
 <div class="download-container">
 	<p>
-		<a href="../../inform7/Downloads/syntax-diagnostics.txt" download>
+		<a href="syntax-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
 				Download <b>syntax-diagnostics.txt</b> (Complete syntax tree, 1.9MB)

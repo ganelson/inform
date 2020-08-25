@@ -21,6 +21,11 @@ Import: services/calculus
 Import: inter/bytecode
 Import: inbuild/supervisor
 Import: core
+Import: assertions
+Import: values
+Import: knowledge
+Import: imperative
+Import: runtime
 Import: inter/building
 Import: inter/codegen
 Import: if

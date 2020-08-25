@@ -14,8 +14,8 @@ for browsing. To obtain and build the software, or to see resources which
 are not webs and thus not here, see: https://github.com/ganelson/inform
 
 @ The Inform 7 compiler comes with a large penumbra of supporting resources,
-so there are nearly 50 webs in this repository:
-(a) The compiler is built from some 16 modules, plus three front-end command
+so there are around 50 webs in this repository:
+(a) The compiler is built from around 20 modules, plus three front-end command
 line tools controlling them. See //compiler// for a map.
 (b) See //other// for command-line tools useful for building or working with
 Inform, but not involving compilation: //inblorb//, a packager; //indoc//, to

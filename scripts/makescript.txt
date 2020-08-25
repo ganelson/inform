@@ -58,6 +58,11 @@ INBUILDX = inbuild/Tangled/inbuild
 {module} CALCULUS calculus services/calculus-module modules
 
 {module} CORE core inform7/core-module modules
+{module} ASSERTIONS assertions inform7/assertions-module modules
+{module} KNOWLEDGE knowledge inform7/knowledge-module modules
+{module} IMPERATIVE imperative inform7/imperative-module modules
+{module} RUNTIME runtime inform7/runtime-module modules
+{module} VALUES values inform7/values-module modules
 {module} IF if inform7/if-module modules
 {module} INDEX index inform7/index-module modules
 {module} MULTIMEDIA multimedia inform7/multimedia-module modules

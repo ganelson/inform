@@ -59,6 +59,11 @@ int Main::deputy(int argc, char *argv[]) {
 	CalculusModule::start();
 	ProblemsModule::start();
 	CoreModule::start();
+	AssertionsModule::start();
+	KnowledgeModule::start();
+	ImperativeModule::start();
+	RuntimeModule::start();
+	ValuesModule::start();
 	IFModule::start();
 	MultimediaModule::start();
 	HTMLModule::start();
@@ -195,6 +200,11 @@ they can be rather lengthy.
 	ProblemsModule::end();
 	MultimediaModule::end();
 	CoreModule::end();
+	AssertionsModule::end();
+	KnowledgeModule::end();
+	ImperativeModule::end();
+	RuntimeModule::end();
+	ValuesModule::end();
 	IFModule::end();
 	IndexModule::end();
 	HTMLModule::end();
