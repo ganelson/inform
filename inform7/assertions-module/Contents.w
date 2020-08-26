@@ -36,6 +36,7 @@ Chapter 3: Requests
 
 Chapter 4: Assertions
 "Turning regular assertion sentences into propositions about the model world."
+	Name Resolution
 	Refine Parse Tree
 	The Creator
 	Assertions
@@ -46,30 +47,16 @@ Chapter 4: Assertions
 	Implications
 	Tree Conversions
 
-Chapter 5: Verbs
-"Verbs which establish relationships between nouns, and which give meaning
-to binary predicates."
+Chapter 5: Basic Adjectives and Relations
+"Predicates for the calculus module to use."
 	The Equality Relation Revisited
 	Quasinumeric Relations
-	Adjective Meanings
-	Relations
-	Explicit Relations
 	The Universal Relation
-	Verbs at Run Time
+	Explicit Relations
+	Adjective Meanings
 
-Chapter 6: Sentences
-"In which the stream of words is broken up into sentences and built into a
-parse tree, recording primary verbs, noun phrases and some sub-clauses; and in
-which these sentences are collected under a hierarchy of headings, with
-material intended only for certain target virtual machines included or
-excluded as need be."
-	Parse Tree Usage
-	Headings
-	Rule Subtrees
-
-Chapter 7: Table Data
+Chapter 6: Table Data
 "Inform's preferred data structure for small initialised databases."
 	Table Columns
 	Tables
-	Runtime Support for Tables
 	Listed-In Relations

@@ -748,7 +748,7 @@ kinds of value:
 	}
 	if (Kinds::eq(kind_of_constant, K_verb)) {
 		verb_form *vf = Rvalues::to_verb_form(spec_found);
-		Emit::holster(VH, VerbsAtRunTime::form_iname(vf));
+		Emit::holster(VH, RTVerbs::form_iname(vf));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_response)) {

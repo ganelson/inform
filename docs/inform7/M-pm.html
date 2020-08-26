@@ -83,29 +83,29 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     66.9% in compilation to Inter</span>
-<span class="plain-syntax">         25.9% in </span><a href="../imperative-module/3-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
-<span class="plain-syntax">          8.5% in </span><a href="../imperative-module/3-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
-<span class="plain-syntax">          6.9% in </span><a href="../values-module/5-rsp.html#SP6" class="internal">Strings::compile_responses</a>
-<span class="plain-syntax">          6.0% in </span><a href="../knowledge-module/3-cmw2.html#SP2" class="internal">World::Compile::compile</a>
-<span class="plain-syntax">          4.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          3.3% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
-<span class="plain-syntax">          1.9% in </span><a href="../imperative-module/3-cs.html#SP14" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
+<span class="plain-syntax">     66.8% in compilation to Inter</span>
+<span class="plain-syntax">         25.4% in </span><a href="../imperative-module/3-cs.html#SP11" class="internal">Phrases::Manager::compile_first_block</a>
+<span class="plain-syntax">          8.8% in </span><a href="../imperative-module/3-cs.html#SP15" class="internal">Phrases::Manager::compile_as_needed</a>
+<span class="plain-syntax">          7.1% in </span><a href="../values-module/5-rsp.html#SP6" class="internal">Strings::compile_responses</a>
+<span class="plain-syntax">          6.2% in </span><a href="../knowledge-module/3-cmw2.html#SP2" class="internal">World::Compile::compile</a>
+<span class="plain-syntax">          3.9% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">          2.0% in </span><a href="../imperative-module/3-cs.html#SP14" class="internal">Phrases::Manager::RulePrintingRule_routine</a>
 <span class="plain-syntax">          1.9% in </span><a href="../imperative-module/3-cs.html#SP13" class="internal">Phrases::Manager::rulebooks_array</a>
-<span class="plain-syntax">          1.0% in </span><a href="../assertions-module/5-vart.html#SP4" class="internal">VerbsAtRunTime::ConjugateVerb</a>
+<span class="plain-syntax">          1.0% in </span><a href="../runtime-module/4-vart.html#SP4" class="internal">RTVerbs::ConjugateVerb</a>
 <span class="plain-syntax">          0.8% in </span><a href="../imperative-module/3-cs.html#SP4" class="internal">Phrases::Manager::traverse</a>
 <span class="plain-syntax">          0.5% in </span><a href="../imperative-module/3-cs.html#SP7" class="internal">Phrases::Manager::parse_rule_parameters</a>
 <span class="plain-syntax">          0.5% in </span><a href="../knowledge-module/3-cmw.html#SP1" class="internal">World::complete</a>
 <span class="plain-syntax">          0.3% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
 <span class="plain-syntax">          0.3% in </span><a href="../imperative-module/3-cs.html#SP13" class="internal">Phrases::Manager::compile_rulebooks</a>
-<span class="plain-syntax">          0.3% in </span><a href="../assertions-module/5-rlt.html#SP23" class="internal">Relations::compile_defined_relations</a>
+<span class="plain-syntax">          0.3% in </span><a href="../runtime-module/4-rart.html#SP17" class="internal">RTRelations::compile_defined_relations</a>
 <span class="plain-syntax">          0.1% in </span><a href="../runtime-module/4-rsfk.html#SP26" class="internal">Kinds::RunTime::compile_data_type_support_routines</a>
 <span class="plain-syntax">          0.1% in </span><a href="../if-module/5-gv.html#SP25" class="internal">PL::Parsing::Verbs::compile_all</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
-<span class="plain-syntax">          3.3% not specifically accounted for</span>
-<span class="plain-syntax">     30.4% in running Inter pipeline</span>
-<span class="plain-syntax">          9.9% in inter step 2/12: link</span>
-<span class="plain-syntax">          9.7% in step preparation</span>
+<span class="plain-syntax">          3.2% not specifically accounted for</span>
+<span class="plain-syntax">     30.5% in running Inter pipeline</span>
+<span class="plain-syntax">         10.3% in step preparation</span>
+<span class="plain-syntax">          9.8% in inter step 2/12: link</span>
 <span class="plain-syntax">          7.1% in inter step 12/12: generate inform6 -&gt; auto.inf</span>
 <span class="plain-syntax">          0.3% in inter step 9/12: make-identifiers-unique</span>
 <span class="plain-syntax">          0.1% in inter step 10/12: reconcile-verbs</span>
@@ -115,7 +115,7 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.1% in inter step 6/12: assimilate</span>
 <span class="plain-syntax">          0.1% in inter step 7/12: resolve-external-symbols</span>
 <span class="plain-syntax">          0.1% in inter step 8/12: inspect-plugs</span>
-<span class="plain-syntax">          2.1% not specifically accounted for</span>
+<span class="plain-syntax">          1.6% not specifically accounted for</span>
 <span class="plain-syntax">      2.0% in supervisor</span>
 <span class="plain-syntax">      0.6% not specifically accounted for</span>
 </pre>
@@ -126,7 +126,7 @@ represent less than 1/1000th of the total.
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Total memory consumption was 256344K = 250 MB</span>
+<span class="plain-syntax">Total memory consumption was 256345K = 250 MB</span>
 
 <span class="plain-syntax">62.4% was used for 1338290 objects, in 273493 frames in 200 x 800K = 160000K = 156 MB:</span>
 
@@ -343,7 +343,7 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">37.5% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    15.9%  text stream storage                      41841360 bytes in 263039 claims</span>
+<span class="plain-syntax">    15.9%  text stream storage                      41843012 bytes in 263039 claims</span>
 <span class="plain-syntax">     3.5%  dictionary storage                       9265664 bytes in 16347 claims</span>
 <span class="plain-syntax">     ----  sorting                                  1048 bytes in 3 claims</span>
 <span class="plain-syntax">     2.7%  source text                              7200000 bytes in 3 claims</span>
@@ -369,14 +369,14 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;s-literal&gt; hits 2097/23834 nti 6 constraint (none) extremes [1, infinity)</span>
+<span class="plain-syntax">&lt;s-literal&gt; hits 2097/23834 nti 7 constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">    English:</span>
 <span class="plain-syntax">        (@1)&lt;cardinal-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]</span>
 <span class="plain-syntax">        (@1)minus (@2)&lt;cardinal-number&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/1256) constraint DS = {6} extremes [2, 2]</span>
+<span class="plain-syntax">          (hits 0/1611) constraint DS = {7} extremes [2, 2]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 (@2)( (@3)&lt;response-letter&gt;=2 (@4)) </span>
-<span class="plain-syntax">          (hits 273/820) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {6} extremes [4, 4]</span>
+<span class="plain-syntax">          (hits 273/831) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {7} extremes [4, 4]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 </span>
 <span class="plain-syntax">          (hits 1564/5548) (matched: 'Represents geographical locations, both indoor</span>
 <span class="plain-syntax">        and outdoor, which are not necessarily areas in a building. A player in one</span>
@@ -385,13 +385,13 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 <span class="plain-syntax">        &lt;s-literal-real-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 11/9909) (matched: 'plus infinity') constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">        (@1)&lt;s-literal-truth-state&gt;=1 </span>
-<span class="plain-syntax">          (hits 78/103) (matched: 'false') constraint CS = {26} extremes [1, 1]</span>
+<span class="plain-syntax">          (hits 78/808) (matched: 'false') constraint CS = {27} extremes [1, 1]</span>
 <span class="plain-syntax">        &lt;s-literal-list&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/2043) constraint DS = {28} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3513) constraint DS = {29} extremes [2, infinity)</span>
 <span class="plain-syntax">        (@1)unicode &lt;s-unicode-character&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3275) constraint DS = {6} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3830) constraint DS = {7} extremes [2, infinity)</span>
 <span class="plain-syntax">        &lt;s-literal-time&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3492) constraint DW = {29, 30, 31} extremes [2, 5]</span>
+<span class="plain-syntax">          (hits 0/3257) constraint DW = {6, 30, 31} extremes [2, 5]</span>
 <span class="plain-syntax">        &lt;s-literal-unit-notation&gt;=1 </span>
 <span class="plain-syntax">          (hits 0/9820) constraint (none) extremes [1, infinity)</span>
 </pre>
@@ -403,7 +403,7 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 		<a href="preform-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
-				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 392.8kB)
+				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 393kB)
 			</button>
 		</a>
 	</p>

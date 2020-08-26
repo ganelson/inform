@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="index.html"><span class="selectedlink">inflections</span></a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-tai.html#SP1">&#167;1. Suffix inflections</a></li><li><a href="2-tai.html#SP3">&#167;3. General tries</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Suffix inflections. </b>The following inflects the ending of the supplied text. It does so by
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Suffix inflections. </b>The following inflects the ending of the supplied text. It does so by
 running the text through an avinue: see <a href="../../../inweb/docs/foundation-module/4-taa.html" class="internal">Tries and Avinues (in foundation)</a>,
 which is where the asterisk notation is handled.
 </p>
@@ -79,7 +85,7 @@ which is where the asterisk notation is handled.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-tai.html#SP2" class="function-link"><span class="function-syntax">Inflect::follow_suffix_instruction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">result</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> code returns a <span class="extract"><span class="extract-syntax">result</span></span> which may be null, if no match
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> code returns a <span class="extract"><span class="extract-syntax">result</span></span> which may be null, if no match
 was found. In that event, we leave the text unchanged, just as if the result
 had been <span class="extract"><span class="extract-syntax">0</span></span> &mdash; meaning "change nothing".
 </p>
@@ -96,7 +102,7 @@ had been <span class="extract"><span class="extract-syntax">0</span></span> &mda
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">success</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>In general the result either has an initial digit, in which case it removes
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>In general the result either has an initial digit, in which case it removes
 that many terminal letters, or does not, in which case it removes all the
 letters (and thus the result text replaces the original entirely).
 The special character <span class="extract"><span class="extract-syntax">+</span></span> after a digit means "duplicate the last character";
@@ -125,7 +131,7 @@ add "ize".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tai.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the output, interpreting plus signs as word breaks</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the output, interpreting plus signs as word breaks</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -134,7 +140,7 @@ add "ize".
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tai.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. General tries. </b>Here we take a word assemblage and apply suffix inflection to the first word
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. General tries. </b>Here we take a word assemblage and apply suffix inflection to the first word
 alone, preserving the rest: for example, "make the tea" might become "making
 the tea". However, if the result of this inflection contains any <span class="extract"><span class="extract-syntax">+</span></span> signs,
 those once again become word boundaries.

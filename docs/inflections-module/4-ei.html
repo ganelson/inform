@@ -33,7 +33,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -43,12 +47,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="index.html"><span class="selectedlink">inflections</span></a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -61,7 +67,7 @@
 
 <ul class="toc"><li><a href="4-ei.html#SP1">&#167;1. Noun inflections</a></li><li><a href="4-ei.html#SP5">&#167;5. Plural inflections</a></li><li><a href="4-ei.html#SP14">&#167;14. Verb inflections</a></li><li><a href="4-ei.html#SP45">&#167;45. Present to past participles</a></li><li><a href="4-ei.html#SP46">&#167;46. Adjective agreements</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Noun inflections. </b>The following trie looks at the start of a word, which we assume to be a
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Noun inflections. </b>The following trie looks at the start of a word, which we assume to be a
 noun, and decides whether to use the indefinite article "a" or "an".
 This is much more complicated than simply looking for a vowel as the first
 letter, as people often think until they try a few cases.
@@ -78,7 +84,7 @@ dictionary and the "Official Scrabble Wordlist".
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-trie-indef-c&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Exceptions to the exceptions:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Exceptions to the exceptions:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -91,7 +97,7 @@ dictionary and the "Official Scrabble Wordlist".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">uvarovite*</span><span class="Preform-plain-syntax">      </span><span class="Preform-constant-syntax">an</span><span class="Preform-plain-syntax">           </span><span class="Preform-comment-syntax"> a rare emerald-green garnet, Ca3Cr2(SiO4)3</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Then the exceptions:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Then the exceptions:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -161,7 +167,7 @@ dictionary and the "Official Scrabble Wordlist".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">uvu*</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">a</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And finally the basic rules:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And finally the basic rules:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -221,7 +227,7 @@ dictionary and the "Official Scrabble Wordlist".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">yw*</span><span class="Preform-plain-syntax">             </span><span class="Preform-constant-syntax">an</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Plural inflections. </b>The following takes a single word, assumes it to be a noun which meaningfully
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Plural inflections. </b>The following takes a single word, assumes it to be a noun which meaningfully
 has a plural, and modifies it to the plural form. ("Golf" is a noun which
 doesn't sensibly have a plural; the algorithm here would return "golves".)
 </p>
@@ -267,7 +273,7 @@ of a sibilant plus "o" suffix to include an "e", so that Conway produces
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;en-trie-plural-append-s&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>See Conway's table A.2. The following nouns, mostly names of kinds of animal,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>See Conway's table A.2. The following nouns, mostly names of kinds of animal,
 have the same plural as singular form: for example, chamois, salmon, goldfish.
 </p>
 
@@ -325,7 +331,7 @@ have the same plural as singular form: for example, chamois, salmon, goldfish.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">pincers</span><span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">0</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>We may as well pluralise pronouns while we're at it.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We may as well pluralise pronouns while we're at it.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -354,7 +360,7 @@ have the same plural as singular form: for example, chamois, salmon, goldfish.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">oneself</span><span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">oneselves</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>We now reach Conway step 4. These are irregular plurals mostly coming
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>We now reach Conway step 4. These are irregular plurals mostly coming
 from archaisms.
 </p>
 
@@ -375,7 +381,7 @@ from archaisms.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">trilby</span><span class="Preform-plain-syntax">          </span><span class="Preform-constant-syntax">trilbys</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Step 5. Now we reach a batch of irregular but fairly general inflected
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Step 5. Now we reach a batch of irregular but fairly general inflected
 endings; for example, protozoon to protozoa, or metamorphosis to metamorphoses.
 Note that we differ from Conway in pluralizing blouse as blouses, not blice.
 </p>
@@ -395,7 +401,7 @@ Note that we differ from Conway in pluralizing blouse as blouses, not blice.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*xis</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">3xes</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Step 6. These are inflections from Latin and Greek which have survived
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Step 6. These are inflections from Latin and Greek which have survived
 into modern English:
 </p>
 
@@ -427,7 +433,7 @@ into modern English:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">ovum</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">ova</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Step 11a. (We're not implementing Conway's steps in sequence: see below.)
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Step 11a. (We're not implementing Conway's steps in sequence: see below.)
 These -o endings are mostly loan words from Romance languages whose original
 inflections are assimilated.
 </p>
@@ -468,7 +474,7 @@ inflections are assimilated.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">tempo</span><span class="Preform-plain-syntax">           </span><span class="Preform-constant-syntax">tempos</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Conway steps 8 to 11. These are regular inflections depending only on
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Conway steps 8 to 11. These are regular inflections depending only on
 word endings.
 </p>
 
@@ -554,7 +560,7 @@ word endings.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*zo</span><span class="Preform-plain-syntax">             </span><span class="Preform-constant-syntax">0s</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Lastly, the fallback if none of the above cases match: append an -s, of
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Lastly, the fallback if none of the above cases match: append an -s, of
 course.
 </p>
 
@@ -563,7 +569,7 @@ course.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">               </span><span class="Preform-constant-syntax">0s</span><span class="Preform-plain-syntax">                </span><span class="Preform-comment-syntax"> Step 13</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Verb inflections. </b>"Le verbe est l'âme d'une langue" (attributed to Georges Duhamel). And the
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Verb inflections. </b>"Le verbe est l'âme d'une langue" (attributed to Georges Duhamel). And the
 care of the soul is, of course, complicated. For example, the source text can
 say something like this:
 </p>
@@ -599,7 +605,7 @@ of the possibilities we need to make, and write a trie to handle each one.
 is, how the different word forms map onto the possible tenses, persons,
 numbers, and so on.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>This gives us a certain amount of choice. What exactly is "too irregular"?
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>This gives us a certain amount of choice. What exactly is "too irregular"?
 In French, are all -er, -ir, and -re verbs "regular"? (Consider "aller",
 for example.) In English, it's possible to say that there are seven or so
 classes of verbs, all regular by their own standards; but most people say
@@ -634,7 +640,7 @@ example, to set has just three distinct forms &mdash; to set, he sets, he set, h
 had set, setting.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Form types are numbered from 0 up to, potentially, a constant
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Form types are numbered from 0 up to, potentially, a constant
 called <span class="extract"><span class="Preform-extract-syntax">MAX_FORM_TYPES</span></span>. (This is so large that there shouldn't ever be need
 for more.) Form type 0 is always the original text, and is used as the basis
 from which the others are generated. For English verbs Inform always sets form
@@ -661,7 +667,7 @@ each language. English needs two: the present (5) and past (6) forms.
 <span class="definition-keyword">define</span> <span class="Preform-constant-syntax">ADJOINT_INFINITIVE_FORM_TYPE</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">4</span>
 <span class="definition-keyword">define</span> <span class="Preform-constant-syntax">MAX_FORM_TYPES</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">123</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>We're now ready to write the <span class="extract"><span class="Preform-extract-syntax">&lt;verb-conjugation-instructions&gt;</span></span>. This is
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>We're now ready to write the <span class="extract"><span class="Preform-extract-syntax">&lt;verb-conjugation-instructions&gt;</span></span>. This is
 a block which looks at the infinitive of the verb and decides which of
 several conjugations should be used. Badly irregular verbs get
 conjugations of their own, and others are grouped together. In French,
@@ -687,7 +693,7 @@ least one line, and the best way to ensure that is to finish up with <span class
 as the last pattern &mdash; this matches anything.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The instructions for English are quite concise, except for the presence
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The instructions for English are quite concise, except for the presence
 of the awkward contracted informal forms of verbs. (These aren't used in
 Inform assertion sentences, but are needed for text substitutions.)
 </p>
@@ -721,7 +727,7 @@ Inform assertion sentences, but are needed for text substitutions.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">             </span><span class="Preform-function-syntax">&lt;regular-verb-conjugation&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>We will start with two auxiliary verbs, that is, verbs used to construct
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>We will start with two auxiliary verbs, that is, verbs used to construct
 forms of other verbs. The first is "to have"; as we'll see, English uses
 this to construct perfect tenses:
 </p>
@@ -784,7 +790,7 @@ for "[have]".
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;to-have-tabulation&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Tabulations give instructions for how to construct 120 possible versions
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Tabulations give instructions for how to construct 120 possible versions
 of the verb. These are divided up first into active and passive "voices":
 </p>
 
@@ -923,7 +929,7 @@ are used for the six persons.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a2-</span><span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">had</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>And this is an example of splitting into cases for the six persons,
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>And this is an example of splitting into cases for the six persons,
 1PS, 2PS, 3PS, 1PP, 2PP, 3PP. I have, you have, he has, we have, you have,
 they have. (This is more excitingly varied in other languages, of course.)
 </p>
@@ -933,7 +939,7 @@ they have. (This is more excitingly varied in other languages, of course.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">has</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">have</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>Next we have "to do", which is like "to have" in being fairly regular,
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Next we have "to do", which is like "to have" in being fairly regular,
 as irregular verbs go. But we treat this as a special case because, again,
 we're going to need as an auxiliary verb when forming negatives ("Peter
 does not wear the hat" &mdash; note the "does not"). But this time we give
@@ -999,7 +1005,7 @@ may have to revisit this for languages other than English.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">does</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">do</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>Regular English verbs, then, look like so. We will, for the first time,
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Regular English verbs, then, look like so. We will, for the first time,
 make heavy use of our numbered verb forms: for example, for the verb
 "to take", they would be "take" (1), "taking" (2), "taken" (3),
 "takes" (5) and "took" (6). We start with the infinitive ("take")
@@ -1031,7 +1037,7 @@ to "grabs onto", "grabbing onto" and so on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;regular-verb-tabulation&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>Here we see our auxiliary verbs in use. For the negated present tense,
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Here we see our auxiliary verbs in use. For the negated present tense,
 "Peter does not carry the ball"; for the negated past tense, "Peter did
 not carry the ball" &mdash; in both cases, this is "to do" plus the infinitive
 "take". For the perfect tenses, "to have" plus the past participle &mdash;
@@ -1055,7 +1061,7 @@ a bequest".)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">p*</span><span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">by</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>This looks odd, but what it says is that the present tense of a regular
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>This looks odd, but what it says is that the present tense of a regular
 English verb is always the infinitive (I take, you take, we take, and so on)
 except for third person singular (he takes), which is different. (It's usually
 what the plural of the infinitive would be if the infinitive were a noun,
@@ -1067,7 +1073,7 @@ as we'll see.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">5</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>Now for our most irregular verb: "to be".
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Now for our most irregular verb: "to be".
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1093,7 +1099,7 @@ as we'll see.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">was</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">were</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">was</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">were</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">were</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">were</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>Except for tense formation (Peter "will" take the ball), the most common
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Except for tense formation (Peter "will" take the ball), the most common
 modal verb which can be used in Inform source text is "can". For example:
 </p>
 
@@ -1132,7 +1138,7 @@ to elide, so we always pronounce it that way and the spelling now follows.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a5-</span><span class="Preform-plain-syntax">       </span><span class="Preform-constant-syntax">will</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">++1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>Inform has only a simple understanding of what "can" means, so it doesn't
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Inform has only a simple understanding of what "can" means, so it doesn't
 allow the source text to use "can" in combination with arbitrary verbs.
 Instead, each legal combination has to be declared explicitly:
 </p>
@@ -1175,7 +1181,7 @@ Jane".
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">p</span><span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">3</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">(</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">4</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">)</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">by</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b>The following handles the other English modal verbs ("might", "should"
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The following handles the other English modal verbs ("might", "should"
 and so on) surprisingly easily. The notation <span class="extract"><span class="Preform-extract-syntax">++1</span></span> means that the verb
 being modified should appear in verb form 1, and so on: for example,
 "might not lead" as "might not" plus form 1 of "to lead", i.e., "lead".
@@ -1200,7 +1206,7 @@ being modified should appear in verb form 1, and so on: for example,
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a5-</span><span class="Preform-plain-syntax">       </span><span class="Preform-constant-syntax">4</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">not</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">++1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>That completes our basic kit of verbs nicely. What's left is used only
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>That completes our basic kit of verbs nicely. What's left is used only
 for generating text at run-time &mdash; for printing adaptive messages, that is;
 none of these oddball exceptional cases is otherwise used as a verb in
 Inform source text. None of them has any meaning to Inform.
@@ -1262,7 +1268,7 @@ dialects &mdash; and we aren't even going to try to cope with that.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">wasn't</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">weren't</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">wasn't</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">weren't</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">weren't</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">weren't</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>And now "to 've", the contracted form of "to have". A subtle dialect
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>And now "to 've", the contracted form of "to have". A subtle dialect
 point here concerns the negated present tense:
 </p>
 
@@ -1313,7 +1319,7 @@ go with those.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">'ve</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">'ve</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">'s</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">'ve</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">'ve</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">'ve</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32.  </b>Now we come to "aren't", a negated form of "to be", but where the
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32.  </b>Now we come to "aren't", a negated form of "to be", but where the
 contraction occurs between the verb and the "not" rather than between
 the subject and the verb.
 </p>
@@ -1351,7 +1357,7 @@ that option here.)
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">haven't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">haven't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">hasn't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">haven't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">haven't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">haven't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">been</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>And finally: the contracted informal negatives of various modal verbs which
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>And finally: the contracted informal negatives of various modal verbs which
 it's useful to be able to print, like the "can't" in
 </p>
 
@@ -1384,7 +1390,7 @@ of "modal" itself arguable. This is the best we can do.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">7</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34.  </b>Together with special rules for can't, which is inevitably slightly different:
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>Together with special rules for can't, which is inevitably slightly different:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1402,7 +1408,7 @@ of "modal" itself arguable. This is the best we can do.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">a5+</span><span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">won't</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">be</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">able</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">to</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">++1</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>We have special tries just to list the forms of the cases we will
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>We have special tries just to list the forms of the cases we will
 deal with. Tries can do fancy things (see below), but here they act just as
 a look-up table: for example, "won't" has present "won't", past
 "wouldn't" and future "won't".
@@ -1450,7 +1456,7 @@ signs can be used if we absolutely have to introduce spaces.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">shouldn't</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">shouldn't</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>That's the end of the conjugations &mdash; the easy part, it turns out. We now
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>That's the end of the conjugations &mdash; the easy part, it turns out. We now
 need to create the four tries to make verb forms out of the infinitive:
 the present participle, the past participle, the third-person singular
 present tense, and the past tense.
@@ -1493,7 +1499,7 @@ no easy way to tell. Consider deter to deterring (stress on second syllable
 of deter), but meter to metering (stress on first syllable of meter).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP37"></a><b>&#167;37.  </b>The following algorithm is due to Toby Nelson, who produced it from a
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37.  </b>The following algorithm is due to Toby Nelson, who produced it from a
 dictionary of 14,689 English verbs, some of them quite obscure (to torpefy,
 anyone? to spuilzie? to cachinnate?). It's essentially a more detailed
 version of Greenbaum's rules above.
@@ -1508,7 +1514,7 @@ version of Greenbaum's rules above.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;en-trie-regular-c-present-participle&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP38"></a><b>&#167;38.  </b>First of all there are some irregular cases &mdash; some for the usual suspects,
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>First of all there are some irregular cases &mdash; some for the usual suspects,
 but others for oddball verbs where English breaks the normal phonetic rules
 for the sake of clarity. For example, the participle of "singe" ought to
 be "singing", but in fact we write "singeing", purely to make it different
@@ -1704,7 +1710,7 @@ from the act of producing a song.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">undersaye</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">1ing</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b>Now some exceptional forms where consonant doubling doesn't occur:
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b>Now some exceptional forms where consonant doubling doesn't occur:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1725,7 +1731,7 @@ from the act of producing a song.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*daub</span><span class="Preform-plain-syntax">       </span><span class="Preform-constant-syntax">0ing</span><span class="Preform-plain-syntax">       </span><span class="Preform-comment-syntax"> daubing, bedaubing</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP40"></a><b>&#167;40.  </b>And now rules for consonant doubling:
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>And now rules for consonant doubling:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1777,7 +1783,7 @@ from the act of producing a song.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*iz</span><span class="Preform-plain-syntax">                    </span><span class="Preform-constant-syntax">0zing</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP41"></a><b>&#167;41.  </b>Finally:
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41.  </b>Finally:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -1791,7 +1797,7 @@ from the act of producing a song.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">0ing</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP42"></a><b>&#167;42.  </b>Next the past participle. As noted above, for most verbs this is the same
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b>Next the past participle. As noted above, for most verbs this is the same
 as the past (e.g., he agreed and it was agreed); but there's a list of
 exceptions for Anglo-Saxon survivals (e.g., he chose and it was chosen).
 The exceptional cases were derived from Wikipedia's catalogue of irregular
@@ -1958,7 +1964,7 @@ removed.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">write</span><span class="Preform-plain-syntax">       </span><span class="Preform-constant-syntax">written</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP43"></a><b>&#167;43.  </b>That's the mandatory participles sorted out; so now we move on to the two
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43.  </b>That's the mandatory participles sorted out; so now we move on to the two
 additional verb forms used by English. First, the present form: a curiosity
 of English is that this is almost always formed as if it were the plural of the
 infinitive &mdash; thus "touch" becomes "touches". There are just a handful
@@ -1976,7 +1982,7 @@ of exceptions to this.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">do</span><span class="Preform-plain-syntax">          </span><span class="Preform-constant-syntax">does</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44.  </b>Second, the past. This is harder. Once again we have a catalogue of
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>Second, the past. This is harder. Once again we have a catalogue of
 Anglo-Saxon past forms (e.g., he chose, not he chooses); and after those
 are out of the way, the rules are the same as for the present participle,
 except for adding -ed instead of -ing. The tricky part, again, is spotting
@@ -2609,7 +2615,7 @@ when to double the consonant, which again depends on stress.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">0ed</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP45"></a><b>&#167;45. Present to past participles. </b>Sentences like
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Present to past participles. </b>Sentences like
 </p>
 
 <blockquote>
@@ -3118,7 +3124,7 @@ cases followed by two general rules.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*ing</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">3ed</span><span class="Preform-plain-syntax">         </span><span class="Preform-comment-syntax"> e.g., "smashing" to "smashed"</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP46"></a><b>&#167;46. Adjective agreements. </b>English doesn't inflect adjectives at all (let's not argue about "blond"
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. Adjective agreements. </b>English doesn't inflect adjectives at all (let's not argue about "blond"
 and "blonde"), so the following are just stubs.
 </p>
 
@@ -3139,7 +3145,7 @@ and "blonde"), so the following are just stubs.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">                </span><span class="Preform-constant-syntax">0</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP47"></a><b>&#167;47.  </b>Grading of adjectives is more interesting. These spelling rules are taken
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47.  </b>Grading of adjectives is more interesting. These spelling rules are taken
 from the Oxford English Grammar at 4.24, "Gradability and comparison".
 Something we can't easily implement is that a final vowel plus consonant
 doesn't result in doubling the consonant (in the way that "big" becomes
@@ -3171,7 +3177,7 @@ rare in English adjectives.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">                                     </span><span class="Preform-constant-syntax">0est</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP48"></a><b>&#167;48.  </b>To the best of my knowledge there's no technical term for "the noun which
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48.  </b>To the best of my knowledge there's no technical term for "the noun which
 is formed from an adjective to refer to the quality it measures", so the
 Inform source code calls this the "quiddity". English permits several
 competing forms of these to be constructed, depending on the adjective's
@@ -3191,7 +3197,7 @@ sometimes less elegant, but never means the wrong thing.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">                               </span><span class="Preform-constant-syntax">0ness</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP49"></a><b>&#167;49.  </b>English has almost no noun cases at all, with the only exceptions being
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49.  </b>English has almost no noun cases at all, with the only exceptions being
 Anglo-Saxon pronouns (thus we distinguish "they" and "them" as nominative
 and accusative, for example); and pronouns we handle separately in any
 case. We won't bother to distinguish gender:
@@ -3205,7 +3211,7 @@ case. We won't bother to distinguish gender:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-noun-declension-group&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;en-noun-declension-tables&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP50"></a><b>&#167;50.  </b>And the sorting into groups sorts everything into "group 1", the only group:
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>And the sorting into groups sorts everything into "group 1", the only group:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -3216,7 +3222,7 @@ case. We won't bother to distinguish gender:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;en-noun-declension-uninflected&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP51"></a><b>&#167;51.  </b>And in this single group, nominative and accusative forms are identical
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>And in this single group, nominative and accusative forms are identical
 to the stem in both singular and plural.
 </p>
 
@@ -3226,7 +3232,7 @@ to the stem in both singular and plural.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">0</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">0</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP52"></a><b>&#167;52.  </b>English articles only inflect slightly, to show indefinite plurals; they
+<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52.  </b>English articles only inflect slightly, to show indefinite plurals; they
 don't distinguish nominative from accusative.
 </p>
 

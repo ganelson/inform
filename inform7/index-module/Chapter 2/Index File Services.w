@@ -574,7 +574,7 @@ void Index::disable_or_enable_census(int which) {
 
 void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	if (Str::eq_wide_string(elt, L"C")) {
-		Sentences::Headings::index(OUT);
+		IndexHeadings::index(OUT);
 		IndexExtensions::index(OUT);
 		if (do_not_update_census == FALSE)
 			ExtensionWebsite::index_after_compilation(Task::project());
@@ -617,7 +617,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Rl")) {
-		Relations::index_table(OUT);
+		RTRelations::index_table(OUT);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vb")) {

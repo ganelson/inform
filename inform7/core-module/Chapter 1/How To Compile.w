@@ -117,8 +117,8 @@ will divide according to these units.
 	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units", -1);
 	BENCH(CompilationSettings::initialise_gcs)
 	BENCH(Emit::begin);
-	BENCH(Sentences::Headings::make_the_tree)
-	BENCH(Sentences::Headings::write_as_xml)
+	BENCH(NameResolution::make_the_tree)
+	BENCH(IndexHeadings::write_as_xml)
 	BENCH(CompilationUnits::determine)
 
 @ Most of the conceptual infrastructure in Inform is created by Inform source
@@ -196,7 +196,7 @@ so on. Those absolute basics are made here.
 	BENCH(Activities::Activity_for_rulebooks_array)
 	BENCH(Activities::Activity_after_rulebooks_array)
 	BENCH(Activities::Activity_atb_rulebooks_array)
-	BENCH(Relations::compile_defined_relation_constants)
+	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(Kinds::RunTime::compile_data_type_support_routines)
 	BENCH(Kinds::RunTime::I7_Kind_Name_routine)
 	BENCH(World::Compile::compile)
@@ -222,7 +222,7 @@ so on. Those absolute basics are made here.
 	BENCH(PL::Files::arrays)
 	BENCH(Rulebooks::rulebook_var_creators)
 	BENCH(Activities::activity_var_creators)
-	BENCH(Relations::IterateRelations)
+	BENCH(RTRelations::IterateRelations)
 	BENCH(Phrases::Manager::RulebookNames_array)
 	BENCH(Phrases::Manager::RulePrintingRule_routine)
 	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::prepare)
@@ -231,7 +231,7 @@ so on. Those absolute basics are made here.
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::time)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs)
-	BENCH(VerbsAtRunTime::ConjugateVerb)
+	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(Adjectives::Meanings::agreements)
 
 	if (debugging) {
@@ -249,7 +249,7 @@ so on. Those absolute basics are made here.
 	BENCH(Strings::compile_responses)
 	BENCH(Lists::check)
 	BENCH(Lists::compile)
-	BENCH(Relations::compile_defined_relations)
+	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Phrases::Manager::compile_as_needed)
 	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)

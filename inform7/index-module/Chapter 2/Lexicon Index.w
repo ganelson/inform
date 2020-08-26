@@ -457,12 +457,12 @@ void IndexLexicon::index_verbs(OUTPUT_STREAM) {
 				Index::link(OUT, Wordings::first_wn(lex->wording_of_entry));
 			if (lex->part_of_speech == AVERB_LEXE) WRITE(" ... <i>auxiliary verb</i>");
 			else if (lex->part_of_speech == MVERB_LEXE) WRITE(" ... for saying only");
-			else VerbsAtRunTime::tabulate_meaning(OUT, lex);
+			else RTVerbs::tabulate_meaning(OUT, lex);
 			HTML_CLOSE("p");
-			VerbsAtRunTime::tabulate(OUT, lex, IS_TENSE, "present");
-			VerbsAtRunTime::tabulate(OUT, lex, WAS_TENSE, "past");
-			VerbsAtRunTime::tabulate(OUT, lex, HASBEEN_TENSE, "present perfect");
-			VerbsAtRunTime::tabulate(OUT, lex, HADBEEN_TENSE, "past perfect");
+			RTVerbs::tabulate(OUT, lex, IS_TENSE, "present");
+			RTVerbs::tabulate(OUT, lex, WAS_TENSE, "past");
+			RTVerbs::tabulate(OUT, lex, HASBEEN_TENSE, "present perfect");
+			RTVerbs::tabulate(OUT, lex, HADBEEN_TENSE, "past perfect");
 			DISCARD_TEXT(entry_text)
 		}
 }

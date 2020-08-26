@@ -156,7 +156,7 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 		I->tag = Nouns::new_proper_noun(W, NEUTER_GENDER, 0,
 			NAMED_CONSTANT_MC, NULL, Task::language_of_syntax());
 	}
-	Sentences::Headings::initialise_noun_resolution(I->tag);
+	NameResolution::initialise(I->tag);
 
 @ The values in an enumerated kind such as our perpetual "colour" example
 are numbered 1, 2, 3, ..., in order of creation. This is where we assign

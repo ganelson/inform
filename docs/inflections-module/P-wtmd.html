@@ -33,7 +33,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -43,12 +47,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="index.html"><span class="selectedlink">inflections</span></a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -61,7 +67,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Inflections</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Declensions</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Verb conjugations</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Naming conventions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The inflections module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The inflections module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -75,7 +81,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Inflections. </b>Inflections are modifications of words &mdash; usually word endings or beginnings &mdash;
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Inflections. </b>Inflections are modifications of words &mdash; usually word endings or beginnings &mdash;
 for different circumstances. English is often called an uninflected language,
 but this is an exaggeration. For example, we spell the word "tree" as
 "trees" when we refer to more than one of them. Inform sometimes needs
@@ -93,7 +99,7 @@ and the code for initialising them from Preform grammar is provided by
 <a href="../words-module/4-pu.html" class="internal">Preform Utilities (in words)</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Though tries are, as just mentioned, created from Preform grammar, they are
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Though tries are, as just mentioned, created from Preform grammar, they are
 parsed quite differently.
 </p>
 
@@ -102,7 +108,7 @@ in sequence until one matches, or must be a list of inflection rules. These
 cannot be mixed within the same NT.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In a list of tries, each production consists only of a single nonterminal
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In a list of tries, each production consists only of a single nonterminal
 identifying the trie to make use of. One exception: the token <span class="extract"><span class="extract-syntax">...</span></span> before the
 trie's name makes it work on the end of a word instead of the beginning.
 For example:
@@ -119,7 +125,7 @@ For example:
 (also on the tail).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>In a list of inflection rules, each production consists of two tokens. The
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>In a list of inflection rules, each production consists of two tokens. The
 first token is what to match; the second gives instructions on what to turn
 it into. An asterisk is used to mean "any string of 0 or more letters";
 a digit at the start of the replacement text means "truncate by this many
@@ -157,7 +163,7 @@ of tries which includes this one), rather than putting it earlier in the same tr
 <p class="commentary">For the implementation of these rules, see <a href="2-tai.html" class="internal">Tries and Inflections</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Once we have that general inflection machinery, most of what we need to
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Once we have that general inflection machinery, most of what we need to
 do becomes a simple matter of writing wrapper functions for tries, and these
 occupy the rest of <a href="2-tai.html" class="internal">Chapter 2: Simple Inflections</a>.
 </p>
@@ -174,7 +180,7 @@ word, using a combination of a trie to handle regular pluralisation (for
 English, we use Conway's algorithm) and a dictionary of user-supplied
 exceptions.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Declensions. </b><a href="3-dcl.html" class="internal">Declensions</a> are sets of inflected forms of a noun or adjective according
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Declensions. </b><a href="3-dcl.html" class="internal">Declensions</a> are sets of inflected forms of a noun or adjective according
 to their grammatical case. A language should list its cases in a special
 nonterminal called &lt;grammatical-case-names&gt;, in which "nominative" or its
 equivalent should always come first. For example:
@@ -190,7 +196,7 @@ natural language. The actual names of cases are only needed by the function
 purposes.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b><a href="3-dcl.html#SP5" class="internal">Declensions::of_noun</a> and <a href="3-dcl.html#SP5" class="internal">Declensions::of_article</a> are functions to
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><a href="3-dcl.html#SP5" class="internal">Declensions::of_noun</a> and <a href="3-dcl.html#SP5" class="internal">Declensions::of_article</a> are functions to
 generate declensions, with one form for each case, from a given stem word.
 These are done with Preform NTs called &lt;noun-declension&gt; and &lt;article-declension&gt;
 respectively; these are currently the only two "declension NTs".
@@ -212,7 +218,7 @@ are numbered, so perhaps, e.g., the word "device" falls into group 1 &mdash; and
 then the <span class="extract"><span class="Preform-extract-syntax">table</span></span> provides declensions for the different groups needed.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A simple example of using the irregular forms table is provided by the
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>A simple example of using the irregular forms table is provided by the
 English language definition of &lt;article-declension&gt;:
 </p>
 
@@ -252,7 +258,7 @@ course, is not very inflected: this would be more interesting for French:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">le</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">la</span><span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">la</span>
 <span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">les</span><span class="Preform-plain-syntax">   </span><span class="Preform-constant-syntax">les</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>So much for irregular forms. Grouped forms are useful for languages like
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>So much for irregular forms. Grouped forms are useful for languages like
 German, which has about 12 groups of nouns, each with its own way of declining.
 For example, there's one group which goes something like:
 </p>
@@ -297,7 +303,7 @@ nouns rather better than this, and there are about 12 groups. Groups are
 numbered upwards from 1 to, in principle, 99. See <a href="3-dcl.html#SP8" class="internal">Declensions::decline_from_groups</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Verb conjugations. </b>This module supplies an extensive system for conjugating verbs. A full set
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Verb conjugations. </b>This module supplies an extensive system for conjugating verbs. A full set
 of inflected forms for a verb, in all its tenses, voices and so on, is stored
 in a <a href="3-vc.html#SP1" class="internal">verb_conjugation</a> object. Making these objects is a nontrivial task:
 see the function <a href="3-vc.html#SP6" class="internal">Conjugation::conjugate</a>.
@@ -309,7 +315,7 @@ description of the syntax used in these tables in the section <a href="4-ei.html
 which demonstrates a complete conjugation of English verbs.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Naming conventions. </b>Tries are highly language specific, and would need rewriting for every language.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Naming conventions. </b>Tries are highly language specific, and would need rewriting for every language.
 The tries for English are supplied in <a href="4-ei.html" class="internal">English Inflections</a>, but that's just
 for convenience; other languages should supply them in the Inform source text of
 the relevant language extension, or in <span class="extract"><span class="Preform-extract-syntax">Syntax.preform</span></span> files.

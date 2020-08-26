@@ -164,8 +164,8 @@ of |px| and |py| falls into. Speed is not very important here.
 int Assertions::which_assertion_case(parse_node *px, parse_node *py) {
 	if (px == NULL) internal_error("make assertion with px NULL");
 	if (py == NULL) internal_error("make assertion with py NULL");
-	if ((ParseTreeUsage::allow_in_assertions(px) == FALSE) ||
-		(ParseTreeUsage::allow_in_assertions(py) == FALSE)) {
+	if ((Assertions::allow_node_type(px) == FALSE) ||
+		(Assertions::allow_node_type(py) == FALSE)) {
 		LOG("$T", px);
 		LOG("$T", py);
 		internal_error("make assertion with improper nodes");
@@ -184,6 +184,12 @@ int Assertions::which_assertion_case(parse_node *px, parse_node *py) {
 		internal_error("make assertion with node type not in matrix");
 	}
 	return assertion_matrix[y].cases[x];
+}
+
+int Assertions::allow_node_type(parse_node *p) {
+	VerifyTree::verify_structure_from(p);
+	if (NodeType::has_flag(Node::get_type(p), ASSERT_NFLAG)) return TRUE;
+	return FALSE;
 }
 
 @h Splitting into cases.

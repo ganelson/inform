@@ -194,6 +194,11 @@
 					<p class="chapterpurpose">Turning regular assertion sentences into propositions about the model world.</p>
 					<ul class="sectionlist">
 						<li>
+							<p class="sectionentry"><a href="4-nr.html">
+								<spon class="sectiontitle">Name Resolution</span></a> -
+							<span class="sectionpurpose">To resolve abbreviated or ambiguous nouns in context of their headings.</span></p>
+						</li>
+						<li>
 							<p class="sectionentry"><a href="4-rpt.html">
 								<spon class="sectiontitle">Refine Parse Tree</span></a> -
 							<span class="sectionpurpose">To determine which subjects are referred to by noun phrases such as "the table" or "a paper cup" found in assertion sentences.</span></p>
@@ -242,8 +247,8 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Verbs</span></p>
-					<p class="chapterpurpose">Verbs which establish relationships between nouns, and which give meaning to binary predicates.</p>
+						<span class="chaptertitle">Chapter 5: Basic Adjectives and Relations</span></p>
+					<p class="chapterpurpose">Predicates for the calculus module to use.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="5-terr.html">
@@ -256,14 +261,9 @@
 							<span class="sectionpurpose">To define the binary predicates corresponding to numerical comparisons.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-am.html">
-								<spon class="sectiontitle">Adjective Meanings</span></a> -
-							<span class="sectionpurpose">One individual meaning which an adjective can have.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-rlt.html">
-								<spon class="sectiontitle">Relations</span></a> -
-							<span class="sectionpurpose">What Inform internally calls "binary predicates", the user calls "relations". In this section, we parse definitions of new relations and create the resulting |binary_predicate| objects.</span></p>
+							<p class="sectionentry"><a href="5-tur.html">
+								<spon class="sectiontitle">The Universal Relation</span></a> -
+							<span class="sectionpurpose">To define the universal relation, which can apply and therefore subsumes all other relations.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-er.html">
@@ -271,61 +271,29 @@
 							<span class="sectionpurpose">To draw inferences from the relations created explicitly by the source text.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-tur.html">
-								<spon class="sectiontitle">The Universal Relation</span></a> -
-							<span class="sectionpurpose">To define the universal relation, which can apply and therefore subsumes all other relations.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-vart.html">
-								<spon class="sectiontitle">Verbs at Run Time</span></a> -
-							<span class="sectionpurpose">To provide run-time access to verbs and their conjugations.</span></p>
+							<p class="sectionentry"><a href="5-am.html">
+								<spon class="sectiontitle">Adjective Meanings</span></a> -
+							<span class="sectionpurpose">One individual meaning which an adjective can have.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<p class="chapterentry"><a name="6"></a>
-						<span class="chaptertitle">Chapter 6: Sentences</span></p>
-					<p class="chapterpurpose">In which the stream of words is broken up into sentences and built into a parse tree, recording primary verbs, noun phrases and some sub-clauses; and in which these sentences are collected under a hierarchy of headings, with material intended only for certain target virtual machines included or excluded as need be.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="6-ptu.html">
-								<spon class="sectiontitle">Parse Tree Usage</span></a> -
-							<span class="sectionpurpose">Shims for the parse tree.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="6-hdn.html">
-								<spon class="sectiontitle">Headings</span></a> -
-							<span class="sectionpurpose">To keep track of the hierarchy of headings and subheadings found in the source text.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="6-rs.html">
-								<spon class="sectiontitle">Rule Subtrees</span></a> -
-							<span class="sectionpurpose">To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the relevant |RULE_NT| node, and so turn each rule definition into a single subtree.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="7"></a>
-						<span class="chaptertitle">Chapter 7: Table Data</span></p>
+						<span class="chaptertitle">Chapter 6: Table Data</span></p>
 					<p class="chapterpurpose">Inform's preferred data structure for small initialised databases.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="7-tc.html">
+							<p class="sectionentry"><a href="6-tc.html">
 								<spon class="sectiontitle">Table Columns</span></a> -
 							<span class="sectionpurpose">To manage the named columns which appear in tables.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="7-tbl.html">
+							<p class="sectionentry"><a href="6-tbl.html">
 								<spon class="sectiontitle">Tables</span></a> -
 							<span class="sectionpurpose">To manage and compile tables, which are two-dimensional arrays with associative look-up facilities provided at run-time.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="7-rsft.html">
-								<spon class="sectiontitle">Runtime Support for Tables</span></a> -
-							<span class="sectionpurpose">To compile run-time data structures holding tables.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="7-lr.html">
+							<p class="sectionentry"><a href="6-lr.html">
 								<spon class="sectiontitle">Listed-In Relations</span></a> -
 							<span class="sectionpurpose">To define the binary predicates corresponding to table columns, and which determine whether a given value is listed in that column.</span></p>
 						</li>

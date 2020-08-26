@@ -1,4 +1,4 @@
-[VerbsAtRunTime::] Verbs at Run Time.
+[RTVerbs::] Verbs at Run Time.
 
 To provide run-time access to verbs and their conjugations.
 
@@ -16,20 +16,20 @@ typedef struct verb_form_compilation_data {
 
 @
 
-@d VERB_COMPILATION_LINGUISTICS_CALLBACK VerbsAtRunTime::initialise_verb
-@d VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK VerbsAtRunTime::initialise_verb_form
+@d VERB_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_verb
+@d VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_verb_form
 
 =
-void VerbsAtRunTime::initialise_verb(verb *V) {
+void RTVerbs::initialise_verb(verb *V) {
 	V->verb_compilation.verb_package = NULL;
 }
 
-void VerbsAtRunTime::initialise_verb_form(verb_form *VF) {
+void RTVerbs::initialise_verb_form(verb_form *VF) {
 	VF->verb_form_compilation.vf_iname = NULL;
 	VF->verb_form_compilation.where_vf_created = current_sentence;
 }
 
-package_request *VerbsAtRunTime::package(verb *V, parse_node *where) {
+package_request *RTVerbs::package(verb *V, parse_node *where) {
 	if (V == NULL) internal_error("no verb identity");
 	if (V->verb_compilation.verb_package == NULL)
 		V->verb_compilation.verb_package =
@@ -37,10 +37,10 @@ package_request *VerbsAtRunTime::package(verb *V, parse_node *where) {
 	return V->verb_compilation.verb_package;
 }
 
-inter_name *VerbsAtRunTime::form_iname(verb_form *vf) {
+inter_name *RTVerbs::form_iname(verb_form *vf) {
 	if (vf->verb_form_compilation.vf_iname == NULL) {
 		package_request *R =
-			VerbsAtRunTime::package(vf->underlying_verb, vf->verb_form_compilation.where_vf_created);
+			RTVerbs::package(vf->underlying_verb, vf->verb_form_compilation.where_vf_created);
 		package_request *R2 = Hierarchy::package_within(VERB_FORMS_HAP, R);
 		vf->verb_form_compilation.vf_iname = Hierarchy::make_iname_in(FORM_FN_HL, R2);
 	}
@@ -50,7 +50,7 @@ inter_name *VerbsAtRunTime::form_iname(verb_form *vf) {
 @h Runtime conjugation.
 
 =
-void VerbsAtRunTime::ConjugateVerb_invoke_emit(verb_conjugation *vc,
+void RTVerbs::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 	verb_conjugation *modal, int negated) {
 	inter_name *cv_pos = Hierarchy::find(CV_POS_HL);
 	inter_name *cv_neg = Hierarchy::find(CV_NEG_HL);
@@ -99,7 +99,7 @@ void VerbsAtRunTime::ConjugateVerb_invoke_emit(verb_conjugation *vc,
 @ Each VC is represented by a routine at run-time:
 
 =
-int VerbsAtRunTime::verb_form_is_instance(verb_form *vf) {
+int RTVerbs::verb_form_is_instance(verb_form *vf) {
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
 	if ((vc) && (vc->auxiliary_only == FALSE) && (vc->instance_of_verb) &&
 		((vf->preposition == NULL) || (vf->underlying_verb != copular_verb)))
@@ -107,7 +107,7 @@ int VerbsAtRunTime::verb_form_is_instance(verb_form *vf) {
 	return FALSE;
 }
 
-void VerbsAtRunTime::ConjugateVerbDefinitions(void) {
+void RTVerbs::ConjugateVerbDefinitions(void) {
 	inter_name *CV_POS_iname = Hierarchy::find(CV_POS_HL);
 	inter_name *CV_NEG_iname = Hierarchy::find(CV_NEG_HL);
 	inter_name *CV_MODAL_INAME_iname = Hierarchy::find(CV_MODAL_HL);
@@ -124,19 +124,19 @@ void VerbsAtRunTime::ConjugateVerbDefinitions(void) {
 	Hierarchy::make_available(Emit::tree(), CV_MEANING_iname);
 }
 
-void VerbsAtRunTime::ConjugateVerb(void) {
+void RTVerbs::ConjugateVerb(void) {
 	verb_conjugation *vc;
 	LOOP_OVER(vc, verb_conjugation)
 		@<Compile ConjugateVerb routine@>;
 	verb_form *vf;
 	LOOP_OVER(vf, verb_form)
-		if (VerbsAtRunTime::verb_form_is_instance(vf))
+		if (RTVerbs::verb_form_is_instance(vf))
 			@<Compile ConjugateVerbForm routine@>;
 	inter_name *iname = Hierarchy::find(TABLEOFVERBS_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_value);
 	LOOP_OVER(vf, verb_form)
-		if (VerbsAtRunTime::verb_form_is_instance(vf))
-			Emit::array_iname_entry(VerbsAtRunTime::form_iname(vf));
+		if (RTVerbs::verb_form_is_instance(vf))
+			Emit::array_iname_entry(RTVerbs::form_iname(vf));
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }
@@ -158,7 +158,7 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
-					VerbsAtRunTime::conj_from_wa(&(vc->infinitive), vc, modal_to_s, 0);
+					RTVerbs::conj_from_wa(&(vc->infinitive), vc, modal_to_s, 0);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -166,7 +166,7 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
-					VerbsAtRunTime::conj_from_wa(&(vc->past_participle), vc, modal_to_s, 0);
+					RTVerbs::conj_from_wa(&(vc->past_participle), vc, modal_to_s, 0);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -174,7 +174,7 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
-					VerbsAtRunTime::conj_from_wa(&(vc->present_participle), vc, modal_to_s, 0);
+					RTVerbs::conj_from_wa(&(vc->present_participle), vc, modal_to_s, 0);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 
@@ -237,7 +237,7 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 
 @<Compile ConjugateVerbForm routine@> =
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
-	packaging_state save = Routines::begin(VerbsAtRunTime::form_iname(vf));
+	packaging_state save = Routines::begin(RTVerbs::form_iname(vf));
 	inter_symbol *fn_s = LocalVariables::add_named_call_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::add_named_call_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::add_named_call_as_symbol(I"t");
@@ -385,7 +385,7 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
 								int mau = vc->tabulations[ACTIVE_VOICE].modal_auxiliary_usage[tense][sense][person][number];
-								VerbsAtRunTime::conj_from_wa(wa, vc, modal_to_s, mau);
+								RTVerbs::conj_from_wa(wa, vc, modal_to_s, mau);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 					}
@@ -404,25 +404,25 @@ void VerbsAtRunTime::ConjugateVerb(void) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][THIRD_PERSON][SINGULAR_NUMBER]);
-			VerbsAtRunTime::conj_from_wa(wa, vc, modal_to_s, 0);
+			RTVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 			wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
-			VerbsAtRunTime::conj_from_wa(wa, vc, modal_to_s, 0);
+			RTVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
 @<Compile for the case where all six parts are the same@> =
 	word_assemblage *wa = &(vc->tabulations[ACTIVE_VOICE].vc_text[tense][sense][FIRST_PERSON][SINGULAR_NUMBER]);
-	VerbsAtRunTime::conj_from_wa(wa, vc, modal_to_s, 0);
+	RTVerbs::conj_from_wa(wa, vc, modal_to_s, 0);
 
 @ =
-void VerbsAtRunTime::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symbol *modal_to_s, int mau) {
+void RTVerbs::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, inter_symbol *modal_to_s, int mau) {
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 	Produce::down(Emit::tree());
 		TEMPORARY_TEXT(OUT)
-		if ((VerbsAtRunTime::takes_contraction_form(wa) == FALSE) && (VerbsAtRunTime::takes_contraction_form(&(vc->infinitive))))
+		if ((RTVerbs::takes_contraction_form(wa) == FALSE) && (RTVerbs::takes_contraction_form(&(vc->infinitive))))
 			WRITE(" ");
 		int i, n;
 		vocabulary_entry **words;
@@ -470,7 +470,7 @@ void VerbsAtRunTime::conj_from_wa(word_assemblage *wa, verb_conjugation *vc, int
 	}
 }
 
-int VerbsAtRunTime::takes_contraction_form(word_assemblage *wa) {
+int RTVerbs::takes_contraction_form(word_assemblage *wa) {
 	vocabulary_entry *ve = WordAssemblages::first_word(wa);
 	if (ve == NULL) return FALSE;
 	wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
@@ -483,16 +483,16 @@ The following dumps the entire stock of registered verb and preposition
 usages to the debugging log.
 
 =
-void VerbsAtRunTime::log(verb_usage *vu) {
+void RTVerbs::log(verb_usage *vu) {
 	VerbUsages::write_usage(DL, vu);
 }
 
-void VerbsAtRunTime::log_all(void) {
+void RTVerbs::log_all(void) {
 	verb_usage *vu;
 	preposition *prep;
 	LOG("The current S-grammar has the following verb and preposition usages:\n");
 	LOOP_OVER(vu, verb_usage) {
-		VerbsAtRunTime::log(vu);
+		RTVerbs::log(vu);
 		LOG("\n");
 	}
 	LOOP_OVER(prep, preposition) {
@@ -504,7 +504,7 @@ void VerbsAtRunTime::log_all(void) {
 The following produces the table of verbs in the Phrasebook Index page.
 
 =
-void VerbsAtRunTime::tabulate(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
+void RTVerbs::tabulate(OUTPUT_STREAM, index_lexicon_entry *lex, int tense, char *tensename) {
 	verb_usage *vu; int f = TRUE;
 	LOOP_OVER(vu, verb_usage)
 		if ((vu->vu_lex_entry == lex) && (VerbUsages::is_used_negatively(vu) == FALSE)
@@ -524,14 +524,14 @@ void VerbsAtRunTime::tabulate(OUTPUT_STREAM, index_lexicon_entry *lex, int tense
 	if (f == FALSE) HTML_CLOSE("p");
 }
 
-void VerbsAtRunTime::tabulate_meaning(OUTPUT_STREAM, index_lexicon_entry *lex) {
+void RTVerbs::tabulate_meaning(OUTPUT_STREAM, index_lexicon_entry *lex) {
 	verb_usage *vu;
 	LOOP_OVER(vu, verb_usage)
 		if (vu->vu_lex_entry == lex) {
 			if (vu->where_vu_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(vu->where_vu_created)));
 			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::base_form(VerbUsages::get_verb(vu)));
-			if (bp) Relations::index_for_verbs(OUT, bp);
+			if (bp) RTRelations::index_for_verbs(OUT, bp);
 			return;
 		}
 	preposition *prep;
@@ -540,7 +540,7 @@ void VerbsAtRunTime::tabulate_meaning(OUTPUT_STREAM, index_lexicon_entry *lex) {
 			if (prep->where_prep_created)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(prep->where_prep_created)));
 			binary_predicate *bp = VerbMeanings::get_regular_meaning_of_form(Verbs::find_form(copular_verb, prep, NULL));
-			if (bp) Relations::index_for_verbs(OUT, bp);
+			if (bp) RTRelations::index_for_verbs(OUT, bp);
 			return;
 		}
 }

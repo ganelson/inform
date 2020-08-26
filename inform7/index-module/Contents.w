@@ -15,3 +15,4 @@ Chapter 2: Indexing
 	Index Physical World
 	Kinds Index
 	Index Extensions
+	Index Headings

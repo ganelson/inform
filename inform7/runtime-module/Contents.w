@@ -41,3 +41,6 @@ Chapter 4: Compilation Utilities
 	Use Options at Run Time
 	Runtime Support for Kinds
 	Extension Files at Run Time
+	Verbs at Run Time
+	Relations at Run Time
+	Runtime Support for Tables

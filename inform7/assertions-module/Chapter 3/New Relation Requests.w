@@ -137,7 +137,7 @@ result is a bitmap of these:
 			(RR.frf)?"frf":"no-frf",
 			(RR.terms[0].unique)?"one":"various", RR.terms[0].domain,
 			(RR.terms[1].unique)?"one":"various", RR.terms[1].domain);
-	Relations::new(bp, &RR);
+	RelationRequests::new(bp, &RR);
 
 @<Parse left and right object phrases@> =
 	<relates-sentence-left-object>(Node::get_text(V->next->next));
@@ -313,4 +313,435 @@ kind *RelationRequests::parse_term(wording W, char *side) {
 		"or the name of a kind of value, but it wasn't either of those.");
 	Problems::issue_problem_end();
 	return NULL;
+}
+
+@h Creation, Stage II.
+Altogether, the Inform user is allowed to define some eight different forms
+of relation. The code below is an attempt to find whatever common ground
+can be found from these different outcomes, but inevitably ends up
+splitting into cases.
+
+=
+void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
+	binary_predicate *bpr = bp->reversal;
+	property *prn = NULL; /* used for run-time storage of this relation */
+	inter_name *i6_prn_name = NULL; /* the I6 identifier for this property */
+	kind *storage_kind = NULL; /* what kind, if any, might be stored in it */
+	inference_subject *storage_infs = NULL; /* summing these up */
+
+	int rvno = FALSE, /* relate values not objects? */
+		dynamic = FALSE, /* use dynamic memory allocation for storage? */
+		provide_prn = FALSE, /* allocate the storage property to the kind? */
+		calling_made = FALSE; /* one of the terms has been given a name */
+
+	if (bp == NULL) internal_error("BP in relation not initially parsed");
+
+	@<Parse the classification variables and use them to fill in the BP term details@>;
+
+	if (rvno) { bp->relates_values_not_objects = TRUE; bpr->relates_values_not_objects = TRUE; }
+	if (RR->frf) { bp->fast_route_finding = TRUE; bpr->fast_route_finding = TRUE; }
+	if (prn) {
+		bp->i6_storage_property = prn; bpr->i6_storage_property = prn;
+		Properties::Valued::set_stored_relation(prn, bp);
+	}
+	if (dynamic) {
+		bp->dynamic_memory = TRUE;
+		bpr->dynamic_memory = TRUE;
+		package_request *P = BinaryPredicates::package(bp);
+		bp->initialiser_iname = Hierarchy::make_iname_in(RELATION_INITIALISER_FN_HL, P);
+	}
+	BinaryPredicates::mark_as_needed(bp);
+
+	if (Wordings::nonempty(RR->CONW)) @<Complete as a relation-by-routine BP@>
+	else if (RR->equivalence) @<Complete as an equivalence-relation BP@>
+	else if (RR->terms[0].unique) {
+		if (RR->terms[1].unique) {
+			if (RR->symmetric) @<Complete as a symmetric one-to-one BP@>
+			else @<Complete as an asymmetric one-to-one BP@>;
+		} else @<Complete as a one-to-various BP@>;
+	} else {
+		if (RR->terms[1].unique) @<Complete as a various-to-one BP@>
+		else if (RR->symmetric) @<Complete as a symmetric various-to-various BP@>
+		else @<Complete as an asymmetric various-to-various BP@>;
+	}
+
+	if (dynamic) {
+		if (calling_made) @<Issue a problem message since this won't be stored in a property@>;
+		@<Override with dynamic allocation schemata@>;
+		Kinds::RunTime::ensure_basic_heap_present();
+	} else {
+		if (provide_prn)
+			Propositions::Assert::assert_true_about(
+				Propositions::Abstract::to_provide_property(prn), storage_infs, prevailing_mood);
+		@<Add in the reducing functions@>;
+	}
+
+	if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) || (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain))) {
+		relation_guard *rg = CREATE(relation_guard);
+		rg->check_L = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) rg->check_L = RR->terms[0].domain;
+		rg->check_R = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain)) rg->check_R = RR->terms[1].domain;
+		rg->inner_test = bp->test_function;
+		rg->inner_make_true = bp->make_true_function;
+		rg->inner_make_false = bp->make_false_function;
+		rg->guarding = bp;
+		rg->f0 = BinaryPredicates::get_term_function(&(bp->term_details[0]));
+		rg->f1 = BinaryPredicates::get_term_function(&(bp->term_details[1]));
+		rg->guard_f0_iname = NULL;
+		rg->guard_f1_iname = NULL;
+		rg->guard_test_iname = NULL;
+		rg->guard_make_true_iname = NULL;
+		rg->guard_make_false_iname = NULL;
+		if (rg->f0) {
+			package_request *R = BinaryPredicates::package(bp);
+			rg->guard_f0_iname = Hierarchy::make_iname_in(GUARD_F0_FN_HL, R);
+			BinaryPredicates::set_term_function(&(bp->term_details[0]),
+				Calculus::Schemas::new("(%n(*1))", rg->guard_f0_iname));
+		}
+		if (rg->f1) {
+			package_request *R = BinaryPredicates::package(bp);
+			rg->guard_f1_iname = Hierarchy::make_iname_in(GUARD_F1_FN_HL, R);
+			BinaryPredicates::set_term_function(&(bp->term_details[1]),
+				Calculus::Schemas::new("(%n(*1))", rg->guard_f1_iname));
+		}
+		if (bp->test_function) {
+			package_request *R = BinaryPredicates::package(bp);
+			rg->guard_test_iname = Hierarchy::make_iname_in(GUARD_TEST_FN_HL, R);
+			bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_test_iname);
+		}
+		if (bp->make_true_function) {
+			package_request *R = BinaryPredicates::package(bp);
+			rg->guard_make_true_iname = Hierarchy::make_iname_in(GUARD_MAKE_TRUE_FN_HL, R);
+			bp->make_true_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_true_iname);
+		}
+		if (bp->make_false_function) {
+			package_request *R = BinaryPredicates::package(bp);
+			rg->guard_make_false_iname = Hierarchy::make_iname_in(GUARD_MAKE_FALSE_INAME_HL, R);
+			bp->make_false_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
+		}
+	}
+
+	bpr->form_of_relation = bp->form_of_relation;
+
+	LOGIF(RELATION_DEFINITIONS, "Defined the binary predicate:\n$2\n", bp);
+}
+
+@h The parsing phase.
+
+@<Parse the classification variables and use them to fill in the BP term details@> =
+	@<Detect callings for the terms of the relation@>;
+	@<Work out the kinds of the terms in the relation@>;
+
+	if (Wordings::empty(RR->CONW)) @<Determine property used for run-time storage@>;
+
+	@<Fill in the BP term details based on the left- and right- variables@>;
+
+@<Fill in the BP term details based on the left- and right- variables@> =
+	bp_term_details left_bptd, right_bptd;
+
+	inference_subject *left_infs = NULL, *right_infs = NULL;
+	if (RR->terms[0].domain) left_infs = Kinds::Knowledge::as_subject(RR->terms[0].domain);
+	if (RR->terms[1].domain) right_infs = Kinds::Knowledge::as_subject(RR->terms[1].domain);
+
+	left_bptd = BinaryPredicates::full_new_term(left_infs, RR->terms[0].domain, RR->terms[0].CALLW, NULL);
+	right_bptd = BinaryPredicates::full_new_term(right_infs, RR->terms[1].domain, RR->terms[1].CALLW, NULL);
+
+	bp->term_details[0] = left_bptd; bp->term_details[1] = right_bptd;
+	bpr->term_details[0] = right_bptd; bpr->term_details[1] = left_bptd;
+
+@ Callings are used to give names to the terms on each side of the relation,
+e.g.,
+
+>> Lock-fitting relates one thing (called the matching key) to various things.
+
+@<Detect callings for the terms of the relation@> =
+	if ((Wordings::nonempty(RR->terms[0].CALLW)) || (Wordings::nonempty(RR->terms[1].CALLW)))
+		calling_made = TRUE;
+
+@ Here we find out the kind which forms the domain on either side. Ideally
+we want each to be a fixed-size and fairly small domain set; actually, best
+of all is for both kinds to be within "object", since that can be stored
+very efficiently, and the worst case is to be forced into "dynamic" storage:
+this means using up heap memory allocated dynamically at run-time.
+
+@<Work out the kinds of the terms in the relation@> =
+
+	rvno = TRUE;
+	if ((Kinds::Behaviour::is_object(RR->terms[0].domain)) &&
+		(Kinds::Behaviour::is_object(RR->terms[1].domain))) rvno = FALSE;
+
+	if (Wordings::empty(RR->CONW)) {
+		if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain) == FALSE) &&
+			(RelationRequests::check_finite_range(RR->terms[0].domain) == FALSE)) dynamic = TRUE;
+		if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain) == FALSE) &&
+			(RR->symmetric == FALSE) &&
+			(RelationRequests::check_finite_range(RR->terms[1].domain) == FALSE)) dynamic = TRUE;
+	}
+
+@ All forms of relation we can produce from here use an I6 property for
+run-time storage (though different forms of relation use it differently).
+We use the calling, if any, to name this property: if there are no
+callings, then it gets a name like "concealment relation storage", and is
+omitted from the index.
+
+@<Determine property used for run-time storage@> =
+	if (Wordings::nonempty(RR->terms[0].CALLW)) {
+		prn = Properties::Valued::obtain_within_kind(RR->terms[0].CALLW, RR->terms[0].domain);
+		if (prn == NULL) return;
+	} else if (Wordings::nonempty(RR->terms[1].CALLW)) {
+		prn = Properties::Valued::obtain_within_kind(RR->terms[1].CALLW, RR->terms[1].domain);
+		if (prn == NULL) return;
+	} else {
+		word_assemblage pw_wa =
+			PreformUtilities::merge(<relation-storage-construction>, 0,
+				WordAssemblages::from_wording(RR->RW));
+		wording PW = WordAssemblages::to_wording(&pw_wa);
+		prn = Properties::Valued::obtain_within_kind(PW, K_object);
+		if (prn == NULL) return;
+		Properties::exclude_from_index(prn);
+	}
+	i6_prn_name = Properties::iname(prn);
+	storage_kind = RR->terms[0].domain;
+	kind *PK = NULL;
+	if (RR->terms[0].unique) {
+		storage_kind = RR->terms[1].domain;
+		if (RR->terms[0].domain) PK = RR->terms[0].domain;
+	} else if (RR->terms[1].unique) {
+		storage_kind = RR->terms[0].domain;
+		if (RR->terms[1].domain) PK = RR->terms[1].domain;
+	}
+	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
+	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
+	else storage_infs = NULL;
+	if (Kinds::Behaviour::is_object(storage_kind) == FALSE) bp->storage_kind = storage_kind;
+	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
+		(Kinds::Behaviour::is_object(PK) == FALSE))
+		Properties::Valued::now_used_for_non_typesafe_relation(prn);
+
+@<Issue a problem message since this won't be stored in a property@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelNotStoredInProperty),
+		"a '(called ...)' name can't be used for this relation",
+		"because of the kinds involved in it. (Names for terms in a relation "
+		"only work if it's possible to store the relation using properties, "
+		"but that's impossible here, so Inform uses a different scheme.)");
+	return;
+
+@h The completion phase.
+At this point the BP is filled in except for: its form; the schemas for
+testing, asserting true and asserting false; the run-time storage property
+to be used, if any; and any fields which are specific to the form in
+question. Anyway, there are eight possible forms of explicit BP, so
+here are eight paragraphs creating them.
+
+@ The |Relation_OtoO| case, or one to one: "R relates one K to one K".
+
+Such a relation consumes run-time storage of $5D$ bytes on the Z-machine
+and $14D$ bytes on Glulx, where $D$ is the size of the domain...
+
+@<Complete as an asymmetric one-to-one BP@> =
+	bp->form_of_relation = Relation_OtoO;
+	provide_prn = TRUE;
+	if (Kinds::Behaviour::is_object(storage_kind)) {
+		bp->make_true_function = Calculus::Schemas::new("Relation_Now1to1(*2,%n,*1)", i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
+	} else {
+		bp->make_true_function = Calculus::Schemas::new("Relation_Now1to1V(*2,*1,%k,%n)",
+			storage_kind, i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
+			storage_kind, i6_prn_name);
+	}
+
+@ The |Relation_OtoV| case, or one to various: "R relates one K to various K".
+
+@<Complete as a one-to-various BP@> =
+	bp->form_of_relation = Relation_OtoV;
+	provide_prn = TRUE;
+	if (Kinds::Behaviour::is_object(storage_kind)) {
+		bp->make_true_function = Calculus::Schemas::new("*2.%n = *1", i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
+	} else {
+		bp->make_true_function = Calculus::Schemas::new("WriteGProperty(%k, *2, %n, *1)",
+			storage_kind, i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
+			storage_kind, i6_prn_name);
+	}
+
+@ The |Relation_VtoO| case, or various to one: "R relates various K to one K".
+
+@<Complete as a various-to-one BP@> =
+	bp->form_of_relation = Relation_VtoO;
+	provide_prn = TRUE;
+	if (Kinds::Behaviour::is_object(storage_kind)) {
+		bp->make_true_function = Calculus::Schemas::new("*1.%n = *2", i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*1,%n,*2)", i6_prn_name);
+	} else {
+		bp->make_true_function = Calculus::Schemas::new("WriteGProperty(%k, *1, %n, *2)",
+			storage_kind, i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*1,*2,%k,%n)",
+			storage_kind, i6_prn_name);
+	}
+
+@ The |Relation_VtoV| case, or various to various: "R relates various K to
+various K".
+
+@<Complete as an asymmetric various-to-various BP@> =
+	bp->form_of_relation = Relation_VtoV;
+	bp->arbitrary = TRUE;
+	BinaryPredicates::mark_as_needed(bp);
+	bp->test_function = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
+		BinaryPredicates::iname(bp));
+	bp->make_true_function = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,false))",
+		BinaryPredicates::iname(bp));
+	bp->make_false_function = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,false))",
+		BinaryPredicates::iname(bp));
+
+@ The |Relation_Sym_OtoO| case, or symmetric one to one: "R relates one K to
+another".
+
+@<Complete as a symmetric one-to-one BP@> =
+	bp->form_of_relation = Relation_Sym_OtoO;
+	provide_prn = TRUE;
+	if (Kinds::Behaviour::is_object(storage_kind)) {
+		bp->make_true_function = Calculus::Schemas::new("Relation_NowS1to1(*2,%n,*1)", i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowSN1to1(*2,%n,*1)", i6_prn_name);
+	} else {
+		bp->make_true_function = Calculus::Schemas::new("Relation_NowS1to1V(*2,*1,%k,%n)",
+			storage_kind, i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowSN1to1V(*2,*1,%k,%n)",
+			storage_kind, i6_prn_name);
+	}
+
+@ The |Relation_Sym_VtoV| case, or symmetric various to various: "R relates K
+to each other".
+
+@<Complete as a symmetric various-to-various BP@> =
+	bp->form_of_relation = Relation_Sym_VtoV;
+	bp->arbitrary = TRUE;
+	BinaryPredicates::mark_as_needed(bp);
+	bp->test_function = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
+		BinaryPredicates::iname(bp));
+	bp->make_true_function = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,true))",
+		BinaryPredicates::iname(bp));
+	bp->make_false_function = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,true))",
+		BinaryPredicates::iname(bp));
+
+@ The |Relation_Equiv| case, or equivalence relation: "R relates K to each
+other in groups".
+
+@<Complete as an equivalence-relation BP@> =
+	bp->form_of_relation = Relation_Equiv;
+	bp->arbitrary = TRUE;
+	provide_prn = TRUE;
+	if (Kinds::Behaviour::is_object(storage_kind)) {
+		bp->test_function = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);
+		bp->make_true_function = Calculus::Schemas::new("Relation_NowEquiv(*1,%n,*2)", i6_prn_name);
+		bp->make_false_function = Calculus::Schemas::new("Relation_NowNEquiv(*1,%n,*2)", i6_prn_name);
+	} else {
+		bp->test_function =
+			Calculus::Schemas::new("(GProperty(%k, *1, %n) == GProperty(%k, *2, %n))",
+				storage_kind, i6_prn_name, storage_kind, i6_prn_name);
+		bp->make_true_function =
+			Calculus::Schemas::new("Relation_NowEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
+		bp->make_false_function =
+			Calculus::Schemas::new("Relation_NowNEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
+	}
+	Properties::Valued::set_kind(prn, K_number);
+
+@ The |Relation_ByRoutine| case, or relation tested by a routine: "R relates
+K to L when (some condition)".
+
+@<Complete as a relation-by-routine BP@> =
+	bp->form_of_relation = Relation_ByRoutine;
+	package_request *P = BinaryPredicates::package(bp);
+	bp->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
+	bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
+	bp->condition_defn_text = RR->CONW;
+
+@ The left- and right- local variables above provide us with convenient
+aliases for the entries which will end up in the |bp_term_details|
+structures attached to the BP: this is where we put them back.
+
+For the meaning of functions $f_0$ and $f_1$, see "Binary Predicates.w".
+The idea here is this: suppose we have a relation of objects where the only
+true outcomes have the form $B(f_0(y), y)$. At run-time we store the
+identity of the counterpart object $f_0(y)$ in the |prn| property of the
+original object $y$.
+
+And we similarly construct an $f_1$ function if the only true outcomes
+have the form $B(x, f_1(x))$.
+
+@<Add in the reducing functions@> =
+	if (i6_prn_name) {
+		i6_schema *f0 = NULL, *f1 = NULL;
+		if (RR->terms[0].unique) {
+			if (RR->terms[1].domain) {
+				if (Kinds::Behaviour::is_object(RR->terms[1].domain))
+					f0 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
+				else
+					f0 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
+						RR->terms[1].domain, i6_prn_name);
+			}
+		} else if (RR->terms[1].unique) {
+			if (RR->terms[0].domain) {
+				if (Kinds::Behaviour::is_object(RR->terms[0].domain))
+					f1 = Calculus::Schemas::new("(*1.%n)", i6_prn_name);
+				else
+					f1 = Calculus::Schemas::new("(GProperty(%k, *1, %n))",
+						RR->terms[0].domain, i6_prn_name);
+			}
+		}
+		if (f0) BinaryPredicates::set_term_function(&(bp->term_details[0]), f0);
+		if (f1) BinaryPredicates::set_term_function(&(bp->term_details[1]), f1);
+	}
+
+@<Override with dynamic allocation schemata@> =
+	bp->test_function = Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
+		BinaryPredicates::iname(bp));
+	bp->make_true_function = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
+		BinaryPredicates::iname(bp));
+	bp->make_false_function = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
+		BinaryPredicates::iname(bp));
+
+@h Storing relations.
+At runtime, relation data is sometimes stored in a property, and that needs
+to have a name:
+
+=
+<relation-storage-construction> ::=
+	... relation storage
+
+@ A modest utility, to check for a case we forbid because of the prohibitive
+(or anyway unpredictable) run-time storage it would imply.
+
+=
+int RelationRequests::check_finite_range(kind *K) {
+	if (Kinds::Behaviour::is_an_enumeration(K)) return TRUE;
+	if (K == NULL) return TRUE; /* to recover from earlier problems */
+	if ((Kinds::Behaviour::is_object(K)) || (Kinds::Behaviour::definite(K) == FALSE))
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RangeOverlyBroad),
+			"relations aren't allowed to range over all 'objects' or all 'values'",
+			"as these are too broad. A relation has to be between two kinds of "
+			"object, or kinds of value. So 'Taming relates various people to "
+			"various animals' is fine, because 'people' and 'animals' both mean "
+			"kinds of object, but 'Wanting relates various objects to various "
+			"values' is not allowed.");
+	return FALSE;
+}
+
+@h Registering names of relations.
+
+=
+<relation-name-formal> ::=
+	... relation
+
+@ 
+
+@d REGISTER_RELATIONS_CALCULUS_CALLBACK RelationRequests::register_name
+
+=
+void RelationRequests::register_name(binary_predicate *bp, word_assemblage source_name) {
+	word_assemblage wa =
+		PreformUtilities::merge(<relation-name-formal>, 0, source_name);
+	wording AW = WordAssemblages::to_wording(&wa);
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		MISCELLANEOUS_MC, Rvalues::from_binary_predicate(bp), Task::language_of_syntax());
 }

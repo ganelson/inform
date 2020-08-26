@@ -175,7 +175,7 @@ they can be rather lengthy.
 			Main::write_diagnostics(
 				I"documentation-diagnostics.txt", &Index::DocReferences::log_statistics);
 			Main::write_diagnostics(
-				I"verbs-diagnostics.txt", &VerbsAtRunTime::log_all);
+				I"verbs-diagnostics.txt", &RTVerbs::log_all);
 			Main::write_diagnostics(
 				I"excerpts-diagnostics.txt", &FromLexicon::statistics);
 			Main::write_diagnostics(

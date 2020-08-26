@@ -65,7 +65,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
 		LOGIF(MATCHING, "C%d: $e\n", pos, inv); pos++;
 		if (Node::get_say_verb(inv)) {
-			VerbsAtRunTime::ConjugateVerb_invoke_emit(
+			RTVerbs::ConjugateVerb_invoke_emit(
 				Node::get_say_verb(inv),
 				Node::get_modal_verb(inv),
 				Annotations::read_int(inv, say_verb_negated_ANNOT));
@@ -385,7 +385,7 @@ no subsequent lines are looked at.
 
 @<Compile code to apply this invocation if it's applicable@> =
 	if (Node::get_say_verb(inv))
-		VerbsAtRunTime::ConjugateVerb_invoke_emit(
+		RTVerbs::ConjugateVerb_invoke_emit(
 			Node::get_say_verb(inv),
 			Node::get_modal_verb(inv),
 			Annotations::read_int(inv, say_verb_negated_ANNOT));
@@ -402,7 +402,7 @@ no subsequent lines are looked at.
 
 @<Compile code to apply this invocation if it's applicable, expression version@> =
 	if (Node::get_say_verb(inv))
-		VerbsAtRunTime::ConjugateVerb_invoke_emit(
+		RTVerbs::ConjugateVerb_invoke_emit(
 			Node::get_say_verb(inv),
 			Node::get_modal_verb(inv),
 			Annotations::read_int(inv, say_verb_negated_ANNOT));

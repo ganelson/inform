@@ -15,6 +15,7 @@ Chapter 1: Configuration and Control
 	Core Preform
 	Progress Percentages
 	Compilation Settings
+	Inform-Only Nodes and Annotations
 
 Chapter 2: Problem Messages
 "The issuing of Problem messages."

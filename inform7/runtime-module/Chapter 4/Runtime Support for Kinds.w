@@ -58,7 +58,7 @@ noun *Kinds::RunTime::register(kind *K, kind *super, wording W, general_pointer 
 	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, data, Task::language_of_syntax());
-	Sentences::Headings::initialise_noun_resolution(nt);
+	NameResolution::initialise(nt);
  	if (Kinds::Behaviour::is_object(super))
  		Kinds::Behaviour::set_range_number(K, no_kinds_of_object++);
  	return nt;
@@ -132,7 +132,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
-			Relations::compile_blank_relation(K);
+			RTRelations::compile_blank_relation(K);
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else {
@@ -760,7 +760,7 @@ void Kinds::RunTime::compile_structures(void) {
 	if (Kinds::get_construct(K) == CON_phrase) {
 		Phrases::Constants::compile_default_closure(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_relation) {
-		Relations::compile_default_relation(identifier, K);
+		RTRelations::compile_default_relation(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {
 		Lists::compile_default_list(identifier, K);
 	} else {
