@@ -25,15 +25,18 @@ divided up into "modules", many shared between two or even all three tools.
 |  //supervisor//-module                           |      .             .
 +----------------------------------------------+      .             .
     .             .      +---------------------+      .             .
+    .             .      | BASIC INFORM        |      .             .
     .             .      |     //core//-module     |      .             .
     .             .      |  //assertions//-module  |      .             .
     .             .      |    //values//-module    |      .             .
     .             .      |   //knowledge//-module  |      .             .
     .             .      |  //imperative//-module  |      .             .
     .             .      |    //runtime//-module   |      .             .
+    .             .      |    //index//-module     |      .             .
+    .             .      +---------------------+      .             .
+    .             .      | EXTRAS              |      .             .
     .             .      |      //if//-module      |      .             .
     .             .      |  //multimedia//-module  |      .             .
-    .             .      |    //index//-module     |      .             .
     .             .      +---------------------+      .             .
     .             .      +----------------------------------------------+
     .             .      |                            //bytecode//-module   |

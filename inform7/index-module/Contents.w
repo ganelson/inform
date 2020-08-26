@@ -12,3 +12,6 @@ Chapter 2: Indexing
 	Index File Services
 	Documentation References
 	Lexicon Index
+	Index Physical World
+	Kinds Index
+	Index Extensions

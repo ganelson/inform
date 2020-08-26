@@ -151,7 +151,7 @@ add to those generated in //syntax//.
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
 we want to expand on those. (And the //core// module will expand on them still
-further, so this still isn't everything: see //core: Parse Tree Usage//.)
+further, so this still isn't everything: see //assertions: Parse Tree Usage//.)
 
 The node types we're adding are for the "structural sentences" which we will
 look for below. (The asterisk notation for |TRACE_NT| isn't known to most

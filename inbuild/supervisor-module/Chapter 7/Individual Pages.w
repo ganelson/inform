@@ -111,7 +111,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 		@<Write up the rubric, if any@>;
 		@<Write up the table of contents for the supplied documentation, if any@>;
 		#ifdef CORE_MODULE
-		Extensions::Files::document_in_detail(OUT, E);
+		IndexExtensions::document_in_detail(OUT, E);
 		#endif
 		@<Write up the supplied documentation, if any@>;
 		DISCARD_TEXT(leaf)

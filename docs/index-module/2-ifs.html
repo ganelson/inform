@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="index.html"><span class="selectedlink">index</span></a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-ifs.html#SP3_2">&#167;3.2. Writing the periodic table</a></li><li><a href="2-ifs.html#SP3_4">&#167;3.4. Writing the elements</a></li><li><a href="2-ifs.html#SP5">&#167;5. So here goes with the CSS and Javascript</a></li><li><a href="2-ifs.html#SP9">&#167;9. Links to source</a></li><li><a href="2-ifs.html#SP10">&#167;10. Links to detail pages</a></li><li><a href="2-ifs.html#SP11">&#167;11. "See below" links</a></li><li><a href="2-ifs.html#SP12">&#167;12. "Show extra" links, and also a spacer of equivalent width</a></li><li><a href="2-ifs.html#SP14">&#167;14. "Deprecation" icons</a></li><li><a href="2-ifs.html#SP15">&#167;15. Miscellaneous utilities</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>If only we had an index file, we could look it up under "index file"...
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>If only we had an index file, we could look it up under "index file"...
 </p>
 
 <p class="commentary">The Index of a project is a set of HTML files describing its milieu: the
@@ -91,7 +97,7 @@ particular, the Standard Rules).
 <span class="plain-syntax">} </span><span class="reserved-syntax">index_page</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure index_page is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">index_element</span><span class="plain-syntax"> {</span>
@@ -104,7 +110,7 @@ particular, the Standard Rules).
 <span class="plain-syntax">} </span><span class="reserved-syntax">index_element</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure index_element is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The index is written at the end of each successful compilation. During
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The index is written at the end of each successful compilation. During
 indexing, only one index file is ever open for output at a time: this
 always has the file handle <span class="extract"><span class="extract-syntax">ifl</span></span>. The following routine is called to open a
 new index file for output.
@@ -163,7 +169,7 @@ new index file for output.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the current index page</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the current index page</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -174,7 +180,7 @@ new index file for output.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2. Writing the periodic table. </b>Each index page is arranged as follows: at the top is a navigational bar
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. Writing the periodic table. </b>Each index page is arranged as follows: at the top is a navigational bar
 in a DIV called "periodictable", and underneath that are chunks of actual
 indexing material in DIVs called "element1", "element2", ... Different
 pages have different numbers of elements.
@@ -213,7 +219,7 @@ which contains text like "Kinds Index". This contains a DIV of class
 and text underneath in another of class "headingrubric".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b>So let's generate all of that:
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b>So let's generate all of that:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the periodic table</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
@@ -244,7 +250,7 @@ and text underneath in another of class "headingrubric".
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_1"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the heading row of the surround</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_1" class="paragraph-anchor"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the heading row of the surround</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -267,7 +273,7 @@ and text underneath in another of class "headingrubric".
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"tr"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_2"></a><b>&#167;3.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a row of the periodic table</span><span class="named-paragraph-number">3.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_2" class="paragraph-anchor"></a><b>&#167;3.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a row of the periodic table</span><span class="named-paragraph-number">3.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -287,7 +293,7 @@ and text underneath in another of class "headingrubric".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_3"></a><b>&#167;3.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an element-box of the periodic table</span><span class="named-paragraph-number">3.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_3" class="paragraph-anchor"></a><b>&#167;3.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an element-box of the periodic table</span><span class="named-paragraph-number">3.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -312,7 +318,7 @@ and text underneath in another of class "headingrubric".
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"td"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_4"></a><b>&#167;3.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a row of the periodic table</span><span class="named-paragraph-number">3.3.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_4" class="paragraph-anchor"></a><b>&#167;3.3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a row of the periodic table</span><span class="named-paragraph-number">3.3.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -343,7 +349,7 @@ and text underneath in another of class "headingrubric".
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"tr"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4. Writing the elements. </b>Each element is contained inside a DIV with id "segment1", "segment2", and
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4. Writing the elements. </b>Each element is contained inside a DIV with id "segment1", "segment2", and
 so on. There's then a banner line &mdash; a sort of subheading; then the index
 content at last; and then a rule.
 </p>
@@ -367,7 +373,7 @@ content at last; and then a rule.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG</span><span class="plain-syntax">(</span><span class="string-syntax">"hr"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This is abstracted as a routine because it's also used for the much smaller
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>This is abstracted as a routine because it's also used for the much smaller
 and simpler navigation on the Actions detail pages.
 </p>
 
@@ -382,7 +388,7 @@ and simpler navigation on the Actions detail pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the banner mini-element-box</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the banner mini-element-box</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -404,7 +410,7 @@ and simpler navigation on the Actions detail pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"td"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the row titling element</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the row titling element</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,7 +423,7 @@ and simpler navigation on the Actions detail pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"td"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. So here goes with the CSS and Javascript. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. So here goes with the CSS and Javascript. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ADDITIONAL_SCRIPTING_HTML_CALLBACK</span><span class="plain-syntax"> </span><a href="2-ifs.html#SP5" class="function-link"><span class="function-syntax">Index::scripting</span></a>
 </pre>
@@ -448,7 +454,7 @@ and simpler navigation on the Actions detail pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"script"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write some CSS styles for all these classes</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write some CSS styles for all these classes</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -576,7 +582,7 @@ and simpler navigation on the Actions detail pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>Now we come to the Javascript. The page can be in one of three states:
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>Now we come to the Javascript. The page can be in one of three states:
 </p>
 
 <ul class="items"><li>(1) With the periodic table closed, and all the boxes in the one visible
@@ -594,7 +600,7 @@ states (1) and (2) are indistinguishable.
 we have routines called when buttons on the page are clicked:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>This is called when the user clicks on an element box corresponding to
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b>This is called when the user clicks on an element box corresponding to
 something on the current page. If that's hidden, we go to state (2) for the
 element clicked on. If it's showing, we see which state we're in: if we're
 in state (2) we go to state (1), and otherwise go to state (2). (The trick
@@ -620,7 +626,7 @@ elements.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b>If we're in state (1) or (2), go to state (3); if we're in state (3), go to
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b>If we're in state (1) or (2), go to state (3); if we're in state (3), go to
 state (1).
 </p>
 
@@ -637,7 +643,7 @@ state (1).
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5"></a><b>&#167;5.5.  </b>At the middle level of our Javascript, we have routines which move the
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5.  </b>At the middle level of our Javascript, we have routines which move the
 page to a new state. This routine goes to state (1):
 </p>
 
@@ -653,7 +659,7 @@ page to a new state. This routine goes to state (1):
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"	}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b>This routine goes to state (2), where the <span class="extract"><span class="extract-syntax">id</span></span> is the ID of the content
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6.  </b>This routine goes to state (2), where the <span class="extract"><span class="extract-syntax">id</span></span> is the ID of the content
 element &mdash; <span class="extract"><span class="extract-syntax">segment1</span></span>, <span class="extract"><span class="extract-syntax">segment2</span></span>, ...
 </p>
 
@@ -671,7 +677,7 @@ element &mdash; <span class="extract"><span class="extract-syntax">segment1</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7"></a><b>&#167;5.7.  </b>This routine goes to state (3):
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7.  </b>This routine goes to state (3):
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for entering the periodic table display</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
@@ -686,7 +692,7 @@ element &mdash; <span class="extract"><span class="extract-syntax">segment1</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8"></a><b>&#167;5.8.  </b>And at the bottom level of the Javascript code we have service routines
+<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8.  </b>And at the bottom level of the Javascript code we have service routines
 to show, hide and colour things:
 </p>
 
@@ -702,7 +708,7 @@ to show, hide and colour things:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_9"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_9" class="paragraph-anchor"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript code for lighting up or greying down an element box</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -717,7 +723,7 @@ to show, hide and colour things:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_9_1"></a><b>&#167;5.9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">5.9.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_9_1" class="paragraph-anchor"></a><b>&#167;5.9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write Javascript to produce the corresponding icon name</span><span class="named-paragraph-number">5.9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -727,7 +733,7 @@ to show, hide and colour things:
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_index_page</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ifs.html#SP5_9">&#167;5.9</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">do_not_update_census</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> Set by the </span><span class="extract"><span class="extract-syntax">-no-update-census</span></span><span class="comment-syntax"> command line option</span>
@@ -738,7 +744,7 @@ to show, hide and colour things:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::index_actual_element</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Index::index_actual_element</span></span>:<br/><a href="2-ifs.html#SP3_4">&#167;3.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">elt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">elt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"C"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Sentences::Headings::index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Extensions::Files::index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ie.html#SP1" class="function-link"><span class="function-syntax">IndexExtensions::index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">do_not_update_census</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ExtensionWebsite::index_after_compilation</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::project</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
@@ -789,8 +795,8 @@ to show, hide and colour things:
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">elt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Ch"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Data::Objects::page_Kinds</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Index::index_kinds</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ipw.html#SP1" class="function-link"><span class="function-syntax">Data::Objects::page_Kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ki.html#SP1" class="function-link"><span class="function-syntax">Kinds::Index::index_kinds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">elt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Ar"</span><span class="plain-syntax">)) {</span>
@@ -799,7 +805,7 @@ to show, hide and colour things:
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">elt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Mp"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Data::Objects::page_World</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-ipw.html#SP2" class="function-link"><span class="function-syntax">Data::Objects::page_World</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">elt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Gz"</span><span class="plain-syntax">)) {</span>
@@ -866,7 +872,7 @@ to show, hide and colour things:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"NO CONTENT"</span><span class="plain-syntax">); </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::explain</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Index::explain</span></span>:<br/><a href="2-ifs.html#SP4_2">&#167;4.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">explanation</span><span class="plain-syntax">) {</span>
@@ -902,7 +908,7 @@ to show, hide and colour things:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">italics_open</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/i&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Written index files are closed either when the next one is opened (see
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Written index files are closed either when the next one is opened (see
 above), or when the <span class="extract"><span class="extract-syntax">.i6t</span></span> interpreter signals the end of indexing by
 calling <span class="extract"><span class="extract-syntax">Index::complete</span></span> below.
 </p>
@@ -921,7 +927,7 @@ calling <span class="extract"><span class="extract-syntax">Index::complete</span
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifl</span><span class="plain-syntax">); </span><span class="identifier-syntax">ifl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Links to source. </b>When index files need to reference source text material, they normally do
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Links to source. </b>When index files need to reference source text material, they normally do
 so by means of orange back-arrow icons which are linked to positions in
 the source as typed by the user. But source text also comes from extensions.
 We don't want to provide source links to those, because they can't easily
@@ -937,7 +943,7 @@ the source text in the application.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::link</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Index::link</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7_11_2">&#167;7.11.2</a>, <a href="2-li.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::link</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Index::link</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7_11_2">&#167;7.11.2</a>, <a href="2-li.html#SP8">&#167;8</a><br/>Index Physical World - <a href="2-ipw.html#SP3_5">&#167;3.5</a>, <a href="2-ipw.html#SP3_8">&#167;3.8</a>, <a href="2-ipw.html#SP4">&#167;4</a><br/>Kinds Index - <a href="2-ki.html#SP6">&#167;6</a><br/>Index Extensions - <a href="2-ie.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-ifs.html#SP9" class="function-link"><span class="function-syntax">Index::link_to_location</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_location</span><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">), </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
@@ -963,7 +969,7 @@ the source text in the application.
 <span class="plain-syntax">    </span><span class="identifier-syntax">SourceLinks::link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">sl</span><span class="plain-syntax">, </span><span class="identifier-syntax">nonbreaking_space</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Links to detail pages. </b>The "Beneath" icon is used for links to details pages seen as beneath the
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Links to detail pages. </b>The "Beneath" icon is used for links to details pages seen as beneath the
 current index page: for instance, for the link from the Actions page to the
 page about the taking action.
 </p>
@@ -976,39 +982,39 @@ page about the taking action.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. "See below" links. </b>These are the grey magnifying glass icons. The links are done by internal
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. "See below" links. </b>These are the grey magnifying glass icons. The links are done by internal
 href links to anchors lower down the same HTML page. These can be identified
 either by number, or by name: whichever is more convenient for the indexing
 code.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::below_link</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Index::below_link</span></span>:<br/><a href="2-ifs.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::below_link</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Index::below_link</span></span>:<br/><a href="2-ifs.html#SP7">&#167;7</a><br/>Index Physical World - <a href="2-ipw.html#SP3_5">&#167;3.5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"href=#%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">, </span><span class="string-syntax">"border=0 src=inform:/doc_images/Below.png"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::anchor</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Index::anchor</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::anchor</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Index::anchor</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7">&#167;7</a><br/>Index Physical World - <a href="2-ipw.html#SP2">&#167;2</a>, <a href="2-ipw.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"name=%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">); </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::below_link_numbered</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Index::below_link_numbered</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7_11_2">&#167;7.11.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::below_link_numbered</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Index::below_link_numbered</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP7_11_2">&#167;7.11.2</a><br/>Kinds Index - <a href="2-ki.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"href=#A%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">, </span><span class="string-syntax">"border=0 src=inform:/doc_images/Below.png"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::anchor_numbered</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Index::anchor_numbered</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::anchor_numbered</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Index::anchor_numbered</span></span>:<br/>Lexicon Index - <a href="2-li.html#SP8">&#167;8</a><br/>Kinds Index - <a href="2-ki.html#SP1_7">&#167;1.7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"name=A%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">); </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. "Show extra" links, and also a spacer of equivalent width. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. "Show extra" links, and also a spacer of equivalent width. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_link</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Index::extra_link</span></span>:<br/>Index Physical World - <a href="2-ipw.html#SP3">&#167;3</a>, <a href="2-ipw.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\""</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"img"</span><span class="plain-syntax">, </span><span class="string-syntax">"border=0 id=\"plus%d\" src=inform:/doc_images/extra.png"</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
@@ -1032,17 +1038,17 @@ code.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>These open up divisions:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>These open up divisions:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_div_open</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">indent</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_div_open</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Index::extra_div_open</span></span>:<br/>Index Physical World - <a href="2-ipw.html#SP3">&#167;3</a>, <a href="2-ipw.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">indent</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">, </span><span class="string-syntax">"id=\"extra%d\" style=\"display: none;\""</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::open_indented_p</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">indent</span><span class="plain-syntax">, </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::open_coloured_box</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">colour</span><span class="plain-syntax">, </span><span class="identifier-syntax">ROUND_BOX_TOP</span><span class="plain-syntax">+</span><span class="identifier-syntax">ROUND_BOX_BOTTOM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_div_close</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::extra_div_close</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Index::extra_div_close</span></span>:<br/>Index Physical World - <a href="2-ipw.html#SP3">&#167;3</a>, <a href="2-ipw.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::close_coloured_box</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">colour</span><span class="plain-syntax">, </span><span class="identifier-syntax">ROUND_BOX_TOP</span><span class="plain-syntax">+</span><span class="identifier-syntax">ROUND_BOX_BOTTOM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
@@ -1058,7 +1064,7 @@ code.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. "Deprecation" icons. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. "Deprecation" icons. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Index::deprecation_icon</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
@@ -1068,7 +1074,7 @@ code.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Miscellaneous utilities. </b>First: to print a double-quoted word into the index, without its surrounding
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Miscellaneous utilities. </b>First: to print a double-quoted word into the index, without its surrounding
 quotes.
 </p>
 
@@ -1086,7 +1092,7 @@ quotes.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="1-im.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">ifs</li><li class="progresssection"><a href="2-dr.html">dr</a></li><li class="progresssection"><a href="2-li.html">li</a></li><li class="progressnext"><a href="2-dr.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="1-im.html">&#10094;</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">ifs</li><li class="progresssection"><a href="2-dr.html">dr</a></li><li class="progresssection"><a href="2-li.html">li</a></li><li class="progresssection"><a href="2-ipw.html">ipw</a></li><li class="progresssection"><a href="2-ki.html">ki</a></li><li class="progresssection"><a href="2-ie.html">ie</a></li><li class="progressnext"><a href="2-dr.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

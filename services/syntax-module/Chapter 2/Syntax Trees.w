@@ -498,7 +498,7 @@ is about to become one of the alternatives to some existing |E|. If it returns
 further.
 
 (//inform7// uses this to rearrange ambiguous phrase invocations to be sorted
-out in type-checking: see //core: Dash//.)
+out in type-checking: see //values: Dash//.)
 
 =
 parse_node *SyntaxTree::add_reading(parse_node *existing, parse_node *reading, wording W) {

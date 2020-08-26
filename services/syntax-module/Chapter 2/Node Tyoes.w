@@ -47,7 +47,7 @@ typedef struct node_type_metadata {
 	int node_flags; /* bitmap of node flags */
 } node_type_metadata;
 
-@ The following categories certainly exist, and //core: Parse Tree Usage// adds
+@ The following categories certainly exist, and //assertions: Parse Tree Usage// adds
 further ones. The idea is that |L1_NCAT|, |L2_NCAT| and so on down are nodes
 of different "levels", with lower numbers being higher in the tree and more
 structurally significant. Categories are used to decide which nodes are allowed

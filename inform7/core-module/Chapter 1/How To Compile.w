@@ -187,7 +187,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTUseOptions::compile_pragmas)
 	BENCH(FundamentalConstants::emit_build_number)
 	BENCH(PL::Bibliographic::compile_constants)
-	BENCH(Extensions::Files::ShowExtensionVersions_routine)
+	BENCH(RTExtensions::ShowExtensionVersions_routine)
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH_IF(scoring_plugin, PL::Score::compile_max_score)
 	BENCH(RTUseOptions::TestUseOption_routine)

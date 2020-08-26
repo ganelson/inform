@@ -9,3 +9,35 @@ Preliminaries
 
 Chapter 1: Configuration and Control
 	Runtime Module
+
+Chapter 2: Emission
+"Emitting Inter code ready for the code-generator."
+	Hierarchy
+	Compilation Units
+	Emit
+
+Chapter 3: Calculated Adjectives
+"Adjectives whose truth or falsity at run-time has to be determined by
+running code."
+	Adjectival Definitions
+	Adjectives by Raw Phrase
+	Adjectives by Raw Condition
+	Adjectives by Phrase
+	Adjectives by Condition
+
+Chapter 4: Compilation Utilities
+"Mainly low-level utilities for compiling code."
+	Fundamental Constants
+	Inform 6 Inclusions
+	List Together
+	Jump Labels
+	Compiled Text
+	Routines
+	I6 Template Interpreter
+	Plugins
+	Plugin Calls
+	Test Scripts
+	Internal Test Cases
+	Use Options at Run Time
+	Runtime Support for Kinds
+	Extension Files at Run Time

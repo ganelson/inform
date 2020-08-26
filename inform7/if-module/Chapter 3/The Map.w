@@ -1128,7 +1128,7 @@ int PL::Map::map_annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 		if ((A) && (B)) WRITE(" - <i>door to ");
 		else WRITE(" - <i>one-sided door to ");
 		instance *X = A;
-		if (A == indexing_room) X = B;
+		if (A == Data::Objects::room_being_indexed()) X = B;
 		if (X == NULL) {
 			parse_node *S = World::Inferences::get_prop_state(
 				Instances::as_subject(O), P_other_side);

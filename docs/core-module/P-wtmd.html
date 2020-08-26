@@ -12,11 +12,6 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -37,6 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="index.html"><span class="selectedlink">core</span></a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -80,10 +80,9 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The Core. </b>The <a href="index.html" class="internal">core</a> module is the largest and most important part of <a href="../inform7/index.html" class="internal">inform7</a>,
-while not being included in either <a href="../inbuild/index.html" class="internal">inbuild</a> or <a href="../inter/index.html" class="internal">inter</a>. It manages the
-entire process of compiling an Inform 7 project, doing a good deal of the
-work itself, but also calling numerous other modules.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The Core. </b>Until 2020, the core module contained almost the entire compiler, but it is
+now modularised in such a way that <a href="index.html" class="internal">core</a> itself only manages the sequence
+of operations.
 </p>
 
 <p class="commentary">When <a href="../supervisor-module/index.html" class="internal">supervisor</a> decides that an Inform project is being compiled, it uses
@@ -95,52 +94,26 @@ run as a production line: see <a href="1-htc.html" class="internal">How To Compi
 but roughly:
 </p>
 
-<ul class="items"><li>&#9679; The tree is subdivided into <a href="27-cm.html" class="internal">Compilation Units</a>. The project's own
-source text is one unit, as is each extension used.
-</li><li>&#9679; A minimal set of kinds, such as "number", verbs, such as "to mean", relations,
-such as "meaning", and so on, is created. See in particular <a href="3-bv.html" class="internal">Booting Verbs</a>.
-</li><li>&#9679; Three passes are made through the "major nodes" of the parse tree, meaning,
-assertion sentences and top-level declarations of structures such as tables,
-equations and rules. See <a href="3-ptmn.html" class="internal">Passes through Major Nodes</a>.
-<ul class="items"><li>(0) During the "pre-pass" names of tables and other top-level structures are
-recorded, and sentences are classified by <a href="3-cs.html#SP3" class="internal">Classifying::sentence</a>. This is
-done by asking the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module to diagram them and determine whether
-the meaning is "regular" &mdash; a typical sentence asserting some relationship,
-such as "the ball is on the table" &mdash; or "special" &mdash; a sentence with some
-other purpose, such as "Test ... with ...", often but not always written in
-the imperative.
-</li><li>(1) During "pass 1", noun phrases in these assertion sentences are understood,
-which may involve creating new instances or other values. For example, the
-sentence "The fedora hat is on the can of Ubuntu cola" may cause new instances
-"fedora hat" and "can of Ubuntu cola" to be created. This process is called
-"refinement": see <a href="5-rpt.html" class="internal">Refine Parse Tree</a>, which calls <a href="5-tc.html" class="internal">The Creator</a> to bring
-things into being.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The function <a href="5-ass.html#SP6" class="internal">Assertions::make_coupling</a> is then
-called to draw out information from this pairing of values.
-</li><li>(2) During "pass 2", <a href="5-ass.html#SP6" class="internal">Assertions::make_coupling</a> is again called, and this
-time is able to draw out relationships between values: for example, that the
-hat is indeed spatially on top of the can.
+<ul class="items"><li>&#9679; The <a href="../assertions-module/index.html" class="internal">assertions</a> module converts top-level declarations &mdash; sentences like
+"The cat is in the hat" or "A truck is a kind of vehicle", for example &mdash; into
+a series of logical propositions, making heavy use of the <a href="../linguistics-module/index.html" class="internal">linguistics</a> and
+<a href="../calculus-module/index.html" class="internal">calculus</a> service modules.
+</li><li>&#9679; Those propositions are "asserted" as being true by the <a href="../knowledge-module/index.html" class="internal">knowledge</a> module,
+which draws inferences and then reconciles these into a world model.
+</li><li>&#9679; Both of those modules are helped by the <a href="../values-module/index.html" class="internal">values</a> module, which handles how
+values and descriptions are parsed and then stored within the compiler.
+</li><li>&#9679; Imperative code inside phrase or rule definitions is the business of the
+<a href="../imperative-module/index.html" class="internal">imperative</a> module, the part of Inform most resembling a conventional compiler.
+</li><li>&#9679; The <a href="../runtime-module/index.html" class="internal">runtime</a> module compiles run-time support functions and data structures
+needed to make Inform's many concepts work at run-time.
 </li></ul>
-</li></ul>
-<pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Classification:</span>
-<span class="plain-syntax">SENTENCE_NT'jane is a woman'</span>
-<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">    UNPARSED_NOUN_NT'jane'</span>
-<span class="plain-syntax">    UNPARSED_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s}</span>
-<span class="plain-syntax">Refined:</span>
-<span class="plain-syntax">    CREATED_NT'jane'</span>
-<span class="plain-syntax">    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; woman(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">After creation:</span>
-<span class="plain-syntax">SENTENCE_NT'jane is a woman'</span>
-<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">    PROPER_NOUN_NT'jane' {eval: CONSTANT_NT'jane' {kind: object} {instance: 'jane'}} {created here}</span>
-<span class="plain-syntax">    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; woman(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-</pre>
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> There really is an Ubuntu cola; it's a fair-trade product which it amuses my
-more Linux-aware students to drink.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary">There are then two expansion packs, as it were: the <a href="../if-module/index.html" class="internal">if</a> and <a href="../multimedia-module/index.html" class="internal">multimedia</a>
+modules, which do nothing essential but add support for interactive fiction
+and for sound and images respectively.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bv.html">3</a></li><li class="progresschapter"><a href="4-dlr.html">4</a></li><li class="progresschapter"><a href="5-rpt.html">5</a></li><li class="progresschapter"><a href="6-lp.html">6</a></li><li class="progresschapter"><a href="7-am.html">7</a></li><li class="progresschapter"><a href="8-ptu.html">8</a></li><li class="progresschapter"><a href="9-ef.html">9</a></li><li class="progresschapter"><a href="10-its.html">10</a></li><li class="progresschapter"></li><li class="progresschapter"><a href="12-terr.html">12</a></li><li class="progresschapter"><a href="13-kak.html">13</a></li><li class="progresschapter"><a href="14-sp.html">14</a></li><li class="progresschapter"><a href="15-pr.html">15</a></li><li class="progresschapter"><a href="16-is.html">16</a></li><li class="progresschapter"><a href="17-tl.html">17</a></li><li class="progresschapter"><a href="18-lc.html">18</a></li><li class="progresschapter"><a href="19-tc.html">19</a></li><li class="progresschapter"><a href="20-eq.html">20</a></li><li class="progresschapter"><a href="21-rl.html">21</a></li><li class="progresschapter"><a href="22-itp.html">22</a></li><li class="progresschapter"><a href="23-ad.html">23</a></li><li class="progresschapter"><a href="24-lv.html">24</a></li><li class="progresschapter"><a href="25-in.html">25</a></li><li class="progresschapter"><a href="26-fc.html">26</a></li><li class="progresschapter"><a href="27-hr.html">27</a></li><li class="progressnext"><a href="1-cm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progressnext"><a href="1-cm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

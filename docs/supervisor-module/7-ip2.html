@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="index.html"><span class="selectedlink">supervisor</span></a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -190,7 +196,7 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Write up the rubric, if any</span><span class="named-paragraph-number">2.2.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_5" class="named-paragraph-link"><span class="named-paragraph">Write up the table of contents for the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Extensions::Files::document_in_detail</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">IndexExtensions::document_in_detail</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="7-ip2.html#SP2_2_1_6" class="named-paragraph-link"><span class="named-paragraph">Write up the supplied documentation, if any</span><span class="named-paragraph-number">2.2.1.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">)</span>

@@ -34,6 +34,7 @@ Import: index
 
 Manual
 	Command-Line Usage
+	Interacting with the GUI
 	Reference Card
 	Performance Metrics
 

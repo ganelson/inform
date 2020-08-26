@@ -55,6 +55,11 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="index.html"><span class="selectedlink">if</span></a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -1347,7 +1352,7 @@ why we don't need to compile <span class="extract"><span class="extract-syntax">
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">A</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">B</span><span class="plain-syntax">)) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" - &lt;i&gt;door to "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" - &lt;i&gt;one-sided door to "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">indexing_room</span><span class="plain-syntax">) </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">Data::Objects::room_being_indexed</span><span class="plain-syntax">()) </span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">World::Inferences::get_prop_state</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Instances::as_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">), </span><span class="identifier-syntax">P_other_side</span><span class="plain-syntax">);</span>

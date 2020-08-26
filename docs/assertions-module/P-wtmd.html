@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -64,7 +69,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7 Modules</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the assertions module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Assertions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The assertions module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -80,8 +85,55 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Assertions. </b>Top-level declarations are dealt with thus:
+</p>
+
+<ul class="items"><li>&#9679; The tree is subdivided into //runtime: Compilation Units//. The project's own
+source text is one unit, as is each extension used.
+</li><li>&#9679; A minimal set of kinds, such as "number", verbs, such as "to mean", relations,
+such as "meaning", and so on, is created. See in particular <a href="2-bv.html" class="internal">Booting Verbs (in assertions)</a>.
+</li><li>&#9679; Three passes are made through the "major nodes" of the parse tree, meaning,
+assertion sentences and top-level declarations of structures such as tables,
+equations and rules. See <a href="2-ptmn.html" class="internal">Passes through Major Nodes</a>.
+<ul class="items"><li>(0) During the "pre-pass" names of tables and other top-level structures are
+recorded, and sentences are classified by <a href="2-cs.html#SP3" class="internal">Classifying::sentence</a>. This is
+done by asking the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module to diagram them and determine whether
+the meaning is "regular" &mdash; a typical sentence asserting some relationship,
+such as "the ball is on the table" &mdash; or "special" &mdash; a sentence with some
+other purpose, such as "Test ... with ...", often but not always written in
+the imperative.
+</li><li>(1) During "pass 1", noun phrases in these assertion sentences are understood,
+which may involve creating new instances or other values. For example, the
+sentence "The fedora hat is on the can of Ubuntu cola" may cause new instances
+"fedora hat" and "can of Ubuntu cola" to be created. This process is called
+"refinement": see <a href="4-rpt.html" class="internal">Refine Parse Tree</a>, which calls <a href="4-tc.html" class="internal">The Creator</a> to bring
+things into being.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The function <a href="4-ass.html#SP6" class="internal">Assertions::make_coupling</a> is then
+called to draw out information from this pairing of values.
+</li><li>(2) During "pass 2", <a href="4-ass.html#SP6" class="internal">Assertions::make_coupling</a> is again called, and this
+time is able to draw out relationships between values: for example, that the
+hat is indeed spatially on top of the can.
+</li></ul>
+</li></ul>
+<pre class="undisplayed-code all-displayed-code code-font">
+<span class="plain-syntax">Classification:</span>
+<span class="plain-syntax">SENTENCE_NT'jane is a woman'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    UNPARSED_NOUN_NT'jane'</span>
+<span class="plain-syntax">    UNPARSED_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s}</span>
+<span class="plain-syntax">Refined:</span>
+<span class="plain-syntax">    CREATED_NT'jane'</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; woman(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
+<span class="plain-syntax">After creation:</span>
+<span class="plain-syntax">SENTENCE_NT'jane is a woman'</span>
+<span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+<span class="plain-syntax">    PROPER_NOUN_NT'jane' {eval: CONSTANT_NT'jane' {kind: object} {instance: 'jane'}} {created here}</span>
+<span class="plain-syntax">    COMMON_NOUN_NT'woman' {indefinite 'a' n/m/f nom/acc s} {creation: &lt;&lt; woman(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
+</pre>
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> There really is an Ubuntu cola; it's a fair-trade product which it amuses my
+more Linux-aware students to drink.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progressnext"><a href="1-am.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-rpt.html">4</a></li><li class="progresschapter"><a href="5-terr.html">5</a></li><li class="progresschapter"><a href="6-ptu.html">6</a></li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progressnext"><a href="1-am.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
