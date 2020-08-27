@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-rnd.html#SP6">&#167;6. Block buffer</a></li><li><a href="2-rnd.html#SP8">&#167;8. Top-level renderer</a></li><li><a href="2-rnd.html#SP10">&#167;10. Rendering text</a></li><li><a href="2-rnd.html#SP10_2_1">&#167;10.2.1. Code mode</a></li><li><a href="2-rnd.html#SP10_2_4">&#167;10.2.4. Tabular mode</a></li><li><a href="2-rnd.html#SP10_2_7">&#167;10.2.7. Regular mode</a></li><li><a href="2-rnd.html#SP10_2_2_3">&#167;10.2.2.3. Javascript paste icons</a></li><li><a href="2-rnd.html#SP13">&#167;13. Rendering cross-references to other sections</a></li><li><a href="2-rnd.html#SP15">&#167;15. Handling the formatted file</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The output mechanism produces documentation in chunks called "blocks", and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The output mechanism produces documentation in chunks called "blocks", and
 it has a buffer which stores one block at a time. Each block contains a
 list of paragraphs, numbered from 0.
 </p>
@@ -68,21 +68,21 @@ list of paragraphs, numbered from 0.
 <span class="plain-syntax">} </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure paragraph is accessed in 2/rr and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_paras_in_block_buffer</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">paragraph</span><span class="plain-syntax"> </span><span class="identifier-syntax">paragraphs</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_PARAGRAPHS_PER_BLOCK</span><span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The blocks are written to a file of "formatted text":
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The blocks are written to a file of "formatted text":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_FTD_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> with </span><span class="extract"><span class="extract-syntax">NULL</span></span><span class="comment-syntax"> meaning that no file is open</span>
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_FTD_stream</span><span class="plain-syntax">; </span><span class="comment-syntax"> otherwise, this is where the text goes</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>It's convenient to record all the formatted text filenames written to, and
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>It's convenient to record all the formatted text filenames written to, and
 those are the keys of the following hash:
 </p>
 
@@ -93,7 +93,7 @@ those are the keys of the following hash:
 <span class="plain-syntax">} </span><span class="reserved-syntax">formatted_file</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure formatted_file is accessed in 2/trs, 2/utc and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Miscellaneously:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Miscellaneously:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -102,7 +102,7 @@ those are the keys of the following hash:
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unique_code_pos_counter</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> used to uniquely ID code samples</span>
 <span class="reserved-syntax">example</span><span class="plain-syntax"> *</span><span class="identifier-syntax">code_example</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Block buffer. </b>When the scanner starts a new block, it calls this:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Block buffer. </b>When the scanner starts a new block, it calls this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -111,7 +111,7 @@ those are the keys of the following hash:
 <span class="plain-syntax">    </span><span class="identifier-syntax">index_to_examples</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>It then calls this to add paragraphs to the block:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>It then calls this to add paragraphs to the block:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,7 +128,7 @@ those are the keys of the following hash:
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">par_shortened</span><span class="plain-syntax"> = </span><span class="identifier-syntax">shortened</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Top-level renderer. </b>If the block consists of text from a section, then the scanner calls the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Top-level renderer. </b>If the block consists of text from a section, then the scanner calls the
 following when the buffer is filled. If, on the other hand, the block
 comes from an example, it calls <span class="extract"><span class="extract-syntax">render_text_of_block</span></span> instead, a simpler
 routine which doesn't surround the text with navigational gadgets and headings.
@@ -145,7 +145,7 @@ routine which doesn't surround the text with navigational gadgets and headings.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the examples below the text of the block</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the examples below the text of the block</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -167,7 +167,7 @@ routine which doesn't surround the text with navigational gadgets and headings.
 <span class="plain-syntax">        </span><a href="4-nd.html#SP6" class="function-link"><span class="function-syntax">Nav::render_navigation_example_bottom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1_1"></a><b>&#167;8.1.1.  </b>Examples need to connect with particular sections of documentation, but
+<p class="commentary firstcommentary"><a id="SP8_1_1" class="paragraph-anchor"></a><b>&#167;8.1.1.  </b>Examples need to connect with particular sections of documentation, but
 they do so by title, not by block number, to protect them from renumbering
 as sections are added or removed. So if the current block is called
 </p>
@@ -194,7 +194,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">            </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP14" class="function-link"><span class="function-syntax">Str::put</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><a href="../../../inweb/docs/foundation-module/4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::toupper</span></a><span class="plain-syntax">(</span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP8_1">&#167;8.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1_2"></a><b>&#167;8.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the example here</span><span class="named-paragraph-number">8.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1_2" class="paragraph-anchor"></a><b>&#167;8.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the example here</span><span class="named-paragraph-number">8.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -216,7 +216,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">indoc_settings</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format</span><span class="plain-syntax"> == </span><span class="constant-syntax">HTML_FORMAT</span><span class="plain-syntax">) </span><a href="../../../inweb/docs/foundation-module/5-htm.html#SP22" class="function-link"><span class="function-syntax">HTML::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"END EXAMPLE"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP8_1">&#167;8.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Renderer::render_example_body</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Renderer::render_example_body</span></span>:<br/><a href="2-rnd.html#SP8_1_2">&#167;8.1.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">example</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax">, </span><span class="reserved-syntax">volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">empty</span><span class="plain-syntax">) {</span>
@@ -235,7 +235,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Rendering text. </b>The actual contents of the buffer are rendered here, then:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Rendering text. </b>The actual contents of the buffer are rendered here, then:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -245,7 +245,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>Plain text is very plain indeed:
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>Plain text is very plain indeed:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the block buffer as plain text</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
@@ -269,7 +269,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b>HTML is more work:
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>HTML is more work:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render the block buffer as HTML</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
@@ -303,7 +303,7 @@ section names are capitalised for this purpose.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">code_mode</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-rnd.html#SP10_2_3" class="named-paragraph-link"><span class="named-paragraph">Exit code mode</span><span class="named-paragraph-number">10.2.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_1"></a><b>&#167;10.2.1. Code mode. </b>Code mode is when the renderer is working on a displayed quotation of source
+<p class="commentary firstcommentary"><a id="SP10_2_1" class="paragraph-anchor"></a><b>&#167;10.2.1. Code mode. </b>Code mode is when the renderer is working on a displayed quotation of source
 code, broken off from the main narrative.
 </p>
 
@@ -324,7 +324,7 @@ code, broken off from the main narrative.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2"></a><b>&#167;10.2.2.  </b>Quoted code is pretty well passed through in raw form, except for Javascript
+<p class="commentary firstcommentary"><a id="SP10_2_2" class="paragraph-anchor"></a><b>&#167;10.2.2.  </b>Quoted code is pretty well passed through in raw form, except for Javascript
 paste markers, which occupy a lot of code below but don't actually come up
 very much.
 </p>
@@ -353,7 +353,7 @@ very much.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">raw</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_1"></a><b>&#167;10.2.2.1.  </b>A distinctly olde-worlde way to indent.
+<p class="commentary firstcommentary"><a id="SP10_2_2_1" class="paragraph-anchor"></a><b>&#167;10.2.2.1.  </b>A distinctly olde-worlde way to indent.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render some indentation</span><span class="named-paragraph-number">10.2.2.1</span></span><span class="comment-syntax"> =</span>
@@ -364,7 +364,7 @@ very much.
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ic</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) { </span><span class="identifier-syntax">ic</span><span class="plain-syntax">--; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;#160;&amp;#160;&amp;#160;&amp;#160;"</span><span class="plain-syntax">); }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2">&#167;10.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_2"></a><b>&#167;10.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take note of any named inline example</span><span class="named-paragraph-number">10.2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_2_2" class="paragraph-anchor"></a><b>&#167;10.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take note of any named inline example</span><span class="named-paragraph-number">10.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -377,7 +377,7 @@ very much.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2">&#167;10.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_3"></a><b>&#167;10.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Exit code mode</span><span class="named-paragraph-number">10.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_3" class="paragraph-anchor"></a><b>&#167;10.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Exit code mode</span><span class="named-paragraph-number">10.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -387,7 +387,7 @@ very much.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/5-htm.html#SP22" class="function-link"><span class="function-syntax">HTML::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"END CODE"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_4"></a><b>&#167;10.2.4. Tabular mode. </b>Tabular mode is not an alternative to code mode: it's a deeper mode within
+<p class="commentary firstcommentary"><a id="SP10_2_4" class="paragraph-anchor"></a><b>&#167;10.2.4. Tabular mode. </b>Tabular mode is not an alternative to code mode: it's a deeper mode within
 it, and is used for a display of I7 source text (i.e., code) when it needs
 to show a Table.
 </p>
@@ -402,7 +402,7 @@ to show a Table.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"table"</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"codetable\""</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5"></a><b>&#167;10.2.5.  </b>Within tabular mode, the following renders lines.
+<p class="commentary firstcommentary"><a id="SP10_2_5" class="paragraph-anchor"></a><b>&#167;10.2.5.  </b>Within tabular mode, the following renders lines.
 </p>
 
 <p class="commentary">Note that any run of one or more tabs is treated as a single column
@@ -441,7 +441,7 @@ people use the blank marker <span class="extract"><span class="extract-syntax">-
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"tr"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_6"></a><b>&#167;10.2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Exit tabular mode</span><span class="named-paragraph-number">10.2.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_6" class="paragraph-anchor"></a><b>&#167;10.2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Exit tabular mode</span><span class="named-paragraph-number">10.2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -451,7 +451,7 @@ people use the blank marker <span class="extract"><span class="extract-syntax">-
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_7"></a><b>&#167;10.2.7. Regular mode. </b>So this is what happens when we're not in either tabular or code mode.
+<p class="commentary firstcommentary"><a id="SP10_2_7" class="paragraph-anchor"></a><b>&#167;10.2.7. Regular mode. </b>So this is what happens when we're not in either tabular or code mode.
 </p>
 
 <p class="commentary">The foot of a block of documentation sometimes contains cross-references
@@ -488,7 +488,7 @@ convert those to HTML links.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_7_1"></a><b>&#167;10.2.7.1.  </b>Blank lines are simply ignored.
+<p class="commentary firstcommentary"><a id="SP10_2_7_1" class="paragraph-anchor"></a><b>&#167;10.2.7.1.  </b>Blank lines are simply ignored.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a non-quotation paragraph to HTML</span><span class="named-paragraph-number">10.2.7.1</span></span><span class="comment-syntax"> =</span>
@@ -516,7 +516,7 @@ convert those to HTML links.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_7">&#167;10.2.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_3"></a><b>&#167;10.2.2.3. Javascript paste icons. </b>That's the whole rendering routine, except for the handling of Javascript
+<p class="commentary firstcommentary"><a id="SP10_2_2_3" class="paragraph-anchor"></a><b>&#167;10.2.2.3. Javascript paste icons. </b>That's the whole rendering routine, except for the handling of Javascript
 paste icons. In rawtext, these look like so:
 </p>
 
@@ -590,7 +590,7 @@ see below.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2">&#167;10.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_3_1"></a><b>&#167;10.2.2.3.1.  </b>The rawtext is doing something like this:
+<p class="commentary firstcommentary"><a id="SP10_2_2_3_1" class="paragraph-anchor"></a><b>&#167;10.2.2.3.1.  </b>The rawtext is doing something like this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -617,7 +617,7 @@ down to the last line which is included in the paste.
 <span class="plain-syntax">    </span><a href="2-rnd.html#SP12" class="function-link"><span class="function-syntax">Renderer::apply_Inform_escape_characters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">J_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2_3">&#167;10.2.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_3_1_1"></a><b>&#167;10.2.2.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the range of rawtext lines which fall into this paste</span><span class="named-paragraph-number">10.2.2.3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_2_3_1_1" class="paragraph-anchor"></a><b>&#167;10.2.2.3.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the range of rawtext lines which fall into this paste</span><span class="named-paragraph-number">10.2.2.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -640,7 +640,7 @@ down to the last line which is included in the paste.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2_3_1">&#167;10.2.2.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2_3_1_2"></a><b>&#167;10.2.2.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Collate the indented lines in that range into the J-text</span><span class="named-paragraph-number">10.2.2.3.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_2_3_1_2" class="paragraph-anchor"></a><b>&#167;10.2.2.3.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Collate the indented lines in that range into the J-text</span><span class="named-paragraph-number">10.2.2.3.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -675,7 +675,7 @@ down to the last line which is included in the paste.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP10_2_2_3_1">&#167;10.2.2.3.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Renderer::remove_paste_markers</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -705,7 +705,7 @@ down to the last line which is included in the paste.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">modified</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Renderer::apply_Inform_escape_characters</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Renderer::apply_Inform_escape_characters</span></span>:<br/><a href="2-rnd.html#SP10_2_2_3">&#167;10.2.2.3</a>, <a href="2-rnd.html#SP10_2_2_3_1">&#167;10.2.2.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -748,7 +748,7 @@ down to the last line which is included in the paste.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">modified</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Rendering cross-references to other sections. </b>These occur when the rawtext contains paragraphs with a very specific
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Rendering cross-references to other sections. </b>These occur when the rawtext contains paragraphs with a very specific
 arrangement:
 </p>
 
@@ -784,7 +784,7 @@ which block is meant, and encode this as a link.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Identify the reference destination and be sure it exists</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Identify the reference destination and be sure it exists</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -793,7 +793,7 @@ which block is meant, and encode this as a link.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="../../../inweb/docs/foundation-module/3-em.html#SP7" class="function-link"><span class="function-syntax">Errors::with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"cross-reference to %S points to no section"</span><span class="plain-syntax">, </span><span class="identifier-syntax">sname</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>And similarly, for cross-referencing to examples by name:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And similarly, for cross-referencing to examples by name:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -807,7 +807,7 @@ which block is meant, and encode this as a link.
 
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Handling the formatted file. </b>The idea is that several sections in a row may need to be written to the
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Handling the formatted file. </b>The idea is that several sections in a row may need to be written to the
 same file, or may not. So this routine is called to guarantee that the
 right file is open, rather than always to open one.
 </p>
@@ -841,7 +841,7 @@ right file is open, rather than always to open one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>When we certainly want to dispose of the current file:
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>When we certainly want to dispose of the current file:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -854,7 +854,7 @@ right file is open, rather than always to open one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b>The HTML files are topped and tailed either using a template supplied, or
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b>The HTML files are topped and tailed either using a template supplied, or
 with a <span class="extract"><span class="extract-syntax">&lt;head&gt;</span></span> we make ourselves.
 </p>
 
@@ -890,7 +890,7 @@ with a <span class="extract"><span class="extract-syntax">&lt;head&gt;</span></s
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">top</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rnd.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_1_1"></a><b>&#167;15.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the HTML footer for the formatted file</span><span class="named-paragraph-number">15.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_1_1" class="paragraph-anchor"></a><b>&#167;15.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the HTML footer for the formatted file</span><span class="named-paragraph-number">15.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

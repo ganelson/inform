@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-bsc.html#SP1">&#167;1. Who we are</a></li><li><a href="1-bsc.html#SP2">&#167;2. Setting up the memory manager</a></li><li><a href="1-bsc.html#SP4">&#167;4. The Unicode for section</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Who we are. </b>This is a command-line tool built on top of the Foundation module. The first
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Who we are. </b>This is a command-line tool built on top of the Foundation module. The first
 definition we need to make is:
 </p>
 
@@ -66,13 +66,13 @@ definition we need to make is:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b>Just two logging aspects to add to the usual Foundation stock:
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>Just two logging aspects to add to the usual Foundation stock:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">SYMBOLS_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INSTRUCTIONS_DA</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare the debugging log aspects</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare the debugging log aspects</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -80,7 +80,7 @@ definition we need to make is:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-dl.html#SP4" class="function-link"><span class="function-syntax">Log::declare_aspect</span></a><span class="plain-syntax">(</span><span class="constant-syntax">INSTRUCTIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"instructions"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bsc.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Setting up the memory manager. </b>We need to itemise the structures we'll want to allocate:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Setting up the memory manager. </b>We need to itemise the structures we'll want to allocate:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">settings_block_CLASS</span>
@@ -99,7 +99,7 @@ definition we need to make is:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">dc_metadatum_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">navigation_design_CLASS</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>And then expand:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>And then expand:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -119,7 +119,7 @@ definition we need to make is:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">dc_metadatum</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">navigation_design</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The Unicode for section. </b>Since this doesn't lie in the ASCII character range, I'll refer to it by
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The Unicode for section. </b>Since this doesn't lie in the ASCII character range, I'll refer to it by
 its Unicode number rather than placing the character in question in the
 source code directly.
 </p>

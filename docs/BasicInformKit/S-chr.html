@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-chr.html#SP1">&#167;1. Char Is Of Case</a></li><li><a href="S-chr.html#SP2">&#167;2. Char To Case</a></li><li><a href="S-chr.html#SP3">&#167;3. Reversing Case</a></li><li><a href="S-chr.html#SP4">&#167;4. DigitToValue</a></li><li><a href="S-chr.html#SP5">&#167;5. Testing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Char Is Of Case. </b>The following decides whether a character <span class="extract"><span class="extract-syntax">c</span></span> belongs to case <span class="extract"><span class="extract-syntax">case</span></span>, where
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Char Is Of Case. </b>The following decides whether a character <span class="extract"><span class="extract-syntax">c</span></span> belongs to case <span class="extract"><span class="extract-syntax">case</span></span>, where
 0 means lower case and 1 means upper. <span class="extract"><span class="extract-syntax">c</span></span> is interpreted according to the
 character casing chart in "UnicodeData.i6t", which means, it will be
 ZSCII for the Z-machine and Unicode for Glulx.
@@ -91,7 +91,7 @@ ZSCII for the Z-machine and Unicode for Glulx.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Char To Case. </b>And the following converts character <span class="extract"><span class="extract-syntax">c</span></span> to the desired case, or returns
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Char To Case. </b>And the following converts character <span class="extract"><span class="extract-syntax">c</span></span> to the desired case, or returns
 it unchanged if it is not a letter with variant casings.
 </p>
 
@@ -127,7 +127,7 @@ it unchanged if it is not a letter with variant casings.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Reversing Case. </b>It's convenient to provide this relatively fast routine to reverse the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Reversing Case. </b>It's convenient to provide this relatively fast routine to reverse the
 case of a letter since this is an operation used frequently in regular
 expression matching (see "RegExp.i6t").
 </p>
@@ -177,7 +177,7 @@ expression matching (see "RegExp.i6t").
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. DigitToValue. </b>This takes a ZSCII or Unicode character code and returns its value as a digit,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. DigitToValue. </b>This takes a ZSCII or Unicode character code and returns its value as a digit,
 or returns \(-1\) if it isn't a digit.
 </p>
 
@@ -188,7 +188,7 @@ or returns \(-1\) if it isn't a digit.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Testing. </b>Not actually used: simply for testing the tables.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Testing. </b>Not actually used: simply for testing the tables.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -119,7 +119,7 @@ The user creates the stock of adjectives by calling //Adjectives::declare//.
 [1] In Inform, for example, empty means something different for rulebooks
 than for containers. An adjective is a unary predicate applying to something,
 and the kind of that thing can be used to decide which meaning applies. See
-//core: Adjective Meanings// for how Inform does this.
+//assertions: Adjective Meanings// for how Inform does this.
 
 @ Each article in the stock is an instance of //adjective//. The stock is fixed
 at two, both automatically created: the definite and the indefinite article.

@@ -55,7 +55,11 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -65,12 +69,14 @@ MathJax = {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -83,7 +89,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="3-vu.html#SP1">&#167;1. Verb usages</a></li><li><a href="3-vu.html#SP3">&#167;3. Search list and tiers</a></li><li><a href="3-vu.html#SP5">&#167;5. Creation</a></li><li><a href="3-vu.html#SP6">&#167;6. Registration of regular verbs</a></li><li><a href="3-vu.html#SP11">&#167;11. Miscellaneous utility routines</a></li><li><a href="3-vu.html#SP13">&#167;13. Parsing source text against verb usages</a></li><li><a href="3-vu.html#SP23">&#167;23. Optimisation</a></li><li><a href="3-vu.html#SP24">&#167;24. Adaptive person</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Verb usages. </b>We already have the ability to conjugate verbs &mdash; to turn "to have" into "I have",
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Verb usages. </b>We already have the ability to conjugate verbs &mdash; to turn "to have" into "I have",
 "you have", "he has", "they have had", "we will have" and so on &mdash; from the
 <a href="../inflections-module/index.html" class="internal">inflections</a> module. However, we won't necessarily want to recognise all of
 those forms in sentences in the source text. For example, Inform only looks
@@ -112,7 +118,7 @@ be turned into one of the following structures:
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_usage is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vrb, 3/prp, 4/vp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::write_usage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::write_usage</span></span>:<br/>Diagrams - <a href="1-dgr.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">verb_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vu</span><span class="plain-syntax">) {</span>
@@ -124,7 +130,7 @@ be turned into one of the following structures:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Search list and tiers. </b>A "search list" of verb usages indicates what order the possibilities should be
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Search list and tiers. </b>A "search list" of verb usages indicates what order the possibilities should be
 checked in. The simpler list is in order of word count:
 </p>
 
@@ -134,7 +140,7 @@ checked in. The simpler list is in order of word count:
 <span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_USAGES</span><span class="plain-syntax">(</span><span class="identifier-syntax">vu</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vu</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vu_search_list</span><span class="plain-syntax">; </span><span class="identifier-syntax">vu</span><span class="plain-syntax">; </span><span class="identifier-syntax">vu</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_in_search_list</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The more complex list involves "tiers" of verbs with different priorities.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The more complex list involves "tiers" of verbs with different priorities.
 </p>
 
 <p class="commentary">A particular challenge of parsing natural language is to decide the most likely
@@ -169,7 +175,7 @@ If two usages belong to the same tier, the earlier in a sentence is preferred.
 <span class="reserved-syntax">verb_usage_tier</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_search_tier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> head of linked list of tiers</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_usage_tier is accessed in 4/vp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Creation. </b>Here we create a single verb usage; note that the empty text cannot be used.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Creation. </b>Here we create a single verb usage; note that the empty text cannot be used.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -192,7 +198,7 @@ If two usages belong to the same tier, the earlier in a sentence is preferred.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vu</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>These are insertion-sorted into a list in decreasing order of word count,
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>These are insertion-sorted into a list in decreasing order of word count,
 with oldest first in the case of equal length:
 </p>
 
@@ -218,7 +224,7 @@ with oldest first in the case of equal length:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Registration of regular verbs. </b>It would be tiresome to have to call the above routine for every possible
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Registration of regular verbs. </b>It would be tiresome to have to call the above routine for every possible
 conjugated form of a verb individually, so the following takes care of
 a whole verb at once.
 </p>
@@ -251,7 +257,7 @@ equivalent to "X is 1".
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>With the present participle the meaning is back the right way around: for
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>With the present participle the meaning is back the right way around: for
 instance, "to be fetching" has the same meaning as "to fetch". At any rate,
 Inform's linguistic model is not subtle enough to distinguish the difference,
 in terms of a continuous rather than instantaneous process, which a human
@@ -277,7 +283,7 @@ an unfortunate mock-Indian sound to it.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Note that forms using the auxiliary "to be" are given meanings which indirect
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Note that forms using the auxiliary "to be" are given meanings which indirect
 to the meanings of the main verb: thus "Y is owned by X" is indirected to
 the reversal of the meaning "X owns Y", and "X is owning Y" to the unreversed
 meaning. Both forms are then internally implemented as prepositional forms
@@ -300,7 +306,7 @@ of "to be", which is convenient however dubious in linguistic terms.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-vu.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Register usages</span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>The sequence of registration is important here, and it's done this way to
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>The sequence of registration is important here, and it's done this way to
 minimise false readings due to overlaps. We take future or other exotic
 tenses (say, the French past historic) first; then the perfect tenses,
 then the imperfect; within that, we take negated forms first, then positive;
@@ -346,7 +352,7 @@ to be this long just in case:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-vu.html#SP7_1_3" class="named-paragraph-link"><span class="named-paragraph">Register each equivalence class of to-do list entries</span><span class="named-paragraph-number">7.1.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_1"></a><b>&#167;7.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make to-do list of usages in these tenses</span><span class="named-paragraph-number">7.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1_1" class="paragraph-anchor"></a><b>&#167;7.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make to-do list of usages in these tenses</span><span class="named-paragraph-number">7.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -358,7 +364,7 @@ to be this long just in case:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP7_1">&#167;7.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_2"></a><b>&#167;7.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make to-do list of usages in this combination</span><span class="named-paragraph-number">7.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1_2" class="paragraph-anchor"></a><b>&#167;7.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make to-do list of usages in this combination</span><span class="named-paragraph-number">7.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -381,7 +387,7 @@ to be this long just in case:
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP7_1">&#167;7.1</a>, <a href="3-vu.html#SP7_1_1">&#167;7.1.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_2_1"></a><b>&#167;7.1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this form to the to-do list</span><span class="named-paragraph-number">7.1.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1_2_1" class="paragraph-anchor"></a><b>&#167;7.1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this form to the to-do list</span><span class="named-paragraph-number">7.1.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -405,7 +411,7 @@ to be this long just in case:
 <span class="plain-syntax">    </span><span class="identifier-syntax">to_do</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP7_1_2">&#167;7.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1_3"></a><b>&#167;7.1.3.  </b>Two entries on the to-do list are "equivalent" if they have the same wording.
+<p class="commentary firstcommentary"><a id="SP7_1_3" class="paragraph-anchor"></a><b>&#167;7.1.3.  </b>Two entries on the to-do list are "equivalent" if they have the same wording.
 For example, "carry" first person singular present tense is equivalent to
 the same thing in the second person, and so on. The priority for an equivalence
 class is the maximum priority for any of its members; this ensures, for example,
@@ -435,7 +441,7 @@ needs to have priority 1.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vu.html#SP7_1">&#167;7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Here are the default decisions on what usages are allowed; the defaults are
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Here are the default decisions on what usages are allowed; the defaults are
 what are used by Inform. In assertions:
 </p>
 
@@ -446,7 +452,7 @@ what are used by Inform. In assertions:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>And in other usages (e.g., in Inform's "now the pink door is not open"):
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And in other usages (e.g., in Inform's "now the pink door is not open"):
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -458,7 +464,7 @@ what are used by Inform. In assertions:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>That just leaves the business of setting the "priority" of a usage. As
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>That just leaves the business of setting the "priority" of a usage. As
 noted above, priority 0 usages are ignored, while otherwise low numbers
 beat high ones.
 </p>
@@ -502,7 +508,7 @@ list, with lower priority numbers before higher ones.
 <span class="plain-syntax">    </span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_within_tier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Miscellaneous utility routines. </b>A usage is "foreign" if it belongs to a language other than English:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Miscellaneous utility routines. </b>A usage is "foreign" if it belongs to a language other than English:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -515,7 +521,7 @@ list, with lower priority numbers before higher ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>And some access routines.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>And some access routines.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -545,7 +551,7 @@ list, with lower priority numbers before higher ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Parsing source text against verb usages. </b>Given a particular VU, and a word range <span class="extract"><span class="extract-syntax">w1</span></span> to <span class="extract"><span class="extract-syntax">w2</span></span>, we test whether the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Parsing source text against verb usages. </b>Given a particular VU, and a word range <span class="extract"><span class="extract-syntax">w1</span></span> to <span class="extract"><span class="extract-syntax">w2</span></span>, we test whether the
 range begins with but does not consist only of the text of the VU. We return
 the first word after the VU text if it does (which will therefore be a
 word number still inside the range), or \(-1\) if it doesn't.
@@ -563,7 +569,7 @@ confine ourselves to words flagged in the vocabulary as being used in verbs.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">WordAssemblages::parse_as_strictly_initial_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">vu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vu_text</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The "permitted verb" is just a piece of temporary context used in parsing:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The "permitted verb" is just a piece of temporary context used in parsing:
 it's convenient for the verb currently being considered to be stored in
 a global variable.
 </p>
@@ -571,7 +577,7 @@ a global variable.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">permitted_verb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>We now define a whole run of internals to parse verbs. As examples,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>We now define a whole run of internals to parse verbs. As examples,
 </p>
 
 <blockquote>
@@ -621,7 +627,7 @@ which has a meaning.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>A copular verb is one which implies the equality relation: in practice,
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>A copular verb is one which implies the equality relation: in practice,
 that means it's "to be". So the following matches "is", "were not",
 and so on.
 </p>
@@ -644,7 +650,7 @@ and so on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>A noncopular verb is anything that isn't copular, but here we also require
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>A noncopular verb is anything that isn't copular, but here we also require
 it to be in the present tense and the negative sense. So, for example, "does
 not carry" qualifies; "is not" or "supports" don't qualify.
 </p>
@@ -669,7 +675,7 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>A universal verb is one which implies the universal relation: in Inform,
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>A universal verb is one which implies the universal relation: in Inform,
 that means it's "to relate".
 </p>
 
@@ -690,7 +696,7 @@ that means it's "to relate".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>Any verb usage which is negative in sense: this is used only to diagnose problems.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Any verb usage which is negative in sense: this is used only to diagnose problems.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -711,7 +717,7 @@ that means it's "to relate".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Any verb usage which is in the past tense: this is used only to diagnose problems.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Any verb usage which is in the past tense: this is used only to diagnose problems.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -732,7 +738,7 @@ that means it's "to relate".
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>The following are used only when recognising text expansions for adaptive
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>The following are used only when recognising text expansions for adaptive
 uses of verbs:
 </p>
 
@@ -768,7 +774,7 @@ uses of verbs:
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>These three nonterminals are used by Inform only to recognise constant
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>These three nonterminals are used by Inform only to recognise constant
 names for verbs. For example, the parsing of the Inform constants "the verb take"
 or "the verb to be able to see" use these.
 </p>
@@ -824,7 +830,7 @@ or "the verb to be able to see" use these.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Optimisation. </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Optimisation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::mark_as_verb</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::mark_as_verb</span></span>:<br/><a href="3-vu.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">vocabulary_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ve</span><span class="plain-syntax">) {</span>
@@ -845,7 +851,7 @@ or "the verb to be able to see" use these.
 <span class="plain-syntax">    </span><span class="identifier-syntax">NTI::first_word_in_match_must_have_my_NTI_bit</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;past-tense-verb&gt;</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Adaptive person. </b></p>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Adaptive person. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VerbUsages::adaptive_person</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">VerbUsages::adaptive_person</span></span>:<br/><a href="3-vu.html#SP21">&#167;21</a>, <a href="3-vu.html#SP22">&#167;22</a><br/>Verbs - <a href="3-vrb.html#SP12_1_1">&#167;12.1.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">NATURAL_LANGUAGE_WORDS_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">) {</span>

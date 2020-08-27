@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-pck.html#SP1">&#167;1. Package requests</a></li><li><a href="1-pck.html#SP10">&#167;10. Bubbles</a></li><li><a href="1-pck.html#SP11">&#167;11. Outside the packages</a></li><li><a href="1-pck.html#SP12">&#167;12. Entry and exit</a></li><li><a href="1-pck.html#SP13">&#167;13. Incarnation</a></li><li><a href="1-pck.html#SP14">&#167;14. Compilation modules</a></li><li><a href="1-pck.html#SP15">&#167;15. Modules</a></li><li><a href="1-pck.html#SP16">&#167;16. Submodules</a></li><li><a href="1-pck.html#SP19">&#167;19. Functions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Package requests. </b>In the same way that inames are created as shadows of eventual inter symbols,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Package requests. </b>In the same way that inames are created as shadows of eventual inter symbols,
 and omly converted into the real thing on demand, "package requests" are
 shadowy packages. The process of turning them into real inter packages is
 called "incarnation".
@@ -89,7 +95,7 @@ called "incarnation".
 <span class="plain-syntax">} </span><span class="reserved-syntax">package_request</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure package_request is accessed in 1/hl and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">package_request</span><span class="plain-syntax"> *</span><span class="function-syntax">Packaging::request</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Packaging::request</span></span>:<br/><a href="1-pck.html#SP15">&#167;15</a>, <a href="1-pck.html#SP18">&#167;18</a>, <a href="1-pck.html#SP19">&#167;19</a>, <a href="1-pck.html#SP20">&#167;20</a><br/>Building Site - <a href="1-bs.html#SP2">&#167;2</a><br/>Hierarchy Locations - <a href="1-hl.html#SP4">&#167;4</a>, <a href="1-hl.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">) {</span>
@@ -104,7 +110,7 @@ called "incarnation".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>In the debugging log, package requests are printed in a form looking a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the debugging log, package requests are printed in a form looking a
 little like URLs, except that they run in the reverse order, innermost first
 and outermost last: to make this more visually clear, backslashes rather
 than forward slashes are used as dividers.
@@ -127,7 +133,7 @@ than forward slashes are used as dividers.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following allows a sequence of different inames to be generated inside a
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following allows a sequence of different inames to be generated inside a
 package: for example, <span class="extract"><span class="extract-syntax">Packaging::make_iname_within(R, I"acorn")</span></span> produces a
 sequence of inames <span class="extract"><span class="extract-syntax">acorn1</span></span>, <span class="extract"><span class="extract-syntax">acorn2</span></span>, ..., as it's called over and over again.
 </p>
@@ -148,7 +154,7 @@ sequence of inames <span class="extract"><span class="extract-syntax">acorn1</sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-in.html#SP6" class="function-link"><span class="function-syntax">InterNames::generated_in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, -1, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>At any given time, emission of Inter is occurring to a particular position
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>At any given time, emission of Inter is occurring to a particular position
 (in some incarnated package) and in the context of a given enclosure. This
 is summarised by the following state:
 </p>
@@ -160,7 +166,7 @@ is summarised by the following state:
 <span class="plain-syntax">} </span><span class="reserved-syntax">packaging_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure packaging_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>It is not legal to write to the following state, which exists only to
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>It is not legal to write to the following state, which exists only to
 initialise variables to neutral contents (and thus to avoid warnings
 generated because clang is not able to prove that they will not be used
 in an uninitialised state &mdash; though in fact they will not).
@@ -174,7 +180,7 @@ in an uninitialised state &mdash; though in fact they will not).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>We will store the current state at all times in the building site:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We will store the current state at all times in the building site:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -186,7 +192,7 @@ in an uninitialised state &mdash; though in fact they will not).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">.</span><span class="element-syntax">current_state</span><span class="plain-syntax">.</span><span class="identifier-syntax">saved_enclosure</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>States are intentionally very lightweight, and in particular they contain
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>States are intentionally very lightweight, and in particular they contain
 pointers to the IBM structures rather than containing a copy thereof. But
 those pointers have to point somewhere, and this is where: to a stack of
 IBM structures.
@@ -205,7 +211,7 @@ IBM structures.
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">.</span><span class="element-syntax">packaging_entry_sp</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>The current state has the following invariant: the IBM part always points to
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The current state has the following invariant: the IBM part always points to
 a validly initialised <span class="extract"><span class="extract-syntax">inter_bookmark</span></span>, and the enclosure part is always
 either <span class="extract"><span class="extract-syntax">NULL</span></span> or a package request which has an enclosing package type. (In
 fact, it is null only fleetingly: as soon as the <span class="extract"><span class="extract-syntax">main</span></span> package is created,
@@ -226,7 +232,7 @@ very early on, the enclosure is always an enclosing package.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">.</span><span class="element-syntax">current_state</span><span class="plain-syntax">.</span><span class="element-syntax">saved_enclosure</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Bubbles. </b>Inter code is stored in memory as a singly-linked list. This is fast and
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Bubbles. </b>Inter code is stored in memory as a singly-linked list. This is fast and
 compact, but can make it awkward to insert material other than at the end,
 particularly if one insertion leads to another close by, midway in the
 process &mdash; which is exactly what can happen when incarnating a nested set
@@ -254,7 +260,7 @@ material will be placed between them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Outside the packages. </b>The Inter specification calls for just a handful of resources to be placed
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Outside the packages. </b>The Inter specification calls for just a handful of resources to be placed
 at the top level, outside even the <span class="extract"><span class="extract-syntax">main</span></span> package. Using bubbles, we leave
 room to insert those resources, then incarnate <span class="extract"><span class="extract-syntax">main</span></span> and enter it.
 </p>
@@ -280,7 +286,7 @@ room to insert those resources, then incarnate <span class="extract"><span class
 <span class="plain-syntax">    </span><a href="1-bs.html#SP2" class="function-link"><span class="function-syntax">Site::set_holdings</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="1-pck.html#SP10" class="function-link"><span class="function-syntax">Packaging::bubble</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Entry and exit. </b>Each PR contains a "write position". This is where emitted Inter code will go;
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Entry and exit. </b>Each PR contains a "write position". This is where emitted Inter code will go;
 and it means that not all of the code inside a package needs to be written
 at the same time. We can come and go as we please, adding code to packages
 all over the hierarchy, simply by switching to the write position in the
@@ -315,7 +321,7 @@ is never followed by an exit.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PACKAGING</span><span class="plain-syntax">, </span><span class="string-syntax">"[%d] Back to $X\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">site</span><span class="plain-syntax">.</span><span class="element-syntax">packaging_entry_sp</span><span class="plain-syntax">, </span><a href="1-pck.html#SP7" class="function-link"><span class="function-syntax">Packaging::enclosure</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Incarnation. </b>The subtlety here is that if a package is incarnated, its parent must be
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Incarnation. </b>The subtlety here is that if a package is incarnated, its parent must be
 incarnated first, and we need to make sure that their bubbles do not lie
 inside each other: if they did, material compiled to the parent and to the
 child would end up interleaved, in a way which violates the Inter
@@ -352,7 +358,7 @@ specification.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">actual_package</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Compilation modules. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Compilation modules. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">compilation_unit</span><span class="plain-syntax"> {</span>
@@ -366,7 +372,7 @@ specification.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure compilation_unit is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Modules. </b>With the code above, then, we can get the Inter hierarchy of packages set up
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Modules. </b>With the code above, then, we can get the Inter hierarchy of packages set up
 as far as creating <span class="extract"><span class="extract-syntax">main</span></span>. After that the Hierarchy code takes over, but it
 calls the routines below to assist. It will want to create a number of "modules"
 and, within them, "submodules".
@@ -399,7 +405,7 @@ following creates modules on demand.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure module_package is accessed in 1/bs and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Submodules. </b>Submodules have names such as <span class="extract"><span class="extract-syntax">properties</span></span>, and the idea is that the same submodule
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Submodules. </b>Submodules have names such as <span class="extract"><span class="extract-syntax">properties</span></span>, and the idea is that the same submodule
 (or rather, submodules with the same name) can be found in multiple modules. The
 different sorts of submodule are identified by <span class="extract"><span class="extract-syntax">submodule_identity</span></span> pointers, though
 as it turns out, this is presently just a wrapper for a name.
@@ -422,7 +428,7 @@ as it turns out, this is presently just a wrapper for a name.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure submodule_identity is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Once the Hierarchy code has registered a submodule, it can request an existing
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Once the Hierarchy code has registered a submodule, it can request an existing
 module to have this submodule. It should call one of the following four functions:
 </p>
 
@@ -450,7 +456,7 @@ module to have this submodule. It should call one of the following four function
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-pck.html#SP18" class="function-link"><span class="function-syntax">Packaging::new_submodule_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="1-pck.html#SP15" class="function-link"><span class="function-syntax">Packaging::get_unit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"template"</span><span class="plain-syntax">), </span><span class="identifier-syntax">sid</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>Those in turn all make use of this back-end function:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Those in turn all make use of this back-end function:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -474,7 +480,7 @@ module to have this submodule. It should call one of the following four function
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure submodule_request is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Functions. </b>Inter code has a standard layout for functions: an outer, enclosing, package of type
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Functions. </b>Inter code has a standard layout for functions: an outer, enclosing, package of type
 <span class="extract"><span class="extract-syntax">_function</span></span>, inside which is an iname <span class="extract"><span class="extract-syntax">call</span></span> for the actual code to call. All such
 functions are produced by the following routines:
 </p>
@@ -508,7 +514,7 @@ functions are produced by the following routines:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Datum is very similar.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Datum is very similar.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

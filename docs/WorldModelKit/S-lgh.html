@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-lgh.html#SP1">&#167;1. Darkness</a></li><li><a href="S-lgh.html#SP2">&#167;2. Light Measurement</a></li><li><a href="S-lgh.html#SP3">&#167;3. Invariant</a></li><li><a href="S-lgh.html#SP4">&#167;4. Adjust Light Rule</a></li><li><a href="S-lgh.html#SP5">&#167;5. Silent Light Consideration</a></li><li><a href="S-lgh.html#SP6">&#167;6. Translucency</a></li><li><a href="S-lgh.html#SP7">&#167;7. Visibility Parent</a></li><li><a href="S-lgh.html#SP8">&#167;8. Find Visibility Levels</a></li><li><a href="S-lgh.html#SP9">&#167;9. Touchability Ceiling</a></li><li><a href="S-lgh.html#SP10">&#167;10. Scope Ceiling</a></li><li><a href="S-lgh.html#SP11">&#167;11. Object Is Untouchable</a></li><li><a href="S-lgh.html#SP12">&#167;12. Access Through Barriers Rule</a></li><li><a href="S-lgh.html#SP13">&#167;13. Can't Reach Inside Closed Containers Rule</a></li><li><a href="S-lgh.html#SP14">&#167;14. Can't Reach Outside Closed Containers Rule</a></li><li><a href="S-lgh.html#SP15">&#167;15. Can't Reach Inside Rooms Rule</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Darkness. </b>"Darkness" is not really a place: but in I6 it has to be an object so that
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Darkness. </b>"Darkness" is not really a place: but in I6 it has to be an object so that
 the location-name on the status line can be "Darkness". In I7 we use it as
 little as possible: note that it has no properties.
 </p>
@@ -52,7 +52,7 @@ little as possible: note that it has no properties.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Object</span><span class="plain-syntax"> </span><span class="identifier-syntax">thedark</span><span class="plain-syntax"> </span><span class="string-syntax">"(darkness object)"</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Light Measurement. </b>These two routines, <span class="extract"><span class="extract-syntax">OffersLight</span></span> and <span class="extract"><span class="extract-syntax">HasLightSource</span></span>, are largely unchanged
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Light Measurement. </b>These two routines, <span class="extract"><span class="extract-syntax">OffersLight</span></span> and <span class="extract"><span class="extract-syntax">HasLightSource</span></span>, are largely unchanged
 from their I6 definitions; see the {\it Inform Designer's Manual}, 4th edition,
 for a commentary. In terms of how they are used in I7, <span class="extract"><span class="extract-syntax">OffersLight</span></span> is called
 only by the two rules below; <span class="extract"><span class="extract-syntax">HasLightSource</span></span> is called also in determining
@@ -120,7 +120,7 @@ the scope, that is, what is visible to the player.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">hasnt</span><span class="plain-syntax"> </span><span class="identifier-syntax">enterable</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Invariant. </b>The following routines maintain two variables about the light condition
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Invariant. </b>The following routines maintain two variables about the light condition
 of the player:
 </p>
 
@@ -136,7 +136,7 @@ has nothing to do with light.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">lightflag</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Adjust Light Rule. </b>This rule fires at least once a turn, and more often when the player moves
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Adjust Light Rule. </b>This rule fires at least once a turn, and more often when the player moves
 location, since that's likely to invalidate any previous assumptions. It
 compares the state of light now with the last time it ran, and gives
 instructions on what to do in each of the four possibilities.
@@ -177,7 +177,7 @@ instructions on what to do in each of the four possibilities.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Silent Light Consideration. </b>The Adjust Light Rule makes a fuss when light changes: it prints messages,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Silent Light Consideration. </b>The Adjust Light Rule makes a fuss when light changes: it prints messages,
 for instance. This rule is silent instead, and simply does the minimum
 necessary to maintain the light invariant. It is used in only four
 circumstances:
@@ -202,7 +202,7 @@ rule print out details as well.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Translucency. </b><span class="extract"><span class="extract-syntax">IsSeeThrough</span></span> is used at various places: roughly speaking, it determines
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Translucency. </b><span class="extract"><span class="extract-syntax">IsSeeThrough</span></span> is used at various places: roughly speaking, it determines
 whether <span class="extract"><span class="extract-syntax">obj</span></span> being in scope means that the object-tree contents of <span class="extract"><span class="extract-syntax">obj</span></span>
 are in scope.
 </p>
@@ -217,7 +217,7 @@ are in scope.
 <span class="plain-syntax">   </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Visibility Parent. </b>The idea of <span class="extract"><span class="extract-syntax">VisibilityParent</span></span> is that it takes us from a given position in
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Visibility Parent. </b>The idea of <span class="extract"><span class="extract-syntax">VisibilityParent</span></span> is that it takes us from a given position in
 the object tree, <span class="extract"><span class="extract-syntax">o</span></span>, to the next visible position above. Note that
 </p>
 
@@ -235,7 +235,7 @@ then the visibility parent of <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Find Visibility Levels. </b>The following routine sets the pair of variables <span class="extract"><span class="extract-syntax">visibility_ceiling</span></span>, the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Find Visibility Levels. </b>The following routine sets the pair of variables <span class="extract"><span class="extract-syntax">visibility_ceiling</span></span>, the
 highest visible point in the object tree above the player &mdash; or <span class="extract"><span class="extract-syntax">thedark</span></span>
 if the player cannot see at all &mdash; and <span class="extract"><span class="extract-syntax">visibility_levels</span></span>, the number of
 steps of <span class="extract"><span class="extract-syntax">VisibilityParent</span></span> needed to reach this ceiling; or 0 if the
@@ -259,7 +259,7 @@ player cannot see at all.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Touchability Ceiling. </b>Analogously:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Touchability Ceiling. </b>Analogously:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -276,7 +276,7 @@ player cannot see at all.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Scope Ceiling. </b>Scope is almost the same thing as visibility, but not quite, and the following
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Scope Ceiling. </b>Scope is almost the same thing as visibility, but not quite, and the following
 routine does not quite duplicate the calculation of <span class="extract"><span class="extract-syntax">FindVisibilityLevels</span></span>.
 The difference arises in the first step, where we take the <span class="extract"><span class="extract-syntax">parent</span></span> of <span class="extract"><span class="extract-syntax">pos</span></span>,
 not the core of the <span class="extract"><span class="extract-syntax">parent</span></span> of the core of <span class="extract"><span class="extract-syntax">pos</span></span>: this makes a
@@ -293,7 +293,7 @@ else.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Object Is Untouchable. </b>The following routine imitates the I6 library one of the same name, but
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Object Is Untouchable. </b>The following routine imitates the I6 library one of the same name, but
 works instead by delegating the decision to the accessibility rulebook.
 </p>
 
@@ -334,7 +334,7 @@ improbable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Access Through Barriers Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Access Through Barriers Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ACCESS_THROUGH_BARRIERS_R</span><span class="plain-syntax"> </span><span class="identifier-syntax">ancestor</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">external</span><span class="plain-syntax"> </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
@@ -396,7 +396,7 @@ improbable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Can't Reach Inside Closed Containers Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Can't Reach Inside Closed Containers Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">CANT_REACH_INSIDE_CLOSED_R</span><span class="plain-syntax">;</span>
@@ -412,7 +412,7 @@ improbable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Can't Reach Outside Closed Containers Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Can't Reach Outside Closed Containers Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">CANT_REACH_OUTSIDE_CLOSED_R</span><span class="plain-syntax">;</span>
@@ -428,7 +428,7 @@ improbable.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Can't Reach Inside Rooms Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Can't Reach Inside Rooms Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">CANT_REACH_INSIDE_ROOMS_R</span><span class="plain-syntax">;</span>

@@ -51,7 +51,11 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="index.html"><span class="selectedlink">kinds</span></a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -61,12 +65,14 @@ MathJax = {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="index.html"><span class="selectedlink">kinds</span></a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -299,12 +305,12 @@ their evaluations. As a simple example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'number'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'list of texts'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of texts</span>
-<span class="element-syntax">'phrase number -&gt; text'</span><span class="plain-syntax">:</span><span class="string-syntax"> phrase number -&gt; text</span>
-<span class="element-syntax">'arithmetic value'</span><span class="plain-syntax">:</span><span class="string-syntax"> arithmetic value</span>
-<span class="element-syntax">'relation of numbers to truth states'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers to truth states</span>
-<span class="element-syntax">'relation of numbers to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of texts</span><span class="plain-syntax">':</span><span class="string-syntax"> list of texts</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase number -&gt; text</span><span class="plain-syntax">':</span><span class="string-syntax"> phrase number -&gt; text</span>
+<span class="plain-syntax">'</span><span class="element-syntax">arithmetic value</span><span class="plain-syntax">':</span><span class="string-syntax"> arithmetic value</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of numbers to truth states</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers to truth states</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span>
 </pre>
 <p class="commentary">This is more of a test than it appears. In each line <a href="../kinds-test/index.html" class="internal">kinds-test</a> has read in
 the textual description in quotes, parsed it into a <a href="2-knd.html#SP1" class="internal">kind</a> object using the &lt;k-kind&gt;
@@ -317,15 +323,15 @@ values by writing <span class="extract"><span class="extract-syntax">K = number<
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> Q</span>
-<span class="element-syntax">'list of relations of Q to R'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of relations of Qs to Rs</span>
-<span class="element-syntax">'substitute number for Q in Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> number</span>
-<span class="element-syntax">'substitute number for Q in list of Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of numbers</span>
-<span class="element-syntax">'substitute number for Q in list of relations of Q to Q'</span><span class="plain-syntax">:</span><span class="string-syntax"> list of relations of numbers</span>
-<span class="element-syntax">'X = relation of Y to Y'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of Ys</span>
-<span class="element-syntax">'X is definite?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'X = relation of numbers to numbers'</span><span class="plain-syntax">:</span><span class="string-syntax"> relation of numbers</span>
-<span class="element-syntax">'X is definite?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">Q</span><span class="plain-syntax">':</span><span class="string-syntax"> Q</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of relations of Q to R</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of Qs to Rs</span>
+<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in Q</span><span class="plain-syntax">':</span><span class="string-syntax"> number</span>
+<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in list of Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of numbers</span>
+<span class="plain-syntax">'</span><span class="element-syntax">substitute number for Q in list of relations of Q to Q</span><span class="plain-syntax">':</span><span class="string-syntax"> list of relations of numbers</span>
+<span class="plain-syntax">'</span><span class="element-syntax">X = relation of Y to Y</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of Ys</span>
+<span class="plain-syntax">'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">X = relation of numbers to numbers</span><span class="plain-syntax">':</span><span class="string-syntax"> relation of numbers</span>
+<span class="plain-syntax">'</span><span class="element-syntax">X is definite?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Overview of facilities. </b>A kind is represented by a <span class="extract"><span class="extract-syntax">kind *</span></span> pointer. These actually point to
 small trees of <a href="2-knd.html#SP1" class="internal">kind</a> objects &mdash; see <a href="index.html" class="internal">kinds</a> &mdash; because many kinds are

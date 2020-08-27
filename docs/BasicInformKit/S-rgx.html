@@ -58,14 +58,14 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-rgx.html#SP1">&#167;1. Debugging</a></li><li><a href="S-rgx.html#SP2">&#167;2. Algorithm</a></li><li><a href="S-rgx.html#SP3">&#167;3. Class Codes</a></li><li><a href="S-rgx.html#SP4">&#167;4. Packets</a></li><li><a href="S-rgx.html#SP5">&#167;5. Nodes</a></li><li><a href="S-rgx.html#SP6">&#167;6. Match Variables</a></li><li><a href="S-rgx.html#SP7">&#167;7. Markers</a></li><li><a href="S-rgx.html#SP8">&#167;8. Debugging</a></li><li><a href="S-rgx.html#SP9">&#167;9. Compiling Tree For Substring Search</a></li><li><a href="S-rgx.html#SP10">&#167;10. Compiling Tree For Regexp Search</a></li><li><a href="S-rgx.html#SP11">&#167;11. Parser</a></li><li><a href="S-rgx.html#SP12">&#167;12. Parse At Position</a></li><li><a href="S-rgx.html#SP13">&#167;13. Backtracking</a></li><li><a href="S-rgx.html#SP14">&#167;14. Fail Subexpressions</a></li><li><a href="S-rgx.html#SP15">&#167;15. Erasing Constraints</a></li><li><a href="S-rgx.html#SP16">&#167;16. Matching Literal Text</a></li><li><a href="S-rgx.html#SP17">&#167;17. Matching Character Range</a></li><li><a href="S-rgx.html#SP18">&#167;18. Search And Replace</a></li><li><a href="S-rgx.html#SP19">&#167;19. Concatenation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Debugging. </b>Set this to true at your peril.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Debugging. </b>Set this to true at your peril.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEXT_TY_RE_Trace</span><span class="plain-syntax"> = </span><span class="reserved-syntax">false</span><span class="plain-syntax">; </span><span class="comment-syntax">Change to true for (a lot of) debugging data in use</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_RE_SetTrace</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">; </span><span class="identifier-syntax">TEXT_TY_RE_Trace</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Algorithm. </b>Once Inform 7 supported (indexed) text, regular-expression matching became an
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Algorithm. </b>Once Inform 7 supported (indexed) text, regular-expression matching became an
 obvious goal: regexp-based features offer more or less the gold standard in
 text search and replace facilities, and I7 is so concerned with text that
 we shouldn't make do with less. But the best and most portable
@@ -94,7 +94,7 @@ raised. In other respects, the algorithm below appears to be accurate if
 not very fast.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Class Codes. </b>While in principle we could keep the match expression in textual form, in
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Class Codes. </b>While in principle we could keep the match expression in textual form, in
 practice the syntax of regular expressions is complex enough that this
 would be tricky and rather slow: we would be parsing the same notations over
 and over again. So we begin by compiling it to a simple tree structure. The
@@ -157,7 +157,7 @@ set on a 32-bit virtual machine.)
 
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SENSITIVITY_RE_CC</span><span class="plain-syntax"> = -50;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Packets. </b>The nodes of the compiled expression tree are stored in "packets", which
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Packets. </b>The nodes of the compiled expression tree are stored in "packets", which
 are segments of a fixed array. A regexp complicated enough that it cannot
 be stored in <span class="extract"><span class="extract-syntax">RE_MAX_PACKETS</span></span> packets will be rejected with an error: it
 looks like a rather low limit, but in fact suffices to handle all of Perl's
@@ -195,7 +195,7 @@ match the packet.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RE_CACHE2</span><span class="plain-syntax"> = </span><span class="constant-syntax">12</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RE_MODES</span><span class="plain-syntax"> = </span><span class="constant-syntax">13</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Nodes. </b>The routine to create a node, something which happens only during the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Nodes. </b>The routine to create a node, something which happens only during the
 compilation phase, and also the routine which returns the address of a given
 node. Nodes are numbered from 0 up to \(M-1\), where \(M\) is the constant
 <span class="extract"><span class="extract-syntax">RE_MAX_PACKETS</span></span>.
@@ -224,7 +224,7 @@ node. Nodes are numbered from 0 up to \(M-1\), where \(M\) is the constant
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RE_PACKET_space</span><span class="plain-syntax"> + </span><span class="identifier-syntax">n</span><span class="plain-syntax">*</span><span class="identifier-syntax">RE_PACKET_SIZE_IN_BYTES</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Match Variables. </b>A bracketed subexpression can be used as a variable: we support <span class="extract"><span class="extract-syntax">\1</span></span>, ..., <span class="extract"><span class="extract-syntax">\9</span></span>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Match Variables. </b>A bracketed subexpression can be used as a variable: we support <span class="extract"><span class="extract-syntax">\1</span></span>, ..., <span class="extract"><span class="extract-syntax">\9</span></span>
 to mean "the value of subexpression 1 to 9", and <span class="extract"><span class="extract-syntax">\0</span></span> to mean "the whole
 text matched", as if the entire regexp were bracketed. (PCRE and Perl also
 allow <span class="extract"><span class="extract-syntax">\10</span></span>, <span class="extract"><span class="extract-syntax">\11</span></span>, ..., but we don't, because it complicates parsing and
@@ -303,7 +303,7 @@ a previous match, setting them to the empty text.
 <span class="string-syntax">    return Allocated_Match_Vars--&gt;vn;</span>
 <span class="string-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Markers. </b>At each node, the <span class="extract"><span class="extract-syntax">--&gt;RE_DATA1</span></span> and <span class="extract"><span class="extract-syntax">--&gt;RE_DATA2</span></span> fields represent the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Markers. </b>At each node, the <span class="extract"><span class="extract-syntax">--&gt;RE_DATA1</span></span> and <span class="extract"><span class="extract-syntax">--&gt;RE_DATA2</span></span> fields represent the
 character positions of the start and end of the text matched by the node
 and its subtree (if any). These are called markers.
 </p>
@@ -329,7 +329,7 @@ the end of <span class="extract"><span class="extract-syntax">\N</span></span>, 
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Debugging. </b>Code in this paragraph simply prints a convenient screen representation of
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Debugging. </b>Code in this paragraph simply prints a convenient screen representation of
 the compiled regexp, together with the current values of its markers. It is
 invaluable for debugging purposes and, touch wood, may not be needed again,
 but it is relatively compact and we keep it just in case.
@@ -436,7 +436,7 @@ but it is relatively compact and we keep it just in case.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Compiling Tree For Substring Search. </b>When we search for a literal substring, say looking for "per" in
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Compiling Tree For Substring Search. </b>When we search for a literal substring, say looking for "per" in
 "Supernumerary", we will in fact use the same apparatus as when searching
 for a regular expression: we compile a very simple node tree in which <span class="extract"><span class="extract-syntax">\0</span></span>
 as the root contains just one child node, a <span class="extract"><span class="extract-syntax">LITERAL_RE_CC</span></span> matching exactly
@@ -476,7 +476,7 @@ the text "per". We return 2 since that's the number of nodes in the tree.
 <span class="plain-syntax">    </span><span class="identifier-syntax">no_packets</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TEXT_TY_RE_ExpandChoices</span><span class="plain-syntax">(</span><span class="identifier-syntax">RE_PACKET_space</span><span class="plain-syntax">, </span><span class="identifier-syntax">no_packets</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Compiling Tree For Regexp Search. </b>But in general we need to compile a regular expression string into a tree
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Compiling Tree For Regexp Search. </b>But in general we need to compile a regular expression string into a tree
 of the kind described above, and here is the routine which does that,
 returning the number of nodes used to build the tree. The syntax it accepts
 is very fully documented in {\it Writing with Inform}, so no details are
@@ -976,7 +976,7 @@ given here.
 <span class="character-syntax">    return w;</span>
 <span class="character-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Parser. </b>The virtue of all of that tree compilation is that the code which actually
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Parser. </b>The virtue of all of that tree compilation is that the code which actually
 does the work &mdash; which parses the source text to see if the regular expression
 matches it &mdash; is much shorter and quicker: indeed, it takes up fewer lines
 than the compiler part, which goes to show that decoding regular expression
@@ -1036,7 +1036,7 @@ of the <span class="extract"><span class="extract-syntax">\0</span></span> root.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Parse At Position. </b><span class="extract"><span class="extract-syntax">TEXT_TY_RE_ParseAtPosition(ftxt, txt, ifrom, ito)</span></span> attempts to match text
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Parse At Position. </b><span class="extract"><span class="extract-syntax">TEXT_TY_RE_ParseAtPosition(ftxt, txt, ifrom, ito)</span></span> attempts to match text
 beginning at position <span class="extract"><span class="extract-syntax">ifrom</span></span> in the text <span class="extract"><span class="extract-syntax">txt</span></span> and extending for
 any length up to position <span class="extract"><span class="extract-syntax">ito</span></span>: it returns the number of characters which
 were matched (which can legitimately be 0), or \(-1\) if no match could be
@@ -1415,7 +1415,7 @@ but mostly in order to match against a <span class="extract"><span class="extrac
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ipos</span><span class="plain-syntax"> - </span><span class="identifier-syntax">ifrom</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Backtracking. </b>It would be very straightforward to match regular expressions with the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Backtracking. </b>It would be very straightforward to match regular expressions with the
 above recursive code if, for every node, there were a fixed number of
 characters (depending on the node) such that there would either be a
 match eating that many characters, or else no match at all. If that
@@ -1516,7 +1516,7 @@ more useful to suggest that the reader observe it in action by setting
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Fail Subexpressions. </b>Here, an attempt to make a complicated match against the node in <span class="extract"><span class="extract-syntax">token</span></span> has
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Fail Subexpressions. </b>Here, an attempt to make a complicated match against the node in <span class="extract"><span class="extract-syntax">token</span></span> has
 failed: that means that any subexpressions which were matched in the course of
 the attempt must also in retrospect be considered unmatched. So we work down
 through the subtree at <span class="extract"><span class="extract-syntax">token</span></span> and empty any markers for subexpressions,
@@ -1544,7 +1544,7 @@ for a backtrack which runs back quite some distance.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Erasing Constraints. </b>As explained above, temporary constraints are placed on some nodes when we
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Erasing Constraints. </b>As explained above, temporary constraints are placed on some nodes when we
 are backtracking to test possible cases. When we do backtrack, though, it's
 important to lift any constraints left over from the previous attempt to
 parse material which is part of or subsequent to the token whose match
@@ -1563,7 +1563,7 @@ attempt has been abandoned.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Matching Literal Text. </b>Here we attempt to make a match of the substring of the text <span class="extract"><span class="extract-syntax">mtxt</span></span> which runs
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Matching Literal Text. </b>Here we attempt to make a match of the substring of the text <span class="extract"><span class="extract-syntax">mtxt</span></span> which runs
 from character <span class="extract"><span class="extract-syntax">mfrom</span></span> to character <span class="extract"><span class="extract-syntax">mto</span></span>, looking for it at the given
 position <span class="extract"><span class="extract-syntax">ipos</span></span> in the source text <span class="extract"><span class="extract-syntax">txt</span></span>.
 </p>
@@ -1585,7 +1585,7 @@ position <span class="extract"><span class="extract-syntax">ipos</span></span> i
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mto</span><span class="plain-syntax">-</span><span class="identifier-syntax">mfrom</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Matching Character Range. </b>Suppose that a character range is stored in <span class="extract"><span class="extract-syntax">ftxt</span></span> between the character
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Matching Character Range. </b>Suppose that a character range is stored in <span class="extract"><span class="extract-syntax">ftxt</span></span> between the character
 positions <span class="extract"><span class="extract-syntax">rf</span></span> and <span class="extract"><span class="extract-syntax">rt</span></span>. Then <span class="extract"><span class="extract-syntax">TEXT_TY_RE_Range(ch, ftxt, rf, rt, negate, insens)</span></span>
 tests whether a given character <span class="extract"><span class="extract-syntax">ch</span></span> lies within that character range,
 negating the outcome if <span class="extract"><span class="extract-syntax">negate</span></span> is set, and performing comparisons
@@ -1658,7 +1658,7 @@ case insensitively if <span class="extract"><span class="extract-syntax">insens<
 <span class="character-syntax">    rfalse;</span>
 <span class="character-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Search And Replace. </b>And finally, last but not least: the routine which searches an indexed
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Search And Replace. </b>And finally, last but not least: the routine which searches an indexed
 text <span class="extract"><span class="extract-syntax">txt</span></span> trying to match it against <span class="extract"><span class="extract-syntax">ftxt</span></span>. If <span class="extract"><span class="extract-syntax">ftxtype</span></span> is set to
 <span class="extract"><span class="extract-syntax">REGEXP_BLOB</span></span> then <span class="extract"><span class="extract-syntax">ftxt</span></span> is expected to be a regular expression such
 as <span class="extract"><span class="extract-syntax">ab+(c*de)?</span></span>, whereas if <span class="extract"><span class="extract-syntax">ftxtype</span></span> is <span class="extract"><span class="extract-syntax">CHR_BLOB</span></span> then it is expected
@@ -1801,7 +1801,7 @@ indeed useful where the blob type is <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">chm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Concatenation. </b>See the corresponding routine in "Text.i6t": this is a variation
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Concatenation. </b>See the corresponding routine in "Text.i6t": this is a variation
 which handles the special syntaxes used in search-and-replace.
 </p>
 

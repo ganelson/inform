@@ -110,14 +110,14 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 			dereffed = TRUE;
 		}
 	}
-	if (ParseTreeUsage::is_lvalue(spec)) {
+	if (Lvalues::is_lvalue(spec)) {
 		Lvalues::compile(VH, spec);
-	} else if (ParseTreeUsage::is_rvalue(spec)) {
+	} else if (Rvalues::is_rvalue(spec)) {
 		Rvalues::compile(VH, spec);
 		if ((VH->vhmode_provided == INTER_DATA_VHMODE) && (VH->vhmode_wanted == INTER_VAL_VHMODE)) {
 			Holsters::to_val_mode(Emit::tree(), VH);
 		}
-	} else if (ParseTreeUsage::is_condition(spec)) {
+	} else if (Specifications::is_condition(spec)) {
 		Conditions::compile(VH, spec);
 	}
 	if (dereffed) {

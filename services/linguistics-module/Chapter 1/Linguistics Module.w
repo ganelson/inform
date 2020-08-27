@@ -65,6 +65,8 @@ DECLARE_CLASS(small_word_set)
 @e VERB_FORMS_DA
 
 =
+COMPILE_WRITER(noun *, Nouns::log)
+
 void LinguisticsModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
@@ -89,6 +91,7 @@ void LinguisticsModule::end(void) {
 	Writers::register_logger('p', Prepositions::log);
 	Writers::register_logger('w', Verbs::log_verb);
 	Writers::register_logger('y', VerbMeanings::log);
+	REGISTER_WRITER('z', Nouns::log);
 
 @ Not all of our memory will be claimed in the form of structures: now and then
 we need to use the equivalent of traditional |malloc| and |calloc| routines.

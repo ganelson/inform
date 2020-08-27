@@ -8,39 +8,24 @@ which use this module:
 
 @d INDEX_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e documentation_ref_CLASS
-@e index_page_CLASS
-@e index_element_CLASS
-@e index_lexicon_entry_CLASS
-
-=
-DECLARE_CLASS(documentation_ref)
-DECLARE_CLASS(index_element)
-DECLARE_CLASS(index_page)
-DECLARE_CLASS(index_lexicon_entry)
-
 @ Like all modules, this one must define a |start| and |end| function:
 
+@e PHRASE_USAGE_DA
+@e INDEX_SORTING_MREASON
+@e MAP_INDEX_MREASON
+@e TYPE_TABLES_MREASON
+@e DOC_FRAGMENT_MREASON
+
 =
+COMPILE_WRITER(heading *, IndexHeadings::log)
+
 void IndexModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
+	REGISTER_WRITER('H', IndexHeadings::log);
+	Log::declare_aspect(PHRASE_USAGE_DA, L"phrase usage", FALSE, FALSE);
+	Memory::reason_name(INDEX_SORTING_MREASON, "index sorting");
+	Memory::reason_name(MAP_INDEX_MREASON, "map in the World index");
+	Memory::reason_name(TYPE_TABLES_MREASON, "tables of details of the kinds of values");
+	Memory::reason_name(DOC_FRAGMENT_MREASON, "documentation fragments");
 }
 void IndexModule::end(void) {
 }
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
-
-@<Register this module's debugging log aspects@> =
-	;
-
-@<Register this module's debugging log writers@> =
-	;

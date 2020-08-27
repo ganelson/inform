@@ -59,6 +59,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -101,7 +106,7 @@ type <span class="extract"><span class="extract-syntax">VALUE</span></span>, and
 </li><li>(c) Functions are pointers to <span class="extract"><span class="extract-syntax">pcalc_func</span></span> structures (see below), and
 <span class="extract"><span class="extract-syntax">NULL</span></span> means "not a function".
 </li></ul>
-<p class="commentary">Cinders are discussed in <a href="../core-module/12-cad.html" class="internal">Cinders and Deferrals (in core)</a>, and can be ignored for now.
+<p class="commentary">Cinders are discussed in <a href="../imperative-module/2-cad.html" class="internal">Cinders and Deferrals (in imperative)</a>, and can be ignored for now.
 </p>
 
 <p class="commentary">In order to verify that a proposition makes sense and does not mix up
@@ -331,7 +336,7 @@ value, because this might not yet have been checked otherwise.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">cinder</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Calculus::Deferrals::Cinders::emit</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">cinder</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ParseTreeUsage::is_phrasal</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">constant</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Specifications::is_phrasal</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">constant</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Dash::check_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">constant</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Specifications::Compiler::emit_as_val</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">.</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>

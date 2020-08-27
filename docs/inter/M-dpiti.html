@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -60,7 +66,7 @@
 
 <ul class="toc"><li><a href="M-dpiti.html#SP1">&#167;1. Data packages</a></li><li><a href="M-dpiti.html#SP2">&#167;2. Kinds and values</a></li><li><a href="M-dpiti.html#SP5">&#167;5. Enumerations and instances</a></li><li><a href="M-dpiti.html#SP6">&#167;6. Properties of instances</a></li><li><a href="M-dpiti.html#SP7">&#167;7. Constants</a></li><li><a href="M-dpiti.html#SP9">&#167;9. Global variables</a></li><li><a href="M-dpiti.html#SP10">&#167;10. Responses</a></li><li><a href="M-dpiti.html#SP11">&#167;11. Metadata</a></li><li><a href="M-dpiti.html#SP12">&#167;12. Append and Link</a></li><li><a href="M-dpiti.html#SP13">&#167;13. Nop</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Data packages. </b>To recap: a file of textual inter has a brief global section at the top, and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Data packages. </b>To recap: a file of textual inter has a brief global section at the top, and
 is then a hierarchiy of package definitions. Each package begins with a
 symbols table, but then has contents which depend on its type. This section
 covers the possible contents for a data package, that is, one whose type
@@ -74,7 +80,7 @@ code. Data packages, unlike code packages, can also contain other packages
 (of either sort).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Kinds and values. </b>Inter is a very loosely typed language, in the sense that it is possible
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Kinds and values. </b>Inter is a very loosely typed language, in the sense that it is possible
 to require that values conform to particular data types. As in Inform, data
 types are called "kinds" in this context (which usefully distinguishes them
 from "types" of packages, a completely different concept).
@@ -125,7 +131,7 @@ not all have to have the same kind;
 <span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_list_of_bool</span><span class="plain-syntax"> </span><span class="reserved-syntax">list</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_boolean</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">kind</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_grammatical_tense</span><span class="plain-syntax"> </span><span class="reserved-syntax">enum</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>In the remainder of this specification, <span class="extract"><span class="extract-syntax">VALUE</span></span> means either the name of
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the remainder of this specification, <span class="extract"><span class="extract-syntax">VALUE</span></span> means either the name of
 a defined <span class="extract"><span class="extract-syntax">constant</span></span> (see below), or else a literal.
 </p>
 
@@ -220,7 +226,7 @@ oddball expressions in the template code which the code generator can't
 but otherwise makes no use of them.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Kinds have "default values": if some piece of storage has to hold a value
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Kinds have "default values": if some piece of storage has to hold a value
 of kind <span class="extract"><span class="extract-syntax">K</span></span>, but that value is not specified, then the default is used.
 For example, the default <span class="extract"><span class="extract-syntax">int32</span></span> is zero.
 </p>
@@ -231,7 +237,7 @@ For example, the default <span class="extract"><span class="extract-syntax">int3
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">defaultvalue</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_boolean</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Enumerations and instances. </b>As noted above, some kinds marked as <span class="extract"><span class="extract-syntax">enum</span></span> are enumerated. This means
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Enumerations and instances. </b>As noted above, some kinds marked as <span class="extract"><span class="extract-syntax">enum</span></span> are enumerated. This means
 that they can have only a finite number of possible values, each of which
 is represented in textual inter by a different name.
 </p>
@@ -267,7 +273,7 @@ automatically also an instance of <span class="extract"><span class="extract-syn
 have subkinds, and so on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Properties of instances. </b>A "property" is a named value attached to all instances of a given kind,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Properties of instances. </b>A "property" is a named value attached to all instances of a given kind,
 and must be created before use with:
 </p>
 
@@ -311,7 +317,7 @@ another value (of the same kind).
 <span class="plain-syntax">    </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> </span><span class="identifier-syntax">I_ball</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_object</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">propertyvalue</span><span class="plain-syntax"> </span><span class="identifier-syntax">P_printed_name</span><span class="plain-syntax"> </span><span class="identifier-syntax">I_ball</span><span class="plain-syntax"> = </span><span class="string-syntax">"beach ball"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Constants. </b>A constant definition assigns a name to a given value: where that name is
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Constants. </b>A constant definition assigns a name to a given value: where that name is
 used, it evaluates to this value. The syntax is:
 </p>
 
@@ -345,7 +351,7 @@ does not make them instances. For example,
 the existing <span class="extract"><span class="extract-syntax">C_green</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>If a constant needs to refer to a function, we seem to run into the limitation
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>If a constant needs to refer to a function, we seem to run into the limitation
 that there's no notation for literal functions. In fact there is, though:
 that's what code packages are. For example,
 </p>
@@ -362,7 +368,7 @@ package names are not values; but <span class="extract"><span class="extract-syn
 can be stored and used at run-time like any other value.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Global variables. </b>Variables are like properties, except that each exists only as a single
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Global variables. </b>Variables are like properties, except that each exists only as a single
 value, not attached to any instance in particular: it makes no sense to ask
 who the owner is. Variables must be declared as:
 </p>
@@ -376,7 +382,7 @@ who the owner is. Variables must be declared as:
 <p class="commentary">	variable V_score K_number = 10
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Responses. </b>A "response" is a special sort of property belonging to a function rather than
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Responses. </b>A "response" is a special sort of property belonging to a function rather than
 an instance: it's a piece of text. This can be set with:
 </p>
 
@@ -391,7 +397,7 @@ inter, the numbers 0 to 25 must be used. The <span class="extract"><span class="
 must be a <span class="extract"><span class="extract-syntax">text</span></span> literal.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Metadata. </b>This has no effect on the code generated, and is simply semantic markup for
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Metadata. </b>This has no effect on the code generated, and is simply semantic markup for
 the benefit of onlookers. The scheme here is that any package can have a
 dictionary of textual key-value pairs, specified by:
 </p>
@@ -406,7 +412,7 @@ dictionary of textual key-value pairs, specified by:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">metadata</span><span class="plain-syntax"> </span><span class="element-syntax">`name</span><span class="plain-syntax">: </span><span class="string-syntax">"blue book"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Append and Link. </b>Two rather ugly constructs are currently needed in order to implement very
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Append and Link. </b>Two rather ugly constructs are currently needed in order to implement very
 low-level features of Inform 7, at points in I7's design where the normally
 subterranean presence of Inform 6 pokes up above the surface:
 </p>
@@ -435,7 +441,7 @@ to make an alteration to the Inform 6 code inside the I6T template file
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">link</span><span class="plain-syntax"> after </span><span class="string-syntax">"Output.i6t"</span><span class="plain-syntax"> </span><span class="string-syntax">"I6 Inclusions"</span><span class="plain-syntax"> </span><span class="string-syntax">"\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Nop. </b>The "nop" statement has no textual representation. It does nothing, and exists
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Nop. </b>The "nop" statement has no textual representation. It does nothing, and exists
 only as a convenience used by Inform when it needs to write simultaneously to
 multiple positions within the same node's child list &mdash; the idea being that
 a nop statement acts as a divider. For example, by placing the A write

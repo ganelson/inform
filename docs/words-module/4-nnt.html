@@ -41,7 +41,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -51,12 +55,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="index.html"><span class="selectedlink">words</span></a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="index.html"><span class="selectedlink">words</span></a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -69,7 +75,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-nnt.html#SP1">&#167;1. How nonterminals are stored</a></li><li><a href="4-nnt.html#SP9">&#167;9. Word ranges in a nonterminal</a></li><li><a href="4-nnt.html#SP10">&#167;10. Other results</a></li><li><a href="4-nnt.html#SP11">&#167;11. Flagging and numbering</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. How nonterminals are stored. </b>Each different nonterminal defined in the <span class="extract"><span class="extract-syntax">Syntax.preform</span></span> code read in,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. How nonterminals are stored. </b>Each different nonterminal defined in the <span class="extract"><span class="extract-syntax">Syntax.preform</span></span> code read in,
 such as &lt;any-integer&gt;, is going to correspond to a global variable in the
 program reading it in, such as <span class="extract"><span class="extract-syntax">any_integer_NTM</span></span>. On the face of it, this is
 impossible. How can what happens at run-time affect what variables are named
@@ -106,7 +112,7 @@ to code which sets up <span class="extract"><span class="extract-syntax">any_int
 <span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"internal nonterminal has no definition function"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>So, then, <a href="../../../inweb/docs/index.html" class="internal">inweb</a> tangles out code which uses the <span class="extract"><span class="extract-syntax">REGISTER_NONTERMINAL</span></span>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>So, then, <a href="../../../inweb/docs/index.html" class="internal">inweb</a> tangles out code which uses the <span class="extract"><span class="extract-syntax">REGISTER_NONTERMINAL</span></span>
 macro for any standard nonterminal, and also tangles a compositor function for
 it; the name of which is the nonterminal's name with a <span class="extract"><span class="extract-syntax">C</span></span> suffix. For example,
 suppose <a href="../../../inweb/docs/index.html" class="internal">inweb</a> sees the following in the web it is tangling:
@@ -149,7 +155,7 @@ compositor function:
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax"> = </span><a href="4-nnt.html#SP8" class="function-link"><span class="function-syntax">Nonterminals::find</span></a><span class="plain-syntax">(</span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">quotedname</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compositor_fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">##</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>For example, this might expand to:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>For example, this might expand to:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -161,7 +167,7 @@ return a nonterminal. But we can be sure that it does, since the function create
 a nonterminal object of that name even if one does not already exist.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The position for internal nonterminals (i.e. those defined by a function
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The position for internal nonterminals (i.e. those defined by a function
 written by the programmer, not by Preform grammar lines) is similar:
 </p>
 
@@ -183,7 +189,7 @@ use the constant <span class="extract"><span class="extract-syntax">INFINITE_WOR
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">internal_definition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">##</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">marked_internal</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>So, then, the following rather lengthy class declaration shows what goes
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>So, then, the following rather lengthy class declaration shows what goes
 into a nonterminal. Note that nonterminals are uniquely identifiable by their
 names: there can be only one called, say, &lt;any-integer&gt;. This is why its
 textual name is referred to as an "ID".
@@ -215,7 +221,7 @@ textual name is referred to as an "ID".
 <span class="plain-syntax">} </span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure nonterminal is accessed in 4/lp, 4/to, 4/le, 4/ni, 4/prf, 4/ins, 4/pu and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>A few notes on this are in order:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>A few notes on this are in order:
 </p>
 
 <ul class="items"><li>(a) As noted above, every nonterminal is either "internal" or "regular". If
@@ -241,7 +247,7 @@ words outside that range. (However: note that a maximum of 0 means that the
 maximum and minimum word counts are disregarded.) The other fields are harder
 to explain &mdash; see <a href="4-to.html" class="internal">The Optimiser</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>So, then, as noted above, nonterminals are identified by their name-words.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>So, then, as noted above, nonterminals are identified by their name-words.
 The following is not especially fast but doesn't need to be: it's used only
 when Preform grammar is parsed, not when Inform text is parsed.
 </p>
@@ -255,7 +261,7 @@ when Preform grammar is parsed, not when Inform text is parsed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And the following always returns one, creating it if necessary:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And the following always returns one, creating it if necessary:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -284,7 +290,7 @@ when Preform grammar is parsed, not when Inform text is parsed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Word ranges in a nonterminal. </b>We now need to define the macros <span class="extract"><span class="extract-syntax">GET_RW</span></span> and <span class="extract"><span class="extract-syntax">PUT_RW</span></span>, which get and set
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Word ranges in a nonterminal. </b>We now need to define the macros <span class="extract"><span class="extract-syntax">GET_RW</span></span> and <span class="extract"><span class="extract-syntax">PUT_RW</span></span>, which get and set
 the results of a successful match against a nonterminal (see <a href="4-ap.html" class="internal">About Preform</a>
 for more on this).
 </p>
@@ -315,7 +321,7 @@ by the nonterminal, though at present we don't need that.
 <span class="plain-syntax">        </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">range_result</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="constant-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Other results. </b>The parser records the result of the most recently matched nonterminal in the
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Other results. </b>The parser records the result of the most recently matched nonterminal in the
 following global variables &mdash; which, unlike word ranges, are not attached to
 any single NT.
 </p>
@@ -327,7 +333,7 @@ any single NT.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">most_recent_result</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> the variable which </span><span class="extract"><span class="extract-syntax">inweb</span></span><span class="comment-syntax"> writes </span><span class="extract"><span class="extract-syntax">&lt;&lt;r&gt;&gt;</span></span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">most_recent_result_p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> the variable which </span><span class="extract"><span class="extract-syntax">inweb</span></span><span class="comment-syntax"> writes </span><span class="extract"><span class="extract-syntax">&lt;&lt;rp&gt;&gt;</span></span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Flagging and numbering. </b>The following mechanism arranges for words used in the grammar for a NT to
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Flagging and numbering. </b>The following mechanism arranges for words used in the grammar for a NT to
 be given properties just because of that &mdash; either flags or numerical values.
 For example, if we wanted the numbers from Stoppard's play "Dogg's Hamlet",
 we might have:
@@ -347,7 +353,7 @@ they occur in production number 1, 2, 3, 4, 5 for the NT.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_words_by_production</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Similarly, we could flag this NT with <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span>, and then the five words
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Similarly, we could flag this NT with <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span>, and then the five words
 sun, dock, trog, slack, pan would all pick up the <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> flag
 automatically.
 </p>
@@ -357,7 +363,7 @@ automatically.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flag_words_in_production</span><span class="plain-syntax"> = </span><span class="identifier-syntax">flags</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>This is all done by the following function, which is called when a word <span class="extract"><span class="extract-syntax">ve</span></span>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>This is all done by the following function, which is called when a word <span class="extract"><span class="extract-syntax">ve</span></span>
 is read as part of a production with match number <span class="extract"><span class="extract-syntax">pc</span></span> for the nonterminal <span class="extract"><span class="extract-syntax">nt</span></span>:
 </p>
 

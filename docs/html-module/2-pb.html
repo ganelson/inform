@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="index.html"><span class="selectedlink">html</span></a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-pb.html#SP1">&#167;1. Pastes and their notation</a></li><li><a href="2-pb.html#SP3">&#167;3. Buttons</a></li><li><a href="2-pb.html#SP5">&#167;5. File-opener buttons</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Pastes and their notation. </b>A paste button is intended to be such that the user clicks it, and some
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Pastes and their notation. </b>A paste button is intended to be such that the user clicks it, and some
 text is inserted at the current cursor position in the Source panel of the
 Inform application.
 </p>
@@ -88,7 +94,7 @@ defined, one if not. (See <a href="../../../inweb/docs/foundation-module/1-wp.ht
 is set.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The challenges here are that (a) the code to be pasted may be, say, as much
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The challenges here are that (a) the code to be pasted may be, say, as much
 as 5K in size, and that (b) it needs to include some special characters,
 escaped in a way which the app has to deal with correctly. This has proved
 a challenge because, historically, different Javascript implementations
@@ -148,7 +154,7 @@ in raw form in the argument to <span class="extract"><span class="extract-syntax
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Buttons. </b>The button is simply an image with a link using the <span class="extract"><span class="extract-syntax">javascript:</span></span> protocol
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Buttons. </b>The button is simply an image with a link using the <span class="extract"><span class="extract-syntax">javascript:</span></span> protocol
 to call a suitable function; on Windows we make a one-off script for each
 paste to avoid problems when the code is too long to pass as a Javascript
 argument. (These concerns may now have become obsolete; Windows browsers
@@ -191,7 +197,7 @@ have improved immensely since 2007.)
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In the following, the source of the text can be either a range of words
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In the following, the source of the text can be either a range of words
 from the lexer (as for instance when a portion of an extension is being
 typeset as documentation, with an example that can be pasted), or can
 be a C string: if the latter, then its encoding must be ISO Latin-1.
@@ -208,7 +214,7 @@ The conversion to UTF-8 is performed in <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>Writing a word range is much harder. In effect, we have to provide an
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>Writing a word range is much harder. In effect, we have to provide an
 inverse function for the lexer, which converted raw source text to nicely
 packaged up words.
 </p>
@@ -271,7 +277,7 @@ stops or more.
 <span class="plain-syntax">    </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">'\n'</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_1"></a><b>&#167;4.1.1.  </b>The lexer also broke words around punctuation marks, so that, for instance,
+<p class="commentary firstcommentary"><a id="SP4_1_1" class="paragraph-anchor"></a><b>&#167;4.1.1.  </b>The lexer also broke words around punctuation marks, so that, for instance,
 "fish, finger" would have been lexed as <span class="extract"><span class="extract-syntax">fish , finger</span></span> &mdash; three words.
 But we want to restore the more natural spacing.
 </p>
@@ -287,7 +293,7 @@ But we want to restore the more natural spacing.
 <span class="plain-syntax">        </span><a href="2-pb.html#SP2" class="function-link"><span class="function-syntax">PasteButtons::put_code_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="character-syntax">' '</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_1_2"></a><b>&#167;4.1.2.  </b>Finally, the lexer rendered a literal I6 inclusion in the form <span class="extract"><span class="extract-syntax">(- self=2;</span></span>
+<p class="commentary firstcommentary"><a id="SP4_1_2" class="paragraph-anchor"></a><b>&#167;4.1.2.  </b>Finally, the lexer rendered a literal I6 inclusion in the form <span class="extract"><span class="extract-syntax">(- self=2;</span></span>
 as a sequence of two lexical words: <span class="extract"><span class="extract-syntax">(-</span></span> and then <span class="extract"><span class="extract-syntax">self=2;</span></span>. In order
 to paste back safely, we must supplement this with the closure <span class="extract"><span class="extract-syntax">-)</span></span> once
 again:
@@ -305,7 +311,7 @@ again:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pb.html#SP4_1">&#167;4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. File-opener buttons. </b>Nothing to do with pastes: this is a completely different sort of button,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. File-opener buttons. </b>Nothing to do with pastes: this is a completely different sort of button,
 though also powered by Javascript. It opens a file or folder on the host
 filing system.
 </p>

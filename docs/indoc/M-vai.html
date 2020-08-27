@@ -42,7 +42,7 @@
 
 <ul class="toc"><li><a href="M-vai.html#SP1">&#167;1. Model</a></li><li><a href="M-vai.html#SP2">&#167;2. Project instructions</a></li><li><a href="M-vai.html#SP3">&#167;3. Durham Core metadata</a></li><li><a href="M-vai.html#SP4">&#167;4. Targets</a></li><li><a href="M-vai.html#SP5">&#167;5. Symbols</a></li><li><a href="M-vai.html#SP6">&#167;6. Other instructions</a></li><li><a href="M-vai.html#SP7">&#167;7. Miscellaneous settings</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Model. </b>Conceptually, an Indoc project has either one or two volumes. The source for
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Model. </b>Conceptually, an Indoc project has either one or two volumes. The source for
 each volume is a single UTF-8 encoded plain text file. In the core Inform
 repository, there are two volumes, with the files being
 </p>
@@ -79,7 +79,7 @@ and also in section "Scripted Scenes" of chapter "Time and Plot" of volume
 "The Recipe Book".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Project instructions. </b>The main instructions file for an Indoc project is, as noted earlier, at:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Project instructions. </b>The main instructions file for an Indoc project is, as noted earlier, at:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -139,7 +139,7 @@ such as:
 mentioned above.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Durham Core metadata. </b>If the project needs to generate Epub books, then these will need to have
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Durham Core metadata. </b>If the project needs to generate Epub books, then these will need to have
 some basic DC ("Durham Core") metadata supplied. For example:
 </p>
 
@@ -152,7 +152,7 @@ some basic DC ("Durham Core") metadata supplied. For example:
 <p class="commentary">The instruction <span class="extract"><span class="extract-syntax">dc:KEY: VALUE</span></span> supplies a DC key-value pair.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Targets. </b>The instructions file typically begins as above, but then goes into a
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Targets. </b>The instructions file typically begins as above, but then goes into a
 block of general settings or instructions (for which see below); and
 eventually gets around to describing one or more targets. A target
 looks like so:
@@ -182,7 +182,7 @@ in settings. The <span class="extract"><span class="extract-syntax">...</span></
 target <span class="extract"><span class="extract-syntax">ebook</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Symbols. </b>The instruction <span class="extract"><span class="extract-syntax">declare: SYMBOL</span></span> creates the symbol <span class="extract"><span class="extract-syntax">SYMBOL</span></span>. These exist
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Symbols. </b>The instruction <span class="extract"><span class="extract-syntax">declare: SYMBOL</span></span> creates the symbol <span class="extract"><span class="extract-syntax">SYMBOL</span></span>. These exist
 so that we can mark certain paragraphs of documentation as being present in
 only some of the targets.
 </p>
@@ -208,7 +208,7 @@ in the Linux version of a manual. To do that, we'll need the symbol:
 Lastly, <span class="extract"><span class="extract-syntax">undeclare: SYMBOL</span></span> removes a symbol.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Other instructions. </b><span class="extract"><span class="extract-syntax">follow: I</span></span> tells Indoc to follow the instructions file <span class="extract"><span class="extract-syntax">I</span></span>. This works
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Other instructions. </b><span class="extract"><span class="extract-syntax">follow: I</span></span> tells Indoc to follow the instructions file <span class="extract"><span class="extract-syntax">I</span></span>. This works
 rather like <span class="extract"><span class="extract-syntax">#include</span></span> in C, or similar languages. If the <span class="extract"><span class="extract-syntax">follow:</span></span> is
 included inside a target block, then it affects only that target. On
 other targets, the file <span class="extract"><span class="extract-syntax">I</span></span> won't even be opened, and need never exist.
@@ -243,7 +243,7 @@ in that it will be alphabetised under "Plotkin, Andrew". The text <span class="e
 in the prototype is where the entry text should appear in the notation.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Miscellaneous settings. </b>There are a great many of these, but most are set to sensible defaults,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Miscellaneous settings. </b>There are a great many of these, but most are set to sensible defaults,
 and it is not compulsory to set any of them. Lines such as
 </p>
 

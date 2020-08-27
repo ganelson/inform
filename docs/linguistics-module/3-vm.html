@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-vm.html#SP1">&#167;1. What we abstract</a></li><li><a href="3-vm.html#SP3">&#167;3. How this module stores verb meanings</a></li><li><a href="3-vm.html#SP9">&#167;9. Recording where assigned</a></li><li><a href="3-vm.html#SP10">&#167;10. The regular meaning</a></li><li><a href="3-vm.html#SP11">&#167;11. The special meaning</a></li><li><a href="3-vm.html#SP12">&#167;12. Logging</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. What we abstract. </b>Because this module is concerned with the structure of sentences and not
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. What we abstract. </b>Because this module is concerned with the structure of sentences and not
 their meanings, we don't really want to get into what verbs "mean". Instead,
 we assume that the tool using this module will assign meanings in some way
 that it understands and we do not: the data for the meaning of a verb will
@@ -81,7 +87,7 @@ a binary predicate.)
 
 <pre class="definitions code-font"><span class="definition-keyword">default</span> <span class="constant-syntax">VERB_MEANING_LINGUISTICS_TYPE</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The "reversal" of a verb is the meaning which exchanges its object and
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The "reversal" of a verb is the meaning which exchanges its object and
 subject. So the reverse meaning to "A likes B" is "A is liked by B", or
 equivalent, "B likes A". We use the <span class="extract"><span class="extract-syntax">VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK</span></span>
 to ask for a reversal to be performed when needed.
@@ -97,7 +103,7 @@ to ask for a reversal to be performed when needed.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. How this module stores verb meanings. </b>We can now define an object to wrap up this abstracted idea of verb meaning:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. How this module stores verb meanings. </b>We can now define an object to wrap up this abstracted idea of verb meaning:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -110,7 +116,7 @@ to ask for a reversal to be performed when needed.
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure verb_meaning is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>All VMs begin as meaningless, which indicates (e.g.) that no meaning
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>All VMs begin as meaningless, which indicates (e.g.) that no meaning
 has been specified.
 </p>
 
@@ -132,7 +138,7 @@ has been specified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>In practice, we create VMs here. Note that regular and special meanings are
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>In practice, we create VMs here. Note that regular and special meanings are
 alternatives to each other: you can't have both.
 </p>
 
@@ -149,7 +155,7 @@ alternatives to each other: you can't have both.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>You can, however, have neither one, if you instead choose to "indirect" the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>You can, however, have neither one, if you instead choose to "indirect" the
 meaning &mdash; this means saying "the same meaning as the regular sense of the base
 form of a given verb", possibly reversed. Note that
 </p>
@@ -173,7 +179,7 @@ usages "is liking" and "is liked by" automatically change with it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>So the following function only needs to be used once.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>So the following function only needs to be used once.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -185,7 +191,7 @@ usages "is liking" and "is liked by" automatically change with it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The following function may seem curious &mdash; what's so great about the first
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The following function may seem curious &mdash; what's so great about the first
 regular sense of a verb? The answer is that Inform generally gives a verb at
 most one regular sense.
 </p>
@@ -199,7 +205,7 @@ most one regular sense.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Recording where assigned. </b>This helps Inform with correctly locating problem messages.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Recording where assigned. </b>This helps Inform with correctly locating problem messages.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -213,7 +219,7 @@ most one regular sense.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"assigned location to null meaning"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. The regular meaning. </b>This is not as simple as returning the <span class="extract"><span class="extract-syntax">regular_meaning</span></span> field, because we
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The regular meaning. </b>This is not as simple as returning the <span class="extract"><span class="extract-syntax">regular_meaning</span></span> field, because we
 have to follow any indirection, and reverse if necessary.
 </p>
 
@@ -233,7 +239,7 @@ have to follow any indirection, and reverse if necessary.
 <span class="plain-syntax">        </span><a href="3-vm.html#SP8" class="function-link"><span class="function-syntax">VerbMeanings::first_unspecial_meaning_of_verb_form</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">vf</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. The special meaning. </b>This is also not as simple as returning the <span class="extract"><span class="extract-syntax">regular_meaning</span></span> field, because
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. The special meaning. </b>This is also not as simple as returning the <span class="extract"><span class="extract-syntax">regular_meaning</span></span> field, because
 again we have to follow any indirection. Since we have no good way to modify
 a special meaning function, we have to provide a function to tell the user
 whether to reverse what that function does.
@@ -251,7 +257,7 @@ whether to reverse what that function does.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">take_meaning_reversed</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VerbMeanings::log</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">VerbMeanings::log</span></span>:<br/>Linguistics Module - <a href="1-lm.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vvm</span><span class="plain-syntax">) {</span>

@@ -668,9 +668,9 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 					LOGIF(GRAMMAR_CONSTRUCTION, "Understand as specification: $T", spec);
 					if ((Specifications::is_kind_like(spec)) &&
 						(Kinds::Behaviour::is_object(Specifications::to_kind(spec)) == FALSE)) goto ImpreciseProblemMessage;
-					if (ParseTreeUsage::is_phrasal(spec)) goto ImpreciseProblemMessage;
+					if (Specifications::is_phrasal(spec)) goto ImpreciseProblemMessage;
 					if (Rvalues::is_nothing_object_constant(spec)) goto ImpreciseProblemMessage;
-					if (ParseTreeUsage::is_rvalue(spec)) {
+					if (Rvalues::is_rvalue(spec)) {
 						K = Node::get_kind_of_value(spec);
 						if (Kinds::Behaviour::request_I6_GPR(K)) {
 							gl_value = spec;

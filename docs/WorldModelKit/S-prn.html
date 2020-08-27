@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-prn.html#SP1">&#167;1. Prompt</a></li><li><a href="S-prn.html#SP2">&#167;2. Boxed Quotations</a></li><li><a href="S-prn.html#SP3">&#167;3. Score Notification</a></li><li><a href="S-prn.html#SP4">&#167;4. Print Rank</a></li><li><a href="S-prn.html#SP5">&#167;5. Status Line</a></li><li><a href="S-prn.html#SP6">&#167;6. Status Line Utilities</a></li><li><a href="S-prn.html#SP7">&#167;7. Banner</a></li><li><a href="S-prn.html#SP8">&#167;8. Short Name Storage</a></li><li><a href="S-prn.html#SP9">&#167;9. Object Names I</a></li><li><a href="S-prn.html#SP10">&#167;10. Standard Name Printing Rule</a></li><li><a href="S-prn.html#SP11">&#167;11. Internal Rule</a></li><li><a href="S-prn.html#SP12">&#167;12. Object Names II</a></li><li><a href="S-prn.html#SP13">&#167;13. Object Names III</a></li><li><a href="S-prn.html#SP14">&#167;14. Standard Response Issuing Rule</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prompt. </b>This is the text printed just before we wait for the player's command: it
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prompt. </b>This is the text printed just before we wait for the player's command: it
 prompts him to type.
 </p>
 
@@ -59,7 +59,7 @@ prompts him to type.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ClearParagraphing</span><span class="plain-syntax">(14);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Boxed Quotations. </b>These appear once only, and happen outside of the paragraphing scheme: they
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Boxed Quotations. </b>These appear once only, and happen outside of the paragraphing scheme: they
 are normally overlaid as windows on top of the regular text. We can request
 one at any time, but it will appear only at prompt time, when the screen is
 fairly well guaranteed not to be scrolling. (Only fairly well since it's just
@@ -92,7 +92,7 @@ in which the quotation can be read before being taken away again.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Score Notification. </b>This doesn't really deserve to be at I6 level at all, but since we want a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Score Notification. </b>This doesn't really deserve to be at I6 level at all, but since we want a
 fancy text style for Glulx, ...
 </p>
 
@@ -109,7 +109,7 @@ fancy text style for Glulx, ...
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Print Rank. </b>The table of scoring ranks is a residue from the ancient times of early IF:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Print Rank. </b>The table of scoring ranks is a residue from the ancient times of early IF:
 it gets a tiny amount of special treatment here, even though I7 works tend
 not to use these now dated conventions.
 </p>
@@ -129,7 +129,7 @@ not to use these now dated conventions.
 <span class="plain-syntax">    </span><span class="string-syntax">"."</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Status Line. </b>Status line printing happens on the upper screen window, and outside of the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Status Line. </b>Status line printing happens on the upper screen window, and outside of the
 paragraph control system.
 </p>
 
@@ -160,7 +160,7 @@ in "ZMachine.i6t".
 <span class="plain-syntax">    @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__pc</span><span class="plain-syntax">; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> </span><span class="identifier-syntax">say__p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Status Line Utilities. </b>Two convenient routines for the default values of <span class="extract"><span class="extract-syntax">right_hand_status_line</span></span>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Status Line Utilities. </b>Two convenient routines for the default values of <span class="extract"><span class="extract-syntax">right_hand_status_line</span></span>
 and <span class="extract"><span class="extract-syntax">left_hand_status_line</span></span> respectively. <span class="extract"><span class="extract-syntax">SL_Location</span></span> also implements the
 text substitution "[player's surroundings]".
 </p>
@@ -192,7 +192,7 @@ text substitution "[player's surroundings]".
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DARKNESS_NAME_INTERNAL_R</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Banner. </b>Note that Inform always compiles <span class="extract"><span class="extract-syntax">Story</span></span> and <span class="extract"><span class="extract-syntax">Headline</span></span> texts, but does not always
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Banner. </b>Note that Inform always compiles <span class="extract"><span class="extract-syntax">Story</span></span> and <span class="extract"><span class="extract-syntax">Headline</span></span> texts, but does not always
 compile a <span class="extract"><span class="extract-syntax">Story_Author</span></span>.
 </p>
 
@@ -224,7 +224,7 @@ compile a <span class="extract"><span class="extract-syntax">Story_Author</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">EndActivity</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRINTING_BANNER_TEXT_ACT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Short Name Storage. </b>None of the following functions should be called for the Z-machine if the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Short Name Storage. </b>None of the following functions should be called for the Z-machine if the
 short name exceeds the size of the following buffer: whereas the Glulx
 implementation of <span class="extract"><span class="extract-syntax">VM_PrintToBuffer</span></span> will safely truncate overlong text,
 that's impossible for the Z-machine, and horrible results will follow.
@@ -263,7 +263,7 @@ buffer and then altering the first character.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">CPrintOrRun</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Object Names I. </b>We now begin the work of printing object names. In the lowest level of this
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Object Names I. </b>We now begin the work of printing object names. In the lowest level of this
 process we print just the name itself (without articles attached), and we
 do it by carrying out an activity.
 </p>
@@ -285,7 +285,7 @@ do it by carrying out an activity.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PSN__</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">); </span><span class="identifier-syntax">indef_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Standard Name Printing Rule. </b>In its initial state, the "printing the name of" activity has just one rule:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Standard Name Printing Rule. </b>In its initial state, the "printing the name of" activity has just one rule:
 the following "for" rule.
 </p>
 
@@ -326,12 +326,12 @@ the following "for" rule.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PrintOrRun</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="identifier-syntax">plural</span><span class="plain-syntax">, </span><span class="reserved-syntax">true</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Internal Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Internal Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PRINT_PROTAGONIST_INTERNAL_R</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Object Names II. </b>The second level of the system for printing object names handles the placing
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Object Names II. </b>The second level of the system for printing object names handles the placing
 of articles in front of them: {\it the} red herring, {\it an} elephant,
 {\it Some} bread. The following routine allows us to choose:
 </p>
@@ -406,7 +406,7 @@ indefinite singular depends on the text of the object's name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PSN__</span><span class="plain-syntax">) </span><span class="identifier-syntax">obj</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Object Names III. </b>The routines accessible from outside this segment.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Object Names III. </b>The routines accessible from outside this segment.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -465,7 +465,7 @@ indefinite singular depends on the text of the object's name.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PrefaceByArticle</span><span class="plain-syntax">(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="identifier-syntax">indef_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Standard Response Issuing Rule. </b>To print a response, we trigger off the response issuing activity. The following
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Standard Response Issuing Rule. </b>To print a response, we trigger off the response issuing activity. The following
 is the default "for" rule for that activity:
 </p>
 

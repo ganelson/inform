@@ -37,7 +37,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -47,12 +51,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -63,13 +69,13 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">linguistics</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>About Sentence Diagrams</b></li></ul></div>
 <p class="purpose">Description and examples of the diagrams which this module turns sentences into.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>First, an acknowledgement: the sentence diagrams in this section are generated
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>First, an acknowledgement: the sentence diagrams in this section are generated
 automatically by <a href="../linguistics-test/index.html" class="internal">linguistics-test</a>. (This means they are always up to date.)
 If you are interested in using <a href="index.html" class="internal">linguistics</a> in some context other than Inform,
 <a href="../linguistics-test/index.html" class="internal">linguistics-test</a> may be a good starting point.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Every example sentence in this section was passed in turn to the &lt;sentence&gt;
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Every example sentence in this section was passed in turn to the &lt;sentence&gt;
 nonterminal, and the trees displayed below were the result. For example:
 </p>
 
@@ -115,7 +121,7 @@ whereas a typical dependency tree would have nodes for both "not" and "a",
 we use annotations instead. We want fairly flat sentence trees with a simple,
 predictable shape.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Using &lt;sentence&gt; alone tends to result in a lot of <span class="extract"><span class="extract-syntax">UNPARSED_NOUN_NT</span></span> nodes.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Using &lt;sentence&gt; alone tends to result in a lot of <span class="extract"><span class="extract-syntax">UNPARSED_NOUN_NT</span></span> nodes.
 This is unsatisfying, but useful, because sometimes the meaning of a verb
 affects how those nodes should be parsed further. The idea is that the user
 will traverse the tree and parse the <span class="extract"><span class="extract-syntax">UNPARSED_NOUN_NT</span></span> nodes as needed.
@@ -141,7 +147,7 @@ annotated with their grammatical usages &mdash; in so far as we can tell. These
 two nouns do not inflect with case in English, but they are both singular.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Clearly the <a href="index.html" class="internal">linguistics</a> module needs to know some vocabulary in order
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Clearly the <a href="index.html" class="internal">linguistics</a> module needs to know some vocabulary in order
 to do this, and in the test runs displayed in this section, it is using a
 very limited stock of nouns, verbs and prepositions as follows:
 </p>
@@ -195,7 +201,7 @@ sensitivity and if <a href="index.html" class="internal">linguistics</a> were a 
 than recognise it, we would take much more care over this. Our interest
 is in grammatical gender, not the assignment of sexes to people.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>So, then, let us start with simple copular sentences &mdash; that is,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>So, then, let us start with simple copular sentences &mdash; that is,
 sentences involving the verb "to be", which equate two subjects rather
 than having a subject act upon an object. This is why one "ought to" say
 "The traitor is I" instead of "The traitor is me", although nobody does.
@@ -216,7 +222,7 @@ than having a subject act upon an object. This is why one "ought to" say
 <span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
 <span class="plain-syntax">    PROPER_NOUN_NT'charles' {proper nom/acc m s}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Next, regular sentences, that is, those where the verb is not copular
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Next, regular sentences, that is, those where the verb is not copular
 but instead expresses some relationship between a subject and an object
 which play different roles.
 </p>
@@ -262,7 +268,7 @@ sentence (woman) is carried by the object (table), but the <span class="extract"
 node is for the table, and so the meaning is "carries", not "carried-by".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Possessive verbs need careful handling because of the wide range of
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Possessive verbs need careful handling because of the wide range of
 meanings they can carry which may not involve ownership as such (cf. French
 "j'ai trente ans", or English "I have mumps"). But syntactically they are
 just like other non-copular verbs, and we parse them as such.
@@ -287,7 +293,7 @@ just like other non-copular verbs, and we parse them as such.
 <span class="plain-syntax">            UNPARSED_NOUN_NT'drink' {indefinite 'a' n/m/f nom/acc s}</span>
 <span class="plain-syntax">            UNPARSED_NOUN_NT'rum'</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>An unusual feature of English is its use of subject-verb inversion:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>An unusual feature of English is its use of subject-verb inversion:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
@@ -317,7 +323,7 @@ to preserve the distinction because Inform will make some use of it.
 allow that sort of thing in Inform (for e.g. "east of X is south of Y").
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Existential sentences, using the defective subject nounphrase "there", are
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Existential sentences, using the defective subject nounphrase "there", are
 marked with an additional annotation.
 </p>
 
@@ -362,7 +368,7 @@ reference to a location already being discussed, whereas "There is a woman"
 does not).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Two sorts of adverbs are recognised, for certainty and occurrence, and they
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Two sorts of adverbs are recognised, for certainty and occurrence, and they
 are handled by making additional annotations to the verb node, not by adding
 fresh nodes:
 </p>
@@ -384,7 +390,7 @@ fresh nodes:
 <span class="plain-syntax">    RELATIONSHIP_NT'carries' {meaning: carries-reversed}</span>
 <span class="plain-syntax">        COMMON_NOUN_NT'ming vase' {definite 'the' n/m/f s/p nom/acc} {common nom/acc n s}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>We can also support imperative verbs, with "special meanings" which are
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>We can also support imperative verbs, with "special meanings" which are
 not necessarily relational, and do not always lead to <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span>
 subtrees. See <a href="3-sm.html" class="internal">Special Meanings</a>.
 </p>
@@ -410,7 +416,7 @@ subtrees. See <a href="3-sm.html" class="internal">Special Meanings</a>.
 <span class="plain-syntax">    COMMON_NOUN_NT'the table' {common nom/acc n s}</span>
 <span class="plain-syntax">    COMMON_NOUN_NT'the ming vase' {common nom/acc n s}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>That shows the full range of what happens with verb nodes. Turning back
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>That shows the full range of what happens with verb nodes. Turning back
 to noun phrases, we can have serial lists:
 </p>
 
@@ -489,7 +495,7 @@ disallow this. Unfortunately, less extreme zeugmas occur all the time:
     <p>The red door is west of the Dining Room and east of the Ballroom.</p>
 </blockquote>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Now we introduce pronouns to the mix. These are detected automatically
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Now we introduce pronouns to the mix. These are detected automatically
 by <a href="index.html" class="internal">linguistics</a>, and exist in nominative and accusative cases in
 English. Note the difference in annotations between "them" and "you",
 for example.
@@ -543,7 +549,7 @@ for example.
 <span class="plain-syntax">    PROPER_NOUN_NT'anna' {proper nom/acc f s}</span>
 <span class="plain-syntax">    PRONOUN_NT'here' {location pronoun n/m/f s/p nom/acc 3p}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>"Callings" use the special syntax "X called Y", which has to be handled
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>"Callings" use the special syntax "X called Y", which has to be handled
 here in the <a href="index.html" class="internal">linguistics</a> module so that Y can safely wording which would
 otherwise have a structural meaning. ("Called" is to Inform as the backslash
 character, making letters literal, is to C.)
@@ -597,7 +603,7 @@ character, making letters literal, is to C.)
 <span class="plain-syntax">        COMMON_NOUN_NT'table' {indefinite 'a' n/m/f nom/acc s} {common nom/acc n s}</span>
 <span class="plain-syntax">        UNPARSED_NOUN_NT'billiards table with deep pockets' {definite 'the' n/m/f s/p nom/acc}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>The word "with", often but not always used in conjunction with "kind of":
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The word "with", often but not always used in conjunction with "kind of":
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">

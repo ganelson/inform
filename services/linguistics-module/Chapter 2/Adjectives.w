@@ -12,7 +12,7 @@ the word "blond"/"blonde", the only counterexample anybody ever brings up.)
 
 Beyond that, an //adjective// object simply contains two convenient hooks
 for the user of this module to attach semantics to an adjective. For how
-Inform does this, see //core: Adjective Meanings//.
+Inform does this, see //assertions: Adjective Meanings//.
 
 = 
 typedef struct adjective {

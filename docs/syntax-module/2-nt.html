@@ -109,7 +109,7 @@ information about them, and here it is:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">node_type_metadata</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">node_type_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">identity</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment-syntax"> name such as </span><span class="extract"><span class="extract-syntax">"INVOCATION_LIST_NT"</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment-syntax"> name such as </span><span class="extract"><span class="extract-syntax">"HEADING_NT"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">min_children</span><span class="plain-syntax">; </span><span class="comment-syntax"> minimum legal number of child nodes</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_children</span><span class="plain-syntax">; </span><span class="comment-syntax"> maximum legal number of child nodes, or </span><span class="extract"><span class="extract-syntax">INFTY</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">category</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">*_NCAT</span></span><span class="comment-syntax"> values below</span>
@@ -117,8 +117,8 @@ information about them, and here it is:
 <span class="plain-syntax">} </span><span class="reserved-syntax">node_type_metadata</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure node_type_metadata is accessed in 2/tv and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following categories certainly exist, and <a href="../assertions-module/6-ptu.html" class="internal">Parse Tree Usage (in assertions)</a> adds
-further ones. The idea is that <span class="extract"><span class="extract-syntax">L1_NCAT</span></span>, <span class="extract"><span class="extract-syntax">L2_NCAT</span></span> and so on down are nodes
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following categories certainly exist, and <a href="../core-module/1-inaa.html" class="internal">Inform-Only Nodes and Annotations (in core)</a>
+adds further ones. The idea is that <span class="extract"><span class="extract-syntax">L1_NCAT</span></span>, <span class="extract"><span class="extract-syntax">L2_NCAT</span></span> and so on down are nodes
 of different "levels", with lower numbers being higher in the tree and more
 structurally significant. Categories are used to decide which nodes are allowed
 to be children of which others, thus enforcing this hierarchy.
@@ -127,8 +127,6 @@ to be children of which others, thus enforcing this hierarchy.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INVALID_NCAT</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">   </span><span class="comment-syntax"> No node with this category should ever exist</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">L1_NCAT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">L2_NCAT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">L3_NCAT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">L4_NCAT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">UNKNOWN_NCAT</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">

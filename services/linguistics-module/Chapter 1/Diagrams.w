@@ -7,6 +7,7 @@ to turn sentences into: i.e., little sentence diagrams made up of parse nodes.
 We do that with the aid of the //syntax// module. So we must first set up
 some new node types:
 
+@e L3_NCAT
 @e VERB_NT             				/* "is" */
 @e UNPARSED_NOUN_NT       			/* "arfle barfle gloop" */
 @e PRONOUN_NT       			    /* "them" */
@@ -156,6 +157,7 @@ void Diagrams::write_relationship_ANNOT(text_stream *OUT, parse_node *p) {
 nodes and annotations correctly:
 
 @d EVEN_MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK Diagrams::setup
+@d EVEN_MORE_PARENTAGE_PERMISSIONS_SYNTAX_CALLBACK Diagrams::parentage_permission
 @d EVEN_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK Diagrams::permissions
 
 =
@@ -173,6 +175,11 @@ void Diagrams::setup(void) {
 	NodeType::new(COMMON_NOUN_NT, I"COMMON_NOUN_NT",	   0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTY_LIST_NT, I"PROPERTY_LIST_NT",   0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(X_OF_Y_NT, I"X_OF_Y_NT",                 2, 2,     L3_NCAT, ASSERT_NFLAG);
+}
+
+void Diagrams::parentage_permission(void) {
+	NodeType::allow_parentage_for_categories(L2_NCAT, L3_NCAT);
+	NodeType::allow_parentage_for_categories(L3_NCAT, L3_NCAT);
 }
 
 void Diagrams::permissions(void) {

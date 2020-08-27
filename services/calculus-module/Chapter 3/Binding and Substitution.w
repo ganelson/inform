@@ -436,7 +436,7 @@ int Binding::detect_local_in_spec(parse_node *spec, int locals_count, parse_node
 			return ++locals_count;
 		}
 	}
-	if (ParseTreeUsage::is_phrasal(spec)) {
+	if (Specifications::is_phrasal(spec)) {
 		parse_node *inv;
 		LOOP_THROUGH_INVOCATION_LIST(inv, spec->down->down) {
 			parse_node *param;

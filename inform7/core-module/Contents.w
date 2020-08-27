@@ -10,6 +10,7 @@ Preliminaries
 Chapter 1: Configuration and Control
 "Managing the production line for the compilation process."
 	Core Module
+	Class Predeclarations
 	What To Compile
 	How To Compile
 	Core Preform

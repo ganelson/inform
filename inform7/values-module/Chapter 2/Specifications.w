@@ -21,29 +21,48 @@ kind *Specifications::to_kind(parse_node *spec) {
 	if (Node::is(spec, AMBIGUITY_NT)) spec = spec->down;
 	if (Specifications::is_description(spec))
 		return Descriptions::to_kind(spec);
-	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
-	else if (ParseTreeUsage::is_rvalue(spec)) return Rvalues::to_kind(spec);
+	if (Lvalues::is_lvalue(spec)) return Lvalues::to_kind(spec);
+	else if (Rvalues::is_rvalue(spec)) return Rvalues::to_kind(spec);
 	return NULL;
 }
 
 kind *Specifications::rvalue_to_kind(parse_node *spec) {
-	if (ParseTreeUsage::is_rvalue(spec))
+	if (Rvalues::is_rvalue(spec))
 		return Rvalues::to_kind(spec);
 	return NULL;
 }
 
 kind *Specifications::to_true_kind(parse_node *spec) {
-	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
-	else if (ParseTreeUsage::is_rvalue(spec)) return Rvalues::to_kind(spec);
+	if (Lvalues::is_lvalue(spec)) return Lvalues::to_kind(spec);
+	else if (Rvalues::is_rvalue(spec)) return Rvalues::to_kind(spec);
 	return NULL;
 }
 
 kind *Specifications::to_true_kind_disambiguated(parse_node *spec) {
 	if (Node::is(spec, AMBIGUITY_NT)) spec = spec->down;
 	if (Node::is(spec, TEST_VALUE_NT)) spec = spec->down;
-	if (ParseTreeUsage::is_lvalue(spec)) return Lvalues::to_kind(spec);
-	else if (ParseTreeUsage::is_rvalue(spec)) return Rvalues::to_kind(spec);
+	if (Lvalues::is_lvalue(spec)) return Lvalues::to_kind(spec);
+	else if (Rvalues::is_rvalue(spec)) return Rvalues::to_kind(spec);
 	return NULL;
+}
+
+int Specifications::is_value(parse_node *spec) {
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(spec));
+	if ((metadata) &&
+		((metadata->category == LVALUE_NCAT) || (metadata->category == RVALUE_NCAT)))
+		return TRUE;
+	return FALSE;
+}
+
+int Specifications::is_condition(parse_node *spec) {
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(spec));
+	if ((metadata) && (metadata->category == COND_NCAT)) return TRUE;
+	return FALSE;
+}
+
+int Specifications::is_phrasal(parse_node *spec) {
+	if (NodeType::has_flag(Node::get_type(spec), PHRASAL_NFLAG)) return TRUE;
+	return FALSE;
 }
 
 @ We say that a specification is "kind-like" if it's one of those which could
@@ -153,9 +172,9 @@ Index; those have to be English language forms.
 =
 void Specifications::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 	if (spec == NULL) WRITE("something unknown");
-	else if (ParseTreeUsage::is_lvalue(spec)) Lvalues::write_out_in_English(OUT, spec);
-	else if (ParseTreeUsage::is_rvalue(spec)) Rvalues::write_out_in_English(OUT, spec);
-	else if (ParseTreeUsage::is_condition(spec)) Conditions::write_out_in_English(OUT, spec);
+	else if (Lvalues::is_lvalue(spec)) Lvalues::write_out_in_English(OUT, spec);
+	else if (Rvalues::is_rvalue(spec)) Rvalues::write_out_in_English(OUT, spec);
+	else if (Specifications::is_condition(spec)) Conditions::write_out_in_English(OUT, spec);
 	else if (Node::is(spec, AMBIGUITY_NT)) Specifications::write_out_in_English(OUT, spec->down);
 	else WRITE("something unrecognised");
 }
@@ -253,8 +272,8 @@ equal status.)
 	if (pref != 0) return pref;
 
 @<If one matches the other, but not vice versa, it must be more specific@> =
-	int ev1 = ((a) || (ParseTreeUsage::is_value(spec1)));
-	int ev2 = ((b) || (ParseTreeUsage::is_value(spec2)));
+	int ev1 = ((a) || (Specifications::is_value(spec1)));
+	int ev2 = ((b) || (Specifications::is_value(spec2)));
 	if (Lvalues::get_storage_form(spec1) == PROPERTY_VALUE_NT) ev1 = FALSE;
 	if (Lvalues::get_storage_form(spec2) == PROPERTY_VALUE_NT) ev2 = FALSE;
 	if ((ev1) && (ev2)) {

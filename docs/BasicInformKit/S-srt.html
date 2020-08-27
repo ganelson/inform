@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-srt.html#SP1">&#167;1. Storage</a></li><li><a href="S-srt.html#SP2">&#167;2. Front End</a></li><li><a href="S-srt.html#SP3">&#167;3. Sort Range</a></li><li><a href="S-srt.html#SP4">&#167;4. Comparison and Exchange</a></li><li><a href="S-srt.html#SP5">&#167;5. 4W37 Sort</a></li><li><a href="S-srt.html#SP6">&#167;6. Insertion Sort</a></li><li><a href="S-srt.html#SP7">&#167;7. In-Place Mergesort</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Storage. </b>We are required to use a stable sorting algorithm with very low, ideally zero,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Storage. </b>We are required to use a stable sorting algorithm with very low, ideally zero,
 auxiliary storage requirement. Exchanges are generally slower than comparisons
 for the typical application (sorting tables, where entire rows must be
 exchanged whereas only entries in a single column need be compared).
@@ -76,7 +76,7 @@ auxiliary storage.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">I7S_Swap</span><span class="plain-syntax">; </span><span class="comment-syntax">The current routine for swapping two fields</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">I7S_Comp</span><span class="plain-syntax">; </span><span class="comment-syntax">The current routine for comparing two fields</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Front End. </b>To perform a sort, we first call <span class="extract"><span class="extract-syntax">SetSortDomain</span></span> to declare the swap and
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Front End. </b>To perform a sort, we first call <span class="extract"><span class="extract-syntax">SetSortDomain</span></span> to declare the swap and
 compare functions to be used, and then call <span class="extract"><span class="extract-syntax">SortArray</span></span> actually to sort. (It
 would be nice to combine these in a single call, but I6 allows a maximum of
 7 call arguments for a routine, and that would make 8.) These are the only
@@ -104,7 +104,7 @@ greater in value.
 <span class="plain-syntax">    </span><span class="identifier-syntax">SortRange</span><span class="plain-syntax">(0, </span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="identifier-syntax">algorithm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Sort Range. </b>This routine sorts a range of fields \(x\leq i &lt; y\) within the array. Fields
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Sort Range. </b>This routine sorts a range of fields \(x\leq i &lt; y\) within the array. Fields
 are numbered from 0. The supplied <span class="extract"><span class="extract-syntax">algorithm</span></span> is an I6 routine to implement
 a particular sorting algorithm; if it is not supplied, then in-place merge
 sort is used by default.
@@ -120,7 +120,7 @@ sort is used by default.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Comparison and Exchange. </b>These are instrumented versions of how to swap and compare fields; note that
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Comparison and Exchange. </b>These are instrumented versions of how to swap and compare fields; note that
 the swap and compare functions are expected to number the fields from 1, not
 from 0. (This is convenient both for tables and lists, where rows and entries
 respectively are both numbered from 1.) The only access which the sorting
@@ -137,7 +137,7 @@ algorithms have to the actual data being sorted is through these routines.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. 4W37 Sort. </b>We now present three alternative sorting algorithms.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. 4W37 Sort. </b>We now present three alternative sorting algorithms.
 </p>
 
 <p class="commentary">The first is the one used in builds up to and including 4W37: note that this is
@@ -161,7 +161,7 @@ to resurrect a very early I7 project.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Insertion Sort. </b>A stable algorithm which has \(O(n^2)\) running time and therefore cannot be
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Insertion Sort. </b>A stable algorithm which has \(O(n^2)\) running time and therefore cannot be
 used with large arrays, but which has good performance on nearly sorted tables,
 and which has very low overhead.
 </p>
@@ -180,7 +180,7 @@ and which has very low overhead.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. In-Place Mergesort. </b>A stable algorithm with \(O(n\log n)\) running time, at some stack cost, and
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. In-Place Mergesort. </b>A stable algorithm with \(O(n\log n)\) running time, at some stack cost, and
 which is generally good for nearly sorted tables, but which is also complex
 and has some overhead. The code here mostly follows Thomas Baudel's
 implementation, which in turn follows the <span class="extract"><span class="extract-syntax">C++</span></span> STL library.

@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -60,7 +66,7 @@
 
 <ul class="toc"><li><a href="M-io.html#SP1">&#167;1. Status</a></li><li><a href="M-io.html#SP2">&#167;2. Global area and main</a></li><li><a href="M-io.html#SP3">&#167;3. Compilation modules</a></li><li><a href="M-io.html#SP5">&#167;5. Function packages</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Status. </b>The Inter specification allows great flexibility in how packages are used
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The Inter specification allows great flexibility in how packages are used
 to structure a program, and requires very little.
 </p>
 
@@ -68,7 +74,7 @@ to structure a program, and requires very little.
 as follows.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Global area and main. </b>Inform opens with a version number, then declares package types (as needed
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Global area and main. </b>Inform opens with a version number, then declares package types (as needed
 below), issues pragmas for I6 compiler memory settings, then declares
 primitives for the standard Inform set: it always declares the same set
 of primitives on every run.
@@ -78,7 +84,7 @@ of primitives on every run.
 type <span class="extract"><span class="extract-syntax">_plain</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Compilation modules. </b>Inform divides up its material into compilation modules, as follows. Each
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Compilation modules. </b>Inform divides up its material into compilation modules, as follows. Each
 one becomes an inter package of type <span class="extract"><span class="extract-syntax">_module</span></span>, and is a subpackage of <span class="extract"><span class="extract-syntax">main</span></span>.
 </p>
 
@@ -101,7 +107,7 @@ definition will include references to every kind defined in the program.
 Such a function doesn't belong to any one block of source text. The
 package is <span class="extract"><span class="extract-syntax">/main/synoptic</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Except for the template module, which is necessarily more free-form,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Except for the template module, which is necessarily more free-form,
 each module package then contains some or all of a standard set of
 subpackages (and nothing else). Suppose the module name is <span class="extract"><span class="extract-syntax">M</span></span>. The
 range of possible subpackages is:
@@ -128,7 +134,7 @@ range of possible subpackages is:
 <span class="plain-syntax">    /main/M/tables</span>
 <span class="plain-syntax">    /main/M/variables</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Function packages. </b>All functions compiled by Inform 7 are expressed in inter code by packages
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Function packages. </b>All functions compiled by Inform 7 are expressed in inter code by packages
 of type <span class="extract"><span class="extract-syntax">_function</span></span>. The only externally visible symbol is <span class="extract"><span class="extract-syntax">call</span></span>, which is
 what is invoked. For example:
 </p>

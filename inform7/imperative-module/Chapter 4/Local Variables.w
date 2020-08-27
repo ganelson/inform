@@ -839,7 +839,7 @@ int LocalVariables::permit_as_new_local(parse_node *found, int as_calling) {
 		(Rvalues::is_CONSTANT_construction(found, CON_table_column)) ||
 		(Rvalues::is_CONSTANT_construction(found, CON_property))) return TRUE;
 	if (as_calling)
-		if (ParseTreeUsage::is_phrasal(found)) return TRUE;
+		if (Specifications::is_phrasal(found)) return TRUE;
 	return FALSE;
 }
 

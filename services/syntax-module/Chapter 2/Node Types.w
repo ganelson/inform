@@ -40,15 +40,15 @@ information about them, and here it is:
 =
 typedef struct node_type_metadata {
 	node_type_t identity;
-	struct text_stream *node_type_name; /* name such as |"INVOCATION_LIST_NT"| */
+	struct text_stream *node_type_name; /* name such as |"HEADING_NT"| */
 	int min_children; /* minimum legal number of child nodes */
 	int max_children; /* maximum legal number of child nodes, or |INFTY| */
 	int category; /* one of the |*_NCAT| values below */
 	int node_flags; /* bitmap of node flags */
 } node_type_metadata;
 
-@ The following categories certainly exist, and //assertions: Parse Tree Usage// adds
-further ones. The idea is that |L1_NCAT|, |L2_NCAT| and so on down are nodes
+@ The following categories certainly exist, and //core: Inform-Only Nodes and Annotations//
+adds further ones. The idea is that |L1_NCAT|, |L2_NCAT| and so on down are nodes
 of different "levels", with lower numbers being higher in the tree and more
 structurally significant. Categories are used to decide which nodes are allowed
 to be children of which others, thus enforcing this hierarchy.
@@ -56,8 +56,6 @@ to be children of which others, thus enforcing this hierarchy.
 @e INVALID_NCAT from 0   /* No node with this category should ever exist */
 @e L1_NCAT
 @e L2_NCAT
-@e L3_NCAT
-@e L4_NCAT
 @e UNKNOWN_NCAT
 
 =

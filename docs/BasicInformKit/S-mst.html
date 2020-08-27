@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-mst.html#SP1">&#167;1. The Memory Stack</a></li><li><a href="S-mst.html#SP2">&#167;2. Create Frame</a></li><li><a href="S-mst.html#SP3">&#167;3. Destroy Frame</a></li><li><a href="S-mst.html#SP4">&#167;4. Seek Frame</a></li><li><a href="S-mst.html#SP5">&#167;5. Backtrace</a></li><li><a href="S-mst.html#SP6">&#167;6. Access to Variables</a></li><li><a href="S-mst.html#SP7">&#167;7. Access to Nonexistent Variables</a></li><li><a href="S-mst.html#SP8">&#167;8. Rulebook Variables</a></li><li><a href="S-mst.html#SP9">&#167;9. Activity Variables</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The Memory Stack. </b>The M-Stack, or memory stack, is a sequence of frames, piled upwards.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The Memory Stack. </b>The M-Stack, or memory stack, is a sequence of frames, piled upwards.
 If we had an accessible stack in memory, we could use that, but neither
 the Z-machine nor Glulx has such a stack, alas, alas, alas. The following
 is not a very good solution, but it just about works.
@@ -72,7 +72,7 @@ is not a very good solution, but it just about works.
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">MStack</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">MSTACK_SIZE</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">MStack_Top</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">Topmost word currently used</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Create Frame. </b>A frame is created by calling the following function with two arguments:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Create Frame. </b>A frame is created by calling the following function with two arguments:
 <span class="extract"><span class="extract-syntax">creator</span></span>, a function which initialises a block of variables, and an
 ID number identifying the owner.
 </p>
@@ -104,7 +104,7 @@ minus 1.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Destroy Frame. </b>As sketched above, the same creator function and ID number are passed to
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Destroy Frame. </b>As sketched above, the same creator function and ID number are passed to
 the following routine to destroy the frame again. It takes the stack down
 to the level of the most recently created frame with this ID number: note
 that each action, for instance, has its own ID number for this purpose,
@@ -132,7 +132,7 @@ is destroyed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Seek Frame. </b>We return the position on the M-stack of the most recently created frame
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Seek Frame. </b>We return the position on the M-stack of the most recently created frame
 with the given ID number (see above), or 0 if no such frame exists; the
 size is stored in the global variable <span class="extract"><span class="extract-syntax">MStack_Frame_Extent</span></span>. (Because word 0
 on the stack is used as a sentinel &mdash; all frames are placed above it &mdash; no frame
@@ -154,7 +154,7 @@ can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">Not found</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Backtrace. </b>Purely for debugging purposes, and giving feedback if the stack runs out of
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Backtrace. </b>Purely for debugging purposes, and giving feedback if the stack runs out of
 memory:
 </p>
 
@@ -173,7 +173,7 @@ memory:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Access to Variables. </b>An M-stack variable is identified by a combination of ID number and offset:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Access to Variables. </b>An M-stack variable is identified by a combination of ID number and offset:
 for instance ID 20007, offset 1, is the variable "room gone to" belonging
 to the going action. The following routine converts that into an address on
 the M-stack, in the topmost block with the given ID number (since "room gone
@@ -200,7 +200,7 @@ the offset is within range.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">+</span><span class="identifier-syntax">off</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Access to Nonexistent Variables. </b>A long-standing point where I7 is not as strict in type-checking as it might
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Access to Nonexistent Variables. </b>A long-standing point where I7 is not as strict in type-checking as it might
 be occurs when checking rule preambles like "Before going to a dead end...".
 Such a preamble must be checked whatever the current action is &mdash; in many
 cases, it will not be a going action at all; which means that "room gone to",
@@ -231,7 +231,7 @@ where it is to be written, of course: that would corrupt the sentinel.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">+</span><span class="identifier-syntax">off</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Rulebook Variables. </b>Each rulebook has a slate of variables, usually empty, with ID number the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Rulebook Variables. </b>Each rulebook has a slate of variables, usually empty, with ID number the
 same as the rulebook's own ID number. (Rulebook IDs number upwards from 0
 in order of creation in the source text.) The associated creator functions,
 usually null, are stored in an array if there is no problem about memory
@@ -258,7 +258,7 @@ costs a very small amount of time, but saves 1K of readable memory.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cr</span><span class="plain-syntax">) </span><span class="identifier-syntax">Mstack_Destroy_Frame</span><span class="plain-syntax">(</span><span class="identifier-syntax">cr</span><span class="plain-syntax">, </span><span class="identifier-syntax">rb</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Activity Variables. </b>Exactly the same goes for activity variables except that here the ID number
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Activity Variables. </b>Exactly the same goes for activity variables except that here the ID number
 is \(10000+N\), where \(N\) is the allocation ID of the activity. (This would
 fail if there were more than 10,000 rulebooks, but this is very difficult
 to see happening.)

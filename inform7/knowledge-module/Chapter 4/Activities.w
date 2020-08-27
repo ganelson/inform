@@ -161,7 +161,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	av->av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, av->av_package, av->name);
 	Emit::named_numeric_constant(av->av_iname, (inter_ti) av->allocation_id);
 
-	LOGIF(ACTION_CREATIONS, "Created activity: %n = %W\n", av->av_iname, av->name);
+	LOGIF(ACTIVITY_CREATIONS, "Created activity: %n = %W\n", av->av_iname, av->name);
 
 	av->activity_on_what_kind = creation_kind;
 

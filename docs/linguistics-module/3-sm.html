@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-sm.html#SP1">&#167;1. Special meaning functions</a></li><li><a href="3-sm.html#SP3">&#167;3. Special meaning holders</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Special meaning functions. </b>Regular meanings of verbs are represented by <span class="extract"><span class="extract-syntax">VERB_MEANING_LINGUISTICS_TYPE</span></span>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Special meaning functions. </b>Regular meanings of verbs are represented by <span class="extract"><span class="extract-syntax">VERB_MEANING_LINGUISTICS_TYPE</span></span>
 pointers &mdash; see <a href="3-vm.html" class="internal">Verb Meanings</a>. In Inform, those are binary predicates.
 They always take two terms.
 </p>
@@ -85,7 +91,7 @@ type <span class="extract"><span class="extract-syntax">special_meaning_fn</span
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">special_meaning_fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *);</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This is a convenient generic special-meaning function; it simply accumulates
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This is a convenient generic special-meaning function; it simply accumulates
 non-empty SPs and OPs as unparsed noun phrases and accepts them.
 </p>
 
@@ -121,11 +127,11 @@ say that the usage is invalid: see Verb Phrases for more.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Special meaning holders. </b>Although a SM is basically encapsulated by a function, it's convenient to
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Special meaning holders. </b>Although a SM is basically encapsulated by a function, it's convenient to
 have some metadata with it too:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">special_meaning_holder</span><span class="plain-syntax"> {</span>
@@ -136,7 +142,7 @@ have some metadata with it too:
 <span class="plain-syntax">} </span><span class="reserved-syntax">special_meaning_holder</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure special_meaning_holder is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">special_meaning_holder</span><span class="plain-syntax"> *</span><span class="function-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><span class="identifier-syntax">special_meaning_fn</span><span class="plain-syntax"> </span><span class="identifier-syntax">func</span><span class="plain-syntax">,</span>
@@ -149,7 +155,7 @@ have some metadata with it too:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">smh</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>SMHs can be found by name:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>SMHs can be found by name:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -164,7 +170,7 @@ have some metadata with it too:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">smh</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Metadata access:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Metadata access:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -184,7 +190,7 @@ have some metadata with it too:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Calling:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Calling:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

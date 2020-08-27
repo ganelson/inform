@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-in.html#SP1">&#167;1. Bytecode definition</a></li><li><a href="2-in.html#SP2">&#167;2. Chunks</a></li><li><a href="2-in.html#SP3">&#167;3. Frames</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Bytecode definition. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Bytecode definition. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">signed_inter_ti</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span>
@@ -99,7 +105,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_tree_node is accessed in 2/it, 2/bkm, 2/st, 2/pck, 2/sym, 2/trn, 3/dfn, 3/iibf, 3/iitf, 3/vi, 3/idt, 4/tmc, 4/tvc, 4/tpc, 4/tlc, 4/tac, 4/tpc2, 4/tpc3, 4/tkc, 4/tdc, 4/tvc2, 4/tcc2, 4/trc, 4/tic, 4/tpc4, 4/tpc5, 4/tpc6, 4/tpc7, 5/tlc, 5/tlc2, 5/tic, 5/trc, 5/tvc, 5/tlc3, 5/tcc, 5/tec, 5/trc2, 5/tcc2, 5/tsc and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Chunks. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Chunks. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">IST_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">SYMBOL_BASE_VAL</span><span class="plain-syntax"> </span><span class="constant-syntax">0x40000000</span>
@@ -109,7 +115,7 @@ function togglePopup(material_id) {
 <span class="definition-keyword">define</span> <span class="constant-syntax">PREFRAME_COMMENT</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PREFRAME_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Frames. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Frames. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="function-syntax">Inode::get_metadata</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Inode::get_metadata</span></span>:<br/><a href="2-in.html#SP5">&#167;5</a>, <a href="2-in.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
@@ -162,7 +168,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Inode::root_frame</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Inode::root_frame</span></span>:<br/>Inter Trees - <a href="2-it.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_warehouse</span><span class="plain-syntax"> *</span><span class="identifier-syntax">warehouse</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
@@ -280,7 +286,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Inode::extend</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Inode::extend</span></span>:<br/>Transmigration - <a href="2-trn.html#SP3_1_1">&#167;3.1.1</a><br/>The Kind Construct - <a href="4-tkc.html#SP2">&#167;2</a><br/>The Constant Construct - <a href="4-tcc2.html#SP2">&#167;2</a><br/>The Primitive Construct - <a href="4-tpc7.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax">) {</span>
@@ -337,7 +343,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">repo_segment</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index_offset</span><span class="plain-syntax">) + (</span><span class="constant-syntax">inter_ti</span><span class="plain-syntax">) (</span><span class="identifier-syntax">F</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">W</span><span class="plain-syntax">.</span><span class="element-syntax">index</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_error_location</span><span class="plain-syntax"> *</span><span class="function-syntax">Inode::retrieve_origin</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>

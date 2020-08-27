@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-pc.html#SP1">&#167;1. Observation</a></li><li><a href="2-pc.html#SP3">&#167;3. Problems which have test cases</a></li><li><a href="2-pc.html#SP4">&#167;4. Problems mentioned in documentation</a></li><li><a href="2-pc.html#SP5">&#167;5. Problems generated in the I7 source</a></li><li><a href="2-pc.html#SP7">&#167;7. Checking</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Observation. </b>Problem messages are identified by their code-names, e.g., <span class="extract"><span class="extract-syntax">PM_MisplacedFrom</span></span>;
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Observation. </b>Problem messages are identified by their code-names, e.g., <span class="extract"><span class="extract-syntax">PM_MisplacedFrom</span></span>;
 those names should be unique, but any number of problems can instead be
 marked with one of three special names.
 </p>
@@ -75,7 +75,7 @@ set of Inform test cases.
 <span class="plain-syntax">} </span><span class="reserved-syntax">known_problem</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure known_problem is accessed in 2/trs and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>When a problem is observed, we create a dictionary entry for it, if necessary,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>When a problem is observed, we create a dictionary entry for it, if necessary,
 and augment its bitmap of known contexts:
 </p>
 
@@ -101,7 +101,7 @@ and augment its bitmap of known contexts:
 <span class="plain-syntax">    </span><span class="identifier-syntax">KP</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">contexts_observed</span><span class="plain-syntax"> |= </span><span class="identifier-syntax">context</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Problems which have test cases. </b>Here we ask Intest to produce a roster of all known test cases, then parse
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Problems which have test cases. </b>Here we ask Intest to produce a roster of all known test cases, then parse
 this back to look for cases whose names have the <span class="extract"><span class="extract-syntax">PM_...</span></span> format. Those are
 the problem message test cases, so we observe them.
 </p>
@@ -125,7 +125,7 @@ the problem message test cases, so we observe them.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Problems mentioned in documentation. </b>Here we look through the "Writing with Inform" source text for cross-references
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Problems mentioned in documentation. </b>Here we look through the "Writing with Inform" source text for cross-references
 to problem messages:
 </p>
 
@@ -148,7 +148,7 @@ to problem messages:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Problems generated in the I7 source. </b>Which is to say, actually existing problem messages.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Problems generated in the I7 source. </b>Which is to say, actually existing problem messages.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -169,7 +169,7 @@ to problem messages:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>So now we have to read a section, looking for the existence of problem
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>So now we have to read a section, looking for the existence of problem
 messages:
 </p>
 
@@ -200,7 +200,7 @@ messages:
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Checking. </b>So the actual policy-enforcement routine is here:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Checking. </b>So the actual policy-enforcement routine is here:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -219,7 +219,7 @@ messages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">all_is_well</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the observations</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform the observations</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -228,7 +228,7 @@ messages:
 <span class="plain-syntax">    </span><a href="2-pc.html#SP5" class="function-link"><span class="function-syntax">Coverage::which_problems_exist</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>Okay, so that's all of the scanning done; now to report on it.
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>Okay, so that's all of the scanning done; now to report on it.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Report and decide how grave the situation is</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
@@ -284,7 +284,7 @@ messages:
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pc.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Coverage::cite</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Coverage::cite</span></span>:<br/><a href="2-pc.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mask</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mask2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">) {</span>

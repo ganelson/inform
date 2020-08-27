@@ -32,6 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="index.html"><span class="selectedlink">multimedia</span></a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -81,44 +86,15 @@ which use this module:
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
 
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">FIGURE_CREATIONS_DA</span>
+</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MultimediaModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mm.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-mm.html#SP3_4" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">FIGURE_CREATIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"figure creations"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MultimediaModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-mm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-mm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-mm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.4</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-mm.html#SP3">&#167;3</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">mm</li><li class="progresssection"><a href="1-msm.html">msm</a></li><li class="progresschapter"><a href="2-fgr.html">2</a></li><li class="progressnext"><a href="1-msm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

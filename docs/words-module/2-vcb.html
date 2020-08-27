@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="index.html"><span class="selectedlink">words</span></a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="index.html"><span class="selectedlink">words</span></a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-vcb.html#SP1">&#167;1. Vocabulary Entries</a></li><li><a href="2-vcb.html#SP13">&#167;13. Hash coding of words</a></li><li><a href="2-vcb.html#SP14">&#167;14. The hash table of vocabulary</a></li><li><a href="2-vcb.html#SP16">&#167;16. Partial words</a></li><li><a href="2-vcb.html#SP17">&#167;17. Ordinals</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Vocabulary Entries. </b>A <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> object is created for each different word found in the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Vocabulary Entries. </b>A <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> object is created for each different word found in the
 source. (Recall that these are not necessarily words in the usual English
 sense: for instance, <span class="extract"><span class="extract-syntax">17</span></span> is a word here.)
 </p>
@@ -116,7 +122,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 <span class="plain-syntax">} </span><span class="reserved-syntax">vocabulary_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure vocabulary_entry is accessed in 4/nnt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Some standard punctuation marks:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Some standard punctuation marks:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -152,7 +158,7 @@ possible meaning as a literal integer, we cache the result: for instance,
 <span class="plain-syntax">    </span><span class="identifier-syntax">STROKE_V</span><span class="plain-syntax">         = </span><a href="2-vcb.html#SP15" class="function-link"><span class="function-syntax">Vocabulary::entry_for_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"|"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each distinct word is to have a unique <span class="extract"><span class="extract-syntax">vocabulary_entry</span></span> structure, and the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each distinct word is to have a unique <span class="extract"><span class="extract-syntax">vocabulary_entry</span></span> structure, and the
 "identity" at word number <span class="extract"><span class="extract-syntax">wn</span></span> is to point to the structure for the text
 at that word. Two words are distinct if their lower-case forms are different,
 except that two quoted literal texts are always distinct, even if they have
@@ -192,7 +198,7 @@ routines, either on a single word or on a range.
 <span class="plain-syntax">        </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::identify_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Should we ever change the text of a word, it's essential to re-identify it,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Should we ever change the text of a word, it's essential to re-identify it,
 as otherwise its <span class="extract"><span class="extract-syntax">lw_identity</span></span> points to the wrong vocabulary entry.
 </p>
 
@@ -203,7 +209,7 @@ as otherwise its <span class="extract"><span class="extract-syntax">lw_identity<
 <span class="plain-syntax">    </span><a href="2-vcb.html#SP3" class="function-link"><span class="function-syntax">Vocabulary::identify_word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>We now need some utilities for dealing with vocabulary entries. Here is a
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>We now need some utilities for dealing with vocabulary entries. Here is a
 creator, and a debugging logger:
 </p>
 
@@ -234,7 +240,7 @@ creator, and a debugging logger:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%08x-%w-%08x"</span><span class="plain-syntax">, </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hash</span><span class="plain-syntax">, </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">raw_exemplar</span><span class="plain-syntax">, </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">flags</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>It's perhaps unexpected that a vocabulary entry not only stores a (pointer
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>It's perhaps unexpected that a vocabulary entry not only stores a (pointer
 to) a copy of the text, the "exemplar" (since it is text which is an
 example of this vocabulary being used), but also a separate raw copy of
 the text: raw in the sense of retaining the original form in the source
@@ -260,7 +266,7 @@ it by hand, using the following routine.
 <span class="plain-syntax">    </span><a href="3-lxr.html#SP19" class="function-link"><span class="function-syntax">Lexer::word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">raw_exemplar</span><span class="plain-syntax"> = </span><a href="3-lxr.html#SP19" class="function-link"><span class="function-syntax">Lexer::word_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Here are some access routines for the data stored in this
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Here are some access routines for the data stored in this
 structure:
 </p>
 
@@ -280,7 +286,7 @@ structure:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>An integer is stored at each vocabulary entry, recording its value
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>An integer is stored at each vocabulary entry, recording its value
 if it every turns out to parse as a literal number:
 </p>
 
@@ -292,7 +298,7 @@ if it every turns out to parse as a literal number:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">literal_number_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Almost all text is used case insensitively in Inform source, but we do
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Almost all text is used case insensitively in Inform source, but we do
 occasionally need to distinguish "The" from "the" and the like, when
 parsing the names of text substitutions. When a new text substitution is
 declared whose first word, in the definition, begins with a capital letter,
@@ -316,7 +322,7 @@ is changed to the upper case variant form.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper_case_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Finally, each vocabulary entry comes with a bitmap of flags, and here
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Finally, each vocabulary entry comes with a bitmap of flags, and here
 we get to set and test them:
 </p>
 
@@ -331,7 +337,7 @@ we get to set and test them:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><a href="3-lxr.html#SP19" class="function-link"><span class="function-syntax">Lexer::word</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">flags</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>It can be useful to find the disjunction of the flags for all the words
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>It can be useful to find the disjunction of the flags for all the words
 in a range, as that gives us a single bitmap which tells us quickly whether
 any of the words in that range is a number, or is a word ending in "-ing",
 and so on:
@@ -345,7 +351,7 @@ and so on:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>We also leave space for a bitmap used by <a href="4-to.html" class="internal">The Optimiser</a>: in particular,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>We also leave space for a bitmap used by <a href="4-to.html" class="internal">The Optimiser</a>: in particular,
 see <a href="4-ni.html#SP3" class="internal">NTI::mark_vocabulary</a>.
 </p>
 
@@ -357,7 +363,7 @@ see <a href="4-ni.html#SP3" class="internal">NTI::mark_vocabulary</a>.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ve</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nt_incidence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Hash coding of words. </b>To find all the different words used in the source text, we need in principle
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Hash coding of words. </b>To find all the different words used in the source text, we need in principle
 to make an enormous number of comparisons of their texts. It is slow to make
 a correct identification of two texts as being equal: we have to compare
 their every characters against each other. Fortunately, it can be much
@@ -430,7 +436,7 @@ they're treated more like literal texts and I6 inclusions.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) (3+(</span><span class="identifier-syntax">hash_code</span><span class="plain-syntax"> % (</span><span class="constant-syntax">HASH_TAB_SIZE</span><span class="plain-syntax">-3))); </span><span class="comment-syntax"> result of X 30011, plus 3</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. The hash table of vocabulary. </b>Armed with these hash codes, we now store the pointers to the vocabulary
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. The hash table of vocabulary. </b>Armed with these hash codes, we now store the pointers to the vocabulary
 entry structures in linked lists, one for each possible hash code.
 These begin empty.
 </p>
@@ -453,7 +459,7 @@ These begin empty.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>And that leaves only one routine: for finding the unique vocabulary
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And that leaves only one routine: for finding the unique vocabulary
 entry pointer associated with the material in <span class="extract"><span class="extract-syntax">text</span></span>. We search the
 hash table to see if we have the word already, and if not, we add it.
 Either way, we return a valid pointer. (Compare Isaiah 55:11, "So shall
@@ -504,7 +510,7 @@ codes for any number, any text, or any I6 inclusion.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>Here the list for this word's hash code was empty, either meaning that this
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>Here the list for this word's hash code was empty, either meaning that this
 is a hash code never seen for any word before (in which case we start the
 list for that hash code with the new word), or that the word is a text
 literal &mdash; because, for efficiency's sake, we deliberately keep the
@@ -522,7 +528,7 @@ hash list for all text literals empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vcb.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b>And here, we exhausted the list at entry <span class="extract"><span class="extract-syntax">n-1</span></span>, with the last entry being
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b>And here, we exhausted the list at entry <span class="extract"><span class="extract-syntax">n-1</span></span>, with the last entry being
 pointed to by <span class="extract"><span class="extract-syntax">old_entry</span></span>. We add the new word at the end.
 </p>
 
@@ -537,7 +543,7 @@ pointed to by <span class="extract"><span class="extract-syntax">old_entry</span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_entry</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-vcb.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Partial words. </b>Much the same, except that we enter a fragment of a word into lexical memory
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Partial words. </b>Much the same, except that we enter a fragment of a word into lexical memory
 and then find its identity as if it were a whole word.
 </p>
 
@@ -552,7 +558,7 @@ and then find its identity as if it were a whole word.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-lxr.html#SP19" class="function-link"><span class="function-syntax">Lexer::word</span></a><span class="plain-syntax">(</span><a href="3-wrd.html#SP7" class="function-link"><span class="function-syntax">Wordings::first_wn</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Ordinals. </b>The following parses the string to see if it is a non-negative integer,
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Ordinals. </b>The following parses the string to see if it is a non-negative integer,
 written as an English ordinal: 0th, 1st, 2nd, 3rd, 4th, 5th, ... Note
 that we don't bother to police the finicky rules on which suffix should
 accompany which value (22nd not 22th, and so on).

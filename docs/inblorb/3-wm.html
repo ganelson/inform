@@ -64,7 +64,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="3-wm.html#SP1">&#167;1. Landmarks in the source</a></li><li><a href="3-wm.html#SP3">&#167;3. Styling with CSS</a></li><li><a href="3-wm.html#SP9">&#167;9. Making an HTML page from a template</a></li><li><a href="3-wm.html#SP11">&#167;11. Rendering the source text as HTML pages</a></li><li><a href="3-wm.html#SP12">&#167;12. Pass 1: scanning the source for tables and headings</a></li><li><a href="3-wm.html#SP15">&#167;15. Pass 2: writing the source text pages</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Landmarks in the source. </b>Making a website is not especially tricky. The difficult part is typesetting
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Landmarks in the source. </b>Making a website is not especially tricky. The difficult part is typesetting
 the source text into it, if that's been requested. We will need to do that by
 scanning the source text for typographically significant structures:
 </p>
@@ -88,7 +88,7 @@ scanning the source text for typographically significant structures:
 <span class="plain-syntax">} </span><span class="reserved-syntax">heading</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure table is private to this section.</li><li>The structure heading is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Segments are used to divide the source text into pieces of what we hope will
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Segments are used to divide the source text into pieces of what we hope will
 be a manageable size.
 </p>
 
@@ -155,7 +155,7 @@ opening with "Section I.1".
 <span class="plain-syntax">} </span><span class="reserved-syntax">segment</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure segment is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Styling with CSS. </b>We try to give the template files as much freedom as possible to define
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Styling with CSS. </b>We try to give the template files as much freedom as possible to define
 whatever CSS styles they need, but the template can't see inside the text of
 variables, so Inblorb itself has to choose CSS styles for anything interesting
 that is displayed there. We use the following style names, which a CSS file
@@ -179,7 +179,7 @@ contains other names of classes, these are only needed because "Standard.html"
 or "Standard-Source.html" say so: Inblorb does not mandate them.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In case CSS is not available, we use old-fashioned HTML alternatives:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In case CSS is not available, we use old-fashioned HTML alternatives:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -219,7 +219,7 @@ or "Standard-Source.html" say so: Inblorb does not mandate them.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>In what follows, we will need to have a current typographic style for text,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>In what follows, we will need to have a current typographic style for text,
 and may need to change it at any point inside the paragraph. We represent the
 current style by the global variable <span class="extract"><span class="extract-syntax">current_style</span></span>, which is either <span class="extract"><span class="extract-syntax">NULL</span></span>
 (for ordinary text) or the name of one of the styles above.
@@ -234,7 +234,7 @@ current style by the global variable <span class="extract"><span class="extract-
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_style</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>We also use CSS to manage code indentation, when it's available, since this
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>We also use CSS to manage code indentation, when it's available, since this
 can handle hanging indentation much better.
 </p>
 
@@ -254,7 +254,7 @@ can handle hanging indentation much better.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Each individual paragraph of the source text (which looks like a line to us)
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Each individual paragraph of the source text (which looks like a line to us)
 should then be framed within:
 </p>
 
@@ -289,7 +289,7 @@ should then be framed within:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>In the age of CSS, old-fashioned elements like <span class="extract"><span class="extract-syntax">halign</span></span> for individual table
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>In the age of CSS, old-fashioned elements like <span class="extract"><span class="extract-syntax">halign</span></span> for individual table
 cells are deprecated, so:
 </p>
 
@@ -310,7 +310,7 @@ cells are deprecated, so:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Making an HTML page from a template. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Making an HTML page from a template. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">COPYTO</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -331,7 +331,7 @@ cells are deprecated, so:
 <span class="plain-syntax">    </span><span class="identifier-syntax">COPYTO</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Each line in turn comes here, then.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Each line in turn comes here, then.
 </p>
 
 <p class="commentary">For this to work we rely on the source template containing a <span class="extract"><span class="extract-syntax">&lt;/head&gt;</span></span> tag,
@@ -365,7 +365,7 @@ used by Inform.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">COPYTO</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Rendering the source text as HTML pages. </b>This is a fiddly operation, which requires us to parse the source text and
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Rendering the source text as HTML pages. </b>This is a fiddly operation, which requires us to parse the source text and
 then typeset it appealingly in a whole suite of HTML pages. This necessarily
 involves loops, but our main aim is to complete the process in \(O(N)\)
 running time, where \(N\) is the number of lines in the source text. (Note
@@ -388,7 +388,7 @@ HTML pages.
 <span class="plain-syntax">    </span><a href="3-wm.html#SP15" class="function-link"><span class="function-syntax">Websites::write_source_text_pages</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">template</span><span class="plain-syntax">, </span><span class="identifier-syntax">website_pathname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Pass 1: scanning the source for tables and headings. </b>During this scan, we will maintain the following variables:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Pass 1: scanning the source for tables and headings. </b>During this scan, we will maintain the following variables:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -401,7 +401,7 @@ HTML pages.
 <span class="reserved-syntax">segment</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_segment</span><span class="plain-syntax">; </span><span class="comment-syntax"> the segment which started most recently, or </span><span class="extract"><span class="extract-syntax">NULL</span></span><span class="comment-syntax"> if none has</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">position_of_documentation_bar</span><span class="plain-syntax">; </span><span class="comment-syntax"> line count of the </span><span class="extract"><span class="extract-syntax">---- Documentation ----</span></span><span class="comment-syntax"> line, if there is one</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Pass 1 has running time \(O(N)\) since it calls <span class="extract"><span class="extract-syntax">Websites::scan_source_line</span></span> exactly once
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Pass 1 has running time \(O(N)\) since it calls <span class="extract"><span class="extract-syntax">Websites::scan_source_line</span></span> exactly once
 for each line in the source, and <span class="extract"><span class="extract-syntax">Websites::scan_source_line</span></span> looks only at a single line
 and at the current table, heading and segment.
 </p>
@@ -423,7 +423,7 @@ and at the current table, heading and segment.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-wm.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Adjust heading levels downwards as far as we can without losing relative hierarchy</span><span class="named-paragraph-number">13.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b>Suppose our source contains only headings at levels 3 and 4: we can reduce these
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>Suppose our source contains only headings at levels 3 and 4: we can reduce these
 to levels 0 and 1 without disturbing their relative importance, and that makes it
 easier for us to typeset them in a sensible way &mdash; there's no point making any
 typographic allowance for three sizes of headings greater than are found anywhere
@@ -445,7 +445,7 @@ in the source text.
 <span class="plain-syntax">            </span><span class="identifier-syntax">h</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heading_level</span><span class="plain-syntax"> -= </span><span class="identifier-syntax">minhl</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Here we scan each single line. (Lines to us may look like whole paragraphs
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Here we scan each single line. (Lines to us may look like whole paragraphs
 to the Inform user; we're dealing with gaps between explicit line break
 characters.)
 </p>
@@ -466,7 +466,7 @@ characters.)
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-wm.html#SP14_5" class="named-paragraph-link"><span class="named-paragraph">Place a new heading here</span><span class="named-paragraph-number">14.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b>Looking at the first word, if any, tells whether we are a heading, or the start
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b>Looking at the first word, if any, tells whether we are a heading, or the start
 of a table, or an empty line, or none of these (in which case a line is perhaps
 unfairly called "dull"). We set <span class="extract"><span class="extract-syntax">lv</span></span> accordingly.
 </p>
@@ -503,7 +503,7 @@ unfairly called "dull"). We set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_2"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Correct the comment nesting level ready for next time</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_2" class="paragraph-anchor"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Correct the comment nesting level ready for next time</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -515,7 +515,7 @@ unfairly called "dull"). We set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_3"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a new table here and return</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_3" class="paragraph-anchor"></a><b>&#167;14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start a new table here and return</span><span class="named-paragraph-number">14.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -526,7 +526,7 @@ unfairly called "dull"). We set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_4"></a><b>&#167;14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a table here and return</span><span class="named-paragraph-number">14.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_4" class="paragraph-anchor"></a><b>&#167;14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a table here and return</span><span class="named-paragraph-number">14.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -535,7 +535,7 @@ unfairly called "dull"). We set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_5"></a><b>&#167;14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place a new heading here</span><span class="named-paragraph-number">14.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_5" class="paragraph-anchor"></a><b>&#167;14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place a new heading here</span><span class="named-paragraph-number">14.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -560,7 +560,7 @@ unfairly called "dull"). We set <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_h</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Pass 2: writing the source text pages. </b>Though there is no obvious way that the following routine passes control
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Pass 2: writing the source text pages. </b>Though there is no obvious way that the following routine passes control
 to the routines below it, in fact it does: <span class="extract"><span class="extract-syntax">Websites::web_copy</span></span> works on the template
 and finds reserved variables such as "[SOURCE]"; expanding those then calls
 the routines below.
@@ -582,7 +582,7 @@ the routines below.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-wm.html#SP15_4" class="named-paragraph-link"><span class="named-paragraph">Generate the segment pages</span><span class="named-paragraph-number">15.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1"></a><b>&#167;15.1.  </b>Calling these URLs is a bit grand, since they are only leafnames. The
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>Calling these URLs is a bit grand, since they are only leafnames. The
 source segments have pages <span class="extract"><span class="extract-syntax">source_0.html</span></span> and so on up; the documentation
 pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span> and so on up.
 </p>
@@ -607,7 +607,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out how the segments link together</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out how the segments link together</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -657,7 +657,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_3"></a><b>&#167;15.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate the prefatory page, which isn't a segment</span><span class="named-paragraph-number">15.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_3" class="paragraph-anchor"></a><b>&#167;15.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate the prefatory page, which isn't a segment</span><span class="named-paragraph-number">15.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -666,7 +666,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    </span><a href="3-wm.html#SP9" class="function-link"><span class="function-syntax">Websites::web_copy</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">template</span><span class="plain-syntax">, </span><span class="identifier-syntax">contents_page</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_4"></a><b>&#167;15.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate the segment pages</span><span class="named-paragraph-number">15.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP15_4" class="paragraph-anchor"></a><b>&#167;15.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate the segment pages</span><span class="named-paragraph-number">15.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -680,7 +680,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>This is what "[PAGENUMBER]" in the template becomes.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>This is what "[PAGENUMBER]" in the template becomes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -693,7 +693,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">COPYTO</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>And similarly "[PAGEEXTENT]".
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>And similarly "[PAGEEXTENT]".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -705,7 +705,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">COPYTO</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>And this is what "[SOURCELINKS]" in the template becomes:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>And this is what "[SOURCELINKS]" in the template becomes:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -727,7 +727,7 @@ pages <span class="extract"><span class="extract-syntax">doc_0.html</span></span
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>When working on "[SOURCE]" or "[SOURCENOTES]", we will need to run
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>When working on "[SOURCE]" or "[SOURCENOTES]", we will need to run
 through a segment of the source text, one line at a time. As we do so, we'll
 maintain the following variables, along with <span class="extract"><span class="extract-syntax">current_style</span></span> (for which
 see the CSS discussion above):
@@ -745,7 +745,7 @@ see the CSS discussion above):
 <span class="reserved-syntax">heading</span><span class="plain-syntax"> *</span><span class="identifier-syntax">latest_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> a heading which is always behind the current position</span>
 <span class="reserved-syntax">table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">latest_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> a table which is always behind the current position</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>So this is "[SOURCE]" (if <span class="extract"><span class="extract-syntax">noting_mode</span></span> is <span class="extract"><span class="extract-syntax">FALSE</span></span>) or "[SOURCENOTES]"
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>So this is "[SOURCE]" (if <span class="extract"><span class="extract-syntax">noting_mode</span></span> is <span class="extract"><span class="extract-syntax">FALSE</span></span>) or "[SOURCENOTES]"
 (if <span class="extract"><span class="extract-syntax">TRUE</span></span>).
 </p>
 
@@ -758,7 +758,7 @@ see the CSS discussion above):
 <span class="plain-syntax">    </span><a href="3-wm.html#SP6" class="function-link"><span class="function-syntax">Websites::close_code</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1.  </b>So at the start of the preface or of any segment:
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b>So at the start of the preface or of any segment:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the variables to their state at the start of an HTML page</span><span class="named-paragraph-number">20.1</span></span><span class="comment-syntax"> =</span>
@@ -778,7 +778,7 @@ see the CSS discussion above):
 <span class="plain-syntax">    </span><span class="identifier-syntax">latest_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FIRST_OBJECT</span><span class="plain-syntax">(</span><span class="reserved-syntax">table</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2"></a><b>&#167;20.2.  </b>We expect any use of "[SOURCENOTES]" to come after the relevant
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b>We expect any use of "[SOURCENOTES]" to come after the relevant
 "[SOURCE]", so that looking at <span class="extract"><span class="extract-syntax">next_footnote_number</span></span> will tell us how many
 notes there were.
 </p>
@@ -796,7 +796,7 @@ notes there were.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/p&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3"></a><b>&#167;20.3.  </b>We want to be very careful about running time here. This paragraph will
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3.  </b>We want to be very careful about running time here. This paragraph will
 run about \(H\) times, where \(H\) is the number of headings (in fact at most \(H+1\)
 times and usually a little less); but we might reasonably expect that \(H\)
 is proportional to \(N\), since there's typically a heading every 30 or so
@@ -822,7 +822,7 @@ per segment, where we realise that we've gone too far).
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">source_text</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"can't open source text"</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="3-wm.html#SP21" class="function-link"><span class="function-syntax">Websites::source_write_iterator</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">start</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3_1"></a><b>&#167;20.3.1.  </b>The following simulates the effect of running through the uninteresting lines
+<p class="commentary firstcommentary"><a id="SP20_3_1" class="paragraph-anchor"></a><b>&#167;20.3.1.  </b>The following simulates the effect of running through the uninteresting lines
 before the segment begins:
 </p>
 
@@ -837,7 +837,7 @@ before the segment begins:
 <span class="plain-syntax">        </span><span class="identifier-syntax">latest_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">segment_being_written</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">most_recent_table</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP20_3">&#167;20.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Websites::source_write_iterator</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Websites::source_write_iterator</span></span>:<br/><a href="3-wm.html#SP20_3">&#167;20.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -845,7 +845,7 @@ before the segment begins:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">done_yet</span><span class="plain-syntax">) </span><a href="../../../inweb/docs/foundation-module/4-tf.html#SP7" class="function-link"><span class="function-syntax">TextFiles::lose_interest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>And this is where we write lines. We arrive here with exactly the same line
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>And this is where we write lines. We arrive here with exactly the same line
 count as the scanner observed before on pass 1, so we can validly compare
 our current line count against those stored for tables, headings and segments.
 </p>
@@ -865,7 +865,7 @@ won't be needed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22_1"></a><b>&#167;22.1.  </b>Recall that the source text is divided into an initial portion containing
+<p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1.  </b>Recall that the source text is divided into an initial portion containing
 no headings &mdash; the "preface" &mdash; and then segments, each of which begins with
 a heading.
 </p>
@@ -893,7 +893,7 @@ source text further, so we return <span class="extract"><span class="extract-syn
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_2"></a><b>&#167;22.2.  </b>The segment pages are easier: in this case we allow the line only if it
+<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2.  </b>The segment pages are easier: in this case we allow the line only if it
 lies inside the segment, and otherwise suppress it. Once we've gone beyond
 the segment, we don't need to read any further, so we return <span class="extract"><span class="extract-syntax">TRUE</span></span>.
 </p>
@@ -908,7 +908,7 @@ the segment, we don't need to read any further, so we return <span class="extrac
 <span class="plain-syntax">        </span><a href="3-wm.html#SP23" class="function-link"><span class="function-syntax">Websites::typeset_contents_listing</span></a><span class="plain-syntax">(</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_3"></a><b>&#167;22.3.  </b>In [SOURCENOTES] mode, we detect footnotes in the form of comments in the
+<p class="commentary firstcommentary"><a id="SP22_3" class="paragraph-anchor"></a><b>&#167;22.3.  </b>In [SOURCENOTES] mode, we detect footnotes in the form of comments in the
 source text marked by asterisks; each one is assigned the next footnote
 number, and typeset. All other material is ignored.
 </p>
@@ -942,7 +942,7 @@ number, and typeset. All other material is ignored.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">footnote_comment_level</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">SPAGE</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4"></a><b>&#167;22.4.  </b>In [SOURCE] mode, we need to work out appropriate type styles to embellish
+<p class="commentary firstcommentary"><a id="SP22_4" class="paragraph-anchor"></a><b>&#167;22.4.  </b>In [SOURCE] mode, we need to work out appropriate type styles to embellish
 the line, then indent it suitably, then typeset it character by character.
 </p>
 
@@ -986,7 +986,7 @@ the line, then indent it suitably, then typeset it character by character.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_1"></a><b>&#167;22.4.1.  </b>The type styles are easily applied, so let's do that now. The innermost one
+<p class="commentary firstcommentary"><a id="SP22_4_1" class="paragraph-anchor"></a><b>&#167;22.4.1.  </b>The type styles are easily applied, so let's do that now. The innermost one
 must be colour, since that may change in the course of the line.
 </p>
 
@@ -999,7 +999,7 @@ must be colour, since that may change in the course of the line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_style</span><span class="plain-syntax">) </span><a href="3-wm.html#SP4" class="function-link"><span class="function-syntax">Websites::open_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPAGE</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_style</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>, <a href="3-wm.html#SP22_4_7_1">&#167;22.4.7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_2"></a><b>&#167;22.4.2.  </b>And they end in reverse order, so that they nest properly if need be:
+<p class="commentary firstcommentary"><a id="SP22_4_2" class="paragraph-anchor"></a><b>&#167;22.4.2.  </b>And they end in reverse order, so that they nest properly if need be:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End typographic embellishments</span><span class="named-paragraph-number">22.4.2</span></span><span class="comment-syntax"> =</span>
@@ -1011,7 +1011,7 @@ must be colour, since that may change in the course of the line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">underline</span><span class="plain-syntax">) </span><a href="3-wm.html#SP4" class="function-link"><span class="function-syntax">Websites::close_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPAGE</span><span class="plain-syntax">, </span><span class="string-syntax">"columnhead"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>, <a href="3-wm.html#SP22_4_7_1">&#167;22.4.7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_3"></a><b>&#167;22.4.3.  </b>The heading line of a source text Table is in bold; the column-headings
+<p class="commentary firstcommentary"><a id="SP22_4_3" class="paragraph-anchor"></a><b>&#167;22.4.3.  </b>The heading line of a source text Table is in bold; the column-headings
 line is underlined; and the material inside appears in an HTML table, with
 <span class="extract"><span class="extract-syntax">tabulate</span></span> mode set.
 </p>
@@ -1053,7 +1053,7 @@ combined, the <span class="extract"><span class="extract-syntax">while</span></s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_4"></a><b>&#167;22.4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The top line of the preface or any segment is in bold</span><span class="named-paragraph-number">22.4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_4_4" class="paragraph-anchor"></a><b>&#167;22.4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The top line of the preface or any segment is in bold</span><span class="named-paragraph-number">22.4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1062,7 +1062,7 @@ combined, the <span class="extract"><span class="extract-syntax">while</span></s
 <span class="plain-syntax">            </span><span class="identifier-syntax">embolden</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_5"></a><b>&#167;22.4.5.  </b>See the discussion of <span class="extract"><span class="extract-syntax">latest_table</span></span> above for why the following <span class="extract"><span class="extract-syntax">while</span></span>
+<p class="commentary firstcommentary"><a id="SP22_4_5" class="paragraph-anchor"></a><b>&#167;22.4.5.  </b>See the discussion of <span class="extract"><span class="extract-syntax">latest_table</span></span> above for why the following <span class="extract"><span class="extract-syntax">while</span></span>
 loop also doesn't make our algorithm \(O(N^2)\).
 </p>
 
@@ -1076,7 +1076,7 @@ loop also doesn't make our algorithm \(O(N^2)\).
 <span class="plain-syntax">        </span><span class="identifier-syntax">embolden</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_6"></a><b>&#167;22.4.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The documentation requires some corrections</span><span class="named-paragraph-number">22.4.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_4_6" class="paragraph-anchor"></a><b>&#167;22.4.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The documentation requires some corrections</span><span class="named-paragraph-number">22.4.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1086,7 +1086,7 @@ loop also doesn't make our algorithm \(O(N^2)\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">line_count</span><span class="plain-syntax"> == </span><span class="identifier-syntax">position_of_documentation_bar</span><span class="plain-syntax">) </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Documentation"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7"></a><b>&#167;22.4.7.  </b>We need to do two things: ensure that the character is HTML-safe, which
+<p class="commentary firstcommentary"><a id="SP22_4_7" class="paragraph-anchor"></a><b>&#167;22.4.7.  </b>We need to do two things: ensure that the character is HTML-safe, which
 means escaping out <span class="extract"><span class="extract-syntax">"</span></span>, <span class="extract"><span class="extract-syntax">&lt;</span></span>, <span class="extract"><span class="extract-syntax">&gt;</span></span> and <span class="extract"><span class="extract-syntax">&amp;</span></span> (but nothing else since the HTML
 file will use a UTF-8 encoding, the same as that in the source text); and
 keep track of the opening and closing of comments and quoted matter.
@@ -1132,7 +1132,7 @@ keep track of the opening and closing of comments and quoted matter.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4">&#167;22.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_1"></a><b>&#167;22.4.7.1.  </b>Inside a source-text Table, a tab moves to the next column, so we need to typeset a
+<p class="commentary firstcommentary"><a id="SP22_4_7_1" class="paragraph-anchor"></a><b>&#167;22.4.7.1.  </b>Inside a source-text Table, a tab moves to the next column, so we need to typeset a
 cell boundary in our HTML <span class="extract"><span class="extract-syntax">&lt;table&gt;</span></span>. Outside of that context, a tab is just white
 space and we turn it into a single space.
 </p>
@@ -1151,7 +1151,7 @@ space and we turn it into a single space.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_2"></a><b>&#167;22.4.7.2.  </b>The following enters or exits quoted-matter mode, and is structured so that
+<p class="commentary firstcommentary"><a id="SP22_4_7_2" class="paragraph-anchor"></a><b>&#167;22.4.7.2.  </b>The following enters or exits quoted-matter mode, and is structured so that
 the quotation marks are not coloured &mdash; only the material inside them.
 </p>
 
@@ -1171,7 +1171,7 @@ quotation marks, and this section of code benefits from his careful amendments.
 <span class="plain-syntax">    </span><span class="identifier-syntax">quoted_matter</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">quoted_matter</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_3"></a><b>&#167;22.4.7.3.  </b>On the other hand, the squares around a comment do pick up the colour
+<p class="commentary firstcommentary"><a id="SP22_4_7_3" class="paragraph-anchor"></a><b>&#167;22.4.7.3.  </b>On the other hand, the squares around a comment do pick up the colour
 of the commentary within them. Asterisked comments must end in the same paragraph
 as they begin.
 </p>
@@ -1197,7 +1197,7 @@ as they begin.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_4"></a><b>&#167;22.4.7.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Typeset a close square bracket outside of a string</span><span class="named-paragraph-number">22.4.7.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_4_7_4" class="paragraph-anchor"></a><b>&#167;22.4.7.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Typeset a close square bracket outside of a string</span><span class="named-paragraph-number">22.4.7.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1206,7 +1206,7 @@ as they begin.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">comment_nesting</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="3-wm.html#SP5" class="function-link"><span class="function-syntax">Websites::change_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">SPAGE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_5"></a><b>&#167;22.4.7.5.  </b>Styling applied to I6 verbatim code does not apply to the purely-I7 markers
+<p class="commentary firstcommentary"><a id="SP22_4_7_5" class="paragraph-anchor"></a><b>&#167;22.4.7.5.  </b>Styling applied to I6 verbatim code does not apply to the purely-I7 markers
 "(-" and "-)" around it:
 </p>
 
@@ -1219,7 +1219,7 @@ as they begin.
 <span class="plain-syntax">    </span><span class="identifier-syntax">i6_matter</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_6"></a><b>&#167;22.4.7.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Typeset the closing of I6 verbatim code</span><span class="named-paragraph-number">22.4.7.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP22_4_7_6" class="paragraph-anchor"></a><b>&#167;22.4.7.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Typeset the closing of I6 verbatim code</span><span class="named-paragraph-number">22.4.7.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1228,7 +1228,7 @@ as they begin.
 <span class="plain-syntax">    </span><span class="identifier-syntax">i6_matter</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7">&#167;22.4.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_4_7_3_1"></a><b>&#167;22.4.7.3.1.  </b>The "cue" of a footnote is the reference in the body of the text, which
+<p class="commentary firstcommentary"><a id="SP22_4_7_3_1" class="paragraph-anchor"></a><b>&#167;22.4.7.3.1.  </b>The "cue" of a footnote is the reference in the body of the text, which
 is conventionally printed as a superscript number. We leave that to the
 span <span class="extract"><span class="extract-syntax">notecue</span></span> if we have CSS, and otherwise render in grey superscript.
 </p>
@@ -1245,7 +1245,7 @@ span <span class="extract"><span class="extract-syntax">notecue</span></span> if
 <span class="plain-syntax">    </span><span class="identifier-syntax">next_footnote_number</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-wm.html#SP22_4_7_3">&#167;22.4.7.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>That just leaves the little contents listings &mdash; one for the source, and
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>That just leaves the little contents listings &mdash; one for the source, and
 another for the documentation (if any).
 </p>
 
@@ -1267,7 +1267,7 @@ another for the documentation (if any).
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-wm.html#SP23_1" class="named-paragraph-link"><span class="named-paragraph">Open or close UL tags to move to the new heading level</span><span class="named-paragraph-number">23.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23_1"></a><b>&#167;23.1.  </b>This is how we obtain our nested UL tags: <span class="extract"><span class="extract-syntax">current_level</span></span> starts and ends at
+<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1.  </b>This is how we obtain our nested UL tags: <span class="extract"><span class="extract-syntax">current_level</span></span> starts and ends at
 \(b-1\), and can only change its value by executing the following loops. Since
 it never changes to a value lower than 0 except when returning to \(b-1\) at
 the end, we are always inside at least the outermost <span class="extract"><span class="extract-syntax">&lt;ul&gt;</span></span>, and since the

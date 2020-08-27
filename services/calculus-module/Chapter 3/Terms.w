@@ -15,7 +15,7 @@ type |VALUE|, and |NULL| means "not a constant".
 (c) Functions are pointers to |pcalc_func| structures (see below), and
 |NULL| means "not a function".
 
-Cinders are discussed in //core: Cinders and Deferrals//, and can be ignored for now.
+Cinders are discussed in //imperative: Cinders and Deferrals//, and can be ignored for now.
 
 In order to verify that a proposition makes sense and does not mix up
 incompatible kinds of value, we will need to type-check it, and one part
@@ -217,7 +217,7 @@ void Terms::emit(pcalc_term pt) {
 		if (pt.cinder >= 0) {
 			Calculus::Deferrals::Cinders::emit(pt.cinder);
 		} else {
-			if (ParseTreeUsage::is_phrasal(pt.constant))
+			if (Specifications::is_phrasal(pt.constant))
 				Dash::check_value(pt.constant, NULL);
 			Specifications::Compiler::emit_as_val(K_value, pt.constant);
 		}

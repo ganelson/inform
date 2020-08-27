@@ -37,7 +37,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -47,12 +51,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -65,7 +71,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Goals and non-goals</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Lcons</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Cardinals and ordinals</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Stock for noun phrases</a></li><li><a href="P-wtmd.html#SP13">&#167;13. Stock for verb phrases</a></li><li><a href="P-wtmd.html#SP17">&#167;17. Performance in practice</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The linguistics module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The linguistics module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -79,7 +85,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Goals and non-goals. </b>The linguistics module aims to provide Preform grammar capable to taking a
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Goals and non-goals. </b>The linguistics module aims to provide Preform grammar capable to taking a
 verb phrase of natural language and parsing it into a "diagram" somewhat like
 the ones students draw in school grammar classes. For example,
 </p>
@@ -107,7 +113,7 @@ and "to be" to <a href="3-vrb.html#SP1" class="internal">verb</a>. The instances
 together, form what is called the "stock".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>To be clear, though:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>To be clear, though:
 </p>
 
 <ul class="items"><li>(a) The stock is a range of possibilities and not a tally of what actually
@@ -140,7 +146,7 @@ her own way to define what verbs actually mean.
 as the <a href="2-daq.html#SP2" class="internal">quantifier</a> object <span class="extract"><span class="extract-syntax">for_all_quantifier</span></span>; and the cardinal "six"
 always means 6.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>This module is designed to work closely with the <a href="../inflections-module/index.html" class="internal">inflections</a> module,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>This module is designed to work closely with the <a href="../inflections-module/index.html" class="internal">inflections</a> module,
 and the demarcation line between the two is that <a href="../inflections-module/index.html" class="internal">inflections</a> knows nothing
 about the meaning or usage of words, while <a href="index.html" class="internal">linguistics</a> is largely free
 to ignore the complications brought in by inflected forms of words.
@@ -154,7 +160,7 @@ noun cases. Our goal here is that the stock should never contain two different
 instances which merely represent inflected forms of the same thing.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Lcons. </b>An "lcon" is a reference to something in the linguistic stock, together with
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Lcons. </b>An "lcon" is a reference to something in the linguistic stock, together with
 annotations for the grammatical form used on a particular occasion. For
 example, an lcon can mean "the indefinite article, in the third person
 plural feminine form", where the stock item is just the indefinite article.
@@ -166,7 +172,7 @@ allocated to create lcons, and they copy with value semantics.
 see <a href="1-sc.html" class="internal">Stock Control</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Cardinals and ordinals. </b>This module does not aspire to parse the full range of literals understood
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Cardinals and ordinals. </b>This module does not aspire to parse the full range of literals understood
 by, for example, Inform. But it does provide &lt;cardinal-number&gt; and
 &lt;ordinal-number&gt; nonterminals, which can recognise low numbers in words
 or arbitrary numbers in digits. See <a href="1-cao.html" class="internal">Cardinals and Ordinals</a>.
@@ -177,12 +183,12 @@ for them to be so: we would need a potentially infinite number of them to
 accommodate the possible range of integers which appear.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Stock for noun phrases. </b>For convenience we will run through the stock in two sets: those grammatical
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Stock for noun phrases. </b>For convenience we will run through the stock in two sets: those grammatical
 categories used in noun phrases, and provided by <a href="2-adj.html" class="internal">Chapter 2: NP Categories</a>; and those
 used in verb phrases, <a href="3-vrb.html" class="internal">Chapter 3: VP Categories</a>. In alphabetical order:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Each adjective in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. All senses of
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Each adjective in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. All senses of
 the same adjectival word &mdash; "empty", say &mdash; are represented by the same
 <a href="2-adj.html#SP1" class="internal">adjective</a>: it's for the user to manage multiple meanings, and to deduce
 which one applies from the context.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
@@ -194,14 +200,14 @@ which one applies from the context.<sup id="fnref:4"><a href="#fn:4" rel="footno
 <ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In Inform, for example, empty means something different for rulebooks
 than for containers. An adjective is a unary predicate applying to something,
 and the kind of that thing can be used to decide which meaning applies. See
-<a href="../core-module/7-am.html" class="internal">Adjective Meanings (in core)</a> for how Inform does this.
+<a href="../assertions-module/5-am.html" class="internal">Adjective Meanings (in assertions)</a> for how Inform does this.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Each article in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. The stock is fixed
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Each article in the stock is an instance of <a href="2-adj.html#SP1" class="internal">adjective</a>. The stock is fixed
 at two, both automatically created: the definite and the indefinite article.
 See <a href="2-art.html" class="internal">Articles</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The determiners are a fixed stock of roughly 20, each being an instance of
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The determiners are a fixed stock of roughly 20, each being an instance of
 the class <a href="2-daq.html#SP4" class="internal">determiner</a>. Properly speaking some are families of determiners &mdash;
 "all but three" and "all but six" are the same <a href="2-daq.html#SP4" class="internal">determiner</a> but with a
 different numerical parameter. But others, like "most of", have fixed wording.
@@ -212,7 +218,7 @@ See <a href="2-daq.html" class="internal">Determiners and Quantifiers</a>.
 <ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Inform makes heavy use of these quantifiers when representing the meaning
 of sentences in predicate calculus, but that's beyond the scope of this module.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Each noun in the stock is an instance of <a href="2-nns.html#SP3" class="internal">noun</a>. Unlike with <a href="2-adj.html#SP1" class="internal">adjective</a>,
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Each noun in the stock is an instance of <a href="2-nns.html#SP3" class="internal">noun</a>. Unlike with <a href="2-adj.html#SP1" class="internal">adjective</a>,
 when the same noun word has multiple meanings, it gets multiple <a href="2-nns.html#SP3" class="internal">noun</a> objects,
 one for each meaning.<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Nouns divide into two subclasses: common nouns, such
 as "monument", and proper nouns, such as "Statue of Liberty".<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
@@ -231,12 +237,12 @@ added to the stock, "Mary" and "kite", unless "kite" is already known as a
 common noun. This is because "the kite", from then on, will be understood
 as referring to this one specific object, just as "Mary" will.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Each pronoun in the stock is an instance of <a href="2-prn.html#SP1" class="internal">pronoun</a>. The stock is fixed
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Each pronoun in the stock is an instance of <a href="2-prn.html#SP1" class="internal">pronoun</a>. The stock is fixed
 at three, all automatically created: the subject (he, she), object (him, her)
 and possessive (his, her) pronouns. See <a href="2-prn.html" class="internal">Pronouns</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Stock for verb phrases. </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Stock for verb phrases. </b></p>
 
 <p class="commentary">Adverb phrases of occurrence refers to wording such as "for the sixth time".
 The stock of these is fixed, though as with determiners, each is really a
@@ -245,11 +251,11 @@ that is, repetitions, and the one measuring "turns", a purely
 interactive-fictional construction useful to Inform. See <a href="3-apoo.html" class="internal">Adverb Phrases of Occurrence</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Adverbs of certainty are words like "usually" or "always". There is a fixed
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Adverbs of certainty are words like "usually" or "always". There is a fixed
 stock of these, at five certainty levels. See <a href="3-aoc.html" class="internal">Adverbs of Certainty</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Prepositions are phrases like "over" or "on top of". Each is an instance of
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Prepositions are phrases like "over" or "on top of". Each is an instance of
 the <a href="3-prp.html#SP1" class="internal">preposition</a> class. See <a href="3-prp.html" class="internal">Prepositions</a>.
 </p>
 
@@ -260,7 +266,7 @@ linguistically ideal, but makes it possible to parse auxiliary uses of
 "to be" efficiently, as in "X is carried by Y".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>Each verb in the stock is an instance of <a href="3-vrb.html#SP1" class="internal">verb</a>. For example, "to carry"
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Each verb in the stock is an instance of <a href="3-vrb.html#SP1" class="internal">verb</a>. For example, "to carry"
 or "to be" might be verbs. One verb in the stock is special and is the
 copular verb &mdash; in English, that's "to be". A copular verb is one which has two
 interacting subject phrases rather than a subject and an object.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
@@ -292,7 +298,7 @@ See <a href="3-vu.html" class="internal">Verb Usages</a>.
 asymmetric roles because the action is done by Peter but to the ball, and
 "Peter is the mayor", where two nouns are equated in a symmetrical sort of way.
 <a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Performance in practice. </b>The following tabulates the linguistic stock accumulated by a typical Inform 7
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Performance in practice. </b>The following tabulates the linguistic stock accumulated by a typical Inform 7
 compilation (the same one used to generate the data in <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>).
 Within each categpry, items are listed in order of creation.
 </p>
@@ -300,13 +306,13 @@ Within each categpry, items are listed in order of creation.
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">adjective: 137 items</span>
 <span class="plain-syntax">article: 2 items</span>
-<span class="plain-syntax">noun: 2381 items</span>
+<span class="plain-syntax">noun: 2379 items</span>
 <span class="plain-syntax">pronoun: 8 items</span>
 <span class="plain-syntax">preposition: 273 items</span>
 <span class="plain-syntax">determiner: 22 items</span>
 <span class="plain-syntax">verb: 108 items</span>
 <span class="plain-syntax">verb_form: 386 items</span>
-<span class="plain-syntax">total in all categories: 3317</span>
+<span class="plain-syntax">total in all categories: 3315</span>
 
 <span class="plain-syntax">adjective: 'even'</span>
 <span class="plain-syntax">adjective: 'odd'</span>
@@ -450,13 +456,11 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">article: indefinite</span>
 
 <span class="plain-syntax">noun: common: 'value'</span>
-<span class="plain-syntax">noun: common: 'pointer value'</span>
-<span class="plain-syntax">noun: common: 'word value'</span>
+<span class="plain-syntax">noun: common: 'sayable value'</span>
+<span class="plain-syntax">noun: common: 'understandable value'</span>
 <span class="plain-syntax">noun: common: 'arithmetic value'</span>
 <span class="plain-syntax">noun: common: 'real arithmetic value'</span>
 <span class="plain-syntax">noun: common: 'enumerated value'</span>
-<span class="plain-syntax">noun: common: 'sayable value'</span>
-<span class="plain-syntax">noun: common: 'combined value of any arity'</span>
 <span class="plain-syntax">noun: common: 'object'</span>
 <span class="plain-syntax">noun: common: 'number'</span>
 <span class="plain-syntax">noun: common: 'real number'</span>
@@ -491,13 +495,6 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">noun: common: 'sound name'</span>
 <span class="plain-syntax">noun: common: 'topic'</span>
 <span class="plain-syntax">noun: proper: 'equality relation'</span>
-<span class="plain-syntax">noun: proper: 'provision relation'</span>
-<span class="plain-syntax">noun: proper: 'universal relation'</span>
-<span class="plain-syntax">noun: proper: 'meaning relation'</span>
-<span class="plain-syntax">noun: proper: 'numerically-greater-than relation'</span>
-<span class="plain-syntax">noun: proper: 'numerically-less-than relation'</span>
-<span class="plain-syntax">noun: proper: 'numerically-greater-than-or-equal-to relation'</span>
-<span class="plain-syntax">noun: proper: 'numerically-less-than-or-equal-to relation'</span>
 <span class="plain-syntax">noun: proper: 'containment relation'</span>
 <span class="plain-syntax">noun: proper: 'support relation'</span>
 <span class="plain-syntax">noun: proper: 'incorporation relation'</span>
@@ -512,6 +509,13 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">noun: proper: 'enclosure relation'</span>
 <span class="plain-syntax">noun: proper: 'adjacency relation'</span>
 <span class="plain-syntax">noun: proper: 'regional-containment relation'</span>
+<span class="plain-syntax">noun: proper: 'numerically-greater-than relation'</span>
+<span class="plain-syntax">noun: proper: 'numerically-less-than relation'</span>
+<span class="plain-syntax">noun: proper: 'numerically-greater-than-or-equal-to relation'</span>
+<span class="plain-syntax">noun: proper: 'numerically-less-than-or-equal-to relation'</span>
+<span class="plain-syntax">noun: proper: 'universal relation'</span>
+<span class="plain-syntax">noun: proper: 'meaning relation'</span>
+<span class="plain-syntax">noun: proper: 'provision relation'</span>
 <span class="plain-syntax">noun: proper: 'variable initial value'</span>
 <span class="plain-syntax">noun: proper: 'property variable initial value'</span>
 <span class="plain-syntax">noun: proper: 'specification'</span>
@@ -1168,11 +1172,7 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">noun: proper: 'particular possession'</span>
 <span class="plain-syntax">noun: proper: 'player's command'</span>
 <span class="plain-syntax">noun: proper: 'matched text'</span>
-<span class="plain-syntax">noun: proper: 'number understood'</span>
-<span class="plain-syntax">noun: proper: 'real number understood'</span>
-<span class="plain-syntax">noun: proper: 'time understood'</span>
 <span class="plain-syntax">noun: proper: 'topic understood'</span>
-<span class="plain-syntax">noun: proper: 'truth state understood'</span>
 <span class="plain-syntax">noun: proper: 'current item from the multiple object list'</span>
 <span class="plain-syntax">noun: proper: 'command prompt'</span>
 <span class="plain-syntax">noun: proper: 'left hand status line'</span>
@@ -2782,7 +2782,11 @@ Within each categpry, items are listed in order of creation.
 <span class="plain-syntax">noun: proper: 'last thing named'</span>
 <span class="plain-syntax">noun: proper: 'last person named'</span>
 <span class="plain-syntax">noun: proper: 'group size'</span>
+<span class="plain-syntax">noun: proper: 'number understood'</span>
+<span class="plain-syntax">noun: proper: 'real number understood'</span>
+<span class="plain-syntax">noun: proper: 'truth state understood'</span>
 <span class="plain-syntax">noun: proper: 'external file understood'</span>
+<span class="plain-syntax">noun: proper: 'time understood'</span>
 <span class="plain-syntax">noun: proper: 'scene understood'</span>
 <span class="plain-syntax">noun: proper: 'figure name understood'</span>
 <span class="plain-syntax">noun: proper: 'sound name understood'</span>

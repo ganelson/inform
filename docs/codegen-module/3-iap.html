@@ -54,7 +54,11 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -64,12 +68,14 @@ MathJax = {
 <li><a href="index.html"><span class="selectedlink">codegen</span></a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -82,7 +88,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="3-iap.html#SP2">&#167;2. Representing instances in I6</a></li><li><a href="3-iap.html#SP3">&#167;3. Representing properties in I6</a></li><li><a href="3-iap.html#SP4">&#167;4. Properties</a></li><li><a href="3-iap.html#SP5_7">&#167;5.7. The kind inheritance tree</a></li><li><a href="3-iap.html#SP5_8">&#167;5.8. Lookup mechanism for properties of value instances</a></li><li><a href="3-iap.html#SP6">&#167;6. Instances</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">properties_written</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -141,7 +147,7 @@ MathJax = {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Representing instances in I6. </b>Partly for historical reasons, partly to squeeze performance out of the
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Representing instances in I6. </b>Partly for historical reasons, partly to squeeze performance out of the
 virtual machines used in traditional parser IF, the I6 run-time
 implementation of instances and their properties is complicated.
 </p>
@@ -163,7 +169,7 @@ example, if there are scenes called "entire game", "Overture" and "Grand
 Finale", then these are stored as the constants 1, 2, 3; and I6 constants are
 defined to represent them.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Representing properties in I6. </b>Both sorts of instance can have properties; for example:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Representing properties in I6. </b>Both sorts of instance can have properties; for example:
 </p>
 
 <blockquote>
@@ -208,7 +214,7 @@ property storage is slightly more compact for value instances, which is
 probably the right bargain.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Properties. </b>Properties in I7 are of two sorts: either-or, which behave adjectivally,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Properties. </b>Properties in I7 are of two sorts: either-or, which behave adjectivally,
 such as "open"; and value, which behave as nouns, such as "carrying capacity".
 We can distinguish these because the I7 compiler annotates the property name
 symbols with the <span class="extract"><span class="extract-syntax">EITHER_OR_IANN</span></span> flag. It also always gives either-or
@@ -244,7 +250,7 @@ limited number can be stored this way. Here we choose which.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>The dodge of using an attribute to store an either-or property won't work
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>The dodge of using an attribute to store an either-or property won't work
 for properties of value instances, because then the value-property-holder
 object couldn't store the necessary table address (see next section). So we
 must rule out any property which might belong to any value.
@@ -275,7 +281,7 @@ must rule out any property which might belong to any value.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b>An either/or property which has been deliberately equated to an I6
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>An either/or property which has been deliberately equated to an I6
 template attribute with a sentence like...
 </p>
 
@@ -295,7 +301,7 @@ to it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">translated</span><span class="plain-syntax">) </span><span class="identifier-syntax">make_attribute</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b>We have in theory 48 Attribute slots to use up, that being the number
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>We have in theory 48 Attribute slots to use up, that being the number
 available in versions 5 and higher of the Z-machine, but the I6 template
 layer consumes so many that only a few slots remain for the user's own
 creations. Giving these away to the first-created properties is the
@@ -318,7 +324,7 @@ to be frequently used.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b>At present the I7 compiler makes a decision matching this one for its
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b>At present the I7 compiler makes a decision matching this one for its
 own internal needs. We want to make sure its decision matches ours, so we
 check that here. (It tells us by marking the property name with the
 <span class="extract"><span class="extract-syntax">ATTRIBUTE_IANN</span></span> annotation.) But this code will eventually go.
@@ -337,7 +343,7 @@ check that here. (It tells us by marking the property name with the
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_5"></a><b>&#167;4.5.  </b>A curiosity of I6 is that attributes must be declared before use, whereas
+<p class="commentary firstcommentary"><a id="SP4_5" class="paragraph-anchor"></a><b>&#167;4.5.  </b>A curiosity of I6 is that attributes must be declared before use, whereas
 properties need not be. We generate suitable <span class="extract"><span class="extract-syntax">Attribute</span></span> statements here.
 Note that if the property has been translated onto an existing I6 name, then
 we assume that's the name of an attribute already declared (for example
@@ -360,7 +366,7 @@ in the I6 template, or some extension), and we therefore do nothing.
 <span class="plain-syntax">    </span><a href="3-cg.html#SP5" class="function-link"><span class="function-syntax">CodeGen::deselect</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">saved</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_6"></a><b>&#167;4.6.  </b>The weak point in our scheme for making some either/or properties into
+<p class="commentary firstcommentary"><a id="SP4_6" class="paragraph-anchor"></a><b>&#167;4.6.  </b>The weak point in our scheme for making some either/or properties into
 Attributes is that run-time code is going to need a fast way to determine
 which, since they have to be accessed differently. We rely on the facts that
 </p>
@@ -394,7 +400,7 @@ compiles an I6 constant for this value.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>It's unlikely, but just possible, that no FBNAs ever exist, so after the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>It's unlikely, but just possible, that no FBNAs ever exist, so after the
 above has been tried on all properties:
 </p>
 
@@ -433,7 +439,7 @@ above has been tried on all properties:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-iap.html#SP5_12" class="named-paragraph-link"><span class="named-paragraph">Stub the properties</span><span class="named-paragraph-number">5.12</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of properties in source order</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of properties in source order</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -489,7 +495,7 @@ above has been tried on all properties:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of kinds in source order</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of kinds in source order</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -506,7 +512,7 @@ above has been tried on all properties:
 <span class="plain-syntax">        </span><a href="3-iap.html#SP7" class="function-link"><span class="function-syntax">CodeGen::IP::compare_kind_symbols</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of kinds in declaration order</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of kinds in declaration order</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -521,7 +527,7 @@ above has been tried on all properties:
 <span class="plain-syntax">        </span><a href="3-iap.html#SP7" class="function-link"><span class="function-syntax">CodeGen::IP::compare_kind_symbols_decl</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of instances in declaration order</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a list of instances in declaration order</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -538,7 +544,7 @@ above has been tried on all properties:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5"></a><b>&#167;5.5.  </b>But there's a snag. The above assumes that property values will have the
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5.  </b>But there's a snag. The above assumes that property values will have the
 same ordering at run-time as their definition order here, but that isn't
 necessarily true. The run-time ordering depends on how early in the I6
 source code they appear, and that in turn depends on which objects have
@@ -572,7 +578,7 @@ bother to force them.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate kinds of object with a sequence counter</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate kinds of object with a sequence counter</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -584,7 +590,7 @@ bother to force them.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7"></a><b>&#167;5.7. The kind inheritance tree. </b>We begin with an array providing metadata on the kinds of object: there
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7. The kind inheritance tree. </b>We begin with an array providing metadata on the kinds of object: there
 are just two words per kind &mdash; the Inform 6 class corresponding to the kind,
 then the instance count for its own kind. For instance, "door" is usually
 kind number 4, so it occupies record 4 in this array &mdash; words 8 and 9. Word
@@ -625,7 +631,7 @@ property usage is legal.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8"></a><b>&#167;5.8. Lookup mechanism for properties of value instances. </b>As noted above, if <span class="extract"><span class="extract-syntax">K</span></span> is a kind which can have properties but is not a subkind
+<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8. Lookup mechanism for properties of value instances. </b>As noted above, if <span class="extract"><span class="extract-syntax">K</span></span> is a kind which can have properties but is not a subkind
 of object, then a property for instances of <span class="extract"><span class="extract-syntax">K</span></span> is stored in an array called
 a "stick". At run-time, given the property number and <span class="extract"><span class="extract-syntax">K</span></span>, we will need to find
 where in memory the correct stick is, and this needs to be quick.
@@ -688,7 +694,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_1"></a><b>&#167;5.8.1.  </b>It's convenient to be able to distinguish, at run-time, which objects are
+<p class="commentary firstcommentary"><a id="SP5_8_1" class="paragraph-anchor"></a><b>&#167;5.8.1.  </b>It's convenient to be able to distinguish, at run-time, which objects are
 the VPH objects used only for kind-property indexing; we can test if <span class="extract"><span class="extract-syntax">O</span></span> is
 such an object with the I6 condition <span class="extract"><span class="extract-syntax">(O ofclass VPH_Class)</span></span>.
 </p>
@@ -705,7 +711,7 @@ words, the number of instances of this kind.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Class VPH_Class;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8">&#167;5.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_2"></a><b>&#167;5.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide who gets a VPH</span><span class="named-paragraph-number">5.8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_8_2" class="paragraph-anchor"></a><b>&#167;5.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide who gets a VPH</span><span class="named-paragraph-number">5.8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -730,11 +736,11 @@ words, the number of instances of this kind.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8">&#167;5.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP_1"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look through this frame list of permissions</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP_1" class="paragraph-anchor"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look through this frame list of permissions</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <ul class="endnotetexts"><li>This code is never used.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_3"></a><b>&#167;5.8.3.  </b>This array is indexed by the weak kind ID of <span class="extract"><span class="extract-syntax">K</span></span>. The entry is 0 if <span class="extract"><span class="extract-syntax">K</span></span>
+<p class="commentary firstcommentary"><a id="SP5_8_3" class="paragraph-anchor"></a><b>&#167;5.8.3.  </b>This array is indexed by the weak kind ID of <span class="extract"><span class="extract-syntax">K</span></span>. The entry is 0 if <span class="extract"><span class="extract-syntax">K</span></span>
 doesn't have a VPH, or the object number of its VPH if it has.
 </p>
 
@@ -761,7 +767,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-iap.html#SP5_8_3_1" class="named-paragraph-link"><span class="named-paragraph">Stub a faux VPH if none have otherwise been created</span><span class="named-paragraph-number">5.8.3.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8">&#167;5.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_3_1"></a><b>&#167;5.8.3.1.  </b>In the event that no value instances have properties, there'll be no
+<p class="commentary firstcommentary"><a id="SP5_8_3_1" class="paragraph-anchor"></a><b>&#167;5.8.3.1.  </b>In the event that no value instances have properties, there'll be no
 instances of the <span class="extract"><span class="extract-syntax">VPH_Class</span></span>, and no I6 object will be compiled with a
 <span class="extract"><span class="extract-syntax">value_range</span></span> property; that means I6 code referring to this will fail with an
 I6 error. We don't want that, so if necessary we compile a useless VPH object
@@ -775,7 +781,7 @@ just to force the property into being.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vph</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"VPH_Class UnusedVPH with value_range 0;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8_3">&#167;5.8.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_4"></a><b>&#167;5.8.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of permissions</span><span class="named-paragraph-number">5.8.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_8_4" class="paragraph-anchor"></a><b>&#167;5.8.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of permissions</span><span class="named-paragraph-number">5.8.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -799,7 +805,7 @@ just to force the property into being.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8">&#167;5.8</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_4_1"></a><b>&#167;5.8.4.1.  </b>These little arrays are sticks of property values, and they are laid out
+<p class="commentary firstcommentary"><a id="SP5_8_4_1" class="paragraph-anchor"></a><b>&#167;5.8.4.1.  </b>These little arrays are sticks of property values, and they are laid out
 as if they were column arrays in a Table data structure. This means they must
 be <span class="extract"><span class="extract-syntax">table</span></span> arrays (which wastes one word of memory) and must have blanked-out
 table column header words at the front (which wastes a further <span class="extract"><span class="extract-syntax">COL_HSIZE</span></span>
@@ -840,7 +846,7 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">sticks</span><span class="plain-syntax">, </span><span class="string-syntax">";\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8_4">&#167;5.8.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_4_1_1"></a><b>&#167;5.8.4.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of values</span><span class="named-paragraph-number">5.8.4.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_8_4_1_1" class="paragraph-anchor"></a><b>&#167;5.8.4.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work through this frame list of values</span><span class="named-paragraph-number">5.8.4.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -860,7 +866,7 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_8_4_1">&#167;5.8.4.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_9"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an I6 Class definition for each kind of object</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_9" class="paragraph-anchor"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an I6 Class definition for each kind of object</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -880,7 +886,7 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_10"></a><b>&#167;5.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an I6 Object definition for each object instance</span><span class="named-paragraph-number">5.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_10" class="paragraph-anchor"></a><b>&#167;5.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write an I6 Object definition for each object instance</span><span class="named-paragraph-number">5.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -891,7 +897,7 @@ because I6 doesn't allow function calls in a constant context.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11"></a><b>&#167;5.11.  </b>The following lets the run-time environment know what properties are
+<p class="commentary firstcommentary"><a id="SP5_11" class="paragraph-anchor"></a><b>&#167;5.11.  </b>The following lets the run-time environment know what properties are
 called, and which kinds of object are allowed to have them. This might look
 a little odd: why does the run-time code need to know any of that?
 </p>
@@ -951,7 +957,7 @@ though this won't happen for any property created by I7 source text.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11_1"></a><b>&#167;5.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the property name in double quotes</span><span class="named-paragraph-number">5.11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_11_1" class="paragraph-anchor"></a><b>&#167;5.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the property name in double quotes</span><span class="named-paragraph-number">5.11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -963,7 +969,7 @@ though this won't happen for any property created by I7 source text.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pos</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_11">&#167;5.11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11_2"></a><b>&#167;5.11.2.  </b>A complete list here would be wasteful both of space and run-time
+<p class="commentary firstcommentary"><a id="SP5_11_2" class="paragraph-anchor"></a><b>&#167;5.11.2.  </b>A complete list here would be wasteful both of space and run-time
 checking time, but we only need a list \(O_1, O_2, ..., O_k\) such that for
 each \(W\) allowed to have the property, either \(W = O_i\) for some \(i\), or
 \(W\) is of kind \(O_i\) for some \(i\) (perhaps indirectly).
@@ -996,7 +1002,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_11">&#167;5.11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11_2_1"></a><b>&#167;5.11.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List any O with an explicit permission</span><span class="named-paragraph-number">5.11.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_11_2_1" class="paragraph-anchor"></a><b>&#167;5.11.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List any O with an explicit permission</span><span class="named-paragraph-number">5.11.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1028,7 +1034,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_11_2">&#167;5.11.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11_2_2"></a><b>&#167;5.11.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">5.11.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_11_2_2" class="paragraph-anchor"></a><b>&#167;5.11.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">List all top-level kinds if "object" itself has an explicit permission</span><span class="named-paragraph-number">5.11.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1050,7 +1056,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5_11_2">&#167;5.11.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_12"></a><b>&#167;5.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stub the properties</span><span class="named-paragraph-number">5.12</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_12" class="paragraph-anchor"></a><b>&#167;5.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stub the properties</span><span class="named-paragraph-number">5.12</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1062,7 +1068,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-iap.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Instances. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Instances. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::IP::instance</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">CodeGen::IP::instance</span></span>:<br/>Frame Control - <a href="3-fc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
@@ -1085,7 +1091,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::IP::pnum</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">CodeGen::IP::pnum</span></span>:<br/><a href="3-iap.html#SP5_8_4_1">&#167;5.8.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop_name</span><span class="plain-syntax">) {</span>
@@ -1135,7 +1141,7 @@ linearly with the size of the source text, even though \(N\) does.
 <span class="plain-syntax">}</span>
 
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>For the I6 header syntax, see the DM4. Note that the "hardwired" short
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>For the I6 header syntax, see the DM4. Note that the "hardwired" short
 name is intentionally made blank: we always use I6's <span class="extract"><span class="extract-syntax">short_name</span></span> property
 instead. I7's spatial plugin, if loaded (as it usually is), will have
 annotated the Inter symbol for the object with an arrow count, that is,
@@ -1231,7 +1237,7 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::IP::is_kind_of_object</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">CodeGen::IP::is_kind_of_object</span></span>:<br/><a href="3-iap.html#SP4_1">&#167;4.1</a>, <a href="3-iap.html#SP5_6">&#167;5.6</a>, <a href="3-iap.html#SP5_7">&#167;5.7</a>, <a href="3-iap.html#SP5_8_2">&#167;5.8.2</a>, <a href="3-iap.html#SP5_9">&#167;5.9</a>, <a href="3-iap.html#SP5_11_2_1">&#167;5.11.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kind_name</span><span class="plain-syntax">) {</span>
@@ -1242,7 +1248,7 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Counting kinds of object, not very quickly:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Counting kinds of object, not very quickly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

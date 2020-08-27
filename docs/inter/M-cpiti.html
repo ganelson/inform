@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -60,7 +66,7 @@
 
 <ul class="toc"><li><a href="M-cpiti.html#SP1">&#167;1. Code packages</a></li><li><a href="M-cpiti.html#SP2">&#167;2. Local variables</a></li><li><a href="M-cpiti.html#SP3">&#167;3. Labels</a></li><li><a href="M-cpiti.html#SP4">&#167;4. Primitive invocations</a></li><li><a href="M-cpiti.html#SP6">&#167;6. Function invocations</a></li><li><a href="M-cpiti.html#SP7">&#167;7. Val and cast</a></li><li><a href="M-cpiti.html#SP8">&#167;8. Ref, lab and code</a></li><li><a href="M-cpiti.html#SP9">&#167;9. Evaluation and reference</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Code packages. </b>To recap: a file of textual inter has a brief global section at the top, and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Code packages. </b>To recap: a file of textual inter has a brief global section at the top, and
 is then a hierarchiy of package definitions. Each package begins with a
 symbols table, but then has contents which depend on its type. This section
 covers the possible contents for a code package, that is, one whose type
@@ -72,7 +78,7 @@ that there is no way for a code package to contain sub-packages. Conceptually,
 a code package is a single executable function.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Local variables. </b>The statement <span class="extract"><span class="extract-syntax">local NAME KIND</span></span> gives the code package a local variable;
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Local variables. </b>The statement <span class="extract"><span class="extract-syntax">local NAME KIND</span></span> gives the code package a local variable;
 the <span class="extract"><span class="extract-syntax">NAME</span></span> must be a private <span class="extract"><span class="extract-syntax">misc</span></span> symbol in the package's symbols table.
 Local variable definitions should be made after the symbols table and before
 the <span class="extract"><span class="extract-syntax">code</span></span> statement. When the function is called at run-time, its
@@ -88,7 +94,7 @@ So for example, if:
 <p class="commentary">then a call <span class="extract"><span class="extract-syntax">Double(6)</span></span> would begin executing with <span class="extract"><span class="extract-syntax">x</span></span> equal to 6.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Labels. </b>Like labels in any assembly language, these are named reference points in the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Labels. </b>Like labels in any assembly language, these are named reference points in the
 code; they are written <span class="extract"><span class="extract-syntax">NAME</span></span>, where <span class="extract"><span class="extract-syntax">NAME</span></span> must be a private <span class="extract"><span class="extract-syntax">label</span></span> symbol
 in the package's symbols table, and must begin with a full stop <span class="extract"><span class="extract-syntax">.</span></span>.
 </p>
@@ -103,7 +109,7 @@ final statement in the package, and contains the actual body code.
 <span class="plain-syntax">            </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_text</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello World!\n"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Primitive invocations. </b>Other than labels and locals, code is a series of "invocations". An invocation
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Primitive invocations. </b>Other than labels and locals, code is a series of "invocations". An invocation
 is a use of either another function, or of a primitive.
 </p>
 
@@ -160,7 +166,7 @@ the primitives you use, so in effect this is the standard set. Details of
 these primitives and what they do will appear below.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>A primitive is invoked by <span class="extract"><span class="extract-syntax">inv PRIMITIVE</span></span>, with any necessary inputs,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>A primitive is invoked by <span class="extract"><span class="extract-syntax">inv PRIMITIVE</span></span>, with any necessary inputs,
 matching the <span class="extract"><span class="extract-syntax">IN</span></span> part of its signature, occurring on subsequent lines
 indented one tab stop in. For example:
 </p>
@@ -205,7 +211,7 @@ primitive. Comparing the declarations of <span class="extract"><span class="extr
 value context.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Function invocations. </b>The same statement, <span class="extract"><span class="extract-syntax">inv</span></span>, is also used to call functions which are not
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Function invocations. </b>The same statement, <span class="extract"><span class="extract-syntax">inv</span></span>, is also used to call functions which are not
 primitive: that is, functions which are defined by code packages.
 </p>
 
@@ -244,7 +250,7 @@ at its kind <span class="extract"><span class="extract-syntax">K_number_to_numbe
 invocation must be <span class="extract"><span class="extract-syntax">val -&gt; val</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Val and cast. </b>As has already been seen in the above examples, <span class="extract"><span class="extract-syntax">val KIND VALUE</span></span> can be
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Val and cast. </b>As has already been seen in the above examples, <span class="extract"><span class="extract-syntax">val KIND VALUE</span></span> can be
 used in value context to supply an argument for a function or primitive.
 </p>
 
@@ -286,7 +292,7 @@ imagine something like this:
 <span class="plain-syntax">        </span><span class="reserved-syntax">cast</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> &lt;- </span><span class="identifier-syntax">K_truth_state</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax"> flag2</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Ref, lab and code. </b>Just as <span class="extract"><span class="extract-syntax">val</span></span> supplies a value as needed by a <span class="extract"><span class="extract-syntax">val</span></span> term in an invocation
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Ref, lab and code. </b>Just as <span class="extract"><span class="extract-syntax">val</span></span> supplies a value as needed by a <span class="extract"><span class="extract-syntax">val</span></span> term in an invocation
 signature, so <span class="extract"><span class="extract-syntax">ref</span></span>, <span class="extract"><span class="extract-syntax">lab</span></span> and <span class="extract"><span class="extract-syntax">code</span></span> meet the other possible requirements.
 For example, suppose the following signatures:
 </p>
@@ -334,7 +340,7 @@ signature term <span class="extract"><span class="extract-syntax">code</span></s
 return a value, that should be another function.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Evaluation and reference. </b>Using the mechanisms above, there is no good way to throw away an unwanted
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Evaluation and reference. </b>Using the mechanisms above, there is no good way to throw away an unwanted
 value: it is an error, for example, to evaluate something in void context.
 That's unfortunate if we want to evaluate something not for its result
 but for a side-effect. To get around that, we have:

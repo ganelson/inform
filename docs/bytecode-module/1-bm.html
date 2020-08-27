@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -58,14 +64,14 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#1">Chapter 1: Setting Up</a></li><li><b>Bytecode Module</b></li></ul></div>
 <p class="purpose">Setting up the use of this module.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This section simoly sets up the module in ways expected by <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>, and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This section simoly sets up the module in ways expected by <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>, and
 contains no code of interest. The following constant exists only in tools
 which use this module:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">BYTECODE_MODULE</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This module defines the following classes:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This module defines the following classes:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">inter_tree_CLASS</span>
@@ -103,7 +109,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax">, </span><span class="constant-syntax">8192</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_annotation</span><span class="plain-syntax">, </span><span class="constant-syntax">8192</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -119,13 +125,13 @@ which use this module:
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BytecodeModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_SYMBOLS_MREASON</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_BYTECODE_MREASON</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_LINKS_MREASON</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -134,7 +140,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">INTER_LINKS_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"inter links storage"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -142,7 +148,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'F'</span><span class="plain-syntax">, &amp;</span><a href="3-vi.html#SP1" class="function-link"><span class="function-syntax">Inter::Verify::writer</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_4"></a><b>&#167;3.4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_FILE_READ_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_MEMORY_DA</span>
@@ -151,7 +157,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_FRAMES_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">INTER_CONNECTORS_DA</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_5"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_5" class="paragraph-anchor"></a><b>&#167;3.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -163,7 +169,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">INTER_CONNECTORS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"inter connectors"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_6"></a><b>&#167;3.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_6" class="paragraph-anchor"></a><b>&#167;3.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

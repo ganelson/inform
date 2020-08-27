@@ -78,8 +78,11 @@ DECLARE_CLASS(known_extension_clash)
 @e HEADINGS_DA
 
 =
+COMPILE_WRITER(extension_dictionary_entry *, ExtensionDictionary::log_entry)
+
 void SupervisorModule::start(void) {
 	Memory::reason_name(EXTENSION_DICTIONARY_MREASON, "extension dictionary");
+	REGISTER_WRITER('d', ExtensionDictionary::log_entry);
 	Writers::register_writer('X', &Works::writer);
 	Writers::register_writer('J', &Languages::log);
 	Log::declare_aspect(EXTENSIONS_CENSUS_DA, L"extensions census", FALSE, FALSE);

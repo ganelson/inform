@@ -2,6 +2,15 @@
 
 Utility functions for specifications representing rvalues.
 
+@h Testing.
+
+=
+int Rvalues::is_rvalue(parse_node *pn) {
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(pn));
+	if ((metadata) && (metadata->category == RVALUE_NCAT)) return TRUE;
+	return FALSE;
+}
+
 @h Constants.
 Constant nodes can store references to many of the structures in this compiler:
 for example, each |table *| pointer in Inform corresponds to a constant node

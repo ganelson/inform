@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="index.html"><span class="selectedlink">problems</span></a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-pl2.html#SP4">&#167;4. Problem quotations</a></li><li><a href="2-pl2.html#SP7">&#167;7. Short and long forms</a></li><li><a href="2-pl2.html#SP9">&#167;9. How problems begin and end</a></li><li><a href="2-pl2.html#SP11">&#167;11. Appending source</a></li><li><a href="2-pl2.html#SP12">&#167;12. Issuing a segment of a problem message</a></li><li><a href="2-pl2.html#SP14">&#167;14. Fatalities</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Problem messages begin with an indication of where in the source text the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Problem messages begin with an indication of where in the source text the
 problem occurs, in terms of headings and subheadings written in the
 source text, and it is this indication that we consider first. For
 example,
@@ -120,7 +126,7 @@ code order.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>A further refinement is that we remember the last set of headings used
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>A further refinement is that we remember the last set of headings used
 for an error message, and only mention what has changed about the location.
 Thus we might next print:
 </p>
@@ -136,7 +142,7 @@ changed. (And we never print internally made level 0, File, headings.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_problem_headings</span><span class="plain-syntax">[</span><span class="constant-syntax">NO_HEADING_LEVELS</span><span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Now for the actual displaying of the location text. The outcome image
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Now for the actual displaying of the location text. The outcome image
 is a trickier thing to get right than might appear. By being in this
 routine, we know that a problem has been issued: the run will therefore
 not have been a success, and we can issue the "Inform failed" outcome
@@ -170,7 +176,7 @@ the two possibilities.
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">NO_HEADING_LEVELS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">last_problem_headings</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">problem_headings</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>We print only the part of the heading position which differs from that
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>We print only the part of the heading position which differs from that
 of the previous one quoted: <span class="extract"><span class="extract-syntax">i</span></span> is at this point the highest level at
 which they differ.
 </p>
@@ -206,7 +212,7 @@ which they differ.
 <span class="plain-syntax">    </span><a href="2-pl1.html#SP1" class="function-link"><span class="function-syntax">ProblemBuffer::clear</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Problem quotations. </b>The texts to be substituted in place of <span class="extract"><span class="extract-syntax">%1</span></span>, <span class="extract"><span class="extract-syntax">%2</span></span>, ..., are called the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Problem quotations. </b>The texts to be substituted in place of <span class="extract"><span class="extract-syntax">%1</span></span>, <span class="extract"><span class="extract-syntax">%2</span></span>, ..., are called the
 "quotations". The value is either a range of words in the source text, or
 else a pointer to some object, depending on the type. The type is a
 single character code. (This coding system is used only here, and could
@@ -225,7 +231,7 @@ easily be changed, but there seems no reason to.)
 <span class="reserved-syntax">problem_quotation</span><span class="plain-syntax"> </span><span class="identifier-syntax">problem_quotations</span><span class="plain-syntax">[10];</span>
 </pre>
 <ul class="endnotetexts"><li>The structure problem_quotation is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>When some higher-level part of Inform wants to issue a formatted problem
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>When some higher-level part of Inform wants to issue a formatted problem
 message, it first declares the contents of any quotations it will make.
 It does this using the routines <span class="extract"><span class="extract-syntax">Problems::quote_object</span></span>, <span class="extract"><span class="extract-syntax">Problems::quote_spec</span></span>, ...
 below. Thus <span class="extract"><span class="extract-syntax">Problems::quote_spec(2, SP)</span></span> specifies that <span class="extract"><span class="extract-syntax">%2</span></span> should be
@@ -250,7 +256,7 @@ printed as the inference <span class="extract"><span class="extract-syntax">SP</
 <span class="plain-syntax">    </span><span class="identifier-syntax">problem_quotations</span><span class="plain-syntax">[</span><span class="identifier-syntax">t</span><span class="plain-syntax">].</span><span class="element-syntax">text_quoted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Here are the three public routines for quoting from text: either via a node
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Here are the three public routines for quoting from text: either via a node
 in the parse tree, or with a literal word range.
 </p>
 
@@ -312,7 +318,7 @@ in the parse tree, or with a literal word range.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, *((</span><span class="reserved-syntax">int</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Short and long forms. </b>Most of the error messages have a short form, giving the main factual
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Short and long forms. </b>Most of the error messages have a short form, giving the main factual
 information, and a long form which also has an explanation attached.
 Some of the text is common to both versions, but other parts are specific
 to either one or the other, and variables record the status of our current
@@ -327,7 +333,7 @@ position in scanning and transcribing the problem message.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_is_a_subsequent_use_of_problem</span><span class="plain-syntax">; </span><span class="comment-syntax"> give short form of this previously-seen problem</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scanning_problem_for</span><span class="plain-syntax"> = </span><span class="constant-syntax">ANY_USE_OF_PROBLEM</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>We do not want to keep wittering on with the same old explanations,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>We do not want to keep wittering on with the same old explanations,
 so we remember which ones we've given before (i.e., in previous problem
 messages during the same run of Inform). Eventually our patience is exhausted
 and we give no further explanation in any circumstances.
@@ -347,7 +353,7 @@ and we give no further explanation in any circumstances.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. How problems begin and end. </b>During the construction of a problem message, we will be running through a
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. How problems begin and end. </b>During the construction of a problem message, we will be running through a
 standard text, and at any point might be considering matter which should
 appear only in the long form, or only in the short form.
 </p>
@@ -391,7 +397,7 @@ to remember whether to use the short or long form.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">crash_on_all_problems</span><span class="plain-syntax">) </span><a href="2-pl0.html#SP2" class="function-link"><span class="function-syntax">ProblemSigils::force_crash</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Documentation links:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Documentation links:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -407,7 +413,7 @@ to remember whether to use the short or long form.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sigil_of_latest_problem</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Appending source. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Appending source. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">appended_source</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
@@ -419,7 +425,7 @@ to remember whether to use the short or long form.
 <span class="plain-syntax">        </span><a href="2-pl1.html#SP4" class="function-link"><span class="function-syntax">ProblemBuffer::copy_source_reference</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">appended_source</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Issuing a segment of a problem message. </b>This function performs the substitution of quotations into problem messages and
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Issuing a segment of a problem message. </b>This function performs the substitution of quotations into problem messages and
 sends them on their way: which is called <a href="2-pl2.html#SP12" class="internal">Problems::issue_problem_segment</a>
 since it only appends a further piece of text, and may be used several times
 to build up complicated messages.
@@ -443,7 +449,7 @@ to build up complicated messages.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b>Ordinarily we just append the new character, but we also act on the escapes
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b>Ordinarily we just append the new character, but we also act on the escapes
 <span class="extract"><span class="extract-syntax">%P</span></span> and <span class="extract"><span class="extract-syntax">%1</span></span> to <span class="extract"><span class="extract-syntax">%9</span></span>. <span class="extract"><span class="extract-syntax">%P</span></span> forces a paragraph break, or at any rate, it does
 in the eventual HTML version of the problem message. Note that these escapes
 are acted on only if they occur in a contextually allowed part of the problem
@@ -474,7 +480,7 @@ on when the shortened form is the one being issued).
 <span class="plain-syntax">    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">PBUFF</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1_1"></a><b>&#167;12.1.1.  </b>This is where a quotation escape, such as <span class="extract"><span class="extract-syntax">%2</span></span>, is expanded: by looking up
+<p class="commentary firstcommentary"><a id="SP12_1_1" class="paragraph-anchor"></a><b>&#167;12.1.1.  </b>This is where a quotation escape, such as <span class="extract"><span class="extract-syntax">%2</span></span>, is expanded: by looking up
 its type, stored internally as a single character.
 </p>
 
@@ -500,7 +506,7 @@ its type, stored internally as a single character.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12_1">&#167;12.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1_1_1"></a><b>&#167;12.1.1.1.  </b>Tinting text involves some HTML, of course:
+<p class="commentary firstcommentary"><a id="SP12_1_1_1" class="paragraph-anchor"></a><b>&#167;12.1.1.1.  </b>Tinting text involves some HTML, of course:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote a red-tinted word range in a problem message</span><span class="named-paragraph-number">12.1.1.1</span></span><span class="comment-syntax"> =</span>
@@ -515,7 +521,7 @@ its type, stored internally as a single character.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12_1_1">&#167;12.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1_1_2"></a><b>&#167;12.1.1.2.  </b>And:
+<p class="commentary firstcommentary"><a id="SP12_1_1_2" class="paragraph-anchor"></a><b>&#167;12.1.1.2.  </b>And:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Quote a green-tinted word range in a problem message</span><span class="named-paragraph-number">12.1.1.2</span></span><span class="comment-syntax"> =</span>
@@ -530,7 +536,7 @@ its type, stored internally as a single character.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12_1_1">&#167;12.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1_2"></a><b>&#167;12.1.2.  </b>More generally, the reference is to some structure we can't write
+<p class="commentary firstcommentary"><a id="SP12_1_2" class="paragraph-anchor"></a><b>&#167;12.1.2.  </b>More generally, the reference is to some structure we can't write
 ourselves, and must delegate to:
 </p>
 
@@ -546,7 +552,7 @@ ourselves, and must delegate to:
 <span class="plain-syntax">    </span><a href="2-pl2.html#SP11" class="function-link"><span class="function-syntax">Problems::transcribe_appended_source</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12_1">&#167;12.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_1_1_1_1"></a><b>&#167;12.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spool temporary stream text to the problem buffer</span><span class="named-paragraph-number">12.1.1.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_1_1_1_1" class="paragraph-anchor"></a><b>&#167;12.1.1.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spool temporary stream text to the problem buffer</span><span class="named-paragraph-number">12.1.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -558,7 +564,7 @@ ourselves, and must delegate to:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pl2.html#SP12_1_1_1">&#167;12.1.1.1</a>, <a href="2-pl2.html#SP12_1_1_2">&#167;12.1.1.2</a>, <a href="2-pl2.html#SP12_1_2">&#167;12.1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>This version is much shorter, since escapes aren't allowed:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>This version is much shorter, since escapes aren't allowed:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -566,7 +572,7 @@ ourselves, and must delegate to:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">PBUFF</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Fatalities. </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Fatalities. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Problems::fatal</span><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">) {</span>

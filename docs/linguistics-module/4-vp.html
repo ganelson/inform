@@ -46,7 +46,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -56,12 +60,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -74,7 +80,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-vp.html#SP1">&#167;1. Seeking verbs</a></li><li><a href="4-vp.html#SP8">&#167;8. Sidekick nonterminals</a></li><li><a href="4-vp.html#SP11">&#167;11. Corrective surgery</a></li><li><a href="4-vp.html#SP15">&#167;15. Called surgery</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Seeking verbs. </b>The nonterminal &lt;sentence&gt; has to find the verb in a sentence, and find its
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Seeking verbs. </b>The nonterminal &lt;sentence&gt; has to find the verb in a sentence, and find its
 noun phrases, with no contextual knowledge at all. In a sentence with only
 one plausible verb, this is not difficult: the verb in "Anna is a sailor"
 must be "is". But suppose we have:
@@ -102,7 +108,7 @@ the cot from nothing.
 and the algorithm below is the product of a very great deal of experimentation.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>There are two variant forms: &lt;sentence&gt; and &lt;sentence-without-occurrences&gt;.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>There are two variant forms: &lt;sentence&gt; and &lt;sentence-without-occurrences&gt;.
 Inform actually uses the latter, detecting adverbs of occurrence like "for
 the third time" lower down in the compiler.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Either way, <a href="4-vp.html#SP5" class="internal">VerbPhrases::seek</a>
 does the work.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
@@ -130,7 +136,7 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Trace diagram</span><span class="named-paragraph-number">2.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Trace diagram</span><span class="named-paragraph-number">2.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -143,7 +149,7 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP2">&#167;2</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">SEEK_VP_TRACE</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">VIABILITY_VP_TRACE</span>
@@ -160,7 +166,7 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The following shows two simple sentences parsed with tracing on:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following shows two simple sentences parsed with tracing on:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
@@ -195,7 +201,7 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="plain-syntax">    RELATIONSHIP_NT'is carried by' {meaning: carries}</span>
 <span class="plain-syntax">        UNPARSED_NOUN_NT'anna'</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The following function is only recursive to at most one level. It's used either
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The following function is only recursive to at most one level. It's used either
 to parse a whole sentence, or is called from within itself to deal with the
 object phrase part of an existential sentence where the SP is defective.
 In the latter case, the call parameter <span class="extract"><span class="extract-syntax">existential_OP_edge</span></span> will be the word
@@ -319,7 +325,7 @@ so that we have to soldier on regardless:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>The "viability map" assigns a score to each word in the sentence. Here
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>The "viability map" assigns a score to each word in the sentence. Here
 are some example viability maps:
 </p>
 
@@ -351,7 +357,7 @@ primary verb does not appear in its first hundred words is a rarity.
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">VIABILITY_MAP_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>Rule (c) is there so that we do not trip up on auxiliary verbs such as "does"
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>Rule (c) is there so that we do not trip up on auxiliary verbs such as "does"
 or "have" in "does not have".
 </p>
 
@@ -394,7 +400,7 @@ it read "Velma is a doer".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the viability map</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Log the viability map</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -408,7 +414,7 @@ it read "Velma is a doer".
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b>We are in fact interested only in word positions with viability 1 or 2, and
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b>We are in fact interested only in word positions with viability 1 or 2, and
 in practice viability 2 positions are very unlikely to be correct, so we
 will first make every effort to match a verb at a viability 1 position.
 (Why do we allow viability 2 matches at all? Really just so that we can
@@ -423,7 +429,7 @@ report them as problems.)
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-vp.html#SP5_4_1" class="named-paragraph-link"><span class="named-paragraph">Seek verb usages at this viability level</span><span class="named-paragraph-number">5.4.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1"></a><b>&#167;5.4.1.  </b>Within that constraint, we check in two passes. On pass 1, we skip over any
+<p class="commentary firstcommentary"><a id="SP5_4_1" class="paragraph-anchor"></a><b>&#167;5.4.1.  </b>Within that constraint, we check in two passes. On pass 1, we skip over any
 verb usage which might be part of a relative clause, in that it's preceded
 by a relative clause marker; on pass 2, should we ever get that far, this
 restriction is lifted. Thus for example in the sentence
@@ -468,7 +474,7 @@ equal length, the earliest defined).
 <span class="plain-syntax">                }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1"></a><b>&#167;5.4.1.1.  </b>At this point <span class="extract"><span class="extract-syntax">TW</span></span> is the tail of the wording: its first word is what we
+<p class="commentary firstcommentary"><a id="SP5_4_1_1" class="paragraph-anchor"></a><b>&#167;5.4.1.1.  </b>At this point <span class="extract"><span class="extract-syntax">TW</span></span> is the tail of the wording: its first word is what we
 think might be the verb. For example, given
 </p>
 
@@ -488,7 +494,7 @@ think might be the verb. For example, given
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-vp.html#SP5_4_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Consider whether this usage is being made at this position</span><span class="named-paragraph-number">5.4.1.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1">&#167;5.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1"></a><b>&#167;5.4.1.1.1.  </b>We must test whether our verb usage appears at the front of <span class="extract"><span class="extract-syntax">TW</span></span>, thougn for
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.  </b>We must test whether our verb usage appears at the front of <span class="extract"><span class="extract-syntax">TW</span></span>, thougn for
 efficiency's sake we first test whether the verb has a meaning. (There are
 potentially a great many meaningless verbs, because of the way adaptive text
 is handled in Inform.)
@@ -516,7 +522,7 @@ is handled in Inform.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1">&#167;5.4.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_1"></a><b>&#167;5.4.1.1.1.1.  </b>A further complication is that we will reject this usage if it occurs
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_1" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.1.  </b>A further complication is that we will reject this usage if it occurs
 somewhere forbidden: for example, if a verb form is only allowed in an SVO
 configuration, we will ignore it if <span class="extract"><span class="extract-syntax">TW</span></span> is the whole of <span class="extract"><span class="extract-syntax">W</span></span>, because then the
 verb would begin at the first word of the sentence. Conversely, if it is only
@@ -541,7 +547,7 @@ flash cards".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1">&#167;5.4.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_2"></a><b>&#167;5.4.1.1.1.2.  </b>So now we know that the verb definitely appears. We form <span class="extract"><span class="extract-syntax">ISW</span></span> as the
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_2" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.2.  </b>So now we know that the verb definitely appears. We form <span class="extract"><span class="extract-syntax">ISW</span></span> as the
 wording for the subject phrase and <span class="extract"><span class="extract-syntax">IOW</span></span> the object phrase. Adverbs of
 certainty are removed from these.
 </p>
@@ -567,7 +573,7 @@ certainty are removed from these.
 <span class="plain-syntax">            </span><span class="identifier-syntax">pass</span><span class="plain-syntax">, </span><span class="identifier-syntax">tier</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">priority</span><span class="plain-syntax">, </span><span class="identifier-syntax">ISW</span><span class="plain-syntax">, </span><span class="identifier-syntax">vi</span><span class="plain-syntax">, </span><span class="identifier-syntax">IOW</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1">&#167;5.4.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3"></a><b>&#167;5.4.1.1.1.3.  </b>If the verb form is, say, "place in ... with ...", and we have detected the
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.3.  </b>If the verb form is, say, "place in ... with ...", and we have detected the
 verb as "places" in the sentence "Henry places the cherry on the cake", we
 still must reject this usage because it's missing the essential prepositions
 "in" and "with". (It would, however, pass if the verb form were "place... on...".)
@@ -597,7 +603,7 @@ still must reject this usage because it's missing the essential prepositions
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-vp.html#SP5_4_1_1_1_3_4" class="named-paragraph-link"><span class="named-paragraph">Check whether any sense of this verb form will accept this usage and succeed if so</span><span class="named-paragraph-number">5.4.1.1.1.3.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1">&#167;5.4.1.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_1"></a><b>&#167;5.4.1.1.1.3.1.  </b>This is also where we detect whether we have an existential sentence such as
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_1" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.3.1.  </b>This is also where we detect whether we have an existential sentence such as
 "There is a man in the Dining Room." If so, we will have to allow for the
 preposition "in" to be divided from the verb "is". But we will first check
 (by using our one level of recursion) whether the tail of the sentence makes
@@ -621,7 +627,7 @@ who is in the Dining Room" (note the additional "is"), it would.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1_3">&#167;5.4.1.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_2"></a><b>&#167;5.4.1.1.1.3.2.  </b>And that explains the following. If we have recursed on "There is a man
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_2" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.3.2.  </b>And that explains the following. If we have recursed on "There is a man
 who is in the Dining Room" then we are currently looking at "a man who is in
 the Dining Room", and have set the <span class="extract"><span class="extract-syntax">SW</span></span> wording to "a man who". We want to
 trim away that "who" from the end of the <span class="extract"><span class="extract-syntax">SW</span></span>.
@@ -639,7 +645,7 @@ trim away that "who" from the end of the <span class="extract"><span class="extr
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1_3">&#167;5.4.1.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_3"></a><b>&#167;5.4.1.1.1.3.3.  </b>This part at least is boringly straightforward.
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_3" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.3.3.  </b>This part at least is boringly straightforward.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check whether we do indeed have these required prepositions in place</span><span class="named-paragraph-number">5.4.1.1.1.3.3</span></span><span class="comment-syntax"> =</span>
@@ -691,7 +697,7 @@ trim away that "who" from the end of the <span class="extract"><span class="extr
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1_3">&#167;5.4.1.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_4"></a><b>&#167;5.4.1.1.1.3.4.  </b>Now we're getting somewhere. The verb and any prepositions required by this
+<p class="commentary firstcommentary"><a id="SP5_4_1_1_1_3_4" class="paragraph-anchor"></a><b>&#167;5.4.1.1.1.3.4.  </b>Now we're getting somewhere. The verb and any prepositions required by this
 form are all in place, and we know this would be a meaningful sentence. So
 we start building the diagram tree for the sentence at last, with the node
 representing the verb.
@@ -733,7 +739,7 @@ representing the verb.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP5_4_1_1_1_3">&#167;5.4.1.1.1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>This routine completes the sentence diagram by adding further nodes to
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This routine completes the sentence diagram by adding further nodes to
 represent the subject and object phrases. How this is done depends on the
 sense of the verb: for example, in Inform, "X is an activity" produces a
 rather different subtree to "Peter is a man". What happens is that each
@@ -792,7 +798,7 @@ if there is one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>In effect, this is the sentence meaning function for all regular meanings.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>In effect, this is the sentence meaning function for all regular meanings.
 For example, "Darcy is proud" and "Darcy wears the hat" will both end up here.
 It is only ever called for task <span class="extract"><span class="extract-syntax">ACCEPT_SMFT</span></span>, and it always accepts.
 </p>
@@ -824,7 +830,7 @@ It is only ever called for task <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>See <a href="P-asd.html" class="internal">About Sentence Diagrams</a>: the OP for a non-copular verb becomes a
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>See <a href="P-asd.html" class="internal">About Sentence Diagrams</a>: the OP for a non-copular verb becomes a
 <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span> subtree, with relation reversed so that it is given from
 the point of view of the object, not the subject.
 </p>
@@ -844,7 +850,7 @@ point of view, it is being worn.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">), </span><a href="3-vm.html#SP2" class="function-link"><span class="function-syntax">VerbMeanings::reverse_VMT</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning</span><span class="plain-syntax">), </span><span class="identifier-syntax">O_PN</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-vp.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Sidekick nonterminals. </b>We will want to spot adverbs of certainty adjacent to the verb itself;
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Sidekick nonterminals. </b>We will want to spot adverbs of certainty adjacent to the verb itself;
 English allows these either side, so "A man is usually happy" and "Peter
 certainly is happy" are both possible. Note that these adverbs can divide
 a verb from its preposition(s): consider "The rain in Spain lies mainly in
@@ -859,7 +865,7 @@ the plain", where "mainly" divides "lies" from "in".
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;certainty&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">					</span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[1], - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Relative clauses ("a woman who is on the stage") are detected by the presence
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Relative clauses ("a woman who is on the stage") are detected by the presence
 of a marker word before the verb (in this example, "who"). Of course, such
 a word doesn't always mean we have a relative clause, so we will need to be a
 little careful using this nonterminal.
@@ -873,7 +879,7 @@ little careful using this nonterminal.
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;rc-marker&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The following is used only in the reconstruction of existential sentences
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following is used only in the reconstruction of existential sentences
 such as "There is a cat called Puss in Boots", where we want to prevent the
 "in" being considered a preposition &mdash; it is part of a calling-name.
 </p>
@@ -883,7 +889,7 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">called</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Corrective surgery. </b>The following iterates until all possible surgeries have been done.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Corrective surgery. </b>The following iterates until all possible surgeries have been done.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -908,7 +914,7 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>"Of surgery" is needed to break nounphrases including the word "of".
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>"Of surgery" is needed to break nounphrases including the word "of".
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -916,7 +922,7 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VerbPhrases::perform_of_surgery</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">VerbPhrases::perform_of_surgery</span></span>:<br/><a href="4-vp.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -949,7 +955,7 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>"Location surgery" is needed to make sentences like the second one here work:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>"Location surgery" is needed to make sentences like the second one here work:
 </p>
 
 <blockquote>
@@ -1001,7 +1007,7 @@ such as "There is a cat called Puss in Boots", where we want to prevent the
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Called surgery. </b>The following case is now, I believe, impossible, but once happened on phrases
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Called surgery. </b>The following case is now, I believe, impossible, but once happened on phrases
 like "north of a room called the Hot and Cold Room" where a <span class="extract"><span class="extract-syntax">CALLED_NT</span></span> and
 a <span class="extract"><span class="extract-syntax">RELATIONSHIP_NT</span></span> had ended up the wrong way round. The code is retained
 in case needed again in future.

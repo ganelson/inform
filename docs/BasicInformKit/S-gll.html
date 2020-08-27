@@ -58,12 +58,12 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-gll.html#SP1">&#167;1. Begin Glulx-only matter</a></li><li><a href="S-gll.html#SP2">&#167;2. Summary</a></li><li><a href="S-gll.html#SP3">&#167;3. Variables and Arrays</a></li><li><a href="S-gll.html#SP4">&#167;4. Infglk</a></li><li><a href="S-gll.html#SP5">&#167;5. Rocks</a></li><li><a href="S-gll.html#SP6">&#167;6. Stubs</a></li><li><a href="S-gll.html#SP7">&#167;7. Starting Up</a></li><li><a href="S-gll.html#SP8">&#167;8. Enable Acceleration</a></li><li><a href="S-gll.html#SP9">&#167;9. Release Number</a></li><li><a href="S-gll.html#SP10">&#167;10. Keyboard Input</a></li><li><a href="S-gll.html#SP11">&#167;11. Buffer Functions</a></li><li><a href="S-gll.html#SP12">&#167;12. Dictionary Functions</a></li><li><a href="S-gll.html#SP13">&#167;13. SHOWVERB support</a></li><li><a href="S-gll.html#SP14">&#167;14. Command Tables</a></li><li><a href="S-gll.html#SP15">&#167;15. Random Number Generator</a></li><li><a href="S-gll.html#SP16">&#167;16. Memory Allocation</a></li><li><a href="S-gll.html#SP17">&#167;17. Audiovisual Resources</a></li><li><a href="S-gll.html#SP18">&#167;18. Typography</a></li><li><a href="S-gll.html#SP19">&#167;19. Character Casing</a></li><li><a href="S-gll.html#SP20">&#167;20. Glulx-Only Printing Routines</a></li><li><a href="S-gll.html#SP21">&#167;21. The Screen</a></li><li><a href="S-gll.html#SP22">&#167;22. Window Colours</a></li><li><a href="S-gll.html#SP23">&#167;23. Main Window</a></li><li><a href="S-gll.html#SP24">&#167;24. Status Line</a></li><li><a href="S-gll.html#SP25">&#167;25. Quotation Boxes</a></li><li><a href="S-gll.html#SP26">&#167;26. Veneer</a></li><li><a href="S-gll.html#SP27">&#167;27. End Glulx-only matter</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Begin Glulx-only matter. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Begin Glulx-only matter. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Summary. </b>This segment closely parallels "ZMachine.i6t", which provides exactly
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Summary. </b>This segment closely parallels "ZMachine.i6t", which provides exactly
 equivalent functionality (indeed, usually the same-named functions and in
 the same order) for the Z-machine VM. This is intended to make the rest of the
 template code independent of the choice of VM, although that is more of an
@@ -73,7 +73,7 @@ the parser (for instance) to call VM-neutral routines to get the data it
 wants out of these arrays.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Variables and Arrays. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Variables and Arrays. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_event</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
@@ -101,7 +101,7 @@ wants out of these arrays.
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse</span><span class="plain-syntax">     --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax">  </span><span class="identifier-syntax">parse2</span><span class="plain-syntax">    --&gt; </span><span class="identifier-syntax">PARSE_BUFFER_LEN</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Infglk. </b>This section is a verbatim copy of an invaluable I6 header file originally
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Infglk. </b>This section is a verbatim copy of an invaluable I6 header file originally
 put together by John Cater but now maintained by Andrew Plotkin. The routines
 are convenient to have on hand, and also provide a canonical set of I6 names
 for the many gestalt and other codes.
@@ -970,7 +970,7 @@ for the many gestalt and other codes.
 <span class="plain-syntax">  </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ret</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Rocks. </b>These are unique ID codes used to mark resources; think of them as inedible
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Rocks. </b>These are unique ID codes used to mark resources; think of them as inedible
 cookies.
 </p>
 
@@ -986,7 +986,7 @@ cookies.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_FOREGROUNDCHAN_ROCK</span><span class="plain-syntax"> </span><span class="constant-syntax">410</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GG_BACKGROUNDCHAN_ROCK</span><span class="plain-syntax"> </span><span class="constant-syntax">411</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Stubs. </b>These are I6 library-style entry point routines, not used by I7, but retained
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Stubs. </b>These are I6 library-style entry point routines, not used by I7, but retained
 in case I7 extensions want to do interesting things with Glulx.
 </p>
 
@@ -995,7 +995,7 @@ in case I7 extensions want to do interesting things with Glulx.
 <span class="plain-syntax">#</span><span class="identifier-syntax">Stub</span><span class="plain-syntax"> </span><span class="identifier-syntax">IdentifyGlkObject</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Stub</span><span class="plain-syntax"> </span><span class="identifier-syntax">InitGlkWindow</span><span class="plain-syntax">     </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Starting Up. </b><span class="extract"><span class="extract-syntax">VM_Initialise()</span></span> is almost the first routine called, except that the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Starting Up. </b><span class="extract"><span class="extract-syntax">VM_Initialise()</span></span> is almost the first routine called, except that the
 "starting the virtual machine" activity is allowed to go first; and,
 come to think of it, memory allocation has to be set up before even that,
 and that in turn calls <span class="extract"><span class="extract-syntax">VM_PreInitialise()</span></span> to do the absolute minimum.
@@ -1177,7 +1177,7 @@ light to the Dark Room.")
 <span class="plain-syntax">    </span><span class="identifier-syntax">IdentifyGlkObject</span><span class="plain-syntax">(2);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Enable Acceleration. </b>This enables use of March 2009 extension to Glulx which optimises the speed
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Enable Acceleration. </b>This enables use of March 2009 extension to Glulx which optimises the speed
 of Inform-compiled story files by moving the work of I6 veneer routines into
 the interpreter itself. It should have no effect on earlier versions of the
 Glulx VM, which will lack the gestalt for this feature, but nor should it
@@ -1210,7 +1210,7 @@ do any harm.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Release Number. </b>Like all software, IF story files have release numbers to mark revised
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Release Number. </b>Like all software, IF story files have release numbers to mark revised
 versions being circulated: unlike most software, and partly for traditional
 reasons, the version number is recorded not in some print statement or
 variable but is branded on, so to speak, in a specific memory location
@@ -1230,7 +1230,7 @@ of the story file header.
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;6 : </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">char</span><span class="plain-syntax">) </span><span class="identifier-syntax">ROM_GAMESERIAL</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Keyboard Input. </b>The VM must provide three routines for keyboard input:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Keyboard Input. </b>The VM must provide three routines for keyboard input:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">VM_KeyChar()</span></span> waits for a key to be pressed and then returns the
@@ -1403,7 +1403,7 @@ to document all of that.
 <span class="character-syntax">    }</span>
 <span class="character-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Buffer Functions. </b>A "buffer", in this sense, is an array containing a stream of characters
 typed from the keyboard; a "parse buffer" is an array which resolves this
 into individual words, pointing to the relevant entries in the dictionary
 structure. Because each VM has its own format for each of these arrays (not
@@ -1515,7 +1515,7 @@ languages of play, and is not called in the template.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0 &lt; </span><span class="identifier-syntax">INPUT_BUFFER_LEN</span><span class="plain-syntax">) (</span><span class="identifier-syntax">b</span><span class="plain-syntax">--&gt;0)++;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Dictionary Functions. </b>Again, the dictionary structure is differently arranged on the different VMs.
 This is a data structure containing, in compressed form, the text of all the
 words to be recognised by tokenisation (above). In I6 for Glulx, a dictionary
 word is represented at run-time by its record's address in the dictionary.
@@ -1552,7 +1552,7 @@ since, on Glulx, they are the same, these are each the identity function.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. SHOWVERB support. </b>Further VM-specific tables cover actions and attributes, and these are
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. SHOWVERB support. </b>Further VM-specific tables cover actions and attributes, and these are
 used by the SHOWVERB testing command.
 </p>
 
@@ -1578,7 +1578,7 @@ used by the SHOWVERB testing command.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Command Tables. </b>The VM is also generated containing a data structure for the grammar
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Command Tables. </b>The VM is also generated containing a data structure for the grammar
 produced by I6's <span class="extract"><span class="extract-syntax">Verb</span></span> and <span class="extract"><span class="extract-syntax">Extend</span></span> directives: this is essentially a
 list of command verbs such as DROP or PUSH, together with a list of
 synonyms, and then the grammar for the subsequent commands to be
@@ -1600,7 +1600,7 @@ recognised by the parser.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Random Number Generator. </b>No routine is needed for extracting a random number, since I6's built-in
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Random Number Generator. </b>No routine is needed for extracting a random number, since I6's built-in
 <span class="extract"><span class="extract-syntax">random</span></span> function does that, but it's useful to abstract the process of
 seeding the RNG so that it produces a repeatable sequence of "random"
 numbers from here on: the necessary opcodes are different for the two VMs.
@@ -1611,7 +1611,7 @@ numbers from here on: the necessary opcodes are different for the two VMs.
 <span class="plain-syntax">    @</span><span class="identifier-syntax">setrandom</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Memory Allocation. </b>This is dynamic memory allocation: something which is never practicable in
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Memory Allocation. </b>This is dynamic memory allocation: something which is never practicable in
 the Z-machine, because the whole address range is already claimed, but which
 is viable on recent revisions of Glulx.
 </p>
@@ -1630,7 +1630,7 @@ is viable on recent revisions of Glulx.
 <span class="plain-syntax">    @</span><span class="identifier-syntax">mfree</span><span class="plain-syntax"> </span><span class="identifier-syntax">address</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, so Glulx is
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Audiovisual Resources. </b>The Z-machine only barely supports figures and sound effects, so Glulx is
 the preferred VM to choose if they are wanted. Properly speaking, it's not
 Glulx which supports these, but its I/O layer Glk, and implementations
 of Glk are free to support them or not as they please: "cheapglk", a
@@ -1655,7 +1655,7 @@ investigate the "gestalt" to find out.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Typography. </b>Glk makes an attempt to present typographic styles as being a matter of
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Typography. </b>Glk makes an attempt to present typographic styles as being a matter of
 semantic markup rather than controlling the actual appearance of text:
 the idea is that the story file should want to print something in a
 heading kind of way, and then the interpreter &mdash; guided by the player's
@@ -1678,7 +1678,7 @@ not the place to discuss whether that was a wise decision for Glk to take
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Character Casing. </b>The following are the equivalent of <span class="extract"><span class="extract-syntax">tolower</span></span> and <span class="extract"><span class="extract-syntax">toupper</span></span>, the traditional
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Character Casing. </b>The following are the equivalent of <span class="extract"><span class="extract-syntax">tolower</span></span> and <span class="extract"><span class="extract-syntax">toupper</span></span>, the traditional
 C library functions for forcing letters into lower and upper case form, for
 the ZSCII character set. Note that Glulx can also use Unicode characters for
 some purposes (Unicode was a relatively late addition to the Glulx standard),
@@ -1689,7 +1689,7 @@ and we make good use of this when storing text.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_UpperToLowerCase</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_char_to_lower</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">); ];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_LowerToUpperCase</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_char_to_upper</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">); ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Glulx-Only Printing Routines. </b>Partly because of the smallness of the range of representable values in
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Glulx-Only Printing Routines. </b>Partly because of the smallness of the range of representable values in
 the Z-machine, there is little run-time type-checking that can be done:
 for instance a dictionary address cannot be distinguished from a function
 address because they are encoded differently, so that a function address
@@ -1814,7 +1814,7 @@ set stored here is once again ZSCII, not Unicode.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">AnyToStrArr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. The Screen. </b>Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
 the special window ID \(-1\) means "all windows" or "the entire screen",
@@ -1851,7 +1851,7 @@ make little sense there.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Window Colours. </b>Our generic screen model is that the screen is made up of windows, each of
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Window Colours. </b>Our generic screen model is that the screen is made up of windows, each of
 which can have its own foreground and background colours.
 </p>
 
@@ -1919,7 +1919,7 @@ which is greatly superior in this respect).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">$ff0000</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;1) + </span><span class="constant-syntax">$ff00</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;2 ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) + </span><span class="constant-syntax">$ff</span><span class="plain-syntax">*(</span><span class="identifier-syntax">c</span><span class="plain-syntax">&amp;4 ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Main Window. </b>The part of the screen on which commands and responses are printed, which
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Main Window. </b>The part of the screen on which commands and responses are printed, which
 ordinarily occupies almost all of the screen area.
 </p>
 
@@ -1933,7 +1933,7 @@ status line, to the main window.
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">=0;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Status Line. </b>Despite the name, the status line need not be a single line at the top of
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Status Line. </b>Despite the name, the status line need not be a single line at the top of
 the screen: that's only the conventional default arrangement. It can expand
 to become the equivalent of an old-fashioned VT220 terminal, with menus
 and grids and mazes displayed lovingly in character graphics, or it can
@@ -1969,7 +1969,7 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 <span class="plain-syntax">    </span><span class="identifier-syntax">statuswin_current</span><span class="plain-syntax">=1;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25. Quotation Boxes. </b>On the Z-machine, quotation boxes are produced by stretching the status line,
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Quotation Boxes. </b>On the Z-machine, quotation boxes are produced by stretching the status line,
 but on Glulx they usually occupy windows of their own. If it isn't possible
 to create such a window, so that <span class="extract"><span class="extract-syntax">gg_quotewin</span></span> is zero below, the quotation
 text just appears in the main window.
@@ -2009,7 +2009,7 @@ text just appears in the main window.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gg_quotewin</span><span class="plain-syntax">) </span><span class="identifier-syntax">glk_set_window</span><span class="plain-syntax">(</span><span class="identifier-syntax">gg_mainwin</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Veneer. </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Veneer. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Unsigned__Compare</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
@@ -2032,7 +2032,7 @@ text just appears in the main window.
 <span class="plain-syntax">    @</span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27. End Glulx-only matter. </b></p>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. End Glulx-only matter. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>

@@ -228,7 +228,7 @@ Inform; this bit of scruffy, rather than neat, logic will have to do.)
 =
 int Conditions::count(parse_node *spec) {
 	if (spec == NULL) return 0;
-	if (ParseTreeUsage::is_condition(spec) == FALSE) return 1;
+	if (Specifications::is_condition(spec) == FALSE) return 1;
 	switch (Node::get_type(spec)) {
 		case LOGICAL_AND_NT:
 			return Conditions::count(spec->down)

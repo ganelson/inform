@@ -33,7 +33,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -43,12 +47,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -61,7 +67,7 @@
 
 <ul class="toc"><li><a href="M-ui.html#SP1">&#167;1. What Inbuild is</a></li><li><a href="M-ui.html#SP2">&#167;2. Installation</a></li><li><a href="M-ui.html#SP3">&#167;3. Basic concepts</a></li><li><a href="M-ui.html#SP5">&#167;5. Graphs</a></li><li><a href="M-ui.html#SP10">&#167;10. Building</a></li><li><a href="M-ui.html#SP12">&#167;12. Specifying what to act on</a></li><li><a href="M-ui.html#SP14">&#167;14. Nests and searches</a></li><li><a href="M-ui.html#SP17">&#167;17. Copy, sync and archive</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. What Inbuild is. </b>Inbuild is a rudimentary build and package manager for the Inform tools.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. What Inbuild is. </b>Inbuild is a rudimentary build and package manager for the Inform tools.
 It consists of a large part of the front end of the Inform 7 compiler,
 together with a command-line interface to access its functions. Because
 it doesn't contain the middle or back ends of Inform 7, it cannot itself
@@ -75,7 +81,7 @@ of 0 if successful, or else it throws errors to <span class="extract"><span clas
 if unsuccessful.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Installation. </b>When it runs, Inbuild needs to know where it is installed in the file
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Installation. </b>When it runs, Inbuild needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Inbuild
 decides by the following set of rules:
@@ -91,7 +97,7 @@ non-empty, we use that.
 </li><li>(d) And if all else fails, we assume that the location is <span class="extract"><span class="extract-syntax">inbuild</span></span>, with
 respect to the current working directory.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Basic concepts. </b>Inbuild manages "copies". A copy is an instance in the file system of an
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Basic concepts. </b>Inbuild manages "copies". A copy is an instance in the file system of an
 asset like an Inform project, an extension, a kit of Inter code, and so on.
 Those categories are called "genres". Any given copy will be a copy of
 what is called an "edition", which in turn is a version of a "work".
@@ -105,7 +111,7 @@ Locksmith by Emily Short &mdash; is identified by its title, author name and
 genre &mdash; in this case, an Inform extension.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Inbuild has a plethora of command-line options, but at its most basic, the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Inbuild has a plethora of command-line options, but at its most basic, the
 user should specify what to do and then give a list of things to do it to.
 For example, here we run <span class="extract"><span class="extract-syntax">-inspect</span></span> on a single copy, and get a one-line
 description of what it is:
@@ -137,7 +143,7 @@ For example,
 the software, but it's still helpful.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Graphs. </b>More ambitiously, we can look at the "graph" of a copy.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Graphs. </b>More ambitiously, we can look at the "graph" of a copy.
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -155,7 +161,7 @@ Menus in order to use Basic Help Menu, and we need Basic Screen Effects in
 order to use Menus.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Now suppose we have an Inform project called <span class="extract"><span class="ConsoleText-extract-syntax">Menu Time.inform</span></span>, whose
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Now suppose we have an Inform project called <span class="extract"><span class="ConsoleText-extract-syntax">Menu Time.inform</span></span>, whose
 source text is as follows:
 </p>
 
@@ -217,7 +223,7 @@ we need various build-in extensions and kits, the first of which is
 <span class="extract"><span class="ConsoleText-extract-syntax">BasicInformKit</span></span>, and that turns out to need lots of files to exist.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The full <span class="extract"><span class="ConsoleText-extract-syntax">-graph</span></span> is not always what we want to see. Often all we really
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The full <span class="extract"><span class="ConsoleText-extract-syntax">-graph</span></span> is not always what we want to see. Often all we really
 want to know is: what do I need to use, or to build, something?
 </p>
 
@@ -268,7 +274,7 @@ are needed. Two of the extensions are listed twice: that's because they are
 each needed for two different reasons.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The version numbers listed above do not mean that only those exact versions
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The version numbers listed above do not mean that only those exact versions
 will do: they mean that this is (the best) version Inbuild has access to.
 They're given because two different versions of the same extension might
 make different choices about which other extensions to include. We can say
@@ -289,7 +295,7 @@ these: <span class="extract"><span class="ConsoleText-extract-syntax">-debug</sp
 <span class="extract"><span class="ConsoleText-extract-syntax">-format=X</span></span> to select a virtual machine. (See the <span class="extract"><span class="ConsoleText-extract-syntax">inform7</span></span> documentation.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Now suppose that the project asks for something impossible, with a line
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Now suppose that the project asks for something impossible, with a line
 such as:
 </p>
 
@@ -328,7 +334,7 @@ respectively. At present, it has no means of fetching missing resources from
 any central repository.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Building. </b>The graph for a copy tells Inbuild not only what is necessary for a build,
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Building. </b>The graph for a copy tells Inbuild not only what is necessary for a build,
 but also how to perform that build.
 </p>
 
@@ -372,7 +378,7 @@ Inbuild is a call to <span class="extract"><span class="ConsoleText-extract-synt
 timestamps of files are ignored and everything is remade from scratch.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>It takes a certain trust to just let Inbuild rip, and if you don't feel that
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>It takes a certain trust to just let Inbuild rip, and if you don't feel that
 trust, adding the <span class="extract"><span class="ConsoleText-extract-syntax">-dry</span></span> switch causes shell commands to be printed out but
 not actually executed &mdash; a dry run. If you are debugging Inbuild, you may
 also want to look at the copious output produced when <span class="extract"><span class="ConsoleText-extract-syntax">-build-trace</span></span> is used.
@@ -387,7 +393,7 @@ folder as Inbuild itself, side by side. If not, you can use <span class="extract
 specify path <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span> as the home of the other Intools.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Specifying what to act on. </b>In all of the examples above, Inbuild is given just one copy to act on.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Specifying what to act on. </b>In all of the examples above, Inbuild is given just one copy to act on.
 (That action may end up invplving lots of other copies, but only one is
 mentioned on the command line.) In fact it's legal to give a list of
 copies to work on, one at a time, except that only one of those copies
@@ -417,7 +423,7 @@ the project target using <span class="extract"><span class="ConsoleText-extract-
 been missed out.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Listing filenames or pathnames of copies on the command line, or using the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Listing filenames or pathnames of copies on the command line, or using the
 <span class="extract"><span class="ConsoleText-extract-syntax">-contents-of D</span></span> switch, is only possible if we know where in the file system
 these copies are; and sometimes we do not.
 </p>
@@ -445,7 +451,7 @@ and minimum version number, use <span class="extract"><span class="ConsoleText-e
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    -matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Nests and searches. </b>When searching with <span class="extract"><span class="ConsoleText-extract-syntax">-matching R</span></span>, or indeed when running Inform and needing
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Nests and searches. </b>When searching with <span class="extract"><span class="ConsoleText-extract-syntax">-matching R</span></span>, or indeed when running Inform and needing
 to find certain resources, Inbuild looks inside what are called "nests".
 </p>
 
@@ -510,7 +516,7 @@ versions in the same nest). But if the user asks for
 nest with the right major version number (3).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>In most runs of the Inform compiler, three nests are used: the "internal"
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>In most runs of the Inform compiler, three nests are used: the "internal"
 one, so-called, which holds built-in extensions and is read-only; the
 "external" one, which will be somewhere outside of the Inform GUI app, and
 will hold additional extensions downloaded by the user; and the Materials
@@ -535,7 +541,7 @@ nest is of course not present.
 <p class="commentary">In addition, extra nests can be specified with <span class="extract"><span class="extract-syntax">-nest N</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>When Inbuild searches for some resource needed by Inform &mdash; let's continue
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>When Inbuild searches for some resource needed by Inform &mdash; let's continue
 to use the Locksmith extension as an example &mdash; it always has some range of
 version numbers in mind: it will only accept a version in that range. (The
 range can be unlimited, in which case any version is acceptable.)
@@ -574,7 +580,7 @@ there's a later version in the external area: Materials always wins. But
 Materials folder doesn't qualify.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Copy, sync and archive. </b>Clerical work is generally best done automatically, and Inbuild offers some
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Copy, sync and archive. </b>Clerical work is generally best done automatically, and Inbuild offers some
 useful filing commands.
 </p>
 
@@ -597,7 +603,7 @@ would like to execute but doesn't execute them.
 already in <span class="extract"><span class="ConsoleText-extract-syntax">N</span></span>, rather than producing an error if a collision occurs.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The <span class="extract"><span class="ConsoleText-extract-syntax">-archive-to N</span></span> command performs <span class="extract"><span class="ConsoleText-extract-syntax">-sync-to N</span></span> on any resource needed
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The <span class="extract"><span class="ConsoleText-extract-syntax">-archive-to N</span></span> command performs <span class="extract"><span class="ConsoleText-extract-syntax">-sync-to N</span></span> on any resource needed
 to build the copy it is working on (with one exception, for technical reasons:
 the configuration file telling Inform how to use the English natural language).
 </p>

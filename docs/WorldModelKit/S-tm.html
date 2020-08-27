@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-tm.html#SP1">&#167;1. Conversion To Number</a></li><li><a href="S-tm.html#SP2">&#167;2. Digital Printing</a></li><li><a href="S-tm.html#SP3">&#167;3. Analogue Printing</a></li><li><a href="S-tm.html#SP4">&#167;4. Understanding</a></li><li><a href="S-tm.html#SP5">&#167;5. Relative Time Token</a></li><li><a href="S-tm.html#SP6">&#167;6. Scene Change Machinery Rule</a></li><li><a href="S-tm.html#SP7">&#167;7. During Scene Matching</a></li><li><a href="S-tm.html#SP8">&#167;8. Scene Questions</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Conversion To Number. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Conversion To Number. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">NUMBER_TY_to_TIME_TY</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
@@ -53,7 +53,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Digital Printing. </b>For instance, "2:06 am".
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Digital Printing. </b>For instance, "2:06 am".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -65,7 +65,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">%</span><span class="identifier-syntax">ONE_HOUR</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">10</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"0"</span><span class="plain-syntax">; </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">%</span><span class="identifier-syntax">ONE_HOUR</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">, (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">aop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Analogue Printing. </b>For instance, "six minutes past two".
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Analogue Printing. </b>For instance, "six minutes past two".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -84,7 +84,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" "</span><span class="plain-syntax">, (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">dir</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">number</span><span class="plain-syntax">) </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Understanding. </b>This I6 grammar token converts words in the player's command to a valid
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Understanding. </b>This I6 grammar token converts words in the player's command to a valid
 I7 time, and is heavily based on the one presented as a solution to an
 exercise in the DM4.
 </p>
@@ -171,7 +171,7 @@ exercise in the DM4.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Relative Time Token. </b>"Time" is an interesting kind of value since it can hold two conceptually
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Relative Time Token. </b>"Time" is an interesting kind of value since it can hold two conceptually
 different ways of thinking about time: absolute times, such as "12:03 PM",
 and also relative times, like "ten minutes". For parsing purposes, these
 are completely different from each other, and the time token above handles
@@ -223,14 +223,14 @@ only absolute times; we need the following for relative ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_NUMBER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Scene Change Machinery Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scene Change Machinery Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SCENE_CHANGE_MACHINERY_R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DetectSceneChange</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. During Scene Matching. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. During Scene Matching. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DuringSceneMatching</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">;</span>
@@ -239,7 +239,7 @@ only absolute times; we need the following for relative ones.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Scene Questions. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Scene Questions. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SceneUtility</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">;</span>

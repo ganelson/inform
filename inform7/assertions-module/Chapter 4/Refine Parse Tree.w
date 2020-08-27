@@ -7,9 +7,8 @@ table" or "a paper cup" found in assertion sentences.
 (a) In general, noun phrases in the parse tree divide into "proper" and "common".
 Before refinement they generally have node type |UNPARSED_NOUN_NT|: afterwards,
 either |PROPER_NOUN_NT| or |COMMON_NOUN_NT|.
-(b) A noun phrase node has a "subject" annotation, an //inference_subject//
-identifying what if anything it refers to. For example, "a door" refers to
-the kind "door".
+(b) A noun phrase node has a "subject" annotation, identifying what if anything
+it refers to. For example, "a door" refers to the kind "door".
 (c) It also has an "evaluation" annotation. For example, "35" evaluates to
 the number 33, but has no subject.
 (d) If the noun phrase gives a number of items, the |multiplicity| annotation
@@ -133,7 +132,7 @@ int Refiner::nominalise_adjective(parse_node *p) {
 }
 
 @h Simple descriptions.
-For a precise definition see //Descriptions::is_complex//, but roughly speaking
+For a precise definition see //values: Descriptions//, but roughly speaking
 a "simple" description is one with only adjectives and perhaps a head noun:
 thus "closed" and "a closed lockable door" are simple, but "four women in a
 lighted room" is complex.

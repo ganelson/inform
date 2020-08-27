@@ -64,7 +64,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="1-bp.html#SP1">&#167;1. Reading the file</a></li><li><a href="1-bp.html#SP6">&#167;6. Summary</a></li><li><a href="1-bp.html#SP7">&#167;7. The interpreter</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Reading the file. </b>We divide the file into blurb commands at line breaks, so:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reading the file. </b>We divide the file into blurb commands at line breaks, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -73,7 +73,7 @@ MathJax = {
 <span class="plain-syntax">    </span><a href="1-be.html#SP1" class="function-link"><span class="function-syntax">BlorbErrors::set_error_position</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The sequence of values enumerated here must correspond exactly to
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The sequence of values enumerated here must correspond exactly to
 indexes into the syntaxes table below.
 </p>
 
@@ -127,7 +127,7 @@ indexes into the syntaxes table below.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">template_path_COMMAND</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">website_COMMAND</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A single number specifying various possible combinations of operands. For
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A single number specifying various possible combinations of operands. For
 example, <span class="extract"><span class="extract-syntax">NT_OPS</span></span> means "number, text". Clearly the list below is not
 exhaustive of the possibilities, but these are the only ones arising for
 Blurb commands.
@@ -145,7 +145,7 @@ Blurb commands.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TTN_OPS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TTT_OPS</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Each legal command syntax is stored as one of these structures.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Each legal command syntax is stored as one of these structures.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -157,7 +157,7 @@ Blurb commands.
 <span class="plain-syntax">} </span><span class="reserved-syntax">blurb_command</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure blurb_command is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And here they all are. They are tested in the sequence given, and
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And here they all are. They are tested in the sequence given, and
 the sequence must exactly match the numbering of the <span class="extract"><span class="extract-syntax">*_COMMAND</span></span>
 values above, since those are indexes into this table.
 </p>
@@ -232,7 +232,7 @@ but, as we shall see, has no effect.
 <span class="plain-syntax">    { </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">VOID_OPS</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax"> }</span>
 <span class="plain-syntax">};</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Summary. </b>For the <span class="extract"><span class="extract-syntax">-help</span></span> information:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Summary. </b>For the <span class="extract"><span class="extract-syntax">-help</span></span> information:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -247,7 +247,7 @@ but, as we shall see, has no effect.
 <span class="plain-syntax">            </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"  %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">syntaxes</span><span class="plain-syntax">[</span><span class="identifier-syntax">t</span><span class="plain-syntax">].</span><span class="element-syntax">explicated</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The interpreter. </b>The following routine is called for each line of the blurb file in sequence,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The interpreter. </b>The following routine is called for each line of the blurb file in sequence,
 including any blank lines.
 </p>
 
@@ -273,7 +273,7 @@ including any blank lines.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>Here we set <span class="extract"><span class="extract-syntax">outcome</span></span> to the index in the syntaxes table of the line matched,
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Here we set <span class="extract"><span class="extract-syntax">outcome</span></span> to the index in the syntaxes table of the line matched,
 or leave it as \(-1\) if no match can be made. Text and number operands are
 copied in <span class="extract"><span class="extract-syntax">text1</span></span>, <span class="extract"><span class="extract-syntax">num1</span></span>, ..., accordingly.
 </p>
@@ -325,7 +325,7 @@ copied in <span class="extract"><span class="extract-syntax">text1</span></span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bp.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>The command is now fully parsed, and is one that we support. We can act.
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>The command is now fully parsed, and is one that we support. We can act.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take action on the command</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
@@ -398,7 +398,7 @@ copied in <span class="extract"><span class="extract-syntax">text1</span></span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bp.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b>We only ever set the frontispiece as resource number 1, since Inform
+<p class="commentary firstcommentary"><a id="SP7_2_1" class="paragraph-anchor"></a><b>&#167;7.2.1.  </b>We only ever set the frontispiece as resource number 1, since Inform
 has the assumption that the cover art is image number 1 built in.
 </p>
 
@@ -418,7 +418,7 @@ has the assumption that the cover art is image number 1 built in.
 <span class="plain-syntax">    </span><a href="3-plc.html#SP5" class="function-link"><span class="function-syntax">Placeholders::set_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"SMALLCOVER"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text1</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bp.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b>Here, <span class="extract"><span class="extract-syntax">text1</span></span> is the pathname of the Release folder. If we suppose that
+<p class="commentary firstcommentary"><a id="SP7_2_2" class="paragraph-anchor"></a><b>&#167;7.2.2.  </b>Here, <span class="extract"><span class="extract-syntax">text1</span></span> is the pathname of the Release folder. If we suppose that
 Inblorb is being run from Inform, then this folder is a subfolder of the
 Materials folder for an I7 project. It follows that we can obtain the
 pathname to the Materials folder by trimming the leaf and the final separator.
@@ -452,7 +452,7 @@ reasons these need to be manipulated to deal with awkward characters.
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"MATERIALSFOLDERPATH"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bp.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And here that very "qualification" routine. The placeholder <span class="extract"><span class="extract-syntax">original</span></span> contains
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And here that very "qualification" routine. The placeholder <span class="extract"><span class="extract-syntax">original</span></span> contains
 the pathname to a folder, a pathname which might contain spaces or backslashes,
 and which needs to be quoted as a literal Javascript string supplied to
 either the function <span class="extract"><span class="extract-syntax">openUrl</span></span> or the function <span class="extract"><span class="extract-syntax">fileUrl</span></span>. Depending on the

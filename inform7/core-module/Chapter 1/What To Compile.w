@@ -168,6 +168,15 @@ inform_language *Task::language_of_syntax(void) {
 	return Projects::get_language_of_syntax(Task::project());
 }
 
+void Task::add_kind_inventions(void) {
+	StarTemplates::transcribe_all(Task::syntax_tree());
+}
+
+void Task::verify(void) {
+	VerifyTree::verify_integrity(Task::syntax_tree());
+	VerifyTree::verify_structure(Task::syntax_tree());
+}
+
 @ Resources in a Blorb file have unique ID numbers which are positive integers,
 but these are not required to start from 1, nor to be contiguous. For Inform,
 ID number 1 is reserved for the cover image (whether or not any cover image

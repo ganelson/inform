@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-in.html#SP1">&#167;1. Families</a></li><li><a href="1-in.html#SP2">&#167;2. Printing inames</a></li><li><a href="1-in.html#SP4">&#167;4. Making new inames</a></li><li><a href="1-in.html#SP8">&#167;8. Conversion of inames to symbols</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Families. </b>Each inter name comes from a "generator". Some are one-shot, and produce just
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Families. </b>Each inter name comes from a "generator". Some are one-shot, and produce just
 one name before being discarded; others produce a numbered sequence of names
 in a given pattern, counting upwards from 1 (<span class="extract"><span class="extract-syntax">example_1</span></span>, <span class="extract"><span class="extract-syntax">example_2</span></span>, ...);
 and others still derive new names from existing ones (for example, turning
@@ -109,7 +115,7 @@ and others still derive new names from existing ones (for example, turning
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_name_generator is accessed in 1/hl, 1/pck and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Printing inames. </b>Inter names are stored not in textual form, but in terms of what would be
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Printing inames. </b>Inter names are stored not in textual form, but in terms of what would be
 required to generate that text. (The memo field, which in principle allows
 any text to be stored, is used only for a small proportion of inames.)
 </p>
@@ -125,7 +131,7 @@ any text to be stored, is used only for a small proportion of inames.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_name</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_name is accessed in 3/prd and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>This implements the <span class="extract"><span class="extract-syntax">%n</span></span> escape, which prints an iname:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This implements the <span class="extract"><span class="extract-syntax">%n</span></span> escape, which prints an iname:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -153,7 +159,7 @@ any text to be stored, is used only for a small proportion of inames.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Making new inames. </b>We can now make a new iname, which is easy unless there's a memo to attach.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Making new inames. </b>We can now make a new iname, which is easy unless there's a memo to attach.
 For example, attaching the wording "printing the name of a dark room" to
 an iname which would otherwise just be <span class="extract"><span class="extract-syntax">V12</span></span> produces <span class="extract"><span class="extract-syntax">V12_printing_the_name_of_a_da</span></span>.
 Memos exist largely to make the Inter code easier for human eyes to read,
@@ -184,7 +190,7 @@ for some inames it never will.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fill the memo with up to 28 characters of text from the given wording</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Fill the memo with up to 28 characters of text from the given wording</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -200,7 +206,7 @@ for some inames it never will.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Str::truncate</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">memo</span><span class="plain-syntax">, </span><span class="constant-syntax">28</span><span class="plain-syntax">); </span><span class="comment-syntax"> it was at worst 62 chars in size, but is now truncated to 28</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-in.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Ensure that the name, as now extended by the memo, is a legal Inter identifier</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Ensure that the name, as now extended by the memo, is a legal Inter identifier</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -212,7 +218,7 @@ for some inames it never will.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">28</span><span class="plain-syntax">) </span><span class="identifier-syntax">Str::truncate</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">memo</span><span class="plain-syntax">, </span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">memo</span><span class="plain-syntax">) - (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> - </span><span class="constant-syntax">28</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-in.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>That creation function should be called only by these, which in turn must
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>That creation function should be called only by these, which in turn must
 be called only from within the current chapter. First, the single-shot cases,
 where the caller wants a single name with fixed wording (but possibly with
 a memo to attach):
@@ -235,7 +241,7 @@ a memo to attach):
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Second, the generated or derived cases:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Second, the generated or derived cases:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -264,7 +270,7 @@ a memo to attach):
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Now that inames have been created, we allow their locations to be read:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Now that inames have been created, we allow their locations to be read:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -281,7 +287,7 @@ a memo to attach):
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter::Packages::scope</span><span class="plain-syntax">(</span><a href="1-pck.html#SP13" class="function-link"><span class="function-syntax">Packaging::incarnate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Conversion of inames to symbols. </b>The purpose of inames is not quite to represent identifier names occurring in
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Conversion of inames to symbols. </b>The purpose of inames is not quite to represent identifier names occurring in
 given packages inside the Inter hierarchy: it would be more accurate to say
 that they represent potential identifiers, which may or may not be used.
 At some point they will probably (but not certainly) undergo "conversion",

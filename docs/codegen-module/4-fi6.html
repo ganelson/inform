@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="index.html"><span class="selectedlink">codegen</span></a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-fi6.html#SP1">&#167;1. Target</a></li><li><a href="4-fi6.html#SP2">&#167;2. Segmentation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Target. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Target. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inform6_target</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -98,7 +104,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">inform6_target</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Segmentation. </b>The loss of <span class="extract"><span class="extract-syntax">life</span></span> is so appalling that I6 will not even compile a story
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Segmentation. </b>The loss of <span class="extract"><span class="extract-syntax">life</span></span> is so appalling that I6 will not even compile a story
 file which doesn't define the property number <span class="extract"><span class="extract-syntax">life</span></span> (well, strictly
 speaking, it checks the presence of constants suggesting the I6 library
 first, but the template layer does define constants like that). We define
@@ -375,7 +381,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for return</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for return</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -396,7 +402,7 @@ now a bitmap of flags for tracing actions, calls to object routines, and so on.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>Here we need some gymnastics. We need to produce a value which the
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>Here we need some gymnastics. We need to produce a value which the
 sometimes shaky I6 expression parser will accept, which turns out to be
 quite a constraint. If we were compiling to C, we might try this:
 </p>
@@ -448,7 +454,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for if</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for if</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -457,7 +463,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifdebug</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifdebug</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -465,7 +471,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifstrict</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifstrict</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -473,7 +479,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_6"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifelse</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for ifelse</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -482,7 +488,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_7"></a><b>&#167;2.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for while</span><span class="named-paragraph-number">2.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for while</span><span class="named-paragraph-number">2.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -490,14 +496,14 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_8"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for do</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_8" class="paragraph-anchor"></a><b>&#167;2.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for do</span><span class="named-paragraph-number">2.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"do {"</span><span class="plain-syntax">); </span><span class="constant-syntax">INV_A2</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"} until (\n"</span><span class="plain-syntax">); </span><span class="identifier-syntax">INDENT</span><span class="plain-syntax">; </span><span class="constant-syntax">INV_A1</span><span class="plain-syntax">; </span><span class="identifier-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_9"></a><b>&#167;2.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for for</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_9" class="paragraph-anchor"></a><b>&#167;2.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for for</span><span class="named-paragraph-number">2.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -514,7 +520,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_10"></a><b>&#167;2.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for objectloop</span><span class="named-paragraph-number">2.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_10" class="paragraph-anchor"></a><b>&#167;2.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for objectloop</span><span class="named-paragraph-number">2.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -538,7 +544,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_11"></a><b>&#167;2.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for objectloopx</span><span class="named-paragraph-number">2.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_11" class="paragraph-anchor"></a><b>&#167;2.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for objectloopx</span><span class="named-paragraph-number">2.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -547,7 +553,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_12"></a><b>&#167;2.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for loop</span><span class="named-paragraph-number">2.12</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_12" class="paragraph-anchor"></a><b>&#167;2.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for loop</span><span class="named-paragraph-number">2.12</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -555,7 +561,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_13"></a><b>&#167;2.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for switch</span><span class="named-paragraph-number">2.13</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_13" class="paragraph-anchor"></a><b>&#167;2.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for switch</span><span class="named-paragraph-number">2.13</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -564,7 +570,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_14"></a><b>&#167;2.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for case</span><span class="named-paragraph-number">2.14</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_14" class="paragraph-anchor"></a><b>&#167;2.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for case</span><span class="named-paragraph-number">2.14</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -572,7 +578,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_15"></a><b>&#167;2.15.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for default</span><span class="named-paragraph-number">2.15</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_15" class="paragraph-anchor"></a><b>&#167;2.15.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Generate primitive for default</span><span class="named-paragraph-number">2.15</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -580,7 +586,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">suppress_terminal_semicolon</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-fi6.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::I6::compile_dictionary_word</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">CodeGen::I6::compile_dictionary_word</span></span>:<br/><a href="4-fi6.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">,</span>
@@ -605,7 +611,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::I6::compile_literal_text</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">CodeGen::I6::compile_literal_text</span></span>:<br/><a href="4-fi6.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">,</span>
@@ -660,7 +666,7 @@ then the result.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Because in I6 source code some properties aren't declared before use, it follows
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Because in I6 source code some properties aren't declared before use, it follows
 that if not used by any object then they won't ever be created. This is a
 problem since it means that I6 code can't refer to them, because it would need
 to mention an I6 symbol which doesn't exist. To get around this, we create the
@@ -684,7 +690,7 @@ trick called "stubbing", these being "stub definitions".)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::I6::prepare_variable</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">CodeGen::I6::prepare_variable</span></span>:<br/><a href="4-fi6.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">,</span>

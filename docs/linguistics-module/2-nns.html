@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-nns.html#SP1">&#167;1. A noun is more than a lexical cluster</a></li><li><a href="2-nns.html#SP7">&#167;7. Creation</a></li><li><a href="2-nns.html#SP9">&#167;9. Subclass</a></li><li><a href="2-nns.html#SP10">&#167;10. Logging</a></li><li><a href="2-nns.html#SP11">&#167;11. Attaching some wording to a noun</a></li><li><a href="2-nns.html#SP12">&#167;12. Name access</a></li><li><a href="2-nns.html#SP13">&#167;13. Meaning</a></li><li><a href="2-nns.html#SP14">&#167;14. Disambiguation</a></li><li><a href="2-nns.html#SP16">&#167;16. Actual usage</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. A noun is more than a lexical cluster. </b>Consider the line:
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. A noun is more than a lexical cluster. </b>Consider the line:
 </p>
 
 <blockquote>
@@ -87,7 +93,7 @@ wrong to represent a noun by a lexical cluster alone.
 contains the lexical cluster to define its syntax, but it also has semantics attached.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>From a linguistic point of view, the class of nouns can be divided into two
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>From a linguistic point of view, the class of nouns can be divided into two
 subclasses: common nouns and proper nouns. "Mammal" is a common noun, whereas
 a sentence such as:
 </p>
@@ -109,7 +115,7 @@ rulebooks and tables, for example.
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">COMMON_NOUN</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PROPER_NOUN</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The other semantic ingredient in a <a href="2-nns.html#SP3" class="internal">noun</a> object is a pointer to some
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The other semantic ingredient in a <a href="2-nns.html#SP3" class="internal">noun</a> object is a pointer to some
 object which gives it a meaning. For example, for the "carved oak table" in
 the Inform example above that would be an <span class="extract"><span class="extract-syntax">instance</span></span> object representing this
 piece of furniture in the model world.
@@ -134,17 +140,17 @@ feminine accusative plural".
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_COMPILATION_LINGUISTICS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_compilation</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../core-module/6-un.html" class="internal">Using Nametags (in core)</a><span class="comment-syntax"> on this</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_compilation_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_compilation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution</span><span class="plain-syntax">; </span><span class="comment-syntax"> see </span><a href="../core-module/8-hdn.html" class="internal">Headings (in core)</a><span class="comment-syntax"> on this</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_resolution</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">noun</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure noun is accessed in 2/adj, 2/art, 2/daq, 2/prn, 3/vrb, 3/vu, 3/prp and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>A <a href="2-nns.html#SP4" class="internal">noun_usage</a> object is what a lexicon search returns when text is matched
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>A <a href="2-nns.html#SP4" class="internal">noun_usage</a> object is what a lexicon search returns when text is matched
 against some form of a noun.
 </p>
 
@@ -156,7 +162,7 @@ against some form of a noun.
 <span class="plain-syntax">} </span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure noun_usage is accessed in 2/art, 2/prn, 3/vu and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::write_usage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Nouns::write_usage</span></span>:<br/>Diagrams - <a href="1-dgr.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">noun_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nu</span><span class="plain-syntax">) {</span>
@@ -166,7 +172,7 @@ against some form of a noun.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Nouns are a grammatical category:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Nouns are a grammatical category:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -182,7 +188,7 @@ against some form of a noun.
 <span class="plain-syntax">    </span><a href="2-nns.html#SP10" class="function-link"><span class="function-syntax">Nouns::log</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Creation. </b>The following functions are called to create new proper or common nouns, and
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Creation. </b>The following functions are called to create new proper or common nouns, and
 note that:
 </p>
 
@@ -210,7 +216,7 @@ to a combination of just two possibilities:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-nns.html#SP8" class="function-link"><span class="function-syntax">Nouns::new_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="constant-syntax">COMMON_NOUN</span><span class="plain-syntax">, </span><span class="identifier-syntax">options</span><span class="plain-syntax">, </span><span class="identifier-syntax">mc</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">gender</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Each using:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Each using:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -231,7 +237,7 @@ to a combination of just two possibilities:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Subclass. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Subclass. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::subclass</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -249,10 +255,10 @@ to a combination of just two possibilities:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Logging. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Logging. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::log</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Nouns::log</span></span>:<br/><a href="2-nns.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::log</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Nouns::log</span></span>:<br/><a href="2-nns.html#SP6">&#167;6</a><br/>Linguistics Module - <a href="1-lm.html#SP3">&#167;3</a>, <a href="1-lm.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-nns.html#SP10" class="function-link"><span class="function-syntax">Nouns::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
@@ -262,7 +268,7 @@ to a combination of just two possibilities:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"'%W'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Attaching some wording to a noun. </b>As noted above, each noun comes with a cluster of names, and here's where
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Attaching some wording to a noun. </b>As noted above, each noun comes with a cluster of names, and here's where
 we add a new one.
 </p>
 
@@ -278,7 +284,7 @@ we add a new one.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1"></a><b>&#167;11.1.  </b>See the discussion of noun usages above. The idea is that if our form is,
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>See the discussion of noun usages above. The idea is that if our form is,
 say, the German plural form of "Tisch", then the declension of that would be
 "Tische", "Tische", "Tischen", "Tische": we group these into two registrations,
 "Tische" (with possible forms nominative, accusative, genitive) and "Tischen"
@@ -306,7 +312,7 @@ say, the German plural form of "Tisch", then the declension of that would be
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-nns.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Name access. </b>We normally access names in their nominative cases, so:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Name access. </b>We normally access names in their nominative cases, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -338,7 +344,7 @@ say, the German plural form of "Tisch", then the declension of that would be
 <span class="plain-syntax">    </span><span class="identifier-syntax">Clusters::set_plural_in_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">names</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Meaning. </b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Meaning. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::meaning</span><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -346,7 +352,7 @@ say, the German plural form of "Tisch", then the declension of that would be
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">meaning</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Disambiguation. </b>Here the parse node <span class="extract"><span class="extract-syntax">p</span></span> stands at the head of a list of alternative meanings
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Disambiguation. </b>Here the parse node <span class="extract"><span class="extract-syntax">p</span></span> stands at the head of a list of alternative meanings
 for some text: for example, they might be different possible meanings of the
 words "red chair" &mdash; perhaps the "red stuffed chair", perhaps the "red upright
 chair", and so on. We want to choose the most likely possibility.
@@ -365,7 +371,7 @@ heading the noun appears under.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If only one of the possible matches is eligible, return that</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If only one of the possible matches is eligible, return that</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -379,7 +385,7 @@ heading the noun appears under.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">candidates</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_nt</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-nns.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14_2"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the matches can be scored, return the highest-scoring one</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_2" class="paragraph-anchor"></a><b>&#167;14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the matches can be scored, return the highest-scoring one</span><span class="named-paragraph-number">14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -389,7 +395,7 @@ heading the noun appears under.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-nns.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::is_eligible_match</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Nouns::is_eligible_match</span></span>:<br/><a href="2-nns.html#SP14_1">&#167;14.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">noun</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">common_only</span><span class="plain-syntax">) {</span>
@@ -397,7 +403,7 @@ heading the noun appears under.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Actual usage. </b></p>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Actual usage. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Nouns::recognise</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -423,7 +429,7 @@ heading the noun appears under.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nu</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>The following function is so called because Inform registers many constant
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>The following function is so called because Inform registers many constant
 values as nouns &mdash; for example, each rulebook name is a noun, and the meaning
 of that is a valid rvalue in the compiler sense; it's a value which can be
 computed with at run-time. Inform represents rvalues as sprigs of the parse

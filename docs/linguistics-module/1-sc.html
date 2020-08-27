@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="index.html"><span class="selectedlink">linguistics</span></a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-sc.html#SP10">&#167;10. Small word sets</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Stock items are classified by their categories. There are only a few of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Stock items are classified by their categories. There are only a few of
 these, each represented by a single instance of:
 </p>
 
@@ -81,7 +87,7 @@ these, each represented by a single instance of:
 <span class="plain-syntax">} </span><span class="reserved-syntax">grammatical_category</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure grammatical_category is accessed in 2/art, 2/prn and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The categories form a fixed set. They are each created by their own sections
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The categories form a fixed set. They are each created by their own sections
 of code, as called from this function when the module starts up:
 </p>
 
@@ -97,7 +103,7 @@ of code, as called from this function when the module starts up:
 <span class="plain-syntax">    </span><a href="3-vrb.html#SP9" class="function-link"><span class="function-syntax">Verbs::create_forms_category</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Those functions in turn each call this creator:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Those functions in turn each call this creator:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -109,7 +115,7 @@ of code, as called from this function when the module starts up:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Grammatical categories support only a single method call:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Grammatical categories support only a single method call:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">LOG_GRAMMATICAL_CATEGORY_MTID</span>
@@ -118,7 +124,7 @@ of code, as called from this function when the module starts up:
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">LOG_GRAMMATICAL_CATEGORY_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">grammatical_category</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cat</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">data</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The stock is essentially a big inventory of items, each represented by an
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The stock is essentially a big inventory of items, each represented by an
 instance of the following:
 </p>
 
@@ -130,7 +136,7 @@ instance of the following:
 <span class="plain-syntax">} </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure linguistic_stock_item is accessed in 2/adj, 2/art, 3/vrb and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>A flat array is maintained of the entire stock, so that they can be efficiently
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>A flat array is maintained of the entire stock, so that they can be efficiently
 looked up by their allocation numbers:
 </p>
 
@@ -150,7 +156,7 @@ looked up by their allocation numbers:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>Note that the array starts empty, so this will happen the first time a stock
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>Note that the array starts empty, so this will happen the first time a stock
 item is created.
 </p>
 
@@ -176,7 +182,7 @@ item is created.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-sc.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>What can we do with the stock? Well, we can log it, which is useful for
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>What can we do with the stock? Well, we can log it, which is useful for
 diagnostics and the woven form of this module, if nothing else.
 </p>
 
@@ -202,7 +208,7 @@ diagnostics and the woven form of this module, if nothing else.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>The stock inventory can also be used to make references. Using the stock
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The stock inventory can also be used to make references. Using the stock
 ID number (plus 1) as the reference ID of a linguistic constant reference,
 we can effectively have a single <span class="extract"><span class="extract-syntax">int</span></span> value refer to a stock item together
 with any combination of gender, person, number, voice, case, tense, and sense.
@@ -220,7 +226,7 @@ The "plus 1" is so that a reference ID of zeri can mean "no item".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">flat_array_of_stock</span><span class="plain-syntax">[</span><span class="identifier-syntax">id</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Grammatical usages.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Grammatical usages.
 Consider nouns, for example. In many languages, declensions do not distinguish
 cases fully. In English, the accusative and nominative form of almost every
 noun are the same. So it would not be possible for this object to say for
@@ -292,7 +298,7 @@ or accusative case".
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure grammatical_usage is accessed in 2/art, 2/prn and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Small word sets. </b>Sometimes we want a very fast way to parse a single word to see if it belongs
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Small word sets. </b>Sometimes we want a very fast way to parse a single word to see if it belongs
 to a small set of possibilities &mdash; for example, to see if it is a pronoun.
 If there are very few such, even using Preform is unnecessary overhead. The
 following is a lightweight alternative:
@@ -309,7 +315,7 @@ following is a lightweight alternative:
 <span class="plain-syntax">} </span><span class="reserved-syntax">small_word_set</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure small_word_set is accessed in 2/art, 2/prn and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Small word sets do not expand: they must be created large enough. But really,
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Small word sets do not expand: they must be created large enough. But really,
 if we expect them to contain more than about 20 words at the outside, then
 we ought to be using standard Preform nonterminals instead.
 </p>
@@ -329,7 +335,7 @@ we ought to be using standard Preform nonterminals instead.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sws</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The following adds a word.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The following adds a word.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

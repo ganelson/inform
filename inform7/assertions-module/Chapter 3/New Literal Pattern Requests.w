@@ -57,7 +57,7 @@ int LPRequests::specifies_SMF(int task, parse_node *V, wording *NPs) {
 
 @ The code in this section parses sentences which set up new literal patterns,
 puts the (quite complicated) result into a //lp_specification// object, and
-sends that to //Literal Patterns//.
+sends that to //values: Literal Patterns//.
 
 @d SINGULAR_LPN 1
 @d PLURAL_LPN 2

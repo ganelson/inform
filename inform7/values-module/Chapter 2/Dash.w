@@ -349,13 +349,13 @@ from a text substitution.)
 	Problems::quote_wording_tinted_green(1, itpt->problematic_text);
 	Problems::quote_spec(2, itpt->as_parsed);
 	Problems::issue_problem_begin(Task::syntax_tree(), "****");
-	if (ParseTreeUsage::is_value(itpt->as_parsed)) {
+	if (Specifications::is_value(itpt->as_parsed)) {
 		kind *K = Specifications::to_kind(itpt->as_parsed);
 		int changed = FALSE;
 		K = Kinds::substitute(K, NULL, &changed, FALSE);
 		Problems::quote_kind(3, K);
 		if (Kinds::eq(K, K_real_number)) real_found = TRUE;
-		if (ParseTreeUsage::is_lvalue(itpt->as_parsed))
+		if (Lvalues::is_lvalue(itpt->as_parsed))
 			@<Produce the token for an lvalue@>
 		else if (Node::is(itpt->as_parsed, PHRASE_TO_DECIDE_VALUE_NT))
 			@<Produce the token for a phrase deciding a value@>
@@ -519,7 +519,7 @@ the value meets some extra requirement. For example:
 
 @<Switch context to an lvalue@> =
 	int rv = SWITCH_CONTEXT_AND_RECURSE(p);
-	if (ParseTreeUsage::is_lvalue(p->down) == FALSE)
+	if (Lvalues::is_lvalue(p->down) == FALSE)
 		@<Issue problem for not being an lvalue@>;
 	return rv;
 
@@ -3069,7 +3069,7 @@ into all that here, because the message is aimed more at Inform novices who
 have made an understandable confusion.
 
 @<Step (5.d.4) Reject plausible but wrong uses due to use of inline-only types in phrases@> =
-	if (ParseTreeUsage::is_lvalue(p)) {
+	if (Lvalues::is_lvalue(p)) {
 		kind *K = Specifications::to_kind(p);
 		if (K == NULL) {
 			THIS_IS_AN_ORDINARY_PROBLEM;
@@ -3118,7 +3118,7 @@ conclusion about the return kind of the phrase.
 
 @<Step (5.e.2) Exception: when expecting a generic or actual CONSTANT@> =
 	LOG_DASH("(5.e.2)");
-	if ((kind_expected) && (ParseTreeUsage::is_value(p))) {
+	if ((kind_expected) && (Specifications::is_value(p))) {
 		if (Node::is(p, PHRASE_TO_DECIDE_VALUE_NT)) {
 			LOGIF(MATCHING, "(5.e.2) exempting phrase from return value checking for now\n");
 		} else {
@@ -3194,7 +3194,7 @@ same species as well.
 	LOG_DASH("(5.e.3)");
 	if ((kind_expected) || (condition_context)) {
 		int condition_found = FALSE;
-		if (ParseTreeUsage::is_condition(p)) condition_found = TRUE;
+		if (Specifications::is_condition(p)) condition_found = TRUE;
 		if (condition_found != condition_context) {
 			if ((Specifications::is_description(p)) && (kind_expected))
 				@<Fail with a warning about literal descriptions@>
@@ -3515,7 +3515,7 @@ void Dash::experiment(wording W, int full) {
 
 =
 int Dash::ambiguity_join(parse_node *existing, parse_node *reading) {
-	if ((ParseTreeUsage::is_phrasal(reading)) &&
+	if ((Specifications::is_phrasal(reading)) &&
 		(Node::get_type(reading) == Node::get_type(existing))) {
 		Dash::add_pr_inv(existing, reading);
 		return TRUE;

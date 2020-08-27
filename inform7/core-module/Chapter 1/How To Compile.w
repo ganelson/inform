@@ -136,7 +136,7 @@ so on. Those absolute basics are made here.
 @<Pass three times through the major nodes@> =
 	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes", 1);
 	BENCH(MajorNodes::pre_pass)
-	BENCH(ParseTreeUsage::verify)
+	BENCH(Task::verify)
 	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through major nodes", 2);
 	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)

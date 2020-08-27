@@ -37,7 +37,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -47,12 +51,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="index.html"><span class="selectedlink">words</span></a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="index.html"><span class="selectedlink">words</span></a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -65,7 +71,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Words, words, words</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Meaning codes</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Contiguous runs of words</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Hypothetical words</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Rock, paper, scissors</a></li><li><a href="P-wtmd.html#SP9">&#167;9. Traditional identifiers</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Preform</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The words module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The words module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -79,7 +85,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Words, words, words. </b>Natural language text for use with Inform begins as text files written by
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Words, words, words. </b>Natural language text for use with Inform begins as text files written by
 human users, which are fed into the "lexer" (i.e., lexical analyser).
 The function <a href="3-tff.html#SP2" class="internal">TextFromFiles::feed_open_file_into_lexer</a> reads such a file,
 converting it to a numbered stream of words. For indexing and error reporting
@@ -123,7 +129,7 @@ general we want "Lamb" and "lamb" to match, but not always.
 although <a href="../inform7/index.html" class="internal">inform7</a> may later unroll text substitutions in it, calling the
 lexer again to do that.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>A few <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> objects are hardwired into <a href="index.html" class="internal">words</a>, but only
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A few <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> objects are hardwired into <a href="index.html" class="internal">words</a>, but only
 for punctuation. These have names like <span class="extract"><span class="extract-syntax">COMMA_V</span></span>, which means just what you
 think it means. In our example,
 </p>
@@ -136,13 +142,13 @@ where further punctuation marks are created in order to parse Preform syntax &md
 there are exotica such as <span class="extract"><span class="extract-syntax">COLONCOLONEQUALS_V</span></span> there, for "::=".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Lexical errors occur if words are too long, or quoted text continues without
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Lexical errors occur if words are too long, or quoted text continues without
 a close quote right to the end of a file, and so on. These are sent to the
 function <a href="3-lxr.html#SP30" class="internal">Lexer::lexer_problem_handler</a>, but can be intercepted by the
 user (see <a href="P-htitm.html" class="internal">How To Include This Module</a>).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Meaning codes. </b>Each <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> has a bitmap of <span class="extract"><span class="extract-syntax">*_MC</span></span> meaning codes assigned to it.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Meaning codes. </b>Each <a href="2-vcb.html#SP1" class="internal">vocabulary_entry</a> has a bitmap of <span class="extract"><span class="extract-syntax">*_MC</span></span> meaning codes assigned to it.
 (And <a href="2-vcb.html#SP10" class="internal">Vocabulary::test_flags</a> tests whether the Nth word has a given bit.)
 For example, <span class="extract"><span class="extract-syntax">ORDINAL_MC</span></span> is applied to ordinal numbers like "sixth" or "15th"
 &mdash; see <a href="2-vcb.html#SP17" class="internal">Vocabulary::an_ordinal_number</a>, and <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> to cardinals. The
@@ -154,7 +160,7 @@ uses this for 15 or so of the most commonly used semantic categories in the
 Inform language. See <a href="../linguistics-module/P-wtmd.html" class="internal">What This Module Does (in linguistics)</a> to pick up the story.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Contiguous runs of words. </b>Natural languages are fundamentally unlike programming languages because a noun
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Contiguous runs of words. </b>Natural languages are fundamentally unlike programming languages because a noun
 referring to, say, a variable is rarely a single lexical token. In C, a variable
 name like <span class="extract"><span class="extract-syntax">selected_lamb</span></span> is one lexical unit. For us, though, "a little lamb"
 is three words.
@@ -167,7 +173,7 @@ deal with this using the <a href="3-wrd.html#SP1" class="internal">wording</a> t
 parameter. <a href="3-wrd.html" class="internal">Wordings</a> provides an extensive API for this.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Hypothetical words. </b>Sometimes Inform needs to make hypothetical passages of text. For example,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Hypothetical words. </b>Sometimes Inform needs to make hypothetical passages of text. For example,
 suppose there is a kind called "paint colour" in the source text; Inform may
 then want to create a variable called "paint colour understood". But this text
 may not occur as such anywhere in the source.
@@ -211,7 +217,7 @@ duplicated in the word stream (like "lamb went everywhere", 30-32), retain
 their original origins.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Rock, paper, scissors. </b>We now have three ways to represent text which may contain multiple words:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Rock, paper, scissors. </b>We now have three ways to represent text which may contain multiple words:
 as a <span class="extract"><span class="extract-syntax">text_stream</span></span>, as a <span class="extract"><span class="extract-syntax">wording</span></span>, as a <span class="extract"><span class="extract-syntax">word_assemblage</span></span>. Each can be
 converted into the other two:
 </p>
@@ -228,7 +234,7 @@ write a <span class="extract"><span class="extract-syntax">word_assemblage</span
 of things: this is fastest and most efficient on memory.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Traditional identifiers. </b>Imagine you're a compiler turning natural language into some sort of computer
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Traditional identifiers. </b>Imagine you're a compiler turning natural language into some sort of computer
 code, just hypothetically: then you probably want "a little lamb" to come out
 as a named location in memory, or object, or something like that: and this name
 must be a valid identifier for some other compiler or assembler &mdash; alphanumeric,
@@ -242,7 +248,7 @@ wording and a unique ID number and makes something sensible: <span class="extrac
 say.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Preform. </b>Preform is a meta-language for writing a simple grammar: it's in some sense
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Preform. </b>Preform is a meta-language for writing a simple grammar: it's in some sense
 pre-Inform, because it defines the Inform language itself. See <a href="4-ap.html" class="internal">About Preform</a>,
 where the story told in the present section continues...
 </p>

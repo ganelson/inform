@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-pd.html#SP4">&#167;4. Say phrases</a></li><li><a href="S-pd.html#SP13">&#167;13. Variables</a></li><li><a href="S-pd.html#SP16">&#167;16. Arithmetic</a></li><li><a href="S-pd.html#SP22">&#167;22. Control structures</a></li><li><a href="S-pd.html#SP29">&#167;29. Values</a></li><li><a href="S-pd.html#SP32">&#167;32. Text</a></li><li><a href="S-pd.html#SP37">&#167;37. Adaptive text</a></li><li><a href="S-pd.html#SP38">&#167;38. Data Structures</a></li><li><a href="S-pd.html#SP41">&#167;41. Lists</a></li><li><a href="S-pd.html#SP47">&#167;47. Functional Programming</a></li><li><a href="S-pd.html#SP49">&#167;49. Rulebooks and Activities</a></li><li><a href="S-pd.html#SP53">&#167;53. External Files</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>All phrases of the Inform language itself are defined here. The Standard
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>All phrases of the Inform language itself are defined here. The Standard
 Rules extension adds more, specialised for interactive fiction creation,
 but the bones of the language are here. For example, we will define what
 the plus sign will mean, and how Inform should compile "say N in words",
@@ -69,7 +69,7 @@ automatically generates the code needed to perform run-time type checking at
 any point where doubt remains as to the phrase definition which must be used.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Many of these phrases have what are called inline definitions, written
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Many of these phrases have what are called inline definitions, written
 using the <span class="extract"><span class="extract-syntax">(-</span></span> and <span class="extract"><span class="extract-syntax">-)</span></span> notation. Non-inline phrases are compiled as
 functions, which are then called when they need to be used. For example,
 "To say the magic number: say 17." compiles to a function, and when
@@ -95,7 +95,7 @@ typical example of a "documentation token", and is only a label. See the
 source of the Inform documentation for how this markup is done.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Unit tests for the phrases below have test case names beginning <span class="extract"><span class="extract-syntax">BIP-</span></span>,
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Unit tests for the phrases below have test case names beginning <span class="extract"><span class="extract-syntax">BIP-</span></span>,
 which stands for "Basic Inform phrase". In fact, these come in pairs, one for
 each virtual machine we customarily generate code to. For example, <span class="extract"><span class="extract-syntax">BIP-Say</span></span>
 tests the "say" phrase for the Z-machine target, and <span class="extract"><span class="extract-syntax">BIP-Say-G</span></span> does the same
@@ -108,7 +108,7 @@ these phrases on all platforms, since this regular expression matches all
 test case names beginning with "BIP-".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Say phrases. </b>We begin with saying phrases: the very first phrase to exist is the one
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Say phrases. </b>We begin with saying phrases: the very first phrase to exist is the one
 printing a single value &mdash; literal text, a number, a time, an object, or
 really almost anything, since the vast majority of kinds in Inform are
 sayable. There used to be separate definitions for saying text, numbers
@@ -159,7 +159,7 @@ which is also where <span class="extract"><span class="extract-syntax">say__n</s
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_s</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">STextSubstitution</span><span class="plain-syntax">(); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>"Showme" is a debugging version of "say" which can print some version of
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>"Showme" is a debugging version of "say" which can print some version of
 the value, and the kind, of just about anything.
 </p>
 
@@ -171,7 +171,7 @@ the value, and the kind, of just about anything.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_showme</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">show</span><span class="plain-syntax">-</span><span class="identifier-syntax">me</span><span class="plain-syntax">:</span><span class="identifier-syntax">val</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Objects are the most difficult things to say, because of the elaborate
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Objects are the most difficult things to say, because of the elaborate
 apparatus for managing their natural-language representations. In particular,
 we need to say them with a definite or indefinite article, which can either
 be capitalised or not, and as part of that we need to keep track of whether
@@ -214,7 +214,7 @@ is made good by using a routine in the template library instead.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_The</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">The</span><span class="plain-syntax">) {</span><span class="identifier-syntax">something</span><span class="plain-syntax">}; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Now some text substitutions which are the equivalent of escape characters.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Now some text substitutions which are the equivalent of escape characters.
 (In double-quoted I6 text, the notation for a literal quotation mark is a
 tilde <span class="extract"><span class="extract-syntax">~</span></span>.) Note the use of the "-- running on" annotation, which tells Inform
 that a text substitution should not cause a new-line.
@@ -239,7 +239,7 @@ that a text substitution should not cause a new-line.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_quotemark</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"~"</span><span class="plain-syntax">; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>For an explanation of the paragraph breaking algorithm, see the template
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>For an explanation of the paragraph breaking algorithm, see the template
 file "Printing.i6t".
 </p>
 
@@ -268,7 +268,7 @@ file "Printing.i6t".
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_breakpending</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- (</span><span class="identifier-syntax">say__p</span><span class="plain-syntax">) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Now for "[if ...]", which expands into a rather assembly-language-like
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Now for "[if ...]", which expands into a rather assembly-language-like
 usage of <span class="extract"><span class="extract-syntax">jump</span></span> statements, I6's form of goto. For instance, the text
 "[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
 thus:
@@ -356,7 +356,7 @@ not allow "say if" to be nested.
 <span class="plain-syntax">    .{-</span><span class="identifier-syntax">label</span><span class="plain-syntax">:</span><span class="identifier-syntax">Say</span><span class="plain-syntax">}{-</span><span class="identifier-syntax">counter</span><span class="plain-syntax">-</span><span class="identifier-syntax">up</span><span class="plain-syntax">:</span><span class="identifier-syntax">Say</span><span class="plain-syntax">}; .{-</span><span class="identifier-syntax">label</span><span class="plain-syntax">:</span><span class="identifier-syntax">SayX</span><span class="plain-syntax">}{-</span><span class="identifier-syntax">counter</span><span class="plain-syntax">-</span><span class="identifier-syntax">up</span><span class="plain-syntax">:</span><span class="identifier-syntax">SayX</span><span class="plain-syntax">};</span>
 <span class="plain-syntax">        -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The other control structure: the random variations form of saying. This
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The other control structure: the random variations form of saying. This
 part of the Inform design was in effect contributed by the community: it
 reimplements a form of Jon Ingold's former extension Text Variations, which
 itself built on code going back to the days of I6.
@@ -414,7 +414,7 @@ uses, and compiles as a switch statement based on the current state.
 <span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">say</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> -- </span><span class="identifier-syntax">ending</span><span class="plain-syntax"> </span><span class="identifier-syntax">say_first_time</span><span class="plain-syntax"> (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_firsttime</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">close</span><span class="plain-syntax">-</span><span class="identifier-syntax">brace</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Now some visual effects, which may or may not be rendered the way the user
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Now some visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
 </p>
 
@@ -441,7 +441,7 @@ you may need to run this in the Inform application to be convinced.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_varspacing</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">font</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax">; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>These are lists in the sense of the "list of" kind of value constructor, and
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>These are lists in the sense of the "list of" kind of value constructor, and
 the first two phrases here might list any values, not just objects.
 </p>
 
@@ -461,7 +461,7 @@ the first two phrases here might list any values, not just objects.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_listindef</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">LIST_OF_TY_Say</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, </span><span class="constant-syntax">3</span><span class="plain-syntax">); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Variables. </b>The "now" phrase can do an extraordinary range of things, and is more or
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Variables. </b>The "now" phrase can do an extraordinary range of things, and is more or
 less a genie granting one wish.
 </p>
 
@@ -485,7 +485,7 @@ the way that C would.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_whether</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- ({</span><span class="identifier-syntax">C</span><span class="plain-syntax">}) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Assignment is probably the most difficult thing the type-checker has to
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Assignment is probably the most difficult thing the type-checker has to
 cope with, since "let" has to work when applied to both unknown names (it
 creates a new variable) and existing ones (kind of value permitting). There
 are also four different ways to create with "let", and two to use
@@ -539,7 +539,7 @@ Forsyte novel of the same name.
 <span class="plain-syntax">        {-</span><span class="identifier-syntax">primitive</span><span class="plain-syntax">-</span><span class="identifier-syntax">definition</span><span class="plain-syntax">:</span><span class="identifier-syntax">solve</span><span class="plain-syntax">-</span><span class="identifier-syntax">equation</span><span class="plain-syntax">};</span>
 <span class="plain-syntax">    -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>It is not explicit in the following definitions that Inform should typecheck
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>It is not explicit in the following definitions that Inform should typecheck
 that the values held by these storage objects can be incremented or decremented
 (as an object, say, cannot, but a number can): Inform nevertheless contains
 code which does this.
@@ -570,7 +570,7 @@ code which does this.
 <span class="plain-syntax">        {-</span><span class="identifier-syntax">copy</span><span class="plain-syntax">:</span><span class="identifier-syntax">S</span><span class="plain-syntax">:-};</span>
 <span class="plain-syntax">    -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Arithmetic. </b>There are nine arithmetic operations, internally numbered 0 upwards, and
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Arithmetic. </b>There are nine arithmetic operations, internally numbered 0 upwards, and
 given verbal forms below. These are handled unusually in the type-checker
 because they need to be more polymorphic than most phrases: Inform uses
 dimension-checking to determine the kind of value resulting. (Thus a
@@ -649,7 +649,7 @@ attention.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_total</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">primitive</span><span class="plain-syntax">-</span><span class="identifier-syntax">definition</span><span class="plain-syntax">:</span><span class="identifier-syntax">total</span><span class="plain-syntax">-</span><span class="identifier-syntax">of</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Real numbers are not available in the Z-machine, but they are likely to
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Real numbers are not available in the Z-machine, but they are likely to
 be available everywhere else, i.e., on any other platform Inform may target
 in future.
 </p>
@@ -676,7 +676,7 @@ in future.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_scientificplaces</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">FloatExp</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>A number of miscellaneous mathematical functions follow, for real
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>A number of miscellaneous mathematical functions follow, for real
 numbers only; these are tested as part of <span class="extract"><span class="extract-syntax">BIP-ArithmeticOperations-G</span></span>,
 already mentioned above. Note that we do not need to define real versions
 of addition, multiplication and so on: the above definitions are polymorphic
@@ -715,7 +715,7 @@ enough to have done that already.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">REAL_NUMBER_TY_to_NUMBER_TY</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Exponentials-G</span></span>.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Exponentials-G</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -736,7 +736,7 @@ enough to have done that already.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_power</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">REAL_NUMBER_TY_Pow</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">P</span><span class="plain-syntax">}) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Trigonometry-G</span></span>.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Trigonometry-G</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -771,7 +771,7 @@ enough to have done that already.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">arctan</span><span class="plain-syntax"> </span><span class="identifier-syntax">function</span><span class="plain-syntax"> </span><span class="identifier-syntax">inverse</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">tan</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">REAL_NUMBER_TY_Arctan</span><span class="plain-syntax">({</span><span class="identifier-syntax">R</span><span class="plain-syntax">}) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Hyperbolics-G</span></span>.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>And these are tested in <span class="extract"><span class="extract-syntax">BIP-Hyperbolics-G</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -805,7 +805,7 @@ enough to have done that already.
 <span class="plain-syntax">    </span><span class="identifier-syntax">let</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">given</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">.5*(</span><span class="identifier-syntax">log</span><span class="plain-syntax">(1+</span><span class="identifier-syntax">R</span><span class="plain-syntax">) - </span><span class="identifier-syntax">log</span><span class="plain-syntax">(1-</span><span class="identifier-syntax">R</span><span class="plain-syntax">)) </span><span class="identifier-syntax">where</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">real</span><span class="plain-syntax"> </span><span class="identifier-syntax">number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Control structures. </b>The term "control structure" conjures up the thought of conditionals and loops,
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Control structures. </b>The term "control structure" conjures up the thought of conditionals and loops,
 and we'll get to those, but we'll begin with the equivalent of the C language's
 <span class="extract"><span class="extract-syntax">return</span></span> statement: ending a function call with some value as an outcome.
 Inform calls this "deciding" something, since in Inform programs functions
@@ -847,7 +847,7 @@ text working).
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_decideon</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">return</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">return</span><span class="plain-syntax">-</span><span class="identifier-syntax">value</span><span class="plain-syntax">:</span><span class="identifier-syntax">something</span><span class="plain-syntax">}; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>While "unless" is supposed to be exactly like "if" but with the reversed
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>While "unless" is supposed to be exactly like "if" but with the reversed
 sense of the condition, that isn't quite true. For example, there is no
 "unless ... then ...": logical it might be, English it is not.
 </p>
@@ -877,7 +877,7 @@ how much a general syntax for phrases can encode control phrases.)
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_switch</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (-  -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>"Do nothing" is a curious feature for a high-level programming language (C,
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>"Do nothing" is a curious feature for a high-level programming language (C,
 for example, does not have a NOP function); it entered Inform in the earliest
 days, when it was useful mainly when natural language syntax had painted users
 into a corner. (In the examples, it used to be used when conditions were
@@ -890,7 +890,7 @@ nothing"s.) It is now hardly ever useful.
 <span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">nothing</span><span class="plain-syntax"> (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_nothing</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- ; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>After all that, the while loop is simplicity itself. Perhaps the presence
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>After all that, the while loop is simplicity itself. Perhaps the presence
 of "unless" for "if" argues for a similarly negated form, "until" for
 "while", but users haven't yet petitioned for this.
 </p>
@@ -905,7 +905,7 @@ of "unless" for "if" argues for a similarly negated form, "until" for
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_while</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">while</span><span class="plain-syntax"> {</span><span class="identifier-syntax">c</span><span class="plain-syntax">}  -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b>The repeat loop looks like a single construction, but isn't, because the
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>The repeat loop looks like a single construction, but isn't, because the
 range can be given in four fundamentally different ways (and the loop variable
 then has a different kind of value accordingly). First, the equivalents of
 BASIC's <span class="extract"><span class="extract-syntax">for</span></span> loop and of Inform 6's <span class="extract"><span class="extract-syntax">objectloop</span></span>, respectively:
@@ -929,7 +929,7 @@ BASIC's <span class="extract"><span class="extract-syntax">for</span></span> loo
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_repeatlist</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">        (- {-</span><span class="identifier-syntax">primitive</span><span class="plain-syntax">-</span><span class="identifier-syntax">definition</span><span class="plain-syntax">:</span><span class="identifier-syntax">repeat</span><span class="plain-syntax">-</span><span class="identifier-syntax">through</span><span class="plain-syntax">-</span><span class="identifier-syntax">list</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>The following are all repeats where the range is the set of rows of a table,
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>The following are all repeats where the range is the set of rows of a table,
 taken in some order, and the repeat variable &mdash; though it does exist &mdash; is
 never specified since the relevant row is instead the one selected during
 each iteration of the loop.
@@ -975,7 +975,7 @@ each iteration of the loop.
 <span class="plain-syntax">        @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">ct_1</span><span class="plain-syntax">}; @</span><span class="identifier-syntax">pull</span><span class="plain-syntax"> {-</span><span class="identifier-syntax">my</span><span class="plain-syntax">:</span><span class="identifier-syntax">ct_0</span><span class="plain-syntax">};</span>
 <span class="plain-syntax">    -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b>The equivalent of <span class="extract"><span class="extract-syntax">break</span></span> or <span class="extract"><span class="extract-syntax">continue</span></span> in C or I6, or of <span class="extract"><span class="extract-syntax">last</span></span> or <span class="extract"><span class="extract-syntax">next</span></span>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>The equivalent of <span class="extract"><span class="extract-syntax">break</span></span> or <span class="extract"><span class="extract-syntax">continue</span></span> in C or I6, or of <span class="extract"><span class="extract-syntax">last</span></span> or <span class="extract"><span class="extract-syntax">next</span></span>
 in Perl. Here "in loop" means "in any of the forms of while or repeat".
 </p>
 
@@ -992,7 +992,7 @@ in Perl. Here "in loop" means "in any of the forms of while or repeat".
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_next</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">continue</span><span class="plain-syntax">; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29. Values. </b>Some of the things we can do with enumerations, others being listed under
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Values. </b>Some of the things we can do with enumerations, others being listed under
 randomness below.
 </p>
 
@@ -1020,7 +1020,7 @@ randomness below.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_enumlast</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax"> </span><span class="identifier-syntax">before</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">default</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b>Random numbers and random items chosen from sets of objects matching a
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>Random numbers and random items chosen from sets of objects matching a
 given description ("a random closed door").
 </p>
 
@@ -1052,7 +1052,7 @@ given description ("a random closed door").
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_seed</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">VM_Seed_RNG</span><span class="plain-syntax">({</span><span class="identifier-syntax">N</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b>A novel feature of Inform is that there is a default value of any kind: fpr
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>A novel feature of Inform is that there is a default value of any kind: fpr
 example, it is 0 for a number, or the empty text for text. When Inform compiles
 a value of a given kind but isn't told what value to compile, it always
 chooses the default, which is why the following definition works.
@@ -1068,7 +1068,7 @@ chooses the default, which is why the following definition works.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_defaultvalue</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">new</span><span class="plain-syntax">:</span><span class="identifier-syntax">K</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32. Text. </b>Inform programs swim in a sea of texts, and most of the ways to make text
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Text. </b>Inform programs swim in a sea of texts, and most of the ways to make text
 involve substitutions; so phrases to manipulate text are nice to have, but
 are bonuses rather than being the essentials.
 </p>
@@ -1124,7 +1124,7 @@ structural levels of text (character, word, punctuated word, etc.).
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_paranum</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TEXT_TY_GetBlob</span><span class="plain-syntax">({-</span><span class="identifier-syntax">new</span><span class="plain-syntax">:</span><span class="identifier-syntax">text</span><span class="plain-syntax">}, {-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}, </span><span class="identifier-syntax">PARA_BLOB</span><span class="plain-syntax">) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33.  </b>The "substituted form of" is a technicality most Inform users never need to
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33.  </b>The "substituted form of" is a technicality most Inform users never need to
 think about; as a one-off phrase, it may as well go here.
 </p>
 
@@ -1133,7 +1133,7 @@ think about; as a one-off phrase, it may as well go here.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_subform</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TEXT_TY_SubstitutedForm</span><span class="plain-syntax">({-</span><span class="identifier-syntax">new</span><span class="plain-syntax">:</span><span class="identifier-syntax">text</span><span class="plain-syntax">}, {-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">T</span><span class="plain-syntax">}) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34"></a><b>&#167;34.  </b>A common matching engine is used for matching plain text...
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34.  </b>A common matching engine is used for matching plain text...
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-TextReplacement</span></span>.
@@ -1192,7 +1192,7 @@ think about; as a one-off phrase, it may as well go here.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_replacepara</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TEXT_TY_ReplaceBlob</span><span class="plain-syntax">(</span><span class="identifier-syntax">PARA_BLOB</span><span class="plain-syntax">, {-</span><span class="identifier-syntax">lvalue</span><span class="plain-syntax">-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}, {-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">replace</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35"></a><b>&#167;35.  </b>...and for regular expressions, though here we also have access to the
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>...and for regular expressions, though here we also have access to the
 exact text which matched (not interesting in the plain text case since it's
 the same as the search text, up to case at least), and the values of matched
 subexpressions (which the plain text case doesn't have).
@@ -1228,7 +1228,7 @@ subexpressions (which the plain text case doesn't have).
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TEXT_TY_Replace_RE</span><span class="plain-syntax">(</span><span class="identifier-syntax">REGEXP_BLOB</span><span class="plain-syntax">, {-</span><span class="identifier-syntax">lvalue</span><span class="plain-syntax">-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, {-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">find</span><span class="plain-syntax">},</span>
 <span class="plain-syntax">        {-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">replace</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">phrase</span><span class="plain-syntax"> </span><span class="identifier-syntax">options</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36"></a><b>&#167;36.  </b>Casing of text.
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>Casing of text.
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-TextCasing</span></span>.
@@ -1256,7 +1256,7 @@ subexpressions (which the plain text case doesn't have).
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_inupper</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TEXT_TY_CharactersOfCase</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, </span><span class="constant-syntax">1</span><span class="plain-syntax">) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP37"></a><b>&#167;37. Adaptive text. </b></p>
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Adaptive text. </b></p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-AdaptiveText</span></span>.
 </p>
@@ -1301,7 +1301,7 @@ subexpressions (which the plain text case doesn't have).
 
 <span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> </span><span class="identifier-syntax">relation</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">objects</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">meaning</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> - </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb</span><span class="plain-syntax">): (- {</span><span class="identifier-syntax">V</span><span class="plain-syntax">}(</span><span class="identifier-syntax">CV_MEANING</span><span class="plain-syntax">) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38"></a><b>&#167;38. Data Structures. </b>Inform provides three main data structures: tables, lists, and relations,
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. Data Structures. </b>Inform provides three main data structures: tables, lists, and relations,
 which we will take in that order.
 </p>
 
@@ -1360,7 +1360,7 @@ or "blanking" it &mdash; requires specialist phrases.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_blankouttable</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TableBlankOutAll</span><span class="plain-syntax">({</span><span class="identifier-syntax">T</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP39"></a><b>&#167;39.  </b>These four are for debugging purposes only, and are used in the same test
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b>These four are for debugging purposes only, and are used in the same test
 case. "Showme the contents of ..." is not a text substitution, for efficiency
 reasons: for a large table it could produce a gargantuan output, and in a
 story file with memory constraints, one might not want to store that in a
@@ -1381,7 +1381,7 @@ text variable.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">phs_tablecolumn</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TableColumnDebug</span><span class="plain-syntax">({</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">TC</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40"></a><b>&#167;40.  </b>Sorting.
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>Sorting.
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-TableSort</span></span>.
@@ -1400,7 +1400,7 @@ text variable.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_sortcolumnreverse</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">TableSort</span><span class="plain-syntax">({</span><span class="identifier-syntax">T</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">TC</span><span class="plain-syntax">}, -1); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41"></a><b>&#167;41. Lists. </b>The following are all for adding and removing values to dynamic lists.
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Lists. </b>The following are all for adding and removing values to dynamic lists.
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-Lists</span></span>.
@@ -1441,7 +1441,7 @@ text variable.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_rementries</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">LIST_OF_TY_RemoveItemRange</span><span class="plain-syntax">({-</span><span class="identifier-syntax">lvalue</span><span class="plain-syntax">-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N2</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">phrase</span><span class="plain-syntax"> </span><span class="identifier-syntax">options</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42"></a><b>&#167;42.  </b>Searching a list is implemented in a somewhat crude way at present, and the
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b>Searching a list is implemented in a somewhat crude way at present, and the
 following syntax may later be replaced with a suitable verb "to be listed
 in", so that there's no need to imitate.
 </p>
@@ -1455,7 +1455,7 @@ in", so that there's no need to imitate.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_isnotlistedin</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- (</span><span class="identifier-syntax">LIST_OF_TY_FindItem</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}) == </span><span class="identifier-syntax">false</span><span class="plain-syntax">) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP43"></a><b>&#167;43.  </b>A description is a representation of a set of objects by means of a
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43.  </b>A description is a representation of a set of objects by means of a
 predicate (e.g., "open unlocked doors"), and it converts into a list of
 current members (in creation order), but there's no reverse process.
 </p>
@@ -1465,7 +1465,7 @@ current members (in creation order), but there's no reverse process.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_listofdesc</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">new</span><span class="plain-syntax">-</span><span class="identifier-syntax">list</span><span class="plain-syntax">-</span><span class="identifier-syntax">of</span><span class="plain-syntax">:</span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">} -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP44"></a><b>&#167;44.  </b>Determining and setting the length:
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>Determining and setting the length:
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-ListLength</span></span>.
@@ -1493,7 +1493,7 @@ current members (in creation order), but there's no reverse process.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_changelength</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">LIST_OF_TY_SetLength</span><span class="plain-syntax">({-</span><span class="identifier-syntax">lvalue</span><span class="plain-syntax">-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">N</span><span class="plain-syntax">}, </span><span class="constant-syntax">0</span><span class="plain-syntax">); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP45"></a><b>&#167;45.  </b>Easy but useful list operations. Sorting ultimately uses a common sorting
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45.  </b>Easy but useful list operations. Sorting ultimately uses a common sorting
 mechanism, in "Sort.i6t", which handles both lists and tables.
 </p>
 
@@ -1528,7 +1528,7 @@ mechanism, in "Sort.i6t", which handles both lists and tables.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_sortlistpropertyreverse</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">LIST_OF_TY_Sort</span><span class="plain-syntax">({-</span><span class="identifier-syntax">lvalue</span><span class="plain-syntax">-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">L</span><span class="plain-syntax">}, -1, {</span><span class="identifier-syntax">P</span><span class="plain-syntax">}, {-</span><span class="identifier-syntax">property</span><span class="plain-syntax">-</span><span class="identifier-syntax">holds</span><span class="plain-syntax">-</span><span class="identifier-syntax">block</span><span class="plain-syntax">-</span><span class="identifier-syntax">value</span><span class="plain-syntax">:</span><span class="identifier-syntax">P</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP46"></a><b>&#167;46.  </b>Relations are the final data structure given here. In some ways they are
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46.  </b>Relations are the final data structure given here. In some ways they are
 the most fundamental of all, but they're not either set or tested by
 procedural phrases &mdash; they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:
@@ -1608,7 +1608,7 @@ So all we have here are the route-finding phrases:
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_rightlookup</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">RelationTest</span><span class="plain-syntax">({-</span><span class="identifier-syntax">by</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax">:</span><span class="identifier-syntax">R</span><span class="plain-syntax">}, </span><span class="identifier-syntax">RELS_LOOKUP_ANY</span><span class="plain-syntax">, {</span><span class="identifier-syntax">X</span><span class="plain-syntax">}, </span><span class="identifier-syntax">RLANY_GET_Y</span><span class="plain-syntax">) -). </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP47"></a><b>&#167;47. Functional Programming. </b>Here we have the ability to use the name of a function as a value, and to
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. Functional Programming. </b>Here we have the ability to use the name of a function as a value, and to
 apply such a function.
 </p>
 
@@ -1662,7 +1662,7 @@ apply such a function.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_apply3</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- {-</span><span class="identifier-syntax">primitive</span><span class="plain-syntax">-</span><span class="identifier-syntax">definition</span><span class="plain-syntax">:</span><span class="identifier-syntax">function</span><span class="plain-syntax">-</span><span class="identifier-syntax">application</span><span class="plain-syntax">}; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP48"></a><b>&#167;48.  </b>The standard map, reduce and filter operations found in most functional
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48.  </b>The standard map, reduce and filter operations found in most functional
 programming languages also have Inform analogues.
 </p>
 
@@ -1699,7 +1699,7 @@ programming languages also have Inform analogues.
 <span class="plain-syntax">            </span><span class="identifier-syntax">add</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">filtered</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">decide</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">filtered</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP49"></a><b>&#167;49. Rulebooks and Activities. </b></p>
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Rulebooks and Activities. </b></p>
 
 <p class="commentary">Firing off activities:
 </p>
@@ -1722,7 +1722,7 @@ programming languages also have Inform analogues.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_continueactivity</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">rfalse</span><span class="plain-syntax">; -) - </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP50"></a><b>&#167;50.  </b>Advanced activity phrases: for setting up one's own activities structured
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50.  </b>Advanced activity phrases: for setting up one's own activities structured
 around I7 source text. People tend not to use this much, and perhaps that's
 a good thing, but it does open up possibilities, and it's good for
 retro-fitting onto extensions to make them more customisable.
@@ -1760,7 +1760,7 @@ See the documentation example <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_abandonactivitywith</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">AbandonActivity</span><span class="plain-syntax">({</span><span class="identifier-syntax">A</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">val</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP51"></a><b>&#167;51.  </b>Here are four different ways to invoke a rule or rulebook:
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51.  </b>Here are four different ways to invoke a rule or rulebook:
 </p>
 
 <p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-Rules</span></span>.
@@ -1798,7 +1798,7 @@ See the documentation example <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_abide</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FollowRulebook</span><span class="plain-syntax">({</span><span class="identifier-syntax">RL</span><span class="plain-syntax">})) </span><span class="identifier-syntax">rtrue</span><span class="plain-syntax">; -) - </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP52"></a><b>&#167;52.  </b>Rules return <span class="extract"><span class="extract-syntax">true</span></span> to indicate a decision, which could be either a success
+<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52.  </b>Rules return <span class="extract"><span class="extract-syntax">true</span></span> to indicate a decision, which could be either a success
 or a failure, and optionally may also return a value. If they return <span class="extract"><span class="extract-syntax">false</span></span>,
 there's no decision.
 </p>
@@ -1830,7 +1830,7 @@ there's no decision.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_rulebookoutcome</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- (</span><span class="identifier-syntax">ResultOfRule</span><span class="plain-syntax">()) -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP53"></a><b>&#167;53. External Files. </b>Inform has a quirky level of support for file-handling, which comes out what
+<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. External Files. </b>Inform has a quirky level of support for file-handling, which comes out what
 the Glulx virtual machine will support.
 </p>
 
@@ -1852,7 +1852,7 @@ the Glulx virtual machine will support.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_saytext</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">FileIO_PrintContents</span><span class="plain-syntax">({</span><span class="identifier-syntax">FN</span><span class="plain-syntax">}); </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP54"></a><b>&#167;54.  </b>See test case <span class="extract"><span class="extract-syntax">BIP-FilesOfTables-G</span></span>, which has no Z-machine counterpart.
+<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54.  </b>See test case <span class="extract"><span class="extract-syntax">BIP-FilesOfTables-G</span></span>, which has no Z-machine counterpart.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1865,7 +1865,7 @@ the Glulx virtual machine will support.
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_writetable</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">FileIO_PutTable</span><span class="plain-syntax">({</span><span class="identifier-syntax">filename</span><span class="plain-syntax">}, {</span><span class="identifier-syntax">T</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP55"></a><b>&#167;55.  </b>These are hardly used phrases which are difficult to test convincingly
+<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55.  </b>These are hardly used phrases which are difficult to test convincingly
 in our framework, since they defend against independent Inform programs
 simultaneously trying to access the same file.
 </p>

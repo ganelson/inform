@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Z-Machine Definitions</a></li><li><a href="S-dfn.html#SP2">&#167;2. Glulx Definitions</a></li><li><a href="S-dfn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="S-dfn.html#SP4">&#167;4. Text Styles</a></li><li><a href="S-dfn.html#SP5">&#167;5. Colour Numbers</a></li><li><a href="S-dfn.html#SP6">&#167;6. Window Numbers</a></li><li><a href="S-dfn.html#SP7">&#167;7. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP8">&#167;8. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP9">&#167;9. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP10">&#167;10. Template Activities</a></li><li><a href="S-dfn.html#SP11">&#167;11. Template Rulebooks</a></li><li><a href="S-dfn.html#SP12">&#167;12. Kind IDs</a></li><li><a href="S-dfn.html#SP13">&#167;13. Parser Error Numbers</a></li><li><a href="S-dfn.html#SP14">&#167;14. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP15">&#167;15. Token Types</a></li><li><a href="S-dfn.html#SP16">&#167;16. GPR Return Values</a></li><li><a href="S-dfn.html#SP17">&#167;17. List Styles</a></li><li><a href="S-dfn.html#SP18">&#167;18. Lengths Of Time</a></li><li><a href="S-dfn.html#SP19">&#167;19. Empty Text</a></li><li><a href="S-dfn.html#SP20">&#167;20. Empty Table</a></li><li><a href="S-dfn.html#SP21">&#167;21. Empty Set</a></li><li><a href="S-dfn.html#SP22">&#167;22. Template Attributes</a></li><li><a href="S-dfn.html#SP23">&#167;23. Template Properties</a></li><li><a href="S-dfn.html#SP24">&#167;24. Action Count</a></li><li><a href="S-dfn.html#SP25">&#167;25. Fake Actions</a></li><li><a href="S-dfn.html#SP26">&#167;26. Formal Parameters</a></li><li><a href="S-dfn.html#SP27">&#167;27. Template Configuration</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Z-Machine Definitions. </b>The Z-machine contains certain special constants and variables at fixed
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Z-Machine Definitions. </b>The Z-machine contains certain special constants and variables at fixed
 position in its "header"; the addresses of these are given below. See
 {\it The Z-Machine Standards Document}, version 1.0, for details.
 </p>
@@ -113,7 +113,7 @@ but not for Z.
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Glulx Definitions. </b>We make similar header definitions for Glulx. Extensive further
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Glulx Definitions. </b>We make similar header definitions for Glulx. Extensive further
 definitions, of constants needed to handle the Glk I/O layer, can be found
 in the "Infglk" section of "Glulx.i6t"; they are not used in the rest
 of the template layer, and would only get in the way here.
@@ -144,7 +144,7 @@ of the template layer, and would only get in the way here.
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Powers of Two. </b>I6 lacks support for logical shifts, and the Z-machine opcodes which bear
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Powers of Two. </b>I6 lacks support for logical shifts, and the Z-machine opcodes which bear
 on this are not always well supported, so the I6 library has traditionally
 used a lookup table for the values of \(2^{15-n}\) where \(0\leq n \leq 11\).
 </p>
@@ -182,7 +182,7 @@ used a lookup table for the values of \(2^{15-n}\) where \(0\leq n \leq 11\).
 <span class="plain-syntax">      </span><span class="constant-syntax">$$0100000000000000</span>
 <span class="plain-syntax">      </span><span class="constant-syntax">$$1000000000000000</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Text Styles. </b>These are the styles of text distinguished by the template layer, though
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Text Styles. </b>These are the styles of text distinguished by the template layer, though
 they are not required to look different from each other on any given VM.
 The codes are independent of the VM targetted, though in fact they are
 equal to Glulx style numbers as conventionally used. (The Z-machine renders
@@ -205,7 +205,7 @@ it, and for unornamental works Glulx is fine in practice.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLOCKQUOTE_VMSTY</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">INPUT_VMSTY</span><span class="plain-syntax">      = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Colour Numbers. </b>These are traditional colour names: quite who it was who thought that azure
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Colour Numbers. </b>These are traditional colour names: quite who it was who thought that azure
 was the same colour as cyan is now unclear. Colour is, again, not easy to
 arrange on Glulx, but there is some workaround code.
 </p>
@@ -221,7 +221,7 @@ arrange on Glulx, but there is some workaround code.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_CYAN</span><span class="plain-syntax">    = </span><span class="constant-syntax">8</span><span class="plain-syntax">; </span><span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_AZURE</span><span class="plain-syntax">   = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLR_WHITE</span><span class="plain-syntax">   = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Window Numbers. </b>Although Glulx can support elaborate tessalations of windows on screen (if
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Window Numbers. </b>Although Glulx can support elaborate tessalations of windows on screen (if
 the complexity of handling this can be mastered), the Z-machine has much
 more limited resources in general, so the template layer assumes a simple
 screen model: there are just two screen areas, the scrolling main window
@@ -234,7 +234,7 @@ line bar at the top of the screen.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_STATUS</span><span class="plain-syntax">  = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_MAIN</span><span class="plain-syntax">    = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Paragraphing Flags. </b>I am not sure many dictionaries would countenance "to paragraph" as a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Paragraphing Flags. </b>I am not sure many dictionaries would countenance "to paragraph" as a
 verb, but never mind: the reference here is to the algorithm used to place
 paragraph breaks within text, which uses bitmaps composed of the following.
 </p>
@@ -246,7 +246,7 @@ paragraph breaks within text, which uses bitmaps composed of the following.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PARA_NORULEBOOKBREAKS</span><span class="plain-syntax">   = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PARA_CONTENTEXPECTED</span><span class="plain-syntax">    = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Descriptors in the Language of Play. </b>The following constants, which must be different in value from the number
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Descriptors in the Language of Play. </b>The following constants, which must be different in value from the number
 of any I6 attribute, are used in the <span class="extract"><span class="extract-syntax">LanguageDescriptors</span></span> table found
 in the definition of the language of play.
 </p>
@@ -256,7 +256,7 @@ in the definition of the language of play.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEFART_PK</span><span class="plain-syntax">   = </span><span class="constant-syntax">$101</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">INDEFART_PK</span><span class="plain-syntax"> = </span><span class="constant-syntax">$102</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Run-Time Problem Numbers. </b>The enumeration sequence here must correspond to that in the file of RTP
 texts, which is used to generate the HTML pages displayed by the Inform
 user interface when a run-time problem has occurred. (For instance, the
 file of RTP texts includes the heading "P17 - Can't divide by zero",
@@ -336,7 +336,7 @@ to I7.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_LISTSIZENEGATIVE</span><span class="plain-syntax">        = </span><span class="constant-syntax">68</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_REGIONSNOTADJACENT</span><span class="plain-syntax">      = </span><span class="constant-syntax">69</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Template Activities. </b>These are the activities defined in the Standard Rules. Most, though not
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Template Activities. </b>These are the activities defined in the Standard Rules. Most, though not
 all, are carried out by explicit function calls in the template layer,
 which is why we need their ID numbers: note that Inform assigns each activity a
 unique ID number on creation, counting upwards from 0, and that it
@@ -388,7 +388,7 @@ creation sequence in the Standard Rules.)
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHOOSING_NOTABLE_LOCALE_OBJ_ACT</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_LOCALE_PARAGRAPH_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">33</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Template Rulebooks. </b>Rulebooks are created in a similar way, and again are numbered upwards from
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Template Rulebooks. </b>Rulebooks are created in a similar way, and again are numbered upwards from
 0 in order of creation. These are the ones used in the template layer.
 (These numbers must correspond {\it both} to those in the source of Inform,
 {\it and} to the creation sequence in the Standard Rules.)
@@ -433,11 +433,11 @@ creation sequence in the Standard Rules.)
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DOES_THE_PLAYER_MEAN_RB</span><span class="plain-syntax">		 = </span><span class="constant-syntax">34</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain-syntax">   = </span><span class="constant-syntax">35</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Kind IDs. </b>These are filled in automatically by Inform, and have the same names as are used
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Kind IDs. </b>These are filled in automatically by Inform, and have the same names as are used
 in the Inform source (and in the Load-.i6t sections): for instance <span class="extract"><span class="extract-syntax">NUMBER_TY</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Parser Error Numbers. </b>The traditional ways in which the I6 library's parser, which we adopt here
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Parser Error Numbers. </b>The traditional ways in which the I6 library's parser, which we adopt here
 more or less intact, can give up on a player's command. See the {\it Inform
 Designer's Manual}, 4th edition, for details.
 </p>
@@ -469,7 +469,7 @@ Designer's Manual}, 4th edition, for details.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ANIMALISTEN_PE</span><span class="plain-syntax">   = </span><span class="constant-syntax">24</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TOTALK_PE</span><span class="plain-syntax">        = </span><span class="constant-syntax">25</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
@@ -488,7 +488,7 @@ in numbering.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOOPOVERSCOPE_REASON</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TESTSCOPE_REASON</span><span class="plain-syntax">     = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
 The <span class="extract"><span class="extract-syntax">*_TOKEN</span></span> constants must not be altered without modifying the I6 compiler
@@ -516,7 +516,7 @@ to match (so, basically, they must not be altered at all).
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TOPIC_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDIT_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">15</span><span class="plain-syntax">;   </span><span class="comment-syntax">Value used to mean "end of grammar line"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
 </p>
@@ -544,7 +544,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_MULTIINSIDE</span><span class="plain-syntax">    = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_CREATURE</span><span class="plain-syntax">       = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -567,7 +567,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EXTRAINDENT_BIT</span><span class="plain-syntax">    = </span><span class="constant-syntax">$$0010000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">New in I7: extra indentation of 1 level</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">      = </span><span class="constant-syntax">$$0100000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">Capitalise first article in list</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Lengths Of Time. </b>Inform measures time in minutes.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Lengths Of Time. </b>Inform measures time in minutes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -577,7 +577,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWELVE_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">720</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWENTY_FOUR_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1440</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string <span class="extract"><span class="extract-syntax">"exemplum"</span></span> twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
@@ -593,21 +593,21 @@ and properties: we give it a name as follows.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_VALUE</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
 containing no rows and no columns.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheEmptyTable</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
 zero value for the "description" kind of value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Prop_Falsity</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
 used by the template.
@@ -670,7 +670,7 @@ are not visible to I7 source text as storage.
 <span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">workflag2</span><span class="plain-syntax">; </span><span class="comment-syntax">new in I7 and also temporary workspace</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_filter_permits</span><span class="plain-syntax"> = </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">; </span><span class="comment-syntax">another I7 listwriter convenience</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, <span class="extract"><span class="extract-syntax">after</span></span>,
 <span class="extract"><span class="extract-syntax">cant_go</span></span>, <span class="extract"><span class="extract-syntax">daemon</span></span>, <span class="extract"><span class="extract-syntax">each_turn</span></span>, <span class="extract"><span class="extract-syntax">invent</span></span>, <span class="extract"><span class="extract-syntax">life</span></span>, <span class="extract"><span class="extract-syntax">number</span></span>, <span class="extract"><span class="extract-syntax">orders</span></span>,
@@ -728,13 +728,13 @@ future use.
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">inside_description</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the locale code</span>
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_name_indef</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the listmaker</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Action Count. </b>The number of valid I7 actions in existence.
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Action Count. </b>The number of valid I7 actions in existence.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ActionCount</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CCOUNT_ACTION_NAME</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25. Fake Actions. </b>Though sometimes useful for I6 coding tricks, fake actions &mdash; action numbers
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Fake Actions. </b>Though sometimes useful for I6 coding tricks, fake actions &mdash; action numbers
 not corresponding to any action, but different from those of valid actions,
 and useable with a number of action syntaxes &mdash; are not conceptually present
 in I7 source text. They can only really exist at the I6 level because I6 is
@@ -758,7 +758,7 @@ used for.
 <span class="identifier-syntax">Fake_Action</span><span class="plain-syntax"> </span><span class="identifier-syntax">PluralFound</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Fake_Action</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheSame</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -773,7 +773,7 @@ used for.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">formal_par7</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_temp</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27. Template Configuration. </b>To minimise the need for conditional compilation in the template, the
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Template Configuration. </b>To minimise the need for conditional compilation in the template, the
 constant <span class="extract"><span class="extract-syntax">TEMPLATE_CONFIGURATION_BITMAP</span></span> must be generated by the user
 (i.e., by I7). It's made up of these bits:
 </p>

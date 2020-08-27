@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-plc.html#SP1">&#167;1. Placeholders</a></li><li><a href="3-plc.html#SP2">&#167;2. Initial values</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Placeholders. </b>Placeholders are markers such as "[AUTHOR]", found in the template
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Placeholders. </b>Placeholders are markers such as "[AUTHOR]", found in the template
 files for making web pages. ("AUTHOR" would be the name of this one; the use
 of capital letters is customary but not required.) Most of these can be set
 to arbitrary texts by use of the <span class="extract"><span class="extract-syntax">placeholder</span></span> command in the blurb file, but
@@ -76,7 +76,7 @@ a few are "reserved":
 <span class="plain-syntax">} </span><span class="reserved-syntax">placeholder</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure placeholder is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Initial values. </b>The <span class="extract"><span class="extract-syntax">BLURB</span></span> refers here to back-cover-style text, and not to the "blurb"
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Initial values. </b>The <span class="extract"><span class="extract-syntax">BLURB</span></span> refers here to back-cover-style text, and not to the "blurb"
 file which we are acting on.
 </p>
 
@@ -105,7 +105,7 @@ file which we are acting on.
 <span class="plain-syntax">    </span><a href="1-mn.html#SP4" class="function-link"><span class="function-syntax">Main::initialise_time_variables</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>We don't need any very efficient system for parsing these names, as there
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We don't need any very efficient system for parsing these names, as there
 are typically fewer than 20 placeholders at a time.
 </p>
 
@@ -124,7 +124,7 @@ are typically fewer than 20 placeholders at a time.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>There are no "types" of these placeholders. When they hold numbers, it's only
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>There are no "types" of these placeholders. When they hold numbers, it's only
 as the text of a number written out in decimal, so:
 </p>
 
@@ -136,7 +136,7 @@ as the text of a number written out in decimal, so:
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">temp_digits</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And here we set a given placeholder to a given text value. If it doesn't
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And here we set a given placeholder to a given text value. If it doesn't
 already exist, it will be created. A reserved placeholder can then never again
 be set, and since it will have been set at creation time (above), it follows
 that a reserved placeholder cannot be set with the <span class="extract"><span class="extract-syntax">placeholder</span></span> command of a
@@ -151,7 +151,7 @@ blurb file.
 <span class="plain-syntax">    </span><a href="3-plc.html#SP6" class="function-link"><span class="function-syntax">Placeholders::set_to_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">var</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Where:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Where:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -172,7 +172,7 @@ blurb file.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pl_contents</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And that just leaves writing the output of these placeholders. The scenario
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And that just leaves writing the output of these placeholders. The scenario
 here is that we're copying HTML over to make a new web page, but we've hit
 text in the template like "[AUTHOR]". We output the value of this
 placeholder instead of that literal text. The reserved placeholders output as
@@ -215,7 +215,7 @@ uses of square brackets which aren't for placeholding.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>Note that the [BLURB] placeholder &mdash; which holds the story description, and is
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Note that the [BLURB] placeholder &mdash; which holds the story description, and is
 like a back cover blurb for a book; the name is not related to the release
 instructions format &mdash; may consist of multiple paragraphs. If so, then they
 will be divided by <span class="extract"><span class="extract-syntax">&lt;br/&gt;</span></span>, since that's the XML convention. But we want to

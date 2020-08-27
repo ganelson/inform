@@ -21,24 +21,11 @@ DECLARE_CLASS(external_file)
 
 @ Like all modules, this one must define a |start| and |end| function:
 
+@e FIGURE_CREATIONS_DA
+
 =
 void MultimediaModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
-	@<Register this module's debugging log aspects@>;
-	@<Register this module's debugging log writers@>;
+	Log::declare_aspect(FIGURE_CREATIONS_DA, L"figure creations", FALSE, FALSE);
 }
 void MultimediaModule::end(void) {
 }
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
-
-@<Register this module's debugging log aspects@> =
-	;
-
-@<Register this module's debugging log writers@> =
-	;

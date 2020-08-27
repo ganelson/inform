@@ -191,7 +191,7 @@ kind *Calculus::Deferrals::Cinders::kind_of_value_of_term(pcalc_term pt) {
 	}
 	if (pt.constant) {
 		if (pt.cinder >= 0) return current_pdef->cinder_kinds[pt.cinder];
-		if (ParseTreeUsage::is_phrasal(pt.constant))
+		if (Specifications::is_phrasal(pt.constant))
 			Dash::check_value(pt.constant, NULL);
 		return Specifications::to_kind(pt.constant);
 	}

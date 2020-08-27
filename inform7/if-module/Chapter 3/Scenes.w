@@ -1132,7 +1132,7 @@ actually running:
 void PL::Scenes::emit_during_clause(parse_node *spec) {
 	int stuck = TRUE;
 	if (K_scene == NULL) { Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1); return; }
-	if (ParseTreeUsage::is_rvalue(spec)) {
+	if (Rvalues::is_rvalue(spec)) {
 		Dash::check_value(spec, K_scene);
 		instance *I = Rvalues::to_instance(spec);
 		if (Instances::of_kind(I, K_scene)) {

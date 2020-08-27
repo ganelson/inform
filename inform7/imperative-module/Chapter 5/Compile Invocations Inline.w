@@ -288,7 +288,7 @@ the presence of annotations can change what we do.
 	if (require_to_be_lvalue) {
 		nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(supplied);
 		if (((nlv) && (NonlocalVariables::is_constant(nlv))) ||
-			(ParseTreeUsage::is_lvalue(supplied) == FALSE)) {
+			(Lvalues::is_lvalue(supplied) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
 			if (nlv) Problems::quote_wording(2, nlv->name);
 			else Problems::quote_spec(2, supplied);

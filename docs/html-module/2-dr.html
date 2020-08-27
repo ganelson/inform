@@ -55,7 +55,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -65,12 +69,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="index.html"><span class="selectedlink">html</span></a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -83,14 +89,14 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-dr.html#SP1">&#167;1. Disclaimer</a></li><li><a href="2-dr.html#SP2">&#167;2. Links and leafnames</a></li><li><a href="2-dr.html#SP7">&#167;7. The table of contents</a></li><li><a href="2-dr.html#SP9">&#167;9. Setting the body text</a></li><li><a href="2-dr.html#SP9_1">&#167;9.1. Typesetting the standard matter</a></li><li><a href="2-dr.html#SP9_6">&#167;9.6. Typesetting the headings</a></li><li><a href="2-dr.html#SP9_4_2_1">&#167;9.4.2.1. Typesetting I7 tables in displayed source text</a></li><li><a href="2-dr.html#SP9_8">&#167;9.8. Typesetting the body of an example</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Disclaimer. </b>The following code originated as a port of a simplified version of an early
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Disclaimer. </b>The following code originated as a port of a simplified version of an early
 form of the Inform documentation tool <a href="../indoc/index.html" class="internal">indoc</a>: in general, that will do a
 better all-round job, but this cut-down version is adequate for what we use
 it for, which is to make extension documentation pages. Those use a much
 simplified range of syntax compared to the full gamut known to <a href="../indoc/index.html" class="internal">indoc</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Links and leafnames. </b>Matters are complicated because an extension typically has not only a
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Links and leafnames. </b>Matters are complicated because an extension typically has not only a
 run of source text, but also up to 26 examples: suppose there are \(X\)
 of these. The extension then needs to produce \(X+1\) pages of HTML: the
 primary one, which just has the body text, and then \(X\) variants which
@@ -132,7 +138,7 @@ by a number. I believe I can live with the guilt.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to_example_anchor</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#eg%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_example_anchor</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The extension documentation text can optionally include section and
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The extension documentation text can optionally include section and
 chapter headings, and also examples. Here we parse the opening of a paragraph
 to see if it might be a heading. For instance, a paragraph consisting of
 </p>
@@ -151,7 +157,7 @@ to see if it might be a heading. For instance, a paragraph consisting of
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">section</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">:</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 2, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">DocumentationRenderer::extension_documentation_heading</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">DocumentationRenderer::extension_documentation_heading</span></span>:<br/><a href="2-dr.html#SP7">&#167;7</a>, <a href="2-dr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">level</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HW</span><span class="plain-syntax">) {</span>
@@ -168,7 +174,7 @@ to see if it might be a heading. For instance, a paragraph consisting of
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And here we do the same to identify an example, which has to satisfy a
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And here we do the same to identify an example, which has to satisfy a
 more exacting specification: a paragraph in the shape
 </p>
 
@@ -197,7 +203,7 @@ text of three asterisks in a row.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">****</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 4, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">DocumentationRenderer::extension_documentation_example</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">DocumentationRenderer::extension_documentation_example</span></span>:<br/><a href="2-dr.html#SP7">&#167;7</a>, <a href="2-dr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
@@ -218,7 +224,7 @@ text of three asterisks in a row.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The table of contents. </b>The user sees chapters as A subheadings, numbered upwards from 1, and sees
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The table of contents. </b>The user sees chapters as A subheadings, numbered upwards from 1, and sees
 sections as B subheadings, numbered from 1 within each chapter. It is legal to
 have only A subheadings; only B subheadings; or a mixture of the two.
 </p>
@@ -284,7 +290,7 @@ extension, enabling them to be lettered as Example A to Example Z.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>Internally, we are numbering all headings independently upwards from 1, and
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Internally, we are numbering all headings independently upwards from 1, and
 we set anchor points in the documentation called <span class="extract"><span class="extract-syntax">#docsec1</span></span>, <span class="extract"><span class="extract-syntax">#docsec2</span></span>,
 and so on: some of these will be chapter headings, some section headings.
 These are the destinations of links from heading lines in the TOC.
@@ -324,7 +330,7 @@ These are the destinations of links from heading lines in the TOC.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG</span><span class="plain-syntax">(</span><span class="string-syntax">"br"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>The TOC entries for examples are similar. Here the link is to the variant
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>The TOC entries for examples are similar. Here the link is to the variant
 page in the current family which has the given example open, and moreover,
 to the anchor in that page corresponding to the top of the example: thus as
 far as the user is concerned it opens the example and goes there.
@@ -348,14 +354,14 @@ far as the user is concerned it opens the example and goes there.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_TAG</span><span class="plain-syntax">(</span><span class="string-syntax">"br"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;table-sentence&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;if-start-of-paragraph&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">table</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Setting the body text. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Setting the body text. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="Preform-constant-syntax">EDOC_ALL_EXAMPLES_CLOSED</span><span class="Preform-plain-syntax"> -1 </span><span class="Preform-comment-syntax"> do not change this without also changing Extensions</span>
 <span class="definition-keyword">define</span> <span class="Preform-constant-syntax">EDOC_FRAGMENT_ONLY</span><span class="Preform-plain-syntax"> -2 </span><span class="Preform-comment-syntax"> must differ from this and from all example variant numbers</span>
@@ -415,7 +421,7 @@ far as the user is concerned it opens the example and goes there.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">example_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1. Typesetting the standard matter. </b>A paragraph break might mean the end of displayed matter (and if so, then also
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. Typesetting the standard matter. </b>A paragraph break might mean the end of displayed matter (and if so, then also
 the end of any table being displayed). Otherwise, it just means a paragraph
 break, and a chance to restore our tired variables.
 </p>
@@ -436,7 +442,7 @@ break, and a chance to restore our tired variables.
 <span class="plain-syntax">    </span><span class="identifier-syntax">mid_displayed_source_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">mid_I7_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b>The indentation setting is made here because a tab anywhere else does
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>The indentation setting is made here because a tab anywhere else does
 not mean a paragraph has been indented. Here <span class="extract"><span class="extract-syntax">i</span></span> is at the number of the
 first word after the paragraph break; the break character corresponding
 to it is the one before that word, so describes the kind of whitespace
@@ -451,7 +457,7 @@ paragraph.
 <span class="plain-syntax">    </span><span class="identifier-syntax">indentation</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Lexer::break_before</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">) == </span><span class="character-syntax">'\t'</span><span class="plain-syntax">) </span><span class="identifier-syntax">indentation</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b>Positions for paste icons in extension documentation are marked with
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b>Positions for paste icons in extension documentation are marked with
 asterisk and colon:
 </p>
 
@@ -460,7 +466,7 @@ asterisk and colon:
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">:</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b>Two lower-level sorts of breaks can also occur in the middle of a paragraph:
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b>Two lower-level sorts of breaks can also occur in the middle of a paragraph:
 line breaks, indicated by newlines plus some tabs, and column breaks inside
 I7 source tables, indicated by tabs. We have to deal with those before we
 can move on to the subsequent word.
@@ -487,7 +493,7 @@ can move on to the subsequent word.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_5"></a><b>&#167;9.5.  </b>See Javascript Pastes for further explanation of the general method here.
+<p class="commentary firstcommentary"><a id="SP9_5" class="paragraph-anchor"></a><b>&#167;9.5.  </b>See Javascript Pastes for further explanation of the general method here.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Transcribe an ordinary word of the documentation</span><span class="named-paragraph-number">9.5</span></span><span class="comment-syntax"> =</span>
@@ -504,7 +510,7 @@ can move on to the subsequent word.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">) == </span><span class="identifier-syntax">OPENI6_V</span><span class="plain-syntax">) </span><span class="identifier-syntax">close_I6_position</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">+1; </span><span class="comment-syntax"> ensure I6 literals are closed</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_1"></a><b>&#167;9.4.1.  </b>A paste causes the same material to be set twice: once in the argument to
+<p class="commentary firstcommentary"><a id="SP9_4_1" class="paragraph-anchor"></a><b>&#167;9.4.1.  </b>A paste causes the same material to be set twice: once in the argument to
 the Javascript paste function (which is passed to the application when the
 user clicks on the paste icon, and thus ends up in the Source panel), and
 once also in the HTML documentation. That's why the code here ranges forward
@@ -528,7 +534,7 @@ but does not advance <span class="extract"><span class="extract-syntax">i</span>
 <span class="plain-syntax">    </span><a href="2-pb.html#SP3" class="function-link"><span class="function-syntax">PasteButtons::paste_W</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4">&#167;9.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_2"></a><b>&#167;9.4.2.  </b>The first step of indentation is handled using the <span class="extract"><span class="extract-syntax">&lt;blockquote&gt;</span></span> tag;
+<p class="commentary firstcommentary"><a id="SP9_4_2" class="paragraph-anchor"></a><b>&#167;9.4.2.  </b>The first step of indentation is handled using the <span class="extract"><span class="extract-syntax">&lt;blockquote&gt;</span></span> tag;
 within that, further tab stops are simulated by printing a row of four
 non-breaking spaces for each indentation level above 1. A paragraph
 of indented (i.e., display matter) beginning with the word "Table" is
@@ -563,7 +569,7 @@ need to achieve with an HTML <span class="extract"><span class="extract-syntax">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">indentation</span><span class="plain-syntax">; </span><span class="identifier-syntax">j</span><span class="plain-syntax">++) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4">&#167;9.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_6"></a><b>&#167;9.6. Typesetting the headings. </b>That is thankfully all for the tormented logic of all those changes of state:
+<p class="commentary firstcommentary"><a id="SP9_6" class="paragraph-anchor"></a><b>&#167;9.6. Typesetting the headings. </b>That is thankfully all for the tormented logic of all those changes of state:
 from here to the rest of the section, all we do is to generate pretty HTML,
 and without altering any variables or causing any side-effects at all.
 First, the headings. Recall that heading number <span class="extract"><span class="extract-syntax">N</span></span> is required to be at
@@ -594,7 +600,7 @@ anchor <span class="extract"><span class="extract-syntax">#docsecN</span></span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_7"></a><b>&#167;9.7.  </b>An example is set with a two-table header, and followed optionally by a
+<p class="commentary firstcommentary"><a id="SP9_7" class="paragraph-anchor"></a><b>&#167;9.7.  </b>An example is set with a two-table header, and followed optionally by a
 table of its inset copy, shaded to distinguish it from the rest of the
 page. The heading is constructed with a main table of one row of two cells,
 in the following section. The left-hand cell then contains a further table,
@@ -640,7 +646,7 @@ in the next section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_7_1"></a><b>&#167;9.7.1.  </b>The little oval icon with its superimposed boldface letter is much harder to
+<p class="commentary firstcommentary"><a id="SP9_7_1" class="paragraph-anchor"></a><b>&#167;9.7.1.  </b>The little oval icon with its superimposed boldface letter is much harder to
 get right on all browsers than it looks, and the following is the result of
 some pretty grim experimentation. Basically, we make a tight, borderless,
 one-cell-in-one-row table, use CSS to make a transparent PNG image of an oval
@@ -671,7 +677,7 @@ had its infamous PNG transparency bug.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_7">&#167;9.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_7_2"></a><b>&#167;9.7.2.  </b>Clicking on the example banner opens it up, if it's currently closed, or
+<p class="commentary firstcommentary"><a id="SP9_7_2" class="paragraph-anchor"></a><b>&#167;9.7.2.  </b>Clicking on the example banner opens it up, if it's currently closed, or
 closes it up, if it's currently open.
 </p>
 
@@ -690,7 +696,7 @@ closes it up, if it's currently open.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_7">&#167;9.7</a>, <a href="2-dr.html#SP9_7_1">&#167;9.7.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_2_1"></a><b>&#167;9.4.2.1. Typesetting I7 tables in displayed source text. </b>Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
+<p class="commentary firstcommentary"><a id="SP9_4_2_1" class="paragraph-anchor"></a><b>&#167;9.4.2.1. Typesetting I7 tables in displayed source text. </b>Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
 and this is fiddly but elementary in the usual way of HTML tables:
 </p>
 
@@ -704,7 +710,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::first_html_column</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4_2">&#167;9.4.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_3"></a><b>&#167;9.4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End table cell for I7 table in extension documentation</span><span class="named-paragraph-number">9.4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_4_3" class="paragraph-anchor"></a><b>&#167;9.4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End table cell for I7 table in extension documentation</span><span class="named-paragraph-number">9.4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -712,14 +718,14 @@ and this is fiddly but elementary in the usual way of HTML tables:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::next_html_column</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4">&#167;9.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_4"></a><b>&#167;9.4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin table cell for I7 table in extension documentation</span><span class="named-paragraph-number">9.4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_4_4" class="paragraph-anchor"></a><b>&#167;9.4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin table cell for I7 table in extension documentation</span><span class="named-paragraph-number">9.4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::begin_colour</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"000080"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4">&#167;9.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4_2_2"></a><b>&#167;9.4.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin new row of I7 table in extension documentation</span><span class="named-paragraph-number">9.4.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_4_2_2" class="paragraph-anchor"></a><b>&#167;9.4.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin new row of I7 table in extension documentation</span><span class="named-paragraph-number">9.4.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -727,7 +733,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::first_html_column</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_4_2">&#167;9.4.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End I7 table in extension documentation</span><span class="named-paragraph-number">9.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1" class="paragraph-anchor"></a><b>&#167;9.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End I7 table in extension documentation</span><span class="named-paragraph-number">9.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -735,7 +741,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML::end_html_table</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9_1">&#167;9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_8"></a><b>&#167;9.8. Typesetting the body of an example. </b>This is done just the way all other extension documentation material is
+<p class="commentary firstcommentary"><a id="SP9_8" class="paragraph-anchor"></a><b>&#167;9.8. Typesetting the body of an example. </b>This is done just the way all other extension documentation material is
 handled, except that it is inside an inset box: which is provided by
 a shaded HTML table, containing just one row, which contains just one
 cell. Here the inset table begins:
@@ -750,7 +756,7 @@ cell. Here the inset table begins:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-dr.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_9"></a><b>&#167;9.9.  </b>And here the inset table ends:
+<p class="commentary firstcommentary"><a id="SP9_9" class="paragraph-anchor"></a><b>&#167;9.9.  </b>And here the inset table ends:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Close the previous example's text</span><span class="named-paragraph-number">9.9</span></span><span class="comment-syntax"> =</span>

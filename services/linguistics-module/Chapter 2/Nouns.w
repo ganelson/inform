@@ -58,10 +58,10 @@ typedef struct noun {
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef NOUN_COMPILATION_LINGUISTICS_CALLBACK
-	struct name_compilation_data name_compilation; /* see //core: Using Nametags// on this */
+	struct name_compilation_data name_compilation;
 	#endif
 	#ifdef NOUN_DISAMBIGUATION_LINGUISTICS_CALLBACK
-	struct name_resolution_data name_resolution; /* see //core: Headings// on this */
+	struct name_resolution_data name_resolution;
 	#endif
 
 	CLASS_DEFINITION

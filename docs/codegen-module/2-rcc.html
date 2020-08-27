@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="index.html"><span class="selectedlink">codegen</span></a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-rcc.html#SP1">&#167;1. Pipeline stage</a></li><li><a href="2-rcc.html#SP2">&#167;2. Resolution</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Pipeline stage. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Pipeline stage. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CodeGen::RCC::create_pipeline_stage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CodeGen::RCC::create_pipeline_stage</span></span>:<br/>Stages - <a href="1-stg.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -80,7 +86,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Resolution. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Resolution. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_CC_STACK_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">32</span>
 </pre>
@@ -129,7 +135,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure rcc_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP_1"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract second token into ident</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP_1" class="paragraph-anchor"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract second token into ident</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -147,7 +153,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2_1">&#167;2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP_1"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract rest of text into ident</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP_1" class="paragraph-anchor"></a><b>&#167;.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Extract rest of text into ident</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -164,7 +170,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2_2">&#167;2.2</a>, <a href="2-rcc.html#SP2_3">&#167;2.3</a>, <a href="2-rcc.html#SP2_4">&#167;2.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Symbol definition</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Symbol definition</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -175,7 +181,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFDEF</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFDEF</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -189,7 +195,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFNDEF</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFNDEF</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -204,7 +210,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide whether symbol defined</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decide whether symbol defined</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -217,7 +223,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">RESOLVING_CONDITIONAL_COMPILATION_DA</span><span class="plain-syntax">)) </span><span class="identifier-syntax">LOG_INDENT</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2_2">&#167;2.2</a>, <a href="2-rcc.html#SP2_3">&#167;2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFTRUE</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFTRUE</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -253,7 +259,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ident</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_2"></a><b>&#167;2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stack up the result</span><span class="named-paragraph-number">2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_2" class="paragraph-anchor"></a><b>&#167;2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Stack up the result</span><span class="named-paragraph-number">2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -264,7 +270,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2_2">&#167;2.2</a>, <a href="2-rcc.html#SP2_3">&#167;2.3</a>, <a href="2-rcc.html#SP2_4">&#167;2.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFNOT</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an IFNOT</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -274,7 +280,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">allow</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-rcc.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_6"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an ENDIF</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an ENDIF</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

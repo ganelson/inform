@@ -17,7 +17,7 @@ threshold value -- "for more than three turns" would be |GT_REPM|, and so
 on. The default, |NO_REPM|, means that nothing is specified by way of
 comparison -- "four times" -- and the meaning of that may depend on
 context; Inform treats a |NO_REPM| occurrence quite carefully -- see
-//core: Chronology//.
+//imperative: Chronology//.
 
 @e EQ_REPM from 1
 @e LT_REPM

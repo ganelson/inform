@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-act.html#SP1">&#167;1. The Activities Stack</a></li><li><a href="S-act.html#SP2">&#167;2. Rule Debugging Inhibition</a></li><li><a href="S-act.html#SP3">&#167;3. Testing Activities</a></li><li><a href="S-act.html#SP4">&#167;4. Emptiness</a></li><li><a href="S-act.html#SP5">&#167;5. Process Activity Rulebook</a></li><li><a href="S-act.html#SP6">&#167;6. Carrying Out Activities</a></li><li><a href="S-act.html#SP7">&#167;7. Begin</a></li><li><a href="S-act.html#SP8">&#167;8. For</a></li><li><a href="S-act.html#SP9">&#167;9. End</a></li><li><a href="S-act.html#SP10">&#167;10. Abandon</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The Activities Stack. </b>Activities are more like nested function calls than independent processes;
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The Activities Stack. </b>Activities are more like nested function calls than independent processes;
 they finish in reverse order of starting, and are placed on a stack. This
 needs only very limited size in practice: 20 might seem a bit low, but making
 it much higher simply means that oddball bugs in the user's code &mdash; where
@@ -58,7 +58,7 @@ efficiently.
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">activities_stack</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">MAX_NESTED_ACTIVITIES</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">activity_parameters_stack</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">MAX_NESTED_ACTIVITIES</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Rule Debugging Inhibition. </b>The output from RULES or RULES ALL becomes totally illegible if it is applied
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Rule Debugging Inhibition. </b>The output from RULES or RULES ALL becomes totally illegible if it is applied
 even to the activities printing names of objects, so this is inhibited when
 any such activity is running. <span class="extract"><span class="extract-syntax">FixInhibitFlag</span></span> is called each time the stack
 changes and ensures that <span class="extract"><span class="extract-syntax">inhibit_flag</span></span> has exactly this meaning.
@@ -85,7 +85,7 @@ changes and ensures that <span class="extract"><span class="extract-syntax">inhi
 <span class="plain-syntax">    </span><span class="identifier-syntax">inhibit_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">inhibit_rule_debugging</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Testing Activities. </b>The following tests whether a given activity <span class="extract"><span class="extract-syntax">A</span></span> is currently running
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Testing Activities. </b>The following tests whether a given activity <span class="extract"><span class="extract-syntax">A</span></span> is currently running
 whose parameter-object matches description <span class="extract"><span class="extract-syntax">desc</span></span>, where as usual the
 description is represented by a routine testing membership, and where
 zero <span class="extract"><span class="extract-syntax">desc</span></span> means that any parameter is valid. Alternatively, we can
@@ -105,7 +105,7 @@ require a specific parameter value of <span class="extract"><span class="extract
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Emptiness. </b>An activity is defined by its three rulebooks: it is empty if they are all
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Emptiness. </b>An activity is defined by its three rulebooks: it is empty if they are all
 empty.
 </p>
 
@@ -125,7 +125,7 @@ empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Process Activity Rulebook. </b>This is really much like processing any rulebook, except that <span class="extract"><span class="extract-syntax">self</span></span> is
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Process Activity Rulebook. </b>This is really much like processing any rulebook, except that <span class="extract"><span class="extract-syntax">self</span></span> is
 temporarily set to the parameter, and is preserved by the process.
 </p>
 
@@ -139,7 +139,7 @@ temporarily set to the parameter, and is preserved by the process.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Carrying Out Activities. </b>This is a three-stage process; most activities are run by calling the following
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Carrying Out Activities. </b>This is a three-stage process; most activities are run by calling the following
 simple routine, but some are run by calling the three subroutines independently.
 </p>
 
@@ -151,7 +151,7 @@ simple routine, but some are run by calling the three subroutines independently.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Begin. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Begin. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">BeginActivity</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
@@ -163,14 +163,14 @@ simple routine, but some are run by calling the three subroutines independently.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ProcessActivityRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">Activity_before_rulebooks</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">o</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. For. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. For. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">ForActivity</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ProcessActivityRulebook</span><span class="plain-syntax">(</span><span class="identifier-syntax">Activity_for_rulebooks</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">o</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. End. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. End. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">EndActivity</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
@@ -183,7 +183,7 @@ simple routine, but some are run by calling the three subroutines independently.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_CANTABANDON</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Abandon. </b>For (very) rare cases where an activity must be abandoned midway; such an
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Abandon. </b>For (very) rare cases where an activity must be abandoned midway; such an
 activity must be being run by calling the three stages individually, and
 <span class="extract"><span class="extract-syntax">EndActivity</span></span> must not have been called yet.
 </p>

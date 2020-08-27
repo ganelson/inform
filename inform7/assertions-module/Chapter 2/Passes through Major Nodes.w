@@ -54,7 +54,7 @@ void MajorNodes::traverse(int pass) {
 
 @<Extend the pass to invented sentences from kinds@> =
 	parse_node *extras = last;
-	ParseTreeUsage::add_kind_inventions();
+	Task::add_kind_inventions();
 	current_sentence = extras;
 	global_pass_state.assembly_position = extras;
 	global_pass_state.pass = 0;
@@ -133,7 +133,8 @@ organisation, and are not directly functional in themselves.
 			#endif
 			break;
 
-		case INVOCATION_LIST_NT: break; /* for error recovery; shouldn't be here otherwise */
+		case INVOCATION_LIST_NT:  break; /* for error recovery; shouldn't be here otherwise */
+		case UNKNOWN_NT: break; /* for error recovery; shouldn't be here otherwise */
 
 		default:
 			LOG("$T\n", p);

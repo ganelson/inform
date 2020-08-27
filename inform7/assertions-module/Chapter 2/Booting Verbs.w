@@ -3,7 +3,8 @@
 In Inform even verbs are created with natural language sentences, but this
 process has to start somewhere.
 
-@ "Booting" is the traditional computing term for "pulling yourself up by
+@h Verbs.
+"Booting" is the traditional computing term for "pulling yourself up by
 your own bootstraps": when a computer switches on it has no program to run,
 but to load in a program would require a program. The circularity is broken
 by having a minimal "boot" program wired into the hardware.
@@ -140,3 +141,60 @@ anything. We need to give the build-in "verb-means" meaning to "to mean":
 @<Give meaning to mean@> =
 	if ((to_mean == NULL) || (meaning_of_mean == NULL)) internal_error("could not make to mean");
 	Verbs::add_form(to_mean, NULL, NULL, VerbMeanings::special(meaning_of_mean), SVO_FS_BIT);
+
+@h Built-in relation names.
+These have to be defined somewhere, and it may as well be here.
+
+@d EQUALITY_RELATION_NAME 0
+@d UNIVERSAL_RELATION_NAME 1
+@d MEANING_RELATION_NAME 2
+@d PROVISION_RELATION_NAME 3
+@d GE_RELATION_NAME 4
+@d GT_RELATION_NAME 5
+@d LE_RELATION_NAME 6
+@d LT_RELATION_NAME 7
+@d ADJACENCY_RELATION_NAME 8
+@d REGIONAL_CONTAINMENT_RELATION_NAME 9
+@d CONTAINMENT_RELATION_NAME 10
+@d SUPPORT_RELATION_NAME 11
+@d INCORPORATION_RELATION_NAME 12
+@d CARRYING_RELATION_NAME 13
+@d HOLDING_RELATION_NAME 14
+@d WEARING_RELATION_NAME 15
+@d POSSESSION_RELATION_NAME 16
+@d VISIBILITY_RELATION_NAME 17
+@d TOUCHABILITY_RELATION_NAME 18
+@d CONCEALMENT_RELATION_NAME 19
+@d ENCLOSURE_RELATION_NAME 20
+@d ROOM_CONTAINMENT_RELATION_NAME 21
+
+@ These are the English names of the built-in relations. The use of hyphenation
+here is a fossil from the times when Inform allowed only single-word relation
+names; but it doesn't seem worth changing, especially as the hyphenated
+relations are almost never needed for anything. All the same, translators into
+other languages may as well drop the hyphens.
+
+=
+<relation-names> ::=
+	equality |
+	universal |
+	meaning |
+	provision |
+	numerically-greater-than-or-equal-to |
+	numerically-greater-than |
+	numerically-less-than-or-equal-to |
+	numerically-less-than |
+	adjacency |
+	regional-containment |
+	containment |
+	support |
+	incorporation |
+	carrying |
+	holding |
+	wearing |
+	possession |
+	visibility |
+	touchability |
+	concealment |
+	enclosure |
+	room-containment

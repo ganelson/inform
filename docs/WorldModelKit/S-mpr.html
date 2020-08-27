@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-mpr.html#SP1">&#167;1. Map Route-Finding</a></li><li><a href="S-mpr.html#SP2">&#167;2. Cache Control</a></li><li><a href="S-mpr.html#SP3">&#167;3. Fast Route-Finding</a></li><li><a href="S-mpr.html#SP4">&#167;4. Slow Route-Finding</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Map Route-Finding. </b>The general problem we have to solve here is: given \(x, y\in R\), where \(R\)
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Map Route-Finding. </b>The general problem we have to solve here is: given \(x, y\in R\), where \(R\)
 is the set of rooms and we write \(x\sim y\) if there is a map connection from
 \(x\) to \(y\),
 </p>
@@ -117,7 +117,7 @@ due to a disagreement between extensions &mdash; "fast" wins.
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Cache Control. </b>We provide code to enable our route-finding algorithms to cache their partial
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Cache Control. </b>We provide code to enable our route-finding algorithms to cache their partial
 results from one usage to the next (though at present only the "fast"
 algorithm does this). The difficulty here is that the result of a route
 search depends on three things, any of which may change:
@@ -190,7 +190,7 @@ by enumerating them in the property <span class="extract"><span class="extract-s
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Fast Route-Finding. </b>The following is a form of Floyd's adaptation of Warshall's algorithm for
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Fast Route-Finding. </b>The following is a form of Floyd's adaptation of Warshall's algorithm for
 finding the transitive closure of a directed graph.
 </p>
 
@@ -311,7 +311,7 @@ cache is useful for all future routes whatever their endpoints.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Slow Route-Finding. </b>The alternative algorithm, used when only \(O(n)\) memory is available,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Slow Route-Finding. </b>The alternative algorithm, used when only \(O(n)\) memory is available,
 computes only some of the shortest paths leading to \(R_y\), and is not cached &mdash;
 both because the storage is likely to be reused often by other searches and
 because there is little gain from doing so, given that a subsequent search

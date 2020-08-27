@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-mth.html#SP1">&#167;1. Square Root</a></li><li><a href="S-mth.html#SP2">&#167;2. Cube Root</a></li><li><a href="S-mth.html#SP3">&#167;3. Absolute value</a></li><li><a href="S-mth.html#SP4">&#167;4. IntegerDivide</a></li><li><a href="S-mth.html#SP5">&#167;5. IntegerRemainder</a></li><li><a href="S-mth.html#SP6">&#167;6. UnsignedCompare</a></li><li><a href="S-mth.html#SP7">&#167;7. SignedCompare</a></li><li><a href="S-mth.html#SP8">&#167;8. Printing reals</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Square Root. </b>Although this routine performs integer square root, it does so using Glulx's
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Square Root. </b>Although this routine performs integer square root, it does so using Glulx's
 floating-point operations if available (with code contributed by Andrew
 Plotkin): this is fast and remains accurate up to about 16 million.
 </p>
@@ -106,7 +106,7 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Cube Root. </b>The following, again, uses floating-point arithmetic if it's available:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Cube Root. </b>The following, again, uses floating-point arithmetic if it's available:
 this is fast and gives good accuracy for smallish numbers, but limited
 precision begins to tell at around 2000000.
 </p>
@@ -141,13 +141,13 @@ used only as a sighting shot.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Absolute value. </b>Of an integer:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Absolute value. </b>Of an integer:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">NUMBER_TY_Abs</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax">&lt;0) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -</span><span class="identifier-syntax">x</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. IntegerDivide. </b>We can't simply use I6's <span class="extract"><span class="extract-syntax">/</span></span> operator, as that translates directly into a
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. IntegerDivide. </b>We can't simply use I6's <span class="extract"><span class="extract-syntax">/</span></span> operator, as that translates directly into a
 virtual machine opcode which crashes on divide by zero.
 </p>
 
@@ -157,7 +157,7 @@ virtual machine opcode which crashes on divide by zero.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">/</span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. IntegerRemainder. </b>Similarly.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. IntegerRemainder. </b>Similarly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -166,7 +166,7 @@ virtual machine opcode which crashes on divide by zero.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">%</span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. UnsignedCompare. </b>Comparison of I6 integers is normally signed, that is, treating the word as
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. UnsignedCompare. </b>Comparison of I6 integers is normally signed, that is, treating the word as
 a twos-complement signed number, so that <span class="extract"><span class="extract-syntax">$FFFF</span></span> is less than <span class="extract"><span class="extract-syntax">0</span></span>, for
 instance. If we want to construe words as being unsigned integers, or as
 addresses, we need to compare them with the following routine, which returns
@@ -193,7 +193,7 @@ addresses, we need to compare them with the following routine, which returns
 <span class="plain-syntax">    #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. SignedCompare. </b>This routine is hardly ever needed; it wraps up ordinary comparisons.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. SignedCompare. </b>This routine is hardly ever needed; it wraps up ordinary comparisons.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -203,7 +203,7 @@ addresses, we need to compare them with the following routine, which returns
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Printing reals. </b>Most of the code in this section is by Andrew Plotkin, and derives from test
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Printing reals. </b>Most of the code in this section is by Andrew Plotkin, and derives from test
 cases used to check the floating-point extensions to Glulx.
 </p>
 

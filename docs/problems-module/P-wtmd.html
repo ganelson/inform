@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="index.html"><span class="selectedlink">problems</span></a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -60,7 +66,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Problems and their sigils</a></li><li><a href="P-wtmd.html#SP4">&#167;4. The story of a non-fatal problem message</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Telemetry</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The problems module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The problems module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -74,7 +80,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Problems and their sigils. </b>The task of this module is to issue error messages which may be lengthy and
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Problems and their sigils. </b>The task of this module is to issue error messages which may be lengthy and
 quite verbal in nature, and to produce them attractively to the command line,
 in an HTML file reporting the result of a run, or both.
 </p>
@@ -106,7 +112,7 @@ conventions on test case naming: in particular, the suffix <span class="extract"
 the Glulx virtual machine only", and similarly for <span class="extract"><span class="extract-syntax">-Z</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>In general problems are a bad thing, of course, but a call to
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In general problems are a bad thing, of course, but a call to
 <a href="2-pl0.html#SP3" class="internal">ProblemSigils::require</a> tells <a href="index.html" class="internal">problems</a> that the parent tool positively
 wants to issue a given problem message. This is useful when testing Inform
 on bad source text to check that it reports the badness as we hope.
@@ -116,7 +122,7 @@ on bad source text to check that it reports the badness as we hope.
 or <a href="2-pl0.html#SP5" class="internal">ProblemSigils::crash_on_problems</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The story of a non-fatal problem message. </b>Suppose that the <a href="../core-module/index.html" class="internal">core</a> module wants to issue a problem message: what
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The story of a non-fatal problem message. </b>Suppose that the <a href="../core-module/index.html" class="internal">core</a> module wants to issue a problem message: what
 happens?
 </p>
 
@@ -171,7 +177,7 @@ For example:
 just once &mdash; to put some text into the problem, and
 </li><li>(d) Call <a href="2-pl2.html#SP9" class="internal">Problems::issue_problem_end</a> to signal that we are done.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>As this demonstrates, problem messages are expanded from prototypes using
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>As this demonstrates, problem messages are expanded from prototypes using
 a <span class="extract"><span class="extract-syntax">printf</span></span>-like formatting system. Unlike <span class="extract"><span class="extract-syntax">printf</span></span>, though, where <span class="extract"><span class="extract-syntax">%s</span></span> means
 a string and <span class="extract"><span class="extract-syntax">%d</span></span> a number, here the escape codes do not indicate the type of
 the data: they are simply <span class="extract"><span class="extract-syntax">%1</span></span>, <span class="extract"><span class="extract-syntax">%2</span></span>, <span class="extract"><span class="extract-syntax">%3</span></span>, ..., <span class="extract"><span class="extract-syntax">%9</span></span>. This is to prevent
@@ -212,7 +218,7 @@ text used by <a href="2-pl3.html#SP14" class="internal">StandardProblems::senten
 subsequent clarifications to long or complicated problems.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b><a href="2-pl3.html" class="internal">Problems, Level 3</a> contains functions for standardly-shaped problems, then.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><a href="2-pl3.html" class="internal">Problems, Level 3</a> contains functions for standardly-shaped problems, then.
 A significant amount of this section also deals with internal errors, that is,
 failed assertions; while <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> provides the basic system for handling
 those &mdash; i.e., print and then exit the program &mdash; <a href="../core-module/index.html" class="internal">core</a> redirects all
@@ -222,7 +228,7 @@ in the HTML problems report in the Inform app (if that's what the user is
 using).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b><a href="2-pl2.html" class="internal">Problems, Level 2</a> contains functions for making quotations to fill the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b><a href="2-pl2.html" class="internal">Problems, Level 2</a> contains functions for making quotations to fill the
 placeholders with content &mdash; see <a href="2-pl2.html#SP4" class="internal">problem_quotation</a>.
 </p>
 
@@ -254,7 +260,7 @@ typically used for filing-system disasters or failed assertions (so-called
 might mean that the problems file itself cannot be written to.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b><a href="2-pl1.html" class="internal">Problems, Level 1</a> is concerned with the "problem buffer" <span class="extract"><span class="extract-syntax">PBUFF</span></span>.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><a href="2-pl1.html" class="internal">Problems, Level 1</a> is concerned with the "problem buffer" <span class="extract"><span class="extract-syntax">PBUFF</span></span>.
 This is a text used to hold the problem message as it is assembled from pieces,
 and only Level 2 functions should print to it. Even they should call down to
 two Level 1 functions when they want to write something other than straightforward
@@ -269,7 +275,7 @@ this is done, with use of the magic <span class="extract"><span class="extract-s
 intercepted later on when the problems file is written out as HTML (see
 <a href="../../../inweb/docs/foundation-module/5-htm.html" class="internal">HTML (in foundation)</a> for details).
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>When a portion of text has been buffered which Level 2 wants to get shot of,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When a portion of text has been buffered which Level 2 wants to get shot of,
 it calls down to <a href="2-pl1.html#SP6" class="internal">ProblemBuffer::output_problem_buffer</a> to send this to a
 file. By default, the text is actually sent three ways: to the standard
 console output, to the debugging log (if there is one), and to the telemetry
@@ -278,7 +284,7 @@ file (if there is one). But this can be diverted with
 just one way.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Telemetry. </b>The <a href="1-tlm.html" class="internal">Telemetry</a> system isn't really to do with problems, except that it
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Telemetry. </b>The <a href="1-tlm.html" class="internal">Telemetry</a> system isn't really to do with problems, except that it
 can log them; it is an optional facility to log activity of a tool or app.
 This is locally stored rather than sent over any wires, so perhaps there's
 no "tele-" about it.

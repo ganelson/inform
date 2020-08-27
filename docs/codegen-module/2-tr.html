@@ -54,7 +54,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -64,12 +68,14 @@ function togglePopup(material_id) {
 <li><a href="index.html"><span class="selectedlink">codegen</span></a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -82,7 +88,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-tr.html#SP1">&#167;1. Interventions</a></li><li><a href="2-tr.html#SP5">&#167;5. I6T kits</a></li><li><a href="2-tr.html#SP8">&#167;8. Syntax of I6T files</a></li><li><a href="2-tr.html#SP10_2_5_3">&#167;10.2.5.3. Acting on I6T commands</a></li><li><a href="2-tr.html#SP11">&#167;11. Contents section</a></li><li><a href="2-tr.html#SP12">&#167;12. Template errors</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Interventions. </b>The user (or an extension used by the user) is allowed to register gobbets
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Interventions. </b>The user (or an extension used by the user) is allowed to register gobbets
 of I6T code to be used before, instead of, or after any whole segment or
 named part of a segment of the template layer: the following structure holds
 such a request.
@@ -104,7 +110,7 @@ such a request.
 <span class="plain-syntax">} </span><span class="reserved-syntax">I6T_intervention</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure I6T_intervention is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TemplateReader::new_intervention</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">TemplateReader::new_intervention</span></span>:<br/>Linker - <a href="2-mt.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">segment</span><span class="plain-syntax">,</span>
@@ -131,7 +137,7 @@ such a request.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMPLATE_READING</span><span class="plain-syntax">, </span><span class="string-syntax">"New stage %d Segment %S Part %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="identifier-syntax">segment</span><span class="plain-syntax">, </span><span class="identifier-syntax">part</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>An intervention "instead" (stage 0) replaces any existing one, but at other
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>An intervention "instead" (stage 0) replaces any existing one, but at other
 stages &mdash; before and after &mdash; they are accumulated.
 </p>
 
@@ -162,7 +168,7 @@ stages &mdash; before and after &mdash; they are accumulated.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>At the end of the run, we check to see if any of the interventions were
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>At the end of the run, we check to see if any of the interventions were
 never acted on. This generally means the user mistyped the name of a section
 or part &mdash; which would otherwise be an error very difficult to detect.
 </p>
@@ -211,11 +217,11 @@ or part &mdash; which would otherwise be an error very difficult to detect.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. I6T kits. </b>These are used to abstract calls to the I6T reader, so that customers of
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. I6T kits. </b>These are used to abstract calls to the I6T reader, so that customers of
 varying dispositions can do different things with the code parsed.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">I6T_kit</span><span class="plain-syntax"> {</span>
@@ -228,7 +234,7 @@ varying dispositions can do different things with the code parsed.
 <span class="plain-syntax">} </span><span class="reserved-syntax">I6T_kit</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure I6T_kit is accessed in 2/mt and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">I6T_kit</span><span class="plain-syntax"> </span><span class="function-syntax">TemplateReader::kit_out</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">TemplateReader::kit_out</span></span>:<br/>Linker - <a href="2-mt.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_bookmark</span><span class="plain-syntax"> *</span><span class="identifier-syntax">IBM</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">A</span><span class="plain-syntax">)(</span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">I6T_kit</span><span class="plain-syntax"> *),</span>
@@ -243,7 +249,7 @@ varying dispositions can do different things with the code parsed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kit</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Syntax of I6T files. </b>The syntax of these files has been designed so that a valid I6T file is
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Syntax of I6T files. </b>The syntax of these files has been designed so that a valid I6T file is
 also a valid Inweb section file. (Inweb now has two formats, an old and a
 new one: here we can read either, though the I6T sources in the main Inform
 distribution have been modernised to the new syntax.) Many Inweb syntaxes
@@ -275,7 +281,7 @@ code. While this doesn't allow for full-on literate programming, it does
 permit a generous amount of annotation.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>One restriction. It actually doesn't matter if a template file contains
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>One restriction. It actually doesn't matter if a template file contains
 lines longer than this, so long as they do not occur inside <span class="extract"><span class="extract-syntax">{-lines:...}</span></span> and
 <span class="extract"><span class="extract-syntax">{-endlines}</span></span>, and so long as no individual braced command <span class="extract"><span class="extract-syntax">{-...}</span></span> exceeds
 this length.
@@ -283,7 +289,7 @@ this length.
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_I6T_LINE_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">1024</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The I6T interpreter is then a single routine to implement the description
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The I6T interpreter is then a single routine to implement the description
 above, though note that it can act on interventions as well. (But in modern
 Inform usage, often there won't be any, because templates for the Standard
 Rules and so forth are assimilated in stand-alone runs of the code generator,
@@ -349,7 +355,7 @@ and therefore no interventions will have happened.)
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure contents_section_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>We look for the <span class="extract"><span class="extract-syntax">.i6t</span></span> files in a list of possible locations supplied as
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>We look for the <span class="extract"><span class="extract-syntax">.i6t</span></span> files in a list of possible locations supplied as
 part of the I6T kit.
 </p>
 
@@ -367,7 +373,7 @@ part of the I6T kit.
 <span class="plain-syntax">        </span><a href="2-tr.html#SP12" class="function-link"><span class="function-syntax">TemplateReader::error</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to open the template segment '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">segment_name</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Interpret the I6T file</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Interpret the I6T file</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -391,7 +397,7 @@ part of the I6T kit.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">argument</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_1"></a><b>&#167;10.2.1.  </b>I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
+<p class="commentary firstcommentary"><a id="SP10_2_1" class="paragraph-anchor"></a><b>&#167;10.2.1.  </b>I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
 ordinary <span class="extract"><span class="extract-syntax">fgetc</span></span> is used, and no BOM marker is parsed. Lines are assumed
 to be terminated with either <span class="extract"><span class="extract-syntax">0x0a</span></span> or <span class="extract"><span class="extract-syntax">0x0d</span></span>. (Since blank lines are
 harmless, we take no trouble over <span class="extract"><span class="extract-syntax">0a0d</span></span> or <span class="extract"><span class="extract-syntax">0d0a</span></span> combinations.) The
@@ -410,7 +416,7 @@ terminated <span class="extract"><span class="extract-syntax">0x0a</span></span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">col</span><span class="plain-syntax">++; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cr</span><span class="plain-syntax"> == </span><span class="constant-syntax">10</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">cr</span><span class="plain-syntax"> == </span><span class="constant-syntax">13</span><span class="plain-syntax">)) </span><span class="identifier-syntax">col</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2">&#167;10.2</a>, <a href="2-tr.html#SP10_2_2">&#167;10.2.2</a>, <a href="2-tr.html#SP10_2_3">&#167;10.2.3</a>, <a href="2-tr.html#SP10_2_5">&#167;10.2.5</a> (three times), <a href="2-tr.html#SP10_2_5_1">&#167;10.2.5.1</a>, <a href="2-tr.html#SP10_2_5_2">&#167;10.2.5.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_2"></a><b>&#167;10.2.2.  </b>Anything following an at-character in the first column is looked at to see if
+<p class="commentary firstcommentary"><a id="SP10_2_2" class="paragraph-anchor"></a><b>&#167;10.2.2.  </b>Anything following an at-character in the first column is looked at to see if
 it's a heading, that is, an Inweb syntax. We recognise both <span class="extract"><span class="extract-syntax">@h</span></span> and <span class="extract"><span class="extract-syntax">@p</span></span> as
 heading markers, in order to accommodate both old and new Inweb syntaxes.
 </p>
@@ -480,7 +486,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">I6T_buffer</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_3"></a><b>&#167;10.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the rest of line as an equals-heading</span><span class="named-paragraph-number">10.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_3" class="paragraph-anchor"></a><b>&#167;10.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the rest of line as an equals-heading</span><span class="named-paragraph-number">10.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -513,7 +519,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_4"></a><b>&#167;10.2.4.  </b>As can be seen, only a small minority of Inweb syntaxes are allowed:
+<p class="commentary firstcommentary"><a id="SP10_2_4" class="paragraph-anchor"></a><b>&#167;10.2.4.  </b>As can be seen, only a small minority of Inweb syntaxes are allowed:
 in particular, no definitions<span class="extract"><span class="extract-syntax"> or angle-bracketed macros. This reader is not
 </span></span>a full-fledged tangler.
 </p>
@@ -564,7 +570,7 @@ in particular, no definitions<span class="extract"><span class="extract-syntax">
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5"></a><b>&#167;10.2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with material which isn't commentary</span><span class="named-paragraph-number">10.2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_5" class="paragraph-anchor"></a><b>&#167;10.2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with material which isn't commentary</span><span class="named-paragraph-number">10.2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -601,7 +607,7 @@ in particular, no definitions<span class="extract"><span class="extract-syntax">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">cr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5_1"></a><b>&#167;10.2.5.1.  </b>And here we read a normal command. The command name must not include <span class="extract"><span class="extract-syntax">}</span></span>
+<p class="commentary firstcommentary"><a id="SP10_2_5_1" class="paragraph-anchor"></a><b>&#167;10.2.5.1.  </b>And here we read a normal command. The command name must not include <span class="extract"><span class="extract-syntax">}</span></span>
 or <span class="extract"><span class="extract-syntax">:</span></span>. If there is no <span class="extract"><span class="extract-syntax">:</span></span> then the argument is left unset (so that it will
 be the empty string: see above). The argument must not include <span class="extract"><span class="extract-syntax">}</span></span>.
 </p>
@@ -622,7 +628,7 @@ be the empty string: see above). The argument must not include <span class="extr
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2_5">&#167;10.2.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5_2"></a><b>&#167;10.2.5.2.  </b>And similarly, for the <span class="extract"><span class="extract-syntax">(+</span></span> ... <span class="extract"><span class="extract-syntax">+)</span></span> notation used to mark I7 material
+<p class="commentary firstcommentary"><a id="SP10_2_5_2" class="paragraph-anchor"></a><b>&#167;10.2.5.2.  </b>And similarly, for the <span class="extract"><span class="extract-syntax">(+</span></span> ... <span class="extract"><span class="extract-syntax">+)</span></span> notation used to mark I7 material
 within I6:
 </p>
 
@@ -643,7 +649,7 @@ within I6:
 <span class="plain-syntax">        </span><a href="2-tr.html#SP12" class="function-link"><span class="function-syntax">TemplateReader::error</span></a><span class="plain-syntax">(</span><span class="string-syntax">"use of (+ ... +) in the template has been withdrawn: '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_exp</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2_5">&#167;10.2.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5_3"></a><b>&#167;10.2.5.3. Acting on I6T commands. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on I6T command and argument</span><span class="named-paragraph-number">10.2.5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2_5_3" class="paragraph-anchor"></a><b>&#167;10.2.5.3. Acting on I6T commands. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on I6T command and argument</span><span class="named-paragraph-number">10.2.5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -651,7 +657,7 @@ within I6:
 <span class="plain-syntax">    (*(</span><span class="identifier-syntax">kit</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command_callback</span><span class="plain-syntax">))(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">command</span><span class="plain-syntax">, </span><span class="identifier-syntax">argument</span><span class="plain-syntax">, </span><span class="identifier-syntax">kit</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2_5">&#167;10.2.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2_5_3_1"></a><b>&#167;10.2.5.3.1.  </b>The <span class="extract"><span class="extract-syntax">{-segment:...}</span></span> command recursively calls the I6T interpreter on the
+<p class="commentary firstcommentary"><a id="SP10_2_5_3_1" class="paragraph-anchor"></a><b>&#167;10.2.5.3.1.  </b>The <span class="extract"><span class="extract-syntax">{-segment:...}</span></span> command recursively calls the I6T interpreter on the
 supplied I6T filename, which means it acts rather like <span class="extract"><span class="extract-syntax">#include</span></span> in C.
 Note that because we pass the current output file handle <span class="extract"><span class="extract-syntax">of</span></span> through to
 this new invocation, it will have the file open if we do, and closed if
@@ -673,7 +679,7 @@ safely between <span class="extract"><span class="extract-syntax">{-open-index}<
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP10_2_5_3">&#167;10.2.5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Contents section. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Contents section. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TemplateReader::read_contents</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -688,7 +694,7 @@ safely between <span class="extract"><span class="extract-syntax">{-open-index}<
 <span class="plain-syntax">    </span><span class="identifier-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Template errors. </b>Errors here used to be basically failed assertions, but inevitably people
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Template errors. </b>Errors here used to be basically failed assertions, but inevitably people
 reported that as a bug (0001596). It was never intended that I6T coding
 be part of the outside-facing language, but for a handful of people
 using template-hacking there are a handful of cases that can't be avoided, so...

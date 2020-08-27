@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-mn.html#SP1">&#167;1. Some globals</a></li><li><a href="1-mn.html#SP3">&#167;3. Main</a></li><li><a href="1-mn.html#SP5">&#167;5. Opening and closing banners</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Some globals. </b>The following variables record HTML and Javascript-related points where
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Some globals. </b>The following variables record HTML and Javascript-related points where
 Inblorb needs to behave differently on the different platforms. The default
 values here aren't actually correct for any platform as they stand: in the
 <span class="extract"><span class="extract-syntax">main</span></span> routine below, we set them as needed.
@@ -62,7 +62,7 @@ values here aren't actually correct for any platform as they stand: in the
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_openUrl</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">escape_fileUrl</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reverse_slash_openUrl</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">reverse_slash_fileUrl</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Some global variables:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Some global variables:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -88,7 +88,7 @@ values here aren't actually correct for any platform as they stand: in the
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">default_cover_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment-syntax"> but it's only the default supplied by Inform</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cover_is_in_JPEG_format</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment-syntax"> as opposed to </span><span class="extract"><span class="extract-syntax">PNG</span></span><span class="comment-syntax"> format</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Main. </b>Like most programs, this one parses command-line arguments, sets things up,
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Main. </b>Like most programs, this one parses command-line arguments, sets things up,
 reads the input and then writes the output.
 </p>
 
@@ -125,7 +125,7 @@ file, for instance.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the default settings</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the default settings</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -135,13 +135,13 @@ file, for instance.
 <span class="plain-syntax">    </span><span class="identifier-syntax">status_template</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>We use Foundation's standard command-line routines.
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>We use Foundation's standard command-line routines.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">VERBOSE_CLSW</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PROJECT_CLSW</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse command-line arguments</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse command-line arguments</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -153,7 +153,7 @@ file, for instance.
 <span class="plain-syntax">            </span><span class="identifier-syntax">blurb_filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">blorb_filename</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_1"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the command-line switches</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3_1" class="paragraph-anchor"></a><b>&#167;3.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the command-line switches</span><span class="named-paragraph-number">3.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -178,7 +178,7 @@ file, for instance.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3_2"></a><b>&#167;3.3.2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3_3_2" class="paragraph-anchor"></a><b>&#167;3.3.2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::switch</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Main::switch</span></span>:<br/><a href="1-mn.html#SP3_3_1">&#167;3.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -199,7 +199,7 @@ file, for instance.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_3_3"></a><b>&#167;3.3.3.  </b>Now let's set the platform-dependent variables.
+<p class="commentary firstcommentary"><a id="SP3_3_3" class="paragraph-anchor"></a><b>&#167;3.3.3.  </b>Now let's set the platform-dependent variables.
 </p>
 
 <p class="commentary">Inblorb generates quite a variety of HTML, for instance to create websites,
@@ -245,7 +245,7 @@ since backslashes are escape characters in Javascript literals.
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP3_3">&#167;3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The placeholder variable [YEAR] is initialised to the year in which Inblorb
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The placeholder variable [YEAR] is initialised to the year in which Inblorb
 runs, according to the host operating system, at least. (It can of course then
 be overridden by commands in the blurb file, and Inform always does this in
 the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
@@ -275,7 +275,7 @@ the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">timestamp</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Opening and closing banners. </b>Note that Inblorb customarily prints informational messages with an initial
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Opening and closing banners. </b>Note that Inblorb customarily prints informational messages with an initial
 <span class="extract"><span class="extract-syntax">!</span></span>, so that the piped output from Inblorb could be used as an <span class="extract"><span class="extract-syntax">Include</span></span>
 file in I6 code, where <span class="extract"><span class="extract-syntax">!</span></span> is the comment character; that isn't in fact how
 I7 uses Inblorb, but it's traditional for blorbing programs to do this.
@@ -291,7 +291,7 @@ I7 uses Inblorb, but it's traditional for blorbing programs to do this.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"as though in a strong box).\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The concluding banner is much smaller &mdash; empty if all went well, a single
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The concluding banner is much smaller &mdash; empty if all went well, a single
 comment line if not. But we also generate the status report page (if that has
 been requested) &mdash; a single HTML file generated from a template by expanding
 placeholders in the template. All of the meat of the report is in those
@@ -305,7 +305,7 @@ placeholders, of course; the template contains only some fancy formatting.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">status_template</span><span class="plain-syntax">) </span><a href="3-wm.html#SP9" class="function-link"><span class="function-syntax">Websites::web_copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">status_template</span><span class="plain-syntax">, </span><span class="identifier-syntax">status_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>If it isn't apparent what these placeholders do, take a look at
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>If it isn't apparent what these placeholders do, take a look at
 the template file called <span class="extract"><span class="extract-syntax">CblorbModel.html</span></span> in the Inform application &mdash;
 that's where they're used.
 </p>

@@ -625,12 +625,12 @@ void Adjectives::Meanings::set_definition_domain(adjective_meaning *am, int earl
 	if (supplied == NULL) @<Reject domain of adjective@>;
 	@<Reject domain of adjective unless a kind of value or description of objects@>;
 	kind *K = NULL;
-	if (ParseTreeUsage::is_condition(supplied)) {
+	if (Specifications::is_condition(supplied)) {
 		if (Specifications::to_kind(supplied))
 			K = Specifications::to_kind(supplied);
 		else K = K_object;
 		@<Reject domain of adjective if it is a set of objects which may vary in play@>;
-	} else if (ParseTreeUsage::is_rvalue(supplied))
+	} else if (Rvalues::is_rvalue(supplied))
 		K = Rvalues::to_kind(supplied);
 	if (K == NULL) @<Reject domain of adjective@>;
 	if (Kinds::Behaviour::is_kind_of_kind(K)) @<Reject domain as vague@>;

@@ -14,7 +14,7 @@ Chapter 1: Setting Up
 
 Chapter 2: The Parse Tree
 	Syntax Trees
-	Node Tyoes
+	Node Types
 	Parse Nodes
 	Node Annotations
 	Tree Verification

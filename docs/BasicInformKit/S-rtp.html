@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-rtp.html#SP1">&#167;1. Reporting</a></li><li><a href="S-rtp.html#SP2">&#167;2. Low-Level Errors</a></li><li><a href="S-rtp.html#SP3">&#167;3. Argument Type Checking Failed</a></li><li><a href="S-rtp.html#SP4">&#167;4. Return Type Checking Failed</a></li><li><a href="S-rtp.html#SP5">&#167;5. Whether Provides</a></li><li><a href="S-rtp.html#SP6">&#167;6. Scan Property Metadata</a></li><li><a href="S-rtp.html#SP7">&#167;7. Get Either-Or Property</a></li><li><a href="S-rtp.html#SP8">&#167;8. Set Either-Or Property</a></li><li><a href="S-rtp.html#SP9">&#167;9. Value Property</a></li><li><a href="S-rtp.html#SP10">&#167;10. Write Value Property</a></li><li><a href="S-rtp.html#SP11">&#167;11. Printing Property Names</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Reporting. </b>All RTPs are produced by calling the following routine, which takes one
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reporting. </b>All RTPs are produced by calling the following routine, which takes one
 compulsory argument: <span class="extract"><span class="extract-syntax">n</span></span>, the RTP number. When I7 is being used with the
 Inform user interface, it's important that these numbers correspond to the
 explanatory web pages stored within the interface application: those in
@@ -224,7 +224,7 @@ original source text (though in fact I7 does not use this at present).
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Low-Level Errors. </b>The following is a residue from the old I6 library, and most of its possible
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Low-Level Errors. </b>The following is a residue from the old I6 library, and most of its possible
 messages can't be seen in I7 use &mdash; for instance I7 has no timers or daemons,
 so error 4 is out of the question. But we retain the routine because the
 veneer code added by I6 requires it to be present.
@@ -262,7 +262,7 @@ veneer code added by I6 requires it to be present.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_LOWLEVELERROR</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Argument Type Checking Failed. </b>This is called when run-time type checking for the argument of a phrase
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Argument Type Checking Failed. </b>This is called when run-time type checking for the argument of a phrase
 fails, so that no definition for the phrase can be applied.
 </p>
 
@@ -271,7 +271,7 @@ fails, so that no definition for the phrase can be applied.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_TYPECHECK</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Return Type Checking Failed. </b>Similarly, though in a more restricted set of circumstances. Inform can usually
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Return Type Checking Failed. </b>Similarly, though in a more restricted set of circumstances. Inform can usually
 prove that the value returned by a phrase matches its supposed kind, but
 because of the deliberately weak type-checking within the kind of value
 "object" it will allow a broader kind of object to be returned when the
@@ -289,7 +289,7 @@ it can be <span class="extract"><span class="extract-syntax">nothing</span></spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Whether Provides. </b>This routine defines the phrase "if O provides P": there are three tests
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Whether Provides. </b>This routine defines the phrase "if O provides P": there are three tests
 to pass, and if any of the three fail, we return <span class="extract"><span class="extract-syntax">false</span></span>. (The <span class="extract"><span class="extract-syntax">issue_rtp</span></span>
 flag, causing RTPs to be issued depending on which test fails, is never set
 when the routine is simply testing the condition.)
@@ -343,7 +343,7 @@ it doesn't mean it actually does have.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">textual</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Scan Property Metadata. </b>The <span class="extract"><span class="extract-syntax">property_metadata</span></span> table is a series of zero-terminated lists of objects
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scan Property Metadata. </b>The <span class="extract"><span class="extract-syntax">property_metadata</span></span> table is a series of zero-terminated lists of objects
 (or class objects, representing I7 kinds). Each list corresponds to a single
 property; the position in the table is called the "offset" for the property.
 The following searches from a given offset.
@@ -356,7 +356,7 @@ The following searches from a given offset.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Get Either-Or Property. </b>If <span class="extract"><span class="extract-syntax">p</span></span> represents a property, then <span class="extract"><span class="extract-syntax">~p</span></span> (its bitwise negation) represents its
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Get Either-Or Property. </b>If <span class="extract"><span class="extract-syntax">p</span></span> represents a property, then <span class="extract"><span class="extract-syntax">~p</span></span> (its bitwise negation) represents its
 logical negation. The bitwise negation will change the sign bit; since all
 properties are ordinarily positive, we can detect bitwise negation by looking
 for negative property numbers. (This could fail on Glulx story files above
@@ -387,7 +387,7 @@ normally valid for doors and containers.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Set Either-Or Property. </b>An attempt to {\it write} an either/or property which is not provided will,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Set Either-Or Property. </b>An attempt to {\it write} an either/or property which is not provided will,
 however, always produce a run-time problem.
 </p>
 
@@ -405,7 +405,7 @@ however, always produce a run-time problem.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Value Property. </b>Some value properties belong to other values (those created in tables), and
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Value Property. </b>Some value properties belong to other values (those created in tables), and
 these are detected by being properties of a special <span class="extract"><span class="extract-syntax">VPH_Class</span></span> pseudo-object
 <span class="extract"><span class="extract-syntax">V</span></span> &mdash; an I6 object which is not part of the world model, and not a valid I7
 "object" value, but which is used in order that properties belonging to values
@@ -442,7 +442,7 @@ the one which the player is on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Write Value Property. </b>This routine's name must consist of the read-value-property routine's name
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Write Value Property. </b>This routine's name must consist of the read-value-property routine's name
 with the prefix <span class="extract"><span class="extract-syntax">Write</span></span>, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 </p>
@@ -460,7 +460,7 @@ converted from an rvalue to an lvalue.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Printing Property Names. </b>Inform doesn't print property names prettily; it more or less prints them
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Printing Property Names. </b>Inform doesn't print property names prettily; it more or less prints them
 only as decimal numbers.
 </p>
 

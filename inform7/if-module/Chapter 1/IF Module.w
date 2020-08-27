@@ -114,12 +114,24 @@ void IFModule::end(void) {
 
 @
 
+@e ACTION_CREATIONS_DA
+@e ACTION_PATTERN_COMPILATION_DA
+@e ACTION_PATTERN_PARSING_DA
 @e GRAMMAR_DA
 @e GRAMMAR_CONSTRUCTION_DA
+@e OBJECT_TREE_DA
+@e SPATIAL_MAP_DA
+@e SPATIAL_MAP_WORKINGS_DA
 
 @<Register this module's debugging log aspects@> =
+	Log::declare_aspect(ACTION_CREATIONS_DA, L"action creations", FALSE, FALSE);
+	Log::declare_aspect(ACTION_PATTERN_COMPILATION_DA, L"action pattern compilation", FALSE, FALSE);
+	Log::declare_aspect(ACTION_PATTERN_PARSING_DA, L"action pattern parsing", FALSE, FALSE);
 	Log::declare_aspect(GRAMMAR_DA, L"grammar", FALSE, FALSE);
 	Log::declare_aspect(GRAMMAR_CONSTRUCTION_DA, L"grammar construction", FALSE, FALSE);
+	Log::declare_aspect(OBJECT_TREE_DA, L"object tree", FALSE, FALSE);
+	Log::declare_aspect(SPATIAL_MAP_DA, L"spatial map", FALSE, FALSE);
+	Log::declare_aspect(SPATIAL_MAP_WORKINGS_DA, L"spatial map workings", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
 	REGISTER_WRITER('A', PL::Actions::Patterns::log);
@@ -138,3 +150,13 @@ DECLARE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
 DECLARE_ANNOTATION_FUNCTIONS(constant_grammar_verb, grammar_verb)
 DECLARE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
 DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
+
+@ =
+void IFModule::declare_annotations(void) {
+	Annotations::declare_type(constant_action_name_ANNOT, NULL);
+	Annotations::declare_type(constant_action_pattern_ANNOT, NULL);
+	Annotations::declare_type(constant_grammar_verb_ANNOT, NULL);
+	Annotations::declare_type(constant_named_action_pattern_ANNOT, NULL);
+	Annotations::declare_type(constant_scene_ANNOT, NULL);
+}
+

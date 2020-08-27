@@ -125,8 +125,14 @@ parse_node *Lvalues::underlying_property(parse_node *spec) {
 @h Testing.
 
 =
+int Lvalues::is_lvalue(parse_node *spec) {
+	node_type_metadata *metadata = NodeType::get_metadata(Node::get_type(spec));
+	if ((metadata) && (metadata->category == LVALUE_NCAT)) return TRUE;
+	return FALSE;
+}
+
 node_type_t Lvalues::get_storage_form(parse_node *spec) {
-	if (ParseTreeUsage::is_lvalue(spec)) return Node::get_type(spec);
+	if (Lvalues::is_lvalue(spec)) return Node::get_type(spec);
 	return UNKNOWN_NT;
 }
 

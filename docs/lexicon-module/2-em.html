@@ -54,7 +54,11 @@ MathJax = {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -64,12 +68,14 @@ MathJax = {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -82,7 +88,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="2-em.html#SP1">&#167;1. Excerpt meanings</a></li><li><a href="2-em.html#SP2">&#167;2. Meaning codes</a></li><li><a href="2-em.html#SP3">&#167;3. Annotating words</a></li><li><a href="2-em.html#SP5">&#167;5. Creating EMs</a></li><li><a href="2-em.html#SP6">&#167;6. Debugging log</a></li><li><a href="2-em.html#SP7">&#167;7. Hashing excerpts</a></li><li><a href="2-em.html#SP10">&#167;10. EM Listing</a></li><li><a href="2-em.html#SP12">&#167;12. Registration</a></li><li><a href="2-em.html#SP13">&#167;13. Errors</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Excerpt meanings. </b>We now define the <a href="2-em.html#SP1" class="internal">excerpt_meaning</a> data structure, which holds a single
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Excerpt meanings. </b>We now define the <a href="2-em.html#SP1" class="internal">excerpt_meaning</a> data structure, which holds a single
 entry in this what amounts to a dictionary. The text to be matched is specified
 as a sequence of at least one, and at most 32, tokens: these can either be
 pointers to specific vocabulary, or can be null, which implies that
@@ -118,7 +124,7 @@ generated from its token list, and a pointer to some structure.
 <span class="plain-syntax">} </span><span class="reserved-syntax">excerpt_meaning</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure excerpt_meaning is accessed in 1/lxc, 2/pe and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Meaning codes. </b>These assign a context to a meaning, and so decide how the <span class="extract"><span class="extract-syntax">data</span></span> pointer for
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Meaning codes. </b>These assign a context to a meaning, and so decide how the <span class="extract"><span class="extract-syntax">data</span></span> pointer for
 an excerpt meaning is to interpreted. For instance, "Persian carpet" might
 have a meaning with code <span class="extract"><span class="extract-syntax">NOUN_MC</span></span>.
 </p>
@@ -139,7 +145,7 @@ a pure power of 2, i.e., a single bit.
 <span class="definition-keyword">define</span> <span class="constant-syntax">NOUN_MC</span><span class="plain-syntax">					</span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">upright chair</span></span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_MC</span><span class="plain-syntax">				</span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">invisible</span></span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Annotating words. </b>Each word in the vocabulary collected up by <a href="../words-module/index.html" class="internal">words</a> will be annotated with
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Annotating words. </b>Each word in the vocabulary collected up by <a href="../words-module/index.html" class="internal">words</a> will be annotated with
 an object of the following class:
 </p>
 
@@ -157,7 +163,7 @@ an object of the following class:
 <span class="plain-syntax">} </span><span class="reserved-syntax">vocabulary_lexicon_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure vocabulary_lexicon_data is accessed in 2/pe and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>With the following initialiser:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>With the following initialiser:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">VOCABULARY_MEANING_INITIALISER_WORDS_CALLBACK</span><span class="plain-syntax"> </span><a href="2-em.html#SP4" class="function-link"><span class="function-syntax">ExcerptMeanings::new_vocabulary_attachment</span></a>
@@ -180,7 +186,7 @@ an object of the following class:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ld</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Creating EMs. </b>The following makes a skeletal EM structure, with no token list or hash code
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Creating EMs. </b>The following makes a skeletal EM structure, with no token list or hash code
 as yet.
 </p>
 
@@ -194,7 +200,7 @@ as yet.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Debugging log. </b>First to log a general bitmap made up from meaning codes:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Debugging log. </b>First to log a general bitmap made up from meaning codes:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -219,7 +225,7 @@ as yet.
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%02d: %08x $M\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">++, (</span><span class="identifier-syntax">pointer_sized_int</span><span class="plain-syntax">) </span><span class="identifier-syntax">em</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Hashing excerpts. </b>For excerpts <span class="extract"><span class="extract-syntax">(w1, w2)</span></span>, we need a form of hash function which makes it
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Hashing excerpts. </b>For excerpts <span class="extract"><span class="extract-syntax">(w1, w2)</span></span>, we need a form of hash function which makes it
 easy to test whether the words in one excerpt can all be found in another,
 or to be more exact whether
 </p>
@@ -234,7 +240,7 @@ away a lot of information. And we also want a hash function which makes it
 easy to test whether an excerpt contains any of the literals.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>There are two sources of text which we might want to hash in this way:
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>There are two sources of text which we might want to hash in this way:
 first, actual excerpts found in the source text. These are not very
 expensive to calculate, but every ounce of speed helps here, so we cache
 the most recent.
@@ -259,7 +265,7 @@ bits 31 and 32 left clear.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b>Second, when a new excerpt meaning is to be registered, we want to hash
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b>Second, when a new excerpt meaning is to be registered, we want to hash
 code its token list. But only some of the tokens are vocabulary entries,
 while others instead represent gaps where arbitrary text can appear (referred
 to with a null pointer). Note that we simply ignore that gaps when hashing,
@@ -295,7 +301,7 @@ same meaning as in the first case above.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">excerpt_hash</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b>Now each vocabulary entry <span class="extract"><span class="extract-syntax">v</span></span>, i.e., each distinct word identity, itself has
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b>Now each vocabulary entry <span class="extract"><span class="extract-syntax">v</span></span>, i.e., each distinct word identity, itself has
 a hash code to identify it. These are stored in <span class="extract"><span class="extract-syntax">v-&gt;hash</span></span> and, except for
 literals, are more or less evenly distributed in about the range 0 to 1000.
 </p>
@@ -314,7 +320,7 @@ for the whole excerpt is as follows.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax">                           </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax"> | (8 &lt;&lt; ((</span><span class="identifier-syntax">v</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">hash</span><span class="plain-syntax">) % </span><span class="constant-syntax">27</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP8">&#167;8</a>, <a href="2-em.html#SP8_1">&#167;8.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>To sum up: the excerpt hash is a bitmap indicating what categories of
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>To sum up: the excerpt hash is a bitmap indicating what categories of
 words are present in the excerpt. It ignores "gaps" in token lists, and
 it ignores the order of the words and repetitions. The three least
 significant bits indicate whether numbers, text or I6 verbatims are
@@ -333,7 +339,7 @@ thought. But it is optimised for the trickiest parsing cases where the
 rewards of saving unnecessary tests are greatest.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. EM Listing. </b>We are clearly not going to store the excerpt meanings in a hash table
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. EM Listing. </b>We are clearly not going to store the excerpt meanings in a hash table
 keyed by the hash values of excerpts &mdash; with hash values as large as
 \(2^{31}-1\), that would be practically impossible.
 </p>
@@ -415,7 +421,7 @@ resort; happily phrases both starting and ending with <span class="extract"><spa
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b>See above.
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>See above.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compute the new excerpt's hash code from its token list</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
@@ -425,7 +431,7 @@ resort; happily phrases both starting and ending with <span class="extract"><spa
 <span class="plain-syntax">    </span><a href="2-em.html#SP8_1" class="function-link"><span class="function-syntax">ExcerptMeanings::hash_code_from_token_list</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b>Another important optimisation is to flag each word in the meaning with
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>Another important optimisation is to flag each word in the meaning with
 the given meaning code &mdash; this is why vocabulary flags and excerpt meaning
 codes share the same numbering space. If we register "Table of Surgical
 Instruments" as a table name, the word "surgical", for instance, picks
@@ -450,7 +456,7 @@ positives.
 <span class="plain-syntax">            ((</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">])-&gt;</span><span class="identifier-syntax">flags</span><span class="plain-syntax">) |= </span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b>Note that articles (a, an, the, some) are excluded: this means we don't
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b>Note that articles (a, an, the, some) are excluded: this means we don't
 waste time trying to see if the excerpt "the" might be a reference to the
 object "Gregory the Great".
 </p>
@@ -474,7 +480,7 @@ object "Gregory the Great".
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b>To register <span class="extract"><span class="extract-syntax">#</span></span>, which is what "To say (N - a number)" and similar
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4.  </b>To register <span class="extract"><span class="extract-syntax">#</span></span>, which is what "To say (N - a number)" and similar
 constructions translate to.
 </p>
 
@@ -493,7 +499,7 @@ constructions translate to.
 <span class="plain-syntax">        </span><span class="string-syntax">"The blank list with $M is now:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">, </span><span class="identifier-syntax">blank_says_p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_5"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the start list of the first word</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the start list of the first word</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -502,7 +508,7 @@ constructions translate to.
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[0]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">start_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6"></a><b>&#167;10.6.  </b>...and similarly...
+<p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6.  </b>...and similarly...
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the end list of the last word</span><span class="named-paragraph-number">10.6</span></span><span class="comment-syntax"> =</span>
@@ -514,7 +520,7 @@ constructions translate to.
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax">-1]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">end_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_7"></a><b>&#167;10.7.  </b>...and similarly again:
+<p class="commentary firstcommentary"><a id="SP10_7" class="paragraph-anchor"></a><b>&#167;10.7.  </b>...and similarly again:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place the new meaning under the middle list of word i</span><span class="named-paragraph-number">10.7</span></span><span class="comment-syntax"> =</span>
@@ -526,7 +532,7 @@ constructions translate to.
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">em_tokens</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]-&gt;</span><span class="identifier-syntax">means</span><span class="plain-syntax">.</span><span class="element-syntax">middle_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Parse nodes are only created from excerpt meanings for storage inside the
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Parse nodes are only created from excerpt meanings for storage inside the
 excerpt parser, so these never live on into trees.
 </p>
 
@@ -537,7 +543,7 @@ excerpt parser, so these never live on into trees.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Registration. </b>The following is the main routine used throughout Inform to register new
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Registration. </b>The following is the main routine used throughout Inform to register new
 meanings.
 </p>
 
@@ -576,7 +582,7 @@ meanings.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b>Articles are preserved at the front of phrase definitions, mainly because
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b>Articles are preserved at the front of phrase definitions, mainly because
 text substitutions need to distinguish (for instance) "say [the X]" from
 "say [an X]".
 </p>
@@ -593,7 +599,7 @@ text substitutions need to distinguish (for instance) "say [the X]" from
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_2"></a><b>&#167;12.2.  </b>Because an open bracket fails <span class="extract"><span class="extract-syntax">isupper</span></span>, the following looks at the first
+<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b>Because an open bracket fails <span class="extract"><span class="extract-syntax">isupper</span></span>, the following looks at the first
 letter of the first word only if it's not a blank. If it finds upper case, as
 it would when reading the "T" in:
 </p>
@@ -631,7 +637,7 @@ sensitivity.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_3"></a><b>&#167;12.3.  </b>We read the text in something like:
+<p class="commentary firstcommentary"><a id="SP12_3" class="paragraph-anchor"></a><b>&#167;12.3.  </b>We read the text in something like:
 </p>
 
 <blockquote>
@@ -666,7 +672,7 @@ tokens denoting gaps, to result in something like:
 <span class="plain-syntax">    </span><span class="identifier-syntax">em</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_em_tokens</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tc</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_3_1"></a><b>&#167;12.3.1.  </b>This is all a little defensive, but syntax bugs higher up tend to find
+<p class="commentary firstcommentary"><a id="SP12_3_1" class="paragraph-anchor"></a><b>&#167;12.3.1.  </b>This is all a little defensive, but syntax bugs higher up tend to find
 their way down to this plughole:
 </p>
 
@@ -691,7 +697,7 @@ their way down to this plughole:
 <span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax">--;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12_3">&#167;12.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_3_2"></a><b>&#167;12.3.2.  </b>In practice, nobody ever hits this message except deliberately. It has
+<p class="commentary firstcommentary"><a id="SP12_3_2" class="paragraph-anchor"></a><b>&#167;12.3.2.  </b>In practice, nobody ever hits this message except deliberately. It has
 a tendency to fire twice or more on the same source text because of
 registering multiple inflected forms of the same text; but it's not worth
 going to any trouble to prevent this.
@@ -702,14 +708,14 @@ going to any trouble to prevent this.
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TooLongName_LEXICONERROR</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_3_3"></a><b>&#167;12.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complain of excessive length of the new excerpt</span><span class="named-paragraph-number">12.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_3_3" class="paragraph-anchor"></a><b>&#167;12.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Complain of excessive length of the new excerpt</span><span class="named-paragraph-number">12.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="2-em.html#SP13" class="function-link"><span class="function-syntax">ExcerptMeanings::problem_handler</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TooLongName_LEXICONERROR</span><span class="plain-syntax">, </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-em.html#SP12_3">&#167;12.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Errors. </b>Some tools using this module will want to push simple error messages out to
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Errors. </b>Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
 texts in HTML. So the client is allowed to define <span class="extract"><span class="extract-syntax">PROBLEM_LEXICON_CALLBACK</span></span>
 to some routine of her own, gazumping this one.

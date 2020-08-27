@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-ord.html#SP1">&#167;1. Main</a></li><li><a href="S-ord.html#SP2">&#167;2. Virtual Machine Startup Rule</a></li><li><a href="S-ord.html#SP3">&#167;3. Initial Situation</a></li><li><a href="S-ord.html#SP4">&#167;4. Initialise Memory Rule</a></li><li><a href="S-ord.html#SP5">&#167;5. Position Player In Model World Rule</a></li><li><a href="S-ord.html#SP6">&#167;6. Parse Command Rule</a></li><li><a href="S-ord.html#SP7">&#167;7. Treat Parser Results</a></li><li><a href="S-ord.html#SP8">&#167;8. Generate Action Rule</a></li><li><a href="S-ord.html#SP9">&#167;9. Generate Multiple Actions</a></li><li><a href="S-ord.html#SP10">&#167;10. Timed Events Rule</a></li><li><a href="S-ord.html#SP11">&#167;11. Setting Timed Events</a></li><li><a href="S-ord.html#SP12">&#167;12. Setting Time Of Day</a></li><li><a href="S-ord.html#SP13">&#167;13. Advance Time Rule</a></li><li><a href="S-ord.html#SP14">&#167;14. Note Object Acquisitions Rule</a></li><li><a href="S-ord.html#SP15">&#167;15. Resurrect Player If Asked Rule</a></li><li><a href="S-ord.html#SP16">&#167;16. Ask The Final Question Rule</a></li><li><a href="S-ord.html#SP17">&#167;17. Read The Final Answer Rule</a></li><li><a href="S-ord.html#SP18">&#167;18. Immediately Restart VM Rule</a></li><li><a href="S-ord.html#SP19">&#167;19. Immediately Restore Saved Game Rule</a></li><li><a href="S-ord.html#SP20">&#167;20. Immediately Quit Rule</a></li><li><a href="S-ord.html#SP21">&#167;21. Immediately Undo Rule</a></li><li><a href="S-ord.html#SP22">&#167;22. Print Obituary Headline Rule</a></li><li><a href="S-ord.html#SP23">&#167;23. Print Final Score Rule</a></li><li><a href="S-ord.html#SP24">&#167;24. Display Final Status Line Rule</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Main. </b>This is where every I6 story file begins execution: it can end either by
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main. </b>This is where every I6 story file begins execution: it can end either by
 returning, or by a <span class="extract"><span class="extract-syntax">quit</span></span> statement or equivalent opcode. (In I7 this does
 indeed happen when the quitting the game action is carried out, or when QUIT
 is typed as a reply to the final question; it's only if the user has altered
@@ -92,7 +92,7 @@ explained in the Standard Rules.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Virtual Machine Startup Rule. </b>We delegate to the appropriate VM-specific section of code for the real work.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Virtual Machine Startup Rule. </b>We delegate to the appropriate VM-specific section of code for the real work.
 The printing of three blank lines at the start of play is traditional: on early
 Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
@@ -107,7 +107,7 @@ space the opening text better.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Initial Situation. </b>The array <span class="extract"><span class="extract-syntax">InitialSituation</span></span> is compiled by Inform and contains:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Initial Situation. </b>The array <span class="extract"><span class="extract-syntax">InitialSituation</span></span> is compiled by Inform and contains:
 </p>
 
 <ul class="items"><ul class="items"><li>(0) The object number for the player, which is usually <span class="extract"><span class="extract-syntax">selfobj</span></span>.
@@ -124,7 +124,7 @@ reads, say, "Mrs Bridges is a woman. The player is Mrs Bridges."): in
 other circumstances they are often correct, but this must not be relied on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Initialise Memory Rule. </b>This rule amalgamates some minimal initialisations which all need to happen
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialise Memory Rule. </b>This rule amalgamates some minimal initialisations which all need to happen
 before we can risk using some of the more exotic I7 kinds:
 </p>
 
@@ -175,7 +175,7 @@ where he is, the surprise will not be spoiled.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Position Player In Model World Rule. </b>This seems as good a place as any to write down the invariant we attempt
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Position Player In Model World Rule. </b>This seems as good a place as any to write down the invariant we attempt
 to maintain for the player's position variables:
 </p>
 
@@ -244,7 +244,7 @@ to behave predictably and without type-unsafe values entering code.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Parse Command Rule. </b>This section contains only two primitive rules from the turn sequence
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Parse Command Rule. </b>This section contains only two primitive rules from the turn sequence
 rulebook, the matched pair of the "parse command rule" and the
 "generate action rule"; the others are found in the sections on Light
 and Time.
@@ -317,7 +317,7 @@ developed gradually over about a decade.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Treat Parser Results. </b>We don't quite use the results exactly as they are returned by the parser:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Treat Parser Results. </b>We don't quite use the results exactly as they are returned by the parser:
 we make modifications in a few special cases.
 </p>
 
@@ -343,7 +343,7 @@ is converted to <span class="extract"><span class="extract-syntax">##Ask</span><
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Generate Action Rule. </b>For what are, again, historical reasons to do with the development of I6,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Generate Action Rule. </b>For what are, again, historical reasons to do with the development of I6,
 the current action is recorded in a slate of global variables:
 </p>
 
@@ -451,7 +451,7 @@ every turn rules from firing, and so forth &mdash; see the Standard Rules.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Generate Multiple Actions. </b>So this routine is used to issue the individual actions necessary when
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Generate Multiple Actions. </b>So this routine is used to issue the individual actions necessary when
 a multiple object list has been supplied as either the noun or second noun
 part of an action generated by the parser. Note that we stop processing
 the list in the event of the game ending, or of the <span class="extract"><span class="extract-syntax">location</span></span> variable
@@ -481,7 +481,7 @@ up reports from a list and delivering them later in some processed way.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Timed Events Rule. </b>A timed event is a rule stored in the <span class="extract"><span class="extract-syntax">TimedEventsTable</span></span>, an I6 table array:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Timed Events Rule. </b>A timed event is a rule stored in the <span class="extract"><span class="extract-syntax">TimedEventsTable</span></span>, an I6 table array:
 zero entries in this table are ignored, and the sequence is significant
 only if more than one event goes off at the same moment, in which case
 earlier entries go off first. Each rule in the table has a corresponding
@@ -525,7 +525,7 @@ because we have just blanked one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Setting Timed Events. </b>This is the corresponding routine which adds events to the timer tables, and
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Setting Timed Events. </b>This is the corresponding routine which adds events to the timer tables, and
 is used to define phrases like "the cuckoo clock explodes in 7 turns from
 now" or "the cuckoo clock explodes at 4 PM". Here the <span class="extract"><span class="extract-syntax">rule</span></span> would be
 "cuckoo clock explodes", and the <span class="extract"><span class="extract-syntax">event_time</span></span> would either be 4 PM with
@@ -550,7 +550,7 @@ that events always fire.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">TimedEventTimesTable</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">b</span><span class="plain-syntax"> = -</span><span class="identifier-syntax">event_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Setting Time Of Day. </b>This is the old I6 library routine <span class="extract"><span class="extract-syntax">SetTime</span></span>, which is no longer used in I7
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Setting Time Of Day. </b>This is the old I6 library routine <span class="extract"><span class="extract-syntax">SetTime</span></span>, which is no longer used in I7
 at present; but might be, some day.
 </p>
 
@@ -562,7 +562,7 @@ at present; but might be, some day.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">s</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">time_step</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">-</span><span class="identifier-syntax">s</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Advance Time Rule. </b>This rule advances the two measures of the passing of time: the number of
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Advance Time Rule. </b>This rule advances the two measures of the passing of time: the number of
 <span class="extract"><span class="extract-syntax">turns</span></span> of play, and <span class="extract"><span class="extract-syntax">the_time</span></span> of day.
 </p>
 
@@ -583,7 +583,7 @@ at present; but might be, some day.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Note Object Acquisitions Rule. </b>See the Standard Rules for comment on this.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Note Object Acquisitions Rule. </b>See the Standard Rules for comment on this.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -602,7 +602,7 @@ at present; but might be, some day.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Resurrect Player If Asked Rule. </b>If a rule in the "when play ends" rulebook set <span class="extract"><span class="extract-syntax">resurrect_please</span></span>, by executing
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Resurrect Player If Asked Rule. </b>If a rule in the "when play ends" rulebook set <span class="extract"><span class="extract-syntax">resurrect_please</span></span>, by executing
 the "resume the game" phrase, then this is where we notice that: making
 the shutdown rulebook succeed then tells <span class="extract"><span class="extract-syntax">Main</span></span> to fall back into the turn
 sequence.
@@ -617,7 +617,7 @@ sequence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Ask The Final Question Rule. </b>And so we come to the bittersweet end: we ask the final question endlessly,
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Ask The Final Question Rule. </b>And so we come to the bittersweet end: we ask the final question endlessly,
 until the player gives a reply which takes drastic enough action to destroy
 the current execution context in the VM, for instance by typing QUIT, RESTART,
 UNDO or RESTORE. The question and answer are all managed by the activity,
@@ -634,7 +634,7 @@ which is defined in I7 source text in the Standard Rules.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Read The Final Answer Rule. </b>This erases the current command, so is a technique we couldn't use during
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Read The Final Answer Rule. </b>This erases the current command, so is a technique we couldn't use during
 actual play, but here commands are but a distant memory. So we can use the
 same buffers for the final question as for game commands.
 </p>
@@ -649,13 +649,13 @@ same buffers for the final question as for game commands.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Immediately Restart VM Rule. </b>Now for four rules acting on typical responses to the final question.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Immediately Restart VM Rule. </b>Now for four rules acting on typical responses to the final question.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">IMMEDIATELY_RESTART_VM_R</span><span class="plain-syntax">; @</span><span class="identifier-syntax">restart</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Immediately Restore Saved Game Rule. </b>It is almost certainly unnecessary to set <span class="extract"><span class="extract-syntax">actor</span></span> to <span class="extract"><span class="extract-syntax">player</span></span> here, but
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Immediately Restore Saved Game Rule. </b>It is almost certainly unnecessary to set <span class="extract"><span class="extract-syntax">actor</span></span> to <span class="extract"><span class="extract-syntax">player</span></span> here, but
 we do so just in case, because <span class="extract"><span class="extract-syntax">RESTORE_THE_GAME_R</span></span> is protected against
 doing anything when it thinks it might have been called erroneously through
 a command like "DAPHNE, RESTORE". (Out of world actions should never
@@ -665,17 +665,17 @@ be carried out that way, but again, it's a precaution.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">IMMEDIATELY_RESTORE_SAVED_R</span><span class="plain-syntax">; </span><span class="identifier-syntax">actor</span><span class="plain-syntax"> = </span><span class="identifier-syntax">player</span><span class="plain-syntax">; </span><span class="identifier-syntax">RESTORE_THE_GAME_R</span><span class="plain-syntax">(); ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Immediately Quit Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Immediately Quit Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">IMMEDIATELY_QUIT_R</span><span class="plain-syntax">; @</span><span class="reserved-syntax">quit</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Immediately Undo Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Immediately Undo Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">IMMEDIATELY_UNDO_R</span><span class="plain-syntax">; </span><span class="identifier-syntax">Perform_Undo</span><span class="plain-syntax">(); ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Print Obituary Headline Rule. </b>Finally, definitions of three primitive rules for the "printing the player's
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Print Obituary Headline Rule. </b>Finally, definitions of three primitive rules for the "printing the player's
 obituary" activity.
 </p>
 
@@ -698,7 +698,7 @@ obituary" activity.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Print Final Score Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Print Final Score Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PRINT_FINAL_SCORE_R</span><span class="plain-syntax">;</span>
@@ -706,7 +706,7 @@ obituary" activity.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Display Final Status Line Rule. </b></p>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Display Final Status Line Rule. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DISPLAY_FINAL_STATUS_LINE_R</span><span class="plain-syntax">;</span>

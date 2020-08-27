@@ -612,7 +612,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 
 =
 int Calculus::Deferrals::spec_is_variable_of_kind_description(parse_node *spec) {
-	if ((ParseTreeUsage::is_lvalue(spec)) &&
+	if ((Lvalues::is_lvalue(spec)) &&
 		(Kinds::get_construct(Specifications::to_kind(spec)) == CON_description))
 		return TRUE;
 	return FALSE;
@@ -933,7 +933,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 		i6_schema loop_schema;
 		if (Calculus::Deferrals::write_loop_schema(&loop_schema, K)) {
 			Calculus::Schemas::emit_expand_from_locals(&loop_schema, v1, v2, TRUE);
-			if (ParseTreeUsage::is_lvalue(spec) == FALSE) {
+			if (Lvalues::is_lvalue(spec) == FALSE) {
 				if (Specifications::to_proposition(spec)) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());

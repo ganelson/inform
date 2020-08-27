@@ -239,7 +239,7 @@ henceforth to be true, so we simply compile empty code in that case.
 				END_COMPILATION_MODE;
 			}
 		}
-	} else if (ParseTreeUsage::is_condition(cs))
+	} else if (Specifications::is_condition(cs))
 		@<Issue a problem message for the wrong sort of condition in a "now"@>
 	else if (rv != NEVER_MATCH) @<Issue a problem message for an unrecognised condition@>;
 

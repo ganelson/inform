@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-utl.html#SP1">&#167;1. Miscellany</a></li><li><a href="S-utl.html#SP2">&#167;2. Language of Play</a></li><li><a href="S-utl.html#SP3">&#167;3. VM-Specific Code</a></li><li><a href="S-utl.html#SP4">&#167;4. More</a></li><li><a href="S-utl.html#SP5">&#167;5. Print Decimal Number</a></li><li><a href="S-utl.html#SP6">&#167;6. Print Text</a></li><li><a href="S-utl.html#SP7">&#167;7. Properties</a></li><li><a href="S-utl.html#SP8">&#167;8. Print Or Run</a></li><li><a href="S-utl.html#SP9">&#167;9. Saying Phrases</a></li><li><a href="S-utl.html#SP10">&#167;10. Kinds</a></li><li><a href="S-utl.html#SP11">&#167;11. GenerateRandomNumber</a></li><li><a href="S-utl.html#SP12">&#167;12. PrintSpaces</a></li><li><a href="S-utl.html#SP13">&#167;13. SwapWorkflags</a></li><li><a href="S-utl.html#SP14">&#167;14. TestUseOption</a></li><li><a href="S-utl.html#SP15">&#167;15. ZRegion</a></li><li><a href="S-utl.html#SP16">&#167;16. Memcpy</a></li><li><a href="S-utl.html#SP17">&#167;17. Arrcpy</a></li><li><a href="S-utl.html#SP18">&#167;18. Verbs as Values</a></li><li><a href="S-utl.html#SP19">&#167;19. Seed Random Number Generator Rule</a></li><li><a href="S-utl.html#SP20">&#167;20. Extracting Verb Numbers</a></li><li><a href="S-utl.html#SP21">&#167;21. Say One Of</a></li><li><a href="S-utl.html#SP22">&#167;22. Rounding</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Miscellany. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Miscellany. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_ZCODE</span><span class="plain-syntax">;</span>
@@ -108,7 +108,7 @@ MathJax = {
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LocalParking</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">64</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Language of Play. </b>The equivalent of I6's language definition file, though here the idea is
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Language of Play. </b>The equivalent of I6's language definition file, though here the idea is
 that a translation should have an inclusion to replace the "Language.i6t"
 segment, which contains the English definition.
 </p>
@@ -117,19 +117,19 @@ segment, which contains the English definition.
 
 <span class="identifier-syntax">Default</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageCases</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. VM-Specific Code. </b>These sections of code contain different definitions of the same routines,
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. VM-Specific Code. </b>These sections of code contain different definitions of the same routines,
 and in some cases the same arrays, to handle low-level functions in the
 virtual machine &mdash; saving the game, performing UNDO, parsing typed text into
 dictionary word addresses and so on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. More. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. More. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">Protect_I7_Arrays</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">16339</span><span class="plain-syntax"> </span><span class="constant-syntax">12345</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Print Decimal Number. </b><span class="extract"><span class="extract-syntax">DecimalNumber</span></span> is a trivial function which just prints a number, in decimal
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Print Decimal Number. </b><span class="extract"><span class="extract-syntax">DecimalNumber</span></span> is a trivial function which just prints a number, in decimal
 digits. It is left over from the I6 library's support routines for Glulx,
 where it was intended as a stub to pass to the Glulx <span class="extract"><span class="extract-syntax">Glulx_PrintAnything</span></span> routine
 (which I7 does not use). In I7, however, it's also used as the default
@@ -139,7 +139,7 @@ printing routine for new kinds of value.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DecimalNumber</span><span class="plain-syntax"> </span><span class="identifier-syntax">num</span><span class="plain-syntax">; </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">num</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Print Text. </b>The routine for printing an I7 "text" value, which might be text with or
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Print Text. </b>The routine for printing an I7 "text" value, which might be text with or
 without substitutions.
 </p>
 
@@ -152,7 +152,7 @@ without substitutions.
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">I7_String</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">; </span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">); ]; </span><span class="comment-syntax">An alternative name now used only by extensions</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Properties. </b>Some either/or properties are compiled to I6 attributes, which must be
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Properties. </b>Some either/or properties are compiled to I6 attributes, which must be
 predeclared, so we do that first. (All other properties can simply be
 used without declaration.)
 </p>
@@ -172,7 +172,7 @@ has to be done (once) at run-time, with the routine compiled.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">valued_property_offsets_SIZE</span><span class="plain-syntax"> (100 + </span><span class="identifier-syntax">CCOUNT_PROPERTY</span><span class="plain-syntax"> + </span><span class="identifier-syntax">INDIV_PROP_START</span><span class="plain-syntax">-48);</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">valued_property_offsets</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">valued_property_offsets_SIZE</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Print Or Run. </b>This utility remains from the old I6 library: it essentially treats a
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Print Or Run. </b>This utility remains from the old I6 library: it essentially treats a
 property as textual and prints it where possible. Where the <span class="extract"><span class="extract-syntax">no_break</span></span>
 flag is set, we expect the text to form only a small part of a paragraph,
 and it's inappropriate to break here: for instance, for printing the
@@ -210,7 +210,7 @@ allows us to divide the paragraph or not accordingly.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DA_Number</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">; ];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DA_TruthState</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">==0) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"false"</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"true"</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Saying Phrases. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Saying Phrases. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">SayPhraseName</span><span class="plain-syntax"> </span><span class="identifier-syntax">closure</span><span class="plain-syntax">;</span>
@@ -218,7 +218,7 @@ allows us to divide the paragraph or not accordingly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">closure</span><span class="plain-syntax">--&gt;2;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Kinds. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Kinds. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">KindAtomic</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">;</span>
@@ -236,7 +236,7 @@ allows us to divide the paragraph or not accordingly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax">--&gt;(2+</span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. GenerateRandomNumber. </b>The following uses the virtual machine's RNG (via the I6 built-in function
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. GenerateRandomNumber. </b>The following uses the virtual machine's RNG (via the I6 built-in function
 <span class="extract"><span class="extract-syntax">random</span></span>) to produce a uniformly random integer in the range \(n\) to \(m\)
 inclusive, where \(n\) and \(m\) are allowed to be either way around; so that
 a random number between 17 and 4 is the same thing as a random number
@@ -254,7 +254,7 @@ to an empty range of values.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_DecimalNumber</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">R_PrintTimeOfDay</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GenerateRandomNumber</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. PrintSpaces. </b>Which prints a row of \(n\) spaces, for \(n\geq 0\).
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. PrintSpaces. </b>Which prints a row of \(n\) spaces, for \(n\geq 0\).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -265,7 +265,7 @@ to an empty range of values.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. SwapWorkflags. </b>Recall that we have two general-purpose temporary attributes for each object:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. SwapWorkflags. </b>Recall that we have two general-purpose temporary attributes for each object:
 <span class="extract"><span class="extract-syntax">workflag</span></span> and <span class="extract"><span class="extract-syntax">workflag2</span></span>. The following swaps their values over for every
 object at once.
 </p>
@@ -282,12 +282,12 @@ object at once.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. TestUseOption. </b>This routine, compiled by Inform, returns <span class="extract"><span class="extract-syntax">true</span></span> if the supplied argument is the
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. TestUseOption. </b>This routine, compiled by Inform, returns <span class="extract"><span class="extract-syntax">true</span></span> if the supplied argument is the
 number of a use option in force for the current run of Inform, and <span class="extract"><span class="extract-syntax">false</span></span>
 otherwise.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. ZRegion. </b>I7 contains many relics from I6, but here's a relic from I5: a routine which
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. ZRegion. </b>I7 contains many relics from I6, but here's a relic from I5: a routine which
 used to determine the metaclass of a value, before that concept was given a
 name. In I6 code, it can be implemented simply using <span class="extract"><span class="extract-syntax">metaclass</span></span>, as the
 following shows. (The name is from "region of the Z-machine".)
@@ -303,7 +303,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Memcpy. </b>This is equivalent to C's memcpy function, in good ways and bad.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Memcpy. </b>This is equivalent to C's memcpy function, in good ways and bad.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -316,7 +316,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Arrcpy. </b>This is not quite so efficient, but not terrible.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Arrcpy. </b>This is not quite so efficient, but not terrible.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -332,7 +332,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="string-syntax">"*** Arrcpy doesn't support this ***"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Verbs as Values. </b></p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Verbs as Values. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">PrintVerbAsValue</span><span class="plain-syntax"> </span><span class="identifier-syntax">vb</span><span class="plain-syntax">;</span>
@@ -350,7 +350,7 @@ following shows. (The name is from "region of the Z-machine".)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Seed Random Number Generator Rule. </b>Unless a seed is provided by Inform, and it won't be for released story files,
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Seed Random Number Generator Rule. </b>Unless a seed is provided by Inform, and it won't be for released story files,
 the VM's interpreter is supposed to start up with a good seed in its random
 number generator: something usually derived from, say, the milliseconds part
 of the current time of day, which is unlikely to repeat or show any pattern
@@ -371,7 +371,7 @@ of course, in a state of sin" (von Neumann).
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Extracting Verb Numbers. </b>A long tale of woe lies behind the following. Infocom games stored verb numbers
 in a single byte in dictionary entries, but they did so counting downwards, so
 that verb number 0 was stored as 255, 1 as 254, and so on. Inform followed
 suit so that debugging of Inform 1 could be aided by using the then-available
@@ -412,7 +412,7 @@ routine was added to concentrate lookups of this field in one place.
 <span class="plain-syntax">    </span><span class="identifier-syntax">prior_named_noun</span><span class="plain-syntax"> = </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Say One Of. </b>These routines are described in the Extensions chapter of the Inform
 documentation.
 </p>
 
@@ -458,7 +458,7 @@ documentation.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ct</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax"> + </span><span class="identifier-syntax">ssd</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">*</span><span class="identifier-syntax">base</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Rounding. </b>The following rounds a numerical value <span class="extract"><span class="extract-syntax">t1</span></span> to the nearest unit of <span class="extract"><span class="extract-syntax">t2</span></span>;
 for instance, if <span class="extract"><span class="extract-syntax">t2</span></span> is 5 then it rounds to the nearest 5. The name is an
 anachronism, as it's used for all kinds of value.
 </p>

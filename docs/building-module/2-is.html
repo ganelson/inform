@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -66,7 +72,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">building</a></li><li><a href="index.html#2">Chapter 2: Blueprints</a></li><li><b>Inter Schemas</b></li></ul></div>
 <ul class="toc"><li><a href="2-is.html#SP1">&#167;1. Definition</a></li><li><a href="2-is.html#SP2">&#167;2. Anatomy of a schema</a></li><li><a href="2-is.html#SP15">&#167;15. Token insertion</a></li><li><a href="2-is.html#SP16">&#167;16. Logging</a></li><li><a href="2-is.html#SP17">&#167;17. Lint</a></li><li><a href="2-is.html#SP18">&#167;18. I6S</a></li><li><a href="2-is.html#SP19">&#167;19. Heads and tails</a></li><li><a href="2-is.html#SP20">&#167;20. Compiler</a></li><li><a href="2-is.html#SP20_1">&#167;20.1. Stage 1</a></li><li><a href="2-is.html#SP20_3">&#167;20.3. Stage 2</a></li><li><a href="2-is.html#SP32">&#167;32. Operators in I6</a></li><li><a href="2-is.html#SP33">&#167;33. Metadata on inter primitives</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Definition. </b>An inter schema is a set of instructions for compiling inter code, while
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definition. </b>An inter schema is a set of instructions for compiling inter code, while
 interspersing certain values at given places.
 </p>
 
@@ -103,7 +109,7 @@ miniature Inform 6 compiler: its task is to take text such as
 which takes a given schema and generates inter code from it.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Anatomy of a schema. </b>Relatively few inter schemas are generated during Inform's run (typically a
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Anatomy of a schema. </b>Relatively few inter schemas are generated during Inform's run (typically a
 few hundred), so they do not need to be stored compactly or compiled quickly.
 </p>
 
@@ -117,7 +123,7 @@ few hundred), so they do not need to be stored compactly or compiled quickly.
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_schema is accessed in 2/eis and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">InterSchemas::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::new</span></span>:<br/><a href="2-is.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source</span><span class="plain-syntax">) {</span>
@@ -129,7 +135,7 @@ few hundred), so they do not need to be stored compactly or compiled quickly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>A schema is a connected tree of nodes, each of which has one of the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>A schema is a connected tree of nodes, each of which has one of the
 following types. (Tempting to mark eliminated nodes as <span class="extract"><span class="extract-syntax">OH_NO_IT_ISNT</span></span>,
 but the need to do this went away.)
 </p>
@@ -171,7 +177,7 @@ but the need to do this went away.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_schema_node is accessed in 2/eis and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="function-syntax">InterSchemas::new_node</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::new_node</span></span>:<br/><a href="2-is.html#SP7">&#167;7</a>, <a href="2-is.html#SP15">&#167;15</a>, <a href="2-is.html#SP22">&#167;22</a>, <a href="2-is.html#SP23">&#167;23</a>, <a href="2-is.html#SP24">&#167;24</a>, <a href="2-is.html#SP25">&#167;25</a>, <a href="2-is.html#SP26">&#167;26</a>, <a href="2-is.html#SP27">&#167;27</a>, <a href="2-is.html#SP28">&#167;28</a>, <a href="2-is.html#SP28_1_1">&#167;28.1.1</a>, <a href="2-is.html#SP29">&#167;29</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">isnt</span><span class="plain-syntax">) {</span>
@@ -197,7 +203,7 @@ but the need to do this went away.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">isn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Ordinarily, a <span class="extract"><span class="extract-syntax">CODE_ISNT</span></span> node represents a complete block of I6 code.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Ordinarily, a <span class="extract"><span class="extract-syntax">CODE_ISNT</span></span> node represents a complete block of I6 code.
 For example, in
 </p>
 
@@ -236,7 +242,7 @@ upwards.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The situation with unopened nodes is different: we must ensure that a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The situation with unopened nodes is different: we must ensure that a
 single code node is left unopened, even if we have to create a code node
 at the top of the tree to serve that role.
 </p>
@@ -263,7 +269,7 @@ at the top of the tree to serve that role.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>A further complication is that some schemas arise from definitions used
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>A further complication is that some schemas arise from definitions used
 only in the middle of switch statements; they contain neither the start nor
 the end of the construct, so the above mechanisms are not sufficient.
 For example, the inline definition
@@ -281,7 +287,7 @@ associate this with any single node, so we mark the schema as a whole.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) </span><span class="identifier-syntax">isn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_schema</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">mid_case</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">EXPRESSION_ISNT</span></span> nodes carry a linked list of tokens with them. When we
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">EXPRESSION_ISNT</span></span> nodes carry a linked list of tokens with them. When we
 begin compiling a schema, we form a single expression node with a long list
 of tokens: gradually this is transformed into a tree of nodes with more,
 but much shorter, expression nodes, and in the process most of the token
@@ -301,7 +307,7 @@ compilation process, and never survive into the final schema:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">COMMA_ISTT</span><span class="plain-syntax">				</span><span class="comment-syntax"> comma</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">COLON_ISTT</span><span class="plain-syntax">				</span><span class="comment-syntax"> colon</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Whereas these token types do make it into the compiled schema:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Whereas these token types do make it into the compiled schema:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">IDENTIFIER_ISTT</span><span class="plain-syntax">			</span><span class="comment-syntax"> an I6 identifier such as </span><span class="extract"><span class="extract-syntax">my_var12</span></span>
@@ -351,7 +357,7 @@ compilation process, and never survive into the final schema:
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_schema_token</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_schema_token is accessed in 2/eis and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="function-syntax">InterSchemas::new_token</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::new_token</span></span>:<br/><a href="2-is.html#SP20_2_2">&#167;20.2.2</a>, <a href="2-is.html#SP20_2_3_1">&#167;20.2.3.1</a>, <a href="2-is.html#SP20_2_4_1">&#167;20.2.4.1</a>, <a href="2-is.html#SP20_2_5">&#167;20.2.5</a>, <a href="2-is.html#SP20_2_2_1_4">&#167;20.2.2.1.4</a>, <a href="2-is.html#SP21">&#167;21</a>, <a href="2-is.html#SP26">&#167;26</a>, <a href="2-is.html#SP29">&#167;29</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">material</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">operation_primitive</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reserved_word</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
@@ -379,7 +385,7 @@ compilation process, and never survive into the final schema:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>The value of <span class="extract"><span class="extract-syntax">reserved_word</span></span>, in a <span class="extract"><span class="extract-syntax">RESERVED_ISTT</span></span> node, must be one of:
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>The value of <span class="extract"><span class="extract-syntax">reserved_word</span></span>, in a <span class="extract"><span class="extract-syntax">RESERVED_ISTT</span></span> node, must be one of:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">IF_I6RW</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -417,7 +423,7 @@ compilation process, and never survive into the final schema:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">IFNOT_I6RW</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ENDIF_I6RW</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>The value of <span class="extract"><span class="extract-syntax">inline_command</span></span>, in an <span class="extract"><span class="extract-syntax">INLINE_ISTT</span></span> node, must be one of:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The value of <span class="extract"><span class="extract-syntax">inline_command</span></span>, in an <span class="extract"><span class="extract-syntax">INLINE_ISTT</span></span> node, must be one of:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">no_ISINC</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -470,7 +476,7 @@ compilation process, and never survive into the final schema:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">current_sentence_ISINC</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">combine_ISINC</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>The value of <span class="extract"><span class="extract-syntax">inline_subcommand</span></span>, in an <span class="extract"><span class="extract-syntax">INLINE_ISTT</span></span> node, must be one of:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The value of <span class="extract"><span class="extract-syntax">inline_subcommand</span></span>, in an <span class="extract"><span class="extract-syntax">INLINE_ISTT</span></span> node, must be one of:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">no_ISINSC</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -489,7 +495,7 @@ compilation process, and never survive into the final schema:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">break_ISINSC</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">verbose_checking_ISINSC</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Token insertion. </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Token insertion. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::add_token</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::add_token</span></span>:<br/><a href="2-is.html#SP20_2_2">&#167;20.2.2</a>, <a href="2-is.html#SP20_2_3_1">&#167;20.2.3.1</a>, <a href="2-is.html#SP20_2_4_1">&#167;20.2.4.1</a>, <a href="2-is.html#SP20_2_5">&#167;20.2.5</a>, <a href="2-is.html#SP20_2_2_1_4">&#167;20.2.2.1.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
@@ -516,7 +522,7 @@ compilation process, and never survive into the final schema:
 <span class="plain-syntax">    </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owner</span><span class="plain-syntax"> = </span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owner</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Logging. </b>It is invaluable to be able to see compiled schemas in the debugging log, so
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Logging. </b>It is invaluable to be able to see compiled schemas in the debugging log, so
 we go to some trouble here.
 </p>
 
@@ -641,7 +647,7 @@ we go to some trouble here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">inline_modifiers</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">PERMIT_LOCALS_IN_TEXT_CMODE_ISSBM</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">" PERMIT_LOCALS_IN_TEXT_CMODE"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Lint. </b>As can be seen, the <span class="extract"><span class="extract-syntax">inter_schema</span></span> structure is quite complicated, and there
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Lint. </b>As can be seen, the <span class="extract"><span class="extract-syntax">inter_schema</span></span> structure is quite complicated, and there
 are numerous invariants it has to satisfy. As a precaution, then, we check that
 all of these invariants hold before shipping out a compiled schema. This is
 where the check is done:
@@ -701,7 +707,7 @@ where the check is done:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. I6S. </b></p>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. I6S. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">compiled_i6s_dict</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -721,7 +727,7 @@ where the check is done:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Heads and tails. </b>Most inline-defined phrases compile to a single schema, but some compile to
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Heads and tails. </b>Most inline-defined phrases compile to a single schema, but some compile to
 two, the head and the tail (which typically bookend a loop structure). A
 general inline definition must therefore in principle be compiled to two
 schemas, not one.
@@ -744,7 +750,7 @@ as the content of a <span class="extract"><span class="extract-syntax">(- ... -)
 <span class="plain-syntax">        *</span><span class="identifier-syntax">tail</span><span class="plain-syntax"> = </span><a href="2-is.html#SP20" class="function-link"><span class="function-syntax">InterSchemas::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tail_defn</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19_1"></a><b>&#167;19.1.  </b>A tail will only be present if the definition contains <span class="extract"><span class="extract-syntax">{-block}</span></span>. If it
+<p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b>A tail will only be present if the definition contains <span class="extract"><span class="extract-syntax">{-block}</span></span>. If it
 does, we then split the definition into a head and a tail, and again trim
 white space from each. Note that <span class="extract"><span class="extract-syntax">{-block}</span></span> is not legal anywhere else.
 </p>
@@ -816,7 +822,7 @@ for instance, we could simply have defined:
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP19">&#167;19</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Compiler. </b>This is a two-stage process.
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Compiler. </b>This is a two-stage process.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -838,7 +844,7 @@ for instance, we could simply have defined:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sch</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_1"></a><b>&#167;20.1. Stage 1. </b>Our method is to tokenise the source code as if it were Inform 6, but to look
+<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1. Stage 1. </b>Our method is to tokenise the source code as if it were Inform 6, but to look
 out for the two extra syntaxes allowed, <span class="extract"><span class="extract-syntax">{-bracing}</span></span> and <span class="extract"><span class="extract-syntax">(+ Inform 7 interpolation +)</span></span>.
 </p>
 
@@ -849,7 +855,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="definition-keyword">enum</span> <span class="constant-syntax">WHITE_TOKSTATE</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TOK_TOKSTATE</span><span class="plain-syntax">				</span><span class="comment-syntax"> an actual token</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_2"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the schema as a single expression node with a linked list of tokens</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2" class="paragraph-anchor"></a><b>&#167;20.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the schema as a single expression node with a linked list of tokens</span><span class="named-paragraph-number">20.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -924,7 +930,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-is.html#SP20_2_2" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, if any</span><span class="named-paragraph-number">20.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_1"></a><b>&#167;20.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb a raw character</span><span class="named-paragraph-number">20.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2_1" class="paragraph-anchor"></a><b>&#167;20.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb a raw character</span><span class="named-paragraph-number">20.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -932,7 +938,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2">&#167;20.2</a>, <a href="2-is.html#SP20_2_3">&#167;20.2.3</a>, <a href="2-is.html#SP20_2_4">&#167;20.2.4</a>, <a href="2-is.html#SP20_2_5">&#167;20.2.5</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2"></a><b>&#167;20.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb raw material, if any</span><span class="named-paragraph-number">20.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP20_2_2" class="paragraph-anchor"></a><b>&#167;20.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb raw material, if any</span><span class="named-paragraph-number">20.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -957,7 +963,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TOKSTATE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2">&#167;20.2</a> (8 times), <a href="2-is.html#SP20_2_3">&#167;20.2.3</a>, <a href="2-is.html#SP20_2_4">&#167;20.2.4</a>, <a href="2-is.html#SP20_2_5">&#167;20.2.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_3"></a><b>&#167;20.2.3.  </b>Material in <span class="extract"><span class="extract-syntax">(+ ... +)</span></span> notation is an interpolation of I7 source text.
+<p class="commentary firstcommentary"><a id="SP20_2_3" class="paragraph-anchor"></a><b>&#167;20.2.3.  </b>Material in <span class="extract"><span class="extract-syntax">(+ ... +)</span></span> notation is an interpolation of I7 source text.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible Inform 7 fragment</span><span class="named-paragraph-number">20.2.3</span></span><span class="comment-syntax"> =</span>
@@ -981,7 +987,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">source_text_fragment</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_3_1"></a><b>&#167;20.2.3.1.  </b>The empty I7 interpolation is legal, but produces no result.
+<p class="commentary firstcommentary"><a id="SP20_2_3_1" class="paragraph-anchor"></a><b>&#167;20.2.3.1.  </b>The empty I7 interpolation is legal, but produces no result.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand a fragment of Inform 7 text</span><span class="named-paragraph-number">20.2.3.1</span></span><span class="comment-syntax"> =</span>
@@ -993,7 +999,7 @@ out for the two extra syntaxes allowed, <span class="extract"><span class="extra
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_3">&#167;20.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_4"></a><b>&#167;20.2.4.  </b>Material in braces sometimes indicates an inline command, but not always,
+<p class="commentary firstcommentary"><a id="SP20_2_4" class="paragraph-anchor"></a><b>&#167;20.2.4.  </b>Material in braces sometimes indicates an inline command, but not always,
 because braces often occur innocently in I6 code. So we require the first
 character after the open-brace not to be white-space, and also not to be
 a pipe (though I've forgotten why). The text inside the braces is called
@@ -1021,7 +1027,7 @@ a "bracing".
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">bracing</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_4_1"></a><b>&#167;20.2.4.1.  </b>That's everything, then, except the one thing that counts: how to expand
+<p class="commentary firstcommentary"><a id="SP20_2_4_1" class="paragraph-anchor"></a><b>&#167;20.2.4.1.  </b>That's everything, then, except the one thing that counts: how to expand
 a bracing.
 </p>
 
@@ -1103,7 +1109,7 @@ a bracing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">preceding_token</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_4">&#167;20.2.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_4_1_1"></a><b>&#167;20.2.4.1.1.  </b>A bracing can take any of the following forms:
+<p class="commentary firstcommentary"><a id="SP20_2_4_1_1" class="paragraph-anchor"></a><b>&#167;20.2.4.1.1.  </b>A bracing can take any of the following forms:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1160,7 +1166,7 @@ optional, operand in <span class="extract"><span class="extract-syntax">operand2
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_4_1">&#167;20.2.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_5"></a><b>&#167;20.2.5.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders.
+<p class="commentary firstcommentary"><a id="SP20_2_5" class="paragraph-anchor"></a><b>&#167;20.2.5.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">GIVE_KIND_ID_ISSBM</span><span class="plain-syntax">					</span><span class="constant-syntax">1</span>
@@ -1233,7 +1239,7 @@ optional, operand in <span class="extract"><span class="extract-syntax">operand2
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2">&#167;20.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1"></a><b>&#167;20.2.2.1.  </b>That leaves us with just the main case to handle: raw I6 code which is
+<p class="commentary firstcommentary"><a id="SP20_2_2_1" class="paragraph-anchor"></a><b>&#167;20.2.2.1.  </b>That leaves us with just the main case to handle: raw I6 code which is
 outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,
 </p>
@@ -1278,7 +1284,7 @@ scanned through since the last time.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2">&#167;20.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1_1"></a><b>&#167;20.2.2.1.1.  </b>Recall that in I6 notation, a dollar introduces a non-decimal number, and
+<p class="commentary firstcommentary"><a id="SP20_2_2_1_1" class="paragraph-anchor"></a><b>&#167;20.2.2.1.1.  </b>Recall that in I6 notation, a dollar introduces a non-decimal number, and
 the character after the initial dollar determines which:
 </p>
 
@@ -1325,7 +1331,7 @@ the character after the initial dollar determines which:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2_1">&#167;20.2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1_2"></a><b>&#167;20.2.2.1.2.  </b>A token beginning with a minus sign and continuing with digits may still
+<p class="commentary firstcommentary"><a id="SP20_2_2_1_2" class="paragraph-anchor"></a><b>&#167;20.2.2.1.2.  </b>A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise <span class="extract"><span class="extract-syntax">x-1</span></span> as
 </p>
@@ -1366,7 +1372,7 @@ For example, we need to tokenise <span class="extract"><span class="extract-synt
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2_1">&#167;20.2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1_3"></a><b>&#167;20.2.2.1.3.  </b>In I6, operators made of non-alphanumeric characters can be up to three
+<p class="commentary firstcommentary"><a id="SP20_2_2_1_3" class="paragraph-anchor"></a><b>&#167;20.2.2.1.3.  </b>In I6, operators made of non-alphanumeric characters can be up to three
 characters long, and we take the longest match: thus <span class="extract"><span class="extract-syntax">--&gt;</span></span> is a trigraph,
 not the monograph <span class="extract"><span class="extract-syntax">-</span></span> followed by the digraph <span class="extract"><span class="extract-syntax">-&gt;</span></span>.
 </p>
@@ -1432,7 +1438,7 @@ language opcodes such as <span class="extract"><span class="extract-syntax">@pul
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2_1">&#167;20.2.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1_4"></a><b>&#167;20.2.2.1.4.  </b>In this code, the new token is between character positions <span class="extract"><span class="extract-syntax">x</span></span> and <span class="extract"><span class="extract-syntax">y</span></span>
+<p class="commentary firstcommentary"><a id="SP20_2_2_1_4" class="paragraph-anchor"></a><b>&#167;20.2.2.1.4.  </b>In this code, the new token is between character positions <span class="extract"><span class="extract-syntax">x</span></span> and <span class="extract"><span class="extract-syntax">y</span></span>
 inclusive; we ignore an empty token.
 </p>
 
@@ -1459,7 +1465,7 @@ inclusive; we ignore an empty token.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2_1">&#167;20.2.2.1</a>, <a href="2-is.html#SP20_2_2_1_1">&#167;20.2.2.1.1</a> (four times), <a href="2-is.html#SP20_2_2_1_2">&#167;20.2.2.1.2</a> (twice), <a href="2-is.html#SP20_2_2_1_3">&#167;20.2.2.1.3</a> (6 times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_2_1_4_1"></a><b>&#167;20.2.2.1.4.1.  </b>Finally, we identify what sort of token we're looking at.
+<p class="commentary firstcommentary"><a id="SP20_2_2_1_4_1" class="paragraph-anchor"></a><b>&#167;20.2.2.1.4.1.  </b>Finally, we identify what sort of token we're looking at.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Identify this new token</span><span class="named-paragraph-number">20.2.2.1.4.1</span></span><span class="comment-syntax"> =</span>
@@ -1612,7 +1618,7 @@ inclusive; we ignore an empty token.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"--&gt;"</span><span class="plain-syntax">)) { </span><span class="identifier-syntax">is</span><span class="plain-syntax"> = </span><span class="constant-syntax">OPERATOR_ISTT</span><span class="plain-syntax">; </span><span class="identifier-syntax">which</span><span class="plain-syntax"> = </span><span class="constant-syntax">LOOKUP_BIP</span><span class="plain-syntax">; }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_2_1_4">&#167;20.2.2.1.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_3"></a><b>&#167;20.3. Stage 2. </b>In the second half of the process, we apply a series of transformations to
+<p class="commentary firstcommentary"><a id="SP20_3" class="paragraph-anchor"></a><b>&#167;20.3. Stage 2. </b>In the second half of the process, we apply a series of transformations to
 the schema tree, gradually shaking out the (sometimes ambiguous) syntactic
 markers such as <span class="extract"><span class="extract-syntax">COMMA_ISTT</span></span> and replacing them with semantically clear
 subtrees.
@@ -1648,7 +1654,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20_4"></a><b>&#167;20.4.  </b>With that mechanism in place, we can do the business:
+<p class="commentary firstcommentary"><a id="SP20_4" class="paragraph-anchor"></a><b>&#167;20.4.  </b>With that mechanism in place, we can do the business:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform transformations to grow the tree and reduce the token count</span><span class="named-paragraph-number">20.4</span></span><span class="comment-syntax"> =</span>
@@ -1680,7 +1686,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="identifier-syntax">REPEATEDLY_APPLY</span><span class="plain-syntax">(</span><a href="2-is.html#SP30" class="function-link"><span class="function-syntax">InterSchemas::message_calls</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b></p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::implied_braces</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::implied_braces</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
@@ -1742,7 +1748,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21_1"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make pre and post markers from here</span><span class="named-paragraph-number">21.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP21_1" class="paragraph-anchor"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make pre and post markers from here</span><span class="named-paragraph-number">21.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1774,7 +1780,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP21">&#167;21</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b></p>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::unbrace_schema</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::unbrace_schema</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -1992,7 +1998,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b></p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::splitprints</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::splitprints</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2035,7 +2041,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b></p>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::casey</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2145,7 +2151,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b></p>
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::alternatecases</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::alternatecases</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2168,7 +2174,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::identify_constructs</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::identify_constructs</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2536,7 +2542,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b></p>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::treat_constructs</span><button class="popup" onclick="togglePopup('usagePopup26')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup26">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::treat_constructs</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2602,7 +2608,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27_1"></a><b>&#167;27.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a wodge</span><span class="named-paragraph-number">27.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End a wodge</span><span class="named-paragraph-number">27.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2612,7 +2618,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="identifier-syntax">cw</span><span class="plain-syntax">++;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP27">&#167;27</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28.  </b></p>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::add_missing_bodies</span><button class="popup" onclick="togglePopup('usagePopup27')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup27">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::add_missing_bodies</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2896,7 +2902,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28_1"></a><b>&#167;28.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Call brackets found</span><span class="named-paragraph-number">28.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP28_1" class="paragraph-anchor"></a><b>&#167;28.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Call brackets found</span><span class="named-paragraph-number">28.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2921,7 +2927,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP28">&#167;28</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP28_1_1"></a><b>&#167;28.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Relegate node</span><span class="named-paragraph-number">28.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP28_1_1" class="paragraph-anchor"></a><b>&#167;28.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Relegate node</span><span class="named-paragraph-number">28.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -2943,7 +2949,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP28_1">&#167;28.1</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29.  </b></p>
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::implied_return_values</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::implied_return_values</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2960,7 +2966,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30.  </b></p>
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::message_calls</span><button class="popup" onclick="togglePopup('usagePopup33')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup33">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::message_calls</span></span>:<br/><a href="2-is.html#SP20_4">&#167;20.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_schema_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">isn</span><span class="plain-syntax">) {</span>
@@ -2986,7 +2992,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31.  </b></p>
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::de_escape_text</span><button class="popup" onclick="togglePopup('usagePopup34')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup34">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::de_escape_text</span></span>:<br/><a href="2-is.html#SP20_2_2">&#167;20.2.2</a>, <a href="2-is.html#SP26">&#167;26</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">m</span><span class="plain-syntax">) {</span>
@@ -3019,7 +3025,7 @@ these out at the start of each iteration.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32"></a><b>&#167;32. Operators in I6. </b>The following routines return data which is essentially the content of the
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Operators in I6. </b>The following routines return data which is essentially the content of the
 table shown in section 6.2 of the Inform 6 Technical Manual: which operators
 take precedence over which others, which are right or left associative,
 which are prefix or postfix, and so on.
@@ -3209,7 +3215,7 @@ which are prefix or postfix, and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33"></a><b>&#167;33. Metadata on inter primitives. </b></p>
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Metadata on inter primitives. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InterSchemas::ip_arity</span><button class="popup" onclick="togglePopup('usagePopup39')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup39">Usage of <span class="code-font"><span class="function-syntax">InterSchemas::ip_arity</span></span>:<br/>Emitting Inter Schemas - <a href="2-eis.html#SP3_10">&#167;3.10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">O</span><span class="plain-syntax">) {</span>

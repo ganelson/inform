@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-blc.html#SP1">&#167;1. Overview</a></li><li><a href="S-blc.html#SP2">&#167;2. Short Block Format</a></li><li><a href="S-blc.html#SP3">&#167;3. Long Block Access</a></li><li><a href="S-blc.html#SP4">&#167;4. Weak Kind</a></li><li><a href="S-blc.html#SP5">&#167;5. Reference counting</a></li><li><a href="S-blc.html#SP6">&#167;6. Changing Reference Counts</a></li><li><a href="S-blc.html#SP7">&#167;7. Long Block Capacity</a></li><li><a href="S-blc.html#SP8">&#167;8. Long Block Array Access</a></li><li><a href="S-blc.html#SP9">&#167;9. First Zero Entry</a></li><li><a href="S-blc.html#SP10">&#167;10. Mass Copy Entries</a></li><li><a href="S-blc.html#SP11">&#167;11. Mass Copy From Array</a></li><li><a href="S-blc.html#SP12">&#167;12. KOVS Routines</a></li><li><a href="S-blc.html#SP13">&#167;13. Creation</a></li><li><a href="S-blc.html#SP14">&#167;14. Errors</a></li><li><a href="S-blc.html#SP15">&#167;15. Short Block Allocation</a></li><li><a href="S-blc.html#SP16">&#167;16. Block Values On Stack</a></li><li><a href="S-blc.html#SP17">&#167;17. Freeing</a></li><li><a href="S-blc.html#SP18">&#167;18. Quick Copy</a></li><li><a href="S-blc.html#SP19">&#167;19. Short Block Copy</a></li><li><a href="S-blc.html#SP20">&#167;20. Slow Copy</a></li><li><a href="S-blc.html#SP21">&#167;21. Copy</a></li><li><a href="S-blc.html#SP22">&#167;22. Destruction</a></li><li><a href="S-blc.html#SP23">&#167;23. Recycling</a></li><li><a href="S-blc.html#SP24">&#167;24. Mutability</a></li><li><a href="S-blc.html#SP25">&#167;25. Casting</a></li><li><a href="S-blc.html#SP26">&#167;26. Comparison</a></li><li><a href="S-blc.html#SP27">&#167;27. Hashing</a></li><li><a href="S-blc.html#SP28">&#167;28. Serialisation</a></li><li><a href="S-blc.html#SP29">&#167;29. Debugging</a></li><li><a href="S-blc.html#SP30">&#167;30. Printing Memory Addresses</a></li><li><a href="S-blc.html#SP31">&#167;31. Hexadecimal Printing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Overview. </b>Each I7 value is represented at run-time by an I6 word: on the Z-machine,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Overview. </b>Each I7 value is represented at run-time by an I6 word: on the Z-machine,
 a 16-bit number, and on Glulx, a 32-bit number. The correspondence between
 these numbers and the original values depends on the kind of value: "number"
 comes out as a signed twos-complement number, but "time" as an integer
@@ -150,7 +150,7 @@ never be freed: it's therefore given a reference count of "infinity".
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RC_INFINITY</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MAX_POSITIVE_NUMBER</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Short Block Format. </b>A short block begins with a word which is usually, but not always, a pointer
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Short Block Format. </b>A short block begins with a word which is usually, but not always, a pointer
 to the long block. There are three possibilities:
 </p>
 
@@ -181,7 +181,7 @@ the long block.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">BLK_BVBITMAP_CONSTANTMASK</span><span class="plain-syntax">  = </span><span class="constant-syntax">$ff40</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Long Block Access. </b>Illustrating this:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Long Block Access. </b>Illustrating this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -198,7 +198,7 @@ the long block.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Weak Kind. </b>This returns the weak kind ID of a block value. Most of the time this
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Weak Kind. </b>This returns the weak kind ID of a block value. Most of the time this
 information is stored in the long block, but that poses a problem for BVs
 which have no long block: we must use the bitmap instead.
 </p>
@@ -217,7 +217,7 @@ which have no long block: we must use the bitmap instead.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NIL_TY</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Reference counting. </b>Reference counts lie in a word at a fixed offset from the start of the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Reference counting. </b>Reference counts lie in a word at a fixed offset from the start of the
 long block: doctrinally, any block value with no long block at all (such
 as a piece of packed text) has reference count infinity.
 </p>
@@ -229,7 +229,7 @@ as a piece of packed text) has reference count infinity.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RC_INFINITY</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Changing Reference Counts. </b>When incrementing, infinity's the limit; when decrementing, it never
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Changing Reference Counts. </b>When incrementing, infinity's the limit; when decrementing, it never
 reduces. Note that the decrement function returns the new reference count,
 but the increment function returns nothing. It's only when reference counts
 go downwards that we have to worry about whether something happens.
@@ -258,7 +258,7 @@ go downwards that we have to worry about whether something happens.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RC_INFINITY</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Long Block Capacity. </b>As we've seen, the long block has some metadata in a header, but otherwise
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Long Block Capacity. </b>As we've seen, the long block has some metadata in a header, but otherwise
 it's organised as if it were an array, with entries 8, 16 or 32 bits wide.
 At any given time, the "capacity" of the LB is the number of entries in
 this array: that doesn't mean that the BV is using them all at any given moment.
@@ -294,7 +294,7 @@ this array: that doesn't mean that the BV is using them all at any given moment.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Long Block Array Access. </b>Though the customer thinks he's getting an array, in fact the storage in
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Long Block Array Access. </b>Though the customer thinks he's getting an array, in fact the storage in
 the LB is not necessarily contiguous, since it can span multiple Flex blocks.
 We abstract that with two routines to read and write entries.
 </p>
@@ -386,7 +386,7 @@ We abstract that with two routines to read and write entries.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print_ret</span><span class="plain-syntax"> </span><span class="string-syntax">"*** BlkValueWrite: writing to index out of range: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="string-syntax">" in "</span><span class="plain-syntax">, </span><span class="reserved-syntax">to</span><span class="plain-syntax">, </span><span class="string-syntax">" ***"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. First Zero Entry. </b>This returns the entry index of the first zero entry in the long block's array,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. First Zero Entry. </b>This returns the entry index of the first zero entry in the long block's array,
 or -1 if it has no zeros.
 </p>
 
@@ -435,7 +435,7 @@ or -1 if it has no zeros.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Mass Copy Entries. </b>This copies a given number of entries from one BV's long block to another;
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Mass Copy Entries. </b>This copies a given number of entries from one BV's long block to another;
 they must both be of the same word size but can differ in header size.
 Functionally, it's identical to
 </p>
@@ -507,7 +507,7 @@ given what it needs to do.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Mass Copy From Array. </b>The following is helpful when reading an array of characters into a text:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Mass Copy From Array. </b>The following is helpful when reading an array of characters into a text:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -548,7 +548,7 @@ given what it needs to do.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. KOVS Routines. </b>Different kinds of value use different data formats for both their short and
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. KOVS Routines. </b>Different kinds of value use different data formats for both their short and
 long blocks, so it follows that each kind needs its own routines to carry out
 the fundamental operations of creating, destroying, copying and comparing.
 This is organised at run-time by giving each kind of block value a "KOVS", a
@@ -587,7 +587,7 @@ depending on the task in hand.
 
 <span class="comment-syntax">Constant BLKVALUE_TRACE; ! Uncomment this to expose masses of tracery</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Creation. </b>To create a block value, call:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Creation. </b>To create a block value, call:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -627,7 +627,7 @@ outside the heap, for reasons to be seen below.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Errors. </b>No I7 source text should ever result in a call to this, unless it does
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Errors. </b>No I7 source text should ever result in a call to this, unless it does
 unpleasant things at the I6 level.
 </p>
 
@@ -638,7 +638,7 @@ unpleasant things at the I6 level.
 <span class="plain-syntax">    @</span><span class="reserved-syntax">quit</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Short Block Allocation. </b>The first thing a KOVS does when creating a value is to initialise its
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Short Block Allocation. </b>The first thing a KOVS does when creating a value is to initialise its
 short block. The following routines provide for a one-word and a two-word
 short block respectively. The KOVS should pass these routines the same
 <span class="extract"><span class="extract-syntax">short_block</span></span> value it was called with. As can be seen, if this is zero
@@ -663,7 +663,7 @@ we get its address from by adding the data offset to the block address.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Block Values On Stack. </b>As noted above, it's wasteful to keep allocating short blocks using Flex.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Block Values On Stack. </b>As noted above, it's wasteful to keep allocating short blocks using Flex.
 For the short blocks of block values in local variables, we store them on
 a stack instead. This is a top-down stack, so the current stack frame
 starts out just after the end of the stack area in memory (and therefore
@@ -695,7 +695,7 @@ local variables.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">BlkValueFree</span><span class="plain-syntax">(</span><span class="identifier-syntax">I7SFRAME</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">*</span><span class="identifier-syntax">offset</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Freeing. </b>As noted above, every value returned by <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> must later be
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Freeing. </b>As noted above, every value returned by <span class="extract"><span class="extract-syntax">BlkValueCreate</span></span> must later be
 freed by calling the following routine exactly once:
 </p>
 
@@ -726,7 +726,7 @@ the relevant Flex block.
 <span class="plain-syntax">        </span><span class="identifier-syntax">FlexFree</span><span class="plain-syntax">(</span><span class="identifier-syntax">bv</span><span class="plain-syntax"> - </span><span class="identifier-syntax">BLK_DATA_OFFSET</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Quick Copy. </b>The basic method of copying block value B into block value A is to destroy the
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Quick Copy. </b>The basic method of copying block value B into block value A is to destroy the
 old contents of A, which are about to be overwritten; then copy the short
 block of A into the short block of B, a quick process; and increment the
 reference count of B.
@@ -748,7 +748,7 @@ reference count of B.
 <span class="plain-syntax">    </span><span class="identifier-syntax">BlkValueIncRefCountPrimitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">from_bv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Short Block Copy. </b>In fact, most of the work of copying a short block is standard. If a SB
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Short Block Copy. </b>In fact, most of the work of copying a short block is standard. If a SB
 consists only a single word pointing to the LB, the first routine below
 handles all the work needed to handle the <span class="extract"><span class="extract-syntax">COPYSB_KOVS</span></span> task. The
 surprising line in this routine is to deal with the convention that a
@@ -768,7 +768,7 @@ true in <span class="extract"><span class="extract-syntax">from_bv</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;1 == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;1 = </span><span class="identifier-syntax">from_bv</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="plain-syntax">*</span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Slow Copy. </b>Why don't we always do this? Consider the case where B is a list of rooms, and
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Slow Copy. </b>Why don't we always do this? Consider the case where B is a list of rooms, and
 A is a list of objects. If we give A's short block a pointer to the long block
 of B, A will suddenly change its kind as well as its contents, because the
 strong kind of a list is stored inside the long block. So there are a few
@@ -829,7 +829,7 @@ is the value given us by <span class="extract"><span class="extract-syntax">KIND
 <span class="plain-syntax">    </span><span class="identifier-syntax">kovs</span><span class="plain-syntax">(</span><span class="identifier-syntax">COPY_KOVS</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_bv</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Copy. </b>As noted above, some copies are quick, and some are slow. We decide by
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Copy. </b>As noted above, some copies are quick, and some are slow. We decide by
 asking the kind's support function:
 </p>
 
@@ -868,7 +868,7 @@ asking the kind's support function:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Destruction. </b>We will also need primitives for two different forms of destruction. This
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Destruction. </b>We will also need primitives for two different forms of destruction. This
 is something which should happen whenever a block value is thrown away,
 not to be used again: either because it's being freed, or because new
 contents are being copied into it.
@@ -901,7 +901,7 @@ a list must not, for example, contain itself.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Recycling. </b>This is like destruction in that it disposes of the value safely, but it
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Recycling. </b>This is like destruction in that it disposes of the value safely, but it
 tries to keep the long block for reuse, rather than deallocating it. This
 won't work if other people are still using it, so in the case where its
 reference count is 2 or more, we simply reduce the count by 1 and then
@@ -919,7 +919,7 @@ replace the small block with a new one (at the same address).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Mutability. </b>A block value is by definition mutable if it has a long block with reference
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Mutability. </b>A block value is by definition mutable if it has a long block with reference
 count 1, because then the data in the long block can freely be changed without
 corrupting other block values.
 </p>
@@ -963,7 +963,7 @@ a temporary one-value stack frame instead to hold it.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25. Casting. </b>We can also perform an assignment to an already-created block value in the
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Casting. </b>We can also perform an assignment to an already-created block value in the
 form of a cast, that is, a conversion of data from one kind to another:
 or at least, for some kinds of value we can.
 </p>
@@ -983,7 +983,7 @@ This mechanism is used, for example, to cast snippets to text.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Comparison. </b>And it's a similar story with comparison:
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Comparison. </b>And it's a similar story with comparison:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1009,7 +1009,7 @@ something which the user would find natural.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kovs</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPARE_KOVS</span><span class="plain-syntax">, </span><span class="identifier-syntax">bv_left</span><span class="plain-syntax">, </span><span class="identifier-syntax">bv_right</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27. Hashing. </b>Given a value of any kind, assign it a hash code which fits in a single
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Hashing. </b>Given a value of any kind, assign it a hash code which fits in a single
 virtual machine word, maximizing the chances that two different values
 will have different hash codes.
 </p>
@@ -1039,7 +1039,7 @@ produce the same hash value.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">kovs</span><span class="plain-syntax">(</span><span class="identifier-syntax">HASH_KOVS</span><span class="plain-syntax">, </span><span class="identifier-syntax">bv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Serialisation. </b>Some block values can be written to external files (on Glulx): others cannot.
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Serialisation. </b>Some block values can be written to external files (on Glulx): others cannot.
 The following routines abstract that.
 </p>
 
@@ -1081,7 +1081,7 @@ whether it was able to write the data.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29"></a><b>&#167;29. Debugging. </b>Surprisingly, the above system of reference-counted double indirection didn't
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Debugging. </b>Surprisingly, the above system of reference-counted double indirection didn't
 work first time, so it turned out to be useful to have these routines on hand.
 </p>
 
@@ -1105,7 +1105,7 @@ work first time, so it turned out to be useful to have these routines on hand.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">")"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30"></a><b>&#167;30. Printing Memory Addresses. </b>The point of the anonymity flag is that, with this set, the output can be
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Printing Memory Addresses. </b>The point of the anonymity flag is that, with this set, the output can be
 used as the required output in an Inform test case without tiny movements
 in memory between builds invalidating this required output.
 </p>
@@ -1131,7 +1131,7 @@ in memory between builds invalidating this required output.
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">BlkPrintHexadecimal</span><span class="plain-syntax">) </span><span class="identifier-syntax">addr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31"></a><b>&#167;31. Hexadecimal Printing. </b></p>
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. Hexadecimal Printing. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">BlkPrintHexadecimal</span><span class="plain-syntax"> </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>

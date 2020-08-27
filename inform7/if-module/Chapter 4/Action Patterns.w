@@ -1515,7 +1515,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		if (problem_count == 0) internal_error("MPE found unknown SP");
 		force_proposition = FALSE;
 	}
-	else if (ParseTreeUsage::is_lvalue(spec)) {
+	else if (Lvalues::is_lvalue(spec)) {
 		force_proposition = TRUE;
 		if (Node::is(spec, TABLE_ENTRY_NT)) {
 			if (Node::no_children(spec) != 2) internal_error("MPE with bad no of args");
@@ -1546,7 +1546,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 			(Kinds::Behaviour::is_object(Specifications::to_kind(spec)) == FALSE)) {
 			force_proposition = FALSE;
 		}
-	else if (ParseTreeUsage::is_rvalue(spec)) {
+	else if (Rvalues::is_rvalue(spec)) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
 			if ((<understanding-action-irregular-operand>(Node::get_text(spec))) &&
 				(<<r>> == TRUE)) {
@@ -1600,7 +1600,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 	if (Specifications::is_description(spec))
 		prop = Descriptions::to_proposition(spec);
 
-	if (ParseTreeUsage::is_lvalue(spec))
+	if (Lvalues::is_lvalue(spec))
 		LOGIF(ACTION_PATTERN_COMPILATION, "Storage has $D\n", prop);
 
 	if ((force_proposition) && (prop == NULL)) {

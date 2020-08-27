@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-rlt.html#SP1">&#167;1. Block Format</a></li><li><a href="S-rlt.html#SP2">&#167;2. KOV Support</a></li><li><a href="S-rlt.html#SP3">&#167;3. Other Definitions</a></li><li><a href="S-rlt.html#SP4">&#167;4. Tunable Parameters</a></li><li><a href="S-rlt.html#SP5">&#167;5. Abstract Relations</a></li><li><a href="S-rlt.html#SP6">&#167;6. Empty Relations</a></li><li><a href="S-rlt.html#SP7">&#167;7. Creation</a></li><li><a href="S-rlt.html#SP8">&#167;8. Destruction</a></li><li><a href="S-rlt.html#SP9">&#167;9. Copying</a></li><li><a href="S-rlt.html#SP10">&#167;10. Comparison</a></li><li><a href="S-rlt.html#SP11">&#167;11. Printing</a></li><li><a href="S-rlt.html#SP12">&#167;12. Naming</a></li><li><a href="S-rlt.html#SP13">&#167;13. Choose Relation Handler</a></li><li><a href="S-rlt.html#SP14">&#167;14. Valency</a></li><li><a href="S-rlt.html#SP15">&#167;15. Double Hash Set Relation Handler</a></li><li><a href="S-rlt.html#SP16">&#167;16. Hash List Relation Handler</a></li><li><a href="S-rlt.html#SP17">&#167;17. Hash Table Relation Handler</a></li><li><a href="S-rlt.html#SP18">&#167;18. Reversed Hash Table Relation Handler</a></li><li><a href="S-rlt.html#SP19">&#167;19. Symmetric Relation Handlers</a></li><li><a href="S-rlt.html#SP20">&#167;20. Hash Core Relation Handler</a></li><li><a href="S-rlt.html#SP21">&#167;21. Equivalence Hash Table Relation Handler</a></li><li><a href="S-rlt.html#SP22">&#167;22. Two-In-One Hash Table Relation Handler</a></li><li><a href="S-rlt.html#SP23">&#167;23. Empty</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Block Format. </b>Inform uses a rich variety of relations, with many different data representations,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Block Format. </b>Inform uses a rich variety of relations, with many different data representations,
 but we aim to hide that complexity from the user. At run-time, a relation is
 represented by a block value. The short block of this BV is simply a pointer
 to a long block. This always begins with at least six words of metadata, but
@@ -84,7 +84,7 @@ to allow for the five-word block header.)
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_FILLED</span><span class="plain-syntax">			</span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRV_DATA_BASE</span><span class="plain-syntax">		</span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. KOV Support. </b>See the "BlockValues.i6t" segment for the specification of the following
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. KOV Support. </b>See the "BlockValues.i6t" segment for the specification of the following
 routines.
 </p>
 
@@ -107,7 +107,7 @@ routines.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Other Definitions. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Other Definitions. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="comment-syntax">valencies</span>
@@ -160,7 +160,7 @@ routines.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RLIST_ALL_Y</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RLIST_ALL_PAIRS</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Tunable Parameters. </b>These constants affect the performance characteristics of the dictionary
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Tunable Parameters. </b>These constants affect the performance characteristics of the dictionary
 structures used for relations on the heap. Changing their values may alter the
 balance between memory consumption and running time.
 </p>
@@ -178,7 +178,7 @@ powers of two.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_LARGE_IS</span><span class="plain-syntax">      </span><span class="constant-syntax">256</span><span class="plain-syntax">; </span><span class="comment-syntax">how many entries make a table "large"?</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RRP_CROWDED_IS</span><span class="plain-syntax">    </span><span class="constant-syntax">2</span><span class="plain-syntax">;   </span><span class="comment-syntax">when filled entries outnumber unfilled by _ to 1</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Abstract Relations. </b>As the following shows, we can abstractly use a relation &mdash; that is, we can
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Abstract Relations. </b>As the following shows, we can abstractly use a relation &mdash; that is, we can
 use a relation whose identity we know little about &mdash; by calling its handler
 routine <span class="extract"><span class="extract-syntax">R</span></span> in the form <span class="extract"><span class="extract-syntax">R(rel, task, X, Y)</span></span>.
 </p>
@@ -230,7 +230,7 @@ operations it does offer.
 <span class="plain-syntax">    </span><span class="identifier-syntax">rel</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">fld</span><span class="plain-syntax"> = </span><span class="identifier-syntax">v</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Empty Relations. </b>The absolute minimum relation is one which can only be tested, and which is
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Empty Relations. </b>The absolute minimum relation is one which can only be tested, and which is
 always empty, that is, where no two values are ever related to each other.
 The necessary handler routine is <span class="extract"><span class="extract-syntax">EmptyRelationHandler</span></span>.
 </p>
@@ -241,7 +241,7 @@ The necessary handler routine is <span class="extract"><span class="extract-synt
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Creation. </b>Something we have to be careful about is what we mean by copying, or indeed
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Creation. </b>Something we have to be careful about is what we mean by copying, or indeed
 creating, a relation. For example, if we write
 </p>
 
@@ -313,7 +313,7 @@ newly constructed data structure which can grow freely from here.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BlkValueCreateSB1</span><span class="plain-syntax">(</span><span class="identifier-syntax">sb</span><span class="plain-syntax">, </span><span class="identifier-syntax">rel</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Destruction. </b>If the relation stores block values on either side, invoke the handler using a special task
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Destruction. </b>If the relation stores block values on either side, invoke the handler using a special task
 value to free the memory associated with them.
 </p>
 
@@ -323,7 +323,7 @@ value to free the memory associated with them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">handler</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RELS_DESTROY</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Copying. </b>Same as destruction: invoke the handler using a special value to tell it to perform
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Copying. </b>Same as destruction: invoke the handler using a special value to tell it to perform
 deep copying.
 </p>
 
@@ -333,7 +333,7 @@ deep copying.
 <span class="plain-syntax">    </span><span class="identifier-syntax">handler</span><span class="plain-syntax">(</span><span class="identifier-syntax">lto</span><span class="plain-syntax">, </span><span class="identifier-syntax">RELS_COPY</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Comparison. </b>It really isn't clear how to define equality for relations, but we follow
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Comparison. </b>It really isn't clear how to define equality for relations, but we follow
 the doctrine above. What we don't do is to test its actual state &mdash; that
 would be very slow and might be impossible.
 </p>
@@ -352,7 +352,7 @@ would be very slow and might be impossible.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Printing. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Printing. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RELATION_TY_Say</span><span class="plain-syntax"> </span><span class="identifier-syntax">rel</span><span class="plain-syntax">;</span>
@@ -360,7 +360,7 @@ would be very slow and might be impossible.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">RlnGetF</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RR_NAME</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Naming. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Naming. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RELATION_TY_Name</span><span class="plain-syntax"> </span><span class="identifier-syntax">rel</span><span class="plain-syntax"> </span><span class="identifier-syntax">txt</span><span class="plain-syntax">;</span>
@@ -370,7 +370,7 @@ would be very slow and might be impossible.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Choose Relation Handler. </b>We implement two different various-to-various handler routines for the
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Choose Relation Handler. </b>We implement two different various-to-various handler routines for the
 sake of efficiency. The choice of handler routines is made based on
 the kinds of value being related. Each handler also has a corresponding
 wrapper for symmetric relations.
@@ -392,7 +392,7 @@ wrapper for symmetric relations.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Valency. </b>"Valency" refers to the number of participants allowed on either side
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Valency. </b>"Valency" refers to the number of participants allowed on either side
 of the relation: various-to-various, one-to-various, various-to-one, or
 one-to-one. A newly created relation is always various-to-various. We
 allow the author to change the valency, but only if no entries have
@@ -436,7 +436,7 @@ been added yet.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BlkValueRead</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">RRV_PERMISSIONS</span><span class="plain-syntax">) &amp; </span><span class="identifier-syntax">VALENCY_MASK</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Double Hash Set Relation Handler. </b>This implements relations which are stored as a double-hashed set.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Double Hash Set Relation Handler. </b>This implements relations which are stored as a double-hashed set.
 The storage comprises a list of three-word entries \((F, X, Y)\), where
 \(F\) is a flags word. The ordering of the list is determined by a probe
 sequence which depends on the combined hash values of \(X\) and \(Y\).
@@ -752,7 +752,7 @@ if so.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Hash List Relation Handler. </b>This implements relations which are stored as a hash table mapping
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Hash List Relation Handler. </b>This implements relations which are stored as a hash table mapping
 keys to either single values or lists of values. The storage comprises a list
 of three-word entries, either \((F, X, Y)\) or \((F, X, L)\), where \(F\) is a
 flags word distinguishing between the two cases (among other things). In the
@@ -774,7 +774,7 @@ which is shared with two other handlers below.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HashCoreRelationHandler</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">kx</span><span class="plain-syntax">, </span><span class="identifier-syntax">ky</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Hash Table Relation Handler. </b>This is the same as the Hash List Relation Handler above, except that only
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Hash Table Relation Handler. </b>This is the same as the Hash List Relation Handler above, except that only
 one value may be stored for each key. This implements various-to-one
 relations.
 </p>
@@ -786,7 +786,7 @@ relations.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HashCoreRelationHandler</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">kx</span><span class="plain-syntax">, </span><span class="identifier-syntax">ky</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Reversed Hash Table Relation Handler. </b>This is the same as the Hash Table Relation Handler except that the sides
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Reversed Hash Table Relation Handler. </b>This is the same as the Hash Table Relation Handler except that the sides
 are reversed. This implements one-to-various relations.
 </p>
 
@@ -822,7 +822,7 @@ are reversed. This implements one-to-various relations.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">HashCoreRelationHandler</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">kx</span><span class="plain-syntax">, </span><span class="identifier-syntax">ky</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Symmetric Relation Handlers. </b>These are simple wrappers around the asymmetric handlers defined above.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Symmetric Relation Handlers. </b>These are simple wrappers around the asymmetric handlers defined above.
 When a pair is inserted or removed, the wrappers insert or remove the
 reversed pair as well.
 </p>
@@ -853,7 +853,7 @@ exceeded Inform 6's 32-character name limit.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TwoInOneHashTableRelationHandler</span><span class="plain-syntax">(</span><span class="identifier-syntax">rel</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="identifier-syntax">Y</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Hash Core Relation Handler. </b>This implements the core functionality that is shared between
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Hash Core Relation Handler. </b>This implements the core functionality that is shared between
 <span class="extract"><span class="extract-syntax">HashListRelationHandler</span></span>, <span class="extract"><span class="extract-syntax">HashTableRelationHandler</span></span>, and
 <span class="extract"><span class="extract-syntax">ReversedHashTableRelationHandler</span></span>. All three handlers are the same except
 for whether the left or right side is the "key" and whether or not
@@ -1278,7 +1278,7 @@ the existing pair \((X, Y)\).
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Equivalence Hash Table Relation Handler. </b>This implements group relations. The table format is identical to that used
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Equivalence Hash Table Relation Handler. </b>This implements group relations. The table format is identical to that used
 by <span class="extract"><span class="extract-syntax">HashCoreRelationHandler</span></span>, but we use it differently. Although the
 relation appears to relate Xs to Xs as far as the game is concerned, the
 table actually relates Xs to numbers, where each number identifies a
@@ -1527,7 +1527,7 @@ situation would be inefficient, so we keep the \(Y\) entry regardless.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Two-In-One Hash Table Relation Handler. </b>This implements one-to-one relations, which are stored as a hash table
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Two-In-One Hash Table Relation Handler. </b>This implements one-to-one relations, which are stored as a hash table
 mapping keys to single values and vice versa. To enforce the one-to-one
 constraint, we need the ability to quickly check whether a value is
 present. This could be done with two separate hash tables, one mapping X to Y
@@ -1973,7 +1973,7 @@ and \(Y\) are the same kind of value.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Empty. </b>This implements the "empty" adjective. We can always check whether a relation
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Empty. </b>This implements the "empty" adjective. We can always check whether a relation
 is empty. For most relation types, we can cause the relation to become empty by
 removing all pairs: but this is impossible for equivalence relations, which are
 never empty, since any \(X\) is equivalent to itself. And we can never force a

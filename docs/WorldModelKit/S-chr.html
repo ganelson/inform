@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="S-chr.html#SP1">&#167;1. Scheme I</a></li><li><a href="S-chr.html#SP2">&#167;2. Present and Past</a></li><li><a href="S-chr.html#SP3">&#167;3. Chronology Point</a></li><li><a href="S-chr.html#SP4">&#167;4. Update Chronological Records Rule</a></li><li><a href="S-chr.html#SP5">&#167;5. Test Single Past State</a></li><li><a href="S-chr.html#SP6">&#167;6. Scheme II</a></li><li><a href="S-chr.html#SP7">&#167;7. Past Action Routines</a></li><li><a href="S-chr.html#SP8">&#167;8. Track Actions</a></li><li><a href="S-chr.html#SP9">&#167;9. Storage</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Scheme I. </b>If source text contains a condition like "if the well has been dry, ...",
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Scheme I. </b>If source text contains a condition like "if the well has been dry, ...",
 then we need to keep a chronological record by testing at every turn whether
 or not the well is dry: we log whether this is true now, whether it has ever
 been true, for how many consecutive turns it has been true (to a maximum
@@ -87,7 +87,7 @@ of play. If the condition is true now, then \(T=1\) if and only if it has
 always been so.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Present and Past. </b>Each individual condition has its own unique "PT number", counting upwards
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Present and Past. </b>Each individual condition has its own unique "PT number", counting upwards
 from 0 in order of compilation by Inform, and a "chronological record" is a
 word array with a state word as described above for each PT number.
 </p>
@@ -128,7 +128,7 @@ the startup CP and the CP at end of turn happen in the course of the
 update chronological records rule (below).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Chronology Point. </b>This is when the time of reference for past tenses is now: so it is where the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Chronology Point. </b>This is when the time of reference for past tenses is now: so it is where the
 past becomes the present. Soon, exciting things will happen, and the present
 will go on developing, while the past will remain as it was; until things
 calm down again and we come to another chronology point.
@@ -140,7 +140,7 @@ calm down again and we come to another chronology point.
 <span class="plain-syntax">        </span><span class="identifier-syntax">past_chronological_record</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">present_chronological_record</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Update Chronological Records Rule. </b>It might seem odd that a routine to, supposedly, update something would only
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Update Chronological Records Rule. </b>It might seem odd that a routine to, supposedly, update something would only
 call another routine called <span class="extract"><span class="extract-syntax">TestSinglePastState</span></span>: but in this setting, any
 test updates the state, because it changes the number of times something has
 been found true, and so on.
@@ -153,7 +153,7 @@ been found true, and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Test Single Past State. </b><span class="extract"><span class="extract-syntax">TestSinglePastState</span></span> is called with four arguments:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Test Single Past State. </b><span class="extract"><span class="extract-syntax">TestSinglePastState</span></span> is called with four arguments:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">past_flag</span></span> is true if we want to test a condition like "if the well was
@@ -170,7 +170,7 @@ purposes the start of play is a turn end since the UCRR runs then, too.)
 </li><li>(d) <span class="extract"><span class="extract-syntax">wanted</span></span> describes what information the function should return, as
 detailed in its code below.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Scheme II. </b>Actions discussed in the past tense &mdash; "if we have taken the ball" or,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Scheme II. </b>Actions discussed in the past tense &mdash; "if we have taken the ball" or,
 more subtly, "Instead of waiting for the third turn" (which also refers
 to the past) &mdash; are handled in a related but simpler way. Inform counts such
 references, just as with other past tense conditions above, but this time
@@ -196,7 +196,7 @@ instead of stopping at 127. (We also generate more legible code to test
 past tense actions.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Past Action Routines. </b>Actions can be quite complicated to test even in the present, and this is
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Past Action Routines. </b>Actions can be quite complicated to test even in the present, and this is
 much more conveniently done in a routine with its own Inform-generated stack
 frame; so each past tense action has its own testing routine, with a name
 like <span class="extract"><span class="extract-syntax">PAPR_41</span></span>, which returns true or false depending on whether the action
@@ -204,7 +204,7 @@ is going on now. The word array <span class="extract"><span class="extract-synta
 null-terminated list of these routines.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Track Actions. </b>The routine <span class="extract"><span class="extract-syntax">TrackActions</span></span> then updates the two arrays, and is the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Track Actions. </b>The routine <span class="extract"><span class="extract-syntax">TrackActions</span></span> then updates the two arrays, and is the
 equivalent for past tense actions of <span class="extract"><span class="extract-syntax">ChronologyPoint</span></span>. It's called
 twice for each in-world action: <span class="extract"><span class="extract-syntax">TrackActions(false)</span></span> just as a new
 action is about to begin, and then <span class="extract"><span class="extract-syntax">TrackActions(true)</span></span> just after it
@@ -325,7 +325,7 @@ can it zero the turns count for another action.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Storage. </b>The necessary array allocation.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Storage. </b>The necessary array allocation.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

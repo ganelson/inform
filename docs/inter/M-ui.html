@@ -33,7 +33,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -43,12 +47,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -61,7 +67,7 @@
 
 <ul class="toc"><li><a href="M-ui.html#SP1">&#167;1. What Inter does</a></li><li><a href="M-ui.html#SP2">&#167;2. Command-line usage</a></li><li><a href="M-ui.html#SP5">&#167;5. Assimilation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. What Inter does. </b>The command-line executable Inter packages up the back end of the Inform 7
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. What Inter does. </b>The command-line executable Inter packages up the back end of the Inform 7
 compiler into a stand-alone tool, and enables that back end to be used more
 flexibly. For example, it can read or write either textual or binary inter
 code, and can convert between them. It can also perform any of the numerous
@@ -76,7 +82,7 @@ what Inform is doing; it also provides a test-bed for future optimisation,
 or for future applications of inter code.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Command-line usage. </b>If you have compiled the standard distribution of the command-line tools
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Command-line usage. </b>If you have compiled the standard distribution of the command-line tools
 for Inform then the Inter executable will be at <span class="extract"><span class="extract-syntax">inter/Tangled/inter</span></span>.
 </p>
 
@@ -98,7 +104,7 @@ have the filename extension <span class="extract"><span class="ConsoleText-extra
 not how Inter decides.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>In the second mode, Inter converts from textual to binary form or vice
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the second mode, Inter converts from textual to binary form or vice
 versa. The option <span class="extract"><span class="ConsoleText-extract-syntax">-binary X</span></span> writes a binary form of the inter to file <span class="extract"><span class="ConsoleText-extract-syntax">X</span></span>,
 and <span class="extract"><span class="ConsoleText-extract-syntax">-textual X</span></span> writes a text form. So, for example,
 </p>
@@ -113,7 +119,7 @@ and <span class="extract"><span class="ConsoleText-extract-syntax">-textual X</s
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -textual</span><span class="ConsoleText-plain-syntax"> my.intert</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In the third and most flexible mode, Inter runs the supplied code through
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In the third and most flexible mode, Inter runs the supplied code through
 a pipeline of processing stages. The pipeline, which must contain at least
 one stage, can be quite elaborate (see later), but for example:
 </p>
@@ -148,7 +154,7 @@ line with e.g.:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -domain D</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Assimilation. </b>Inform makes use of what are called "kits" of pre-compiled Inter code:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Assimilation. </b>Inform makes use of what are called "kits" of pre-compiled Inter code:
 for example, <span class="extract"><span class="extract-syntax">CommandParserKit</span></span> contains code for the traditional interactive
 fiction command parser. For speed, Inter loads these as binary Inter, but
 that means they have to be compiled from time to time. This is called

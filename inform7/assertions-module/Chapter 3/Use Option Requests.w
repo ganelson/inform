@@ -81,7 +81,7 @@ option name is taken from the |...| or |###| as appropriate:
 the I6 compiler. Of course, in the age in Inter, those might well be ignored,
 since the compiler next down the chain may no longer be I6.
 
-See //runtime:Use Options at Run Time// for what happens to these.
+See //runtime: Use Options at Run Time// for what happens to these.
 
 @<Set a memory setting@> =
 	int n = <<r>>, w1 = Wordings::first_wn(S);

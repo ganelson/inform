@@ -44,14 +44,14 @@
 
 <ul class="toc"><li><a href="S-fl.html#SP1">&#167;1. Language</a></li><li><a href="S-fl.html#SP2">&#167;2. Structure</a></li><li><a href="S-fl.html#SP3">&#167;3. Instances</a></li><li><a href="S-fl.html#SP4">&#167;4. Errors</a></li><li><a href="S-fl.html#SP5">&#167;5. Glulx Material</a></li><li><a href="S-fl.html#SP6">&#167;6. Existence</a></li><li><a href="S-fl.html#SP7">&#167;7. Readiness</a></li><li><a href="S-fl.html#SP8">&#167;8. Open File</a></li><li><a href="S-fl.html#SP9">&#167;9. Close File</a></li><li><a href="S-fl.html#SP10">&#167;10. Get Character</a></li><li><a href="S-fl.html#SP11">&#167;11. Put Character</a></li><li><a href="S-fl.html#SP12">&#167;12. Print Line</a></li><li><a href="S-fl.html#SP13">&#167;13. Print Contents</a></li><li><a href="S-fl.html#SP14">&#167;14. Print Text</a></li><li><a href="S-fl.html#SP15">&#167;15. Serialising Tables</a></li><li><a href="S-fl.html#SP16">&#167;16. Z-Machine Stubs</a></li><li><a href="S-fl.html#SP17">&#167;17. Back To Core</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Language. </b>This whole template contains material used only if the "Glulx external files"
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Language. </b>This whole template contains material used only if the "Glulx external files"
 element is part of Inform's current definition, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">PLUGIN_FILES</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Structure. </b>The I7 kind of value "auxiliary-file" is an <span class="extract"><span class="extract-syntax">--&gt;</span></span> array, holding a memory
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Structure. </b>The I7 kind of value "auxiliary-file" is an <span class="extract"><span class="extract-syntax">--&gt;</span></span> array, holding a memory
 structure containing information about external files. The following
 constants specify memory offsets and values. Note the safety value stored
 as the first word of the structure: this helps protect the routines below
@@ -75,12 +75,12 @@ during his formative years.)
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_IFID_OF_OWNER</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">; </span><span class="comment-syntax">UUID_ARRAY if owned by this project, or</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">string array of IFID of owner, or NULL to leave open</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Instances. </b>These structures are not dynamically created: they are precompiled by the Inform
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Instances. </b>These structures are not dynamically created: they are precompiled by the Inform
 compiler, already filled in with the necessary values. The following command
 generates them.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Errors. </b>This is used for I/O errors of all kinds: it isn't within the Glulx-only
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Errors. </b>This is used for I/O errors of all kinds: it isn't within the Glulx-only
 code because one of the errors is to try to use these routines on the
 Z-machine.
 </p>
@@ -99,12 +99,12 @@ Z-machine.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Glulx Material. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Glulx Material. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">IFDEF</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Existence. </b>Determine whether a file exists on disc. Note that we have no concept of
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Existence. </b>Determine whether a file exists on disc. Note that we have no concept of
 directories, or the file system structure on the host machine: indeed, it
 is entirely up to the Glulx VM what it does when asked to look for a file.
 By convention, though, files for a project are stored in the same folder
@@ -128,7 +128,7 @@ alongside the Inform project file.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Readiness. </b>One of our problems is that a file might be being used by another application:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Readiness. </b>One of our problems is that a file might be being used by another application:
 perhaps even by another story file running in a second incarnation of Glulx,
 like a parallel world of which we can know nothing. We actually want to
 allow for this sort of thing, because one use for external files in I7
@@ -198,7 +198,7 @@ asterisk or hyphen into the initial character as needed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">glk_fileref_destroy</span><span class="plain-syntax">(</span><span class="identifier-syntax">fref</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Open File. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Open File. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FileIO_Open</span><span class="plain-syntax"> </span><span class="identifier-syntax">extf</span><span class="plain-syntax"> </span><span class="identifier-syntax">write_flag</span><span class="plain-syntax"> </span><span class="identifier-syntax">append_flag</span>
@@ -287,7 +287,7 @@ asterisk or hyphen into the initial character as needed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FileIO_Error</span><span class="plain-syntax">(</span><span class="identifier-syntax">extf</span><span class="plain-syntax">, </span><span class="string-syntax">"tried to open a file which seems to be malformed"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Close File. </b>Note that a call to the following, in write mode, must be followed by a
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Close File. </b>Note that a call to the following, in write mode, must be followed by a
 <span class="extract"><span class="extract-syntax">glk_stream_set_current()</span></span>, or else the next print statement will run into
 Glk errors.
 </p>
@@ -312,7 +312,7 @@ Glk errors.
 <span class="plain-syntax">    </span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_STATUS</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AUXF_STATUS_IS_CLOSED</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Get Character. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Get Character. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FileIO_GetC</span><span class="plain-syntax"> </span><span class="identifier-syntax">extf</span><span class="plain-syntax">  </span><span class="identifier-syntax">struc</span><span class="plain-syntax">;</span>
@@ -322,7 +322,7 @@ Glk errors.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_get_char_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_STREAM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Put Character. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Put Character. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FileIO_PutC</span><span class="plain-syntax"> </span><span class="identifier-syntax">extf</span><span class="plain-syntax"> </span><span class="identifier-syntax">char</span><span class="plain-syntax">  </span><span class="identifier-syntax">struc</span><span class="plain-syntax">;</span>
@@ -337,7 +337,7 @@ Glk errors.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">glk_put_char_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">struc</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">AUXF_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Print Line. </b>We read characters from the supplied file until the next newline
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Print Line. </b>We read characters from the supplied file until the next newline
 character. (We allow for that to be encoded as either a single <span class="extract"><span class="extract-syntax">0a</span></span> or a
 single <span class="extract"><span class="extract-syntax">0d</span></span>.) Each character is printed, and at the end we print a newline.
 </p>
@@ -355,7 +355,7 @@ single <span class="extract"><span class="extract-syntax">0d</span></span>.) Eac
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Print Contents. </b>Repeating this until the file runs out is equivalent to the Unix command
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Print Contents. </b>Repeating this until the file runs out is equivalent to the Unix command
 <span class="extract"><span class="extract-syntax">cat</span></span>, that is, it copies the stream of characters from the file to the
 output stream. (This might well be another file, just as with <span class="extract"><span class="extract-syntax">cat</span></span>, in
 which case we have a copy utility.)
@@ -374,7 +374,7 @@ which case we have a copy utility.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Print Text. </b>The following writes a given piece of text as the new content of the file,
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Print Text. </b>The following writes a given piece of text as the new content of the file,
 either as the whole file (if <span class="extract"><span class="extract-syntax">append_flag</span></span> is false) or adding only to the
 end (if true).
 </p>
@@ -398,7 +398,7 @@ end (if true).
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Serialising Tables. </b>The most important data structures to "serialise" &mdash; that is, to convert
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Serialising Tables. </b>The most important data structures to "serialise" &mdash; that is, to convert
 from their binary representations in memory into text representations in an
 external file &mdash; are Tables. Here we only carry out the file-handling; the
 actual translations are in "Tables.i6t".
@@ -432,7 +432,7 @@ actual translations are in "Tables.i6t".
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Z-Machine Stubs. </b>These routines do the minimum possible, but equally, they only generate a
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Z-Machine Stubs. </b>These routines do the minimum possible, but equally, they only generate a
 run-time problem when there is no alternative.
 </p>
 
@@ -450,7 +450,7 @@ run-time problem when there is no alternative.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FileIO_PutContents</span><span class="plain-syntax"> </span><span class="identifier-syntax">extf</span><span class="plain-syntax">; </span><span class="identifier-syntax">FileIO_PutTable</span><span class="plain-syntax">(</span><span class="identifier-syntax">extf</span><span class="plain-syntax">); ];</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ENDIF</span><span class="plain-syntax">; </span><span class="comment-syntax">TARGET_GLULX</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Back To Core. </b></p>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Back To Core. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">IFNOT</span><span class="plain-syntax">; </span><span class="comment-syntax">PLUGIN_FILES</span>

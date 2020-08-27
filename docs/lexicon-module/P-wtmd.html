@@ -32,7 +32,11 @@
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -42,12 +46,14 @@
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -60,7 +66,7 @@
 
 <ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. A symbols table for natural language</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Optimisations</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Performance in practice</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>The lexicon module is a part of the Inform compiler toolset. It is
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The lexicon module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 </p>
 
@@ -74,7 +80,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. A symbols table for natural language. </b>This module provides an analogue to the "symbols table" used in a compiler for
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. A symbols table for natural language. </b>This module provides an analogue to the "symbols table" used in a compiler for
 a conventional language. For example, in a C compiler, identifiers such as
 <span class="extract"><span class="extract-syntax">int</span></span>, <span class="extract"><span class="extract-syntax">x</span></span> or <span class="extract"><span class="extract-syntax">printf</span></span> might all be entries in such a table, and any new name
 can rapidly be checked to see if it matches one already known.
@@ -110,7 +116,7 @@ have multiple meanings, and the more so once multi-word flexible patterns
 are involved.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>This is not a large module, but it contains tricky and speed-critical code.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This is not a large module, but it contains tricky and speed-critical code.
 In compensation, it exposes a very simple API to the outside world, all of
 which is found in <a href="1-lxc.html" class="internal">Lexicon (in lexicon)</a>.
 </p>
@@ -126,7 +132,7 @@ for example), and to control the style of parsing done.
 See <a href="P-htitm.html" class="internal">How To Include This Module (in lexicon)</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Optimisations. </b>This is a speed-critical part of Inform and has been heavily optimised, at the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Optimisations. </b>This is a speed-critical part of Inform and has been heavily optimised, at the
 cost of some complexity. There are two main ideas:
 </p>
 
@@ -149,7 +155,7 @@ in contexts where it is legal to use a subset of a name to refer to the
 meaning &mdash; for example, to say just "Gandalf" but mean the same wizard.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Secondly, recall that each vocabulary entry has a field 32 bits wide for
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Secondly, recall that each vocabulary entry has a field 32 bits wide for
 a bitmap, of which only 6 bits were used in the lexer. (See <a href="../words-module/2-vcb.html" class="internal">Vocabulary (in words)</a>.)
 For example, cardinal numbers had the <span class="extract"><span class="extract-syntax">NUMBER_MC</span></span> bit set.
 </p>
@@ -170,7 +176,7 @@ say, "green table" because the word <span class="extract"><span class="extract-s
 see <a href="2-em.html#SP8_1" class="internal">ExcerptMeanings::hash_code_from_token_list</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Performance in practice. </b>The following statistics show how many times the lexicon was used during
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Performance in practice. </b>The following statistics show how many times the lexicon was used during
 a typical Inform 7 compilation (the same one used to generate the data in
 <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>).
 </p>
@@ -188,19 +194,19 @@ than the number with correct ones
 number of successes.
 </li></ul>
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Size of lexicon: 3102 excerpt meanings</span>
-<span class="plain-syntax">  Stored among 841 words out of total vocabulary of 10557</span>
-<span class="plain-syntax">  711 words have a start list: longest belongs to report (with 293 meanings)</span>
+<span class="plain-syntax">Size of lexicon: 3098 excerpt meanings</span>
+<span class="plain-syntax">  Stored among 840 words out of total vocabulary of 10550</span>
+<span class="plain-syntax">  710 words have a start list: longest belongs to report (with 293 meanings)</span>
 <span class="plain-syntax">  15 words have an end list: longest belongs to case (with 6 meanings)</span>
 <span class="plain-syntax">  29 words have a middle list: longest belongs to to (with 4 meanings)</span>
 <span class="plain-syntax">  108 words have a subset list: longest belongs to street (with 4 meanings)</span>
 
-<span class="plain-syntax">Number of attempts to retrieve: 104735</span>
-<span class="plain-syntax">  of which unsuccessful: 87234</span>
+<span class="plain-syntax">Number of attempts to retrieve: 104739</span>
+<span class="plain-syntax">  of which unsuccessful: 87238</span>
 <span class="plain-syntax">  of which successful: 17501</span>
 
-<span class="plain-syntax">Total attempts to match against excerpt meanings: 249460</span>
-<span class="plain-syntax">  of which, total with incorrect hash codes: 227471</span>
+<span class="plain-syntax">Total attempts to match against excerpt meanings: 249459</span>
+<span class="plain-syntax">  of which, total with incorrect hash codes: 227470</span>
 <span class="plain-syntax">  of which, total with correct hash codes: 21989</span>
 <span class="plain-syntax">  of which, total which matched: 19267</span>
 </pre>

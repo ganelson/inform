@@ -40,7 +40,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="../kinds-module/index.html">kinds</a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -50,12 +54,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="../kinds-module/index.html">kinds</a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -68,7 +74,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-mn.html#SP1">&#167;1. Settings variables</a></li><li><a href="1-mn.html#SP2">&#167;2. Main routine</a></li><li><a href="1-mn.html#SP2_7">&#167;2.7. Command line</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Settings variables. </b>The following will be set at the command line.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Settings variables. </b>The following will be set at the command line.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -93,7 +99,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">fullname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Main routine. </b>When Inter is called at the command line, it begins at <span class="extract"><span class="extract-syntax">main</span></span>, like all C
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Main routine. </b>When Inter is called at the command line, it begins at <span class="extract"><span class="extract-syntax">main</span></span>, like all C
 programs.
 </p>
 
@@ -118,7 +124,7 @@ also done with a pipeline.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start up the modules</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Start up the modules</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -129,7 +135,7 @@ also done with a pipeline.
 <span class="plain-syntax">    </span><a href="../codegen-module/1-cm.html#SP3" class="function-link"><span class="function-syntax">CodegenModule::start</span></a><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin with an empty file list and variables dictionary</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin with an empty file list and variables dictionary</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -137,7 +143,7 @@ also done with a pipeline.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pipeline_vars</span><span class="plain-syntax"> = </span><a href="../codegen-module/1-ppl.html#SP4" class="function-link"><span class="function-syntax">CodeGen::Pipeline::basic_dictionary</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"output.i6"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>This pipeline is supplied built in to the installation of <span class="extract"><span class="extract-syntax">inter</span></span>. In fact,
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b>This pipeline is supplied built in to the installation of <span class="extract"><span class="extract-syntax">inter</span></span>. In fact,
 it only ever writes the binary form of the code it produces, so only <span class="extract"><span class="extract-syntax">*out</span></span>
 is used. But at times in the past it has been useful to debug with the text
 form, which would be written to <span class="extract"><span class="extract-syntax">*outt</span></span>.
@@ -162,7 +168,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">        </span><a href="../arch-module/2-arc.html#SP4" class="function-link"><span class="function-syntax">Architectures::canonical_textual</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">kit_to_assimilate</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run the pipeline</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Run the pipeline</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -182,7 +188,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="../../../inweb/docs/foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span><span class="string-syntax">"pipeline could not be parsed"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_5"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the list of inter files, and perhaps transcode them</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_5" class="paragraph-anchor"></a><b>&#167;2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the list of inter files, and perhaps transcode them</span><span class="named-paragraph-number">2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -205,7 +211,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">output_binarily</span><span class="plain-syntax">) </span><a href="../bytecode-module/3-iibf.html#SP1_1" class="function-link"><span class="function-syntax">Inter::Binary::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">output_binarily</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_6"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_6" class="paragraph-anchor"></a><b>&#167;2.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shut down the modules</span><span class="named-paragraph-number">2.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -216,7 +222,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">(); </span><span class="comment-syntax"> must be ended last</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_7"></a><b>&#167;2.7. Command line. </b></p>
+<p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7. Command line. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"inter"</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_CLSW</span>
@@ -258,7 +264,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="identifier-syntax">path_to_inter</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/3-pth.html#SP3" class="function-link"><span class="function-syntax">Pathnames::installation_path</span></a><span class="plain-syntax">(</span><span class="string-syntax">"INTER_PATH"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"inter"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::respond</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Main::respond</span></span>:<br/><a href="1-mn.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -277,7 +283,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a pipeline variable to the dictionary</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a pipeline variable to the dictionary</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -294,7 +300,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-mn.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::add_file</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Main::add_file</span></span>:<br/><a href="1-mn.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
@@ -302,7 +308,7 @@ form, which would be written to <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_file_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The modules included in <span class="extract"><span class="extract-syntax">inter</span></span> make use of the Inform 7 module <span class="extract"><span class="extract-syntax">kinds</span></span>,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The modules included in <span class="extract"><span class="extract-syntax">inter</span></span> make use of the Inform 7 module <span class="extract"><span class="extract-syntax">kinds</span></span>,
 but when we are using <span class="extract"><span class="extract-syntax">inter</span></span> on its own, kinds have no meaning for us.
 We are required to create a <span class="extract"><span class="extract-syntax">kind</span></span> type, in order for <span class="extract"><span class="extract-syntax">kinds</span></span> to compile;
 but no instances of this kind will ever in fact exist. <span class="extract"><span class="extract-syntax">K_value</span></span> is a

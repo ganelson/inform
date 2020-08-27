@@ -59,7 +59,11 @@ function togglePopup(material_id) {
 <li><a href="../supervisor-module/index.html">supervisor</a></li>
 </ul><h2>Inform7 Modules</h2><ul>
 <li><a href="../core-module/index.html">core</a></li>
-<li><a href="index.html"><span class="selectedlink">kinds</span></a></li>
+<li><a href="../assertions-module/index.html">assertions</a></li>
+<li><a href="../values-module/index.html">values</a></li>
+<li><a href="../knowledge-module/index.html">knowledge</a></li>
+<li><a href="../imperative-module/index.html">imperative</a></li>
+<li><a href="../runtime-module/index.html">runtime</a></li>
 <li><a href="../if-module/index.html">if</a></li>
 <li><a href="../multimedia-module/index.html">multimedia</a></li>
 <li><a href="../index-module/index.html">index</a></li>
@@ -69,12 +73,14 @@ function togglePopup(material_id) {
 <li><a href="../codegen-module/index.html">codegen</a></li>
 </ul><h2>Services</h2><ul>
 <li><a href="../arch-module/index.html">arch</a></li>
-<li><a href="../syntax-module/index.html">syntax</a></li>
-<li><a href="../words-module/index.html">words</a></li>
+<li><a href="../calculus-module/index.html">calculus</a></li>
 <li><a href="../html-module/index.html">html</a></li>
 <li><a href="../inflections-module/index.html">inflections</a></li>
+<li><a href="index.html"><span class="selectedlink">kinds</span></a></li>
 <li><a href="../linguistics-module/index.html">linguistics</a></li>
 <li><a href="../problems-module/index.html">problems</a></li>
+<li><a href="../syntax-module/index.html">syntax</a></li>
+<li><a href="../words-module/index.html">words</a></li>
 <li><a href="../../../inweb/docs/foundation-module/index.html">foundation</a></li>
 
 </ul>
@@ -131,51 +137,51 @@ following shows it in action.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'number &lt;= real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'value &lt;= number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'object &lt;= text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'object &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'thing &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'device &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'device &lt;= object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'list of devices &lt;= thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'list of devices &lt;= list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind thing of object</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind device of thing</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind vehicle of thing</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new unit length</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number &lt;= number?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number &lt;= real number?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">value &lt;= number?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">object &lt;= text?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">object &lt;= thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">thing &lt;= object?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">device &lt;= thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">device &lt;= object?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of devices &lt;= thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of devices &lt;= list of things?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The indefinite <span class="extract"><span class="extract-syntax">arithmetic kind</span></span> used by Inform is a good example of what
 in other languages would be called a protocol. Here we see conformance:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'real number &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'length &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'text &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'arithmetic value &lt;= value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'value &lt;= arithmetic value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'arithmetic value &lt;= sayable value?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new unit length</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number &lt;= arithmetic value?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">real number &lt;= arithmetic value?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">length &lt;= arithmetic value?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">text &lt;= arithmetic value?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">arithmetic value &lt;= value?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">value &lt;= arithmetic value?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">arithmetic value &lt;= sayable value?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Here we see covariance versus contravariance:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new kind larger of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind smaller of larger'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'smaller &lt;= larger?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'larger &lt;= smaller?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'list of smaller &lt;= list of larger?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'list of larger &lt;= list of smaller?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'relation of larger to texts &lt;= relation of smaller to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'relation of smaller to texts &lt;= relation of larger to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'phrase larger -&gt; text &lt;= phrase smaller -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
-<span class="element-syntax">'phrase smaller -&gt; text &lt;= phrase larger -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'phrase text -&gt; larger &lt;= phrase text -&gt; smaller?'</span><span class="plain-syntax">:</span><span class="string-syntax"> false</span>
-<span class="element-syntax">'phrase text -&gt; smaller &lt;= phrase text -&gt; larger?'</span><span class="plain-syntax">:</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind larger of object</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind smaller of larger</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">smaller &lt;= larger?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">larger &lt;= smaller?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of smaller &lt;= list of larger?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of larger &lt;= list of smaller?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of larger to texts &lt;= relation of smaller to texts?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of smaller to texts &lt;= relation of larger to texts?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase larger -&gt; text &lt;= phrase smaller -&gt; text?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase smaller -&gt; text &lt;= phrase larger -&gt; text?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase text -&gt; larger &lt;= phrase text -&gt; smaller?</span><span class="plain-syntax">':</span><span class="string-syntax"> false</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase text -&gt; smaller &lt;= phrase text -&gt; larger?</span><span class="plain-syntax">':</span><span class="string-syntax"> true</span>
 </pre>
 <ul class="items"><li>&#9679; A constructor \(\phi\) is "covariant" &mdash; meaning, goes the same way &mdash; if
 \(K\leq L\) means \(\phi(K)\leq\phi(L)\).
@@ -347,29 +353,29 @@ run time rather than compile time.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">'new kind thing of object'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind device of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new kind vehicle of thing'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'new unit length'</span><span class="plain-syntax">:</span><span class="string-syntax"> ok</span>
-<span class="element-syntax">'number compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'number compatible with real number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'value compatible with number?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'object compatible with text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'object compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> sometimes</span>
-<span class="element-syntax">'thing compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'device compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'device compatible with object?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'list of devices compatible with thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'list of devices compatible with list of things?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'relation of things to texts compatible with relation of devices to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'relation of devices to texts compatible with relation of things to texts?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'phrase thing -&gt; text compatible with phrase device -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'phrase device -&gt; text compatible with phrase thing -&gt; text?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'phrase text -&gt; thing compatible with phrase text -&gt; device?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
-<span class="element-syntax">'phrase text -&gt; device compatible with phrase text -&gt; thing?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'activity on numbers compatible with activity?'</span><span class="plain-syntax">:</span><span class="string-syntax"> always</span>
-<span class="element-syntax">'first term of activity'</span><span class="plain-syntax">:</span><span class="string-syntax"> nothing</span>
-<span class="element-syntax">'activity on numbers compatible with activity on values?'</span><span class="plain-syntax">:</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind thing of object</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind device of thing</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new kind vehicle of thing</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">new unit length</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number compatible with number?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">number compatible with real number?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">value compatible with number?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">object compatible with text?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">object compatible with thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> sometimes</span>
+<span class="plain-syntax">'</span><span class="element-syntax">thing compatible with object?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">device compatible with thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">device compatible with object?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of devices compatible with thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">list of devices compatible with list of things?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of things to texts compatible with relation of devices to texts?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">relation of devices to texts compatible with relation of things to texts?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase thing -&gt; text compatible with phrase device -&gt; text?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase device -&gt; text compatible with phrase thing -&gt; text?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase text -&gt; thing compatible with phrase text -&gt; device?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
+<span class="plain-syntax">'</span><span class="element-syntax">phrase text -&gt; device compatible with phrase text -&gt; thing?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">activity on numbers compatible with activity?</span><span class="plain-syntax">':</span><span class="string-syntax"> always</span>
+<span class="plain-syntax">'</span><span class="element-syntax">first term of activity</span><span class="plain-syntax">':</span><span class="string-syntax"> nothing</span>
+<span class="plain-syntax">'</span><span class="element-syntax">activity on numbers compatible with activity on values?</span><span class="plain-syntax">':</span><span class="string-syntax"> never</span>
 </pre>
 <p class="commentary">Note that <span class="extract"><span class="extract-syntax">number</span></span> is compatible with <span class="extract"><span class="extract-syntax">real number</span></span>. Run-time code will be
 needed to convert the value, but the answer is "always". We also see that

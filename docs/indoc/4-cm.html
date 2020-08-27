@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-cm.html#SP1">&#167;1. Creation</a></li><li><a href="4-cm.html#SP2">&#167;2. Top</a></li><li><a href="4-cm.html#SP3">&#167;3. Index top</a></li><li><a href="4-cm.html#SP4">&#167;4. Middle</a></li><li><a href="4-cm.html#SP5">&#167;5. Bottom</a></li><li><a href="4-cm.html#SP6">&#167;6. Banners</a></li><li><a href="4-cm.html#SP8">&#167;8. Contents page</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">navigation_design</span><span class="plain-syntax"> *</span><span class="function-syntax">Midnight::create</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Midnight::create</span></span>:<br/>Navigational Designs - <a href="4-nd.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -65,7 +65,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ND</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Top. </b>At the front end of a section, before any of its text.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Top. </b>At the front end of a section, before any of its text.
 </p>
 
 <p class="commentary">Midnight doesn't have volume or chapter titles as such, since the banner
@@ -97,7 +97,7 @@ heading includes these anyway.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out URLs for the preceding and following sections</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out URLs for the preceding and following sections</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -105,7 +105,7 @@ heading includes these anyway.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next_section</span><span class="plain-syntax">) </span><span class="identifier-syntax">linkright</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">section_URL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Index top. </b>And this is a variant for index pages, such as the index of examples.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Index top. </b>And this is a variant for index pages, such as the index of examples.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -113,7 +113,7 @@ heading includes these anyway.
 <span class="plain-syntax">    </span><a href="4-cm.html#SP6" class="function-link"><span class="function-syntax">Midnight::midnight_banner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Middle. </b>At the middle part, when the text is over, but before any example cues.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Middle. </b>At the middle part, when the text is over, but before any example cues.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -121,7 +121,7 @@ heading includes these anyway.
 <span class="plain-syntax">    </span><a href="2-haj.html#SP11" class="function-link"><span class="function-syntax">HTMLUtilities::ruled_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Bottom. </b>At the end of the section, after any example cues and perhaps also example
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Bottom. </b>At the end of the section, after any example cues and perhaps also example
 bodied. (In a section with no examples, this immediately follows the middle.)
 </p>
 
@@ -154,7 +154,7 @@ bodied. (In a section with no examples, this immediately follows the middle.)
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/5-htm.html#SP14" class="function-link"><span class="function-syntax">HTML::end_div</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Banners. </b>These are the black, status-line-like banners with navigation icons at the
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Banners. </b>These are the black, status-line-like banners with navigation icons at the
 top of every Midnight page.
 </p>
 
@@ -197,7 +197,7 @@ top of every Midnight page.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>And this is a similar design motif used in Midnight contents pages: see below.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And this is a similar design motif used in Midnight contents pages: see below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -216,7 +216,7 @@ top of every Midnight page.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"table"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Contents page. </b>Midnight provides a contents page of its very own.
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Contents page. </b>Midnight provides a contents page of its very own.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -230,7 +230,7 @@ top of every Midnight page.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"tr"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Contents pages are only produced in some styles, and they're really index
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Contents pages are only produced in some styles, and they're really index
 pages of links. In light mode, we get just a simple listing of the contents of
 the current volume; in heavy mode, it's a two-column table, with the contents
 of each volume side by side.
@@ -264,7 +264,7 @@ of each volume side by side.
 <span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/2-str.html#SP34" class="function-link"><span class="function-syntax">Streams::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the HTML page for the contents</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the HTML page for the contents</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -294,7 +294,7 @@ of each volume side by side.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">xxx</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End the HTML page for the contents</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">End the HTML page for the contents</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -305,7 +305,7 @@ of each volume side by side.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">tail</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render this column of the contents</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render this column of the contents</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -318,7 +318,7 @@ of each volume side by side.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cm.html#SP9_3_1" class="named-paragraph-link"><span class="named-paragraph">Render a lightweight list of simple links</span><span class="named-paragraph-number">9.3.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_1"></a><b>&#167;9.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a lightweight list of simple links</span><span class="named-paragraph-number">9.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3_1" class="paragraph-anchor"></a><b>&#167;9.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a lightweight list of simple links</span><span class="named-paragraph-number">9.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -355,7 +355,7 @@ of each volume side by side.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2"></a><b>&#167;9.3.2.  </b>This is almost as simple, but now the lines linking to sections within a
+<p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2.  </b>This is almost as simple, but now the lines linking to sections within a
 chapter are grouped into a <span class="extract"><span class="extract-syntax">&lt;div&gt;</span></span> for that chapter, which can be hidden
 or revealed &mdash; it contains "extra" material, as we put it.
 </p>
@@ -409,7 +409,7 @@ there are in practice about 25.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2_1"></a><b>&#167;9.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a chapter link</span><span class="named-paragraph-number">9.3.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3_2_1" class="paragraph-anchor"></a><b>&#167;9.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a chapter link</span><span class="named-paragraph-number">9.3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -437,7 +437,7 @@ there are in practice about 25.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">thetitle</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9_3_2">&#167;9.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2_2"></a><b>&#167;9.3.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a section link</span><span class="named-paragraph-number">9.3.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3_2_2" class="paragraph-anchor"></a><b>&#167;9.3.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a section link</span><span class="named-paragraph-number">9.3.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -447,7 +447,7 @@ there are in practice about 25.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">txt</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9_3_2">&#167;9.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_4"></a><b>&#167;9.4.  </b>In Midnight mode, this is where the extra indexes are listed in the contents:
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b>In Midnight mode, this is where the extra indexes are listed in the contents:
 some in the left-hand (WWI) column, others in the right-hand (RB). This is
 done with a second row of the table whose first row contains the chapter
 contents cells.
@@ -491,7 +491,7 @@ contents cells.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2_3"></a><b>&#167;9.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render links to example indexes</span><span class="named-paragraph-number">9.3.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_3_2_3" class="paragraph-anchor"></a><b>&#167;9.3.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render links to example indexes</span><span class="named-paragraph-number">9.3.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -500,7 +500,7 @@ contents cells.
 <span class="plain-syntax">    </span><a href="4-cm.html#SP10" class="function-link"><span class="function-syntax">Midnight::mc_link_A</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">indoc_settings</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">examples_thematic_leafname</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Thematic Index of Examples"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cm.html#SP9_3_2">&#167;9.3.2</a>, <a href="4-cm.html#SP9_4">&#167;9.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And here are the level A and B contents entry link paragraphs:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>And here are the level A and B contents entry link paragraphs:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-lng.html#SP1">&#167;1. Vocabulary</a></li><li><a href="S-lng.html#SP2">&#167;2. Pronouns</a></li><li><a href="S-lng.html#SP3">&#167;3. Descriptors</a></li><li><a href="S-lng.html#SP4">&#167;4. Numbers</a></li><li><a href="S-lng.html#SP5">&#167;5. Time</a></li><li><a href="S-lng.html#SP6">&#167;6. Directions</a></li><li><a href="S-lng.html#SP7">&#167;7. Translation</a></li><li><a href="S-lng.html#SP8">&#167;8. Articles</a></li><li><a href="S-lng.html#SP9">&#167;9. Commands</a></li><li><a href="S-lng.html#SP10">&#167;10. Stubs</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Vocabulary. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Vocabulary. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AGAIN1__WD</span><span class="plain-syntax">     = </span><span class="character-syntax">'again'</span><span class="plain-syntax">;</span>
@@ -97,7 +97,7 @@
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTART__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restart'</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESTORE__WD</span><span class="plain-syntax">    = </span><span class="character-syntax">'restore'</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Pronouns. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Pronouns. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguagePronouns</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -113,7 +113,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'her'</span><span class="plain-syntax">     </span><span class="constant-syntax">$$010000000000</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'them'</span><span class="plain-syntax">    </span><span class="constant-syntax">$$000111000111</span><span class="plain-syntax">                    </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Descriptors. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Descriptors. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageDescriptors</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -141,7 +141,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'lighted'</span><span class="plain-syntax"> </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    </span><span class="identifier-syntax">light</span><span class="plain-syntax">           </span><span class="identifier-syntax">NULL</span>
 <span class="plain-syntax">    </span><span class="character-syntax">'unlit'</span><span class="plain-syntax">   </span><span class="constant-syntax">$$111111111111</span><span class="plain-syntax">    (-</span><span class="identifier-syntax">light</span><span class="plain-syntax">)        </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Numbers. </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Numbers. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageNumbers</span><span class="plain-syntax"> </span><span class="identifier-syntax">table</span>
@@ -154,7 +154,7 @@
 <span class="plain-syntax">    </span><span class="character-syntax">'twenty-nine'</span><span class="plain-syntax"> </span><span class="constant-syntax">29</span><span class="plain-syntax"> </span><span class="character-syntax">'thirty'</span><span class="plain-syntax"> </span><span class="constant-syntax">30</span>
 <span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Time. </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Time. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageTimeOfDay</span><span class="plain-syntax"> </span><span class="identifier-syntax">hours</span><span class="plain-syntax"> </span><span class="identifier-syntax">mins</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -165,19 +165,19 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">hours</span><span class="plain-syntax">/12) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" pm"</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" am"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Directions. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Directions. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageDirection</span><span class="plain-syntax"> </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">d</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Translation. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Translation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LanguageToInformese</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Articles. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Articles. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageAnimateGender</span><span class="plain-syntax">   = </span><span class="identifier-syntax">male</span><span class="plain-syntax">;</span>
@@ -207,7 +207,7 @@
 
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">LanguageGNAsToArticles</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Commands. </b><span class="extract"><span class="extract-syntax">LanguageVerbLikesAdverb</span></span> is called by <span class="extract"><span class="extract-syntax">PrintCommand</span></span> when printing an <span class="extract"><span class="extract-syntax">UPTO_PE</span></span>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Commands. </b><span class="extract"><span class="extract-syntax">LanguageVerbLikesAdverb</span></span> is called by <span class="extract"><span class="extract-syntax">PrintCommand</span></span> when printing an <span class="extract"><span class="extract-syntax">UPTO_PE</span></span>
 error or an inference message.  Words which are intransitive verbs, i.e.,
 which require a direction name as an adverb ("walk west"), not a noun
 ("I only understood you as far as wanting to touch the ground"), should
@@ -247,7 +247,7 @@ adjective in a <span class="extract"><span class="extract-syntax">name</span></s
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
 routines:
 </p>
 

@@ -151,7 +151,7 @@ add to those generated in //syntax//.
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
 we want to expand on those. (And the //core// module will expand on them still
-further, so this still isn't everything: see //assertions: Parse Tree Usage//.)
+further, so this still isn't everything: see //core: Inform-Only Nodes and Annotations//.)
 
 The node types we're adding are for the "structural sentences" which we will
 look for below. (The asterisk notation for |TRACE_NT| isn't known to most
@@ -165,20 +165,18 @@ Inform users: it increases output to the debugging log.)
 @e TABLE_NT            /* "Table 1 - Counties of England" */
 @e EQUATION_NT         /* "Equation 2 - Newton's Second Law" */
 @e TRACE_NT            /* A sentence consisting of an asterisk and optional quoted text */
-@e INVOCATION_LIST_NT  /* Single invocation of a (possibly compound) phrase */
 
 @d list_node_type RULE_NT
-@d list_entry_node_type INVOCATION_LIST_NT
+@d list_entry_node_type UNKNOWN_NT
 
 =
 void SourceText::node_metadata(void) {
 	NodeType::new(BIBLIOGRAPHIC_NT, I"BIBLIOGRAPHIC_NT",     0, 0,     L2_NCAT, 0);
-	NodeType::new(RULE_NT, I"RULE_NT",                 0, INFTY, L2_NCAT, 0);
+	NodeType::new(RULE_NT, I"RULE_NT",                       0, INFTY, L2_NCAT, 0);
 	NodeType::new(INFORM6CODE_NT, I"INFORM6CODE_NT",         0, 0,     L2_NCAT, 0);
 	NodeType::new(TABLE_NT, I"TABLE_NT",                     0, 0,     L2_NCAT, TABBED_NFLAG);
 	NodeType::new(EQUATION_NT, I"EQUATION_NT",               0, 0,     L2_NCAT, 0);
 	NodeType::new(TRACE_NT, I"TRACE_NT",                     0, 0,     L2_NCAT, 0);
-	NodeType::new(INVOCATION_LIST_NT, I"INVOCATION_LIST_NT", 0, INFTY, L4_NCAT, 0);
 }
 
 @ Sentences in the source text are of five categories: dividing sentences,

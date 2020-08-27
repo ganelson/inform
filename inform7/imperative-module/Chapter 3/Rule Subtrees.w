@@ -1,19 +1,15 @@
 [RuleSubtrees::] Rule Subtrees.
 
-To tidy up |INVOCATION_LIST_NT| nodes into a list of children under the
-relevant |RULE_NT| node, and so turn each rule definition into a single
-subtree.
+To tidy up invocation nodes into a list of children under the relevant rule
+node, and so turn each rule definition into a single subtree.
 
-@ Initially, the phrases (|INVOCATION_LIST_NT|) making up a rule (|RULE_NT|) are
-simply listed after it in the parse tree, but we want them to become its
-children: this is the only thing the $A$-grammar does with rules, which
-otherwise wait until later to be dealt with.
+@ Initially, the invocations (parsed as just |UNKNOWN_NT|) defining a
+rule (|RULE_NT|) are simply listed after it in the parse tree, but we
+want them to become its children, and we give them the node type
+|INVOCATION_LIST_NT|.
 
-The code in this section accomplishes the regrouping: after it runs, every
-|INVOCATION_LIST_NT| is a child of the |RULE_NT| header to which it belongs.
-
-@ This routine is used whenever new material is added. Whenever it finds a
-childless |RULE_NT| followed by a sequence of |INVOCATION_LIST_NT| nodes, it
+This function is used whenever new material is added. Whenever it finds a
+childless |RULE_NT| followed by a sequence of |UNKNOWN_NT| nodes, it
 joins these in sequence as children of the |RULE_NT|. Since it always
 acts so as to leave a non-zero number of children, and since it acts only
 on childless nodes, it cannot ever act on the same node twice.
@@ -22,32 +18,22 @@ on childless nodes, it cannot ever act on the same node twice.
 void RuleSubtrees::register_recently_lexed_phrases(void) {
 	if (problem_count > 0) return; /* for then the tree is perhaps broken anyway */
 	SyntaxTree::traverse(Task::syntax_tree(), RuleSubtrees::demote_command_nodes);
-	SyntaxTree::traverse(Task::syntax_tree(), RuleSubtrees::detect_loose_command_nodes);
 }
 
-@ Command nodes are demoted to be children of routine nodes:
-
-=
 void RuleSubtrees::demote_command_nodes(parse_node *p) {
 	if ((Node::get_type(p) == RULE_NT) && (p->down == NULL)) {
 		parse_node *end_def = p;
-		while ((end_def->next) && (Node::get_type(end_def->next) == INVOCATION_LIST_NT))
+		while ((end_def->next) && (Node::get_type(end_def->next) == UNKNOWN_NT))
 			end_def = end_def->next;
-		if (p == end_def) return; /* |RULE_NT| not followed by any |INVOCATION_LIST_NT|s */
+		if (p == end_def) return; /* |RULE_NT| not followed by any |UNKNOWN_NT|s */
 		/* splice so that |p->next| to |end_def| become the children of |p|: */
 		p->down = p->next;
 		p->next = end_def->next;
 		end_def->next = NULL;
+		for (parse_node *inv_p = p->down; inv_p; inv_p = inv_p->next)
+			Node::set_type(inv_p, INVOCATION_LIST_NT);
 		RuleSubtrees::parse_routine_structure(p);
 	}
-}
-
-@ And just in case:
-
-=
-void RuleSubtrees::detect_loose_command_nodes(parse_node *p) {
-	if (Node::get_type(p) == INVOCATION_LIST_NT)
-		internal_error("loose COMMAND node outside of rule definition");
 }
 
 @h Parsing Routine Structure.

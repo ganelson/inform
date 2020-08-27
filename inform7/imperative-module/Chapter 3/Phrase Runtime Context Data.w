@@ -135,7 +135,7 @@ extracts a single specified scene if there is one:
 #ifdef IF_MODULE
 scene *Phrases::Context::get_scene(ph_runtime_context_data *phrcd) {
 	if (phrcd == NULL) return NULL;
-	if (ParseTreeUsage::is_rvalue(phrcd->during_scene)) {
+	if (Rvalues::is_rvalue(phrcd->during_scene)) {
 		instance *q = Rvalues::to_instance(phrcd->during_scene);
 		if (q) return PL::Scenes::from_named_constant(q);
 	}
