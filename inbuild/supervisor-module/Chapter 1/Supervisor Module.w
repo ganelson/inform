@@ -126,3 +126,11 @@ void SupervisorModule::write_inclusion_of_extension_ANNOT(text_stream *OUT, pars
 		WRITE(" }");
 	}
 }
+
+@d STILL_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK SupervisorModule::grant_annotation_permissions
+
+=
+void SupervisorModule::grant_annotation_permissions(void) {
+	Annotations::allow(HEADING_NT, embodying_heading_ANNOT);
+	Annotations::allow(HEADING_NT, inclusion_of_extension_ANNOT);
+}

@@ -63,6 +63,7 @@ parse_node_annotation_type *known_annotation_types[MAX_ANNOT_NUMBER];
 
 void Annotations::declare_type(int id, void (*f)(text_stream *, parse_node *)) {
 	if ((id < 0) || (id >= MAX_ANNOT_NUMBER)) internal_error("annot out of range");
+	if (f == NULL) internal_error("no logging function");
 	if (known_annotation_types_started == FALSE) {
 		for (int i=0; i<MAX_ANNOT_NUMBER; i++) known_annotation_types[i] = NULL;
 		known_annotation_types_started = TRUE;
@@ -257,6 +258,8 @@ node will throw an internal error -- it must mean a bug in Inform.
 =
 void Annotations::make_annotation_allowed_table(void) {
 	Annotations::allow(HEADING_NT, heading_level_ANNOT);
+	Annotations::allow(HEADING_NT, suppress_heading_dependencies_ANNOT);
+	Annotations::allow(HEADING_NT, implied_heading_ANNOT);
 	Annotations::allow(SENTENCE_NT, language_element_ANNOT);
 	#ifdef ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK
 	ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK();
@@ -266,6 +269,9 @@ void Annotations::make_annotation_allowed_table(void) {
 	#endif
 	#ifdef EVEN_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK
 	EVEN_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK();
+	#endif
+	#ifdef STILL_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK
+	STILL_MORE_ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK();
 	#endif
 }
 

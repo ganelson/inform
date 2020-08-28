@@ -348,3 +348,6 @@ void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	while ((pn->next_alternative) && (a<9)) a++, pn = pn->next_alternative;
 	if (a > 0) WRITE("/%d", a);
 }
+void Node::write_node(OUTPUT_STREAM, char *format_string, void *vpn) {
+	Node::log_node(OUT, vpn);
+}

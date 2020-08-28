@@ -234,6 +234,30 @@ void PL::Actions::Patterns::log(action_pattern *ap) {
 	LOG("\n");
 }
 
+void PL::Actions::Patterns::write(OUTPUT_STREAM, action_pattern *ap) {
+	if (ap == NULL) WRITE("<null-ap>");
+	else if (ap->valid != TRUE) WRITE("<invalid>");
+	else {
+		WRITE("<action: ");
+		if (ap->action == NULL) WRITE("unspecified");
+		else PL::Actions::Lists::log_briefly(ap->action);
+		if (ap->noun_spec) WRITE(" noun: %P", ap->noun_spec);
+		if (ap->second_spec) WRITE(" second: %P", ap->second_spec);
+		if (ap->from_spec) WRITE(" from: %P", ap->from_spec);
+		if (ap->to_spec) WRITE(" to: %P", ap->to_spec);
+		if (ap->by_spec) WRITE(" by: %P", ap->by_spec);
+		if (ap->through_spec) WRITE(" through: %P", ap->through_spec);
+		if (ap->pushing_spec) WRITE(" pushing: %P", ap->pushing_spec);
+		if (ap->room_spec) WRITE(" room: %P", ap->room_spec);
+		if (ap->parameter_spec) WRITE(" parameter: %P", ap->parameter_spec);
+		if (ap->presence_spec) WRITE(" presence: %P", ap->presence_spec);
+		if (ap->nowhere_flag) WRITE(" nowhere");
+		if (ap->when) WRITE(" when: %P", ap->when);
+		if (ap->duration) { WRITE(" duration: "); Occurrence::log(OUT, ap->duration); }
+		WRITE(">");
+	}
+}
+
 action_pattern *PL::Actions::Patterns::ap_store(action_pattern ap) {
 	action_pattern *sap = CREATE(action_pattern);
 	*sap = ap;

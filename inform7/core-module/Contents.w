@@ -7,7 +7,7 @@ Licence: Artistic License 2.0
 Preliminaries
 	What This Module Does
 
-Chapter 1: Configuration and Control
+Chapter 1: Control
 "Managing the production line for the compilation process."
 	Core Module
 	Class Predeclarations

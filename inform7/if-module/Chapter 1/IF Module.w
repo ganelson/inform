@@ -77,13 +77,6 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(scene_connector, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 
-MAKE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
-MAKE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
-MAKE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
-MAKE_ANNOTATION_FUNCTIONS(constant_grammar_verb, grammar_verb)
-MAKE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
-MAKE_ANNOTATION_FUNCTIONS(constant_scene, scene)
-
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the
 foundation module does that automatically.)
@@ -143,6 +136,13 @@ void IFModule::end(void) {
 @ This module uses |syntax|, and adds the following annotations to the
 syntax tree.
 
+@e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
+@e constant_action_name_ANNOT /* |action_name|: for constant values */
+@e constant_action_pattern_ANNOT /* |action_pattern|: for constant values */
+@e constant_grammar_verb_ANNOT /* |grammar_verb|: for constant values */
+@e constant_named_action_pattern_ANNOT /* |named_action_pattern|: for constant values */
+@e constant_scene_ANNOT /* |scene|: for constant values */
+
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
 DECLARE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
@@ -152,11 +152,52 @@ DECLARE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern
 DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
 
 @ =
-void IFModule::declare_annotations(void) {
-	Annotations::declare_type(constant_action_name_ANNOT, NULL);
-	Annotations::declare_type(constant_action_pattern_ANNOT, NULL);
-	Annotations::declare_type(constant_grammar_verb_ANNOT, NULL);
-	Annotations::declare_type(constant_named_action_pattern_ANNOT, NULL);
-	Annotations::declare_type(constant_scene_ANNOT, NULL);
-}
+MAKE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
+MAKE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
+MAKE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
+MAKE_ANNOTATION_FUNCTIONS(constant_grammar_verb, grammar_verb)
+MAKE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
+MAKE_ANNOTATION_FUNCTIONS(constant_scene, scene)
 
+@ =
+void IFModule::declare_annotations(void) {
+	Annotations::declare_type(action_meaning_ANNOT, IFModule::write_action_meaning_ANNOT);
+	Annotations::declare_type(constant_action_name_ANNOT, IFModule::write_constant_action_name_ANNOT);
+	Annotations::declare_type(constant_action_pattern_ANNOT, IFModule::write_constant_action_pattern_ANNOT);
+	Annotations::declare_type(constant_grammar_verb_ANNOT, IFModule::write_constant_grammar_verb_ANNOT);
+	Annotations::declare_type(constant_named_action_pattern_ANNOT, IFModule::write_constant_named_action_pattern_ANNOT);
+	Annotations::declare_type(constant_scene_ANNOT, IFModule::write_constant_scene_ANNOT);
+}
+void IFModule::write_action_meaning_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_action_meaning(p)) {
+		WRITE(" {action meaning: ");
+		PL::Actions::Patterns::write(OUT, Node::get_action_meaning(p));
+		WRITE("}");
+	} 
+}
+void IFModule::write_constant_action_name_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_action_name(p))
+		WRITE(" {action name: %W}", Node::get_constant_action_name(p)->present_name);
+}
+void IFModule::write_constant_action_pattern_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_action_pattern(p)) {
+		WRITE(" {action pattern: ");
+		PL::Actions::Patterns::write(OUT, Node::get_constant_action_pattern(p));
+		WRITE("}");
+	} 
+}
+void IFModule::write_constant_grammar_verb_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_grammar_verb(p))
+		WRITE(" {grammar verb: GV%d}", Node::get_constant_grammar_verb(p)->allocation_id);
+}
+void IFModule::write_constant_named_action_pattern_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_named_action_pattern(p)) {
+		WRITE(" {named action pattern: ");
+		Nouns::write(OUT, Node::get_constant_named_action_pattern(p)->name);
+		WRITE("}");
+	} 
+}
+void IFModule::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_scene(p))
+		WRITE(" {scene: %I}", Node::get_constant_scene(p)->as_instance);
+}
