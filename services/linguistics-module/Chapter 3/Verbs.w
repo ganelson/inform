@@ -176,6 +176,9 @@ void Verbs::create_forms_category(void) {
 
 void Verbs::log_form_item(grammatical_category *cat, general_pointer data) {
 	verb_form *vf = RETRIEVE_POINTER_verb_form(data);
+	Verbs::log_form(vf);
+}
+void Verbs::log_form(verb_form *vf) {
 	LOG("$w + $p + $p",
 		vf->underlying_verb, vf->preposition, vf->second_clause_preposition);
 	if (vf->form_structures & SVO_FS_BIT) LOG(" SVO");

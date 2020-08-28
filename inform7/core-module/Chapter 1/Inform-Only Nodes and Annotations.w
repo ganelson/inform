@@ -448,10 +448,11 @@ void CoreSyntax::write_grammar_token_literal_ANNOT(text_stream *OUT, parse_node 
 		Annotations::read_int(p, grammar_token_literal_ANNOT));
 }
 void CoreSyntax::write_grammar_token_relation_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {grammar_token_relation ...}");
+	binary_predicate *bp = Node::get_grammar_token_relation(p);
+	if (bp) WRITE(" {grammar token relation: %S}", bp->debugging_log_name);
 }
 void CoreSyntax::write_grammar_value_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {grammar_value ...}");
+	WRITE(" {grammar value: $P}", Node::get_grammar_value(p));
 }
 void CoreSyntax::write_lpe_options_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE(" {lpe options: %04x}", Annotations::read_int(p, lpe_options_ANNOT));
@@ -461,17 +462,24 @@ void CoreSyntax::write_multiplicity_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE(" {multiplicity %d}", Annotations::read_int(p, multiplicity_ANNOT));
 }
 void CoreSyntax::write_new_relation_here_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {new_relation_here ...}");
+	binary_predicate *bp = Node::get_new_relation_here(p);
+	if (bp) WRITE(" {new relation: %S}", bp->debugging_log_name);
 }
 void CoreSyntax::write_nowhere_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, nowhere_ANNOT))
 		WRITE(" {nowhere}");
 }
 void CoreSyntax::write_predicate_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {predicate ...}");
+	unary_predicate *up = Node::get_predicate(p);
+	if (up) {
+		WRITE(" {predicate: ");
+		UnaryPredicateFamilies::log(OUT, up);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_quant_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {quant ...}");
+	quantifier *q = Node::get_quant(p);
+	if (q) WRITE(" {quantifier: %s}", q->log_text);
 }
 void CoreSyntax::write_quantification_parameter_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, quantification_parameter_ANNOT) > 0)
@@ -487,7 +495,10 @@ void CoreSyntax::write_row_amendable_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE(" {row amendable}");
 }
 void CoreSyntax::write_rule_placement_sense_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {rule_placement_sense ...}");
+	if (Annotations::read_int(p, rule_placement_sense_ANNOT))
+		WRITE(" {rule placement sense: positive}");
+	else
+		WRITE(" {rule placement sense: negative}");
 }
 void CoreSyntax::write_slash_class_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, slash_class_ANNOT) > 0)
@@ -637,22 +648,36 @@ void CoreSyntax::declare_code_annotations(void) {
 	Annotations::declare_type(unproven_ANNOT, CoreSyntax::write_unproven_ANNOT);
 }
 void CoreSyntax::write_colon_block_command_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {colon_block_command ...}");
+	if (Annotations::read_int(p, colon_block_command_ANNOT) > 0)
+		WRITE(" {colon_block_command}");
 }
 void CoreSyntax::write_control_structure_used_ANNOT(text_stream *OUT, parse_node *p) {
 	control_structure_phrase *csp = Node::get_control_structure_used(p);
 	if (csp) {
-		WRITE(" {"); ControlStructures::log(OUT, csp); WRITE("}");
+		WRITE(" {control structure: "); ControlStructures::log(OUT, csp); WRITE("}");
 	}
 }
 void CoreSyntax::write_end_control_structure_used_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {end_control_structure_used ...}");
+	control_structure_phrase *csp = Node::get_end_control_structure_used(p);
+	if (csp) {
+		WRITE(" {end control structure: "); ControlStructures::log(OUT, csp); WRITE("}");
+	}
 }
 void CoreSyntax::write_epistemological_status_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {epistemological_status ...}");
+	int n = Annotations::read_int(p, from_text_substitution_ANNOT);
+	if (n != 0) {
+		WRITE(" {epistemological_status: ");
+		if (n & TESTED_DASHFLAG)         		WRITE("t");
+		if (n & INTERESTINGLY_FAILED_DASHFLAG)	WRITE("i");
+		if (n & GROSSLY_FAILED_DASHFLAG) 		WRITE("g");
+		if (n & PASSED_DASHFLAG)         		WRITE("p");
+		if (n & UNPROVEN_DASHFLAG)       		WRITE("u");
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_from_text_substitution_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {from_text_substitution ...}");
+	if (Annotations::read_int(p, from_text_substitution_ANNOT) > 0)
+		WRITE(" {from text substitution}");
 }
 void CoreSyntax::write_indentation_level_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, indentation_level_ANNOT) > 0)
@@ -671,49 +696,71 @@ void CoreSyntax::write_kind_resulting_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE(" {resulting: %u}", Node::get_kind_resulting(p));
 }
 void CoreSyntax::write_kind_variable_declarations_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {kind_variable_declarations ...}");
+	kind_variable_declaration *kvd = Node::get_kind_variable_declarations(p);
+	if (kvd) {
+		WRITE(" {kind variable declarations:");
+		while (kvd) {
+			WRITE(" %c=%u", 'A'+kvd->kv_number-1, kvd->kv_value);
+			kvd = kvd->next;
+		}
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_modal_verb_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {modal_verb ...}");
+	verb_conjugation *vc = Node::get_modal_verb(p);
+	if (vc) WRITE(" {modal verb: %A}", vc->infinitive);
 }
 void CoreSyntax::write_phrase_invoked_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {phrase_invoked ...}");
+	phrase *ph = Node::get_phrase_invoked(p);
+	if (ph) WRITE(" {phrase invoked: %n}", Phrases::iname(ph));
 }
 void CoreSyntax::write_phrase_options_invoked_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {phrase_options_invoked ...}");
+	invocation_options *io = Node::get_phrase_options_invoked(p);
+	if (io) WRITE(" {phrase options invoked: %W}", io->options_invoked_text);
 }
 void CoreSyntax::write_results_from_splitting_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {results_from_splitting ...}");
+	if (Annotations::read_int(p, results_from_splitting_ANNOT) > 0)
+		WRITE(" {results_from_splitting}");
 }
 void CoreSyntax::write_say_adjective_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {say_adjective ...}");
+	adjective *adj = Node::get_say_adjective(p);
+	if (adj) {
+		WRITE(" {say adjective: ");
+		Adjectives::log(adj);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_say_verb_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {say_verb ...}");
+	verb_conjugation *vc = Node::get_say_verb(p);
+	if (vc) WRITE(" {say verb: %A}", vc->infinitive);
 }
 void CoreSyntax::write_say_verb_negated_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {say_verb_negated ...}");
+	if (Annotations::read_int(p, say_verb_negated_ANNOT) > 0)
+		WRITE(" {say verb negated}");
 }
 void CoreSyntax::write_ssp_closing_segment_wn_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {ssp_closing_segment_wn ...}");
+	int wn = Annotations::read_int(p, ssp_closing_segment_wn_ANNOT);
+	if (wn > 0) WRITE(" {ssp closing segment: %W}", Wordings::one_word(wn));
 }
 void CoreSyntax::write_ssp_segment_count_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {ssp_segment_count ...}");
+	WRITE(" {ssp_segment_count: %d}", Annotations::read_int(p, ssp_segment_count_ANNOT));
 }
 void CoreSyntax::write_suppress_newlines_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {suppress_newlines ...}");
+	if (Annotations::read_int(p, suppress_newlines_ANNOT) > 0)
+		WRITE(" {suppress_newlines}");
 }
 void CoreSyntax::write_token_as_parsed_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token_as_parsed ...}");
+	WRITE(" {token as parsed: $P}", Node::get_token_as_parsed(p));
 }
 void CoreSyntax::write_token_check_to_do_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token_check_to_do ...}");
+	WRITE(" {token check to do: $P}", Node::get_token_check_to_do(p));
 }
 void CoreSyntax::write_token_to_be_parsed_against_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {token_to_be_parsed_against ...}");
+	WRITE(" {token to be parsed against: $P}", Node::get_token_to_be_parsed_against(p));
 }
 void CoreSyntax::write_unproven_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {unproven ...}");
+	if (Annotations::read_int(p, unproven_ANNOT) > 0)
+		WRITE(" {unproven}");
 }
 
 void CoreSyntax::grant_code_permissions(void) {
@@ -879,16 +926,24 @@ void CoreSyntax::declare_spec_annotations(void) {
 	Annotations::declare_type(text_unescaped_ANNOT, CoreSyntax::write_text_unescaped_ANNOT);
 }
 void CoreSyntax::write_constant_activity_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {activity ...}");
+	activity *act = Node::get_constant_activity(p);
+	if (act) WRITE(" {activity: %W}", act->name);
 }
 void CoreSyntax::write_constant_binary_predicate_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {binary_predicate ...}");
+	binary_predicate *bp = Node::get_grammar_token_relation(p);
+	if (bp) WRITE(" {binary_predicate: %S}", bp->debugging_log_name);
 }
 void CoreSyntax::write_constant_constant_phrase_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {constant_phrase ...}");
+	constant_phrase *cphr = Node::get_constant_constant_phrase(p);
+	if (cphr) {
+		WRITE(" {constant phrase:");
+		Nouns::write(OUT, cphr->name);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_constant_equation_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {equation ...}");
+	equation *eqn = Node::get_constant_equation(p);
+	if (eqn) WRITE(" {equation: %W}", eqn->equation_text);
 }
 void CoreSyntax::write_constant_instance_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_instance(p)) {
@@ -908,7 +963,12 @@ void CoreSyntax::write_constant_local_variable_ANNOT(text_stream *OUT, parse_nod
 	}
 }
 void CoreSyntax::write_constant_named_rulebook_outcome_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {named_rulebook_outcome ...}");
+	named_rulebook_outcome *nro = Node::get_constant_named_rulebook_outcome(p);
+	if (nro) {
+		WRITE(" {named rulebook outcome: ");
+		Nouns::write(OUT, nro->name);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_constant_nonlocal_variable_ANNOT(text_stream *OUT, parse_node *p) {
 	nonlocal_variable *q = Node::get_constant_nonlocal_variable(p);
@@ -919,28 +979,43 @@ void CoreSyntax::write_constant_nonlocal_variable_ANNOT(text_stream *OUT, parse_
 	}
 }
 void CoreSyntax::write_constant_property_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {property ...}");
+	if (Node::get_constant_property(p))
+		WRITE(" {property: $Y}", Node::get_constant_property(p));
 }
 void CoreSyntax::write_constant_rule_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {rule ...}");
+	if (Node::get_constant_rule(p))
+		WRITE(" {rule: %W}", Node::get_constant_rule(p)->name);
 }
 void CoreSyntax::write_constant_rulebook_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {rulebook ...}");
+	if (Node::get_constant_rulebook(p))
+		WRITE(" {rulebook: %W}", Node::get_constant_rulebook(p)->primary_name);
 }
 void CoreSyntax::write_constant_table_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {table ...}");
+	if (Node::get_constant_table(p))
+		WRITE(" {table: %n}", Node::get_constant_table(p)->table_identifier);
 }
 void CoreSyntax::write_constant_table_column_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {table_column ...}");
+	if (Node::get_constant_table_column(p)) {
+		WRITE(" {table column: ");
+		Nouns::write(OUT, Node::get_constant_table_column(p)->name);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_constant_text_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {text ...}");
+	if (Node::get_constant_text(p))
+		WRITE(" {text: '%S'}", Node::get_constant_text(p));
 }
 void CoreSyntax::write_constant_use_option_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {use_option ...}");
+	if (Node::get_constant_use_option(p))
+		WRITE(" {use option: %W}", Node::get_constant_use_option(p)->name);
 }
 void CoreSyntax::write_constant_verb_form_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {verb_form ...}");
+	verb_form *vf = Node::get_constant_verb_form(p);
+	if (vf) {
+		WRITE(" {verb form: ");
+		Verbs::log_form(vf);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_condition_tense_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_condition_tense(p)) {
@@ -950,38 +1025,61 @@ void CoreSyntax::write_condition_tense_ANNOT(text_stream *OUT, parse_node *p) {
 	}
 }
 void CoreSyntax::write_constant_enumeration_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {enumeration ...}");
+	WRITE(" {enumeration: %d}", Annotations::read_int(p, constant_enumeration_ANNOT));
 }
 void CoreSyntax::write_constant_number_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {number ...}");
+	WRITE(" {number: %d}", Annotations::read_int(p, constant_number_ANNOT));
 }
 void CoreSyntax::write_converted_SN_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {converted_SN ...}");
+	if (Annotations::read_int(p, converted_SN_ANNOT))
+		WRITE(" {converted SN}");
 }
 void CoreSyntax::write_explicit_iname_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {explicit_iname ...}");
+	WRITE(" {explicit iname: %n}", Node::get_explicit_iname(p));
 }
 void CoreSyntax::write_explicit_literal_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {explicit_literal ...}");
+	if (Annotations::read_int(p, explicit_literal_ANNOT))
+		WRITE(" {explicit literal}");
 }
 void CoreSyntax::write_grammar_token_code_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {grammar_token_code ...}");
+	int gtc = Annotations::read_int(p, grammar_token_code_ANNOT);
+	if (gtc != 0) {
+		WRITE(" {grammar_token_code: ");
+		if (gtc == NAMED_TOKEN_GTC) WRITE("named token");
+		if (gtc == RELATED_GTC) WRITE("related");
+		if (gtc == STUFF_GTC) WRITE("stuff");
+		if (gtc == ANY_STUFF_GTC) WRITE("any stuff");
+		if (gtc == ANY_THINGS_GTC) WRITE("any things");
+		if (gtc == NOUN_TOKEN_GTC) WRITE("noun");
+		if (gtc == MULTI_TOKEN_GTC) WRITE("multi");
+		if (gtc == MULTIINSIDE_TOKEN_GTC) WRITE("multiinside");
+		if (gtc == MULTIHELD_TOKEN_GTC) WRITE("multiheld");
+		if (gtc == HELD_TOKEN_GTC) WRITE("held");
+		if (gtc == CREATURE_TOKEN_GTC) WRITE("creature");
+		if (gtc == TOPIC_TOKEN_GTC) WRITE("topic");
+		if (gtc == MULTIEXCEPT_TOKEN_GTC) WRITE("multiexcept");
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_is_phrase_option_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {is_phrase_option ...}");
+	if (Annotations::read_int(p, is_phrase_option_ANNOT))
+		WRITE(" {is phrase option}");
 }
 void CoreSyntax::write_kind_of_value_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_kind_of_value(p))
 		WRITE(" {kind: %u}", Node::get_kind_of_value(p));
 }
 void CoreSyntax::write_nothing_object_ANNOT(text_stream *OUT, parse_node *p) {
-	if (Annotations::read_int(p, nothing_object_ANNOT)) LOG(" {nothing}");
+	if (Annotations::read_int(p, nothing_object_ANNOT))
+		WRITE(" {nothing}");
 }
 void CoreSyntax::write_phrase_option_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {phrase_option ...}");
+	if (Annotations::read_int(p, phrase_option_ANNOT))
+		WRITE(" {phrase option: %08x}", Annotations::read_int(p, phrase_option_ANNOT));
 }
 void CoreSyntax::write_property_name_used_as_noun_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {property_name_used_as_noun ...}");
+	if (Annotations::read_int(p, property_name_used_as_noun_ANNOT))
+		WRITE(" {property name used as noun}");
 }
 void CoreSyntax::write_proposition_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_proposition(p)) {
@@ -991,22 +1089,32 @@ void CoreSyntax::write_proposition_ANNOT(text_stream *OUT, parse_node *p) {
 	}
 }
 void CoreSyntax::write_record_as_self_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {record_as_self ...}");
+	if (Annotations::read_int(p, record_as_self_ANNOT))
+		WRITE(" {record as self}");
 }
 void CoreSyntax::write_response_code_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {response_code ...}");
+	WRITE(" {response code: %c}", 'A' + Annotations::read_int(p, response_code_ANNOT));
 }
 void CoreSyntax::write_save_self_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {save_self ...}");
+	if (Annotations::read_int(p, save_self_ANNOT))
+		WRITE(" {save self}");
 }
 void CoreSyntax::write_self_object_ANNOT(text_stream *OUT, parse_node *p) {
-	if (Annotations::read_int(p, self_object_ANNOT)) LOG(" {self}");
+	if (Annotations::read_int(p, self_object_ANNOT))
+		WRITE(" {self}");
 }
 void CoreSyntax::write_tense_marker_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {tense_marker ...}");
+	grammatical_usage *gu = Node::get_tense_marker(p);
+	if (gu) {
+		WRITE(" {tense marker: ");
+		Stock::write_usage(OUT, gu,
+			SENSE_LCW+VOICE_LCW+TENSE_LCW+PERSON_LCW+NUMBER_LCW);
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_text_unescaped_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {text_unescaped ...}");
+	if (Annotations::read_int(p, text_unescaped_ANNOT))
+		WRITE(" {text unescaped}");
 }
 
 void CoreSyntax::grant_spec_permissions(void) {
