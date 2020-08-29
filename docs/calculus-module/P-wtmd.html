@@ -154,13 +154,6 @@ and prints the result.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; is-a-kind (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; is-a-kind(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; is-a-var (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; is-a-var(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; is-a-const (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; is-a-const(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; everywhere (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; everywhere(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; nowhere (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; nowhere(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; here (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; here(x) &gt;&gt;</span>
-<span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; called = magic passcode (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; called='magic passcode'(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; kind = number (x) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; kind=number(x) &gt;&gt;</span>
 <span class="plain-syntax">'</span><span class="element-syntax">new unary even</span><span class="plain-syntax">':</span><span class="string-syntax"> ok</span>
 <span class="plain-syntax">'</span><span class="element-syntax">&lt;&lt; even (12) &gt;&gt;</span><span class="plain-syntax">':</span><span class="string-syntax"> &lt;&lt; even('12') &gt;&gt;</span>
@@ -270,40 +263,40 @@ one set of them &mdash; but with that said,
 </p>
 
 <ul class="items"><li>(a) They can be organised into "families" with shared implementations &mdash; see
-<a href="2-bpf.html" class="internal">Binary Predicate Families</a>.
+<a href="3-bpf.html" class="internal">Binary Predicate Families</a>.
 </li><li>(b) The equality predicate \(=\) is predefined by the <a href="index.html" class="internal">calculus</a> module, and
-its special meaning is used when simplifying propositions. See <a href="2-ter.html" class="internal">The Equality Relation</a>.
+its special meaning is used when simplifying propositions. See <a href="3-ter.html" class="internal">The Equality Relation</a>.
 It is written with the special notation <span class="extract"><span class="extract-syntax">(x == y)</span></span>, though this is just syntactic
 sugar.
 </li></ul>
-<p class="commentary">New BPs can be constructed with <a href="2-bp.html#SP26" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
+<p class="commentary">New BPs can be constructed with <a href="3-bp.html#SP26" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
 is used because every \(B\) has a "reversal" \(B^r\), such that \(B^r(s, t)\) is true
 if and only if \(B(t, s)\). \(B\) and \(B^r\) are created in pairs.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="2-bp.html#SP25" class="internal">BinaryPredicates::make_equality</a>.
+<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="3-bp.html#SP25" class="internal">BinaryPredicates::make_equality</a>.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making propositions. </b>Propositions are built incrementally, like Lego, with a sequence of function
 calls.
 </p>
 
-<p class="commentary">1. Terms are made using the functions <a href="3-trm.html#SP4" class="internal">Terms::new_constant</a>,
-<a href="3-trm.html#SP4" class="internal">Terms::new_variable</a> and <a href="3-trm.html#SP4" class="internal">Terms::new_function</a>.
+<p class="commentary">1. Terms are made using the functions <a href="4-trm.html#SP4" class="internal">Terms::new_constant</a>,
+<a href="4-trm.html#SP4" class="internal">Terms::new_variable</a> and <a href="4-trm.html#SP4" class="internal">Terms::new_function</a>.
 </p>
 
-<p class="commentary">2. Unary predicate atoms are made using <a href="3-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
-Binary predicate atoms are made using <a href="3-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
+<p class="commentary">2. Unary predicate atoms are made using <a href="4-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
+Binary predicate atoms are made using <a href="4-ap.html#SP10" class="internal">Atoms::binary_PREDICATE_new</a>.
 </p>
 
 <p class="commentary">3. Propositions are then built up from atoms or other propositions<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> by calling:
 </p>
 
-<ul class="items"><li>&#9679; <a href="3-prp.html#SP15" class="internal">Propositions::conjoin</a>.
-</li><li>&#9679; <a href="3-prp.html#SP16" class="internal">Propositions::negate</a>.
-</li><li>&#9679; <a href="3-prp.html#SP16" class="internal">Propositions::quantify</a>.
+<ul class="items"><li>&#9679; <a href="4-prp.html#SP15" class="internal">Propositions::conjoin</a>.
+</li><li>&#9679; <a href="4-prp.html#SP16" class="internal">Propositions::negate</a>.
+</li><li>&#9679; <a href="4-prp.html#SP16" class="internal">Propositions::quantify</a>.
 </li></ul>
 <ul class="footnotetexts"><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> But beware that propositions are passed by reference not value. Use
-<a href="3-prp.html#SP13" class="internal">Propositions::copy</a> before changing one, if you need to use it
+<a href="4-prp.html#SP13" class="internal">Propositions::copy</a> before changing one, if you need to use it
 again.
 <a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>There are two senses in which it's possible to make an impossible proposition:
@@ -314,14 +307,14 @@ give a domain set for a quantifier.
 </li><li>(2) More subtly, you could concatenate two propositions in which the same
 variable is used with a different meaning in each.
 </li></ul>
-<p class="commentary">The functions <a href="3-prp.html#SP10" class="internal">Propositions::is_syntactically_valid</a> and
-<a href="3-bas.html#SP2" class="internal">Binding::is_well_formed</a> test that (1) and (2) have not happened.
-It's because of (2) that it's important to use <a href="3-prp.html#SP15" class="internal">Propositions::conjoin</a>
-and not the simpler <a href="3-prp.html#SP14" class="internal">Propositions::concatenate</a>.
+<p class="commentary">The functions <a href="4-prp.html#SP10" class="internal">Propositions::is_syntactically_valid</a> and
+<a href="4-bas.html#SP2" class="internal">Binding::is_well_formed</a> test that (1) and (2) have not happened.
+It's because of (2) that it's important to use <a href="4-prp.html#SP15" class="internal">Propositions::conjoin</a>
+and not the simpler <a href="4-prp.html#SP14" class="internal">Propositions::concatenate</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresssection"><a href="P-itpc.html">itpc</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-cs.html">2</a></li><li class="progresschapter"><a href="3-trm.html">3</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresssection"><a href="P-itpc.html">itpc</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-cs.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

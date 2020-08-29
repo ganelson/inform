@@ -300,7 +300,7 @@ void Descriptions::clear_calling(parse_node *spec) {
 int Descriptions::makes_callings(parse_node *spec) {
 	if (spec == NULL) return FALSE;
 	if (Specifications::is_description(spec)) {
-		if (Propositions::contains_callings(Descriptions::to_proposition(spec)))
+		if (CreationPredicates::contains_callings(Descriptions::to_proposition(spec)))
 			return TRUE;
 		wording C = Descriptions::get_calling(spec);
 		if (Wordings::nonempty(C)) return TRUE;

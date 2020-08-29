@@ -535,26 +535,12 @@ int Propositions::contains_nonexistence_quantifier(pcalc_prop *prop) {
 	return FALSE;
 }
 
-int Propositions::contains_callings(pcalc_prop *prop) {
-	for (pcalc_prop *p = prop; p; p = p->next)
-		if (CreationPredicates::is_calling_up_atom(p))
-			return TRUE;
-	return FALSE;
-}
-
 @ Here we try to find out the kind of value of variable 0 without the full
 expense of typechecking the proposition:
 
 =
 kind *Propositions::describes_kind(pcalc_prop *prop) {
 	pcalc_prop *p = prop;
-	while ((p = Propositions::prop_seek_up_family(p, is_a_kind_up_family)) != NULL) {
-		kind *K = CreationPredicates::what_kind(p);
-		if ((Terms::variable_underlying(&(p->terms[0])) == 0) && (Kinds::eq(K, K_value)))
-			return K;
-		p = p->next;
-	}
-	p = prop;
 	while ((p = Propositions::prop_seek_up_family(p, kind_up_family)) != NULL) {
 		if (Terms::variable_underlying(&(p->terms[0])) == 0)
 			return KindPredicates::get_kind(p);
@@ -593,6 +579,7 @@ parse_node *Propositions::describes_value(pcalc_prop *prop) {
 @ Finding an adjective is easy: it's a predicate of arity 1.
 
 =
+#ifdef CORE_MODULE
 int Propositions::contains_adjective(pcalc_prop *prop) {
 	for (pcalc_prop *p = prop; p; p = p->next)
 		if ((p->element == PREDICATE_ATOM) && (p->arity == 1)) {
@@ -613,6 +600,7 @@ int Propositions::count_adjectives(pcalc_prop *prop) {
 		}
 	return ac;
 }
+#endif
 
 @ The following searches not for an atom, but for the lexically earliest
 term in the proposition:
@@ -659,6 +647,7 @@ pcalc_term Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 following are useful for looping through them:
 
 =
+#ifdef CORE_MODULE
 unary_predicate *Propositions::first_unary_predicate(pcalc_prop *prop, pcalc_prop **ppp) {
 	prop = Propositions::prop_seek_up_family(prop, adjectival_up_family);
 	if (ppp) *ppp = prop;
@@ -673,6 +662,7 @@ unary_predicate *Propositions::next_unary_predicate(pcalc_prop **ppp) {
 	if (prop == NULL) return NULL;
 	return Atoms::to_adjectival_usage(prop);
 }
+#endif
 
 @h Bracketed groups.
 The following routine tests whether the entire proposition is a single

@@ -26,6 +26,14 @@ Specifications come in three sorts:
 (-*) Lvalues, |LVALUE_NCAT|, such as variables.
 (-*) Conditions, |COND_NCAT|, representing the logical structure of conditions.
 
+@ Further node types and annotations are created in //if: IF Module//. Just
+in case that is not being compiled, the following constant needs to exist
+for compilation reasons, but will never be used:
+
+@default ACTION_NT 0x80000000
+
+@ To take these by category:
+
 @d MORE_NODE_METADATA_SETUP_SYNTAX_CALLBACK CoreSyntax::create_node_types
 
 =
@@ -35,25 +43,24 @@ void CoreSyntax::create_node_types(void) {
 	@<Create the rvalue nodes@>;
 	@<Create the lvalue nodes@>;
 	@<Create the condition nodes@>;
+	#ifdef IF_MODULE
+	IFModule::create_node_types();
+	#endif
 }
 
 @
 
 @e ALLOWED_NT                   /* "an animal is allowed to have a description" */
 @e EVERY_NT                     /* "every container" */
-@e ACTION_NT                    /* "taking something closed" */
 @e ADJECTIVE_NT                 /* "open" */
 @e PROPERTYCALLED_NT            /* "a man has a number called age" */
 @e CREATED_NT                   /* "a vehicle called Sarah Jane's car" */
-@e TOKEN_NT                     /* used for tokens in grammar */
 
 @<Create additional level 3 structural nodes@> =
 	NodeType::new(ALLOWED_NT, I"ALLOWED_NT",               1, 1,     L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(EVERY_NT, I"EVERY_NT",                   0, INFTY, L3_NCAT, ASSERT_NFLAG);
-	NodeType::new(ACTION_NT, I"ACTION_NT",                 0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(ADJECTIVE_NT, I"ADJECTIVE_NT",           0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTYCALLED_NT, I"PROPERTYCALLED_NT", 2, 2,     L3_NCAT, 0);
-	NodeType::new(TOKEN_NT, I"TOKEN_NT",                   0, INFTY, L3_NCAT, 0);
 	NodeType::new(CREATED_NT, I"CREATED_NT",               0, 0,     L3_NCAT, ASSERT_NFLAG);
 
 @
@@ -247,6 +254,9 @@ void CoreSyntax::grant_annotation_permissions(void) {
 	CoreSyntax::grant_L3_permissions();
 	CoreSyntax::grant_code_permissions();
 	CoreSyntax::grant_spec_permissions();
+	#ifdef IF_MODULE
+	IFModule::grant_annotation_permissions();
+	#endif
 }
 
 @ The unit annotation is applied to every structural node, and indicates to
@@ -351,9 +361,6 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e defn_language_ANNOT /* |inform_language|: what language this definition is in */
 @e evaluation_ANNOT /* |parse_node|: result of evaluating the text */
 @e explicit_gender_marker_ANNOT  /* |int|: used by PROPER NOUN nodes for evident genders */
-@e grammar_token_literal_ANNOT /* int: for grammar tokens which are literal words */
-@e grammar_token_relation_ANNOT /* |binary_predicate|: for relation tokens */
-@e grammar_value_ANNOT /* |parse_node|: used as a marker when evaluating Understand grammar */
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
@@ -364,8 +371,6 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e refined_ANNOT /* |int|: this subtree has had its nouns parsed */
 @e row_amendable_ANNOT /* int: a candidate row for a table amendment */
 @e rule_placement_sense_ANNOT /* |int|: are we listing a rule into something, or out of it? */
-@e slash_class_ANNOT /* int: used when partitioning grammar tokens */
-@e slash_dash_dash_ANNOT /* |int|: used when partitioning grammar tokens */
 @e subject_ANNOT /* |inference_subject|: what this node describes */
 @e table_cell_unspecified_ANNOT /* int: used to mark table entries as unset */
 @e turned_already_ANNOT /* |int|: aliasing like "player" to "yourself" performed already */
@@ -400,9 +405,6 @@ void CoreSyntax::declare_L3_annotations(void) {
 	Annotations::declare_type(defn_language_ANNOT, CoreSyntax::write_defn_language_ANNOT);
 	Annotations::declare_type(evaluation_ANNOT, CoreSyntax::write_evaluation_ANNOT);
 	Annotations::declare_type(explicit_gender_marker_ANNOT, CoreSyntax::write_explicit_gender_marker_ANNOT);
-	Annotations::declare_type(grammar_token_literal_ANNOT, CoreSyntax::write_grammar_token_literal_ANNOT);
-	Annotations::declare_type(grammar_token_relation_ANNOT, CoreSyntax::write_grammar_token_relation_ANNOT);
-	Annotations::declare_type(grammar_value_ANNOT, CoreSyntax::write_grammar_value_ANNOT);
 	Annotations::declare_type(lpe_options_ANNOT, CoreSyntax::write_lpe_options_ANNOT);
 	Annotations::declare_type(multiplicity_ANNOT, CoreSyntax::write_multiplicity_ANNOT);
 	Annotations::declare_type(new_relation_here_ANNOT, CoreSyntax::write_new_relation_here_ANNOT);
@@ -413,8 +415,6 @@ void CoreSyntax::declare_L3_annotations(void) {
 	Annotations::declare_type(refined_ANNOT, CoreSyntax::write_refined_ANNOT);
 	Annotations::declare_type(row_amendable_ANNOT, CoreSyntax::write_row_amendable_ANNOT);
 	Annotations::declare_type(rule_placement_sense_ANNOT, CoreSyntax::write_rule_placement_sense_ANNOT);
-	Annotations::declare_type(slash_class_ANNOT, CoreSyntax::write_slash_class_ANNOT);
-	Annotations::declare_type(slash_dash_dash_ANNOT, CoreSyntax::write_slash_dash_dash_ANNOT);
 	Annotations::declare_type(subject_ANNOT, CoreSyntax::write_subject_ANNOT);
 	Annotations::declare_type(table_cell_unspecified_ANNOT, CoreSyntax::write_table_cell_unspecified_ANNOT);
 	Annotations::declare_type(turned_already_ANNOT, CoreSyntax::write_turned_already_ANNOT);
@@ -442,17 +442,6 @@ void CoreSyntax::write_explicit_gender_marker_ANNOT(text_stream *OUT, parse_node
 	WRITE(" {explicit gender marker: ");
 	Lcon::write_gender(OUT, Annotations::read_int(p, explicit_gender_marker_ANNOT));
 	WRITE("}");
-}
-void CoreSyntax::write_grammar_token_literal_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {grammar token literal: %d}",
-		Annotations::read_int(p, grammar_token_literal_ANNOT));
-}
-void CoreSyntax::write_grammar_token_relation_ANNOT(text_stream *OUT, parse_node *p) {
-	binary_predicate *bp = Node::get_grammar_token_relation(p);
-	if (bp) WRITE(" {grammar token relation: %S}", bp->debugging_log_name);
-}
-void CoreSyntax::write_grammar_value_ANNOT(text_stream *OUT, parse_node *p) {
-	WRITE(" {grammar value: $P}", Node::get_grammar_value(p));
 }
 void CoreSyntax::write_lpe_options_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE(" {lpe options: %04x}", Annotations::read_int(p, lpe_options_ANNOT));
@@ -500,14 +489,6 @@ void CoreSyntax::write_rule_placement_sense_ANNOT(text_stream *OUT, parse_node *
 	else
 		WRITE(" {rule placement sense: negative}");
 }
-void CoreSyntax::write_slash_class_ANNOT(text_stream *OUT, parse_node *p) {
-	if (Annotations::read_int(p, slash_class_ANNOT) > 0)
-		WRITE(" {slash: %d}", Annotations::read_int(p, slash_class_ANNOT));
-}
-void CoreSyntax::write_slash_dash_dash_ANNOT(text_stream *OUT, parse_node *p) {
-	if (Annotations::read_int(p, slash_dash_dash_ANNOT) > 0)
-		WRITE(" {slash-dash-dash: %d}", Annotations::read_int(p, slash_dash_dash_ANNOT));
-}
 void CoreSyntax::write_subject_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_subject(p))
 		WRITE(" {refers: $j}", Node::get_subject(p));
@@ -527,15 +508,9 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow_for_category(L3_NCAT, evaluation_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
-	#ifdef IF_MODULE
-	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
-	#endif
 	Annotations::allow(ADJECTIVE_NT, predicate_ANNOT);
 	Annotations::allow(VERB_NT, category_of_I6_translation_ANNOT);
 	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
-	#ifdef IF_MODULE
-	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
-	#endif
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, multiplicity_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, quant_ANNOT);
@@ -555,10 +530,6 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, slash_dash_dash_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, turned_already_ANNOT);
-	Annotations::allow(TOKEN_NT, grammar_token_literal_ANNOT);
-	Annotations::allow(TOKEN_NT, grammar_token_relation_ANNOT);
-	Annotations::allow(TOKEN_NT, grammar_value_ANNOT);
-	Annotations::allow(TOKEN_NT, slash_class_ANNOT);
 }
 
 @h Annotations of code nodes.
@@ -1122,13 +1093,6 @@ void CoreSyntax::grant_spec_permissions(void) {
 	CoreSyntax::allow_annotation_to_specification(converted_SN_ANNOT);
 	CoreSyntax::allow_annotation_to_specification(subject_term_ANNOT);
 	CoreSyntax::allow_annotation_to_specification(epistemological_status_ANNOT);
-	#ifdef IF_MODULE
-	Annotations::allow(CONSTANT_NT, constant_action_name_ANNOT);
-	Annotations::allow(CONSTANT_NT, constant_action_pattern_ANNOT);
-	Annotations::allow(CONSTANT_NT, constant_grammar_verb_ANNOT);
-	Annotations::allow(CONSTANT_NT, constant_named_action_pattern_ANNOT);
-	Annotations::allow(CONSTANT_NT, constant_scene_ANNOT);
-	#endif
 	Annotations::allow(CONSTANT_NT, constant_activity_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_binary_predicate_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_constant_phrase_ANNOT);

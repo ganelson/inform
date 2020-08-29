@@ -1,11 +1,4 @@
 '<< >>': << >>
-'<< is-a-kind (x) >>': << is-a-kind(x) >>
-'<< is-a-var (x) >>': << is-a-var(x) >>
-'<< is-a-const (x) >>': << is-a-const(x) >>
-'<< everywhere (x) >>': << everywhere(x) >>
-'<< nowhere (x) >>': << nowhere(x) >>
-'<< here (x) >>': << here(x) >>
-'<< called = magic passcode (x) >>': << called='magic passcode'(x) >>
 '<< kind = number (x) >>': << kind=number(x) >>
 'new unary even': ok
 '<< even (12) >>': << even('12') >>

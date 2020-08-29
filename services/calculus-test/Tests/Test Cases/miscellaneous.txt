@@ -13,9 +13,6 @@ remove close domain from R.
 P contains quantifier.
 P contains relation.
 << (1 == 2) >> contains relation.
-P contains adjective.
-<< (1 == 2) >> contains adjective.
-<< (1 == 2) ^ even(x) >> contains adjective.
 << (1 == 2) ^ even(x) >> contains quantifier.
 term first cited in << even(x) >>.
 term first cited in << not< sees(56, 2) not> >>.

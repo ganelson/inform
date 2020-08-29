@@ -23,6 +23,8 @@ COMPILE_WRITER(table *, Tables::log)
 COMPILE_WRITER(table_column *, Tables::Columns::log)
 
 void AssertionsModule::start(void) {
+	AdjectivalPredicates::start();
+	CreationPredicates::start();
 	Calculus::QuasinumericRelations::start();
 	Tables::Relations::start();
 	Relations::Universal::start();

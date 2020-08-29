@@ -1,11 +1,4 @@
 << >>.
-<< is-a-kind(x) >>.
-<< is-a-var(x) >>.
-<< is-a-const(x) >>.
-<< everywhere(x) >>.
-<< nowhere(x) >>.
-<< here(x) >>.
-<< called = magic passcode(x) >>.
 << kind = number(x) >>.
 
 new unary even.

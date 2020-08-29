@@ -191,3 +191,10 @@ void CreationPredicates::log_is_a_kind(up_family *self, OUTPUT_STREAM, unary_pre
 	WRITE("is-a-kind");
 	if (up->assert_kind) WRITE("=%u", up->assert_kind);
 }
+
+int CreationPredicates::contains_callings(pcalc_prop *prop) {
+	for (pcalc_prop *p = prop; p; p = p->next)
+		if (CreationPredicates::is_calling_up_atom(p))
+			return TRUE;
+	return FALSE;
+}

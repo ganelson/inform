@@ -12,9 +12,6 @@
 'P contains quantifier': true
 'P contains relation': false
 '<< (1 == 2) >> contains relation': true
-'P contains adjective': true
-'<< (1 == 2) >> contains adjective': false
-'<< (1 == 2) ^ even (x) >> contains adjective': true
 '<< (1 == 2) ^ even (x) >> contains quantifier': false
 'term first cited in << even (x) >>': x
 'term first cited in << not< sees (56, 2) not> >>': '56'

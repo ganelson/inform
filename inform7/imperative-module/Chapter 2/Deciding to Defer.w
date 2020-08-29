@@ -86,7 +86,7 @@ that the resulting routine will be called |Prop_n|.
 =
 inter_name *Calculus::Deferrals::compile_deferred_description_test(parse_node *spec) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
-	if (Propositions::contains_callings(prop)) {
+	if (CreationPredicates::contains_callings(prop)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCallDeferredDescs),
 			"'called' can't be used when testing a description",
 			"since it would make a name for something which existed only "
@@ -348,13 +348,13 @@ void Calculus::Deferrals::emit_retrieve_callings(pcalc_prop *prop) {
 
 =
 void Calculus::Deferrals::prepare_to_retrieve_callings(OUTPUT_STREAM, pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (Propositions::contains_callings(prop))) {
+	if ((condition_context == FALSE) && (CreationPredicates::contains_callings(prop))) {
 		WRITE("deferred_calling_list-->26 = ");
 	}
 }
 
 int Calculus::Deferrals::emit_prepare_to_retrieve_callings(pcalc_prop *prop, int condition_context) {
-	if ((condition_context == FALSE) && (Propositions::contains_callings(prop))) {
+	if ((condition_context == FALSE) && (CreationPredicates::contains_callings(prop))) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
@@ -622,7 +622,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	int reason, general_pointer data, kind *K) {
 	pcalc_prop_deferral *pdef = Calculus::Deferrals::new_deferred_proposition(prop, reason);
 	pdef->defn_ref = data;
-	int with_callings = Propositions::contains_callings(prop);
+	int with_callings = CreationPredicates::contains_callings(prop);
 	if (with_callings) {
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
@@ -886,7 +886,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 		if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) use_as_is = TRUE;
 		else {
 			domain_prop = Propositions::FromSentences::from_spec(spec);
-			if (Propositions::contains_callings(domain_prop))
+			if (CreationPredicates::contains_callings(domain_prop))
 				@<Issue called in repeat problem@>;
 		}
 

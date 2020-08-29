@@ -1,16 +1,16 @@
 ROOT_NT
     HEADING_NT'implied inclusions' {under: H0'implied inclusions'} {heading 0} {implied}
         INCLUSION_NT'include basic inform by graham nelson'
-            HEADING_NT'version 1 of basic inform by graham nelson begins here' {heading 0} {under: H0'version 1 of basic inform by graham nelson begins here'}{includes: Basic Inform by Graham Nelson v1 } {unit: 0}
+            HEADING_NT'version 1 of basic inform by graham nelson begins here' {heading 0} {under: H0'version 1 of basic inform by graham nelson begins here'} {includes: Basic Inform by Graham Nelson v1 } {unit: 0}
                 BEGINHERE_NT'version 1 of basic inform by graham nelson' {unit: 0}
                 ...
         INCLUSION_NT'include english language by graham nelson'
-            HEADING_NT'version 1 of english language by graham nelson begins here' {heading 0} {under: H0'version 1 of english language by graham nelson begins here'}{includes: English Language by Graham Nelson v1 } {unit: 1}
+            HEADING_NT'version 1 of english language by graham nelson begins here' {heading 0} {under: H0'version 1 of english language by graham nelson begins here'} {includes: English Language by Graham Nelson v1 } {unit: 1}
                 BEGINHERE_NT'version 1 of english language by graham nelson' {unit: 1}
                 ...
         INCLUSION_NT'include english language by graham nelson'
         INCLUSION_NT'include standard rules by graham nelson'
-            HEADING_NT'version 6 of the standard rules by graham nelson begins here' {heading 0} {under: H0'version 6 of the standard rules by graham nelson begins here'}{includes: Standard Rules by Graham Nelson v6 } {unit: 2}
+            HEADING_NT'version 6 of the standard rules by graham nelson begins here' {heading 0} {under: H0'version 6 of the standard rules by graham nelson begins here'} {includes: Standard Rules by Graham Nelson v6 } {unit: 2}
                 BEGINHERE_NT'version 6 of the standard rules by graham nelson' {unit: 2}
                 ...
         INCLUSION_NT'include standard rules by graham nelson'
@@ -337,7 +337,7 @@ ROOT_NT
             RULE_NT'report injecting it with' {unit: 4}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 4}
             INCLUSION_NT'include locksmith by emily short' {unit: 4}
-                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'}{includes: Locksmith by Emily Short v12 } {unit: 4}
+                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 4}
                     BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 4}
                     ...
             SENTENCE_NT'understand "go to/toward/into [any room]" as going toward' {unit: 4} {classified}

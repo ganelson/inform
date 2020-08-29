@@ -89,21 +89,14 @@ COMPILE_WRITER(action_name_list *, PL::Actions::Lists::log)
 COMPILE_WRITER(action_name *, PL::Actions::log)
 
 void IFModule::start(void) {
-	@<Register this module's memory allocation reasons@>;
-	@<Register this module's stream writers@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	WherePredicates::start();
 	PL::SpatialRelations::start();
 	PL::MapDirections::start();
 }
 void IFModule::end(void) {
 }
-
-@<Register this module's memory allocation reasons@> =
-	;
-
-@<Register this module's stream writers@> =
-	;
 
 @
 
@@ -133,8 +126,18 @@ void IFModule::end(void) {
 	REGISTER_WRITER('L', PL::Actions::Lists::log);
 	REGISTER_WRITER('l', PL::Actions::log);
 
-@ This module uses |syntax|, and adds the following annotations to the
-syntax tree.
+@ This module uses |syntax|, and adds two node types to the syntax tree:
+
+@e ACTION_NT  /* "taking something closed" */
+@e TOKEN_NT   /* used for tokens in grammar */
+
+=
+void IFModule::create_node_types(void) {
+	NodeType::new(ACTION_NT, I"ACTION_NT", 0, INFTY, L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(TOKEN_NT, I"TOKEN_NT",   0, INFTY, L3_NCAT, 0);
+}
+
+@ And these annotations to the syntax tree:
 
 @e action_meaning_ANNOT /* |action_pattern|: meaning in parse tree when used as noun */
 @e constant_action_name_ANNOT /* |action_name|: for constant values */
@@ -142,6 +145,11 @@ syntax tree.
 @e constant_grammar_verb_ANNOT /* |grammar_verb|: for constant values */
 @e constant_named_action_pattern_ANNOT /* |named_action_pattern|: for constant values */
 @e constant_scene_ANNOT /* |scene|: for constant values */
+@e grammar_token_literal_ANNOT /* int: for grammar tokens which are literal words */
+@e grammar_token_relation_ANNOT /* |binary_predicate|: for relation tokens */
+@e grammar_value_ANNOT /* |parse_node|: used as a marker when evaluating Understand grammar */
+@e slash_class_ANNOT /* int: used when partitioning grammar tokens */
+@e slash_dash_dash_ANNOT /* |int|: used when partitioning grammar tokens */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
@@ -167,6 +175,11 @@ void IFModule::declare_annotations(void) {
 	Annotations::declare_type(constant_grammar_verb_ANNOT, IFModule::write_constant_grammar_verb_ANNOT);
 	Annotations::declare_type(constant_named_action_pattern_ANNOT, IFModule::write_constant_named_action_pattern_ANNOT);
 	Annotations::declare_type(constant_scene_ANNOT, IFModule::write_constant_scene_ANNOT);
+	Annotations::declare_type(grammar_token_literal_ANNOT, IFModule::write_grammar_token_literal_ANNOT);
+	Annotations::declare_type(grammar_token_relation_ANNOT, IFModule::write_grammar_token_relation_ANNOT);
+	Annotations::declare_type(grammar_value_ANNOT, IFModule::write_grammar_value_ANNOT);
+	Annotations::declare_type(slash_class_ANNOT, IFModule::write_slash_class_ANNOT);
+	Annotations::declare_type(slash_dash_dash_ANNOT, IFModule::write_slash_dash_dash_ANNOT);
 }
 void IFModule::write_action_meaning_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_action_meaning(p)) {
@@ -200,4 +213,37 @@ void IFModule::write_constant_named_action_pattern_ANNOT(text_stream *OUT, parse
 void IFModule::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_scene(p))
 		WRITE(" {scene: %I}", Node::get_constant_scene(p)->as_instance);
+}
+void IFModule::write_grammar_token_literal_ANNOT(text_stream *OUT, parse_node *p) {
+	WRITE(" {grammar token literal: %d}",
+		Annotations::read_int(p, grammar_token_literal_ANNOT));
+}
+void IFModule::write_grammar_token_relation_ANNOT(text_stream *OUT, parse_node *p) {
+	binary_predicate *bp = Node::get_grammar_token_relation(p);
+	if (bp) WRITE(" {grammar token relation: %S}", bp->debugging_log_name);
+}
+void IFModule::write_grammar_value_ANNOT(text_stream *OUT, parse_node *p) {
+	WRITE(" {grammar value: $P}", Node::get_grammar_value(p));
+}
+void IFModule::write_slash_class_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, slash_class_ANNOT) > 0)
+		WRITE(" {slash: %d}", Annotations::read_int(p, slash_class_ANNOT));
+}
+void IFModule::write_slash_dash_dash_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, slash_dash_dash_ANNOT) > 0)
+		WRITE(" {slash-dash-dash: %d}", Annotations::read_int(p, slash_dash_dash_ANNOT));
+}
+
+void IFModule::grant_annotation_permissions(void) {
+	Annotations::allow(ACTION_NT, action_meaning_ANNOT);
+	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_action_name_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_action_pattern_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_grammar_verb_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_named_action_pattern_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_scene_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_token_literal_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_token_relation_ANNOT);
+	Annotations::allow(TOKEN_NT, grammar_value_ANNOT);
+	Annotations::allow(TOKEN_NT, slash_class_ANNOT);
 }

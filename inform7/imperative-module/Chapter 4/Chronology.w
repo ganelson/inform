@@ -649,7 +649,7 @@ a file stream, thus allowing rewinding:
 		parse_node *spec = ptc->condition;
 		LOGIF(TIME_PERIODS, "Number %d: proposition $D\n",
 			ptc->allocation_id, Specifications::to_proposition(spec));
-		if (Propositions::contains_callings(Specifications::to_proposition(spec))) {
+		if (CreationPredicates::contains_callings(Specifications::to_proposition(spec))) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastCallings),
 				"it's not safe to use '(called ...)' in a way referring "
 				"to past history",

@@ -121,7 +121,7 @@ void SupervisorModule::write_embodying_heading_ANNOT(text_stream *OUT, parse_nod
 void SupervisorModule::write_inclusion_of_extension_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_inclusion_of_extension(p)) {
 		inform_extension *E = Node::get_inclusion_of_extension(p);
-		WRITE("{includes: ");
+		WRITE(" {includes: ");
 		Copies::write_copy(OUT, E->as_copy);
 		WRITE(" }");
 	}

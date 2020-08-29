@@ -25,10 +25,12 @@ match any text.
 
 @e repl_var_CLASS
 @e named_function_CLASS
+@e named_unary_predicate_CLASS
 
 =
 DECLARE_CLASS(repl_var)
 DECLARE_CLASS(named_function)
+DECLARE_CLASS(named_unary_predicate)
 
 typedef struct repl_var {
 	struct wording name;
@@ -42,6 +44,12 @@ typedef struct named_function {
 	int side;
 	CLASS_DEFINITION
 } named_function;
+
+typedef struct named_unary_predicate {
+	struct wording name;
+	struct unary_predicate *up;
+	CLASS_DEFINITION
+} named_unary_predicate;
 
 <new-repl-variable> internal {
 	repl_var *rv;
@@ -69,6 +77,15 @@ typedef struct named_function {
 	LOOP_OVER(nf, named_function)
 		if (Wordings::match(nf->name, W)) {
 			==> { -, nf }; return TRUE;
+		}
+	return FALSE;
+}
+
+<unary-name> internal {
+	named_unary_predicate *nup;
+	LOOP_OVER(nup, named_unary_predicate)
+		if (Wordings::match(nup->name, W)) {
+			==> { -, nup->up }; return TRUE;
 		}
 	return FALSE;
 }
@@ -140,7 +157,6 @@ void Declarations::parse(parse_node *p) {
 	<evaluation> is complex |                  ==> { Propositions::is_complex(RP[1]), - }
 	<evaluation> contains relation |           ==> { Propositions::contains_binary_predicate(RP[1]), - }
 	<evaluation> contains quantifier |         ==> { Propositions::contains_quantifier(RP[1]), - }
-	<evaluation> contains adjective |          ==> { Propositions::contains_adjective(RP[1]), - }
 	<evaluation> is a group                    ==> { Propositions::is_a_group(RP[1], NEGATION_OPEN_ATOM), - }
 
 <proposition> ::=
@@ -156,17 +172,10 @@ void Declarations::parse(parse_node *p) {
 	<atomic-proposition>                             ==> { pass 1 }
 
 <atomic-proposition> ::=
-	<adjective-name> ( <term> ) |              ==> { -, AdjectivalPredicates::new_atom(RP[1], FALSE, *((pcalc_term *) RP[2])) }
+	<unary-name> ( <term> ) |                  ==> { -, Atoms::unary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2])) }
 	( <term> == <term> ) |                     ==> { -, Atoms::binary_PREDICATE_new(R_equality, *((pcalc_term *) RP[1]), *((pcalc_term *) RP[2])) }
 	<relation-name> ( <term> , <term> ) |      ==> { -, Atoms::binary_PREDICATE_new(RP[1], *((pcalc_term *) RP[2]), *((pcalc_term *) RP[3])) }
 	kind = <k-kind> ( <term> ) |               ==> { -, KindPredicates::new_atom(RP[1], *((pcalc_term *) RP[2])) }
-	called = ... ( <term> ) |                  ==> { -, CreationPredicates::calling_up(WR[1], *((pcalc_term *) RP[1]), NULL) }
-	everywhere ( <term> ) |                    ==> { -, WherePredicates::everywhere_up(*((pcalc_term *) RP[1])) }
-	nowhere ( <term> ) |                       ==> { -, WherePredicates::nowhere_up(*((pcalc_term *) RP[1])) }
-	here ( <term> ) |                          ==> { -, WherePredicates::here_up(*((pcalc_term *) RP[1])) }
-	is-a-kind ( <term> ) |                     ==> { -, CreationPredicates::is_a_kind_up(*((pcalc_term *) RP[1]), NULL) }
-	is-a-var ( <term> ) |                      ==> { -, CreationPredicates::is_a_var_up(*((pcalc_term *) RP[1])) }
-	is-a-const ( <term> ) |                    ==> { -, CreationPredicates::is_a_const_up(*((pcalc_term *) RP[1])) }
 	not< |                                     ==> { -, Atoms::new(NEGATION_OPEN_ATOM) }
 	not> |                                     ==> { -, Atoms::new(NEGATION_CLOSE_ATOM) }
 	in< |                                      ==> { -, Atoms::new(DOMAIN_OPEN_ATOM) }
@@ -227,7 +236,7 @@ void Declarations::parse(parse_node *p) {
 	==> { -, Propositions::quantify_using(RP[1], RP[2], RP[3]) }
 
 @<Create new unary@> =
-	Adjectives::declare(GET_RW(<declaration-line>, 1), NULL);
+	Declarations::new_unary(GET_RW(<declaration-line>, 1), K_number);
 	PRINT("'%<W': ok\n", W);
 
 @<Create new binary@> =
@@ -308,6 +317,19 @@ void Declarations::parse(parse_node *p) {
 
 @ =
 bp_family *test_bp_family = NULL;
+up_family *test_up_family = NULL;
+
+void Declarations::new_unary(wording W, kind *k0) {
+	if (test_up_family == NULL) {
+		test_up_family = UnaryPredicateFamilies::new();
+		METHOD_ADD(test_up_family, LOG_UPF_MTID, Declarations::log_unary);
+	}
+	named_unary_predicate *nup = CREATE(named_unary_predicate);
+	nup->up = UnaryPredicates::new(test_up_family);
+	nup->up->assert_kind = k0;
+	nup->up->calling_name = W;
+	nup->name = W;
+}
 
 void Declarations::new(wording W, kind *k0, wording f0, kind *k1, wording f1) {
 	if (test_bp_family == NULL)
@@ -357,4 +379,8 @@ pcalc_term *Declarations::stash(pcalc_term t) {
 
 parse_node *Declarations::number_to_value(wording W, int n) {
 	return Diagrams::new_UNPARSED_NOUN(W);
+}
+
+void Declarations::log_unary(up_family *self, OUTPUT_STREAM, unary_predicate *up) {
+	WRITE("%W", up->calling_name);
 }

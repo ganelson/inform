@@ -12,23 +12,24 @@ Preliminaries
 Chapter 1: Setting Up
 	Calculus Module
 
-Chapter 2: Predicates
-	Compilation Schemas
+Chapter 2: Unary Predicates
 	Unary Predicates
 	Unary Predicate Families
 	Kind Predicates
-	The Adjectival Predicates
-	The Creation Predicates
-	Everywhere, Nowhere and Here
+
+Chapter 3: Binary Predicates
 	Binary Predicate Families
 	Binary Predicates
 	The Equality Relation
 
-Chapter 3: Propositions
+Chapter 4: Propositions
 	Terms
 	Atomic Propositions
 	Propositions
 	Binding and Substitution
 	Type Check Propositions
+
+Chapter 5: Tools
+	Compilation Schemas
 	Simplifications
 	Sentence Conversions

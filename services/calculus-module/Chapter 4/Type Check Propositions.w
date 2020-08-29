@@ -327,17 +327,8 @@ only produce a problem message when the worst happens.
 int Propositions::Checker::type_check_unary_predicate(pcalc_prop *pl, variable_type_assignment *vta,
 	tc_problem_kit *tck) {
 	unary_predicate *tr = RETRIEVE_POINTER_unary_predicate(pl->predicate);
-	adjective *aph = AdjectivalPredicates::to_adjective(tr);
-	kind *K = Propositions::Checker::kind_of_term(&(pl->terms[0]), vta, tck);
-
-	if ((aph) && (ADJECTIVE_APPLICABLE_FUNCTION(aph, K) == FALSE)) {
-		wording W = Adjectives::get_nominative_singular(aph);
-		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
-		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
-			NULL, W, K, NULL, NULL, tck);
+	if (UnaryPredicateFamilies::typecheck(tr, pl, vta, tck) == NEVER_MATCH)
 		return NEVER_MATCH;
-	}
-
 	return ALWAYS_MATCH;
 }
 

@@ -12,14 +12,12 @@ up_family *adjectival_up_family = NULL;
 =
 void AdjectivalPredicates::start(void) {
 	adjectival_up_family = UnaryPredicateFamilies::new();
-	#ifdef CORE_MODULE
 	METHOD_ADD(adjectival_up_family, TYPECHECK_UPF_MTID, AdjectivalPredicates::typecheck);
 	METHOD_ADD(adjectival_up_family, INFER_KIND_UPF_MTID, AdjectivalPredicates::infer_kind);
 	METHOD_ADD(adjectival_up_family, ASSERT_UPF_MTID, AdjectivalPredicates::assert);
 	METHOD_ADD(adjectival_up_family, TESTABLE_UPF_MTID, AdjectivalPredicates::testable);
 	METHOD_ADD(adjectival_up_family, TEST_UPF_MTID, AdjectivalPredicates::test);
 	METHOD_ADD(adjectival_up_family, SCHEMA_UPF_MTID, AdjectivalPredicates::get_schema);
-	#endif
 	METHOD_ADD(adjectival_up_family, LOG_UPF_MTID, AdjectivalPredicates::log);
 }
 
@@ -46,23 +44,26 @@ void AdjectivalPredicates::log(up_family *self, OUTPUT_STREAM, unary_predicate *
 	WRITE("%W", W);
 }
 
-#ifdef CORE_MODULE
 void AdjectivalPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	adjective_meaning *am = Adjectives::Meanings::first_meaning(aph);
 	kind *D = Adjectives::Meanings::get_domain(am);
 	if (D) *K = D;
 }
-#endif
 
-#ifdef CORE_MODULE
 int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	if (Propositions::Checker::type_check_unary_predicate(prop, vta, tck) == NEVER_MATCH)
+	adjective *aph = AdjectivalPredicates::to_adjective(up);
+	kind *K = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
+	if ((aph) && (Adjectives::Meanings::applicable_to(aph, K) == FALSE)) {
+		wording W = Adjectives::get_nominative_singular(aph);
+		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
+		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
+			NULL, W, K, NULL, NULL, tck);
 		return NEVER_MATCH;
-	return DECLINE_TO_MATCH;
+	}
+	return ALWAYS_MATCH;
 }
-#endif
 
 @ Next, asserting $adjective(t)$. We know that $t$ evaluates to a kind
 of value over which $adjective$ is defined, or the proposition would
@@ -71,7 +72,6 @@ not have survived type-checking. But only some adjectives can be asserted;
 success flag.
 
 =
-#ifdef CORE_MODULE
 void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *pl) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
@@ -100,18 +100,14 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 
 	if (found == FALSE) Propositions::Assert::issue_couldnt_problem(aph, parity);
 }
-#endif
 
-#ifdef CORE_MODULE
 int AdjectivalPredicates::testable(up_family *self, unary_predicate *up) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	property *prn = Adjectives::Meanings::has_EORP_meaning(aph, NULL);
 	if (prn == NULL) return FALSE;
 	return TRUE;
 }
-#endif
 
-#ifdef CORE_MODULE
 int AdjectivalPredicates::test(up_family *self, unary_predicate *up,
 	TERM_DOMAIN_CALCULUS_TYPE *about) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
@@ -128,9 +124,7 @@ int AdjectivalPredicates::test(up_family *self, unary_predicate *up,
 	}
 	return FALSE;
 }
-#endif
 
-#ifdef CORE_MODULE
 void AdjectivalPredicates::get_schema(up_family *self, int task, unary_predicate *up,
 	annotated_i6_schema *asch, kind *K) {
 	int atask = 0; /* redundant assignment to appease |gcc -O2| */
@@ -146,7 +140,6 @@ void AdjectivalPredicates::get_schema(up_family *self, int task, unary_predicate
 
 	asch->schema = Adjectives::Meanings::get_i6_schema(aph, K, atask);
 }
-#endif
 
 @ Access:
 

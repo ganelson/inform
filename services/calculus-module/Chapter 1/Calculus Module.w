@@ -54,9 +54,6 @@ void CalculusModule::start(void) {
 	Annotations::declare_type(subject_term_ANNOT,
 		CalculusModule::write_subject_term_ANNOT);
 	KindPredicates::start();
-	AdjectivalPredicates::start();
-	CreationPredicates::start();
-	WherePredicates::start();
 	Calculus::Equality::start();
 }
 void CalculusModule::end(void) {

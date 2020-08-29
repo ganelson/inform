@@ -49,6 +49,8 @@ Chapter 4: Assertions
 
 Chapter 5: Basic Adjectives and Relations
 "Predicates for the calculus module to use."
+	The Adjectival Predicates
+	The Creation Predicates
 	The Equality Relation Revisited
 	Quasinumeric Relations
 	The Universal Relation
