@@ -73,11 +73,9 @@ function togglePopup(material_id) {
 <p class="purpose">To create sets of unary predicates for different purposes.</p>
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Want to create a new unary predicate? First you'll need a family for it to
-belong to.
-</p>
-
-<p class="commentary">A <a href="2-upf.html#SP1" class="internal">up_family</a> object is simply a receiver for the method calls providing
-the predicate's implementation.
+belong to. A <a href="2-upf.html#SP1" class="internal">up_family</a> object is simply a receiver for the method calls
+providing the predicate's implementation. In effect, a family is a collection
+of UPs which share an implementation.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -108,7 +106,10 @@ in Inform's run.
 <span class="plain-syntax">        </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">STOCK_UPF_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This method performs a type-check to see whether the value supplied as the
+term of the predicate is acceptable. For example, <span class="extract"><span class="extract-syntax">even(t)</span></span> should reject
+<span class="extract"><span class="extract-syntax">t</span></span> if it is a text, because <span class="extract"><span class="extract-syntax">even</span></span> is meaningful only for numbers.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TYPECHECK_UPF_MTID</span>
 </pre>
@@ -128,20 +129,10 @@ in Inform's run.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure variable_type_assignment is accessed in 4/tcp.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSERT_UPF_MTID</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSERT_UPF_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">up_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">unary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">)</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnaryPredicateFamilies::assert</span><span class="plain-syntax">(</span><span class="reserved-syntax">unary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">up</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSERT_UPF_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>A unary predicate is "testable" if its truth can be determined at compile
+time. (We assume everything can be tested at run time.) For example,
+<span class="extract"><span class="extract-syntax">kind=number(t)</span></span> can generally be tested at compile time, but <span class="extract"><span class="extract-syntax">even(t)</span></span> cannot.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TESTABLE_UPF_MTID</span>
 </pre>
@@ -154,7 +145,9 @@ in Inform's run.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And for a testable UP, the following should perform that test. It will never
+be called for non-testable ones.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_UPF_MTID</span>
 </pre>
@@ -167,8 +160,30 @@ in Inform's run.
 <span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">up</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">TEST_UPF_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><span class="identifier-syntax">about</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Assertion is used in Inform when constructing the model world. The <a href="index.html" class="internal">calculus</a>
+module doesn't really get involved in this, and provides this method only for
+Inform's benefit.
+</p>
 
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SCHEMA_UPF_MTID</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSERT_UPF_MTID</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSERT_UPF_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">up_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">unary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">)</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnaryPredicateFamilies::assert</span><span class="plain-syntax">(</span><span class="reserved-syntax">unary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">up</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSERT_UPF_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><span class="identifier-syntax">now_negated</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Schemas are used in compilation: see <a href="5-cs.html" class="internal">Compilation Schemas</a> for more.
+Again, the <a href="index.html" class="internal">calculus</a> module doesn't really get involved in this.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">SCHEMA_UPF_MTID</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">SCHEMA_UPF_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">up_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="reserved-syntax">unary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">annotated_i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">asch</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">)</span>
 
@@ -177,7 +192,10 @@ in Inform's run.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">up</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">SCHEMA_UPF_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><span class="identifier-syntax">asch</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>If the usage of this UP implies the kind of its term, here's where we say so.
+The obvious example is <span class="extract"><span class="extract-syntax">kind=K(t)</span></span>, which necessarily means <span class="extract"><span class="extract-syntax">t</span></span> has kind <span class="extract"><span class="extract-syntax">K</span></span>.
+But one could also imagine UPs which are appropriate only for, say, real numbers.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INFER_KIND_UPF_MTID</span>
 </pre>
@@ -190,7 +208,8 @@ in Inform's run.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Logging should be brief: something like <span class="extract"><span class="extract-syntax">kind=number</span></span> is plenty.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">LOG_UPF_MTID</span>
 </pre>

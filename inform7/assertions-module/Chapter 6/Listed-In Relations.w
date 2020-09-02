@@ -31,8 +31,8 @@ predicates instead.
 =
 binary_predicate *Tables::Relations::make_listed_in_predicate(table_column *tc) {
 	binary_predicate *bp = BinaryPredicates::make_pair(listed_in_bp_family,
-		BinaryPredicates::new_term(NULL),
-		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_table)),
+		BPTerms::new(NULL),
+		BPTerms::new(Kinds::Knowledge::as_subject(K_table)),
 		I"listed_in", I"lists-in", NULL,
 		Calculus::Schemas::new("(ct_1=ExistsTableRowCorr(ct_0=*2,%d,*1))",
 			Tables::Columns::get_id(tc)),
@@ -50,8 +50,8 @@ in later, instead:
 
 =
 void Tables::Relations::supply_kind_for_listed_in_tc(binary_predicate *bp, kind *K) {
-	BinaryPredicates::set_term_domain(&(bp->term_details[0]), K);
-	BinaryPredicates::set_term_domain(&(bp->reversal->term_details[1]), K);
+	BPTerms::set_domain(&(bp->term_details[0]), K);
+	BPTerms::set_domain(&(bp->reversal->term_details[1]), K);
 }
 
 @h Typechecking.

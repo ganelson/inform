@@ -49,6 +49,7 @@ Chapter 4: Assertions
 
 Chapter 5: Basic Adjectives and Relations
 "Predicates for the calculus module to use."
+	Kind Predicates Revisited
 	The Adjectival Predicates
 	The Creation Predicates
 	The Equality Relation Revisited

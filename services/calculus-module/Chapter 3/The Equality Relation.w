@@ -19,13 +19,17 @@ family to handle its typechecking and so on.
 =
 void Calculus::Equality::start(void) {
 	equality_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(equality_bp_family, STOCK_BPF_MTID, Calculus::Equality::stock);
-	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Calculus::Equality::REL_describe_for_problems);
-	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Calculus::Equality::REL_describe_briefly);
+	METHOD_ADD(equality_bp_family, STOCK_BPF_MTID,
+		Calculus::Equality::stock);
+	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID,
+		Calculus::Equality::REL_describe_for_problems);
+	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
+		Calculus::Equality::REL_describe_briefly);
 
 	spatial_bp_family = BinaryPredicateFamilies::new();
 	#ifndef IF_MODULE
-	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, Calculus::Equality::stock_spatial);
+	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID,
+		Calculus::Equality::stock_spatial);
 	#endif
 }
 
@@ -46,8 +50,8 @@ void Calculus::Equality::stock_spatial(bp_family *self, int n) {
 	if (n == 1) {
 		a_has_b_predicate =
 			BinaryPredicates::make_pair(spatial_bp_family,
-				BinaryPredicates::full_new_term(NULL, NULL, EMPTY_WORDING, NULL),
-				BinaryPredicates::new_term(NULL),
+				BPTerms::new_full(NULL, NULL, EMPTY_WORDING, NULL),
+				BPTerms::new(NULL),
 				I"has", I"is-had-by",
 				NULL, NULL,
 				PreformUtilities::wording(<relation-names>, POSSESSION_RELATION_NAME));

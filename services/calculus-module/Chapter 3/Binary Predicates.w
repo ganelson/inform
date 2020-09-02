@@ -3,136 +3,6 @@
 To create and manage binary predicates, which are the underlying
 data structures beneath Inform's relations.
 
-@ A "binary predicate" (the term comes from logic) is a property $B$
-such that for any combination $x$ and $y$, and at any given moment at
-run-time, $B(x, y)$ is either true or false.
-
-Examples used in Inform include equality, where $EQ(x, y)$ is true if and
-only if $x = y$, and containment, where $C(x, y)$ is true if and only if the
-thing $x$ is inside the room or container $y$. ($EQ$ does not change
-during play, but $C$ does.) A fairly large set of binary predicates is built
-into Inform, and the user is allowed to create more with sentences like
-
->> Lock-fitting relates one thing (called the matching key) to various things.
-
-In the Inform documentation, binary predicates are called "relations".
-The code to parse "relates" sentences and construct the binary predicate
-implied can be found in the next section, "Relations.w".
-
-Binary predicates are of central importance because they allow complex
-sentences to be written which talk about more than one thing at a time,
-with some connection between them. In excerpts like "an animal inside
-something" or "a man who wears the top hat", the meanings of the two
-connecting pieces of text -- "inside" and "who wears" -- are (pointers
-to) binary predicates: the containment relation and the wearing relation.
-
-Inform is rich in ways to create relations, and consequently the BPs are
-many and varied. They turn up in one-off examples but also in whole families.
-Still, despite the variation, what they share in common is greater yet,
-and so a single |binary_predicate| structure is used to represent them all.
-
-@ The values $x$ and $y$ to which a binary predicate $B$ can apply are
-called its "terms". For some relations, the source text gives these
-names:
-
->> Lock-fitting relates one thing (called the matching key) to various things.
-
-Here the $x$ term has the name "matching key", whereas the $y$ term is
-anonymous. (More often, both are anonymous.) Internally the terms are not
-named but are numbered 0 and 1: so we should really write $B(x_0, x_1)$
-rather than $B(x, y)$.
-
-@ Different BPs apply to different sorts of terms: for instance, the
-numerical less-than comparison applies to numbers, whereas containment
-applies to things. The two terms need not have the same domain: the
-"wearing" relation, as seen in
-
->> Harry Smythe wears the tweed waistcoat.
-
-is a binary predicate $W(x_0, x_1)$ such that $x_0$ ranges across people
-and $x_1$ ranges across things.
-
-Inform represents this by allowing each BP to have either a
-designated kind of object, or a designated kind of value, or no
-restriction at all, for each term. (In practice, even the unrestricted
-terms have limitations, but which are enforced by special code in the
-type-checker to handle special predicates such as equality. For instance,
-$EQ(x, y)$ can be tested for any values $x$ and $y$ of the same kind, so
-the two terms in effect constrain each other.)
-
-In the S-parser, type-checking is used to make sure the source text doesn't
-try to test or assert $B(x, y)$ for any $x$ or $y$ which don't fit, so that
-
->> if 1 wears "Hello there", ...
-
-will be rejected. Whereas in the A-parser, these restrictions are used to
-infer information about otherwise unknown quantities: so writing
-
->> Harry Smythe wears the tweed waistcoat.
-
-causes the A-parser to force the Harry Smythe object to be of kind
-"person", and the tweed waistcoat of kind "thing".
-
-@ Some BPs are such that $B(x, y)$ can be true for more or less any
-combination of $x$ and $y$. Those can take a lot of storage and it is
-difficult to perform any reasoning about them, because knowing that $B(x,
-y)$ is true doesn't give you any information about $B(x, z)$. For instance,
-the BP created by
-
->> Suspicion relates various people to various people.
-
-is stored at run-time in a bitmap of $P^2$ bits, where $P$ is the number
-of people, and searching it ("if anyone suspects Harry") requires
-exhaustive loops, which incur some speed overhead as well.
-
-But other BPs have special properties restricting the circumstances in
-which they are true, and in those cases we want to capitalise on that.
-"Contains" is an example of this. A single thing $y$ can be (directly)
-inside only one other thing $x$ at a time, so that if we know $C(x, y)$
-and $C(w, y)$ then we can deduce that $x=w$. We write this common value
-as $f_0(y)$, the only possible value for term 0 given that term 1 is $y$.
-Another way to say this is that the only possible pairs making $C$ true
-have the form $C(f_0(y), y)$.
-
-And similarly for term 1. If we write $T$ for the "on top of" relation
-then it turns out that there is a function $f_1$ such that the only cases
-where $T$ is true have the form $T(x, f_1(x))$. Here $f_1(x)$ is the thing
-which directly supports $x$.
-
-Containment has an $f_0$ but not an $f_1$ function; "on top of" has an
-$f_1$ but not an $f_0$. Many BPs (like "suspicion" above) have neither.
-
-Note that if $B$ does have an $f_0$ function then its reversal $R$ has an
-identical $f_1$ function, and vice versa.
-
-@ We never in fact need to calculate the value of $f_0(y)$ from $y$ during
-compilation -- only at run-time. So we store the function $f_0(y)$ as what
-is called an "I6 schema", basically a piece of I6 source code with a
-place-holder where $y$ is to be inserted. In the case of containment, the
-schema is written
-$$ f_0(|*1|) = |ContainerOf(*1)| $$
-and what this means is that we can calculate $f_0(y)$ from an object $y$
-at run-time by calling the |ContainerOf| function, which tells us what
-container (if any) is at present directly containing $y$.
-
-@ To sum up, each term of a BP can specify: a name, a domain, and an
-$f_i$ function. Every one of these details is optional. They are gathered
-together in a sub-structure called |bp_term_details|.
-
-(For Inform, the following will be an inference subject, which is a wider
-category than kinds.)
-
-@default TERM_DOMAIN_CALCULUS_TYPE struct kind
-
-=
-typedef struct bp_term_details {
-	struct wording called_name; /* "(called...)" name, if any exists */
-	TERM_DOMAIN_CALCULUS_TYPE *implies_infs; /* the domain of values allowed */
-	struct kind *implies_kind; /* the kind of these values */
-	struct i6_schema *function_of_other; /* the function $f_0$ or $f_1$ as above */
-	char *index_term_as; /* usually null, but if not, used in Phrasebook index */
-} bp_term_details;
-
 @ Given any binary predicate $B$, we may wish to do some or all of the
 following at run-time:
 
@@ -214,10 +84,8 @@ typedef struct binary_predicate {
 	int right_way_round; /* was this BP created directly? or is it a reversal of another? */
 
 	/* how to compile code which tests or forces this BP to be true or false: */
-	struct i6_schema *test_function; /* I6 schema for (a) testing $B(x, y)$... */
+	struct i6_schema *task_functions[4]; /* I6 schema for tasks */
 	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
-	struct i6_schema *make_true_function; /* I6 schema for (b) "now $B(x, y)$" */
-	struct i6_schema *make_false_function; /* I6 schema for (c) "now ${\rm not}(B(x, y))$" */
 
 	/* for use in the A-parser: */
 	int arbitrary; /* allow source to assert $B(x, y)$ for any arbitrary pairs $x, y$ */
@@ -303,122 +171,17 @@ one of the tables which has a column of this name.
 @d VERB_MEANING_EQUALITY R_equality
 @d VERB_MEANING_POSSESSION a_has_b_predicate
 
-@h Creating term details.
-The essential point in defining a term is to describe the domain of values it
-ranges over, which we do by giving an "inference subject" (INFS). An INFS is
-roughly speaking anything in the model world which Inform can store knowledge
-about; here it will almost always be a generality of things, such as "all
-numbers", or "all rooms".
-
-=
-bp_term_details BinaryPredicates::new_term(TERM_DOMAIN_CALCULUS_TYPE *infs) {
-	bp_term_details bptd;
-	bptd.called_name = EMPTY_WORDING;
-	bptd.function_of_other = NULL;
-	bptd.implies_infs = infs;
-	bptd.implies_kind = NULL;
-	bptd.index_term_as = NULL;
-	return bptd;
-}
-
-@ And there is also a fuller version, including the inessentials:
-
-=
-bp_term_details BinaryPredicates::full_new_term(TERM_DOMAIN_CALCULUS_TYPE *infs, kind *K,
-	wording CW, i6_schema *f) {
-	bp_term_details bptd = BinaryPredicates::new_term(infs);
-	bptd.implies_kind = K;
-	bptd.called_name = CW;
-	bptd.function_of_other = f;
-	return bptd;
-}
-
-@ In a few cases BPs need to be created before the relevant domains are known,
-so that we must fill them in later, using the following:
-
-=
-void BinaryPredicates::set_term_domain(bp_term_details *bptd, kind *K) {
-	if (bptd == NULL) internal_error("no BPTD");
-	bptd->implies_kind = K;
-	bptd->implies_infs = TERM_DOMAIN_FROM_KIND_FUNCTION(K);
-}
-
-@ Similarly:
-
-=
-void BinaryPredicates::set_term_function(bp_term_details *bptd, i6_schema *f) {
-	if (bptd == NULL) internal_error("no BPTD");
-	bptd->function_of_other = f;
-}
-
-i6_schema *BinaryPredicates::get_term_function(bp_term_details *bptd) {
-	if (bptd == NULL) internal_error("no BPTD");
-	return bptd->function_of_other;
-}
-
 @ Combining these:
 
 =
 kind *BinaryPredicates::kind(binary_predicate *bp) {
 	if (bp == R_equality) return Kinds::binary_con(CON_relation, K_value, K_value);
-	kind *K0 = BinaryPredicates::kind_of_term(&(bp->term_details[0]));
-	kind *K1 = BinaryPredicates::kind_of_term(&(bp->term_details[1]));
+	kind *K0 = BPTerms::kind(&(bp->term_details[0]));
+	kind *K1 = BPTerms::kind(&(bp->term_details[1]));
 	if (K0 == NULL) K0 = K_object;
 	if (K1 == NULL) K1 = K_object;
 	return Kinds::binary_con(CON_relation, K0, K1);
 }
-
-@ The kind of a term is:
-
-=
-kind *BinaryPredicates::kind_of_term(bp_term_details *bptd) {
-	if (bptd == NULL) return NULL;
-	if (bptd->implies_kind) return bptd->implies_kind;
-	return TERM_DOMAIN_TO_KIND_FUNCTION(bptd->implies_infs);
-}
-
-@ The table of relations in the index uses the textual name of an INFS, so:
-
-=
-void BinaryPredicates::index_term_details(OUTPUT_STREAM, bp_term_details *bptd) {
-	if (bptd->index_term_as) { WRITE("%s", bptd->index_term_as); return; }
-	wording W = EMPTY_WORDING;
-	if (bptd->implies_infs) W = TERM_DOMAIN_WORDING_FUNCTION(bptd->implies_infs);
-	if (Wordings::nonempty(W)) WRITE("%W", W); else WRITE("--");
-}
-
-@ The following routine adds the given BP term as a call parameter to the
-routine currently being compiled, deciding that something is an object if
-its kind indications are all blank, but verifying that the value supplied
-matches the specific necessary kind of object if there is one.
-
-=
-#ifdef CORE_MODULE
-void BinaryPredicates::add_term_as_call_parameter(ph_stack_frame *phsf, bp_term_details bptd) {
-	kind *K = BinaryPredicates::kind_of_term(&bptd);
-	kind *PK = K;
-	if ((PK == NULL) || (Kinds::Behaviour::is_subkind_of_object(PK))) PK = K_object;
-	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
-		bptd.called_name, PK);
-	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), NOT_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_symbol(Emit::tree(), K_value, lv_s);
-					Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::rfalse(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	}
-}
-#endif
 
 @ And as a convenience:
 
@@ -453,7 +216,7 @@ this effect. For now, we give $EQ$ entirely blank term details.
 =
 binary_predicate *BinaryPredicates::make_equality(bp_family *family, word_assemblage WA) {
 	binary_predicate *bp = BinaryPredicates::make_single(family,
-		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+		BPTerms::new(NULL), BPTerms::new(NULL),
 		I"is", NULL, NULL, WA);
 	bp->reversal = bp; bp->right_way_round = TRUE;
 	#ifdef REGISTER_RELATIONS_CALCULUS_CALLBACK
@@ -515,7 +278,7 @@ binary_predicate *BinaryPredicates::make_pair_sketchily(bp_family *family,
 	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
 	binary_predicate *bp =
 		BinaryPredicates::make_pair(family,
-		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+		BPTerms::new(NULL), BPTerms::new(NULL),
 		relname, NULL, NULL, NULL, wa);
 	DISCARD_TEXT(relname)
 	bp->form_of_relation = f;
@@ -560,10 +323,10 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	/* the |reversal| and the |right_way_round| field must be set by the caller */
 
 	/* for use in code compilation */
-	bp->test_function = tf;
+	bp->task_functions[TEST_ATOM_TASK] = tf;
 	bp->condition_defn_text = EMPTY_WORDING;
-	bp->make_true_function = mtf;
-	bp->make_false_function = NULL;
+	bp->task_functions[NOW_ATOM_TRUE_TASK] = mtf;
+	bp->task_functions[NOW_ATOM_FALSE_TASK] = NULL;
 
 	/* for use by the A-parser */
 	bp->arbitrary = FALSE;
@@ -644,9 +407,9 @@ void BinaryPredicates::log(binary_predicate *bp) {
 		bp->allocation_id, bp->debugging_log_name, bp->right_way_round?"right":"wrong",
 		BinaryPredicates::form_to_text(bp));
 	for (i=0; i<2; i++) BinaryPredicates::log_term_details(&bp->term_details[i], i);
-	LOG("  test: $i\n", bp->test_function);
-	LOG("  make true: $i\n", bp->make_true_function);
-	LOG("  make false: $i\n", bp->make_false_function);
+	LOG("  test: $i\n", bp->task_functions[TEST_ATOM_TASK]);
+	LOG("  make true: $i\n", bp->task_functions[NOW_ATOM_TRUE_TASK]);
+	LOG("  make false: $i\n", bp->task_functions[NOW_ATOM_FALSE_TASK]);
 	#ifdef CORE_MODULE
 	LOG("  storage property: $Y\n", bp->i6_storage_property);
 	#endif
@@ -709,7 +472,7 @@ parse_node *BinaryPredicates::get_bp_created_at(binary_predicate *bp) {
 =
 kind *BinaryPredicates::term_kind(binary_predicate *bp, int t) {
 	if (bp == NULL) internal_error("tried to find kind of null relation");
-	return BinaryPredicates::kind_of_term(&(bp->term_details[t]));
+	return BPTerms::kind(&(bp->term_details[t]));
 }
 i6_schema *BinaryPredicates::get_term_as_fn_of_other(binary_predicate *bp, int t) {
 	if (bp == NULL) internal_error("tried to find function of null relation");
@@ -732,11 +495,11 @@ int BinaryPredicates::is_the_wrong_way_round(binary_predicate *bp) {
 
 =
 i6_schema *BinaryPredicates::get_test_function(binary_predicate *bp) {
-	return bp->test_function;
+	return bp->task_functions[TEST_ATOM_TASK];
 }
 int BinaryPredicates::can_be_made_true_at_runtime(binary_predicate *bp) {
-	if ((bp->make_true_function) ||
-		(bp->reversal->make_true_function)) return TRUE;
+	if ((bp->task_functions[NOW_ATOM_TRUE_TASK]) ||
+		(bp->reversal->task_functions[NOW_ATOM_TRUE_TASK])) return TRUE;
 	return FALSE;
 }
 
@@ -800,7 +563,7 @@ we can help it by providing an I6 schema of a loop header solving the
 following problem:
 
 Loop a variable $v$ (in the schema, |*1|) over all possible $x$ such that
-$R(x, t)$, for some fixed $t$ (in the schema, |*1|).
+$R(x, t)$, for some fixed $t$ (in the schema, |*2|).
 
 If we can't do this, it will still manage, but by the brute force method
 of looping over all $x$ in the left domain of $R$ and testing every possible

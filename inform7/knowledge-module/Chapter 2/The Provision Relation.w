@@ -37,7 +37,7 @@ void Properties::ProvisionRelation::stock(bp_family *self, int n) {
 	if (n == 1) {
 		R_provision =
 			BinaryPredicates::make_pair(provision_bp_family,
-				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+				BPTerms::new(NULL), BPTerms::new(NULL),
 				I"provides", NULL, NULL, NULL,
 				PreformUtilities::wording(<relation-names>, PROVISION_RELATION_NAME));
 		BinaryPredicates::set_index_details(R_provision, "value", "property");

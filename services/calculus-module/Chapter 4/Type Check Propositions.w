@@ -12,17 +12,23 @@ proposition's terms are all constant then type-checking is easy. ${\it is}(4, |s
 good, ${\it is}(4, |"fish"|)$ bad. The subtlety comes in interpreting
 ${\it is}(4, x)$, where $x$ is a variable. Our calculus allows variables to
 range over many domains -- numbers, texts, scenes, objects, and so on.
-So it turns out to be convenient to have a structure holding a choice of kinds
-of value for the contents of the variables; such structures exist temporarily
-on the stack while we work.
-
-=
 
 @h Problem reporting kit.
 The caller to |Propositions::Checker::type_check| has to fill this form out first. Paperwork,
 what can you do, eh?
 
+@d DECLINE_TO_MATCH 1000 /* not one of the three legal |*_MATCH| values */
+@d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal |*_MATCH| values */
+
 =
+typedef struct tc_problem_kit {
+	int issue_error;
+	struct wording ew_text;
+	char *intention;
+	int log_to_I6_text;
+	int flag_problem;
+} tc_problem_kit;
+
 tc_problem_kit Propositions::Checker::tc_no_problem_reporting(void) {
 	tc_problem_kit tck;
 	tck.issue_error = FALSE; tck.ew_text = EMPTY_WORDING; tck.intention = "be silent checking";

@@ -59,6 +59,11 @@ void CalculusModule::start(void) {
 void CalculusModule::end(void) {
 }
 
+@ //calculus// provides one extra annotation for the syntax tree:
+
+@e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
+
+@ =
 DECLARE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 MAKE_ANNOTATION_FUNCTIONS(subject_term, pcalc_term)
 
@@ -69,10 +74,6 @@ void CalculusModule::write_subject_term_ANNOT(text_stream *OUT, parse_node *p) {
 		WRITE("}");
 	}
 }
-
-@
-
-@e subject_term_ANNOT /* |pcalc_term|: what the subject of the subtree was */
 
 @ We also have to make annotation functions for one special annotation needed
 by //linguistics//:

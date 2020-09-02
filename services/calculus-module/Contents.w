@@ -7,7 +7,6 @@ Licence: Artistic License 2.0
 Preliminaries
 	What This Module Does
 	How To Include This Module
-	Introduction to Predicate Calculus
 
 Chapter 1: Setting Up
 	Calculus Module
@@ -19,6 +18,7 @@ Chapter 2: Unary Predicates
 
 Chapter 3: Binary Predicates
 	Binary Predicate Families
+	Binary Predicate Term Details
 	Binary Predicates
 	The Equality Relation
 

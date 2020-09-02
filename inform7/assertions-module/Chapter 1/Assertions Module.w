@@ -30,6 +30,7 @@ void AssertionsModule::start(void) {
 	Relations::Universal::start();
 	Relations::Explicit::start();
 	EqualityDetails::start();
+	KindPredicatesRevisited::start();
 	REGISTER_WRITER('B', Tables::log);
 	REGISTER_WRITER('C', Tables::Columns::log);
 	Log::declare_aspect(ASSEMBLIES_DA, L"assemblies", FALSE, FALSE);

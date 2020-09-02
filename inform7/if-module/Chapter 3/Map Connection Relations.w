@@ -35,8 +35,8 @@ We may as well do this here: creating the relation "X is adjacent to Y".
 void PL::MapDirections::create_relations(void) {
 	R_adjacency =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BinaryPredicates::new_term(infs_room),
-			BinaryPredicates::new_term(infs_room),
+			BPTerms::new(infs_room),
+			BPTerms::new(infs_room),
 			I"adjacent-to", I"adjacent-from",
 			NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, ADJACENCY_RELATION_NAME));
@@ -136,7 +136,7 @@ int no_directions_noticed = 0;
 	WRITE_TO(relname, "%W-map", W);
 	LOOP_THROUGH_TEXT(pos, relname)
 		if (Str::get(pos) == ' ') Str::put(pos, '-');
-	bp_term_details room_term = BinaryPredicates::new_term(NULL);
+	bp_term_details room_term = BPTerms::new(NULL);
 	bp = BinaryPredicates::make_pair(map_connecting_bp_family,
 		room_term, room_term, relname, NULL, NULL, NULL,
 		PreformUtilities::merge(<mapping-relation-construction>, 0,
@@ -193,12 +193,12 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 			"is privately-named.')");
 		return;
 	}
-	bp->term_details[0] = BinaryPredicates::new_term(NULL);
-	bp->term_details[1] = BinaryPredicates::new_term(NULL);
+	bp->term_details[0] = BPTerms::new(NULL);
+	bp->term_details[1] = BPTerms::new(NULL);
 	BinaryPredicates::set_index_details(bp, "room/door", "room/door");
-	bp->test_function = Calculus::Schemas::new("(MapConnection(*2,%n) == *1)", ident);
-	bp->make_true_function = Calculus::Schemas::new("AssertMapConnection(*2,%n,*1)", ident);
-	bp->make_false_function = Calculus::Schemas::new("AssertMapUnconnection(*2,%n,*1)", ident);
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(MapConnection(*2,%n) == *1)", ident);
+	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("AssertMapConnection(*2,%n,*1)", ident);
+	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("AssertMapUnconnection(*2,%n,*1)", ident);
 	PF_I(map, I)->direction_relation = bp;
 }
 

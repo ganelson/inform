@@ -3,10 +3,9 @@
 To create sets of unary predicates for different purposes.
 
 @ Want to create a new unary predicate? First you'll need a family for it to
-belong to.
-
-A //up_family// object is simply a receiver for the method calls providing
-the predicate's implementation.
+belong to. A //up_family// object is simply a receiver for the method calls
+providing the predicate's implementation. In effect, a family is a collection
+of UPs which share an implementation.
 
 =
 typedef struct up_family {
@@ -34,7 +33,9 @@ void UnaryPredicateFamilies::stock(int n) {
 		VOID_METHOD_CALL(f, STOCK_UPF_MTID, n);
 }
 
-@
+@ This method performs a type-check to see whether the value supplied as the
+term of the predicate is acceptable. For example, |even(t)| should reject
+|t| if it is a text, because |even| is meaningful only for numbers.
 
 @e TYPECHECK_UPF_MTID
 
@@ -53,20 +54,9 @@ int UnaryPredicateFamilies::typecheck(unary_predicate *up,
 	return rv;
 }
 
-@
-
-@e ASSERT_UPF_MTID
-
-=
-VOID_METHOD_TYPE(ASSERT_UPF_MTID, up_family *f, unary_predicate *up,
-	int now_negated, pcalc_prop *pl)
-
-void UnaryPredicateFamilies::assert(unary_predicate *up,
-	int now_negated, pcalc_prop *pl) {
-	VOID_METHOD_CALL(up->family, ASSERT_UPF_MTID, up, now_negated, pl);
-}
-
-@
+@ A unary predicate is "testable" if its truth can be determined at compile
+time. (We assume everything can be tested at run time.) For example,
+|kind=number(t)| can generally be tested at compile time, but |even(t)| cannot.
 
 @e TESTABLE_UPF_MTID
 
@@ -79,7 +69,8 @@ int UnaryPredicateFamilies::testable(unary_predicate *up) {
 	return rv;
 }
 
-@
+@ And for a testable UP, the following should perform that test. It will never
+be called for non-testable ones.
 
 @e TEST_UPF_MTID
 
@@ -93,6 +84,25 @@ int UnaryPredicateFamilies::test(unary_predicate *up, TERM_DOMAIN_CALCULUS_TYPE 
 	return rv;
 }
 
+@ Assertion is used in Inform when constructing the model world. The //calculus//
+module doesn't really get involved in this, and provides this method only for
+Inform's benefit.
+
+
+@e ASSERT_UPF_MTID
+
+=
+VOID_METHOD_TYPE(ASSERT_UPF_MTID, up_family *f, unary_predicate *up,
+	int now_negated, pcalc_prop *pl)
+
+void UnaryPredicateFamilies::assert(unary_predicate *up,
+	int now_negated, pcalc_prop *pl) {
+	VOID_METHOD_CALL(up->family, ASSERT_UPF_MTID, up, now_negated, pl);
+}
+
+@ Schemas are used in compilation: see //Compilation Schemas// for more.
+Again, the //calculus// module doesn't really get involved in this.
+
 @e SCHEMA_UPF_MTID
 
 =
@@ -104,7 +114,9 @@ void UnaryPredicateFamilies::get_schema(int task, unary_predicate *up,
 	VOID_METHOD_CALL(up->family, SCHEMA_UPF_MTID, task, up, asch, K);
 }
 
-@ 
+@ If the usage of this UP implies the kind of its term, here's where we say so.
+The obvious example is |kind=K(t)|, which necessarily means |t| has kind |K|.
+But one could also imagine UPs which are appropriate only for, say, real numbers.
 
 @e INFER_KIND_UPF_MTID
 
@@ -117,7 +129,7 @@ kind *UnaryPredicateFamilies::infer_kind(unary_predicate *up) {
 	return K;
 }
 
-@ 
+@ Logging should be brief: something like |kind=number| is plenty.
 
 @e LOG_UPF_MTID
 

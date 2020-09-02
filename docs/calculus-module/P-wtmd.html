@@ -236,45 +236,45 @@ example, <span class="extract"><span class="extract-syntax">odd(n) ^ prime(n)</s
 and <span class="extract"><span class="extract-syntax">prime(n)</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Unary predicates. </b>We have a mixed bag of unary predicates, as follows.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Unary predicates. </b>The <a href="index.html" class="internal">calculus</a> module aims to be agnostic about what unary predicates will
+exist. They are grouped into "families" &mdash; see <a href="2-upf.html" class="internal">Unary Predicate Families</a>
+for details &mdash; which loosely group them by implementation. So, for exanple,
+Inform has a family of unary predicates in the form <span class="extract"><span class="extract-syntax">calling='whatever'(x)</span></span>
+which assert that <span class="extract"><span class="extract-syntax">x</span></span> represents something of a given name. But <a href="index.html" class="internal">calculus</a>
+is not concerned with the details. Only one family is built in:
 </p>
 
-<ul class="items"><li>&#9679; For each adjective defined in the <a href="../linguistics-module/index.html" class="internal">linguistics</a> module, there is a
-predicate <span class="extract"><span class="extract-syntax">A(t)</span></span>, true if the adjective currently applies to \(t\).
-</li><li>&#9679; For each kind \(K\), there is a predicate <span class="extract"><span class="extract-syntax">kind=K(t)</span></span>, which is true if \(t\)
+<ul class="items"><li>&#9679; For each kind \(K\), there is a predicate <span class="extract"><span class="extract-syntax">kind=K(t)</span></span>, which is true if \(t\)
 is of the kind \(K\).
-</li><li>&#9679; For any wording <span class="extract"><span class="extract-syntax">W</span></span>, there is a predicate <span class="extract"><span class="extract-syntax">called=W(t)</span></span>, which asserts
-that the current value of \(t\) is something named <span class="extract"><span class="extract-syntax">W</span></span>.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-kind(t)</span></span> asserts that \(t\) represents a kind, not a value.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-var(t)</span></span> asserts that \(t\) represents a variable, not a value.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">is-a-const(t)</span></span> asserts that \(t\) represents a constant, not a value.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">everywhere(t)</span></span> asserts that \(t\) is an object found everywhere.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">nowhere(t)</span></span> asserts that \(t\) is an object found nowhere.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">here(t)</span></span> asserts that \(t\) is an object found in the current room.
 </li></ul>
-<p class="commentary">As is apparent, the <span class="extract"><span class="extract-syntax">is-a-...</span></span> predicates are a cheat: they exist purely to
-make it easier to write propositions which change the state of the world,
-rather than discuss that state. For example, Inform might create the kind
-"animal" by asserting <span class="extract"><span class="extract-syntax">Exists x : is-a-kind(x) ^ called=animal(x)</span></span>.
+<p class="commentary">New UPs can be constructed with <a href="2-up.html#SP2" class="internal">UnaryPredicates::new</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Binary predicates. </b>By contrast all binary predicate atoms use <span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span>, and there is only
-one set of them &mdash; but with that said,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Binary predicates. </b>Similarly, <a href="index.html" class="internal">calculus</a> allows the user to create as many families of binary
+predicates as are wanted. See <a href="3-bpf.html" class="internal">Binary Predicate Families</a>. For example,
+the "same property value as" relations all belong to a single family. This
+module builds only one family in:
 </p>
 
-<ul class="items"><li>(a) They can be organised into "families" with shared implementations &mdash; see
-<a href="3-bpf.html" class="internal">Binary Predicate Families</a>.
-</li><li>(b) The equality predicate \(=\) is predefined by the <a href="index.html" class="internal">calculus</a> module, and
-its special meaning is used when simplifying propositions. See <a href="3-ter.html" class="internal">The Equality Relation</a>.
-It is written with the special notation <span class="extract"><span class="extract-syntax">(x == y)</span></span>, though this is just syntactic
-sugar.
+<ul class="items"><li>&#9679; The equality predicate \(=\), whose special meaning is used when simplifying
+propositions. See <a href="3-ter.html" class="internal">The Equality Relation</a>. It is written with the special
+notation <span class="extract"><span class="extract-syntax">(x == y)</span></span>, though this is just syntactic sugar.
 </li></ul>
-<p class="commentary">New BPs can be constructed with <a href="3-bp.html#SP26" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
+<p class="commentary">Binary predicates are of central importance to us because they allow complex
+sentences to be written which talk about more than one thing at a time,
+with some connection between them. In excerpts of Inform source like "an animal
+inside something" or "a man who wears the top hat", the meanings of the two
+connecting pieces of text &mdash; "inside" and "who wears" &mdash; are binary predicates:
+the containment relation and the wearing relation. To avoid scaring the horses,
+binary predicates are called "relations" in all of the Inform documentation.
+</p>
+
+<p class="commentary">New BPs can be constructed with <a href="3-bp.html#SP13" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
 is used because every \(B\) has a "reversal" \(B^r\), such that \(B^r(s, t)\) is true
 if and only if \(B(t, s)\). \(B\) and \(B^r\) are created in pairs.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="3-bp.html#SP25" class="internal">BinaryPredicates::make_equality</a>.
+<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="3-bp.html#SP12" class="internal">BinaryPredicates::make_equality</a>.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making propositions. </b>Propositions are built incrementally, like Lego, with a sequence of function
 calls.
@@ -314,7 +314,7 @@ and not the simpler <a href="4-prp.html#SP14" class="internal">Propositions::con
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresssection"><a href="P-itpc.html">itpc</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-cs.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-cs.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

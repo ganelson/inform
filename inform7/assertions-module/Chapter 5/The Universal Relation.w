@@ -33,12 +33,12 @@ void Relations::Universal::stock(bp_family *self, int n) {
 	if (n == 1) {
 		R_universal =
 			BinaryPredicates::make_pair(universal_bp_family,
-				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+				BPTerms::new(NULL), BPTerms::new(NULL),
 				I"relates", NULL, NULL, NULL,
 				PreformUtilities::wording(<relation-names>, UNIVERSAL_RELATION_NAME));
 		R_meaning =
 			BinaryPredicates::make_pair(universal_bp_family,
-				BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+				BPTerms::new(NULL), BPTerms::new(NULL),
 				I"means", NULL, NULL, NULL,
 				PreformUtilities::wording(<relation-names>, MEANING_RELATION_NAME));
 	}

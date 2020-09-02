@@ -2,7 +2,13 @@
 
 To create sets of relations for different purposes.
 
-@ Want to create a new binary predicate? First you'll need a family for it to
+@ A "binary predicate" is a property $B$ such that for any combination $x$ and
+$y$, and at any given moment at run-time, $B(x, y)$ is either true or false.
+The classic example is equality, $(x == y)$, which is true if and only if they
+are the same value. But Inform has many others. In the Inform documentation,
+binary predicates are called "relations".
+
+Want to create a new binary predicate? First you'll need a family for it to
 belong to. Some families are small (the equality family contains just the
 equality relation), others larger (the map connections family in an IF compilation
 has one for each map direction). What unites the members of a family is that
@@ -54,18 +60,8 @@ void BinaryPredicateFamilies::second_stock(void) {
 such as "if 19 is false", where the terms of the relation do not fit.
 
 @e TYPECHECK_BPF_MTID
-@d DECLINE_TO_MATCH 1000 /* not one of the three legal |*_MATCH| values */
-@d NEVER_MATCH_SAYING_WHY_NOT 1001 /* not one of the three legal |*_MATCH| values */
 
 =
-typedef struct tc_problem_kit {
-	int issue_error;
-	struct wording ew_text;
-	char *intention;
-	int log_to_I6_text;
-	int flag_problem;
-} tc_problem_kit;
-
 INT_METHOD_TYPE(TYPECHECK_BPF_MTID, bp_family *f, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck)
 
@@ -119,13 +115,7 @@ i6_schema *BinaryPredicateFamilies::get_schema(int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, bp->relation_family, SCHEMA_BPF_MTID, task, bp, asch);
-	if (rv == FALSE) {
-		switch(task) {
-			case TEST_ATOM_TASK: asch->schema = bp->test_function; break;
-			case NOW_ATOM_TRUE_TASK: asch->schema = bp->make_true_function; break;
-			case NOW_ATOM_FALSE_TASK: asch->schema = bp->make_false_function; break;
-		}
-	}
+	if ((rv == FALSE) && (task)) asch->schema = bp->task_functions[task];
 	return asch->schema;
 }
 

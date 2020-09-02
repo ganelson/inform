@@ -335,9 +335,9 @@ void Declarations::new(wording W, kind *k0, wording f0, kind *k1, wording f1) {
 	if (test_bp_family == NULL)
 		test_bp_family = BinaryPredicateFamilies::new();
 	bp_term_details t0 =
-		BinaryPredicates::new_term(TERM_DOMAIN_FROM_KIND_FUNCTION(k0));
+		BPTerms::new(TERM_DOMAIN_FROM_KIND_FUNCTION(k0));
 	bp_term_details t1 =
-		BinaryPredicates::new_term(TERM_DOMAIN_FROM_KIND_FUNCTION(k1));
+		BPTerms::new(TERM_DOMAIN_FROM_KIND_FUNCTION(k1));
 	text_stream *S = Str::new();
 	WRITE_TO(S, "%W", W);
 	binary_predicate *bp =
@@ -353,7 +353,7 @@ void Declarations::new(wording W, kind *k0, wording f0, kind *k1, wording f1) {
 		nf->bp = bp;
 		nf->name = f0;
 		nf->side = 1;
-		BinaryPredicates::set_term_function(&(bp->term_details[0]),
+		BPTerms::set_function(&(bp->term_details[0]),
 			Calculus::Schemas::new("%S(*1)", f0n));
 	}
 	if (Str::ne(f1n, I"none")) {
@@ -361,7 +361,7 @@ void Declarations::new(wording W, kind *k0, wording f0, kind *k1, wording f1) {
 		nf->bp = bp;
 		nf->name = f1;
 		nf->side = 0;
-		BinaryPredicates::set_term_function(&(bp->term_details[1]),
+		BPTerms::set_function(&(bp->term_details[1]),
 			Calculus::Schemas::new("%S(*1)", f1n));
 	}
 	DISCARD_TEXT(f0n)

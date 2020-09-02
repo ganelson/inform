@@ -40,7 +40,7 @@ Total memory consumption was 256345K = 250 MB
      0.1%  scan_directory                           70 objects, 288960 bytes
      0.1%  noun                                     2379 objects, 285480 bytes
      ----  action_name_list_array                   3 x 1000 = 3000 objects, 240096 bytes
-     ----  binary_predicate                         321 objects, 197736 bytes
+     ----  binary_predicate                         321 objects, 200304 bytes
      ----  inter_annotation_array                   1 x 8192 objects, 196640 bytes
      ----  inference                                1703 objects, 177112 bytes
      ----  linked_list_item_array                   10 x 1000 = 10000 objects, 160320 bytes
@@ -232,5 +232,5 @@ Total memory consumption was 256345K = 250 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.0% was overhead - 52560560 bytes = 51328K = 50 MB
+20.0% was overhead - 52557992 bytes = 51326K = 50 MB
 

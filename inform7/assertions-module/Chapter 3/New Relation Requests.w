@@ -380,12 +380,12 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		relation_guard *rg = CREATE(relation_guard);
 		rg->check_L = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain)) rg->check_L = RR->terms[0].domain;
 		rg->check_R = NULL; if (Kinds::Behaviour::is_subkind_of_object(RR->terms[1].domain)) rg->check_R = RR->terms[1].domain;
-		rg->inner_test = bp->test_function;
-		rg->inner_make_true = bp->make_true_function;
-		rg->inner_make_false = bp->make_false_function;
+		rg->inner_test = bp->task_functions[TEST_ATOM_TASK];
+		rg->inner_make_true = bp->task_functions[NOW_ATOM_TRUE_TASK];
+		rg->inner_make_false = bp->task_functions[NOW_ATOM_FALSE_TASK];
 		rg->guarding = bp;
-		rg->f0 = BinaryPredicates::get_term_function(&(bp->term_details[0]));
-		rg->f1 = BinaryPredicates::get_term_function(&(bp->term_details[1]));
+		rg->f0 = BPTerms::get_function(&(bp->term_details[0]));
+		rg->f1 = BPTerms::get_function(&(bp->term_details[1]));
 		rg->guard_f0_iname = NULL;
 		rg->guard_f1_iname = NULL;
 		rg->guard_test_iname = NULL;
@@ -394,29 +394,29 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		if (rg->f0) {
 			package_request *R = BinaryPredicates::package(bp);
 			rg->guard_f0_iname = Hierarchy::make_iname_in(GUARD_F0_FN_HL, R);
-			BinaryPredicates::set_term_function(&(bp->term_details[0]),
+			BPTerms::set_function(&(bp->term_details[0]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f0_iname));
 		}
 		if (rg->f1) {
 			package_request *R = BinaryPredicates::package(bp);
 			rg->guard_f1_iname = Hierarchy::make_iname_in(GUARD_F1_FN_HL, R);
-			BinaryPredicates::set_term_function(&(bp->term_details[1]),
+			BPTerms::set_function(&(bp->term_details[1]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f1_iname));
 		}
-		if (bp->test_function) {
+		if (bp->task_functions[TEST_ATOM_TASK]) {
 			package_request *R = BinaryPredicates::package(bp);
 			rg->guard_test_iname = Hierarchy::make_iname_in(GUARD_TEST_FN_HL, R);
-			bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_test_iname);
+			bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_test_iname);
 		}
-		if (bp->make_true_function) {
+		if (bp->task_functions[NOW_ATOM_TRUE_TASK]) {
 			package_request *R = BinaryPredicates::package(bp);
 			rg->guard_make_true_iname = Hierarchy::make_iname_in(GUARD_MAKE_TRUE_FN_HL, R);
-			bp->make_true_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_true_iname);
+			bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_true_iname);
 		}
-		if (bp->make_false_function) {
+		if (bp->task_functions[NOW_ATOM_FALSE_TASK]) {
 			package_request *R = BinaryPredicates::package(bp);
 			rg->guard_make_false_iname = Hierarchy::make_iname_in(GUARD_MAKE_FALSE_INAME_HL, R);
-			bp->make_false_function = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
+			bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
 		}
 	}
 
@@ -442,8 +442,8 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (RR->terms[0].domain) left_infs = Kinds::Knowledge::as_subject(RR->terms[0].domain);
 	if (RR->terms[1].domain) right_infs = Kinds::Knowledge::as_subject(RR->terms[1].domain);
 
-	left_bptd = BinaryPredicates::full_new_term(left_infs, RR->terms[0].domain, RR->terms[0].CALLW, NULL);
-	right_bptd = BinaryPredicates::full_new_term(right_infs, RR->terms[1].domain, RR->terms[1].CALLW, NULL);
+	left_bptd = BPTerms::new_full(left_infs, RR->terms[0].domain, RR->terms[0].CALLW, NULL);
+	right_bptd = BPTerms::new_full(right_infs, RR->terms[1].domain, RR->terms[1].CALLW, NULL);
 
 	bp->term_details[0] = left_bptd; bp->term_details[1] = right_bptd;
 	bpr->term_details[0] = right_bptd; bpr->term_details[1] = left_bptd;
@@ -541,12 +541,12 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 	bp->form_of_relation = Relation_OtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
-		bp->make_true_function = Calculus::Schemas::new("Relation_Now1to1(*2,%n,*1)", i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_Now1to1(*2,%n,*1)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
 	} else {
-		bp->make_true_function = Calculus::Schemas::new("Relation_Now1to1V(*2,*1,%k,%n)",
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_Now1to1V(*2,*1,%k,%n)",
 			storage_kind, i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
 			storage_kind, i6_prn_name);
 	}
 
@@ -556,12 +556,12 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 	bp->form_of_relation = Relation_OtoV;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
-		bp->make_true_function = Calculus::Schemas::new("*2.%n = *1", i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("*2.%n = *1", i6_prn_name);
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toV(*2,%n,*1)", i6_prn_name);
 	} else {
-		bp->make_true_function = Calculus::Schemas::new("WriteGProperty(%k, *2, %n, *1)",
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("WriteGProperty(%k, *2, %n, *1)",
 			storage_kind, i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toVV(*2,*1,%k,%n)",
 			storage_kind, i6_prn_name);
 	}
 
@@ -571,12 +571,12 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 	bp->form_of_relation = Relation_VtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
-		bp->make_true_function = Calculus::Schemas::new("*1.%n = *2", i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toV(*1,%n,*2)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("*1.%n = *2", i6_prn_name);
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toV(*1,%n,*2)", i6_prn_name);
 	} else {
-		bp->make_true_function = Calculus::Schemas::new("WriteGProperty(%k, *1, %n, *2)",
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("WriteGProperty(%k, *1, %n, *2)",
 			storage_kind, i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowN1toVV(*1,*2,%k,%n)",
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowN1toVV(*1,*2,%k,%n)",
 			storage_kind, i6_prn_name);
 	}
 
@@ -587,11 +587,11 @@ various K".
 	bp->form_of_relation = Relation_VtoV;
 	bp->arbitrary = TRUE;
 	BinaryPredicates::mark_as_needed(bp);
-	bp->test_function = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
 		BinaryPredicates::iname(bp));
-	bp->make_true_function = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,false))",
+	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,false))",
 		BinaryPredicates::iname(bp));
-	bp->make_false_function = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,false))",
+	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,false))",
 		BinaryPredicates::iname(bp));
 
 @ The |Relation_Sym_OtoO| case, or symmetric one to one: "R relates one K to
@@ -601,12 +601,12 @@ another".
 	bp->form_of_relation = Relation_Sym_OtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
-		bp->make_true_function = Calculus::Schemas::new("Relation_NowS1to1(*2,%n,*1)", i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowSN1to1(*2,%n,*1)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_NowS1to1(*2,%n,*1)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowSN1to1(*2,%n,*1)", i6_prn_name);
 	} else {
-		bp->make_true_function = Calculus::Schemas::new("Relation_NowS1to1V(*2,*1,%k,%n)",
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_NowS1to1V(*2,*1,%k,%n)",
 			storage_kind, i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowSN1to1V(*2,*1,%k,%n)",
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowSN1to1V(*2,*1,%k,%n)",
 			storage_kind, i6_prn_name);
 	}
 
@@ -617,11 +617,11 @@ to each other".
 	bp->form_of_relation = Relation_Sym_VtoV;
 	bp->arbitrary = TRUE;
 	BinaryPredicates::mark_as_needed(bp);
-	bp->test_function = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
 		BinaryPredicates::iname(bp));
-	bp->make_true_function = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,true))",
+	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,true))",
 		BinaryPredicates::iname(bp));
-	bp->make_false_function = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,true))",
+	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,true))",
 		BinaryPredicates::iname(bp));
 
 @ The |Relation_Equiv| case, or equivalence relation: "R relates K to each
@@ -632,16 +632,16 @@ other in groups".
 	bp->arbitrary = TRUE;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
-		bp->test_function = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);
-		bp->make_true_function = Calculus::Schemas::new("Relation_NowEquiv(*1,%n,*2)", i6_prn_name);
-		bp->make_false_function = Calculus::Schemas::new("Relation_NowNEquiv(*1,%n,*2)", i6_prn_name);
+		bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);
+		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_NowEquiv(*1,%n,*2)", i6_prn_name);
+		bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("Relation_NowNEquiv(*1,%n,*2)", i6_prn_name);
 	} else {
-		bp->test_function =
+		bp->task_functions[TEST_ATOM_TASK] =
 			Calculus::Schemas::new("(GProperty(%k, *1, %n) == GProperty(%k, *2, %n))",
 				storage_kind, i6_prn_name, storage_kind, i6_prn_name);
-		bp->make_true_function =
+		bp->task_functions[NOW_ATOM_TRUE_TASK] =
 			Calculus::Schemas::new("Relation_NowEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
-		bp->make_false_function =
+		bp->task_functions[NOW_ATOM_FALSE_TASK] =
 			Calculus::Schemas::new("Relation_NowNEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
 	}
 	Properties::Valued::set_kind(prn, K_number);
@@ -653,7 +653,7 @@ K to L when (some condition)".
 	bp->form_of_relation = Relation_ByRoutine;
 	package_request *P = BinaryPredicates::package(bp);
 	bp->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
-	bp->test_function = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
 	bp->condition_defn_text = RR->CONW;
 
 @ The left- and right- local variables above provide us with convenient
@@ -689,16 +689,16 @@ have the form $B(x, f_1(x))$.
 						RR->terms[0].domain, i6_prn_name);
 			}
 		}
-		if (f0) BinaryPredicates::set_term_function(&(bp->term_details[0]), f0);
-		if (f1) BinaryPredicates::set_term_function(&(bp->term_details[1]), f1);
+		if (f0) BPTerms::set_function(&(bp->term_details[0]), f0);
+		if (f1) BPTerms::set_function(&(bp->term_details[1]), f1);
 	}
 
 @<Override with dynamic allocation schemata@> =
-	bp->test_function = Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
 		BinaryPredicates::iname(bp));
-	bp->make_true_function = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
+	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
 		BinaryPredicates::iname(bp));
-	bp->make_false_function = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
+	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
 		BinaryPredicates::iname(bp));
 
 @h Storing relations.

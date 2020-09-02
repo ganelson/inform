@@ -4,6 +4,13 @@ To substitute constants into propositions in place of variables,
 and to apply quantifiers to bind any unbound variables.
 
 @h Status of variables.
+In any proposition $\phi$, we say that a variable $v$ is "bound" if it
+appears as the variable governed by a quantifier: it is "free" if it
+does appear somewhere in $\phi$ -- either directly as a term or indirectly
+through a function application -- and is not bound. For instance, in
+$$ \forall x : K(x) \land B(x, f_C(y)) $$
+the variable $x$ is bound and the variable $y$ is free.
+
 In any given proposition, each of the 26 variables always satisfies exactly
 one of the following:
 

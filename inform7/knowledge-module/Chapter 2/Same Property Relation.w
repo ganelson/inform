@@ -46,7 +46,7 @@ void Properties::SameRelations::stock(bp_family *self, int n) {
 				TEMPORARY_TEXT(relname)
 				WRITE_TO(relname, "%V", rel_name);
 				binary_predicate *bp = BinaryPredicates::make_pair(same_property_bp_family,
-					BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+					BPTerms::new(NULL), BPTerms::new(NULL),
 					relname, NULL,
 					Calculus::Schemas::new("*1.%n = *2.%n", i6_pname, i6_pname),
 					Calculus::Schemas::new("*1.%n == *2.%n", i6_pname, i6_pname),

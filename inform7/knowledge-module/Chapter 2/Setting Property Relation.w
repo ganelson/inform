@@ -40,8 +40,8 @@ therefore store the text of the property name (say, "weight") in
 =
 binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
-		BinaryPredicates::new_term(Kinds::Knowledge::as_subject(K_object)),
-		BinaryPredicates::new_term(NULL),
+		BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
+		BPTerms::new(NULL),
 		I"set-property", NULL, NULL, NULL, WordAssemblages::lit_0());
 	bp->property_pending_text = W;
 	bp->reversal->property_pending_text = W;
@@ -126,11 +126,11 @@ and simplicity.
 
 =
 void Properties::SettingRelations::set_property_BP_schemas(binary_predicate *bp, property *prn) {
-	bp->test_function =
+	bp->task_functions[TEST_ATOM_TASK] =
 		Calculus::Schemas::new("*1.%n == *2", Properties::iname(prn));
-	bp->make_true_function =
+	bp->task_functions[NOW_ATOM_TRUE_TASK] =
 		Calculus::Schemas::new("*1.%n = *2", Properties::iname(prn));
-	BinaryPredicates::set_term_domain(&(bp->term_details[1]),
+	BPTerms::set_domain(&(bp->term_details[1]),
 		Properties::Valued::kind(prn));
 }
 

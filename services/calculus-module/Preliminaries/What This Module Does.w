@@ -129,34 +129,33 @@ example, |odd(n) ^ prime(n)| is the notation for two consecutive atoms |odd(n)|
 and |prime(n)|.
 
 @h Unary predicates.
-We have a mixed bag of unary predicates, as follows.
-(*) For each adjective defined in the //linguistics// module, there is a
-predicate |A(t)|, true if the adjective currently applies to $t$.
+The //calculus// module aims to be agnostic about what unary predicates will
+exist. They are grouped into "families" -- see //Unary Predicate Families//
+for details -- which loosely group them by implementation. So, for exanple,
+Inform has a family of unary predicates in the form |calling='whatever'(x)|
+which assert that |x| represents something of a given name. But //calculus//
+is not concerned with the details. Only one family is built in:
 (*) For each kind $K$, there is a predicate |kind=K(t)|, which is true if $t$
 is of the kind $K$.
-(*) For any wording |W|, there is a predicate |called=W(t)|, which asserts
-that the current value of $t$ is something named |W|.
-(*) |is-a-kind(t)| asserts that $t$ represents a kind, not a value.
-(*) |is-a-var(t)| asserts that $t$ represents a variable, not a value.
-(*) |is-a-const(t)| asserts that $t$ represents a constant, not a value.
-(*) |everywhere(t)| asserts that $t$ is an object found everywhere.
-(*) |nowhere(t)| asserts that $t$ is an object found nowhere.
-(*) |here(t)| asserts that $t$ is an object found in the current room.
 
-As is apparent, the |is-a-...| predicates are a cheat: they exist purely to
-make it easier to write propositions which change the state of the world,
-rather than discuss that state. For example, Inform might create the kind
-"animal" by asserting |Exists x : is-a-kind(x) ^ called=animal(x)|.
+New UPs can be constructed with //UnaryPredicates::new//.
 
 @h Binary predicates.
-By contrast all binary predicate atoms use |PREDICATE_ATOM|, and there is only
-one set of them -- but with that said,
-(a) They can be organised into "families" with shared implementations -- see
-//Binary Predicate Families//.
-(b) The equality predicate $=$ is predefined by the //calculus// module, and
-its special meaning is used when simplifying propositions. See //The Equality Relation//.
-It is written with the special notation |(x == y)|, though this is just syntactic
-sugar.
+Similarly, //calculus// allows the user to create as many families of binary
+predicates as are wanted. See //Binary Predicate Families//. For example,
+the "same property value as" relations all belong to a single family. This
+module builds only one family in:
+(*) The equality predicate $=$, whose special meaning is used when simplifying
+propositions. See //The Equality Relation//. It is written with the special
+notation |(x == y)|, though this is just syntactic sugar.
+
+Binary predicates are of central importance to us because they allow complex
+sentences to be written which talk about more than one thing at a time,
+with some connection between them. In excerpts of Inform source like "an animal
+inside something" or "a man who wears the top hat", the meanings of the two
+connecting pieces of text -- "inside" and "who wears" -- are binary predicates:
+the containment relation and the wearing relation. To avoid scaring the horses,
+binary predicates are called "relations" in all of the Inform documentation.
 
 New BPs can be constructed with //BinaryPredicates::make_pair//. The term "pair"
 is used because every $B$ has a "reversal" $B^r$, such that $B^r(s, t)$ is true

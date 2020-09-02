@@ -481,7 +481,7 @@ behaviour despite being of mutually incompatible kinds.)
 	TEMPORARY_TEXT(relname)
 	WRITE_TO(relname, "%V", quiddity);
 	bp = BinaryPredicates::make_pair(property_comparison_bp_family,
-		BinaryPredicates::new_term(NULL), BinaryPredicates::new_term(NULL),
+		BPTerms::new(NULL), BPTerms::new(NULL),
 		relname, NULL, NULL,
 		schema_to_compare_property_values, WordAssemblages::lit_1(quiddity));
 	DISCARD_TEXT(relname)

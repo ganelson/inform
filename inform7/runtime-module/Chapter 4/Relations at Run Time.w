@@ -1663,8 +1663,8 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	packaging_state save = Routines::begin(rname);
 
 	ph_stack_frame *phsf = Frames::current_stack_frame();
-	BinaryPredicates::add_term_as_call_parameter(phsf, par1);
-	BinaryPredicates::add_term_as_call_parameter(phsf, par2);
+	RTRelations::add_term_as_call_parameter(phsf, par1);
+	RTRelations::add_term_as_call_parameter(phsf, par2);
 
 	LocalVariables::enable_possessive_form_of_it();
 
@@ -1683,6 +1683,38 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 	}
 
 	Routines::end(save);
+}
+
+@ The following routine adds the given BP term as a call parameter to the
+routine currently being compiled, deciding that something is an object if
+its kind indications are all blank, but verifying that the value supplied
+matches the specific necessary kind of object if there is one.
+
+=
+void RTRelations::add_term_as_call_parameter(ph_stack_frame *phsf,
+	bp_term_details bptd) {
+	kind *K = BPTerms::kind(&bptd);
+	kind *PK = K;
+	if ((PK == NULL) || (Kinds::Behaviour::is_subkind_of_object(PK))) PK = K_object;
+	inter_symbol *lv_s = LocalVariables::add_call_parameter_as_symbol(phsf,
+		bptd.called_name, PK);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
+		Produce::inv_primitive(Emit::tree(), IF_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), NOT_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, lv_s);
+					Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::rfalse(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	}
 }
 
 @h Indexing relations.
@@ -1709,9 +1741,9 @@ void RTRelations::index_table(OUTPUT_STREAM) {
 			HTML::next_html_column(OUT, 0);
 			if (Str::len(type) > 0) WRITE("%S", type); else WRITE("--");
 			HTML::next_html_column(OUT, 0);
-			BinaryPredicates::index_term_details(OUT, &(bp->term_details[0]));
+			BPTerms::index(OUT, &(bp->term_details[0]));
 			HTML::next_html_column(OUT, 0);
-			BinaryPredicates::index_term_details(OUT, &(bp->term_details[1]));
+			BPTerms::index(OUT, &(bp->term_details[1]));
 			HTML::end_html_row(OUT);
 		}
 	HTML::end_html_table(OUT);

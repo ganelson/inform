@@ -3,7 +3,7 @@
 A lightweight structure to represent a unary predicate, which is either true
 or false when applied to a single term.
 
-@ These are relatively small and quick to make, and are parametrised in various
+@ UPs are relatively small and quick to make, and are parametrised in various
 ways. For example, there is no single |kind=K| unary predicate; there is one
 for every possible kind |K|.
 
@@ -19,25 +19,28 @@ typedef struct unary_predicate {
 
 @ =
 unary_predicate *UnaryPredicates::new(up_family *f) {
-	unary_predicate *au = CREATE(unary_predicate);
-	au->family = f;
-	au->assert_kind = NULL;
-	au->lcon = 0;
-	au->calling_name = EMPTY_WORDING;
-	return au;
+	unary_predicate *up = CREATE(unary_predicate);
+	up->family = f;
+	up->assert_kind = NULL;
+	up->lcon = 0;
+	up->calling_name = EMPTY_WORDING;
+	return up;
 }
 
-unary_predicate *UnaryPredicates::copy(unary_predicate *au_from) {
-	unary_predicate *au = CREATE(unary_predicate);
-	au->family = au_from->family;
-	au->assert_kind = au_from->assert_kind;
-	au->composited = au_from->composited;
-	au->unarticled = au_from->unarticled;
-	au->calling_name = au_from->calling_name;
-	au->lcon = au_from->lcon;
-	return au;
+void UnaryPredicates::log(unary_predicate *up) {
+	UnaryPredicateFamilies::log(DL, up);
 }
 
-void UnaryPredicates::log(unary_predicate *au) {
-	UnaryPredicateFamilies::log(DL, au);
+@ When deep-copying propositions, we also deep-copy their unary predicates:
+
+=
+unary_predicate *UnaryPredicates::copy(unary_predicate *up_from) {
+	unary_predicate *up = CREATE(unary_predicate);
+	up->family = up_from->family;
+	up->assert_kind = up_from->assert_kind;
+	up->composited = up_from->composited;
+	up->unarticled = up_from->unarticled;
+	up->calling_name = up_from->calling_name;
+	up->lcon = up_from->lcon;
+	return up;
 }
