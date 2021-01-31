@@ -61,9 +61,11 @@ void Calculus::Equality::stock_spatial(bp_family *self, int n) {
 @h Problem message text.
 
 =
-int Calculus::Equality::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int Calculus::Equality::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
 	return FALSE;
 }
-void Calculus::Equality::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void Calculus::Equality::REL_describe_briefly(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
 	WRITE("equality");
 }

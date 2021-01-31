@@ -74,7 +74,6 @@ typedef struct binary_predicate {
 	struct inter_name *bp_iname; /* when referred to as a constant */
 	struct inter_name *handler_iname;
 	struct inter_name *v2v_bitmap_iname; /* only relevant for some relations */
-	struct inter_name *bp_by_routine_iname; /* for relations by routine */
 	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
 	#endif
 
@@ -85,7 +84,6 @@ typedef struct binary_predicate {
 
 	/* how to compile code which tests or forces this BP to be true or false: */
 	struct i6_schema *task_functions[4]; /* I6 schema for tasks */
-	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
 
 	/* for use in the A-parser: */
 	int arbitrary; /* allow source to assert $B(x, y)$ for any arbitrary pairs $x, y$ */
@@ -107,9 +105,6 @@ typedef struct binary_predicate {
 	int record_needed; /* we need to compile a small array of details in readable memory */
 
 	/* details, filled in for right-way-round BPs only, for particular kinds of BP: */
-	int a_listed_in_predicate; /* (if right way) was this generated from a table column? */
-	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
-
 	general_pointer family_specific;
 
 	CLASS_DEFINITION
@@ -314,7 +309,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->bp_iname = NULL;
 	bp->handler_iname = NULL;
 	bp->v2v_bitmap_iname = NULL;
-	bp->bp_by_routine_iname = NULL;
 	bp->initialiser_iname = NULL;
 	#endif
 
@@ -324,7 +318,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	/* for use in code compilation */
 	bp->task_functions[TEST_ATOM_TASK] = tf;
-	bp->condition_defn_text = EMPTY_WORDING;
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = mtf;
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = NULL;
 
@@ -355,9 +348,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->record_needed = FALSE;
 
 	/* details for particular kinds of relation */
-	bp->a_listed_in_predicate = FALSE;
-	bp->equivalence_partition = NULL;
-
 	bp->family_specific = NULL_GENERAL_POINTER;
 
 	return bp;

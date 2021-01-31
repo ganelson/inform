@@ -172,7 +172,6 @@ and "inside" the wrong way round.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> when referred to as a constant</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">handler_iname</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v2v_bitmap_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> only relevant for some relations</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp_by_routine_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> for relations by routine</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">initialiser_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> if stored in dynamically allocated memory</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
@@ -183,7 +182,6 @@ and "inside" the wrong way round.
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> how to compile code which tests or forces this BP to be true or false:</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">task_functions</span><span class="plain-syntax">[4]; </span><span class="comment-syntax"> I6 schema for tasks</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">condition_defn_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...unless this I7 condition is used instead</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> for use in the A-parser:</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">arbitrary</span><span class="plain-syntax">; </span><span class="comment-syntax"> allow source to assert </span>\(B(x, y)\)<span class="comment-syntax"> for any arbitrary pairs </span>\(x, y\)
@@ -205,9 +203,6 @@ and "inside" the wrong way round.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">record_needed</span><span class="plain-syntax">; </span><span class="comment-syntax"> we need to compile a small array of details in readable memory</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> details, filled in for right-way-round BPs only, for particular kinds of BP:</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a_listed_in_predicate</span><span class="plain-syntax">; </span><span class="comment-syntax"> (if right way) was this generated from a table column?</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">equivalence_partition</span><span class="plain-syntax">; </span><span class="comment-syntax"> (if right way) partition array of equivalence classes</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">family_specific</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -432,7 +427,6 @@ would always be <span class="extract"><span class="extract-syntax">NULL</span></
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bp_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">handler_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">v2v_bitmap_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bp_by_routine_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">initialiser_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
@@ -442,7 +436,6 @@ would always be <span class="extract"><span class="extract-syntax">NULL</span></
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> for use in code compilation</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_functions</span><span class="plain-syntax">[</span><span class="constant-syntax">TEST_ATOM_TASK</span><span class="plain-syntax">] = </span><span class="identifier-syntax">tf</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">condition_defn_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_functions</span><span class="plain-syntax">[</span><span class="constant-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">] = </span><span class="identifier-syntax">mtf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_functions</span><span class="plain-syntax">[</span><span class="constant-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
@@ -473,9 +466,6 @@ would always be <span class="extract"><span class="extract-syntax">NULL</span></
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">record_needed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> details for particular kinds of relation</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">a_listed_in_predicate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">equivalence_partition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">bp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bp</span><span class="plain-syntax">;</span>

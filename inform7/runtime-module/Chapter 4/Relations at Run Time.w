@@ -249,9 +249,11 @@ void RTRelations::compile_relation_records(void) {
 			if (dbp->v2v_bitmap_iname == NULL) internal_error("gaah");
 			Emit::array_iname_entry(dbp->v2v_bitmap_iname);
 			break;
-		case Relation_ByRoutine: /* Field 0 is the routine used to test the relation */
-			Emit::array_iname_entry(dbp->bp_by_routine_iname);
+		case Relation_ByRoutine: { /* Field 0 is the routine used to test the relation */
+			by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(dbp->family_specific);
+			Emit::array_iname_entry(D->bp_by_routine_iname);
 			break;
+		}
 		default:
 			internal_error("Binary predicate with unknown structural type");
 	}
@@ -1239,10 +1241,12 @@ $$ p(P) = 12, p(S) = 23, p(R) = 25, p(D) = 26, p(O) = 31. $$
 =
 void RTRelations::equivalence_relation_make_singleton_partitions(binary_predicate *bp,
 	int domain_size) {
-	int i;
+	if (bp->form_of_relation != Relation_Equiv)
+		internal_error("attempt to make partition for a non-equivalence relation");
+	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
 	int *partition_array = Memory::calloc(domain_size, sizeof(int), PARTITION_MREASON);
-	for (i=0; i<domain_size; i++) partition_array[i] = i+1;
-	bp->equivalence_partition = partition_array;
+	for (int i=0; i<domain_size; i++) partition_array[i] = i+1;
+	D->equivalence_partition = partition_array;
 }
 
 @ The A-parser has meanwhile been reading in facts about the helping relation:
@@ -1280,8 +1284,9 @@ void RTRelations::equivalence_relation_merge_classes(binary_predicate *bp,
 	int domain_size, int ix1, int ix2) {
 	if (bp->form_of_relation != Relation_Equiv)
 		internal_error("attempt to merge classes for a non-equivalence relation");
+	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
 	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	int *partition_array = bp->equivalence_partition;
+	int *partition_array = D->equivalence_partition;;
 	if (partition_array == NULL)
 		internal_error("attempt to use null equivalence partition array");
 	int little, big; /* or, The Fairies' Parliament */
@@ -1329,7 +1334,8 @@ int RTRelations::equivalence_relation_get_class(binary_predicate *bp, int ix) {
 	if (bp->form_of_relation != Relation_Equiv)
 		internal_error("attempt to merge classes for a non-equivalence relation");
 	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	int *partition_array = bp->equivalence_partition;
+	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
+	int *partition_array = D->equivalence_partition;;
 	if (partition_array == NULL)
 		internal_error("attempt to use null equivalence partition array");
 	return partition_array[ix];
@@ -1379,8 +1385,9 @@ void RTRelations::compile_defined_relations(void) {
 			WRITE_TO(C, "Routine to decide if %S(t_0, t_1)", BinaryPredicates::get_log_name(bp));
 			Produce::comment(Emit::tree(), C);
 			DISCARD_TEXT(C)
-			RTRelations::compile_routine_to_decide(bp->bp_by_routine_iname,
-				bp->condition_defn_text, bp->term_details[0], bp->term_details[1]);
+			by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(bp->family_specific);
+			RTRelations::compile_routine_to_decide(D->bp_by_routine_iname,
+				D->condition_defn_text, bp->term_details[0], bp->term_details[1]);
 		}
 	@<Compile RProperty routine@>;
 

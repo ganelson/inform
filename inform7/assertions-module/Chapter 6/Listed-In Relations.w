@@ -37,7 +37,6 @@ binary_predicate *Tables::Relations::make_listed_in_predicate(table_column *tc) 
 		Calculus::Schemas::new("(ct_1=ExistsTableRowCorr(ct_0=*2,%d,*1))",
 			Tables::Columns::get_id(tc)),
 		WordAssemblages::lit_0());
-	bp->a_listed_in_predicate = TRUE;
 	return bp;
 }
 

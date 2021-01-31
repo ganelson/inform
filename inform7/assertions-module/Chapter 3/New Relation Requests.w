@@ -315,6 +315,20 @@ kind *RelationRequests::parse_term(wording W, char *side) {
 	return NULL;
 }
 
+@
+
+=
+typedef struct by_routine_bp_data {
+	struct wording condition_defn_text; /* ...unless this I7 condition is used instead */
+	struct inter_name *bp_by_routine_iname; /* routine to determine */
+	CLASS_DEFINITION
+} by_routine_bp_data;
+
+typedef struct equivalence_bp_data {
+	int *equivalence_partition; /* (if right way) partition array of equivalence classes */
+	CLASS_DEFINITION
+} equivalence_bp_data;
+
 @h Creation, Stage II.
 Altogether, the Inform user is allowed to define some eight different forms
 of relation. The code below is an attempt to find whatever common ground
@@ -629,6 +643,9 @@ other in groups".
 
 @<Complete as an equivalence-relation BP@> =
 	bp->form_of_relation = Relation_Equiv;
+	equivalence_bp_data *D = CREATE(equivalence_bp_data);
+	D->equivalence_partition = NULL;
+	bp->family_specific = STORE_POINTER_equivalence_bp_data(D);
 	bp->arbitrary = TRUE;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
@@ -652,9 +669,11 @@ K to L when (some condition)".
 @<Complete as a relation-by-routine BP@> =
 	bp->form_of_relation = Relation_ByRoutine;
 	package_request *P = BinaryPredicates::package(bp);
-	bp->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
-	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", bp->bp_by_routine_iname);
-	bp->condition_defn_text = RR->CONW;
+	by_routine_bp_data *D = CREATE(by_routine_bp_data);
+	D->condition_defn_text = RR->CONW;
+	D->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
+	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", D->bp_by_routine_iname);
+	bp->family_specific = STORE_POINTER_by_routine_bp_data(D);
 
 @ The left- and right- local variables above provide us with convenient
 aliases for the entries which will end up in the |bp_term_details|
