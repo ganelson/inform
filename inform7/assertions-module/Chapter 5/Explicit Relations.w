@@ -10,6 +10,10 @@ there are none.
 
 = (early code)
 bp_family *explicit_bp_family = NULL;
+typedef struct explicit_bp_data {
+	CLASS_DEFINITION
+} explicit_bp_data;
+
 
 @ =
 void Relations::Explicit::start(void) {
@@ -44,7 +48,7 @@ int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
 		return TRUE;
 	} else {
 		if ((infs0 == NULL) || (infs1 == NULL)) @<Reject relationship with nothing@>;
-		if (BinaryPredicates::allow_arbitrary_assertions(bp)) {
+		if (Relations::Explicit::allow_arbitrary_assertions(bp)) {
 			World::Inferences::draw_relation(bp, infs0, infs1);
 			if ((BinaryPredicates::get_form_of_relation(bp) == Relation_Sym_VtoV) && (infs0 != infs1))
 				World::Inferences::draw_relation(bp, infs1, infs0);
@@ -57,6 +61,13 @@ int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
 			return TRUE;
 		}
 	}
+	return FALSE;
+}
+
+int Relations::Explicit::allow_arbitrary_assertions(binary_predicate *bp) {
+	if (bp->form_of_relation == Relation_Equiv) return TRUE;
+	if (bp->form_of_relation == Relation_VtoV) return TRUE;
+	if (bp->form_of_relation == Relation_Sym_VtoV) return TRUE;
 	return FALSE;
 }
 

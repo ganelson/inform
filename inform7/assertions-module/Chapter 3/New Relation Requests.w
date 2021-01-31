@@ -526,7 +526,7 @@ omitted from the index.
 	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
 	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
 	else storage_infs = NULL;
-	if (Kinds::Behaviour::is_object(storage_kind) == FALSE) bp->storage_kind = storage_kind;
+//	if (Kinds::Behaviour::is_object(storage_kind) == FALSE) bp->storage_kind = storage_kind;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
 		(Kinds::Behaviour::is_object(PK) == FALSE))
 		Properties::Valued::now_used_for_non_typesafe_relation(prn);
@@ -599,7 +599,6 @@ various K".
 
 @<Complete as an asymmetric various-to-various BP@> =
 	bp->form_of_relation = Relation_VtoV;
-	bp->arbitrary = TRUE;
 	BinaryPredicates::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
 		BinaryPredicates::iname(bp));
@@ -629,7 +628,6 @@ to each other".
 
 @<Complete as a symmetric various-to-various BP@> =
 	bp->form_of_relation = Relation_Sym_VtoV;
-	bp->arbitrary = TRUE;
 	BinaryPredicates::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
 		BinaryPredicates::iname(bp));
@@ -646,7 +644,6 @@ other in groups".
 	equivalence_bp_data *D = CREATE(equivalence_bp_data);
 	D->equivalence_partition = NULL;
 	bp->family_specific = STORE_POINTER_equivalence_bp_data(D);
-	bp->arbitrary = TRUE;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);

@@ -23,6 +23,7 @@ DECLARE_CLASS(compile_task_data)
 @e application_CLASS
 @e by_routine_bp_data_CLASS
 @e equivalence_bp_data_CLASS
+@e explicit_bp_data_CLASS
 @e generalisation_CLASS
 @e i6_memory_setting_CLASS
 @e implication_CLASS
@@ -39,6 +40,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
 DECLARE_CLASS(generalisation)
 DECLARE_CLASS(by_routine_bp_data)
 DECLARE_CLASS(equivalence_bp_data)
+DECLARE_CLASS(explicit_bp_data)
 DECLARE_CLASS(i6_memory_setting)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(relation_guard)

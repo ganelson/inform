@@ -86,7 +86,6 @@ typedef struct binary_predicate {
 	struct i6_schema *task_functions[4]; /* I6 schema for tasks */
 
 	/* for use in the A-parser: */
-	int arbitrary; /* allow source to assert $B(x, y)$ for any arbitrary pairs $x, y$ */
 	int relates_values_not_objects; /* true if either term is necessarily a value... */
 	TERM_DOMAIN_CALCULUS_TYPE *knowledge_about_bp; /* ...and if so, here's the list of known assertions */
 
@@ -95,14 +94,14 @@ typedef struct binary_predicate {
 	#ifdef CORE_MODULE
 	struct property *i6_storage_property; /* provides run-time storage */
 	#endif
-	struct kind *storage_kind; /* kind of property owner */
+	struct kind *storage_kindXXX; /* kind of property owner */
 	int allow_function_simplification; /* allow Inform to make use of any $f_i$ functions? */
 	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
 	char *loop_parent_optimisation_proviso; /* if not NULL, optimise loops using object tree */
 	char *loop_parent_optimisation_ranger; /* if not NULL, routine iterating through contents */
 	int record_needed; /* we need to compile a small array of details in readable memory */
 
-	/* details, filled in for right-way-round BPs only, for particular kinds of BP: */
+	/* details for particular kinds of BP: */
 	general_pointer family_specific;
 
 	CLASS_DEFINITION
@@ -320,7 +319,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = NULL;
 
 	/* for use by the A-parser */
-	bp->arbitrary = FALSE;
 	bp->relates_values_not_objects = FALSE;
 	#ifdef CORE_MODULE
 	bp->knowledge_about_bp =
@@ -336,7 +334,7 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	#ifdef CORE_MODULE
 	bp->i6_storage_property = NULL;
 	#endif
-	bp->storage_kind = NULL;
+//	bp->storage_kind = NULL;
 	bp->allow_function_simplification = TRUE;
 	bp->fast_route_finding = FALSE;
 	bp->loop_parent_optimisation_proviso = NULL;
@@ -497,9 +495,6 @@ can't be done if an assertion is about values, so they are stored under the
 relation itself.)
 
 =
-int BinaryPredicates::allow_arbitrary_assertions(binary_predicate *bp) {
-	return bp->arbitrary;
-}
 int BinaryPredicates::store_dynamically(binary_predicate *bp) {
 	return bp->dynamic_memory;
 }
