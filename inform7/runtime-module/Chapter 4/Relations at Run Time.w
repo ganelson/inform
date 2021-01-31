@@ -2,6 +2,17 @@
 
 Relations need both storage and support code at runtime.
 
+@h The handler.
+
+=
+inter_name *RTRelations::handler_iname(binary_predicate *bp) {
+	if (bp->handler_iname == NULL) {
+		package_request *R = BinaryPredicates::package(bp);
+		bp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
+	}
+	return bp->handler_iname;
+}
+
 @h Relation records.
 The template layer needs to be able to perform certain actions on any given
 relation, regardless of its mode of storage (if any). We abstract all of this
@@ -99,7 +110,7 @@ void RTRelations::compile_relation_records(void) {
 				DISCARD_TEXT(A)
 			Produce::up(Emit::tree());
 
-			switch(bp->form_of_relation) {
+			switch(Relations::Explicit::get_form_of_relation(bp)) {
 				case Relation_OtoO:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
 					Produce::down(Emit::tree());
@@ -196,7 +207,7 @@ void RTRelations::compile_relation_records(void) {
 		Emit::array_iname_entry(Hierarchy::find(RELS_LOOKUP_ALL_X_HL));
 		Emit::array_iname_entry(RELS_LIST_iname);
 	}
-	switch(dbp->form_of_relation) {
+	switch(Relations::Explicit::get_form_of_relation(dbp)) {
 		case Relation_Implicit:
 			if ((minimal == FALSE) && (BinaryPredicates::can_be_made_true_at_runtime(dbp))) {
 				Emit::array_iname_entry(RELS_ASSERT_TRUE_iname);
@@ -215,7 +226,6 @@ void RTRelations::compile_relation_records(void) {
 		case Relation_Equiv: Emit::array_iname_entry(RELS_EQUIVALENCE_iname); @<Throw in the full suite@>; break;
 		case Relation_VtoV: @<Throw in the full suite@>; break;
 		case Relation_Sym_VtoV: Emit::array_iname_entry(RELS_SYMMETRIC_iname); @<Throw in the full suite@>; break;
-		case Relation_ByRoutine: break;
 		default:
 			internal_error("Binary predicate with unknown structural type");
 	}
@@ -233,29 +243,32 @@ void RTRelations::compile_relation_records(void) {
 @<Write the storage field of the relation metadata array@> =
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
-	switch(dbp->form_of_relation) {
-		case Relation_Implicit: /* Field 0 is not used */
-			Emit::array_numeric_entry(0); /* which is not the same as |NULL|, unlike in C */
-			break;
-		case Relation_OtoO:
-		case Relation_OtoV:
-		case Relation_VtoO:
-		case Relation_Sym_OtoO:
-		case Relation_Equiv: /* Field 0 is the property used for run-time storage */
-			Emit::array_iname_entry(Properties::iname(dbp->i6_storage_property));
-			break;
-		case Relation_VtoV:
-		case Relation_Sym_VtoV: /* Field 0 is the bitmap array used for run-time storage */
-			if (dbp->v2v_bitmap_iname == NULL) internal_error("gaah");
-			Emit::array_iname_entry(dbp->v2v_bitmap_iname);
-			break;
-		case Relation_ByRoutine: { /* Field 0 is the routine used to test the relation */
-			by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(dbp->family_specific);
-			Emit::array_iname_entry(D->bp_by_routine_iname);
-			break;
+	if (bp->relation_family == by_routine_bp_family) {
+		/* Field 0 is the routine used to test the relation */
+		by_routine_bp_data *D = RETRIEVE_POINTER_by_routine_bp_data(dbp->family_specific);
+		Emit::array_iname_entry(D->bp_by_routine_iname);
+	} else {
+		switch(Relations::Explicit::get_form_of_relation(dbp)) {
+			case Relation_Implicit: /* Field 0 is not used */
+				Emit::array_numeric_entry(0); /* which is not the same as |NULL|, unlike in C */
+				break;
+			case Relation_OtoO:
+			case Relation_OtoV:
+			case Relation_VtoO:
+			case Relation_Sym_OtoO:
+			case Relation_Equiv: /* Field 0 is the property used for run-time storage */
+				Emit::array_iname_entry(
+					Properties::iname(Relations::Explicit::get_i6_storage_property(dbp)));
+				break;
+			case Relation_VtoV:
+			case Relation_Sym_VtoV: {
+				/* Field 0 is the bitmap array used for run-time storage */
+				explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+				if (ED->v2v_bitmap_iname == NULL) internal_error("gaah");
+				Emit::array_iname_entry(ED->v2v_bitmap_iname);
+				break;
+			}
 		}
-		default:
-			internal_error("Binary predicate with unknown structural type");
 	}
 
 @<Write the kind field of the relation record@> =
@@ -263,7 +276,7 @@ void RTRelations::compile_relation_records(void) {
 
 @<Write the description field of the relation record@> =
 	TEMPORARY_TEXT(DF)
-	if (bp->form_of_relation == Relation_Implicit)
+	if (Relations::Explicit::get_form_of_relation(bp) == Relation_Implicit)
 		WRITE_TO(DF, "%S", BinaryPredicates::get_log_name(bp));
 	else CompiledText::from_text(DF, Node::get_text(bp->bp_created_at));
 	Emit::array_text_entry(DF);
@@ -277,7 +290,7 @@ void RTRelations::compile_relation_records(void) {
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) { X = I"Y"; Y = I"X"; dbp = bp->reversal; }
 
-	handler = BinaryPredicates::handler_iname(bp);
+	handler = RTRelations::handler_iname(bp);
 	packaging_state save = Routines::begin(handler);
 	inter_symbol *rr_s = LocalVariables::add_named_call_as_symbol(I"rr");
 	inter_symbol *task_s = LocalVariables::add_named_call_as_symbol(I"task");
@@ -366,7 +379,7 @@ void RTRelations::compile_relation_records(void) {
 				}
 				inter_name *shower = NULL;
 				int par = 0;
-				switch(dbp->form_of_relation) {
+				switch(Relations::Explicit::get_form_of_relation(dbp)) {
 					case Relation_OtoO: shower = Hierarchy::find(RELATION_RSHOWOTOO_HL); break;
 					case Relation_OtoV: shower = Hierarchy::find(RELATION_RSHOWOTOO_HL); break;
 					case Relation_VtoO: shower = Hierarchy::find(RELATION_SHOWOTOO_HL); break;
@@ -387,7 +400,7 @@ void RTRelations::compile_relation_records(void) {
 				}
 				inter_name *emptier = NULL;
 				par = 0;
-				switch(dbp->form_of_relation) {
+				switch(Relations::Explicit::get_form_of_relation(dbp)) {
 					case Relation_OtoO: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
 					case Relation_OtoV: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
 					case Relation_VtoO: emptier = Hierarchy::find(RELATION_EMPTYOTOO_HL); break;
@@ -409,7 +422,7 @@ void RTRelations::compile_relation_records(void) {
 				inter_name *router = NULL;
 				int id_flag = TRUE;
 				int follow = FALSE;
-				switch(dbp->form_of_relation) {
+				switch(Relations::Explicit::get_form_of_relation(dbp)) {
 					case Relation_OtoO: router = Hierarchy::find(OTOVRELROUTETO_HL); follow = TRUE; break;
 					case Relation_OtoV: router = Hierarchy::find(OTOVRELROUTETO_HL); follow = TRUE; break;
 					case Relation_VtoO: router = Hierarchy::find(VTOORELROUTETO_HL); follow = TRUE; break;
@@ -697,7 +710,7 @@ void RTRelations::compile_relation_records(void) {
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
 						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::handler_iname(dbp));
+							Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
 							Produce::val_symbol(Emit::tree(), K_value, rr_s);
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
@@ -797,7 +810,7 @@ void RTRelations::compile_relation_records(void) {
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
 						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::handler_iname(dbp));
+							Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
 							Produce::val_symbol(Emit::tree(), K_value, rr_s);
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
 							if (t == 0) {
@@ -840,7 +853,7 @@ void RTRelations::compile_relation_records(void) {
 							Produce::down(Emit::tree());
 								Produce::inv_primitive(Emit::tree(), INDIRECT4_BIP);
 								Produce::down(Emit::tree());
-									Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::handler_iname(dbp));
+									Produce::val_iname(Emit::tree(), K_value, RTRelations::handler_iname(dbp));
 									Produce::val_symbol(Emit::tree(), K_value, rr_s);
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_TEST_HL));
 									Produce::val_symbol(Emit::tree(), K_value, Z1_s);
@@ -990,8 +1003,9 @@ void RTRelations::compile_vtov_storage(binary_predicate *bp) {
 		@<Allocate a zeroed-out memory cache for relations with fast route-finding@>;
 
 	package_request *P = BinaryPredicates::package(bp);
-	bp->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
-	packaging_state save = Emit::named_array_begin(bp->v2v_bitmap_iname, K_value);
+	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+	ED->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
+	packaging_state save = Emit::named_array_begin(ED->v2v_bitmap_iname, K_value);
 	@<Compile header information in the V-to-V structure@>;
 
 	if ((left_count > 0) && (right_count > 0))
@@ -1241,12 +1255,12 @@ $$ p(P) = 12, p(S) = 23, p(R) = 25, p(D) = 26, p(O) = 31. $$
 =
 void RTRelations::equivalence_relation_make_singleton_partitions(binary_predicate *bp,
 	int domain_size) {
-	if (bp->form_of_relation != Relation_Equiv)
+	if (Relations::Explicit::get_form_of_relation(bp) != Relation_Equiv)
 		internal_error("attempt to make partition for a non-equivalence relation");
-	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
+	explicit_bp_data *D = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	int *partition_array = Memory::calloc(domain_size, sizeof(int), PARTITION_MREASON);
 	for (int i=0; i<domain_size; i++) partition_array[i] = i+1;
-	D->equivalence_partition = partition_array;
+	D->equiv_data->equivalence_partition = partition_array;
 }
 
 @ The A-parser has meanwhile been reading in facts about the helping relation:
@@ -1282,11 +1296,11 @@ users to set up these relations in a stylistically poor way.
 =
 void RTRelations::equivalence_relation_merge_classes(binary_predicate *bp,
 	int domain_size, int ix1, int ix2) {
-	if (bp->form_of_relation != Relation_Equiv)
+	if (Relations::Explicit::get_form_of_relation(bp) != Relation_Equiv)
 		internal_error("attempt to merge classes for a non-equivalence relation");
-	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
+	explicit_bp_data *D = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	int *partition_array = D->equivalence_partition;;
+	int *partition_array = D->equiv_data->equivalence_partition;;
 	if (partition_array == NULL)
 		internal_error("attempt to use null equivalence partition array");
 	int little, big; /* or, The Fairies' Parliament */
@@ -1325,17 +1339,18 @@ void RTRelations::equivalence_relation_add_properties(binary_predicate *bp) {
 @<Set the partition number property@> =
 	parse_node *val = Rvalues::from_int(
 		RTRelations::equivalence_relation_get_class(bp, infs->allocation_id), EMPTY_WORDING);
-	Properties::Valued::assert(bp->i6_storage_property, infs, val, CERTAIN_CE);
+	Properties::Valued::assert(Relations::Explicit::get_i6_storage_property(bp),
+		infs, val, CERTAIN_CE);
 
 @ Where:
 
 =
 int RTRelations::equivalence_relation_get_class(binary_predicate *bp, int ix) {
-	if (bp->form_of_relation != Relation_Equiv)
+	if (Relations::Explicit::get_form_of_relation(bp) != Relation_Equiv)
 		internal_error("attempt to merge classes for a non-equivalence relation");
 	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	equivalence_bp_data *D = RETRIEVE_POINTER_equivalence_bp_data(bp->family_specific);
-	int *partition_array = D->equivalence_partition;;
+	explicit_bp_data *D = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+	int *partition_array = D->equiv_data->equivalence_partition;;
 	if (partition_array == NULL)
 		internal_error("attempt to use null equivalence partition array");
 	return partition_array[ix];
@@ -1379,7 +1394,7 @@ void RTRelations::compile_defined_relations(void) {
 	RTRelations::compile_relation_records();
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
-		if ((bp->form_of_relation == Relation_ByRoutine) && (bp->right_way_round)) {
+		if ((bp->relation_family == by_routine_bp_family) && (bp->right_way_round)) {
 			current_sentence = bp->bp_created_at;
 			TEMPORARY_TEXT(C)
 			WRITE_TO(C, "Routine to decide if %S(t_0, t_1)", BinaryPredicates::get_log_name(bp));

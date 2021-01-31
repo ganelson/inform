@@ -39,8 +39,8 @@ int RelationRequests::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 						"this is too long a name for a single relation to have",
 						"and would become unwieldy.");
 				else Node::set_new_relation_here(V->next,
-						BinaryPredicates::make_pair_sketchily(explicit_bp_family,
-							WordAssemblages::from_wording(RW), Relation_OtoO));
+						Relations::Explicit::make_pair_sketchily(
+							WordAssemblages::from_wording(RW)));
 				return TRUE;
 			}
 			break;
@@ -343,6 +343,8 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	kind *storage_kind = NULL; /* what kind, if any, might be stored in it */
 	inference_subject *storage_infs = NULL; /* summing these up */
 
+	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+			
 	int rvno = FALSE, /* relate values not objects? */
 		dynamic = FALSE, /* use dynamic memory allocation for storage? */
 		provide_prn = FALSE, /* allocate the storage property to the kind? */
@@ -355,7 +357,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (rvno) { bp->relates_values_not_objects = TRUE; bpr->relates_values_not_objects = TRUE; }
 	if (RR->frf) { bp->fast_route_finding = TRUE; bpr->fast_route_finding = TRUE; }
 	if (prn) {
-		bp->i6_storage_property = prn; bpr->i6_storage_property = prn;
+		ED->i6_storage_property = prn;
 		Properties::Valued::set_stored_relation(prn, bp);
 	}
 	if (dynamic) {
@@ -433,8 +435,6 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 			bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
 		}
 	}
-
-	bpr->form_of_relation = bp->form_of_relation;
 
 	LOGIF(RELATION_DEFINITIONS, "Defined the binary predicate:\n$2\n", bp);
 }
@@ -526,7 +526,6 @@ omitted from the index.
 	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
 	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
 	else storage_infs = NULL;
-//	if (Kinds::Behaviour::is_object(storage_kind) == FALSE) bp->storage_kind = storage_kind;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
 		(Kinds::Behaviour::is_object(PK) == FALSE))
 		Properties::Valued::now_used_for_non_typesafe_relation(prn);
@@ -552,7 +551,7 @@ Such a relation consumes run-time storage of $5D$ bytes on the Z-machine
 and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 
 @<Complete as an asymmetric one-to-one BP@> =
-	bp->form_of_relation = Relation_OtoO;
+	ED->form_of_relation = Relation_OtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_Now1to1(*2,%n,*1)", i6_prn_name);
@@ -567,7 +566,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 @ The |Relation_OtoV| case, or one to various: "R relates one K to various K".
 
 @<Complete as a one-to-various BP@> =
-	bp->form_of_relation = Relation_OtoV;
+	ED->form_of_relation = Relation_OtoV;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("*2.%n = *1", i6_prn_name);
@@ -582,7 +581,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 @ The |Relation_VtoO| case, or various to one: "R relates various K to one K".
 
 @<Complete as a various-to-one BP@> =
-	bp->form_of_relation = Relation_VtoO;
+	ED->form_of_relation = Relation_VtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("*1.%n = *2", i6_prn_name);
@@ -598,7 +597,7 @@ and $14D$ bytes on Glulx, where $D$ is the size of the domain...
 various K".
 
 @<Complete as an asymmetric various-to-various BP@> =
-	bp->form_of_relation = Relation_VtoV;
+	ED->form_of_relation = Relation_VtoV;
 	BinaryPredicates::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
 		BinaryPredicates::iname(bp));
@@ -611,7 +610,7 @@ various K".
 another".
 
 @<Complete as a symmetric one-to-one BP@> =
-	bp->form_of_relation = Relation_Sym_OtoO;
+	ED->form_of_relation = Relation_Sym_OtoO;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("Relation_NowS1to1(*2,%n,*1)", i6_prn_name);
@@ -627,7 +626,7 @@ another".
 to each other".
 
 @<Complete as a symmetric various-to-various BP@> =
-	bp->form_of_relation = Relation_Sym_VtoV;
+	ED->form_of_relation = Relation_Sym_VtoV;
 	BinaryPredicates::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
 		BinaryPredicates::iname(bp));
@@ -640,10 +639,10 @@ to each other".
 other in groups".
 
 @<Complete as an equivalence-relation BP@> =
-	bp->form_of_relation = Relation_Equiv;
+	ED->form_of_relation = Relation_Equiv;
 	equivalence_bp_data *D = CREATE(equivalence_bp_data);
 	D->equivalence_partition = NULL;
-	bp->family_specific = STORE_POINTER_equivalence_bp_data(D);
+	ED->equiv_data = D;
 	provide_prn = TRUE;
 	if (Kinds::Behaviour::is_object(storage_kind)) {
 		bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(*1.%n == *2.%n)", i6_prn_name, i6_prn_name);
@@ -660,11 +659,12 @@ other in groups".
 	}
 	Properties::Valued::set_kind(prn, K_number);
 
-@ The |Relation_ByRoutine| case, or relation tested by a routine: "R relates
-K to L when (some condition)".
+@ The case of a relation tested by a routine: "R relates K to L when (some
+condition)".
 
 @<Complete as a relation-by-routine BP@> =
-	bp->form_of_relation = Relation_ByRoutine;
+	bp->relation_family = by_routine_bp_family;
+	bp->reversal->relation_family = by_routine_bp_family;
 	package_request *P = BinaryPredicates::package(bp);
 	by_routine_bp_data *D = CREATE(by_routine_bp_data);
 	D->condition_defn_text = RR->CONW;

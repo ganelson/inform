@@ -64,7 +64,6 @@ and "inside" the wrong way round.
 =
 typedef struct binary_predicate {
 	struct bp_family *relation_family;
-	int form_of_relation; /* one of the |Relation_*| constants defined below */
 	struct word_assemblage relation_name; /* (which might have length 0) */
 	struct parse_node *bp_created_at; /* where declared in the source text */
 	struct text_stream *debugging_log_name; /* used when printing propositions to the debug log */
@@ -73,7 +72,6 @@ typedef struct binary_predicate {
 	struct package_request *bp_package;
 	struct inter_name *bp_iname; /* when referred to as a constant */
 	struct inter_name *handler_iname;
-	struct inter_name *v2v_bitmap_iname; /* only relevant for some relations */
 	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
 	#endif
 
@@ -91,10 +89,6 @@ typedef struct binary_predicate {
 
 	/* for optimisation of run-time code: */
 	int dynamic_memory; /* stored in dynamically allocated memory */
-	#ifdef CORE_MODULE
-	struct property *i6_storage_property; /* provides run-time storage */
-	#endif
-	struct kind *storage_kindXXX; /* kind of property owner */
 	int allow_function_simplification; /* allow Inform to make use of any $f_i$ functions? */
 	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
 	char *loop_parent_optimisation_proviso; /* if not NULL, optimise loops using object tree */
@@ -106,24 +100,6 @@ typedef struct binary_predicate {
 
 	CLASS_DEFINITION
 } binary_predicate;
-
-@ The following constants are used to identify the "form" of a BP (in that the
-|form_of_relation| field of any BP always equals one of these and never changes).
-These constant names (and values) exactly match a set of constants compiled
-into every I6 program created by Inform, so they can be used freely both in
-the Inform source code and also in the I6 template layer.
-
-@d Relation_Implicit	-1 /* all implicit BPs have this form, and all others are explicit */
-
-@d Relation_OtoO		1 /* one to one: "R relates one K to one K" */
-@d Relation_OtoV		2 /* one to various: "R relates one K to various K" */
-@d Relation_VtoO		3 /* various to one: "R relates various K to one K" */
-@d Relation_VtoV		4 /* various to various: "R relates various K to various K" */
-@d Relation_Sym_OtoO	5 /* symmetric one to one: "R relates one K to another" */
-@d Relation_Sym_VtoV	6 /* symmetric various to various: "R relates K to each other" */
-@d Relation_Equiv		7 /* equivalence relation: "R relates K to each other in groups" */
-
-@d Relation_ByRoutine	8 /* relation tested by a routine: "R relates K to L when (some condition)" */
 
 @ That completes the catalogue of the one-off cases, and we can move on
 to the five families of implicit relations which correspond to other
@@ -257,27 +233,6 @@ binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 	return bp;
 }
 
-@ When the source text declares new relations, it turns out to be convenient
-to make their BPs in a two-stage process: to make sketchy, mostly-blank BP
-structures for them early on -- but getting their names registered -- and
-then fill in the correct details later. This is where such sketchy pairs are
-made:
-
-=
-binary_predicate *BinaryPredicates::make_pair_sketchily(bp_family *family,
-	word_assemblage wa, int f) {
-	TEMPORARY_TEXT(relname)
-	WRITE_TO(relname, "%V", WordAssemblages::first_word(&wa));
-	binary_predicate *bp =
-		BinaryPredicates::make_pair(family,
-		BPTerms::new(NULL), BPTerms::new(NULL),
-		relname, NULL, NULL, NULL, wa);
-	DISCARD_TEXT(relname)
-	bp->form_of_relation = f;
-	bp->reversal->form_of_relation = f;
-	return bp;
-}
-
 @h BP construction.
 The following routine should only ever be called from the two above: provided
 we stick to that, we ensure the golden rule that {\it every BP has a reversal
@@ -296,7 +251,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	i6_schema *mtf, i6_schema *tf, word_assemblage rn) {
 	binary_predicate *bp = CREATE(binary_predicate);
 	bp->relation_family = family;
-	bp->form_of_relation = Relation_Implicit;
 	bp->relation_name = rn;
 	bp->bp_created_at = current_sentence;
 	bp->debugging_log_name = Str::duplicate(name);
@@ -305,7 +259,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->bp_package = NULL;
 	bp->bp_iname = NULL;
 	bp->handler_iname = NULL;
-	bp->v2v_bitmap_iname = NULL;
 	bp->initialiser_iname = NULL;
 	#endif
 
@@ -331,10 +284,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	
 	/* for optimisation of run-time code */
 	bp->dynamic_memory = FALSE;
-	#ifdef CORE_MODULE
-	bp->i6_storage_property = NULL;
-	#endif
-//	bp->storage_kind = NULL;
 	bp->allow_function_simplification = TRUE;
 	bp->fast_route_finding = FALSE;
 	bp->loop_parent_optimisation_proviso = NULL;
@@ -385,18 +334,20 @@ void BinaryPredicates::log_term_details(bp_term_details *bptd, int i) {
 }
 
 void BinaryPredicates::log(binary_predicate *bp) {
-	int i;
 	if (bp == NULL) { LOG("<null-BP>\n"); return; }
+	#ifdef CORE_MODULE
 	LOG("BP%d <%S> - %s way round - %s\n",
 		bp->allocation_id, bp->debugging_log_name, bp->right_way_round?"right":"wrong",
-		BinaryPredicates::form_to_text(bp));
-	for (i=0; i<2; i++) BinaryPredicates::log_term_details(&bp->term_details[i], i);
+		Relations::Explicit::form_to_text(bp));
+	#endif
+	#ifndef CORE_MODULE
+	LOG("BP%d <%S> - %s way round\n",
+		bp->allocation_id, bp->debugging_log_name, bp->right_way_round?"right":"wrong");
+	#endif
+	for (int i=0; i<2; i++) BinaryPredicates::log_term_details(&bp->term_details[i], i);
 	LOG("  test: $i\n", bp->task_functions[TEST_ATOM_TASK]);
 	LOG("  make true: $i\n", bp->task_functions[NOW_ATOM_TRUE_TASK]);
 	LOG("  make false: $i\n", bp->task_functions[NOW_ATOM_FALSE_TASK]);
-	#ifdef CORE_MODULE
-	LOG("  storage property: $Y\n", bp->i6_storage_property);
-	#endif
 }
 
 @h Relation names.
@@ -423,30 +374,6 @@ text_stream *BinaryPredicates::get_log_name(binary_predicate *bp) {
 @h Miscellaneous access routines.
 
 =
-int BinaryPredicates::get_form_of_relation(binary_predicate *bp) {
-	return bp->form_of_relation;
-}
-int BinaryPredicates::is_explicit_with_runtime_storage(binary_predicate *bp) {
-	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	if (bp->form_of_relation == Relation_Implicit) return FALSE;
-	if (bp->form_of_relation == Relation_ByRoutine) return FALSE;
-	return TRUE;
-}
-char *BinaryPredicates::form_to_text(binary_predicate *bp) {
-	switch(bp->form_of_relation) {
-		case Relation_Implicit: return "Relation_Implicit";
-		case Relation_OtoO: return "Relation_OtoO";
-		case Relation_OtoV: return "Relation_OtoV";
-		case Relation_VtoO: return "Relation_VtoO";
-		case Relation_VtoV: return "Relation_VtoV";
-		case Relation_Sym_OtoO: return "Relation_Sym_OtoO";
-		case Relation_Sym_VtoV: return "Relation_Sym_VtoV";
-		case Relation_Equiv: return "Relation_Equiv";
-		case Relation_ByRoutine: return "Relation_ByRoutine";
-		default: return "formless-BP";
-	}
-}
-
 parse_node *BinaryPredicates::get_bp_created_at(binary_predicate *bp) {
 	return bp->bp_created_at;
 }
@@ -508,11 +435,6 @@ TERM_DOMAIN_CALCULUS_TYPE *BinaryPredicates::as_subject(binary_predicate *bp) {
 @ For use when optimising code.
 
 =
-#ifdef CORE_MODULE
-property *BinaryPredicates::get_i6_storage_property(binary_predicate *bp) {
-	return bp->i6_storage_property;
-}
-#endif
 int BinaryPredicates::allows_function_simplification(binary_predicate *bp) {
 	return bp->allow_function_simplification;
 }

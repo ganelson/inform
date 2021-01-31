@@ -22,7 +22,7 @@ void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject *infs) {
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
 
 	if (BinaryPredicates::store_dynamically(bp)) return; /* handled at run-time instead */
-	if ((BinaryPredicates::get_form_of_relation(bp) == Relation_Equiv) && (bp->right_way_round)) {
+	if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Equiv) && (bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
 		POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
@@ -37,13 +37,10 @@ void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject *infs) {
 
 void KnowledgeAboutRelations::SUBJ_check_model(inference_subject *infs) {
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
-	if ((bp->right_way_round) &&
-		((bp->form_of_relation == Relation_OtoO) ||
-			(bp->form_of_relation == Relation_Sym_OtoO)))
+	int f = Relations::Explicit::get_form_of_relation(bp);
+	if ((bp->right_way_round) && ((f == Relation_OtoO) || (f == Relation_Sym_OtoO)))
 		KnowledgeAboutRelations::check_OtoO_relation(bp);
-	if ((bp->right_way_round) &&
-		((bp->form_of_relation == Relation_OtoV) ||
-			(bp->form_of_relation == Relation_VtoO)))
+	if ((bp->right_way_round) && ((f == Relation_OtoV) || (f == Relation_VtoO)))
 		KnowledgeAboutRelations::check_OtoV_relation(bp);
 }
 
@@ -77,8 +74,8 @@ void KnowledgeAboutRelations::SUBJ_compile(inference_subject *infs) {
 			}
 			Routines::end(save);
 		} else {
-			if ((bp->form_of_relation == Relation_VtoV) ||
-				(bp->form_of_relation == Relation_Sym_VtoV))
+			int f = Relations::Explicit::get_form_of_relation(bp);
+			if ((f == Relation_VtoV) || (f == Relation_Sym_VtoV))
 				RTRelations::compile_vtov_storage(bp);
 		}
 	}
@@ -102,7 +99,7 @@ void KnowledgeAboutRelations::check_OtoO_relation(binary_predicate *bp) {
 	inference **right_second = (inference **)
 		(Memory::calloc(nc, sizeof(inference *), OBJECT_COMPILATION_MREASON));
 
-	property *prn = BinaryPredicates::get_i6_storage_property(bp);
+	property *prn = Relations::Explicit::get_i6_storage_property(bp);
 
 	inference_subject *infs;
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
@@ -187,7 +184,7 @@ void KnowledgeAboutRelations::check_OtoV_relation(binary_predicate *bp) {
 		}
 	}
 
-	if (bp->form_of_relation == Relation_VtoO) {
+	if (Relations::Explicit::get_form_of_relation(bp) == Relation_VtoO) {
 		LOOP_OVER(infs, inference_subject) {
 			if (left_counts[infs->allocation_id] >= 2) {
 				StandardProblems::infs_contradiction_problem(_p_(PM_RelationVtoOContradiction),

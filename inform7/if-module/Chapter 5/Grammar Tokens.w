@@ -875,10 +875,10 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					return K_object;
 				}
 			} else {
-				property *prn = BinaryPredicates::get_i6_storage_property(bp);
+				property *prn = Relations::Explicit::get_i6_storage_property(bp);
 				reverse = FALSE;
 				if (BinaryPredicates::is_the_wrong_way_round(bp)) reverse = TRUE;
-				if (BinaryPredicates::get_form_of_relation(bp) == Relation_VtoO) {
+				if (Relations::Explicit::get_form_of_relation(bp) == Relation_VtoO) {
 					if (reverse) reverse = FALSE; else reverse = TRUE;
 				}
 				if (prn) {
