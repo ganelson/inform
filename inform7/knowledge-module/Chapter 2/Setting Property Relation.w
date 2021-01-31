@@ -25,8 +25,12 @@ void Properties::SettingRelations::stock(bp_family *self, int n) {
 	if (n == 2) {
 		binary_predicate *bp;
 		LOOP_OVER(bp, binary_predicate)
-			if (Wordings::nonempty(bp->property_pending_text))
-				Properties::SettingRelations::fix_property_bp(bp);
+			if (bp->relation_family == property_setting_bp_family) {
+				property_setting_bp_data *PSD =
+					RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+				if (Wordings::nonempty(PSD->property_pending_text))
+					Properties::SettingRelations::fix_property_bp(bp);
+			}
 	}
 }
 
@@ -38,13 +42,21 @@ therefore store the text of the property name (say, "weight") in
 |property_pending_text| and come back to it later on.
 
 =
+typedef struct property_setting_bp_data {
+	struct wording property_pending_text; /* temp. version used until props created */
+	struct property *set_property; /* asserting $B(x, v)$ sets this prop. of $x$ to $v$ */
+	CLASS_DEFINITION
+} property_setting_bp_data;
+
 binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
 		BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
 		BPTerms::new(NULL),
 		I"set-property", NULL, NULL, NULL, WordAssemblages::lit_0());
-	bp->property_pending_text = W;
-	bp->reversal->property_pending_text = W;
+	property_setting_bp_data *PSD = CREATE(property_setting_bp_data);
+	PSD->property_pending_text = W;
+	bp->family_specific = STORE_POINTER_property_setting_bp_data(PSD);
+	bp->reversal->family_specific = STORE_POINTER_property_setting_bp_data(PSD);
 	return bp;
 }
 
@@ -56,29 +68,37 @@ property as a key, clumsy as that may seem.
 binary_predicate *Properties::SettingRelations::find_set_property_BP(wording W) {
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
-		if (Wordings::match(W, bp->property_pending_text))
-			if (bp->right_way_round)
-				return bp;
+		if (bp->relation_family == property_setting_bp_family)
+			if (bp->right_way_round) {
+				property_setting_bp_data *PSD =
+					RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+				if (Wordings::match(W, PSD->property_pending_text))
+					return bp;
+			}
 	return NULL;
 }
 
-@ ...And now it's "later on". We fix these BPs in original-reversal pairs, so
-that the two can never fall out of step.
+@ ...And now it's "later on". Original-reversal pairs share the setting data, so
+that the two can never fall out of step with each other.
 
 =
 void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
-	binary_predicate *bpr = bp->reversal;
-	wording W = bp->property_pending_text;
-	if (Wordings::nonempty(W)) {
-		bp->property_pending_text = EMPTY_WORDING;
-		bpr->property_pending_text = EMPTY_WORDING;
-		current_sentence = bp->bp_created_at;
-		<relation-property-name>(W);
-		if (<<r>> == FALSE) return; /* a problem was issued */
-		property *prn = <<rp>>;
-		bp->set_property = prn; bpr->set_property = prn;
-		if (bp->right_way_round) Properties::SettingRelations::set_property_BP_schemas(bp, prn);
-		else Properties::SettingRelations::set_property_BP_schemas(bpr, prn);
+	if (bp->relation_family == property_setting_bp_family) {
+		property_setting_bp_data *PSD =
+			RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+		wording W = PSD->property_pending_text;
+		if (Wordings::nonempty(W)) {
+			PSD->property_pending_text = EMPTY_WORDING;
+			current_sentence = bp->bp_created_at;
+			<relation-property-name>(W);
+			if (<<r>> == FALSE) return; /* a problem was issued */
+			property *prn = <<rp>>;
+			PSD->set_property = prn;
+			if (bp->right_way_round)
+				Properties::SettingRelations::set_property_BP_schemas(bp, prn);
+			else
+				Properties::SettingRelations::set_property_BP_schemas(bp->reversal, prn);
+		}
 	}
 }
 
@@ -112,8 +132,9 @@ Inform:
 =
 binary_predicate *Properties::SettingRelations::make_set_nameless_property_BP(property *prn) {
 	binary_predicate *bp = Properties::SettingRelations::make_set_property_BP(EMPTY_WORDING);
-	binary_predicate *bpr = bp->reversal;
-	bp->set_property = prn; bpr->set_property = prn;
+	property_setting_bp_data *PSD =
+		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+	PSD->set_property = prn;
 	Properties::SettingRelations::set_property_BP_schemas(bp, prn);
 	return bp;
 }
@@ -149,7 +170,9 @@ instance, but hasn't been yet.
 =
 int Properties::SettingRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	property *prn = bp->set_property;
+	property_setting_bp_data *PSD =
+		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+	property *prn = PSD->set_property;
 	kind *val_kind = Properties::Valued::kind(prn);
 	@<Require the value to be type-safe for storage in the property@>;
 	@<Require the subject to be able to have properties@>;
@@ -222,7 +245,9 @@ be caught later on Inform's run.
 int Properties::SettingRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
-	World::Inferences::draw_property(infs0, bp->set_property, spec1);
+	property_setting_bp_data *PSD =
+		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+	World::Inferences::draw_property(infs0, PSD->set_property, spec1);
 	return TRUE;
 }
 
@@ -236,7 +261,9 @@ int Properties::SettingRelations::REL_compile(bp_family *self, int task,
 
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
 
-	property *prn = bp->set_property;
+	property_setting_bp_data *PSD =
+		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
+	property *prn = PSD->set_property;
 	switch (task) {
 		case TEST_ATOM_TASK:
 			Calculus::Schemas::modify(asch->schema,
@@ -254,7 +281,8 @@ int Properties::SettingRelations::REL_compile(bp_family *self, int task,
 
 @ =
 int Properties::SettingRelations::bp_sets_a_property(binary_predicate *bp) {
-	if ((bp->set_property) || (Wordings::nonempty(bp->property_pending_text))) return TRUE;
+	if (bp->relation_family == property_setting_bp_family) return TRUE;
+//	if ((bp->set_property) || (Wordings::nonempty(bp->property_pending_text))) return TRUE;
 	return FALSE;
 }
 

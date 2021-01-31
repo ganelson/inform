@@ -97,6 +97,7 @@ DECLARE_CLASS(text_substitution)
 @e property_CLASS
 @e property_permission_CLASS
 @e property_of_value_storage_CLASS
+@e property_setting_bp_data_CLASS
 @e rule_CLASS
 @e rulebook_CLASS
 @e rulebook_outcome_CLASS
@@ -121,6 +122,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(property_permission)
 DECLARE_CLASS(property)
+DECLARE_CLASS(property_setting_bp_data)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook)
 DECLARE_CLASS(rulebook_outcome)

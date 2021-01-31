@@ -87,8 +87,6 @@ typedef struct binary_predicate {
 
 	/* for use in the A-parser: */
 	int arbitrary; /* allow source to assert $B(x, y)$ for any arbitrary pairs $x, y$ */
-	struct property *set_property; /* asserting $B(x, v)$ sets this prop. of $x$ to $v$ */
-	struct wording property_pending_text; /* temp. version used until props created */
 	int relates_values_not_objects; /* true if either term is necessarily a value... */
 	TERM_DOMAIN_CALCULUS_TYPE *knowledge_about_bp; /* ...and if so, here's the list of known assertions */
 
@@ -323,8 +321,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	/* for use by the A-parser */
 	bp->arbitrary = FALSE;
-	bp->set_property = NULL;
-	bp->property_pending_text = EMPTY_WORDING;
 	bp->relates_values_not_objects = FALSE;
 	#ifdef CORE_MODULE
 	bp->knowledge_about_bp =
