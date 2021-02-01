@@ -57,16 +57,16 @@ void KnowledgeAboutRelations::SUBJ_compile(inference_subject *infs) {
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
 	if (bp->right_way_round) {
 		if (BinaryPredicates::store_dynamically(bp)) {
-			packaging_state save = Routines::begin(bp->initialiser_iname);
+			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
 			POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
 				parse_node *spec0, *spec1;
 				World::Inferences::get_references_spec(i, &spec0, &spec1);
-				BinaryPredicates::mark_as_needed(bp);
+				RTRelations::mark_as_needed(bp);
 				Produce::inv_call_iname(Emit::tree(), rtiname);
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, bp->bp_iname);
+					Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
 					Specifications::Compiler::emit_as_val(K_value, spec0);
 					Specifications::Compiler::emit_as_val(K_value, spec1);

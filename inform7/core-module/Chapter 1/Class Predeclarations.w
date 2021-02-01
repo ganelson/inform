@@ -164,6 +164,7 @@ DECLARE_CLASS(use_as_event)
 
 @ //runtime// --
 
+@e bp_runtime_implementation_CLASS
 @e definition_CLASS
 @e dval_written_CLASS
 @e i6_inclusion_matter_CLASS
@@ -178,6 +179,7 @@ DECLARE_CLASS(use_as_event)
 @e test_scenario_CLASS
 
 =
+DECLARE_CLASS(bp_runtime_implementation)
 DECLARE_CLASS(definition)
 DECLARE_CLASS(dval_written)
 DECLARE_CLASS(i6_inclusion_matter)

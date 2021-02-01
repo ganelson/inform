@@ -363,10 +363,9 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (dynamic) {
 		bp->dynamic_memory = TRUE;
 		bpr->dynamic_memory = TRUE;
-		package_request *P = BinaryPredicates::package(bp);
-		bp->initialiser_iname = Hierarchy::make_iname_in(RELATION_INITIALISER_FN_HL, P);
+		RTRelations::initialiser_iname(bp);
 	}
-	BinaryPredicates::mark_as_needed(bp);
+	RTRelations::mark_as_needed(bp);
 
 	if (Wordings::nonempty(RR->CONW)) @<Complete as a relation-by-routine BP@>
 	else if (RR->equivalence) @<Complete as an equivalence-relation BP@>
@@ -408,29 +407,29 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		rg->guard_make_true_iname = NULL;
 		rg->guard_make_false_iname = NULL;
 		if (rg->f0) {
-			package_request *R = BinaryPredicates::package(bp);
+			package_request *R = RTRelations::package(bp);
 			rg->guard_f0_iname = Hierarchy::make_iname_in(GUARD_F0_FN_HL, R);
 			BPTerms::set_function(&(bp->term_details[0]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f0_iname));
 		}
 		if (rg->f1) {
-			package_request *R = BinaryPredicates::package(bp);
+			package_request *R = RTRelations::package(bp);
 			rg->guard_f1_iname = Hierarchy::make_iname_in(GUARD_F1_FN_HL, R);
 			BPTerms::set_function(&(bp->term_details[1]),
 				Calculus::Schemas::new("(%n(*1))", rg->guard_f1_iname));
 		}
 		if (bp->task_functions[TEST_ATOM_TASK]) {
-			package_request *R = BinaryPredicates::package(bp);
+			package_request *R = RTRelations::package(bp);
 			rg->guard_test_iname = Hierarchy::make_iname_in(GUARD_TEST_FN_HL, R);
 			bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_test_iname);
 		}
 		if (bp->task_functions[NOW_ATOM_TRUE_TASK]) {
-			package_request *R = BinaryPredicates::package(bp);
+			package_request *R = RTRelations::package(bp);
 			rg->guard_make_true_iname = Hierarchy::make_iname_in(GUARD_MAKE_TRUE_FN_HL, R);
 			bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_true_iname);
 		}
 		if (bp->task_functions[NOW_ATOM_FALSE_TASK]) {
-			package_request *R = BinaryPredicates::package(bp);
+			package_request *R = RTRelations::package(bp);
 			rg->guard_make_false_iname = Hierarchy::make_iname_in(GUARD_MAKE_FALSE_INAME_HL, R);
 			bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(%n(*1,*2))", rg->guard_make_false_iname);
 		}
@@ -598,13 +597,13 @@ various K".
 
 @<Complete as an asymmetric various-to-various BP@> =
 	ED->form_of_relation = Relation_VtoV;
-	BinaryPredicates::mark_as_needed(bp);
+	RTRelations::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,false))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,false))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,false))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 
 @ The |Relation_Sym_OtoO| case, or symmetric one to one: "R relates one K to
 another".
@@ -627,13 +626,13 @@ to each other".
 
 @<Complete as a symmetric various-to-various BP@> =
 	ED->form_of_relation = Relation_Sym_VtoV;
-	BinaryPredicates::mark_as_needed(bp);
+	RTRelations::mark_as_needed(bp);
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(Relation_TestVtoV(*1,%n,*2,true))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(Relation_NowVtoV(*1,%n,*2,true))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(Relation_NowNVtoV(*1,%n,*2,true))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 
 @ The |Relation_Equiv| case, or equivalence relation: "R relates K to each
 other in groups".
@@ -665,7 +664,7 @@ condition)".
 @<Complete as a relation-by-routine BP@> =
 	bp->relation_family = by_routine_bp_family;
 	bp->reversal->relation_family = by_routine_bp_family;
-	package_request *P = BinaryPredicates::package(bp);
+	package_request *P = RTRelations::package(bp);
 	by_routine_bp_data *D = CREATE(by_routine_bp_data);
 	D->condition_defn_text = RR->CONW;
 	D->bp_by_routine_iname = Hierarchy::make_iname_in(RELATION_FN_HL, P);
@@ -711,11 +710,11 @@ have the form $B(x, f_1(x))$.
 
 @<Override with dynamic allocation schemata@> =
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_TEST,*1,*2))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_TRUE,*1,*2))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("(RelationTest(%n,RELS_ASSERT_FALSE,*1,*2))",
-		BinaryPredicates::iname(bp));
+		RTRelations::iname(bp));
 
 @h Storing relations.
 At runtime, relation data is sometimes stored in a property, and that needs

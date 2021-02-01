@@ -68,13 +68,6 @@ typedef struct binary_predicate {
 	struct parse_node *bp_created_at; /* where declared in the source text */
 	struct text_stream *debugging_log_name; /* used when printing propositions to the debug log */
 
-	#ifdef CORE_MODULE
-	struct package_request *bp_package;
-	struct inter_name *bp_iname; /* when referred to as a constant */
-	struct inter_name *handler_iname;
-	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
-	#endif
-
 	struct bp_term_details term_details[2]; /* term 0 is the left term, 1 is the right */
 
 	struct binary_predicate *reversal; /* the $R$ such that $R(x,y)$ iff $B(y,x)$ */
@@ -93,10 +86,12 @@ typedef struct binary_predicate {
 	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
 	char *loop_parent_optimisation_proviso; /* if not NULL, optimise loops using object tree */
 	char *loop_parent_optimisation_ranger; /* if not NULL, routine iterating through contents */
-	int record_needed; /* we need to compile a small array of details in readable memory */
 
-	/* details for particular kinds of BP: */
-	general_pointer family_specific;
+	general_pointer family_specific; /* details for particular kinds of BP */
+
+	#ifdef CORE_MODULE
+	struct bp_runtime_implementation *imp;
+	#endif
 
 	CLASS_DEFINITION
 } binary_predicate;
@@ -254,13 +249,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->relation_name = rn;
 	bp->bp_created_at = current_sentence;
 	bp->debugging_log_name = Str::duplicate(name);
-	
-	#ifdef CORE_MODULE
-	bp->bp_package = NULL;
-	bp->bp_iname = NULL;
-	bp->handler_iname = NULL;
-	bp->initialiser_iname = NULL;
-	#endif
 
 	bp->term_details[0] = left_term; bp->term_details[1] = right_term;
 
@@ -288,10 +276,13 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 	bp->fast_route_finding = FALSE;
 	bp->loop_parent_optimisation_proviso = NULL;
 	bp->loop_parent_optimisation_ranger = NULL;
-	bp->record_needed = FALSE;
 
 	/* details for particular kinds of relation */
 	bp->family_specific = NULL_GENERAL_POINTER;
+
+	#ifdef CORE_MODULE
+	bp->imp = RTRelations::implement(bp);
+	#endif
 
 	return bp;
 }
@@ -300,25 +291,6 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 =
 #ifdef CORE_MODULE
-package_request *BinaryPredicates::package(binary_predicate *bp) {
-	if (bp == NULL) internal_error("null bp");
-	if (bp->bp_package == NULL)
-		bp->bp_package = Hierarchy::package(CompilationUnits::find(bp->bp_created_at), RELATIONS_HAP);
-	return bp->bp_package;
-}
-#endif
-
-@h The handler.
-
-=
-#ifdef CORE_MODULE
-inter_name *BinaryPredicates::handler_iname(binary_predicate *bp) {
-	if (bp->handler_iname == NULL) {
-		package_request *R = BinaryPredicates::package(bp);
-		bp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
-	}
-	return bp->handler_iname;
-}
 #endif
 
 @h BP and term logging.
@@ -438,28 +410,6 @@ TERM_DOMAIN_CALCULUS_TYPE *BinaryPredicates::as_subject(binary_predicate *bp) {
 int BinaryPredicates::allows_function_simplification(binary_predicate *bp) {
 	return bp->allow_function_simplification;
 }
-#ifdef CORE_MODULE
-inter_name *default_rr = NULL;
-void BinaryPredicates::mark_as_needed(binary_predicate *bp) {
-	if (bp->record_needed == FALSE) {
-		bp->bp_iname = Hierarchy::make_iname_in(RELATION_RECORD_HL, BinaryPredicates::package(bp));
-		if (default_rr == NULL) {
-			default_rr = bp->bp_iname;
-			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
-			Emit::named_iname_constant(iname, K_value, default_rr);
-			Hierarchy::make_available(Emit::tree(), iname);
-		}
-	}
-	bp->record_needed = TRUE;
-}
-#endif
-
-#ifdef CORE_MODULE
-inter_name *BinaryPredicates::iname(binary_predicate *bp) {
-	if (bp == NULL) return NULL;
-	return bp->bp_iname;
-}
-#endif
 
 @ The predicate-calculus engine compiles much better loops if
 we can help it by providing an I6 schema of a loop header solving the

@@ -184,10 +184,10 @@ void RTVerbs::ConjugateVerb(void) {
 	verb *vi = vc->vc_conjugates;
 	verb_meaning *vm = (vi)?VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
-	inter_name *rel_iname = default_rr;
+	inter_name *rel_iname = RTRelations::default_iname();
 	if (meaning) {
-		BinaryPredicates::mark_as_needed(meaning);
-		rel_iname = meaning->bp_iname;
+		RTRelations::mark_as_needed(meaning);
+		rel_iname = RTRelations::iname(meaning);
 	}
 
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
@@ -277,13 +277,12 @@ void RTVerbs::ConjugateVerb(void) {
 	Produce::up(Emit::tree());
 
 	verb_meaning *vm = &(vf->list_of_senses->vm);
-	inter_name *rel_iname = default_rr;
+	inter_name *rel_iname = RTRelations::default_iname();
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
 	if (meaning) {
-		BinaryPredicates::mark_as_needed(meaning);
-		rel_iname = meaning->bp_iname;
+		RTRelations::mark_as_needed(meaning);
+		rel_iname = RTRelations::iname(meaning);
 	}
-
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());

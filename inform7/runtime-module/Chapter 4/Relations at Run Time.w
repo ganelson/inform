@@ -2,15 +2,74 @@
 
 Relations need both storage and support code at runtime.
 
-@h The handler.
+@h Data.
+Each binary predicate has an instance of the following attached to it:
 
 =
-inter_name *RTRelations::handler_iname(binary_predicate *bp) {
-	if (bp->handler_iname == NULL) {
-		package_request *R = BinaryPredicates::package(bp);
-		bp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
+typedef struct bp_runtime_implementation {
+	struct package_request *bp_package;
+	struct inter_name *bp_iname; /* when referred to as a constant */
+	struct inter_name *handler_iname;
+	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
+	int record_needed; /* we need to compile a small array of details in readable memory */	
+	CLASS_DEFINITION
+} bp_runtime_implementation;
+
+bp_runtime_implementation *RTRelations::implement(binary_predicate *bp) {
+	bp_runtime_implementation *imp = CREATE(bp_runtime_implementation);
+	imp->bp_package = NULL;
+	imp->bp_iname = NULL;
+	imp->handler_iname = NULL;
+	imp->initialiser_iname = NULL;
+	imp->record_needed = FALSE;
+	return imp;
+}
+
+package_request *RTRelations::package(binary_predicate *bp) {
+	if (bp == NULL) internal_error("null bp");
+	if (bp->imp->bp_package == NULL)
+		bp->imp->bp_package =
+			Hierarchy::package(CompilationUnits::find(bp->bp_created_at), RELATIONS_HAP);
+	return bp->imp->bp_package;
+}
+
+inter_name *RTRelations::initialiser_iname(binary_predicate *bp) {
+	if (bp->imp->initialiser_iname == NULL) {
+		package_request *P = RTRelations::package(bp);
+		bp->imp->initialiser_iname = Hierarchy::make_iname_in(RELATION_INITIALISER_FN_HL, P);
 	}
-	return bp->handler_iname;
+	return bp->imp->initialiser_iname;
+}
+
+inter_name *RTRelations::handler_iname(binary_predicate *bp) {
+	if (bp->imp->handler_iname == NULL) {
+		package_request *R = RTRelations::package(bp);
+		bp->imp->handler_iname = Hierarchy::make_iname_in(HANDLER_FN_HL, R);
+	}
+	return bp->imp->handler_iname;
+}
+
+inter_name *RTRelations::iname(binary_predicate *bp) {
+	if (bp == NULL) return NULL;
+	return bp->imp->bp_iname;
+}
+
+inter_name *default_rr = NULL;
+inter_name *RTRelations::default_iname(void) {
+	return default_rr;
+}
+
+void RTRelations::mark_as_needed(binary_predicate *bp) {
+	if (bp->imp->record_needed == FALSE) {
+		bp->imp->bp_iname = Hierarchy::make_iname_in(RELATION_RECORD_HL, RTRelations::package(bp));
+		if (default_rr == NULL) {
+			default_rr = bp->imp->bp_iname;
+			inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
+			Emit::named_iname_constant(iname, K_value, RTRelations::default_iname());
+			Hierarchy::make_available(Emit::tree(), iname);
+		}
+	}
+	bp->imp->record_needed = TRUE;
 }
 
 @h Relation records.
@@ -81,7 +140,7 @@ void RTRelations::compile_relation_records(void) {
 		if ((dbp == R_equality) || (dbp == R_meaning) ||
 			(dbp == R_provision) || (dbp == R_universal))
 			minimal = TRUE;
-		if (bp->record_needed) {
+		if (bp->imp->record_needed) {
 			inter_name *handler = NULL;
 			if (bp->dynamic_memory == FALSE)
 				@<Write the relation handler routine for this BP@>;
@@ -98,12 +157,12 @@ void RTRelations::compile_relation_records(void) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
 			Produce::down(Emit::tree());
 				Kinds::RunTime::emit_strong_id_as_val(BinaryPredicates::kind(bp));
-				Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 			Produce::up(Emit::tree());
 
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_NAME_HL));
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 				TEMPORARY_TEXT(A)
 				WRITE_TO(A, "%A", &(bp->relation_name));
 				Produce::val_text(Emit::tree(), A);
@@ -114,40 +173,40 @@ void RTRelations::compile_relation_records(void) {
 				case Relation_OtoO:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
 				case Relation_OtoV:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOVADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
 				case Relation_VtoO:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_VTOOADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
 				case Relation_Sym_OtoO:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_OTOOADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
 				case Relation_Equiv:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_EQUIVALENCEADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
@@ -155,14 +214,14 @@ void RTRelations::compile_relation_records(void) {
 				case Relation_Sym_VtoV:
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RELATION_TY_SYMMETRICADJECTIVE_HL));
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+						Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 						Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 					break;
 			}
 			Produce::inv_primitive(Emit::tree(), INDIRECT0V_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, bp->initialiser_iname);
+				Produce::val_iname(Emit::tree(), K_value, RTRelations::initialiser_iname(bp));
 			Produce::up(Emit::tree());
 		}
 	}
@@ -171,8 +230,8 @@ void RTRelations::compile_relation_records(void) {
 }
 
 @<Write the relation record for this BP@> =
-	if (BinaryPredicates::iname(bp) == NULL) internal_error("no bp symbol");
-	packaging_state save = Emit::named_array_begin(BinaryPredicates::iname(bp), K_value);
+	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
+	packaging_state save = Emit::named_array_begin(RTRelations::iname(bp), K_value);
 	if (bp->dynamic_memory) {
 		Emit::array_numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
@@ -197,7 +256,7 @@ void RTRelations::compile_relation_records(void) {
 @<Write the permissions field of the relation record@> =
 	binary_predicate *dbp = bp;
 	if (bp->right_way_round == FALSE) dbp = bp->reversal;
-	inter_name *bm_symb = Hierarchy::make_iname_in(ABILITIES_HL, bp->bp_package);
+	inter_name *bm_symb = Hierarchy::make_iname_in(ABILITIES_HL, bp->imp->bp_package);
 	packaging_state save_sum = Emit::sum_constant_begin(bm_symb, K_value);
 	if (RELS_TEST_iname == NULL) internal_error("no RELS symbols yet");
 	Emit::array_iname_entry(RELS_TEST_iname);
@@ -463,7 +522,7 @@ void RTRelations::compile_relation_records(void) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELMINIMAL_HL));
 		Produce::val_symbol(Emit::tree(), K_value, task_s);
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+		Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 	Produce::up(Emit::tree());
 
 @<The ASSERT TRUE task@> =
@@ -941,11 +1000,11 @@ void RTRelations::IterateRelations(void) {
 	inter_symbol *callback_s = LocalVariables::add_named_call_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
-		if (bp->record_needed) {
+		if (bp->imp->record_needed) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, callback_s);
-				Produce::val_iname(Emit::tree(), K_value, BinaryPredicates::iname(bp));
+				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 			Produce::up(Emit::tree());
 		}
 	Routines::end(save);
@@ -1002,7 +1061,7 @@ void RTRelations::compile_vtov_storage(binary_predicate *bp) {
 	if ((left_count > 0) && (right_count > 0))
 		@<Allocate a zeroed-out memory cache for relations with fast route-finding@>;
 
-	package_request *P = BinaryPredicates::package(bp);
+	package_request *P = RTRelations::package(bp);
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	ED->v2v_bitmap_iname = Hierarchy::make_iname_in(BITMAP_HL, P);
 	packaging_state save = Emit::named_array_begin(ED->v2v_bitmap_iname, K_value);
@@ -1070,7 +1129,7 @@ and this is why the "cache broken" flag is initially set in the header
 above: it forces the template layer to generate the cache when first used.
 
 @<Allocate a zeroed-out memory cache for relations with fast route-finding@> =
-	package_request *P = BinaryPredicates::package(bp);
+	package_request *P = RTRelations::package(bp);
 	inter_name *iname = Hierarchy::make_iname_in(ROUTE_CACHE_HL, P);
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
@@ -1617,7 +1676,7 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Produce::val_symbol(Emit::tree(), K_value, L_s);
 				Produce::val_symbol(Emit::tree(), K_value, R_s);
-				Produce::val_iname(Emit::tree(), K_value, rg->guarding->bp_iname);
+				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
 			Produce::up(Emit::tree());
 		}
 		Routines::end(save);
@@ -1672,7 +1731,7 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RTP_RELKINDVIOLATION_HL));
 				Produce::val_symbol(Emit::tree(), K_value, L_s);
 				Produce::val_symbol(Emit::tree(), K_value, R_s);
-				Produce::val_iname(Emit::tree(), K_value, rg->guarding->bp_iname);
+				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
 			Produce::up(Emit::tree());
 		}
 		Routines::end(save);

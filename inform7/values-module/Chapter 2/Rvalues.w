@@ -700,8 +700,8 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_relation) {
 		binary_predicate *bp = Rvalues::to_binary_predicate(spec_found);
-		BinaryPredicates::mark_as_needed(bp);
-		inter_name *N = BinaryPredicates::iname(bp);
+		RTRelations::mark_as_needed(bp);
+		inter_name *N = RTRelations::iname(bp);
 		if (N) Emit::holster(VH, N);
 		return;
 	}
