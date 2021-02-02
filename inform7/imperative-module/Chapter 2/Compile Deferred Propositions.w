@@ -1599,7 +1599,7 @@ pcalc_prop *Propositions::Deferred::compile_loop_header(int var, local_variable 
 		proposition = Propositions::delete_atom(proposition, kind_position);
 	}
 
-	Calculus::Schemas::emit_expand_from_terms(&loop_schema, &var_term, &second_term, TRUE);
+	EmitSchemas::emit_expand_from_terms(&loop_schema, &var_term, &second_term, TRUE);
 
 	return proposition;
 }

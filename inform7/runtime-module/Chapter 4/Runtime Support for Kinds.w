@@ -486,7 +486,7 @@ int Kinds::RunTime::weak_id(kind *K) {
 which might occupy up to 31 characters, the maximum length of an I6 identifier:
 
 =
-void Kinds::RunTime::compile_weak_id(OUTPUT_STREAM, kind *K) {
+void Kinds::RunTime::write_weak_id(OUTPUT_STREAM, kind *K) {
 	if (K == NULL) { WRITE("UNKNOWN_TY"); return; }
 	kind_constructor *con = Kinds::get_construct(K);
 	text_stream *sn = Kinds::Constructors::name_in_template_code(con);

@@ -858,9 +858,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									pcalc_term self_term = Terms::new_constant(
 										Rvalues::new_self_object_constant());
 									if (reverse)
-										Calculus::Schemas::emit_val_expand_from_terms(i6s, &rv_term, &self_term);
+										EmitSchemas::emit_val_expand_from_terms(i6s, &rv_term, &self_term);
 									else
-										Calculus::Schemas::emit_val_expand_from_terms(i6s, &self_term, &rv_term);
+										EmitSchemas::emit_val_expand_from_terms(i6s, &self_term, &rv_term);
 					continue_loop_on_fail = TRUE;
 				} else {
 					Problems::quote_source(1, current_sentence);

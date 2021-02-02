@@ -1166,7 +1166,10 @@ optional, operand in <span class="extract"><span class="extract-syntax">operand2
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-is.html#SP20_2_4_1">&#167;20.2.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_2_5" class="paragraph-anchor"></a><b>&#167;20.2.5.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders.
+<p class="commentary firstcommentary"><a id="SP20_2_5" class="paragraph-anchor"></a><b>&#167;20.2.5.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders, but a variety
+of modifiers are allowed: for example <span class="extract"><span class="extract-syntax">*!1</span></span> changes the compilation mode in
+which <span class="extract"><span class="extract-syntax">*1</span></span> will be compiled so that local variables will be allowed in any
+text expansion in it. The full syntax follows:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">GIVE_KIND_ID_ISSBM</span><span class="plain-syntax">					</span><span class="constant-syntax">1</span>

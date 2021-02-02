@@ -21,6 +21,7 @@ Chapter 3: Binary Predicates
 	Binary Predicate Term Details
 	Binary Predicates
 	The Equality Relation
+	Compilation Schemas
 
 Chapter 4: Propositions
 	Terms
@@ -30,6 +31,5 @@ Chapter 4: Propositions
 	Type Check Propositions
 
 Chapter 5: Tools
-	Compilation Schemas
 	Simplifications
 	Sentence Conversions

@@ -266,7 +266,7 @@ void Frames::compile_allocation(OUTPUT_STREAM, kind *K) {
 void Frames::emit_allocation(kind *K) {
 	pointer_allocation *pall = Frames::add_allocation(K, NULL);
 	i6_schema *all_sch = Calculus::Schemas::new("%S", pall->escaped_local_reference_code);
-	Calculus::Schemas::emit_expand_from_terms(all_sch, NULL, NULL, FALSE);
+	EmitSchemas::emit_expand_from_terms(all_sch, NULL, NULL, FALSE);
 }
 
 @ The following works out a call to |BlkValueCreate| which will return a

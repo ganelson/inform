@@ -1003,7 +1003,10 @@ optional, operand in |operand2|.
 	}
 	DISCARD_TEXT(pname)
 
-@ In abbreviated prototypes, |*1| and |*2| are placeholders.
+@ In abbreviated prototypes, |*1| and |*2| are placeholders, but a variety
+of modifiers are allowed: for example |*!1| changes the compilation mode in
+which |*1| will be compiled so that local variables will be allowed in any
+text expansion in it. The full syntax follows:
 
 @d GIVE_KIND_ID_ISSBM					1
 @d GIVE_COMPARISON_ROUTINE_ISSBM		2

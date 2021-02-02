@@ -12,6 +12,7 @@ Chapter 1: Configuration and Control
 
 Chapter 2: Compiling from Propositions
 	Compiling from Specifications
+	Emitting from Schemas
 	Compile Atoms
 	Deciding to Defer
 	Cinders and Deferrals

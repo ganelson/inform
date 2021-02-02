@@ -1133,7 +1133,7 @@ dynamic lists, since Y is a block value not a word value. The point of the
 	LOGIF(KIND_CHECKING, "Inline copy: %s\n", prototype);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
-	Calculus::Schemas::emit_expand_from_terms(sch, &pt1, &pt2, FALSE);
+	EmitSchemas::emit_expand_from_terms(sch, &pt1, &pt2, FALSE);
 	END_COMPILATION_MODE;
 	return;
 

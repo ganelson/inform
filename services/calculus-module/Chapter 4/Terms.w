@@ -227,7 +227,7 @@ void Terms::emit(pcalc_term pt) {
 		binary_predicate *bp = (pt.function)->bp;
 		i6_schema *fn = BinaryPredicates::get_term_as_fn_of_other(bp, 1-pt.function->from_term);
 		if (fn == NULL) internal_error("function of non-functional predicate");
-		Calculus::Schemas::emit_expand_from_terms(fn, &(pt.function->fn_of), NULL, FALSE);
+		EmitSchemas::emit_expand_from_terms(fn, &(pt.function->fn_of), NULL, FALSE);
 		return;
 	}
 	internal_error("Broken pcalc term");
