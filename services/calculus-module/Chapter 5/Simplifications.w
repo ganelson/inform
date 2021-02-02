@@ -773,8 +773,7 @@ pcalc_prop *Calculus::Simplifications::reduce_predicates(pcalc_prop *prop, int *
 		binary_predicate *bp = Atoms::is_binary_predicate(pl);
 		if (bp)
 			for (int j=0; j<2; j++)
-				if ((BinaryPredicates::get_term_as_fn_of_other(bp, j)) &&
-					(BinaryPredicates::allows_function_simplification(bp))) {
+				if (BinaryPredicates::get_term_as_fn_of_other(bp, j)) {
 					pl->terms[1-j] = Terms::new_function(bp, pl->terms[1-j], 1-j);
 					pl->predicate = STORE_POINTER_binary_predicate(R_equality);
 					PROPOSITION_EDITED(pl, prop);

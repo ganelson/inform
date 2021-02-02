@@ -21,11 +21,11 @@ void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject *infs) {
 	int domain_size = NUMBER_CREATED(inference_subject);
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
 
-	if (BinaryPredicates::store_dynamically(bp)) return; /* handled at run-time instead */
+	if (Relations::Explicit::stored_dynamically(bp)) return; /* handled at run-time instead */
 	if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Equiv) && (bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
-		POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
+		POSITIVE_KNOWLEDGE_LOOP(i, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
 			inference_subject *infs0, *infs1;
 			World::Inferences::get_references(i, &infs0, &infs1);
 			RTRelations::equivalence_relation_merge_classes(bp, domain_size,
@@ -56,11 +56,11 @@ int KnowledgeAboutRelations::SUBJ_compile_all(void) {
 void KnowledgeAboutRelations::SUBJ_compile(inference_subject *infs) {
 	binary_predicate *bp = InferenceSubjects::as_bp(infs);
 	if (bp->right_way_round) {
-		if (BinaryPredicates::store_dynamically(bp)) {
+		if (Relations::Explicit::stored_dynamically(bp)) {
 			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
+			POSITIVE_KNOWLEDGE_LOOP(i, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
 				parse_node *spec0, *spec1;
 				World::Inferences::get_references_spec(i, &spec0, &spec1);
 				RTRelations::mark_as_needed(bp);
@@ -162,7 +162,7 @@ void KnowledgeAboutRelations::check_OtoV_relation(binary_predicate *bp) {
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
 
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
 		parse_node *left_val = NULL;
 		parse_node *right_val = NULL;
 		World::Inferences::get_references_spec(inf, &left_val, &right_val);

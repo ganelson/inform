@@ -2,13 +2,7 @@
 
 To create sets of relations for different purposes.
 
-@ A "binary predicate" is a property $B$ such that for any combination $x$ and
-$y$, and at any given moment at run-time, $B(x, y)$ is either true or false.
-The classic example is equality, $(x == y)$, which is true if and only if they
-are the same value. But Inform has many others. In the Inform documentation,
-binary predicates are called "relations".
-
-Want to create a new binary predicate? First you'll need a family for it to
+@ Want to create a new binary predicate? First you'll need a family for it to
 belong to. Some families are small (the equality family contains just the
 equality relation), others larger (the map connections family in an IF compilation
 has one for each map direction). What unites the members of a family is that
@@ -91,7 +85,8 @@ int BinaryPredicateFamilies::assert(binary_predicate *bp,
 	return rv;
 }
 
-@ This is for compiling run-time code to either test, make true, or make false.
+@ This is for compiling run-time code to either test a relation, make a
+relation true from now on, or make it false.
 
 Some constants here enumerate the three cases of what we are to do. This
 looks asymmetrical -- shouldn't we also test to see whether an atom is false,

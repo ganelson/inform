@@ -18,9 +18,9 @@ For more, see //foundation: A Brief Guide to Foundation//.
 @h What predicate calculus is.
 The word "calculus" is often used to mean differentiating and integrating
 functions, but properly speaking that is "infinitesimal calculus", and there
-are many others.[1] In logic, different sets of rules for making deductions
-tend to be given such names, and we will use (a form of) one of the most
-popular simple systems, "predicate calculus".[2]
+are many others.[1] In particular, any set of rules for making deductions
+tends to be called a "calculus", and we will use a form of one of the most
+popular, "predicate calculus".[2]
 
 Most attempts to codify the meaning of sentences in any systematic way involve
 predicate calculus, and most people generally seem to agree that linguistic
@@ -144,7 +144,7 @@ New UPs can be constructed with //UnaryPredicates::new//.
 Similarly, //calculus// allows the user to create as many families of binary
 predicates as are wanted. See //Binary Predicate Families//. For example,
 the "same property value as" relations all belong to a single family. This
-module builds only one family in:
+module builds in only one family:
 (*) The equality predicate $=$, whose special meaning is used when simplifying
 propositions. See //The Equality Relation//. It is written with the special
 notation |(x == y)|, though this is just syntactic sugar.

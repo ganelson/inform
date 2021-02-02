@@ -1,9 +1,10 @@
 [Calculus::Equality::] The Equality Relation.
 
-To define that prince among predicates, the equality relation.
+To define that prince among predicates, the equality relation; and also its
+less noble sidekick, the "has" relation.
 
-@ This predicate plays a very special role in our calculus, and must always
-exist.
+@ Equality is the only relation in its family; but in Inform, there will be other
+relations besides "has" in the spatial family.
 
 = (early code)
 bp_family *equality_bp_family = NULL;
@@ -13,8 +14,9 @@ binary_predicate *R_equality = NULL;
 binary_predicate *a_has_b_predicate = NULL;
 
 @h Family.
-This is a minimal representation only: Inform adds other methods to the equality
-family to handle its typechecking and so on.
+This is a minimal representation only, for when the calculus module is used
+in a non-Inform context: whereas Inform adds other methods to the equality
+family to handle its typechecking in //assertions: The Equality Relation Revisited//.
 
 =
 void Calculus::Equality::start(void) {
@@ -34,8 +36,7 @@ void Calculus::Equality::start(void) {
 }
 
 @h Initial stock.
-This relation is hard-wired in, and it is made in a slightly special way
-since (alone among binary predicates) it has no distinct reversal.
+Note the unique one-off way in which equality is made.
 
 =
 void Calculus::Equality::stock(bp_family *self, int n) {

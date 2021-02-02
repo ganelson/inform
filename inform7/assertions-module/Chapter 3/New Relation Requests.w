@@ -345,8 +345,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 
 	explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 			
-	int rvno = FALSE, /* relate values not objects? */
-		dynamic = FALSE, /* use dynamic memory allocation for storage? */
+	int dynamic = FALSE, /* use dynamic memory allocation for storage? */
 		provide_prn = FALSE, /* allocate the storage property to the kind? */
 		calling_made = FALSE; /* one of the terms has been given a name */
 
@@ -354,15 +353,14 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 
 	@<Parse the classification variables and use them to fill in the BP term details@>;
 
-	if (rvno) { bp->relates_values_not_objects = TRUE; bpr->relates_values_not_objects = TRUE; }
-	if (RR->frf) { bp->fast_route_finding = TRUE; bpr->fast_route_finding = TRUE; }
+	if (RR->frf) RTRelations::use_frf(bp);
 	if (prn) {
 		ED->i6_storage_property = prn;
 		Properties::Valued::set_stored_relation(prn, bp);
 	}
 	if (dynamic) {
-		bp->dynamic_memory = TRUE;
-		bpr->dynamic_memory = TRUE;
+		Relations::Explicit::store_dynamically(bp);
+		Relations::Explicit::store_dynamically(bpr);
 		RTRelations::initialiser_iname(bp);
 	}
 	RTRelations::mark_as_needed(bp);
@@ -477,11 +475,6 @@ very efficiently, and the worst case is to be forced into "dynamic" storage:
 this means using up heap memory allocated dynamically at run-time.
 
 @<Work out the kinds of the terms in the relation@> =
-
-	rvno = TRUE;
-	if ((Kinds::Behaviour::is_object(RR->terms[0].domain)) &&
-		(Kinds::Behaviour::is_object(RR->terms[1].domain))) rvno = FALSE;
-
 	if (Wordings::empty(RR->CONW)) {
 		if ((Kinds::Behaviour::is_subkind_of_object(RR->terms[0].domain) == FALSE) &&
 			(RelationRequests::check_finite_range(RR->terms[0].domain) == FALSE)) dynamic = TRUE;

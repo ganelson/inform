@@ -151,16 +151,20 @@ void World::Inferences::draw_negated_property(inference_subject *infs,
 	World::Inferences::join_inference(i, infs);
 }
 
+inference_subject *World::Inferences::bp_as_subject(binary_predicate *bp) {
+	return bp->knowledge_about_bp;
+}
+
 void World::Inferences::draw_relation(binary_predicate *bp,
 	inference_subject *infs0, inference_subject *infs1) {
 	inference *i = World::Inferences::create_relation_inference(infs0, infs1);
-	World::Inferences::join_inference(i, BinaryPredicates::as_subject(bp));
+	World::Inferences::join_inference(i, World::Inferences::bp_as_subject(bp));
 }
 
 void World::Inferences::draw_relation_spec(binary_predicate *bp,
 	parse_node *spec0, parse_node *spec1) {
 	inference *i = World::Inferences::create_relation_inference_spec(spec0, spec1);
-	World::Inferences::join_inference(i, BinaryPredicates::as_subject(bp));
+	World::Inferences::join_inference(i, World::Inferences::bp_as_subject(bp));
 }
 
 @ And an all-purpose routine provided for plugins to draw customised

@@ -16,6 +16,7 @@ typedef struct explicit_bp_data {
 	struct property *i6_storage_property; /* provides run-time storage */
 	struct equivalence_bp_data *equiv_data; /* only used for |Relation_Equiv| */
 	struct inter_name *v2v_bitmap_iname; /* only used for |Relation_VtoV| and |Relation_Sym_VtoV| */
+	int store_dynamically;
 	CLASS_DEFINITION
 } explicit_bp_data;
 
@@ -62,6 +63,33 @@ int Relations::Explicit::allow_arbitrary_assertions(binary_predicate *bp) {
 	return FALSE;
 }
 
+void Relations::Explicit::store_dynamically(binary_predicate *bp) {
+	if (bp->relation_family == explicit_bp_family) {
+		explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+		ED->store_dynamically = TRUE;
+	} else internal_error("not explicit");
+}
+
+int Relations::Explicit::stored_dynamically(binary_predicate *bp) {
+	if (bp->relation_family == explicit_bp_family) {
+		explicit_bp_data *ED = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
+		return ED->store_dynamically;
+	}
+	return FALSE;
+}
+
+int Relations::Explicit::relates_values_not_objects(binary_predicate *bp) {
+	if (bp->relation_family == explicit_bp_family) {
+		kind *K = BinaryPredicates::kind(bp);
+		kind *K0, *K1;
+		Kinds::binary_construction_material(K, &K0, &K1);
+		if ((Kinds::Behaviour::is_object(K0)) && (Kinds::Behaviour::is_object(K1)))
+			return FALSE;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 @ When the source text declares new relations, it turns out to be convenient
 to make their BPs in a two-stage process: to make sketchy, mostly-blank BP
 structures for them early on -- but getting their names registered -- and
@@ -85,6 +113,7 @@ binary_predicate *Relations::Explicit::make_pair_sketchily(word_assemblage wa) {
 	ED->i6_storage_property = NULL;
 	ED->form_of_relation = Relation_OtoO;
 	ED->v2v_bitmap_iname = NULL;
+	ED->store_dynamically = FALSE;
 
 	return bp;
 }
@@ -131,7 +160,7 @@ int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs1, parse_node *spec1) {
 
 	@<Reject non-assertable relations@>;
-	if (BinaryPredicates::store_dynamically(bp)) {
+	if (Relations::Explicit::stored_dynamically(bp)) {
 		World::Inferences::draw_relation_spec(bp, spec0, spec1);
 		return TRUE;
 	} else {

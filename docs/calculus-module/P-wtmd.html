@@ -101,9 +101,9 @@ For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What predicate calculus is. </b>The word "calculus" is often used to mean differentiating and integrating
 functions, but properly speaking that is "infinitesimal calculus", and there
-are many others.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> In logic, different sets of rules for making deductions
-tend to be given such names, and we will use (a form of) one of the most
-popular simple systems, "predicate calculus".<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+are many others.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> In particular, any set of rules for making deductions
+tends to be called a "calculus", and we will use a form of one of the most
+popular, "predicate calculus".<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
 
 <p class="commentary">Most attempts to codify the meaning of sentences in any systematic way involve
@@ -253,7 +253,7 @@ is of the kind \(K\).
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Binary predicates. </b>Similarly, <a href="index.html" class="internal">calculus</a> allows the user to create as many families of binary
 predicates as are wanted. See <a href="3-bpf.html" class="internal">Binary Predicate Families</a>. For example,
 the "same property value as" relations all belong to a single family. This
-module builds only one family in:
+module builds in only one family:
 </p>
 
 <ul class="items"><li>&#9679; The equality predicate \(=\), whose special meaning is used when simplifying
@@ -269,12 +269,12 @@ the containment relation and the wearing relation. To avoid scaring the horses,
 binary predicates are called "relations" in all of the Inform documentation.
 </p>
 
-<p class="commentary">New BPs can be constructed with <a href="3-bp.html#SP12" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
+<p class="commentary">New BPs can be constructed with <a href="3-bp.html#SP10" class="internal">BinaryPredicates::make_pair</a>. The term "pair"
 is used because every \(B\) has a "reversal" \(B^r\), such that \(B^r(s, t)\) is true
 if and only if \(B(t, s)\). \(B\) and \(B^r\) are created in pairs.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup>
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="3-bp.html#SP11" class="internal">BinaryPredicates::make_equality</a>.
+<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Except for equality, which is its own reversal. See <a href="3-bp.html#SP9" class="internal">BinaryPredicates::make_equality</a>.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making propositions. </b>Propositions are built incrementally, like Lego, with a sequence of function
 calls.

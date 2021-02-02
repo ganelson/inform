@@ -13,20 +13,6 @@
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
-MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
-
-<script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
   popup.classList.toggle("show");
@@ -86,14 +72,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#3">Chapter 3: Binary Predicates</a></li><li><b>Binary Predicate Families</b></li></ul></div>
 <p class="purpose">To create sets of relations for different purposes.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>A "binary predicate" is a property \(B\) such that for any combination \(x\) and
-\(y\), and at any given moment at run-time, \(B(x, y)\) is either true or false.
-The classic example is equality, \((x == y)\), which is true if and only if they
-are the same value. But Inform has many others. In the Inform documentation,
-binary predicates are called "relations".
-</p>
-
-<p class="commentary">Want to create a new binary predicate? First you'll need a family for it to
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Want to create a new binary predicate? First you'll need a family for it to
 belong to. Some families are small (the equality family contains just the
 equality relation), others larger (the map connections family in an IF compilation
 has one for each map direction). What unites the members of a family is that
@@ -182,7 +161,8 @@ world.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>This is for compiling run-time code to either test, make true, or make false.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>This is for compiling run-time code to either test a relation, make a
+relation true from now on, or make it false.
 </p>
 
 <p class="commentary">Some constants here enumerate the three cases of what we are to do. This
@@ -231,8 +211,8 @@ fields, when they are mentioned in problem messages.
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" relation"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K0</span><span class="plain-syntax"> = </span><a href="3-bp.html#SP19" class="function-link"><span class="function-syntax">BinaryPredicates::term_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K0</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">K0</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K1</span><span class="plain-syntax"> = </span><a href="3-bp.html#SP19" class="function-link"><span class="function-syntax">BinaryPredicates::term_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">K1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K0</span><span class="plain-syntax"> = </span><a href="3-bp.html#SP7" class="function-link"><span class="function-syntax">BinaryPredicates::term_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K0</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">K0</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K1</span><span class="plain-syntax"> = </span><a href="3-bp.html#SP7" class="function-link"><span class="function-syntax">BinaryPredicates::term_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">); </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">K1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" (between "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K0</span><span class="plain-syntax">, </span><span class="identifier-syntax">K1</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::Textual::write_plural</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">K0</span><span class="plain-syntax">);</span>

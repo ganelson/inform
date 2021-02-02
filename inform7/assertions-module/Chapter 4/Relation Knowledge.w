@@ -162,7 +162,7 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 @ At some point we should probably revisit this.
 
 @<Impose a tedious restriction on relations between objects and values@> =
-	if ((BinaryPredicates::relates_values_not_objects(bp)) &&
+	if ((Relations::Explicit::relates_values_not_objects(bp)) &&
 		(((Node::get_subject(px)) && (InferenceSubjects::domain(Node::get_subject(px)))) ||
 		((Node::get_subject(py)) && (InferenceSubjects::domain(Node::get_subject(py)))))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_KindRelatedToValue),

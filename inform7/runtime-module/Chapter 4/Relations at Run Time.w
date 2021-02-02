@@ -12,6 +12,7 @@ typedef struct bp_runtime_implementation {
 	struct inter_name *handler_iname;
 	struct inter_name *initialiser_iname; /* if stored in dynamically allocated memory */
 	int record_needed; /* we need to compile a small array of details in readable memory */	
+	int fast_route_finding; /* use fast rather than slow route-finding algorithm? */
 	CLASS_DEFINITION
 } bp_runtime_implementation;
 
@@ -22,6 +23,7 @@ bp_runtime_implementation *RTRelations::implement(binary_predicate *bp) {
 	imp->handler_iname = NULL;
 	imp->initialiser_iname = NULL;
 	imp->record_needed = FALSE;
+	imp->fast_route_finding = FALSE;
 	return imp;
 }
 
@@ -70,6 +72,11 @@ void RTRelations::mark_as_needed(binary_predicate *bp) {
 		}
 	}
 	bp->imp->record_needed = TRUE;
+}
+
+void RTRelations::use_frf(binary_predicate *bp) {
+	bp->imp->fast_route_finding = TRUE;
+	bp->reversal->imp->fast_route_finding = TRUE;
 }
 
 @h Relation records.
@@ -142,7 +149,7 @@ void RTRelations::compile_relation_records(void) {
 			minimal = TRUE;
 		if (bp->imp->record_needed) {
 			inter_name *handler = NULL;
-			if (bp->dynamic_memory == FALSE)
+			if (Relations::Explicit::stored_dynamically(bp) == FALSE)
 				@<Write the relation handler routine for this BP@>;
 			@<Write the relation record for this BP@>;
 		}
@@ -152,7 +159,7 @@ void RTRelations::compile_relation_records(void) {
 	LocalVariables::add_internal_local_c_as_symbol(I"i", "loop counter");
 	LocalVariables::add_internal_local_c_as_symbol(I"rel", "new relation");
 	LOOP_OVER(bp, binary_predicate) {
-		if ((bp->dynamic_memory) && (bp->right_way_round)) {
+		if ((Relations::Explicit::stored_dynamically(bp)) && (bp->right_way_round)) {
 
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
 			Produce::down(Emit::tree());
@@ -232,7 +239,7 @@ void RTRelations::compile_relation_records(void) {
 @<Write the relation record for this BP@> =
 	if (RTRelations::iname(bp) == NULL) internal_error("no bp symbol");
 	packaging_state save = Emit::named_array_begin(RTRelations::iname(bp), K_value);
-	if (bp->dynamic_memory) {
+	if (Relations::Explicit::stored_dynamically(bp)) {
 		Emit::array_numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
 		Kinds::RunTime::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
@@ -1133,7 +1140,7 @@ above: it forces the template layer to generate the cache when first used.
 	inter_name *iname = Hierarchy::make_iname_in(ROUTE_CACHE_HL, P);
 	kind *left_kind = BinaryPredicates::term_kind(bp, 0);
 	kind *right_kind = BinaryPredicates::term_kind(bp, 1);
-	if ((bp->fast_route_finding) &&
+	if ((bp->imp->fast_route_finding) &&
 		(Kinds::eq(left_kind, right_kind)) &&
 		(Kinds::Behaviour::is_subkind_of_object(left_kind)) &&
 		(left_count == right_count)) {
@@ -1203,7 +1210,7 @@ to send the pairs in that row in any order.
 
 @<Find all pairs belonging to this row, and set the relevant flags@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, BinaryPredicates::as_subject(bp), ARBITRARY_RELATION_INF) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
 		inference_subject *left_infs, *right_infs;
 		World::Inferences::get_references(inf, &left_infs, &right_infs);
 		if (infs == left_infs) row_flags[RTRelations::get_relation_index(right_infs, 1)] = 1;

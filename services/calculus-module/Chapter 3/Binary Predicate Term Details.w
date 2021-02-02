@@ -26,7 +26,7 @@ typedef struct bp_term_details {
 	struct wording called_name; /* "(called...)" name, if any exists */
 	TERM_DOMAIN_CALCULUS_TYPE *implies_infs; /* the domain of values allowed */
 	struct kind *implies_kind; /* the kind of these values */
-	struct i6_schema *function_of_other; /* the function $f_0$ or $f_1$ as above */
+	struct i6_schema *function_of_other; /* where one term can be deduced from the other */
 	char *index_term_as; /* usually null, but if not, used in Phrasebook index */
 } bp_term_details;
 
@@ -37,6 +37,16 @@ bp_term_details BPTerms::new(TERM_DOMAIN_CALCULUS_TYPE *infs) {
 	bptd.function_of_other = NULL;
 	bptd.implies_infs = infs;
 	bptd.implies_kind = NULL;
+	bptd.index_term_as = NULL;
+	return bptd;
+}
+
+bp_term_details BPTerms::new_kind(kind *K) {
+	bp_term_details bptd;
+	bptd.called_name = EMPTY_WORDING;
+	bptd.function_of_other = NULL;
+	bptd.implies_infs = NULL;
+	bptd.implies_kind = K;
 	bptd.index_term_as = NULL;
 	return bptd;
 }
@@ -65,9 +75,9 @@ void BPTerms::set_domain(bp_term_details *bptd, kind *K) {
 
 @ Some BPs are such that $B(x, y)$ can be true for more or less any
 combination of $x$ and $y$. Those can take a lot of storage and it is
-difficult to perform any reasoning about them, because knowing that $B(x,
-y)$ is true doesn't give you any information about $B(x, z)$. For instance,
-the BP created by
+difficult to perform any reasoning about them, because knowing that
+$B(x, y)$ is true doesn't give you any information about $B(x, z)$.
+For instance, the BP created by
 
 >> Suspicion relates various people to various people.
 
@@ -96,14 +106,9 @@ Note that if $B$ does have an $f_0$ function then its reversal $R$ has an
 identical $f_1$ function, and vice versa.
 
 @ We never in fact need to calculate the value of $f_0(y)$ from $y$ during
-compilation -- only at run-time. So we store the function $f_0(y)$ as what
-is called an "I6 schema", basically a piece of I6 source code with a
-place-holder where $y$ is to be inserted. In the case of containment, the
-schema is written
-$$ f_0(|*1|) = |ContainerOf(*1)| $$
-and what this means is that we can calculate $f_0(y)$ from an object $y$
-at run-time by calling the |ContainerOf| function, which tells us what
-container (if any) is at present directly containing $y$.
+compilation -- only at run-time. So we store the function $f_0(y)$ in an
+//i6_schema// for the necessary run-time code. For example, this might be
+the schema |ContainerOf(*1)|, which would code-generate to a function call.
 
 =
 void BPTerms::set_function(bp_term_details *bptd, i6_schema *f) {
@@ -125,7 +130,7 @@ kind *BPTerms::kind(bp_term_details *bptd) {
 	return TERM_DOMAIN_TO_KIND_FUNCTION(bptd->implies_infs);
 }
 
-@ The table of relations in the index uses the textual name of an INFS, so:
+@ The table of relations in the index uses the textual name, so:
 
 =
 void BPTerms::index(OUTPUT_STREAM, bp_term_details *bptd) {
