@@ -370,7 +370,7 @@ using a tense other than the present, and all is well.
 		explicit_negation = TRUE; pass = FALSE;
 	}
 	spec = Conditions::new_TEST_PROPOSITION(
-		Propositions::FromSentences::S_subtree(TRUE, W, A, B, subj, pass));
+		SentencePropositions::S_subtree(TRUE, W, A, B, subj, pass));
 	Node::set_subject_term(spec, subj);
 	if (Wordings::nonempty(W)) Node::set_text(spec, W);
 	if (VerbUsages::get_tense_used(vu) != IS_TENSE) {
@@ -396,7 +396,7 @@ using a tense other than the present, and all is well.
 
 @<Convert an SN subtree@> =
 	spec = Descriptions::from_proposition(
-		Propositions::FromSentences::S_subtree(FALSE, W, A, B, subj, verb_phrase_negated), W);
+		SentencePropositions::S_subtree(FALSE, W, A, B, subj, verb_phrase_negated), W);
 	Node::set_subject_term(spec, subj);
 	Annotations::write_int(spec, converted_SN_ANNOT, TRUE);
 	if (A) @<Veto certain cases where text was misunderstood as a description@>;

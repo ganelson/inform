@@ -1628,7 +1628,7 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 		LOGIF(ACTION_PATTERN_COMPILATION, "Storage has $D\n", prop);
 
 	if ((force_proposition) && (prop == NULL)) {
-		prop = Propositions::FromSentences::from_spec(spec);
+		prop = SentencePropositions::from_spec(spec);
 		LOGIF(ACTION_PATTERN_COMPILATION, "[MPE forced proposition: $D]\n", prop);
 		if (prop == NULL) internal_error("MPE unable to force proposition");
 		if (verify_as_kind) {

@@ -236,7 +236,7 @@ pcalc_prop *Descriptions::get_inner_prop(parse_node *spec) {
 		prop = Propositions::ungroup_after(prop, prop, NULL);
 		return prop->next;
 	}
-	return Propositions::FromSentences::from_spec(spec);
+	return SentencePropositions::from_spec(spec);
 }
 
 pcalc_prop *Descriptions::get_quantified_prop(parse_node *spec) {
@@ -247,7 +247,7 @@ pcalc_prop *Descriptions::get_quantified_prop(parse_node *spec) {
 		prop = Propositions::ungroup_after(prop, prop, NULL);
 		return prop->next;
 	}
-	return Propositions::FromSentences::from_spec(spec);
+	return SentencePropositions::from_spec(spec);
 }
 
 quantifier *Descriptions::get_quantifier(parse_node *spec) {

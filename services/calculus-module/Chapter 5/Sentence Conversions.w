@@ -1,7 +1,6 @@
-[Propositions::FromSentences::] Sentence Conversions.
+[SentencePropositions::] Sentence Conversions.
 
-The third of the three sources of propositions to conjure with:
-those which arise by the parsing of complex sentence trees in the S-grammar.
+Turning parse trees from English sentences into logical propositions.
 
 @h The meaning of a sentence.
 "Again and again Haddon thought he had found the key to the strange writings,
@@ -13,34 +12,49 @@ his life to solving the riddle, the amazing story of the Trigan Empire would
 never have been given to the world. WHAT FOLLOWS IS THAT STORY."
 ("The Rise and Fall of the Trigan Empire", 1965)
 
-This section provides a single, but crucial, function to the rest of Inform:
-it takes a sentence subtree output by the S-parser and turns it into a proposition.
+Inform turns sentences into parse trees: see //linguistics: About Sentence Diagrams//
+for many examples. In such parse trees,
 
-The sentence subtree can be headed by either a |SV_NT|, representing a
-whole sentence, which we turn into a proposition with no free variables; or by
-an |SN_NT|, representing a description which includes a relative clause,
-such as "an animal which can see the player". In this section we will loosely
-refer to the text parsed by either sort of subtree as the "sentence".
+(*) an "S-subtree" is one representing a verb phrase (VP) or relative phrase (RP), and
+(*) an "SN-subtree" is one representing a noun phrase (NP). 
 
-The basic idea is simple. The sentence will have a verb phrase (VP), together
-with two noun phrases: a subject phrase (SP) and object phrase (OP). English
-is an SVO language, so phrases (usually) occur in the sequence SP-VP-OP.
-In "Katy examines the painting", "Katy" is the SP and "painting" is
-the OP. (Although the subject is sometimes the more active participant, that
-isn't always the case: in "the painting is examined by Katy", "the painting"
-is now the SP. The subject is what the sentence talks about.) At this point
-in the program, the S-parser has turned the sentence into a neat tree structure
-identifying the SP, VP and OP. We need to find meanings for the SP, VP and OP
-independently, and then combine these into a single proposition representing
-the meaning of the whole sentence.
+An S-subtree typically contains two SN-subtrees within it, the "subject phrase" (SP)
+and the "object phrase" (OP). In the S-subtree for "Katy examines the painting",
+"Katy" would be one SN-subtree, the SP, and "painting" the other, the OP. But
+note that an S-subtree can also represent a noun, if it expresses a relative
+phrase: for example, "an animal which can see the player".
+
+In this section we provide relatively simple, but crucial, functions which
+convert these subtrees into logical propositions.
+
+@h S-subtrees.
+To begin with: S-subtrees.
+
+(*) If |SV_not_SN| is set, then this expects a complete sentence, and produces
+a proposition with no free variables; otherwise this expects a relative phrase
+and produces a proposition $\phi(x)$ with a single free variable $x$. Thus,
+"an animal which can see the player" produces a proposition which expresses
+that $x$ is such an animal without specifying a value of $x$.
+
+(*) Rather than being given just one tree location, we have two, |A| and |B|.
+|A| is the subject phrase and |B| either the object phrase or some relationship
+beneath which is the object phrase. Again, see //linguistics: About Sentence Diagrams//
+for the idea.
+
+(*) A side-effect of the function is to record a copy of the subject term of
+the resulting proposition by writing to the term pointed to by |subject_of_sentence|,
+if this is not null.
 
 =
 int conv_log_depth = 0; /* recursion depth: used only to clarify the debugging log */
 
-pcalc_prop *Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, parse_node *A, parse_node *B, pcalc_term *subject_of_sentence, int verb_phrase_negated) {
+pcalc_prop *SentencePropositions::S_subtree(int SV_not_SN, wording W,
+	parse_node *A, parse_node *B, pcalc_term *subject_of_sentence,
+	int verb_phrase_negated) {
 	parse_node *subject_phrase_subtree = NULL, *object_phrase_subtree = NULL;
 	pcalc_prop *subject_phrase_prop, *object_phrase_prop;
-	pcalc_term subject_phrase_term = Terms::new_constant(NULL); /* unnecessary initialization to pacify clang, which can't prove it's unnecessary */
+	/* unnecessary initialization to pacify clang, which can't prove it's unnecessary: */
+	pcalc_term subject_phrase_term = Terms::new_constant(NULL); 
 	pcalc_term object_phrase_term = Terms::new_constant(NULL);
 	binary_predicate *verb_phrase_relation = NULL;
 	pcalc_prop *sentence_prop = NULL;
@@ -64,7 +78,7 @@ pcalc_prop *Propositions::FromSentences::S_subtree(int SV_not_SN, wording W, par
 }
 
 @<Check the tree position makes sense, and tell the debugging log@> =
-	if (A) Propositions::FromSentences::set_position(A);
+	if (A) SentencePropositions::set_position(A);
 	if (conv_log_depth == 0) LOGIF(PREDICATE_CALCULUS, "-----------\n");
 	conv_log_depth++;
 	LOGIF(PREDICATE_CALCULUS, "[%d] Starting fs on: <%W>\n", conv_log_depth, W);
@@ -85,13 +99,12 @@ even though they refer to nothing at all, because we don't like to say
 At any rate Inform parses a sentence in the form "There is X" or "There
 are Y" into a simpler form of tree with just one noun phrase, and no verb
 phrase at all. We convert the noun phrase to a proposition $\phi$ in which
-$x$ is free, then bind it with $\exists x$ to form $\exists x: \phi(x)$,
-making an S-proposition as required.
+$x$ is free, then bind it with $\exists x$ to form $\exists x: \phi(x)$.
 
 @<Handle a THERE subtree, used for "there is/are NP"@> =
 	if (SV_not_SN == FALSE) internal_error("THERE subtree misplaced");
 	parse_node *spec = B->down;
-	sentence_prop = Propositions::FromSentences::from_spec(spec);
+	sentence_prop = SentencePropositions::from_spec(spec);
 	sentence_prop = Binding::bind_existential(sentence_prop, NULL);
 
 @ Here we only locate the subject and object subtrees -- their meanings we
@@ -106,14 +119,14 @@ it can be applied.
 
 @<Find meaning of the VP as a relation and a parity@> =
 	subject_phrase_subtree = A;
-	if (subject_phrase_subtree == NULL) Propositions::FromSentences::error("SP subtree null");
+	if (subject_phrase_subtree == NULL) SentencePropositions::error("SP subtree null");
 	parse_node *verb_phrase_subtree = B;
-	if (verb_phrase_subtree == NULL) Propositions::FromSentences::error("VP subtree null");
-	if (verb_phrase_subtree->down == NULL) Propositions::FromSentences::error("VP subtree broken");
+	if (verb_phrase_subtree == NULL) SentencePropositions::error("VP subtree null");
+	if (verb_phrase_subtree->down == NULL) SentencePropositions::error("VP subtree broken");
 	object_phrase_subtree = verb_phrase_subtree->down;
 
 	verb_usage *vu = Node::get_verb(verb_phrase_subtree);
-	if (vu == NULL) Propositions::FromSentences::error("verb null");
+	if (vu == NULL) SentencePropositions::error("verb null");
 	if ((SV_not_SN == FALSE) && (VerbUsages::get_tense_used(vu) != IS_TENSE))
 		@<Disallow the past tenses in relative clauses@>;
 
@@ -147,14 +160,14 @@ $v$ is the unique free variable of $\psi$, and $Q$ is a generalised quantifier w
 is not $\exists$.
 
 @ As examples of all four cases:
-(a) "Reverend Green" returns $t=|Green|$, $\phi = T$ -- a single definite thing.
+(a) "Reverend Green" returns $t=RG$, $\phi = T$ -- a single definite thing.
 (b) "Colonel Mustard in the Library" returns $t=x$ such that
-$\phi = \exists x: {\it is}(x, |Mustard|)\land{\it in}(|Mustard|, |Library|)$ -- a single definite
+$\phi = \exists x: {\it is}(x, CM)\land{\it in}(CM, L)$ -- a single definite
 thing but subject to conditions.
 (c) "A suspect carrying the lead piping" returns $t=x$ and
-$\phi = {\it suspect}(x)\land{\it carries}(x, |piping|)$ -- a single but vague thing.
+$\phi = {\it suspect}(x)\land{\it carries}(x, LP)$ -- a single but vague thing.
 (d) "All the weapons in the Billiard Room" returns $t=x$ and
-$\phi = \forall x: x\in\lbrace x\mid {\it weapon}(x)\land{\it in}(x, |Billiard|)\rbrace$ --
+$\phi = \forall x: x\in\lbrace x\mid {\it weapon}(x)\land{\it in}(x, BR)\rbrace$ --
 a range of things.
 
 @ Thus $\phi$ can contain at most 1 free variable, and then only in case (c).
@@ -165,10 +178,10 @@ The answer is that if we were only parsing whole sentences (SV-trees) then
 it would make no difference, because $x$ ends up bound by $\exists x$
 anyway when the final sentence is being put together. But we also want to
 parse descriptions. Consider:
-
->> (1) let L be the list of open doors in the Dining Room;
->> (2) let L be the list of two open doors in the Dining Room;
-
+= (text as Inform 7)
+(1) let L be the list of open doors in the Dining Room;
+(2) let L be the list of two open doors in the Dining Room;
+=
 Here (1) is legal in Inform, (2) is not, because it implies a requirement about
 the list which will probably not be satisfied. (Maybe there are three open
 doors there, maybe none.) In case (1), |NPstp| applied to "open doors" will
@@ -183,20 +196,20 @@ Or to put this more informally: it's possible for a single item to be an
 than three open doors". So $\phi$ contains a free variable if and only if
 the NP describes a single but vague thing.
 
-@ The First Rule is implemented by |Propositions::FromSentences::NP_subtree_to_proposition| below, and
+@ The First Rule is implemented by |SentencePropositions::NP_subtree| below, and
 we apply it independently to the SP and OP:
 
 @<Find meanings of the SP and OP as propositions and terms@> =
 	kind *subject_K = BinaryPredicates::term_kind(verb_phrase_relation, 0);
 	if (Kinds::Behaviour::is_subkind_of_object(subject_K)) subject_K = NULL;
  	subject_phrase_prop =
- 		Propositions::FromSentences::NP_subtree_to_proposition(&subject_phrase_term, subject_phrase_subtree,
+ 		SentencePropositions::NP_subtree(&subject_phrase_term, subject_phrase_subtree,
 			subject_K);
 
 	kind *object_K = BinaryPredicates::term_kind(verb_phrase_relation, 1);
 	if (Kinds::Behaviour::is_subkind_of_object(object_K)) object_K = NULL;
 	object_phrase_prop =
-		Propositions::FromSentences::NP_subtree_to_proposition(&object_phrase_term, object_phrase_subtree,
+		SentencePropositions::NP_subtree(&object_phrase_term, object_phrase_subtree,
 			object_K);
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] subject NP: $0 such that: $D\n",
@@ -215,8 +228,8 @@ the first point at which the placement as subject rather than object will
 start to make a difference:
 
 (i) we always bind a free variable in the object, but
-(ii) we only bind a free variable in the subject if we are looking at the
-topmost verb in a whole sentence (i.e., for an SV rather than SN subtree).
+(ii) we only bind a free variable in the subject in |SV_not_SN|-mode, i.e.,
+when our text represents an entire sentence rather than a relative clause.
 
 The SP is called the "subject phrase" because it contributes the subject of
 a sentence: what it is a sentence about.
@@ -227,8 +240,11 @@ describes something, in a way that can be tested for any given candidate $x$ --
 we produce $\phi_S = {\it woman}(x)$ with $x$ remaining free.
 
 @<Bind up any free variable in the OP and sometimes the SP, too@> =
-	if (SV_not_SN) subject_phrase_prop = Binding::bind_existential(subject_phrase_prop, &subject_phrase_term);
-	object_phrase_prop = Binding::bind_existential(object_phrase_prop, &object_phrase_term);
+	if (SV_not_SN)
+		subject_phrase_prop =
+			Binding::bind_existential(subject_phrase_prop, &subject_phrase_term);
+	object_phrase_prop =
+		Binding::bind_existential(object_phrase_prop, &object_phrase_term);
 
 @ Of all the thousands of paragraphs of code in Inform, this is the one which
 most sums up "how it works". We started with a sentence in
@@ -240,20 +256,16 @@ binary relation $B$, meant either in a positive sense ($B$ does hold) or a
 negative one (it doesn't). And now:
 
 Second Rule. The combined "meaning" $\Sigma$ is as follows:
-(1) if we are parsing a whole sentence (i.e., an SV-subtree), or $\phi_S$ is
-not in the form $Q x\in\lbrace x\mid\theta(x)\rbrace$, then:
-$$ \Sigma = \phi_S \land \phi'_O \land B(t_S, t'_O) $$
-if the sense is positive, or
-$$ \phi_S \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
-if not.
-(2) if we are parsing a relative clause (i.e., an SN-subtree), and $\phi_S$ is of the form
-$Q x\in\lbrace x\mid\theta(x)\rbrace$, then:
-$$ \Sigma = Q x\in\lbrace x\mid\theta(x) \land \phi'_O \land B(t_S, t'_O)\rbrace $$
-if the sense is positive, or
-$$ Q x\in\lbrace x\mid\theta(x) \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
-if not. Here $\phi'_O$ and $t'_O$ are $\phi_O$ and $t_O$ modified to relabel its
-variables so that there are no accidental clashes with variables named in
-$\phi_S$.
+(1) if we are parsing a whole sentence, or $\phi_S$ is
+not in the form $Q x\in\lbrace x\mid\theta(x)\rbrace$ for some quantifier $Q$, then
+according to whether the sense is positive or negative we have:
+$$ \Sigma = \phi_S \land \phi'_O \land B(t_S, t'_O) \qquad \Sigma = \phi_S \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
+(2) if we are parsing a relative clause, and $\phi_S$ is of the form
+$Q x\in\lbrace x\mid\theta(x)\rbrace$, then according to whether the sense is
+positive or negative we have:
+$$ \Sigma = Q x\in\lbrace x\mid\theta(x) \land \phi'_O \land B(t_S, t'_O)\rbrace \qquad \Sigma = Q x\in\lbrace x\mid\theta(x) \land \lnot(\phi'_O \land B(t_S, t'_O)) $$
+Here $\phi'_O$ and $t'_O$ are $\phi_O$ and $t_O$ modified to relabel its
+variables so that there are no accidental clashes with variables in $\phi_S$.
 
 @ That simple rule took the author a long, long time to work out,
 so it may be worth a little discussion:
@@ -262,8 +274,7 @@ so it may be worth a little discussion:
 |==| or |>=| work in conventional programming languages. For if
 $t_S$ and $t_O$ are both constants, and $\phi_S$ and $\phi_O$ both
 empty, we obtain just $B(t_S, t_O)$ and $\lnot(B(t_S, t_O))$. For instance,
-"score is 10" becomes just ${\it is}(|score|, 10)$, which compiles just to
-|(score == 10)|.
+"s is 10" becomes just ${\it is}(s, 10)$, which compiles just to |(s == 10)|.
 (b) In general, though, the meaning of an English sentence is not just that
 the verb is true, but also that the subject and object make sense. For
 "a woman is carrying an animal" to be true, there has to be such a woman,
@@ -277,21 +288,18 @@ the sentence "The box does not contain three coins". The first formula,
 which is correct, means roughly "it's not true that there are three coins
 $x$ such that $x$ is in the box", whereas the second, wrong, means
 "three coins $x$ exist such that $x$ is not in the box".
-(d) The difference between cases (1) and (2) is actually very slight. Case (2)
-arises only when a relative clause is qualifying the range of a collection
-of things: for instance, in "every man who is in the Garden", we have
+(d) Case (2) arises only when a relative clause is qualifying the range of a
+collection of things: for instance, in "every man who is in the Garden", we have
 $\phi_S = \forall x\in\lbrace x\mid {\it man}(x)\rbrace$ and then need to
-apply the relation ${\it in}(x, |Garden|)$. If we used formula (1)
+apply the relation ${\it in}(x, G)$. If we used formula (1)
 we would then have
-$$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\rbrace: {\it in}(x, |Garden|) $$
+$$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\rbrace: {\it in}(x, G) $$
 which means "every man is in the Garden" -- making a statement about
 everything covered by $\phi_S$, not restricting the coverage of $\phi_S$,
 as a relative clause should. Using formula (2), however, we get:
-$$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\land {\it in}(x, |Garden|)\rbrace $$
-Note that these formulae are identical except for what we might call punctuation.
-(e) The modification needed to make $\phi'_O$ out of $\phi_O$ is pretty well
-inconsequential. It makes no difference to the meaning of $\phi_O$.
-Consider the example "a woman is carrying an animal" once again.
+$$ \Sigma = \forall x\in\lbrace x\mid {\it man}(x)\land {\it in}(x, G)\rbrace $$
+(e) The modification needed to make $\phi'_O$ out of $\phi_O$ does not change
+its meaning. Consider the example "a woman is carrying an animal" once again.
 $t_S = x$ and $\phi_S = {\it woman}(x)$, which use $x$; and on the other
 hand $t_O = x$ and $\phi_O = {\it animal}(x)$, which also use $x$. Clearly
 we don't mean the same $x$ on both sides, so we relabel the OP to get $y$
@@ -325,27 +333,34 @@ of quantification) then so is $\Sigma$.
 @<Combine the SP, VP and OP meanings into a single proposition for the sentence@> =
 	int use_case_2 = FALSE;
 	if (SV_not_SN == FALSE)
-		subject_phrase_prop = Propositions::remove_final_close_domain(subject_phrase_prop, &use_case_2);
+		subject_phrase_prop =
+			Propositions::remove_final_close_domain(subject_phrase_prop, &use_case_2);
 
 	@<Deal with the English irregularity concerning -where words@>;
 
-	LOGIF(PREDICATE_CALCULUS, "[%d] Before renumbering of OP: t = $0, phi = $D\n", conv_log_depth, &object_phrase_term, object_phrase_prop);
+	LOGIF(PREDICATE_CALCULUS, "[%d] Before renumbering of OP: t = $0, phi = $D\n",
+		conv_log_depth, &object_phrase_term, object_phrase_prop);
 	object_phrase_term.variable =
-		Binding::renumber_bound(object_phrase_prop, subject_phrase_prop, object_phrase_term.variable);
+		Binding::renumber_bound(object_phrase_prop, subject_phrase_prop,
+			object_phrase_term.variable);
 	if (object_phrase_term.variable >= 26) internal_error("bad OP renumbering");
-	LOGIF(PREDICATE_CALCULUS, "[%d] After renumbering of OP: t = $0, phi = $D\n", conv_log_depth, &object_phrase_term, object_phrase_prop);
+	LOGIF(PREDICATE_CALCULUS, "[%d] After renumbering of OP: t = $0, phi = $D\n",
+		conv_log_depth, &object_phrase_term, object_phrase_prop);
 
 	sentence_prop = subject_phrase_prop;
 	if (verb_phrase_negated)
-		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_OPEN_ATOM));
+		sentence_prop =
+			Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_OPEN_ATOM));
 	sentence_prop = Propositions::concatenate(sentence_prop, object_phrase_prop);
 	sentence_prop = Propositions::concatenate(sentence_prop,
 		Atoms::binary_PREDICATE_new(verb_phrase_relation, subject_phrase_term, object_phrase_term));
 	if (verb_phrase_negated)
-		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_CLOSE_ATOM));
+		sentence_prop =
+			Propositions::concatenate(sentence_prop, Atoms::new(NEGATION_CLOSE_ATOM));
 
 	if (use_case_2)
-		sentence_prop = Propositions::concatenate(sentence_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
+		sentence_prop =
+			Propositions::concatenate(sentence_prop, Atoms::new(DOMAIN_CLOSE_ATOM));
 
 	LOGIF(PREDICATE_CALCULUS, "[%d] Initial meaning: $D\n", conv_log_depth, sentence_prop);
 
@@ -397,9 +412,9 @@ in the program as shipped to users is like wearing a life-jacket while
 learning to sail on dry land, and then taking it off when going to sea.
 Still, rule (iii) can only be ensured by writing the routines carefully.
 
-The simplification routines can all be found in "Simplifications".
+The simplification functions can all be found in //Simplifications//.
 
-@d APPLY_SIMPLIFICATION(proposition, simp) {
+@d APPLY_SIMP(proposition, simp) {
 	int changed = FALSE, NF = Binding::number_free(proposition);
 	if (proposition) proposition = simp(proposition, &changed);
 	if (changed) LOGIF(PREDICATE_CALCULUS, "[%d] %s: $D\n", conv_log_depth, #simp, proposition);
@@ -416,27 +431,27 @@ The simplification routines can all be found in "Simplifications".
 		internal_error("tried to simplify proposition which is not well-formed");
 	}
 
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::nothing_constant);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::nothing_constant);
 	#ifdef CORE_MODULE
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::use_listed_in);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::use_listed_in);
 	#endif
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_determiners_nonex);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::negated_satisfiable);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::make_kinds_of_value_explicit);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::negated_determiners_nonex);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::negated_satisfiable);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::make_kinds_of_value_explicit);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::redundant_kinds);
 
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::turn_right_way_round);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::region_containment);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::everywhere_and_nowhere);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::reduce_predicates);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_redundant_variables);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::not_related_to_something);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::turn_right_way_round);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::region_containment);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::everywhere_and_nowhere);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::reduce_predicates);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::eliminate_redundant_variables);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::not_related_to_something);
 	#ifdef CORE_MODULE
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::convert_gerunds);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::eliminate_to_have);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::convert_gerunds);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::eliminate_to_have);
 	#endif
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::is_all_rooms);
-	APPLY_SIMPLIFICATION(sentence_prop, Calculus::Simplifications::redundant_kinds);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::is_all_rooms);
+	APPLY_SIMP(sentence_prop, Calculus::Simplifications::redundant_kinds);
 
 	Binding::renumber(sentence_prop, NULL); /* just for the sake of tidiness */
 
@@ -455,7 +470,7 @@ three basic noun phrases: a value, a description, or a marker for an implied
 but missing noun.
 
 =
-pcalc_prop *Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *subject_of_NP, parse_node *p,
+pcalc_prop *SentencePropositions::NP_subtree(pcalc_term *subject_of_NP, parse_node *p,
 	kind *K) {
 	pcalc_prop *NP_prop = NULL; wording W;
 	@<Tell the debugging log about the NP-subtree@>;
@@ -483,7 +498,7 @@ pcalc_prop *Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *s
 @<Tell the debugging log about the NP-subtree@> =
 	W = Node::get_text(p);
 	conv_log_depth++;
-	LOGIF(PREDICATE_CALCULUS, "[%d] Starting Propositions::FromSentences::NP_subtree_to_proposition on: <%W>\n",
+	LOGIF(PREDICATE_CALCULUS, "[%d] Starting SentencePropositions::NP_subtree on: <%W>\n",
 		conv_log_depth, W);
 
 @ ...and also at the end.
@@ -500,19 +515,19 @@ pcalc_prop *Propositions::FromSentences::NP_subtree_to_proposition(pcalc_term *s
 		if (Binding::status(NP_prop, v) != FREE_VST)
 			internal_error("free variable from NP but not the preferred term");
 	}
-	LOGIF(PREDICATE_CALCULUS, "[%d] Propositions::FromSentences::NP_subtree_to_proposition: %W --> t = $0, phi = $D\n",
+	LOGIF(PREDICATE_CALCULUS,
+		"[%d] SentencePropositions::NP_subtree: %W --> t = $0, phi = $D\n",
 		conv_log_depth, W, subject_of_NP, NP_prop);
 	conv_log_depth--;
 
 @ Here we find a constant $C$ and return $t=C$ with a null $\phi$, except
 in one case: where $C$ is the name of an either/or property, such as
 "closed". In the context of a value, this is a noun -- it identifies
-which property we are talking about -- and this is why
-|ExParser::Conversion::VAL_subtree_to_spec| returns it as a constant. But inside a sentence, it
-has to be considered an adjective, so rather than returning $t = |closed|,
-\phi = T$, we return $t=x$ and $\phi = {\it closed}(x)$. If we didn't do
-this, text like "the trapdoor is closed" would translate to the
-proposition ${\it is}(|trapdoor|, |closed|)$, which would then fail in
+which property we are talking about. But inside a sentence, it
+has to be considered an adjective, so rather than returning
+$t = {\it closed}, \phi = T$, we return $t=x$ and $\phi = {\it closed}(x)$.
+If we didn't do this, text like "the trapdoor is closed" would translate to the
+proposition ${\it is}({\it trapdoor}, {\it closed})$, which would then fail in
 type-checking.
 
 (Note that this is a different sort of noun/adjective ambiguity than the
@@ -536,7 +551,7 @@ one arising below, which is to do with enumerated value properties.)
 	}
 	#endif
 
-@ If |Propositions::FromSentences::from_spec| is given a constant value $C$ then it returns the
+@ If |SentencePropositions::from_spec| is given a constant value $C$ then it returns the
 proposition ${\it is}(x, C)$: we look out for this and translate it to
 $t=C, \phi = T$. Otherwise, $\phi$ can be exactly the proposition returned,
 and the first term occurring in it will be chosen as the subject $t$. (In
@@ -545,7 +560,7 @@ it binds.)
 
 @<This NP was parsed as a description@> =
 	parse_node *spec = p;
-	NP_prop = Propositions::copy(Propositions::FromSentences::from_spec(spec));
+	NP_prop = Propositions::copy(SentencePropositions::from_spec(spec));
 
 	if (Propositions::match(NP_prop, 2,
 		PREDICATE_ATOM, NULL, NULL,
@@ -573,9 +588,8 @@ is read as the verb phrase "is" with |ABSENT_SUBJECT_NT| as SP
 and "an unlocked container" as OP.
 
 |ABSENT_SUBJECT_NT| nodes are easy to deal with since they translate to the I6
-variable |self| in the final compiled code; the |Rvalues::new_self_object_constant| routine
-returns a specification which refers to this. From a predicate
-calculus point of view, this is just another constant.
+variable |self| in the final compiled code. From a predicate calculus point
+of view, this is just another constant.
 
 @<This NP is only a ghostly presence@> =
 	#ifdef CORE_MODULE
@@ -583,14 +597,15 @@ calculus point of view, this is just another constant.
 	#endif
 
 @ Suppose we have a situation like this:
-
->> Texture is a kind of value. Rough, smooth and jagged are textures.  A thing has a texture.
->> Feeling relates various rooms to one texture. The verb to feel (he feels) implies the feeling relation.
-
+= (text as Inform 7)
+Texture is a kind of value. Rough, smooth and jagged are textures.  A thing has a texture.
+Feeling relates various rooms to one texture. The verb to feel (he feels) implies the feeling relation.
+=
 and consider the sentences:
-
->> [1] the broken bottle is jagged    [2] the Spiky Cavern feels jagged
-
+= (text as Inform 7)
+[1] the broken bottle is jagged
+[2] the Spiky Cavern feels jagged
+=
 Now suppose we are working on the NP "jagged". In (1), it's an adjective: we
 are talking about a quality of the bottle. But in (2), it's a noun: we are
 establishing a relation between two values, the Cavern and the jagged texture.
@@ -602,15 +617,15 @@ expected as the outcome. In the case of the equality relation used in (1),
 "is", the terms can be anything; but in the case of the feeling relation
 used in (2), the second term, corresponding to the noun phrase "jagged" in
 this sentence, has to have the kind of value "texture". So we convert it
-into noun form, and return $t=|texture|, \phi = T$.
+into noun form, and return $t={\it texture}, \phi = T$.
 
 (Note that this is a different sort of noun/adjective ambiguity than the
 one arising above, which is to do with either/or properties.)
 
 Another case which can occur is:
-
->> the bottle provides the property closed
-
+= (text as Inform 7)
+the bottle provides the property closed
+=
 where the presence of the words "the property" needs to alert us that
 "closed" is a noun referring to the property itself, not to a nameless
 object possessing that property. When the S-parser matches a property in
@@ -630,9 +645,9 @@ show this. (Score values otherwise aren't used for property names.)
 $\phi$, then we convert $t$ to a new free variable, say $t = y$, we then bind
 any free variable in the old $\phi$ and then change to $\exists y: {\it is}(y, C)\land\phi$.
 For instance, if we are working on the OP "the box in a room" from this:
-
->> a thing in the box in a room
-
+= (text as Inform 7)
+a thing in the box in a room
+=
 then the constant is $C = |box|$, and Sstp returned
 $\phi = \exists x: {\it room}(x)\land{\it is}(x, |ContainerOf(box)|)$.
 
@@ -675,7 +690,7 @@ always evaluate to 0 or 1.
 with a single unbound variable, to represent SP.
 
 =
-pcalc_prop *Propositions::FromSentences::from_spec(parse_node *spec) {
+pcalc_prop *SentencePropositions::from_spec(parse_node *spec) {
 	if (spec == NULL) return NULL; /* the null description is universally true */
 
 	pcalc_prop *prop = NP_TO_PROPOSITION(spec);
@@ -689,9 +704,9 @@ pcalc_prop *Propositions::FromSentences::from_spec(parse_node *spec) {
 }
 
 @ For example, if we have written:
-
->> Colour is a kind of value. The colours are pink, green and black. A thing has a colour.
-
+= (text as Inform 7)
+Colour is a kind of value. The colours are pink, green and black. A thing has a colour.
+=
 then "pink" is both a noun and an adjective. If SP is its representation as a
 noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 
@@ -735,12 +750,12 @@ created in Inform go through type-checking, so:
 touch wood.
 
 =
-void Propositions::FromSentences::set_position(parse_node *A) {
+void SentencePropositions::set_position(parse_node *A) {
 	#ifdef CORE_MODULE
 	StandardProblems::s_subtree_error_set_position(Task::syntax_tree(), A);
 	#endif
 }
-void Propositions::FromSentences::error(char *plaint) {
+void SentencePropositions::error(char *plaint) {
 	#ifdef CORE_MODULE
 	StandardProblems::s_subtree_error(Task::syntax_tree(), plaint);
 	#endif

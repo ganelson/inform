@@ -30,6 +30,6 @@ Chapter 4: Propositions
 	Binding and Substitution
 	Type Check Propositions
 
-Chapter 5: Tools
-	Simplifications
+Chapter 5: Sentences
 	Sentence Conversions
+	Simplifications

@@ -386,7 +386,7 @@ void Calculus::Deferrals::emit_test_if_var_matches_description(parse_node *var, 
 		internal_error("VMD on non-variable");
 
 	LOG_INDENT;
-	pcalc_prop *prop = Propositions::FromSentences::from_spec(matches);
+	pcalc_prop *prop = SentencePropositions::from_spec(matches);
 	kind *K = Specifications::to_kind(var);
 	prop = Propositions::concatenate(
 		KindPredicates::new_atom(K, Terms::new_variable(0)), prop);
@@ -540,7 +540,7 @@ void Calculus::Deferrals::compile_multiple_use_proposition(value_holster *VH,
 			"as a description value, but not 'three numbers' or 'most numbers'.");
 		Problems::issue_problem_end();
 	}
-	pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+	pcalc_prop *prop = SentencePropositions::from_spec(spec);
 	if (negate) {
 		prop = Propositions::concatenate(Atoms::new(NEGATION_OPEN_ATOM), prop);
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_CLOSE_ATOM));
@@ -602,7 +602,7 @@ void Calculus::Deferrals::emit_number_of_S(parse_node *spec) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NUMBER_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a number of things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, NUMBER_OF_DEFER, NULL_GENERAL_POINTER, NULL);
 	}
@@ -666,7 +666,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 			Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a list of things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, LIST_OF_DEFER, NULL_GENERAL_POINTER, K);
 	}
@@ -698,7 +698,7 @@ void Calculus::Deferrals::emit_random_of_S(parse_node *spec) {
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) RANDOM_OF_DUSAGE);
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop, "a random thing matching a description", spec);
 		kind *K = Propositions::describes_kind(prop);
 		if ((K) && (Calculus::Deferrals::has_finite_domain(K) == FALSE))
@@ -750,7 +750,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
-		pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		Calculus::Deferrals::prop_verify_descriptive(prop,
 			"a total property value for things matching a description", spec);
 		Calculus::Deferrals::emit_call_to_deferred_desc(prop, TOTAL_DEFER,
@@ -773,7 +773,7 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 		Produce::up(Emit::tree());
 	} else {
 		Calculus::Deferrals::emit_test_of_proposition(
-			in, Propositions::FromSentences::from_spec(spec));
+			in, SentencePropositions::from_spec(spec));
 	}
 }
 
@@ -782,7 +782,7 @@ void Calculus::Deferrals::emit_substitution_test(parse_node *in,
 =
 void Calculus::Deferrals::emit_substitution_now(parse_node *in,
 	parse_node *spec) {
-	pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+	pcalc_prop *prop = SentencePropositions::from_spec(spec);
 	Binding::substitute_var_0_in(prop, in);
 	Propositions::Checker::type_check(prop,
 		Propositions::Checker::tc_no_problem_reporting());
@@ -828,7 +828,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 	} else {
 		measurement_definition *mdef_found = Properties::Measurement::retrieve(prn, sign);
 		if (mdef_found) {
-			pcalc_prop *prop = Propositions::FromSentences::from_spec(spec);
+			pcalc_prop *prop = SentencePropositions::from_spec(spec);
 			Calculus::Deferrals::prop_verify_descriptive(prop,
 				"an extreme case of something matching a description", spec);
 			Calculus::Deferrals::emit_call_to_deferred_desc(prop, EXTREMAL_DEFER,
@@ -885,7 +885,7 @@ void Calculus::Deferrals::emit_repeat_through_domain_S(parse_node *spec,
 		pcalc_prop *domain_prop = NULL; int use_as_is = FALSE;
 		if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) use_as_is = TRUE;
 		else {
-			domain_prop = Propositions::FromSentences::from_spec(spec);
+			domain_prop = SentencePropositions::from_spec(spec);
 			if (CreationPredicates::contains_callings(domain_prop))
 				@<Issue called in repeat problem@>;
 		}
