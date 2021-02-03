@@ -133,9 +133,9 @@ proposition would be wasteful of space in the Z-machine.
 
 @<Simplify the proposition by flipping negated quantifiers, if possible@> =
 	int changed = FALSE;
-	proposition = Calculus::Simplifications::negated_determiners(proposition, &changed, TRUE);
+	proposition = Simplifications::negated_determiners(proposition, &changed, TRUE);
 	if (changed) {
-		LOGIF(PREDICATE_CALCULUS, "Calculus::Simplifications::negated_determiners: $D\n", proposition);
+		LOGIF(PREDICATE_CALCULUS, "Simplifications::negated_determiners: $D\n", proposition);
 	}
 
 @ While unfortunate in a way, this is for the best, because a successful

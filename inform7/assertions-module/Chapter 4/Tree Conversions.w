@@ -76,7 +76,7 @@ pcalc_prop *Propositions::Abstract::to_set_relation(binary_predicate *bp,
 	else pt1 = Terms::new_constant(spec1);
 	pcalc_prop *prop = Atoms::binary_PREDICATE_new(bp, pt0, pt1);
 	int dummy;
-	prop = Calculus::Simplifications::make_kinds_of_value_explicit(prop, &dummy);
+	prop = Simplifications::make_kinds_of_value_explicit(prop, &dummy);
 	return prop;
 }
 

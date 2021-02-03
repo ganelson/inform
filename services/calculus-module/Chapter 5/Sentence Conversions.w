@@ -431,27 +431,27 @@ The simplification functions can all be found in //Simplifications//.
 		internal_error("tried to simplify proposition which is not well-formed");
 	}
 
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::nothing_constant);
+	APPLY_SIMP(sentence_prop, Simplifications::nothing_constant);
 	#ifdef CORE_MODULE
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::use_listed_in);
+	APPLY_SIMP(sentence_prop, Simplifications::use_listed_in);
 	#endif
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::negated_determiners_nonex);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::negated_satisfiable);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::make_kinds_of_value_explicit);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::redundant_kinds);
+	APPLY_SIMP(sentence_prop, Simplifications::negated_determiners_nonex);
+	APPLY_SIMP(sentence_prop, Simplifications::negated_satisfiable);
+	APPLY_SIMP(sentence_prop, Simplifications::make_kinds_of_value_explicit);
+	APPLY_SIMP(sentence_prop, Simplifications::redundant_kinds);
 
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::turn_right_way_round);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::region_containment);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::everywhere_and_nowhere);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::reduce_predicates);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::eliminate_redundant_variables);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::not_related_to_something);
+	APPLY_SIMP(sentence_prop, Simplifications::turn_right_way_round);
+	APPLY_SIMP(sentence_prop, Simplifications::region_containment);
+	APPLY_SIMP(sentence_prop, Simplifications::everywhere_and_nowhere);
+	APPLY_SIMP(sentence_prop, Simplifications::reduce_predicates);
+	APPLY_SIMP(sentence_prop, Simplifications::eliminate_redundant_variables);
+	APPLY_SIMP(sentence_prop, Simplifications::not_related_to_something);
 	#ifdef CORE_MODULE
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::convert_gerunds);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::eliminate_to_have);
+	APPLY_SIMP(sentence_prop, Simplifications::convert_gerunds);
+	APPLY_SIMP(sentence_prop, Simplifications::eliminate_to_have);
 	#endif
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::is_all_rooms);
-	APPLY_SIMP(sentence_prop, Calculus::Simplifications::redundant_kinds);
+	APPLY_SIMP(sentence_prop, Simplifications::is_all_rooms);
+	APPLY_SIMP(sentence_prop, Simplifications::redundant_kinds);
 
 	Binding::renumber(sentence_prop, NULL); /* just for the sake of tidiness */
 

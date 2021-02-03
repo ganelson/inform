@@ -1,55 +1,58 @@
-[Calculus::Simplifications::] Simplifications.
+[Simplifications::] Simplifications.
 
-A set of operations each of which takes a proposition and either
-leaves it unchanged or replaces it with a simpler one logically equivalent
-to the original.
+A set of operations which rewrite propositions to make them easier or
+quicker to test at run-time without changing their meaning.
 
-@ Recall the three rules for simplification routines: they take a proposition
-$\Sigma$ (which they are allowed to destroy or modify) and return $\Sigma'$,
-but such that:
+@h Golden rules.
+The following functions all take a propeosition $\Sigma$ in the parameter
+|prop|, and return $\Sigma'$; they set the flag pointed to by |changed| if
+they in fact change something. (They are allowed to modify or destroy the
+data structure pointed to by |prop|, or indeed to change it in place and
+return the same pointer.)
 
-(i) $\Sigma'$ remains a syntactically correct proposition with well-formed
-quantifiers,
-(ii) $\Sigma'$ has the same number of free variables as $\Sigma$, and
-(iii) in all situations and for all possible values of any free variables,
-$\Sigma'$ is true if and only if $\Sigma$ is.
+(1) $\Sigma'$ must remain a syntactically correct proposition;
+(2) $\Sigma'$ has the same number of free variables as $\Sigma$, and
+(3) $\Sigma$ semantically entails $\Sigma'$ and vice versa, that is, for
+all possible values of any free variables $\Sigma'$ is true if and only
+if $\Sigma$ is.
 
-Rules (i) and (ii) are always strictly obeyed. A simplification which obeys (iii)
-in its purely logical sense is called a "deduction"; one which bends (iii)
-to change the proposition from what the user wrote, to what he meant to write,
-is called a "fudge". Fudges are needed because English is quirky, and does
-not correspond perfectly to predicate logic.
+Rules (1) and (2) are always strictly obeyed. If (3) is also strictly obeyed,
+we call the function a "deduction": but if we bend rule (3) to accommodate
+the quirky nature of language, we call it a "fudge".
 
-What we mean by simpler is not shorter, or with less exotic contents: often
-the simplified form of a proposition is longer and uses relations or
-determiners less obviously derived from the original text. Instead, simpler
-means simpler to test and assert. Our ideal is a conjunction of a sequence
-of predicates, using the smallest possible number of variables (and hence
-quantifiers).
+Note that we do not require $\Sigma'$ to be simpler than $\Sigma$ in any
+crude sense (say, its number of atoms). We want it to be more convenient
+to test at run-time than $\Sigma$ would have been, that's all. But usually
+it's a good idea to reduce the number of different variables occurring in it.
 
 @h Simplify the nothing constant (fudge).
 The word "nothing" is sometimes a noun ("the holder of the oak tree is
 nothing"), sometimes a determiner ("nothing is in the box"). This
-doesn't arise with the other no- words, nowhere and nobody, since those are
-not allowed as nouns in Inform.
+doesn't arise with other no- words, such as "nowhere" and "nobody", since
+those are not allowed as nouns in Inform.
 
 Here we look for the noun form as one term in a binary predicate, and convert
 it to the determiner form unless the predicate is equality. Thus "X is nothing"
 is allowed to use the noun form, "X contains nothing" has to use the
-determiner form. (In particular "nothing is nothing" compares two identical
-nouns and is always true. I thought this was a sentence nobody would write,
-but Google finds 223,000 hits for it.)
+determiner form.[1]
+
+[1] In particular "nothing is nothing" compares two identical nouns and is always
+true. I thought this was a sentence nobody would write, but Google finds 223,000
+hits for it, for example in Peter Hammill's lyrics to "Flight": "He say nothing
+is quite what it seems / I say nothing is nothing."
 
 =
-pcalc_prop *Calculus::Simplifications::nothing_constant(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::nothing_constant(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
-	#ifdef DETECT_NOTHING_VALUE
+	#ifdef DETECT_NOTHING_CALCULUS_CALLBACK
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop)
-		if ((Atoms::is_binary_predicate(pl)) && (Atoms::is_equality_predicate(pl) == FALSE)) {
+		if ((Atoms::is_binary_predicate(pl)) &&
+			(Atoms::is_equality_predicate(pl) == FALSE)) {
 			binary_predicate *bp = RETRIEVE_POINTER_binary_predicate(pl->predicate);
 			for (int i=0; i<2; i++) {
-				if (DETECT_NOTHING_VALUE(Terms::constant_underlying(&(pl->terms[i])))) {
+				parse_node *C = Terms::constant_underlying(&(pl->terms[i]));
+				if (DETECT_NOTHING_CALCULUS_CALLBACK(C)) {
 					@<Substitute for the term and quantify with does-not-exist@>;
 					PROPOSITION_EDITED(pl, prop);
 					break;
@@ -60,12 +63,10 @@ pcalc_prop *Calculus::Simplifications::nothing_constant(pcalc_prop *prop, int *c
 	return prop;
 }
 
-@ Formally, if $B$ is a predicate other than equality,
-$$ \Sigma = \cdots B(t, f_X(f_Y(\cdots(|nothing|))))\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots \not\exists v\in\lbrace v\mid K_1(v)\rbrace: B(t, f_X(f_Y(\cdots(v))))\cdots $$
+@ Formally, if $B$ is a predicate other than equality, and $N$ is the "nothing" constant,
+$$ \Sigma = \cdots B(t, f_X(f_Y(\cdots(N))))\cdots \quad \longrightarrow \quad \Sigma' = \cdots \not\exists v\in\lbrace v\mid K_1(v)\rbrace: B(t, f_X(f_Y(\cdots(v))))\cdots $$
 where $v$ is unused in $\Sigma$, and -- note the difference in placing --
-$$ \Sigma = \cdots B(f_X(f_Y(\cdots(|nothing|))), t)\cdots \quad \longrightarrow \quad
-\Sigma' = \not\exists v\in\lbrace v\mid K_2(v)\rbrace: \cdots B(f_X(f_Y(\cdots(v))), t)\cdots $$
+$$ \Sigma = \cdots B(f_X(f_Y(\cdots(N))), t)\cdots \quad \longrightarrow \quad \Sigma' = \not\exists v\in\lbrace v\mid K_2(v)\rbrace: \cdots B(f_X(f_Y(\cdots(v))), t)\cdots $$
 where $K_1$ and $K_2$ are the kinds of terms 1 and 2 in the predicate $B$.
 
 The difference in where we place the quantifier is important in double-negative
@@ -73,27 +74,28 @@ sentences. Consider these:
 
 >> [1] the box does not contain nothing
 
-which produces $\Sigma = \lnot({\it contains}(|box|, |nothing|))$. Here,
+which produces $\Sigma = \lnot({\it contains}(B, N))$. Here,
 |nothing| is part of the object phrase, not the subject phrase, and we need
 to quantify it within the OP -- which means, within the negation, because our
 recipe for negated sentences was (roughly) SP $\land\lnot($ OP $\land$ VP$)$.
-We thus make $\Sigma' = \lnot(\not\exists x:{\it contains}(|box|, x))$,
-although later simplification converts that to $\exists x: {\it contains}(|box|, x)$,
+We thus make $\Sigma' = \lnot(\not\exists x:{\it contains}(B, x))$,
+although later simplification converts that to $\exists x: {\it contains}(B, x)$,
 just as if the original sentence had been "the box contains something".
 On the other hand,
 
 >> [2] nothing does not annoy Peter
 
-produces $\Sigma = \lnot({\it annoys}(|nothing|, |Peter|))$, and now we have
-to quantify as $\Sigma' = \not\exists x: \lnot({\it annoys}(x, |Peter|))$.
+produces $\Sigma = \lnot({\it annoys}(N, P))$, and now we have
+to quantify as $\Sigma' = \not\exists x: \lnot({\it annoys}(x, P))$.
 
 Double-negatives are a little odd. If natural language were really the same as
 predicate logic with some grunting sounds for decoration, then a double negative
-would always be a positive. But in 18th-century English, that wasn't true: it
-was a way of emphasising the negation, just as characters in Aaron Sorkin's
-"The West Wing" scripts are always saying "not for nothing, but..." when
-their meaning is equivalent to "this is nothing, but...". Still, Inform takes
-the view that a double negative is a positive.
+would always be a positive. In fact that isn't always quite true,[1] but Inform
+does consider a double negative to be a positive.
+
+[1] In 18th-century English, for example, the double negative was a way to
+emphasise rather than undo negation, just as characters in Aaron Sorkin dramas
+are always saying "not for nothing, but..." to mean "it's nothing, but...".
 
 @ The code is simpler than the explanation:
 
@@ -109,38 +111,33 @@ the view that a double negative is a positive.
 		prop = Propositions::insert_atom(prop, position,
 			KindPredicates::new_atom(BinaryPredicates::term_kind(bp, i), new_var));
 	prop = Propositions::insert_atom(prop, position, Atoms::new(DOMAIN_OPEN_ATOM));
-	prop = Propositions::insert_atom(prop, position, Atoms::QUANTIFIER_new(not_exists_quantifier, nv, 0));
+	prop = Propositions::insert_atom(prop, position,
+		Atoms::QUANTIFIER_new(not_exists_quantifier, nv, 0));
 
 @h Use listed-in predicates (deduction).
-Specifications for entries in tables have a variety of forms (well, four
-of them), and one is by implication a condition: this is the 2-reference form
-of |TABLE_ENTRY_NT| specification. Suppose the source text reads
+Suppose the source text reads:
 
 >> if X is a density listed in the Table of Solid Stuff, ...
 
 Inform parses "a density listed in the Table of Solid Stuff" as a single
 specification, with references to the density column and the Solid Stuff
-table. In logical terms, this is just another constant, which we'll call $L$.
+table. In terms of our calculus, this is just another constant, which we'll call $L$.
 At this point the sentence looks like:
 $$ {\it is}(X, L) $$
 The trouble is that $L$ is really a predicate, acting on some free variable $v$,
-because it stands for any value $v$ found in the density column. We could try
-to interpret ${\it is}$ so as to accommodate this, but it is much better to
-use Inform's regular predicate apparatus.
-
-So we must make its nature explicit. Every table column has an associated binary
-predicate, and we rewrite:
-$$ \exists v: {\it number}(v)\land {\hbox{\it listed-in-density-column}}(v, T)\land {\it is}(v, X) $$
+because it stands for any value $v$ found in the density column. So we must make
+its nature explicit. Every table column has an associated binary predicate,
+and we rewrite:
+$$ \exists v: {\it number}(v)\land {\it listed}_{\it density}(v, T)\land {\it is}(v, X) $$
 This looks extravagant, but later simplification will reduce it to
-$$ {\hbox{\it listed-in-density-column}}(X, T). $$
+${\it listed}_{\it density}(X, T)$.
 
 More formally suppose we write $L(C, T)$ for the constant representing "a
 C listed in T", and suppose we use the notation $P(\dots t\dots)$ for any
 predicate containing a term underlying which is $t$. Let $v$ be a variable
 unused in $\Sigma$, and let $K$ be the kind of value of entries in the $C$
 column. Then:
-$$ \Sigma = \cdots P(\dots L(C, T)\dots) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots \exists v: K(v)\land {\hbox{\it listed-in-C-column}}(v, T)\land P(\dots v\dots) \cdots $$
+$$ \Sigma = \cdots P(\dots L(C, T)\dots) \cdots \quad \longrightarrow \quad \Sigma' = \cdots \exists v: K(v)\land {\it listed}_C(v, T)\land P(\dots v\dots) \cdots $$
 where the variable $v$ has replaced the constant $L(C, T)$ underlying one
 of the terms of $P$.
 
@@ -151,13 +148,12 @@ twice. For example,
 
 generates ${\it is}(L(C_1, T_1), L(C_2, T_2))$. As it happens, Inform can't
 compile this efficiently and will produce a problem message to say so, but
-it's important that our code here should generate the correct proposition,
-$$ \exists x: {\it number}(x)\land {\hbox{\it listed-in-PM_-column}}(x, T_1)\land
-{\hbox{\it listed-in-PM_-column}}(x, T_2). $$
+the code here does generate the correct proposition,
+$$ \exists x: {\it number}(x)\land {\it listed}_{\it Salad}(x, T_1)\land {\it listed}_{\it Solid}(x, T_2). $$
 
 =
 #ifdef CORE_MODULE
-pcalc_prop *Calculus::Simplifications::use_listed_in(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::use_listed_in(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 
 	*changed = FALSE;
@@ -209,11 +205,11 @@ and also preserves $\exists v$ atoms in $\Sigma$, which are useful since
 they make some of our later simplifications more applicable.
 
 =
-pcalc_prop *Calculus::Simplifications::negated_determiners_nonex(pcalc_prop *prop, int *changed) {
-	return Calculus::Simplifications::negated_determiners(prop, changed, FALSE);
+pcalc_prop *Simplifications::negated_determiners_nonex(pcalc_prop *prop, int *changed) {
+	return Simplifications::negated_determiners(prop, changed, FALSE);
 }
 
-pcalc_prop *Calculus::Simplifications::negated_determiners(pcalc_prop *prop, int *changed,
+pcalc_prop *Simplifications::negated_determiners(pcalc_prop *prop, int *changed,
 	int negate_existence_too) {
 	TRAVERSE_VARIABLE(pl);
 
@@ -226,7 +222,7 @@ pcalc_prop *Calculus::Simplifications::negated_determiners(pcalc_prop *prop, int
 			QUANTIFIER_ATOM, &quant_atom)) {
 			if ((negate_existence_too) ||
 				((Atoms::is_existence_quantifier(quant_atom) == FALSE))) {
-				prop = Calculus::Simplifications::prop_ungroup_and_negate_determiner(prop, pl_prev, TRUE);
+				prop = Simplifications::prop_ungroup_and_negate_determiner(prop, pl_prev, TRUE);
 				PROPOSITION_EDITED(pl, prop);
 			}
 		}
@@ -234,7 +230,7 @@ pcalc_prop *Calculus::Simplifications::negated_determiners(pcalc_prop *prop, int
 	return prop;
 }
 
-@ And the following useful routine actually performs the change. The only
+@ And the following useful function actually performs the change. The only
 tricky point here is that we store $\exists v$ without domain brackets; so
 if $Q$ happens to be $\exists v$ then we have to turn $\lnot(\exists v: \cdots)$
 into $\not\exists v\in \lbrace v\mid \cdots\rbrace\cdots$, and it's not
@@ -245,18 +241,17 @@ So we want the braces to enclose fixed, unassertable matter -- $v$ being
 a container, say -- and the $\phi$ outside the braces should then contain
 predicates which can be asserted.
 
-In practice that's way too hard for this routine to handle. If |add_domain_brackets|
-is set, then it converts
-$$ \lnot(\exists v: \cdots) \quad\longrightarrow\quad
-\not\exists v\in \lbrace v\mid \cdots\rbrace $$
+In practice that's way too hard for this function to handle. If |add_domain_brackets|
+is true, then it converts
+$$ \lnot(\exists v: \cdots) \quad\longrightarrow\quad \not\exists v\in \lbrace v\mid \cdots\rbrace $$
 -- that is, it will make the entire negated subproposition the domain of the
-quantifier. If |add_domain_brackets| is clear, the routine will return a
+quantifier. If |add_domain_brackets| is false, the function will return a
 syntactically incorrect proposition lacking the domain brackets, and it's
 the caller's responsibility to put that right.
 
 =
-pcalc_prop *Calculus::Simplifications::prop_ungroup_and_negate_determiner(pcalc_prop *prop, pcalc_prop *after,
-	int add_domain_brackets) {
+pcalc_prop *Simplifications::prop_ungroup_and_negate_determiner(pcalc_prop *prop,
+	pcalc_prop *after, int add_domain_brackets) {
 	pcalc_prop *quant_atom, *last;
 	int fnd;
 	if (after == NULL)
@@ -271,35 +266,35 @@ pcalc_prop *Calculus::Simplifications::prop_ungroup_and_negate_determiner(pcalc_
 		quantifier *quant = quant_atom->quant;
 		quantifier *antiquant = Quantifiers::get_negation(quant);
 		quant_atom->quant = antiquant;
-		prop = Propositions::ungroup_after(prop, after, &last); /* remove negation group brackets */
+		prop = Propositions::ungroup_after(prop, after, &last); /* remove negation brackets */
 		if ((quant == exists_quantifier) && (add_domain_brackets)) {
 			prop = Propositions::insert_atom(prop, quant_atom, Atoms::new(DOMAIN_OPEN_ATOM));
 			prop = Propositions::insert_atom(prop, last, Atoms::new(DOMAIN_CLOSE_ATOM));
 		}
 		if (antiquant == exists_quantifier) {
-			prop = Propositions::ungroup_after(prop, quant_atom, NULL); /* remove domain group brackets */
+			prop = Propositions::ungroup_after(prop, quant_atom, NULL); /* remove domain brackets */
 		}
-		LOGIF(PREDICATE_CALCULUS_WORKINGS, "Calculus::Simplifications::prop_ungroup_and_negate_determiner: $D\n", prop);
+		LOGIF(PREDICATE_CALCULUS_WORKINGS,
+			"Simplifications::prop_ungroup_and_negate_determiner: $D\n", prop);
 	} else internal_error("not a negate-group-determiner");
 	return prop;
 }
 
 @h Simplify negated satisfiability (deduction).
 When simplifying converted sentences, we chose not to use the
-|Calculus::Simplifications::negated_determiners| tactic on existence quantifiers $\exists v$,
+|Simplifications::negated_determiners| tactic on existence quantifiers $\exists v$,
 partly because it's tricky to establish their domain in a way helpful to
 the rest of Inform.
 
 Here we handle a simple case which occurs frequently and where we can indeed
 identify the domain well:
-$$ \Sigma = \lnot (\exists v: K(v)\land P) \quad \longrightarrow \quad
-\Sigma' = \not\exists v\in\lbrace v\mid K(v)\rbrace: P $$
+$$ \Sigma = \lnot (\exists v: K(v)\land P) \quad \longrightarrow \quad \Sigma' = \not\exists v\in\lbrace v\mid K(v)\rbrace: P $$
 where $K$ is a kind, and $P$ is any single predicate other than equality.
 (In the case of equality, we'd rather leave matters as they stand, because
 substitution will later eliminate all of this anyway.)
 
 =
-pcalc_prop *Calculus::Simplifications::negated_satisfiable(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::negated_satisfiable(pcalc_prop *prop, int *changed) {
 	pcalc_prop *quant_atom, *predicate_atom, *kind_atom;
 	*changed = FALSE;
 	if ((Propositions::match(prop, 6,
@@ -312,7 +307,7 @@ pcalc_prop *Calculus::Simplifications::negated_satisfiable(pcalc_prop *prop, int
 		(Atoms::is_existence_quantifier(quant_atom)) &&
 		(Atoms::is_equality_predicate(predicate_atom) == FALSE) &&
 		(kind_atom->terms[0].variable == quant_atom->terms[0].variable)) {
-		prop = Calculus::Simplifications::prop_ungroup_and_negate_determiner(prop, NULL, FALSE);
+		prop = Simplifications::prop_ungroup_and_negate_determiner(prop, NULL, FALSE);
 		prop = Propositions::insert_atom(prop, quant_atom, Atoms::new(DOMAIN_OPEN_ATOM));
 		prop = Propositions::insert_atom(prop, kind_atom, Atoms::new(DOMAIN_CLOSE_ATOM));
 		*changed = TRUE;
@@ -332,15 +327,12 @@ necessarily know by other means).
 
 Formally, let $K_1$ and $K_2$ be the kinds of value of terms 1 and 2 of the
 binary predicate $R$. Let $v$ be a variable. Then:
-$$ \Sigma = \cdots R(v, t)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots K_1(v)\land R(v, t) $$
-$$ \Sigma = \cdots R(t, v)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots K_2(v)\land R(t, v) $$
+$$ \Sigma = \cdots R(v, t)\cdots \quad \longrightarrow \quad \Sigma' = \cdots K_1(v)\land R(v, t) $$
+$$ \Sigma = \cdots R(t, v)\cdots \quad \longrightarrow \quad \Sigma' = \cdots K_2(v)\land R(t, v) $$
 and therefore, if both cases occur,
-$$ \Sigma = \cdots R(v, w)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots K_1(v)\land K_2(w)\land R(v, w) $$
+$$ \Sigma = \cdots R(v, w)\cdots \quad \longrightarrow \quad \Sigma' = \cdots K_1(v)\land K_2(w)\land R(v, w) $$
 
-Some of these new kind atoms are unnecessary, but |Calculus::Simplifications::redundant_kinds| will
+Some of these new kind atoms are unnecessary, but |Simplifications::redundant_kinds| will
 detect and remove those.
 
 Why do we do this for binary predicates, but not unary predicates? The answer
@@ -349,7 +341,7 @@ are allowed to have multiple definitions for different kinds of value, and
 because the code testing them is written to cope properly with bogus values.
 
 =
-pcalc_prop *Calculus::Simplifications::make_kinds_of_value_explicit(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::make_kinds_of_value_explicit(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 
 	TRAVERSE_PROPOSITION(pl, prop)
@@ -373,23 +365,24 @@ pcalc_prop *Calculus::Simplifications::make_kinds_of_value_explicit(pcalc_prop *
 }
 
 @h Remove redundant kind predicates (deduction).
-Propositions often contain more |KIND| atoms than they need, not least as a
-result of |Calculus::Simplifications::make_kinds_of_value_explicit|. Here we remove (some of)
+Propositions often contain more kind predicates than they need, not least as a
+result of |Simplifications::make_kinds_of_value_explicit|. Here we remove some of
 those, and move the survivors to what we consider the best positions within
 the line. For reasons to be revealed below, we run this process twice over:
 
 =
-pcalc_prop *Calculus::Simplifications::redundant_kinds(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::redundant_kinds(pcalc_prop *prop, int *changed) {
 	int c1 = FALSE, c2 = FALSE;
-	prop = Calculus::Simplifications::simp_redundant_kinds_dash(prop, prop, 1, &c1);
-	prop = Calculus::Simplifications::simp_redundant_kinds_dash(prop, prop, 1, &c2);
+	prop = Simplifications::simp_redundant_kinds_dash(prop, prop, 1, &c1);
+	prop = Simplifications::simp_redundant_kinds_dash(prop, prop, 1, &c2);
 	if ((c1) || (c2)) *changed = TRUE; else *changed = FALSE;
 	return prop;
 }
 
-@ This routine works recursively on subexpressions within the main
-proposition. These all begin and end with matched |*_OPEN_ATOM| and
-|*_CLOSED_ATOM| brackets, with one exception: the main proposition itself.
+@ This function works recursively on subexpressions within the main
+proposition. These all begin and end with matched open and close brackets,
+with one exception: the main proposition itself.
+
 |start_group| represents the first atom of the expression (the open
 bracket, in most cases) and |start_level| the level of bracket nesting
 at that point. This is 1 for the main proposition, but 0 for subexpressions,
@@ -399,8 +392,8 @@ This would all go wrong if the proposition were not well-formed, but we
 know that it is -- an internal error would have been thrown if not.
 
 =
-pcalc_prop *Calculus::Simplifications::simp_redundant_kinds_dash(pcalc_prop *prop, pcalc_prop *start_group,
-	int start_level, int *changed) {
+pcalc_prop *Simplifications::simp_redundant_kinds_dash(pcalc_prop *prop,
+	pcalc_prop *start_group, int start_level, int *changed) {
 	pcalc_prop *optimal_kind_placings_domain[26], *optimal_kind_placings_statement[26];
 
 	@<Recursively simplify all subexpressions first@>;
@@ -422,7 +415,8 @@ call will already have taken care of those sub-sub-expressions.)
 	TRAVERSE_PROPOSITION(pl, start_group) {
 		if (Atoms::is_opener(pl->element)) {
 			blevel++;
-			if (blevel == 2) prop = Calculus::Simplifications::simp_redundant_kinds_dash(prop, pl, 0, changed);
+			if (blevel == 2)
+				prop = Simplifications::simp_redundant_kinds_dash(prop, pl, 0, changed);
 		}
 		if (Atoms::is_closer(pl->element)) blevel--;
 		if (blevel == 0) break;
@@ -446,11 +440,8 @@ when $K(v)$ should move into the domain set, even if it occurs in the
 statement.
 
 Rule (iv) there looks a little surprising. For instance, it causes
-$$ \Sigma = \not\exists x\in\lbrace x\mid {\it thing}(x)\land{\it contains}(|Ballroom|, x)\rbrace :
-{\it container}(x)\land {\it open(x)}
-\quad \longrightarrow \quad $$
-$$ \Sigma' = \not\exists x\in\lbrace x\mid {\it container}(x)\land{\it thing}(x)\land{\it contains}(|Ballroom|, x)\rbrace :
-{\it open(x)}. $$
+$$ \Sigma = \not\exists x\in\lbrace x\mid {\it thing}(x)\land{\it contains}(B, x)\rbrace : {\it container}(x)\land {\it open(x)} \quad \longrightarrow \quad $$
+$$ \Sigma' = \not\exists x\in\lbrace x\mid {\it container}(x)\land{\it thing}(x)\land{\it contains}(B, x)\rbrace : {\it open(x)}. $$
 These are logically equivalent because $\not\exists$ behaves that way --
 they wouldn't be equivalent for other quantifiers. Rule (iii) would have
 said no movement was necessary; the reason we made the move is that it
@@ -501,9 +492,7 @@ are in the subexpression at the top level. It then does two things:
 
 Suppose $K$ and $L$ are kinds of value such that $L\subseteq K$, and let
 $\psi$ be a well-formed proposition. Then
-$$ \Sigma = \psi \land L(v) \cdots K(v) \cdots
-\quad \longrightarrow \quad
-\Sigma' = \psi \land L(v) \cdots $$
+$$ \Sigma = \psi \land L(v) \cdots K(v) \cdots \quad \longrightarrow \quad \Sigma' = \psi \land L(v) \cdots $$
 (that is, $K(v)$ is eliminated). This is clearly valid since $L(v)\Rightarrow K(v)$
 and $L(v)$ is valid throughout the subexpression after its appearance.
 
@@ -516,12 +505,12 @@ This is why the simplification is run twice, and why it's important that
 the process of moving predicates back to their optimal position reverses
 their order. Suppose we start with ${\it person}(x)\land{\it vehicle}(y)\land{\it woman}(x)$.
 
-(1a) On pass 1, {\it person} occurs before {\it woman}, but it is weaker --
+(1a) On pass 1, "person" occurs before "woman", but it is weaker --
 every woman is a person, but not necessarily vice versa -- so neither is
 deleted.
 (1b) But pass 1 also moves the kinds back, and this produces
 ${\it woman}(x)\land{\it vehicle}(y)\land{\it person}(x)$.
-(2a) On pass 2, the stronger {\it woman} now occurs before {\it person}, so
+(2a) On pass 2, the stronger "woman" now occurs before "person", so
 we eliminate to get ${\it woman}(x)\land{\it vehicle}(y)$.
 (2b) And pass 2 again moves kinds back, producing ${\it vehicle}(y)\land{\it woman}(x)$.
 
@@ -562,7 +551,7 @@ $$ Qv\in\lbrace v\mid K(v) \land... \rbrace : L(v) $$
 and we are working on the $K(v)$ term. If we continue only to the end of
 the current subexpression, that runs out at the $\rbrace$, the end of
 the domain specification. So in that one case alone we allow ourselves
-to sidestep the |DOMAIN_CLOSE_ATOM| and continue looking for $L(v)$ in the
+to sidestep the domain closure and continue looking for $L(v)$ in the
 outer subexpression -- the one which is governed by the quantifier.
 
 @<Strike out any subsequent but weaker kind predicate on the same variable@> =
@@ -598,10 +587,10 @@ outer subexpression -- the one which is governed by the quantifier.
 	}
 
 @ Suppose we find a term $K(C)$, where $C$ is a constant in the sense of
-predicate calculus -- that is, a |specification|. There is no need to
-perform such a test at run-time because we can determine the kind of $C$
-and compare it against $K$ right now. For instance, ${\it number}(|score|)$
-is necessarily true at all times.
+predicate calculus. Then there is no need to perform such a test at run-time
+because we can determine the kind of $C$ right now and simply compare it.
+and compare it against $K$ right now. For instance, ${\it number}(17)$
+is bound to be true.
 
 Formally, suppose $C$ is a constant which, when evaluated, has kind of value
 $L$. Suppose that $L\subseteq K$ and that $K$ is not a kind of object. Then
@@ -611,7 +600,7 @@ $$ \Sigma = \cdots K(C)\cdots \quad \longrightarrow \quad \Sigma' = \cdots\cdots
 We could clearly go further than this:
 (a) Why don't we eliminate $K(C)$ when $K$ is an object, too? Logically this
 would be fine, but we choose not to, for two reasons: people sometimes write
-phrases in I6 which claim to return a room, say, but sometimes return |nothing|.
+phrases in I7 which claim to return a room, say, but sometimes return |nothing|.
 Technically this is a violation of type safety. If $t$ is a term representing
 a call to this function, then ${\it room}(t)$ ought to be redundant. But in
 practice it will protect against the |nothing| value. The other reason is
@@ -653,21 +642,16 @@ the proposition is going to fail type-checking anyway.)
 Recall that BPs are manufactured in pairs, each being the reversal of
 the other, in the sense of transposing their terms. Of each pair, one is
 considered the canonical way to represent the relation, and is "the right
-way round". This routine turns all BPs in the proposition the right way
-round, if they aren't already.
+way round". This function turns all BPs in the proposition the right way
+round, if they aren't already. (Equality is always the right way round, so
+that is never altered.)
 
 Suppose $B$ is a binary predicate which is marked as the wrong way round,
 and $R$ is its reversal. Then we change:
-$$ \Sigma = \cdots B(t_1, t_2)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots R(t_2, t_1) \cdots $$
-
-(Note that the equality predicate "is" only has one way round, and it's
-the right one -- this is the only exception to the rule that BPs come in
-pairs -- so equality predicates won't be turned around here, not that it
-would matter if they were.)
+$$ \Sigma = \cdots B(t_1, t_2)\cdots \quad \longrightarrow \quad \Sigma' = \cdots R(t_2, t_1) \cdots $$
 
 =
-pcalc_prop *Calculus::Simplifications::turn_right_way_round(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::turn_right_way_round(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 
 	*changed = FALSE;
@@ -707,7 +691,7 @@ $$ \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad
 (Note that a region cannot directly contain any object, except a backdrop.)
 
 =
-pcalc_prop *Calculus::Simplifications::region_containment(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 	#ifdef IF_MODULE
 	TRAVERSE_VARIABLE(pl);
@@ -764,7 +748,7 @@ is that direct containment does, but region containment doesn't, and this is
 why it was necessary to separate the two out.
 
 =
-pcalc_prop *Calculus::Simplifications::reduce_predicates(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::reduce_predicates(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 
 	*changed = FALSE;
@@ -793,7 +777,7 @@ where this is safe.
 @d BOUND_BY_SOMETHING_ELSE 3
 
 =
-pcalc_prop *Calculus::Simplifications::eliminate_redundant_variables(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::eliminate_redundant_variables(pcalc_prop *prop, int *changed) {
 	TRAVERSE_VARIABLE(pl);
 	int level, binding_status[26], binding_level[26], binding_sequence[26];
 	pcalc_prop *position_of_binding[26];
@@ -925,7 +909,7 @@ A similar trick for kinds of value is not possible, because -- unlike objects --
 they have no "not a valid case" value analogous to the non-object |nothing|.
 
 =
-pcalc_prop *Calculus::Simplifications::not_related_to_something(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 	#ifdef PRODUCE_NOTHING_VALUE 
 	TRAVERSE_VARIABLE(pl);
@@ -972,7 +956,7 @@ accordingly.
 
 =
 #ifdef IF_MODULE
-pcalc_prop *Calculus::Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 
 	TRAVERSE_VARIABLE(pl);
@@ -1011,7 +995,7 @@ sufficiently contrived sentences, this wouldn't be true.
 
 =
 #ifdef CORE_MODULE
-pcalc_prop *Calculus::Simplifications::eliminate_to_have(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::eliminate_to_have(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 
 	TRAVERSE_VARIABLE(pl);
@@ -1042,7 +1026,7 @@ term $C$.
 		Lvalues::new_PROPERTY_VALUE(spec, pl->terms[1-i].constant);
 	Node::set_text(po_spec, prn->name);
 	int no_substitutions_made;
-	prop = Calculus::Simplifications::prop_substitute_prop_cons(prop, prn, po_spec, &no_substitutions_made, pl);
+	prop = Simplifications::prop_substitute_prop_cons(prop, prn, po_spec, &no_substitutions_made, pl);
 	if (no_substitutions_made > 0) {
 		prop = Propositions::delete_atom(prop, pl_prev);
 		PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
@@ -1056,7 +1040,7 @@ changes made.
 
 =
 #ifdef CORE_MODULE
-pcalc_prop *Calculus::Simplifications::prop_substitute_prop_cons(pcalc_prop *prop, property *prn,
+pcalc_prop *Simplifications::prop_substitute_prop_cons(pcalc_prop *prop, property *prn,
 	parse_node *po_spec, int *count, pcalc_prop *not_this) {
 	TRAVERSE_VARIABLE(pl);
 	int j, c = 0;
@@ -1104,7 +1088,7 @@ Note that we match this only at the end of a proposition, where $v$ can
 have no other consequence.
 
 =
-pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 	return prop;
 	#ifdef IF_MODULE
@@ -1172,7 +1156,7 @@ pcalc_prop *Calculus::Simplifications::is_all_rooms(pcalc_prop *prop, int *chang
 	return prop;
 	#endif
 }
-pcalc_prop *Calculus::Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *changed) {
+pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 	#ifdef IF_MODULE
 	TRAVERSE_VARIABLE(pl);

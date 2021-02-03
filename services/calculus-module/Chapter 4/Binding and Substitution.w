@@ -268,8 +268,8 @@ int Binding::substitute_v_in_term(pcalc_term *pt, int v, pcalc_term *t) {
 }
 
 void Binding::substitute_nothing_in_term(pcalc_term *pt, pcalc_term *t) {
-#ifdef DETECT_NOTHING_VALUE
-	if ((pt->constant) && (DETECT_NOTHING_VALUE(pt->constant))) { *pt = *t; return; }
+#ifdef DETECT_NOTHING_CALCULUS_CALLBACK
+	if ((pt->constant) && (DETECT_NOTHING_CALCULUS_CALLBACK(pt->constant))) { *pt = *t; return; }
 	if (pt->function) Binding::substitute_nothing_in_term(&(pt->function->fn_of), t);
 #endif
 }

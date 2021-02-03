@@ -318,7 +318,7 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 
 @h Nothingness.
 
-@d DETECT_NOTHING_VALUE Rvalues::is_nothing_object_constant
+@d DETECT_NOTHING_CALCULUS_CALLBACK Rvalues::is_nothing_object_constant
 @d PRODUCE_NOTHING_VALUE Specifications::nothing
 
 =

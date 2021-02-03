@@ -24,3 +24,7 @@ before, the corresponding calls to //foundation//.)
 
 
 @ |REGISTER_RELATIONS_CALCULUS_CALLBACK|.
+
+|DETECT_NOTHING_CALCULUS_CALLBACK|. This detects whether a constant is the
+"nothing" used in Inform: i.e., a default value for objects indicating an
+absence of any object.
