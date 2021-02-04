@@ -39,9 +39,9 @@ For example, the //core// module sets:
 = (text as Inweb)
 	@d VERB_MEANING_LINGUISTICS_TYPE struct binary_predicate
 =
-The parent may also want to define |VERB_MEANING_UNIVERSAL|, which should be
-a value of this type, and represents the "to relate" verb which can assert
-any verb meaning -- for example, "X relates to Y by R". See //Verb Usages//.
+The parent may also want to define |VERB_MEANING_UNIVERSAL_CALCULUS_RELATION|,
+which should be a value of this type, and represents the "to relate" verb which
+can assert any verb meaning -- for example, "X relates to Y by R". See //Verb Usages//.
 
 @h Using callbacks.
 Shared modules like this one are tweaked in behaviour by defining "callback

@@ -319,7 +319,7 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 @h Nothingness.
 
 @d DETECT_NOTHING_CALCULUS_CALLBACK Rvalues::is_nothing_object_constant
-@d PRODUCE_NOTHING_VALUE Specifications::nothing
+@d PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK Specifications::nothing
 
 =
 nonlocal_variable *i6_nothing_VAR = NULL; /* the I6 |nothing| constant */

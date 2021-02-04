@@ -64,7 +64,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>How To Include This Module</b></li></ul></div>
 <p class="purpose">What to do to make use of the calculus module in a new command-line tool.</p>
 
-<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-htitm.html#SP1">&#167;1. Status</a></li><li><a href="P-htitm.html#SP2">&#167;2. Importing the module</a></li><li><a href="P-htitm.html#SP3">&#167;3. Using callbacks</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Status. </b>The calculus module provided as one of the "services" suite of modules, which means
 that it was built with a view to potential incorporation in multiple tools.
@@ -89,14 +89,52 @@ module:
 <span class="extract"><span class="extract-syntax">CalculusModule::end()</span></span> just before it shuts down. (But just after, and just
 before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b><span class="extract"><span class="extract-syntax">REGISTER_RELATIONS_CALCULUS_CALLBACK</span></span>.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Using callbacks. </b>Shared modules like this one are tweaked in behaviour by defining "callback
+functions". This means that the parent might provide a function of its own
+which would answer a question put to it by the module, or take some action
+on behalf of the module: it's a callback in the sense that the parent is
+normally calling the module, but then the module calls the parent back to
+ask for data or action.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">DETECT_NOTHING_CALCULUS_CALLBACK</span></span>. This detects whether a constant is the
-"nothing" used in Inform: i.e., a default value for objects indicating an
-absence of any object.
+<p class="commentary">The parent must indicate which function to use by defining a constant with
+a specific name as being equal to that function's name. A fictional example
+would be
 </p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> EXPRESS_SURPRISE_CALCULUS_CALLBACK Emotions::zowie</span>
+
+<span class="plain-syntax">    =</span>
+<span class="plain-syntax">    </span><span class="element-syntax">void Emotions:</span><span class="plain-syntax">:</span><span class="string-syntax">zowie(text_stream *OUT) {</span>
+<span class="plain-syntax">        WRITE("Zowie!\n");</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<p class="commentary">The calculus module has only a few callbacks and all are optional. The
+following alphabetical list has references to fuller explanations:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK</span></span>, if provided, is called whenever
+a binary predicate is created. (The Inform compiler uses this opportunity to
+register its textual name, if it has one.) See <a href="3-bp.html#SP10" class="internal">BinaryPredicates::make_pair</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">DETECT_NOTHING_CALCULUS_CALLBACK</span></span>. The Inform run-time has a constant called
+<span class="extract"><span class="extract-syntax">nothing</span></span> which acts as a default value for objects, indicating an absence of
+any object. The existence of this enables some propositions to be simplified.
+If provided, the function should test whether the supplied constant is <span class="extract"><span class="extract-syntax">nothing</span></span>.
+See <a href="5-smp.html#SP2" class="internal">Simplifications::nothing_constant</a> and <a href="4-bas.html#SP11" class="internal">Binding::substitute_nothing_in_term</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">PROBLEM_CALCULUS_CALLBACK</span></span> is called when a proposition is mis-constructed,
+and can prevent the resulting warning from being issued to the terminal as an
+error message: see <a href="4-tcp.html#SP11" class="internal">Propositions::Checker::problem</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK</span></span> can provide the <span class="extract"><span class="extract-syntax">nothing</span></span> constant;
+see above, and see <a href="5-smp.html#SP14" class="internal">Simplifications::not_related_to_something</a>.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In addition, the following value can optionally be defined:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">VERB_MEANING_UNIVERSAL_CALCULUS_RELATION</span></span> should be the universal relation,
+that is, the binary predicate which defines "relates". This requires specialist
+type-checking: see <a href="4-tcp.html#SP9" class="internal">Propositions::Checker::type_check_binary_predicate</a>.
+</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-sc.html">5</a></li><li class="progressnext"><a href="1-cm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

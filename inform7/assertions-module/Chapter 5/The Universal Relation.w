@@ -5,7 +5,7 @@ subsumes all other relations.
 
 @h Definitions.
 
-@d VERB_MEANING_UNIVERSAL R_universal
+@d VERB_MEANING_UNIVERSAL_CALCULUS_RELATION R_universal
 
 = (early code)
 binary_predicate *R_universal = NULL;

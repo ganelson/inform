@@ -150,8 +150,8 @@ binary_predicate *BinaryPredicates::make_equality(bp_family *family, word_assemb
 		BPTerms::new(NULL), BPTerms::new(NULL),
 		I"is", NULL, NULL, WA);
 	bp->reversal = bp; bp->right_way_round = TRUE;
-	#ifdef REGISTER_RELATIONS_CALCULUS_CALLBACK
-	REGISTER_RELATIONS_CALCULUS_CALLBACK(bp, WA);
+	#ifdef BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK
+	BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK(bp, WA);
 	#endif
 	return bp;
 }
@@ -184,8 +184,8 @@ binary_predicate *BinaryPredicates::make_pair(bp_family *family,
 	bp->right_way_round = TRUE; bpr->right_way_round = FALSE;
 
 	if (WordAssemblages::nonempty(source_name)) {
-		#ifdef REGISTER_RELATIONS_CALCULUS_CALLBACK
-		REGISTER_RELATIONS_CALCULUS_CALLBACK(bp, source_name);
+		#ifdef BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK
+		BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK(bp, source_name);
 		#endif
 	}
 

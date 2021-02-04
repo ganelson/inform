@@ -523,10 +523,10 @@ that means it's "to relate".
 
 =
 <universal-verb> internal ? {
-	#ifdef VERB_MEANING_UNIVERSAL
+	#ifdef VERB_MEANING_UNIVERSAL_CALCULUS_RELATION
 	verb_usage *vu;
 	LOOP_OVER_USAGES(vu)
-		if (VerbUsages::get_regular_meaning(vu, NULL, NULL) == VERB_MEANING_UNIVERSAL) {
+		if (VerbUsages::get_regular_meaning(vu, NULL, NULL) == VERB_MEANING_UNIVERSAL_CALCULUS_RELATION) {
 			int i = VerbUsages::parse_against_verb(W, vu);
 			if ((i>Wordings::first_wn(W)) && (i<=Wordings::last_wn(W))) {
 				==> { -, vu };

@@ -743,7 +743,7 @@ int RelationRequests::check_finite_range(kind *K) {
 
 @ 
 
-@d REGISTER_RELATIONS_CALCULUS_CALLBACK RelationRequests::register_name
+@d BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK RelationRequests::register_name
 
 =
 void RelationRequests::register_name(binary_predicate *bp, word_assemblage source_name) {

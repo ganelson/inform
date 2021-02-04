@@ -83,7 +83,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the calculus module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What predicate calculus is</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Notation</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Formal description</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Unary predicates</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Binary predicates</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Making propositions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What predicate calculus is</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Notation</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Formal description</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Unary predicates</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Binary predicates</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Making propositions</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Sentences</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The calculus module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -304,8 +304,8 @@ again.
 
 <ul class="items"><li>(1) You could make a mess of the punctuation markers improperly, or fail to
 give a domain set for a quantifier.
-</li><li>(2) More subtly, you could concatenate two propositions in which the same
-variable is used with a different meaning in each.
+</li><li>(2) You could concatenate two propositions in which the same variable is
+used with a different meaning in each.
 </li></ul>
 <p class="commentary">The functions <a href="4-prp.html#SP10" class="internal">Propositions::is_syntactically_valid</a> and
 <a href="4-bas.html#SP2" class="internal">Binding::is_well_formed</a> test that (1) and (2) have not happened.
@@ -313,6 +313,35 @@ It's because of (2) that it's important to use <a href="4-prp.html#SP15" class="
 and not the simpler <a href="4-prp.html#SP14" class="internal">Propositions::concatenate</a>.
 </p>
 
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Making propositions is a largely syntactic game, but in the end they will
+have meanings. Terms will have kinds, and relations will only apply to certain
+kinds. This means that some propositions which make syntactic sense will
+nevertheless be "bad": for example, \({\it contains}(7, x)\) is not just untrue
+but at some level meaningless &mdash; a number cannot contain things.
+</p>
+
+<p class="commentary">Throughout Inform, then, all propositions have to be type-checked before use,
+and this is done by <a href="4-tcp.html#SP4" class="internal">Propositions::Checker::type_check</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Sentences. </b>Our whole interest in propositions is to use them to provide a meaning for
+a sentence of natural language: we evaluate text like "Peter is in the car"
+into a proposition.<sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> This task is central to how Inform works, and occupies
+the whole of <a href="5-sc.html" class="internal">Sentence Conversions</a>.
+</p>
+
+<p class="commentary">On the face of it, this is a simple matter of conjoining propositions for
+the subject (Peter) and the object (the car) together with a binary predicate
+(is-in). But most cases are not so simple, and if we did only that then we
+would often end up with a much longer proposition than necessary, which it
+would be inefficient to test or assert at run-time. So the sentence converter
+makes use of logical deductions to "simplify" its output, and these tactics
+form roughly 20 functions in the <a href="5-smp.html" class="internal">Simplifications</a> section.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> In fact, a proposition with no free variables. It's not a coincidence that
+logicians call such propositions "sentences".
+<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresssection"><a href="P-htitm.html">htitm</a></li><li class="progresschapter"><a href="1-cm.html">1</a></li><li class="progresschapter"><a href="2-up.html">2</a></li><li class="progresschapter"><a href="3-bpf.html">3</a></li><li class="progresschapter"><a href="4-trm.html">4</a></li><li class="progresschapter"><a href="5-sc.html">5</a></li><li class="progressnext"><a href="P-htitm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

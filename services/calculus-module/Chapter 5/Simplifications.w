@@ -909,7 +909,7 @@ they have no "not a valid case" value analogous to the non-object |nothing|.
 =
 pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
-	#ifdef PRODUCE_NOTHING_VALUE 
+	#ifdef PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK 
 	TRAVERSE_VARIABLE(pl);
 
 	TRAVERSE_PROPOSITION(pl, prop) {
@@ -930,7 +930,7 @@ pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *cha
 					/* now insert equality predicate: */
 					prop = Propositions::insert_atom(prop, pl_prev,
 						Atoms::binary_PREDICATE_new(R_equality,
-							KIND_term, Terms::new_constant(PRODUCE_NOTHING_VALUE())));
+							KIND_term, Terms::new_constant(PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK())));
 					PROPOSITION_EDITED(pl, prop);
 				}
 			}

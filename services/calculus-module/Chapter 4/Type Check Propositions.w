@@ -350,8 +350,8 @@ int Propositions::Checker::type_check_binary_predicate(pcalc_prop *pl, variable_
 	kind *kinds_of_terms[2], *kinds_required[2];
 
 	@<Work out what kinds we find@>;
-	#ifdef VERB_MEANING_UNIVERSAL
-	if (bp == VERB_MEANING_UNIVERSAL) @<Adapt to the universal relation@>;
+	#ifdef VERB_MEANING_UNIVERSAL_CALCULUS_RELATION
+	if (bp == VERB_MEANING_UNIVERSAL_CALCULUS_RELATION) @<Adapt to the universal relation@>;
 	#endif
 	@<Work out what kinds we should have found@>;
 

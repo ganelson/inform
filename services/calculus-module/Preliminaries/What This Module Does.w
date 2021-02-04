@@ -186,10 +186,36 @@ again.
 
 (1) You could make a mess of the punctuation markers improperly, or fail to
 give a domain set for a quantifier.
-(2) More subtly, you could concatenate two propositions in which the same
-variable is used with a different meaning in each.
+(2) You could concatenate two propositions in which the same variable is
+used with a different meaning in each.
 
 The functions //Propositions::is_syntactically_valid// and
 //Binding::is_well_formed// test that (1) and (2) have not happened.
 It's because of (2) that it's important to use //Propositions::conjoin//
 and not the simpler //Propositions::concatenate//.
+
+@ Making propositions is a largely syntactic game, but in the end they will
+have meanings. Terms will have kinds, and relations will only apply to certain
+kinds. This means that some propositions which make syntactic sense will
+nevertheless be "bad": for example, ${\it contains}(7, x)$ is not just untrue
+but at some level meaningless -- a number cannot contain things.
+
+Throughout Inform, then, all propositions have to be type-checked before use,
+and this is done by //Propositions::Checker::type_check//.
+
+@h Sentences.
+Our whole interest in propositions is to use them to provide a meaning for
+a sentence of natural language: we evaluate text like "Peter is in the car"
+into a proposition.[1] This task is central to how Inform works, and occupies
+the whole of //Sentence Conversions//.
+
+On the face of it, this is a simple matter of conjoining propositions for
+the subject (Peter) and the object (the car) together with a binary predicate
+(is-in). But most cases are not so simple, and if we did only that then we
+would often end up with a much longer proposition than necessary, which it
+would be inefficient to test or assert at run-time. So the sentence converter
+makes use of logical deductions to "simplify" its output, and these tactics
+form roughly 20 functions in the //Simplifications// section.
+
+[1] In fact, a proposition with no free variables. It's not a coincidence that
+logicians call such propositions "sentences".
