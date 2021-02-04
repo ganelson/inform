@@ -91,7 +91,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Services</a></li><li><a href="index.html">calculus</a></li><li><a href="index.html#5">Chapter 5: Sentences</a></li><li><b>Simplifications</b></li></ul></div>
 <p class="purpose">A set of operations which rewrite propositions to make them easier or quicker to test at run-time without changing their meaning.</p>
 
-<ul class="toc"><li><a href="5-smp.html#SP1">&#167;1. Golden rules</a></li><li><a href="5-smp.html#SP2">&#167;2. Simplify the nothing constant (fudge)</a></li><li><a href="5-smp.html#SP3">&#167;3. Use listed-in predicates (deduction)</a></li><li><a href="5-smp.html#SP4">&#167;4. Simplify negated determiners (deduction)</a></li><li><a href="5-smp.html#SP6">&#167;6. Simplify negated satisfiability (deduction)</a></li><li><a href="5-smp.html#SP7">&#167;7. Make kind requirements explicit (deduction)</a></li><li><a href="5-smp.html#SP8">&#167;8. Remove redundant kind predicates (deduction)</a></li><li><a href="5-smp.html#SP10">&#167;10. Turn binary predicates the right way round (deduction)</a></li><li><a href="5-smp.html#SP11">&#167;11. Simplify region containment (fudge)</a></li><li><a href="5-smp.html#SP12">&#167;12. Reduce binary predicates (deduction)</a></li><li><a href="5-smp.html#SP13">&#167;13. Eliminating determined variables (deduction)</a></li><li><a href="5-smp.html#SP14">&#167;14. Simplify non-relation (deduction)</a></li><li><a href="5-smp.html#SP15">&#167;15. Convert gerunds to nouns (deduction)</a></li><li><a href="5-smp.html#SP16">&#167;16. Eliminate to have meaning property ownership (fudge)</a></li><li><a href="5-smp.html#SP18">&#167;18. Turn all rooms to everywhere (fudge)</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-smp.html#SP1">&#167;1. Golden rules</a></li><li><a href="5-smp.html#SP2">&#167;2. Simplify the nothing constant (fudge)</a></li><li><a href="5-smp.html#SP3">&#167;3. Use listed-in predicates (deduction)</a></li><li><a href="5-smp.html#SP4">&#167;4. Simplify negated determiners (deduction)</a></li><li><a href="5-smp.html#SP6">&#167;6. Simplify negated satisfiability (deduction)</a></li><li><a href="5-smp.html#SP7">&#167;7. Make kind requirements explicit (deduction)</a></li><li><a href="5-smp.html#SP8">&#167;8. Remove redundant kind predicates (deduction)</a></li><li><a href="5-smp.html#SP10">&#167;10. Turn binary predicates the right way round (deduction)</a></li><li><a href="5-smp.html#SP11">&#167;11. Simplify region containment (fudge)</a></li><li><a href="5-smp.html#SP12">&#167;12. Reduce binary predicates (deduction)</a></li><li><a href="5-smp.html#SP13">&#167;13. Eliminating determined variables (deduction)</a></li><li><a href="5-smp.html#SP14">&#167;14. Simplify non-relation (deduction)</a></li><li><a href="5-smp.html#SP15">&#167;15. Convert gerunds to nouns (deduction)</a></li><li><a href="5-smp.html#SP16">&#167;16. Eliminate to have meaning property ownership (fudge)</a></li><li><a href="5-smp.html#SP18">&#167;18. Turn all rooms to everywhere (fudge)</a></li><li><a href="5-smp.html#SP19">&#167;19. Everywhere and nowhere (fudge)</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Golden rules. </b>The following functions all take a propeosition \(\Sigma\) in the parameter
 <span class="extract"><span class="extract-syntax">prop</span></span>, and return \(\Sigma'\); they set the flag pointed to by <span class="extract"><span class="extract-syntax">changed</span></span> if
@@ -848,11 +848,9 @@ only one thing at a time, but might be in many regions at once.
 point where we choose to divert some uses to <span class="extract"><span class="extract-syntax">R_regional_containment</span></span>.
 If \(R\) is a constant region name, and \(C_D\), \(C_R\) are the predicates for
 direct and region containment, then
-\(\) \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots C_R(t, R)\cdots \(\)
-\(\) \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots C_R(R, t)\cdots \(\)
-(Note that a region cannot directly contain any object, except a backdrop.)
+$$ \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad \Sigma' = \cdots C_R(t, R)\cdots $$
+$$ \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad \Sigma' = \cdots C_R(R, t)\cdots $$
+Note that a region cannot directly contain any object, except a backdrop.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -874,7 +872,8 @@ direct and region containment, then
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1-</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">KB</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1-</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">KB</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_backdrop</span><span class="plain-syntax">)) </span><span class="identifier-syntax">backdropping</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_object_of_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">KB</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_backdrop</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">backdropping</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">regionality</span><span class="plain-syntax">) &amp;&amp; (!</span><span class="identifier-syntax">backdropping</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">predicate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STORE_POINTER_binary_predicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">R_regional_containment</span><span class="plain-syntax">);</span>
@@ -891,23 +890,22 @@ direct and region containment, then
 gain considerably by being able to eliminate a variable altogether. For
 instance, suppose we have "Mme Cholet is in a burrow". This will
 initially come out as
-\(\) \exists x: {\it burrow}(x)\land {\it in}(<span class="extract"><span class="extract-syntax">Cholet</span></span>, x) \(\)
+$$ \exists x: {\it burrow}(x)\land {\it in}(C, x) $$
 To test that proposition requires trying all possible burrows \(x\).
 But exploiting the fact that Mme Cholet can only be in one place at a
 time, we can reduce the binary predicate to equality, thus:
-\(\) \exists x: {\it burrow}(x)\land {\it is}(<span class="extract"><span class="extract-syntax">ContainerOf(Cholet)</span></span>, x) \(\)
-A later simplification can then observe that this tells us what \(x\) must be,
+$$ \exists x: {\it burrow}(x)\land {\it is}(f(C), x) $$
+where \(f\) is the function determining the location of something. A later
+simplification can then observe that this tells us what \(x\) must be,
 and eliminate both quantifier and variable.
 </p>
 
 <p class="commentary">Formally, suppose \(B\) is a predicate with a function \(f_B\) such that \(B(x, y)\)
 is true if and only \(y = f_B(x)\). Then:
-\(\) \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(f_B(t_1), t_2) \cdots \(\)
+$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t_1), t_2) \cdots $$
 Similarly, if there is a function \(g_B\) such that \(B(x, y)\) if and only if
 \(x = g_B(y)\) then
-\(\) \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(t_1, g_B(t_2)) \cdots \(\)
+$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(t_1, g_B(t_2)) \cdots $$
 Not all BPs have these: the reason for our fudge on regional containment (above)
 is that direct containment does, but region containment doesn't, and this is
 why it was necessary to separate the two out.
@@ -970,13 +968,13 @@ where this is safe.
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">permitted</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PREDICATE_CALCULUS_WORKINGS</span><span class="plain-syntax">, </span><span class="string-syntax">"Substituting %c &lt;-- $0\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">pcalc_vars</span><span class="plain-syntax">[</span><span class="identifier-syntax">var_to_sub</span><span class="plain-syntax">], &amp;(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1-</span><span class="identifier-syntax">j</span><span class="plain-syntax">]));</span>
-<span class="plain-syntax">                        </span><span class="comment-syntax"> first delete the </span>\({\it is}(v, t)\)<span class="comment-syntax"> predicate</span>
+<span class="plain-syntax">                        </span><span class="comment-syntax"> first delete the is(v, t) predicate</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                        </span><span class="comment-syntax"> then unbind the variable, by deleting its </span>\(\exists v\)<span class="comment-syntax"> quantifier</span>
+<span class="plain-syntax">                        </span><span class="comment-syntax"> then unbind the variable, by deleting its exists v quantifier</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">position_of_binding</span><span class="plain-syntax">[</span><span class="identifier-syntax">var_to_sub</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">PREDICATE_CALCULUS_WORKINGS</span><span class="plain-syntax">, </span><span class="string-syntax">"After deletion: $D\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">binding_status</span><span class="plain-syntax">[</span><span class="identifier-syntax">var_to_sub</span><span class="plain-syntax">] = </span><span class="constant-syntax">NOT_BOUND_AT_ALL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                        </span><span class="comment-syntax"> then substitute for all other occurrences of </span>\(v\)
+<span class="plain-syntax">                        </span><span class="comment-syntax"> then substitute for all other occurrences of v</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-bas.html#SP13" class="function-link"><span class="function-syntax">Binding::substitute_term</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">var_to_sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1-</span><span class="identifier-syntax">j</span><span class="plain-syntax">],</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">changed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        *</span><span class="identifier-syntax">changed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -1028,7 +1026,7 @@ substituting \(v = f_A(f_B(\cdots s))\).
 
 <p class="commentary">But only if the term \(s\) underneath those functions does not make the equation
 \({\it is}(v, f_A(f_B(\cdots s)))\) implicit. Suppose \(s\) depends
-on a variable \(w\) which is bound and occurs {\it after} the binding of \(v\).
+on a variable \(w\) which is bound and occurs after the binding of \(v\).
 The value of such a variable \(w\) can depend on the value of \(v\). Saying that
 \(v=s\) may therefore not determine a unique value of \(v\) at all: it may be
 a subtle condition passed by a whole class of possible values, or none.
@@ -1039,10 +1037,10 @@ More problematic is \({\it is}(v, f_C(v))\), "\(v\) is the container of \(v\)",
 which is never true. Still worse is
 $$ \exists v: V_{=2} w: {\it is}(v, w) $$
 which literally says there is a value of \(v\) equal to two different things &mdash;
-certainly false. But if we were allowed to eliminate \(v\), we would get just
+certainly false. But if we eliminated \(v\), we would get just
 $$ V_{=2} w $$
 which asserts "there are exactly two objects" &mdash; which is certainly not a
-valid deduction, and might even be true.
+valid deduction.
 </p>
 
 <p class="commentary">Here <span class="extract"><span class="extract-syntax">var_to_sub</span></span> is \(v\) and <span class="extract"><span class="extract-syntax">var_in_other_term</span></span> is \(w\), or else they are \(-1\)
@@ -1066,14 +1064,15 @@ if no variables are present in their respective terms.
 <ul class="endnotetexts"><li>This code is used in <a href="5-smp.html#SP13">&#167;13</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Simplify non-relation (deduction). </b>As a result of the previous simplifications, it fairly often happens that we
 find a term like
-\(\) \lnot({\it thing}(t<span class="extract"><span class="extract-syntax">.component_parent</span></span>)) \(\)
-in the proposition. This comes out of text such as "... not part of something",
+$$ \lnot({\it thing}(f_P(t))) $$
+where \(f_P\) is the function determining what, if anything, the object \(t\) is
+a component part of. This comes out of text such as "... not part of something",
 asserting first that there is no \(y\) such that \(t\) is a part of \(y\), and then
 simplifying to remove the \(y\) variable. A term like the one above is then
 left behind. But the negation is cumbersome, and makes the proposition harder
-to assert or test. Exploiting the fact that <span class="extract"><span class="extract-syntax">component_parent</span></span> is a property
-which is either the part-parent or else <span class="extract"><span class="extract-syntax">nothing</span></span>, we can simplify to:
-\(\) {\it is}(t<span class="extract"><span class="extract-syntax">.component_parent</span></span>, <span class="extract"><span class="extract-syntax">nothing</span></span>) \(\)
+to assert or test. Exploiting the fact that \(f_P(t)\) is a property
+which is either the part-parent or else \(N =\) <span class="extract"><span class="extract-syntax">nothing</span></span>, we can simplify to:
+$$ {\it is}(f_P(t), N) $$
 And similar tricks can be pulled for other various-to-one-object predicates.
 </p>
 
@@ -1081,8 +1080,7 @@ And similar tricks can be pulled for other various-to-one-object predicates.
 such that \(B(x, y)\) iff \(f_B(x) = y\), or else such that \(B(x, y)\) iff \(f_B(y) = x\);
 and such that the values of \(f_B\) are objects. Let \(K\) be a kind of object.
 Then:
-\(\) \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(f_B(t), <span class="extract"><span class="extract-syntax">nothing</span></span>) \cdots \(\)
+$$ \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t), N) \cdots $$
 </p>
 
 <p class="commentary">A similar trick for kinds of value is not possible, because &mdash; unlike objects &mdash;
@@ -1107,7 +1105,8 @@ they have no "not a valid case" value analogous to the non-object <span class="e
 <span class="plain-syntax">                </span><span class="reserved-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">KIND_term</span><span class="plain-syntax"> = </span><span class="identifier-syntax">kind_atom</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[0];</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">KIND_term</span><span class="plain-syntax">.</span><span class="element-syntax">function</span><span class="plain-syntax">) </span><span class="identifier-syntax">bp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">KIND_term</span><span class="plain-syntax">.</span><span class="element-syntax">function</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">bp</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><a href="3-bp.html#SP7" class="function-link"><span class="function-syntax">BinaryPredicates::term_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">)))) {</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP34" class="function-link"><span class="function-syntax">Propositions::ungroup_after</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove negation grouping</span>
+<span class="plain-syntax">                    </span><span class="comment-syntax"> remove negation grouping</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP34" class="function-link"><span class="function-syntax">Propositions::ungroup_after</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove </span><span class="extract"><span class="extract-syntax">kind=K</span></span>
 <span class="plain-syntax">                    </span><span class="comment-syntax"> now insert equality predicate:</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
@@ -1125,17 +1124,10 @@ they have no "not a valid case" value analogous to the non-object <span class="e
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Convert gerunds to nouns (deduction). </b>Suppose we write:
 </p>
 
-<blockquote>
-    <p>The funky thing to do is a stored action that varies.</p>
-</blockquote>
-
-<p class="commentary">and subsequently:
-</p>
-
-<blockquote>
-    <p>the funky thing to do is waiting</p>
-</blockquote>
-
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">funky</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">stored</span><span class="plain-syntax"> </span><span class="identifier-syntax">action</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">varies</span><span class="plain-syntax">.</span>
+<span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">funky</span><span class="plain-syntax"> </span><span class="identifier-syntax">thing</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">do</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">waiting</span><span class="plain-syntax">.</span>
+</pre>
 <p class="commentary">Here "waiting" is a gerund, and although it describes an action it is a
 noun (thus a value) rather than a condition. We coerce its constant value
 accordingly.
@@ -1151,7 +1143,8 @@ accordingly.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">element</span><span class="plain-syntax"> == </span><span class="constant-syntax">PREDICATE_ATOM</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">arity</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;2; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Conditions::is_TEST_ACTION</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="identifier-syntax">constant</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Conditions::action_tested</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="identifier-syntax">constant</span><span class="plain-syntax"> =</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">Conditions::action_tested</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
@@ -1165,23 +1158,19 @@ can also arise from text such as
 </blockquote>
 
 <p class="commentary">where it's the numerical "weight" property which is owned by the balloon.
-(The language of abstract "property" always echoes that of real physical
-things &mdash; consider how the iTunes Music Store invites you to "buy" what
-is at best a lease of temporary, partial and revocable rights to make use
-of something with no physical essence. This isn't a con trick, or not
-altogether so. We like the word "buy"; we immediately understand it.)
 At this stage of simplification, the above has produced
-\(\) {\hbox{\it at-most}}(<span class="extract"><span class="extract-syntax">weight</span></span>, 1)\land {\it is}(<span class="extract"><span class="extract-syntax">balloon</span></span>, f_H(<span class="extract"><span class="extract-syntax">weight</span></span>)) \(\)
-where \(H\) is the predicate <span class="extract"><span class="extract-syntax">a_has_b_predicate</span></span>. As it stands, this
-proposition will fail type-checking, because it contains an implicit
-free variable &mdash; the object which owns the weight. We make this explicit
-by removing ${\it is}(<span class="extract"><span class="extract-syntax">balloon</span></span>, f_H(<span class="extract"><span class="extract-syntax">weight</span></span>))$ and replacing all other
-references to <span class="extract"><span class="extract-syntax">weight</span></span> with "the weight of <span class="extract"><span class="extract-syntax">balloon</span></span>".
+$$ {\it atmost}(w, 1)\land {\it is}(B, f_H(w)) $$
+where \(H\) is the predicate <span class="extract"><span class="extract-syntax">a_has_b_predicate</span></span>. As it stands, this proposition
+will fail type-checking, because it contains an implicit free variable &mdash; the
+object which owns the weight. We make this explicit by removing
+\({\it is}(B, f_H(w))\) and replacing all other references to \(w\) with "the
+weight of \(B\)".
 </p>
 
-<p class="commentary">This is a fudge because it assumes &mdash; possibly wrongly &mdash; that all
-references to the weight are to the weight of the same thing. In
-sufficiently contrived sentences, this wouldn't be true.
+<p class="commentary">This is a fudge because it assumes &mdash; possibly wrongly &mdash; that all references
+to the weight are to the weight of the same thing. In sufficiently contrived
+sentences, this wouldn't be true. No bugs have ever been reported which suggest
+that real users run into this.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1221,7 +1210,8 @@ term \(C\).
 <span class="plain-syntax">        </span><span class="identifier-syntax">Lvalues::new_PROPERTY_VALUE</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[1-</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">constant</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Node::set_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">po_spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_substitutions_made</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="5-smp.html#SP17" class="function-link"><span class="function-syntax">Simplifications::prop_substitute_prop_cons</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">, </span><span class="identifier-syntax">po_spec</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">no_substitutions_made</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="5-smp.html#SP17" class="function-link"><span class="function-syntax">Simplifications::prop_substitute_prop_cons</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">, </span><span class="identifier-syntax">po_spec</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        &amp;</span><span class="identifier-syntax">no_substitutions_made</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">no_substitutions_made</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PROPOSITION_EDITED_REPEATING_CURRENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
@@ -1274,17 +1264,11 @@ usually mean "in all rooms", so that the sentence
 <p class="commentary">means the sky is in every room, not that the sky is equal to every room.
 Since the literal reading would make no useful sense, Inform fudges the
 proposition to change it to the idiomatic one.
-\(\) \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(v, t) \quad \longrightarrow \quad
-\Sigma' = \cdots {\it everywhere}(t) \(\)
-\(\) \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(t, v) \quad \longrightarrow \quad
-\Sigma' = \cdots {\it everywhere}(t) \(\)
-\(\) \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(v, t) \quad \longrightarrow \quad
-\Sigma' = \cdots \lnot({\it everywhere}(t)) \(\)
-\(\) \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(t, v) \quad \longrightarrow \quad
-\Sigma' = \cdots \lnot({\it everywhere}(t)) \(\)
-</p>
-
-<p class="commentary">Note that we match this only at the end of a proposition, where \(v\) can
+$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(v, t) \quad \longrightarrow \quad \Sigma' = \cdots {\it everywhere}(t) $$
+$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(t, v) \quad \longrightarrow \quad \Sigma' = \cdots {\it everywhere}(t) $$
+$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(v, t) \quad \longrightarrow \quad \Sigma' = \cdots \lnot({\it everywhere}(t)) $$
+$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(t, v) \quad \longrightarrow \quad \Sigma' = \cdots \lnot({\it everywhere}(t)) $$
+Note that we match this only at the end of a proposition, where \(v\) can
 have no other consequence.
 </p>
 
@@ -1316,11 +1300,13 @@ have no other consequence.
 <span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove </span><span class="extract"><span class="extract-syntax">DOMAIN_CLOSE_ATOM</span></span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove </span><span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_notall_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q_atom</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_CLOSE_ATOM</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                            </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_CLOSE_ATOM</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">WherePredicates::everywhere_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp_atom</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]));</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_notall_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q_atom</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_OPEN_ATOM</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                            </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_OPEN_ATOM</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">PROPOSITION_EDITED</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
@@ -1357,6 +1343,14 @@ have no other consequence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Everywhere and nowhere (fudge). </b>Similarly, if the proposition expresses the idea of "nowhere" or "everywhere"
+by spelling this out in quantifiers about being no place or every place, then
+replace those with uses of the special unary predicates for "nowhere" and
+"everywhere".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Simplifications::everywhere_and_nowhere</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Simplifications::everywhere_and_nowhere</span></span>:<br/>Sentence Conversions - <a href="5-sc.html#SP2_14">&#167;2.14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">changed</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">changed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
@@ -1387,7 +1381,8 @@ have no other consequence.
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove </span><span class="extract"><span class="extract-syntax">DOMAIN_CLOSE_ATOM</span></span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP19" class="function-link"><span class="function-syntax">Propositions::delete_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">); </span><span class="comment-syntax"> remove </span><span class="extract"><span class="extract-syntax">PREDICATE_ATOM</span></span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_notall_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q_atom</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_CLOSE_ATOM</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                            </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                                </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_CLOSE_ATOM</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_atom</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_nonexistence_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q_atom</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                            </span><span class="identifier-syntax">new_atom</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WherePredicates::nowhere_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp_atom</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]);</span>
@@ -1395,7 +1390,8 @@ have no other consequence.
 <span class="plain-syntax">                            </span><span class="identifier-syntax">new_atom</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WherePredicates::everywhere_up</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp_atom</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">terms</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><span class="identifier-syntax">new_atom</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-ap.html#SP7" class="function-link"><span class="function-syntax">Atoms::is_notall_quantifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">q_atom</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">, </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_OPEN_ATOM</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">                            </span><span class="identifier-syntax">prop</span><span class="plain-syntax"> = </span><a href="4-prp.html#SP18" class="function-link"><span class="function-syntax">Propositions::insert_atom</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prop</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl_prev</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                                </span><a href="4-ap.html#SP4" class="function-link"><span class="function-syntax">Atoms::new</span></a><span class="plain-syntax">(</span><span class="constant-syntax">NEGATION_OPEN_ATOM</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">PROPOSITION_EDITED</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="identifier-syntax">prop</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    }</span>

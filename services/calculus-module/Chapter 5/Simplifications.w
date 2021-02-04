@@ -684,11 +684,9 @@ So far we assume every "in" means the |R_containment|. This is the
 point where we choose to divert some uses to |R_regional_containment|.
 If $R$ is a constant region name, and $C_D$, $C_R$ are the predicates for
 direct and region containment, then
-$$ \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots C_R(t, R)\cdots $$
-$$ \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad
-\Sigma' = \cdots C_R(R, t)\cdots $$
-(Note that a region cannot directly contain any object, except a backdrop.)
+$$ \Sigma = \cdots C_D(t, R)\cdots \quad \longrightarrow \quad \Sigma' = \cdots C_R(t, R)\cdots $$
+$$ \Sigma = \cdots C_D(R, t)\cdots \quad \longrightarrow \quad \Sigma' = \cdots C_R(R, t)\cdots $$
+Note that a region cannot directly contain any object, except a backdrop.
 
 =
 pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) {
@@ -709,7 +707,8 @@ pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) 
 				}
 				if (pl->terms[1-j].constant) {
 					kind *KB = Specifications::to_kind(pl->terms[1-j].constant);
-					if (Kinds::Behaviour::is_object_of_kind(KB, K_backdrop)) backdropping = TRUE;
+					if (Kinds::Behaviour::is_object_of_kind(KB, K_backdrop))
+						backdropping = TRUE;
 				}
 				if ((regionality) && (!backdropping)) {
 					pl->predicate = STORE_POINTER_binary_predicate(R_regional_containment);
@@ -727,22 +726,21 @@ If we are able to reduce a binary to a unary predicate, we will probably
 gain considerably by being able to eliminate a variable altogether. For
 instance, suppose we have "Mme Cholet is in a burrow". This will
 initially come out as
-$$ \exists x: {\it burrow}(x)\land {\it in}(|Cholet|, x) $$
+$$ \exists x: {\it burrow}(x)\land {\it in}(C, x) $$
 To test that proposition requires trying all possible burrows $x$.
 But exploiting the fact that Mme Cholet can only be in one place at a
 time, we can reduce the binary predicate to equality, thus:
-$$ \exists x: {\it burrow}(x)\land {\it is}(|ContainerOf(Cholet)|, x) $$
-A later simplification can then observe that this tells us what $x$ must be,
+$$ \exists x: {\it burrow}(x)\land {\it is}(f(C), x) $$
+where $f$ is the function determining the location of something. A later
+simplification can then observe that this tells us what $x$ must be,
 and eliminate both quantifier and variable.
 
 Formally, suppose $B$ is a predicate with a function $f_B$ such that $B(x, y)$
 is true if and only $y = f_B(x)$. Then:
-$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(f_B(t_1), t_2) \cdots $$
+$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t_1), t_2) \cdots $$
 Similarly, if there is a function $g_B$ such that $B(x, y)$ if and only if
 $x = g_B(y)$ then
-$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(t_1, g_B(t_2)) \cdots $$
+$$ \Sigma = \cdots B(t_1, t_2) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(t_1, g_B(t_2)) \cdots $$
 Not all BPs have these: the reason for our fudge on regional containment (above)
 is that direct containment does, but region containment doesn't, and this is
 why it was necessary to separate the two out.
@@ -804,13 +802,13 @@ pcalc_prop *Simplifications::eliminate_redundant_variables(pcalc_prop *prop, int
 					if (permitted) {
 						LOGIF(PREDICATE_CALCULUS_WORKINGS, "Substituting %c <-- $0\n",
 							pcalc_vars[var_to_sub], &(pl->terms[1-j]));
-						/* first delete the ${\it is}(v, t)$ predicate */
+						/* first delete the is(v, t) predicate */
 						prop = Propositions::delete_atom(prop, pl_prev);
-						/* then unbind the variable, by deleting its $\exists v$ quantifier */
+						/* then unbind the variable, by deleting its exists v quantifier */
 						prop = Propositions::delete_atom(prop, position_of_binding[var_to_sub]);
 						LOGIF(PREDICATE_CALCULUS_WORKINGS, "After deletion: $D\n", prop);
 						binding_status[var_to_sub] = NOT_BOUND_AT_ALL;
-						/* then substitute for all other occurrences of $v$ */
+						/* then substitute for all other occurrences of v */
 						prop = Binding::substitute_term(prop, var_to_sub, pl->terms[1-j],
 							FALSE, NULL, changed);
 						*changed = TRUE;
@@ -856,7 +854,7 @@ substituting $v = f_A(f_B(\cdots s))$.
 
 But only if the term $s$ underneath those functions does not make the equation
 ${\it is}(v, f_A(f_B(\cdots s)))$ implicit. Suppose $s$ depends
-on a variable $w$ which is bound and occurs {\it after} the binding of $v$.
+on a variable $w$ which is bound and occurs after the binding of $v$.
 The value of such a variable $w$ can depend on the value of $v$. Saying that
 $v=s$ may therefore not determine a unique value of $v$ at all: it may be
 a subtle condition passed by a whole class of possible values, or none.
@@ -866,10 +864,10 @@ More problematic is ${\it is}(v, f_C(v))$, "$v$ is the container of $v$",
 which is never true. Still worse is
 $$ \exists v: V_{=2} w: {\it is}(v, w) $$
 which literally says there is a value of $v$ equal to two different things --
-certainly false. But if we were allowed to eliminate $v$, we would get just
+certainly false. But if we eliminated $v$, we would get just
 $$ V_{=2} w $$
 which asserts "there are exactly two objects" -- which is certainly not a
-valid deduction, and might even be true.
+valid deduction.
 
 Here |var_to_sub| is $v$ and |var_in_other_term| is $w$, or else they are $-1$
 if no variables are present in their respective terms.
@@ -888,22 +886,22 @@ if no variables are present in their respective terms.
 @h Simplify non-relation (deduction).
 As a result of the previous simplifications, it fairly often happens that we
 find a term like
-$$ \lnot({\it thing}(t|.component_parent|)) $$
-in the proposition. This comes out of text such as "... not part of something",
+$$ \lnot({\it thing}(f_P(t))) $$
+where $f_P$ is the function determining what, if anything, the object $t$ is
+a component part of. This comes out of text such as "... not part of something",
 asserting first that there is no $y$ such that $t$ is a part of $y$, and then
 simplifying to remove the $y$ variable. A term like the one above is then
 left behind. But the negation is cumbersome, and makes the proposition harder
-to assert or test. Exploiting the fact that |component_parent| is a property
-which is either the part-parent or else |nothing|, we can simplify to:
-$$ {\it is}(t|.component_parent|, |nothing|) $$
+to assert or test. Exploiting the fact that $f_P(t)$ is a property
+which is either the part-parent or else $N =$ |nothing|, we can simplify to:
+$$ {\it is}(f_P(t), N) $$
 And similar tricks can be pulled for other various-to-one-object predicates.
 
 Formally, let $B$ be a binary predicate supporting either a function $f_B$
 such that $B(x, y)$ iff $f_B(x) = y$, or else such that $B(x, y)$ iff $f_B(y) = x$;
 and such that the values of $f_B$ are objects. Let $K$ be a kind of object.
 Then:
-$$ \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad
-\Sigma' = \cdots {\it is}(f_B(t), |nothing|) \cdots $$
+$$ \Sigma = \cdots \lnot( K(f_B(t))) \cdots \quad \longrightarrow \quad \Sigma' = \cdots {\it is}(f_B(t), N) \cdots $$
 
 A similar trick for kinds of value is not possible, because -- unlike objects --
 they have no "not a valid case" value analogous to the non-object |nothing|.
@@ -926,7 +924,8 @@ pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *cha
 				pcalc_term KIND_term = kind_atom->terms[0];
 				if (KIND_term.function) bp = KIND_term.function->bp;
 				if ((bp) && (Kinds::eq(K, BinaryPredicates::term_kind(bp, 1)))) {
-					prop = Propositions::ungroup_after(prop, pl_prev, NULL); /* remove negation grouping */
+					/* remove negation grouping */
+					prop = Propositions::ungroup_after(prop, pl_prev, NULL); 
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |kind=K| */
 					/* now insert equality predicate: */
 					prop = Propositions::insert_atom(prop, pl_prev,
@@ -943,13 +942,10 @@ pcalc_prop *Simplifications::not_related_to_something(pcalc_prop *prop, int *cha
 
 @h Convert gerunds to nouns (deduction).
 Suppose we write:
-
->> The funky thing to do is a stored action that varies.
-
-and subsequently:
-
->> the funky thing to do is waiting
-
+= (text as Inform 7)
+The funky thing to do is a stored action that varies.
+The funky thing to do is waiting.
+=
 Here "waiting" is a gerund, and although it describes an action it is a
 noun (thus a value) rather than a condition. We coerce its constant value
 accordingly.
@@ -964,7 +960,8 @@ pcalc_prop *Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 2))
 			for (int i=0; i<2; i++)
 				if (Conditions::is_TEST_ACTION(pl->terms[i].constant))
-					pl->terms[i].constant = Conditions::action_tested(pl->terms[i].constant);
+					pl->terms[i].constant =
+						Conditions::action_tested(pl->terms[i].constant);
 	return prop;
 }
 #endif
@@ -976,22 +973,18 @@ can also arise from text such as
 >> the balloon has weight at most 1
 
 where it's the numerical "weight" property which is owned by the balloon.
-(The language of abstract "property" always echoes that of real physical
-things -- consider how the iTunes Music Store invites you to "buy" what
-is at best a lease of temporary, partial and revocable rights to make use
-of something with no physical essence. This isn't a con trick, or not
-altogether so. We like the word "buy"; we immediately understand it.)
 At this stage of simplification, the above has produced
-$$ {\hbox{\it at-most}}(|weight|, 1)\land {\it is}(|balloon|, f_H(|weight|)) $$
-where $H$ is the predicate |a_has_b_predicate|. As it stands, this
-proposition will fail type-checking, because it contains an implicit
-free variable -- the object which owns the weight. We make this explicit
-by removing ${\it is}(|balloon|, f_H(|weight|))$ and replacing all other
-references to |weight| with "the weight of |balloon|".
+$$ {\it atmost}(w, 1)\land {\it is}(B, f_H(w)) $$
+where $H$ is the predicate |a_has_b_predicate|. As it stands, this proposition
+will fail type-checking, because it contains an implicit free variable -- the
+object which owns the weight. We make this explicit by removing
+${\it is}(B, f_H(w))$ and replacing all other references to $w$ with "the
+weight of $B$".
 
-This is a fudge because it assumes -- possibly wrongly -- that all
-references to the weight are to the weight of the same thing. In
-sufficiently contrived sentences, this wouldn't be true.
+This is a fudge because it assumes -- possibly wrongly -- that all references
+to the weight are to the weight of the same thing. In sufficiently contrived
+sentences, this wouldn't be true. No bugs have ever been reported which suggest
+that real users run into this.
 
 =
 #ifdef CORE_MODULE
@@ -1026,7 +1019,8 @@ term $C$.
 		Lvalues::new_PROPERTY_VALUE(spec, pl->terms[1-i].constant);
 	Node::set_text(po_spec, prn->name);
 	int no_substitutions_made;
-	prop = Simplifications::prop_substitute_prop_cons(prop, prn, po_spec, &no_substitutions_made, pl);
+	prop = Simplifications::prop_substitute_prop_cons(prop, prn, po_spec,
+		&no_substitutions_made, pl);
 	if (no_substitutions_made > 0) {
 		prop = Propositions::delete_atom(prop, pl_prev);
 		PROPOSITION_EDITED_REPEATING_CURRENT(pl, prop);
@@ -1075,15 +1069,10 @@ usually mean "in all rooms", so that the sentence
 means the sky is in every room, not that the sky is equal to every room.
 Since the literal reading would make no useful sense, Inform fudges the
 proposition to change it to the idiomatic one.
-$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(v, t) \quad \longrightarrow \quad
-\Sigma' = \cdots {\it everywhere}(t) $$
-$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(t, v) \quad \longrightarrow \quad
-\Sigma' = \cdots {\it everywhere}(t) $$
-$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(v, t) \quad \longrightarrow \quad
-\Sigma' = \cdots \lnot({\it everywhere}(t)) $$
-$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)}\rbrace : {\it is}(t, v) \quad \longrightarrow \quad
-\Sigma' = \cdots \lnot({\it everywhere}(t)) $$
-
+$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(v, t) \quad \longrightarrow \quad \Sigma' = \cdots {\it everywhere}(t) $$
+$$ \Sigma = \cdots \forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(t, v) \quad \longrightarrow \quad \Sigma' = \cdots {\it everywhere}(t) $$
+$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(v, t) \quad \longrightarrow \quad \Sigma' = \cdots \lnot({\it everywhere}(t)) $$
+$$ \Sigma = \cdots \not\forall v\in\lbrace v\mid{\it room}(v)\rbrace : {\it is}(t, v) \quad \longrightarrow \quad \Sigma' = \cdots \lnot({\it everywhere}(t)) $$
 Note that we match this only at the end of a proposition, where $v$ can
 have no other consequence.
 
@@ -1115,11 +1104,13 @@ pcalc_prop *Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 					prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 					if (Atoms::is_notall_quantifier(q_atom))
-						prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_CLOSE_ATOM));
+						prop = Propositions::insert_atom(prop, pl_prev,
+							Atoms::new(NEGATION_CLOSE_ATOM));
 					prop = Propositions::insert_atom(prop, pl_prev,
 						WherePredicates::everywhere_up(bp_atom->terms[j]));
 					if (Atoms::is_notall_quantifier(q_atom))
-						prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_OPEN_ATOM));
+						prop = Propositions::insert_atom(prop, pl_prev,
+							Atoms::new(NEGATION_OPEN_ATOM));
 					PROPOSITION_EDITED(pl, prop);
 					break;
 				}
@@ -1156,6 +1147,14 @@ pcalc_prop *Simplifications::is_all_rooms(pcalc_prop *prop, int *changed) {
 	return prop;
 	#endif
 }
+
+@h Everywhere and nowhere (fudge).
+Similarly, if the proposition expresses the idea of "nowhere" or "everywhere"
+by spelling this out in quantifiers about being no place or every place, then
+replace those with uses of the special unary predicates for "nowhere" and
+"everywhere".
+
+=
 pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *changed) {
 	*changed = FALSE;
 	#ifdef IF_MODULE
@@ -1186,7 +1185,8 @@ pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *chang
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |DOMAIN_CLOSE_ATOM| */
 						prop = Propositions::delete_atom(prop, pl_prev); /* remove |PREDICATE_ATOM| */
 						if (Atoms::is_notall_quantifier(q_atom))
-							prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_CLOSE_ATOM));
+							prop = Propositions::insert_atom(prop, pl_prev,
+								Atoms::new(NEGATION_CLOSE_ATOM));
 						pcalc_prop *new_atom;
 						if (Atoms::is_nonexistence_quantifier(q_atom))
 							new_atom = WherePredicates::nowhere_up(bp_atom->terms[j]);
@@ -1194,7 +1194,8 @@ pcalc_prop *Simplifications::everywhere_and_nowhere(pcalc_prop *prop, int *chang
 							new_atom = WherePredicates::everywhere_up(bp_atom->terms[j]);
 						prop = Propositions::insert_atom(prop, pl_prev, new_atom);
 						if (Atoms::is_notall_quantifier(q_atom))
-							prop = Propositions::insert_atom(prop, pl_prev, Atoms::new(NEGATION_OPEN_ATOM));
+							prop = Propositions::insert_atom(prop, pl_prev,
+								Atoms::new(NEGATION_OPEN_ATOM));
 						PROPOSITION_EDITED(pl, prop);
 						break;
 					}
