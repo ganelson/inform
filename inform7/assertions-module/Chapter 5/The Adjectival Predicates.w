@@ -1,6 +1,6 @@
 [AdjectivalPredicates::] The Adjectival Predicates.
 
-To define the predicates connected to limguistic adjectives.
+To define the predicates connected to linguistic adjectives.
 
 @
 

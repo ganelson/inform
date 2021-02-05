@@ -7,52 +7,52 @@ sentences which belong to it. So when any noun is created, the following
 is called to let the current sentence's heading know that it has a new
 friend.
 
-@ =
-typedef struct name_resolution_data {
-	int heading_count; /* used when tallying up objects under their headings */
-	struct noun *next_under_heading; /* next in the list under that */
-	int search_score; /* used when searching nametags to parse names */
-	struct noun *next_to_search; /* similarly */
-} name_resolution_data;
-
-@
-
 @d LOOP_OVER_NOUNS_UNDER(nt, h)
 	for (nt=h->list_of_contents; nt; nt=NameResolution::data(nt)->next_under_heading)
 
 =
-name_resolution_data *NameResolution::data(noun *t) {
-	if (t == NULL) internal_error("tried to fetch resolution data for null tag");
-	return &(t->name_resolution);
-}
+typedef struct name_resolution_data {
+	int heading_count; /* used when tallying up objects under their headings */
+	struct noun *next_under_heading; /* next in the list under that */
+	int search_score; /* used when searching nouns to parse names */
+	struct noun *next_to_search; /* similarly */
+} name_resolution_data;
 
-void NameResolution::initialise(noun *t) {
-	if (t == NULL) internal_error("tried to initialise resolution data for null tag");
+@ When a noun is created by source text under a heading, its NRD is filled in:
+
+=
+int nouns_placed_under_headings = 0;
+void NameResolution::initialise(noun *N) {
+	if (N == NULL) internal_error("tried to initialise resolution data for null noun");
 	NameResolution::disturb();
-	NameResolution::attach_noun(t);
+	if (current_sentence) {
+		heading *h = Headings::of_wording(Node::get_text(current_sentence));
+		if (h) {
+			nouns_placed_under_headings++;
+			name_resolution_data *nrd = NameResolution::data(N);
+			nrd->next_to_search = NULL;
+			if (h->last_in_list_of_contents == NULL) h->list_of_contents = N;
+			else NameResolution::data(h->last_in_list_of_contents)->next_under_heading = N;
+			nrd->next_under_heading = NULL;
+			h->last_in_list_of_contents = N;
+		}
+	}
 	NameResolution::verify_divisions();
 }
 
-int no_tags_attached = 0;
-void NameResolution::attach_noun(noun *new_tag) {
+void NameResolution::attach_noun(noun *N) {
 	if (current_sentence == NULL) return;
-	heading *h = Headings::of_wording(Node::get_text(current_sentence));
-	if (h == NULL) return;
-	no_tags_attached++;
-	name_resolution_data *nrd = NameResolution::data(new_tag);
-	nrd->next_to_search = NULL;
-	if (h->last_in_list_of_contents == NULL) h->list_of_contents = new_tag;
-	else NameResolution::data(h->last_in_list_of_contents)->next_under_heading = new_tag;
-	nrd->next_under_heading = NULL;
-	h->last_in_list_of_contents = new_tag;
 }
 
-@ The following verification checks that every noun is listed
-in the list for exactly one heading. The point of the check is not so much
-to make sure the tag lists are properly formed, as the code making those
-is pretty elementary: it's really a test that the source text is well-formed
-with everything placed under a heading, and no sentence having fallen
-through a crack.
+name_resolution_data *NameResolution::data(noun *N) {
+	if (N == NULL) internal_error("tried to fetch resolution data for null noun");
+	return &(N->name_resolution);
+}
+
+@ The following verification checks that every noun is listed in the list for
+exactly one heading. This is really a test that the source text is well-formed
+with everything placed under a heading, and no sentence having fallen through
+a crack.
 
 =
 void NameResolution::verify_divisions(void) {
@@ -70,9 +70,8 @@ void NameResolution::verify_divisions(void) {
 				nt, NameResolution::data(nt)->heading_count);
 			disaster = TRUE;
 		}
-	if (total != no_tags_attached) {
-		LOG("%d tags != %d attached\n",
-			total, no_tags_attached);
+	if (total != nouns_placed_under_headings) {
+		LOG("%d nouns != %d placed under headings\n", total, nouns_placed_under_headings);
 		disaster = TRUE;
 	}
 	if (disaster) internal_error_tree_unsafe("heading contents list failed verification");
@@ -171,8 +170,8 @@ heading *NameResolution::pseudo_heading(void) {
 }
 
 @ Leaving aside the cache, then, we build a list as initially empty, then
-all nametags of priority 1 as found by recursively searching headings, then all
-nametags of priority 2, and so on.
+all nouns of priority 1 as found by recursively searching headings, then all
+nouns of priority 2, and so on.
 
 =
 void NameResolution::construct_noun_search_list(void) {
@@ -220,17 +219,17 @@ and produce an internal error if not.
 @<Verify that the search list indeed contains every noun just once@> =
 	int c = 0; noun *nt;
 	LOOP_OVER_NT_SEARCH_LIST(nt) c++;
-	if (c != no_tags_attached) {
+	if (c != nouns_placed_under_headings) {
 		LOG("Reordering failed from $H\n", h);
-		LOG("%d tags created, %d in ordering\n", no_tags_attached, c);
+		LOG("%d nouns under headings, %d in ordering\n", nouns_placed_under_headings, c);
 		IndexHeadings::log_all_headings();
 		LOG("Making fresh tree:\n");
 		NameResolution::make_the_tree();
 		IndexHeadings::log_all_headings();
-		internal_error_tree_unsafe("reordering of nametags failed");
+		internal_error_tree_unsafe("reordering of nouns failed");
 	}
 
-@ The following adds all nametags under heading H to the search list, using
+@ The following adds all nouns under heading H to the search list, using
 its own list of contents, and then recurses to add all objects under
 subheadings of H other than the one which has just recursed up to H. With
 that done, we recurse up to the superheading of H.
@@ -257,7 +256,7 @@ upwards, the maximum recursion depth of the routine is less than $2L+1$, where
 $L$ is the number of levels in the tree other than the pseudo-heading. This
 provides an upper bound of about 21, regardless of the size of the source
 text. The running time is linear in both the number of headings and the
-number of nametags in the source text.
+number of nouns in the source text.
 
 =
 void NameResolution::build_search_list_from(heading *within, heading *way_we_came, int p) {
@@ -267,7 +266,7 @@ void NameResolution::build_search_list_from(heading *within, heading *way_we_cam
 
 	LOOP_OVER_NOUNS_UNDER(nt, within)
 		if (Nouns::subclass(nt) == p)
-			@<Add tag to the end of the search list@>;
+			@<Add noun to the end of the search list@>;
 
 	/* recurse downwards through subordinate headings, other than the way we came up */
 	for (subhead = within->child_heading; subhead; subhead = subhead->next_heading)
@@ -279,12 +278,12 @@ void NameResolution::build_search_list_from(heading *within, heading *way_we_cam
 		NameResolution::build_search_list_from(within->parent_heading, within, p);
 }
 
-@<Add tag to the end of the search list@> =
+@<Add noun to the end of the search list@> =
 	if (nt_search_finish == NULL) {
 		nt_search_start = nt;
 	} else {
 		if (NameResolution::data(nt_search_finish)->next_to_search != NULL)
-			internal_error("end of tag search list has frayed somehow");
+			internal_error("end of noun search list has frayed somehow");
 		NameResolution::data(nt_search_finish)->next_to_search = nt;
 	}
 	NameResolution::data(nt)->next_to_search = NULL;

@@ -51,9 +51,11 @@ to implement substitutions."
 	Text Substitutions
 	Responses
 
-Chapter 6: List Data
-"List literals."
+Chapter 6: Lists and Tables
 	List Constants
+	Table Columns
+	Tables
+	Listed-In Relations
 
 Chapter 7: Equations
 "Simple mathematical or scientific equations, which can be solved at run-time."

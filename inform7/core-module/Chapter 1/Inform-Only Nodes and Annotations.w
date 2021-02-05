@@ -305,13 +305,20 @@ MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
 @ =
 void CoreSyntax::declare_L2_annotations(void) {
-	Annotations::declare_type(classified_ANNOT, CoreSyntax::write_classified_ANNOT);
-	Annotations::declare_type(clears_pronouns_ANNOT, CoreSyntax::write_clears_pronouns_ANNOT);
-	Annotations::declare_type(implicit_in_creation_of_ANNOT, CoreSyntax::write_implicit_in_creation_of_ANNOT);
-	Annotations::declare_type(implicitness_count_ANNOT, CoreSyntax::write_implicitness_count_ANNOT);
-	Annotations::declare_type(interpretation_of_subject_ANNOT, CoreSyntax::write_interpretation_of_subject_ANNOT);
-	Annotations::declare_type(verb_problem_issued_ANNOT, CoreSyntax::write_verb_problem_issued_ANNOT);
-	Annotations::declare_type(you_can_ignore_ANNOT, CoreSyntax::write_you_can_ignore_ANNOT);
+	Annotations::declare_type(
+		classified_ANNOT, CoreSyntax::write_classified_ANNOT);
+	Annotations::declare_type(
+		clears_pronouns_ANNOT, CoreSyntax::write_clears_pronouns_ANNOT);
+	Annotations::declare_type(
+		implicit_in_creation_of_ANNOT, CoreSyntax::write_implicit_in_creation_of_ANNOT);
+	Annotations::declare_type(
+		implicitness_count_ANNOT, CoreSyntax::write_implicitness_count_ANNOT);
+	Annotations::declare_type(
+		interpretation_of_subject_ANNOT, CoreSyntax::write_interpretation_of_subject_ANNOT);
+	Annotations::declare_type(
+		verb_problem_issued_ANNOT, CoreSyntax::write_verb_problem_issued_ANNOT);
+	Annotations::declare_type(
+		you_can_ignore_ANNOT, CoreSyntax::write_you_can_ignore_ANNOT);
 }
 void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, classified_ANNOT))
@@ -399,25 +406,44 @@ MAKE_ANNOTATION_FUNCTIONS(subject, inference_subject)
 
 @ =
 void CoreSyntax::declare_L3_annotations(void) {
-	Annotations::declare_type(category_of_I6_translation_ANNOT, CoreSyntax::write_category_of_I6_translation_ANNOT);
-	Annotations::declare_type(creation_proposition_ANNOT, CoreSyntax::write_creation_proposition_ANNOT);
-	Annotations::declare_type(creation_site_ANNOT, CoreSyntax::write_creation_site_ANNOT);
-	Annotations::declare_type(defn_language_ANNOT, CoreSyntax::write_defn_language_ANNOT);
-	Annotations::declare_type(evaluation_ANNOT, CoreSyntax::write_evaluation_ANNOT);
-	Annotations::declare_type(explicit_gender_marker_ANNOT, CoreSyntax::write_explicit_gender_marker_ANNOT);
-	Annotations::declare_type(lpe_options_ANNOT, CoreSyntax::write_lpe_options_ANNOT);
-	Annotations::declare_type(multiplicity_ANNOT, CoreSyntax::write_multiplicity_ANNOT);
-	Annotations::declare_type(new_relation_here_ANNOT, CoreSyntax::write_new_relation_here_ANNOT);
-	Annotations::declare_type(nowhere_ANNOT, CoreSyntax::write_nowhere_ANNOT);
-	Annotations::declare_type(predicate_ANNOT, CoreSyntax::write_predicate_ANNOT);
-	Annotations::declare_type(quant_ANNOT, CoreSyntax::write_quant_ANNOT);
-	Annotations::declare_type(quantification_parameter_ANNOT, CoreSyntax::write_quantification_parameter_ANNOT);
-	Annotations::declare_type(refined_ANNOT, CoreSyntax::write_refined_ANNOT);
-	Annotations::declare_type(row_amendable_ANNOT, CoreSyntax::write_row_amendable_ANNOT);
-	Annotations::declare_type(rule_placement_sense_ANNOT, CoreSyntax::write_rule_placement_sense_ANNOT);
-	Annotations::declare_type(subject_ANNOT, CoreSyntax::write_subject_ANNOT);
-	Annotations::declare_type(table_cell_unspecified_ANNOT, CoreSyntax::write_table_cell_unspecified_ANNOT);
-	Annotations::declare_type(turned_already_ANNOT, CoreSyntax::write_turned_already_ANNOT);
+	Annotations::declare_type(
+		category_of_I6_translation_ANNOT, CoreSyntax::write_category_of_I6_translation_ANNOT);
+	Annotations::declare_type(
+		creation_proposition_ANNOT, CoreSyntax::write_creation_proposition_ANNOT);
+	Annotations::declare_type(
+		creation_site_ANNOT, CoreSyntax::write_creation_site_ANNOT);
+	Annotations::declare_type(
+		defn_language_ANNOT, CoreSyntax::write_defn_language_ANNOT);
+	Annotations::declare_type(
+		evaluation_ANNOT, CoreSyntax::write_evaluation_ANNOT);
+	Annotations::declare_type(
+		explicit_gender_marker_ANNOT, CoreSyntax::write_explicit_gender_marker_ANNOT);
+	Annotations::declare_type(
+		lpe_options_ANNOT, CoreSyntax::write_lpe_options_ANNOT);
+	Annotations::declare_type(
+		multiplicity_ANNOT, CoreSyntax::write_multiplicity_ANNOT);
+	Annotations::declare_type(
+		new_relation_here_ANNOT, CoreSyntax::write_new_relation_here_ANNOT);
+	Annotations::declare_type(
+		nowhere_ANNOT, CoreSyntax::write_nowhere_ANNOT);
+	Annotations::declare_type(
+		predicate_ANNOT, CoreSyntax::write_predicate_ANNOT);
+	Annotations::declare_type(
+		quant_ANNOT, CoreSyntax::write_quant_ANNOT);
+	Annotations::declare_type(
+		quantification_parameter_ANNOT, CoreSyntax::write_quantification_parameter_ANNOT);
+	Annotations::declare_type(
+		refined_ANNOT, CoreSyntax::write_refined_ANNOT);
+	Annotations::declare_type(
+		row_amendable_ANNOT, CoreSyntax::write_row_amendable_ANNOT);
+	Annotations::declare_type(
+		rule_placement_sense_ANNOT, CoreSyntax::write_rule_placement_sense_ANNOT);
+	Annotations::declare_type(
+		subject_ANNOT, CoreSyntax::write_subject_ANNOT);
+	Annotations::declare_type(
+		table_cell_unspecified_ANNOT, CoreSyntax::write_table_cell_unspecified_ANNOT);
+	Annotations::declare_type(
+		turned_already_ANNOT, CoreSyntax::write_turned_already_ANNOT);
 }
 void CoreSyntax::write_category_of_I6_translation_ANNOT(text_stream *OUT, parse_node *p) {
 	WRITE(" {category: %d}", Annotations::read_int(p, category_of_I6_translation_ANNOT));
@@ -593,30 +619,54 @@ MAKE_ANNOTATION_FUNCTIONS(token_to_be_parsed_against, parse_node)
 
 @ =
 void CoreSyntax::declare_code_annotations(void) {
-	Annotations::declare_type(colon_block_command_ANNOT, CoreSyntax::write_colon_block_command_ANNOT);
-	Annotations::declare_type(control_structure_used_ANNOT, CoreSyntax::write_control_structure_used_ANNOT);
-	Annotations::declare_type(end_control_structure_used_ANNOT, CoreSyntax::write_end_control_structure_used_ANNOT);
-	Annotations::declare_type(epistemological_status_ANNOT, CoreSyntax::write_epistemological_status_ANNOT);
-	Annotations::declare_type(from_text_substitution_ANNOT, CoreSyntax::write_from_text_substitution_ANNOT);
-	Annotations::declare_type(indentation_level_ANNOT, CoreSyntax::write_indentation_level_ANNOT);
-	Annotations::declare_type(kind_of_new_variable_ANNOT, CoreSyntax::write_kind_of_new_variable_ANNOT);
-	Annotations::declare_type(kind_required_by_context_ANNOT, CoreSyntax::write_kind_required_by_context_ANNOT);
-	Annotations::declare_type(kind_resulting_ANNOT, CoreSyntax::write_kind_resulting_ANNOT);
-	Annotations::declare_type(kind_variable_declarations_ANNOT, CoreSyntax::write_kind_variable_declarations_ANNOT);
-	Annotations::declare_type(modal_verb_ANNOT, CoreSyntax::write_modal_verb_ANNOT);
-	Annotations::declare_type(phrase_invoked_ANNOT, CoreSyntax::write_phrase_invoked_ANNOT);
-	Annotations::declare_type(phrase_options_invoked_ANNOT, CoreSyntax::write_phrase_options_invoked_ANNOT);
-	Annotations::declare_type(results_from_splitting_ANNOT, CoreSyntax::write_results_from_splitting_ANNOT);
-	Annotations::declare_type(say_adjective_ANNOT, CoreSyntax::write_say_adjective_ANNOT);
-	Annotations::declare_type(say_verb_ANNOT, CoreSyntax::write_say_verb_ANNOT);
-	Annotations::declare_type(say_verb_negated_ANNOT, CoreSyntax::write_say_verb_ANNOT);
-	Annotations::declare_type(ssp_closing_segment_wn_ANNOT, CoreSyntax::write_ssp_closing_segment_wn_ANNOT);
-	Annotations::declare_type(ssp_segment_count_ANNOT, CoreSyntax::write_ssp_segment_count_ANNOT);
-	Annotations::declare_type(suppress_newlines_ANNOT, CoreSyntax::write_suppress_newlines_ANNOT);
-	Annotations::declare_type(token_as_parsed_ANNOT, CoreSyntax::write_token_as_parsed_ANNOT);
-	Annotations::declare_type(token_check_to_do_ANNOT, CoreSyntax::write_token_check_to_do_ANNOT);
-	Annotations::declare_type(token_to_be_parsed_against_ANNOT, CoreSyntax::write_token_to_be_parsed_against_ANNOT);
-	Annotations::declare_type(unproven_ANNOT, CoreSyntax::write_unproven_ANNOT);
+	Annotations::declare_type(
+		colon_block_command_ANNOT, CoreSyntax::write_colon_block_command_ANNOT);
+	Annotations::declare_type(
+		control_structure_used_ANNOT, CoreSyntax::write_control_structure_used_ANNOT);
+	Annotations::declare_type(
+		end_control_structure_used_ANNOT, CoreSyntax::write_end_control_structure_used_ANNOT);
+	Annotations::declare_type(
+		epistemological_status_ANNOT, CoreSyntax::write_epistemological_status_ANNOT);
+	Annotations::declare_type(
+		from_text_substitution_ANNOT, CoreSyntax::write_from_text_substitution_ANNOT);
+	Annotations::declare_type(
+		indentation_level_ANNOT, CoreSyntax::write_indentation_level_ANNOT);
+	Annotations::declare_type(
+		kind_of_new_variable_ANNOT, CoreSyntax::write_kind_of_new_variable_ANNOT);
+	Annotations::declare_type(
+		kind_required_by_context_ANNOT, CoreSyntax::write_kind_required_by_context_ANNOT);
+	Annotations::declare_type(
+		kind_resulting_ANNOT, CoreSyntax::write_kind_resulting_ANNOT);
+	Annotations::declare_type(
+		kind_variable_declarations_ANNOT, CoreSyntax::write_kind_variable_declarations_ANNOT);
+	Annotations::declare_type(
+		modal_verb_ANNOT, CoreSyntax::write_modal_verb_ANNOT);
+	Annotations::declare_type(
+		phrase_invoked_ANNOT, CoreSyntax::write_phrase_invoked_ANNOT);
+	Annotations::declare_type(
+		phrase_options_invoked_ANNOT, CoreSyntax::write_phrase_options_invoked_ANNOT);
+	Annotations::declare_type(
+		results_from_splitting_ANNOT, CoreSyntax::write_results_from_splitting_ANNOT);
+	Annotations::declare_type(
+		say_adjective_ANNOT, CoreSyntax::write_say_adjective_ANNOT);
+	Annotations::declare_type(
+		say_verb_ANNOT, CoreSyntax::write_say_verb_ANNOT);
+	Annotations::declare_type(
+		say_verb_negated_ANNOT, CoreSyntax::write_say_verb_ANNOT);
+	Annotations::declare_type(
+		ssp_closing_segment_wn_ANNOT, CoreSyntax::write_ssp_closing_segment_wn_ANNOT);
+	Annotations::declare_type(
+		ssp_segment_count_ANNOT, CoreSyntax::write_ssp_segment_count_ANNOT);
+	Annotations::declare_type(
+		suppress_newlines_ANNOT, CoreSyntax::write_suppress_newlines_ANNOT);
+	Annotations::declare_type(
+		token_as_parsed_ANNOT, CoreSyntax::write_token_as_parsed_ANNOT);
+	Annotations::declare_type(
+		token_check_to_do_ANNOT, CoreSyntax::write_token_check_to_do_ANNOT);
+	Annotations::declare_type(
+		token_to_be_parsed_against_ANNOT, CoreSyntax::write_token_to_be_parsed_against_ANNOT);
+	Annotations::declare_type(
+		unproven_ANNOT, CoreSyntax::write_unproven_ANNOT);
 }
 void CoreSyntax::write_colon_block_command_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, colon_block_command_ANNOT) > 0)
@@ -860,41 +910,76 @@ MAKE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 
 =
 void CoreSyntax::declare_spec_annotations(void) {
-	Annotations::declare_type(constant_activity_ANNOT, CoreSyntax::write_constant_activity_ANNOT);
-	Annotations::declare_type(constant_binary_predicate_ANNOT, CoreSyntax::write_constant_binary_predicate_ANNOT);
-	Annotations::declare_type(constant_constant_phrase_ANNOT, CoreSyntax::write_constant_constant_phrase_ANNOT);
-	Annotations::declare_type(constant_equation_ANNOT, CoreSyntax::write_constant_equation_ANNOT);
-	Annotations::declare_type(constant_instance_ANNOT, CoreSyntax::write_constant_instance_ANNOT);
-	Annotations::declare_type(constant_local_variable_ANNOT, CoreSyntax::write_constant_local_variable_ANNOT);
-	Annotations::declare_type(constant_named_rulebook_outcome_ANNOT, CoreSyntax::write_constant_named_rulebook_outcome_ANNOT);
-	Annotations::declare_type(constant_nonlocal_variable_ANNOT, CoreSyntax::write_constant_nonlocal_variable_ANNOT);
-	Annotations::declare_type(constant_property_ANNOT, CoreSyntax::write_constant_property_ANNOT);
-	Annotations::declare_type(constant_rule_ANNOT, CoreSyntax::write_constant_rule_ANNOT);
-	Annotations::declare_type(constant_rulebook_ANNOT, CoreSyntax::write_constant_rulebook_ANNOT);
-	Annotations::declare_type(constant_table_ANNOT, CoreSyntax::write_constant_table_ANNOT);
-	Annotations::declare_type(constant_table_column_ANNOT, CoreSyntax::write_constant_table_column_ANNOT);
-	Annotations::declare_type(constant_text_ANNOT, CoreSyntax::write_constant_text_ANNOT);
-	Annotations::declare_type(constant_use_option_ANNOT, CoreSyntax::write_constant_use_option_ANNOT);
-	Annotations::declare_type(constant_verb_form_ANNOT, CoreSyntax::write_constant_verb_form_ANNOT);
-	Annotations::declare_type(condition_tense_ANNOT, CoreSyntax::write_condition_tense_ANNOT);
-	Annotations::declare_type(constant_enumeration_ANNOT, CoreSyntax::write_constant_enumeration_ANNOT);
-	Annotations::declare_type(constant_number_ANNOT, CoreSyntax::write_constant_number_ANNOT);
-	Annotations::declare_type(converted_SN_ANNOT, CoreSyntax::write_converted_SN_ANNOT);
-	Annotations::declare_type(explicit_iname_ANNOT, CoreSyntax::write_explicit_iname_ANNOT);
-	Annotations::declare_type(explicit_literal_ANNOT, CoreSyntax::write_explicit_literal_ANNOT);
-	Annotations::declare_type(grammar_token_code_ANNOT, CoreSyntax::write_grammar_token_code_ANNOT);
-	Annotations::declare_type(is_phrase_option_ANNOT, CoreSyntax::write_is_phrase_option_ANNOT);
-	Annotations::declare_type(kind_of_value_ANNOT, CoreSyntax::write_kind_of_value_ANNOT);
-	Annotations::declare_type(nothing_object_ANNOT, CoreSyntax::write_nothing_object_ANNOT);
-	Annotations::declare_type(phrase_option_ANNOT, CoreSyntax::write_phrase_option_ANNOT);
-	Annotations::declare_type(property_name_used_as_noun_ANNOT, CoreSyntax::write_property_name_used_as_noun_ANNOT);
-	Annotations::declare_type(proposition_ANNOT, CoreSyntax::write_proposition_ANNOT);
-	Annotations::declare_type(record_as_self_ANNOT, CoreSyntax::write_record_as_self_ANNOT);
-	Annotations::declare_type(response_code_ANNOT, CoreSyntax::write_response_code_ANNOT);
-	Annotations::declare_type(save_self_ANNOT, CoreSyntax::write_save_self_ANNOT);
-	Annotations::declare_type(self_object_ANNOT, CoreSyntax::write_self_object_ANNOT);
-	Annotations::declare_type(tense_marker_ANNOT, CoreSyntax::write_tense_marker_ANNOT);
-	Annotations::declare_type(text_unescaped_ANNOT, CoreSyntax::write_text_unescaped_ANNOT);
+	Annotations::declare_type(
+		constant_activity_ANNOT, CoreSyntax::write_constant_activity_ANNOT);
+	Annotations::declare_type(
+		constant_binary_predicate_ANNOT, CoreSyntax::write_constant_binary_predicate_ANNOT);
+	Annotations::declare_type(
+		constant_constant_phrase_ANNOT, CoreSyntax::write_constant_constant_phrase_ANNOT);
+	Annotations::declare_type(
+		constant_equation_ANNOT, CoreSyntax::write_constant_equation_ANNOT);
+	Annotations::declare_type(
+		constant_instance_ANNOT, CoreSyntax::write_constant_instance_ANNOT);
+	Annotations::declare_type(
+		constant_local_variable_ANNOT, CoreSyntax::write_constant_local_variable_ANNOT);
+	Annotations::declare_type(
+		constant_named_rulebook_outcome_ANNOT, CoreSyntax::write_constant_named_rulebook_outcome_ANNOT);
+	Annotations::declare_type(
+		constant_nonlocal_variable_ANNOT, CoreSyntax::write_constant_nonlocal_variable_ANNOT);
+	Annotations::declare_type(
+		constant_property_ANNOT, CoreSyntax::write_constant_property_ANNOT);
+	Annotations::declare_type(
+		constant_rule_ANNOT, CoreSyntax::write_constant_rule_ANNOT);
+	Annotations::declare_type(
+		constant_rulebook_ANNOT, CoreSyntax::write_constant_rulebook_ANNOT);
+	Annotations::declare_type(
+		constant_table_ANNOT, CoreSyntax::write_constant_table_ANNOT);
+	Annotations::declare_type(
+		constant_table_column_ANNOT, CoreSyntax::write_constant_table_column_ANNOT);
+	Annotations::declare_type(
+		constant_text_ANNOT, CoreSyntax::write_constant_text_ANNOT);
+	Annotations::declare_type(
+		constant_use_option_ANNOT, CoreSyntax::write_constant_use_option_ANNOT);
+	Annotations::declare_type(
+		constant_verb_form_ANNOT, CoreSyntax::write_constant_verb_form_ANNOT);
+	Annotations::declare_type(
+		condition_tense_ANNOT, CoreSyntax::write_condition_tense_ANNOT);
+	Annotations::declare_type(
+		constant_enumeration_ANNOT, CoreSyntax::write_constant_enumeration_ANNOT);
+	Annotations::declare_type(
+		constant_number_ANNOT, CoreSyntax::write_constant_number_ANNOT);
+	Annotations::declare_type(
+		converted_SN_ANNOT, CoreSyntax::write_converted_SN_ANNOT);
+	Annotations::declare_type(
+		explicit_iname_ANNOT, CoreSyntax::write_explicit_iname_ANNOT);
+	Annotations::declare_type(
+		explicit_literal_ANNOT, CoreSyntax::write_explicit_literal_ANNOT);
+	Annotations::declare_type(
+		grammar_token_code_ANNOT, CoreSyntax::write_grammar_token_code_ANNOT);
+	Annotations::declare_type(
+		is_phrase_option_ANNOT, CoreSyntax::write_is_phrase_option_ANNOT);
+	Annotations::declare_type(
+		kind_of_value_ANNOT, CoreSyntax::write_kind_of_value_ANNOT);
+	Annotations::declare_type(
+		nothing_object_ANNOT, CoreSyntax::write_nothing_object_ANNOT);
+	Annotations::declare_type(
+		phrase_option_ANNOT, CoreSyntax::write_phrase_option_ANNOT);
+	Annotations::declare_type(
+		property_name_used_as_noun_ANNOT, CoreSyntax::write_property_name_used_as_noun_ANNOT);
+	Annotations::declare_type(
+		proposition_ANNOT, CoreSyntax::write_proposition_ANNOT);
+	Annotations::declare_type(
+		record_as_self_ANNOT, CoreSyntax::write_record_as_self_ANNOT);
+	Annotations::declare_type(
+		response_code_ANNOT, CoreSyntax::write_response_code_ANNOT);
+	Annotations::declare_type(
+		save_self_ANNOT, CoreSyntax::write_save_self_ANNOT);
+	Annotations::declare_type(
+		self_object_ANNOT, CoreSyntax::write_self_object_ANNOT);
+	Annotations::declare_type(
+		tense_marker_ANNOT, CoreSyntax::write_tense_marker_ANNOT);
+	Annotations::declare_type(
+		text_unescaped_ANNOT, CoreSyntax::write_text_unescaped_ANNOT);
 }
 void CoreSyntax::write_constant_activity_ANNOT(text_stream *OUT, parse_node *p) {
 	activity *act = Node::get_constant_activity(p);

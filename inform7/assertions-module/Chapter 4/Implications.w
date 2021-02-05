@@ -3,7 +3,8 @@
 To keep track of a dangerous form of super-assertion called an
 implication, which is allowed to generalise about properties.
 
-@ Implications are structures are used to store the information in sentences
+@h Creation.
+Implications are structures are used to store the information in sentences
 like "Something worn is usually wearable and initially carried." The
 "something worn" part must turn out to be a description of a category of
 objects; the "usually" part translates into a level of certainty. We regard
@@ -196,7 +197,8 @@ repetition results in redundancy, since the inferences it would make have
 no better a certainty level.
 
 =
-int Assertions::Implications::check_implications_of(inference_subject *domain, inference_subject *candidate) {
+int Assertions::Implications::check_implications_of(inference_subject *domain,
+	inference_subject *candidate) {
 	inference_subject *k = InferenceSubjects::narrowest_broader_subject(domain);
 	if ((k) && (Assertions::Implications::check_implications_of(k, candidate))) return TRUE;
 
@@ -256,7 +258,8 @@ int Assertions::Implications::check_implications_of(inference_subject *domain, i
 
 @<Apply the conclusion to the candidate@> =
 	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
-	pcalc_prop *prop = KindPredicates::new_atom(InferenceSubjects::domain(domain), Terms::new_variable(0));
+	pcalc_prop *prop = KindPredicates::new_atom(
+		InferenceSubjects::domain(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
 		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));

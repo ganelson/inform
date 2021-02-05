@@ -1,4 +1,4 @@
-[Rules::Placement::] Rule Placement Requests.
+[RulePlacement::] Rule Placement Requests.
 
 Special sentences for listing named rules in particular rulebooks.
 
@@ -13,7 +13,7 @@ First, this handles the special meaning "X is listed in...":
 	not listed <np-unparsed>  ==> { FALSE, RP[1] }
 
 @ =
-int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
+int RulePlacement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "The time passes rule is listed in the turn sequence rulebook." */
@@ -28,7 +28,7 @@ int Rules::Placement::listed_in_SMF(int task, parse_node *V, wording *NPs) {
 			}
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
-			Rules::Placement::place_in_rulebook(V->next, V->next->next,
+			RulePlacement::place_in_rulebook(V->next, V->next->next,
 				Annotations::read_int(V, rule_placement_sense_ANNOT));
 			break;
 	}
@@ -63,7 +63,7 @@ following won't pick up many false positives.
 	<nounphrase-rule> unless <np-unparsed>     ==> { FALSE, RP[1] }; ((parse_node *) RP[1])->next = RP[2];
 
 @ =
-int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs) {
+int RulePlacement::substitutes_for_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "The time passes slowly rule substitutes for the time passes rule." */
@@ -78,7 +78,7 @@ int Rules::Placement::substitutes_for_SMF(int task, parse_node *V, wording *NPs)
 			}
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
-			Rules::Placement::request_substitute(V->next, V->next->next, V->next->next->next,
+			RulePlacement::request_substitute(V->next, V->next->next, V->next->next->next,
 				Annotations::read_int(V, rule_placement_sense_ANNOT));
 			break;
 	}
@@ -116,7 +116,7 @@ subject and object NPs.
 	==> { FALSE, - };
 
 @ =
-void Rules::Placement::request_substitute(parse_node *p1, parse_node *p2, parse_node *p3,
+void RulePlacement::request_substitute(parse_node *p1, parse_node *p2, parse_node *p3,
 	int sense) {
 	<substitutes-for-sentence-subject>(Node::get_text(p1));
 	if (<<r>> == FALSE) return;
@@ -147,7 +147,7 @@ eventually match <spec-condition>.
 	...              ==> @<Issue PM_NoSuchRuleExists problem@>
 
 @ =
-int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
+int RulePlacement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "The time passes rule does nothing." */
@@ -161,14 +161,14 @@ int Rules::Placement::does_nothing_SMF(int task, parse_node *V, wording *NPs) {
 			}
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
-			Rules::Placement::constrain_effect(V->next, NULL, NOT_APPLICABLE);
+			RulePlacement::constrain_effect(V->next, NULL, NOT_APPLICABLE);
 			break;
 	}
 	return FALSE;
 }
 
 @ =
-int Rules::Placement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs) {
+int RulePlacement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[2]):EMPTY_WORDING;
 	wording CW = (NPs)?(NPs[1]):EMPTY_WORDING;
@@ -184,14 +184,14 @@ int Rules::Placement::does_nothing_if_SMF(int task, parse_node *V, wording *NPs)
 			}
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
-			Rules::Placement::constrain_effect(V->next, V->next->next, FALSE);
+			RulePlacement::constrain_effect(V->next, V->next->next, FALSE);
 			break;
 	}
 	return FALSE;
 }
 
 @ =
-int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *NPs) {
+int RulePlacement::does_nothing_unless_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[2]):EMPTY_WORDING;
 	wording CW = (NPs)?(NPs[1]):EMPTY_WORDING;
@@ -207,17 +207,17 @@ int Rules::Placement::does_nothing_unless_SMF(int task, parse_node *V, wording *
 			}
 			break;
 		case TRAVERSE_FOR_RULE_FILING_SMFT:
-			Rules::Placement::constrain_effect(V->next, V->next->next, TRUE);
+			RulePlacement::constrain_effect(V->next, V->next->next, TRUE);
 			break;
 	}
 	return FALSE;
 }
 
 @ =
-void Rules::Placement::constrain_effect(parse_node *p1, parse_node *p2, int sense) {
+void RulePlacement::constrain_effect(parse_node *p1, parse_node *p2, int sense) {
 	if (Node::get_type(p1) == AND_NT) {
-		Rules::Placement::constrain_effect(p1->down, p2, sense);
-		Rules::Placement::constrain_effect(p1->down->next, p2, sense);
+		RulePlacement::constrain_effect(p1->down, p2, sense);
+		RulePlacement::constrain_effect(p1->down->next, p2, sense);
 		return;
 	}
 	<does-nothing-sentence-subject>(Node::get_text(p1));
@@ -305,10 +305,10 @@ The subject noun phrase is an articled list, each entry of which must match:
 	Problems::issue_problem_end();
 
 @ =
-void Rules::Placement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense) {
+void RulePlacement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense) {
 	if (Node::get_type(p1) == AND_NT) {
-		Rules::Placement::place_in_rulebook(p1->down, p2, sense);
-		Rules::Placement::place_in_rulebook(p1->down->next, p2, sense);
+		RulePlacement::place_in_rulebook(p1->down, p2, sense);
+		RulePlacement::place_in_rulebook(p1->down->next, p2, sense);
 		return;
 	}
 	@<Make single placement@>;

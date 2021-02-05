@@ -16,7 +16,30 @@ uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
 @h Assertions.
-Top-level declarations are dealt with thus:
+This module's task is to read the declarative sentences in the source text,
+such as "Mrs Jones is wearing a trilby hat" or "Brightness is a kind of value",
+which assert that something is true. These are converted into propositions
+in predicate calculus, which are sent in a stream to the //knowledge// module.
+Those propositions may be mutually inconsistent, or not even be self-consistent
+or meaningful: but that is for //knowledge// to worry about. Our task is just
+to provide a list of supposedly true statements.
+
+Between the //linguistics// and //calculus// modules we have extensive
+equipment for parsing regular sentences already, so it would seem simple
+to act on a sentence like "Mr Herries knows Howarth." And so it would be if
+people called "Mr Herries" and "Howarth" were already known to exist.
+Unfortunately, this may be the first mention of them, and that makes things
+much more complicated.
+
+Even if they do exist, they may be referred to ambiguously. If there are
+two different people both called Kassava, who is meant by "Carter knows
+Kassava"? This depends on context: see //Name Resolution//.
+
+Though it is rather under-developed at present, Inform also has minimal
+support for "anaphora", that is, for cross-references between sentences using
+pronouns such as "it". See //Anaphoric References//, but don't expect much.
+
+@ So, then, top-level declarations are dealt with like so:
 (*) The tree is subdivided into //runtime: Compilation Units//. The project's own
 source text is one unit, as is each extension used.
 (*) A minimal set of kinds, such as "number", verbs, such as "to mean", relations,
@@ -46,3 +69,49 @@ hat is indeed spatially on top of the can.
 
 [1] There really is an Ubuntu cola; it's a fair-trade product which it amuses my
 more Linux-aware students to drink.
+
+@h Special meanings.
+In the same way that programming languages have a few "reserved words" which
+cue up built-in language features, even though they may look like user-defined
+functions or variables, Inform has a few verbs with "special meanings", which
+make requests directly to the compiler. These occupy //Chapter 3//, which is
+really just a catalogue of ways to ask for things.
+
+All that we do is parse such sentences and then make a call to some
+appropriate function, usually in one of the other modules. For example, the
+section //New Activity Requests// dismantles sentences like "Counting is an
+activity on numbers", but then just calls //Activities::new// (in the
+//knowledge// module) to take action.
+
+@h Regular meanings.
+As noted above, //Assertions::make_coupling// is called on each regular
+assertion: coupling being a lingistic term for placing subject and object into
+a relationship with each other. What it does is to split into cases according to
+the subject and object phrases of a sentence. These can take 12 different forms,
+so there are $12\times 12 = 144$ possible combinations of subject with object,
+and a $12\times 12$ matrix is used to determine which of 42 cases the sentence
+falls into.
+
+Each case then leads either to a proposition being formed, or to
+a problem message being issued. Most of the easier cases are dealt with in
+the (admittedly quite long) //Assertions// section, but harder ones are
+delegated to the remaining sections in //Chapter 4//.
+
+The brief story above implied that each sentence is turned into a single
+proposition, as if this part of Inform can act as a sort of pipeline: text
+in, proposition out. But it is not quite so simple, and for the hardest
+sentences we must store notes on what to add later. For example, in
+//Assemblies//, a sentence like "In every container is a coin" cannot
+take immediate effect. It clearly creates a whole lot of coin instances,
+but we don't yet know what is a container and what is not. That will
+depend on conclusions to be drawn by the //knowledge// module later on.
+Similarly, though a little easier, //Implications// like "Something worn is
+usually wearable" do not immediately lead to propositions being drawn up.
+
+@h Making use of the calculus module.
+//Chapter 5// simply stocks up our predicate calculus system with some
+basic unary and binary predicates, and provides a few shorthand functions
+to make commonly-needed propositions (see //Calculus Utilities//).
+
+More specialised predicates will also be added by other modules, so the
+roster here is not complete, but these are the essentials.

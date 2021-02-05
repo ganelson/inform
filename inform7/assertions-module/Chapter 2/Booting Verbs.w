@@ -39,7 +39,7 @@ to the Inform compiler. For example,
 
 is one of three special meanings of "to translate into". The //linguistics//
 module decides which if any is meant in a given case by calling the "special
-meaning functions" to see if wants to accept the sentence in question.
+meaning functions" to see which if any wants to accept the sentence in question.
 
 @ When the //linguistics// module looks for a primary verb, it may find
 multiple candidates: consider "fruit flies like a banana", where "flies" and
@@ -71,33 +71,37 @@ names. But as these names are only used in early boot sentences in the
 be a single word, and are hyphenated.
 
 @<Create the special meanings@> =
-	SpecialMeanings::declare(RelationRequests::new_relation_SMF,			I"new-relation", 1);
-	SpecialMeanings::declare(Rules::Placement::substitutes_for_SMF,			I"rule-substitutes-for", 1);
-	SpecialMeanings::declare(Rules::Placement::does_nothing_SMF,			I"rule-does-nothing", 1);
-	SpecialMeanings::declare(Rules::Placement::does_nothing_if_SMF,			I"rule-does-nothing-if", 1);
-	SpecialMeanings::declare(Rules::Placement::does_nothing_unless_SMF,		I"rule-does-nothing-unless", 1);
-	SpecialMeanings::declare(Translations::translates_into_unicode_as_SMF,	I"translates-into-unicode", 1);
-	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,	I"translates-into-i6", 1);
-	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,	I"translates-into-language", 1);
+	SpecialMeanings::declare(RelationRequests::new_relation_SMF, I"new-relation", 1);
+	SpecialMeanings::declare(RulePlacement::substitutes_for_SMF, I"rule-substitutes-for", 1);
+	SpecialMeanings::declare(RulePlacement::does_nothing_SMF, I"rule-does-nothing", 1);
+	SpecialMeanings::declare(RulePlacement::does_nothing_if_SMF, I"rule-does-nothing-if", 1);
+	SpecialMeanings::declare(RulePlacement::does_nothing_unless_SMF,
+		I"rule-does-nothing-unless", 1);
+	SpecialMeanings::declare(Translations::translates_into_unicode_as_SMF,
+		I"translates-into-unicode", 1);
+	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,
+		I"translates-into-i6", 1);
+	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,
+		I"translates-into-language", 1);
 
-	SpecialMeanings::declare(TestRequests::test_with_SMF,			        I"test-with", 1);
+	SpecialMeanings::declare(TestRequests::test_with_SMF, I"test-with", 1);
 
-	SpecialMeanings::declare(NewVerbRequests::new_verb_SMF, 				I"new-verb", 2);
-	SpecialMeanings::declare(Plurals::plural_SMF, 							I"new-plural", 2);
-	SpecialMeanings::declare(ActivityRequests::new_activity_SMF, 			I"new-activity", 2);
-	SpecialMeanings::declare(NewAdjectiveRequests::new_adjective_SMF,		I"new-adjective", 2);
-	SpecialMeanings::declare(NewPropertyRequests::either_SMF,				I"new-either-or", 2);
-	SpecialMeanings::declare(DefineByTable::defined_by_SMF,					I"defined-by-table", 2);
-	SpecialMeanings::declare(Rules::Placement::listed_in_SMF,				I"rule-listed-in", 2);
-	SpecialMeanings::declare(NewPropertyRequests::optional_either_SMF,		I"can-be", 2);
+    SpecialMeanings::declare(NewVerbRequests::new_verb_SMF, I"new-verb", 2);
+	SpecialMeanings::declare(Plurals::plural_SMF, I"new-plural", 2);
+	SpecialMeanings::declare(ActivityRequests::new_activity_SMF, I"new-activity", 2);
+	SpecialMeanings::declare(NewAdjectiveRequests::new_adjective_SMF, I"new-adjective", 2);
+	SpecialMeanings::declare(NewPropertyRequests::either_SMF, I"new-either-or", 2);
+	SpecialMeanings::declare(DefineByTable::defined_by_SMF, I"defined-by-table", 2);
+	SpecialMeanings::declare(RulePlacement::listed_in_SMF, I"rule-listed-in", 2);
+	SpecialMeanings::declare(NewPropertyRequests::optional_either_SMF, I"can-be", 2);
 
-	meaning_of_mean = SpecialMeanings::declare(NewVerbRequests::verb_means_SMF, 	I"verb-means", 3);
+	meaning_of_mean = SpecialMeanings::declare(NewVerbRequests::verb_means_SMF, I"verb-means", 3);
 
-	SpecialMeanings::declare(LPRequests::specifies_SMF, 					I"specifies-notation", 4);
-	SpecialMeanings::declare(NewUseOptions::use_translates_as_SMF,			I"use-translates", 4);
-	SpecialMeanings::declare(UseOptions::use_SMF,							I"use", 4);
-	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF,				I"include-in", 4);
-	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF,				I"omit-from", 4);
+	SpecialMeanings::declare(LPRequests::specifies_SMF, I"specifies-notation", 4);
+	SpecialMeanings::declare(NewUseOptions::use_translates_as_SMF, I"use-translates", 4);
+	SpecialMeanings::declare(UseOptions::use_SMF, I"use", 4);
+	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF, I"include-in", 4);
+	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF, I"omit-from", 4);
 
 	#ifdef MULTIMEDIA_MODULE
 	MultimediaMeanings::bootstrap();

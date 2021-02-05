@@ -610,7 +610,7 @@ is the "geography choice" for its kind.
 		@<Attempt to reconcile the two choices@>;
 
 	if (Kinds::eq(Instances::to_kind(I), K_object))
-		Propositions::Abstract::assert_kind_of_object(I, K_thing);
+		Propositions::Abstract::assert_kind_of_instance(I, K_thing);
 
 @ By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
@@ -675,7 +675,7 @@ when it's legitimately a door.
 @<Accept the geography choice, since it only refines what we already know@> =
 	LOGIF(KIND_CHANGES, "Accepting geography choice of kind of $O as %u\n",
 		I, geography_choice);
-	Propositions::Abstract::assert_kind_of_object(I, geography_choice);
+	Propositions::Abstract::assert_kind_of_instance(I, geography_choice);
 
 @<Issue a problem message, since the choices are irreconcilable@> =
 	LOG("Choices: designer %u, geography %u.\n", designers_choice, geography_choice);

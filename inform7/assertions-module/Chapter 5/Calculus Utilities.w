@@ -1,14 +1,8 @@
-[Propositions::Abstract::] Tree Conversions.
+[Propositions::Abstract::] Calculus Utilities.
 
-The second of the three sources of propositions to conjure with:
-those which arise from subtrees constructed by the A-parser.
+Utility functions for creating basic propositions using these predicates.
 
-@h Elementary propositions.
-The S-parser attacks whole sentences, but the A-parser more cautiously takes
-on only fragments, and so it makes much shorter propositions -- usually with
-a single free variable representing an object or value to which something
-must be done.
-
+@h Creation propositions.
 We start with some elementary propositions which create things, by asserting
 their existence.
 
@@ -36,20 +30,24 @@ pcalc_prop *Propositions::Abstract::to_create_something(kind *K, wording W) {
 	return prop;
 }
 
-@ A proposition to assert that an object has a given kind:
+@ Here is a proposition to assert that something has a given kind:
 
 =
 pcalc_prop *Propositions::Abstract::prop_to_set_kind(kind *k) {
 	return KindPredicates::new_atom(k, Terms::new_variable(0));
 }
 
-void Propositions::Abstract::assert_kind_of_object(instance *I, kind *k) {
-	Propositions::Assert::assert_true_about(Propositions::Abstract::prop_to_set_kind(k),
+@ These two functions go ahead and declare truths:
+
+=
+void Propositions::Abstract::assert_kind_of_instance(instance *I, kind *k) {
+	Propositions::Assert::assert_true_about(
+		Propositions::Abstract::prop_to_set_kind(k),
 		Instances::as_subject(I), prevailing_mood);
 }
 
-void Propositions::Abstract::assert_kind_of_subject(inference_subject *inst, inference_subject *new,
-	pcalc_prop *subject_to) {
+void Propositions::Abstract::assert_kind_of_subject(inference_subject *inst,
+	inference_subject *new, pcalc_prop *subject_to) {
 	kind *K = InferenceSubjects::domain(new);
 	pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 	if (subject_to) prop = Propositions::concatenate(prop, subject_to);
@@ -116,7 +114,8 @@ whose text can be found in a node |py|...
 
 =
 pcalc_prop *Propositions::Abstract::from_property_subtree(property *prn, parse_node *py) {
-	return Propositions::Abstract::to_set_property(prn, Assertions::PropertyKnowledge::property_value_from_property_subtree(prn, py));
+	return Propositions::Abstract::to_set_property(prn,
+		Assertions::PropertyKnowledge::property_value_from_property_subtree(prn, py));
 }
 
 @ ...and sometimes it wants to assert a more elaborate list, such as "carrying
@@ -131,7 +130,8 @@ pcalc_prop *Propositions::Abstract::from_property_list(parse_node *p, kind *K) {
 		switch(Node::get_type(p)) {
 			case AND_NT:
 				for (p = p->down; p; p = p->next)
-					prop = Propositions::conjoin(prop, Propositions::Abstract::from_property_list(p, NULL));
+					prop = Propositions::conjoin(prop,
+						Propositions::Abstract::from_property_list(p, NULL));
 				break;
 			case PROPERTY_LIST_NT:
 				@<Conjoin atoms to assert from a property list@>;
@@ -196,7 +196,8 @@ parse the text to find what which property is referred to.
 			Problems::issue_problem_end();
 			return NULL;
 		}
-		prop = Propositions::conjoin(prop, Propositions::Abstract::from_property_subtree(prn, NULL));
+		prop = Propositions::conjoin(prop,
+			Propositions::Abstract::from_property_subtree(prn, NULL));
 	}
 
 @ The node has text in the form "property name property value", with no

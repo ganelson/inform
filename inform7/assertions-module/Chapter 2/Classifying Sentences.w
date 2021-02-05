@@ -180,14 +180,12 @@ or else it's a property or list of properties, as in "carrying capacity 7".
 		}
 		Node::set_type(py, PROPERTYCALLED_NT);
 		if (Node::get_type(py->down) == AND_NT) {
-internal_error("Og yeah?");
 			int L = Node::left_edge_of(py->down),
 				R = Node::right_edge_of(py->down);
 			<np-articled>(Wordings::new(L, R));
 			parse_node *pn = <<rp>>;
 			pn->next = py->down->next;
 			py->down = pn;
-			LOG("Thus $T", py);
 		}
 		px->next = Node::new(ALLOWED_NT);
 		px->next->down = py;

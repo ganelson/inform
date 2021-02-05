@@ -280,7 +280,7 @@ to be a region already:
 @<A room is being put inside a region@> =
 	inference_subject *rm = Instances::as_subject(I1);
 	parse_node *spec = Rvalues::from_instance(I0);
-	Propositions::Abstract::assert_kind_of_object(I1, K_room);
+	Propositions::Abstract::assert_kind_of_instance(I1, K_room);
 	World::Inferences::draw_property(rm, P_map_region, spec);
 
 @ Note that because we use regular |PARENTAGE_INF| inferences to remember

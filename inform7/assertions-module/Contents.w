@@ -10,7 +10,7 @@ Preliminaries
 Chapter 1: Configuration and Control
 	Assertions Module
 
-Chapter 2: Top-Level Declarations
+Chapter 2: Declarations
 "Passing three times through top-level declarations and assertion sentences."
 	Booting Verbs
 	Passes through Major Nodes
@@ -45,10 +45,9 @@ Chapter 4: Assertions
 	Relation Knowledge
 	Assemblies
 	Implications
-	Tree Conversions
 
-Chapter 5: Basic Adjectives and Relations
-"Predicates for the calculus module to use."
+Chapter 5: Predicates
+"Unary and then binary predicates for the calculus module to conjure with."
 	Kind Predicates Revisited
 	The Adjectival Predicates
 	The Creation Predicates
@@ -57,9 +56,4 @@ Chapter 5: Basic Adjectives and Relations
 	The Universal Relation
 	Explicit Relations
 	Adjective Meanings
-
-Chapter 6: Table Data
-"Inform's preferred data structure for small initialised databases."
-	Table Columns
-	Tables
-	Listed-In Relations
+	Calculus Utilities
