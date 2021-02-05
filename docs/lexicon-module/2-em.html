@@ -141,9 +141,9 @@ a table name". But the <span class="extract"><span class="extract-syntax">meanin
 a pure power of 2, i.e., a single bit.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MISCELLANEOUS_MC</span><span class="plain-syntax">			</span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax"> a grab-bag of other possible nouns</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOUN_MC</span><span class="plain-syntax">					</span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">upright chair</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_MC</span><span class="plain-syntax">				</span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">invisible</span></span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MISCELLANEOUS_MC</span><span class="plain-syntax">            </span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax"> a grab-bag of other possible nouns</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">NOUN_MC</span><span class="plain-syntax">                 </span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">upright chair</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">ADJECTIVE_MC</span><span class="plain-syntax">                </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">invisible</span></span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Annotating words. </b>Each word in the vocabulary collected up by <a href="../words-module/index.html" class="internal">words</a> will be annotated with
 an object of the following class:
@@ -573,11 +573,6 @@ meanings.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-em.html#SP12_3" class="named-paragraph-link"><span class="named-paragraph">Build the token list for the new EM</span><span class="named-paragraph-number">12.3</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><a href="2-em.html#SP10" class="function-link"><span class="function-syntax">ExcerptMeanings::register_em</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax">, </span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;notable-player-variables&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">meaning_code</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">VARIABLE_MC</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">meaning_of_player</span><span class="plain-syntax"> = </span><a href="2-pe.html#SP7" class="function-link"><span class="function-syntax">FromLexicon::retrieve_parse_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">em</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

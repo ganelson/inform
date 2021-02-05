@@ -1,16 +1,12 @@
-[UseExcerptMeanings::] Using Excerpt Meanings.
+[MeaningCodes::] Meaning Codes.
 
-To register and deregister meanings for excerpts of text as
-nouns, adjectives, imperative phrases and other usages.
+The set of meaning codes used when Inform runs the excerpt parser.
 
-@ One meaning we find it convenient to have direct access to: the meaning
-of the noun "player".
-
-= (early code)
-parse_node *meaning_of_player = NULL;
-
-@h Meaning codes.
-This is where we define the meaning codes used by Inform.
+@ See //lexicon: Excerpt Meanings// for more, but briefly: the //lexicon//
+module provides a parser for "excerpts" of natural language text. The user
+of that module is supposed to provide bitmap-friendly codes which categorise
+the various meanings likely to be given. Several modules do this, but this
+is where the Inform compiler-specific codes appear.
 
 @d VOID_PHRASE_MC			0x00000010 /* e.g., |award # points| */
 @d VALUE_PHRASE_MC			0x00000020 /* e.g., |number of rows in #| */
@@ -28,36 +24,34 @@ This is where we define the meaning codes used by Inform.
 @d SAY_PHRASE_MC			0x00020000 /* e.g., |say # in words| */
 @d PHRASE_CONSTANT_MC		0x00040000 /* e.g., |doubling function| */
 
-@ The second set of MCs signal the contexts in which particular words are
-found. They are used to mark |vocabulary_entry| structures of individual
-words, whose |flags| field is a bitmap combination of some or all of the
-following. (The six highest bits are defined in the |words| module.)
+@ This one is used only by the //if// module, but let's define it here anyway:
 
 @d ACTION_PARTICIPLE_MC		0x02000000 /* a word like "taking" */
 
-@
+@ We use callback functions to tell //lexicon// any special rules for
+parsing excerpts with these codes:
 
-@d EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK UseExcerptMeanings::case_sensitivity
-@d EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK UseExcerptMeanings::allow_blank
-@d EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK UseExcerptMeanings::ignore_definite_article
+@d EM_CASE_SENSITIVITY_TEST_LEXICON_CALLBACK MeaningCodes::case_sensitivity
+@d EM_ALLOW_BLANK_TEST_LEXICON_CALLBACK MeaningCodes::allow_blank
+@d EM_IGNORE_DEFINITE_ARTICLE_TEST_LEXICON_CALLBACK MeaningCodes::ignore_definite_article
 
 =
-int UseExcerptMeanings::case_sensitivity(unsigned int mc) {
+int MeaningCodes::case_sensitivity(unsigned int mc) {
 	if (mc == SAY_PHRASE_MC) return TRUE;
 	return FALSE;
 }
 
-int UseExcerptMeanings::allow_blank(unsigned int mc) {
+int MeaningCodes::allow_blank(unsigned int mc) {
 	if (mc == SAY_PHRASE_MC) return TRUE;
 	return FALSE;
 }
 
-int UseExcerptMeanings::ignore_definite_article(unsigned int mc) {
+int MeaningCodes::ignore_definite_article(unsigned int mc) {
 	if ((mc & SAY_PHRASE_MC) == 0) return TRUE;
 	return FALSE;
 }
 
-@ We decide which form of parsing to use with the following bitmaps.
+@ We decide which form of parsing to use with the following bitmaps:
 
 @d EXACT_PARSING_BITMAP
 	(MISCELLANEOUS_MC + PROPERTY_MC + ADJECTIVE_MC +
@@ -68,12 +62,13 @@ int UseExcerptMeanings::ignore_definite_article(unsigned int mc) {
 	(NOUN_MC)
 @d PARAMETRISED_PARSING_BITMAP
 	(VOID_PHRASE_MC + VALUE_PHRASE_MC + COND_PHRASE_MC + SAY_PHRASE_MC)
-@
 
-@d PROBLEM_LEXICON_CALLBACK UseExcerptMeanings::linguistics_problem_handler
+@ The //lexicon// module is generally quite uncomplaining, but:
+
+@d PROBLEM_LEXICON_CALLBACK MeaningCodes::linguistics_problem_handler
 
 =
-void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void *ref, int k) {
+void MeaningCodes::linguistics_problem_handler(int err_no, wording W, void *ref, int k) {
 	switch (err_no) {
 		case TooLongName_LEXICONERROR:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooLongName),
@@ -84,13 +79,12 @@ void UseExcerptMeanings::linguistics_problem_handler(int err_no, wording W, void
 	}
 }
 
-@h Debugging log.
-Here we log a general bitmap made up from meaning codes:
+@ Here we log a general bitmap made up from meaning codes:
 
-@d LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK UseExcerptMeanings::log_meaning_code
+@d LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK MeaningCodes::log_meaning_code
 
 =
-void UseExcerptMeanings::log_meaning_code(OUTPUT_STREAM, unsigned int mc) {
+void MeaningCodes::log_meaning_code(OUTPUT_STREAM, unsigned int mc) {
 	int i, f = FALSE;
 	unsigned int j;
 	for (i=0, j=1; i<31; i++, j*=2)

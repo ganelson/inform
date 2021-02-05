@@ -76,7 +76,7 @@ function togglePopup(material_id) {
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Default bitmaps. </b>The following will be useful only for minimal use of <a href="index.html" class="internal">lexicon</a>. Inform
 certainly doesn't use settings as minimal as these &mdash; see
-<a href="../values-module/3-uem.html" class="internal">Using Excerpt Meanings (in values)</a> for what it does do.
+<a href="../values-module/1-mc.html" class="internal">Meaning Codes (in values)</a> for what it does do.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax"> meaningless, so do not use</span>
@@ -680,7 +680,7 @@ as extended by one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">FromLexicon::retrieve_parse_node</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">FromLexicon::retrieve_parse_node</span></span>:<br/>Excerpt Meanings - <a href="2-em.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">FromLexicon::retrieve_parse_node</span><span class="plain-syntax">(</span><span class="reserved-syntax">excerpt_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">em</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">em</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PN_FROM_EM_LEXICON_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PN_FROM_EM_LEXICON_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">em</span><span class="plain-syntax">);</span>

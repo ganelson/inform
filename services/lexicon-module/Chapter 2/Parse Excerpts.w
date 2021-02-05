@@ -6,7 +6,7 @@ registered excerpt meanings which it matches.
 @h Default bitmaps.
 The following will be useful only for minimal use of //lexicon//. Inform
 certainly doesn't use settings as minimal as these -- see
-//values: Using Excerpt Meanings// for what it does do.
+//values: Meaning Codes// for what it does do.
 
 @d ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC 0x00000004 /* meaningless, so do not use */
 

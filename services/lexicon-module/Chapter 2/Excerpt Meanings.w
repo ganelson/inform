@@ -427,11 +427,6 @@ excerpt_meaning *ExcerptMeanings::register(
 	@<Build the token list for the new EM@>;
 
 	ExcerptMeanings::register_em(meaning_code, em);
-	#ifdef IF_MODULE
-	if ((<notable-player-variables>(W)) && (<<r>> == 0)
-		&& (meaning_code & VARIABLE_MC))
-		meaning_of_player = FromLexicon::retrieve_parse_node(em);
-	#endif
 
 	return em;
 }

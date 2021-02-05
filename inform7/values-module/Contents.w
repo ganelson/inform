@@ -9,6 +9,7 @@ Preliminaries
 
 Chapter 1: Configuration and Control
 	Values Module
+	Meaning Codes
 
 Chapter 2: Specifications
 "In which the meanings of excerpts are systematically catalogued according to
@@ -26,7 +27,6 @@ Chapter 3: Nouns
 34 kg, and so on."
 	Literal Patterns
 	Times of Day
-	Using Excerpt Meanings
 	Unicode Literals
 	Using Nametags
 	Instances

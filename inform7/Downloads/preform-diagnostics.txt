@@ -8848,14 +8848,14 @@
         yourself 
           (hits 1/1) (matched: 'yourself') constraint CS = {19} extremes [1, 1]
 
-<notable-player-variables> hits 6/6382 nti 20 constraint CS = {20} extremes [1, 3]
+<notable-player-variables> hits 3/186 nti 20 constraint CS = {20} extremes [1, 3]
     English:
         player 
-          (hits 2/16) (matched: 'player') constraint CS = {20} extremes [1, 1]
+          (hits 1/3) (matched: 'player') constraint CS = {20} extremes [1, 1]
         score 
-          (hits 2/14) (matched: 'score') constraint CS = {20} extremes [1, 1]
+          (hits 1/2) (matched: 'score') constraint CS = {20} extremes [1, 1]
         time of day 
-          (hits 2/2) (matched: 'time of day') constraint CS = {20} extremes [3, 3]
+          (hits 1/1) (matched: 'time of day') constraint CS = {20} extremes [3, 3]
 
 <implicit-player-relationship> nti 21 constraint CS = {21} extremes [1, 2]
     English:

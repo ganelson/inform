@@ -189,8 +189,8 @@ int Rvalues::to_int(parse_node *spec) {
 }
 
 @ Internally we represent parsed reals as unsigned integers holding their
-IEEE-754 representations; I just don't sufficiently trust C's implementation
-of |float| to be consistent across all Inform's platforms to use it.
+IEEE-754 representations; I don't sufficiently trust C's implementation
+of |float| to be consistent across all Inform's platforms to use that instead.
 
 =
 parse_node *Rvalues::from_IEEE_754(unsigned int n, wording W) {

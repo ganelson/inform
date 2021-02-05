@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -64,7 +69,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the values module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. There Is No Good Word For This</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Taxonomy</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The values module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -80,6 +85,76 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. There Is No Good Word For This. </b>What is a value? In the compiler for an orthodox programming language this is
+relatively easy to answer,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but natural language swirls with meanings which
+sometimes seem to resist categorisation. Even the most basic attempts to divide,
+say, nouns from verbs sometimes break down.
+</p>
+
+<p class="commentary">This module is called <a href="index.html" class="internal">values</a>, but in fact it handles forms of expression
+much broader than that, and there isn't really a good umbrella term to cover
+them: literals, named constants, variables, conditions, descriptions and so on.
+Until around 2016, the Inform source had a C type called <span class="extract"><span class="extract-syntax">type_specification</span></span>
+which unified all of these, but "type specification" was never a good phrase &mdash;
+<span class="extract"><span class="extract-syntax">"fish"</span></span> or <span class="extract"><span class="extract-syntax">17 + 2</span></span> do not really specify types, after all.
+</p>
+
+<p class="commentary">And so we ended up with just "specification". There is, however, no unifying
+<span class="extract"><span class="extract-syntax">specification</span></span> type any longer. Instead, all specifications are stored as
+fragments of the parse tree: that is, as <span class="extract"><span class="extract-syntax">parse_node</span></span> pointers. This new
+scheme removed complexity,<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> and is faster, while consuming less memory;
+it has demerits as well,<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> but is now fairly settled.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Though, for example: are functions values? How about pointers to functions?
+Parameters passed by reference, or pass-throughs? Are types also values? How
+about type classes? Conditions? Exceptions? And if the answer is no, why can
+they often be used as if it were yes?
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> A fairly convoluted conversion layer of code once existed in order to
+turn pieces of parse tree into <span class="extract"><span class="extract-syntax">type_specification</span></span> objects, but that entire
+layer has now gone, and all of its bugs and edge cases went with it.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The main demerit is that while all specifications are <span class="extract"><span class="extract-syntax">parse_node</span></span>s, not
+all <span class="extract"><span class="extract-syntax">parse_node</span></span>s are specifications &mdash; chapter subheadings, for example. So
+the use of the <span class="extract"><span class="extract-syntax">parse_node</span></span> type in source code does not communicate whether
+we're trying to work with specifications, or doing general parsing.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Taxonomy. </b>We might start with lvalues and rvalues. These traditional terms
+are based on L for left, R for right, in an assignment operation like <span class="extract"><span class="extract-syntax">v = 5</span></span>.
+Here <span class="extract"><span class="extract-syntax">v</span></span> is on the left and is an l-value: it's a variable, that is, a named
+place to store data. The <span class="extract"><span class="extract-syntax">5</span></span> is an r-value, and is the data which will be
+stored. Of course, <span class="extract"><span class="extract-syntax">v</span></span> can also occur on the right, as in the assignment
+<span class="extract"><span class="extract-syntax">w = v</span></span> where one variable is copied into another. For the avoidance of doubt,
+we will call <span class="extract"><span class="extract-syntax">v</span></span> an lvalue wherever it appears &mdash; we mean only that it has
+the potential to be written to.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> For us, then:
+</p>
+
+<ul class="items"><li>&#9679; An "rvalue" unambiguously specifies a piece of data at run-time.
+Numbers, texts and instances are all examples of rvalues, but so are usages
+of phrases to decide values (i.e., function calls). See <a href="2-rvl.html" class="internal">RValues</a>.
+</li><li>&#9679; An "lvalue" unambiguously specifies a place to store data, such as
+a variable, or a table entry. See <a href="2-lvl.html" class="internal">Lvalues</a>.
+</li></ul>
+<p class="commentary">Lvalues and rvalues inside the compiler mostly come from parsing source text,
+but we can also manufacture them directly. If we need the number 17 as a
+constant, for example, we can call <a href="2-rvl.html#SP10" class="internal">Rvalues::from_int</a> to make a suitable
+<span class="extract"><span class="extract-syntax">parse_node</span></span>, even if "17" is never mentioned in the source text read in.
+And a wide range of other functions exist to make constant rvalues of all kinds:
+<a href="2-rvl.html#SP13" class="internal">Rvalues::from_Unicode_point</a>, for example.
+</p>
+
+<p class="commentary">Similarly, functions such as <a href="2-lvl.html#SP2" class="internal">Lvalues::new_LOCAL_VARIABLE</a> allow us to take
+a <span class="extract"><span class="extract-syntax">local_variable</span></span> pointer and make an lvalue from it.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> We have to treat lvalues in this slightly unusual way because, contrary to
+C-like languages, we have no syntactic way to mark that the name of a variable
+means its value rather than its identity &mdash; in C, this would be <span class="extract"><span class="extract-syntax">name</span></span> versus
+<span class="extract"><span class="extract-syntax">&amp;name</span></span>, with the "pointer to" marker <span class="extract"><span class="extract-syntax">&amp;</span></span> distinguishing the cases. We must
+instead look to the context. Even C sometimes does that &mdash; when C writes <span class="extract"><span class="extract-syntax">v = 5</span></span>,
+it would arguably be more consistent to say something like <span class="extract"><span class="extract-syntax">store(&amp;v, 5)</span></span>.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-vm.html">1</a></li><li class="progresschapter"><a href="2-spc.html">2</a></li><li class="progresschapter"><a href="3-lp.html">3</a></li><li class="progresschapter"><a href="4-its.html">4</a></li><li class="progresschapter"><a href="5-tl.html">5</a></li><li class="progresschapter"><a href="6-lc.html">6</a></li><li class="progresschapter"><a href="7-eqt.html">7</a></li><li class="progressnext"><a href="1-vm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
