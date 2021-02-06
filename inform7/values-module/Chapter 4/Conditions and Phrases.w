@@ -1,40 +1,34 @@
-[SParser::] Conditions and Phrases.
+[SPCond::] Conditions and Phrases.
 
 To parse the text of To... phrases, say phrases and conditions.
 
 @h Conditions.
-A condition is an excerpt of text which measures the truth of something.
-We will call a condition "pure" if it is self-sufficient, rather than
-referring anaphorically to some implied subject. For instance,
-
->> if the bucket is an open container, ...
-
-contains a pure condition, but
-
->> if an open container, ...
-
+In Inform syntax, a condition is an excerpt of text which measures the truth of
+something. We will call it "pure" if it is self-sufficient, rather than
+referring anaphorically to some implied subject. For instance, "if the bucket
+is an open container" contains a pure condition, but "if an open container"
 is impure. We are very wary of impure conditions, and don't allow the
 logical operations or chronological restrictions to apply to them. So the
 only valid impure conditions are description noun phrases.
 
 =
 <s-condition-uncached> ::=
-	<s-condition-pure> |  ==> { pass 1 }
-	<s-descriptive-np>    ==> { pass 1 }
+	<s-cond-pure> |                     ==> { pass 1 }
+	<s-descriptive-np>                  ==> { pass 1 }
 
 @ Now for pure conditions. Note that logical "and" and "or" are implemented
 directly right here, rather than being phrases defined in the Standard Rules,
 and that they aren't the same as the "and" and "or" used a list dividers.
 
 =
-<s-condition-pure> ::=
-	( <s-condition-pure> ) |                       ==> { pass 1 }
-	<s-condition-pure> , and <s-condition-pure> |  ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
-	<s-condition-pure> and <s-condition-pure> |    ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
-	<s-condition-pure> , or <s-condition-pure> |   ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
-	<s-condition-pure> or <s-condition-pure> |     ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
-	<s-condition-with-chronology> |                ==> { pass 1 }
-	<s-condition-atomic>                           ==> { pass 1 }
+<s-cond-pure> ::=
+	( <s-cond-pure> ) |                 ==> { pass 1 }
+	<s-cond-pure> , and <s-cond-pure> | ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
+	<s-cond-pure> and <s-cond-pure> |   ==> { -, Conditions::new_LOGICAL_AND(RP[1], RP[2]) }
+	<s-cond-pure> , or <s-cond-pure> |  ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
+	<s-cond-pure> or <s-cond-pure> |    ==> { -, Conditions::new_LOGICAL_OR(RP[1], RP[2]) }
+	<s-cond-with-chronology> |          ==> { pass 1 }
+	<s-cond-atomic>                     ==> { pass 1 }
 
 @ Chronological restrictions include, for instance,
 
@@ -44,17 +38,17 @@ where the condition is divided as
 
 >> if the gate is open / for the first time
 
-and <s-condition-atomic> is used to parse the first half. While it's possible
-to express this in Preform grammar, the result doesn't run quickly, so I've
-implemented this as a hand-coded nonterminal instead.
+and <s-cond-atomic> is used to parse the first half. While it's possible
+to express this in Preform grammar, the result doesn't run quickly, so the
+following implements this as a hand-coded nonterminal instead.
 
 =
-<s-condition-with-chronology> internal {
+<s-cond-with-chronology> internal {
 	#ifdef IF_MODULE
 	time_period *tp = Occurrence::parse(W);
 	if (tp) {
 		wording RW = Occurrence::unused_wording(tp);
-		if ((Wordings::nonempty(RW)) && (<s-condition-atomic>(RW))) {
+		if ((Wordings::nonempty(RW)) && (<s-cond-atomic>(RW))) {
 			parse_node *atomic_cnd = <<rp>>;
 			parse_node *spec = atomic_cnd;
 			if (Node::is(spec, CONSTANT_NT)) {
@@ -75,7 +69,7 @@ this, for instance:
 
 >> if not we are carrying the torch, ...
 
-As a result, we can't handle negation in <s-condition-pure>, and have to
+As a result, we can't handle negation in <s-cond-pure>, and have to
 work into the grammar below on a case by case basis. And where we do allow
 "not", we always check the positive sense first -- people do sometimes
 create phrase options like "not printing anything", for example, which
@@ -101,7 +95,7 @@ nothing, i.e., "we are taking" and "taking" are synonymous. Translators
 to other languages may want to find more elegant solutions.
 
 =
-<s-condition-atomic> ::=
+<s-cond-atomic> ::=
 	<s-phrase-option-in-use> |                      ==> { pass 1 }
 	not <s-phrase-option-in-use> |                  ==> { -, Conditions::negate(RP[1]) }
 	<s-nonexistential-phrase-to-decide> |           ==> { pass 1 }
@@ -138,7 +132,7 @@ testing the existence of something.
 	parse_node *p = Lexicon::retrieve(COND_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		SParser::add_ilist(spec, p);
+		SPCond::add_ilist(spec, p);
 		parse_node *tval = Node::new_with_words(TEST_VALUE_NT, W);
 		tval->down = spec;
 		==> { -, tval };
@@ -218,22 +212,22 @@ typechecking to choose between much later on.
 
 =
 <s-command> ::=
-	( <s-command> ) |                               ==> { pass 1 }
-	<s-to-phrase>                                   ==> { pass 1 }
+	( <s-command> ) |                            ==> { pass 1 }
+	<s-to-phrase>                                ==> { pass 1 }
 
 <s-say-command> ::=
-	( <s-say-command> ) |                           ==> { pass 1 }
-	<s-adaptive-text> |                             ==> { pass 1 }
-	<s-text-substitution>                           ==> { pass 1 }
+	( <s-say-command> ) |                        ==> { pass 1 }
+	<s-adaptive-text> |                          ==> { pass 1 }
+	<s-text-substitution>                        ==> { pass 1 }
 
 <s-adaptive-text> ::=
-	<s-local-variable> |                            ==> { fail }
-	<adaptive-verb> verb |                          ==> { -, SParser::say_verb(RP[1], R[1], NULL, W) }
-	<adaptive-adjective> adjective |                ==> { -, SParser::say_adjective(RP[1], W) }
-	<adaptive-verb> |                               ==> { -, SParser::say_verb(RP[1], R[1], NULL, W) }
-	<modal-verb> <adaptive-verb-infinitive> verb |  ==> @<Annotate the verb with a modal@>
-	<modal-verb> <adaptive-verb-infinitive> |       ==> @<Annotate the verb with a modal@>
-	<adaptive-adjective>                            ==> { -, SParser::say_adjective(RP[1], W) }
+	<s-local-variable> |                         ==> { fail }
+	<adaptive-verb> verb |                       ==> { -, SPCond::say_verb(RP[1], R[1], NULL, W) }
+	<adaptive-adjective> adjective |             ==> { -, SPCond::say_adjective(RP[1], W) }
+	<adaptive-verb> |                            ==> { -, SPCond::say_verb(RP[1], R[1], NULL, W) }
+	<modal-verb> <adaptive-verb-infinitive> verb | ==> @<Annotate the verb with a modal@>
+	<modal-verb> <adaptive-verb-infinitive> |    ==> @<Annotate the verb with a modal@>
+	<adaptive-adjective>                         ==> { -, SPCond::say_adjective(RP[1], W) }
 
 @ "To..." phrases are easy, or at least, easy to delegate:
 
@@ -242,7 +236,7 @@ typechecking to choose between much later on.
 	parse_node *p = Lexicon::retrieve(VOID_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		SParser::add_ilist(spec, p);
+		SPCond::add_ilist(spec, p);
 		==> { -, spec };
 		return TRUE;
 	}
@@ -254,7 +248,7 @@ typechecking to choose between much later on.
 	parse_node *p = Lexicon::retrieve(SAY_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		SParser::add_ilist(spec, p);
+		SPCond::add_ilist(spec, p);
 		==> { -, spec };
 		return TRUE;
 	}
@@ -264,13 +258,13 @@ typechecking to choose between much later on.
 @<Annotate the verb with a modal@> =
 	int neg = FALSE;
 	if ((R[1]) || (R[2])) neg = TRUE;
-	==> { -, SParser::say_verb(RP[2], neg, RP[1], W) };
+	==> { -, SPCond::say_verb(RP[2], neg, RP[1], W) };
 
 @ Invocation nodes for adaptive-text adjectives hold references to their masculine
 singulars.
 
 =
-parse_node *SParser::say_adjective(adjective *aph, wording W) {
+parse_node *SPCond::say_adjective(adjective *aph, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
@@ -284,7 +278,7 @@ parse_node *SParser::say_adjective(adjective *aph, wording W) {
 person plurals.
 
 =
-parse_node *SParser::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
+parse_node *SPCond::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
@@ -307,7 +301,7 @@ at run-time which of several possible definitions is to apply, so the
 possibilities will all be invoked.
 
 =
-void SParser::add_ilist(parse_node *spec, parse_node *p) {
+void SPCond::add_ilist(parse_node *spec, parse_node *p) {
 	@<Build the invocation list@>;
 
 	int len = Invocations::length_of_list(spec->down->down);

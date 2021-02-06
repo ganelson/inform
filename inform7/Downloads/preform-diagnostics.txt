@@ -7012,101 +7012,101 @@
 
 <s-description> hits 1652/38642 nti 24 constraint (none) extremes [1, infinity)
     English:
-        <s-description-uncomposite-inner> 
+        <s-desc-uncomposite-inner> 
           (hits 1392/19321) (matched long text) constraint (none) extremes [1, infinity)
         <s-np-with-relative-clause> 
           (hits 260/4813) (matched long text) constraint (none) extremes [3, infinity)
 
-<s-description-uncomposite> hits 257/2044 nti 25 constraint (none) extremes [1, infinity)
+<s-desc-uncomposite> hits 257/2044 nti 25 constraint (none) extremes [1, infinity)
     English:
-        <s-description-uncomposite-inner> 
+        <s-desc-uncomposite-inner> 
           (hits 257/1022) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
 
-<s-description-uncomposite-inner> hits 1649/40686 nti 28 constraint (none) extremes [1, infinity)
+<s-desc-uncomposite-inner> hits 1649/40686 nti 28 constraint (none) extremes [1, infinity)
     English:
-        <s-description-uncalled> ( called <s-calling-name> ) 
+        <s-desc-uncalled> ( called <s-calling-name> ) 
           (hits 118/1387) (matched long text) constraint DS = {28} extremes [5, infinity)
-        <s-description-uncalled> 
+        <s-desc-uncalled> 
           (hits 1531/20225) (matched: 'the alfred cralle pool hall') constraint (none) extremes [1, infinity)
 
-<s-description-uncalled> hits 1649/40686 nti 26 constraint (none) extremes [1, infinity)
+<s-desc-uncalled> hits 1649/40686 nti 26 constraint (none) extremes [1, infinity)
     English:
-        <s-specifier> <s-description-unspecified> 
+        <s-specifier> <s-desc-unspecified> 
           (hits 51/10558) (matched: 'at least two stamped envelopes') constraint (none) extremes [2, infinity)
         <s-specifying-noun> 
           (hits 156/20292) (matched: 'something') constraint (none) extremes [1, infinity)
         <s-specifying-noun> <s-adjective-list> 
           (hits 22/10507) (matched: 'something switched on') constraint (none) extremes [2, infinity)
-        <if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> 
+        <if-can-omit-trying> <definite-article> <s-common-desc-unspecified> 
           (hits 2/10485) (matched: 'the person') constraint (none) extremes [2, infinity)
-        ^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> 
+        ^<if-can-omit-trying> ^<if-multiplicitous> <definite-article> <s-common-desc-unspecified> 
           (hits 0/10483) constraint (none) extremes [2, infinity)
-        <definite-article> <s-proper-description-unspecified> 
+        <definite-article> <s-proper-desc-unspecified> 
           (hits 56/10483) (matched: 'the alfred cralle pool hall') constraint (none) extremes [2, infinity)
-        <indefinite-article> <s-description-unspecified> 
+        <indefinite-article> <s-desc-unspecified> 
           (hits 617/10427) (matched: 'a marked for listing person') constraint (none) extremes [2, infinity)
-        <s-description-unspecified> 
+        <s-desc-unspecified> 
           (hits 745/19439) (matched: 'marked for listing other people') constraint (none) extremes [1, infinity)
 
-<s-description-unspecified> hits 1413/40652 nti 27 constraint (none) extremes [1, infinity)
+<s-desc-unspecified> hits 1413/40652 nti 27 constraint (none) extremes [1, infinity)
     English:
         <s-qualifiable-noun> 
           (hits 1029/20326) (matched: 'nancy johnson memorial square') constraint (none) extremes [1, infinity)
         <s-applicable-adjective-list> <s-qualifiable-noun> 
           (hits 384/10129) (matched: 'marked for listing other people') constraint (none) extremes [2, infinity)
 
-<s-common-description-unspecified> hits 2/148 nti 28 constraint (none) extremes [1, infinity)
+<s-common-desc-unspecified> hits 2/148 nti 28 constraint (none) extremes [1, infinity)
     English:
         <s-qualifiable-common-noun> 
           (hits 2/74) (matched: 'person') constraint (none) extremes [1, infinity)
         <s-applicable-adjective-list> <s-qualifiable-common-noun> 
           (hits 0/67) constraint (none) extremes [2, infinity)
 
-<s-proper-description-unspecified> hits 56/7042 nti 29 constraint (none) extremes [1, infinity)
+<s-proper-desc-unspecified> hits 56/7042 nti 29 constraint (none) extremes [1, infinity)
     English:
         <s-qualifiable-proper-noun> 
           (hits 56/129) (matched: 'alfred cralle pool hall') constraint CW = {r2, r4} extremes [1, infinity)
         <s-applicable-adjective-list> <s-qualifiable-proper-noun> 
           (hits 0/1386) constraint (none) extremes [2, infinity)
 
-<if-trying-omission-permitted> internal hits 1086/31390 nti 30 constraint (none) extremes [0, 0]
+<if-can-omit-trying> internal hits 1086/31390 nti 30 constraint (none) extremes [0, 0]
 
 <if-multiplicitous> internal hits 4743/9700 nti 31 constraint (none) extremes [0, 0]
 
-<s-description-nounless> hits 102/544 nti 6 constraint (none) extremes [1, infinity)
+<s-desc-nounless> hits 102/544 nti 6 constraint (none) extremes [1, infinity)
     English:
-        <s-description-nounless-uncomposite> 
+        <s-desc-nounless-uncomposite> 
           (hits 102/272) (matched: 'the dark') constraint (none) extremes [1, infinity)
         <s-np-with-relative-clause> 
           (hits 0/170) constraint (none) extremes [1, infinity)
 
-<s-description-nounless-uncomposite> hits 102/544 nti 29 constraint (none) extremes [1, infinity)
+<s-desc-nounless-uncomposite> hits 102/544 nti 29 constraint (none) extremes [1, infinity)
     English:
-        <s-description-nounless-uncalled> ( called <s-calling-name> ) 
+        <s-desc-nounless-uncalled> ( called <s-calling-name> ) 
           (hits 0/65) constraint DS = {29} extremes [5, infinity)
-        <s-description-nounless-uncalled> 
+        <s-desc-nounless-uncalled> 
           (hits 102/272) (matched: 'the dark') constraint (none) extremes [1, infinity)
 
-<s-description-nounless-uncalled> hits 102/544 nti 7 constraint (none) extremes [1, infinity)
+<s-desc-nounless-uncalled> hits 102/544 nti 7 constraint (none) extremes [1, infinity)
     English:
-        <s-specifier> <s-description-nounless-unspecified> 
+        <s-specifier> <s-desc-nounless-unspecified> 
           (hits 8/153) (matched: 'every dvd') constraint (none) extremes [2, infinity)
         <s-specifying-noun> 
           (hits 0/264) constraint (none) extremes [1, infinity)
         <s-specifying-noun> <s-adjective-list> 
           (hits 0/145) constraint (none) extremes [2, infinity)
-        <if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> 
+        <if-can-omit-trying> <definite-article> <s-common-desc-unspecified> 
           (hits 0/145) constraint (none) extremes [2, infinity)
-        ^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> 
+        ^<if-can-omit-trying> ^<if-multiplicitous> <definite-article> <s-common-desc-unspecified> 
           (hits 0/145) constraint (none) extremes [2, infinity)
-        <indefinite-article> <s-description-nounless-unspecified> 
+        <indefinite-article> <s-desc-nounless-unspecified> 
           (hits 0/145) constraint (none) extremes [2, infinity)
-        <definite-article> <s-proper-description-unspecified> 
+        <definite-article> <s-proper-desc-unspecified> 
           (hits 0/145) constraint (none) extremes [2, infinity)
-        <s-description-nounless-unspecified> 
+        <s-desc-nounless-unspecified> 
           (hits 94/264) (matched: 'the dark') constraint (none) extremes [1, infinity)
 
-<s-description-nounless-unspecified> hits 102/566 nti 8 constraint (none) extremes [1, infinity)
+<s-desc-nounless-unspecified> hits 102/566 nti 8 constraint (none) extremes [1, infinity)
     English:
         <s-qualifiable-noun> 
           (hits 101/283) (matched: 'cold comfort') constraint (none) extremes [1, infinity)
@@ -7148,7 +7148,7 @@
         Rooms are arranged in a map.') constraint (none) extremes [1, infinity)
         <s-constant-value> 
           (hits 113/1134) (matched: 'for deciding whether all includes rules') constraint (none) extremes [1, infinity)
-        <s-description-uncomposite> 
+        <s-desc-uncomposite> 
           (hits 257/1021) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
         <s-action-pattern-as-value> 
           (hits 3/764) (matched: 'smelling') constraint (none) extremes [1, infinity)
@@ -7186,7 +7186,7 @@
           (hits 0/1) constraint (none) extremes [1, infinity)
         <s-constant-value> 
           (hits 0/1) constraint (none) extremes [1, infinity)
-        <s-description-uncomposite> 
+        <s-desc-uncomposite> 
           (hits 0/1) constraint (none) extremes [1, infinity)
         <s-description> 
           (hits 0/1) constraint (none) extremes [1, infinity)
@@ -7320,14 +7320,14 @@
 
 <s-general-verb-tail> hits 2149/6658 nti 30 constraint (none) extremes [2, infinity)
     English:
-        <universal-verb> <s-universal-relation-term> 
+        <universal-verb> <s-universal-term> 
           (hits 0/1001) constraint DS = {8} & FS = {9} extremes [4, infinity)
         <nonimperative-verb> <permitted-preposition> <s-noun-phrase> 
           (hits 224/1822) (matched long text) constraint DS = {14} & FS = {6} extremes [3, infinity)
         <nonimperative-verb> <s-noun-phrase> 
           (hits 1925/2182) (matched long text) constraint FS = {6} extremes [2, infinity)
 
-<s-universal-relation-term> nti 8 constraint DS = {8} extremes [3, infinity)
+<s-universal-term> nti 8 constraint DS = {8} extremes [3, infinity)
     English:
         <s-noun-phrase> to <s-noun-phrase> 
           constraint DS = {8} extremes [3, infinity)
@@ -7348,7 +7348,7 @@
 
 <s-relative-verb-tail> hits 183/24032 nti 6 constraint DS = {30} extremes [3, infinity)
     English:
-        <rc-marker> <universal-verb> <s-universal-relation-term> 
+        <rc-marker> <universal-verb> <s-universal-term> 
           (hits 0/2526) constraint DS = {8, 30} extremes [5, infinity)
         <rc-marker> <nonimperative-verb> <permitted-preposition> <s-noun-phrase> 
           (hits 32/3664) (matched long text) constraint DS = {14, 30} extremes [4, infinity)
@@ -7372,7 +7372,7 @@
     English:
         <if-forced-physical> <s-variable-as-value> 
           (hits 143/1094) (matched: 'the second noun') constraint (none) extremes [1, infinity)
-        <if-forced-physical> <s-description-nounless> 
+        <if-forced-physical> <s-desc-nounless> 
           (hits 102/951) (matched: 'the dark') constraint (none) extremes [1, infinity)
         ^<if-forced-physical> <s-value-uncached> 
           (hits 552/849) (matched long text) constraint (none) extremes [1, infinity)
@@ -7390,31 +7390,31 @@
 
 <s-condition-uncached> hits 1071/2634 nti 11 constraint (none) extremes [0, infinity)
     English:
-        <s-condition-pure> 
+        <s-cond-pure> 
           (hits 1069/1317) (matched long text) constraint (none) extremes [0, infinity)
         <s-descriptive-np> 
           (hits 2/248) (matched: 'switched off') constraint (none) extremes [1, infinity)
 
-<s-condition-pure> hits 1325/3170 nti 22 constraint (none) extremes [0, infinity)
+<s-cond-pure> hits 1325/3170 nti 22 constraint (none) extremes [0, infinity)
     English:
-        ( <s-condition-pure> ) 
+        ( <s-cond-pure> ) 
           (hits 0/939) constraint DS = {22} extremes [3, infinity)
-        <s-condition-pure> , and <s-condition-pure> 
+        <s-cond-pure> , and <s-cond-pure> 
           (hits 0/923) constraint DS = {22} extremes [4, infinity)
-        <s-condition-pure> and <s-condition-pure> 
+        <s-cond-pure> and <s-cond-pure> 
           (hits 97/939) (matched long text) constraint DS = {22} extremes [3, infinity)
-        <s-condition-pure> , or <s-condition-pure> 
+        <s-cond-pure> , or <s-cond-pure> 
           (hits 0/826) constraint DS = {22} extremes [4, infinity)
-        <s-condition-pure> or <s-condition-pure> 
+        <s-cond-pure> or <s-cond-pure> 
           (hits 31/842) (matched long text) constraint DS = {22} extremes [3, infinity)
-        <s-condition-with-chronology> 
+        <s-cond-with-chronology> 
           (hits 0/1457) constraint (none) extremes [1, infinity)
-        <s-condition-atomic> 
+        <s-cond-atomic> 
           (hits 1197/1457) (matched long text) constraint (none) extremes [0, infinity)
 
-<s-condition-with-chronology> internal hits 0/2914 nti 12 constraint (none) extremes [1, infinity)
+<s-cond-with-chronology> internal hits 0/2914 nti 12 constraint (none) extremes [1, infinity)
 
-<s-condition-atomic> hits 1197/2914 nti 21 constraint (none) extremes [0, infinity)
+<s-cond-atomic> hits 1197/2914 nti 21 constraint (none) extremes [0, infinity)
     English:
         <s-phrase-option-in-use> 
           (hits 1/1457) (matched: 'continuing') constraint (none) extremes [1, infinity)

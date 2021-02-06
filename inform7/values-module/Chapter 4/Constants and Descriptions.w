@@ -1,4 +1,4 @@
-[Node::AdjectiveLists::] Constants and Descriptions.
+[SPDesc::] Constants and Descriptions.
 
 To parse noun phrases in constant contexts, which specify values
 either explicitly or by describing them more or less vaguely.
@@ -182,7 +182,7 @@ is read as if it were "scenery thing".
 
 =
 <s-adjective-list-as-desc> ::=
-	<s-adjective-list>  ==> { -, Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) }
+	<s-adjective-list>  ==> { -, SPDesc::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) }
 
 @ So now we test whether an excerpt is a list of adjectives; for example,
 this matches
@@ -242,15 +242,15 @@ the chimp is either not hairy or not an animal.
 
 =
 <s-adjective-list> ::=
-	not <indefinite-article> <s-adjective-list-unarticled> |  ==> { 0, Node::AdjectiveLists::make_adjlist(Node::AdjectiveLists::negate_adjlist(RP[2]), W) }
-	<indefinite-article> <s-adjective-list-unarticled> |      ==> { 0, Node::AdjectiveLists::make_adjlist(RP[2], W) }
-	<s-adjective-list-unarticled>                             ==> { 0, Node::AdjectiveLists::make_adjlist(RP[1], W) }
+	not <indefinite-article> <s-adjective-list-unarticled> |  ==> { 0, SPDesc::make_adjlist(SPDesc::negate_adjlist(RP[2]), W) }
+	<indefinite-article> <s-adjective-list-unarticled> |      ==> { 0, SPDesc::make_adjlist(RP[2], W) }
+	<s-adjective-list-unarticled>                             ==> { 0, SPDesc::make_adjlist(RP[1], W) }
 
 <s-adjective-list-unarticled> ::=
-	not <s-adjective> |                                       ==> { 0, Node::AdjectiveLists::negate_adjlist(RP[1]) }
+	not <s-adjective> |                                       ==> { 0, SPDesc::negate_adjlist(RP[1]) }
 	<s-adjective> |                                           ==> { 0, RP[1] }
-	not <s-adjective> <s-adjective-list-unarticled> |         ==> { 0, Node::AdjectiveLists::join_adjlist(Node::AdjectiveLists::negate_adjlist(RP[1]), RP[2]) }
-	<s-adjective> <s-adjective-list-unarticled>               ==> { 0, Node::AdjectiveLists::join_adjlist(RP[1], RP[2]) }
+	not <s-adjective> <s-adjective-list-unarticled> |         ==> { 0, SPDesc::join_adjlist(SPDesc::negate_adjlist(RP[1]), RP[2]) }
+	<s-adjective> <s-adjective-list-unarticled>               ==> { 0, SPDesc::join_adjlist(RP[1], RP[2]) }
 
 @ That reduces us to an internal nonterminal, which matches the longest
 possible adjective name it can see.
@@ -273,7 +273,7 @@ possible adjective name it can see.
 }
 
 @ =
-parse_node *Node::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B) {
+parse_node *SPDesc::join_adjlist(parse_node *A, parse_node *B) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
@@ -281,7 +281,7 @@ parse_node *Node::AdjectiveLists::join_adjlist(parse_node *A, parse_node *B) {
 	return A;
 }
 
-parse_node *Node::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node *B) {
+parse_node *SPDesc::join_adjlist_w(parse_node *A, parse_node *B) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, B)
@@ -289,12 +289,12 @@ parse_node *Node::AdjectiveLists::join_adjlist_w(parse_node *A, parse_node *B) {
 	return A;
 }
 
-parse_node *Node::AdjectiveLists::make_adjlist(parse_node *A, wording W) {
+parse_node *SPDesc::make_adjlist(parse_node *A, wording W) {
 	Node::set_text(A, W);
 	return A;
 }
 
-parse_node *Node::AdjectiveLists::negate_adjlist(parse_node *A) {
+parse_node *SPDesc::negate_adjlist(parse_node *A) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A)
@@ -303,20 +303,20 @@ parse_node *Node::AdjectiveLists::negate_adjlist(parse_node *A) {
 }
 
 @ =
-parse_node *Node::AdjectiveLists::add_adjlist(parse_node *spec, parse_node *adjlist) {
+parse_node *SPDesc::add_adjlist(parse_node *spec, parse_node *adjlist) {
 	if (adjlist) {
 		instance *I = Rvalues::to_object_instance(spec);
 		if (I) spec = Descriptions::from_instance(I, Node::get_text(spec));
-		Node::AdjectiveLists::join_adjlist(spec, adjlist);
+		SPDesc::join_adjlist(spec, adjlist);
 	}
 	return spec;
 }
 
-parse_node *Node::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_node *adjlist) {
+parse_node *SPDesc::add_adjlist_w(parse_node *spec, parse_node *adjlist) {
 	if (adjlist) {
 		instance *I = Rvalues::to_object_instance(spec);
 		if (I) spec = Descriptions::from_instance(I, Node::get_text(spec));
-		Node::AdjectiveLists::join_adjlist_w(spec, adjlist);
+		SPDesc::join_adjlist_w(spec, adjlist);
 	}
 	return spec;
 }
@@ -324,7 +324,7 @@ parse_node *Node::AdjectiveLists::add_adjlist_w(parse_node *spec, parse_node *ad
 @ And this makes a more semantic check:
 
 =
-int Node::AdjectiveLists::adjlist_applies_to_kind(parse_node *A, kind *K) {
+int SPDesc::adjlist_applies_to_kind(parse_node *A, kind *K) {
 	unary_predicate *au;
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A) {
@@ -400,22 +400,14 @@ whereas "empty rulebook" will work.
 
 =
 <s-applicable-adjective-list> ::=
-	<s-adjective-list>	==> { -, RP[1] }; if ((s_adj_domain) && (Node::AdjectiveLists::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE)) return FALSE;
+	<s-adjective-list>	==> { -, RP[1] }; @<Require adjective to be applicable@>;
+
+@<Require adjective to be applicable@> =
+	if ((s_adj_domain) &&
+		(SPDesc::adjlist_applies_to_kind(RP[1], s_adj_domain) == FALSE))
+			return FALSE;
 
 @h Descriptions.
-In most programming languages, commands are like imperative verbs, but their
-noun phrases are specific. |print X|, say, prints an unambiguously determined
-quantity |X|. Sometimes wildcards are allowed, as when the Unix shell allows
-|ls *.txt| to list all text files in the current directory. Inform goes
-further, and -- in some circumstances at least -- permits the |X| to be a more
-or less vague description of a collection of values, such that only at run-time
-can it be determined what values |X| refers to.
-
-It might look as if a description is a generalisation of a value: that is,
-every value is a description. In fact, that isn't true, because the noun part
-of a description has to be "qualifiable" in the sense above: so "100", for
-instance, is a value but not a description.
-
 Grammatically, a description is a sequence of the following five elements, some
 of which are optional:
 
@@ -448,48 +440,47 @@ and similarly for specifiers.
 
 In cases of ambiguity, the earliest split wins: that is, the one
 maximising the length of the noun. This means that if the source text
-actually names a dark room, the text "dark room" will not be confused
-with "dark (i.e., the property) room (i.e, the kind)", since that
-splits later.
+actually created something called "dark room", then the text "dark room"
+will not be confused with "dark (i.e., the property) room (i.e, the kind)",
+since that splits later.
 
 In the grammar for <s-description>, the noun is compulsory.
 
 =
 <s-description> ::=
-	<s-description-uncomposite-inner> |                             ==> { pass 1 }
-	<s-np-with-relative-clause>                                     ==> { pass 1 }
+	<s-desc-uncomposite-inner> |                              ==> { pass 1 }
+	<s-np-with-relative-clause>                               ==> { pass 1 }
 
-<s-description-uncomposite> ::=
-	<s-description-uncomposite-inner>                               ==> { pass 1 }
+<s-desc-uncomposite> ::=
+	<s-desc-uncomposite-inner>                                ==> { pass 1 }
 
-<s-description-uncomposite-inner> ::=
-	<s-description-uncalled> ( called <s-calling-name> ) |          ==> @<Glue on the calling ML@>
-	<s-description-uncalled>                                        ==> { pass 1 }
+<s-desc-uncomposite-inner> ::=
+	<s-desc-uncalled> ( called <s-calling-name> ) |           ==> @<Glue on the calling ML@>
+	<s-desc-uncalled>                                         ==> { pass 1 }
 
-<s-description-uncalled> ::=
-	<s-specifier> <s-description-unspecified> |                     ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |                                           ==> { pass 1 }
-	<s-specifying-noun> <s-adjective-list> |                        ==> { -, Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2]) }
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |  ==> { pass 3 }
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<definite-article> <s-proper-description-unspecified> |         ==> { pass 2 }
-	<indefinite-article> <s-description-unspecified> |              ==> { pass 2 }
-	<s-description-unspecified>                                     ==> { pass 1 }
+<s-desc-uncalled> ::=
+	<s-specifier> <s-desc-unspecified> |                      ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |                                     ==> { pass 1 }
+	<s-specifying-noun> <s-adjective-list> |                  ==> @<Glue on trailing adjectives@>
+	<if-can-omit-trying> <definite-article> <s-common-desc-unspecified> |  ==> { pass 3 }
+	^<if-can-omit-trying> ^<if-multiplicitous> <definite-article> <s-common-desc-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<definite-article> <s-proper-desc-unspecified> |          ==> { pass 2 }
+	<indefinite-article> <s-desc-unspecified> |               ==> { pass 2 }
+	<s-desc-unspecified>                                      ==> { pass 1 }
 
-<s-description-unspecified> ::=
-	<s-qualifiable-noun> |                                          ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-noun>				==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
+<s-desc-unspecified> ::=
+	<s-qualifiable-noun> |                                    ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-noun>        ==> @<Glue on leading adjectives@>
 
-<s-common-description-unspecified> ::=
-	<s-qualifiable-common-noun> |                                   ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-common-noun>		==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
+<s-common-desc-unspecified> ::=
+	<s-qualifiable-common-noun> |                             ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-common-noun> ==> @<Glue on leading adjectives@>
 
-<s-proper-description-unspecified> ::=
-	<s-qualifiable-proper-noun> |                                   ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-proper-noun>		==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
-	
+<s-proper-desc-unspecified> ::=
+	<s-qualifiable-proper-noun> |                             ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-proper-noun> ==> @<Glue on leading adjectives@>
 
-<if-trying-omission-permitted> internal 0 {
+<if-can-omit-trying> internal 0 {
 	#ifdef IF_MODULE
 	if (permit_trying_omission) return TRUE;
 	#endif
@@ -501,32 +492,41 @@ In the grammar for <s-description>, the noun is compulsory.
 	==> { fail nonterminal };
 }
 
-@ The grammar for <s-description-nounless> is almost exactly the same
+@ The grammar for <s-desc-nounless> is almost exactly the same
 except that the noun is optional. The only difference is right at the bottom.
 
 =
-<s-description-nounless> ::=
-	<s-description-nounless-uncomposite> |                          ==> { pass 1 }
-	<s-np-with-relative-clause>                                     ==> { pass 1 }
+<s-desc-nounless> ::=
+	<s-desc-nounless-uncomposite> |                           ==> { pass 1 }
+	<s-np-with-relative-clause>                               ==> { pass 1 }
 
-<s-description-nounless-uncomposite> ::=
-	<s-description-nounless-uncalled> ( called <s-calling-name> ) |  ==> @<Glue on the calling ML@>
-	<s-description-nounless-uncalled>                                ==> { pass 1 }
+<s-desc-nounless-uncomposite> ::=
+	<s-desc-nounless-uncalled> ( called <s-calling-name> ) |  ==> @<Glue on the calling ML@>
+	<s-desc-nounless-uncalled>                                ==> { pass 1 }
 
-<s-description-nounless-uncalled> ::=
-	<s-specifier> <s-description-nounless-unspecified> |             ==> @<Glue on the quantification ML@>
-	<s-specifying-noun> |                                            ==> { pass 1 }
-	<s-specifying-noun> <s-adjective-list> |                         ==> { -, Node::AdjectiveLists::add_adjlist_w(RP[1], RP[2]) }
-	<if-trying-omission-permitted> <definite-article> <s-common-description-unspecified> |  ==> { pass 3 }
-	^<if-trying-omission-permitted> ^<if-multiplicitous> <definite-article> <s-common-description-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
-	<indefinite-article> <s-description-nounless-unspecified> |      ==> { pass 2 }
-	<definite-article> <s-proper-description-unspecified> |          ==> { pass 2 }
-	<s-description-nounless-unspecified>                             ==> { pass 1 }
+<s-desc-nounless-uncalled> ::=
+	<s-specifier> <s-desc-nounless-unspecified> |             ==> @<Glue on the quantification ML@>
+	<s-specifying-noun> |                                     ==> { pass 1 }
+	<s-specifying-noun> <s-adjective-list> |                  ==> @<Glue on trailing adjectives@>
+	<if-can-omit-trying> <definite-article> <s-common-desc-unspecified> |  ==> { pass 3 }
+	^<if-can-omit-trying> ^<if-multiplicitous> <definite-article> <s-common-desc-unspecified> |  ==> @<Issue PM_DefiniteCommonNoun problem@>
+	<indefinite-article> <s-desc-nounless-unspecified> |      ==> { pass 2 }
+	<definite-article> <s-proper-desc-unspecified> |          ==> { pass 2 }
+	<s-desc-nounless-unspecified>                             ==> { pass 1 }
 
-<s-description-nounless-unspecified> ::=
-	<s-qualifiable-noun> |                                           ==> { pass 1 }
-	<s-applicable-adjective-list> <s-qualifiable-noun> |             ==> { -, Node::AdjectiveLists::add_adjlist(RP[2], RP[1]) }
-	<s-adjective-list>                                               ==> { -, Node::AdjectiveLists::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) }
+<s-desc-nounless-unspecified> ::=
+	<s-qualifiable-noun> |                                    ==> { pass 1 }
+	<s-applicable-adjective-list> <s-qualifiable-noun> |      ==> @<Glue on leading adjectives@>
+	<s-adjective-list>                                        ==> @<Describe with adjectives alone@>
+
+@<Glue on trailing adjectives@> =
+	==> { -, SPDesc::add_adjlist_w(RP[1], RP[2]) };
+
+@<Glue on leading adjectives@> =
+	==> { -, SPDesc::add_adjlist(RP[2], RP[1]) };
+
+@<Describe with adjectives alone@> =
+	==> { -, SPDesc::add_adjlist(Descriptions::from_proposition(NULL, W), RP[1]) };
 
 @<Glue on the calling ML@> =
 	parse_node *p = RP[1];
@@ -607,16 +607,12 @@ context of a proper noun, as in "some tea", because it may be confusion of
 	...              ==> { -, Node::new_with_words(UNKNOWN_NT, WR[1]) }
 
 @ The following is written as an internal, voracious nonterminal for speed.
-It matches text like
+It matches text like "all", "six of the" and "most".
 
->> all
->> six of the
->> most
-
-and so on. Note that an article can follow a determiner, as in "six of the
-people", where "six of" is a determiner. At this point we don't need to
-notice whether the article is definite or not, and we're similarly turning a
-blind eye to singular vs plural.
+Note that an article can follow a determiner, as in "six of the people", where
+"six of" is a determiner. At this point we don't need to notice whether the
+article is definite or not, and we're similarly turning a blind eye to singular
+vs plural.
 
 =
 <s-specifier> internal ? {

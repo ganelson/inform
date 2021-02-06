@@ -1,4 +1,4 @@
-[SParser::] Type Expressions and Values.
+[SPType::] Type Expressions and Values.
 
 To parse two forms of noun: a noun phrase in a sentence, and a
 description of what text can be written in a given situation.
@@ -11,20 +11,21 @@ should appear in a given place, whereas a "value" means anything which
 can be a noun phrase for a verb. There is considerable overlap between the
 two, but they are not the same.
 
-The following example sentences have the relevant phrases in bold.
-
->> [1] if the idea of the gizmo is {\bf taking the fish}, ...
->> [2] if there are {\bf three women} in the Nunnery, ...
->> [3a: as description] Before taking {\bf the harmonium}, ...
->> [3b: as constant] let X be {\bf the harmonium};
->> [4] now Y is {\bf the can't reach inside rooms rule};
->> [5] now Z is {\bf the time of day};
->> [6] let N be {\bf the number of entries in L};
->> [7] Understand "turn to [{\bf number}]" as combination-setting.
->> [8] To repeat until (C - {\bf condition}): ...
->> [9] The Zeppelin countdown is a {\bf number that varies}.
->> [10] The little red car is a {\bf vehicle}.
->> [11] The weight of the Space Shuttle is {\bf 68585 kg}.
+The following example sentences all have expressions embedded in them:
+= (text as Inform 7)
+                                     EXPRESSION:
+if the idea of the gizmo is          taking the fish             , ...
+if there are                         three women                 in the Nunnery, ...
+Before taking                        the harmonium               , ...
+let X be                             the harmonium
+now Y is                             the start timers rule
+now Z is                             the time of day
+let N be                             the number of entries in L
+Understand "turn to [                number                      ]" as combination-setting.
+To repeat until (C -                 condition                   ): ...
+The Zeppelin countdown is a          number that varies
+The little red car is a              vehicle
+The weight of the Space Shuttle is   68585 kg
 
 @h Type expressions.
 A "type expression" specifies what sort of excerpt of text should appear
@@ -61,7 +62,7 @@ type representing only its own value.
 	<k-kind> |                                   ==> { -, Specifications::from_kind(RP[1]) }
 	<s-literal> |                                ==> { pass 1 }
 	<s-constant-value> |                         ==> { pass 1 }
-	<s-description-uncomposite> |                ==> { pass 1 }
+	<s-desc-uncomposite> |                       ==> { pass 1 }
 	<s-action-pattern-as-value> |                ==> { pass 1 }
 	<s-description>                              ==> { pass 1 }
 
@@ -108,7 +109,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 	<k-kind> |                      ==> { -, Specifications::new_new_variable_like(RP[1]) }
 	<s-literal> |                   ==> @<Issue PM_TypeCantVary problem@>
 	<s-constant-value> |            ==> @<Issue PM_TypeCantVary problem@>
-	<s-description-uncomposite> |   ==> @<Issue PM_TypeUnmaintainable problem@>
+	<s-desc-uncomposite> |          ==> @<Issue PM_TypeUnmaintainable problem@>
 	<s-description>                 ==> @<Issue PM_TypeUnmaintainable problem@>
 
 @<Issue PM_TypeCantVary problem@> =
@@ -132,23 +133,17 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 	Problems::issue_problem_end();
 	==> { -, Specifications::new_new_variable_like(K_object) };
 
-@ Two pieces of context:
+@h Unusual contexts.
+Two pieces of context. "Let" mode is in operation when we are in an equation
+written out in the phrase, such as here:
+
+>> let V be given by V = fl;
 
 =
 int let_equation_mode = FALSE;
 kind *probable_noun_phrase_context = NULL;
 
-@ That's it for type expressions, and we move on to values. There are
-three special circumstances in which we parse differently: while we could write
-variant grammars for these situations, they would be very large and almost
-identical to <s-value> anyway, so instead we simply use <s-value>.
-
-The following matches only if we are in an equation written out in the phrase:
-for example,
-
->> let V be given by V = fl;
-
-As mentioned earlier, this changes our conventions on word-breaking.
+@ As mentioned earlier, this changes our conventions on word-breaking.
 
 =
 <if-let-equation-mode> internal 0 {
@@ -184,99 +179,86 @@ but otherwise changes little.
 }
 
 @h Values.
-The boldface terms here are all parsed as values:
-
->> {\bf The cat} is in {\bf the bag}. The {\bf time of day} is {\bf 11:10 AM}.
->> award {\bf six} points;
->> if {\bf more than three animals} are in {\bf the kennel}, ...
-
 The sequence here is important, in that it resolves ambiguities:
 
-(b) Variable names have highest priority, in order to allow temporary "let"
+(*) Variable names have highest priority, in order to allow temporary "let"
 names to mask existing meanings.
-
-(c) Constants come next: these include literals, but also named constants,
+(*) Constants come next: these include literals, but also named constants,
 such as names of rooms or things.
-
-(d) Equations are an oddball exceptional case, seldom arising.
-
-(f) Property names are not constants and, as values, they are usually read
+(*) Equations are an oddball exceptional case, seldom arising.
+(*) Property names are not constants and, as values, they are usually read
 as implicitly referring to a property value of something, not as a reference
 to the property itself: thus "description" means the actual description of
 some object clear from context, not the description property in the abstract.
-
-(g) Table column names present a particular ambiguity arising from tables
+(*) Table column names present a particular ambiguity arising from tables
 which are used to construct instances. In tables like that, the column names
 become names of properties owned by those instances; and then there are also
 ambiguities like those with property names, as between the column's identity
 and the actual contents of the current row.
-
-(i) Phrases to decide a value whose wording mimics a property cause trouble.
+(*) Phrases to decide a value whose wording mimics a property cause trouble.
 I sometimes think it would be better to penalise this sort of wording by
 treating it badly, but since the Standard Rules are as guilty as anyone else,
 Inform instead tries to cope. Here we parse any phrase whose wording doesn't
 look like a property lookup in the form "X of Y"; later we will pick up
 any phrase whose wording does.
-
-(k) Similarly we parse descriptions in two rounds: those referring to
+(*) Similarly we parse descriptions in two rounds: those referring to
 physical objects, and others later on. This is because English tends to give
 metaphorically physical names to abstract things: for example, the word
 "table" for an array of data. We want to make sure sentences like "The
 ball is on the table" are not misread through parsing "table" as the
 name of the kind. (Type expressions have the opposite convention: there,
 kind names always take priority over mere names of things. See above.)
-
-(m) The "member of..." productions are to make it possible to write
+(*) The "member of..." productions are to make it possible to write
 description comprehensions without ambiguity or grammatical oddness; for
 instance if a "let" name "D" holds a description, it enables us to
 write "members of D" instead of just "D", making the wording of some
 phrases much more natural. It's the difference between a set and its
-membership, which is to say, really just a syntactic difference.
+membership, which is to say, not really a difference at all.
 
 =
 <s-value-uncached> ::=
-	( <s-value-uncached> ) |                                            ==> { pass 1 }
-	<s-variable> |                                                      ==> { -, SParser::val(RP[1], W) }
-	<if-table-column-expected> <s-table-column-name> |                  ==> { -, SParser::val(RP[2], W) }
-	<if-property-name-expected> <s-property-name> |                     ==> { -, SParser::val(RP[2], W) }
-	<s-constant-value>	|                                               ==> { -, SParser::val(RP[1], W) }
-	<s-equation-usage> |                                                ==> { pass 1 }
-	<s-property-name> |                                                 ==> { -, SParser::val(RP[1], W) }
-	<s-action-pattern-as-value> |                                       ==> { -, SParser::val(RP[1], W) }
-	<s-value-phrase-non-of> |                                           ==> { -, SParser::val(RP[1], W) }
-	<s-adjective-list-as-desc> |                                        ==> { -, SParser::val(RP[1], W) }
-	<s-purely-physical-description> |                                   ==> { -, SParser::val(RP[1], W) }
-	<s-table-reference> |                                               ==> { -, SParser::val(RP[1], W) }
-	member/members of <s-description> |                                 ==> { -, SParser::val(RP[1], W) }
-	member/members of <s-local-variable> |                              ==> { -, SParser::val(RP[1], W) }
-	<s-property-name> of <s-value-uncached> |                           ==> @<Make a belonging-to-V property@>
-	<if-pronoun-present> <possessive-third-person> <s-property-name> |  ==> @<Make a belonging-to-it property@>
-	entry <s-value-uncached> of/in/from <s-value-uncached> |            ==> @<Make a list entry@>
-	<s-description> |                                                   ==> { -, SParser::val(RP[1], W) }
-	<s-table-column-name> |                                             ==> { -, SParser::val(RP[1], W) }
-	<s-value-phrase>                                                    ==> { -, SParser::val(RP[1], W) }
+	( <s-value-uncached> ) |                                 ==> { pass 1 }
+	<s-variable> |                                           ==> { -, SPType::val(RP[1], W) }
+	<if-table-column-expected> <s-table-column-name> |       ==> { -, SPType::val(RP[2], W) }
+	<if-property-name-expected> <s-property-name> |          ==> { -, SPType::val(RP[2], W) }
+	<s-constant-value>	|                                    ==> { -, SPType::val(RP[1], W) }
+	<s-equation-usage> |                                     ==> { pass 1 }
+	<s-property-name> |                                      ==> { -, SPType::val(RP[1], W) }
+	<s-action-pattern-as-value> |                            ==> { -, SPType::val(RP[1], W) }
+	<s-value-phrase-non-of> |                                ==> { -, SPType::val(RP[1], W) }
+	<s-adjective-list-as-desc> |                             ==> { -, SPType::val(RP[1], W) }
+	<s-purely-physical-description> |                        ==> { -, SPType::val(RP[1], W) }
+	<s-table-reference> |                                    ==> { -, SPType::val(RP[1], W) }
+	member/members of <s-description> |                      ==> { -, SPType::val(RP[1], W) }
+	member/members of <s-local-variable> |                   ==> { -, SPType::val(RP[1], W) }
+	<s-property-name> of <s-value-uncached> |                ==> @<Belonging-to-V prop@>
+	<if-pronoun-present> <possessive-third-person> <s-property-name> | ==> @<Belonging-to-it prop@>
+	entry <s-value-uncached> of/in/from <s-value-uncached> | ==> @<Make a list entry@>
+	<s-description> |                                        ==> { -, SPType::val(RP[1], W) }
+	<s-table-column-name> |                                  ==> { -, SPType::val(RP[1], W) }
+	<s-value-phrase>                                         ==> { -, SPType::val(RP[1], W) }
 
 @ =
-parse_node *SParser::val(parse_node *v, wording W) {
+parse_node *SPType::val(parse_node *v, wording W) {
 	Node::set_text(v, W);
 	return v;
 }
 
 @ =
 <s-equation-usage> ::=
-	<if-let-equation-mode> <s-plain-text-with-equals> where <s-plain-text> |  ==> @<Make an equation@>
-	<s-value-uncached> where <s-plain-text> |                                 ==> @<Make an equation, if the kinds are right@>
-	<if-let-equation-mode> <s-plain-text-with-equals>                         ==> @<Make an inline equation@>
+	<if-let-equation-mode> <s-plain-text-with-equals> where <s-plain-text> |  ==> @<An equation@>
+	<s-value-uncached> where <s-plain-text> |                ==> @<An equation, if kinds are right@>
+	<if-let-equation-mode> <s-plain-text-with-equals>        ==> @<An inline equation@>
 
-@<Make an equation@> =
+@<An equation@> =
 	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
 	Equations::set_wherewithal(eqn, Node::get_text((parse_node *) RP[3]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, SParser::val(eq, W) };
+	==> { -, SPType::val(eq, W) };
 
-@<Make an equation, if the kinds are right@> =
+@<An equation, if kinds are right@> =
 	parse_node *p = RP[1];
 	if (!(Rvalues::is_CONSTANT_of_kind(p, K_equation))) return FALSE;
 	parse_node *eq = p;
@@ -284,32 +266,32 @@ parse_node *SParser::val(parse_node *v, wording W) {
 	Equations::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, SParser::val(eq, W) };
+	==> { -, SPType::val(eq, W) };
 
-@<Make an inline equation@> =
+@<An inline equation@> =
 	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, SParser::val(eq, W) };
+	==> { -, SPType::val(eq, W) };
 
 
-@<Make a belonging-to-it property@> =
+@<Belonging-to-it prop@> =
 	parse_node *lvspec =
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 			LocalVariables::it_variable());
-	parse_node *val = SParser::val(lvspec, EMPTY_WORDING);
-	==> { -, SParser::val(SParser::p_o_val(RP[3], val), W) };
+	parse_node *val = SPType::val(lvspec, EMPTY_WORDING);
+	==> { -, SPType::val(SPType::p_o_val(RP[3], val), W) };
 
-@<Make a belonging-to-V property@> =
-	==> { -, SParser::val(SParser::p_o_val(RP[1], RP[2]), W) };
+@<Belonging-to-V prop@> =
+	==> { -, SPType::val(SPType::p_o_val(RP[1], RP[2]), W) };
 
 @<Make a list entry@> =
 	parse_node *val = Lvalues::new_LIST_ENTRY(RP[2], RP[1]);
-	==> { -, SParser::val(val, W) };
+	==> { -, SPType::val(val, W) };
 
 @ =
-parse_node *SParser::p_o_val(parse_node *A, parse_node *B) {
+parse_node *SPType::p_o_val(parse_node *A, parse_node *B) {
 	parse_node *pts =
 		(Node::get_type(A) == UNKNOWN_NT) ?
 			Specifications::new_UNKNOWN(Node::get_text(A)) :
@@ -345,12 +327,12 @@ the text "grand total" is parsed as the local.
 	<s-global-variable>                ==> { pass 1 }
 
 <s-nonglobal-variable> ::=
-	( <s-nonglobal-variable> ) |  ==> { pass 1 }
-	<s-local-variable> |          ==> { -, SParser::val(RP[1], W) }
-	<s-stacked-variable>          ==> { -, SParser::val(RP[1], W) }
+	( <s-nonglobal-variable> ) |       ==> { pass 1 }
+	<s-local-variable> |               ==> { -, SPType::val(RP[1], W) }
+	<s-stacked-variable>               ==> { -, SPType::val(RP[1], W) }
 
 <s-variable-as-value> ::=
-	<s-variable>                  ==> { -, SParser::val(RP[1], W) }
+	<s-variable>                       ==> { -, SPType::val(RP[1], W) }
 
 @ This requires three internals:
 
@@ -418,7 +400,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	word_to_suppress_in_phrases = suppression;
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		SParser::add_ilist(spec, p);
+		SPCond::add_ilist(spec, p);
 		==> { -, spec }; return TRUE;
 	}
 	==> { fail nonterminal };
@@ -429,7 +411,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	parse_node *p = Lexicon::retrieve(VALUE_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		SParser::add_ilist(spec, p);
+		SPCond::add_ilist(spec, p);
 		==> { -, spec }; return TRUE;
 	}
 	==> { fail nonterminal };
@@ -452,13 +434,13 @@ Again, this is part of a condition, and can't evaluate.
 
 =
 <s-table-reference> ::=
-	<s-table-column-name> entry |    ==> @<Make table entry value@>
-	<s-table-column-name> in row <s-value-uncached> of <s-value-uncached> |    ==> @<Make table in row of value@>
-	<s-table-column-name> listed in <s-value-uncached> |    ==> @<Make table listed in value@>
-	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> |    ==> @<Make table corresponding to value@>
-	<s-table-column-name> of <s-value-uncached> in <s-value-uncached>											==> @<Make table of in value@>
+	<s-table-column-name> entry |                                           ==> @<Table (a)@>
+	<s-table-column-name> in row <s-value-uncached> of <s-value-uncached> | ==> @<Table (b)@>
+	<s-table-column-name> listed in <s-value-uncached> |                    ==> @<Table (c)@>
+	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> | ==> @<Table (d)@>
+	<s-table-column-name> of <s-value-uncached> in <s-value-uncached>		==> @<Table (e)@>
 
-@<Make table entry value@> =
+@<Table (a)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
 	spec->down = RP[1];
 	if ((LocalVariables::are_we_using_table_lookup() == FALSE) &&
@@ -478,37 +460,37 @@ Again, this is part of a condition, and can't evaluate.
 	}
 	==> { -, spec };
 
-@<Make table in row of value@> =
+@<Table (b)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = SParser::arg(RP[1]);
-	spec->down->next = SParser::arg(RP[2]);
-	spec->down->next->next = SParser::arg(RP[3]);
+	spec->down = SPType::arg(RP[1]);
+	spec->down->next = SPType::arg(RP[2]);
+	spec->down->next->next = SPType::arg(RP[3]);
 	==> { -, spec };
 
-@<Make table listed in value@> =
+@<Table (c)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = SParser::arg(RP[1]);
-	spec->down->next = SParser::arg(RP[2]);
+	spec->down = SPType::arg(RP[1]);
+	spec->down->next = SPType::arg(RP[2]);
 	==> { -, spec };
 
-@<Make table corresponding to value@> =
+@<Table (d)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = SParser::arg(RP[1]);
-	spec->down->next = SParser::arg(RP[2]);
-	spec->down->next->next = SParser::arg(RP[3]);
-	spec->down->next->next->next = SParser::arg(RP[4]);
+	spec->down = SPType::arg(RP[1]);
+	spec->down->next = SPType::arg(RP[2]);
+	spec->down->next->next = SPType::arg(RP[3]);
+	spec->down->next->next->next = SPType::arg(RP[4]);
 	==> { -, spec };
 
-@<Make table of in value@> =
+@<Table (e)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = SParser::arg(RP[1]);
-	spec->down->next = SParser::arg(RP[1]);
-	spec->down->next->next = SParser::arg(RP[2]);
-	spec->down->next->next->next = SParser::arg(RP[3]);
+	spec->down = SPType::arg(RP[1]);
+	spec->down->next = SPType::arg(RP[1]);
+	spec->down->next->next = SPType::arg(RP[2]);
+	spec->down->next->next->next = SPType::arg(RP[3]);
 	==> { -, spec };
 
 @ =
-parse_node *SParser::arg(parse_node *val) {
+parse_node *SPType::arg(parse_node *val) {
 	if (val == NULL) return Specifications::new_UNKNOWN(EMPTY_WORDING);
 	return Node::duplicate(val);
 }

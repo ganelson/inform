@@ -1,45 +1,33 @@
-[SParser::Subtrees::] Verbal and Relative Clauses.
+[SPVerb::] Verbal and Relative Clauses.
 
 To break down an excerpt into NP and VP-like clauses, perhaps with
 a primary verb (to make a sentence), perhaps only a relative clause (to make
 a more complex NP).
 
-@ This is a global mode for the S-parser: see below.
-
-=
-int force_all_SP_noun_phrases_to_be_physical = FALSE;
-
-@h The top level of the S-grammar.
+@h SVO phrases.
 English is an SVO language, where the main parts of the sentence occur in the
 order subject, verb, object. The following grammar parses that crucial division,
 and note that it can be used either to form a complete sentence, where there
 is an active verb --
-
 >> now the silver bars are in the Hall of Mists;
-
 or alternatively to make a more elaborate noun phrase, using a relative clause,
 where there is no active verb:
-
 >> a woman who carries the silver bars;
-
 We sometimes also have to deal with English's use of "there" as a meaningless
 placeholder to stand for a missing noun phrase:
-
 >> there is an open door
-
-@ The following parses a sentence with an active verb.
 
 =
 <s-sentence> ::=
-	<np-existential> <s-existential-verb-tail> |    ==> @<Make SV provided object is descriptive@>;
-	<s-noun-phrase> <s-general-verb-tail>			==> @<Make SV@>;
+	<np-existential> <s-existential-verb-tail> | ==> @<Make SV provided object is descriptive@>;
+	<s-noun-phrase> <s-general-verb-tail>	     ==> @<Make SV@>;
 
 <s-existential-verb-tail> ::=
-	<copular-verb> <s-noun-phrase-nounless>			==> { -, SParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
+	<copular-verb> <s-noun-phrase-nounless>		 ==> { -, SPVerb::marker(RP[1], NULL, RP[2]) }
 
 @<Make SV@> =
-	SParser::Subtrees::correct_for_adjectives(RP[1], RP[2]);
-	==> { -, SParser::Subtrees::to_specification(TRUE, W, RP[1], RP[2]) }
+	SPVerb::correct_for_adjectives(RP[1], RP[2]);
+	==> { -, SPVerb::to_specification(TRUE, W, RP[1], RP[2]) }
 
 @ An ugly trick, invisible from the grammar itself, is that we forbid the
 object to be a value. This removes cases like "if there is 21", but in fact
@@ -53,46 +41,37 @@ so ambiguous -- a bad decision in about 2003.)
 	parse_node *test = op->down;
 	if (Node::is(test, AMBIGUITY_NT)) test = test->down;
 	if (Specifications::is_description_like(test) == FALSE) { ==> { fail } }
-	==> { -, SParser::Subtrees::to_specification(TRUE, W, NULL, op) }
+	==> { -, SPVerb::to_specification(TRUE, W, NULL, op) }
 
 @ More generally, the tail syntax splits according to the verb in question. The
 copular verb "to be" has special syntactic rules for its object phrase (for
 Inform, at least: linguists would probably analyse this slightly differently).
 We've just seen one special point: "to be" can take the placeholder
-"there", which no other verb can. (English does allow this, for archaic or
-dramatic purposes: "There lurks a mysterious invisible force." Inform
-doesn't, and it also doesn't read the mathematical usage "there exists",
-though this caused the author a certain pang of regret.) The verb "to be" is
-considered "copular" because it acts to combine its subject and object: "X
-is 5", "Y is blue", and so on, refer to just one thing but make a statement
-about its nature or identity. Other verbs -- "to carry", say -- normally
-refer to two different things, at least in their most general forms: "X
-carries the briefcase". Therefore:
+"there", which no other verb can.[1] The verb "to be" is "copular" because it
+acts to combine its subject and object: "X is 5", "Y is blue", and so on, refer
+to just one thing but make a statement about its nature or identity.
+Other verbs -- "to carry", say -- normally refer to two different things, at
+least in their most general forms: "X carries the briefcase".
 
->> Mr Cogito is in the Dining Room.
+The universal verb "to relate" needs a special syntax in order to handle its
+extra object: see below.
 
-should be parsed, but
-
->> Mr Cogito carries in the Dining Room.
-
-should not. One can debate whether this is a difference of syntax or semantics,
-but for Inform, it's handled at the syntax level.
-
-The universal verb "to relate" needs a special syntax in order to
-handle its extra object: see below.
+[1] English does allow this, for archaic or dramatic purposes: "There lurks
+a mysterious invisible force." Inform doesn't, and it also doesn't read the
+mathematical usage "there exists", alas.
 
 =
 <s-general-verb-tail> ::=
-	<universal-verb> <s-universal-relation-term> |                             ==> { -, SParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
-	<nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, SParser::Subtrees::verb_marker(RP[1], RP[2], RP[3]) }
-	<nonimperative-verb> <s-noun-phrase>                            ==> { -, SParser::Subtrees::verb_marker(RP[1], NULL, RP[2]) }
+	<universal-verb> <s-universal-term> |  ==> { -, SPVerb::marker(RP[1], NULL, RP[2]) }
+	<nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, SPVerb::marker(RP[1], RP[2], RP[3]) }
+	<nonimperative-verb> <s-noun-phrase>   ==> { -, SPVerb::marker(RP[1], NULL, RP[2]) }
 
 @ The verb marker is a temporary node used just to store the verb or preposition
 usage; it's attached to the tree only briefly before sentence conversion
 removes it again.
 
 =
-parse_node *SParser::Subtrees::verb_marker(verb_usage *vu, preposition *prep, parse_node *np) {
+parse_node *SPVerb::marker(verb_usage *vu, preposition *prep, parse_node *np) {
 	parse_node *VP_part = Node::new(UNKNOWN_NT);
 	Node::set_verb(VP_part, vu);
 	Node::set_preposition(VP_part, prep);
@@ -111,8 +90,8 @@ heap; and that would effectively make "relates" of limited use on Z-machine
 works.
 
 =
-<s-universal-relation-term> ::=
-	<s-noun-phrase> to <s-noun-phrase>	==> { -, SParser::val(Rvalues::from_pair(RP[1], RP[2]), W) }
+<s-universal-term> ::=
+	<s-noun-phrase> to <s-noun-phrase>	==> { -, SPType::val(Rvalues::from_pair(RP[1], RP[2]), W) }
 
 @ The following parses a noun phrase with a relative clause, which is
 syntactically very similar to the case of a sentence. Sometimes the verb is
@@ -138,19 +117,19 @@ relevant noun subtree with a representation of the player-object for those.
 	<s-noun-phrase> <s-relative-verb-tail>                     ==> @<Make SN@>
 
 <s-implied-relative-verb-tail> ::=
-	<copular-preposition> <s-noun-phrase-nounless> |    ==> { -, SParser::Subtrees::verb_marker(regular_to_be, RP[1], RP[2]) }
-	not <copular-preposition> <s-noun-phrase-nounless>  ==> { -, SParser::Subtrees::verb_marker(negated_to_be, RP[1], RP[2]) }
+	<copular-preposition> <s-noun-phrase-nounless> |  ==> { -, SPVerb::marker(regular_to_be, RP[1], RP[2]) }
+	not <copular-preposition> <s-noun-phrase-nounless> ==> { -, SPVerb::marker(negated_to_be, RP[1], RP[2]) }
 
 <s-relative-verb-tail> ::=
-	<rc-marker> <universal-verb> <s-universal-relation-term> |                  ==> { -, SParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
-	<rc-marker> <nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, SParser::Subtrees::verb_marker(RP[2], RP[3], RP[4]) }
-	<rc-marker> <nonimperative-verb> <s-noun-phrase>                            ==> { -, SParser::Subtrees::verb_marker(RP[2], NULL, RP[3]) }
+	<rc-marker> <universal-verb> <s-universal-term> | ==> { -, SPVerb::marker(RP[2], NULL, RP[3]) }
+	<rc-marker> <nonimperative-verb> <permitted-preposition> <s-noun-phrase> |  ==> { -, SPVerb::marker(RP[2], RP[3], RP[4]) }
+	<rc-marker> <nonimperative-verb> <s-noun-phrase>  ==> { -, SPVerb::marker(RP[2], NULL, RP[3]) }
 
 @<Make SN@> =
 	LOGIF(MATCHING, "So uncorrectedly RP[1] = $T\n", RP[1]);
 	LOGIF(MATCHING, "and uncorrectedly RP[2] = $T\n", RP[2]);
-	SParser::Subtrees::correct_for_adjectives(RP[1], RP[2]);
-	==> { -, SParser::Subtrees::to_specification(FALSE, W, RP[1], RP[2]) };
+	SPVerb::correct_for_adjectives(RP[1], RP[2]);
+	==> { -, SPVerb::to_specification(FALSE, W, RP[1], RP[2]) };
 
 @h Tidying up a sentence subtree.
 This checks, in a paranoid sort of way, that a subtree is properly formed,
@@ -158,7 +137,7 @@ and also makes one useful correction when it sees a wrong guess as to whether
 an adjective is meant as a noun.
 
 =
-void SParser::Subtrees::correct_for_adjectives(parse_node *A, parse_node *B) {
+void SPVerb::correct_for_adjectives(parse_node *A, parse_node *B) {
 	parse_node *subject_phrase_subtree, *object_phrase_subtree, *verb_phrase_subtree;
 
 	if (A == NULL) internal_error("SV childless");
@@ -177,7 +156,6 @@ void SParser::Subtrees::correct_for_adjectives(parse_node *A, parse_node *B) {
 is orange" so that "orange" will be used not as a noun but as an adjective.
 
 @<Modify the object from a noun to an adjective if the subject is also a noun@> =
-
 	if ((Rvalues::to_instance(object_phrase_subtree)) &&
 		(subject_phrase_subtree) &&
 		(Specifications::is_description_like(subject_phrase_subtree))) {
@@ -193,12 +171,15 @@ is orange" so that "orange" will be used not as a noun but as an adjective.
 
 @h Values as noun phrases.
 It is very nearly true that the subject and object noun phrases are parsed
-by <s-value>, which was given in "Type Expressions and Values". But there
+by <s-value>, which was given in //Type Expressions and Values//. But there
 is a technicality: for reasons to do with ambiguities, <s-value> needs to
 be able to try descriptions which involve only physical objects at one stage,
 and then later to try other descriptions.
 
-Note that <s-purely-physical-description> calls <s-description> which in
+=
+int force_all_SP_noun_phrases_to_be_physical = FALSE;
+
+@ Note that <s-purely-physical-description> calls <s-description> which in
 turn may, if there's a relative clause, call <s-np-with-relative-clause> and thus
 <s-noun-phrase>. Rather than passing endless copies of a flag down the call
 stack, we simply give <s-noun-phrase> a global mode of operation.
@@ -226,13 +207,13 @@ is the same as that matched by <s-value>.
 
 =
 <s-noun-phrase> ::=
-	<if-forced-physical> <s-variable-as-value> |    ==> { pass 2 }
-	<if-forced-physical> <s-description> |    ==> { pass 2 }
+	<if-forced-physical> <s-variable-as-value> |  ==> { pass 2 }
+	<if-forced-physical> <s-description> |        ==> { pass 2 }
 	^<if-forced-physical> <s-value-uncached> |    ==> { pass 2 }
 
 <s-noun-phrase-nounless> ::=
-	<if-forced-physical> <s-variable-as-value> |    ==> { pass 2 }
-	<if-forced-physical> <s-description-nounless> |    ==> { pass 2 }
+	<if-forced-physical> <s-variable-as-value> |  ==> { pass 2 }
+	<if-forced-physical> <s-desc-nounless> |      ==> { pass 2 }
 	^<if-forced-physical> <s-value-uncached> |    ==> { pass 2 }
 
 @ Finally, the following is needed for conditions ("if fixed in place
@@ -247,8 +228,8 @@ pre-empting descriptions.)
 =
 <s-descriptive-np> ::=
 	( <s-descriptive-np> ) |    ==> { pass 1 }
-	<cardinal-number> |    ==> { fail }
-	<s-description> |    ==> @<Construct a descriptive SN subtree@>
+	<cardinal-number> |         ==> { fail }
+	<s-description> |           ==> @<Construct a descriptive SN subtree@>
 	<s-adjective-list-as-desc>	==> @<Construct a descriptive SN subtree@>
 
 @<Construct a descriptive SN subtree@> =
@@ -256,7 +237,7 @@ pre-empting descriptions.)
 	if (Annotations::read_int(sn, converted_SN_ANNOT)) {
 		==> { -, sn };
 	} else {
-		==> { -, SParser::Subtrees::to_specification(FALSE, W, RP[1], NULL) };
+		==> { -, SPVerb::to_specification(FALSE, W, RP[1], NULL) };
 	}
 	parse_node *pn = *XP;
 	Node::set_text(pn, W);
@@ -269,11 +250,13 @@ object.
 =
 parse_node *PM_DescLocalPast_location = NULL;
 
-parse_node *SParser::Subtrees::to_specification(int SV_not_SN, wording W, parse_node *A, parse_node *B) {
-	parse_node *R = SParser::Subtrees::to_specification_inner(SV_not_SN, W, A, B);
+parse_node *SPVerb::to_specification(int SV_not_SN, wording W,
+	parse_node *A, parse_node *B) {
+	parse_node *R = SPVerb::to_specification_inner(SV_not_SN, W, A, B);
 	return R;
 }
-parse_node *SParser::Subtrees::to_specification_inner(int SV_not_SN, wording W, parse_node *A, parse_node *B) {
+parse_node *SPVerb::to_specification_inner(int SV_not_SN, wording W,
+	parse_node *A, parse_node *B) {
 	parse_node *spec;
 	parse_node *subject_noun_phrase = NULL, *verb_phrase = NULL;
 	verb_usage *vu = NULL;
@@ -284,7 +267,7 @@ parse_node *SParser::Subtrees::to_specification_inner(int SV_not_SN, wording W, 
 		for (parse_node *poss = A->down; poss; poss = poss->next_alternative) {
 			parse_node *one = Node::duplicate(poss);
 			one->next_alternative = NULL;
-			parse_node *new_poss = SParser::Subtrees::to_specification(SV_not_SN, W, one, B);
+			parse_node *new_poss = SPVerb::to_specification(SV_not_SN, W, one, B);
 			if (!(Node::is(new_poss, UNKNOWN_NT)))
 				amb = SyntaxTree::add_reading(amb, new_poss, W);
 		}
@@ -297,7 +280,7 @@ parse_node *SParser::Subtrees::to_specification_inner(int SV_not_SN, wording W, 
 			parse_node *hmm = Node::duplicate(B);
 			hmm->down = Node::duplicate(poss);
 			hmm->down->next_alternative = NULL;
-			parse_node *new_poss = SParser::Subtrees::to_specification(SV_not_SN, W, A, hmm);
+			parse_node *new_poss = SPVerb::to_specification(SV_not_SN, W, A, hmm);
 			if (!(Node::is(new_poss, UNKNOWN_NT)))
 				amb = SyntaxTree::add_reading(amb, new_poss, W);
 		}
@@ -322,10 +305,10 @@ object, in practice) and the implied verb is "is", in the present tense.
 
 @<Reconstruct a bare description as a sentence with an implied absent subject@> =
 	if ((A) && (B == NULL)) {
-		B = SParser::Subtrees::verb_marker(regular_to_be, NULL, A);
+		B = SPVerb::marker(regular_to_be, NULL, A);
 		A = Node::new(UNKNOWN_NT);
 		SV_not_SN = TRUE;
-		SParser::Subtrees::correct_for_adjectives(A, B);
+		SPVerb::correct_for_adjectives(A, B);
 	}
 
 @ Having performed that manoeuvre, we can be certain that the top of the tree
@@ -335,7 +318,8 @@ has the standard form, but we check it anyway.
 	subject_noun_phrase = A;
 	verb_phrase = B;
 
-	if (verb_phrase->down == NULL) StandardProblems::s_subtree_error(Task::syntax_tree(), "VP childless");
+	if (verb_phrase->down == NULL)
+		StandardProblems::s_subtree_error(Task::syntax_tree(), "VP childless");
 
 	if (Node::get_type(verb_phrase) != UNKNOWN_NT)
 		StandardProblems::s_subtree_error(Task::syntax_tree(), "VP not a VP");
@@ -400,7 +384,7 @@ using a tense other than the present, and all is well.
 	Node::set_subject_term(spec, subj);
 	Annotations::write_int(spec, converted_SN_ANNOT, TRUE);
 	if (A) @<Veto certain cases where text was misunderstood as a description@>;
-	if (VerbUsages::get_tense_used(vu) != IS_TENSE) SParser::Subtrees::throw_past_problem(TRUE);
+	if (VerbUsages::get_tense_used(vu) != IS_TENSE) SPVerb::throw_past_problem(TRUE);
 
 @ This is a little inelegant, but it catches awkward phrases such as "going
 south in the Home" which might be read otherwise as "going south" (an action
@@ -414,10 +398,11 @@ pattern) plus "in the Home" (a description).
 		return Specifications::new_UNKNOWN(W);
 
 @ =
-void SParser::Subtrees::throw_past_problem(int desc) {
+void SPVerb::throw_past_problem(int desc) {
 	if (PM_PastSubordinate_issued_at != current_sentence) {
 		PM_PastSubordinate_issued_at = current_sentence;
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastSubordinate),
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_PastSubordinate),
 				"subordinate clauses have to be in the present tense",
 				"so 'the Black Door was open' is fine, but not 'something which "
 				"was open'. Only the main verb can be in the past tense.");
