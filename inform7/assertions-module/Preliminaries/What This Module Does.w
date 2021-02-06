@@ -80,8 +80,8 @@ really just a catalogue of ways to ask for things.
 All that we do is parse such sentences and then make a call to some
 appropriate function, usually in one of the other modules. For example, the
 section //New Activity Requests// dismantles sentences like "Counting is an
-activity on numbers", but then just calls //Activities::new// (in the
-//knowledge// module) to take action.
+activity on numbers", but calls the //knowledge// module to do the actual
+making of the new activity.
 
 @h Regular meanings.
 As noted above, //Assertions::make_coupling// is called on each regular

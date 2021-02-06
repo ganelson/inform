@@ -102,8 +102,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			inter_name *N = Kinds::RunTime::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			inter_name *rks_symb = Kinds::RunTime::compile_default_value_inner(K);
 			Emit::array_iname_entry(rks_symb);
@@ -111,8 +110,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
-			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			inter_name *N = Kinds::RunTime::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
 			Emit::array_iname_entry(PL::Actions::double_sharp(PL::Actions::Wait()));
@@ -129,8 +127,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-			inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+			inter_name *N = Kinds::RunTime::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			RTRelations::compile_blank_relation(K);
 			Emit::array_end(save);
@@ -151,8 +148,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	}
 
 	if (Kinds::eq(K, K_text)) {
-		package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-		inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+		inter_name *N =  Kinds::RunTime::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
@@ -233,6 +229,14 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		"(a number, a time, some text perhaps?).");
 	Problems::issue_problem_end();
 	return NOT_APPLICABLE;
+
+@
+
+=
+inter_name *Kinds::RunTime::new_block_constant_iname(void) {
+	package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
+	return Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+}
 
 @ This returns either valid I6 code for the value which is the default for
 $K$, or else |NULL| if $K$ has no values, or no default can be chosen.
@@ -762,7 +766,7 @@ void Kinds::RunTime::compile_structures(void) {
 	} else if (Kinds::get_construct(K) == CON_relation) {
 		RTRelations::compile_default_relation(identifier, K);
 	} else if (Kinds::get_construct(K) == CON_list_of) {
-		Lists::compile_default_list(identifier, K);
+		ConstantLists::compile_default_list(identifier, K);
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_kind(2, K);
@@ -1046,12 +1050,12 @@ inter_name *Kinds::RunTime::iname_inner(kind *K) {
 inter_name *Kinds::RunTime::assure_iname_exists(kind *K) {
 	noun *nt = Kinds::Behaviour::get_noun(K);
 	if (nt) {
-		if (UseNouns::iname_set(nt) == FALSE) {
+		if (NounIdentifiers::iname_set(nt) == FALSE) {
 			inter_name *iname = Kinds::RunTime::constructed_kind_name(K);
-			UseNouns::noun_impose_identifier(nt, iname);
+			NounIdentifiers::noun_impose_identifier(nt, iname);
 		}
 	}
-	return UseNouns::iname(nt);
+	return NounIdentifiers::iname(nt);
 }
 
 inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
@@ -1128,7 +1132,7 @@ void Kinds::RunTime::compile_instance_counts(void) {
 	#ifdef IF_MODULE
 	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
 	#endif
-	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), Strings::TextLiterals::CCOUNT_QUOTATIONS());
+	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), TextLiterals::CCOUNT_QUOTATIONS());
 	Kinds::RunTime::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), max_frame_size_needed);
 	Kinds::RunTime::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }
@@ -1187,7 +1191,7 @@ but at present this can't happen.
 
 @<Compile I6 printing routine for a unit kind@> =
 	if (LiteralPatterns::list_of_literal_forms(K))
-		LiteralPatterns::printing_routine(printing_rule_name,
+		RTLiteralPatterns::printing_routine(printing_rule_name,
 			LiteralPatterns::list_of_literal_forms(K));
 	else {
 		packaging_state save = Routines::begin(printing_rule_name);

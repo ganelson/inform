@@ -136,7 +136,7 @@ void PL::Parsing::Tokens::Values::time(void) {
 	packaging_state save = Routines::begin(iname);
 	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 	PL::Parsing::Tokens::Values::add_original(&gprk);
-	kind *K = PL::TimesOfDay::kind();
+	kind *K = TimesOfDay::kind();
 	if (K) {
 		grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K);
 		if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
@@ -206,7 +206,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 @<Compile body of kind GPR@> =
 	@<Save word number@>;
 	LITERAL_FORMS_LOOP(lp, K) {
-		LiteralPatterns::gpr(&gprk, lp);
+		RTLiteralPatterns::gpr(&gprk, lp);
 		@<Reset word number@>;
 	}
 

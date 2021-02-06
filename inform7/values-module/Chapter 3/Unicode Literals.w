@@ -13,8 +13,8 @@ the player types either of these:
 
 =
 <s-unicode-character> ::=
-	<cardinal-number-unlimited> |  ==> { -, Rvalues::from_Unicode_point(UnicodeLiterals::range(R[1]), W) }
-	<unicode-character-name>       ==> { -, Rvalues::from_Unicode_point(R[1], W) }
+	<cardinal-number-unlimited> | ==> { -, Rvalues::from_Unicode(UnicodeLiterals::max(R[1]), W) }
+	<unicode-character-name>      ==> { -, Rvalues::from_Unicode(R[1], W) }
 
 <unicode-character-name> internal {
 	parse_node *p = Lexicon::retrieve(MISCELLANEOUS_MC, W);
@@ -30,7 +30,7 @@ the player types either of these:
 @ And here is the range check:
 
 =
-int UnicodeLiterals::range(int cc) {
+int UnicodeLiterals::max(int cc) {
 	if ((cc < 0) || (cc >= 0x10000)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeOutOfRange),
 			"Inform can only handle Unicode characters in the 16-bit range",

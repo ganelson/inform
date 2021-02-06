@@ -31,7 +31,11 @@ Chapter 4: Compilation Utilities
 	Inform 6 Inclusions
 	List Together
 	Jump Labels
+	Text Literals
+	Text Substitutions
+	Responses
 	Compiled Text
+	Constant Lists
 	Routines
 	I6 Template Interpreter
 	Plugins
@@ -41,6 +45,8 @@ Chapter 4: Compilation Utilities
 	Use Options at Run Time
 	Runtime Support for Kinds
 	Extension Files at Run Time
+	Noun Identifiers
 	Verbs at Run Time
 	Relations at Run Time
+	Literal Patterns at Run Time
 	Runtime Support for Tables

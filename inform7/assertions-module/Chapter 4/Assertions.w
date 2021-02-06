@@ -1445,7 +1445,7 @@ file: this may possibly be useful to I6 hackers.
 		Problems::issue_problem_end();
 	}
 	if ((var_set == FALSE) && (Kinds::eq(a_kind, K_text))) {
-		Strings::TextLiterals::compile_literal(NULL, TRUE, Node::get_text(px));
+		TextLiterals::compile_literal(NULL, TRUE, Node::get_text(px));
 	}
 	return;
 

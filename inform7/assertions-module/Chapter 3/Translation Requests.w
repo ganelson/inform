@@ -137,7 +137,7 @@ generated anyway; Inform authors never type them.
 	...                            ==> { -1, - }
 
 <translates-into-unicode-sentence-object> ::=
-	<cardinal-number-unlimited> |  ==> { UnicodeLiterals::range(R[1]), - }
+	<cardinal-number-unlimited> |  ==> { UnicodeLiterals::max(R[1]), - }
 	...                            ==> @<Issue PM_UnicodeNonLiteral problem@>
 
 @<Issue PM_UnicodeNonLiteral problem@> =
@@ -362,7 +362,7 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 				if (nt) {
 					TEMPORARY_TEXT(i6r)
 					WRITE_TO(i6r, "%N", Wordings::first_wn(OP));
-					UseNouns::noun_set_I6_representation(nt, i6r);
+					NounIdentifiers::noun_set_translation(nt, i6r);
 					DISCARD_TEXT(i6r)
 				}
 			} else {

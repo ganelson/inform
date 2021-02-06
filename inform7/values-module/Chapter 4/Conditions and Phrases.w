@@ -1,4 +1,4 @@
-[ExParser::] Conditions and Phrases.
+[SParser::] Conditions and Phrases.
 
 To parse the text of To... phrases, say phrases and conditions.
 
@@ -138,7 +138,7 @@ testing the existence of something.
 	parse_node *p = Lexicon::retrieve(COND_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		ExParser::add_ilist(spec, p);
+		SParser::add_ilist(spec, p);
 		parse_node *tval = Node::new_with_words(TEST_VALUE_NT, W);
 		tval->down = spec;
 		==> { -, tval };
@@ -228,12 +228,12 @@ typechecking to choose between much later on.
 
 <s-adaptive-text> ::=
 	<s-local-variable> |                            ==> { fail }
-	<adaptive-verb> verb |                          ==> { -, ExParser::say_verb(RP[1], R[1], NULL, W) }
-	<adaptive-adjective> adjective |                ==> { -, ExParser::say_adjective(RP[1], W) }
-	<adaptive-verb> |                               ==> { -, ExParser::say_verb(RP[1], R[1], NULL, W) }
+	<adaptive-verb> verb |                          ==> { -, SParser::say_verb(RP[1], R[1], NULL, W) }
+	<adaptive-adjective> adjective |                ==> { -, SParser::say_adjective(RP[1], W) }
+	<adaptive-verb> |                               ==> { -, SParser::say_verb(RP[1], R[1], NULL, W) }
 	<modal-verb> <adaptive-verb-infinitive> verb |  ==> @<Annotate the verb with a modal@>
 	<modal-verb> <adaptive-verb-infinitive> |       ==> @<Annotate the verb with a modal@>
-	<adaptive-adjective>                            ==> { -, ExParser::say_adjective(RP[1], W) }
+	<adaptive-adjective>                            ==> { -, SParser::say_adjective(RP[1], W) }
 
 @ "To..." phrases are easy, or at least, easy to delegate:
 
@@ -242,7 +242,7 @@ typechecking to choose between much later on.
 	parse_node *p = Lexicon::retrieve(VOID_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		ExParser::add_ilist(spec, p);
+		SParser::add_ilist(spec, p);
 		==> { -, spec };
 		return TRUE;
 	}
@@ -254,7 +254,7 @@ typechecking to choose between much later on.
 	parse_node *p = Lexicon::retrieve(SAY_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		ExParser::add_ilist(spec, p);
+		SParser::add_ilist(spec, p);
 		==> { -, spec };
 		return TRUE;
 	}
@@ -264,13 +264,13 @@ typechecking to choose between much later on.
 @<Annotate the verb with a modal@> =
 	int neg = FALSE;
 	if ((R[1]) || (R[2])) neg = TRUE;
-	==> { -, ExParser::say_verb(RP[2], neg, RP[1], W) };
+	==> { -, SParser::say_verb(RP[2], neg, RP[1], W) };
 
 @ Invocation nodes for adaptive-text adjectives hold references to their masculine
 singulars.
 
 =
-parse_node *ExParser::say_adjective(adjective *aph, wording W) {
+parse_node *SParser::say_adjective(adjective *aph, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
@@ -284,7 +284,7 @@ parse_node *ExParser::say_adjective(adjective *aph, wording W) {
 person plurals.
 
 =
-parse_node *ExParser::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
+parse_node *SParser::say_verb(verb_conjugation *vc, int neg, verb_conjugation *mvc, wording W) {
 	parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, W);
@@ -307,7 +307,7 @@ at run-time which of several possible definitions is to apply, so the
 possibilities will all be invoked.
 
 =
-void ExParser::add_ilist(parse_node *spec, parse_node *p) {
+void SParser::add_ilist(parse_node *spec, parse_node *p) {
 	@<Build the invocation list@>;
 
 	int len = Invocations::length_of_list(spec->down->down);

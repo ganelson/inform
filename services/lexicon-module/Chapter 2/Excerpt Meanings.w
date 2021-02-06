@@ -280,7 +280,7 @@ resort; happily phrases both starting and ending with |#| are uncommon.
 parse_node *blank_says_p = NULL;
 void ExcerptMeanings::register_em(unsigned int meaning_code, excerpt_meaning *em) {
 	#ifdef CORE_MODULE
-	ExParser::warn_expression_cache(); /* the existence of new meanings jeopardises any cached parsing results */
+	PreformCache::warn_of_changes(); /* the existence of new meanings jeopardises any cached parsing results */
 	#endif
 
 	@<Compute the new excerpt's hash code from its token list@>;

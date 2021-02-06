@@ -80,6 +80,9 @@ see //Sentences::make_node//.
 (*) |DIVIDE_AT_COLON_SYNTAX_CALLBACK| is called to ask permission to break a
 sentence at a colon. See //Sentences::break_inner//.
 
+(*) |IS_SENTENCE_NODE_SYNTAX_CALLBACK| is asked whether a given node represents
+a regular sentence or not: see //NodeType::is_sentence//.
+
 (*) |LANGUAGE_ELEMENT_SYNTAX_CALLBACK| is called when a sentence is found matching
 the nonterminal |<language-modifying-sentence>|: see //Sentences::make_node//.
 
@@ -112,5 +115,6 @@ prevent this from being issued to the terminal as an error message: see
 sentence is found in the source text being broken into sentences: see
 //Sentences::make_node//.
 
-(*) |IS_SENTENCE_NODE_SYNTAX_CALLBACK| is asked whether a given node represents
-a regular sentence or not: see //NodeType::is_sentence//.
+(*) |UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK| is used only by the Preform cache:
+if this isn't being used, it's sufficient to return a null pointer. See
+//Simple Preform Cache//.

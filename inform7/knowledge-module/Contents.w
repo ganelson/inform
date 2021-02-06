@@ -11,7 +11,11 @@ Chapter 1: Configuration and Control
 	Knowledge Module
 	Assert Propositions
 
-Chapter 2: Properties
+Chapter 2: Property Owners
+	Instances
+	Nonlocal Variables
+
+Chapter 3: Properties
 "Properties are named values attached to elements of the world model; not only
 objects, but also other enumerated constant values, and so on."
 	Properties
@@ -28,7 +32,7 @@ objects, but also other enumerated constant values, and so on."
 	Properties of Values
 	Emit Property Values
 
-Chapter 3: Inference and Model
+Chapter 4: Inference and Model
 "Having now essentially disposed of the original assertion sentences by
 converting them to propositions, which in turn generated basic inferences
 about the model world, we must now resolve this mass of facts, applying
@@ -43,7 +47,16 @@ fits this knowledge."
 	Compile Model World
 	Instance Counting
 
-Chapter 4: Rules and Rulebooks
+Chapter 5: Tables
+	Table Columns
+	Tables
+	Listed-In Relations
+
+Chapter 6: Equations
+"Simple mathematical or scientific equations, which can be solved at run-time."
+	Equations
+
+Chapter 7: Rules and Rulebooks
 "Rules are named phrases which are invoked in a particular way, and rulebooks
 a way to organise lists of them."
 	Rules

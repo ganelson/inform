@@ -1,7 +1,6 @@
 [Lvalues::] Lvalues.
 
-Utility functions for specifications representing lvalues, that is,
-storage locations for values at run-time.
+Storage locations into which rvalues can be put at run-time.
 
 @h Creation.
 "Lvalues" can occur on the left of an assignment sign: they are values
@@ -263,7 +262,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 		case LIST_ENTRY_NT: @<Compile a list entry specification@>;
 		case TABLE_ENTRY_NT: @<Compile a table entry specification@>;
 		default: LOG("Offender: $P\n", spec_found);
-			internal_error("unable to compile this STORAGE species");
+			internal_error("unable to compile this lvalue");
 	}
 }
 
@@ -464,8 +463,8 @@ object as produced the original text containing the substitution.
 @h Lvalue compilation.
 To recap, if an assignment takes the form "now X is Y" then X is the lvalue,
 Y is the rvalue. We only need to read Y, but we need to write X. Compilation
-applied to a STORAGE item produces code suitable for reading it, i.e., suitable
-for use in position Y -- but not in general suitable for X.
+applied to an lvalue specification produces code suitable for reading it, i.e.,
+suitable for use in position Y -- but not in general suitable for X.
 
 To compile the lvalue form of a storage item, we use the following schemas.
 These in effect take the rvalue form and modify it. There are three
@@ -615,7 +614,7 @@ char *Lvalues::interpret_store(node_type_t storage_class, kind *left, kind *righ
 	}
 	int reduce = FALSE;
 	#ifdef IF_MODULE
-	kind *KT = PL::TimesOfDay::kind();
+	kind *KT = TimesOfDay::kind();
 	if ((KT) && (Kinds::eq(left, KT))) reduce = TRUE;
 	#endif
 	return Lvalues::storage_class_schema(storage_class, form, reduce);

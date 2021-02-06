@@ -1,16 +1,12 @@
 [Conditions::] Conditions.
 
-Utility functions for condition nodes.
+States of being which at any given point, at run-time, might be true or false.
 
 @h Creation.
 In Inform, conditions are not values, nor can values be used directly as
 conditions: we therefore need to provide the logical operations of AND, OR,
-and NOT structurally via the SP rather than implementing them as phrases
-like the arithmetic operators. (Conditions and values are kept separate
-even though it does complicate the type system because this provides
-cleaner resolution of ambiguities, and I don't repent of this, because the
-mixture of the two is sometimes unclear enough even in C: in natural
-language, it tends to look very odd indeed.)
+and NOT structurally in the parse tree rather than implementing them as phrases
+like the arithmetic operators.
 
 So |LOGICAL_AND_NT| and |LOGICAL_OR_NT| imitate the effect of logical
 operators. They have two arguments which must themselves be CONDITIONs;
@@ -274,7 +270,8 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 				PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
 				#endif
 			} else if (Specifications::is_description(spec_found)) {
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); /* purely for problem recovery */
+				/* purely for problem recovery: */
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); 
 			} else {
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 			}
@@ -324,5 +321,6 @@ type-checker won't allow these specifications to be compiled anywhere else.
 		if (po == NULL) internal_error("no phrase options exist in this frame");
 		inter_symbol *po_s = LocalVariables::declare_this(po, FALSE, 8);
 		Produce::val_symbol(Emit::tree(), K_value, po_s);
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) Annotations::read_int(spec_found, phrase_option_ANNOT));
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL,
+			(inter_ti) Annotations::read_int(spec_found, phrase_option_ANNOT));
 	Produce::up(Emit::tree());

@@ -97,7 +97,7 @@ void PL::Bibliographic::bibliographic_data(parse_node *PN) {
 		if (<s-value>(TW)) the_title = <<rp>>;
 		else the_title = Specifications::new_UNKNOWN(TW);
 		Assertions::PropertyKnowledge::initialise_global_variable(story_title_VAR, the_title);
-		Strings::TextLiterals::suppress_quote_expansion(Node::get_text(the_title));
+		TextLiterals::suppress_quote_expansion(Node::get_text(the_title));
 
 		if (Str::len(edn->work->author_name) > 0) {
 			parse_node *the_author;
@@ -212,7 +212,7 @@ void PL::Bibliographic::compile_constants(void) {
 	if (NonlocalVariables::has_initial_value_set(story_title_VAR))
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
 	else
-		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
+		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
 	Emit::named_generic_constant(iname, v1, v2);
 	Hierarchy::make_available(Emit::tree(), iname);
 
@@ -225,7 +225,7 @@ void PL::Bibliographic::compile_constants(void) {
 		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
 	} else {
-		Strings::TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
+		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
 	}
 	Emit::named_generic_constant(iname, v1, v2);
 	Hierarchy::make_available(Emit::tree(), iname);

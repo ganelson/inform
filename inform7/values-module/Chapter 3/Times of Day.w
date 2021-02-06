@@ -1,4 +1,4 @@
-[PL::TimesOfDay::] Times of Day.
+[TimesOfDay::] Times of Day.
 
 To make a built-in kind of value for times of day, such as "11:22 AM".
 
@@ -10,6 +10,7 @@ understood to start in the middle; but on reflection it appears that her
 proceeding is not very different from his; since Science, too, reckons backwards
 as well as forwards, divides his unit into billions, and with his clock-finger
 at Nought really sets off in medias res" (George Eliot, "Daniel Deronda").
+
 Our make-believe here is midnight, our unit is divided not into billions but
 into 1440, and a value of this kind holds one of two possibilities:
 
@@ -19,36 +20,35 @@ into 1440, and a value of this kind holds one of two possibilities:
 Thus the value 70 might mean 1:10 AM, or it might mean 70 minutes, and
 type-checking does not try to distinguish the two. This is so that arithmetic
 will be easier -- we can add 70 minutes to 1:10 AM to get 2:20 AM, but if they
-had different kinds, this would be illegal.
+had different kinds, this would be illegal.[1]
 
-The ambiguity is occasionally unhelpful, though: we have to supplement the "[a
-time]" Understand token, which parses an absolute time, with a special "[a
-time period]" one, so that users are able to parse relative times as well. And
-of course, times really do not behave like integers, no matter how we might
-pretend. What is 4:52 PM plus 3:31 PM, in any very meaningful sense? (Inform
-adds these by treating them as durations since the previous midnight in each
-case, but it's hard to see why that makes much human sense.) But despite these
-qualms, it has been a reasonably good design in practice, and few authors
-have objected.
+[1] The down side is that it allows adding, say, 4:52 PM to 3:31 PM, which
+Inform does by considering each as time since the previous midnight, but makes
+little sense. We also need two different notations for time -- compare the
+command parser tokens "[a time]", recognising, say, "4:12 AM" and "[a
+time period]", for "3 HOURS".
+
+@ This section of code is a plugin: that is, it can be deactivated, removing
+support for times of day from the Inform language. If so, |K_time| remains null.
 
 = (early code)
 kind *K_time = NULL;
 
-@ =
-void PL::TimesOfDay::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::TimesOfDay::times_new_base_kind_notify);
+@ The plugin intervenes only to notice the "time" kind when it appears.
+
+=
+void TimesOfDay::start(void) {
+	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, TimesOfDay::times_new_base_kind_notify);
 }
 
-@ =
-int PL::TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
+int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	if (Str::eq_wide_string(name, L"TIME_TY")) {
 		K_time = new_base; return TRUE;
 	}
 	return FALSE;
 }
 
-@ =
-kind *PL::TimesOfDay::kind(void) {
+kind *TimesOfDay::kind(void) {
 	return K_time;
 }
 
@@ -59,9 +59,9 @@ linguistically the same thing at all.
 
 =
 <s-literal-time> ::=
-	minus <elapsed-time> |                                         ==> { -, Rvalues::from_time(-R[1], W) }
-	<elapsed-time> |                                               ==> { -, Rvalues::from_time(R[1], W) }
-	<clock-time>                                                   ==> { -, Rvalues::from_time(R[1], W) }
+	minus <elapsed-time> |  ==> { -, Rvalues::from_time(-R[1], W) }
+	<elapsed-time> |        ==> { -, Rvalues::from_time(R[1], W) }
+	<clock-time>            ==> { -, Rvalues::from_time(R[1], W) }
 
 <elapsed-time> ::=
 	<cardinal-number> hour/hours |                                 ==> { 60*R[1], - }
@@ -155,10 +155,10 @@ a specific time of day, or when a named event occurs.
 
 =
 <event-rule-preamble> ::=
-	at <clock-time> |    ==> { pass 1 }
+	at <clock-time> |         ==> { pass 1 }
 	at the time when ... |    ==> { NO_FIXED_TIME, - }
 	at the time that ... |    ==> @<Issue PM_AtTimeThat problem@>
-	at ...								==> @<Issue PM_AtWithoutTime problem@>
+	at ...					  ==> @<Issue PM_AtWithoutTime problem@>
 
 @<Issue PM_AtTimeThat problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AtTimeThat),

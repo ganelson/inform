@@ -548,7 +548,7 @@ void PL::HTMLMap::render_single_room_as_HTML(OUTPUT_STREAM, instance *R) {
 	WRITE("\n\n");
 	HTML_OPEN("p");
 	noun *nt = Instances::get_noun(R);
-	Index::anchor(OUT, UseNouns::identifier(nt));
+	Index::anchor(OUT, NounIdentifiers::identifier(nt));
 	HTML_TAG_WITH("a", "name=wo_%d", R->allocation_id);
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);

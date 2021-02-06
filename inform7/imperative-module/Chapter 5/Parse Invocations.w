@@ -312,7 +312,7 @@ parser needs our help in the first place.)
 
 @ =
 void Phrases::Parser::parse_within_inv(parse_node *inv) {
-	ExParser::warn_expression_cache();
+	PreformCache::warn_of_changes();
 	int N = Invocations::get_no_tokens(inv);
 	for (int i = 0; i < N; i++) {
 		parse_node *to_match = Invocations::get_token_to_be_parsed_against(inv, i);

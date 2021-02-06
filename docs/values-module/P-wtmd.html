@@ -17,6 +17,20 @@
 
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+	tex: {
+		inlineMath: '$', '$'], ['\\(', '\\)'
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -69,7 +83,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the values module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. There Is No Good Word For This</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Taxonomy</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. For want of a better word</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Taxonomy</a></li><li><a href="P-wtmd.html#SP9">&#167;9. Dash</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Literals</a></li><li><a href="P-wtmd.html#SP11">&#167;11. Grammar</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The values module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -85,78 +99,184 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. There Is No Good Word For This. </b>What is a value? In the compiler for an orthodox programming language this is
-relatively easy to answer,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but natural language swirls with meanings which
-sometimes seem to resist categorisation. Even the most basic attempts to divide,
-say, nouns from verbs sometimes break down.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. For want of a better word. </b>What is a value? In the compiler for an orthodox programming language this is
+relatively easy to answer,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but natural language often resists categorisation.
+Even basic attempts to divide, say, nouns from verbs sometimes break down.
 </p>
 
-<p class="commentary">This module is called <a href="index.html" class="internal">values</a>, but in fact it handles forms of expression
-much broader than that, and there isn't really a good umbrella term to cover
-them: literals, named constants, variables, conditions, descriptions and so on.
-Until around 2016, the Inform source had a C type called <span class="extract"><span class="extract-syntax">type_specification</span></span>
-which unified all of these, but "type specification" was never a good phrase &mdash;
-<span class="extract"><span class="extract-syntax">"fish"</span></span> or <span class="extract"><span class="extract-syntax">17 + 2</span></span> do not really specify types, after all.
+<p class="commentary">So although this module is called <a href="index.html" class="internal">values</a>, it actually looks after ways of
+describing data in general, and this involves a wide range of concepts:
+literals, named constants, variables, conditions, descriptions and so on.
+The umbrella term we will use is "specification", for want of anything better.
 </p>
 
-<p class="commentary">And so we ended up with just "specification". There is, however, no unifying
-<span class="extract"><span class="extract-syntax">specification</span></span> type any longer. Instead, all specifications are stored as
-fragments of the parse tree: that is, as <span class="extract"><span class="extract-syntax">parse_node</span></span> pointers. This new
-scheme removed complexity,<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> and is faster, while consuming less memory;
-it has demerits as well,<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> but is now fairly settled.
+<p class="commentary">Until around 2016, the Inform source had a C type called <span class="extract"><span class="extract-syntax">type_specification</span></span>,
+since it had its origins in specifying the "type" of phrase tokens,<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> but "type
+specification" was never a happy phrase, and coding with <span class="extract"><span class="extract-syntax">type_specification</span></span>
+was never really satisfactory. It has now been removed, and what we now call just
+"specifications" are stored directly as fragments of the parse tree: that is,
+as <span class="extract"><span class="extract-syntax">parse_node</span></span> pointers. This new scheme removed complexity,<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> and is faster,
+while consuming less memory. There are demerits too,<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> but the die is cast.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Though, for example: are functions values? How about pointers to functions?
 Parameters passed by reference, or pass-throughs? Are types also values? How
 about type classes? Conditions? Exceptions? And if the answer is no, why can
 they often be used as if it were yes?
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> A fairly convoluted conversion layer of code once existed in order to
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Inform phrases include even structural language features like "if", and
+are not simply function calls: so their tokens can be conditions, lvalues,
+or descriptions as well as rvalues. The "type" of such a token must therefore
+be broader than simply a kind, because only values have kinds.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> A fairly convoluted conversion layer of code once existed in order to
 turn pieces of parse tree into <span class="extract"><span class="extract-syntax">type_specification</span></span> objects, but that entire
 layer has now gone, and all of its bugs and edge cases went with it.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The main demerit is that while all specifications are <span class="extract"><span class="extract-syntax">parse_node</span></span>s, not
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The main demerit is that while all specifications are <span class="extract"><span class="extract-syntax">parse_node</span></span>s, not
 all <span class="extract"><span class="extract-syntax">parse_node</span></span>s are specifications &mdash; chapter subheadings, for example. So
 the use of the <span class="extract"><span class="extract-syntax">parse_node</span></span> type in source code does not communicate whether
 we're trying to work with specifications, or doing general parsing.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Taxonomy. </b>We might start with lvalues and rvalues. These traditional terms
-are based on L for left, R for right, in an assignment operation like <span class="extract"><span class="extract-syntax">v = 5</span></span>.
-Here <span class="extract"><span class="extract-syntax">v</span></span> is on the left and is an l-value: it's a variable, that is, a named
-place to store data. The <span class="extract"><span class="extract-syntax">5</span></span> is an r-value, and is the data which will be
-stored. Of course, <span class="extract"><span class="extract-syntax">v</span></span> can also occur on the right, as in the assignment
-<span class="extract"><span class="extract-syntax">w = v</span></span> where one variable is copied into another. For the avoidance of doubt,
-we will call <span class="extract"><span class="extract-syntax">v</span></span> an lvalue wherever it appears &mdash; we mean only that it has
-the potential to be written to.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> For us, then:
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Given that these disparate ideas are hard to unify, it might seem clearer
+not to unify them at all &mdash; if they are different concepts, represent that
+by using different C types inside Inform.
 </p>
 
-<ul class="items"><li>&#9679; An "rvalue" unambiguously specifies a piece of data at run-time.
-Numbers, texts and instances are all examples of rvalues, but so are usages
-of phrases to decide values (i.e., function calls). See <a href="2-rvl.html" class="internal">RValues</a>.
-</li><li>&#9679; An "lvalue" unambiguously specifies a place to store data, such as
-a variable, or a table entry. See <a href="2-lvl.html" class="internal">Lvalues</a>.
-</li></ul>
-<p class="commentary">Lvalues and rvalues inside the compiler mostly come from parsing source text,
-but we can also manufacture them directly. If we need the number 17 as a
-constant, for example, we can call <a href="2-rvl.html#SP10" class="internal">Rvalues::from_int</a> to make a suitable
-<span class="extract"><span class="extract-syntax">parse_node</span></span>, even if "17" is never mentioned in the source text read in.
-And a wide range of other functions exist to make constant rvalues of all kinds:
-<a href="2-rvl.html#SP13" class="internal">Rvalues::from_Unicode_point</a>, for example.
+<p class="commentary">The reason we need to unify is that Inform's concept of a phrase is much
+broader than the concept of a function in a C-like language. Whereas an
+argument of a C function must be an rvalue, Inform phrases can take arguments
+(they are actually called tokens) which can be lvalues or descriptions. This
+allows basic structural features such as "if" to be defined as phrases. But it
+also means that we need a single type able to represent phrase token
+requirements inside the Inform source code.
 </p>
 
-<p class="commentary">Similarly, functions such as <a href="2-lvl.html#SP2" class="internal">Lvalues::new_LOCAL_VARIABLE</a> allow us to take
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Taxonomy. </b>Specifications fall into four categories: rvalues, lvalues, conditions and
+descriptions. Various functions, such as <a href="2-spc.html#SP1" class="internal">Specifications::is_condition</a>,
+exist to determine whether a given <span class="extract"><span class="extract-syntax">parse_node</span></span> is one of these.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>"Rvalues" specify pieces of data at run-time. Numbers, texts and instances
+are all examples of rvalues, but so are usages of phrases to decide
+values (i.e., function calls). See <a href="2-rvl.html" class="internal">Rvalues</a>.
+</p>
+
+<p class="commentary">These mostly come from parsing source text, but we can also manufacture them
+directly. If we need the number 17 as a constant, for example, we can call
+<a href="2-rvl.html#SP10" class="internal">Rvalues::from_int</a> to make a suitable <span class="extract"><span class="extract-syntax">parse_node</span></span>, even if "17" is never
+mentioned in the source text read in. And a wide range of other functions
+exist to make constant rvalues of all kinds: <a href="2-rvl.html#SP13" class="internal">Rvalues::from_Unicode</a>,
+for example.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>"Lvalues" specify places to store data, such as variables, or table entries.
+See <a href="2-lvl.html" class="internal">Lvalues</a>.
+</p>
+
+<p class="commentary">Functions such as <a href="2-lvl.html#SP2" class="internal">Lvalues::new_LOCAL_VARIABLE</a> allow us to take
 a <span class="extract"><span class="extract-syntax">local_variable</span></span> pointer and make an lvalue from it.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> We have to treat lvalues in this slightly unusual way because, contrary to
+<p class="commentary">These traditional computer-science terms, "lvalue" and "rvalue", are based
+on L for left, R for right, in an assignment operation like <span class="extract"><span class="extract-syntax">v = 5</span></span>.
+Here <span class="extract"><span class="extract-syntax">v</span></span> is on the left and is an l-value: it's a variable, that is, a named
+place to store data. The <span class="extract"><span class="extract-syntax">5</span></span> is an r-value, and is the data which will be
+stored. Of course, <span class="extract"><span class="extract-syntax">v</span></span> can also occur on the right, as in the assignment
+<span class="extract"><span class="extract-syntax">w = v</span></span> where one variable is copied into another. But in this source code
+we would call <span class="extract"><span class="extract-syntax">v</span></span> an lvalue wherever it appears &mdash; we mean only that it has
+the potential to be written to.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> We have to treat lvalues in this slightly unusual way because, contrary to
 C-like languages, we have no syntactic way to mark that the name of a variable
 means its value rather than its identity &mdash; in C, this would be <span class="extract"><span class="extract-syntax">name</span></span> versus
 <span class="extract"><span class="extract-syntax">&amp;name</span></span>, with the "pointer to" marker <span class="extract"><span class="extract-syntax">&amp;</span></span> distinguishing the cases. We must
 instead look to the context. Even C sometimes does that &mdash; when C writes <span class="extract"><span class="extract-syntax">v = 5</span></span>,
 it would arguably be more consistent to say something like <span class="extract"><span class="extract-syntax">store(&amp;v, 5)</span></span>.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>"Conditions" express a state of being which might, or might not, be true:
+Inform allows these to be tested with "if" and brought about with "now".
+</p>
+
+<p class="commentary">Whereas in C-like languages conditions are rvalues and vice versa &mdash;
+you can write <span class="extract"><span class="extract-syntax">a = b == c</span></span>, or <span class="extract"><span class="extract-syntax">if (7)</span></span> &mdash; this often feels a little rum,
+and in natural language even more so. In Inform, then, a condition is not an
+rvalue, and an rvalue is not a condition.
+</p>
+
+<p class="commentary">Possible states are stored as propositions in predicate calculus with no
+free variables: the function <a href="2-cnd.html#SP8" class="internal">Conditions::new_TEST_PROPOSITION</a> makes
+a condition out of a proposition.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>"Descriptions" express a state of something which is not directly specified,
+which again might, or might not, be true. For example, "an open door" is
+a description: some objects are, and some objects are not, open doors.
+</p>
+
+<p class="commentary">Descriptions are stored as propositions in predicate calculus with one
+free variable: the function <a href="2-dsc.html#SP1" class="internal">Descriptions::from_proposition</a> makes
+a description out of a proposition.
+</p>
+
+<p class="commentary">Note that the name of a kind, such as "number", can also be seen as a
+description: <a href="2-dsc.html#SP3" class="internal">Descriptions::from_kind</a> turns \(K\) into the description \(K(x)\).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Dash. </b>Suppose that a specification has been written in a particular context. Does
+it make sense there? This is what the <a href="2-dsh.html" class="internal">Dash</a> algorithm exists to check.
+</p>
+
+<p class="commentary">If all we needed to know was "is it okay to store an rvalue of kind \(K_1\) in
+an lvalue of kind \(K_2\)", then we could just use the functions in
+<a href="../kinds-module/2-tlok.html" class="internal">The Lattice of Kinds (in kinds)</a>. But specifications are more than just rvalues,
+so they need a wider set of checks. For example, if an author writes "if \(X\)",
+Dash has to check that \(X\) is indeed a condition. Inform authors get to
+know Dash pretty well, because it can issue nearly 100 different problem
+messages, including most of the ones authors run into most often.
+</p>
+
+<p class="commentary">Though Dash is used mainly to check tokens of phrases, it can also be used
+to verify individual specifications with direct function calls: for example,
+<a href="2-dsh.html#SP8" class="internal">Dash::check_condition</a> and <a href="2-dsh.html#SP8" class="internal">Dash::check_value</a> determine whether a
+specification is indeed a condition or an lvalue/rvalue of a given kind.
+</p>
+
+<p class="commentary">Dash aims to be pragmatic rather than clever<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>, and its goal is to issue
+good problem messages rather than, say, to have good running time on heroically
+large composite expressions &mdash; those essentially never arise in natural language.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> In particular it does not need a constraint-satisfaction algorithm, as is
+needed by the almost-Turing complete type systems in some languages.
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Literals. </b><a href="3-pl.html" class="internal">Chapter 3: Literals</a> then works through different ways to write constant values in
+source text, which we loosely call "literals". What makes them literal is that
+they explicitly state values rather than simply naming them. Thus "15" is a
+literal but "the score" is not, even if it is a variable which happens to have
+the value 15.
+</p>
+
+<p class="commentary">The linguistics module has built-in support for parsing numbers, so we don't
+need to do that basic digit-parsing here: see <a href="../linguistics-module/1-cao.html" class="internal">Cardinals and Ordinals (in linguistics)</a>
+for details. But we will also want <a href="3-ll.html" class="internal">Literal Lists</a> in braces, <a href="3-ul.html" class="internal">Unicode Literals</a>
+for character names, and <a href="3-tod.html" class="internal">Times of Day</a>; and also user-defined notations
+for user-defined kinds. For example:
+</p>
+
+<blockquote>
+    <p>16:9 specifies an aspect ratio.</p>
+</blockquote>
+
+<p class="commentary">would establish a new notation for the kind "aspect ratio", supposing that
+had already been created. See <a href="3-lp.html" class="internal">Literal Patterns</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Grammar. </b>What remains, then, is the general Preform grammar for Inform's expressions
+and conditions &mdash; the so-called "S-parser", since it produces specifications.
+This is the content of <a href="4-ets.html" class="internal">Chapter 4: The S-Parser</a>.
+</p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-vm.html">1</a></li><li class="progresschapter"><a href="2-spc.html">2</a></li><li class="progresschapter"><a href="3-lp.html">3</a></li><li class="progresschapter"><a href="4-its.html">4</a></li><li class="progresschapter"><a href="5-tl.html">5</a></li><li class="progresschapter"><a href="6-lc.html">6</a></li><li class="progresschapter"><a href="7-eqt.html">7</a></li><li class="progressnext"><a href="1-vm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-vm.html">1</a></li><li class="progresschapter"><a href="2-spc.html">2</a></li><li class="progresschapter"><a href="3-pl.html">3</a></li><li class="progresschapter"><a href="4-ets.html">4</a></li><li class="progressnext"><a href="1-vm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

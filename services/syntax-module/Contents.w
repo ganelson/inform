@@ -18,6 +18,7 @@ Chapter 2: The Parse Tree
 	Parse Nodes
 	Node Annotations
 	Tree Verification
+	Simple Preform Cache
 
 Chapter 3: Breaking into Sentences
 	Sentences

@@ -85,7 +85,7 @@ foundation module does that automatically.)
 COMPILE_WRITER(action_pattern *, PL::Actions::Patterns::log)
 COMPILE_WRITER(grammar_verb *, PL::Parsing::Verbs::log)
 COMPILE_WRITER(grammar_line *, PL::Parsing::Lines::log)
-COMPILE_WRITER(action_name_list *, PL::Actions::Lists::log)
+COMPILE_WRITER(action_name_list *, PL::Actions::ConstantLists::log)
 COMPILE_WRITER(action_name *, PL::Actions::log)
 
 void IFModule::start(void) {
@@ -123,7 +123,7 @@ void IFModule::end(void) {
 	REGISTER_WRITER('A', PL::Actions::Patterns::log);
 	REGISTER_WRITER('G', PL::Parsing::Verbs::log);
 	REGISTER_WRITER('g', PL::Parsing::Lines::log);
-	REGISTER_WRITER('L', PL::Actions::Lists::log);
+	REGISTER_WRITER('L', PL::Actions::ConstantLists::log);
 	REGISTER_WRITER('l', PL::Actions::log);
 
 @ This module uses |syntax|, and adds two node types to the syntax tree:

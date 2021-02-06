@@ -139,7 +139,7 @@ it can be applied.
 
 @<Disallow the past tenses in relative clauses@> =
 	#ifdef CORE_MODULE
-	ExParser::Subtrees::throw_past_problem(FALSE);
+	SParser::Subtrees::throw_past_problem(FALSE);
 	#endif
 
 @ First Rule. The "meaning" of a noun phrase is a pair $(\phi, t)$,

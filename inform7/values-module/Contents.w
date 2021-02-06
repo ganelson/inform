@@ -1,6 +1,6 @@
 Title: values
 Author: Graham Nelson
-Purpose: Representing and parsing values, descriptions and specifications.
+Purpose: Representing and parsing values, descriptions and conditions.
 Language: InC
 Licence: Artistic License 2.0
 
@@ -12,9 +12,7 @@ Chapter 1: Configuration and Control
 	Meaning Codes
 
 Chapter 2: Specifications
-"In which the meanings of excerpts are systematically catalogued according to
-what they specify; a categorisation much broader than working out kinds of
-value, since it applies to a much broader range of excerpts than values."
+"An umbrella category for ways to describe data or its nature."
 	Specifications
 	Rvalues
 	Lvalues
@@ -22,41 +20,19 @@ value, since it applies to a much broader range of excerpts than values."
 	Descriptions
 	Dash
 
-Chapter 3: Nouns
-"Nouns, mainly proper, and notations for constant values such as 10:03 AM, six,
-34 kg, and so on."
+Chapter 3: Literals
+"Notations for explicit values such as 10:03 AM, six, 34 kg, and so on."
+	Parsing Literals
 	Literal Patterns
+	Literal Real Numbers
 	Times of Day
 	Unicode Literals
-	Using Nametags
-	Instances
-	Nonlocal Variables
+	Literal Lists
 
 Chapter 4: The S-Parser
-"In which the S-parser is put to work: excerpts of several words at a time
-are assigned meanings, and compound statements formed of these are parsed,
-producing lists of possible interpretations."
-	Introduction to Semantics
-	Architecture of the S-Parser
-	Parse Literals
+"Preform grammar to turn natural language text into specifications."
+	Enter the S-Parser
 	Constants and Descriptions
 	Type Expressions and Values
 	Verbal and Relative Clauses
 	Conditions and Phrases
-
-Chapter 5: Text Data
-"Text literals, which may be constant strings, or may be functions in order
-to implement substitutions."
-	Text Literals
-	Text Substitutions
-	Responses
-
-Chapter 6: Lists and Tables
-	List Constants
-	Table Columns
-	Tables
-	Listed-In Relations
-
-Chapter 7: Equations
-"Simple mathematical or scientific equations, which can be solved at run-time."
-	Equations

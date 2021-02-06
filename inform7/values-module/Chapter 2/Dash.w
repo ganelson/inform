@@ -1,7 +1,6 @@
 [Dash::] Dash.
 
-Dash is the part of Inform most nearly like a typechecker in a
-conventional compiler.
+The part of Inform most nearly like a typechecker in a conventional compiler.
 
 @ Dash is the second typechecking algorithm to be used in Inform, installed in
 early 2015: the first had served since 2003, but became unwieldy after so many
@@ -30,15 +29,15 @@ the arguments can also be proved. There are several valid interpretations of
 "let ... be ...", and these are all present in the parse tree as alternative
 interpretations, so the typechecker tries each in turn, accepting one (or
 more) if the arguments can be proved to be of the right type. This means
-proving that argument 0 ("the score") matches a generic |NONLOCAL_VARIABLE_NT|
-and also that argument 1 ("the score plus 10") matches a generic rvalue. A
-further rule requires that the kind of value of argument 1 must match the kind
-of value stored in the variable, here a "number", so we must prove that too.
-Now "plus" is polymorphic and can produce different kinds of value depending
-on the kinds of value it acts upon, so again we must check all possible
-interpretations. But we finally succeed in showing that "score" is an lvalue,
-"10" is a number, "score" is also a number, and that "plus" on two numbers
-gives a number, so we complete the proof and the phrase is proved correct.
+proving that argument 0 ("the score") is an lvalue and also that argument 1
+("the score plus 10") is an rvalue. A further rule requires that the kind of
+value of argument 1 must match the kind of value stored in the variable, here
+a "number", so we must prove that too. Now "plus" is polymorphic and can
+produce different kinds of value depending on the kinds of value it acts upon,
+so again we must check all possible interpretations. But we finally succeed in
+showing that "score" is an lvalue, "10" is a number, "score" is also a number,
+and that "plus" on two numbers gives a number, so we complete the proof and
+the phrase is proved correct.
 
 @ When issuing problems, we show a form of backtrace so that the user can
 see what we've considered, and this is used to accumulate data for that.
@@ -60,11 +59,15 @@ setting of kind variables. This suite is called the "dashboard".
 First, we keep track of the problem messages we will issue, if any, using
 a bitmap made up of the following modes:
 
-@d BEGIN_DASH_MODE			int s_dm = dash_mode; kind **s_kvc = kind_of_var_to_create; parse_node *s_invl = Dash_ambiguity_list;
+@d BEGIN_DASH_MODE			int s_dm = dash_mode;
+							kind **s_kvc = kind_of_var_to_create;
+							parse_node *s_invl = Dash_ambiguity_list;
 @d DASH_MODE_ENTER(mode)	dash_mode |= mode;
 @d DASH_MODE_CREATE(K)		kind_of_var_to_create = K;
 @d DASH_MODE_EXIT(mode)		dash_mode &= (~mode);
-@d END_DASH_MODE			dash_mode = s_dm; kind_of_var_to_create = s_kvc; Dash_ambiguity_list = s_invl;
+@d END_DASH_MODE			dash_mode = s_dm;
+							kind_of_var_to_create = s_kvc;
+							Dash_ambiguity_list = s_invl;
 @d TEST_DASH_MODE(mode)		(dash_mode & mode)
 
 @d ISSUE_PROBLEMS_DMODE     		0x00000001 /* rather than keep silent about them */
@@ -115,10 +118,11 @@ invocations.
 kind_variable_declaration *most_recent_interpretation = NULL;
 parse_node *Dash_ambiguity_list = NULL;
 
-@ We need careful debug logging of what Dash does. During Inform's infancy, it
-was not so much that this was the great habitat and breeding ground for bugs;
-more that those bugs which were here were by far the hardest to root out. So
-careful logging on demand is vital.
+@ We need careful debug logging of what Dash does. During Inform's infancy, the
+type checker was the hardest thing to debug, but that wasn't so much because
+this was the great habitat and breeding ground for bugs; it was more that those
+bugs which were here were by far the hardest to root out. So careful logging
+on demand is vital.
 
 Each call to the recursive Dash has its own unique ID number, to make logging
 more legible.
@@ -217,10 +221,10 @@ the backtrace if the inner routine should throw a problem message.
 The recursion limit below is clearly arbitrary, but is there to prevent the
 algorithm from slowing Inform unacceptably in the event of something like
 
->> say  g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g / g;
+>> say  g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g + g;
 
 where "g" is a term Inform doesn't recognise, because otherwise this will
-recurse through every possible interpretation of the divide sign (i.e. every
+recurse through every possible interpretation of the plus sign (i.e. every
 possible order of operations).
 
 @d MAX_DASH_RECURSION 10000
@@ -2104,7 +2108,7 @@ and decide that K should be "text".
 	if (initial_value)
 		@<Where no kind was explicitly stated, infer this from the supplied initial value@>;
 
-@ Unusually, it's legal for the initial value to be a generic constant --
+@ Unusually, it's legal for the initial value to be a kind --
 
 >> let the magic digraph be a text;
 

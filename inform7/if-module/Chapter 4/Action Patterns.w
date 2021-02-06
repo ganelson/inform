@@ -216,7 +216,7 @@ void PL::Actions::Patterns::log(action_pattern *ap) {
 		else LOG("  [Valid]");
 		LOG("  Action: ");
 		if (ap->action == NULL) LOG("unspecified");
-		else PL::Actions::Lists::log_briefly(ap->action);
+		else PL::Actions::ConstantLists::log_briefly(ap->action);
 		if (ap->noun_spec) LOG("  Noun: $P", ap->noun_spec);
 		if (ap->second_spec) LOG("  Second: $P", ap->second_spec);
 		if (ap->from_spec) LOG("  From: $P", ap->from_spec);
@@ -240,7 +240,7 @@ void PL::Actions::Patterns::write(OUTPUT_STREAM, action_pattern *ap) {
 	else {
 		WRITE("<action: ");
 		if (ap->action == NULL) WRITE("unspecified");
-		else PL::Actions::Lists::log_briefly(ap->action);
+		else PL::Actions::ConstantLists::log_briefly(ap->action);
 		if (ap->noun_spec) WRITE(" noun: %P", ap->noun_spec);
 		if (ap->second_spec) WRITE(" second: %P", ap->second_spec);
 		if (ap->from_spec) WRITE(" from: %P", ap->from_spec);
@@ -790,7 +790,7 @@ box" makes no sense since only one is transitive).
 <ap-common-core-inner-inner-inner> internal {
 	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (scanning_anl_only_mode) {
-		action_name_list *anl = PL::Actions::Lists::parse(W, prevailing_ap_tense);
+		action_name_list *anl = PL::Actions::ConstantLists::parse(W, prevailing_ap_tense);
 		if (anl == NULL) { ==> { fail nonterminal }; }
 		action_pattern ap = PL::Actions::Patterns::new(); ap.valid = TRUE;
 		ap.text_of_pattern = W;
@@ -899,9 +899,9 @@ away as they are recorded.
 
 @<PAR - (f) Parse Special Going Clauses@> =
 	action_name_list *preliminary_anl =
-		PL::Actions::Lists::parse(W, tense);
+		PL::Actions::ConstantLists::parse(W, tense);
 	action_name *chief_an =
-		PL::Actions::Lists::get_single_action(preliminary_anl);
+		PL::Actions::ConstantLists::get_single_action(preliminary_anl);
 	if (chief_an == NULL) {
 		int x;
 		chief_an = PL::Actions::longest_null(W, tense, &x);
@@ -936,7 +936,7 @@ e.g., from "taking or dropping something", that it will be
 taking or dropping.
 
 @<PAR - (i) Parse Initial Action Name List@> =
-	anl = PL::Actions::Lists::parse(W, tense);
+	anl = PL::Actions::ConstantLists::parse(W, tense);
 	if (anl == NULL) goto Failed;
 	LOGIF(ACTION_PATTERN_PARSING, "ANL from PAR(i):\n$L\n", anl);
 
@@ -1334,7 +1334,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.4.1 - Action/How/What Happens";
 
-	rv = PL::Actions::Lists::compare_specificity(ap1->action, ap2->action);
+	rv = PL::Actions::ConstantLists::compare_specificity(ap1->action, ap2->action);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.5.1 - Action/When/Duration";
@@ -1395,7 +1395,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 		spec1 = Rvalues::from_wording(Node::get_text(spec1));
 
 	action_name_list *anl = ap->action;
-	action_name *an = PL::Actions::Lists::get_singleton_action(anl);
+	action_name *an = PL::Actions::ConstantLists::get_singleton_action(anl);
 	LOGIF(EXPRESSIONS, "Compiling from action name list:\n$L\n", anl);
 
 	int flag_bits = 0;
@@ -1655,12 +1655,11 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 
 @ =
 void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *ap) {
-	package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
-	inter_name *N = Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
+	inter_name *N = Kinds::RunTime::new_block_constant_iname();
 	packaging_state save = Emit::named_late_array_begin(N, K_value);
 
 	Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
-	action_name *an = PL::Actions::Lists::get_singleton_action(ap->action);
+	action_name *an = PL::Actions::ConstantLists::get_singleton_action(ap->action);
 	Emit::array_action_entry(an);
 
 	int request_bits = ap->request;
@@ -1668,7 +1667,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->noun_spec, K_understanding))) {
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC)
-			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ap->noun_spec));
+			literal_text *lt = TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ap->noun_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 			DISCARD_TEXT(BC)
 		} else Specifications::Compiler::emit(ap->noun_spec);
@@ -1678,7 +1677,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 	if (ap->second_spec) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ap->second_spec, K_understanding))) {
 			request_bits = request_bits | 32;
-			literal_text *lt = Strings::TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ap->second_spec));
+			literal_text *lt = TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ap->second_spec));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 		} else Specifications::Compiler::emit(ap->second_spec);
 	} else {
@@ -1901,7 +1900,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	int range_to_compile = 0;
 	LocalVariables::begin_condition_emit();
 
-	if (PL::Actions::Lists::negated(ap.action)) {
+	if (PL::Actions::ConstantLists::negated(ap.action)) {
 		if (ranges_count[0] > 0) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
@@ -1972,7 +1971,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	}
 
 	if ((ranges_count[0] + ranges_count[1] + ranges_count[2] + ranges_count[3] == 0) &&
-		(PL::Actions::Lists::negated(ap.action) == FALSE)) {
+		(PL::Actions::ConstantLists::negated(ap.action) == FALSE)) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 	}
 	LocalVariables::end_condition_emit();
@@ -2031,7 +2030,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, ap.actor_spec, K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
-			PL::Actions::Lists::emit(ap.action);
+			PL::Actions::ConstantLists::emit(ap.action);
 			break;
 		case NOUN_EXISTS_CPMC:
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));

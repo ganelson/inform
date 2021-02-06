@@ -265,7 +265,7 @@ inter_node_list *Inter::Warehouse::get_frame_list(inter_warehouse *warehouse, in
 inter_ti Inter::Warehouse::create_frame_list(inter_warehouse *warehouse) {
 	inter_ti n = Inter::Warehouse::create_resource(warehouse);
 	warehouse->stored_resources[n].irsrc = FRAME_LIST_IRSRC;
-	warehouse->stored_resources[n].stored_frame_list = Inter::Lists::new();
+	warehouse->stored_resources[n].stored_frame_list = Inter::ConstantLists::new();
 	return n;
 }
 

@@ -1,8 +1,10 @@
-[Rvalues::] RValues.
+[Rvalues::] Rvalues.
 
-Utility functions for specifications representing rvalues.
+Specific values which can be stored or used at run-time.
 
 @h Testing.
+An "rvalue" is a specification of an single piece of data, such as a number,
+a text or a choice of object. This detects whether a specification is one:
 
 =
 int Rvalues::is_rvalue(parse_node *pn) {
@@ -11,7 +13,7 @@ int Rvalues::is_rvalue(parse_node *pn) {
 	return FALSE;
 }
 
-@h Constants.
+@h Named constants.
 Constant nodes can store references to many of the structures in this compiler:
 for example, each |table *| pointer in Inform corresponds to a constant node
 representing the name of that table.
@@ -28,7 +30,8 @@ pointers:
 
 =
 #ifdef IF_MODULE
-parse_node *Rvalues::from_action_name(action_name *val) { CONV_FROM(action_name, K_action_name) }
+parse_node *Rvalues::from_action_name(action_name *val) { 
+		CONV_FROM(action_name, K_action_name) }
 parse_node *Rvalues::from_action_pattern(action_pattern *val) {
 	if (((PL::Actions::Patterns::is_unspecific(val) == FALSE) &&
 		(PL::Actions::Patterns::is_overspecific(val) == FALSE)) ||
@@ -38,22 +41,37 @@ parse_node *Rvalues::from_action_pattern(action_pattern *val) {
 		CONV_FROM(action_pattern, K_description_of_action);
 	}
 }
-parse_node *Rvalues::from_grammar_verb(grammar_verb *val) { CONV_FROM(grammar_verb, K_understanding) }
-parse_node *Rvalues::from_named_action_pattern(named_action_pattern *val) { CONV_FROM(named_action_pattern, K_nil) }
-parse_node *Rvalues::from_scene(scene *val) { CONV_FROM(scene, K_scene) }
+parse_node *Rvalues::from_grammar_verb(grammar_verb *val) { 
+		CONV_FROM(grammar_verb, K_understanding) }
+parse_node *Rvalues::from_named_action_pattern(named_action_pattern *val) { 
+		CONV_FROM(named_action_pattern, K_nil) }
+parse_node *Rvalues::from_scene(scene *val) { 
+		CONV_FROM(scene, K_scene) }
 #endif
-parse_node *Rvalues::from_activity(activity *val) { CONV_FROM(activity, Activities::to_kind(val)) }
-parse_node *Rvalues::from_binary_predicate(binary_predicate *val) { CONV_FROM(binary_predicate, Kinds::base_construction(CON_relation)) }
-parse_node *Rvalues::from_constant_phrase(constant_phrase *val) { CONV_FROM(constant_phrase, Kinds::base_construction(CON_phrase)) }
-parse_node *Rvalues::from_equation(equation *val) { CONV_FROM(equation, K_equation) }
-parse_node *Rvalues::from_named_rulebook_outcome(named_rulebook_outcome *val) { CONV_FROM(named_rulebook_outcome, K_rulebook_outcome) }
-parse_node *Rvalues::from_property(property *val) { CONV_FROM(property, Properties::to_kind(val)) }
-parse_node *Rvalues::from_rule(rule *val) { CONV_FROM(rule, Rules::to_kind(val)) }
-parse_node *Rvalues::from_rulebook(rulebook *val) { CONV_FROM(rulebook, Rulebooks::to_kind(val)) }
-parse_node *Rvalues::from_table(table *val) { CONV_FROM(table, K_table) }
-parse_node *Rvalues::from_table_column(table_column *val) { CONV_FROM(table_column, Tables::Columns::to_kind(val)) }
-parse_node *Rvalues::from_use_option(use_option *val) { CONV_FROM(use_option, K_use_option) }
-parse_node *Rvalues::from_verb_form(verb_form *val) { CONV_FROM(verb_form, K_verb) }
+parse_node *Rvalues::from_activity(activity *val) { 
+		CONV_FROM(activity, Activities::to_kind(val)) }
+parse_node *Rvalues::from_binary_predicate(binary_predicate *val) { 
+		CONV_FROM(binary_predicate, Kinds::base_construction(CON_relation)) }
+parse_node *Rvalues::from_constant_phrase(constant_phrase *val) { 
+		CONV_FROM(constant_phrase, Kinds::base_construction(CON_phrase)) }
+parse_node *Rvalues::from_equation(equation *val) { 
+		CONV_FROM(equation, K_equation) }
+parse_node *Rvalues::from_named_rulebook_outcome(named_rulebook_outcome *val) { 
+		CONV_FROM(named_rulebook_outcome, K_rulebook_outcome) }
+parse_node *Rvalues::from_property(property *val) { 
+		CONV_FROM(property, Properties::to_kind(val)) }
+parse_node *Rvalues::from_rule(rule *val) { 
+		CONV_FROM(rule, Rules::to_kind(val)) }
+parse_node *Rvalues::from_rulebook(rulebook *val) { 
+		CONV_FROM(rulebook, Rulebooks::to_kind(val)) }
+parse_node *Rvalues::from_table(table *val) { 
+		CONV_FROM(table, K_table) }
+parse_node *Rvalues::from_table_column(table_column *val) { 
+		CONV_FROM(table_column, Tables::Columns::to_kind(val)) }
+parse_node *Rvalues::from_use_option(use_option *val) { 
+		CONV_FROM(use_option, K_use_option) }
+parse_node *Rvalues::from_verb_form(verb_form *val) { 
+		CONV_FROM(verb_form, K_verb) }
 
 @ Contrariwise, here's how to get back again:
 
@@ -64,24 +82,41 @@ parse_node *Rvalues::from_verb_form(verb_form *val) { CONV_FROM(verb_form, K_ver
 
 =
 #ifdef IF_MODULE
-action_name *Rvalues::to_action_name(parse_node *spec) { CONV_TO(action_name) }
-action_pattern *Rvalues::to_action_pattern(parse_node *spec) { CONV_TO(action_pattern) }
-grammar_verb *Rvalues::to_grammar_verb(parse_node *spec) { CONV_TO(grammar_verb) }
-named_action_pattern *Rvalues::to_named_action_pattern(parse_node *spec) { CONV_TO(named_action_pattern) }
-scene *Rvalues::to_scene(parse_node *spec) { CONV_TO(scene) }
+action_name *Rvalues::to_action_name(parse_node *spec) { 
+		CONV_TO(action_name) }
+action_pattern *Rvalues::to_action_pattern(parse_node *spec) { 
+		CONV_TO(action_pattern) }
+grammar_verb *Rvalues::to_grammar_verb(parse_node *spec) { 
+		CONV_TO(grammar_verb) }
+named_action_pattern *Rvalues::to_named_action_pattern(parse_node *spec) { 
+		CONV_TO(named_action_pattern) }
+scene *Rvalues::to_scene(parse_node *spec) { 
+		CONV_TO(scene) }
 #endif
-activity *Rvalues::to_activity(parse_node *spec) { CONV_TO(activity) }
-binary_predicate *Rvalues::to_binary_predicate(parse_node *spec) { CONV_TO(binary_predicate) }
-constant_phrase *Rvalues::to_constant_phrase(parse_node *spec) { CONV_TO(constant_phrase) }
-equation *Rvalues::to_equation(parse_node *spec) { CONV_TO(equation) }
-named_rulebook_outcome *Rvalues::to_named_rulebook_outcome(parse_node *spec) { CONV_TO(named_rulebook_outcome) }
-property *Rvalues::to_property(parse_node *spec) { CONV_TO(property) }
-rule *Rvalues::to_rule(parse_node *spec) { CONV_TO(rule) }
-rulebook *Rvalues::to_rulebook(parse_node *spec) { CONV_TO(rulebook) }
-table *Rvalues::to_table(parse_node *spec) { CONV_TO(table) }
-table_column *Rvalues::to_table_column(parse_node *spec) { CONV_TO(table_column) }
-use_option *Rvalues::to_use_option(parse_node *spec) { CONV_TO(use_option) }
-verb_form *Rvalues::to_verb_form(parse_node *spec) { CONV_TO(verb_form) }
+activity *Rvalues::to_activity(parse_node *spec) { 
+		CONV_TO(activity) }
+binary_predicate *Rvalues::to_binary_predicate(parse_node *spec) { 
+		CONV_TO(binary_predicate) }
+constant_phrase *Rvalues::to_constant_phrase(parse_node *spec) { 
+		CONV_TO(constant_phrase) }
+equation *Rvalues::to_equation(parse_node *spec) { 
+		CONV_TO(equation) }
+named_rulebook_outcome *Rvalues::to_named_rulebook_outcome(parse_node *spec) { 
+		CONV_TO(named_rulebook_outcome) }
+property *Rvalues::to_property(parse_node *spec) { 
+		CONV_TO(property) }
+rule *Rvalues::to_rule(parse_node *spec) { 
+		CONV_TO(rule) }
+rulebook *Rvalues::to_rulebook(parse_node *spec) { 
+		CONV_TO(rulebook) }
+table *Rvalues::to_table(parse_node *spec) { 
+		CONV_TO(table) }
+table_column *Rvalues::to_table_column(parse_node *spec) { 
+		CONV_TO(table_column) }
+use_option *Rvalues::to_use_option(parse_node *spec) { 
+		CONV_TO(use_option) }
+verb_form *Rvalues::to_verb_form(parse_node *spec) { 
+		CONV_TO(verb_form) }
 
 @
 
@@ -100,7 +135,8 @@ parse_node *Rvalues::from_instance(instance *I) {
 	return val;
 }
 
-instance *Rvalues::to_instance(parse_node *spec) { CONV_TO(instance) }
+instance *Rvalues::to_instance(parse_node *spec) { 
+		CONV_TO(instance) }
 
 @ An instance of a subkind of |K_object| is called an "object":
 
@@ -227,7 +263,7 @@ int Rvalues::to_boolean(parse_node *spec) {
 @ And Unicode character values.
 
 =
-parse_node *Rvalues::from_Unicode_point(int code_point, wording W) {
+parse_node *Rvalues::from_Unicode(int code_point, wording W) {
 	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
 	Node::set_kind_of_value(spec, K_unicode_character);
 	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
@@ -247,14 +283,14 @@ reduced modulo 1440, the number of minutes in a day.
 =
 parse_node *Rvalues::from_time(int minutes_since_midnight, wording W) {
 	parse_node *spec = Node::new_with_words(CONSTANT_NT, W);
-	Node::set_kind_of_value(spec, PL::TimesOfDay::kind());
+	Node::set_kind_of_value(spec, TimesOfDay::kind());
 	Annotations::write_int(spec, explicit_literal_ANNOT, TRUE);
 	Annotations::write_int(spec, constant_number_ANNOT, minutes_since_midnight);
 	return spec;
 }
 
 int Rvalues::to_time(parse_node *spec) {
-	if (Rvalues::is_CONSTANT_of_kind(spec, PL::TimesOfDay::kind()))
+	if (Rvalues::is_CONSTANT_of_kind(spec, TimesOfDay::kind()))
 		return Annotations::read_int(spec, constant_number_ANNOT);
 	return 0;
 }
@@ -407,7 +443,8 @@ int Rvalues::compare_CONSTANT(parse_node *spec1, parse_node *spec2) {
 	}
 	switch (Kinds::Behaviour::get_constant_compilation_method(K1)) {
 		case LITERAL_CCM:
-			if (Rvalues::to_encoded_notation(spec1) == Rvalues::to_encoded_notation(spec2)) return TRUE;
+			if (Rvalues::to_encoded_notation(spec1) ==
+				Rvalues::to_encoded_notation(spec2)) return TRUE;
 			return FALSE;
 		case NAMED_CONSTANT_CCM: {
 			instance *I1 = Rvalues::to_instance(spec1);
@@ -498,11 +535,6 @@ kind *Rvalues::to_kind(parse_node *spec) {
 	internal_error("unknown evaluating VALUE type"); return NULL;
 }
 
-@ This is trickier than it looks. What kind shall we say that the constants
-"nothing", "Cobbled Crawl", or "animal" have? The answer is the
-narrowest we can: "nothing" comes out as "object", "Cobbled Crawl"
-as "room" (a kind of object), "animal" as itself (ditto).
-
 @<Work out the kind for a constant object@> =
 	if (Annotations::read_int(spec, self_object_ANNOT)) return K_object;
 	else if (Annotations::read_int(spec, nothing_object_ANNOT)) return K_object;
@@ -510,8 +542,6 @@ as "room" (a kind of object), "animal" as itself (ditto).
 		instance *I = Rvalues::to_instance(spec);
 		if (I) return Instances::to_kind(I);
 	}
-
-@ Not a base kind:
 
 @<Work out the kind for a constant relation@> =
 	binary_predicate *bp = Rvalues::to_binary_predicate(spec);
@@ -565,10 +595,12 @@ some problem message.
 		phrase *ph = Node::get_phrase_invoked(deciding_inv);
 		if ((ph) && (Phrases::TypeData::get_mor(&(ph->type_data)) == DECIDES_VALUE_MOR)) {
 			if (Phrases::TypeData::return_decided_dimensionally(&(ph->type_data))) {
-				if (Node::get_kind_resulting(deciding_inv)) return Node::get_kind_resulting(deciding_inv);
+				if (Node::get_kind_resulting(deciding_inv))
+					return Node::get_kind_resulting(deciding_inv);
 				return K_value;
 			} else {
-				if (Node::get_kind_resulting(deciding_inv)) return Node::get_kind_resulting(deciding_inv);
+				if (Node::get_kind_resulting(deciding_inv))
+					return Node::get_kind_resulting(deciding_inv);
 				kind *K = Phrases::TypeData::get_return_kind(&(ph->type_data));
 				if (Kinds::Behaviour::definite(K) == FALSE) return K_value;
 				return K;
@@ -665,7 +697,7 @@ kinds of value:
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_list_of) {
-		inter_name *N = Lists::compile_literal_list(Node::get_text(spec_found));
+		inter_name *N = ConstantLists::compile_literal_list(Node::get_text(spec_found));
 		if (N) Emit::holster(VH, N);
 		return;
 	}
@@ -775,13 +807,15 @@ kinds of value:
 
 @ The interesting, read "unfortunate", case is that of constant property
 names. The curiosity here is that it's legal to store the nameless negation
-of an either/or property in a "property" constant. This is purely so that
+of an either/or property in a "property" constant. This was purely so that
 the following ungainly syntax works:
 
 >> change X to not P;
 
-Recall that in Inform 6 syntax, an attribute |attr| can be negated in sense
-in several contexts by using a tilde: |~attr|.
+Which is now gone anyway, in favour of "now", where all this is handled
+better. The feature, of we can call it that, probably derives from the fact
+that Inform 6 allows an attribute |attr| can be negated in sense in several
+contexts by using a tilde: |~attr|.
 
 @<Compile property constants@> =
 	property *prn = Rvalues::to_property(spec_found);

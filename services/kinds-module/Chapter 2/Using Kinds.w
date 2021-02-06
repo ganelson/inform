@@ -315,8 +315,8 @@ int Kinds::Behaviour::scale_factor(kind *K) {
 	if (K == NULL) return 1;
 	if (K->intermediate_result)
 		return Kinds::Dimensions::us_get_scaling_factor(K->intermediate_result);
-	#ifdef LITERAL_PATTERNS
-	return LiteralPatterns::scale_factor(K);
+	#ifdef DETERMINE_SCALE_FACTOR_KINDS_CALLBACK
+	return DETERMINE_SCALE_FACTOR_KINDS_CALLBACK(K);
 	#else
 	return 1;
 	#endif

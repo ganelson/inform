@@ -1,4 +1,4 @@
-[ExParser::] Type Expressions and Values.
+[SParser::] Type Expressions and Values.
 
 To parse two forms of noun: a noun phrase in a sentence, and a
 description of what text can be written in a given situation.
@@ -236,28 +236,28 @@ membership, which is to say, really just a syntactic difference.
 =
 <s-value-uncached> ::=
 	( <s-value-uncached> ) |                                            ==> { pass 1 }
-	<s-variable> |                                                      ==> { -, ExParser::val(RP[1], W) }
-	<if-table-column-expected> <s-table-column-name> |                  ==> { -, ExParser::val(RP[2], W) }
-	<if-property-name-expected> <s-property-name> |                     ==> { -, ExParser::val(RP[2], W) }
-	<s-constant-value>	|                                               ==> { -, ExParser::val(RP[1], W) }
+	<s-variable> |                                                      ==> { -, SParser::val(RP[1], W) }
+	<if-table-column-expected> <s-table-column-name> |                  ==> { -, SParser::val(RP[2], W) }
+	<if-property-name-expected> <s-property-name> |                     ==> { -, SParser::val(RP[2], W) }
+	<s-constant-value>	|                                               ==> { -, SParser::val(RP[1], W) }
 	<s-equation-usage> |                                                ==> { pass 1 }
-	<s-property-name> |                                                 ==> { -, ExParser::val(RP[1], W) }
-	<s-action-pattern-as-value> |                                       ==> { -, ExParser::val(RP[1], W) }
-	<s-value-phrase-non-of> |                                           ==> { -, ExParser::val(RP[1], W) }
-	<s-adjective-list-as-desc> |                                        ==> { -, ExParser::val(RP[1], W) }
-	<s-purely-physical-description> |                                   ==> { -, ExParser::val(RP[1], W) }
-	<s-table-reference> |                                               ==> { -, ExParser::val(RP[1], W) }
-	member/members of <s-description> |                                 ==> { -, ExParser::val(RP[1], W) }
-	member/members of <s-local-variable> |                              ==> { -, ExParser::val(RP[1], W) }
+	<s-property-name> |                                                 ==> { -, SParser::val(RP[1], W) }
+	<s-action-pattern-as-value> |                                       ==> { -, SParser::val(RP[1], W) }
+	<s-value-phrase-non-of> |                                           ==> { -, SParser::val(RP[1], W) }
+	<s-adjective-list-as-desc> |                                        ==> { -, SParser::val(RP[1], W) }
+	<s-purely-physical-description> |                                   ==> { -, SParser::val(RP[1], W) }
+	<s-table-reference> |                                               ==> { -, SParser::val(RP[1], W) }
+	member/members of <s-description> |                                 ==> { -, SParser::val(RP[1], W) }
+	member/members of <s-local-variable> |                              ==> { -, SParser::val(RP[1], W) }
 	<s-property-name> of <s-value-uncached> |                           ==> @<Make a belonging-to-V property@>
 	<if-pronoun-present> <possessive-third-person> <s-property-name> |  ==> @<Make a belonging-to-it property@>
 	entry <s-value-uncached> of/in/from <s-value-uncached> |            ==> @<Make a list entry@>
-	<s-description> |                                                   ==> { -, ExParser::val(RP[1], W) }
-	<s-table-column-name> |                                             ==> { -, ExParser::val(RP[1], W) }
-	<s-value-phrase>                                                    ==> { -, ExParser::val(RP[1], W) }
+	<s-description> |                                                   ==> { -, SParser::val(RP[1], W) }
+	<s-table-column-name> |                                             ==> { -, SParser::val(RP[1], W) }
+	<s-value-phrase>                                                    ==> { -, SParser::val(RP[1], W) }
 
 @ =
-parse_node *ExParser::val(parse_node *v, wording W) {
+parse_node *SParser::val(parse_node *v, wording W) {
 	Node::set_text(v, W);
 	return v;
 }
@@ -274,7 +274,7 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	Equations::set_wherewithal(eqn, Node::get_text((parse_node *) RP[3]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, ExParser::val(eq, W) };
+	==> { -, SParser::val(eq, W) };
 
 @<Make an equation, if the kinds are right@> =
 	parse_node *p = RP[1];
@@ -284,32 +284,32 @@ parse_node *ExParser::val(parse_node *v, wording W) {
 	Equations::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, ExParser::val(eq, W) };
+	==> { -, SParser::val(eq, W) };
 
 @<Make an inline equation@> =
 	equation *eqn = Equations::new(Node::get_text((parse_node *) RP[2]), TRUE);
 	parse_node *eq = Rvalues::from_equation(eqn);
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
-	==> { -, ExParser::val(eq, W) };
+	==> { -, SParser::val(eq, W) };
 
 
 @<Make a belonging-to-it property@> =
 	parse_node *lvspec =
 		Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 			LocalVariables::it_variable());
-	parse_node *val = ExParser::val(lvspec, EMPTY_WORDING);
-	==> { -, ExParser::val(ExParser::p_o_val(RP[3], val), W) };
+	parse_node *val = SParser::val(lvspec, EMPTY_WORDING);
+	==> { -, SParser::val(SParser::p_o_val(RP[3], val), W) };
 
 @<Make a belonging-to-V property@> =
-	==> { -, ExParser::val(ExParser::p_o_val(RP[1], RP[2]), W) };
+	==> { -, SParser::val(SParser::p_o_val(RP[1], RP[2]), W) };
 
 @<Make a list entry@> =
 	parse_node *val = Lvalues::new_LIST_ENTRY(RP[2], RP[1]);
-	==> { -, ExParser::val(val, W) };
+	==> { -, SParser::val(val, W) };
 
 @ =
-parse_node *ExParser::p_o_val(parse_node *A, parse_node *B) {
+parse_node *SParser::p_o_val(parse_node *A, parse_node *B) {
 	parse_node *pts =
 		(Node::get_type(A) == UNKNOWN_NT) ?
 			Specifications::new_UNKNOWN(Node::get_text(A)) :
@@ -346,11 +346,11 @@ the text "grand total" is parsed as the local.
 
 <s-nonglobal-variable> ::=
 	( <s-nonglobal-variable> ) |  ==> { pass 1 }
-	<s-local-variable> |          ==> { -, ExParser::val(RP[1], W) }
-	<s-stacked-variable>          ==> { -, ExParser::val(RP[1], W) }
+	<s-local-variable> |          ==> { -, SParser::val(RP[1], W) }
+	<s-stacked-variable>          ==> { -, SParser::val(RP[1], W) }
 
 <s-variable-as-value> ::=
-	<s-variable>                  ==> { -, ExParser::val(RP[1], W) }
+	<s-variable>                  ==> { -, SParser::val(RP[1], W) }
 
 @ This requires three internals:
 
@@ -418,7 +418,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	word_to_suppress_in_phrases = suppression;
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		ExParser::add_ilist(spec, p);
+		SParser::add_ilist(spec, p);
 		==> { -, spec }; return TRUE;
 	}
 	==> { fail nonterminal };
@@ -429,7 +429,7 @@ vocabulary_entry *property_word_to_suppress = NULL;
 	parse_node *p = Lexicon::retrieve(VALUE_PHRASE_MC, W);
 	if (p) {
 		parse_node *spec = Node::new_with_words(PHRASE_TO_DECIDE_VALUE_NT, W);
-		ExParser::add_ilist(spec, p);
+		SParser::add_ilist(spec, p);
 		==> { -, spec }; return TRUE;
 	}
 	==> { fail nonterminal };
@@ -480,35 +480,35 @@ Again, this is part of a condition, and can't evaluate.
 
 @<Make table in row of value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = ExParser::arg(RP[1]);
-	spec->down->next = ExParser::arg(RP[2]);
-	spec->down->next->next = ExParser::arg(RP[3]);
+	spec->down = SParser::arg(RP[1]);
+	spec->down->next = SParser::arg(RP[2]);
+	spec->down->next->next = SParser::arg(RP[3]);
 	==> { -, spec };
 
 @<Make table listed in value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = ExParser::arg(RP[1]);
-	spec->down->next = ExParser::arg(RP[2]);
+	spec->down = SParser::arg(RP[1]);
+	spec->down->next = SParser::arg(RP[2]);
 	==> { -, spec };
 
 @<Make table corresponding to value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = ExParser::arg(RP[1]);
-	spec->down->next = ExParser::arg(RP[2]);
-	spec->down->next->next = ExParser::arg(RP[3]);
-	spec->down->next->next->next = ExParser::arg(RP[4]);
+	spec->down = SParser::arg(RP[1]);
+	spec->down->next = SParser::arg(RP[2]);
+	spec->down->next->next = SParser::arg(RP[3]);
+	spec->down->next->next->next = SParser::arg(RP[4]);
 	==> { -, spec };
 
 @<Make table of in value@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
-	spec->down = ExParser::arg(RP[1]);
-	spec->down->next = ExParser::arg(RP[1]);
-	spec->down->next->next = ExParser::arg(RP[2]);
-	spec->down->next->next->next = ExParser::arg(RP[3]);
+	spec->down = SParser::arg(RP[1]);
+	spec->down->next = SParser::arg(RP[1]);
+	spec->down->next->next = SParser::arg(RP[2]);
+	spec->down->next->next->next = SParser::arg(RP[3]);
 	==> { -, spec };
 
 @ =
-parse_node *ExParser::arg(parse_node *val) {
+parse_node *SParser::arg(parse_node *val) {
 	if (val == NULL) return Specifications::new_UNKNOWN(EMPTY_WORDING);
 	return Node::duplicate(val);
 }

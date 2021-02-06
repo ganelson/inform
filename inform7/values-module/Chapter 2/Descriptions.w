@@ -1,11 +1,12 @@
 [Descriptions::] Descriptions.
 
-Description nodes represent text such as "even numbers", which
-can either define a set of values or a predicate on them.
+Descriptions such as "open door" or "number which is greater than 8" which may
+or may not be true of any given rvalue at run-time.
 
 @h Descriptions vs propositions.
-A description of K-values is stored as a |TEST_VALUE_NT| node with a constant
-node beneath it of kind "description of K":
+A description of $K$-values is stored as a |TEST_VALUE_NT| node with a constant
+node beneath it of kind "description of $K$". This in turn will hold a logical
+proposition $\phi(x)$ with one free variable $x$ expected to range over $K$.
 
 =
 parse_node *Descriptions::from_proposition(pcalc_prop *prop, wording W) {

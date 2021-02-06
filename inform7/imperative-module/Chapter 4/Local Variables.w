@@ -132,7 +132,7 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 	if (override_index >= 0) ix = override_index;
 	@<Fill in the local variable structure, whether it's new or recycled@>;
 
-	ExParser::warn_expression_cache(); /* the range of parsing possibilities has changed */
+	PreformCache::warn_of_changes(); /* the range of parsing possibilities has changed */
 
 	return lvar;
 }
@@ -964,7 +964,7 @@ void LocalVariables::end_scope(int s) {
 			}
 			LocalVariables::deallocate(lvar);
 		}
-	ExParser::warn_expression_cache();
+	PreformCache::warn_of_changes();
 }
 
 @ This rather fatuous routine is used only for describing repetitions in

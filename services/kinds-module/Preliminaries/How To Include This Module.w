@@ -48,6 +48,10 @@ would be
 =
 The following alphabetical list has references to fuller explanations:
 
+(*) |DETERMINE_SCALE_FACTOR_KINDS_CALLBACK|, if provided, is called to give
+the "scale factor" for a kind. See //values: Literal Patterns// for the
+use of this; here, it appears in //Kinds::Behaviour::scale_factor//.
+
 (*) |HIERARCHY_GET_SUPER_KINDS_CALLBACK| is called to ask what the superkind
 of a kind is. See //Latticework::super//.
 
@@ -77,3 +81,4 @@ prevent this from being issued to the terminal as an error message: see
 
 (*) |REGISTER_NOUN_KINDS_CALLBACK|, if provided, can register a common noun
 for a new base kind with the lexicon itself. See //Kinds::new_base//.
+

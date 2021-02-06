@@ -173,7 +173,7 @@ void Plugins::Manage::start(void) {
 	CREATE_PLUGIN(backdrops_plugin, PL::Backdrops::start, FALSE, BACKDROPS_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(devices_plugin, PL::Devices::start, FALSE, DEVICES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(showme_plugin, PL::Showme::start, FALSE, SHOWME_PLUGIN_NAME, IF_PLUGIN_NAME);
-	CREATE_PLUGIN(times_plugin, PL::TimesOfDay::start, FALSE, TIMES_OF_DAY_PLUGIN_NAME, IF_PLUGIN_NAME);
+	CREATE_PLUGIN(times_plugin, TimesOfDay::start, FALSE, TIMES_OF_DAY_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(scenes_plugin, PL::Scenes::start, FALSE, SCENES_PLUGIN_NAME, IF_PLUGIN_NAME);
 	CREATE_PLUGIN(bibliographic_plugin, PL::Bibliographic::start, FALSE, BIBLIOGRAPHIC_DATA_PLUGIN_NAME, IF_PLUGIN_NAME);
 	#endif

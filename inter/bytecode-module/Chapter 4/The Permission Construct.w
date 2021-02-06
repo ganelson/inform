@@ -139,10 +139,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 			}
 		}
 
-		Inter::Lists::add(FL, P);
+		Inter::ConstantLists::add(FL, P);
 
 		FL = Inode::ID_to_frame_list(P, Inter::Property::permissions_list(prop_name));
-		Inter::Lists::add(FL, P);
+		Inter::ConstantLists::add(FL, P);
 	}
 }
 

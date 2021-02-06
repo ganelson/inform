@@ -331,6 +331,8 @@ parse_node *Specifications::nothing(void) {
 We begin with s-nodes used to represent text not yet parsed, or for which no
 meaning could be found.
 
+@d UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK Specifications::new_UNKNOWN
+
 =
 parse_node *Specifications::new_UNKNOWN(wording W) {
 	return Node::new_with_words(UNKNOWN_NT, W);

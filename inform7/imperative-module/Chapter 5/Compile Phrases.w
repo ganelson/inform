@@ -71,7 +71,7 @@ void Routines::Compile::routine(phrase *ph,
 	Frames::set_stvol(phsf, legible);
 
 	LocalVariables::deallocate_all(phsf); /* in case any are left from an earlier compile */
-	ExParser::warn_expression_cache(); /* that local variables may have changed */
+	PreformCache::warn_of_changes(); /* that local variables may have changed */
 
 @<Compile the body of the routine@> =
 	current_sentence = ph->declaration_node;
@@ -179,7 +179,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 
 @<Compile a say head@> =
 	for (parse_node *say_node = p->down, *prev_sn = NULL; say_node; prev_sn = say_node, say_node = say_node->next) {
-		ExParser::parse_say_term(say_node);
+		SParser::parse_say_term(say_node);
 		parse_node *inv = Invocations::first_in_list(say_node->down);
 		if (inv) {
 			if (prev_sn) {
@@ -578,7 +578,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARACONTENT_HL));
 		}
 	} else {
-		ExParser::parse_void_phrase(p);
+		SParser::parse_void_phrase(p);
 	}
 
 	if (initial_problem_count == problem_count) {
@@ -656,7 +656,7 @@ the "[if...]".
 It doesn't quite do nothing, though, because it also counts the say phrases found.
 
 @<Check that say control structures have been used in a correct sequence@> =
-	int it_was_not_worth_adding = it_is_not_worth_adding;
+	int it_was_not_worth_adding = Strings::TextSubstitutions::is_it_worth_adding();
 	Strings::TextSubstitutions::it_is_not_worth_adding();
 
 	int SSP_sp = 0;
@@ -698,7 +698,8 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 			@<Issue a problem message for an SSP without end@>;
 		}
 	}
-	it_is_not_worth_adding = it_was_not_worth_adding;
+	if (it_was_not_worth_adding) Strings::TextSubstitutions::it_is_not_worth_adding();
+	else Strings::TextSubstitutions::it_is_worth_adding();
 
 @<This starts a complex SSP@> =
 	if (SSP_sp >= MAX_COMPLEX_SAY_DEPTH) {

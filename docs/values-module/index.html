@@ -58,7 +58,7 @@
 		</nav>
 		<main role="main">
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><b>values</b></li></ul>
-		<p class="purpose">Representing and parsing values, descriptions and specifications. This is version 1.</p>
+		<p class="purpose">Representing and parsing values, descriptions and conditions. This is version 1.</p>
 		<hr>
 		<div class="contentspage">
 			<ul class="chapterlist">
@@ -92,7 +92,7 @@
 				<li>
 					<p class="chapterentry"><a name="2"></a>
 						<span class="chaptertitle">Chapter 2: Specifications</span></p>
-					<p class="chapterpurpose">In which the meanings of excerpts are systematically catalogued according to what they specify; a categorisation much broader than working out kinds of value, since it applies to a much broader range of excerpts than values.</p>
+					<p class="chapterpurpose">An umbrella category for ways to describe data or its nature.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="2-spc.html">
@@ -101,40 +101,50 @@
 						</li>
 						<li>
 							<p class="sectionentry"><a href="2-rvl.html">
-								<spon class="sectiontitle">RValues</span></a> -
-							<span class="sectionpurpose">Utility functions for specifications representing rvalues.</span></p>
+								<spon class="sectiontitle">Rvalues</span></a> -
+							<span class="sectionpurpose">Specific values which can be stored or used at run-time.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="2-lvl.html">
 								<spon class="sectiontitle">Lvalues</span></a> -
-							<span class="sectionpurpose">Utility functions for specifications representing lvalues, that is, storage locations for values at run-time.</span></p>
+							<span class="sectionpurpose">Storage locations into which rvalues can be put at run-time.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="2-cnd.html">
 								<spon class="sectiontitle">Conditions</span></a> -
-							<span class="sectionpurpose">Utility functions for condition nodes.</span></p>
+							<span class="sectionpurpose">States of being which at any given point, at run-time, might be true or false.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="2-dsc.html">
 								<spon class="sectiontitle">Descriptions</span></a> -
-							<span class="sectionpurpose">Description nodes represent text such as "even numbers", which can either define a set of values or a predicate on them.</span></p>
+							<span class="sectionpurpose">Descriptions such as "open door" or "number which is greater than 8" which may or may not be true of any given rvalue at run-time.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="2-dsh.html">
 								<spon class="sectiontitle">Dash</span></a> -
-							<span class="sectionpurpose">Dash is the part of Inform most nearly like a typechecker in a conventional compiler.</span></p>
+							<span class="sectionpurpose">The part of Inform most nearly like a typechecker in a conventional compiler.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<p class="chapterentry"><a name="3"></a>
-						<span class="chaptertitle">Chapter 3: Nouns</span></p>
-					<p class="chapterpurpose">Nouns, mainly proper, and notations for constant values such as 10:03 AM, six, 34 kg, and so on.</p>
+						<span class="chaptertitle">Chapter 3: Literals</span></p>
+					<p class="chapterpurpose">Notations for explicit values such as 10:03 AM, six, 34 kg, and so on.</p>
 					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-pl.html">
+								<spon class="sectiontitle">Parsing Literals</span></a> -
+							<span class="sectionpurpose">To decide if an excerpt of text is a value referred to notationally rather than by name.</span></p>
+						</li>
 						<li>
 							<p class="sectionentry"><a href="3-lp.html">
 								<spon class="sectiontitle">Literal Patterns</span></a> -
 							<span class="sectionpurpose">To manage the possible notations with which literal values can be written.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-lrn.html">
+								<spon class="sectiontitle">Literal Real Numbers</span></a> -
+							<span class="sectionpurpose">To parse real numbers written as decimal expansions, or in scientific or engineering notation.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="3-tod.html">
@@ -147,41 +157,21 @@
 							<span class="sectionpurpose">To manage the names assigned to Unicode character values.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-un.html">
-								<spon class="sectiontitle">Using Nametags</span></a> -
-							<span class="sectionpurpose">Nametags provide for a more contextual parsing of nouns, allowing them to be given in an inexact verbal form.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="3-ins.html">
-								<spon class="sectiontitle">Instances</span></a> -
-							<span class="sectionpurpose">To manage constant values of enumerated kinds, including kinds of object.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="3-nv.html">
-								<spon class="sectiontitle">Nonlocal Variables</span></a> -
-							<span class="sectionpurpose">To manage variables whose scope is wider than the current rule.</span></p>
+							<p class="sectionentry"><a href="3-ll.html">
+								<spon class="sectiontitle">Literal Lists</span></a> -
+							<span class="sectionpurpose">Parsing and vetting the kinds of literal lists written in braces.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<p class="chapterentry"><a name="4"></a>
 						<span class="chaptertitle">Chapter 4: The S-Parser</span></p>
-					<p class="chapterpurpose">In which the S-parser is put to work: excerpts of several words at a time are assigned meanings, and compound statements formed of these are parsed, producing lists of possible interpretations.</p>
+					<p class="chapterpurpose">Preform grammar to turn natural language text into specifications.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="4-its.html">
-								<spon class="sectiontitle">Introduction to Semantics</span></a> -
-							<span class="sectionpurpose">A general introduction to the S-parser and the data structures it makes use of.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="4-aots.html">
-								<spon class="sectiontitle">Architecture of the S-Parser</span></a> -
-							<span class="sectionpurpose">Top-level structure of the S-parser, which turns text into S-nodes.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="4-pl.html">
-								<spon class="sectiontitle">Parse Literals</span></a> -
-							<span class="sectionpurpose">To decide if an excerpt of text is a value referred to notationally rather than by name.</span></p>
+							<p class="sectionentry"><a href="4-ets.html">
+								<spon class="sectiontitle">Enter the S-Parser</span></a> -
+							<span class="sectionpurpose">The top-level nonterminals of the S-parser, which turns text into specifications.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="4-cad.html">
@@ -202,66 +192,6 @@
 							<p class="sectionentry"><a href="4-cap.html">
 								<spon class="sectiontitle">Conditions and Phrases</span></a> -
 							<span class="sectionpurpose">To parse the text of To... phrases, say phrases and conditions.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Text Data</span></p>
-					<p class="chapterpurpose">Text literals, which may be constant strings, or may be functions in order to implement substitutions.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="5-tl.html">
-								<spon class="sectiontitle">Text Literals</span></a> -
-							<span class="sectionpurpose">In this section we compile text constants.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-ts.html">
-								<spon class="sectiontitle">Text Substitutions</span></a> -
-							<span class="sectionpurpose">In this section we compile text with substitutions.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-rsp.html">
-								<spon class="sectiontitle">Responses</span></a> -
-							<span class="sectionpurpose">In this section we keep track of response texts.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="6"></a>
-						<span class="chaptertitle">Chapter 6: Lists and Tables</span></p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="6-lc.html">
-								<spon class="sectiontitle">List Constants</span></a> -
-							<span class="sectionpurpose">In this section we compile I6 arrays for constant lists arising from braced literals.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="6-tc.html">
-								<spon class="sectiontitle">Table Columns</span></a> -
-							<span class="sectionpurpose">To manage the named columns which appear in tables.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="6-tbl.html">
-								<spon class="sectiontitle">Tables</span></a> -
-							<span class="sectionpurpose">To manage and compile tables, which are two-dimensional arrays with associative look-up facilities provided at run-time.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="6-lr.html">
-								<spon class="sectiontitle">Listed-In Relations</span></a> -
-							<span class="sectionpurpose">To define the binary predicates corresponding to table columns, and which determine whether a given value is listed in that column.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="7"></a>
-						<span class="chaptertitle">Chapter 7: Equations</span></p>
-					<p class="chapterpurpose">Simple mathematical or scientific equations, which can be solved at run-time.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="7-eqt.html">
-								<spon class="sectiontitle">Equations</span></a> -
-							<span class="sectionpurpose">To manage and compile equations, which relate numerical quantities.</span></p>
 						</li>
 					</ul>
 				</li>

@@ -119,7 +119,10 @@ would be
 <p class="commentary">The following alphabetical list has references to fuller explanations:
 </p>
 
-<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_GET_SUPER_KINDS_CALLBACK</span></span> is called to ask what the superkind
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">DETERMINE_SCALE_FACTOR_KINDS_CALLBACK</span></span>, if provided, is called to give
+the "scale factor" for a kind. See <a href="../values-module/3-lp.html" class="internal">Literal Patterns (in values)</a> for the
+use of this; here, it appears in <a href="2-uk.html#SP19" class="internal">Kinds::Behaviour::scale_factor</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_GET_SUPER_KINDS_CALLBACK</span></span> is called to ask what the superkind
 of a kind is. See <a href="2-tlok.html#SP6" class="internal">Latticework::super</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">HIERARCHY_ALLOWS_SOMETIMES_MATCH_KINDS_CALLBACK</span></span> is called to ask if q
 kind can contain sometimes-matching subkind instances. See

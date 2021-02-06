@@ -181,14 +181,12 @@ void Specifications::Compiler::emit_constant_to_kind_as_val(parse_node *value, k
 }
 
 parse_node *Specifications::Compiler::cast_constant(parse_node *value, kind *to) {
-	#ifdef REAL_LITERALS
 	kind *from = Specifications::to_kind(value);
 	if ((Kinds::eq(from, K_number)) && (Kinds::eq(to, K_real_number))) {
 		wording W = Node::get_text(value);
 		if (<s-literal-real-number>(W)) value = <<rp>>;
 		else internal_error("can't parse integer as real");
 	}
-	#endif
 	return value;
 }
 

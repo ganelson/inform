@@ -1,4 +1,4 @@
-[Inter::Lists::] Inter Node Lists.
+[Inter::ConstantLists::] Inter Node Lists.
 
 To store doubly-linked lists of inter frames.
 
@@ -28,7 +28,7 @@ typedef struct inter_node_list_entry {
 		if (((F = F##_entry->listed_node), F))
 
 =
-inter_node_list *Inter::Lists::new(void) {
+inter_node_list *Inter::ConstantLists::new(void) {
 	inter_node_list *ifl = CREATE(inter_node_list);
 	ifl->spare_storage = NULL;
 	ifl->storage_used = 0;
@@ -38,7 +38,7 @@ inter_node_list *Inter::Lists::new(void) {
 	return ifl;
 }
 
-void Inter::Lists::add(inter_node_list *FL, inter_tree_node *F) {
+void Inter::ConstantLists::add(inter_node_list *FL, inter_tree_node *F) {
 	if (F == NULL) internal_error("linked imvalid frame");
 	if (FL == NULL) internal_error("bad frame list");
 	if (FL->storage_used >= FL->storage_capacity) {

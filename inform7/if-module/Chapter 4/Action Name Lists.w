@@ -1,4 +1,4 @@
-[PL::Actions::Lists::] Action Name Lists.
+[PL::Actions::ConstantLists::] Action Name Lists.
 
 Action name lists provide a disjunction in the choice of action
 made by an action pattern. For instance, "taking or dropping the disc"
@@ -29,7 +29,7 @@ example. The following routine extracts this from a potentially longer
 text (e.g. "taking, dropping or examining a door").
 
 =
-action_name_list *PL::Actions::Lists::anl_new(void) {
+action_name_list *PL::Actions::ConstantLists::anl_new(void) {
 	action_name_list *new_anl = CREATE(action_name_list);
 	new_anl->action_listed = NULL;
 	new_anl->nap_listed = NULL;
@@ -44,7 +44,7 @@ action_name_list *PL::Actions::Lists::anl_new(void) {
 	return new_anl;
 }
 
-void PL::Actions::Lists::log(action_name_list *anl) {
+void PL::Actions::ConstantLists::log(action_name_list *anl) {
 	int i, c;
 	for (c=0; anl; anl = anl->next, c++) {
 		LOG("ANL entry %s(%d@%d): %s ",
@@ -62,7 +62,7 @@ void PL::Actions::Lists::log(action_name_list *anl) {
 	}
 }
 
-void PL::Actions::Lists::log_briefly(action_name_list *anl) {
+void PL::Actions::ConstantLists::log_briefly(action_name_list *anl) {
 	if (anl == NULL) LOG("<null-anl>");
 	else {
 		if (anl->negate_pattern) LOG("NOT[ ");
@@ -82,7 +82,7 @@ void PL::Actions::Lists::log_briefly(action_name_list *anl) {
 	}
 }
 
-action_name *PL::Actions::Lists::get_singleton_action(action_name_list *anl) {
+action_name *PL::Actions::ConstantLists::get_singleton_action(action_name_list *anl) {
 	action_name *an;
 	if (anl == NULL) internal_error("Supposed singleton ANL is empty");
 	an = anl->action_listed;
@@ -112,7 +112,7 @@ operands.
 
 <anl-excluded> ::=
 	<anl> to/with {<anl-minimal-common-operand>} |        ==> @<Add to-clause to excluded ANL@>;
-	<anl>                                                 ==> { TRUE, PL::Actions::Lists::flip_anl_parity(RP[1], FALSE) }
+	<anl>                                                 ==> { TRUE, PL::Actions::ConstantLists::flip_anl_parity(RP[1], FALSE) }
 
 <anl-minimal-common-operand> ::=
 	_,/or ... |                                           ==> { fail }
@@ -120,7 +120,7 @@ operands.
 	...
 
 @<Construct ANL for anything@> =
-	action_name_list *new_anl = PL::Actions::Lists::anl_new();
+	action_name_list *new_anl = PL::Actions::ConstantLists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
 	==> { TRUE, new_anl };
 
@@ -156,7 +156,7 @@ for instance, we don't want to count the "in" from "fixed in place".
 	action_name_list *new_anl;
 	if ((!preform_lookahead_mode) && (anl_being_parsed)) new_anl = anl_being_parsed;
 	else {
-		new_anl = PL::Actions::Lists::anl_new();
+		new_anl = PL::Actions::ConstantLists::anl_new();
 		new_anl->word_position = Wordings::first_wn(W);
 	}
 	new_anl->parameter[new_anl->parc] = W;
@@ -199,7 +199,7 @@ end, but it's syntactically valid.)
 }
 
 <anl-entry-with-action> internal {
-	action_name_list *anl = PL::Actions::Lists::anl_parse_internal(W);
+	action_name_list *anl = PL::Actions::ConstantLists::anl_parse_internal(W);
 	if (anl) {
 		==> { -, anl }; return TRUE;
 	}
@@ -207,20 +207,20 @@ end, but it's syntactically valid.)
 }
 
 @<Make an action pattern from named behaviour@> =
-	action_name_list *new_anl = PL::Actions::Lists::anl_new();
+	action_name_list *new_anl = PL::Actions::ConstantLists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->nap_listed = RP[1];
 	==> { 0, new_anl };
 
 @<Make an action pattern from named behaviour plus in@> =
-	action_name_list *new_anl = PL::Actions::Lists::anl_new();
+	action_name_list *new_anl = PL::Actions::ConstantLists::anl_new();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->nap_listed = RP[1];
 	new_anl->in_clause = GET_RW(<anl-in-tail>, 1);
 	==> { 0, new_anl };
 
 @<Add to-clause to excluded ANL@> =
-	action_name_list *anl = PL::Actions::Lists::flip_anl_parity(RP[1], TRUE);
+	action_name_list *anl = PL::Actions::ConstantLists::flip_anl_parity(RP[1], TRUE);
 	if ((anl == NULL) ||
 		(PL::Actions::can_have_parameters(anl->action_listed) == FALSE)) {
 		==> { fail production };
@@ -244,7 +244,7 @@ end, but it's syntactically valid.)
 	==> { 0, join };
 
 @ =
-action_name_list *PL::Actions::Lists::flip_anl_parity(action_name_list *anl, int flip_all) {
+action_name_list *PL::Actions::ConstantLists::flip_anl_parity(action_name_list *anl, int flip_all) {
 	if (flip_all) {
 		action_name_list *L;
 		for (L = anl; L; L = L->next) {
@@ -258,7 +258,7 @@ action_name_list *PL::Actions::Lists::flip_anl_parity(action_name_list *anl, int
 
 @ =
 int anl_parsing_tense = IS_TENSE;
-action_name_list *PL::Actions::Lists::parse(wording W, int tense) {
+action_name_list *PL::Actions::ConstantLists::parse(wording W, int tense) {
 	if (Wordings::mismatched_brackets(W)) return NULL;
 	int t = anl_parsing_tense;
 	anl_parsing_tense = tense;
@@ -269,14 +269,14 @@ action_name_list *PL::Actions::Lists::parse(wording W, int tense) {
 }
 
 @ =
-action_name_list *PL::Actions::Lists::anl_parse_internal(wording W) {
+action_name_list *PL::Actions::ConstantLists::anl_parse_internal(wording W) {
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W (tense %d)\n", W, anl_parsing_tense);
 
 	int tense = anl_parsing_tense;
 	action_name_list *anl_list = NULL, *new_anl = NULL;
 
 	action_name *an;
-	new_anl = PL::Actions::Lists::anl_new();
+	new_anl = PL::Actions::ConstantLists::anl_new();
 	anl_list = NULL;
 
 	LOOP_OVER(an, action_name) {
@@ -343,7 +343,7 @@ action_name_list *PL::Actions::Lists::anl_parse_internal(wording W) {
 				new_anl->next = pos;
 			}
 		}
-		new_anl = PL::Actions::Lists::anl_new();
+		new_anl = PL::Actions::ConstantLists::anl_new();
 		DontInclude: ;
 	}
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$L\n", W, anl_list);
@@ -351,7 +351,7 @@ action_name_list *PL::Actions::Lists::anl_parse_internal(wording W) {
 }
 
 int scanning_anl_only_mode = FALSE;
-action_name_list *PL::Actions::Lists::extract_actions_only(wording W) {
+action_name_list *PL::Actions::ConstantLists::extract_actions_only(wording W) {
 	action_name_list *anl = NULL;
 	int s = scanning_anl_only_mode;
 	scanning_anl_only_mode = TRUE;
@@ -369,7 +369,7 @@ action_name_list *PL::Actions::Lists::extract_actions_only(wording W) {
 	return anl;
 }
 
-action_name *PL::Actions::Lists::get_single_action(action_name_list *anl) {
+action_name *PL::Actions::ConstantLists::get_single_action(action_name_list *anl) {
 	int posn = -1, matchl = -1;
 	action_name *anf = NULL;
 	LOGIF(RULE_ATTACHMENTS, "Getting single action from:\n$L\n", anl);
@@ -396,17 +396,17 @@ action_name *PL::Actions::Lists::get_single_action(action_name_list *anl) {
 	return anf;
 }
 
-int PL::Actions::Lists::get_explicit_anyone_flag(action_name_list *anl) {
+int PL::Actions::ConstantLists::get_explicit_anyone_flag(action_name_list *anl) {
 	if (anl == NULL) return FALSE;
 	return anl->anyone_specified;
 }
 
-int PL::Actions::Lists::negated(action_name_list *anl) {
+int PL::Actions::ConstantLists::negated(action_name_list *anl) {
 	if (anl == NULL) return FALSE;
 	return anl->negate_pattern;
 }
 
-void PL::Actions::Lists::compile(OUTPUT_STREAM, action_name_list *anl) {
+void PL::Actions::ConstantLists::compile(OUTPUT_STREAM, action_name_list *anl) {
 	if (anl == NULL) return;
 	LOGIF(ACTION_PATTERN_COMPILATION, "CANL: $L", anl);
 
@@ -438,7 +438,7 @@ void PL::Actions::Lists::compile(OUTPUT_STREAM, action_name_list *anl) {
 	WRITE(")");
 }
 
-void PL::Actions::Lists::emit(action_name_list *anl) {
+void PL::Actions::ConstantLists::emit(action_name_list *anl) {
 	if (anl == NULL) return;
 	LOGIF(ACTION_PATTERN_COMPILATION, "CANL: $L", anl);
 
@@ -479,10 +479,10 @@ more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 
 =
-int PL::Actions::Lists::compare_specificity(action_name_list *anl1, action_name_list *anl2) {
+int PL::Actions::ConstantLists::compare_specificity(action_name_list *anl1, action_name_list *anl2) {
 	int count1, count2;
-	count1 = PL::Actions::Lists::count_actions_covered(anl1);
-	count2 = PL::Actions::Lists::count_actions_covered(anl2);
+	count1 = PL::Actions::ConstantLists::count_actions_covered(anl1);
+	count2 = PL::Actions::ConstantLists::count_actions_covered(anl2);
 	if (count1 < count2) return 1;
 	if (count1 > count2) return -1;
 	return 0;
@@ -491,7 +491,7 @@ int PL::Actions::Lists::compare_specificity(action_name_list *anl1, action_name_
 @ Where:
 
 =
-int PL::Actions::Lists::count_actions_covered(action_name_list *anl) {
+int PL::Actions::ConstantLists::count_actions_covered(action_name_list *anl) {
 	int k, parity = TRUE, infinity = NUMBER_CREATED(action_name);
 	if (anl == NULL) return infinity;
 	if (anl->negate_pattern) parity = FALSE;

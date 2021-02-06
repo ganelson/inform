@@ -188,7 +188,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	if (tabulating_kinds_index) Kinds::Index::begin_chart_row(OUT);
 	if (details) {
 		HTML::open_indented_p(OUT, depth, "halftight");
-		if ((K) || (I != indexing_room)) Index::anchor(OUT, UseNouns::identifier(nt));
+		if ((K) || (I != indexing_room)) Index::anchor(OUT, NounIdentifiers::identifier(nt));
 	} else {
 		#ifdef IF_MODULE
 		if (I) PL::Spatial::index_spatial_relationship(OUT, I);
@@ -270,7 +270,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	if ((K) && (Kinds::Behaviour::get_documentation_reference(K)))
 		Index::DocReferences::link(OUT, Kinds::Behaviour::get_documentation_reference(K));
 	if ((details == FALSE) && (K))
-		Index::below_link(OUT, UseNouns::identifier(nt));
+		Index::below_link(OUT, NounIdentifiers::identifier(nt));
 
 @ This either recurses down through subkinds or through the spatial hierarchy.
 

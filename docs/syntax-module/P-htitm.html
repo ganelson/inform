@@ -148,6 +148,8 @@ or ending sentence is found in the source text being broken into sentences:
 see <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">DIVIDE_AT_COLON_SYNTAX_CALLBACK</span></span> is called to ask permission to break a
 sentence at a colon. See <a href="3-snt.html#SP5" class="internal">Sentences::break_inner</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">IS_SENTENCE_NODE_SYNTAX_CALLBACK</span></span> is asked whether a given node represents
+a regular sentence or not: see <a href="2-nt.html#SP11" class="internal">NodeType::is_sentence</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">LANGUAGE_ELEMENT_SYNTAX_CALLBACK</span></span> is called when a sentence is found matching
 the nonterminal <span class="extract"><span class="extract-syntax">&lt;language-modifying-sentence&gt;</span></span>: see <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">LOG_UNENUMERATED_NODE_TYPES_SYNTAX_CALLBACK</span></span> is called to log a node type
@@ -171,8 +173,9 @@ prevent this from being issued to the terminal as an error message: see
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK</span></span> is called when a new, regular
 sentence is found in the source text being broken into sentences: see
 <a href="3-snt.html#SP6" class="internal">Sentences::make_node</a>.
-</li><li>&#9679; <span class="extract"><span class="extract-syntax">IS_SENTENCE_NODE_SYNTAX_CALLBACK</span></span> is asked whether a given node represents
-a regular sentence or not: see <a href="2-nt.html#SP11" class="internal">NodeType::is_sentence</a>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK</span></span> is used only by the Preform cache:
+if this isn't being used, it's sufficient to return a null pointer. See
+<a href="2-spc.html" class="internal">Simple Preform Cache</a>.
 </li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresscurrentchapter">P</li><li class="progresssection"><a href="P-wtmd.html">wtmd</a></li><li class="progresscurrent">htitm</li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresschapter"><a href="2-st.html">2</a></li><li class="progresschapter"><a href="3-snt.html">3</a></li><li class="progressnext"><a href="1-sm.html">&#10095;</a></li></ul></div>
