@@ -687,7 +687,7 @@ kinds of value:
 	}
 	if (Kinds::eq(kind_of_constant, K_equation)) {
 		equation *eqn = Rvalues::to_equation(spec_found);
-		inter_name *N = Equations::identifier(eqn);
+		inter_name *N = RTEquations::identifier(eqn);
 		if (N) Emit::holster(VH, N);
 		return;
 	}
@@ -756,13 +756,13 @@ kinds of value:
 	}
 	if (Kinds::eq(kind_of_constant, K_table)) {
 		table *t = Rvalues::to_table(spec_found);
-		Emit::holster(VH, Tables::identifier(t));
+		Emit::holster(VH, RTTables::identifier(t));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
 		table_column *tc = Rvalues::to_table_column(spec_found);
 		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) Tables::Columns::get_id(tc));
+			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_text)) {

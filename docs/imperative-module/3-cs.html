@@ -281,9 +281,9 @@ PHRCDs are used to make sure it appears in the right position.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::add_rules_to_rulebooks</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">EARLY_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rules::Bookings::make_automatic_placements</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-rb.html#SP7" class="function-link"><span class="function-syntax">Rules::Bookings::make_automatic_placements</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">NUMBER_RULEBOOKS_CREATED_HL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::named_numeric_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">NUMBER_CREATED</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::named_numeric_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, (</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax">) </span><span class="identifier-syntax">NUMBER_CREATED</span><span class="plain-syntax">(</span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -358,9 +358,9 @@ adjective definitions.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Rulebooks::compile_rule_phrases</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::compile_rule_phrases</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            &amp;</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP11">&#167;11</a>.</li></ul>
@@ -368,9 +368,9 @@ adjective definitions.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Rules::compile_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">rule</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><a href="2-rls.html#SP21" class="function-link"><span class="function-syntax">Rules::compile_definition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            &amp;</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP11">&#167;11</a>.</li></ul>
@@ -507,17 +507,17 @@ noted down:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::rulebooks_array</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rulebooks::rulebooks_array_array</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::rulebooks_array_array</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::compile_rulebooks</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rulebooks::compile_rulebooks</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::compile_rulebooks</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::RulebookNames_array</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rulebooks::RulebookNames_array</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::RulebookNames_array</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And finally, just as the sun slips below the horizon, we compile the code
@@ -529,7 +529,7 @@ printing out "fire alarm rule".
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::RulePrintingRule_routine</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Rules::RulePrintingRule_routine</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-rls.html#SP19" class="function-link"><span class="function-syntax">Rules::RulePrintingRule_routine</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Evening. </b>The twilight gathers, but our work is far from done. Recall that we have
@@ -574,9 +574,9 @@ can be called multiple times in the course of the evening.)
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::compile_as_needed</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">EVENING_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Rules::compile_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">rule</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><a href="2-rls.html#SP21" class="function-link"><span class="function-syntax">Rules::compile_definition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            &amp;</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">repeat</span><span class="plain-syntax">) {</span>
@@ -592,13 +592,13 @@ can be called multiple times in the course of the evening.)
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Strings::TextSubstitutions::compilation_coroutine</span><span class="plain-syntax">(</span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-cdp.html#SP2" class="function-link"><span class="function-syntax">Propositions::Deferred::compilation_coroutine</span></a><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cdp.html#SP2" class="function-link"><span class="function-syntax">Propositions::Deferred::compilation_coroutine</span></a><span class="plain-syntax">() &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">repeat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-rs.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-cfs.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-itp.html">itp</a></li><li class="progresssection"><a href="3-rs.html">rs</a></li><li class="progresscurrent">cs</li><li class="progresssection"><a href="3-phr.html">phr</a></li><li class="progresssection"><a href="3-pu.html">pu</a></li><li class="progresssection"><a href="3-prcd.html">prcd</a></li><li class="progresssection"><a href="3-ptd.html">ptd</a></li><li class="progresssection"><a href="3-dptd.html">dptd</a></li><li class="progresssection"><a href="3-po.html">po</a></li><li class="progresssection"><a href="3-pav.html">pav</a></li><li class="progresssection"><a href="3-tph.html">tph</a></li><li class="progresssection"><a href="3-tp.html">tp</a></li><li class="progresssection"><a href="3-pi.html">pi</a></li><li class="progresschapter"><a href="4-lv.html">4</a></li><li class="progresschapter"><a href="5-inv.html">5</a></li><li class="progressnext"><a href="3-phr.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-rs.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-rls.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-itp.html">itp</a></li><li class="progresssection"><a href="3-rs.html">rs</a></li><li class="progresscurrent">cs</li><li class="progresssection"><a href="3-phr.html">phr</a></li><li class="progresssection"><a href="3-pu.html">pu</a></li><li class="progresssection"><a href="3-prcd.html">prcd</a></li><li class="progresssection"><a href="3-ptd.html">ptd</a></li><li class="progresssection"><a href="3-dptd.html">dptd</a></li><li class="progresssection"><a href="3-po.html">po</a></li><li class="progresssection"><a href="3-pav.html">pav</a></li><li class="progresssection"><a href="3-tph.html">tph</a></li><li class="progresssection"><a href="3-tp.html">tp</a></li><li class="progresssection"><a href="3-pi.html">pi</a></li><li class="progresschapter"><a href="4-lv.html">4</a></li><li class="progresschapter"><a href="5-cfs.html">5</a></li><li class="progresschapter"><a href="6-inv.html">6</a></li><li class="progressnext"><a href="3-phr.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

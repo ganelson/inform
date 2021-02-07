@@ -263,7 +263,7 @@ parse_node *SPType::val(parse_node *v, wording W) {
 	if (!(Rvalues::is_CONSTANT_of_kind(p, K_equation))) return FALSE;
 	parse_node *eq = p;
 	equation *eqn = Rvalues::to_equation(eq);
-	Equations::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
+	EquationSolver::set_usage_notes(eqn, Node::get_text((parse_node *) RP[2]));
 	Equations::declare_local_variables(eqn);
 	Equations::examine(eqn);
 	==> { -, SPType::val(eq, W) };

@@ -37,6 +37,7 @@ Chapter 4: Compilation Utilities
 	Compiled Text
 	Constant Lists
 	Routines
+	Equations Support
 	I6 Template Interpreter
 	Plugins
 	Plugin Calls

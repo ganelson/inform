@@ -46,22 +46,3 @@ fits this knowledge."
 	Complete Model World
 	Compile Model World
 	Instance Counting
-
-Chapter 5: Tables
-	Table Columns
-	Tables
-	Listed-In Relations
-
-Chapter 6: Equations
-"Simple mathematical or scientific equations, which can be solved at run-time."
-	Equations
-
-Chapter 7: Rules and Rulebooks
-"Rules are named phrases which are invoked in a particular way, and rulebooks
-a way to organise lists of them."
-	Rules
-	Rule Bookings
-	Rulebooks
-	Focus and Outcome
-	Stacked Variables
-	Activities

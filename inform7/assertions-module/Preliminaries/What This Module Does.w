@@ -108,6 +108,12 @@ depend on conclusions to be drawn by the //knowledge// module later on.
 Similarly, though a little easier, //Implications// like "Something worn is
 usually wearable" do not immediately lead to propositions being drawn up.
 
+@h Other gadgets.
+At the top level, Inform source text consists of more than just assertion
+sentences. Rules and phrases are left to //imperative// to look after, but we
+will take care of //Tables// (and their //Table Columns//) here, along with
+the quirkier inclusion of //Equations//.
+
 @h Making use of the calculus module.
 //Chapter 5// simply stocks up our predicate calculus system with some
 basic unary and binary predicates, and provides a few shorthand functions

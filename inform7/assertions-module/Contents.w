@@ -46,7 +46,13 @@ Chapter 4: Assertions
 	Assemblies
 	Implications
 
-Chapter 5: Predicates
+Chapter 5: Other Gadgets
+"Tables and equations do not look like sentences, but are also top-level."
+	Table Columns
+	Tables
+	Equations
+
+Chapter 6: Predicates
 "Unary and then binary predicates for the calculus module to conjure with."
 	Kind Predicates Revisited
 	The Adjectival Predicates
@@ -55,5 +61,6 @@ Chapter 5: Predicates
 	Quasinumeric Relations
 	The Universal Relation
 	Explicit Relations
+	Listed-In Relations
 	Adjective Meanings
 	Calculus Utilities

@@ -40,7 +40,7 @@ void PL::Score::compile_max_score(void) {
 			(Kinds::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
 			(Kinds::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
 			inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
-			Emit::named_iname_constant(iname, K_value, Tables::identifier(t));
+			Emit::named_iname_constant(iname, K_value, RTTables::identifier(t));
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);
 			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
 			if ((PN != NULL) && (max_score_VAR) &&

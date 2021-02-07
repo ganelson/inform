@@ -1,15 +1,87 @@
-[Tables::Support::] Runtime Support for Tables.
+[RTTables::] Runtime Support for Tables.
 
 To compile run-time data structures holding tables.
 
-@h Compiling tables.
+@h Columns.
+The run-time code uses a range of unique ID numbers to represent table columns;
+these can't simply be addresses of the data because two uses of columns called
+"population" in different tables need to have the same ID in each context.
+(They need to run from 100 upward because numbers 0 to 99 refer to columns
+by index within the current table: see //assertions: Tables//.)
 
 =
-void Tables::Support::compile(void) {
+int RTTables::column_id(table_column *tc) {
+	return 100 + tc->allocation_id;
+}
+
+@ This compiles a function which takes the ID of a column and returns its
+kind as a strong kind ID.
+
+=
+void RTTables::column_introspection_routine(void) {
+	inter_name *iname = Hierarchy::find(TC_KOV_HL);
+	packaging_state save = Routines::begin(iname);
+	inter_symbol *tcv_s = LocalVariables::add_named_call_as_symbol(I"tc");
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, tcv_s);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+
+	table_column *tc;
+	LOOP_OVER(tc, table_column) {
+		Produce::inv_primitive(Emit::tree(), CASE_BIP);
+		Produce::down(Emit::tree());
+			Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) RTTables::column_id(tc));
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+				Produce::down(Emit::tree());
+					Kinds::RunTime::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	}
+
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
+	Produce::up(Emit::tree());
+	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
+}
+
+inter_name *RTTables::new_tcu_iname(table *t) {
+	package_request *R = Hierarchy::package_within(TABLE_COLUMNS_HAP, t->table_package);
+	return Hierarchy::make_iname_in(COLUMN_DATA_HL, R);
+}
+
+@h Tables.
+
+=
+void RTTables::new_table(parse_node *PN, table *t) {
+	t->table_package = Hierarchy::package(CompilationUnits::find(PN), TABLES_HAP);
+	t->table_identifier = Hierarchy::make_iname_in(TABLE_DATA_HL, t->table_package);
+}
+
+void RTTables::supply_table_wording(table *t, wording W) {
+	Hierarchy::markup_wording(t->table_package, TABLE_NAME_HMD, W);
+}
+
+inter_name *RTTables::identifier(table *t) {
+	return t->table_identifier;
+}
+
+@
+
+=
+void RTTables::compile(void) {
 	@<Compile the data structures for entry storage@>;
 	@<Compile the blanks bitmap table@>;
 	@<Compile the Table of Tables@>;
-	Tables::Columns::compile_run_time_support();
+	RTTables::column_introspection_routine();
 }
 
 @<Compile the data structures for entry storage@> =
@@ -40,7 +112,7 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	for (int j=0; j<t->no_columns; j++) {
 		@<Compile the inner table array for column j@>;
 	}
-	packaging_state save = Emit::named_table_array_begin(Tables::identifier(t), K_value);
+	packaging_state save = Emit::named_table_array_begin(RTTables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
 		Emit::array_iname_entry(t->columns[j].tcu_iname);
 	}
@@ -130,10 +202,10 @@ the values given there.
 
 	if ((K_understanding) && (Kinds::eq(K, K_understanding)))   bits = TB_COLUMN_TOPIC;
 
-	if (Tables::Support::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
+	if (RTTables::requires_blanks_bitmap(K) == FALSE) 	bits += TB_COLUMN_NOBLANKBITS;
 	if (t->preserve_row_order_at_run_time) 						bits += TB_COLUMN_DONTSORTME;
 
-	Emit::array_numeric_entry((inter_ti) (Tables::Columns::get_id(tc) + bits));
+	Emit::array_numeric_entry((inter_ti) (RTTables::column_id(tc) + bits));
 	if (bits & TB_COLUMN_NOBLANKBITS)
 		Emit::array_null_entry();
 	else
@@ -199,7 +271,7 @@ case.)
 			current_sentence = t->table_created_at->source_table;
 			for (int j=0; j<t->no_columns; j++) {
 				table_column *tc = t->columns[j].column_identity;
-				if (Tables::Support::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
+				if (RTTables::requires_blanks_bitmap(Tables::Columns::get_kind(tc)) == FALSE)
 					continue;
 				int current_bit = 1, byte_so_far = 0;
 				@<Compile blank bits for entries from the source text@>;
@@ -246,7 +318,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 	table *t;
 	LOOP_OVER(t, table)
 		if (t->amendment_of == FALSE) {
-			Emit::array_iname_entry(Tables::identifier(t));
+			Emit::array_iname_entry(RTTables::identifier(t));
 		}
 	Emit::array_numeric_entry(0);
 	Emit::array_numeric_entry(0);
@@ -256,7 +328,7 @@ against the rules. (The Template file "Tables.i6t" defines it.)
 table values and prints the (title-cased) name of the one which matches.
 
 =
-void Tables::Support::compile_print_table_names(void) {
+void RTTables::compile_print_table_names(void) {
 	table *t;
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
 	packaging_state save = Routines::begin(iname);
@@ -283,7 +355,7 @@ void Tables::Support::compile_print_table_names(void) {
 		if (t->amendment_of == FALSE) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_table, Tables::identifier(t));
+				Produce::val_iname(Emit::tree(), K_table, RTTables::identifier(t));
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
@@ -319,7 +391,7 @@ improbability, be valid for this kind. If we can prove that it is not, we
 should return |FALSE|; if in any doubt, we must return |TRUE|.
 
 =
-int Tables::Support::requires_blanks_bitmap(kind *K) {
+int RTTables::requires_blanks_bitmap(kind *K) {
 	if (K == NULL) return FALSE;
 	if (Kinds::Behaviour::is_object(K)) return FALSE;
 	if (Kinds::Behaviour::is_an_enumeration(K)) return FALSE;

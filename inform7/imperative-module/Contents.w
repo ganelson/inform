@@ -10,13 +10,15 @@ Preliminaries
 Chapter 1: Configuration and Control
 	Imperative Module
 
-Chapter 2: Compiling from Propositions
-	Compiling from Specifications
-	Emitting from Schemas
-	Compile Atoms
-	Deciding to Defer
-	Cinders and Deferrals
-	Compile Deferred Propositions
+Chapter 2: Rules and Rulebooks
+"Rules are named phrases which are invoked in a particular way, and rulebooks
+a way to organise lists of them."
+	Rules
+	Rule Bookings
+	Rulebooks
+	Focus and Outcome
+	Stacked Variables
+	Activities
 
 Chapter 3: Phrases
 "In which rules, To... phrases (and similar explicit instructions to do
@@ -38,14 +40,22 @@ being compiled as a great mass of Inform 6 routines and arrays."
 	Phrasebook Index
 
 Chapter 4: Compilation Context
-"Preparing a context at run-time in which code can be executed: creating
-local variables, and so on."
+"Preparing a context at run-time in which code can be executed."
 	Local Variables
 	Phrase Blocks
 	Stack Frames
 	Chronology
 
-Chapter 5: Compilation
+Chapter 5: Compiling Propositions
+"Generating code to test or assert propositions from predicate calculus."
+	Compiling from Specifications
+	Emitting from Schemas
+	Compile Atoms
+	Deciding to Defer
+	Cinders and Deferrals
+	Compile Deferred Propositions
+
+Chapter 6: Compiling Invocations
 "Generating code to perform individual phrases."
 	Invocations
 	Parse Invocations
@@ -54,3 +64,4 @@ Chapter 5: Compilation
 	Compile Invocations Inline
 	Compile Phrases
 	Compile Arithmetic
+	Compile Solutions to Equations
