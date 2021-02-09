@@ -1497,12 +1497,12 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 				"at once, and it would be clearer to write it as two sentences?");
 			return;
 		}
-		Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
+		Assert::true_about(prop, left_object, prevailing_mood);
 	} else {
 		kind *K = Specifications::to_kind(Node::get_evaluation(py));
 		if (K) {
 			pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
-			Propositions::Assert::assert_true_about(prop, left_object, prevailing_mood);
+			Assert::true_about(prop, left_object, prevailing_mood);
 		}
 	}
 

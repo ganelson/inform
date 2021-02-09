@@ -151,7 +151,7 @@ void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 		return;
 	}
 	#ifdef IF_MODULE
-	inference_subject *subj = Propositions::Assert::subject_of_term(prop->terms[0]);
+	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	PL::Backdrops::infer_presence_everywhere(ox);
 	#endif
@@ -164,7 +164,7 @@ void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 #ifdef CORE_MODULE
 void WherePredicates::assert_nowhere(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
-	inference_subject *subj = Propositions::Assert::subject_of_term(prop->terms[0]);
+	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
@@ -193,7 +193,7 @@ problem aside for now.
 #ifdef CORE_MODULE
 void WherePredicates::assert_here(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
-	inference_subject *subj = Propositions::Assert::subject_of_term(prop->terms[0]);
+	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),

@@ -487,7 +487,7 @@ int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) 
 					"which doesn't make sense. An individual thing can be 'nowhere', "
 					"but here we're talking about a whole kind, and it's not allowed "
 					"to talk about general locations of a whole kind of things at once.");
-			else Propositions::Assert::assert_true_about(
+			else Assert::true_about(
 				Propositions::Abstract::to_put_nowhere(), left_subject, prevailing_mood);
 			return TRUE;
 		}

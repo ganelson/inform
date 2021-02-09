@@ -59,7 +59,7 @@ void KindPredicatesRevisited::assert(up_family *self, unary_predicate *up,
 			"which is too vague. You must say what kind it does have.");
 		return;
 	}
-	inference_subject *subj = Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *subj = Assert::subject_of_term(pl->terms[0]);
 	instance *ox = InferenceSubjects::as_object_instance(subj);
 	if (ox) Instances::set_kind(ox, up->assert_kind);
 	else {

@@ -51,7 +51,7 @@ automatically creates it.
 	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
 	property *prn = Properties::Valued::obtain(Node::get_text(p));
-	Propositions::Assert::assert_true_about(Propositions::Abstract::to_provide_property(prn),
+	Assert::true_about(Propositions::Abstract::to_provide_property(prn),
 		owner_infs, prevailing_mood);
 	return prn;
 

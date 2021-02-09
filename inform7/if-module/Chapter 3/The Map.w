@@ -672,7 +672,7 @@ void PL::Map::oneway_map_connection(instance *go_from, instance *go_to,
 	if (bp == NULL) internal_error("map connection in non-direction");
 	int x = prevailing_mood;
 	prevailing_mood = certainty_level;
-	Propositions::Assert::assert_true_about(
+	Assert::true_about(
 		Propositions::Abstract::to_set_simple_relation(bp, go_to),
 		Instances::as_subject(go_from), certainty_level);
 	prevailing_mood = x;

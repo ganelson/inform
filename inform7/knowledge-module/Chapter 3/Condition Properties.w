@@ -84,7 +84,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(NULL, W);
 	prop = Propositions::concatenate(prop,
 		Propositions::Abstract::to_make_a_kind(K_value));
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 
 	property *prn = Properties::Valued::obtain(W);
 	prn->either_or = FALSE;

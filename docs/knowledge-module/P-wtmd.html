@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -64,7 +69,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">knowledge</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the knowledge module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. The Model</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The knowledge module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -80,6 +85,68 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The Model. </b>This module's task is to build the "model world", the initial state of the
+world as it is chosen by an Inform author.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This consists of:
+</p>
+
+<ul class="items"><li>&#9679; Kinds, such as "vehicle", created in source text.
+</li><li>&#9679; Instances of kinds, such as a specific lorry in a fictional world being
+created with Inform.
+</li><li>&#9679; Permanently existing variables, which have kinds and initial values.
+</li><li>&#9679; Either-or properties, which individual instances might or might not have:
+for example, the lorry might be "parked" or "not parked".
+</li><li>&#9679; Properties with values, which some instances will have and some will not,
+and with differing values: for example, the colour of the lorry might be "yellow".
+</li><li>&#9679; Relationships between instances. For example, a specific person might
+"know how to drive" the yellow lorry, or might not.
+</li></ul>
+<p class="commentary">But the model does not contain:
+</p>
+
+<ul class="items"><li>&#9679; Kinds, such as "number", built in to Inform.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+</li><li>&#9679; Values, such as the number 176, which exist without anyone getting to
+choose whether they should exist or not.
+</li><li>&#9679; Temporary variables used during phrases or activities, but not existing
+at the start of play.
+</li><li>&#9679; Adjectives such as "even" as applied to numbers, or "empty" as applied
+to containers, whose truth or falsity is determined by something other than
+the author's whim. An author cannot choose that 176 is odd, and whether a
+container is empty depends only on whether there is something in it.
+</li><li>&#9679; Relationships which are, similarly, determined by an algorithm and not
+by a specific authorial choice. Like it or not, 176 is "greater than" 8.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The term "model" is drawn partly from interactive fiction, but also from
+model theory in the sense of logic, where a "model" is a specific solution
+showing that a set of logical propositions can all simultaneously be true.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Properly speaking, kinds created by Neptune files inside kits rather than
+being declared in source text.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The model is constructed entirely from a stream of logical propositions
+sent here by the <a href="../assertions-module/index.html" class="internal">assertions</a> module. Those propositions may be mutually
+inconsistent &mdash; either flatly contradictory or just impossible to reconcile.
+</p>
+
+<p class="commentary">The stream of supposed truthful statements comes to this module through calls
+to either <a href="1-ap.html#SP4" class="internal">Assert::true</a> or <a href="1-ap.html#SP4" class="internal">Assert::true_about</a>. These reduce a
+proposition to a set of facts concerning things in the model; as we have
+seen, the model includes kinds, variables, instances and relations, and so
+we need a unified type for "something you can know a fact about". That
+type is called <a href="4-is.html#SP4" class="internal">inference_subject</a>. Each subject has its own list of known
+facts: we call such a fact an <a href="4-inf.html#SP5" class="internal">inference</a> because it has (usually) been
+inferred from a proposition.
+</p>
+
+<p class="commentary"><a href="2-ins.html" class="internal">Chapter 2: Property Owners</a> implements our system of properties: each different value
+or either-or property is a <a href="3-prp.html#SP1" class="internal">property</a> object. There might be a puritan
+case for abolishing this type in favour of regarding either-or properties
+as special cases of <span class="extract"><span class="extract-syntax">unary_predicate</span></span> and value properties as special cases
+of <span class="extract"><span class="extract-syntax">binary_predicate</span></span> (by identifying a predicate with its setting relation),
+but I do not think this would clarify anything.
+</p>
+
+<p class="commentary"><a href="3-prp.html" class="internal">Chapter 3: Properties</a> then covers <a href="4-is.html" class="internal">Inference Subjects</a> and their <a href="4-inf.html" class="internal">Inferences</a>.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-ins.html">2</a></li><li class="progresschapter"><a href="3-prp.html">3</a></li><li class="progresschapter"><a href="4-is.html">4</a></li><li class="progressnext"><a href="1-km.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

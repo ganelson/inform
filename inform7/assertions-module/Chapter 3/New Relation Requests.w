@@ -384,7 +384,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 		Kinds::RunTime::ensure_basic_heap_present();
 	} else {
 		if (provide_prn)
-			Propositions::Assert::assert_true_about(
+			Assert::true_about(
 				Propositions::Abstract::to_provide_property(prn), storage_infs, prevailing_mood);
 		@<Add in the reducing functions@>;
 	}

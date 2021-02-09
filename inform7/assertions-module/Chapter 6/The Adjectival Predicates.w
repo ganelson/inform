@@ -77,9 +77,9 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	int parity = (now_negated)?FALSE:TRUE, found;
 	if (AdjectivalPredicates::parity(up) == FALSE) parity = (parity)?FALSE:TRUE;
-	inference_subject *ox = Propositions::Assert::subject_of_term(pl->terms[0]);
+	inference_subject *ox = Assert::subject_of_term(pl->terms[0]);
 
-	parse_node *ots = Propositions::Assert::spec_of_term(pl->terms[0]);
+	parse_node *ots = Assert::spec_of_term(pl->terms[0]);
 
 	kind *domain_of_definition = InferenceSubjects::domain(ox);
 	if (domain_of_definition == NULL) {
@@ -98,7 +98,7 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	if (ox) found = Adjectives::Meanings::assert(aph, domain_of_definition, ox, NULL, parity);
 	else found = Adjectives::Meanings::assert(aph, domain_of_definition, NULL, ots, parity);
 
-	if (found == FALSE) Propositions::Assert::issue_couldnt_problem(aph, parity);
+	if (found == FALSE) Assert::issue_couldnt_problem(aph, parity);
 }
 
 int AdjectivalPredicates::testable(up_family *self, unary_predicate *up) {

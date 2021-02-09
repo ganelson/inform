@@ -84,7 +84,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	#endif
 
 @<Check that the premiss involves only either/or properties and/or a kind@> =
-	if (Propositions::Assert::testable_at_compile_time(premiss) == FALSE) {
+	if (Assert::testable_at_compile_time(premiss) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadImplicationDomain),
 			"that's an implication where the condition to qualify is not "
 			"one that I can determine in advance of the start of play",
@@ -229,7 +229,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	possession_marker *pom = Properties::get_possession_marker(conclusion_prop);
 	@<Check that the conclusion is not redundant or irrelevant@>;
 
-	int candidate_qualifies = Propositions::Assert::test_at_compile_time(imp->if_spec, candidate);
+	int candidate_qualifies = Assert::test_at_compile_time(imp->if_spec, candidate);
 
 	if (candidate_qualifies) {
 		LOGIF(IMPLICATIONS, "PASS: changing property $Y of $j\n", conclusion_prop, candidate);
@@ -267,5 +267,5 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	} else {
 		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));
 	}
-	Propositions::Assert::assert_true_about(prop, candidate, CERTAIN_CE);
+	Assert::true_about(prop, candidate, CERTAIN_CE);
 	return TRUE;

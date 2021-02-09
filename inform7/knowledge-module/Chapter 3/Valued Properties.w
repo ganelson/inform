@@ -210,7 +210,7 @@ int Properties::Valued::is_used_for_non_typesafe_relation(property *prn) {
 void Properties::Valued::assert(property *prn, inference_subject *owner,
 	parse_node *val, int certainty) {
 	pcalc_prop *prop = Propositions::Abstract::to_set_property(prn, val);
-	Propositions::Assert::assert_true_about(prop, owner, certainty);
+	Assert::true_about(prop, owner, certainty);
 }
 
 @h Compilation.

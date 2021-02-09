@@ -602,7 +602,7 @@ to abbreviated forms of object names are normally allowed.
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_object, W);
 	if (is_a_kind)
 		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_kind(K_object));
-	Propositions::Assert::assert_true(prop, CERTAIN_CE);
+	Assert::true(prop, CERTAIN_CE);
 
 	if (is_a_kind == FALSE) {
 		recent_creation = latest_instance;
@@ -666,7 +666,7 @@ to abbreviated forms of object names are normally allowed.
 @<Create a new kind of value@> =
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(NULL, W);
 	prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_kind(K_value));
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 	val = Specifications::from_kind(latest_base_kind_of_value);
 
 @<Create a new variable@> =
@@ -682,7 +682,7 @@ to abbreviated forms of object names are normally allowed.
 		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_const());
 	else
 		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_var());
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 	if (NonlocalVariables::get_latest() == NULL) internal_error("failed to create");
 	val = Lvalues::new_actual_NONLOCAL_VARIABLE(NonlocalVariables::get_latest());
 
@@ -690,7 +690,7 @@ to abbreviated forms of object names are normally allowed.
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(create_as, W);
 	pcalc_prop *such_that = Node::get_creation_proposition(governor);
 	if (such_that) prop = Propositions::concatenate(prop, such_that);
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 	val = Rvalues::from_instance(latest_instance);
 
 @ Lastly: rulebooks and activities are not part of the model, because they would
@@ -930,7 +930,7 @@ to a different vehicle object.
 	NW = Wordings::truncate(NW, 32); /* truncate to the maximum length */
 	parse_node *pz = Node::new(PROPER_NOUN_NT);
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(instance_kind, NW);
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 	new_instance = Instances::as_subject(latest_instance);
 	if (named_after) {
 		#ifdef IF_MODULE
@@ -1084,7 +1084,7 @@ void Assertions::Creator::stock_nl_kind(kind *K) {
 	LOOP_OVER(L, inform_language) {
 		pcalc_prop *prop =
 			Propositions::Abstract::to_create_something(K, L->instance_name);
-		Propositions::Assert::assert_true(prop, CERTAIN_CE);
+		Assert::true(prop, CERTAIN_CE);
 		L->nl_instance = latest_instance;
 	}
 }

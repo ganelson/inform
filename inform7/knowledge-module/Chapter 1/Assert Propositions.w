@@ -1,4 +1,4 @@
-[Propositions::Assert::] Assert Propositions.
+[Assert::] Assert Propositions.
 
 To declare that a given proposition is a true statement about the
 state of the world when play begins.
@@ -39,8 +39,8 @@ declared as literals in the source text: there is no need to analyse their
 meaning.
 
 To build or change the model, we assert that propositions about it are true,
-using |Propositions::Assert::assert_true| or
-|Propositions::Assert::assert_true_about|. This is the only way to
+using |Assert::true| or
+|Assert::true_about|. This is the only way to
 create kinds, instances, global variables, and constant values, and also the
 only way to attach properties to objects, to set property values or
 the kind of a given object or the value of a global variable, or to declare
@@ -53,8 +53,8 @@ not to attach scent to anything or to relate any objects by admiring. The
 model world would then not have changed at all.) So creating new properties
 and new relations is not done by asserting propositions.
 
-@ |Propositions::Assert::assert_true| asserts propositions in which all variables are
-bound (or which have no variables); |Propositions::Assert::assert_true_about| asserts
+@ |Assert::true| asserts propositions in which all variables are
+bound (or which have no variables); |Assert::true_about| asserts
 propositions in which $x$ is free but all other variables are bound, and
 substitutes either an object $O$ or a value $V$ into $x$ before asserting.
 These two procedures are the entire API, so to speak, for growing or changing
@@ -63,8 +63,8 @@ which takes assertion sentences in the source text and
 converts them into a series of propositions which it would like to make true.
 
 Either way those requests come in, they all end up in the central
-|Propositions::Assert::prop_true_in_model| procedure, one of the most important choke points within
-Inform. |Propositions::Assert::prop_true_in_model| and its delegates -- routines to assert the
+|Assert::prop_true_in_model| procedure, one of the most important choke points within
+Inform. |Assert::prop_true_in_model| and its delegates -- routines to assert the
 truth of various adjectives or relations -- are allowed to call routines such
 as |Instances::set_kind| and |Instances::new| which are forbidden for use in the
 rest of Inform. These are guarded with the following macro, to ensure that
@@ -75,19 +75,19 @@ we don't accidentally break this rule:
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
 = (early code)
-int ptim_recursion_depth = 0; /* depth of recursion of |Propositions::Assert::prop_true_in_model| */
+int ptim_recursion_depth = 0; /* depth of recursion of |Assert::prop_true_in_model| */
 
 @h Entrance.
 This first entrance is a mere alias for the second.
 
 =
-void Propositions::Assert::assert_true(pcalc_prop *prop, int certitude) {
-	Propositions::Assert::prop_true_in_world_model_inner(prop, NULL, certitude);
+void Assert::true(pcalc_prop *prop, int certitude) {
+	Assert::prop_true_in_world_model_inner(prop, NULL, certitude);
 }
 
-void Propositions::Assert::assert_true_about(pcalc_prop *prop, inference_subject *infs,
+void Assert::true_about(pcalc_prop *prop, inference_subject *infs,
 	int certitude) {
-	Propositions::Assert::prop_true_in_world_model_inner(prop, infs, certitude);
+	Assert::prop_true_in_world_model_inner(prop, infs, certitude);
 }
 
 @ If we are working along a proposition and reach, say, $door(x)$, we
@@ -104,7 +104,7 @@ parse_node **current_interpretation_as_spec = NULL; /* must point to a 26-elemen
 =
 parse_node *last_couldnt_assert_at = NULL;
 
-void Propositions::Assert::issue_couldnt_problem(adjective *aph, int parity) {
+void Assert::issue_couldnt_problem(adjective *aph, int parity) {
 	if (last_couldnt_assert_at != current_sentence) {
 		wording W = Adjectives::get_nominative_singular(aph);
 		Problems::quote_source(1, current_sentence);
@@ -134,11 +134,11 @@ void Propositions::Assert::issue_couldnt_problem(adjective *aph, int parity) {
 
 @ The second entrance, then, keeps track of the recursion depth but also
 ensures that the identification slate is always correct, stacking them
-so that an inner |Propositions::Assert::prop_true_in_model| has an independent slate from an outer
+so that an inner |Assert::prop_true_in_model| has an independent slate from an outer
 one.
 
 =
-void Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject *subject,
+void Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject *subject,
 	int certainty) {
 	inference_subject **saved_interpretation_as_infs = current_interpretation_as_infs;
 	parse_node **saved_interpretation_as_spec = current_interpretation_as_spec;
@@ -150,7 +150,7 @@ void Propositions::Assert::prop_true_in_world_model_inner(pcalc_prop *prop, infe
 
 	ptim_recursion_depth++;
 
-	Propositions::Assert::prop_true_in_model(prop);
+	Assert::prop_true_in_model(prop);
 
 	ptim_recursion_depth--;
 
@@ -168,7 +168,7 @@ been supplied; $x$ of course is variable number 0.
 	current_interpretation_as_infs = ciawo; current_interpretation_as_spec = ciats;
 
 @h Main procedure.
-As can be seen, |Propositions::Assert::prop_true_in_model| is a simple procedure. After a little
+As can be seen, |Assert::prop_true_in_model| is a simple procedure. After a little
 fuss to check that everything is set up right, we simply run through the
 proposition one atom at a time.
 
@@ -186,7 +186,7 @@ That means we can simply assert each atom in turn, with a parity depending on
 its nesting in negation brackets, which is nice and easy to write:
 
 =
-void Propositions::Assert::prop_true_in_model(pcalc_prop *prop) {
+void Assert::prop_true_in_model(pcalc_prop *prop) {
 	if (prop == NULL) return;
 	@<Record the proposition in the debugging log@>;
 	if (Propositions::contains_nonexistence_quantifier(prop))
@@ -402,8 +402,8 @@ these kind atoms.
 
 	@<Determine the BP and terms to be asserted@>;
 
-	parse_node *spec0 = Propositions::Assert::spec_of_term(pt0), *spec1 = Propositions::Assert::spec_of_term(pt1);
-	inference_subject *subj0 = Propositions::Assert::subject_of_term(pt0), *subj1 = Propositions::Assert::subject_of_term(pt1);
+	parse_node *spec0 = Assert::spec_of_term(pt0), *spec1 = Assert::spec_of_term(pt1);
+	inference_subject *subj0 = Assert::subject_of_term(pt0), *subj1 = Assert::subject_of_term(pt1);
 	if ((subj0) && (spec0 == NULL)) spec0 = InferenceSubjects::as_constant(subj0);
 	if ((subj1) && (spec1 == NULL)) spec1 = InferenceSubjects::as_constant(subj1);
 
@@ -412,8 +412,8 @@ these kind atoms.
 	#endif
 		kind *K0 = BinaryPredicates::term_kind(bp, 0);
 		kind *K1 = BinaryPredicates::term_kind(bp, 1);
-		if (Kinds::Behaviour::is_subkind_of_object(K0)) Propositions::Assert::cautiously_set_kind(subj0, K0);
-		if (Kinds::Behaviour::is_subkind_of_object(K1)) Propositions::Assert::cautiously_set_kind(subj1, K1);
+		if (Kinds::Behaviour::is_subkind_of_object(K0)) Assert::cautiously_set_kind(subj0, K0);
+		if (Kinds::Behaviour::is_subkind_of_object(K1)) Assert::cautiously_set_kind(subj1, K1);
 	#ifdef IF_MODULE
 	}
 	#endif
@@ -483,7 +483,7 @@ things by default when we complete the model world anyway; so there is no
 need to risk setting the kind here at this stage.
 
 =
-void Propositions::Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
+void Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
 	if ((inst == NULL) || (k == NULL)) return;
 	#ifdef IF_MODULE
 	if (Kinds::eq(k, K_thing)) return;
@@ -507,7 +507,7 @@ and won't even try. We can evaluate a variable using the interpretation
 slate -- that was its whole purpose. So the only case left is a constant:
 
 =
-parse_node *Propositions::Assert::spec_of_term(pcalc_term pt) {
+parse_node *Assert::spec_of_term(pcalc_term pt) {
 	if (pt.function) return NULL;
 	if (pt.variable >= 0) return current_interpretation_as_spec[pt.variable];
 	return pt.constant;
@@ -527,7 +527,7 @@ type with a problem message. In practice the A-parser gets there first,
 but just in case.
 
 =
-inference_subject *Propositions::Assert::subject_of_term(pcalc_term pt) {
+inference_subject *Assert::subject_of_term(pcalc_term pt) {
 	if (pt.function) return NULL;
 	if (pt.variable >= 0) return current_interpretation_as_infs[pt.variable];
 
@@ -558,7 +558,7 @@ of a given inference subject at the current stage of the world model. (This is
 necessary for the implications code to work.)
 
 =
-int Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
+int Assert::testable_at_compile_time(pcalc_prop *prop) {
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {
@@ -581,8 +581,8 @@ int Propositions::Assert::testable_at_compile_time(pcalc_prop *prop) {
 @ And the actual test:
 
 =
-int Propositions::Assert::test_at_compile_time(pcalc_prop *prop, inference_subject *about) {
-	if (Propositions::Assert::testable_at_compile_time(prop) == FALSE) return NOT_APPLICABLE;
+int Assert::test_at_compile_time(pcalc_prop *prop, inference_subject *about) {
+	if (Assert::testable_at_compile_time(prop) == FALSE) return NOT_APPLICABLE;
 	TRAVERSE_VARIABLE(pl);
 	TRAVERSE_PROPOSITION(pl, prop) {
 		switch(pl->element) {

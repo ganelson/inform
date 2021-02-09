@@ -332,7 +332,7 @@ table: do they get permission as well? We're going to say that they do.
 		property *P = NULL;
 		@<Ensure that a property with the same name as the column name exists@>;
 		if (global_pass_state.pass == 1)
-			Propositions::Assert::assert_true_about(
+			Assert::true_about(
 				Propositions::Abstract::to_provide_property(P),
 				Kinds::Knowledge::as_subject(t->kind_defined_in_this_table),
 				prevailing_mood);

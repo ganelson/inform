@@ -35,7 +35,7 @@ void Assertions::PropertyKnowledge::igv_dash(nonlocal_variable *q, parse_node *v
 
 	parse_node *var = Lvalues::new_actual_NONLOCAL_VARIABLE(q);
 	pcalc_prop *prop = Propositions::Abstract::to_set_relation(R_equality, NULL, var, NULL, val);
-	Propositions::Assert::assert_true(prop, prevailing_mood);
+	Assert::true(prop, prevailing_mood);
 }
 
 @ On the face of it, the following looks unnecessary, and it nearly is.
@@ -102,7 +102,7 @@ void Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_
 	inference_subject *owner, parse_node *val_subtree) {
 	pcalc_prop *prop = Propositions::Abstract::from_property_subtree(prn, val_subtree);
 	if (owner == NULL) @<Issue a problem for an unrecognised property owner@>;
-	Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
+	Assert::true_about(prop, owner, prevailing_mood);
 }
 
 void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtree, parse_node *list_subtree) {
@@ -125,7 +125,7 @@ void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtr
 	kind *kind_clue = NULL;
 	@<Work out the clue kind@>;
 	pcalc_prop *prop = Propositions::Abstract::from_property_list(list_subtree, kind_clue);
-	Propositions::Assert::assert_true_about(prop, owner, prevailing_mood);
+	Assert::true_about(prop, owner, prevailing_mood);
 }
 
 @ We pass the "clue kind" to obtain a proposition which includes an atom

@@ -41,7 +41,7 @@ pcalc_prop *Propositions::Abstract::prop_to_set_kind(kind *k) {
 
 =
 void Propositions::Abstract::assert_kind_of_instance(instance *I, kind *k) {
-	Propositions::Assert::assert_true_about(
+	Assert::true_about(
 		Propositions::Abstract::prop_to_set_kind(k),
 		Instances::as_subject(I), prevailing_mood);
 }
@@ -51,7 +51,7 @@ void Propositions::Abstract::assert_kind_of_subject(inference_subject *inst,
 	kind *K = InferenceSubjects::domain(new);
 	pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 	if (subject_to) prop = Propositions::concatenate(prop, subject_to);
-	Propositions::Assert::assert_true_about(prop, inst, prevailing_mood);
+	Assert::true_about(prop, inst, prevailing_mood);
 }
 
 @ Now propositions to assert that relations hold:
