@@ -39,13 +39,6 @@ If $C$ is a certainty level, then we call its absolute value the "absolute
 certainty". Thus there are only three absolute certainty levels: unknown,
 likely and certain.
 
-@ When a given sentence is being parsed, there is a prevailing mood of certainty
-or uncertainty about the information implied by it, and this is stored in the
-following global variable:
-
-= (early code)
-int prevailing_mood = UNKNOWN_CE;
-
 @ This is the data structure used to store a single inference. Within the
 stock of facts known about a given INFS, the individual inferences are
 organised as linked lists; hence the |next| field.

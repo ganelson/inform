@@ -127,16 +127,23 @@ inconsistent &mdash; either flatly contradictory or just impossible to reconcile
 </p>
 
 <p class="commentary">The stream of supposed truthful statements comes to this module through calls
-to either <a href="1-ap.html#SP4" class="internal">Assert::true</a> or <a href="1-ap.html#SP4" class="internal">Assert::true_about</a>. These reduce a
+to either <a href="1-ap.html#SP2" class="internal">Assert::true</a> or <a href="1-ap.html#SP2" class="internal">Assert::true_about</a>. These reduce a
 proposition to a set of facts concerning things in the model; as we have
 seen, the model includes kinds, variables, instances and relations, and so
 we need a unified type for "something you can know a fact about". That
-type is called <a href="4-is.html#SP4" class="internal">inference_subject</a>. Each subject has its own list of known
-facts: we call such a fact an <a href="4-inf.html#SP5" class="internal">inference</a> because it has (usually) been
+type is called <a href="2-is.html#SP4" class="internal">inference_subject</a>. Each subject has its own list of known
+facts: we call such a fact an <a href="4-inf.html#SP4" class="internal">inference</a> because it has (usually) been
 inferred from a proposition.
 </p>
 
-<p class="commentary"><a href="2-ins.html" class="internal">Chapter 2: Property Owners</a> implements our system of properties: each different value
+<p class="commentary"><a href="2-is.html" class="internal">Chapter 2: Subjects</a> gives a general API for dealing with <a href="2-is.html" class="internal">Inference Subjects</a>,
+and then works systematically through the various categories of these.
+Kinds and binary predicates already exist from other modules (see
+<a href="../kinds-module/2-knd.html" class="internal">Chapter 2: Kinds (in kinds)</a> and <a href="../calculus-module/3-bpf.html" class="internal">Chapter 3: Binary Predicates (in calculus)</a>
+respectively), but <a href="2-ins.html" class="internal">Instances</a> and <a href="2-nv.html" class="internal">Nonlocal Variables</a> are new.
+</p>
+
+<p class="commentary"><a href="3-prp.html" class="internal">Chapter 3: Properties</a> implements our system of properties: each different value
 or either-or property is a <a href="3-prp.html#SP1" class="internal">property</a> object. There might be a puritan
 case for abolishing this type in favour of regarding either-or properties
 as special cases of <span class="extract"><span class="extract-syntax">unary_predicate</span></span> and value properties as special cases
@@ -144,11 +151,11 @@ of <span class="extract"><span class="extract-syntax">binary_predicate</span></s
 but I do not think this would clarify anything.
 </p>
 
-<p class="commentary"><a href="3-prp.html" class="internal">Chapter 3: Properties</a> then covers <a href="4-is.html" class="internal">Inference Subjects</a> and their <a href="4-inf.html" class="internal">Inferences</a>.
+<p class="commentary">Finally, <a href="4-pp.html" class="internal">Chapter 4: Inference and Model</a> builds the actual model.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-ins.html">2</a></li><li class="progresschapter"><a href="3-prp.html">3</a></li><li class="progresschapter"><a href="4-is.html">4</a></li><li class="progressnext"><a href="1-km.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-km.html">1</a></li><li class="progresschapter"><a href="2-is.html">2</a></li><li class="progresschapter"><a href="3-prp.html">3</a></li><li class="progresschapter"><a href="4-pp.html">4</a></li><li class="progressnext"><a href="1-km.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

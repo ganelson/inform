@@ -11,7 +11,10 @@ Chapter 1: Configuration and Control
 	Knowledge Module
 	Assert Propositions
 
-Chapter 2: Property Owners
+Chapter 2: Subjects
+	Inference Subjects
+	Knowledge about Kinds
+	Knowledge about Relations
 	Instances
 	Nonlocal Variables
 
@@ -38,9 +41,6 @@ converting them to propositions, which in turn generated basic inferences
 about the model world, we must now resolve this mass of facts, applying
 Occam's Razor to construct the simplest explicit model of the world which
 fits this knowledge."
-	Inference Subjects
-	Knowledge about Kinds
-	Knowledge about Relations
 	Property Permissions
 	Inferences
 	Complete Model World

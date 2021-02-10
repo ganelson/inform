@@ -3,143 +3,58 @@
 To declare that a given proposition is a true statement about the
 state of the world when play begins.
 
-@ Inside Inform, the term "the model" means the collection of the following:
-
-(1) The inference subjects capable of holding properties, divided into:
-(-1a) World objects, such as "Brazilian frog" or "Jungle Clearing"; each
-of which belongs to a kind;
-(-1b) Kinds of object, such as "animal" or "room"; each of which
-is a kind in turn of another kind, even if only "kind", which is its own kind;
-(-1c) Named constant values, such as "red" or "Entire Game"; each of which
-belongs to a kind of value;
-(-1d) Kinds of value whose values are all named, such as "colour" or "scene".
-
-(2) The associated values, divided into:
-(-2a) Properties, such as "open" or "carrying capacity", each of which is
-held by some subset of the objects -- for instance, containers and people are
-permitted to have the "carrying capacity" property;
-(-2b) Global variables, such as "time of day".
-
-(3) Relations between the objects (or in some cases between objects and values
-outside the model), such as "containment".
-
-Much else lies outside the model: values like |152| or |"alfalfa"|, rules,
-rulebooks, phrases, relations which can only be tested (such as "less than"
-or "visibility") and so on. Some of this is excluded because it is beyond
-the source text's power to decide facts about it (for instance, that 5 is
-less than 6); other matter is left out because it only relates to what
-happens to the world after its initial creation (for instances, actions
-and activities). The model is that which the source text can decide about
-the initial state of things.
-
-@ The initial state of the world is built from the model. Properly speaking
-a few other things contribute, too -- such as the entries initially found in
-table cells -- but these don't need careful handling, since they are explicitly
-declared as literals in the source text: there is no need to analyse their
-meaning.
-
-To build or change the model, we assert that propositions about it are true,
-using |Assert::true| or
-|Assert::true_about|. This is the only way to
-create kinds, instances, global variables, and constant values, and also the
-only way to attach properties to objects, to set property values or
-the kind of a given object or the value of a global variable, or to declare
-that relationships hold.
-
-However, creating new property names and new relations does not count as a
-change in the model world. (After all, we could create a new property
-called "scent" and a new relation called "admiring", but then choose
-not to attach scent to anything or to relate any objects by admiring. The
-model world would then not have changed at all.) So creating new properties
-and new relations is not done by asserting propositions.
-
-@ |Assert::true| asserts propositions in which all variables are
-bound (or which have no variables); |Assert::true_about| asserts
-propositions in which $x$ is free but all other variables are bound, and
-substitutes either an object $O$ or a value $V$ into $x$ before asserting.
-These two procedures are the entire API, so to speak, for growing or changing
-the model. They are used by the detailed-look part of the A-parser,
-which takes assertion sentences in the source text and
-converts them into a series of propositions which it would like to make true.
-
-Either way those requests come in, they all end up in the central
-|Assert::prop_true_in_model| procedure, one of the most important choke points within
-Inform. |Assert::prop_true_in_model| and its delegates -- routines to assert the
-truth of various adjectives or relations -- are allowed to call routines such
-as |Instances::set_kind| and |Instances::new| which are forbidden for use in the
-rest of Inform. These are guarded with the following macro, to ensure that
-we don't accidentally break this rule:
+@h Defensive moat.
+To enforce the doctrine that calls to //Assert::true// or //Assert::true_about//
+are the only way to change the model, we define a macro |PROTECTED_MODEL_PROCEDURE|
+which can be used to guard a function so that it can only be called as a
+consequence of these. For example, //Instances::new// is defended this way.
 
 @d PROTECTED_MODEL_PROCEDURE
-	if (ptim_recursion_depth == 0)
+	if (assert_recursion_depth == 0)
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
 = (early code)
-int ptim_recursion_depth = 0; /* depth of recursion of |Assert::prop_true_in_model| */
+int assert_recursion_depth = 0; /* depth of recursion of |Assert::inner_slated| */
 
 @h Entrance.
-This first entrance is a mere alias for the second.
+//Assert::true// takes a proposition with no free variables and converts it
+into inferences at a given certainty level; //Assert::true_about// the same,
+but where the proposition $\phi(x)$ has one free variable, and an inference
+subject is supplied to stand as $x$, the thing the proposition is discussing.
 
 =
 void Assert::true(pcalc_prop *prop, int certitude) {
-	Assert::prop_true_in_world_model_inner(prop, NULL, certitude);
+	Assert::inner(prop, NULL, certitude);
 }
 
 void Assert::true_about(pcalc_prop *prop, inference_subject *infs,
 	int certitude) {
-	Assert::prop_true_in_world_model_inner(prop, infs, certitude);
+	Assert::inner(prop, infs, certitude);
 }
 
 @ If we are working along a proposition and reach, say, $door(x)$, we
-can only assert that if we know what the value of $x$ is. We therefore keep
-an array (or a pair of arrays) holding our current beliefs about the values
-of the variables -- this is called the "identification slate".
+can only assert that if we know what the value of $x$ is. We record this with
+two 26-element arrays, for the up to 26 predicate calculus variables; there
+are two arrays because the value can be given either as a specification or
+as an inference subject.
 
 =
-inference_subject **current_interpretation_as_infs = NULL; /* must point to a 26-element array */
-parse_node **current_interpretation_as_spec = NULL; /* must point to a 26-element array */
+inference_subject **current_interpretation_as_infs = NULL;
+parse_node **current_interpretation_as_spec = NULL;
 
-@ Purely to avoid multiply producing a problem message.
+@ When a proposition is being asserted, there is a prevailing mood of certainty
+or uncertainty about the information implied by it, and this is stored in the
+following global variable:
 
-=
-parse_node *last_couldnt_assert_at = NULL;
+= (early code)
+int prevailing_mood = UNKNOWN_CE;
 
-void Assert::issue_couldnt_problem(adjective *aph, int parity) {
-	if (last_couldnt_assert_at != current_sentence) {
-		wording W = Adjectives::get_nominative_singular(aph);
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, W);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantAssertAdjective));
-		if (parity == FALSE) Problems::issue_problem_segment(
-			"In the sentence %1, you ask me to arrange for something not to be "
-			"'%2' at the start of play. This is only possible when an adjective "
-			"talks about an either/or property, like 'open'/'closed' - if there "
-			"are three or more possibilities then it's ambiguous. Even if there "
-			"are only two possibilities, I can't always fix them just on your "
-			"request - 'visible'/'invisible', for instance, is something I can "
-			"test during play at any time, but not something I can arrange at "
-			"the start.");
-		else Problems::issue_problem_segment(
-			"In the sentence %1, you ask me to arrange for something to be '%2' "
-			"at the start of play. There are some adjectives ('open' or 'dark', "
-			"for instance) which I can fix, but others are just too vague. For "
-			"example, saying 'Peter is visible.' isn't allowed, because it "
-			"doesn't tell me where Peter is. Like 'visible', being '%2' is "
-			"something I can test during play at any time, but not something "
-			"I can arrange at the start.");
-		Problems::issue_problem_end();
-		last_couldnt_assert_at = current_sentence;
-	}
-}
-
-@ The second entrance, then, keeps track of the recursion depth but also
-ensures that the identification slate is always correct, stacking them
-so that an inner |Assert::prop_true_in_model| has an independent slate from an outer
-one.
+@ The true entrance, then, keeps track of the recursion depth but also ensures
+that the identification slate is always correct, stacking them so that an
+inner |Assert::inner_slated| has an independent slate from an outer one.
 
 =
-void Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject *subject,
-	int certainty) {
+void Assert::inner(pcalc_prop *prop, inference_subject *subject, int certainty) {
 	inference_subject **saved_interpretation_as_infs = current_interpretation_as_infs;
 	parse_node **saved_interpretation_as_spec = current_interpretation_as_spec;
 	int saved_prevailing_mood = prevailing_mood;
@@ -148,11 +63,11 @@ void Assert::prop_true_in_world_model_inner(pcalc_prop *prop, inference_subject 
 	inference_subject *ciawo[26]; parse_node *ciats[26];
 	@<Establish a new identification slate for the variables in the proposition@>;
 
-	ptim_recursion_depth++;
+	assert_recursion_depth++;
 
-	Assert::prop_true_in_model(prop);
+	Assert::inner_slated(prop);
 
-	ptim_recursion_depth--;
+	assert_recursion_depth--;
 
 	prevailing_mood = saved_prevailing_mood;
 	current_interpretation_as_infs = saved_interpretation_as_infs;
@@ -167,15 +82,14 @@ been supplied; $x$ of course is variable number 0.
 	ciawo[0] = subject; ciats[0] = NULL;
 	current_interpretation_as_infs = ciawo; current_interpretation_as_spec = ciats;
 
-@h Main procedure.
-As can be seen, |Assert::prop_true_in_model| is a simple procedure. After a little
-fuss to check that everything is set up right, we simply run through the
-proposition one atom at a time.
+@ Enough preparation. The actual process is simple: after a little fuss to
+check that everything is set up right, we simply run through the proposition
+one atom at a time.
 
 This is a modest scheme. We are unable to assert any proposition other
 than $\exists$, so that we never see their attendant domain brackets.
-We are therefore left with a proposition in the form $P_1\land P_2\land ...
-\land P_n$ where each $P_i$ is either a predicate-like atom, an $\exists v$
+We are therefore left with a proposition in the form $P_1\land P_2\land ... \land P_n$
+where each $P_i$ is either a predicate-like atom, an $\exists v$
 term for some variable $v$, or else $\lnot(...)$ of a similar conjunction.
 
 This is an ambiguous task if we have to assert $\lnot(P\land Q)$, which is
@@ -186,7 +100,7 @@ That means we can simply assert each atom in turn, with a parity depending on
 its nesting in negation brackets, which is nice and easy to write:
 
 =
-void Assert::prop_true_in_model(pcalc_prop *prop) {
+void Assert::inner_slated(pcalc_prop *prop) {
 	if (prop == NULL) return;
 	@<Record the proposition in the debugging log@>;
 	if (Propositions::contains_nonexistence_quantifier(prop))
@@ -391,7 +305,8 @@ these kind atoms.
 
 @<Assert the truth or falsity of a binary predicate@> =
 	if (now_negated) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantAssertNegatedRelations),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CantAssertNegatedRelations),
 			"that seems to make a negative statement about a relationship",
 			"which is too vague. You must make positive assertions.");
 		return;
@@ -403,7 +318,8 @@ these kind atoms.
 	@<Determine the BP and terms to be asserted@>;
 
 	parse_node *spec0 = Assert::spec_of_term(pt0), *spec1 = Assert::spec_of_term(pt1);
-	inference_subject *subj0 = Assert::subject_of_term(pt0), *subj1 = Assert::subject_of_term(pt1);
+	inference_subject *subj0 = Assert::subject_of_term(pt0),
+		*subj1 = Assert::subject_of_term(pt1);
 	if ((subj0) && (spec0 == NULL)) spec0 = InferenceSubjects::as_constant(subj0);
 	if ((subj1) && (spec1 == NULL)) spec1 = InferenceSubjects::as_constant(subj1);
 
@@ -412,8 +328,10 @@ these kind atoms.
 	#endif
 		kind *K0 = BinaryPredicates::term_kind(bp, 0);
 		kind *K1 = BinaryPredicates::term_kind(bp, 1);
-		if (Kinds::Behaviour::is_subkind_of_object(K0)) Assert::cautiously_set_kind(subj0, K0);
-		if (Kinds::Behaviour::is_subkind_of_object(K1)) Assert::cautiously_set_kind(subj1, K1);
+		if (Kinds::Behaviour::is_subkind_of_object(K0))
+			Assert::cautiously_set_kind(subj0, K0);
+		if (Kinds::Behaviour::is_subkind_of_object(K1))
+			Assert::cautiously_set_kind(subj1, K1);
 	#ifdef IF_MODULE
 	}
 	#endif
@@ -426,14 +344,16 @@ these kind atoms.
 
 	if ((Rvalues::is_nothing_object_constant(spec0)) ||
 		(Rvalues::is_nothing_object_constant(spec1)))
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationFailedOnNothing),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_RelationFailedOnNothing),
 			"that is an assertion which involves 'nothing'",
 			"which looks as if it might be trying to give me negative rather "
 			"than positive information. There's no need to tell me something "
 			"like 'Nothing is in the box.': just don't put anything in the box, "
 			"and then nothing will be in it.");
 	else
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(BelievedImpossible),
 			"that is an assertion I can't puzzle out",
 			"which seems to involve placing two things in some sort of "
 			"relationship, but if so then I can't make it work. Perhaps the "
@@ -455,7 +375,8 @@ simpler and clearer.
 		if (the_fn == NULL) { the_fn = pt1.function; side = 0; }
 		if (the_fn) {
 			if ((pl->terms[side].function) || (the_fn->fn_of.function)) {
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(BelievedImpossible),
 					"that is too complicated an assertion",
 					"and cannot be declared as part of the initial situation. (It "
 					"does make sense, and could be tested with 'if' - it's just "
@@ -599,3 +520,39 @@ int Assert::test_at_compile_time(pcalc_prop *prop, inference_subject *about) {
 @<Test if this unary predicate is true@> =
 	unary_predicate *up = RETRIEVE_POINTER_unary_predicate(pl->predicate);
 	if (UnaryPredicateFamilies::test(up, about) == FALSE) return FALSE;
+
+@h A catch-all problem.
+This is provided so that code trying to assert predicates, but failing, can
+make use of a generic problem message when stuck for anything better to say.
+
+=
+parse_node *last_couldnt_assert_at = NULL;
+
+void Assert::issue_couldnt_problem(adjective *aph, int parity) {
+	if (last_couldnt_assert_at != current_sentence) {
+		wording W = Adjectives::get_nominative_singular(aph);
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, W);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_CantAssertAdjective));
+		if (parity == FALSE) Problems::issue_problem_segment(
+			"In the sentence %1, you ask me to arrange for something not to be "
+			"'%2' at the start of play. This is only possible when an adjective "
+			"talks about an either/or property, like 'open'/'closed' - if there "
+			"are three or more possibilities then it's ambiguous. Even if there "
+			"are only two possibilities, I can't always fix them just on your "
+			"request - 'visible'/'invisible', for instance, is something I can "
+			"test during play at any time, but not something I can arrange at "
+			"the start.");
+		else Problems::issue_problem_segment(
+			"In the sentence %1, you ask me to arrange for something to be '%2' "
+			"at the start of play. There are some adjectives ('open' or 'dark', "
+			"for instance) which I can fix, but others are just too vague. For "
+			"example, saying 'Peter is visible.' isn't allowed, because it "
+			"doesn't tell me where Peter is. Like 'visible', being '%2' is "
+			"something I can test during play at any time, but not something "
+			"I can arrange at the start.");
+		Problems::issue_problem_end();
+		last_couldnt_assert_at = current_sentence;
+	}
+}
