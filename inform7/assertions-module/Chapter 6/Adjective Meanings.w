@@ -535,7 +535,7 @@ within the domain of an adjective meaning.
 
 =
 int Adjectives::Meanings::domain_subj_compare(inference_subject *infs, adjective_meaning *am) {
-	instance *I = InferenceSubjects::as_object_instance(infs);
+	instance *I = Instances::object_from_infs(infs);
 	if (I == NULL) return TRUE;
 	if (am->domain_infs == Kinds::Knowledge::as_subject(K_object)) return TRUE;
 	while (infs) {
@@ -743,8 +743,8 @@ int Adjectives::Meanings::compare(adjective_meaning *am1, adjective_meaning *am2
 	if (InferenceSubjects::is_strictly_within(am1->domain_infs, am2->domain_infs)) return 1;
 	if (InferenceSubjects::is_strictly_within(am2->domain_infs, am1->domain_infs)) return -1;
 
-	kind *K1 = InferenceSubjects::as_nonobject_kind(am1->domain_infs);
-	kind *K2 = InferenceSubjects::as_nonobject_kind(am2->domain_infs);
+	kind *K1 = Kinds::Knowledge::nonobject_from_infs(am1->domain_infs);
+	kind *K2 = Kinds::Knowledge::nonobject_from_infs(am2->domain_infs);
 	if ((K1) && (K2)) {
 		int c1 = Kinds::compatible(K1, K2);
 		int c2 = Kinds::compatible(K2, K1);

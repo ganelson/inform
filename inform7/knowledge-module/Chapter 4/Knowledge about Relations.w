@@ -5,21 +5,57 @@ To store inferences about the state of relationships.
 @
 
 =
-wording KnowledgeAboutRelations::SUBJ_get_name_text(inference_subject *from) {
-	return EMPTY_WORDING; /* nameless */
+inference_subject_family *relations_family = NULL;
+
+inference_subject_family *KnowledgeAboutRelations::family(void) {
+	if (relations_family == NULL) {
+		relations_family = InferenceSubjects::new_family();
+		METHOD_ADD(relations_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
+			KnowledgeAboutRelations::certainty);
+		METHOD_ADD(relations_family, EMIT_ALL_INFS_MTID, KnowledgeAboutRelations::SUBJ_compile_all);
+		METHOD_ADD(relations_family, EMIT_ONE_INFS_MTID, KnowledgeAboutRelations::SUBJ_compile);
+		METHOD_ADD(relations_family, CHECK_MODEL_INFS_MTID, KnowledgeAboutRelations::SUBJ_check_model);
+		METHOD_ADD(relations_family, COMPLETE_MODEL_INFS_MTID, KnowledgeAboutRelations::SUBJ_complete_model);
+		METHOD_ADD(relations_family, EMIT_ELEMENT_INFS_MTID, KnowledgeAboutRelations::SUBJ_emit_element_of_condition);
+		METHOD_ADD(relations_family, GET_NAME_TEXT_INFS_MTID, KnowledgeAboutRelations::SUBJ_get_name_text);
+		METHOD_ADD(relations_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, KnowledgeAboutRelations::SUBJ_make_adj_const_domain);
+		METHOD_ADD(relations_family, NEW_PERMISSION_GRANTED_INFS_MTID, KnowledgeAboutRelations::SUBJ_new_permission_granted);
+	}
+	return relations_family;
 }
 
-general_pointer KnowledgeAboutRelations::SUBJ_new_permission_granted(inference_subject *from) {
-	return NULL_GENERAL_POINTER;
+int KnowledgeAboutRelations::certainty(inference_subject_family *f, inference_subject *infs) {
+	return CERTAIN_CE;	
 }
 
-void KnowledgeAboutRelations::SUBJ_make_adj_const_domain(inference_subject *infs,
+binary_predicate *KnowledgeAboutRelations::from_infs(inference_subject *infs) {
+	if ((infs) && (infs->infs_family == relations_family))
+		return RETRIEVE_POINTER_binary_predicate(infs->represents);
+	return NULL;
+}
+
+inference_subject *KnowledgeAboutRelations::new_subject(binary_predicate *bp) {
+	return InferenceSubjects::new(relations, KnowledgeAboutRelations::family(),
+		STORE_POINTER_binary_predicate(bp), NULL);
+}
+
+void KnowledgeAboutRelations::SUBJ_get_name_text(inference_subject_family *family,
+	inference_subject *from, wording *W) {
+	*W = EMPTY_WORDING; /* nameless */
+}
+
+void KnowledgeAboutRelations::SUBJ_new_permission_granted(inference_subject_family *f,
+	inference_subject *from, general_pointer *G) {
+	*G = NULL_GENERAL_POINTER;
+}
+
+void KnowledgeAboutRelations::SUBJ_make_adj_const_domain(inference_subject_family *family, inference_subject *infs,
 	instance *nc, property *prn) {
 }
 
-void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject *infs) {
+void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject_family *family, inference_subject *infs) {
 	int domain_size = NUMBER_CREATED(inference_subject);
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
+	binary_predicate *bp = KnowledgeAboutRelations::from_infs(infs);
 
 	if (Relations::Explicit::stored_dynamically(bp)) return; /* handled at run-time instead */
 	if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Equiv) && (bp->right_way_round)) {
@@ -35,8 +71,8 @@ void KnowledgeAboutRelations::SUBJ_complete_model(inference_subject *infs) {
 	}
 }
 
-void KnowledgeAboutRelations::SUBJ_check_model(inference_subject *infs) {
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
+void KnowledgeAboutRelations::SUBJ_check_model(inference_subject_family *family, inference_subject *infs) {
+	binary_predicate *bp = KnowledgeAboutRelations::from_infs(infs);
 	int f = Relations::Explicit::get_form_of_relation(bp);
 	if ((bp->right_way_round) && ((f == Relation_OtoO) || (f == Relation_Sym_OtoO)))
 		KnowledgeAboutRelations::check_OtoO_relation(bp);
@@ -44,17 +80,17 @@ void KnowledgeAboutRelations::SUBJ_check_model(inference_subject *infs) {
 		KnowledgeAboutRelations::check_OtoV_relation(bp);
 }
 
-int KnowledgeAboutRelations::SUBJ_emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
+int KnowledgeAboutRelations::SUBJ_emit_element_of_condition(inference_subject_family *family, inference_subject *infs, inter_symbol *t0_s) {
 	internal_error("BP in runtime match condition");
 	return FALSE;
 }
 
-int KnowledgeAboutRelations::SUBJ_compile_all(void) {
+int KnowledgeAboutRelations::SUBJ_compile_all(inference_subject_family *f, int ignored) {
 	return FALSE;
 }
 
-void KnowledgeAboutRelations::SUBJ_compile(inference_subject *infs) {
-	binary_predicate *bp = InferenceSubjects::as_bp(infs);
+void KnowledgeAboutRelations::SUBJ_compile(inference_subject_family *f, inference_subject *infs) {
+	binary_predicate *bp = KnowledgeAboutRelations::from_infs(infs);
 	if (bp->right_way_round) {
 		if (Relations::Explicit::stored_dynamically(bp)) {
 			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));

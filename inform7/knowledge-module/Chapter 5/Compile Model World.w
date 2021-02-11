@@ -33,7 +33,7 @@ void World::Compile::compile(void) {
 	rough_array_memory_used = (int *)
 		(Memory::calloc(nc, sizeof(int), COMPILATION_SIZE_MREASON));
 	for (i=0; i<nc; i++) rough_array_memory_used[i] = 0;
-	InferenceSubjects::compile_all();
+	InferenceSubjects::emit_all();
 	Memory::I7_array_free(rough_array_memory_used, COMPILATION_SIZE_MREASON, nc, sizeof(int));
 	rough_array_memory_used = NULL;
 }

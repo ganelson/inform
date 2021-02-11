@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-alpha.1+6R20 'Krypton' (10 February 2021)
+v10.1.0-alpha.1+6R21 'Krypton' (11 February 2021)
 
 ## About Inform 7
 

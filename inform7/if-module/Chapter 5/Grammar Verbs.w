@@ -476,10 +476,10 @@ or creates such.
 =
 grammar_verb *PL::Parsing::Verbs::for_subject(inference_subject *subj) {
 	grammar_verb *gv;
-	if (PF_S(parsing, subj)->understand_as_this_object != NULL)
-		return PF_S(parsing, subj)->understand_as_this_object;
+	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object != NULL)
+		return PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
 	gv = PL::Parsing::Verbs::gv_new(GV_IS_OBJECT);
-	PF_S(parsing, subj)->understand_as_this_object = gv;
+	PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object = gv;
 	gv->subj_understood = subj;
 	return gv;
 }
@@ -878,19 +878,19 @@ specified for all things. (This mimics I6 class-to-instance inheritance.)
 void PL::Parsing::Verbs::gv_compile_parse_name_lines(gpr_kit *gprk, grammar_verb *gv) {
 	inference_subject *subj = gv->subj_understood;
 
-	if (PF_S(parsing, subj)->understand_as_this_object != gv)
+	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object != gv)
 		internal_error("link between subject and GV broken");
 
 	LOGIF(GRAMMAR, "Parse_name content for $j:\n", subj);
-	PL::Parsing::Verbs::gv_compile_lines(gprk, PF_S(parsing, subj)->understand_as_this_object);
+	PL::Parsing::Verbs::gv_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object);
 
 	inference_subject *infs;
 	for (infs = InferenceSubjects::narrowest_broader_subject(subj);
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		if (PF_S(parsing, infs))
-			if (PF_S(parsing, infs)->understand_as_this_object) {
+		if (PARSING_DATA_FOR_SUBJ(infs))
+			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object) {
 				LOGIF(GRAMMAR, "And parse_name content inherited from $j:\n", infs);
-				PL::Parsing::Verbs::gv_compile_lines(gprk, PF_S(parsing, infs)->understand_as_this_object);
+				PL::Parsing::Verbs::gv_compile_lines(gprk, PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object);
 			}
 	}
 }

@@ -199,7 +199,7 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(MapConnection(*2,%n) == *1)", ident);
 	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("AssertMapConnection(*2,%n,*1)", ident);
 	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("AssertMapUnconnection(*2,%n,*1)", ident);
-	PF_I(map, I)->direction_relation = bp;
+	MAP_DATA(I)->direction_relation = bp;
 }
 
 @ 
@@ -291,14 +291,14 @@ void PL::MapDirections::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, bin
 =
 binary_predicate *PL::MapDirections::get_mapping_relation(instance *dir) {
 	if (dir == NULL) return NULL;
-	return PF_I(map, dir)->direction_relation;
+	return MAP_DATA(dir)->direction_relation;
 }
 
 instance *PL::MapDirections::get_mapping_direction(binary_predicate *bp) {
 	if (bp == NULL) return NULL;
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		if (PF_I(map, I)->direction_relation == bp)
+		if (MAP_DATA(I)->direction_relation == bp)
 			return I;
 	return NULL;
 }

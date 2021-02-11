@@ -94,7 +94,7 @@ inter_name *PL::Parsing::Tokens::General::get_gv_parse_name(grammar_verb *gv) {
 
 inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_subject *subj) {
 	inter_name *symb = NULL;
-	grammar_verb *gv = PF_S(parsing, subj)->understand_as_this_object;
+	grammar_verb *gv = PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
 	if (PL::Parsing::Verbs::is_empty(gv) == FALSE) {
 		symb = PL::Parsing::Tokens::General::get_gv_parse_name(gv);
 	} else {
@@ -185,7 +185,7 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
 			== FALSE) return FALSE;
 	}
 
-	if (InferenceSubjects::domain(subj)) test_distinguishability = TRUE;
+	if (Kinds::Knowledge::from_infs(subj)) test_distinguishability = TRUE;
 
 	inter_name *compile_to = rname;
 	if (compile_to == NULL) compile_to = N;

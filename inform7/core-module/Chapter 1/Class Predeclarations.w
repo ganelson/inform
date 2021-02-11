@@ -93,6 +93,7 @@ DECLARE_CLASS(text_substitution)
 @e counting_data_CLASS
 @e inference_CLASS
 @e inference_subject_CLASS
+@e inference_subject_family_CLASS
 @e measurement_definition_CLASS
 @e named_rulebook_outcome_CLASS
 @e placement_affecting_CLASS
@@ -118,6 +119,7 @@ DECLARE_CLASS(comparative_bp_data)
 DECLARE_CLASS(counting_data)
 DECLARE_CLASS(inference)
 DECLARE_CLASS(inference_subject)
+DECLARE_CLASS(inference_subject_family)
 DECLARE_CLASS(measurement_definition)
 DECLARE_CLASS(named_rulebook_outcome)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)

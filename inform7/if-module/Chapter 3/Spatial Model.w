@@ -24,6 +24,8 @@ fundamental spatial data we will keep for each object is its "progenitor",
 which may be |NULL|, representing the object which immediately contains,
 carries, wears, supports or incorporates it.
 
+@d SPATIAL_DATA(I) PLUGIN_DATA_ON_INSTANCE(spatial, I)
+
 =
 typedef struct spatial_data {
 	/* fundamental spatial information about an object's location */
@@ -131,14 +133,10 @@ after stage (d) when they exist.
 
 =
 void PL::Spatial::create_inference_subjects(void) {
-	infs_room = InferenceSubjects::new(global_constants,
-		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
-	infs_thing = InferenceSubjects::new(global_constants,
-		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
-	infs_supporter = InferenceSubjects::new(global_constants,
-		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
-	infs_person = InferenceSubjects::new(global_constants,
-		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
+	infs_room =      InferenceSubjects::new_fundamental(global_constants, "room(early)");
+	infs_thing =     InferenceSubjects::new_fundamental(global_constants, "thing(early)");
+	infs_supporter = InferenceSubjects::new_fundamental(global_constants, "supporter(early)");
+	infs_person =    InferenceSubjects::new_fundamental(global_constants, "person(early)");
 }
 
 @ And this is where those IOUs are redeemed. What happens is that, ordinarily,
@@ -255,7 +253,7 @@ int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name,
 }
 
 int PL::Spatial::spatial_new_subject_notify(inference_subject *subj) {
-	CREATE_PF_DATA(spatial, subj, PL::Spatial::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, PL::Spatial::new_data);
 	return FALSE;
 }
 
@@ -374,7 +372,7 @@ int PL::Spatial::spatial_default_appearance(inference_subject *infs, parse_node 
 	if (InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_object))) {
 		property *set_prn = P_description;
 		if (InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_thing))) {
-			instance *I = InferenceSubjects::as_object_instance(infs);
+			instance *I = Instances::object_from_infs(infs);
 			if ((I) && (PL::Backdrops::object_is_scenery(I))) {
 				inference *inf;
 				KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
@@ -480,7 +478,7 @@ int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) 
 	if (Annotations::read_int(py, nowhere_ANNOT)) {
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject) {
-			if (InferenceSubjects::domain(left_subject))
+			if (Kinds::Knowledge::from_infs(left_subject))
 				StandardProblems::subject_problem_at_sentence(_p_(PM_KindNowhere),
 					left_subject,
 					"seems to be said to be 'nowhere' in some way",
@@ -622,7 +620,7 @@ or "region".
 	inference_subject *infs;
 	for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		kind *K = InferenceSubjects::as_kind(infs);
+		kind *K = Kinds::Knowledge::from_infs(infs);
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			f = K;
 			if ((Kinds::eq(f, K_container)) ||
@@ -733,15 +731,15 @@ provide access routines to read and write:
 instance *PL::Spatial::progenitor(instance *I) {
 	if (I == NULL) return NULL;
 	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE) return NULL;
-	return PF_I(spatial, I)->progenitor;
+	return SPATIAL_DATA(I)->progenitor;
 }
 
 void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
 	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
 	if (to == NULL) internal_error("set progenitor of nothing");
-	PF_I(spatial, of)->progenitor = to;
-	PF_I(spatial, of)->progenitor_set_at =
+	SPATIAL_DATA(of)->progenitor = to;
+	SPATIAL_DATA(of)->progenitor_set_at =
 		(reason)?World::Inferences::where_inferred(reason):NULL;
 }
 
@@ -751,8 +749,8 @@ void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) 
 void PL::Spatial::void_progenitor(instance *of) {
 	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
-	PF_I(spatial, of)->progenitor = NULL;
-	PF_I(spatial, of)->progenitor_set_at = NULL;
+	SPATIAL_DATA(of)->progenitor = NULL;
+	SPATIAL_DATA(of)->progenitor_set_at = NULL;
 }
 
 @ We need to establish what the rooms are before we worry about objects which
@@ -765,10 +763,10 @@ int PL::Spatial::spatial_stage_II(void) {
 	@<Set the here flag for all those objects whose parentage is only thus known@>;
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		if (PF_I(spatial, I)->here_flag == FALSE)
+		if (SPATIAL_DATA(I)->here_flag == FALSE)
 			@<Position this object spatially@>;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		if (PF_I(spatial, I)->here_flag)
+		if (SPATIAL_DATA(I)->here_flag)
 			@<Position this object spatially@>;
 	@<Issue problem messages if non-physical objects are spatially enclosed@>;
 	return FALSE;
@@ -777,10 +775,10 @@ int PL::Spatial::spatial_stage_II(void) {
 @<Set the here flag for all those objects whose parentage is only thus known@> =
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I) {
-		PF_I(spatial, I)->here_flag = FALSE;
+		SPATIAL_DATA(I)->here_flag = FALSE;
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_HERE_INF)
-			PF_I(spatial, I)->here_flag = TRUE;
+			SPATIAL_DATA(I)->here_flag = TRUE;
 	}
 
 @<Issue problem messages if non-physical objects are spatially enclosed@> =
@@ -815,7 +813,7 @@ object under investigation.
 	if (parent_setting_inference) {
 		instance *whereabouts =
 			World::Inferences::get_reference_as_object(parent_setting_inference);
-		if (PF_I(spatial, I)->here_flag) @<Find the whereabouts of something here@>;
+		if (SPATIAL_DATA(I)->here_flag) @<Find the whereabouts of something here@>;
 		if (whereabouts) {
 			PL::Spatial::set_progenitor(I, whereabouts, parent_setting_inference);
 			LOGIF(OBJECT_TREE, "Progenitor of $O is $O\n", I, whereabouts);
@@ -883,14 +881,14 @@ when it finishes this will be set to the most recently mentioned.
 				"the hatchway on a tank - it's probably best to make it an enterable "
 				"container.)");
 		}
-		PF_I(spatial, I)->part_flag = TRUE;
+		SPATIAL_DATA(I)->part_flag = TRUE;
 	}
 
 @ =
 void PL::Spatial::seek_room(parse_node *sent, void **v_I) {
 	instance **I = (instance **) v_I;
 	inference_subject *isub = Node::get_interpretation_of_subject(sent);
-	instance *sub = InferenceSubjects::as_object_instance(isub);
+	instance *sub = Instances::object_from_infs(isub);
 	if (PL::Spatial::object_is_a_room(sub)) *I = sub;
 }
 
@@ -916,7 +914,7 @@ If it has a parent in either one, then that parent is required to be its progeni
 void PL::Spatial::log_object_tree(void) {
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		if (PF_I(spatial, I)->object_tree_parent == NULL)
+		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
 			PL::Spatial::log_object_tree_recursively(I, 0);
 }
 
@@ -924,10 +922,10 @@ void PL::Spatial::log_object_tree_recursively(instance *I, int depth) {
 	int i = depth;
 	while (i>0) { LOG("  "); i--; }
 	LOG("$O\n", I);
-	if (PF_I(spatial, I)->object_tree_child)
-		PL::Spatial::log_object_tree_recursively(PF_I(spatial, I)->object_tree_child, depth+1);
-	if (PF_I(spatial, I)->object_tree_sibling)
-		PL::Spatial::log_object_tree_recursively(PF_I(spatial, I)->object_tree_sibling, depth);
+	if (SPATIAL_DATA(I)->object_tree_child)
+		PL::Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_child, depth+1);
+	if (SPATIAL_DATA(I)->object_tree_sibling)
+		PL::Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_sibling, depth);
 }
 
 @ The initial state of both trees is total disconnection. They are then produced
@@ -943,7 +941,7 @@ void PL::Spatial::adopt_object(instance *orphan, instance *foster) {
 	if (orphan == NULL) internal_error("orphan is null in adoption");
 	if (foster == NULL) internal_error("foster is null in adoption");
 
-	instance *former_parent = PF_I(spatial, orphan)->object_tree_parent;
+	instance *former_parent = SPATIAL_DATA(orphan)->object_tree_parent;
 	if (former_parent) @<Remove the object from the main object tree@>;
 	@<Adopt the object into the main object tree@>;
 }
@@ -956,7 +954,7 @@ void PL::Spatial::part_object(instance *orphan) {
 	LOGIF(OBJECT_TREE, "Parting $O\n", orphan);
 	if (orphan == NULL) internal_error("new part is null in parting");
 
-	instance *former_parent = PF_I(spatial, orphan)->object_tree_parent;
+	instance *former_parent = SPATIAL_DATA(orphan)->object_tree_parent;
 	if (former_parent == NULL) internal_error("new part is without parent");
 
 	@<Remove the object from the main object tree@>;
@@ -964,42 +962,42 @@ void PL::Spatial::part_object(instance *orphan) {
 }
 
 @<Remove the object from the main object tree@> =
-	if (PF_I(spatial, former_parent)->object_tree_child == orphan) {
-		PF_I(spatial, former_parent)->object_tree_child =
-			PF_I(spatial, orphan)->object_tree_sibling;
+	if (SPATIAL_DATA(former_parent)->object_tree_child == orphan) {
+		SPATIAL_DATA(former_parent)->object_tree_child =
+			SPATIAL_DATA(orphan)->object_tree_sibling;
 	} else {
-		instance *elder = PF_I(spatial, former_parent)->object_tree_child;
+		instance *elder = SPATIAL_DATA(former_parent)->object_tree_child;
 		while (elder) {
-			if (PF_I(spatial, elder)->object_tree_sibling == orphan)
-				PF_I(spatial, elder)->object_tree_sibling =
-					PF_I(spatial, orphan)->object_tree_sibling;
-			elder = PF_I(spatial, elder)->object_tree_sibling;
+			if (SPATIAL_DATA(elder)->object_tree_sibling == orphan)
+				SPATIAL_DATA(elder)->object_tree_sibling =
+					SPATIAL_DATA(orphan)->object_tree_sibling;
+			elder = SPATIAL_DATA(elder)->object_tree_sibling;
 		}
 	}
-	PF_I(spatial, orphan)->object_tree_parent = NULL;
-	PF_I(spatial, orphan)->object_tree_sibling = NULL;
+	SPATIAL_DATA(orphan)->object_tree_parent = NULL;
+	SPATIAL_DATA(orphan)->object_tree_sibling = NULL;
 
 @<Adopt the object into the main object tree@> =
-	if (PF_I(spatial, foster)->object_tree_child == NULL) {
-		PF_I(spatial, foster)->object_tree_child = orphan;
+	if (SPATIAL_DATA(foster)->object_tree_child == NULL) {
+		SPATIAL_DATA(foster)->object_tree_child = orphan;
 	} else {
-		instance *elder = PF_I(spatial, foster)->object_tree_child;
-		while (PF_I(spatial, elder)->object_tree_sibling)
-			elder = PF_I(spatial, elder)->object_tree_sibling;
-		PF_I(spatial, elder)->object_tree_sibling = orphan;
+		instance *elder = SPATIAL_DATA(foster)->object_tree_child;
+		while (SPATIAL_DATA(elder)->object_tree_sibling)
+			elder = SPATIAL_DATA(elder)->object_tree_sibling;
+		SPATIAL_DATA(elder)->object_tree_sibling = orphan;
 	}
-	PF_I(spatial, orphan)->object_tree_parent = foster;
+	SPATIAL_DATA(orphan)->object_tree_parent = foster;
 
 @<Adopt the object into the incorporation tree@> =
-	if (PF_I(spatial, former_parent)->incorp_tree_child == NULL) {
-		PF_I(spatial, former_parent)->incorp_tree_child = orphan;
+	if (SPATIAL_DATA(former_parent)->incorp_tree_child == NULL) {
+		SPATIAL_DATA(former_parent)->incorp_tree_child = orphan;
 	} else {
-		instance *existing_part = PF_I(spatial, former_parent)->incorp_tree_child;
-		while (PF_I(spatial, existing_part)->incorp_tree_sibling)
-			existing_part = PF_I(spatial, existing_part)->incorp_tree_sibling;
-		PF_I(spatial, existing_part)->incorp_tree_sibling = orphan;
+		instance *existing_part = SPATIAL_DATA(former_parent)->incorp_tree_child;
+		while (SPATIAL_DATA(existing_part)->incorp_tree_sibling)
+			existing_part = SPATIAL_DATA(existing_part)->incorp_tree_sibling;
+		SPATIAL_DATA(existing_part)->incorp_tree_sibling = orphan;
 	}
-	PF_I(spatial, orphan)->incorp_tree_parent = former_parent;
+	SPATIAL_DATA(orphan)->incorp_tree_parent = former_parent;
 
 @ What will we use the trees for? Well, one use is to tell other plugins
 which depend on Spatial whether or not one object spatially contains another:
@@ -1078,7 +1076,7 @@ changed progenitors at Stage II.)
 		Problems::quote_object(2, I3);
 		Problems::quote_source(3, creator);
 		Problems::issue_problem_segment("%2 (created by %3) ");
-		if (PF_I(spatial, I3)->part_flag) Problems::issue_problem_segment("part of ");
+		if (SPATIAL_DATA(I3)->part_flag) Problems::issue_problem_segment("part of ");
 		else Problems::issue_problem_segment("in ");
 		I3 = PL::Spatial::progenitor(I3);
 		if (I3 == I) break;
@@ -1108,7 +1106,7 @@ to the trees in creation order achieves this nicely:
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		if (PL::Spatial::progenitor(I))
 			PL::Spatial::adopt_object(I, PL::Spatial::progenitor(I));
-		if (PF_I(spatial, I)->part_flag)
+		if (SPATIAL_DATA(I)->part_flag)
 			PL::Spatial::part_object(I);
 	}
 
@@ -1122,9 +1120,9 @@ the absence of other information.)
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		int portable = FALSE;
 		instance *J = I;
-		if (PF_I(spatial, I)->part_flag == FALSE)
+		if (SPATIAL_DATA(I)->part_flag == FALSE)
 			for (J = PL::Spatial::progenitor(I); J; J = PL::Spatial::progenitor(J)) {
-				if (PF_I(spatial, J)->part_flag) break;
+				if (SPATIAL_DATA(J)->part_flag) break;
 				if (Instances::of_kind(J, K_person)) {
 					portable = TRUE;
 					break;
@@ -1223,13 +1221,13 @@ a triplet of I6-only properties:
 
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I) {
-		instance *cp = PF_I(spatial, I)->incorp_tree_parent;
+		instance *cp = SPATIAL_DATA(I)->incorp_tree_parent;
 		if (cp) Properties::Valued::assert(P_component_parent, Instances::as_subject(I),
 			Rvalues::from_instance(cp), CERTAIN_CE);
-		instance *cc = PF_I(spatial, I)->incorp_tree_child;
+		instance *cc = SPATIAL_DATA(I)->incorp_tree_child;
 		if (cc) Properties::Valued::assert(P_component_child, Instances::as_subject(I),
 			Rvalues::from_instance(cc), CERTAIN_CE);
-		instance *cs = PF_I(spatial, I)->incorp_tree_sibling;
+		instance *cs = SPATIAL_DATA(I)->incorp_tree_sibling;
 		if (cs) Properties::Valued::assert(P_component_sibling, Instances::as_subject(I),
 			Rvalues::from_instance(cs), CERTAIN_CE);
 	}
@@ -1243,18 +1241,18 @@ for objects:
 	Instances::begin_sequencing_objects();
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		if (PF_I(spatial, I)->object_tree_parent == NULL)
+		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
 			PL::Spatial::add_to_object_sequence(I, 0);
 
 @ =
 void PL::Spatial::add_to_object_sequence(instance *I, int depth) {
 	Instances::place_this_object_next(I);
-	PF_I(spatial, I)->I6_definition_depth = depth;
+	SPATIAL_DATA(I)->I6_definition_depth = depth;
 
-	if (PF_I(spatial, I)->object_tree_child)
-		PL::Spatial::add_to_object_sequence(PF_I(spatial, I)->object_tree_child, depth+1);
-	if (PF_I(spatial, I)->object_tree_sibling)
-		PL::Spatial::add_to_object_sequence(PF_I(spatial, I)->object_tree_sibling, depth);
+	if (SPATIAL_DATA(I)->object_tree_child)
+		PL::Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_child, depth+1);
+	if (SPATIAL_DATA(I)->object_tree_sibling)
+		PL::Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_sibling, depth);
 }
 
 @ The "definition depth" is the same thing as the depth in the main tree;
@@ -1263,7 +1261,7 @@ void PL::Spatial::add_to_object_sequence(instance *I, int depth) {
 =
 int PL::Spatial::get_definition_depth(instance *I) {
 	if (Plugins::Manage::plugged_in(spatial_plugin))
-		return PF_I(spatial, I)->I6_definition_depth;
+		return SPATIAL_DATA(I)->I6_definition_depth;
 	return 0;
 }
 
@@ -1299,7 +1297,7 @@ void PL::Spatial::index_spatial_relationship(OUTPUT_STREAM, instance *I) {
 		/* we could set |rel| to "in" here, but the index omits that for clarity */
 		if (Instances::of_kind(P, K_supporter)) rel = "on";
 		if (Instances::of_kind(P, K_person)) rel = "carried";
-		if (PF_I(spatial, I)->part_flag) rel = "part";
+		if (SPATIAL_DATA(I)->part_flag) rel = "part";
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PROPERTY_INF)
 			if (World::Inferences::get_property(inf) == P_worn)
@@ -1313,7 +1311,7 @@ it already turns up under its owner.
 
 =
 int PL::Spatial::no_detail_index(instance *I) {
-	if (PF_I(spatial, I)->incorp_tree_parent != NULL) return TRUE;
+	if (SPATIAL_DATA(I)->incorp_tree_parent != NULL) return TRUE;
 	return FALSE;
 }
 
@@ -1322,15 +1320,15 @@ int PL::Spatial::no_detail_index(instance *I) {
 =
 void PL::Spatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int details) {
 	if (depth > NUMBER_CREATED(instance) + 1) return; /* to recover from errors */
-	if (PF_I(spatial, I)->incorp_tree_child != NULL) {
-		instance *I2 = PF_I(spatial, I)->incorp_tree_child;
+	if (SPATIAL_DATA(I)->incorp_tree_child != NULL) {
+		instance *I2 = SPATIAL_DATA(I)->incorp_tree_child;
 		while (I2 != NULL) {
 			Data::Objects::index(OUT, I2, NULL, depth+1, details);
-			I2 = PF_I(spatial, I2)->incorp_tree_sibling;
+			I2 = SPATIAL_DATA(I2)->incorp_tree_sibling;
 		}
 	}
-	if (PF_I(spatial, I)->object_tree_child)
-		Data::Objects::index(OUT, PF_I(spatial, I)->object_tree_child, NULL, depth+1, details);
+	if (SPATIAL_DATA(I)->object_tree_child)
+		Data::Objects::index(OUT, SPATIAL_DATA(I)->object_tree_child, NULL, depth+1, details);
 	if ((PL::Spatial::object_is_a_room(I)) &&
 		(PL::Map::object_is_a_door(I) == FALSE)) {
 		instance *I2;
@@ -1346,8 +1344,8 @@ void PL::Spatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, in
 	PL::Player::index_object_further(OUT, I, depth, details);
 	PL::Backdrops::index_object_further(OUT, I, depth, details, 0);
 
-	if (PF_I(spatial, I)->object_tree_sibling)
-		Data::Objects::index(OUT, PF_I(spatial, I)->object_tree_sibling, NULL, depth, details);
+	if (SPATIAL_DATA(I)->object_tree_sibling)
+		Data::Objects::index(OUT, SPATIAL_DATA(I)->object_tree_sibling, NULL, depth, details);
 }
 
 @ And also:
@@ -1362,14 +1360,14 @@ int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
 			char *rel = "in";
 			if (Instances::of_kind(P, K_supporter)) rel = "on";
 			if (Instances::of_kind(P, K_person)) rel = "carried by";
-			if (PF_I(spatial, O)->part_flag) rel = "part of";
+			if (SPATIAL_DATA(O)->part_flag) rel = "part of";
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(O), PROPERTY_INF)
 				if (World::Inferences::get_property(inf) == P_worn)
 					rel = "worn by";
 			WRITE("%s ", rel);
 			Instances::index_name(OUT, P);
-			parse_node *at = PF_I(spatial, O)->progenitor_set_at;
+			parse_node *at = SPATIAL_DATA(O)->progenitor_set_at;
 			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 
 		}

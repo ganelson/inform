@@ -8,6 +8,8 @@ up run-time checking of the type safety of property usage.
 @ Every subject contains a pointer to its own unique copy of the following
 structure, but it only has relevance if the subject represents an object:
 
+@d COUNTING_DATA(subj) PLUGIN_DATA_ON_SUBJECT(counting, subj)
+
 =
 typedef struct counting_data {
 	struct property *instance_count_prop; /* the (|I6| only) IK-Count property for this kind */
@@ -39,7 +41,7 @@ Counting data is actually relevant only for kinds, and remains blank for instanc
 
 =
 int PL::Counting::counting_new_subject_notify(inference_subject *subj) {
-	CREATE_PF_DATA(counting, subj, PL::Counting::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(counting, subj, PL::Counting::new_data);
 	return FALSE;
 }
 
@@ -266,11 +268,11 @@ for the relation-route-finding code at run time.
 			inference_subject *subj = Kinds::Knowledge::as_subject(K);
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 
-			PF_S(counting, subj)->instance_count_prop =
+			COUNTING_DATA(subj)->instance_count_prop =
 				Properties::Valued::new_nameless_using(K_number, Kinds::Behaviour::package(K), count_iname);
 
 			inter_name *next_iname = PL::Counting::next_instance(K);
-			PF_S(counting, subj)->instance_link_prop =
+			COUNTING_DATA(subj)->instance_link_prop =
 				Properties::Valued::new_nameless_using(K_object, Kinds::Behaviour::package(K), next_iname);
 		}
 	P_KD_Count = Properties::Valued::new_nameless(I"KD_Count", K_number);
@@ -282,10 +284,10 @@ for the relation-route-finding code at run time.
 		inference_subject *infs;
 		for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-			kind *K = InferenceSubjects::as_kind(infs);
+			kind *K = Kinds::Knowledge::from_infs(infs);
 			if (Kinds::Behaviour::is_subkind_of_object(K)) {
 				inference_subject *subj = Kinds::Knowledge::as_subject(K);
-				PF_S(counting, subj)->has_instances = TRUE;
+				COUNTING_DATA(subj)->has_instances = TRUE;
 				@<Fill in this IK-Count property@>;
 				@<Fill in this IK-Link property@>;
 			}
@@ -319,7 +321,7 @@ and so on for all other kinds.
 	int ic = INSTANCE_COUNT(I, K);
 	parse_node *the_count = Rvalues::from_int(ic, EMPTY_WORDING);
 	Properties::Valued::assert(
-		PF_S(counting, subj)->instance_count_prop,
+		COUNTING_DATA(subj)->instance_count_prop,
 		Instances::as_subject(I), the_count, CERTAIN_CE);
 
 @ The IK-Link property is never set for kind 0, so there's no special case. It
@@ -327,14 +329,14 @@ records the next instance in compilation order:
 
 @<Fill in this IK-Link property@> =
 	Properties::Valued::assert(
-		PF_S(counting, subj)->instance_link_prop,
+		COUNTING_DATA(subj)->instance_link_prop,
 		Instances::as_subject(I), PL::Counting::next_instance_of_as_value(I, K), CERTAIN_CE);
 
 @ =
 inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		inference_subject *subj = Kinds::Knowledge::as_subject(K);
-		property *P = PF_S(counting, subj)->instance_count_prop;
+		property *P = COUNTING_DATA(subj)->instance_count_prop;
 		if (P) return Properties::iname(P);
 	}
 	return NULL;
@@ -349,7 +351,7 @@ int PL::Counting::counting_estimate_property_usage(kind *k, int *words_used) {
 	inference_subject *infs;
 	for (infs = InferenceSubjects::narrowest_broader_subject(Kinds::Knowledge::as_subject(k));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		kind *k2 = InferenceSubjects::as_kind(infs);
+		kind *k2 = Kinds::Knowledge::from_infs(infs);
 		if (Kinds::Behaviour::is_subkind_of_object(k2))
 			*words_used += 4;
 	}
@@ -365,7 +367,7 @@ constants, and use the Link constants to progress; we stop at |nothing|.
 int PL::Counting::optimise_loop(i6_schema *sch, kind *K) {
 	if (Plugins::Manage::plugged_in(counting_plugin) == FALSE) return FALSE;
 	inference_subject *subj = Kinds::Knowledge::as_subject(K);
-	if (PF_S(counting, subj)->has_instances == FALSE) /* (to avoid writing misleading code) */
+	if (COUNTING_DATA(subj)->has_instances == FALSE) /* (to avoid writing misleading code) */
 		Calculus::Schemas::modify(sch,
 			"for (*1=nothing: false: )");
 	else {

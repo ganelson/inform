@@ -58,3 +58,11 @@ void KnowledgeModule::start(void) {
 }
 void KnowledgeModule::end(void) {
 }
+
+@ This module works closely with //calculus//, hanging the following functions
+on its hooks:
+
+@d TERM_DOMAIN_CALCULUS_TYPE struct inference_subject
+@d TERM_DOMAIN_WORDING_FUNCTION InferenceSubjects::get_name_text
+@d TERM_DOMAIN_TO_KIND_FUNCTION Kinds::Knowledge::from_infs
+@d TERM_DOMAIN_FROM_KIND_FUNCTION Kinds::Knowledge::as_subject

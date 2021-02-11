@@ -125,7 +125,7 @@ those associated with "container", and only then its own implications.
 
 =
 void Assertions::Implications::consider_all(inference_subject *infs) {
-	if (InferenceSubjects::domain(infs)) return;
+	if (Kinds::Knowledge::from_infs(infs)) return;
 	int ongoing = TRUE;
 	while (ongoing) {
 		@<Erase all of the possession markers@>;
@@ -259,7 +259,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 @<Apply the conclusion to the candidate@> =
 	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
 	pcalc_prop *prop = KindPredicates::new_atom(
-		InferenceSubjects::domain(domain), Terms::new_variable(0));
+		Kinds::Knowledge::from_infs(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {
 		prop = Propositions::concatenate(prop, Atoms::new(NEGATION_OPEN_ATOM));
 		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));

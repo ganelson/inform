@@ -15,6 +15,8 @@ together, but the details can be ignored. If we expected very large numbers
 of objects then it would be worth economising here, but profiling suggests
 that it really isn't.
 
+@d MAP_DATA(I) PLUGIN_DATA_ON_INSTANCE(map, I)
+
 =
 typedef struct map_data {
 	/* these are meaningful for doors only */
@@ -230,7 +232,7 @@ int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
 
 @ =
 int PL::Map::map_new_subject_notify(inference_subject *subj) {
-	CREATE_PF_DATA(map, subj, PL::Map::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, PL::Map::new_data);
 	return FALSE;
 }
 
@@ -252,7 +254,7 @@ int PL::Map::object_is_a_door(instance *I) {
 
 int PL::Map::subject_is_a_door(inference_subject *infs) {
 	return PL::Map::object_is_a_door(
-		InferenceSubjects::as_object_instance(infs));
+		Instances::object_from_infs(infs));
 }
 
 @h Directions and their numbers.
@@ -321,7 +323,7 @@ int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 	registered_directions++;
 	package_request *PR = Hierarchy::synoptic_package(DIRECTIONS_HAP);
 	inter_name *dname = Hierarchy::make_iname_in(DIRECTION_HL, PR);
-	PF_I(map, I)->direction_iname = dname;
+	MAP_DATA(I)->direction_iname = dname;
 	PL::MapDirections::make_mapped_predicate(I, dname);
 
 @h The exits array.
@@ -335,7 +337,7 @@ But it's convenient, and profiling suggests that the memory overhead is not
 significant. It also means that the World Index mapping code, which contains
 quite crunchy algorithms, has the fastest possible access to the layout.
 
-@d MAP_EXIT(X, Y) PF_I(map, X)->exits[Y]
+@d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
 void PL::Map::build_exits_array(void) {
@@ -343,7 +345,7 @@ void PL::Map::build_exits_array(void) {
 	int d = 0;
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		if (Kinds::Behaviour::is_object_of_kind(Instances::to_kind(I), K_direction)) {
-			PF_I(map, I)->direction_index = d++;
+			MAP_DATA(I)->direction_index = d++;
 		}
 	}
 	LOOP_OVER_OBJECT_INSTANCES(I) {
@@ -352,13 +354,13 @@ void PL::Map::build_exits_array(void) {
 			inference_subject *infs1, *infs2;
 			World::Inferences::get_references(inf, &infs1, &infs2);
 			instance *to = NULL, *dir = NULL;
-			if (infs1) to = InferenceSubjects::as_object_instance(infs1);
-			if (infs2) dir = InferenceSubjects::as_object_instance(infs2);
+			if (infs1) to = Instances::object_from_infs(infs1);
+			if (infs2) dir = Instances::object_from_infs(infs2);
 			if ((to) && (dir)) {
-				int dn = PF_I(map, dir)->direction_index;
+				int dn = MAP_DATA(dir)->direction_index;
 				if ((dn >= 0) && (dn < MAX_DIRECTIONS)) {
 					MAP_EXIT(I, dn) = to;
-					PF_I(map, I)->exits_set_at[dn] = World::Inferences::where_inferred(inf);
+					MAP_DATA(I)->exits_set_at[dn] = World::Inferences::where_inferred(inf);
 				}
 			}
 		}
@@ -382,7 +384,7 @@ int PL::Map::map_compile_model_tables(void) {
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction) {
-		Emit::named_iname_constant(PF_I(map, I)->direction_iname, K_object, Instances::emitted_iname(I));
+		Emit::named_iname_constant(MAP_DATA(I)->direction_iname, K_object, Instances::emitted_iname(I));
 	}
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
@@ -438,8 +440,8 @@ object has four pieces of data attached:
 
 =
 void PL::Map::get_door_data(instance *door, instance **c1, instance **c2) {
-	if (c1) *c1 = PF_I(map, door)->map_connection_a;
-	if (c2) *c2 = PF_I(map, door)->map_connection_b;
+	if (c1) *c1 = MAP_DATA(door)->map_connection_a;
+	if (c2) *c2 = MAP_DATA(door)->map_connection_b;
 }
 
 @h Properties.
@@ -631,9 +633,9 @@ pairs.
 =
 void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 	inference_subject *i_dir) {
-	instance *go_from = InferenceSubjects::as_object_instance(i_from);
-	instance *go_to = InferenceSubjects::as_object_instance(i_to);
-	instance *forwards_dir = InferenceSubjects::as_object_instance(i_dir);
+	instance *go_from = Instances::object_from_infs(i_from);
+	instance *go_to = Instances::object_from_infs(i_to);
+	instance *forwards_dir = Instances::object_from_infs(i_dir);
 	if (Instances::of_kind(forwards_dir, K_direction) == FALSE)
 		internal_error("unknown direction");
 	instance *reverse_dir = PL::Map::get_value_of_opposite_property(forwards_dir);
@@ -731,7 +733,7 @@ checks that various mapping impossibilities do not occur.
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1;
 			World::Inferences::get_references(inf, &infs1, NULL);
-			instance *to = InferenceSubjects::as_object_instance(infs1);
+			instance *to = Instances::object_from_infs(infs1);
 			if ((PL::Spatial::object_is_a_room(I)) && (to) &&
 				(PL::Map::object_is_a_door(to) == FALSE) &&
 				(PL::Spatial::object_is_a_room(to) == FALSE))
@@ -763,18 +765,18 @@ checks that various mapping impossibilities do not occur.
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1, *infs2;
 				World::Inferences::get_references(inf, &infs1, &infs2);
-				instance *to = InferenceSubjects::as_object_instance(infs1);
-				instance *dir = InferenceSubjects::as_object_instance(infs2);
+				instance *to = Instances::object_from_infs(infs1);
+				instance *dir = Instances::object_from_infs(infs2);
 				if (to) {
 					if (connections_in == 0) {
-						PF_I(map, I)->map_connection_a = to;
-						PF_I(map, I)->map_direction_a = dir;
+						MAP_DATA(I)->map_connection_a = to;
+						MAP_DATA(I)->map_direction_a = dir;
 						where[0] = World::Inferences::where_inferred(inf);
 						front_side_inf = inf;
 					}
 					if (connections_in == 1) {
-						PF_I(map, I)->map_connection_b = to;
-						PF_I(map, I)->map_direction_b = dir;
+						MAP_DATA(I)->map_connection_b = to;
+						MAP_DATA(I)->map_direction_b = dir;
 						where[1] = World::Inferences::where_inferred(inf);
 						back_side_inf = inf;
 					}
@@ -787,12 +789,12 @@ checks that various mapping impossibilities do not occur.
 			if ((front_side_inf) && (back_side_inf)) {
 				if (World::Inferences::get_timestamp(front_side_inf) >
 					World::Inferences::get_timestamp(back_side_inf)) {
-					instance *X = PF_I(map, I)->map_connection_a;
-					PF_I(map, I)->map_connection_a = PF_I(map, I)->map_connection_b;
-					PF_I(map, I)->map_connection_b = X;
-					X = PF_I(map, I)->map_direction_a;
-					PF_I(map, I)->map_direction_a = PF_I(map, I)->map_direction_b;
-					PF_I(map, I)->map_direction_b = X;
+					instance *X = MAP_DATA(I)->map_connection_a;
+					MAP_DATA(I)->map_connection_a = MAP_DATA(I)->map_connection_b;
+					MAP_DATA(I)->map_connection_b = X;
+					X = MAP_DATA(I)->map_direction_a;
+					MAP_DATA(I)->map_direction_a = MAP_DATA(I)->map_direction_b;
+					MAP_DATA(I)->map_direction_b = X;
 					parse_node *PX = where[0]; where[0] = where[1]; where[1] = PX;
 				}
 			}
@@ -836,10 +838,10 @@ from which there's no way back.)
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1;
 				World::Inferences::get_references(inf, &infs1, NULL);
-				instance *to = InferenceSubjects::as_object_instance(infs1);
+				instance *to = Instances::object_from_infs(infs1);
 				if (PL::Map::object_is_a_door(to)) {
-					instance *exit1 = PF_I(map, to)->map_connection_a;
-					instance *exit2 = PF_I(map, to)->map_connection_b;
+					instance *exit1 = MAP_DATA(to)->map_connection_a;
+					instance *exit2 = MAP_DATA(to)->map_connection_b;
 					if ((I != exit1) && (exit2 == NULL)) {
 						Problems::quote_object(1, I);
 						Problems::quote_object(2, to);
@@ -872,8 +874,8 @@ from which there's no way back.)
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if ((PL::Map::object_is_a_door(I)) &&
-			(PF_I(map, I)->map_connection_a) &&
-			(PF_I(map, I)->map_connection_b) &&
+			(MAP_DATA(I)->map_connection_a) &&
+			(MAP_DATA(I)->map_connection_b) &&
 			(World::Inferences::get_prop_state(
 				Instances::as_subject(I), P_other_side)))
 				StandardProblems::object_problem(_p_(PM_BothWaysDoor),
@@ -896,8 +898,8 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(PL::Spatial::progenitor(I)) &&
-			(PL::Spatial::progenitor(I) != PF_I(map, I)->map_connection_a) &&
-			(PL::Spatial::progenitor(I) != PF_I(map, I)->map_connection_b))
+			(PL::Spatial::progenitor(I) != MAP_DATA(I)->map_connection_a) &&
+			(PL::Spatial::progenitor(I) != MAP_DATA(I)->map_connection_b))
 			StandardProblems::object_problem(_p_(PM_DoorInThirdRoom),
 				I, "seems to be a door which is present in a room to which it is not connected",
 				"but this is not allowed. A door must be in one or both of the rooms it is "
@@ -911,9 +913,9 @@ to them.
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		if ((PL::Map::object_is_a_door(I)) &&
-			(PF_I(map, I)->map_connection_b == NULL) &&
+			(MAP_DATA(I)->map_connection_b == NULL) &&
 			(PL::Spatial::progenitor(I) == NULL))
-			PL::Spatial::set_progenitor(I, PF_I(map, I)->map_connection_a, NULL);
+			PL::Spatial::set_progenitor(I, MAP_DATA(I)->map_connection_a, NULL);
 
 @ At this point we know that the doors are correctly plumbed in, and all we
 need to do is compile properties to implement them. See the DM4 for details
@@ -931,10 +933,10 @@ trust that there is nothing surprising here.
 		if (PL::Map::object_is_a_door(I)) {
 			Properties::EitherOr::assert(
 				P_door, Instances::as_subject(I), TRUE, CERTAIN_CE);
-			instance *R1 = PF_I(map, I)->map_connection_a;
-			instance *R2 = PF_I(map, I)->map_connection_b;
-			instance *D1 = PF_I(map, I)->map_direction_a;
-			instance *D2 = PF_I(map, I)->map_direction_b;
+			instance *R1 = MAP_DATA(I)->map_connection_a;
+			instance *R2 = MAP_DATA(I)->map_connection_b;
+			instance *D1 = MAP_DATA(I)->map_direction_a;
+			instance *D2 = MAP_DATA(I)->map_direction_b;
 			if (R1 && R2) {
 				@<Assert found-in for a two-sided door@>;
 				@<Assert door-dir for a two-sided door@>;

@@ -138,8 +138,8 @@ are typechecked at run-time rather than compile-time in that domain.)
 
 @<Work out the clue kind@> =
 	if (owner) {
-		kind_clue = InferenceSubjects::domain(owner);
-		if (kind_clue == NULL) kind_clue = InferenceSubjects::domain(InferenceSubjects::narrowest_broader_subject(owner));
+		kind_clue = Kinds::Knowledge::from_infs(owner);
+		if (kind_clue == NULL) kind_clue = Kinds::Knowledge::from_infs(InferenceSubjects::narrowest_broader_subject(owner));
 		if ((InferenceSubjects::is_an_object(owner)) ||
 			(InferenceSubjects::is_a_kind_of_object(owner)))
 			kind_clue = K_object;

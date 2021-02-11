@@ -158,9 +158,7 @@ to have the "initial value" property.
 	if ((Wordings::nonempty(W)) && (scope == NULL)) /* that is, if it's a global */
 		Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			VARIABLE_MC, Lvalues::new_actual_NONLOCAL_VARIABLE(nlv), Task::language_of_syntax());
-	nlv->nlv_knowledge =
-		InferenceSubjects::new(nonlocal_variables,
-			VARI_SUB, STORE_POINTER_nonlocal_variable(nlv), CERTAIN_CE);
+	nlv->nlv_knowledge = NonlocalVariables::new_subject(nlv);
 
 @ So much for creation; and here's how we log them:
 
@@ -380,31 +378,65 @@ void NonlocalVariables::warn_about_change(nonlocal_variable *nlv) {
 there's very little to say.
 
 =
-wording NonlocalVariables::SUBJ_get_name_text(inference_subject *from) {
-	nonlocal_variable *nlv = InferenceSubjects::as_nlv(from);
-	return nlv->name;
+inference_subject_family *nlv_family = NULL;
+
+inference_subject_family *NonlocalVariables::family(void) {
+	if (nlv_family == NULL) {
+		nlv_family = InferenceSubjects::new_family();
+		METHOD_ADD(nlv_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
+			NonlocalVariables::certainty);
+		METHOD_ADD(nlv_family, EMIT_ALL_INFS_MTID, NonlocalVariables::SUBJ_compile_all);
+		METHOD_ADD(nlv_family, EMIT_ONE_INFS_MTID, NonlocalVariables::SUBJ_compile);
+		METHOD_ADD(nlv_family, CHECK_MODEL_INFS_MTID, NonlocalVariables::SUBJ_check_model);
+		METHOD_ADD(nlv_family, COMPLETE_MODEL_INFS_MTID, NonlocalVariables::SUBJ_complete_model);
+		METHOD_ADD(nlv_family, EMIT_ELEMENT_INFS_MTID, NonlocalVariables::SUBJ_emit_element_of_condition);
+		METHOD_ADD(nlv_family, GET_NAME_TEXT_INFS_MTID, NonlocalVariables::SUBJ_get_name_text);
+		METHOD_ADD(nlv_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, NonlocalVariables::SUBJ_make_adj_const_domain);
+		METHOD_ADD(nlv_family, NEW_PERMISSION_GRANTED_INFS_MTID, NonlocalVariables::SUBJ_new_permission_granted);
+	}
+	return nlv_family;
+}
+int NonlocalVariables::certainty(inference_subject_family *f, inference_subject *infs) {
+	return CERTAIN_CE;	
+}
+nonlocal_variable *NonlocalVariables::from_infs(inference_subject *infs) {
+	if ((infs) && (infs->infs_family == nlv_family))
+		return RETRIEVE_POINTER_nonlocal_variable(infs->represents);
+	return NULL;
 }
 
-general_pointer NonlocalVariables::SUBJ_new_permission_granted(inference_subject *from) {
-	return NULL_GENERAL_POINTER;
+inference_subject *NonlocalVariables::new_subject(nonlocal_variable *nlv) {
+	return InferenceSubjects::new(global_variables,
+		NonlocalVariables::family(), STORE_POINTER_nonlocal_variable(nlv), NULL);
 }
 
-void NonlocalVariables::SUBJ_make_adj_const_domain(inference_subject *infs,
+void NonlocalVariables::SUBJ_get_name_text(inference_subject_family *family,
+	inference_subject *from, wording *W) {
+	nonlocal_variable *nlv = NonlocalVariables::from_infs(from);
+	*W = nlv->name;
+}
+
+void NonlocalVariables::SUBJ_new_permission_granted(inference_subject_family *f,
+	inference_subject *from, general_pointer *G) {
+	*G = NULL_GENERAL_POINTER;
+}
+
+void NonlocalVariables::SUBJ_make_adj_const_domain(inference_subject_family *family, inference_subject *infs,
 	instance *nc, property *prn) {
 }
 
-void NonlocalVariables::SUBJ_complete_model(inference_subject *infs) {
+void NonlocalVariables::SUBJ_complete_model(inference_subject_family *family, inference_subject *infs) {
 }
 
-void NonlocalVariables::SUBJ_check_model(inference_subject *infs) {
+void NonlocalVariables::SUBJ_check_model(inference_subject_family *family, inference_subject *infs) {
 }
 
-int NonlocalVariables::SUBJ_emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
+int NonlocalVariables::SUBJ_emit_element_of_condition(inference_subject_family *family, inference_subject *infs, inter_symbol *t0_s) {
 	internal_error("NLV in runtime match condition");
 	return FALSE;
 }
 
-void NonlocalVariables::SUBJ_compile(inference_subject *infs) {
+void NonlocalVariables::SUBJ_compile(inference_subject_family *f, inference_subject *infs) {
 }
 
 inference_subject *NonlocalVariables::get_knowledge(nonlocal_variable *nlv) {
@@ -423,7 +455,7 @@ inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
 	return nlv->nlv_iname;
 }
 
-int NonlocalVariables::SUBJ_compile_all(void) {
+int NonlocalVariables::SUBJ_compile_all(inference_subject_family *f, int ignored) {
 	NonlocalVariables::allocate_storage(); /* in case this hasn't happened already */
 	@<Verify that externally-stored nonlocals haven't been initialised@>;
 	nonlocal_variable *nlv;

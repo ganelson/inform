@@ -198,7 +198,7 @@ int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *
 				"'everywhere' can only be used to place individual backdrops",
 				"so although 'The mist is a backdrop. The mist is everywhere.' "
 				"would be fine, 'Corruption is everywhere.' would not.");
-		else if (InferenceSubjects::domain(left_subject))
+		else if (Kinds::Knowledge::from_infs(left_subject))
 			StandardProblems::subject_problem_at_sentence(_p_(PM_KindOfBackdropEverywhere),
 				left_subject,
 				"seems to be said to be 'everywhere' in some way",

@@ -91,23 +91,8 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="2"></a>
-						<span class="chaptertitle">Chapter 2: Subjects</span></p>
+						<span class="chaptertitle">Chapter 2: Instances and Variables</span></p>
 					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="2-is.html">
-								<spon class="sectiontitle">Inference Subjects</span></a> -
-							<span class="sectionpurpose">The different data structures for elements of the model world are all unified by a single concept, the inference subject, about which facts can be known.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-kak.html">
-								<spon class="sectiontitle">Knowledge about Kinds</span></a> -
-							<span class="sectionpurpose">How kinds can be inference subjects.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-kar.html">
-								<spon class="sectiontitle">Knowledge about Relations</span></a> -
-							<span class="sectionpurpose">To store inferences about the state of relationships.</span></p>
-						</li>
 						<li>
 							<p class="sectionentry"><a href="2-ins.html">
 								<spon class="sectiontitle">Instances</span></a> -
@@ -123,7 +108,6 @@
 				<li>
 					<p class="chapterentry"><a name="3"></a>
 						<span class="chaptertitle">Chapter 3: Properties</span></p>
-					<p class="chapterpurpose">Properties are named values attached to elements of the world model; not only objects, but also other enumerated constant values, and so on.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="3-prp.html">
@@ -194,31 +178,51 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="4"></a>
-						<span class="chaptertitle">Chapter 4: Inference and Model</span></p>
-					<p class="chapterpurpose">Having now essentially disposed of the original assertion sentences by converting them to propositions, which in turn generated basic inferences about the model world, we must now resolve this mass of facts, applying Occam's Razor to construct the simplest explicit model of the world which fits this knowledge.</p>
+						<span class="chaptertitle">Chapter 4: Subjects</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="4-pp.html">
+							<p class="sectionentry"><a href="4-is.html">
+								<spon class="sectiontitle">Inference Subjects</span></a> -
+							<span class="sectionpurpose">A unified way to refer to the things propositions talk about.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-kak.html">
+								<spon class="sectiontitle">Knowledge about Kinds</span></a> -
+							<span class="sectionpurpose">How kinds can be inference subjects.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-kar.html">
+								<spon class="sectiontitle">Knowledge about Relations</span></a> -
+							<span class="sectionpurpose">To store inferences about the state of relationships.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: Model</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="5-pp.html">
 								<spon class="sectiontitle">Property Permissions</span></a> -
 							<span class="sectionpurpose">To enforce the domain of properties: for instance, that a door can be open or closed but that an animal cannot, or that a person can have a carrying capacity but that a door cannot.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-inf.html">
+							<p class="sectionentry"><a href="5-inf.html">
 								<spon class="sectiontitle">Inferences</span></a> -
 							<span class="sectionpurpose">To manage the individual pieces of information gathered, with varying degrees of certainty, from assertion sentences. This is mostly information about which objects have what properties.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-cmw.html">
+							<p class="sectionentry"><a href="5-cmw.html">
 								<spon class="sectiontitle">Complete Model World</span></a> -
 							<span class="sectionpurpose">Once the assertions have all been read and reduced to inferences, and all the creations have been made, we take stock; sometimes we spot inconsistencies, sometimes we make deductions, and we try to complete our picture of the model world.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-cmw2.html">
+							<p class="sectionentry"><a href="5-cmw2.html">
 								<spon class="sectiontitle">Compile Model World</span></a> -
 							<span class="sectionpurpose">To manage the compilation of the diverse run-time arrays and/or code needed to set up the initial state of the model world.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-ic.html">
+							<p class="sectionentry"><a href="5-ic.html">
 								<spon class="sectiontitle">Instance Counting</span></a> -
 							<span class="sectionpurpose">A plugin which maintains run-time-accessible linked lists of instances of kinds, in order to speed up loops; and instance counts within kinds, in order to speed up relation storage; and the object-kind hierarchy, in order to speed up run-time checking of the type safety of property usage.</span></p>
 						</li>

@@ -21,6 +21,9 @@ nonlocal_variable *I6_actor_VAR = NULL;
 @ Every inference subject (in particular, every object and every kind of object)
 contains a pointer to its own unique copy of the following structure:
 
+@d PARSING_DATA(I) PLUGIN_DATA_ON_INSTANCE(parsing, I)
+@d PARSING_DATA_FOR_SUBJ(S) PLUGIN_DATA_ON_SUBJECT(parsing, S)
+
 =
 typedef struct parsing_data {
 	struct grammar_verb *understand_as_this_object; /* grammar for parsing the name at run-time */
@@ -66,7 +69,7 @@ void PL::Parsing::Visibility::start(void) {
 }
 
 int PL::Parsing::Visibility::parsing_new_subject_notify(inference_subject *subj) {
-	CREATE_PF_DATA(parsing, subj, PL::Parsing::Visibility::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, PL::Parsing::Visibility::new_data);
 	return FALSE;
 }
 
@@ -220,17 +223,17 @@ for the kinds we inherit from.
 				}
 			}
 
-		if (PF_I(parsing, I)->understand_as_this_object)
+		if (PARSING_DATA(I)->understand_as_this_object)
 			PL::Parsing::Verbs::take_out_one_word_grammar(
-				PF_I(parsing, I)->understand_as_this_object);
+				PARSING_DATA(I)->understand_as_this_object);
 
 		inference_subject *infs;
 		for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-			if (PF_S(parsing, infs)) {
-				if (PF_S(parsing, infs)->understand_as_this_object)
+			if (PARSING_DATA_FOR_SUBJ(infs)) {
+				if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object)
 					PL::Parsing::Verbs::take_out_one_word_grammar(
-						PF_S(parsing, infs)->understand_as_this_object);
+						PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object);
 			}
 		}
 
@@ -259,7 +262,7 @@ i.e., all I6 objects corresponding to I7 things.
 
 @<Assert the I6 action-bitmap property@> =
 	if (InferenceSubjects::is_within(subj, Kinds::Knowledge::as_subject(K_room)) == FALSE) {
-		instance *I = InferenceSubjects::as_instance(subj);
+		instance *I = Instances::from_infs(subj);
 		inter_name *S = PL::Actions::compile_action_bitmap_property(I);
 		Properties::Valued::assert(P_action_bitmap, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);

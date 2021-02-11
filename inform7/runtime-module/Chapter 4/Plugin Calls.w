@@ -114,7 +114,7 @@ int Plugins::Call::new_variable_notify(nonlocal_variable *q) {
 }
 
 int Plugins::Call::new_base_kind_notify(kind *K, kind *super, text_stream *d, wording W) {
-	@<Renew the subject if necessary to cope with an early subject creation@>;
+	Kinds::Knowledge::renew(K, super, W);
 	if (<property-name>(W)) {
 		property *P = <<rp>>;
 		Properties::Valued::set_kind(P, K);
@@ -123,21 +123,6 @@ int Plugins::Call::new_base_kind_notify(kind *K, kind *super, text_stream *d, wo
 	}
 	PLUGINS_CALL(PLUGIN_NEW_BASE_KIND_NOTIFY, K, d, W);
 }
-
-@ This is used to overcome a timing problem. A few inference subjects need to
-be defined early in Inform's run to set up relations -- "thing", for example.
-So when we do finally create "thing" as a kind of object, it needs to be
-matched up with the inference subject already existing.
-
-@<Renew the subject if necessary to cope with an early subject creation@> =
-	inference_subject *revised = NULL;
-	if (Wordings::nonempty(W)) Plugins::Call::name_to_early_infs(W, &revised);
-	if (revised) {
-		InferenceSubjects::renew(revised,
-			Kinds::Knowledge::as_subject(super), KIND_SUB,
-				STORE_POINTER_kind_constructor(K->construct), LIKELY_CE);
-		Kinds::Knowledge::set_subject(K, revised);
-	}
 
 @ =
 int Plugins::Call::compile_constant(value_holster *VH, kind *K, parse_node *spec) {

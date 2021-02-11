@@ -65,7 +65,7 @@ property *Properties::EitherOr::obtain(wording W, inference_subject *infs) {
 	}
 	property *prn = Properties::obtain(W, FALSE);
 	prn->either_or = TRUE;
-	kind *K = InferenceSubjects::domain(infs);
+	kind *K = Kinds::Knowledge::from_infs(infs);
 	if (prn->adjectival_meaning_registered == NULL)
 		Properties::EitherOr::create_adjective_from_property(prn, W, K);
 	else

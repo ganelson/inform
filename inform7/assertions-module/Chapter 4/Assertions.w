@@ -21,7 +21,7 @@ void Assertions::make_existential(parse_node *py) {
 				break;
 			case COMMON_NOUN_NT:
 				if ((InferenceSubjects::is_a_kind_of_object(Node::get_subject(py))) ||
-					(Kinds::eq(K_object, InferenceSubjects::as_kind(Node::get_subject(py)))))
+					(Kinds::eq(K_object, Kinds::Knowledge::from_infs(Node::get_subject(py)))))
 					Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 				else
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
@@ -461,7 +461,7 @@ specifying its edibility.
 
 	if ((InferenceSubjects::is_an_object(inst)) ||
 		(InferenceSubjects::is_a_kind_of_object(inst))) {
-		if ((InferenceSubjects::domain(inst) == FALSE) &&
+		if ((Kinds::Knowledge::from_infs(inst) == FALSE) &&
 			(InferenceSubjects::where_created(inst) != current_sentence))
 			@<Don't allow an existing object to be declared as a kind over again@>;
 
@@ -1083,7 +1083,7 @@ opera about a dog, "Collared Is Bowser".)
 @h Case 32. A problem message issued purely on stylistic grounds.
 
 @<Case 32 - COMMON NOUN, PROPER NOUN vs ACTION@> =
-	if ((Node::get_subject(px)) && (InferenceSubjects::domain(Node::get_subject(px)))) {
+	if ((Node::get_subject(px)) && (Kinds::Knowledge::from_infs(Node::get_subject(px)))) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, py);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindIsAction));

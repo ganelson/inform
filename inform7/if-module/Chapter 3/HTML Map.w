@@ -423,8 +423,8 @@ from each other.)
 	instance *RG;
 	int regc = 0;
 	LOOP_OVER_INSTANCES(RG, K_region)
-		if (PF_I(map, RG)->world_index_colour == NULL)
-			PF_I(map, RG)->world_index_colour =
+		if (MAP_DATA(RG)->world_index_colour == NULL)
+			MAP_DATA(RG)->world_index_colour =
 				HTML::translate_colour_name(
 					some_map_colours[(regc++) % NO_REGION_COLOURS]);
 
@@ -432,12 +432,12 @@ from each other.)
 	wchar_t *default_room_col = HTML::translate_colour_name(L"Light Grey");
 	instance *R;
 	LOOP_OVER_ROOMS(R)
-		if (PF_I(map, R)->world_index_colour == NULL) {
+		if (MAP_DATA(R)->world_index_colour == NULL) {
 			instance *reg = PL::Regions::enclosing(R);
 			if (reg)
-				PF_I(map, R)->world_index_colour = PF_I(map, reg)->world_index_colour;
+				MAP_DATA(R)->world_index_colour = MAP_DATA(reg)->world_index_colour;
 			else
-				PF_I(map, R)->world_index_colour = default_room_col;
+				MAP_DATA(R)->world_index_colour = default_room_col;
 		}
 
 @<Draw an HTML map for the whole Universe of rooms@> =
@@ -931,10 +931,10 @@ void PL::HTMLMap::index_room_square(OUTPUT_STREAM, instance *I, int pass) {
 			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, I);
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
-			PF_I(map, I)->world_index_colour);
+			MAP_DATA(I)->world_index_colour);
 		TEMPORARY_TEXT(col)
-		if (PF_I(map, I)->world_index_text_colour)
-			WRITE_TO(col, "%w", PF_I(map, I)->world_index_text_colour);
+		if (MAP_DATA(I)->world_index_text_colour)
+			WRITE_TO(col, "%w", MAP_DATA(I)->world_index_text_colour);
 		else
 			WRITE_TO(col, "%s", ROOM_TEXT_COLOUR);
 		HTML::begin_colour(OUT, col);
@@ -1017,7 +1017,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, instance *I, instance *Reg, parse_n
 		ROOM_BORDER_SIZE, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
-		PF_I(map, Reg)->world_index_colour);
+		MAP_DATA(Reg)->world_index_colour);
 	WRITE("&nbsp;");
 	Instances::index_name(OUT, Reg); WRITE(" region");
 	if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));

@@ -60,10 +60,10 @@ void KindPredicatesRevisited::assert(up_family *self, unary_predicate *up,
 		return;
 	}
 	inference_subject *subj = Assert::subject_of_term(pl->terms[0]);
-	instance *ox = InferenceSubjects::as_object_instance(subj);
+	instance *ox = Instances::object_from_infs(subj);
 	if (ox) Instances::set_kind(ox, up->assert_kind);
 	else {
-		kind *K = InferenceSubjects::as_kind(subj);
+		kind *K = Kinds::Knowledge::from_infs(subj);
 		if (K) Kinds::make_subkind(K, up->assert_kind);
 	}
 }

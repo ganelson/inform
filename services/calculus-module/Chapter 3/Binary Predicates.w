@@ -223,9 +223,7 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	/* for use by the A-parser */
 	#ifdef CORE_MODULE
-	bp->knowledge_about_bp =
-		InferenceSubjects::new(relations,
-			RELN_SUB, STORE_POINTER_binary_predicate(bp), CERTAIN_CE);
+	bp->knowledge_about_bp = KnowledgeAboutRelations::new_subject(bp);
 	#endif
 	#ifndef CORE_MODULE
 	bp->knowledge_about_bp = NULL;

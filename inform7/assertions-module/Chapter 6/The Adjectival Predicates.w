@@ -81,15 +81,15 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 
 	parse_node *ots = Assert::spec_of_term(pl->terms[0]);
 
-	kind *domain_of_definition = InferenceSubjects::domain(ox);
+	kind *domain_of_definition = Kinds::Knowledge::from_infs(ox);
 	if (domain_of_definition == NULL) {
-		instance *inst = InferenceSubjects::as_object_instance(ox);
+		instance *inst = Instances::object_from_infs(ox);
 		if (inst) domain_of_definition = Instances::to_kind(inst);
 	}
 
 	inference_subject *try = ox;
 	while ((domain_of_definition == NULL) && (try)) {
-		domain_of_definition = InferenceSubjects::domain(try);
+		domain_of_definition = Kinds::Knowledge::from_infs(try);
 		try = InferenceSubjects::narrowest_broader_subject(try);
 	}
 	if (domain_of_definition == NULL)

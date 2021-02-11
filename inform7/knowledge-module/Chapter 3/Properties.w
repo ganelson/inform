@@ -246,7 +246,7 @@ this to any other language).
 				prn->do_not_compile = TRUE;
 				Properties::Valued::set_kind(prn, K_value);
 				prn->include_in_index = FALSE;
-				World::Permissions::grant(nonlocal_variables, P_variable_initial_value, TRUE);
+				World::Permissions::grant(global_variables, P_variable_initial_value, TRUE);
 				break;
 		}
 	}
@@ -730,7 +730,7 @@ void Properties::emit(void) {
 		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
 			inference_subject *subj = pp->property_owner;
 			if (subj == NULL) internal_error("unowned property");
-			kind *K = InferenceSubjects::as_kind(subj);
+			kind *K = Kinds::Knowledge::from_infs(subj);
 			if (K) Emit::permission(prn, K, Properties::OfValues::annotate_table_storage(pp));
 		}
 	}

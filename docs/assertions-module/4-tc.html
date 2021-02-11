@@ -342,7 +342,7 @@ in the node's subject, so this case is easy.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    *</span><span class="identifier-syntax">governing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">InferenceSubjects::domain</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Kinds::Knowledge::from_infs</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-tc.html#SP4">&#167;4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>Less surprisingly, "number that varies" and "number" return <span class="extract"><span class="extract-syntax">K_number</span></span>.

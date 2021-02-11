@@ -1169,7 +1169,7 @@ not kinds); and that it must inherit from the domain of the term.
 
 =
 int RTRelations::infs_in_domain(inference_subject *infs, binary_predicate *bp, int index) {
-	if (InferenceSubjects::domain(infs) != NULL) return FALSE;
+	if (Kinds::Knowledge::from_infs(infs) != NULL) return FALSE;
 	kind *K = BinaryPredicates::term_kind(bp, index);
 	if (K == NULL) return FALSE;
 	inference_subject *domain_infs = Kinds::Knowledge::as_subject(K);

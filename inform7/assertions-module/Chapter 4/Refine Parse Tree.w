@@ -29,7 +29,7 @@ void Refiner::give_spec_to_noun(parse_node *p, parse_node *eval) {
 }
 
 @<Make a common or proper noun as appropriate@> =
-	if (InferenceSubjects::domain(infs)) Node::set_type(p, COMMON_NOUN_NT);
+	if (Kinds::Knowledge::from_infs(infs)) Node::set_type(p, COMMON_NOUN_NT);
 	else Node::set_type(p, PROPER_NOUN_NT);
 	Refiner::apply_description(p, eval);
 	Node::set_subject(p, infs);
@@ -399,9 +399,9 @@ inference subject representing the domain to which any new kind would belong.
 		Refiner::refine(what, FORBID_CREATION);
 		kind_of_what = Node::get_subject(what);
 	}
-	if ((kind_of_what == NULL) || (InferenceSubjects::domain(kind_of_what) == NULL))
+	if ((kind_of_what == NULL) || (Kinds::Knowledge::from_infs(kind_of_what) == NULL))
 		@<Issue a problem message for a kind of instance@>;
-	if ((InferenceSubjects::as_nonobject_kind(kind_of_what)) &&
+	if ((Kinds::Knowledge::nonobject_from_infs(kind_of_what)) &&
 		(kind_of_what != Kinds::Knowledge::as_subject(K_value)) &&
 		(kind_of_what != Kinds::Knowledge::as_subject(K_object)))
 			@<Issue a problem message for a disallowed subkind@>;

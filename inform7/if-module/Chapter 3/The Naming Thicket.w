@@ -86,7 +86,7 @@ the Creator to make something else have a proper name.
 
 =
 void PL::Naming::now_has_proper_name(inference_subject *infs) {
-	instance *wto = InferenceSubjects::as_object_instance(infs);
+	instance *wto = Instances::object_from_infs(infs);
 	if (wto) PL::Naming::object_now_has_proper_name(wto);
 }
 
@@ -124,7 +124,7 @@ This is needed when assemblies name one new creation after another; for instance
 
 =
 void PL::Naming::transfer_details(inference_subject *from, inference_subject *to) {
-	instance *wto = InferenceSubjects::as_object_instance(to);
+	instance *wto = Instances::object_from_infs(to);
 	if (wto) {
 		if (World::Inferences::get_EO_state(from, P_proper_named) > 0)
 			PL::Naming::now_has_proper_name(to);
@@ -134,7 +134,7 @@ void PL::Naming::transfer_details(inference_subject *from, inference_subject *to
 }
 
 instance *PL::Naming::object_this_is_named_after(instance *I) {
-	return InferenceSubjects::as_object_instance(
+	return Instances::object_from_infs(
 		Assertions::Assemblies::what_this_is_named_after(
 			Instances::as_subject(I)));
 }

@@ -212,7 +212,7 @@ in the node's subject, so this case is easy.
 
 @<Handle the kind of a "kind of..." clause@> =
 	*governing = p;
-	return InferenceSubjects::domain(Node::get_subject(p));
+	return Kinds::Knowledge::from_infs(Node::get_subject(p));
 
 @ Less surprisingly, "number that varies" and "number" return |K_number|.
 

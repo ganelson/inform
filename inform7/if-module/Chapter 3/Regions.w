@@ -22,6 +22,8 @@ property *P_regional_found_in = NULL; /* an I6-only property used for implementa
 following minimal structure, though it will only be relevant for instances of
 "room":
 
+@d REGIONS_DATA(I) PLUGIN_DATA_ON_INSTANCE(regions, I)
+
 =
 typedef struct regions_data {
 	struct instance *in_region; /* smallest region containing me (rooms only) */
@@ -48,8 +50,7 @@ void PL::Regions::start(void) {
 }
 
 void PL::Regions::create_inference_subjects(void) {
-	infs_region = InferenceSubjects::new(global_constants,
-		FUND_SUB, NULL_GENERAL_POINTER, LIKELY_CE);
+	infs_region = InferenceSubjects::new_fundamental(global_constants, "region(early)");
 }
 
 regions_data *PL::Regions::new_data(inference_subject *subj) {
@@ -61,9 +62,9 @@ regions_data *PL::Regions::new_data(inference_subject *subj) {
 }
 
 inter_name *PL::Regions::found_in_iname(instance *I) {
-	if (PF_I(regions, I)->in_region_iname == NULL)
-		PF_I(regions, I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, Instances::package(I));
-	return PF_I(regions, I)->in_region_iname;
+	if (REGIONS_DATA(I)->in_region_iname == NULL)
+		REGIONS_DATA(I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, Instances::package(I));
+	return REGIONS_DATA(I)->in_region_iname;
 }
 
 @h Kinds.
@@ -84,7 +85,7 @@ int PL::Regions::regions_new_base_kind_notify(kind *new_base, char *text_stream,
 }
 
 int PL::Regions::regions_new_subject_notify(inference_subject *subj) {
-	CREATE_PF_DATA(regions, subj, PL::Regions::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, PL::Regions::new_data);
 	return FALSE;
 }
 
@@ -165,7 +166,7 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 		inference_subject *right_kind = Node::get_subject(py);
 		if ((InferenceSubjects::is_an_object(left_subject)) &&
 			(right_kind == Kinds::Knowledge::as_subject(K_region))) {
-			instance *left_object = InferenceSubjects::as_object_instance(left_subject);
+			instance *left_object = Instances::object_from_infs(left_subject);
 			if ((left_object) &&
 				(current_sentence != Instances::get_creating_sentence(left_object)) &&
 				(Instances::of_kind(left_object, K_region) == FALSE)) {
@@ -257,8 +258,8 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 }
 
 @<You can only be declared as in one region@> =
-	if ((PF_I(regions, I1)->in_region) &&
-		(PF_I(regions, I1)->in_region != I0)) {
+	if ((REGIONS_DATA(I1)->in_region) &&
+		(REGIONS_DATA(I1)->in_region != I0)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionInTwoRegions),
 			"each region can only be declared to be inside a single "
 			"other region",
@@ -266,8 +267,8 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 			"they are not permitted to overlap.");
 		return TRUE;
 	}
-	PF_I(regions, I1)->in_region = I0;
-	PF_I(regions, I1)->in_region_set_at = current_sentence;
+	REGIONS_DATA(I1)->in_region = I0;
+	REGIONS_DATA(I1)->in_region_set_at = current_sentence;
 
 @<A region is being put inside a region@> =
 	inference_subject *inner = Instances::as_subject(I1);
@@ -290,7 +291,7 @@ region is either the next broadest region containing it, or else |NULL|.
 =
 instance *PL::Regions::enclosing(instance *reg) {
 	instance *P = NULL;
-	if (PL::Spatial::object_is_a_room(reg)) P = PF_I(regions, reg)->in_region;
+	if (PL::Spatial::object_is_a_room(reg)) P = REGIONS_DATA(reg)->in_region;
 	if (PL::Regions::object_is_a_region(reg)) P = PL::Spatial::progenitor(reg);
 	if (PL::Regions::object_is_a_region(P) == FALSE) return NULL;
 	return P;
@@ -320,8 +321,8 @@ int PL::Regions::regions_complete_model(int stage) {
 			if (val) {
 				instance *reg =
 					Rvalues::to_object_instance(val);
-				PF_I(regions, I)->in_region = reg;
-				PF_I(regions, I)->in_region_set_at = where;
+				REGIONS_DATA(I)->in_region = reg;
+				REGIONS_DATA(I)->in_region_set_at = where;
 			}
 		}
 
@@ -364,7 +365,7 @@ void PL::Regions::write_regional_found_in_routines(void) {
 int PL::Regions::regions_add_to_World_index(OUTPUT_STREAM, instance *O) {
 	if ((O) && (Instances::of_kind(O, K_room))) {
 		instance *R = PL::Regions::enclosing(O);
-		if (R) PL::HTMLMap::colour_chip(OUT, O, R, PF_I(regions, O)->in_region_set_at);
+		if (R) PL::HTMLMap::colour_chip(OUT, O, R, REGIONS_DATA(O)->in_region_set_at);
 	}
 	return FALSE;
 }

@@ -228,7 +228,7 @@ differently as a result.
 		if (<s-type-expression>(Node::get_text(the_owner)))
 			owner_infs = Kinds::Knowledge::as_subject(Specifications::to_kind(<<rp>>));
 	}
-	kind *K = InferenceSubjects::domain(owner_infs);
+	kind *K = Kinds::Knowledge::from_infs(owner_infs);
 	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of an either/or or condition@>;
 

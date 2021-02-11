@@ -207,16 +207,16 @@ void PL::EPSMap::put_mp(wchar_t *name, map_parameter_scope *scope, instance *sco
 	if (scope == NULL) scope = &global_map_scope;
 	if (Wide::cmp(name, L"room-colour") == 0) {
 		if (scope == &global_map_scope) changed_global_room_colour = TRUE;
-		if (scope_I) PF_I(map, scope_I)->world_index_colour = put_string;
+		if (scope_I) MAP_DATA(scope_I)->world_index_colour = put_string;
 	}
 	if (Wide::cmp(name, L"room-name-colour") == 0)
-		if (scope_I) PF_I(map, scope_I)->world_index_text_colour = put_string;
+		if (scope_I) MAP_DATA(scope_I)->world_index_text_colour = put_string;
 	if (put_string) PL::EPSMap::put_string_mp(name, scope, put_string);
 	else PL::EPSMap::put_int_mp(name, scope, put_integer);
 }
 
 map_parameter_scope *PL::EPSMap::scope_for_single_room(instance *rm) {
-	return &(PF_I(map, rm)->local_map_parameters);
+	return &(MAP_DATA(rm)->local_map_parameters);
 }
 
 int PL::EPSMap::obj_in_region(instance *I, instance *reg) {
@@ -550,7 +550,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 
 	instance *I = <<instance:x>>;
 	instance *I2 = <<instance:y>>;
-	int exit = PF_I(map, <<instance:dir>>)->direction_index;
+	int exit = MAP_DATA(<<instance:dir>>)->direction_index;
 
 	if ((I == NULL) || (PL::Spatial::object_is_a_room(I) == FALSE)) {
 		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapFromNonRoom),
@@ -835,14 +835,14 @@ void PL::EPSMap::render_map_as_EPS(void) {
 
 	LOOP_OVER_ROOMS(R)
 		if (Room_position(R).z == z) {
-			PF_I(map, R)->local_map_parameters.wider_scope = &(eml->map_parameters);
+			MAP_DATA(R)->local_map_parameters.wider_scope = &(eml->map_parameters);
 		}
 
 @<Inherit EPS room colours from those used in the World Index@> =
 	instance *R;
 	LOOP_OVER_ROOMS(R)
-		PL::EPSMap::put_string_mp(L"room-colour", &(PF_I(map, R)->local_map_parameters),
-			PF_I(map, R)->world_index_colour);
+		PL::EPSMap::put_string_mp(L"room-colour", &(MAP_DATA(R)->local_map_parameters),
+			MAP_DATA(R)->world_index_colour);
 
 @<Open a stream and write the EPS map to it@> =
 	filename *F = Task::epsmap_file();
@@ -956,7 +956,7 @@ rectangle around the whole thing...
 	}
 
 @<Establish EPS coordinates for this room@> =
-	map_parameter_scope *room_scope = &(PF_I(map, R)->local_map_parameters);
+	map_parameter_scope *room_scope = &(MAP_DATA(R)->local_map_parameters);
 	int bx = Room_position(R).x-Universe.corner0.x;
 	int by = Room_position(R).y-eml->y_min;
 	int offs = PL::EPSMap::get_int_mp(L"room-offset", room_scope);
@@ -970,15 +970,15 @@ rectangle around the whole thing...
 	bx += xpart*mapunit/100;
 	by += ypart*mapunit/100;
 
-	PF_I(map, R)->eps_x = bx;
-	PF_I(map, R)->eps_y = by;
+	MAP_DATA(R)->eps_x = bx;
+	MAP_DATA(R)->eps_y = by;
 
 @<Draw the map connections from this room as EPS paths@> =
-	map_parameter_scope *room_scope = &(PF_I(map, R)->local_map_parameters);
+	map_parameter_scope *room_scope = &(MAP_DATA(R)->local_map_parameters);
 	PL::EPSMap::EPS_compile_line_width_setting(OUT, PL::EPSMap::get_int_mp(L"route-thickness", room_scope));
 
-	int bx = PF_I(map, R)->eps_x;
-	int by = PF_I(map, R)->eps_y;
+	int bx = MAP_DATA(R)->eps_x;
+	int by = MAP_DATA(R)->eps_y;
 	int boxsize = PL::EPSMap::get_int_mp(L"room-size", room_scope)/2;
 	int R_stiffness = PL::EPSMap::get_int_mp(L"route-stiffness", room_scope);
 	int dir;
@@ -991,7 +991,7 @@ rectangle around the whole thing...
 	PL::EPSMap::EPS_compile_line_width_unsetting(OUT);
 
 @<Draw a single map connection as an EPS arrow@> =
-	int T_stiffness = PL::EPSMap::get_int_mp(L"route-stiffness", &(PF_I(map, T)->local_map_parameters));
+	int T_stiffness = PL::EPSMap::get_int_mp(L"route-stiffness", &(MAP_DATA(T)->local_map_parameters));
 	if (PL::EPSMap::get_int_mp(L"monochrome", level_scope)) PL::EPSMap::EPS_compile_set_greyscale(OUT, 0);
 	else PL::EPSMap::EPS_compile_set_colour(OUT, PL::EPSMap::get_string_mp(L"route-colour", level_scope));
 	if ((Room_position(T).z == Room_position(R).z) &&
@@ -1008,7 +1008,7 @@ just for the earlier-defined room.
 		PL::EPSMap::EPS_compile_Bezier_curve(OUT,
 			R_stiffness*mapunit, T_stiffness*mapunit,
 			bx, by, exit,
-			PF_I(map, T)->eps_x, PF_I(map, T)->eps_y, PL::SpatialMap::opposite(exit));
+			MAP_DATA(T)->eps_x, MAP_DATA(T)->eps_y, PL::SpatialMap::opposite(exit));
 
 @ A one-way arrow has the destination marked on it textually, since it doesn't
 actually go there in any visual way.
@@ -1031,9 +1031,9 @@ actually go there in any visual way.
 		TRUE, TRUE);
 
 @<Draw the boxes for the rooms themselves@> =
-	map_parameter_scope *room_scope = &(PF_I(map, R)->local_map_parameters);
-	int bx = PF_I(map, R)->eps_x;
-	int by = PF_I(map, R)->eps_y;
+	map_parameter_scope *room_scope = &(MAP_DATA(R)->local_map_parameters);
+	int bx = MAP_DATA(R)->eps_x;
+	int by = MAP_DATA(R)->eps_y;
 	int boxsize = PL::EPSMap::get_int_mp(L"room-size", room_scope)/2;
 	@<Draw the filled box for the room@>;
 	@<Draw the outline of the box for the room@>;
@@ -1087,8 +1087,8 @@ actually go there in any visual way.
 		if (PL::EPSMap::get_int_mp(L"monochrome", NULL)) PL::EPSMap::EPS_compile_set_greyscale(OUT, 0);
 		else PL::EPSMap::EPS_compile_set_colour(OUT, rh->colour);
 		if (rh->offset_from) {
-			bx = PF_I(map, rh->offset_from)->eps_x;
-			by = PF_I(map, rh->offset_from)->eps_y;
+			bx = MAP_DATA(rh->offset_from)->eps_x;
+			by = MAP_DATA(rh->offset_from)->eps_y;
 		}
 		bx += xpart*mapunit/100; by += ypart*mapunit/100;
 		PL::EPSMap::plot_text_at(OUT, rh->annotation, NULL, 128, rh->font, bx, by, rh->point_size,

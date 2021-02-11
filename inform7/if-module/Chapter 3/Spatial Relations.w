@@ -172,8 +172,8 @@ place the same object in a container, a room or a region respectively.
 int PL::SpatialRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
-	instance *I0 = InferenceSubjects::as_object_instance(infs0),
-		*I1 = InferenceSubjects::as_object_instance(infs1);
+	instance *I0 = Instances::object_from_infs(infs0),
+		*I1 = Instances::object_from_infs(infs1);
 	if ((I0) && (I1)) {
 		if (I1 == I0) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MiseEnAbyme),

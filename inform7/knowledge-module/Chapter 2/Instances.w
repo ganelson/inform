@@ -121,8 +121,7 @@ later on.)
 	I->index_appearances = 0;
 	I->first_noted_usage = NULL;
 	I->last_noted_usage = NULL;
-	I->as_subject = InferenceSubjects::new(Kinds::Knowledge::as_subject(K),
-		INST_SUB, STORE_POINTER_instance(I), CERTAIN_CE);
+	I->as_subject = Instances::make_subject(I, K);
 
 @ When we create instances of a kind whose name coincides with a property
 used as a condition, as here:
@@ -420,7 +419,7 @@ specialised than which other ones, and by making a call, we can find out.
 kind *Instances::to_kind(instance *I) {
 	if (I == NULL) return NULL;
 	inference_subject *inherits_from = InferenceSubjects::narrowest_broader_subject(I->as_subject);
-	return InferenceSubjects::as_kind(inherits_from);
+	return Kinds::Knowledge::from_infs(inherits_from);
 }
 
 int Instances::of_kind(instance *I, kind *match) {
@@ -601,36 +600,82 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 Some methods for instances as inference subjects:
 
 =
-wording Instances::SUBJ_get_name_text(inference_subject *from) {
-	instance *I = InferenceSubjects::as_nc(from);
-	return Instances::get_name(I, FALSE);
+inference_subject_family *instances_family = NULL;
+
+inference_subject_family *Instances::family(void) {
+	if (instances_family == NULL) {
+		instances_family = InferenceSubjects::new_family();
+		METHOD_ADD(instances_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
+			Instances::certainty);
+		METHOD_ADD(instances_family, EMIT_ALL_INFS_MTID, Instances::SUBJ_compile_all);
+		METHOD_ADD(instances_family, EMIT_ONE_INFS_MTID, Instances::SUBJ_compile);
+		METHOD_ADD(instances_family, CHECK_MODEL_INFS_MTID, Instances::SUBJ_check_model);
+		METHOD_ADD(instances_family, COMPLETE_MODEL_INFS_MTID, Instances::SUBJ_complete_model);
+		METHOD_ADD(instances_family, EMIT_ELEMENT_INFS_MTID, Instances::SUBJ_emit_element_of_condition);
+		METHOD_ADD(instances_family, GET_NAME_TEXT_INFS_MTID, Instances::SUBJ_get_name_text);
+		METHOD_ADD(instances_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, Instances::SUBJ_make_adj_const_domain);
+		METHOD_ADD(instances_family, NEW_PERMISSION_GRANTED_INFS_MTID, Instances::SUBJ_new_permission_granted);
+	}
+	return instances_family;
 }
 
-general_pointer Instances::SUBJ_new_permission_granted(inference_subject *from) {
-	return STORE_POINTER_property_of_value_storage(
+int Instances::certainty(inference_subject_family *f, inference_subject *infs) {
+	return CERTAIN_CE;	
+}
+
+inference_subject *Instances::make_subject(instance *I, kind *K) {
+	return InferenceSubjects::new(Kinds::Knowledge::as_subject(K),
+		Instances::family(), STORE_POINTER_instance(I), NULL);
+}
+
+instance *Instances::from_infs(inference_subject *infs) {
+	if ((infs) && (infs->infs_family == instances_family))
+		return RETRIEVE_POINTER_instance(infs->represents);
+	return NULL;
+}
+
+instance *Instances::object_from_infs(inference_subject *infs) {
+	if ((infs) && (infs->infs_family == instances_family)) {
+		instance *nc = RETRIEVE_POINTER_instance(infs->represents);
+		if (Kinds::Behaviour::is_object(Instances::to_kind(nc)))
+			return nc;
+	}
+	return NULL;
+}
+
+
+void Instances::SUBJ_get_name_text(inference_subject_family *family,
+	inference_subject *from, wording *W) {
+	instance *I = Instances::from_infs(from);
+	*W = Instances::get_name(I, FALSE);
+}
+
+void Instances::SUBJ_new_permission_granted(inference_subject_family *f,
+	inference_subject *from, general_pointer *G) {
+	*G = STORE_POINTER_property_of_value_storage(
 		Properties::OfValues::get_storage());
 }
 
-void Instances::SUBJ_complete_model(inference_subject *infs) {
+void Instances::SUBJ_complete_model(inference_subject_family *family, inference_subject *infs) {
 }
 
-void Instances::SUBJ_check_model(inference_subject *infs) {
+void Instances::SUBJ_check_model(inference_subject_family *family, inference_subject *infs) {
 }
 
 @ See below.
 
 =
-void Instances::SUBJ_make_adj_const_domain(inference_subject *S,
+void Instances::SUBJ_make_adj_const_domain(inference_subject_family *family, inference_subject *S,
 	instance *I, property *P) {
-	Instances::make_adj_const_domain(I, P, NULL, InferenceSubjects::as_instance(S));
+	Instances::make_adj_const_domain(I, P, NULL, Instances::from_infs(S));
 }
 
 @ Since all instances are single values, testing for inclusion under such a
 subject is very simple:
 
 =
-int Instances::SUBJ_emit_element_of_condition(inference_subject *infs, inter_symbol *t0_s) {
-	instance *I = InferenceSubjects::as_nc(infs);
+int Instances::SUBJ_emit_element_of_condition(inference_subject_family *family, inference_subject *infs, inter_symbol *t0_s) {
+	instance *I = Instances::from_infs(infs);
 	Produce::inv_primitive(Emit::tree(), EQ_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, t0_s);
@@ -700,13 +745,13 @@ the object instances, then compile the non-object ones (all just constant
 declarations) and finally return |TRUE| to indicate that the task is finished.
 
 =
-int Instances::SUBJ_compile_all(void) {
+int Instances::SUBJ_compile_all(inference_subject_family *family, int ignored) {
 	instance *I;
 	LOOP_OVER_OBJECTS_IN_COMPILATION_SEQUENCE(I)
-		Instances::SUBJ_compile(Instances::as_subject(I));
+		Instances::SUBJ_compile(family, Instances::as_subject(I));
 	LOOP_OVER(I, instance)
 		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
-			Instances::SUBJ_compile(Instances::as_subject(I));
+			Instances::SUBJ_compile(family, Instances::as_subject(I));
 	#ifdef IF_MODULE
 	PL::Naming::compile_small_names();
 	#endif
@@ -716,8 +761,8 @@ int Instances::SUBJ_compile_all(void) {
 @ Either way, the actual compilation happens here:
 
 =
-void Instances::SUBJ_compile(inference_subject *infs) {
-	instance *I = InferenceSubjects::as_nc(infs);
+void Instances::SUBJ_compile(inference_subject_family *family, inference_subject *infs) {
+	instance *I = Instances::from_infs(infs);
 	Instances::emitted_iname(I);
 	Properties::emit_instance_permissions(I);
 	Properties::Emit::emit_subject(infs);

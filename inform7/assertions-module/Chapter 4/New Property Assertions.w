@@ -46,7 +46,7 @@ automatically creates it.
 			"something like that, to give the property a name.");
 	}
 	inference_subject *owner_infs = Node::get_subject(owner_ref);
-	kind *K = InferenceSubjects::domain(owner_infs);
+	kind *K = Kinds::Knowledge::from_infs(owner_infs);
 	Kinds::Behaviour::convert_to_enumeration(K);
 	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;

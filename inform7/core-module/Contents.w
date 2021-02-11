@@ -25,3 +25,4 @@ Chapter 2: Problem Messages
 	Supplementary Issues
 	Problems With Source Text
 	Calculus Problems
+	Kinds Problems

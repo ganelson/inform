@@ -1,0 +1,9 @@
+PM_DimensionRedundant
+PM_DimensionNotBaseKOV
+PM_NonDimensional
+PM_UnitSequenceOverflow
+PM_DimensionsInconsistent
+PM_KindUnalterable
+PM_KindsCircular
+PM_LPCantScaleYet
+PM_LPCantScaleTwice

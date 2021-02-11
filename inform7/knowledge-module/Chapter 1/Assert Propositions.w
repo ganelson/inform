@@ -409,7 +409,7 @@ void Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
 	#ifdef IF_MODULE
 	if (Kinds::eq(k, K_thing)) return;
 	#endif
-	instance *instance_wo = InferenceSubjects::as_object_instance(inst);
+	instance *instance_wo = Instances::object_from_infs(inst);
 	if (instance_wo == NULL) return;
 	Instances::set_kind(instance_wo, k);
 }

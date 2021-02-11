@@ -163,8 +163,8 @@ void Assertions::Relational::assert_relation_between_subtrees(parse_node *px, bi
 
 @<Impose a tedious restriction on relations between objects and values@> =
 	if ((Relations::Explicit::relates_values_not_objects(bp)) &&
-		(((Node::get_subject(px)) && (InferenceSubjects::domain(Node::get_subject(px)))) ||
-		((Node::get_subject(py)) && (InferenceSubjects::domain(Node::get_subject(py)))))) {
+		(((Node::get_subject(px)) && (Kinds::Knowledge::from_infs(Node::get_subject(px)))) ||
+		((Node::get_subject(py)) && (Kinds::Knowledge::from_infs(Node::get_subject(py)))))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_KindRelatedToValue),
 			"relations between objects and values have to be made one "
 			"object at a time",

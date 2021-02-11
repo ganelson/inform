@@ -229,7 +229,7 @@ void World::Inferences::get_references_spec(inference *i,
 }
 
 instance *World::Inferences::get_reference_as_object(inference *i) {
-	return InferenceSubjects::as_object_instance(i->infs_ref1);
+	return Instances::object_from_infs(i->infs_ref1);
 }
 
 @h Looping over inferences.

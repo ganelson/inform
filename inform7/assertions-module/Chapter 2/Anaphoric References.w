@@ -106,11 +106,11 @@ void Anaphora::change_discussion_topic(inference_subject *infsx,
 		return;
 	#ifdef IF_MODULE
 	if ((PL::Map::is_a_direction(infsx)) &&
-			((InferenceSubjects::as_object_instance(infsx) == NULL) ||
-				(InferenceSubjects::as_object_instance(infsy_full)))) infsx = NULL;
+			((Instances::object_from_infs(infsx) == NULL) ||
+				(Instances::object_from_infs(infsy_full)))) infsx = NULL;
 	#endif
 	if (infsx) global_pass_state.subject_of_sentences = infsx;
-	if ((infsy) && (InferenceSubjects::domain(infsy) == NULL))
+	if ((infsy) && (Kinds::Knowledge::from_infs(infsy) == NULL))
 		global_pass_state.object_of_sentences = infsy;
 	else if (infsx) global_pass_state.object_of_sentences = infsx;
 
