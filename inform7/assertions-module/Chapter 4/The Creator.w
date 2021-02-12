@@ -586,8 +586,9 @@ creates two different objects with different names, even though references
 to abbreviated forms of object names are normally allowed.
 
 @<Create an object or kind of object rather than a value@> =
-	recent_creation = Instances::parse_object(W);
-	if (recent_creation) {
+	recent_creation = NULL;
+	if (<instance-of-object>(W)) {
+		recent_creation = <<rp>>;
 		wording RW = Instances::get_name(recent_creation, FALSE);
 		if ((Wordings::nonempty(RW)) && (Wordings::match(W, RW) == FALSE))
 			recent_creation = NULL;
@@ -605,7 +606,7 @@ to abbreviated forms of object names are normally allowed.
 	Assert::true(prop, CERTAIN_CE);
 
 	if (is_a_kind == FALSE) {
-		recent_creation = latest_instance;
+		recent_creation = Instances::latest();
 		article_usage *au = Node::get_article(p);
 		#ifdef IF_MODULE
 		if (au == NULL)
@@ -691,7 +692,7 @@ to abbreviated forms of object names are normally allowed.
 	pcalc_prop *such_that = Node::get_creation_proposition(governor);
 	if (such_that) prop = Propositions::concatenate(prop, such_that);
 	Assert::true(prop, prevailing_mood);
-	val = Rvalues::from_instance(latest_instance);
+	val = Rvalues::from_instance(Instances::latest());
 
 @ Lastly: rulebooks and activities are not part of the model, because they would
 make it enormously larger, and because they describe only the run-time evolution
@@ -931,7 +932,7 @@ to a different vehicle object.
 	parse_node *pz = Node::new(PROPER_NOUN_NT);
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(instance_kind, NW);
 	Assert::true(prop, prevailing_mood);
-	new_instance = Instances::as_subject(latest_instance);
+	new_instance = Instances::as_subject(Instances::latest());
 	if (named_after) {
 		#ifdef IF_MODULE
 		PL::Naming::transfer_details(named_after, new_instance);
@@ -1085,6 +1086,6 @@ void Assertions::Creator::stock_nl_kind(kind *K) {
 		pcalc_prop *prop =
 			Propositions::Abstract::to_create_something(K, L->instance_name);
 		Assert::true(prop, CERTAIN_CE);
-		L->nl_instance = latest_instance;
+		L->nl_instance = Instances::latest();
 	}
 }

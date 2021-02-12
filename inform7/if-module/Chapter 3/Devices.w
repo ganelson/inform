@@ -34,7 +34,7 @@ int PL::Devices::IF_complete_model(int stage) {
 		P_switchable = Properties::EitherOr::new_nameless(L"switchable");
 		Properties::EitherOr::implement_as_attribute(P_switchable, TRUE);
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I)
+		LOOP_OVER_INSTANCES(I, K_object)
 			if (Instances::of_kind(I, K_device))
 				Properties::EitherOr::assert(
 					P_switchable, Instances::as_subject(I), TRUE, CERTAIN_CE);

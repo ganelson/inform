@@ -93,7 +93,7 @@ the running time down that we loop through submaps with overhead no worse
 than the number of rooms in the submap; this is why we keep the linked list.
 
 @d LOOP_OVER_ROOMS(R)
-	LOOP_OVER_OBJECT_INSTANCES(R)
+	LOOP_OVER_INSTANCES(R, K_object)
 		if (PL::Spatial::object_is_a_room(R))
 
 @d LOOP_OVER_SUBMAP(R, sub)
@@ -2841,33 +2841,33 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 			else if (D) icon = "e_arrow_door_blocked";
 			HTML_TAG_WITH("img", "border=0 src=inform:/map_icons/%s.png", icon);
 			WRITE("&nbsp;");
-			Instances::index_name(OUT, dir);
+			IXInstances::index_name(OUT, dir);
 			WRITE(" to ");
 			if (S) {
-				Instances::index_name(OUT, S);
+				IXInstances::index_name(OUT, S);
 				if (D) {
 					WRITE(" via ");
-					Instances::index_name(OUT, D);
+					IXInstances::index_name(OUT, D);
 				}
 			} else {
-				Instances::index_name(OUT, D);
+				IXInstances::index_name(OUT, D);
 				WRITE(" (a door)");
 			}
 			if (S) {
 				instance *B = opp?(PL::SpatialMap::room_exit(S, od, NULL)):NULL;
 				if (B == NULL) {
 					WRITE(" (but ");
-					Instances::index_name(OUT, opp);
+					IXInstances::index_name(OUT, opp);
 					WRITE(" from ");
-					Instances::index_name(OUT, S);
+					IXInstances::index_name(OUT, S);
 					WRITE(" is nowhere)");
 				} else if (B != R) {
 					WRITE(" (but ");
-					Instances::index_name(OUT, opp);
+					IXInstances::index_name(OUT, opp);
 					WRITE(" from ");
-					Instances::index_name(OUT, S);
+					IXInstances::index_name(OUT, S);
 					WRITE(" is ");
-					Instances::index_name(OUT, B);
+					IXInstances::index_name(OUT, B);
 					WRITE(")");
 				}
 			}

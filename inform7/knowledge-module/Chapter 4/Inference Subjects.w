@@ -532,8 +532,8 @@ and the following macro does that. |name| should be the name of the plugin,
 say |spatial|; |creator| a function to create and initialise the data structure,
 returning a pointer to it.
 
-@d ATTACH_PLUGIN_DATA_TO_SUBJECT(name, S, creator)
-	(S)->additional_data_for_plugins[name##_plugin->allocation_id] = (void *) (creator(S));
+@d ATTACH_PLUGIN_DATA_TO_SUBJECT(name, S, val)
+	(S)->additional_data_for_plugins[name##_plugin->allocation_id] = (void *) (val);
 
 @ Then, to access that same data, the following -- though in practice each
 plugin will define further macros to make more abbreviated forms. Many of

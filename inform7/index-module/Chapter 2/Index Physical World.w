@@ -64,19 +64,19 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Spatial::no_detail_index(I))
 			|| (PL::Map::object_is_a_direction(I)))
-			Instances::increment_indexing_count(I);
+			IXInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =
 	instance *reg;
-	LOOP_OVER_OBJECT_INSTANCES(reg)
+	LOOP_OVER_INSTANCES(reg, K_object)
 		if (PL::Regions::object_is_a_region(reg)) {
 			int subheaded = FALSE;
-			Instances::increment_indexing_count(reg);
+			IXInstances::increment_indexing_count(reg);
 			instance *rm;
-			LOOP_OVER_OBJECT_INSTANCES(rm)
+			LOOP_OVER_INSTANCES(rm, K_object)
 				if ((PL::Spatial::object_is_a_room(rm)) &&
 					(PL::Regions::enclosing(rm) == reg)) {
 					if (subheaded == FALSE) {
@@ -87,7 +87,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 						subheaded = TRUE;
 					}
 					PL::HTMLMap::render_single_room_as_HTML(OUT, rm);
-					Instances::increment_indexing_count(rm);
+					IXInstances::increment_indexing_count(rm);
 				}
 		}
 
@@ -99,9 +99,9 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 
 @<Give room details for rooms outside any region in the World index@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Spatial::object_is_a_room(I)) &&
-			(Instances::indexed_yet(I) == FALSE)) {
+			(IXInstances::indexed_yet(I) == FALSE)) {
 			@<Start a new details panel on the World index@>;
 			PL::HTMLMap::render_single_room_as_HTML(OUT, I);
 		}
@@ -114,8 +114,8 @@ will be things which are offstage (and their contents and any parts thereof):
 @<Give details of everything still unmentioned in the World index@> =
 	int out_of_play_count = 0;
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
-		if ((Instances::indexed_yet(I) == FALSE) &&
+	LOOP_OVER_INSTANCES(I, K_object)
+		if ((IXInstances::indexed_yet(I) == FALSE) &&
 			(PL::Spatial::progenitor(I) == NULL)) {
 			@<Start a new details panel on the World index@>;
 			if (++out_of_play_count == 1) {
@@ -155,7 +155,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	noun *nt = NULL;
 	if (I) {
 		if (depth > NUMBER_CREATED(instance) + 1) return; /* to recover from errors */
-		Instances::increment_indexing_count(I);
+		IXInstances::increment_indexing_count(I);
 		#ifdef IF_MODULE
 		if (Instances::of_kind(I, K_room)) indexing_room = I;
 		#endif
@@ -178,7 +178,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		Plugins::Call::add_to_World_index(OUT, I);
-		Instances::index_usages(OUT, I);
+		IXInstances::index_usages(OUT, I);
 		Index::extra_div_close(OUT, "e0e0e0");
 	}
 	@<Recurse the index citation for the object as necessary@>;
@@ -314,7 +314,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	parse_node *P = Instances::get_kind_set_sentence(I);
 	if (P) Index::link(OUT, Wordings::first_wn(Node::get_text(P)));
 	WRITE(" &gt; <b>");
-	Instances::index_name(OUT, I);
+	IXInstances::index_name(OUT, I);
 	WRITE("</b>");
 	HTML_CLOSE("p");
 
@@ -342,7 +342,7 @@ void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
 		LOOP_OVER_INSTANCES(I, K) {
 			if (c > 0) WRITE(", "); c++;
 			HTML::begin_colour(OUT, I"808080");
-			Instances::index_name(OUT, I);
+			IXInstances::index_name(OUT, I);
 			HTML::end_colour(OUT);
 			parse_node *at = Instances::get_creating_sentence(I);
 			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
@@ -353,7 +353,7 @@ void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {
 		LOOP_OVER_INSTANCES(I, K) {
 			if (c > 0) WRITE(", "); c++;
 			HTML::begin_colour(OUT, I"808080");
-			Instances::index_name(OUT, I);
+			IXInstances::index_name(OUT, I);
 			HTML::end_colour(OUT);
 			parse_node *at = Instances::get_creating_sentence(I);
 			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));

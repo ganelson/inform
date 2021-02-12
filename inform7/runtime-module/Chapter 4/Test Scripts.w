@@ -131,10 +131,10 @@ void PL::Parsing::TestScripts::write_text(void) {
 
 		save = Emit::named_array_begin(test->req_iname, K_value);
 		if (test->place == NULL) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(Instances::iname(test->place));
+		else Emit::array_iname_entry(RTInstances::iname(test->place));
 		for (int j=0; j<test->no_possessions; j++) {
 			if (test->possessions[j] == NULL) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(Instances::iname(test->possessions[j]));
+			else Emit::array_iname_entry(RTInstances::iname(test->possessions[j]));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);

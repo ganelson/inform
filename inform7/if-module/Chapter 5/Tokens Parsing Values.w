@@ -231,7 +231,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_symbol(Emit::tree(), K_value, gprk.instance_s);
-							Produce::val_iname(Emit::tree(), K_value, Instances::iname(q));
+							Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(q));
 						Produce::up(Emit::tree());
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
@@ -266,7 +266,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
 				Produce::down(Emit::tree());
 					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-					Produce::val_iname(Emit::tree(), K_value, Instances::iname(q));
+					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(q));
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 				Produce::down(Emit::tree());

@@ -46,7 +46,7 @@ void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol 
 		if (Kinds::Behaviour::is_object(K))
 			PL::Showme::compile_SHOWME_type_subj(val, KindSubjects::from_kind(K), t_0_s, na_s);
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		PL::Showme::compile_SHOWME_type_subj(val, Instances::as_subject(I), t_0_s, na_s);
 }
 

@@ -1681,10 +1681,10 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 		}
 	}
 
-	instance *I = Instances::parse_object(LW);
-	if (I) {
+	if (<instance-of-object>(LW)) {
+		instance *I = <<rp>>;
 		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, Instances::iname(<<rp>>));
+			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(I));
 		else
 			WRITE_TO(OUT, "%~I", I);
 		return;

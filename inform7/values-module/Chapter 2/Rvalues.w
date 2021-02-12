@@ -722,7 +722,7 @@ kinds of value:
 				if (N) Emit::holster(VH, N);
 			}
 			parse_node *NB = Routines::Compile::line_being_compiled();
-			if (NB) Instances::note_usage(I, NB);
+			if (NB) IXInstances::note_usage(I, NB);
 		}
 		return;
 	}

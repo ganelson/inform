@@ -715,7 +715,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 	if (I) {
 		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 		if (pname) {
-			prop = AdjectivalPredicates::new_atom_on_x(Instances::get_adjective(I), FALSE);
+			prop = AdjectivalPredicates::new_atom_on_x(InstanceAdjectives::as_adjective(I), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}
 	}

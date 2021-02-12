@@ -275,11 +275,11 @@ int PL::Player::player_complete_model(int stage) {
 
 @<Set the start room to the earliest room defined in the source text@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL)
 			&& (Projects::draws_from_source_file(Task::project(), Instances::get_creating_file(I))))
 			start_room = I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL))
 			start_room = I;
 	start_object = start_room;
@@ -353,9 +353,9 @@ void PL::Player::InitialSituation(void) {
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		NonlocalVariables::emit_initial_value(player_VAR);
 		if (start_object == NULL) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(Instances::iname(start_object));
+		else Emit::array_iname_entry(RTInstances::iname(start_object));
 		if (start_room == NULL) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(Instances::iname(start_room));
+		else Emit::array_iname_entry(RTInstances::iname(start_room));
 		NonlocalVariables::emit_initial_value(time_of_day_VAR);
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
@@ -370,7 +370,7 @@ usually appear anywhere.
 =
 void PL::Player::index_object_further(OUTPUT_STREAM, instance *I, int depth, int details) {
 	if ((I == start_room) && (I_yourself) &&
-		(Instances::indexed_yet(I_yourself) == FALSE))
+		(IXInstances::indexed_yet(I_yourself) == FALSE))
 		Data::Objects::index(OUT, I_yourself, NULL, depth+1, details);
 }
 

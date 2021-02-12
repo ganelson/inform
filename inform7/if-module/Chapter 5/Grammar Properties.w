@@ -69,7 +69,7 @@ void PL::Parsing::Visibility::start(void) {
 }
 
 int PL::Parsing::Visibility::parsing_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, PL::Parsing::Visibility::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, PL::Parsing::Visibility::new_data(subj));
 	return FALSE;
 }
 
@@ -143,7 +143,7 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 		P_action_bitmap = Properties::Valued::new_nameless(I"action_bitmap", K_value);
 		Hierarchy::make_available(Emit::tree(), Properties::iname(P_action_bitmap));
 
-		LOOP_OVER_OBJECT_INSTANCES(I) {
+		LOOP_OVER_INSTANCES(I, K_object) {
 			inference_subject *subj = Instances::as_subject(I);
 			@<Assert the I6 name property@>;
 			@<Assert the I6 parse-name property@>;

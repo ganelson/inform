@@ -133,13 +133,13 @@ int PL::Backdrops::assert_relations(binary_predicate *relation,
 @ For indexing purposes, the following loops are useful:
 
 @d LOOP_OVER_BACKDROPS_IN(B, P, I)
-	LOOP_OVER_OBJECT_INSTANCES(B)
+	LOOP_OVER_INSTANCES(B, K_object)
 		if (PL::Backdrops::object_is_a_backdrop(B))
 			POSITIVE_KNOWLEDGE_LOOP(I, Instances::as_subject(B), FOUND_IN_INF)
 				if (World::Inferences::get_reference_as_object(I) == P)
 
 @d LOOP_OVER_BACKDROPS_EVERYWHERE(B, I)
-	LOOP_OVER_OBJECT_INSTANCES(B)
+	LOOP_OVER_INSTANCES(B, K_object)
 		if (PL::Backdrops::object_is_a_backdrop(B))
 			POSITIVE_KNOWLEDGE_LOOP(I, Instances::as_subject(B), FOUND_EVERYWHERE_INF)
 
@@ -238,7 +238,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 		P_absent = Properties::EitherOr::new_nameless(L"absent");
 		Properties::EitherOr::implement_as_attribute(P_absent, TRUE);
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I) {
+		LOOP_OVER_INSTANCES(I, K_object) {
 			inter_name *FOUNDIN = NULL;
 			@<If the object is found everywhere, make a found-in property accordingly@>;
 			int room_count = 0, region_count = 0;
@@ -276,7 +276,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 	packaging_state save = Emit::named_array_begin(FOUNDIN, K_value);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF)
-		Emit::array_iname_entry(Instances::iname(World::Inferences::get_reference_as_object(inf)));
+		Emit::array_iname_entry(RTInstances::iname(World::Inferences::get_reference_as_object(inf)));
 	Emit::array_end(save);
 	Produce::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
 
@@ -326,13 +326,13 @@ void PL::Backdrops::write_found_in_routines(void) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-				Produce::val_iname(Emit::tree(), K_object, Instances::iname(loc));
+				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
 			Produce::up(Emit::tree());
 		} else {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-				Produce::val_iname(Emit::tree(), K_object, Instances::iname(loc));
+				Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(loc));
 			Produce::up(Emit::tree());
 		}
 			Produce::code(Emit::tree());

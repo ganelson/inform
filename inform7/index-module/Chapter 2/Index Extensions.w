@@ -135,7 +135,7 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 @<Document and dictionary the objects made in extension@> =
 	instance *I;
 	int kc = 0;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		wording OW = Instances::get_name(I, FALSE);
 		if ((Instances::get_creating_sentence(I)) && (Wordings::nonempty(OW))) {
 			if (Lexer::file_of_origin(
@@ -175,10 +175,12 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 @<Document and dictionary the enumerated constant values made in extension@> =
 	instance *q;
 	int kc = 0;
-	LOOP_OVER_ENUMERATION_INSTANCES(q) {
-		wording NW = Instances::get_name(q, FALSE);
-		if ((Wordings::nonempty(NW)) && (Lexer::file_of_origin(Wordings::first_wn(NW)) == E->read_into_file))
-			kc = IndexExtensions::document_headword(OUT, kc, E, "Values", I"value", NW);
+	LOOP_OVER(q, instance) {
+		if (Kinds::Behaviour::is_an_enumeration(Instances::to_kind(q))) {
+			wording NW = Instances::get_name(q, FALSE);
+			if ((Wordings::nonempty(NW)) && (Lexer::file_of_origin(Wordings::first_wn(NW)) == E->read_into_file))
+				kc = IndexExtensions::document_headword(OUT, kc, E, "Values", I"value", NW);
+		}
 	}
 	if (kc != 0) HTML_CLOSE("p");
 

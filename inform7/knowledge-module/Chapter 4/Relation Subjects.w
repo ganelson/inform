@@ -2,7 +2,7 @@
 
 The relations family of inference subjects.
 
-@
+@ Every binary predicate has an associated subject:
 
 =
 inference_subject_family *relations_family = NULL;

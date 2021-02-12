@@ -41,7 +41,7 @@ Counting data is actually relevant only for kinds, and remains blank for instanc
 
 =
 int PL::Counting::counting_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(counting, subj, PL::Counting::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(counting, subj, PL::Counting::new_data(subj));
 	return FALSE;
 }
 
@@ -89,7 +89,7 @@ a problem in practice; the number seldom exceeds a few hundred.
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K))
-			LOOP_OVER_OBJECT_INSTANCES(I)
+			LOOP_OVER_INSTANCES(I, K_object)
 				INSTANCE_COUNT(I, K) = -1;
 
 	LOOP_OVER_BASE_KINDS(K)
@@ -124,9 +124,9 @@ an explicit player.
 instance *PL::Counting::next_instance_of(instance *I, kind *k) {
 	if (k == NULL) return NULL;
 	int resuming = TRUE;
-	if (I == NULL) { I = FIRST_IN_COMPILATION_SEQUENCE; resuming = FALSE; }
+	if (I == NULL) { I = FIRST_IN_INSTANCE_ORDERING; resuming = FALSE; }
 	while (I) {
-		if (resuming) I = NEXT_IN_COMPILATION_SEQUENCE(I);
+		if (resuming) I = NEXT_IN_INSTANCE_ORDERING(I);
 		resuming = TRUE;
 		if (I == NULL) break;
 		if (InferenceSubjects::aliased_but_diverted(Instances::as_subject(I)))
@@ -257,7 +257,7 @@ for the relation-route-finding code at run time.
 	P_vector = Properties::Valued::new_nameless(I"vector", K_number);
 	parse_node *zero = Rvalues::from_int(0, EMPTY_WORDING);
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		Properties::Valued::assert(P_vector,
 			Instances::as_subject(I), zero, CERTAIN_CE);
 
@@ -279,7 +279,7 @@ for the relation-route-finding code at run time.
 
 @<Assert values of the two instance properties for each instance@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		@<Fill in the special IK0-Count property@>;
 		inference_subject *infs;
 		for (infs = KindSubjects::from_kind(Instances::to_kind(I));

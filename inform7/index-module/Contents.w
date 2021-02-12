@@ -16,3 +16,4 @@ Chapter 2: Indexing
 	Kinds Index
 	Index Extensions
 	Index Headings
+	Instances

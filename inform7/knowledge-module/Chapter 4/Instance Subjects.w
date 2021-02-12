@@ -64,5 +64,5 @@ void InstanceSubjects::new_permission_granted(inference_subject_family *f,
 
 void InstanceSubjects::make_adj_const_domain(inference_subject_family *family,
 	inference_subject *S, instance *I, property *P) {
-	Instances::make_adj_const_domain(I, P, NULL, InstanceSubjects::to_instance(S));
+	InstanceAdjectives::make_adjectival(I, P, NULL, InstanceSubjects::to_instance(S));
 }

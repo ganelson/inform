@@ -253,7 +253,7 @@ int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name,
 }
 
 int PL::Spatial::spatial_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, PL::Spatial::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, PL::Spatial::new_data(subj));
 	return FALSE;
 }
 
@@ -563,7 +563,7 @@ that Y is the destination of a map connection -- to see which.
 =
 int PL::Spatial::spatial_stage_I(void) {
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		@<Perform kind determination for this object@>;
 	return FALSE;
 }
@@ -762,10 +762,10 @@ the kind of here-objects.
 int PL::Spatial::spatial_stage_II(void) {
 	@<Set the here flag for all those objects whose parentage is only thus known@>;
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->here_flag == FALSE)
 			@<Position this object spatially@>;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->here_flag)
 			@<Position this object spatially@>;
 	@<Issue problem messages if non-physical objects are spatially enclosed@>;
@@ -774,7 +774,7 @@ int PL::Spatial::spatial_stage_II(void) {
 
 @<Set the here flag for all those objects whose parentage is only thus known@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		SPATIAL_DATA(I)->here_flag = FALSE;
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_HERE_INF)
@@ -783,7 +783,7 @@ int PL::Spatial::spatial_stage_II(void) {
 
 @<Issue problem messages if non-physical objects are spatially enclosed@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		if ((PL::Spatial::progenitor(I)) &&
 			(Instances::of_kind(I, K_thing) == FALSE) &&
 			(Instances::of_kind(I, K_room) == FALSE) &&
@@ -913,7 +913,7 @@ If it has a parent in either one, then that parent is required to be its progeni
 =
 void PL::Spatial::log_object_tree(void) {
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
 			PL::Spatial::log_object_tree_recursively(I, 0);
 }
@@ -1050,7 +1050,7 @@ changed progenitors at Stage II.)
 @<Check the well-foundedness of the hierarchy of the set of progenitors@> =
 	instance *I;
 	int max_loop = NUMBER_CREATED(instance) + 1;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		int k;
 		instance *I2;
 		for (I2 = PL::Spatial::progenitor(I), k=0; (I2) && (k<max_loop);
@@ -1103,7 +1103,7 @@ to the trees in creation order achieves this nicely:
 
 @<Expand the progenitor data into the two object trees@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		if (PL::Spatial::progenitor(I))
 			PL::Spatial::adopt_object(I, PL::Spatial::progenitor(I));
 		if (SPATIAL_DATA(I)->part_flag)
@@ -1117,7 +1117,7 @@ the absence of other information.)
 
 @<Assert the portability of any item carried or supported by a person@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		int portable = FALSE;
 		instance *J = I;
 		if (SPATIAL_DATA(I)->part_flag == FALSE)
@@ -1173,7 +1173,7 @@ extensive maps.
 	P_mark_as_thing = Properties::EitherOr::new_nameless(L"mark_as_thing");
 	Properties::EitherOr::implement_as_attribute(P_mark_as_thing, TRUE);
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_room))
 			Properties::EitherOr::assert(
 				P_mark_as_room, Instances::as_subject(I), TRUE, CERTAIN_CE);
@@ -1188,7 +1188,7 @@ extensive maps.
 	P_supporter = Properties::EitherOr::new_nameless(L"supporter");
 	Properties::EitherOr::implement_as_attribute(P_supporter, TRUE);
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_container))
 			Properties::EitherOr::assert(
 				P_container, Instances::as_subject(I), TRUE, CERTAIN_CE);
@@ -1220,7 +1220,7 @@ a triplet of I6-only properties:
 	}
 
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		instance *cp = SPATIAL_DATA(I)->incorp_tree_parent;
 		if (cp) Properties::Valued::assert(P_component_parent, Instances::as_subject(I),
 			Rvalues::from_instance(cp), CERTAIN_CE);
@@ -1238,15 +1238,15 @@ incorporation), we use the main tree to determine the compilation sequence
 for objects:
 
 @<Set up the compilation sequence so that it traverses the main object tree@> =
-	Instances::begin_sequencing_objects();
+	OrderingInstances::begin();
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
 			PL::Spatial::add_to_object_sequence(I, 0);
 
 @ =
 void PL::Spatial::add_to_object_sequence(instance *I, int depth) {
-	Instances::place_this_object_next(I);
+	OrderingInstances::place_next(I);
 	SPATIAL_DATA(I)->I6_definition_depth = depth;
 
 	if (SPATIAL_DATA(I)->object_tree_child)
@@ -1274,7 +1274,7 @@ empty.
 int PL::Spatial::spatial_stage_IV(void) {
 	if (Task::wraps_existing_storyfile()) {
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I)
+		LOOP_OVER_INSTANCES(I, K_object)
 			if (PL::Spatial::object_is_a_room(I)) {
 				StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_RoomInIgnoredSource),
 					"This is supposed to be a source text which only contains "
@@ -1332,7 +1332,7 @@ void PL::Spatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, in
 	if ((PL::Spatial::object_is_a_room(I)) &&
 		(PL::Map::object_is_a_door(I) == FALSE)) {
 		instance *I2;
-		LOOP_OVER_OBJECT_INSTANCES(I2) {
+		LOOP_OVER_INSTANCES(I2, K_object) {
 			if ((PL::Map::object_is_a_door(I2)) && (PL::Spatial::progenitor(I2) != I)) {
 				instance *A = NULL, *B = NULL;
 				PL::Map::get_door_data(I2, &A, &B);
@@ -1366,7 +1366,7 @@ int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
 				if (World::Inferences::get_property(inf) == P_worn)
 					rel = "worn by";
 			WRITE("%s ", rel);
-			Instances::index_name(OUT, P);
+			IXInstances::index_name(OUT, P);
 			parse_node *at = SPATIAL_DATA(O)->progenitor_set_at;
 			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 

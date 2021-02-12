@@ -175,7 +175,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 			@<Assert the printed plural name property for kinds other than thing or kinds of room@>;
 		}
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		wording W = Instances::get_name_in_play(I, FALSE);
 		inference_subject *subj = Instances::as_subject(I);
 		int this_is_a_room = PL::Spatial::object_is_a_room(I);
@@ -431,14 +431,14 @@ void PL::Naming::compile_small_names(void) {
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), PROPERTYADDRESS_BIP);
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), porname);
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
@@ -447,7 +447,7 @@ void PL::Naming::compile_small_names(void) {
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), porname);
 					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SHORT_NAME_HL));
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
@@ -456,7 +456,7 @@ void PL::Naming::compile_small_names(void) {
 		} else {
 			Produce::inv_primitive(Emit::tree(), PRINTNAME_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Instances::iname(owner));
+				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
 			Produce::up(Emit::tree());
 		}
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);

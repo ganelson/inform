@@ -151,7 +151,7 @@ so on. Those absolute basics are made here.
 	BENCH(Properties::Emit::allocate_attributes)
 	BENCH(PL::Actions::name_all)
 	BENCH(NounIdentifiers::name_all)
-	BENCH(Instances::place_objects_in_definition_sequence)
+	BENCH(OrderingInstances::objects_in_definition_sequence)
 	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world", -1);
 	BENCH(World::complete)
 

@@ -297,7 +297,7 @@ binary_predicate *PL::MapDirections::get_mapping_relation(instance *dir) {
 instance *PL::MapDirections::get_mapping_direction(binary_predicate *bp) {
 	if (bp == NULL) return NULL;
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (MAP_DATA(I)->direction_relation == bp)
 			return I;
 	return NULL;

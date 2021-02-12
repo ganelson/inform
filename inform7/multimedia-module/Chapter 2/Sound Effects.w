@@ -8,6 +8,8 @@ the index of sound effects.
 and in any case we only allow two formats: AIFF (uncompressed) and OGG
 (compressed).
 
+@d sounds_data blorb_sound
+
 =
 typedef struct blorb_sound {
 	struct wording name; /* text of name */
@@ -50,8 +52,7 @@ int PL::Sounds::sounds_new_named_instance_notify(instance *nc) {
 				"this is not the way to create a new sound name",
 				"which should be done with a special 'Sound ... is the file ...' "
 				"sentence.");
-		Instances::set_connection(nc,
-			STORE_POINTER_blorb_sound(PL::Sounds::new_blorb_sound(nc)));
+		ATTACH_PLUGIN_DATA_TO_SUBJECT(sounds, nc->as_subject, PL::Sounds::new_blorb_sound(nc));
 		return TRUE;
 	}
 	return FALSE;
@@ -142,8 +143,7 @@ void PL::Sounds::register_sound(wording F, wording FN) {
 		K_sound_name, F);
 	Assert::true(prop, CERTAIN_CE);
 	allow_sound_creations = FALSE;
-	blorb_sound *bs = RETRIEVE_POINTER_blorb_sound(
-		Instances::get_connection(latest_instance));
+	blorb_sound *bs = PLUGIN_DATA_ON_INSTANCE(sounds, Instances::latest());
 
 	TEMPORARY_TEXT(leaf)
 	WRITE_TO(leaf, "%N", wn);

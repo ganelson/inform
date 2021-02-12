@@ -85,7 +85,7 @@ int PL::Regions::regions_new_base_kind_notify(kind *new_base, char *text_stream,
 }
 
 int PL::Regions::regions_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, PL::Regions::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, PL::Regions::new_data(subj));
 	return FALSE;
 }
 
@@ -312,7 +312,7 @@ int PL::Regions::regions_complete_model(int stage) {
 
 @<Assert map-region properties of rooms and regions@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((Instances::of_kind(I, K_room)) ||
 			(Instances::of_kind(I, K_region))) {
 			parse_node *where = NULL;
@@ -330,7 +330,7 @@ int PL::Regions::regions_complete_model(int stage) {
 	P_regional_found_in = Properties::Valued::new_nameless(
 		I"regional_found_in", K_text);
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
 			Properties::Valued::assert(P_regional_found_in, Instances::as_subject(I),
@@ -340,7 +340,7 @@ int PL::Regions::regions_complete_model(int stage) {
 @ =
 void PL::Regions::write_regional_found_in_routines(void) {
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
 			packaging_state save = Routines::begin(iname);
@@ -349,7 +349,7 @@ void PL::Regions::write_regional_found_in_routines(void) {
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-						Produce::val_iname(Emit::tree(), K_object, Instances::iname(I));
+						Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(I));
 					Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());

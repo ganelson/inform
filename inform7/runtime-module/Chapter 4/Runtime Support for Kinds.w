@@ -117,7 +117,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			Emit::array_numeric_entry(0);
 			Emit::array_numeric_entry(0);
 			#ifdef IF_MODULE
-			Emit::array_iname_entry(Instances::iname(I_yourself));
+			Emit::array_iname_entry(RTInstances::iname(I_yourself));
 			#endif
 			#ifndef IF_MODULE
 			Emit::array_numeric_entry(I"0");
@@ -1216,7 +1216,7 @@ but at present this can't happen.
 			LOOP_OVER_INSTANCES(I, K) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Instances::iname(I));
+					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(I));
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), PRINT_BIP);

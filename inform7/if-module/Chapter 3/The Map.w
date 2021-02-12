@@ -232,7 +232,7 @@ int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
 
 @ =
 int PL::Map::map_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, PL::Map::new_data);
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, PL::Map::new_data(subj));
 	return FALSE;
 }
 
@@ -343,12 +343,12 @@ quite crunchy algorithms, has the fastest possible access to the layout.
 void PL::Map::build_exits_array(void) {
 	instance *I;
 	int d = 0;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Kinds::Behaviour::is_object_of_kind(Instances::to_kind(I), K_direction)) {
 			MAP_DATA(I)->direction_index = d++;
 		}
 	}
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1, *infs2;
@@ -395,7 +395,7 @@ at run-time, so we can't know now how many we will need.
 
 @<Compile the I6 Map-Storage array@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		RTInstances::emitted_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_object);
@@ -410,13 +410,13 @@ at run-time, so we can't know now how many we will need.
 	} else {
 		Emit::array_divider(I"one row per room");
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I)
+		LOOP_OVER_INSTANCES(I, K_object)
 			if (PL::Spatial::object_is_a_room(I)) {
 				int i;
 				for (i=0; i<registered_directions; i++) {
 					instance *to = MAP_EXIT(I, i);
 					if (to)
-						Emit::array_iname_entry(Instances::iname(to));
+						Emit::array_iname_entry(RTInstances::iname(to));
 					else
 						Emit::array_numeric_entry(0);
 				}
@@ -718,7 +718,7 @@ accommodate it.)
 	parse_node *minus_one = Rvalues::from_int(-1, EMPTY_WORDING);
 
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Spatial::object_is_a_room(I))
 			Properties::Valued::assert(P_room_index,
 				Instances::as_subject(I), minus_one, CERTAIN_CE);
@@ -728,7 +728,7 @@ checks that various mapping impossibilities do not occur.
 
 @<Ensure that map connections are room-to-room, room-to-door or door-to-room@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1;
@@ -755,7 +755,7 @@ checks that various mapping impossibilities do not occur.
 
 @<Ensure that every door has either one or two connections from it@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Map::object_is_a_door(I)) {
 			int connections_in = 0;
 			inference *inf;
@@ -832,7 +832,7 @@ from which there's no way back.)
 
 @<Ensure that no door has spurious other connections to it@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Spatial::object_is_a_room(I)) {
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
@@ -872,7 +872,7 @@ from which there's no way back.)
 
 @<Ensure that no door uses both map connections and other side@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_a) &&
 			(MAP_DATA(I)->map_connection_b) &&
@@ -895,7 +895,7 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 
 @<Ensure that no door is present in a room to which it does not connect@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(PL::Spatial::progenitor(I)) &&
 			(PL::Spatial::progenitor(I) != MAP_DATA(I)->map_connection_a) &&
@@ -911,7 +911,7 @@ to them.
 
 @<Place any one-sided door inside the room which connects to it@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_b == NULL) &&
 			(PL::Spatial::progenitor(I) == NULL))
@@ -929,7 +929,7 @@ trust that there is nothing surprising here.
 	P_door_to = Properties::Valued::new_nameless(I"door_to", K_value);
 
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I)
+	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Map::object_is_a_door(I)) {
 			Properties::EitherOr::assert(
 				P_door, Instances::as_subject(I), TRUE, CERTAIN_CE);
@@ -952,8 +952,8 @@ trust that there is nothing surprising here.
 	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	packaging_state save = Emit::named_array_begin(S, K_value);
-	Emit::array_iname_entry(Instances::iname(R1));
-	Emit::array_iname_entry(Instances::iname(R2));
+	Emit::array_iname_entry(RTInstances::iname(R1));
+	Emit::array_iname_entry(RTInstances::iname(R2));
 	Emit::array_end(save);
 	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	PL::Map::set_found_in(I, S);
@@ -1037,14 +1037,14 @@ void PL::Map::write_door_dir_routines(void) {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Instances::iname(notice->R1));
+				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value,
-						Instances::iname(PL::Map::get_value_of_opposite_property(notice->D1)));
+						RTInstances::iname(PL::Map::get_value_of_opposite_property(notice->D1)));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -1052,7 +1052,7 @@ void PL::Map::write_door_dir_routines(void) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value,
-				Instances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
+				RTInstances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
 		Produce::up(Emit::tree());
 
 		Routines::end(save);
@@ -1093,20 +1093,20 @@ void PL::Map::write_door_to_routines(void) {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Instances::iname(notice->R1));
+				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Instances::iname(notice->R2));
+					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R2));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Instances::iname(notice->R1));
+			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
 		Produce::up(Emit::tree());
 
 		Routines::end(save);
@@ -1137,7 +1137,7 @@ int PL::Map::map_annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 			X = Rvalues::to_object_instance(S);
 		}
 		if (X == NULL) WRITE("nowhere");
-		else Instances::index_name(OUT, X);
+		else IXInstances::index_name(OUT, X);
 		WRITE("</i>");
 		return TRUE;
 	}

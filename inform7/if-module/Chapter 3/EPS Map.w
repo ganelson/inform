@@ -625,7 +625,9 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	rh->at_offset = <<roff>>;
 
 	if (<<r>> == RUBRIC_OFFSET) {
-		instance *I = Instances::parse_object(Wordings::from(Node::get_text(p), i));
+		wording RW = Wordings::from(Node::get_text(p), i);
+		instance *I = NULL;
+		if (<instance-of-object>(RW)) I = <<rp>>;
 		i = Wordings::last_wn(RESTW) + 1;
 		if (I == NULL) {
 			StandardProblems::map_problem(_p_(PM_MapUnknownOffsetBase),

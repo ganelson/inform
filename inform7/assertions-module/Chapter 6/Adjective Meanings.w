@@ -1132,7 +1132,7 @@ adjective_meaning *Adjectives::Meanings::parse(parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	adjective_meaning *am = NULL;
 	if (am == NULL) am = Properties::EitherOr::ADJ_parse(q, sense, AW, DNW, CONW, CALLW);
-	if (am == NULL) am = Instances::ADJ_parse(q, sense, AW, DNW, CONW, CALLW);
+	if (am == NULL) am = InstanceAdjectives::parse(q, sense, AW, DNW, CONW, CALLW);
 	if (am == NULL) am = Properties::Measurement::ADJ_parse(q, sense, AW, DNW, CONW, CALLW);
 	if (am == NULL) am = Phrases::RawCondition::ADJ_parse(q, sense, AW, DNW, CONW, CALLW);
 	if (am == NULL) am = Phrases::RawPhrasal::ADJ_parse(q, sense, AW, DNW, CONW, CALLW);
@@ -1159,7 +1159,7 @@ void Adjectives::Meanings::compiling_soon(adjective_meaning *am, int T) {
 			RETRIEVE_POINTER_definition(am->detailed_meaning), T); break;
 		case MEASUREMENT_KADJ: Properties::Measurement::ADJ_compiling_soon(am,
 			RETRIEVE_POINTER_measurement_definition(am->detailed_meaning), T); break;
-		case ENUMERATIVE_KADJ: Instances::ADJ_compiling_soon(am,
+		case ENUMERATIVE_KADJ: InstanceAdjectives::compiling_soon(am,
 			RETRIEVE_POINTER_instance(am->detailed_meaning), T); break;
 		case EORP_KADJ: Properties::EitherOr::ADJ_compiling_soon(am,
 			RETRIEVE_POINTER_property(am->detailed_meaning), T); break;
@@ -1197,7 +1197,7 @@ int Adjectives::Meanings::compile_inner(adjective_meaning *am, int T, int emit_f
 			RETRIEVE_POINTER_definition(am->detailed_meaning), T, emit_flag, phsf);
 		case MEASUREMENT_KADJ: return Properties::Measurement::ADJ_compile(
 			RETRIEVE_POINTER_measurement_definition(am->detailed_meaning), T, emit_flag, phsf);
-		case ENUMERATIVE_KADJ: return Instances::ADJ_compile(
+		case ENUMERATIVE_KADJ: return InstanceAdjectives::compile(
 			RETRIEVE_POINTER_instance(am->detailed_meaning), T, emit_flag, phsf);
 		case EORP_KADJ: return Properties::EitherOr::ADJ_compile(
 			RETRIEVE_POINTER_property(am->detailed_meaning), T, emit_flag, phsf);
@@ -1248,7 +1248,7 @@ int Adjectives::Meanings::assert_single(adjective_meaning *am, inference_subject
 		case MEASUREMENT_KADJ: return Properties::Measurement::ADJ_assert(
 			RETRIEVE_POINTER_measurement_definition(am->detailed_meaning),
 			infs_to_assert_on, val_to_assert_on, parity);
-		case ENUMERATIVE_KADJ: return Instances::ADJ_assert(
+		case ENUMERATIVE_KADJ: return InstanceAdjectives::assert(
 			RETRIEVE_POINTER_instance(am->detailed_meaning),
 			infs_to_assert_on, val_to_assert_on, parity);
 		case EORP_KADJ: return Properties::EitherOr::ADJ_assert(
@@ -1286,7 +1286,7 @@ void Adjectives::Meanings::print_to_index(OUTPUT_STREAM, adjective_meaning *am) 
 				RETRIEVE_POINTER_definition(am->detailed_meaning)); break;
 			case MEASUREMENT_KADJ: rv = Properties::Measurement::ADJ_index(OUT,
 				RETRIEVE_POINTER_measurement_definition(am->detailed_meaning)); break;
-			case ENUMERATIVE_KADJ: rv = Instances::ADJ_index(OUT,
+			case ENUMERATIVE_KADJ: rv = IXInstances::as_adjective(OUT,
 				RETRIEVE_POINTER_instance(am->detailed_meaning)); break;
 			case EORP_KADJ: rv = Properties::EitherOr::ADJ_index(OUT,
 				RETRIEVE_POINTER_property(am->detailed_meaning)); break;

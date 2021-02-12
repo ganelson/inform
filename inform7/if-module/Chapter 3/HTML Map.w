@@ -892,7 +892,7 @@ void PL::HTMLMap::plot_map_cell(OUTPUT_STREAM, int pass, vector P, int i1, int i
 	if ((I3) || (D)) {
 		WRITE_TO(tool_tip, "title=\"");
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I)
+		LOOP_OVER_INSTANCES(I, K_object)
 			if (PL::Counting::instance_count(I, K_direction) == exit) {
 				WRITE_TO(tool_tip, "%+I", I);
 				break;
@@ -1019,7 +1019,7 @@ void PL::HTMLMap::colour_chip(OUTPUT_STREAM, instance *I, instance *Reg, parse_n
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%w\"",
 		MAP_DATA(Reg)->world_index_colour);
 	WRITE("&nbsp;");
-	Instances::index_name(OUT, Reg); WRITE(" region");
+	IXInstances::index_name(OUT, Reg); WRITE(" region");
 	if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
 	WRITE("&nbsp;");
 	HTML_CLOSE("td");

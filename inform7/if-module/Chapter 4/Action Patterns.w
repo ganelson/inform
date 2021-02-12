@@ -598,7 +598,10 @@ would match as an abbreviated form of the name of "angry waiting man".
 						if (Vocabulary::test_flags(j, ACTION_PARTICIPLE_MC)) k++;
 					if (k>0) continue;
 					I = Rvalues::to_object_instance(try_stem);
-					if (Instances::full_name_includes(I, Lexer::word(i))) continue;
+					if (I) {
+						noun *N = Instances::get_noun(I);
+						if (Nouns::nominative_singular_includes(N, Lexer::word(i))) continue;
+					}
 					if ((Lvalues::get_storage_form(try_stem) == LOCAL_VARIABLE_NT) ||
 						(Lvalues::get_storage_form(try_stem) == NONLOCAL_VARIABLE_NT) ||
 						(Node::is(try_stem, CONSTANT_NT)) ||
@@ -1686,7 +1689,7 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 	if (ap->actor_spec) {
 		Specifications::Compiler::emit(ap->actor_spec);
 	} else
-		Emit::array_iname_entry(Instances::iname(I_yourself));
+		Emit::array_iname_entry(RTInstances::iname(I_yourself));
 	Emit::array_numeric_entry((inter_ti) request_bits);
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
@@ -2144,7 +2147,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
 			PL::Actions::Patterns::compile_pattern_match_clause(FALSE, VH,
-				NonlocalVariables::temporary_from_iname(Instances::iname(to_be_present), K_object),
+				NonlocalVariables::temporary_from_iname(RTInstances::iname(to_be_present), K_object),
 				ap.presence_spec, K_object, FALSE);
 			break;
 		}
@@ -2153,7 +2156,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSCOPE_HL));
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, Instances::iname(to_be_present));
+				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(to_be_present));
 				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
 			Produce::up(Emit::tree());
 			break;

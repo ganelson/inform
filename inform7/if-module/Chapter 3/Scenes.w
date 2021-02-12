@@ -38,6 +38,11 @@ typedef struct scene {
 	CLASS_DEFINITION
 } scene;
 
+@
+
+@d scenes_data scene
+@d SCENES_DATA(subj) PLUGIN_DATA_ON_SUBJECT(scenes, subj)
+
 @ The following either/or property needs some compiler support:
 
 =
@@ -164,7 +169,7 @@ to translate this to other languages.)
 
 @<Connect the scene structure to the instance@> =
 	sc->as_instance = I;
-	Instances::set_connection(I, STORE_POINTER_scene(sc));
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(scenes, I->as_subject, sc);
 	wording W = Instances::get_name(I, FALSE);
 	if (<notable-scenes>(W)) SC_entire_game = sc;
 
@@ -174,8 +179,7 @@ to translate this to other languages.)
 scene *PL::Scenes::from_named_constant(instance *I) {
 	if (K_scene == NULL) return NULL;
 	kind *K = Instances::to_kind(I);
-	if (Kinds::eq(K, K_scene))
-		return RETRIEVE_POINTER_scene(Instances::get_connection(I));
+	if (Kinds::eq(K, K_scene)) return PLUGIN_DATA_ON_SUBJECT(scenes, I->as_subject);
 	return NULL;
 }
 

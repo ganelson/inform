@@ -13,6 +13,9 @@ Chapter 1: Configuration and Control
 
 Chapter 2: Instances and Variables
 	Instances
+	Instances as Adjectives
+	Preform for Instances
+	Ordering Instances
 	Nonlocal Variables
 
 Chapter 3: Properties

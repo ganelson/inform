@@ -133,7 +133,7 @@ void IndexLexicon::index_common_nouns(OUTPUT_STREAM) {
 
 @<Stock the lexicon with nouns from names of objects@> =
 	instance *I;
-	LOOP_OVER_OBJECT_INSTANCES(I) {
+	LOOP_OVER_INSTANCES(I, K_object) {
 		wording W = Instances::get_name(I, FALSE);
 		if (Wordings::nonempty(W)) {
 			index_lexicon_entry *lex = IndexLexicon::lexicon_new_entry(W);
@@ -182,16 +182,17 @@ on. (Sometimes these will also be listed separately with an adjectival sense.)
 @<Stock the lexicon with nouns from named values@> =
 	index_lexicon_entry *lex;
 	instance *qn;
-	LOOP_OVER_ENUMERATION_INSTANCES(qn) {
-		property *prn =
-			Properties::Conditions::get_coinciding_property(Instances::to_kind(qn));
-		if ((prn) && (Properties::Conditions::of_what(prn))) continue;
-		wording NW = Instances::get_name(qn, FALSE);
-		lex = IndexLexicon::lexicon_new_entry(NW);
-		lex->part_of_speech = ENUMERATED_CONSTANT_LEXE;
-		lex->category = "noun";
-		lex->entry_refers_to = STORE_POINTER_instance(qn);
-	}
+	LOOP_OVER(qn, instance)
+		if (Kinds::Behaviour::is_an_enumeration(Instances::to_kind(qn))) {
+			property *prn =
+				Properties::Conditions::get_coinciding_property(Instances::to_kind(qn));
+			if ((prn) && (Properties::Conditions::of_what(prn))) continue;
+			wording NW = Instances::get_name(qn, FALSE);
+			lex = IndexLexicon::lexicon_new_entry(NW);
+			lex->part_of_speech = ENUMERATED_CONSTANT_LEXE;
+			lex->category = "noun";
+			lex->entry_refers_to = STORE_POINTER_instance(qn);
+		}
 
 @<Stock the lexicon with meaningless verbs@> =
 	verb_conjugation *vc;

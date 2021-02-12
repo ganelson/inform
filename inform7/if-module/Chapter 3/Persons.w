@@ -25,7 +25,7 @@ int PL::Persons::IF_complete_model(int stage) {
 		Properties::EitherOr::implement_as_attribute(P_animate, TRUE);
 		P_before = Properties::Valued::new_nameless(I"before", K_value);
 		instance *I;
-		LOOP_OVER_OBJECT_INSTANCES(I)
+		LOOP_OVER_INSTANCES(I, K_object)
 			if (Instances::of_kind(I, K_person)) {
 				Properties::EitherOr::assert(
 					P_animate, Instances::as_subject(I), TRUE, CERTAIN_CE);

@@ -10,6 +10,8 @@ project, by an unspecified other project, or by a project named by IFID.
 @d OWNED_BY_ANOTHER_PROJECT 2
 @d OWNED_BY_SPECIFIC_PROJECT 3
 
+@d files_data external_file
+
 =
 typedef struct external_file {
 	struct wording name; /* text of name */
@@ -53,8 +55,7 @@ int PL::Files::files_new_named_instance_notify(instance *nc) {
 				"this is not the way to create a new external file",
 				"which should be done with a special 'The File ... is called ...' "
 				"sentence.");
-		Instances::set_connection(nc,
-			STORE_POINTER_external_file(PL::Files::new_external_file(nc)));
+		ATTACH_PLUGIN_DATA_TO_SUBJECT(files, nc->as_subject, PL::Files::new_external_file(nc));
 		return TRUE;
 	}
 	return FALSE;
@@ -230,8 +231,7 @@ void PL::Files::register_file(wording F, wording FN) {
 		K_external_file, F);
 	Assert::true(prop, CERTAIN_CE);
 	allow_exf_creations = FALSE;
-	external_file *exf = RETRIEVE_POINTER_external_file(
-		Instances::get_connection(latest_instance));
+	external_file *exf = PLUGIN_DATA_ON_INSTANCE(files, Instances::latest());
 	exf->name = F;
 	exf->unextended_filename = Wordings::first_wn(FN);
 	exf->file_is_binary = binary;

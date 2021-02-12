@@ -7,6 +7,8 @@ the thumbnail index of figures.
 @ To be viable, figures have to be of an image format which Blorb recognises,
 and in any case we only allow two formats: JPEG and PNG.
 
+@d figures_data blorb_figure
+
 =
 typedef struct blorb_figure {
 	struct wording name; /* text of name */
@@ -54,8 +56,7 @@ int PL::Figures::figures_new_named_instance_notify(instance *nc) {
 				"this is not the way to create a new figure name",
 				"which should be done with a special 'Figure ... is the file ...' "
 				"sentence.");
-		Instances::set_connection(nc,
-			STORE_POINTER_blorb_figure(PL::Figures::new_blorb_figure(nc)));
+		ATTACH_PLUGIN_DATA_TO_SUBJECT(figures, nc->as_subject, PL::Figures::new_blorb_figure(nc));
 		return TRUE;
 	}
 	return FALSE;
@@ -155,8 +156,7 @@ void PL::Figures::register_figure(wording F, wording FN) {
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_figure_name, F);
 	Assert::true(prop, CERTAIN_CE);
 	allow_figure_creations = FALSE;
-	blorb_figure *bf = RETRIEVE_POINTER_blorb_figure(
-		Instances::get_connection(latest_instance));
+	blorb_figure *bf = PLUGIN_DATA_ON_INSTANCE(figures, Instances::latest());
 
 	bf->name = F;
 	if (wn >= 0) {

@@ -127,7 +127,7 @@ We simply pass the request along to the appropriate code.
 void KindSubjects::make_adj_const_domain(inference_subject_family *family,
 	inference_subject *infs, instance *I, property *prn) {
 	kind *K = KindSubjects::to_kind(infs);
-	Instances::make_adj_const_domain(I, prn, K, NULL);
+	InstanceAdjectives::make_adjectival(I, prn, K, NULL);
 }
 
 @ =

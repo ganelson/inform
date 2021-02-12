@@ -353,7 +353,7 @@ void Kinds::Index::end_chart_row(OUTPUT_STREAM, int shaded, kind *K,
 	int found = FALSE;
 	instance *inst;
 	LOOP_OVER_INSTANCES(inst, K) {
-		Instances::index_name(OUT, inst);
+		IXInstances::index_name(OUT, inst);
 		found = TRUE;
 		break;
 	}

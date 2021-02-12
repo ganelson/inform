@@ -7711,7 +7711,7 @@
 
 <s-text-substitution> internal hits 2388/4776 nti 25 constraint (none) extremes [1, infinity)
 
-<instance-of-object> internal nti 26 constraint (none) extremes [1, infinity)
+<instance-of-object> internal hits 0/172 nti 26 constraint (none) extremes [1, infinity)
 
 <instance-of-non-object> internal hits 4/252 nti 27 constraint (none) extremes [1, infinity)
 
