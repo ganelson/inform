@@ -32,8 +32,10 @@ Chapter 3: Properties
 
 Chapter 4: Subjects
 	Inference Subjects
-	Knowledge about Kinds
-	Knowledge about Relations
+	Variable Subjects
+	Instance Subjects
+	Kind Subjects
+	Relation Subjects
 
 Chapter 5: Model
 	Property Permissions

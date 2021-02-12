@@ -254,7 +254,7 @@ int PL::Map::object_is_a_door(instance *I) {
 
 int PL::Map::subject_is_a_door(inference_subject *infs) {
 	return PL::Map::object_is_a_door(
-		Instances::object_from_infs(infs));
+		InstanceSubjects::to_object_instance(infs));
 }
 
 @h Directions and their numbers.
@@ -267,7 +267,7 @@ sheaf of binary relations, one for each direction. Anyway:
 =
 int PL::Map::is_a_direction(inference_subject *infs) {
 	if (K_direction == NULL) return FALSE; /* in particular, if we aren't using the IF model */
-	return InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_direction));
+	return InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_direction));
 }
 
 @ When a new direction comes into existence (i.e., not when the underlying
@@ -354,8 +354,8 @@ void PL::Map::build_exits_array(void) {
 			inference_subject *infs1, *infs2;
 			World::Inferences::get_references(inf, &infs1, &infs2);
 			instance *to = NULL, *dir = NULL;
-			if (infs1) to = Instances::object_from_infs(infs1);
-			if (infs2) dir = Instances::object_from_infs(infs2);
+			if (infs1) to = InstanceSubjects::to_object_instance(infs1);
+			if (infs2) dir = InstanceSubjects::to_object_instance(infs2);
 			if ((to) && (dir)) {
 				int dn = MAP_DATA(dir)->direction_index;
 				if ((dn >= 0) && (dn < MAX_DIRECTIONS)) {
@@ -384,7 +384,7 @@ int PL::Map::map_compile_model_tables(void) {
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_direction) {
-		Emit::named_iname_constant(MAP_DATA(I)->direction_iname, K_object, Instances::emitted_iname(I));
+		Emit::named_iname_constant(MAP_DATA(I)->direction_iname, K_object, RTInstances::emitted_iname(I));
 	}
 
 @ The |Map_Storage| array consists only of the |exits| arrays written out
@@ -396,7 +396,7 @@ at run-time, so we can't know now how many we will need.
 @<Compile the I6 Map-Storage array@> =
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
-		Instances::emitted_iname(I);
+		RTInstances::emitted_iname(I);
 	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_object);
 	int words_used = 0;
@@ -633,9 +633,9 @@ pairs.
 =
 void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 	inference_subject *i_dir) {
-	instance *go_from = Instances::object_from_infs(i_from);
-	instance *go_to = Instances::object_from_infs(i_to);
-	instance *forwards_dir = Instances::object_from_infs(i_dir);
+	instance *go_from = InstanceSubjects::to_object_instance(i_from);
+	instance *go_to = InstanceSubjects::to_object_instance(i_to);
+	instance *forwards_dir = InstanceSubjects::to_object_instance(i_dir);
 	if (Instances::of_kind(forwards_dir, K_direction) == FALSE)
 		internal_error("unknown direction");
 	instance *reverse_dir = PL::Map::get_value_of_opposite_property(forwards_dir);
@@ -733,7 +733,7 @@ checks that various mapping impossibilities do not occur.
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1;
 			World::Inferences::get_references(inf, &infs1, NULL);
-			instance *to = Instances::object_from_infs(infs1);
+			instance *to = InstanceSubjects::to_object_instance(infs1);
 			if ((PL::Spatial::object_is_a_room(I)) && (to) &&
 				(PL::Map::object_is_a_door(to) == FALSE) &&
 				(PL::Spatial::object_is_a_room(to) == FALSE))
@@ -765,8 +765,8 @@ checks that various mapping impossibilities do not occur.
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1, *infs2;
 				World::Inferences::get_references(inf, &infs1, &infs2);
-				instance *to = Instances::object_from_infs(infs1);
-				instance *dir = Instances::object_from_infs(infs2);
+				instance *to = InstanceSubjects::to_object_instance(infs1);
+				instance *dir = InstanceSubjects::to_object_instance(infs2);
 				if (to) {
 					if (connections_in == 0) {
 						MAP_DATA(I)->map_connection_a = to;
@@ -838,7 +838,7 @@ from which there's no way back.)
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1;
 				World::Inferences::get_references(inf, &infs1, NULL);
-				instance *to = Instances::object_from_infs(infs1);
+				instance *to = InstanceSubjects::to_object_instance(infs1);
 				if (PL::Map::object_is_a_door(to)) {
 					instance *exit1 = MAP_DATA(to)->map_connection_a;
 					instance *exit2 = MAP_DATA(to)->map_connection_b;
@@ -949,7 +949,7 @@ trust that there is nothing surprising here.
 @ Here |found_in| is a two-entry list.
 
 @<Assert found-in for a two-sided door@> =
-	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
+	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	packaging_state save = Emit::named_array_begin(S, K_value);
 	Emit::array_iname_entry(Instances::iname(R1));
@@ -963,7 +963,7 @@ always the way to the other room -- the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
 	door_dir_notice *notice = CREATE(door_dir_notice);
-	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, Instances::package(I));
+	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, RTInstances::package(I));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->D1 = D1;
@@ -976,7 +976,7 @@ always the other room -- the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
 	door_to_notice *notice = CREATE(door_to_notice);
-	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, Instances::package(I));
+	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, RTInstances::package(I));
 	notice->door = I;
 	notice->R1 = R1;
 	notice->R2 = R2;
@@ -998,7 +998,7 @@ why we don't need to compile |door_to| here.
 	instance *backwards = PL::Map::get_value_of_opposite_property(D1);
 	if (backwards)
 		Properties::Valued::assert(P_door_dir, Instances::as_subject(I),
-			Rvalues::from_iname(Instances::emitted_iname(backwards)), CERTAIN_CE);
+			Rvalues::from_iname(RTInstances::emitted_iname(backwards)), CERTAIN_CE);
 
 @h Redeeming those notices.
 

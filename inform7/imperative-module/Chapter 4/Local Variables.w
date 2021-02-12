@@ -1050,7 +1050,7 @@ void LocalVariables::end_condition_emit(void) {
 				if ((K == NULL) ||
 					(Kinds::Behaviour::is_object(K)) ||
 					(Kinds::Behaviour::definite(K) == FALSE) ||
-					(Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, "'called' value") != TRUE))
+					(RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "'called' value") != TRUE))
 					Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
 			callings_in_condition_sp--;

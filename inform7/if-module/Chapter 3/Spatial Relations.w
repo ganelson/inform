@@ -147,8 +147,8 @@ can be tested at run-time, but which can't be asserted or made true or false.
 			PreformUtilities::wording(<relation-names>, CONCEALMENT_RELATION_NAME));
 	R_enclosure =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
-			BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
+			BPTerms::new(KindSubjects::from_kind(K_object)),
+			BPTerms::new(KindSubjects::from_kind(K_object)),
 			I"encloses", I"is-enclosed-by",
 			NULL, Calculus::Schemas::new("IndirectlyContains(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, ENCLOSURE_RELATION_NAME));
@@ -172,8 +172,8 @@ place the same object in a container, a room or a region respectively.
 int PL::SpatialRelations::REL_assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
-	instance *I0 = Instances::object_from_infs(infs0),
-		*I1 = Instances::object_from_infs(infs1);
+	instance *I0 = InstanceSubjects::to_object_instance(infs0),
+		*I1 = InstanceSubjects::to_object_instance(infs1);
 	if ((I0) && (I1)) {
 		if (I1 == I0) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MiseEnAbyme),

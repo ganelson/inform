@@ -163,7 +163,7 @@ void RTRelations::compile_relation_records(void) {
 
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_strong_id_as_val(BinaryPredicates::kind(bp));
+				RTKinds::emit_strong_id_as_val(BinaryPredicates::kind(bp));
 				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 			Produce::up(Emit::tree());
 
@@ -242,7 +242,7 @@ void RTRelations::compile_relation_records(void) {
 	if (Relations::Explicit::stored_dynamically(bp)) {
 		Emit::array_numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
-		Kinds::RunTime::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
+		RTKinds::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
 		Emit::array_null_entry();
 		Emit::array_null_entry();
 		@<Write the name field of the relation record@>;
@@ -338,7 +338,7 @@ void RTRelations::compile_relation_records(void) {
 	}
 
 @<Write the kind field of the relation record@> =
-	Kinds::RunTime::emit_strong_id(BinaryPredicates::kind(bp));
+	RTKinds::emit_strong_id(BinaryPredicates::kind(bp));
 
 @<Write the description field of the relation record@> =
 	TEMPORARY_TEXT(DF)
@@ -858,7 +858,7 @@ void RTRelations::compile_relation_records(void) {
 		Produce::down(Emit::tree());
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DEFAULTVALUEOFKOV_HL));
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_strong_id_as_val(K);
+				RTKinds::emit_strong_id_as_val(K);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
@@ -958,7 +958,7 @@ between numbers and texts.
 =
 void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
 	packaging_state save = Emit::named_array_begin(identifier, K_value);
-	Kinds::RunTime::emit_block_value_header(K, FALSE, 8);
+	RTKinds::emit_block_value_header(K, FALSE, 8);
 	Emit::array_null_entry();
 	Emit::array_null_entry();
 	TEMPORARY_TEXT(DVT)
@@ -966,7 +966,7 @@ void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
 	Emit::array_text_entry(DVT);
 	Emit::array_iname_entry(TTF_iname);
 	Emit::array_numeric_entry(0);
-	Kinds::RunTime::emit_strong_id(K);
+	RTKinds::emit_strong_id(K);
 	Emit::array_iname_entry(Hierarchy::find(EMPTYRELATIONHANDLER_HL));
 	Emit::array_text_entry(DVT);
 	DISCARD_TEXT(DVT)
@@ -974,7 +974,7 @@ void RTRelations::compile_default_relation(inter_name *identifier, kind *K) {
 }
 
 void RTRelations::compile_blank_relation(kind *K) {
-	Kinds::RunTime::emit_block_value_header(K, FALSE, 34);
+	RTKinds::emit_block_value_header(K, FALSE, 34);
 	Emit::array_null_entry();
 	Emit::array_null_entry();
 	TEMPORARY_TEXT(DVT)
@@ -984,7 +984,7 @@ void RTRelations::compile_blank_relation(kind *K) {
 
 	Emit::array_iname_entry(TTF_iname);
 	Emit::array_numeric_entry(7);
-	Kinds::RunTime::emit_strong_id(K);
+	RTKinds::emit_strong_id(K);
 	kind *EK = Kinds::unary_construction_material(K);
 	if (Kinds::Behaviour::uses_pointer_values(EK))
 		Emit::array_iname_entry(Hierarchy::find(HASHLISTRELATIONHANDLER_HL));
@@ -1169,10 +1169,10 @@ not kinds); and that it must inherit from the domain of the term.
 
 =
 int RTRelations::infs_in_domain(inference_subject *infs, binary_predicate *bp, int index) {
-	if (Kinds::Knowledge::from_infs(infs) != NULL) return FALSE;
+	if (KindSubjects::to_kind(infs) != NULL) return FALSE;
 	kind *K = BinaryPredicates::term_kind(bp, index);
 	if (K == NULL) return FALSE;
-	inference_subject *domain_infs = Kinds::Knowledge::as_subject(K);
+	inference_subject *domain_infs = KindSubjects::from_kind(K);
 	if (InferenceSubjects::is_strictly_within(infs, domain_infs)) return TRUE;
 	return FALSE;
 }
@@ -1525,7 +1525,7 @@ void RTRelations::compile_defined_relations(void) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, X_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_R));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -1563,7 +1563,7 @@ void RTRelations::compile_defined_relations(void) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, X_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_L));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
 					Produce::up(Emit::tree());
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
@@ -1606,7 +1606,7 @@ void RTRelations::compile_defined_relations(void) {
 						Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_symbol(Emit::tree(), K_value, L_s);
-							Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_L));
+							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
 						Produce::up(Emit::tree());
 					downs++;
 				}
@@ -1616,7 +1616,7 @@ void RTRelations::compile_defined_relations(void) {
 						Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_symbol(Emit::tree(), K_value, R_s);
-							Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_R));
+							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
 						Produce::up(Emit::tree());
 					downs++;
 				}
@@ -1658,14 +1658,14 @@ void RTRelations::compile_defined_relations(void) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, L_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_L));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
 					Produce::up(Emit::tree());
 				}
 				if (rg->check_R) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, R_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_R));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
 					Produce::up(Emit::tree());
 				}
 				for (int i=0; i<downs-1; i++) Produce::up(Emit::tree());
@@ -1713,14 +1713,14 @@ void RTRelations::compile_defined_relations(void) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, L_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_L));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_L));
 					Produce::up(Emit::tree());
 				}
 				if (rg->check_R) {
 					Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_symbol(Emit::tree(), K_value, R_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(rg->check_R));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(rg->check_R));
 					Produce::up(Emit::tree());
 				}
 				for (int i=0; i<downs-1; i++) Produce::up(Emit::tree());
@@ -1794,7 +1794,7 @@ void RTRelations::add_term_as_call_parameter(ph_stack_frame *phsf,
 				Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, lv_s);
-					Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+					Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -1852,4 +1852,39 @@ void RTRelations::index_for_verbs(OUTPUT_STREAM, binary_predicate *bp) {
 		WordAssemblages::index(OUT, &(bp->relation_name));
 	}
 	WRITE("</i>");
+}
+
+@ Method functions needed by //knowledge: Relation Subjects//:
+
+=
+int RTRelations::emit_all(inference_subject_family *f, int ignored) {
+	return FALSE;
+}
+
+void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs) {
+	binary_predicate *bp = RelationSubjects::to_bp(infs);
+	if (bp->right_way_round) {
+		if (Relations::Explicit::stored_dynamically(bp)) {
+			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
+			inference *i;
+			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
+			POSITIVE_KNOWLEDGE_LOOP(i, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
+				parse_node *spec0, *spec1;
+				World::Inferences::get_references_spec(i, &spec0, &spec1);
+				RTRelations::mark_as_needed(bp);
+				Produce::inv_call_iname(Emit::tree(), rtiname);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(RELS_ASSERT_TRUE_HL));
+					Specifications::Compiler::emit_as_val(K_value, spec0);
+					Specifications::Compiler::emit_as_val(K_value, spec1);
+				Produce::up(Emit::tree());
+			}
+			Routines::end(save);
+		} else {
+			int f = Relations::Explicit::get_form_of_relation(bp);
+			if ((f == Relation_VtoV) || (f == Relation_Sym_VtoV))
+				RTRelations::compile_vtov_storage(bp);
+		}
+	}
 }

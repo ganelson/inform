@@ -809,7 +809,7 @@ end actually occurred.)
 			inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K_scene);
+				RTKinds::emit_weak_id_as_val(K_scene);
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ix+1);
 				Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_recurring));
 			Produce::up(Emit::tree());

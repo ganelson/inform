@@ -396,7 +396,7 @@ to or described can be of any kind, but in fact we restrict to kinds of object.
 @<Make reference from kind, if a kind of object@> =
 	kind *K = RP[1];
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		==> { -, Kinds::Knowledge::as_subject(K) };
+		==> { -, KindSubjects::from_kind(K) };
 	} else {
 		==> { fail production };
 	}
@@ -716,7 +716,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 						}
 						kind *K = Specifications::to_kind(spec);
 						if ((K) && (Kinds::Behaviour::is_subkind_of_object(K))) {
-							subj = Kinds::Knowledge::as_subject(K);
+							subj = KindSubjects::from_kind(K);
 							gv_is = GV_IS_OBJECT;
 						} else if (gv_prn == NULL) goto ImpreciseProblemMessage;
 					} else {

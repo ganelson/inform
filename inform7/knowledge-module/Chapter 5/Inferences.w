@@ -229,7 +229,7 @@ void World::Inferences::get_references_spec(inference *i,
 }
 
 instance *World::Inferences::get_reference_as_object(inference *i) {
-	return Instances::object_from_infs(i->infs_ref1);
+	return InstanceSubjects::to_object_instance(i->infs_ref1);
 }
 
 @h Looping over inferences.
@@ -601,7 +601,7 @@ inference_subject *World::Inferences::divert_infs(inference_subject *infs) {
 	if (infs_diversion)
 		if ((I_yourself) && (player_VAR) &&
 			(infs == Instances::as_subject(I_yourself))) {
-			parse_node *val = NonlocalVariables::get_initial_value(player_VAR);
+			parse_node *val = VariableSubjects::get_initial_value(player_VAR);
 			inference_subject *divert = InferenceSubjects::from_specification(val);
 			if (divert) return divert;
 		}

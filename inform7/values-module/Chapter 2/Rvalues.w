@@ -652,7 +652,7 @@ a number: all that matters is that the correct integer value is compiled.
 	instance *I = Node::get_constant_instance(spec_found);
 	if (I) {
 		if (Holsters::data_acceptable(VH)) {
-			inter_name *N = Instances::emitted_iname(I);
+			inter_name *N = RTInstances::emitted_iname(I);
 			if (N) Emit::holster(VH, N);
 			else internal_error("no iname for instance");
 		}
@@ -718,7 +718,7 @@ kinds of value:
 		} else {
 			instance *I = Rvalues::to_instance(spec_found);
 			if (I) {
-				inter_name *N = Instances::emitted_iname(I);
+				inter_name *N = RTInstances::emitted_iname(I);
 				if (N) Emit::holster(VH, N);
 			}
 			parse_node *NB = Routines::Compile::line_being_compiled();

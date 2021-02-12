@@ -125,7 +125,7 @@ of object the left operand is, we can only test property provision at run-time:
 answer now.
 
 @<Determine the result now, since we know already, and compile only the outcome@> =
-	if (World::Permissions::find(Kinds::Knowledge::as_subject(K), prn, TRUE))
+	if (World::Permissions::find(KindSubjects::from_kind(K), prn, TRUE))
 		Calculus::Schemas::modify(asch->schema, "true");
 	else
 		Calculus::Schemas::modify(asch->schema, "false");

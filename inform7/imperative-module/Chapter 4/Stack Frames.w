@@ -273,7 +273,7 @@ void Frames::emit_allocation(kind *K) {
 default value of the given kind.
 
 @<Work out heap allocation code for this pointer value@> =
-	pall->allocation = Kinds::RunTime::make_heap_allocation(K, 0, pall->offset_index);
+	pall->allocation = RTKinds::make_heap_allocation(K, 0, pall->offset_index);
 
 @ This is the storage used to hold the pointer. For each frame, we have
 a subarray of short blocks, indexed by the offset.

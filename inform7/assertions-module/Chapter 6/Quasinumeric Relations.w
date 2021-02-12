@@ -42,7 +42,7 @@ These relations are all hard-wired in.
 =
 void Calculus::QuasinumericRelations::stock(bp_family *self, int n) {
 	if (n == 1) {
-		bp_term_details number_term = BPTerms::new(Kinds::Knowledge::as_subject(K_number));
+		bp_term_details number_term = BPTerms::new(KindSubjects::from_kind(K_number));
 		R_numerically_greater_than =
 			BinaryPredicates::make_pair(quasinumeric_bp_family,
 				number_term, number_term,

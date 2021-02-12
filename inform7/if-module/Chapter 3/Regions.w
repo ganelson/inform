@@ -63,7 +63,7 @@ regions_data *PL::Regions::new_data(inference_subject *subj) {
 
 inter_name *PL::Regions::found_in_iname(instance *I) {
 	if (REGIONS_DATA(I)->in_region_iname == NULL)
-		REGIONS_DATA(I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, Instances::package(I));
+		REGIONS_DATA(I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, RTInstances::package(I));
 	return REGIONS_DATA(I)->in_region_iname;
 }
 
@@ -165,8 +165,8 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 		inference_subject *left_subject = Node::get_subject(px);
 		inference_subject *right_kind = Node::get_subject(py);
 		if ((InferenceSubjects::is_an_object(left_subject)) &&
-			(right_kind == Kinds::Knowledge::as_subject(K_region))) {
-			instance *left_object = Instances::object_from_infs(left_subject);
+			(right_kind == KindSubjects::from_kind(K_region))) {
+			instance *left_object = InstanceSubjects::to_object_instance(left_subject);
 			if ((left_object) &&
 				(current_sentence != Instances::get_creating_sentence(left_object)) &&
 				(Instances::of_kind(left_object, K_region) == FALSE)) {
@@ -181,7 +181,7 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 		}
 	}
 	if ((Node::get_type(px) == RELATIONSHIP_NT) &&
-		(Node::get_subject(py) == Kinds::Knowledge::as_subject(K_region))) {
+		(Node::get_subject(py) == KindSubjects::from_kind(K_region))) {
 		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
 			"a region cannot be given a specific location",
 			"since it contains what may be many rooms, which may not be "
@@ -210,7 +210,7 @@ void PL::Regions::create_relations(void) {
 	R_regional_containment =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new(infs_region),
-			BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
+			BPTerms::new(KindSubjects::from_kind(K_object)),
 			I"region-contains", I"in-region",
 			NULL, Calculus::Schemas::new("TestRegionalContainment(*2,*1)"),
 			PreformUtilities::wording(<relation-names>,

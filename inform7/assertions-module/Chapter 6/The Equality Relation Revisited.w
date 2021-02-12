@@ -115,7 +115,7 @@ int EqualityDetails::REL_assert(bp_family *self, binary_predicate *bp,
 				"qualified by 'usually'",
 				"not with 'always', 'seldom' or 'never'.");
 		else World::Inferences::draw_property(
-			NonlocalVariables::get_knowledge(q), P_variable_initial_value, spec1);
+			NonlocalVariables::to_subject(q), P_variable_initial_value, spec1);
 		return TRUE;
 	}
 	return FALSE;
@@ -169,7 +169,7 @@ int EqualityDetails::REL_compile(bp_family *self, int task, binary_predicate *bp
 		case TEST_ATOM_TASK:
 			if ((st[0]) && (st[1]))
 				Calculus::Schemas::modify(asch->schema, "%S",
-					Kinds::RunTime::interpret_test_equality(st[0], st[1]));
+					RTKinds::interpret_test_equality(st[0], st[1]));
 			else if (problem_count == 0) {
 				LOG("$0 and $0; %u and %u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCompareValues),
@@ -305,7 +305,7 @@ one that's more helpfully specific and return |TRUE|.
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP,
 			"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \"",
-			Kinds::RunTime::I6_classname(st[0]));
+			RTKinds::I6_classname(st[0]));
 		Kinds::Textual::write(TEMP, st[0]);
 		WRITE_TO(TEMP, "\");");
 		Calculus::Schemas::append(asch->schema, "%S", TEMP);

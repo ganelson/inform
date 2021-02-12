@@ -116,8 +116,8 @@ person as the author of the main work.
 =
 int PL::Bibliographic::story_author_is(text_stream *p) {
 	if ((story_author_VAR) &&
-		(NonlocalVariables::has_initial_value_set(story_author_VAR))) {
-		parse_node *spec = NonlocalVariables::get_initial_value(story_author_VAR);
+		(VariableSubjects::has_initial_value_set(story_author_VAR))) {
+		parse_node *spec = VariableSubjects::get_initial_value(story_author_VAR);
 		Node::set_kind_of_value(spec, K_text);
 		int result = FALSE;
 		TEMPORARY_TEXT(TEMP)
@@ -209,7 +209,7 @@ void PL::Bibliographic::compile_constants(void) {
 	inter_name *iname = Hierarchy::find(STORY_HL);
 	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
 	inter_ti v1 = 0, v2 = 0;
-	if (NonlocalVariables::has_initial_value_set(story_title_VAR))
+	if (VariableSubjects::has_initial_value_set(story_title_VAR))
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
 	else
 		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
@@ -221,7 +221,7 @@ void PL::Bibliographic::compile_constants(void) {
 @<Compile the I6 Headline constant@> =
 	inter_name *iname = Hierarchy::find(HEADLINE_HL);
 	inter_ti v1 = 0, v2 = 0;
-	if (NonlocalVariables::has_initial_value_set(story_headline_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_headline_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
 	} else {
@@ -233,7 +233,7 @@ void PL::Bibliographic::compile_constants(void) {
 @ This time we compile nothing if no author is provided:
 
 @<Compile the I6 Story Author constant@> =
-	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
 		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
@@ -251,7 +251,7 @@ void PL::Bibliographic::compile_constants(void) {
 @ Similarly (but numerically):
 
 @<Compile the I6 Release directive@> =
-	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
 		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
@@ -349,7 +349,7 @@ void PL::Bibliographic::contents_heading(OUTPUT_STREAM) {
 void PL::Bibliographic::index_bibliographic_variable(OUTPUT_STREAM, nonlocal_variable *nlv, text_stream *t) {
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
-	if ((nlv) && (NonlocalVariables::has_initial_value_set(nlv))) {
+	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		wording W = NonlocalVariables::treat_as_plain_text_word(nlv);
 		PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(Wordings::first_wn(W)));
 	} else {

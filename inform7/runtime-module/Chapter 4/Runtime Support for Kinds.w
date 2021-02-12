@@ -1,4 +1,4 @@
-[Kinds::RunTime::] Runtime Support for Kinds.
+[RTKinds::] Runtime Support for Kinds.
 
 To compile I6 material needed at runtime to enable kinds
 to function as they should.
@@ -20,12 +20,12 @@ typedef struct runtime_kind_structure {
 @h Kinds as tables.
 
 =
-table *Kinds::RunTime::defined_by_table(kind *K) {
+table *RTKinds::defined_by_table(kind *K) {
 	if (K == NULL) return NULL;
 	return K->construct->named_values_created_with_table;
 }
 
-void Kinds::RunTime::set_defined_by_table(kind *K, table *t) {
+void RTKinds::set_defined_by_table(kind *K, table *t) {
 	if (K == NULL) internal_error("no such kind");
 	K->construct->named_values_created_with_table = t;
 }
@@ -38,23 +38,23 @@ class number; the whole text is the classname. These are used only for those
 kinds being compiled to an I6 |Class|.
 
 =
-inter_name *Kinds::RunTime::I6_classname(kind *K) {
-	if (Kinds::Behaviour::is_object(K)) return Kinds::RunTime::iname(K);
+inter_name *RTKinds::I6_classname(kind *K) {
+	if (Kinds::Behaviour::is_object(K)) return RTKinds::iname(K);
 	internal_error("no I6 classname available");
 	return NULL;
 }
 
-int Kinds::RunTime::I6_classnumber(kind *K) {
+int RTKinds::I6_classnumber(kind *K) {
 	return Kinds::Behaviour::get_range_number(K);
 }
 
 @ And here is where those range numbers come from:
 
-@d REGISTER_NOUN_KINDS_CALLBACK Kinds::RunTime::register
+@d REGISTER_NOUN_KINDS_CALLBACK RTKinds::register
 
 =
 int no_kinds_of_object = 1;
-noun *Kinds::RunTime::register(kind *K, kind *super, wording W, general_pointer data) {
+noun *RTKinds::register(kind *K, kind *super, wording W, general_pointer data) {
 	noun *nt = Nouns::new_common_noun(W, NEUTER_GENDER,
 		ADD_TO_LEXICON_NTOPT + WITH_PLURAL_FORMS_NTOPT,
 		KIND_SLOW_MC, data, Task::language_of_syntax());
@@ -76,21 +76,21 @@ chosen), but no problem message has been issued about this, or
 (c) |NOT_APPLICABLE| if it failed and issued a specific problem message.
 
 =
-int Kinds::RunTime::emit_default_value(kind *K, wording W, char *storage_name) {
+int RTKinds::emit_default_value(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	int rv = Kinds::RunTime::compile_default_value_vh(&VH, K, W, storage_name);
+	int rv = RTKinds::compile_default_value_vh(&VH, K, W, storage_name);
 	inter_ti v1 = 0, v2 = 0;
 	Holsters::unholster_pair(&VH, &v1, &v2);
 	Emit::array_generic_entry(v1, v2);
 	return rv;
 }
-int Kinds::RunTime::emit_default_value_as_val(kind *K, wording W, char *storage_name) {
+int RTKinds::emit_default_value_as_val(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	int rv = Kinds::RunTime::compile_default_value_vh(&VH, K, W, storage_name);
+	int rv = RTKinds::compile_default_value_vh(&VH, K, W, storage_name);
 	Holsters::to_val_mode(Emit::tree(), &VH);
 	return rv;
 }
-int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
+int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 	wording W, char *storage_name) {
 	if (Kinds::eq(K, K_value))
 		@<"Value" is too vague to be the kind of a variable@>;
@@ -102,17 +102,17 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
 		if (Kinds::get_construct(K) == CON_list_of) {
-			inter_name *N = Kinds::RunTime::new_block_constant_iname();
+			inter_name *N = RTKinds::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
-			inter_name *rks_symb = Kinds::RunTime::compile_default_value_inner(K);
+			inter_name *rks_symb = RTKinds::compile_default_value_inner(K);
 			Emit::array_iname_entry(rks_symb);
 			Emit::array_numeric_entry(0);
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else if (Kinds::eq(K, K_stored_action)) {
-			inter_name *N = Kinds::RunTime::new_block_constant_iname();
+			inter_name *N = RTKinds::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
-			Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
+			RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
 			Emit::array_iname_entry(PL::Actions::double_sharp(PL::Actions::Wait()));
 			Emit::array_numeric_entry(0);
 			Emit::array_numeric_entry(0);
@@ -127,13 +127,13 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else if (Kinds::get_construct(K) == CON_relation) {
-			inter_name *N = Kinds::RunTime::new_block_constant_iname();
+			inter_name *N = RTKinds::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			RTRelations::compile_blank_relation(K);
 			Emit::array_end(save);
 			if (N) Emit::holster(VH, N);
 		} else {
-			inter_name *N = Kinds::RunTime::compile_default_value_inner(K);
+			inter_name *N = RTKinds::compile_default_value_inner(K);
 			if (N) Emit::holster(VH, N);
 		}
 		return TRUE;
@@ -142,13 +142,13 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	if ((Kinds::get_construct(K) == CON_list_of) ||
 		(Kinds::get_construct(K) == CON_phrase) ||
 		(Kinds::get_construct(K) == CON_relation)) {
-		inter_name *N = Kinds::RunTime::compile_default_value_inner(K);
+		inter_name *N = RTKinds::compile_default_value_inner(K);
 		if (N) Emit::holster(VH, N);
 		return TRUE;
 	}
 
 	if (Kinds::eq(K, K_text)) {
-		inter_name *N =  Kinds::RunTime::new_block_constant_iname();
+		inter_name *N =  RTKinds::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(Hierarchy::find(EMPTY_TEXT_PACKED_HL));
@@ -158,7 +158,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 	}
 
 	inter_ti v1 = 0, v2 = 0;
-	Kinds::RunTime::get_default_value(&v1, &v2, K);
+	RTKinds::get_default_value(&v1, &v2, K);
 	if (v1 != 0) {
 		if (Holsters::data_acceptable(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
@@ -233,7 +233,7 @@ int Kinds::RunTime::compile_default_value_vh(value_holster *VH, kind *K,
 @
 
 =
-inter_name *Kinds::RunTime::new_block_constant_iname(void) {
+inter_name *RTKinds::new_block_constant_iname(void) {
 	package_request *PR = Hierarchy::package_in_enclosure(BLOCK_CONSTANTS_HAP);
 	return Hierarchy::make_iname_in(BLOCK_CONSTANT_HL, PR);
 }
@@ -247,7 +247,7 @@ I6 story file; this effectively suppresses problem messages which the
 absence of rooms would otherwise result in.
 
 =
-void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
+void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	if (K == NULL) return;
 	if (K->construct->stored_as) K = K->construct->stored_as;
 
@@ -255,7 +255,7 @@ void Kinds::RunTime::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
-		inter_name *N = Instances::emitted_iname(I);
+		inter_name *N = RTInstances::emitted_iname(I);
 		Emit::to_ival(v1, v2, N);
 		return;
 	}
@@ -350,7 +350,7 @@ similarly, we must assign by transferring the contents of the blocks of
 data, not merely the pointer to them, which is a "deep copy".
 
 =
-text_stream *Kinds::RunTime::interpret_test_equality(kind *left, kind *right) {
+text_stream *RTKinds::interpret_test_equality(kind *left, kind *right) {
 	LOGIF(KIND_CHECKING, "Interpreting equality test of kinds %u, %u\n", left, right);
 
 	if ((Kinds::eq(left, K_truth_state)) || (Kinds::eq(right, K_truth_state)))
@@ -387,7 +387,7 @@ text_stream *Kinds::RunTime::interpret_test_equality(kind *left, kind *right) {
 @h Casts at runtime.
 
 =
-int Kinds::RunTime::cast_possible(kind *from, kind *to) {
+int RTKinds::cast_possible(kind *from, kind *to) {
 	from = Kinds::weaken(from, K_object);
 	to = Kinds::weaken(to, K_object);
 	if ((to) && (from) && (to->construct != from->construct) &&
@@ -400,8 +400,8 @@ int Kinds::RunTime::cast_possible(kind *from, kind *to) {
 }
 
 @ =
-int Kinds::RunTime::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
-	if (Kinds::RunTime::cast_possible(from, to)) {
+int RTKinds::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
+	if (RTKinds::cast_possible(from, to)) {
 		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
 			WRITE("(");
 			return TRUE;
@@ -423,8 +423,8 @@ int Kinds::RunTime::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
 	return FALSE;
 }
 
-int Kinds::RunTime::emit_cast_call(kind *from, kind *to, int *down) {
-	if (Kinds::RunTime::cast_possible(from, to)) {
+int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
+	if (RTKinds::cast_possible(from, to)) {
 		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
 			return TRUE;
 		}
@@ -481,7 +481,7 @@ Weak IDs have already appeared:
 @d UNKNOWN_WEAK_ID 1
 
 =
-int Kinds::RunTime::weak_id(kind *K) {
+int RTKinds::weak_id(kind *K) {
 	if (K == NULL) return UNKNOWN_WEAK_ID;
 	return Kinds::Constructors::get_weak_ID(Kinds::get_construct(K));
 }
@@ -490,27 +490,27 @@ int Kinds::RunTime::weak_id(kind *K) {
 which might occupy up to 31 characters, the maximum length of an I6 identifier:
 
 =
-void Kinds::RunTime::write_weak_id(OUTPUT_STREAM, kind *K) {
+void RTKinds::write_weak_id(OUTPUT_STREAM, kind *K) {
 	if (K == NULL) { WRITE("UNKNOWN_TY"); return; }
 	kind_constructor *con = Kinds::get_construct(K);
 	text_stream *sn = Kinds::Constructors::name_in_template_code(con);
-	if (Str::len(sn) > 0) WRITE("%S", sn); else WRITE("%d", Kinds::RunTime::weak_id(K));
+	if (Str::len(sn) > 0) WRITE("%S", sn); else WRITE("%d", RTKinds::weak_id(K));
 }
 
-void Kinds::RunTime::emit_weak_id(kind *K) {
+void RTKinds::emit_weak_id(kind *K) {
 	if (K == NULL) { Emit::array_iname_entry(Kinds::Constructors::UNKNOWN_iname()); return; }
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::iname(con);
 	if (iname) Emit::array_iname_entry(iname);
-	else Emit::array_numeric_entry((inter_ti) (Kinds::RunTime::weak_id(K)));
+	else Emit::array_numeric_entry((inter_ti) (RTKinds::weak_id(K)));
 }
 
-void Kinds::RunTime::emit_weak_id_as_val(kind *K) {
+void RTKinds::emit_weak_id_as_val(kind *K) {
 	if (K == NULL) internal_error("cannot emit null kind as val");
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::iname(con);
 	if (iname) Produce::val_iname(Emit::tree(), K_value, iname);
-	else Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (Kinds::RunTime::weak_id(K)));
+	else Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (RTKinds::weak_id(K)));
 }
 
 @ The strong ID is a faithful representation of the |kind| structure,
@@ -554,21 +554,21 @@ ensure that we always point to the same array every time the same construction
 turns up. This means remembering everything we've seen, using a new structure:
 
 =
-void Kinds::RunTime::emit_strong_id(kind *K) {
-	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
+void RTKinds::emit_strong_id(kind *K) {
+	runtime_kind_structure *rks = RTKinds::get_rks(K);
 	if (rks) {
 		Emit::array_iname_entry(rks->rks_iname);
 	} else {
-		Kinds::RunTime::emit_weak_id(K);
+		RTKinds::emit_weak_id(K);
 	}
 }
 
-void Kinds::RunTime::emit_strong_id_as_val(kind *K) {
-	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
+void RTKinds::emit_strong_id_as_val(kind *K) {
+	runtime_kind_structure *rks = RTKinds::get_rks(K);
 	if (rks) {
 		Produce::val_iname(Emit::tree(), K_value, rks->rks_iname);
 	} else {
-		Kinds::RunTime::emit_weak_id_as_val(K);
+		RTKinds::emit_weak_id_as_val(K);
 	}
 }
 
@@ -577,14 +577,14 @@ ID is the same as its strong ID -- if it's a base kind, in other words --
 and otherwise return a pointer to a unique |runtime_kind_structure| for $K$.
 
 Note that a |CON_TUPLE_ENTRY| node is recursed downwards through, to ensure
-that its leaves are passed through |Kinds::RunTime::get_rks|, but no RKS structure is made
+that its leaves are passed through |RTKinds::get_rks|, but no RKS structure is made
 for it -- this is because none is needed, since we're going to roll up
 tuple subtrees into flat arrays. Recall that |CON_TUPLE_ENTRY| nodes are
 "punctuation", not base kinds in their own right. We can never see them
 here except as a result of recursion.
 
 =
-runtime_kind_structure *Kinds::RunTime::get_rks(kind *K) {
+runtime_kind_structure *RTKinds::get_rks(kind *K) {
 	kind *divert = Kinds::Behaviour::stored_as(K);
 	if (divert) K = divert;
 	runtime_kind_structure *rks = NULL;
@@ -596,14 +596,14 @@ runtime_kind_structure *Kinds::RunTime::get_rks(kind *K) {
 			switch (arity) {
 				case 1: {
 					kind *k = Kinds::unary_construction_material(K);
-					Kinds::RunTime::get_rks(k);
+					RTKinds::get_rks(k);
 					break;
 				}
 				case 2: {
 					kind *k = NULL, *l = NULL;
 					Kinds::binary_construction_material(K, &k, &l);
-					Kinds::RunTime::get_rks(k);
-					Kinds::RunTime::get_rks(l);
+					RTKinds::get_rks(k);
+					RTKinds::get_rks(l);
 					break;
 				}
 			}
@@ -645,15 +645,15 @@ compile under Inform 6.
 values for kinds, since both involve tracking constructions uniquely.
 
 =
-inter_name *Kinds::RunTime::compile_default_value_inner(kind *K) {
-	Kinds::RunTime::precompile_default_value(K);
-	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
+inter_name *RTKinds::compile_default_value_inner(kind *K) {
+	RTKinds::precompile_default_value(K);
+	runtime_kind_structure *rks = RTKinds::get_rks(K);
 	if (rks == NULL) return NULL;
 	return rks->rks_dv_iname;
 }
 
-int Kinds::RunTime::precompile_default_value(kind *K) {
-	runtime_kind_structure *rks = Kinds::RunTime::get_rks(K);
+int RTKinds::precompile_default_value(kind *K) {
+	runtime_kind_structure *rks = RTKinds::get_rks(K);
 	if (rks == NULL) return FALSE;
 	rks->make_default = TRUE;
 	if (rks->default_requested_here == NULL) rks->default_requested_here = current_sentence;
@@ -663,7 +663,7 @@ int Kinds::RunTime::precompile_default_value(kind *K) {
 @ Convenient storage for some names.
 
 =
-inter_name *Kinds::RunTime::get_kind_GPR_iname(kind *K) {
+inter_name *RTKinds::get_kind_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->kind_GPR_iname == NULL) {
@@ -673,7 +673,7 @@ inter_name *Kinds::RunTime::get_kind_GPR_iname(kind *K) {
 	return con->kind_GPR_iname;
 }
 
-inter_name *Kinds::RunTime::get_instance_GPR_iname(kind *K) {
+inter_name *RTKinds::get_instance_GPR_iname(kind *K) {
 	if (K == NULL) return NULL;
 	kind_constructor *con = Kinds::get_construct(K);
 	if (con->instance_GPR_iname == NULL) {
@@ -690,12 +690,12 @@ compiled the arrays themselves; so we do that now.
 Because these are recursive structures -- the array for a strong ID often
 contains references to other strong ID arrays -- it may look as if there's
 a risk of further RKS structures being generated, which might make the loop
-behave oddly. But this doesn't happen because |Kinds::RunTime::get_rks| has already
+behave oddly. But this doesn't happen because |RTKinds::get_rks| has already
 recursively scanned through for us, so that if we have seen a construction
 $K$, we have also seen its bases.
 
 =
-void Kinds::RunTime::compile_structures(void) {
+void RTKinds::compile_structures(void) {
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
 		kind *K = rks->kind_described;
@@ -707,7 +707,7 @@ void Kinds::RunTime::compile_structures(void) {
 
 @<Compile the runtime ID structure for this kind@> =
 	packaging_state save = Emit::named_array_begin(rks->rks_iname, K_value);
-	Kinds::RunTime::emit_weak_id(K);
+	RTKinds::emit_weak_id(K);
 	@<Compile the list of strong IDs for the bases@>;
 	Emit::array_end(save);
 
@@ -718,7 +718,7 @@ void Kinds::RunTime::compile_structures(void) {
 		kind *X = NULL, *result = NULL;
 		Kinds::binary_construction_material(K, &X, &result);
 		@<Expand out a tuple subtree into a simple array@>;
-		Kinds::RunTime::emit_strong_id(result);
+		RTKinds::emit_strong_id(result);
 	} else if (Kinds::get_construct(K) == CON_combination) {
 		arity--;
 		kind *X = Kinds::unary_construction_material(K);
@@ -732,14 +732,14 @@ void Kinds::RunTime::compile_structures(void) {
 	switch (arity) {
 		case 1: {
 			kind *X = Kinds::unary_construction_material(K);
-			Kinds::RunTime::emit_strong_id(X);
+			RTKinds::emit_strong_id(X);
 			break;
 		}
 		case 2: {
 			kind *X = NULL, *Y = NULL;
 			Kinds::binary_construction_material(K, &X, &Y);
-			Kinds::RunTime::emit_strong_id(X);
-			Kinds::RunTime::emit_strong_id(Y);
+			RTKinds::emit_strong_id(X);
+			RTKinds::emit_strong_id(Y);
 			break;
 		}
 	}
@@ -755,7 +755,7 @@ void Kinds::RunTime::compile_structures(void) {
 		arity++;
 		kind *term = NULL;
 		Kinds::binary_construction_material(X, &term, &X);
-		Kinds::RunTime::emit_strong_id(term);
+		RTKinds::emit_strong_id(term);
 	}
 
 @<Compile a constructed default value for this kind@> =
@@ -790,7 +790,7 @@ void Kinds::RunTime::compile_structures(void) {
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, k_s);
-					Kinds::RunTime::emit_strong_id_as_val(K);
+					RTKinds::emit_strong_id_as_val(K);
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
@@ -820,7 +820,7 @@ how the job is done.
 =
 int total_heap_allocation = 0;
 
-void Kinds::RunTime::ensure_basic_heap_present(void) {
+void RTKinds::ensure_basic_heap_present(void) {
 	total_heap_allocation += 256; /* enough for the initial free-space block */
 }
 
@@ -829,7 +829,7 @@ data on the heap for any permanent storage objects (global variables,
 property values, table entries, list items) of pointer-value kinds:
 
 =
-void Kinds::RunTime::compile_heap_allocator(void) {
+void RTKinds::compile_heap_allocator(void) {
 	@<Compile a constant for the heap size needed@>;
 }
 
@@ -848,9 +848,9 @@ has essentially no memory constraints compared with the Z-machine.
 		total_heap_allocation = global_compilation_settings.dynamic_memory_allocation;
 	while (max_heap < total_heap_allocation) max_heap = max_heap*2;
 	if (TargetVMs::is_16_bit(Task::vm()))
-		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), max_heap);
+		RTKinds::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), max_heap);
 	else
-		Kinds::RunTime::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), 4*max_heap);
+		RTKinds::compile_nnci(Hierarchy::find(MEMORY_HEAP_SIZE_HL), 4*max_heap);
 	LOG("Providing for a total heap of %d, given requirement of %d\n",
 		max_heap, total_heap_allocation);
 
@@ -869,7 +869,7 @@ typedef struct heap_allocation {
 	int stack_offset;
 } heap_allocation;
 
-heap_allocation Kinds::RunTime::make_heap_allocation(kind *K, int multiplier,
+heap_allocation RTKinds::make_heap_allocation(kind *K, int multiplier,
 	int stack_offset) {
 	if (Kinds::Behaviour::uses_pointer_values(K) == FALSE)
 		internal_error("unable to allocate heap storage for this kind of value");
@@ -879,7 +879,7 @@ heap_allocation Kinds::RunTime::make_heap_allocation(kind *K, int multiplier,
 	total_heap_allocation += (Kinds::Behaviour::get_heap_size_estimate(K) + 8)*multiplier;
 
 	if (Kinds::get_construct(K) == CON_relation)
-		Kinds::RunTime::precompile_default_value(K);
+		RTKinds::precompile_default_value(K);
 
 	heap_allocation ha;
 	ha.allocated_kind = K;
@@ -887,19 +887,19 @@ heap_allocation Kinds::RunTime::make_heap_allocation(kind *K, int multiplier,
 	return ha;
 }
 
-void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {
+void RTKinds::emit_heap_allocation(heap_allocation ha) {
 	if (ha.stack_offset >= 0) {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATEONSTACK_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
 		Produce::down(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ha.stack_offset);
-		Kinds::RunTime::emit_strong_id_as_val(ha.allocated_kind);
+		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
 		Produce::up(Emit::tree());
 	} else {
 		inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 		Produce::inv_call_iname(Emit::tree(), iname);
 		Produce::down(Emit::tree());
-		Kinds::RunTime::emit_strong_id_as_val(ha.allocated_kind);
+		RTKinds::emit_strong_id_as_val(ha.allocated_kind);
 		Produce::up(Emit::tree());
 	}
 }
@@ -913,7 +913,7 @@ void Kinds::RunTime::emit_heap_allocation(heap_allocation ha) {
 @d BLK_FLAG_TRUNCMULT 0x00000010
 
 =
-void Kinds::RunTime::emit_block_value_header(kind *K, int individual, int size) {
+void RTKinds::emit_block_value_header(kind *K, int individual, int size) {
 	if (individual == FALSE) Emit::array_numeric_entry(0);
 	int n = 0, c = 1, w = 4;
 	if (TargetVMs::is_16_bit(Task::vm())) w = 2;
@@ -925,7 +925,7 @@ void Kinds::RunTime::emit_block_value_header(kind *K, int individual, int size) 
 		Emit::array_numeric_entry((inter_ti) (0x100*n + flags));
 	else
 		Emit::array_numeric_entry((inter_ti) (0x1000000*n + 0x10000*flags));
-	Kinds::RunTime::emit_weak_id(K);
+	RTKinds::emit_weak_id(K);
 
 	Emit::array_MPN_entry();
 }
@@ -935,7 +935,7 @@ The following generates a small suite of I6 routines associated with
 each such kind, and needed at run-time.
 
 =
-int Kinds::RunTime::base_represented_in_inter(kind *K) {
+int RTKinds::base_represented_in_inter(kind *K) {
 	if ((Kinds::Behaviour::is_kind_of_kind(K) == FALSE) &&
 		(Kinds::is_proper_constructor(K) == FALSE) &&
 		(K != K_void) &&
@@ -955,15 +955,15 @@ typedef struct kind_interaction {
 @d MAX_KIND_ARITY 32
 
 =
-inter_name *Kinds::RunTime::iname(kind *K) {
-	if (Kinds::RunTime::base_represented_in_inter(K) == FALSE) {
+inter_name *RTKinds::iname(kind *K) {
+	if (RTKinds::base_represented_in_inter(K) == FALSE) {
 		kind_interaction *KI;
 		LOOP_OVER(KI, kind_interaction)
 			if (Kinds::eq(K, KI->noted_kind))
 				return KI->noted_iname;
 	}
-	inter_name *S = Kinds::RunTime::iname_inner(K);
-	if (Kinds::RunTime::base_represented_in_inter(K) == FALSE) {
+	inter_name *S = RTKinds::iname_inner(K);
+	if (RTKinds::base_represented_in_inter(K) == FALSE) {
 		kind_interaction *KI = CREATE(kind_interaction);
 		KI->noted_kind = K;
 		KI->noted_iname = S;
@@ -1037,42 +1037,42 @@ inter_name *Kinds::RunTime::iname(kind *K) {
 
 @ =
 int object_kind_count = 1;
-inter_name *Kinds::RunTime::iname_inner(kind *K) {
+inter_name *RTKinds::iname_inner(kind *K) {
 	if (Kinds::is_proper_constructor(K)) {
-		return Kinds::RunTime::constructed_kind_name(K);
+		return RTKinds::constructed_kind_name(K);
 	}
-	if (Kinds::RunTime::base_represented_in_inter(K)) {
-		return Kinds::RunTime::assure_iname_exists(K);
+	if (RTKinds::base_represented_in_inter(K)) {
+		return RTKinds::assure_iname_exists(K);
 	}
 	return NULL;
 }
 
-inter_name *Kinds::RunTime::assure_iname_exists(kind *K) {
+inter_name *RTKinds::assure_iname_exists(kind *K) {
 	noun *nt = Kinds::Behaviour::get_noun(K);
 	if (nt) {
 		if (NounIdentifiers::iname_set(nt) == FALSE) {
-			inter_name *iname = Kinds::RunTime::constructed_kind_name(K);
+			inter_name *iname = RTKinds::constructed_kind_name(K);
 			NounIdentifiers::noun_impose_identifier(nt, iname);
 		}
 	}
 	return NounIdentifiers::iname(nt);
 }
 
-inter_name *Kinds::RunTime::constructed_kind_name(kind *K) {
+inter_name *RTKinds::constructed_kind_name(kind *K) {
 	package_request *R2 = Kinds::Behaviour::package(K);
 	TEMPORARY_TEXT(KT)
 	Kinds::Textual::write(KT, K);
 	wording W = Feeds::feed_text(KT);
 	DISCARD_TEXT(KT)
 	int v = -2;
-	if (Kinds::Behaviour::is_subkind_of_object(K)) v = Kinds::RunTime::I6_classnumber(K);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) v = RTKinds::I6_classnumber(K);
 	return Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R2, W, v);
 }
 
 @ =
-void Kinds::RunTime::emit(kind *K) {
+void RTKinds::emit(kind *K) {
 	if (K == NULL) internal_error("tried to emit null kind");
-	if (Emit::defined(Kinds::RunTime::iname(K))) return;
+	if (Emit::defined(RTKinds::iname(K))) return;
 	inter_ti dt = INT32_IDT;
 	if (K == K_object) dt = ENUM_IDT;
 	if (Kinds::Behaviour::is_an_enumeration(K)) dt = ENUM_IDT;
@@ -1082,33 +1082,33 @@ void Kinds::RunTime::emit(kind *K) {
 	kind *S = Latticework::super(K);
 	if ((S) && (Kinds::conforms_to(S, K_object) == FALSE)) S = NULL;
 	if (S) {
-		Kinds::RunTime::emit(S);
+		RTKinds::emit(S);
 		dt = ENUM_IDT;
 	}
-	Emit::kind(Kinds::RunTime::iname(K), dt, S?Kinds::RunTime::iname(S):NULL, BASE_ICON, 0, NULL);
+	Emit::kind(RTKinds::iname(K), dt, S?RTKinds::iname(S):NULL, BASE_ICON, 0, NULL);
 	if (K == K_object) {
-		Produce::change_translation(Kinds::RunTime::iname(K), I"K0_kind");
-		Hierarchy::make_available(Emit::tree(), Kinds::RunTime::iname(K));
+		Produce::change_translation(RTKinds::iname(K), I"K0_kind");
+		Hierarchy::make_available(Emit::tree(), RTKinds::iname(K));
 	}
 }
 
-void Kinds::RunTime::kind_declarations(void) {
+void RTKinds::kind_declarations(void) {
 	kind *K; inter_ti c = 0;
 	LOOP_OVER_BASE_KINDS(K)
-		if (Kinds::RunTime::base_represented_in_inter(K)) {
-			Kinds::RunTime::emit(K);
-			inter_name *iname = Kinds::RunTime::iname(K);
-			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_ti) Kinds::RunTime::weak_id(K));
+		if (RTKinds::base_represented_in_inter(K)) {
+			RTKinds::emit(K);
+			inter_name *iname = RTKinds::iname(K);
+			Produce::annotate_i(iname, WEAK_ID_IANN, (inter_ti) RTKinds::weak_id(K));
 			Produce::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
 
-void Kinds::RunTime::compile_nnci(inter_name *name, int val) {
+void RTKinds::compile_nnci(inter_name *name, int val) {
 	Emit::named_numeric_constant(name, (inter_ti) val);
 	Hierarchy::make_available(Emit::tree(), name);
 }
 
-void Kinds::RunTime::compile_instance_counts(void) {
+void RTKinds::compile_instance_counts(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) || (Kinds::Behaviour::is_object(K))) {
@@ -1127,17 +1127,17 @@ void Kinds::RunTime::compile_instance_counts(void) {
 		}
 	}
 
-	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
-	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
+	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
+	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
 	#ifdef IF_MODULE
-	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
+	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
 	#endif
-	Kinds::RunTime::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), TextLiterals::CCOUNT_QUOTATIONS());
-	Kinds::RunTime::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), max_frame_size_needed);
-	Kinds::RunTime::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
+	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), TextLiterals::CCOUNT_QUOTATIONS());
+	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), max_frame_size_needed);
+	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }
 
-void Kinds::RunTime::compile_data_type_support_routines(void) {
+void RTKinds::compile_data_type_support_routines(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
@@ -1176,7 +1176,7 @@ compilation errors.
 	packaging_state save = Routines::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::add_named_call_as_symbol(I"value");
 	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "! weak kind ID: %d\n", Kinds::RunTime::weak_id(K));
+	WRITE_TO(C, "! weak kind ID: %d\n", RTKinds::weak_id(K));
 	Emit::code_comment(C);
 	DISCARD_TEXT(C)
 	Produce::inv_primitive(Emit::tree(), PRINT_BIP);
@@ -1505,7 +1505,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) continue;
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K);
+				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					inter_name *pname = Kinds::Behaviour::get_iname(K);
@@ -1564,7 +1564,7 @@ which have to be given some type-safe value to start out at.
 		if (Kinds::Behaviour::definite(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K);
+				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1576,7 +1576,7 @@ which have to be given some type-safe value to start out at.
 								Produce::val_symbol(Emit::tree(), K_value, sk_s);
 							Produce::up(Emit::tree());
 						} else {
-							Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
+							RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, "list entry");
 						}
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -1636,7 +1636,7 @@ unless the two values are genuinely equal.
 			(Kinds::Behaviour::uses_signed_comparisons(K) == FALSE)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K);
+				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1691,7 +1691,7 @@ unless the two values are genuinely equal.
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K);
+				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1747,7 +1747,7 @@ storing pointers to blocks on the heap.
 			if (Kinds::Behaviour::uses_pointer_values(K)) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Kinds::RunTime::emit_weak_id_as_val(K);
+					RTKinds::emit_weak_id_as_val(K);
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						Produce::rtrue(Emit::tree());
@@ -1791,7 +1791,7 @@ such a function does, see "BlockValues.i6t".
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K);
+				RTKinds::emit_weak_id_as_val(K);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -1827,7 +1827,7 @@ making it a routine rather than using an array saves a few bytes of precious
 Z-machine array space.
 
 =
-void Kinds::RunTime::I7_Kind_Name_routine(void) {
+void RTKinds::I7_Kind_Name_routine(void) {
 	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *k_s = LocalVariables::add_named_call_as_symbol(I"k");
@@ -1839,7 +1839,7 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, k_s);
-					Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+					Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
@@ -1859,11 +1859,12 @@ void Kinds::RunTime::I7_Kind_Name_routine(void) {
 
 @ =
 int VM_non_support_problem_issued = FALSE;
-void Kinds::RunTime::notify_of_use(kind *K) {
-	if (Kinds::RunTime::target_VM_supports(K) == FALSE) {
+void RTKinds::notify_of_use(kind *K) {
+	if (RTKinds::target_VM_supports(K) == FALSE) {
 		if (VM_non_support_problem_issued == FALSE) {
 			VM_non_support_problem_issued = TRUE;
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindRequiresGlulx));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_KindRequiresGlulx));
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, K);
 			Problems::issue_problem_segment(
@@ -1876,10 +1877,65 @@ void Kinds::RunTime::notify_of_use(kind *K) {
 	}
 }
 
-int Kinds::RunTime::target_VM_supports(kind *K) {
+int RTKinds::target_VM_supports(kind *K) {
 	target_vm *VM = Task::vm();
 	if (VM == NULL) internal_error("target VM not set yet");
 	if ((Kinds::FloatingPoint::uses_floating_point(K)) &&
 		(TargetVMs::supports_floating_point(VM) == FALSE)) return FALSE;
 	return TRUE;
+}
+
+@ Three method functions for the kinds family of inference subjects:
+
+=
+int RTKinds::emit_element_of_condition(inference_subject_family *family,
+	inference_subject *infs, inter_symbol *t0_s) {
+	kind *K = KindSubjects::to_kind(infs);
+	if (Kinds::Behaviour::is_subkind_of_object(K)) {
+		Produce::inv_primitive(Emit::tree(), OFCLASS_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_symbol(Emit::tree(), K_value, t0_s);
+			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
+		Produce::up(Emit::tree());
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_object)) {
+		Produce::val_symbol(Emit::tree(), K_value, t0_s);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@ These functions emit the great stream of Inter commands needed to define the
+kinds and their properties.
+
+First, we will call |Properties::Emit::emit_subject| for all kinds of object,
+beginning with object and working downwards through the tree of its subkinds.
+After that, we call it for all other kinds able to have properties, in no
+particular order.
+
+=
+int RTKinds::emit_all(inference_subject_family *f, int ignored) {
+	inter_name *iname = Hierarchy::find(MAX_WEAK_ID_HL);
+	Emit::named_numeric_constant(iname, (inter_ti) next_free_data_type_ID);
+	RTKinds::emit_recursive(KindSubjects::from_kind(K_object));
+	return FALSE;
+}
+
+void RTKinds::emit_recursive(inference_subject *within) {
+	Properties::Emit::emit_subject(within);
+	inference_subject *subj;
+	LOOP_OVER(subj, inference_subject)
+		if ((InferenceSubjects::narrowest_broader_subject(subj) == within) &&
+			(InferenceSubjects::is_a_kind_of_object(subj))) {
+			RTKinds::emit_recursive(subj);
+		}
+}
+
+void RTKinds::emit_one(inference_subject_family *f, inference_subject *infs) {
+	kind *K = KindSubjects::to_kind(infs);
+	if ((KindSubjects::has_properties(K)) &&
+		(Kinds::Behaviour::is_object(K) == FALSE))
+		Properties::Emit::emit_subject(infs);
+	Properties::OfValues::check_allowable(K);
 }

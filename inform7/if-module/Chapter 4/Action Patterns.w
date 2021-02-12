@@ -1401,7 +1401,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	int flag_bits = 0;
 	if (Kinds::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
 	if (Kinds::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
-	if (flag_bits > 0) Kinds::RunTime::ensure_basic_heap_present();
+	if (flag_bits > 0) RTKinds::ensure_basic_heap_present();
 
 	if (ap->request) flag_bits += 1;
 
@@ -1655,10 +1655,10 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 
 @ =
 void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *ap) {
-	inter_name *N = Kinds::RunTime::new_block_constant_iname();
+	inter_name *N = RTKinds::new_block_constant_iname();
 	packaging_state save = Emit::named_late_array_begin(N, K_value);
 
-	Kinds::RunTime::emit_block_value_header(K_stored_action, FALSE, 6);
+	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
 	action_name *an = PL::Actions::ConstantLists::get_singleton_action(ap->action);
 	Emit::array_action_entry(an);
 

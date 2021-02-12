@@ -253,7 +253,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 				Produce::val_symbol(Emit::tree(), K_value, pos_s);
 			Produce::up(Emit::tree());
 			if (Kinds::Behaviour::uses_pointer_values(K))
-				Kinds::RunTime::emit_heap_allocation(Kinds::RunTime::make_heap_allocation(K, 1, -1));
+				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
 			else
 				NonlocalVariables::emit_initial_value_as_val(q);
 		Produce::up(Emit::tree());

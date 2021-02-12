@@ -645,7 +645,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 	if (K) {
 		Frames::emit_allocation(K);
-		Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
+		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 	}
 	Produce::up(Emit::tree());
 	while (Produce::level(Emit::tree()) > L) Produce::up(Emit::tree());
@@ -663,7 +663,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 		Produce::down(Emit::tree());
 			Frames::emit_allocation(K);
 			Specifications::Compiler::emit_as_val(K_value, spec);
-			Kinds::RunTime::emit_strong_id_as_val(Kinds::unary_construction_material(K));
+			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
@@ -1004,7 +1004,7 @@ int Calculus::Deferrals::write_loop_schema(i6_schema *sch, kind *K) {
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		if (PL::Counting::optimise_loop(sch, K) == FALSE)
 			Calculus::Schemas::modify(sch, "objectloop (*1 ofclass %n)",
-				Kinds::RunTime::I6_classname(K));
+				RTKinds::I6_classname(K));
 		return TRUE;
 	}
 
@@ -1125,7 +1125,7 @@ void Calculus::Deferrals::emit_loop_over_list_S(parse_node *spec, local_variable
 							Produce::ref_symbol(Emit::tree(), K_value, val_var_s);
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECREATE_HL));
 							Produce::down(Emit::tree());
-								Kinds::RunTime::emit_strong_id_as_val(CK);
+								RTKinds::emit_strong_id_as_val(CK);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 						Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPYAZ_HL));

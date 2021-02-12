@@ -121,7 +121,7 @@ later on.)
 	I->index_appearances = 0;
 	I->first_noted_usage = NULL;
 	I->last_noted_usage = NULL;
-	I->as_subject = Instances::make_subject(I, K);
+	I->as_subject = InstanceSubjects::new(I, K);
 
 @ When we create instances of a kind whose name coincides with a property
 used as a condition, as here:
@@ -419,7 +419,7 @@ specialised than which other ones, and by making a call, we can find out.
 kind *Instances::to_kind(instance *I) {
 	if (I == NULL) return NULL;
 	inference_subject *inherits_from = InferenceSubjects::narrowest_broader_subject(I->as_subject);
-	return Kinds::Knowledge::from_infs(inherits_from);
+	return KindSubjects::to_kind(inherits_from);
 }
 
 int Instances::of_kind(instance *I, kind *match) {
@@ -448,7 +448,7 @@ void Instances::set_kind(instance *I, kind *new) {
 		return;
 	}
 	Plugins::Call::set_kind_notify(I, new);
-	InferenceSubjects::falls_within(I->as_subject, Kinds::Knowledge::as_subject(new));
+	InferenceSubjects::falls_within(I->as_subject, KindSubjects::from_kind(new));
 	Assertions::Assemblies::satisfies_generalisations(I->as_subject);
 	I->instance_of_set_at = current_sentence;
 	LOGIF(KIND_CHANGES, "Setting kind of $O to %u\n", I, new);
@@ -596,93 +596,6 @@ void Instances::index_usages(OUTPUT_STREAM, instance *I) {
 	if (k > 0) HTML_CLOSE("p");
 }
 
-@h As subjects.
-Some methods for instances as inference subjects:
-
-=
-inference_subject_family *instances_family = NULL;
-
-inference_subject_family *Instances::family(void) {
-	if (instances_family == NULL) {
-		instances_family = InferenceSubjects::new_family();
-		METHOD_ADD(instances_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
-			Instances::certainty);
-		METHOD_ADD(instances_family, EMIT_ALL_INFS_MTID, Instances::SUBJ_compile_all);
-		METHOD_ADD(instances_family, EMIT_ONE_INFS_MTID, Instances::SUBJ_compile);
-		METHOD_ADD(instances_family, CHECK_MODEL_INFS_MTID, Instances::SUBJ_check_model);
-		METHOD_ADD(instances_family, COMPLETE_MODEL_INFS_MTID, Instances::SUBJ_complete_model);
-		METHOD_ADD(instances_family, EMIT_ELEMENT_INFS_MTID, Instances::SUBJ_emit_element_of_condition);
-		METHOD_ADD(instances_family, GET_NAME_TEXT_INFS_MTID, Instances::SUBJ_get_name_text);
-		METHOD_ADD(instances_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, Instances::SUBJ_make_adj_const_domain);
-		METHOD_ADD(instances_family, NEW_PERMISSION_GRANTED_INFS_MTID, Instances::SUBJ_new_permission_granted);
-	}
-	return instances_family;
-}
-
-int Instances::certainty(inference_subject_family *f, inference_subject *infs) {
-	return CERTAIN_CE;	
-}
-
-inference_subject *Instances::make_subject(instance *I, kind *K) {
-	return InferenceSubjects::new(Kinds::Knowledge::as_subject(K),
-		Instances::family(), STORE_POINTER_instance(I), NULL);
-}
-
-instance *Instances::from_infs(inference_subject *infs) {
-	if ((infs) && (infs->infs_family == instances_family))
-		return RETRIEVE_POINTER_instance(infs->represents);
-	return NULL;
-}
-
-instance *Instances::object_from_infs(inference_subject *infs) {
-	if ((infs) && (infs->infs_family == instances_family)) {
-		instance *nc = RETRIEVE_POINTER_instance(infs->represents);
-		if (Kinds::Behaviour::is_object(Instances::to_kind(nc)))
-			return nc;
-	}
-	return NULL;
-}
-
-
-void Instances::SUBJ_get_name_text(inference_subject_family *family,
-	inference_subject *from, wording *W) {
-	instance *I = Instances::from_infs(from);
-	*W = Instances::get_name(I, FALSE);
-}
-
-void Instances::SUBJ_new_permission_granted(inference_subject_family *f,
-	inference_subject *from, general_pointer *G) {
-	*G = STORE_POINTER_property_of_value_storage(
-		Properties::OfValues::get_storage());
-}
-
-void Instances::SUBJ_complete_model(inference_subject_family *family, inference_subject *infs) {
-}
-
-void Instances::SUBJ_check_model(inference_subject_family *family, inference_subject *infs) {
-}
-
-@ See below.
-
-=
-void Instances::SUBJ_make_adj_const_domain(inference_subject_family *family, inference_subject *S,
-	instance *I, property *P) {
-	Instances::make_adj_const_domain(I, P, NULL, Instances::from_infs(S));
-}
-
-@ Since all instances are single values, testing for inclusion under such a
-subject is very simple:
-
-=
-int Instances::SUBJ_emit_element_of_condition(inference_subject_family *family, inference_subject *infs, inter_symbol *t0_s) {
-	instance *I = Instances::from_infs(infs);
-	Produce::inv_primitive(Emit::tree(), EQ_BIP);
-	Produce::down(Emit::tree());
-		Produce::val_symbol(Emit::tree(), K_value, t0_s);
-		Produce::val_iname(Emit::tree(), K_value, Instances::iname(I));
-	Produce::up(Emit::tree());
-	return TRUE;
-}
 
 @ Here's how to place the instance objects in order. The ordering is used not
 only for compilation, but also for instance counting (e.g., marking the
@@ -736,52 +649,6 @@ void Instances::place_objects_in_definition_sequence(void) {
 @d NEXT_IN_COMPILATION_SEQUENCE(I) objects_in_compilation_list[I->allocation_id]
 @d LOOP_OVER_OBJECTS_IN_COMPILATION_SEQUENCE(I)
 	for (I=FIRST_IN_COMPILATION_SEQUENCE; I; I=NEXT_IN_COMPILATION_SEQUENCE(I))
-
-@ Compilation looks tricky only because we need to compile instances in a
-set order which is not the order of their creation. (This is because objects
-must be compiled in containment-tree traversal order in the final Inform 6
-code.) So in reply to a request to compile all instances, we first delegate
-the object instances, then compile the non-object ones (all just constant
-declarations) and finally return |TRUE| to indicate that the task is finished.
-
-=
-int Instances::SUBJ_compile_all(inference_subject_family *family, int ignored) {
-	instance *I;
-	LOOP_OVER_OBJECTS_IN_COMPILATION_SEQUENCE(I)
-		Instances::SUBJ_compile(family, Instances::as_subject(I));
-	LOOP_OVER(I, instance)
-		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
-			Instances::SUBJ_compile(family, Instances::as_subject(I));
-	#ifdef IF_MODULE
-	PL::Naming::compile_small_names();
-	#endif
-	return TRUE;
-}
-
-@ Either way, the actual compilation happens here:
-
-=
-void Instances::SUBJ_compile(inference_subject_family *family, inference_subject *infs) {
-	instance *I = Instances::from_infs(infs);
-	Instances::emitted_iname(I);
-	Properties::emit_instance_permissions(I);
-	Properties::Emit::emit_subject(infs);
-}
-
-inter_name *Instances::emitted_iname(instance *I) {
-	if (I == NULL) return NULL;
-	inter_name *iname = Instances::iname(I);
-	if (I->instance_emitted == FALSE) {
-		I->instance_emitted = TRUE;
-		Emit::instance(iname, Instances::to_kind(I), I->enumeration_index);
-	}
-	return iname;
-}
-
-package_request *Instances::package(instance *I) {
-	Instances::iname(I); // Thus forcing this to exist...
-	return I->instance_package;
-}
 
 @h Adjectival uses of instances.
 Some constant names can be used adjectivally, but not others. This happens

@@ -1270,7 +1270,7 @@ int Equations::enode_typecheck(equation *eqn, equation_node *tok) {
 				tok->gK_before =
 					Kinds::FloatingPoint::new_gk(
 						Node::get_kind_of_value(tok->leaf_constant));
-				if ((tok->enode_promotion) && (Kinds::RunTime::target_VM_supports(K_real_number)))
+				if ((tok->enode_promotion) && (RTKinds::target_VM_supports(K_real_number)))
 					tok->gK_before =
 						Kinds::FloatingPoint::to_real(tok->gK_before);
 				break;
@@ -1737,7 +1737,7 @@ cube roots.
 			Kinds::FloatingPoint::new_gk(K_real_number);
 		old_LHS->enode_operands[1]->rational_n = 1;
 		old_LHS->enode_operands[1]->rational_m = p;
-		Kinds::RunTime::notify_of_use(K_real_number);
+		RTKinds::notify_of_use(K_real_number);
 	}
 
 @ Here we have something like |log x = y| and want to rewrite as |x = exp y|,

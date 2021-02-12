@@ -212,7 +212,7 @@ in the node's subject, so this case is easy.
 
 @<Handle the kind of a "kind of..." clause@> =
 	*governing = p;
-	return Kinds::Knowledge::from_infs(Node::get_subject(p));
+	return KindSubjects::to_kind(Node::get_subject(p));
 
 @ Less surprisingly, "number that varies" and "number" return |K_number|.
 
@@ -653,8 +653,8 @@ to abbreviated forms of object names are normally allowed.
 	else if ((Kinds::Behaviour::definite(create_as)) && (Kinds::Behaviour::is_quasinumerical(create_as)))
 		@<Issue a problem for trying to create an instance of a unit@>
 	else if ((Kinds::Behaviour::definite(create_as)) &&
-		(Kinds::RunTime::defined_by_table(create_as)) &&
-		(Kinds::RunTime::defined_by_table(create_as) != allow_tabular_definitions_from))
+		(RTKinds::defined_by_table(create_as)) &&
+		(RTKinds::defined_by_table(create_as) != allow_tabular_definitions_from))
 		@<Issue a problem for trying to create an instance of a table-defined kind@>
 	else if ((Kinds::Behaviour::definite(create_as)) && (Kinds::Behaviour::has_named_constant_values(create_as)))
 		@<Create an instance of an enumerated kind@>
@@ -757,7 +757,7 @@ them by asserting propositions to be true; we act directly.
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
 	Problems::quote_kind(3, create_as);
-	Problems::quote_table(4, Kinds::RunTime::defined_by_table(create_as));
+	Problems::quote_table(4, RTKinds::defined_by_table(create_as));
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableOfExistingKind2));
 		Problems::issue_problem_segment(
 			"The sentence %1 reads to me as if '%2' refers to something "
@@ -1004,7 +1004,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 @<Check that the new name is non-empty and distinct from all existing ones@> =
 	wording SW = EMPTY_WORDING;
 	if (Wordings::empty(NW))
-		SW = InferenceSubjects::get_name_text(Kinds::Knowledge::as_subject(instance_kind));
+		SW = InferenceSubjects::get_name_text(KindSubjects::from_kind(instance_kind));
 	else if (<s-constant-value>(NW)) SW = NW;
 	if (Wordings::nonempty(SW)) {
 		TEMPORARY_TEXT(textual_count)

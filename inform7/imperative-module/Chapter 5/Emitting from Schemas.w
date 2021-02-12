@@ -180,7 +180,7 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 	int give_kind_id, int give_comparison_routine,
 	int dereference_property, kind *cast_to, int by_reference) {
 	if (give_kind_id) {
-		if (pt) Kinds::RunTime::emit_weak_id_as_val(pt->term_checked_as_kind);
+		if (pt) RTKinds::emit_weak_id_as_val(pt->term_checked_as_kind);
 	} else if (give_comparison_routine) {
 		inter_name *cr = Hierarchy::find(SIGNEDCOMPARE_HL);
 		if ((pt) && (pt->term_checked_as_kind)) {
@@ -198,7 +198,7 @@ void EmitSchemas::sch_emit_parameter(pcalc_term *pt,
 			END_COMPILATION_MODE;
 		} else {
 			int down = FALSE;
-			Kinds::RunTime::emit_cast_call(pt->term_checked_as_kind, cast_to, &down);
+			RTKinds::emit_cast_call(pt->term_checked_as_kind, cast_to, &down);
 			pcalc_term cpt = *pt;
 			if ((dereference_property) &&
 				(Node::is(cpt.constant, CONSTANT_NT))) {

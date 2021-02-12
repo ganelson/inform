@@ -44,7 +44,7 @@ void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol 
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_object(K))
-			PL::Showme::compile_SHOWME_type_subj(val, Kinds::Knowledge::as_subject(K), t_0_s, na_s);
+			PL::Showme::compile_SHOWME_type_subj(val, KindSubjects::from_kind(K), t_0_s, na_s);
 	instance *I;
 	LOOP_OVER_OBJECT_INSTANCES(I)
 		PL::Showme::compile_SHOWME_type_subj(val, Instances::as_subject(I), t_0_s, na_s);
@@ -181,7 +181,7 @@ routine for colours; and the best thing is to print nothing at all.
 				inter_name *iname = Hierarchy::find(GPROPERTY_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
 				Produce::down(Emit::tree());
-					Kinds::RunTime::emit_weak_id_as_val(K_object);
+					RTKinds::emit_weak_id_as_val(K_object);
 					Produce::val_symbol(Emit::tree(), K_value, t_0_s);
 					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
 				Produce::up(Emit::tree());
@@ -213,7 +213,7 @@ routine for colours; and the best thing is to print nothing at all.
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
 					Produce::down(Emit::tree());
-						Kinds::RunTime::emit_weak_id_as_val(K_object);
+						RTKinds::emit_weak_id_as_val(K_object);
 						Produce::val_symbol(Emit::tree(), K_value, t_0_s);
 						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
 					Produce::up(Emit::tree());
@@ -256,7 +256,7 @@ routine for colours; and the best thing is to print nothing at all.
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_iname(K));
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
 		Produce::down(Emit::tree());
-			Kinds::RunTime::emit_weak_id_as_val(K_object);
+			RTKinds::emit_weak_id_as_val(K_object);
 			Produce::val_symbol(Emit::tree(), K_value, t_0_s);
 			Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
 		Produce::up(Emit::tree());

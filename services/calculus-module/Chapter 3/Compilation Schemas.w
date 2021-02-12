@@ -151,7 +151,7 @@ so it would not be safe to store only the textual identifier.
 		case 'd': WRITE("%d", va_arg(ap, int)); break;
 		case 'k':
 			#ifdef CORE_MODULE
-			Kinds::RunTime::write_weak_id(OUT, va_arg(ap, kind *));
+			RTKinds::write_weak_id(OUT, va_arg(ap, kind *));
 			#endif
 			#ifndef CORE_MODULE
 			WRITE("{%u}", va_arg(ap, kind *));

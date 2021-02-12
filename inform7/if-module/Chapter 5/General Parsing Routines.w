@@ -185,7 +185,7 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
 			== FALSE) return FALSE;
 	}
 
-	if (Kinds::Knowledge::from_infs(subj)) test_distinguishability = TRUE;
+	if (KindSubjects::to_kind(subj)) test_distinguishability = TRUE;
 
 	inter_name *compile_to = rname;
 	if (compile_to == NULL) compile_to = N;
@@ -1081,7 +1081,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
 					Produce::inv_primitive(Emit::tree(), EQ_BIP);
 					Produce::down(Emit::tree());
-						Produce::inv_call_iname(Emit::tree(), Kinds::RunTime::get_instance_GPR_iname(K));
+						Produce::inv_call_iname(Emit::tree(), RTKinds::get_instance_GPR_iname(K));
 						Produce::down(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 							Produce::down(Emit::tree());
@@ -1096,7 +1096,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);
 						Produce::down(Emit::tree());
-							Produce::inv_call_iname(Emit::tree(), Kinds::RunTime::get_kind_GPR_iname(K));
+							Produce::inv_call_iname(Emit::tree(), RTKinds::get_kind_GPR_iname(K));
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_NUMBER_HL));
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), EQ_BIP);

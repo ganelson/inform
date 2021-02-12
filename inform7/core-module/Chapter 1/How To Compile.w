@@ -145,7 +145,7 @@ so on. Those absolute basics are made here.
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
-	BENCH(Kinds::RunTime::kind_declarations)
+	BENCH(RTKinds::kind_declarations)
 	BENCH(RTUseOptions::compile)
 	BENCH(Properties::emit)
 	BENCH(Properties::Emit::allocate_attributes)
@@ -180,7 +180,7 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::traverse_to_stock)
 	BENCH(Properties::annotate_attributes)
 	BENCH(Rulebooks::Outcomes::RulebookOutcomePrintingRule)
-	BENCH(Kinds::RunTime::compile_instance_counts)
+	BENCH(RTKinds::compile_instance_counts)
 
 @<Generate inter@> =
 	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
@@ -197,8 +197,8 @@ so on. Those absolute basics are made here.
 	BENCH(Activities::Activity_after_rulebooks_array)
 	BENCH(Activities::Activity_atb_rulebooks_array)
 	BENCH(RTRelations::compile_defined_relation_constants)
-	BENCH(Kinds::RunTime::compile_data_type_support_routines)
-	BENCH(Kinds::RunTime::I7_Kind_Name_routine)
+	BENCH(RTKinds::compile_data_type_support_routines)
+	BENCH(RTKinds::I7_Kind_Name_routine)
 	BENCH(World::Compile::compile)
 	BENCH_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines)
 	BENCH_IF(map_plugin, PL::Map::write_door_dir_routines)
@@ -266,9 +266,9 @@ so on. Those absolute basics are made here.
 	BENCH(ConstantLists::compile)
 	BENCH(TextLiterals::compile)
 	BENCH(JumpLabels::compile_necessary_storage)
-	BENCH(Kinds::RunTime::compile_heap_allocator)
+	BENCH(RTKinds::compile_heap_allocator)
 	BENCH(Phrases::Constants::compile_closures)
-	BENCH(Kinds::RunTime::compile_structures)
+	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(Phrases::Timed::check_for_unused)
 	BENCH(PL::Showme::compile_SHOWME_details)

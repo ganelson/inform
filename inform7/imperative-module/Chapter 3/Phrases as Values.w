@@ -131,7 +131,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 	inter_name *iname = Phrases::Constants::iname(cphr);
 	packaging_state save = Emit::named_array_begin(iname, K_value);
 
-	Kinds::RunTime::emit_strong_id(cphr->cphr_kind);
+	RTKinds::emit_strong_id(cphr->cphr_kind);
 
 	inter_name *RS = Routines::ToPhrases::make_iname(ph,
 		Phrases::Constants::kind(cphr));
@@ -173,7 +173,7 @@ made above.
 
 @<Compile the default closure@> =
 	packaging_state save = Emit::named_array_begin(closure_identifier, K_value);
-	Kinds::RunTime::emit_strong_id(K);
+	RTKinds::emit_strong_id(K);
 	Emit::array_iname_entry(rname);
 	TEMPORARY_TEXT(DVT)
 	WRITE_TO(DVT, "default value of "); Kinds::Textual::write(DVT, K);
@@ -203,10 +203,10 @@ made above.
 			inter_name *iname = Hierarchy::find(BLKVALUECREATE_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
 			Produce::down(Emit::tree());
-			Kinds::RunTime::emit_strong_id_as_val(result);
+			RTKinds::emit_strong_id_as_val(result);
 			Produce::up(Emit::tree());
 		} else {
-			if (Kinds::RunTime::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
+			if (RTKinds::emit_default_value_as_val(result, EMPTY_WORDING, NULL) != TRUE)
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		}
 

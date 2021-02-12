@@ -552,7 +552,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			Produce::inv_primitive(Emit::tree(), OBJECTLOOP_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K_object));
+				Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K_object));
 				Produce::inv_primitive(Emit::tree(), IN_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
@@ -846,7 +846,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
 					Produce::down(Emit::tree());
 						Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-						Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+						Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -929,7 +929,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Produce::inv_primitive(Emit::tree(), OBJECTLOOPX_BIP);
 						Produce::down(Emit::tree());
 							Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-							Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
 								Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1064,7 +1064,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							if (Str::len(i6_gpr_name) > 0)
 								Produce::val_iname(Emit::tree(), K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::get_kind_GPR_iname(K));
+								Produce::val_iname(Emit::tree(), K_value, RTKinds::get_kind_GPR_iname(K));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1085,7 +1085,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					if (Str::len(i6_gpr_name) > 0)
 						Emit::array_iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 					else
-						Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
+						Emit::array_iname_entry(RTKinds::get_kind_GPR_iname(K));
 				}
 				return K;
 			}
@@ -1189,7 +1189,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									if (Str::len(i6_gpr_name) > 0)
 										Produce::val_iname(Emit::tree(), K_value, Produce::find_by_name(Emit::tree(), i6_gpr_name));
 									else
-										Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::get_kind_GPR_iname(K));
+										Produce::val_iname(Emit::tree(), K_value, RTKinds::get_kind_GPR_iname(K));
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1210,7 +1210,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							if (Str::len(i6_gpr_name) > 0)
 								Emit::array_iname_entry(Produce::find_by_name(Emit::tree(), i6_gpr_name));
 							else
-								Emit::array_iname_entry(Kinds::RunTime::get_kind_GPR_iname(K));
+								Emit::array_iname_entry(RTKinds::get_kind_GPR_iname(K));
 						}
 					} else if (Kinds::Behaviour::is_object(K)) {
 						if (code_mode) {

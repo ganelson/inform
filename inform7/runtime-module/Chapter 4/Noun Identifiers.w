@@ -76,7 +76,7 @@ instance, the Standard Rules want the player-character object to be called
 void NounIdentifiers::name_all(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
-		Kinds::RunTime::assure_iname_exists(K);
+		RTKinds::assure_iname_exists(K);
 	SyntaxTree::traverse(Task::syntax_tree(), NounIdentifiers::visit_to_name);
 }
 

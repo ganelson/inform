@@ -213,7 +213,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 			return;
 	dw = CREATE(dval_written);
 	dw->K_written = K; dw->v1 = 0; dw->v2 = 0;
-	Kinds::RunTime::get_default_value(&(dw->v1), &(dw->v2), K);
+	RTKinds::get_default_value(&(dw->v1), &(dw->v2), K);
 	if (dw->v1 != 0)
 		Emit::defaultvalue(K, dw->v1, dw->v2);
 }
@@ -237,7 +237,7 @@ void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
 void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
 	Properties::emit_single(P);
 	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
-	inter_symbol *owner_kind = InterNames::to_symbol(Instances::emitted_iname(I));
+	inter_symbol *owner_kind = InterNames::to_symbol(RTInstances::emitted_iname(I));
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(Emit::tree()),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }

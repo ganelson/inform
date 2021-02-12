@@ -198,7 +198,7 @@ int PL::Backdrops::backdrops_intervene_in_assertion(parse_node *px, parse_node *
 				"'everywhere' can only be used to place individual backdrops",
 				"so although 'The mist is a backdrop. The mist is everywhere.' "
 				"would be fine, 'Corruption is everywhere.' would not.");
-		else if (Kinds::Knowledge::from_infs(left_subject))
+		else if (KindSubjects::to_kind(left_subject))
 			StandardProblems::subject_problem_at_sentence(_p_(PM_KindOfBackdropEverywhere),
 				left_subject,
 				"seems to be said to be 'everywhere' in some way",
@@ -271,7 +271,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 	}
 
 @<The object is found only in a few rooms, and no regions, so make it a list@> =
-	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
+	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 	FOUNDIN = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	packaging_state save = Emit::named_array_begin(FOUNDIN, K_value);
 	inference *inf;
@@ -283,7 +283,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
-	package_request *R = Instances::package(I);
+	package_request *R = RTInstances::package(I);
 	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
 	notice->many_places = TRUE;
 	FOUNDIN = notice->found_in_routine_iname;
@@ -296,7 +296,7 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 @<The object is found nowhere, so give it a stub found-in property and mark it absent@> =
 	backdrop_found_in_notice *notice = CREATE(backdrop_found_in_notice);
 	notice->backdrop = I;
-	package_request *R = Instances::package(I);
+	package_request *R = RTInstances::package(I);
 	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
 	notice->many_places = FALSE;
 	FOUNDIN = notice->found_in_routine_iname;

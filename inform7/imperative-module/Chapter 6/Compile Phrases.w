@@ -97,7 +97,7 @@ to us, so we end our routine with code which certainly performs a return.
 	Produce::down(Emit::tree());
 	kind *K = Frames::get_kind_returned();
 	if (K) {
-		if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING,
+		if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING,
 			"value decided by this phrase") != TRUE) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DefaultDecideFails),
 				"it's not possible to decide such a value",

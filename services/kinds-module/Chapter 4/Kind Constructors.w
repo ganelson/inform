@@ -48,7 +48,7 @@ typedef struct kind_constructor {
 	int constant_compilation_method; /* one of the |*_CCM| values */
 
 	/* E: knowledge about values of this kind */
-	struct inference_subject *dt_knowledge; /* inferences about properties */
+	struct inference_subject *base_as_infs; /* inferences about properties */
 	struct text_stream *default_value; /* used for built-in types only */
 
 	/* F: behaviour as a property as well */
@@ -199,8 +199,7 @@ kind_constructor *Kinds::Constructors::new(kind_constructor *super,
 	#endif
 	if (Str::len(source_name) > 0) WRITE_TO(con->name_in_template_code, "%S", source_name);
 	#ifdef CORE_MODULE
-	if ((con != CON_KIND_VARIABLE) && (con != CON_INTERMEDIATE))
-		con->dt_knowledge = Kinds::Knowledge::create_for_constructor(con);
+	KindSubjects::new(con);
 	#endif
 	con->where_defined_in_source_text = current_sentence;
 
@@ -245,7 +244,7 @@ we apply any defaults set in Neptune files.
 	con->constant_compilation_method = NONE_CCM;
 
 	/* E: knowledge about values of this kind */
-	con->dt_knowledge = NULL; /* but will be filled in imminently, in almost all cases */
+	con->base_as_infs = NULL; /* but will be filled in imminently, in almost all cases */
 	con->default_value = Str::new();
 
 	/* F: behaviour as a property as well */

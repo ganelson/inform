@@ -730,7 +730,7 @@ void Properties::emit(void) {
 		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
 			inference_subject *subj = pp->property_owner;
 			if (subj == NULL) internal_error("unowned property");
-			kind *K = Kinds::Knowledge::from_infs(subj);
+			kind *K = KindSubjects::to_kind(subj);
 			if (K) Emit::permission(prn, K, Properties::OfValues::annotate_table_storage(pp));
 		}
 	}
@@ -773,6 +773,6 @@ void Properties::emit_instance_permissions(instance *I) {
 		property *prn = pp->property_granted;
 		if (Properties::is_either_or(prn))
 			if (prn->stored_in_negation) continue;
-		Emit::instance_permission(prn, Instances::emitted_iname(I));
+		Emit::instance_permission(prn, RTInstances::emitted_iname(I));
 	}
 }

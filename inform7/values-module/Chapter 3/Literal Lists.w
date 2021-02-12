@@ -85,7 +85,7 @@ literal_list *Lists::empty_literal(wording W) {
 	ll->first_llist_entry = NULL;
 	ll->list_text = NULL;
 	ll->ll_package = Emit::current_enclosure();
-	Kinds::RunTime::ensure_basic_heap_present();
+	RTKinds::ensure_basic_heap_present();
 	return ll;
 }
 

@@ -374,7 +374,7 @@ its own when kind variables are in play.
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
 	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_allocation(K);
 	else if (K == NULL) @<Issue an inline no-such-kind problem@>
-	else if (Kinds::RunTime::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
+	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
 		@<Issue problem for no natural choice@>;
 	return;
 
@@ -430,13 +430,13 @@ proposition.
 
 @<Inline command "strong-kind"@> =
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
-	if (K) Kinds::RunTime::emit_strong_id_as_val(K);
+	if (K) RTKinds::emit_strong_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
 @<Inline command "weak-kind"@> =
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
-	if (K) Kinds::RunTime::emit_weak_id_as_val(K);
+	if (K) RTKinds::emit_weak_id_as_val(K);
 	else @<Issue an inline no-such-kind problem@>;
 	return;
 
@@ -733,7 +733,7 @@ the problem messages are phrased differently if something goes wrong.
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(CHECKKINDRETURNED_HL));
 		Produce::down(Emit::tree());
 			Specifications::Compiler::emit_to_kind(supplied, kind_needed);
-			Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(kind_needed));
+			Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(kind_needed));
 		Produce::up(Emit::tree());
 	} else @<Issue a problem for returning a value of the wrong kind@>;
 
@@ -1062,7 +1062,7 @@ default values when created, so they are always typesafe anyway.
 			Produce::down(Emit::tree());
 				inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 				Produce::val_symbol(Emit::tree(), K_value, lvar_s);
-				Kinds::RunTime::emit_default_value_as_val(K, Node::get_text(V), "value");
+				RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
 			Produce::up(Emit::tree());
 		}
 	} else {
@@ -1071,7 +1071,7 @@ default values when created, so they are always typesafe anyway.
 		Produce::down(Emit::tree());
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-			rv = Kinds::RunTime::emit_default_value_as_val(K, Node::get_text(V), "value");
+			rv = RTKinds::emit_default_value_as_val(K, Node::get_text(V), "value");
 		Produce::up(Emit::tree());
 
 		if (rv == FALSE) {
@@ -1674,9 +1674,9 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 		kind *K = <<rp>>;
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			if (VH)
-				Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K));
+				Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K));
 			else
-				WRITE_TO(OUT, "%n", Kinds::RunTime::I6_classname(K));
+				WRITE_TO(OUT, "%n", RTKinds::I6_classname(K));
 			return;
 		}
 	}

@@ -64,7 +64,7 @@ numbered 0.
 
 @d INSTANCE_COUNT(I, K)
 	kind_instance_counts[(I)->allocation_id*max_kind_instance_count +
-		Kinds::RunTime::I6_classnumber(K)]
+		RTKinds::I6_classnumber(K)]
 
 =
 int *kind_instance_counts = NULL;
@@ -161,7 +161,7 @@ inter_name *PL::Counting::first_instance(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::first_instance_iname(con);
 	if (iname == NULL) {
-		iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+		iname = Hierarchy::derive_iname_in(FIRST_INSTANCE_HL, RTKinds::iname(K), Kinds::Behaviour::package(K));
 		Kinds::Constructors::set_first_instance_iname(con, iname);
 	}
 	return iname;
@@ -171,14 +171,14 @@ inter_name *PL::Counting::next_instance(kind *K) {
 	kind_constructor *con = Kinds::get_construct(K);
 	inter_name *iname = Kinds::Constructors::next_instance_iname(con);
 	if (iname == NULL) {
-		iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+		iname = Hierarchy::derive_iname_in(NEXT_INSTANCE_HL, RTKinds::iname(K), Kinds::Behaviour::package(K));
 		Kinds::Constructors::set_next_instance_iname(con, iname);
 	}
 	return iname;
 }
 
 inter_name *PL::Counting::instance_count_iname(kind *K) {
-	int N = Kinds::RunTime::I6_classnumber(K);
+	int N = RTKinds::I6_classnumber(K);
 	if (N == 1) return Hierarchy::make_iname_in(COUNT_INSTANCE_1_HL, Kinds::Behaviour::package(K));
 	if (N == 2) return Hierarchy::make_iname_in(COUNT_INSTANCE_2_HL, Kinds::Behaviour::package(K));
 	if (N == 3) return Hierarchy::make_iname_in(COUNT_INSTANCE_3_HL, Kinds::Behaviour::package(K));
@@ -189,7 +189,7 @@ inter_name *PL::Counting::instance_count_iname(kind *K) {
 	if (N == 8) return Hierarchy::make_iname_in(COUNT_INSTANCE_8_HL, Kinds::Behaviour::package(K));
 	if (N == 9) return Hierarchy::make_iname_in(COUNT_INSTANCE_9_HL, Kinds::Behaviour::package(K));
 	if (N == 10) return Hierarchy::make_iname_in(COUNT_INSTANCE_10_HL, Kinds::Behaviour::package(K));
-	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, Kinds::RunTime::iname(K), Kinds::Behaviour::package(K));
+	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKinds::iname(K), Kinds::Behaviour::package(K));
 }
 
 int PL::Counting::counting_compile_model_tables(void) {
@@ -199,7 +199,7 @@ int PL::Counting::counting_compile_model_tables(void) {
 			inter_name *iname = PL::Counting::first_instance(K);
 			instance *next = PL::Counting::next_instance_of(NULL, K);
 			if (next) {
-				Emit::named_iname_constant(iname, K_object, Instances::emitted_iname(next));
+				Emit::named_iname_constant(iname, K_object, RTInstances::emitted_iname(next));
 			} else {
 				Emit::named_iname_constant(iname, K_object, NULL);
 			}
@@ -265,7 +265,7 @@ for the relation-route-finding code at run time.
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			inference_subject *subj = Kinds::Knowledge::as_subject(K);
+			inference_subject *subj = KindSubjects::from_kind(K);
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 
 			COUNTING_DATA(subj)->instance_count_prop =
@@ -282,11 +282,11 @@ for the relation-route-finding code at run time.
 	LOOP_OVER_OBJECT_INSTANCES(I) {
 		@<Fill in the special IK0-Count property@>;
 		inference_subject *infs;
-		for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
+		for (infs = KindSubjects::from_kind(Instances::to_kind(I));
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-			kind *K = Kinds::Knowledge::from_infs(infs);
+			kind *K = KindSubjects::to_kind(infs);
 			if (Kinds::Behaviour::is_subkind_of_object(K)) {
-				inference_subject *subj = Kinds::Knowledge::as_subject(K);
+				inference_subject *subj = KindSubjects::from_kind(K);
 				COUNTING_DATA(subj)->has_instances = TRUE;
 				@<Fill in this IK-Count property@>;
 				@<Fill in this IK-Link property@>;
@@ -335,7 +335,7 @@ records the next instance in compilation order:
 @ =
 inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		inference_subject *subj = Kinds::Knowledge::as_subject(K);
+		inference_subject *subj = KindSubjects::from_kind(K);
 		property *P = COUNTING_DATA(subj)->instance_count_prop;
 		if (P) return Properties::iname(P);
 	}
@@ -349,9 +349,9 @@ per instance per kind, so:
 =
 int PL::Counting::counting_estimate_property_usage(kind *k, int *words_used) {
 	inference_subject *infs;
-	for (infs = InferenceSubjects::narrowest_broader_subject(Kinds::Knowledge::as_subject(k));
+	for (infs = InferenceSubjects::narrowest_broader_subject(KindSubjects::from_kind(k));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		kind *k2 = Kinds::Knowledge::from_infs(infs);
+		kind *k2 = KindSubjects::to_kind(infs);
 		if (Kinds::Behaviour::is_subkind_of_object(k2))
 			*words_used += 4;
 	}
@@ -366,7 +366,7 @@ constants, and use the Link constants to progress; we stop at |nothing|.
 =
 int PL::Counting::optimise_loop(i6_schema *sch, kind *K) {
 	if (Plugins::Manage::plugged_in(counting_plugin) == FALSE) return FALSE;
-	inference_subject *subj = Kinds::Knowledge::as_subject(K);
+	inference_subject *subj = KindSubjects::from_kind(K);
 	if (COUNTING_DATA(subj)->has_instances == FALSE) /* (to avoid writing misleading code) */
 		Calculus::Schemas::modify(sch,
 			"for (*1=nothing: false: )");

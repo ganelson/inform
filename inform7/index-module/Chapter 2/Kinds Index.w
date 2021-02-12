@@ -116,7 +116,7 @@ void Kinds::Index::index_kinds(OUTPUT_STREAM, int pass) {
 		(Kinds::Behaviour::indexed_grey_if_empty(K)))
 			shaded = TRUE;
 	if (Calculus::Deferrals::has_finite_domain(K)) repeat = "tick";
-	if (Kinds::Knowledge::has_properties(K)) props = "tick";
+	if (KindSubjects::has_properties(K)) props = "tick";
 	if (Kinds::Behaviour::offers_I6_GPR(K)) under = "tick";
 	Kinds::Index::begin_chart_row(OUT);
 	Kinds::Index::index_kind_name_cell(OUT, shaded, K);
@@ -248,7 +248,7 @@ is made, so that the following sentence can't have an empty list in it.
 		WRITE("%S", explanation);
 		HTML_TAG("br");
 	}
-	World::Inferences::index(OUT, Kinds::Knowledge::as_subject(K), FALSE);
+	World::Inferences::index(OUT, KindSubjects::from_kind(K), FALSE);
 
 @<Explain about covariance and contravariance@> =
 	HTML_OPEN("p");

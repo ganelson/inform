@@ -73,7 +73,9 @@ subject, it would be the thing subject; and so on.[2]
 which all of the links run upwards to a common root -- the |model_world| subject,
 which represents the entire model.
 
-[2] The subject hierarchy thus contains a duplicate of //kinds: The Lattice of Kinds//,
+[2] The subject hierarchy thus contains the same tree structure of
+//kinds: The Lattice of Kinds//, which is not a coincidence -- see
+//
 but of course it includes instances and much else as well.
 
 @ The top of the inference hierarchy is essentially fixed, and contains a number
@@ -177,7 +179,7 @@ int InferenceSubjects::aliased_but_diverted(inference_subject *infs) {
 		inference_subject *vs =
 			Instances::as_subject(
 				Rvalues::to_object_instance(
-					NonlocalVariables::get_initial_value(
+					VariableSubjects::get_initial_value(
 						infs->alias_variable)));
 		if ((vs) && (vs != infs)) return TRUE;
 	}
@@ -270,7 +272,7 @@ inference_subject *InferenceSubjects::from_specification(parse_node *spec) {
 	inference_subject *infs = NULL;
 	if (Specifications::is_kind_like(spec)) {
 		kind *K = Specifications::to_kind(spec);
-		infs = Kinds::Knowledge::as_subject(K);
+		infs = KindSubjects::from_kind(K);
 	} else {
 		instance *nc = Rvalues::to_instance(spec);
 		if (nc) infs = Instances::as_subject(nc);
@@ -282,10 +284,10 @@ inference_subject *InferenceSubjects::from_specification(parse_node *spec) {
 
 =
 parse_node *InferenceSubjects::as_constant(inference_subject *infs) {
-	kind *K = Kinds::Knowledge::from_infs(infs);
+	kind *K = KindSubjects::to_kind(infs);
 	if (K) return Specifications::from_kind(K);
 
-	instance *nc = Instances::from_infs(infs);
+	instance *nc = InstanceSubjects::to_instance(infs);
 	if (nc) return Rvalues::from_instance(nc);
 
 	return NULL;
@@ -295,12 +297,12 @@ parse_node *InferenceSubjects::as_constant(inference_subject *infs) {
 
 =
 int InferenceSubjects::is_an_object(inference_subject *infs) {
-	if (Instances::object_from_infs(infs)) return TRUE;
+	if (InstanceSubjects::to_object_instance(infs)) return TRUE;
 	return FALSE;
 }
 int InferenceSubjects::is_a_kind_of_object(inference_subject *infs) {
 	if (infs) {
-		kind *K = Kinds::Knowledge::from_infs(infs);
+		kind *K = KindSubjects::to_kind(infs);
 		if ((K) && (Kinds::Behaviour::is_subkind_of_object(K))) return TRUE;
 	}
 	return FALSE;
@@ -314,12 +316,12 @@ void InferenceSubjects::log(inference_subject *infs) {
 	if (infs->infs_name_in_log) { LOG("infs<%s>", infs->infs_name_in_log); return; }
 
 	wording W = InferenceSubjects::get_name_text(infs);
-	kind *K = Kinds::Knowledge::nonobject_from_infs(infs);
+	kind *K = KindSubjects::to_nonobject_kind(infs);
 	if (K) { LOG("infs'%u'-k", K); return; }
 
 	if (Wordings::nonempty(W)) { LOG("infs'%W'", W); return; }
 
-	binary_predicate *bp = KnowledgeAboutRelations::from_infs(infs);
+	binary_predicate *bp = RelationSubjects::to_bp(infs);
 	if (bp) { LOG("infs'%S'", BinaryPredicates::get_log_name(bp)); }
 
 	LOG("infs%d", infs->allocation_id);

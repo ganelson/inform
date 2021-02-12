@@ -289,7 +289,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
 	if (I) World::Inferences::index(OUT, Instances::as_subject(I), TRUE);
-	else World::Inferences::index(OUT, Kinds::Knowledge::as_subject(K), TRUE);
+	else World::Inferences::index(OUT, KindSubjects::from_kind(K), TRUE);
 	if (K) {
 		HTML_CLOSE("p");
 		Data::Objects::index_instances(OUT, K, depth);

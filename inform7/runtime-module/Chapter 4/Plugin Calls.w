@@ -114,7 +114,7 @@ int Plugins::Call::new_variable_notify(nonlocal_variable *q) {
 }
 
 int Plugins::Call::new_base_kind_notify(kind *K, kind *super, text_stream *d, wording W) {
-	Kinds::Knowledge::renew(K, super, W);
+	KindSubjects::renew(K, super, W);
 	if (<property-name>(W)) {
 		property *P = <<rp>>;
 		Properties::Valued::set_kind(P, K);

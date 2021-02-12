@@ -260,7 +260,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
 				Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
+				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
 				Produce::up(Emit::tree());
 				rtrue = TRUE;
@@ -270,7 +270,7 @@ void Rulebooks::Outcomes::compile_default_outcome(outcomes *outs) {
 				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 				Produce::inv_call_iname(Emit::tree(), iname);
 				Produce::down(Emit::tree());
-				Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
+				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
 				Produce::up(Emit::tree());
 				rtrue = TRUE;
@@ -361,7 +361,7 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
 			Produce::down(Emit::tree());
-			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
+			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
 			Produce::up(Emit::tree());
 			Produce::rtrue(Emit::tree());
@@ -371,7 +371,7 @@ void Rulebooks::Outcomes::compile_outcome(named_rulebook_outcome *rbno) {
 			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
 			Produce::inv_call_iname(Emit::tree(), iname);
 			Produce::down(Emit::tree());
-			Kinds::RunTime::emit_weak_id_as_val(K_rulebook_outcome);
+			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
 			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
 			Produce::up(Emit::tree());
 			Produce::rtrue(Emit::tree());

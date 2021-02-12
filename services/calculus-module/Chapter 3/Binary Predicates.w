@@ -223,7 +223,7 @@ binary_predicate *BinaryPredicates::make_single(bp_family *family,
 
 	/* for use by the A-parser */
 	#ifdef CORE_MODULE
-	bp->knowledge_about_bp = KnowledgeAboutRelations::new_subject(bp);
+	bp->knowledge_about_bp = RelationSubjects::new(bp);
 	#endif
 	#ifndef CORE_MODULE
 	bp->knowledge_about_bp = NULL;

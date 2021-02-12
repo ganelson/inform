@@ -158,7 +158,7 @@ to have the "initial value" property.
 	if ((Wordings::nonempty(W)) && (scope == NULL)) /* that is, if it's a global */
 		Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 			VARIABLE_MC, Lvalues::new_actual_NONLOCAL_VARIABLE(nlv), Task::language_of_syntax());
-	nlv->nlv_knowledge = NonlocalVariables::new_subject(nlv);
+	nlv->nlv_knowledge = VariableSubjects::new(nlv);
 
 @ So much for creation; and here's how we log them:
 
@@ -374,182 +374,13 @@ void NonlocalVariables::warn_about_change(nonlocal_variable *nlv) {
 	#endif
 }
 
-@ Here are the standard routines allowing NLVs to be inference subjects:
-there's very little to say.
-
-=
-inference_subject_family *nlv_family = NULL;
-
-inference_subject_family *NonlocalVariables::family(void) {
-	if (nlv_family == NULL) {
-		nlv_family = InferenceSubjects::new_family();
-		METHOD_ADD(nlv_family, GET_DEFAULT_CERTAINTY_INFS_MTID,
-			NonlocalVariables::certainty);
-		METHOD_ADD(nlv_family, EMIT_ALL_INFS_MTID, NonlocalVariables::SUBJ_compile_all);
-		METHOD_ADD(nlv_family, EMIT_ONE_INFS_MTID, NonlocalVariables::SUBJ_compile);
-		METHOD_ADD(nlv_family, CHECK_MODEL_INFS_MTID, NonlocalVariables::SUBJ_check_model);
-		METHOD_ADD(nlv_family, COMPLETE_MODEL_INFS_MTID, NonlocalVariables::SUBJ_complete_model);
-		METHOD_ADD(nlv_family, EMIT_ELEMENT_INFS_MTID, NonlocalVariables::SUBJ_emit_element_of_condition);
-		METHOD_ADD(nlv_family, GET_NAME_TEXT_INFS_MTID, NonlocalVariables::SUBJ_get_name_text);
-		METHOD_ADD(nlv_family, MAKE_ADJ_CONST_DOMAIN_INFS_MTID, NonlocalVariables::SUBJ_make_adj_const_domain);
-		METHOD_ADD(nlv_family, NEW_PERMISSION_GRANTED_INFS_MTID, NonlocalVariables::SUBJ_new_permission_granted);
-	}
-	return nlv_family;
-}
-int NonlocalVariables::certainty(inference_subject_family *f, inference_subject *infs) {
-	return CERTAIN_CE;	
-}
-nonlocal_variable *NonlocalVariables::from_infs(inference_subject *infs) {
-	if ((infs) && (infs->infs_family == nlv_family))
-		return RETRIEVE_POINTER_nonlocal_variable(infs->represents);
-	return NULL;
-}
-
-inference_subject *NonlocalVariables::new_subject(nonlocal_variable *nlv) {
-	return InferenceSubjects::new(global_variables,
-		NonlocalVariables::family(), STORE_POINTER_nonlocal_variable(nlv), NULL);
-}
-
-void NonlocalVariables::SUBJ_get_name_text(inference_subject_family *family,
-	inference_subject *from, wording *W) {
-	nonlocal_variable *nlv = NonlocalVariables::from_infs(from);
-	*W = nlv->name;
-}
-
-void NonlocalVariables::SUBJ_new_permission_granted(inference_subject_family *f,
-	inference_subject *from, general_pointer *G) {
-	*G = NULL_GENERAL_POINTER;
-}
-
-void NonlocalVariables::SUBJ_make_adj_const_domain(inference_subject_family *family, inference_subject *infs,
-	instance *nc, property *prn) {
-}
-
-void NonlocalVariables::SUBJ_complete_model(inference_subject_family *family, inference_subject *infs) {
-}
-
-void NonlocalVariables::SUBJ_check_model(inference_subject_family *family, inference_subject *infs) {
-}
-
-int NonlocalVariables::SUBJ_emit_element_of_condition(inference_subject_family *family, inference_subject *infs, inter_symbol *t0_s) {
-	internal_error("NLV in runtime match condition");
-	return FALSE;
-}
-
-void NonlocalVariables::SUBJ_compile(inference_subject_family *f, inference_subject *infs) {
-}
-
-inference_subject *NonlocalVariables::get_knowledge(nonlocal_variable *nlv) {
-	return nlv->nlv_knowledge;
-}
-
-@ The iname is created on demand:
-
-=
-inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
-	if (nlv->nlv_iname == NULL) {
-		package_request *R = Hierarchy::package(CompilationUnits::find(nlv->nlv_created_at), VARIABLES_HAP);
-		Hierarchy::markup_wording(R, VARIABLE_NAME_HMD, nlv->name);
-		nlv->nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
-	}
-	return nlv->nlv_iname;
-}
-
-int NonlocalVariables::SUBJ_compile_all(inference_subject_family *f, int ignored) {
-	NonlocalVariables::allocate_storage(); /* in case this hasn't happened already */
-	@<Verify that externally-stored nonlocals haven't been initialised@>;
-	nonlocal_variable *nlv;
-	LOOP_OVER(nlv, nonlocal_variable) {
-		current_sentence = NonlocalVariables::origin_of_initial_value(nlv);
-		if (NonlocalVariables::has_initial_value_set(nlv))
-			Assertions::PropertyKnowledge::verify_global_variable(nlv);
-	}
-	LOOP_OVER(nlv, nonlocal_variable)
-		if ((nlv->constant_at_run_time == FALSE) ||
-			(nlv->housed_in_variables_array)) {
-
-			BEGIN_COMPILATION_MODE;
-			COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-
-			inter_name *iname = NonlocalVariables::iname(nlv);
-			inter_ti v1 = 0, v2 = 0;
-
-			NonlocalVariables::seek_initial_value(iname, &v1, &v2, nlv);
-
-			END_COMPILATION_MODE;
-
-			text_stream *rvalue = NULL;
-			if (nlv->housed_in_variables_array == FALSE)
-				rvalue = NonlocalVariables::identifier(nlv);
-			Emit::variable(iname, nlv->nlv_kind, v1, v2, rvalue);
-			if (nlv == command_prompt_VAR) {
-				inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
-				packaging_state save = Routines::begin(cpt_iname);
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_text, iname);
-				Produce::up(Emit::tree());
-				Routines::end(save);
-				Hierarchy::make_available(Emit::tree(), cpt_iname);
-			}
-
-		}
-	return TRUE;
-}
-
-@ If a variable is said to be the same as, say, |my_var| defined in some
-I6 code somewhere out of our reach, then it makes no sense to allow the
-source text to specify its initial value -- the initial value is whatever
-that faraway I6 code said it was.
-
-@<Verify that externally-stored nonlocals haven't been initialised@> =
-	nonlocal_variable *nlv;
-	LOOP_OVER(nlv, nonlocal_variable)
-		if ((nlv->housed_in_variables_array == FALSE) &&
-			(nlv->var_is_initialisable_anyway == FALSE) &&
-			(nlv->alias_to_infs == NULL) &&
-			(NonlocalVariables::has_initial_value_set(nlv)))
-			@<Issue a problem message for an impossible initialisation@>;
-
-@<Issue a problem message for an impossible initialisation@> =
-	current_sentence = NonlocalVariables::origin_of_initial_value(nlv);
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, nlv->name);
-	Problems::quote_stream(3, nlv->lvalue_nve.textual_form);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_InaccessibleVariable));
-	Problems::issue_problem_segment(
-		"The sentence %1 tells me that '%2' has a specific initial value, "
-		"but this is a variable which has been translated into an I6 'Global' "
-		"called '%3' at the lowest level of Inform. Any initial value must be "
-		"given in its I6 definition, not here.");
-	Problems::issue_problem_end();
-
 @ So, as we've seen, each variable is an inference subject. The initial knowledge
 about it is that it's a variable, and as such, has permission to have the
 "variable initial value" property. So:
 
 =
-parse_node *NonlocalVariables::get_initial_value(nonlocal_variable *nlv) {
-	inference *inf;
-	inference_subject *infs = NonlocalVariables::get_knowledge(nlv);
-	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
-		if (World::Inferences::get_property(inf) == P_variable_initial_value)
-			return World::Inferences::get_property_value(inf);
-	return Specifications::new_UNKNOWN(EMPTY_WORDING);
-}
-
-parse_node *NonlocalVariables::origin_of_initial_value(nonlocal_variable *nlv) {
-	inference *inf;
-	inference_subject *infs = NonlocalVariables::get_knowledge(nlv);
-	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
-		if (World::Inferences::get_property(inf) == P_variable_initial_value)
-			return World::Inferences::where_inferred(inf);
-	return NULL;
-}
-
-int NonlocalVariables::has_initial_value_set(nonlocal_variable *nlv) {
-	if ((nlv) && (NonlocalVariables::origin_of_initial_value(nlv))) return TRUE;
-	return FALSE;
+inference_subject *NonlocalVariables::to_subject(nonlocal_variable *nlv) {
+	return nlv->nlv_knowledge;
 }
 
 void NonlocalVariables::allow_to_be_zero(nonlocal_variable *nlv) {
@@ -634,7 +465,7 @@ data variable (such as "story title") to be treated as text.
 =
 wording NonlocalVariables::treat_as_plain_text_word(nonlocal_variable *nlv) {
 	inference *inf;
-	inference_subject *infs = NonlocalVariables::get_knowledge(nlv);
+	inference_subject *infs = NonlocalVariables::to_subject(nlv);
 	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
 		if (World::Inferences::get_property(inf) == P_variable_initial_value)
 			return Node::get_text(
@@ -697,7 +528,7 @@ parse_node *NonlocalVariables::substitute_constants(parse_node *spec) {
 				break;
 			}
 			nlv->substitution_marker = substitution_session_id;
-			parse_node *sspec = NonlocalVariables::get_initial_value(nlv);
+			parse_node *sspec = VariableSubjects::get_initial_value(nlv);
 			if (Node::is(sspec, UNKNOWN_NT) == FALSE) { spec = sspec; continue; }
 		}
 		break;
@@ -713,7 +544,7 @@ neither quite proper nor common; "the player" in Inform is an example.
 =
 inference_subject *NonlocalVariables::get_alias(nonlocal_variable *nlv) {
 	if (nlv) {
-		parse_node *val = NonlocalVariables::get_initial_value(nlv);
+		parse_node *val = VariableSubjects::get_initial_value(nlv);
 		inference_subject *vals = InferenceSubjects::from_specification(val);
 		if (vals) return vals;
 		return nlv->alias_to_infs;
@@ -760,13 +591,13 @@ void NonlocalVariables::seek_initial_value(inter_name *iname, inter_ti *v1, inte
 void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_variable *nlv) {
 	parse_node *val =
 		NonlocalVariables::substitute_constants(
-			NonlocalVariables::get_initial_value(
+			VariableSubjects::get_initial_value(
 				nlv));
 	if (Node::is(val, UNKNOWN_NT)) {
 		current_sentence = nlv->nlv_created_at;
 		@<Initialise with the default value of its kind@>
 	} else {
-		current_sentence = NonlocalVariables::origin_of_initial_value(nlv);
+		current_sentence = VariableSubjects::origin_of_initial_value(nlv);
 		if (Lvalues::get_storage_form(val) == NONLOCAL_VARIABLE_NT)
 			@<Issue a problem for one variable set equal to another@>
 		else Specifications::Compiler::compile_constant_to_kind_vh(VH, val, nlv->nlv_kind);
@@ -774,7 +605,7 @@ void NonlocalVariables::compile_initial_value_vh(value_holster *VH, nonlocal_var
 }
 
 @<Initialise with the default value of its kind@> =
-	if (Kinds::RunTime::compile_default_value_vh(VH, nlv->nlv_kind, nlv->name, "variable") == FALSE) {
+	if (RTKinds::compile_default_value_vh(VH, nlv->nlv_kind, nlv->name, "variable") == FALSE) {
 		if (nlv->var_is_allowed_to_be_zero) {
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		} else {
@@ -884,3 +715,14 @@ void NonlocalVariables::index_single(OUTPUT_STREAM, nonlocal_variable *nlv) {
 	Kinds::Textual::write(OUT, nlv->nlv_kind);
 	WRITE("</i>");
 }
+
+inter_name *NonlocalVariables::iname(nonlocal_variable *nlv) {
+	if (nlv->nlv_iname == NULL) {
+		package_request *R =
+			Hierarchy::package(CompilationUnits::find(nlv->nlv_created_at), VARIABLES_HAP);
+		Hierarchy::markup_wording(R, VARIABLE_NAME_HMD, nlv->name);
+		nlv->nlv_iname = Hierarchy::make_iname_with_memo(VARIABLE_HL, R, nlv->name);
+	}
+	return nlv->nlv_iname;
+}
+

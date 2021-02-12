@@ -12,15 +12,15 @@ manage that here.
 inter_ti cs_sequence_counter = 0;
 void Properties::Emit::emit_subject(inference_subject *subj) {
 	LOGIF(OBJECT_COMPILATION, "Compiling object definition for $j\n", subj);
-	kind *K = Kinds::Knowledge::from_infs(subj);
-	instance *I = Instances::from_infs(subj);
+	kind *K = KindSubjects::to_kind(subj);
+	instance *I = InstanceSubjects::to_instance(subj);
 
 	int words_used = 0;
 	if (K) Plugins::Call::estimate_property_usage(K, &words_used);
 
 	inter_name *iname = NULL;
-	if (K) iname = Kinds::RunTime::iname(K);
-	else if (I) iname = Instances::emitted_iname(I);
+	if (K) iname = RTKinds::iname(K);
+	else if (I) iname = RTInstances::emitted_iname(I);
 	else internal_error("bad subject for emission");
 
 	Produce::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
@@ -31,7 +31,7 @@ void Properties::Emit::emit_subject(inference_subject *subj) {
 		int nw = 0;
 		for (inference_subject *infs = subj;
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-			kind *K2 = Kinds::Knowledge::from_infs(infs);
+			kind *K2 = KindSubjects::to_kind(infs);
 			if (K2) nw += World::Compile::get_rough_memory_usage(K2);
 		}
 		nw += 16;
@@ -110,9 +110,9 @@ value the property will have, and compiles a clause as appropriate.
 =
 int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn) {
 	package_request *R = NULL;
-	instance *I = Instances::from_infs(know);
-	if (I) R = Instances::package(I);
-	kind *K = Kinds::Knowledge::from_infs(know);
+	instance *I = InstanceSubjects::to_instance(know);
+	if (I) R = RTInstances::package(I);
+	kind *K = KindSubjects::to_kind(know);
 	if (K) R = Kinds::Behaviour::package(K);
 	int storage_cost = 0;
 	if ((Properties::visited_in_traverse(prn) == FALSE) &&
@@ -128,8 +128,8 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 }
 
 @<Now emit a propertyvalue@> =
-	instance *as_I = Instances::from_infs(know);
-	kind *as_K = Kinds::Knowledge::from_infs(know);
+	instance *as_I = InstanceSubjects::to_instance(know);
+	kind *as_K = KindSubjects::to_kind(know);
 	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) FALSE;
 	property *in = prn;
 

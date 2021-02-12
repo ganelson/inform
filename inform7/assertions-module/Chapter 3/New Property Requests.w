@@ -226,10 +226,10 @@ differently as a result.
 	if (owner_infs == NULL) {
 		owner_spec = NULL;
 		if (<s-type-expression>(Node::get_text(the_owner)))
-			owner_infs = Kinds::Knowledge::as_subject(Specifications::to_kind(<<rp>>));
+			owner_infs = KindSubjects::from_kind(Specifications::to_kind(<<rp>>));
 	}
-	kind *K = Kinds::Knowledge::from_infs(owner_infs);
-	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
+	kind *K = KindSubjects::to_kind(owner_infs);
+	if ((K) && (KindSubjects::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of an either/or or condition@>;
 
 @<Disallow this kind as a new owner of an either/or or condition@> =

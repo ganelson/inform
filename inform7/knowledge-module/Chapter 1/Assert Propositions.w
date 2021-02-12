@@ -254,7 +254,7 @@ interpret no indication of a kind as meaning "object".
 @<Create the object and add to the identification slate@> =
 	if (is_a_kind) {
 		K = Kinds::new_base(NW, K);
-		current_interpretation_as_infs[v] = Kinds::Knowledge::as_subject(K);
+		current_interpretation_as_infs[v] = KindSubjects::from_kind(K);
 		current_interpretation_as_spec[v] = Specifications::from_kind(K);
 	} else if ((is_a_var) || (is_a_const)) {
 		if (K == NULL) K = K_object;
@@ -409,7 +409,7 @@ void Assert::cautiously_set_kind(inference_subject *inst, kind *k) {
 	#ifdef IF_MODULE
 	if (Kinds::eq(k, K_thing)) return;
 	#endif
-	instance *instance_wo = Instances::object_from_infs(inst);
+	instance *instance_wo = InstanceSubjects::to_object_instance(inst);
 	if (instance_wo == NULL) return;
 	Instances::set_kind(instance_wo, k);
 }
@@ -461,7 +461,7 @@ inference_subject *Assert::subject_of_term(pcalc_term pt) {
 		if (Descriptions::to_instance(spec))
 			return Instances::as_subject(Descriptions::to_instance(spec));
 		if (Specifications::to_kind(spec))
-			return Kinds::Knowledge::as_subject(Specifications::to_kind(spec));
+			return KindSubjects::from_kind(Specifications::to_kind(spec));
 	}
 
 	if (Node::is(spec, NONLOCAL_VARIABLE_NT)) {

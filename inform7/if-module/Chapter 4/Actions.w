@@ -1010,7 +1010,7 @@ inter_name *PL::Actions::compile_action_bitmap_property(instance *I) {
 	package_request *R = NULL;
 	inter_name *N = NULL;
 	if (I) {
-		R = Instances::package(I);
+		R = RTInstances::package(I);
 		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, R);
 		N = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 	} else {
@@ -1207,8 +1207,8 @@ void PL::Actions::ActionData(void) {
 		inter_ti bitmap = (inter_ti) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
 			msp*0x10 + ((an->out_of_world)?1:0)*0x20 + hn*0x40 + hs*0x80);
 		Emit::array_numeric_entry(bitmap);
-		Kinds::RunTime::emit_strong_id(an->noun_kind);
-		Kinds::RunTime::emit_strong_id(an->second_kind);
+		RTKinds::emit_strong_id(an->noun_kind);
+		RTKinds::emit_strong_id(an->second_kind);
 		if ((an->owned_by_an) &&
 				(StackedVariables::owner_empty(an->owned_by_an) == FALSE))
 			Emit::array_iname_entry(StackedVariables::frame_creator(an->owned_by_an));

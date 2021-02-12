@@ -152,7 +152,7 @@ void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 	}
 	#ifdef IF_MODULE
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
-	instance *ox = Instances::object_from_infs(subj);
+	instance *ox = InstanceSubjects::to_object_instance(subj);
 	PL::Backdrops::infer_presence_everywhere(ox);
 	#endif
 }
@@ -165,7 +165,7 @@ void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 void WherePredicates::assert_nowhere(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
-	instance *ox = Instances::object_from_infs(subj);
+	instance *ox = InstanceSubjects::to_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that seems to say that something isn't nowhere",
@@ -194,7 +194,7 @@ problem aside for now.
 void WherePredicates::assert_here(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
-	instance *ox = Instances::object_from_infs(subj);
+	instance *ox = InstanceSubjects::to_object_instance(subj);
 	if (now_negated) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"that seems to say that something isn't here",

@@ -44,6 +44,8 @@ Chapter 4: Compilation Utilities
 	Test Scripts
 	Internal Test Cases
 	Use Options at Run Time
+	Variables
+	Instances
 	Runtime Support for Kinds
 	Extension Files at Run Time
 	Noun Identifiers

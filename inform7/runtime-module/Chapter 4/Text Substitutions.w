@@ -157,7 +157,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 	text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
 		adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
-		inter_name *N = Kinds::RunTime::new_block_constant_iname();
+		inter_name *N = RTKinds::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 		Emit::array_iname_entry(ts->ts_routine_iname);

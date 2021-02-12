@@ -25,8 +25,8 @@ void Properties::Appearance::infer(inference_subject *infs, parse_node *spec) {
 			@<Issue a problem for a second appearance@>;
 
 	prevailing_mood = CERTAIN_CE;
-	if ((Kinds::Knowledge::from_infs(infs)) &&
-		(InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_object))))
+	if ((KindSubjects::to_kind(infs)) &&
+		(InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_object))))
 		prevailing_mood = LIKELY_CE;
 	Properties::Valued::assert(P_indefinite_appearance_text, infs, spec, prevailing_mood);
 }

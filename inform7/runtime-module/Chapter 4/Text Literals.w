@@ -162,7 +162,7 @@ which are null pointers.
 	if (encode_constant_text_bibliographically) x->bibliographic_conventions = TRUE;
 	if (write) {
 		if (x->lt_sba_iname == NULL)
-			x->lt_sba_iname = Kinds::RunTime::new_block_constant_iname();
+			x->lt_sba_iname = RTKinds::new_block_constant_iname();
 		if (VH) Emit::holster(VH, x->lt_sba_iname);
 		x->small_block_array_needed = TRUE;
 	}
@@ -288,7 +288,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 	inter_name *iname = Hierarchy::make_iname_in(BOX_QUOTATION_FN_HL, PR);
 
 	if (lt->lt_sba_iname == NULL)
-		lt->lt_sba_iname = Kinds::RunTime::new_block_constant_iname();
+		lt->lt_sba_iname = RTKinds::new_block_constant_iname();
 
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
 
@@ -306,7 +306,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {
 	literal_text *lt = NULL;
 	if (TEST_COMPILATION_MODE(CONSTANT_CMODE)) {
-		inter_name *N = Kinds::RunTime::new_block_constant_iname();
+		inter_name *N = RTKinds::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		lt = TextLiterals::compile_literal(NULL, FALSE, W);
 		Emit::array_iname_entry(Hierarchy::find(PACKED_TEXT_STORAGE_HL));

@@ -37,7 +37,7 @@ void RTTables::column_introspection_routine(void) {
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 				Produce::down(Emit::tree());
-					Kinds::RunTime::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
+					RTKinds::emit_strong_id_as_val(Tables::Columns::get_kind(tc));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -260,7 +260,7 @@ case.)
 
 @<Write a cell value for a blank cell@> =
 	if (t->fill_in_blanks == FALSE) Emit::array_iname_entry(Hierarchy::find(TABLE_NOVALUE_HL));
-	else Kinds::RunTime::emit_default_value(K, EMPTY_WORDING, "table entry");
+	else RTKinds::emit_default_value(K, EMPTY_WORDING, "table entry");
 
 @<Compile the blanks bitmap table@> =
 	inter_name *iname = Hierarchy::find(TB_BLANKS_HL);

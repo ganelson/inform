@@ -369,10 +369,10 @@ appearance".
 
 =
 int PL::Spatial::spatial_default_appearance(inference_subject *infs, parse_node *txt) {
-	if (InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_object))) {
+	if (InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_object))) {
 		property *set_prn = P_description;
-		if (InferenceSubjects::is_within(infs, Kinds::Knowledge::as_subject(K_thing))) {
-			instance *I = Instances::object_from_infs(infs);
+		if (InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_thing))) {
+			instance *I = InstanceSubjects::to_object_instance(infs);
 			if ((I) && (PL::Backdrops::object_is_scenery(I))) {
 				inference *inf;
 				KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
@@ -478,7 +478,7 @@ int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) 
 	if (Annotations::read_int(py, nowhere_ANNOT)) {
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject) {
-			if (Kinds::Knowledge::from_infs(left_subject))
+			if (KindSubjects::to_kind(left_subject))
 				StandardProblems::subject_problem_at_sentence(_p_(PM_KindNowhere),
 					left_subject,
 					"seems to be said to be 'nowhere' in some way",
@@ -618,9 +618,9 @@ or "region".
 @<Determine the designer choice@> =
 	kind *f = NULL;
 	inference_subject *infs;
-	for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
+	for (infs = KindSubjects::from_kind(Instances::to_kind(I));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		kind *K = Kinds::Knowledge::from_infs(infs);
+		kind *K = KindSubjects::to_kind(infs);
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			f = K;
 			if ((Kinds::eq(f, K_container)) ||
@@ -888,7 +888,7 @@ when it finishes this will be set to the most recently mentioned.
 void PL::Spatial::seek_room(parse_node *sent, void **v_I) {
 	instance **I = (instance **) v_I;
 	inference_subject *isub = Node::get_interpretation_of_subject(sent);
-	instance *sub = Instances::object_from_infs(isub);
+	instance *sub = InstanceSubjects::to_object_instance(isub);
 	if (PL::Spatial::object_is_a_room(sub)) *I = sub;
 }
 
@@ -1039,7 +1039,7 @@ holdall" (hence the name), with other actors oblivious.
 	if (K_players_holdall) {
 		inter_name *iname = Hierarchy::find(RUCKSACK_CLASS_HL);
 		Hierarchy::make_available(Emit::tree(), iname);
-		Emit::named_iname_constant(iname, K_value, Kinds::RunTime::I6_classname(K_players_holdall));
+		Emit::named_iname_constant(iname, K_value, RTKinds::I6_classname(K_players_holdall));
 	}
 
 @ The following verifies, in a brute-force way, that there are no cycles in
@@ -1150,13 +1150,13 @@ as a value for |description| from the room class.
 	if (K_room) {
 		inference *inf;
 		int desc_seen = FALSE;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Kinds::Knowledge::as_subject(K_room), PROPERTY_INF)
+		POSITIVE_KNOWLEDGE_LOOP(inf, KindSubjects::from_kind(K_room), PROPERTY_INF)
 			if (World::Inferences::get_property(inf) == P_description)
 				desc_seen = TRUE;
 		if (desc_seen == FALSE) {
 			TEMPORARY_TEXT(val)
 			WRITE_TO(val, "\"\"");
-			Properties::Valued::assert(P_description, Kinds::Knowledge::as_subject(K_room),
+			Properties::Valued::assert(P_description, KindSubjects::from_kind(K_room),
 				Rvalues::from_unescaped_wording(Feeds::feed_text(val)), LIKELY_CE);
 			DISCARD_TEXT(val)
 		}
@@ -1211,11 +1211,11 @@ a triplet of I6-only properties:
 
 	if (K_thing) {
 		parse_node *nothing_constant = Rvalues::new_nothing_object_constant();
-		Properties::Valued::assert(P_component_parent, Kinds::Knowledge::as_subject(K_thing),
+		Properties::Valued::assert(P_component_parent, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
-		Properties::Valued::assert(P_component_child, Kinds::Knowledge::as_subject(K_thing),
+		Properties::Valued::assert(P_component_child, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
-		Properties::Valued::assert(P_component_sibling, Kinds::Knowledge::as_subject(K_thing),
+		Properties::Valued::assert(P_component_sibling, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
 	}
 

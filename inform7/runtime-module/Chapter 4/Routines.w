@@ -129,7 +129,7 @@ after the call parameters, and is used only as a scratch variable.
 	Produce::up(Emit::tree());
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame)
-		Kinds::RunTime::emit_heap_allocation(pall->allocation);
+		RTKinds::emit_heap_allocation(pall->allocation);
 
 	for (int i=0; i<currently_compiling_in_frame->no_formal_parameters_needed; i++) {
 		nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);

@@ -153,11 +153,11 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 		kind *K;
 		LOOP_OVER_BASE_KINDS(K)
 			if (Kinds::Behaviour::is_subkind_of_object(K)) {
-				inference_subject *subj = Kinds::Knowledge::as_subject(K);
+				inference_subject *subj = KindSubjects::from_kind(K);
 				@<Assert the I6 parse-name property@>;
 			}
 
-		inference_subject *subj = Kinds::Knowledge::as_subject(K_thing);
+		inference_subject *subj = KindSubjects::from_kind(K_thing);
 		@<Assert the I6 action-bitmap property@>;
 	}
 	return FALSE;
@@ -188,7 +188,7 @@ for the kinds we inherit from.
 	if (PL::Naming::object_is_privately_named(I) == FALSE) {
 		kind *K = Instances::to_kind(I);
 		int from_kind = FALSE;
-		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, Instances::package(I));
+		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
 		inter_name *name_array = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
 		packaging_state save = Emit::named_array_begin(name_array, K_value);
 		wording W = Instances::get_name_in_play(I, FALSE);
@@ -228,7 +228,7 @@ for the kinds we inherit from.
 				PARSING_DATA(I)->understand_as_this_object);
 
 		inference_subject *infs;
-		for (infs = Kinds::Knowledge::as_subject(Instances::to_kind(I));
+		for (infs = KindSubjects::from_kind(Instances::to_kind(I));
 			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 			if (PARSING_DATA_FOR_SUBJ(infs)) {
 				if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object)
@@ -261,8 +261,8 @@ to ensure that it will be inherited by all I6 objects of this class,
 i.e., all I6 objects corresponding to I7 things.
 
 @<Assert the I6 action-bitmap property@> =
-	if (InferenceSubjects::is_within(subj, Kinds::Knowledge::as_subject(K_room)) == FALSE) {
-		instance *I = Instances::from_infs(subj);
+	if (InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE) {
+		instance *I = InstanceSubjects::to_instance(subj);
 		inter_name *S = PL::Actions::compile_action_bitmap_property(I);
 		Properties::Valued::assert(P_action_bitmap, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);

@@ -1867,7 +1867,7 @@ us there.
 		@<Issue a problem message for being too vague about the owner@>;
 
 	inference_subject *owning_subject = InferenceSubjects::from_specification(the_owner);
-	if (owning_subject == NULL) owning_subject = Kinds::Knowledge::as_subject(K2);
+	if (owning_subject == NULL) owning_subject = KindSubjects::from_kind(K2);
 	if (World::Permissions::find(owning_subject, prn, TRUE) == NULL) {
 		if ((Kinds::Behaviour::is_object(K2) == FALSE) ||
 			((Rvalues::is_object(the_owner)) &&

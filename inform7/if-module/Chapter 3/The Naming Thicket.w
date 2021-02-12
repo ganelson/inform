@@ -86,7 +86,7 @@ the Creator to make something else have a proper name.
 
 =
 void PL::Naming::now_has_proper_name(inference_subject *infs) {
-	instance *wto = Instances::object_from_infs(infs);
+	instance *wto = InstanceSubjects::to_object_instance(infs);
 	if (wto) PL::Naming::object_now_has_proper_name(wto);
 }
 
@@ -124,7 +124,7 @@ This is needed when assemblies name one new creation after another; for instance
 
 =
 void PL::Naming::transfer_details(inference_subject *from, inference_subject *to) {
-	instance *wto = Instances::object_from_infs(to);
+	instance *wto = InstanceSubjects::to_object_instance(to);
 	if (wto) {
 		if (World::Inferences::get_EO_state(from, P_proper_named) > 0)
 			PL::Naming::now_has_proper_name(to);
@@ -134,7 +134,7 @@ void PL::Naming::transfer_details(inference_subject *from, inference_subject *to
 }
 
 instance *PL::Naming::object_this_is_named_after(instance *I) {
-	return Instances::object_from_infs(
+	return InstanceSubjects::to_object_instance(
 		Assertions::Assemblies::what_this_is_named_after(
 			Instances::as_subject(I)));
 }
@@ -170,7 +170,7 @@ from sentences, and this can include I6 properties with no I7 analogue.
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
 			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Task::project()));
 			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Task::project()));
-			inference_subject *subj = Kinds::Knowledge::as_subject(K);
+			inference_subject *subj = KindSubjects::from_kind(K);
 			@<Issue problem message if the name contains a comma@>;
 			@<Assert the printed plural name property for kinds other than thing or kinds of room@>;
 		}
@@ -306,20 +306,20 @@ so. These routines allow that to happen.
 
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Instances::package(I));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, RTInstances::package(I));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = FALSE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Instances::package(I));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, RTInstances::package(I));
 	faux = notice->snn_iname;
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
 	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, Instances::package(I));
+	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, RTInstances::package(I));
 	notice->namee = I;
 	notice->after_subject = subj;
 	notice->capped = TRUE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, Instances::package(I));
+	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, RTInstances::package(I));
 	faux = notice->snn_iname;
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary

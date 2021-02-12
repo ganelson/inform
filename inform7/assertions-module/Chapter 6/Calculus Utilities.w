@@ -48,7 +48,7 @@ void Propositions::Abstract::assert_kind_of_instance(instance *I, kind *k) {
 
 void Propositions::Abstract::assert_kind_of_subject(inference_subject *inst,
 	inference_subject *new, pcalc_prop *subject_to) {
-	kind *K = Kinds::Knowledge::from_infs(new);
+	kind *K = KindSubjects::to_kind(new);
 	pcalc_prop *prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 	if (subject_to) prop = Propositions::concatenate(prop, subject_to);
 	Assert::true_about(prop, inst, prevailing_mood);

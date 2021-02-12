@@ -60,10 +60,10 @@ void KindPredicatesRevisited::assert(up_family *self, unary_predicate *up,
 		return;
 	}
 	inference_subject *subj = Assert::subject_of_term(pl->terms[0]);
-	instance *ox = Instances::object_from_infs(subj);
+	instance *ox = InstanceSubjects::to_object_instance(subj);
 	if (ox) Instances::set_kind(ox, up->assert_kind);
 	else {
-		kind *K = Kinds::Knowledge::from_infs(subj);
+		kind *K = KindSubjects::to_kind(subj);
 		if (K) Kinds::make_subkind(K, up->assert_kind);
 	}
 }
@@ -84,7 +84,7 @@ void KindPredicatesRevisited::get_schema(up_family *self, int task, unary_predic
 		case TEST_ATOM_TASK:
 			if (Kinds::Behaviour::is_subkind_of_object(up->assert_kind))
 				Calculus::Schemas::modify(asch->schema, "*1 ofclass %n",
-					Kinds::RunTime::I6_classname(up->assert_kind));
+					RTKinds::I6_classname(up->assert_kind));
 			else {
 				if ((Kinds::get_construct(up->assert_kind) == CON_list_of) &&
 					(problem_count == 0)) {

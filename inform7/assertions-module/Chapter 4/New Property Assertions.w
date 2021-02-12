@@ -46,9 +46,9 @@ automatically creates it.
 			"something like that, to give the property a name.");
 	}
 	inference_subject *owner_infs = Node::get_subject(owner_ref);
-	kind *K = Kinds::Knowledge::from_infs(owner_infs);
+	kind *K = KindSubjects::to_kind(owner_infs);
 	Kinds::Behaviour::convert_to_enumeration(K);
-	if ((K) && (Kinds::Knowledge::has_properties(K) == FALSE))
+	if ((K) && (KindSubjects::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
 	property *prn = Properties::Valued::obtain(Node::get_text(p));
 	Assert::true_about(Propositions::Abstract::to_provide_property(prn),
@@ -72,7 +72,7 @@ automatically creates it.
 		"is not allowed, because storing something for every possible number takes an "
 		"impossible amount of space. (See the Kinds index for which kinds can have "
 		"properties.)");
-	owner_infs = Kinds::Knowledge::as_subject(K_object);
+	owner_infs = KindSubjects::from_kind(K_object);
 
 @<This is a subtree citing a kind of value plus a name@> =
 	parse_node *kind_ref = p->down;

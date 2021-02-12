@@ -98,7 +98,7 @@ void Specifications::Compiler::compile_inner(value_holster *VH, parse_node *spec
 =
 void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_node *spec) {
 	kind *K_found = Specifications::to_kind(spec);
-	Kinds::RunTime::notify_of_use(K_found);
+	RTKinds::notify_of_use(K_found);
 
 	int dereffed = FALSE;
 	if (TEST_COMPILATION_MODE(DEREFERENCE_POINTERS_CMODE)) {
@@ -130,9 +130,9 @@ a value in a context where a particular kind of value is expected:
 
 =
 void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
-	Kinds::RunTime::notify_of_use(K_wanted);
+	RTKinds::notify_of_use(K_wanted);
 	kind *K_found = Specifications::to_kind(value);
-	Kinds::RunTime::notify_of_use(K_found);
+	RTKinds::notify_of_use(K_found);
 
 	if ((K_understanding) && (Kinds::eq(K_wanted, K_understanding)) && (Kinds::eq(K_found, K_text))) {
 		Node::set_kind_of_value(value, K_understanding);
@@ -140,7 +140,7 @@ void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
 	}
 
 	int down = FALSE;
-	Kinds::RunTime::emit_cast_call(K_found, K_wanted, &down);
+	RTKinds::emit_cast_call(K_found, K_wanted, &down);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(PERMIT_LOCALS_IN_TEXT_CMODE);
 	Specifications::Compiler::emit_as_val(K_value, value);
@@ -152,7 +152,7 @@ void Specifications::Compiler::emit_to_kind(parse_node *value, kind *K_wanted) {
 
 =
 void Specifications::Compiler::compile_constant_to_kind_vh(value_holster *VH, parse_node *value, kind *K_wanted) {
-	Kinds::RunTime::notify_of_use(K_wanted);
+	RTKinds::notify_of_use(K_wanted);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
@@ -161,7 +161,7 @@ void Specifications::Compiler::compile_constant_to_kind_vh(value_holster *VH, pa
 }
 
 void Specifications::Compiler::emit_constant_to_kind(parse_node *value, kind *K_wanted) {
-	Kinds::RunTime::notify_of_use(K_wanted);
+	RTKinds::notify_of_use(K_wanted);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);
@@ -171,7 +171,7 @@ void Specifications::Compiler::emit_constant_to_kind(parse_node *value, kind *K_
 }
 
 void Specifications::Compiler::emit_constant_to_kind_as_val(parse_node *value, kind *K_wanted) {
-	Kinds::RunTime::notify_of_use(K_wanted);
+	RTKinds::notify_of_use(K_wanted);
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
 	COMPILATION_MODE_ENTER(CONSTANT_CMODE);

@@ -21,7 +21,7 @@ void Assertions::make_existential(parse_node *py) {
 				break;
 			case COMMON_NOUN_NT:
 				if ((InferenceSubjects::is_a_kind_of_object(Node::get_subject(py))) ||
-					(Kinds::eq(K_object, Kinds::Knowledge::from_infs(Node::get_subject(py)))))
+					(Kinds::eq(K_object, KindSubjects::to_kind(Node::get_subject(py)))))
 					Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 				else
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThereIsVague),
@@ -461,7 +461,7 @@ specifying its edibility.
 
 	if ((InferenceSubjects::is_an_object(inst)) ||
 		(InferenceSubjects::is_a_kind_of_object(inst))) {
-		if ((Kinds::Knowledge::from_infs(inst) == FALSE) &&
+		if ((KindSubjects::to_kind(inst) == FALSE) &&
 			(InferenceSubjects::where_created(inst) != current_sentence))
 			@<Don't allow an existing object to be declared as a kind over again@>;
 
@@ -804,7 +804,7 @@ or a kind of value.
 		if ((prn) && (Properties::Valued::coincides_with_kind(prn))) {
 			kind *K = Properties::Valued::kind(prn);
 			Node::set_type_and_clear_annotations(px, COMMON_NOUN_NT);
-			Node::set_subject(px, Kinds::Knowledge::as_subject(K));
+			Node::set_subject(px, KindSubjects::from_kind(K));
 			Node::set_evaluation(px, Specifications::from_kind(K));
 		}
 	}
@@ -903,7 +903,7 @@ but in fact isn't one;
 		inference_subject *owner_infs = Node::get_subject(px->down);
 		if (owner_infs == NULL) {
 			if (<k-kind>(Node::get_text(px->down)))
-				owner_infs = Kinds::Knowledge::as_subject(<<rp>>);
+				owner_infs = KindSubjects::from_kind(<<rp>>);
 		}
 		if ((Specifications::is_description(owner)) &&
 			(Specifications::is_kind_like(owner) == FALSE))
@@ -1083,7 +1083,7 @@ opera about a dog, "Collared Is Bowser".)
 @h Case 32. A problem message issued purely on stylistic grounds.
 
 @<Case 32 - COMMON NOUN, PROPER NOUN vs ACTION@> =
-	if ((Node::get_subject(px)) && (Kinds::Knowledge::from_infs(Node::get_subject(px)))) {
+	if ((Node::get_subject(px)) && (KindSubjects::to_kind(Node::get_subject(px)))) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_source(2, py);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindIsAction));
@@ -1121,7 +1121,7 @@ this ought to be allowed...
 
 	if (prevailing_mood == CERTAIN_CE) {
 		Node::set_subject(px,
-			Kinds::Knowledge::as_subject(
+			KindSubjects::from_kind(
 				Specifications::to_kind(
 					Node::get_evaluation(px))));
 		Node::set_type(px, EVERY_NT);
@@ -1352,7 +1352,7 @@ allow one case, where the declaration is redundant and harmless.)
 @<Case 39 - PROPER NOUN vs COMMON NOUN@> =
 	if ((InferenceSubjects::is_an_object(Node::get_subject(px))) ||
 		(InferenceSubjects::is_a_kind_of_object(Node::get_subject(px)))) {
-		if ((Node::get_subject(py) != Kinds::Knowledge::as_subject(K_object)) &&
+		if ((Node::get_subject(py) != KindSubjects::from_kind(K_object)) &&
 			(InferenceSubjects::is_a_kind_of_object(Node::get_subject(py)) == FALSE))
 			Assertions::issue_value_equation_problem(px, py);
 		else @<Assert that X is an instance of Y@>;

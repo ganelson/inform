@@ -81,7 +81,7 @@ void Problems::quote_subject(int t, inference_subject *infs) {
 	if (infs == NULL) { Problems::quote_text(t, "something"); return; }
 	wording W = InferenceSubjects::get_name_text(infs);
 	if (Wordings::nonempty(W)) { Problems::quote_wording(t, W); return; }
-	instance *I = Instances::object_from_infs(infs);
+	instance *I = InstanceSubjects::to_object_instance(infs);
 	if (I) { Problems::quote_object(t, I); return; }
 	Problems::quote_text(t, "something nameless"); /* this never actually happens */
 }

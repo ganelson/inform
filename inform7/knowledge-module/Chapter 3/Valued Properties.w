@@ -239,7 +239,7 @@ void Properties::Valued::compile_default_value(value_holster *VH, property *prn)
 	}
 	kind *K = Properties::Valued::kind(prn);
 	current_sentence = NULL;
-	if (Kinds::RunTime::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
+	if (RTKinds::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
 		Problems::quote_wording(1, prn->name);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyUninitialisable));
 		Problems::issue_problem_segment(

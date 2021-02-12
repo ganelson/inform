@@ -381,7 +381,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (dynamic) {
 		if (calling_made) @<Issue a problem message since this won't be stored in a property@>;
 		@<Override with dynamic allocation schemata@>;
-		Kinds::RunTime::ensure_basic_heap_present();
+		RTKinds::ensure_basic_heap_present();
 	} else {
 		if (provide_prn)
 			Assert::true_about(
@@ -450,8 +450,8 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	bp_term_details left_bptd, right_bptd;
 
 	inference_subject *left_infs = NULL, *right_infs = NULL;
-	if (RR->terms[0].domain) left_infs = Kinds::Knowledge::as_subject(RR->terms[0].domain);
-	if (RR->terms[1].domain) right_infs = Kinds::Knowledge::as_subject(RR->terms[1].domain);
+	if (RR->terms[0].domain) left_infs = KindSubjects::from_kind(RR->terms[0].domain);
+	if (RR->terms[1].domain) right_infs = KindSubjects::from_kind(RR->terms[1].domain);
 
 	left_bptd = BPTerms::new_full(left_infs, RR->terms[0].domain, RR->terms[0].CALLW, NULL);
 	right_bptd = BPTerms::new_full(right_infs, RR->terms[1].domain, RR->terms[1].CALLW, NULL);
@@ -516,7 +516,7 @@ omitted from the index.
 		if (RR->terms[1].domain) PK = RR->terms[1].domain;
 	}
 	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
-	if (storage_kind) storage_infs = Kinds::Knowledge::as_subject(storage_kind);
+	if (storage_kind) storage_infs = KindSubjects::from_kind(storage_kind);
 	else storage_infs = NULL;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
 		(Kinds::Behaviour::is_object(PK) == FALSE))

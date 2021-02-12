@@ -44,7 +44,7 @@ void PL::Score::compile_max_score(void) {
 			parse_node *PN = Tables::cells_in_ith_column(t, 0);
 			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
 			if ((PN != NULL) && (max_score_VAR) &&
-				(NonlocalVariables::has_initial_value_set(max_score_VAR) == FALSE))
+				(VariableSubjects::has_initial_value_set(max_score_VAR) == FALSE))
 				Assertions::PropertyKnowledge::initialise_global_variable(
 					max_score_VAR, Node::get_evaluation(PN));
 			Hierarchy::make_available(Emit::tree(), iname);
@@ -60,7 +60,7 @@ void PL::Score::compile_max_score(void) {
 	}
 	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
-	if (NonlocalVariables::has_initial_value_set(max_score_VAR)) {
+	if (VariableSubjects::has_initial_value_set(max_score_VAR)) {
 		inter_ti v1 = 0, v2 = 0;
 		NonlocalVariables::seek_initial_value(iname, &v1, &v2, max_score_VAR);
 		Emit::named_generic_constant(iname, v1, v2);

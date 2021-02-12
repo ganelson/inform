@@ -140,7 +140,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 }
 
 @<Forbid generalisation about fixed kinds@> =
-	kind *instance_kind = Kinds::Knowledge::nonobject_from_infs(k);
+	kind *instance_kind = KindSubjects::to_nonobject_kind(k);
 	if ((instance_kind) &&
 		(Kinds::Behaviour::is_object(instance_kind) == FALSE) &&
 		(Kinds::Behaviour::has_named_constant_values(instance_kind) == FALSE)) {
@@ -215,7 +215,7 @@ of a given kind has undergone every generalisation applicable to it exactly once
 void Assertions::Assemblies::ensure_all_generalisations_made(inference_subject *k) {
 	inference_subject *infs;
 	LOOP_OVER(infs, inference_subject)
-		if ((InferenceSubjects::is_within(infs, k)) && (Kinds::Knowledge::from_infs(infs) == NULL))
+		if ((InferenceSubjects::is_within(infs, k)) && (KindSubjects::to_kind(infs) == NULL))
 			Assertions::Assemblies::satisfies_generalisations(infs);
 }
 
@@ -227,7 +227,7 @@ situation we call just |Assertions::Assemblies::satisfies_generalisations| on th
 
 =
 void Assertions::Assemblies::satisfies_generalisations(inference_subject *infs) {
-	if (Kinds::Knowledge::from_infs(infs)) return;
+	if (KindSubjects::to_kind(infs)) return;
 	inference_subject *k;
 	for (k = InferenceSubjects::narrowest_broader_subject(infs); k; k = InferenceSubjects::narrowest_broader_subject(k)) {
 		application *app;

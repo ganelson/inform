@@ -29,7 +29,7 @@ void Refiner::give_spec_to_noun(parse_node *p, parse_node *eval) {
 }
 
 @<Make a common or proper noun as appropriate@> =
-	if (Kinds::Knowledge::from_infs(infs)) Node::set_type(p, COMMON_NOUN_NT);
+	if (KindSubjects::to_kind(infs)) Node::set_type(p, COMMON_NOUN_NT);
 	else Node::set_type(p, PROPER_NOUN_NT);
 	Refiner::apply_description(p, eval);
 	Node::set_subject(p, infs);
@@ -175,7 +175,7 @@ set for it.
 		}
 	} else if (Descriptions::makes_kind_explicit(desc)) {
 		kind *K = Specifications::to_kind(desc);
-		head = Kinds::Knowledge::as_subject(K);
+		head = KindSubjects::from_kind(K);
 		Refiner::give_subject_to_noun(p, head);
 		Node::set_evaluation(p, Specifications::from_kind(K));
 		Refiner::apply_description(p, desc);
@@ -393,17 +393,17 @@ object. After refinement, it will be annotated with a valid non-null
 inference subject representing the domain to which any new kind would belong.
 
 @<Refine a kind subtree@> =
-	inference_subject *kind_of_what = Kinds::Knowledge::as_subject(K_object);
+	inference_subject *kind_of_what = KindSubjects::from_kind(K_object);
 	if (p->down) {
 		parse_node *what = p->down;
 		Refiner::refine(what, FORBID_CREATION);
 		kind_of_what = Node::get_subject(what);
 	}
-	if ((kind_of_what == NULL) || (Kinds::Knowledge::from_infs(kind_of_what) == NULL))
+	if ((kind_of_what == NULL) || (KindSubjects::to_kind(kind_of_what) == NULL))
 		@<Issue a problem message for a kind of instance@>;
-	if ((Kinds::Knowledge::nonobject_from_infs(kind_of_what)) &&
-		(kind_of_what != Kinds::Knowledge::as_subject(K_value)) &&
-		(kind_of_what != Kinds::Knowledge::as_subject(K_object)))
+	if ((KindSubjects::to_nonobject_kind(kind_of_what)) &&
+		(kind_of_what != KindSubjects::from_kind(K_value)) &&
+		(kind_of_what != KindSubjects::from_kind(K_object)))
 			@<Issue a problem message for a disallowed subkind@>;
 	Node::set_subject(p, kind_of_what);
 
@@ -415,13 +415,13 @@ inference subject representing the domain to which any new kind would belong.
 			"so 'a kind of container' is allowed but 'a kind of Mona Lisa' (where "
 			"Mona Lisa is a specific thing you've already made), wouldn't be "
 			"allowed. There is only one Mona Lisa.");
-		kind_of_what = Kinds::Knowledge::as_subject(K_object);
+		kind_of_what = KindSubjects::from_kind(K_object);
 	} else {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_KindOfActualValue),
 			"I don't recognise that as a kind",
 			"such as 'room' or 'door': it would need to be straightforwardly the name "
 			"of a kind, and not be qualified with adjectives like 'open'.");
-		kind_of_what = Kinds::Knowledge::as_subject(K_value);
+		kind_of_what = KindSubjects::from_kind(K_value);
 	}
 
 @<Issue a problem message for a disallowed subkind@> =
@@ -430,7 +430,7 @@ inference subject representing the domain to which any new kind would belong.
 		"so on) and kinds of 'value'",
 		"so for example 'colour is a kind of value' is allowed but 'prime is "
 		"a kind of number' is not.");
-	kind_of_what = Kinds::Knowledge::as_subject(K_value);
+	kind_of_what = KindSubjects::from_kind(K_value);
 
 @ The following could clearly be improved.
 
@@ -572,7 +572,7 @@ a noun instead of a condition testing the current action.
 		if ((K) &&
 			(Descriptions::to_instance(spec) == NULL) &&
 			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-			Node::set_subject(p, Kinds::Knowledge::as_subject(K));
+			Node::set_subject(p, KindSubjects::from_kind(K));
 			Node::set_type(p, EVERY_NT);
 			return;
 		}

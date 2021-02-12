@@ -118,7 +118,7 @@ inference_subject *Specifications::to_subject(parse_node *spec) {
 		} else {
 			kind *K = Binding::kind_of_variable_0(prop);
 			if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) K = K_object;
-			infs = Kinds::Knowledge::as_subject(K);
+			infs = KindSubjects::from_kind(K);
 		}
 	} else infs = InferenceSubjects::from_specification(spec);
 	return infs;

@@ -135,7 +135,7 @@ instance has its own <span class="extract"><span class="extract-syntax">equation
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">equation_symbol</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure equation_symbol is accessed in 2/ptmn, 2/cs, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 4/rpt, 4/tc, 4/ass, 4/npa, 4/pk, 4/rk, 4/ass2, 4/imp, 5/tc, 5/tbl, 6/tcp, 6/cu and here.</li></ul>
+<ul class="endnotetexts"><li>The structure equation_symbol is accessed in 2/ptmn, 2/cs, 3/dlr, 3/pr, 3/tr, 3/nuor, 3/uor, 3/tr2, 3/dbtr, 3/rpr, 3/nar, 3/nlpr, 3/nrr, 3/npr, 3/nvr, 3/nar2, 4/rpt, 4/tc, 4/ass, 4/npa, 4/rk, 4/ass2, 4/imp, 5/tc, 5/tbl, 6/tcp, 6/cu and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In addition, there are some standing symbols used by all equations: the
 constant "pi", for example. They're stored in this linked list:
 </p>
@@ -1531,7 +1531,7 @@ are obliged to issue a problem message.
 <span class="plain-syntax">                </span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">gK_before</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Kinds::FloatingPoint::new_gk</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">Node::get_kind_of_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">leaf_constant</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_promotion</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::RunTime::target_VM_supports</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_promotion</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">RTKinds::target_VM_supports</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">gK_before</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">Kinds::FloatingPoint::to_real</span><span class="plain-syntax">(</span><span class="identifier-syntax">tok</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">gK_before</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -2058,7 +2058,7 @@ cube roots.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Kinds::FloatingPoint::new_gk</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">old_LHS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_operands</span><span class="plain-syntax">[1]-&gt;</span><span class="element-syntax">rational_n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">old_LHS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enode_operands</span><span class="plain-syntax">[1]-&gt;</span><span class="element-syntax">rational_m</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Kinds::RunTime::notify_of_use</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RTKinds::notify_of_use</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-eqt.html#SP41_3">&#167;41.3</a>.</li></ul>

@@ -300,7 +300,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(GPROPERTY_HL));
 			Produce::down(Emit::tree());
 		}
-		Kinds::RunTime::emit_weak_id_as_val(owner_kind);
+		RTKinds::emit_weak_id_as_val(owner_kind);
 		@<Emit the property's owner@>;
 		Specifications::Compiler::emit_as_val(K_value, prop_spec);
 		if (!(TEST_COMPILATION_MODE(TREAT_AS_LVALUE_CMODE))) {
@@ -328,7 +328,7 @@ we use here. We replace "self" as a default owner by the only possible owner.
 @<Reinterpret the "self" for what are unambiguously conditions of single things@> =
 	if (Rvalues::is_self_object_constant(owner)) {
 		inference_subject *infs = Properties::Conditions::of_what(prn);
-		instance *I = Instances::object_from_infs(infs);
+		instance *I = InstanceSubjects::to_object_instance(infs);
 		if (I) owner = Rvalues::from_instance(I);
 	}
 

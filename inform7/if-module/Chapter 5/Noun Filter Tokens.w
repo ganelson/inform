@@ -71,7 +71,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, v_s);
 			inter_name *gpr_to_ask = Kinds::Behaviour::get_explicit_I6_GPR_iname(R);
-			if (gpr_to_ask == NULL) gpr_to_ask = Kinds::RunTime::get_kind_GPR_iname(R);
+			if (gpr_to_ask == NULL) gpr_to_ask = RTKinds::get_kind_GPR_iname(R);
 			Produce::inv_call_iname(Emit::tree(), gpr_to_ask);
 		Produce::up(Emit::tree());
 
@@ -155,7 +155,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 						Produce::inv_primitive(Emit::tree(), OBJECTLOOP_BIP);
 						Produce::down(Emit::tree());
 							Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
-							Produce::val_iname(Emit::tree(), K_value, Kinds::RunTime::I6_classname(K_object));
+							Produce::val_iname(Emit::tree(), K_value, RTKinds::I6_classname(K_object));
 							Calculus::Deferrals::emit_test_if_var_matches_description(noun_var, nft->the_filter);
 
 							Produce::code(Emit::tree());

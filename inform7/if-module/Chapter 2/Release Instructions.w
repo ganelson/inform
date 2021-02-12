@@ -593,7 +593,7 @@ void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *hea
 	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_creation_year_VAR, FALSE) == FALSE)
 		WRITE("%d", (the_present->tm_year)+1900);
 	WRITE("</firstpublished>\n");
-	if (NonlocalVariables::has_initial_value_set(story_description_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
 		WRITE("<description>");
 		PL::Bibliographic::Release::write_var_to_XML(OUT, story_description_VAR, TRUE);
 		WRITE("</description>\n");
@@ -690,7 +690,7 @@ bytes of the header to store its own version number.
 	WRITE("<releasedate>%04d-%02d-%02d</releasedate>\n",
 		(the_present->tm_year)+1900, (the_present->tm_mon)+1, the_present->tm_mday);
 	if ((story_release_number_VAR != NULL) &&
-		(NonlocalVariables::has_initial_value_set(story_release_number_VAR))) {
+		(VariableSubjects::has_initial_value_set(story_release_number_VAR))) {
 		WRITE("<version>");
 		PL::Bibliographic::Release::write_var_to_XML(OUT, story_release_number_VAR, FALSE);
 		WRITE("</version>\n");
@@ -728,7 +728,7 @@ LISP.
 		WRITE("<serial>%02d%02d%02d</serial>\n",
 			(the_present->tm_year)-100, (the_present->tm_mon)+1, the_present->tm_mday);
 		if ((story_release_number_VAR != NULL) &&
-			(NonlocalVariables::has_initial_value_set(story_release_number_VAR))) {
+			(VariableSubjects::has_initial_value_set(story_release_number_VAR))) {
 			WRITE("<release>");
 			PL::Bibliographic::Release::write_var_to_XML(OUT, story_release_number_VAR, FALSE);
 			WRITE("</release>\n");
@@ -741,10 +741,10 @@ LISP.
 @ =
 int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv, int desc_mode) {
 	NonlocalVariables::treat_as_plain_text_word(nlv);
-	if ((nlv) && (NonlocalVariables::has_initial_value_set(nlv))) {
+	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		parse_node *val =
 			NonlocalVariables::substitute_constants(
-				NonlocalVariables::get_initial_value(
+				VariableSubjects::get_initial_value(
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
 		if (Node::is(val, UNKNOWN_NT)) {
@@ -769,10 +769,10 @@ int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variabl
 
 @ =
 int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv) {
-	if ((nlv) && (NonlocalVariables::has_initial_value_set(nlv))) {
+	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		parse_node *val =
 			NonlocalVariables::substitute_constants(
-				NonlocalVariables::get_initial_value(
+				VariableSubjects::get_initial_value(
 					nlv));
 		kind *K = NonlocalVariables::kind(nlv);
 		if (Node::is(val, UNKNOWN_NT)) {
@@ -837,7 +837,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Compose the blorbed story filename into the TEMP stream@> =
 	if ((story_title_VAR != NULL) &&
-		(NonlocalVariables::has_initial_value_set(story_title_VAR))) {
+		(VariableSubjects::has_initial_value_set(story_title_VAR))) {
 		BEGIN_COMPILATION_MODE;
 		COMPILATION_MODE_ENTER(TRUNCATE_TEXT_CMODE);
 		PL::Bibliographic::Release::write_var_to_text(TEMP, story_title_VAR);
@@ -911,7 +911,7 @@ brackets [THUS].
 @<Write numerous placeholder variables@> =
 	WRITE("placeholder [IFID] = \"%S\"\n", PL::Bibliographic::IFID::read_uuid());
 
-	if (NonlocalVariables::has_initial_value_set(story_release_number_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		WRITE("placeholder [RELEASE] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_release_number_VAR);
 		WRITE("\"\n");
@@ -920,27 +920,27 @@ brackets [THUS].
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 
-	if (NonlocalVariables::has_initial_value_set(story_creation_year_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_creation_year_VAR)) {
 		WRITE("placeholder [YEAR] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_creation_year_VAR);
 		WRITE("\"\n");
 	} else WRITE("placeholder [YEAR] = \"%d\"\n", (the_present->tm_year)+1900);
 
-	if (NonlocalVariables::has_initial_value_set(story_title_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_title_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
 		WRITE("placeholder [TITLE] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_title_VAR);
 		WRITE("\"\n");
 	} else WRITE("placeholder [TITLE] = \"Untitled\"\n");
 
-	if (NonlocalVariables::has_initial_value_set(story_author_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
 		WRITE("placeholder [AUTHOR] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_author_VAR);
 		WRITE("\"\n");
 	} else WRITE("placeholder [AUTHOR] = \"Anonymous\"\n");
 
-	if (NonlocalVariables::has_initial_value_set(story_description_VAR)) {
+	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
 		NonlocalVariables::treat_as_plain_text_word(story_description_VAR);
 		WRITE("placeholder [BLURB] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_description_VAR);

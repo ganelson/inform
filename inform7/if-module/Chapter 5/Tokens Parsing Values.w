@@ -173,7 +173,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 			(Kinds::Behaviour::is_quasinumerical(K))) {
 			instance *q; literal_pattern *lp;
 			if (Kinds::Behaviour::needs_I6_GPR(K) == FALSE) continue;
-			inter_name *iname = Kinds::RunTime::get_kind_GPR_iname(K);
+			inter_name *iname = RTKinds::get_kind_GPR_iname(K);
 			packaging_state save = Routines::begin(iname);
 			int need_lf_vars = FALSE;
 			LITERAL_FORMS_LOOP(lp, K) {
@@ -188,7 +188,7 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 			Routines::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
-				inter_name *iname = Kinds::RunTime::get_instance_GPR_iname(K);
+				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
 				packaging_state save = Routines::begin(iname);
 				gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
 				PL::Parsing::Tokens::Values::add_instance_call(&gprk);

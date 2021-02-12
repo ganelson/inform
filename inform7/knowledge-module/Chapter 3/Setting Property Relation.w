@@ -50,7 +50,7 @@ typedef struct property_setting_bp_data {
 
 binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
-		BPTerms::new(Kinds::Knowledge::as_subject(K_object)),
+		BPTerms::new(KindSubjects::from_kind(K_object)),
 		BPTerms::new(NULL),
 		I"set-property", NULL, NULL, NULL, WordAssemblages::lit_0());
 	property_setting_bp_data *PSD = CREATE(property_setting_bp_data);
@@ -227,7 +227,7 @@ be caught later on Inform's run.
 	}
 
 @<Require the subject to be able to have properties@> =
-	if (Kinds::Knowledge::has_properties(kinds_of_terms[0]) == FALSE) {
+	if (KindSubjects::has_properties(kinds_of_terms[0]) == FALSE) {
 		LOG("Property value for impossible domain %u\n", kinds_of_terms[0]);
 		Problems::quote_kind(4, kinds_of_terms[0]);
 		Problems::quote_property(5, prn);

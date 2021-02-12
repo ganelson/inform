@@ -525,7 +525,7 @@ make a weak match.
 
 =
 int Adjectives::Meanings::domain_weak_match(kind *K1, kind *K2) {
-	if (Kinds::RunTime::weak_id(K1) == Kinds::RunTime::weak_id(K2))
+	if (RTKinds::weak_id(K1) == RTKinds::weak_id(K2))
 		return TRUE;
 	return FALSE;
 }
@@ -535,9 +535,9 @@ within the domain of an adjective meaning.
 
 =
 int Adjectives::Meanings::domain_subj_compare(inference_subject *infs, adjective_meaning *am) {
-	instance *I = Instances::object_from_infs(infs);
+	instance *I = InstanceSubjects::to_object_instance(infs);
 	if (I == NULL) return TRUE;
-	if (am->domain_infs == Kinds::Knowledge::as_subject(K_object)) return TRUE;
+	if (am->domain_infs == KindSubjects::from_kind(K_object)) return TRUE;
 	while (infs) {
 		if (am->domain_infs == infs) return TRUE;
 		infs = InferenceSubjects::narrowest_broader_subject(infs);
@@ -572,7 +572,7 @@ void Adjectives::Meanings::set_domain_text(adjective_meaning *am, wording W) {
 void Adjectives::Meanings::set_domain_from_instance(adjective_meaning *am,
 	instance *I) {
 	if (I == NULL) {
-		am->domain_infs = Kinds::Knowledge::as_subject(K_object);
+		am->domain_infs = KindSubjects::from_kind(K_object);
 		am->domain_kind = K_object;
 	} else {
 		am->domain_infs = Instances::as_subject(I);
@@ -588,7 +588,7 @@ disambiguation is used when applying adjectives to objects.
 =
 void Adjectives::Meanings::set_domain_from_kind(adjective_meaning *am, kind *K) {
 	if ((K == NULL) || (Kinds::Behaviour::is_object(K))) K = K_object;
-	am->domain_infs = Kinds::Knowledge::as_subject(K);
+	am->domain_infs = KindSubjects::from_kind(K);
 	am->domain_kind = K;
 	am->domain_text = EMPTY_WORDING;
 }
@@ -743,8 +743,8 @@ int Adjectives::Meanings::compare(adjective_meaning *am1, adjective_meaning *am2
 	if (InferenceSubjects::is_strictly_within(am1->domain_infs, am2->domain_infs)) return 1;
 	if (InferenceSubjects::is_strictly_within(am2->domain_infs, am1->domain_infs)) return -1;
 
-	kind *K1 = Kinds::Knowledge::nonobject_from_infs(am1->domain_infs);
-	kind *K2 = Kinds::Knowledge::nonobject_from_infs(am2->domain_infs);
+	kind *K1 = KindSubjects::to_nonobject_kind(am1->domain_infs);
+	kind *K2 = KindSubjects::to_nonobject_kind(am2->domain_infs);
 	if ((K1) && (K2)) {
 		int c1 = Kinds::compatible(K1, K2);
 		int c2 = Kinds::compatible(K2, K1);
@@ -896,7 +896,7 @@ negation does not, and so must use those of the original.
 			case NOW_ADJECTIVE_FALSE_TASK: task = NOW_ADJECTIVE_TRUE_TASK; break;
 		}
 	}
-	inter_name *iname = Adjectives::Meanings::iname(use_aph, task, Kinds::RunTime::weak_id(am_kind));
+	inter_name *iname = Adjectives::Meanings::iname(use_aph, task, RTKinds::weak_id(am_kind));
 	Calculus::Schemas::modify(&(am->i6s_to_transfer_to_SR[T]), "*=-(%s%n(*1))",
 		negation_operator, iname);
 
@@ -910,7 +910,7 @@ objects, if there is one; otherwise the first-declared meaning.
 int Adjectives::Meanings::write_adjective_test_routine(value_holster *VH,
 	adjective *aph) {
 	i6_schema *sch;
-	int weak_id = Kinds::RunTime::weak_id(K_object);
+	int weak_id = RTKinds::weak_id(K_object);
 	sch = Adjectives::Meanings::get_i6_schema(aph, NULL,
 		TEST_ADJECTIVE_TASK);
 	if (sch == NULL) {
@@ -918,7 +918,7 @@ int Adjectives::Meanings::write_adjective_test_routine(value_holster *VH,
 		kind *am_kind =
 			Adjectives::Meanings::get_domain(aph->adjective_meanings.possible_meanings);
 		if (am_kind == NULL) return FALSE;
-		weak_id = Kinds::RunTime::weak_id(am_kind);
+		weak_id = RTKinds::weak_id(am_kind);
 	}
 	Produce::val_iname(Emit::tree(), K_value, Adjectives::Meanings::iname(aph, TEST_ADJECTIVE_TASK, weak_id));
 	return TRUE;
@@ -1008,7 +1008,7 @@ known in order to sort.
 	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to %u, task %d\n",
 		W, K, T);
 
-	inter_name *iname = Adjectives::Meanings::iname(aph, T, Kinds::RunTime::weak_id(K));
+	inter_name *iname = Adjectives::Meanings::iname(aph, T, RTKinds::weak_id(K));
 	packaging_state save = Routines::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 

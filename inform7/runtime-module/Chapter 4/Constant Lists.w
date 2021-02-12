@@ -13,7 +13,7 @@ inter_name *ConstantLists::compile_literal_list(wording W) {
 	literal_list *ll = Lists::find_literal(incipit+1);
 	if (ll) {
 		Lists::kind_of_ll(ll, FALSE);
-		inter_name *N = Kinds::RunTime::new_block_constant_iname();
+		inter_name *N = RTKinds::new_block_constant_iname();
 		packaging_state save = Emit::named_late_array_begin(N, K_value);
 		Emit::array_iname_entry(ConstantLists::iname(ll));
 		Emit::array_numeric_entry(0);
@@ -61,9 +61,9 @@ the list!);
 	int n = 0;
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) n++;
 
-	Kinds::RunTime::emit_block_value_header(Lists::kind_of_ll(ll, FALSE), TRUE, n+2);
+	RTKinds::emit_block_value_header(Lists::kind_of_ll(ll, FALSE), TRUE, n+2);
 
-	Kinds::RunTime::emit_strong_id(ll->entry_kind);
+	RTKinds::emit_strong_id(ll->entry_kind);
 
 	Emit::array_numeric_entry((inter_ti) n);
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
@@ -76,8 +76,8 @@ the list!);
 =
 void ConstantLists::compile_default_list(inter_name *identifier, kind *K) {
 	packaging_state save = Emit::named_array_begin(identifier, K_value);
-	Kinds::RunTime::emit_block_value_header(K, TRUE, 2);
-	Kinds::RunTime::emit_strong_id(Kinds::unary_construction_material(K));
+	RTKinds::emit_block_value_header(K, TRUE, 2);
+	RTKinds::emit_strong_id(Kinds::unary_construction_material(K));
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 }

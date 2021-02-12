@@ -1,9 +1,9 @@
-Total memory consumption was 257144K = 251 MB
+Total memory consumption was 257518K = 251 MB
 
-62.5% was used for 1338754 objects, in 273957 frames in 201 x 800K = 160800K = 157 MB:
+62.4% was used for 1341242 objects, in 273970 frames in 201 x 800K = 160800K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
-     5.4%  text_stream_array                        2567 x 100 = 256700 objects, 14457344 bytes
+     5.5%  text_stream_array                        2592 x 100 = 259200 objects, 14598144 bytes
      3.9%  parse_node                               129993 objects, 10399440 bytes
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
@@ -92,7 +92,7 @@ Total memory consumption was 257144K = 251 MB
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  to_phrase_request                        59 objects, 15576 bytes
      ----  adjective_iname_holder                   320 objects, 15360 bytes
-     ----  method                                   317 objects, 15216 bytes
+     ----  method                                   305 objects, 14640 bytes
      ----  plugin                                   23 objects, 13432 bytes
      ----  literal_text                             147 objects, 12936 bytes
      ----  stopwatch_timer                          148 objects, 11840 bytes
@@ -218,13 +218,13 @@ Total memory consumption was 257144K = 251 MB
      ----  loop_over_scope                          1 object, 40 bytes
      ----  by_routine_bp_data                       1 object, 40 bytes
 
-37.4% was used for memory not allocated for objects:
+37.5% was used for memory not allocated for objects:
 
-    15.8%  text stream storage                      41840680 bytes in 263034 claims
+    16.0%  text stream storage                      42223552 bytes in 265554 claims
      3.5%  dictionary storage                       9266176 bytes in 16348 claims
      ----  sorting                                  1048 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
-     4.1%  source text details                      10800000 bytes in 2 claims
+     4.0%  source text details                      10800000 bytes in 2 claims
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      0.8%  inter symbols storage                    2277376 bytes in 13914 claims
@@ -237,5 +237,5 @@ Total memory consumption was 257144K = 251 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.2% was overhead - 53399616 bytes = 52148K = 50 MB
+20.1% was overhead - 53259392 bytes = 52011K = 50 MB
 
