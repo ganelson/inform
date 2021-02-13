@@ -75,7 +75,7 @@ to be marked with NT incidence bits. (See //words: Nonterminal Incidences//.)
 =
 void CorePreform::set_core_internal_NTIs(void) {
 	NTI::give_nt_reserved_incidence_bit(<s-adjective>, ADJECTIVE_RES_NT_BIT);
-	NTI::give_nt_reserved_incidence_bit(<s-instance-name>, PROPER_NOUN_RES_NT_BIT);
+	NTI::give_nt_reserved_incidence_bit(<s-object-instance>, PROPER_NOUN_RES_NT_BIT);
 }
 
 @ Later on, the //words// module calls the following function to mark that a
@@ -88,7 +88,7 @@ bit or the <k-kind> bit set, which as we see above is |COMMON_NOUN_RES_NT_BIT|.
 =
 void CorePreform::set_core_internal_requirements(void) {
 	NTI::every_word_in_match_must_have_my_NTI_bit(<s-adjective>);
-	CorePreform::mark_nt_as_requiring_itself_articled(<s-instance-name>);
+	CorePreform::mark_nt_as_requiring_itself_articled(<s-object-instance>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-kind-variable>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-formal-variable>);
 	CorePreform::mark_nt_as_requiring_itself_articled(<k-base-kind>);

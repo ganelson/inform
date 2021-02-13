@@ -364,19 +364,15 @@ them with conditions like
 =
 <s-qualifiable-noun> ::=
 	<k-kind> |           ==> { -, Specifications::from_kind(RP[1]) }; s_adj_domain = RP[1];
-	<s-instance-name>    ==> { -, RP[1] }; s_adj_domain = NULL;
+	<s-object-instance>  ==> { -, RP[1] }; s_adj_domain = NULL;
 
 <s-qualifiable-common-noun> ::=
 	<k-kind>             ==> { -, Specifications::from_kind(RP[1]) }; s_adj_domain = RP[1];
 
 <s-qualifiable-proper-noun> ::=
-	<s-instance-name>    ==> { -, RP[1] }; s_adj_domain = NULL;
+	<s-object-instance>  ==> { -, RP[1] }; s_adj_domain = NULL;
 
-@ <s-instance-name> parses text exactly as if it were <instance-of-object>, but
-is just a little faster written as an internal like this.
-
-=
-<s-instance-name> internal {
+<s-object-instance> internal {
 	parse_node *p = Lexicon::retrieve(NOUN_MC, W);
 	if (p) {
 		noun_usage *nu = Nouns::disambiguate(p, FALSE);

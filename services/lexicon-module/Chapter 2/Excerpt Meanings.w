@@ -409,7 +409,7 @@ excerpt_meaning *ExcerptMeanings::register(
 	#ifdef CORE_MODULE
 	if (meaning_code == NOUN_MC)
 		LOOP_THROUGH_WORDING(i, W)
-			NTI::mark_word(i, <s-instance-name>);
+			NTI::mark_word(i, <s-object-instance>);
 	if (meaning_code == KIND_SLOW_MC)
 		LOOP_THROUGH_WORDING(i, W)
 			NTI::mark_word(i, <k-kind>);

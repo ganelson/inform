@@ -5,8 +5,8 @@ Size of lexicon: 3098 excerpt meanings
   29 words have a middle list: longest belongs to to (with 4 meanings)
   108 words have a subset list: longest belongs to street (with 4 meanings)
 
-Number of attempts to retrieve: 104739
-  of which unsuccessful: 87238
+Number of attempts to retrieve: 104653
+  of which unsuccessful: 87152
   of which successful: 17501
 
 Total attempts to match against excerpt meanings: 249459
