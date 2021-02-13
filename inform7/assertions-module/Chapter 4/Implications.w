@@ -96,7 +96,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 
 @<Check that the conclusion involves only a single either/or property@> =
 	unary_predicate *pred = Node::get_predicate(py);
-	property *prn = Adjectives::Meanings::has_EORP_meaning(AdjectivalPredicates::to_adjective(pred), NULL);
+	property *prn = AdjectiveMeanings::has_EORP_meaning(AdjectivalPredicates::to_adjective(pred), NULL);
 	if (prn == NULL) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ImplicationValueProperty),
 			"that's an implication where the outcome is an adjective other than "
@@ -222,7 +222,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	LOGIF(IMPLICATIONS, "$D => $T (certainty %d; changed state %d)\n",
 		imp->if_spec, imp->then_pn, imp->implied_likelihood, conclusion_state);
 
-	property *conclusion_prop = Adjectives::Meanings::has_EORP_meaning(
+	property *conclusion_prop = AdjectiveMeanings::has_EORP_meaning(
 		AdjectivalPredicates::to_adjective(pred), NULL);
 	@<Check that the conclusion is not impossible@>;
 

@@ -16,6 +16,10 @@ which use this module:
 
 =
 void RuntimeModule::start(void) {
+	Phrases::Phrasal::start();
+	Phrases::Condition::start();
+	Phrases::RawPhrasal::start();
+	Phrases::RawCondition::start();
 	Memory::reason_name(EMIT_ARRAY_MREASON, "emitter array storage");
 	Memory::reason_name(PARTITION_MREASON, "initial state for relations in groups");
 	Memory::reason_name(RELATION_CONSTRUCTION_MREASON, "relation bitmap storage");

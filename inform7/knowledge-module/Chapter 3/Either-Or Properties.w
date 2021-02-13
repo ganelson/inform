@@ -244,44 +244,42 @@ void Properties::EitherOr::compile_default_value(value_holster *VH, property *pr
 @h Either/or properties as adjectives.
 What makes either/or properties linguistically interesting is their use as
 adjectives: an open door, a transparent container. Adjectival
-meanings arising in this way are of the |EORP_KADJ| kind, and the following
+meanings arising in this way are of the |either_or_property_amf| kind, and the following
 is called every time an either/or property is created, to create its matching
 adjectival meaning:
 
 =
+adjective_meaning_family *either_or_property_amf = NULL; /* defined by an either/or property like "closed" */
+
+void Properties::EitherOr::start(void) {
+	either_or_property_amf = AdjectiveMeanings::new_family(1);
+
+	METHOD_ADD(either_or_property_amf, ASSERT_ADJM_MTID, Properties::EitherOr::ADJ_assert);
+	METHOD_ADD(either_or_property_amf, COMPILING_SOON_ADJM_MTID, Properties::EitherOr::compiling_soon);
+	METHOD_ADD(either_or_property_amf, INDEX_ADJM_MTID, Properties::EitherOr::ADJ_index);
+}
+
+int Properties::EitherOr::is_either_or_adjective(adjective_meaning *am) {
+	if ((am) && (am->family == either_or_property_amf)) return TRUE;
+	return FALSE;
+}
+
 void Properties::EitherOr::create_adjective_from_property(property *prn, wording W, kind *K) {
 	adjective_meaning *am =
-		Adjectives::Meanings::new(EORP_KADJ, STORE_POINTER_property(prn), W);
-	Adjectives::Meanings::declare(am, W, 1);
-	Adjectives::Meanings::set_domain_from_kind(am, K);
-	prn->adjective_registered = Adjectives::Meanings::get_aph_from_am(am);
+		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
+	AdjectiveMeanings::declare(am, W, 1);
+	AdjectiveMeanings::set_domain_from_kind(am, K);
+	prn->adjective_registered = AdjectiveMeanings::get_aph_from_am(am);
 	prn->adjectival_meaning_registered = am;
 }
 
 void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn, wording W, kind *K) {
 	adjective *aph = prn->adjective_registered;
-	if (Adjectives::Meanings::applicable_to(aph, K)) return;
+	if (AdjectiveMeanings::applicable_to(aph, K)) return;
 	adjective_meaning *am =
-		Adjectives::Meanings::new(EORP_KADJ, STORE_POINTER_property(prn), W);
-	Adjectives::Meanings::declare(am, W, 2);
-	Adjectives::Meanings::set_domain_from_kind(am, K);
-}
-
-@ And here are the methods which define |EORP| adjectives. They arise other
-than by parsing, as we've seen, so:
-
-=
-adjective_meaning *Properties::EitherOr::ADJ_parse(parse_node *q,
-	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
-	return NULL;
-}
-
-@ Compiling tests or assertions of these adjectives is easy, because it just
-means using their schemata in the usual way...
-
-=
-int Properties::EitherOr::ADJ_compile(property *prn, int T, int emit_flag, ph_stack_frame *phsf) {
-	return FALSE;
+		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
+	AdjectiveMeanings::declare(am, W, 2);
+	AdjectiveMeanings::set_domain_from_kind(am, K);
 }
 
 @ ...but writing those schemata is not so easy, partly because of the way
@@ -289,13 +287,14 @@ either/or properties may be paired, partly because of the attribute storage
 optimisation applied to some but not all of them.
 
 =
-void Properties::EitherOr::ADJ_compiling_soon(adjective_meaning *am, property *prn, int T) {
-	if (am == NULL) internal_error("Unregistered adjectival either/or property in either/or atom");
+void Properties::EitherOr::compiling_soon(adjective_meaning_family *family, adjective_meaning *am, int T) {
+	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
+	if (prn == NULL) internal_error("Unregistered adjectival either/or property in either/or atom");
 
-	if (Adjectives::Meanings::get_ready_flag(am)) return;
-	Adjectives::Meanings::set_ready_flag(am);
+	if (AdjectiveMeanings::get_ready_flag(am)) return;
+	AdjectiveMeanings::set_ready_flag(am);
 
-	kind *K = Adjectives::Meanings::get_domain(am);
+	kind *K = AdjectiveMeanings::get_domain(am);
 	if (Kinds::Behaviour::is_object(K))
 		@<Set the schemata for an either/or property adjective with objects as domain@>
 	else
@@ -313,24 +312,24 @@ which would work just as well, but more slowly.
 		property *neg = Properties::EitherOr::get_negation(prn);
 		inter_name *identifier = Properties::iname(neg);
 
-		i6_schema *sch = Adjectives::Meanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n) == false", identifier);
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
 	} else {
 		inter_name *identifier = Properties::iname(prn);
 
-		i6_schema *sch = Adjectives::Meanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n)", identifier);
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
 	}
 
@@ -338,27 +337,27 @@ which would work just as well, but more slowly.
 	if (Properties::EitherOr::stored_in_negation(prn)) {
 		property *neg = Properties::EitherOr::get_negation(prn);
 
-		i6_schema *sch = Adjectives::Meanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n) == false", K,
 			Properties::iname(neg));
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
 			Properties::iname(neg));
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
 			Properties::iname(neg));
 	} else {
-		i6_schema *sch = Adjectives::Meanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n)", K,
 			Properties::iname(prn));
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
 			Properties::iname(prn));
 
-		sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
+		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
 			Properties::iname(prn));
 	}
@@ -367,8 +366,10 @@ which would work just as well, but more slowly.
 property.
 
 =
-int Properties::EitherOr::ADJ_assert(property *prn,
+int Properties::EitherOr::ADJ_assert(adjective_meaning_family *f,
+	adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
+	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
 	if (parity == FALSE) World::Inferences::draw_negated_property(infs_to_assert_on, prn, NULL);
 	else World::Inferences::draw_property(infs_to_assert_on, prn, NULL);
 	return TRUE;
@@ -377,7 +378,9 @@ int Properties::EitherOr::ADJ_assert(property *prn,
 @ And finally:
 
 =
-int Properties::EitherOr::ADJ_index(OUTPUT_STREAM, property *prn) {
+int Properties::EitherOr::ADJ_index(adjective_meaning_family *f, text_stream *OUT,
+	adjective_meaning *am) {
+	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
 	property *neg = Properties::EitherOr::get_negation(prn);
 	WRITE("either/or property");
 	if (Properties::permission_list(prn)) {

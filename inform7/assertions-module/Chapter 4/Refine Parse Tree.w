@@ -122,7 +122,7 @@ int Refiner::nominalise_adjective(parse_node *p) {
 	if ((p) && (Node::get_type(p) == ADJECTIVE_NT)) {
 		unary_predicate *pred = Node::get_predicate(p);
 		if (AdjectivalPredicates::parity(pred) == TRUE) {
-			instance *q = Adjectives::Meanings::has_ENUMERATIVE_meaning(
+			instance *q = AdjectiveMeanings::has_ENUMERATIVE_meaning(
 				AdjectivalPredicates::to_adjective(pred));
 			if (q) Refiner::give_spec_to_noun(p, Rvalues::from_instance(q));
 		}

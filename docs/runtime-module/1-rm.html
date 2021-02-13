@@ -80,6 +80,10 @@ which use this module:
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuntimeModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="3-abp.html#SP1" class="function-link"><span class="function-syntax">Phrases::Phrasal::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-abc.html#SP1" class="function-link"><span class="function-syntax">Phrases::Condition::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-abrp.html#SP2" class="function-link"><span class="function-syntax">Phrases::RawPhrasal::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-abrc.html#SP2" class="function-link"><span class="function-syntax">Phrases::RawCondition::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">EMIT_ARRAY_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"emitter array storage"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">PARTITION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"initial state for relations in groups"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Memory::reason_name</span><span class="plain-syntax">(</span><span class="constant-syntax">RELATION_CONSTRUCTION_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"relation bitmap storage"</span><span class="plain-syntax">);</span>

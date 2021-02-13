@@ -34,6 +34,9 @@ COMPILE_WRITER_I(int, World::Inferences::log_kind)
 
 =
 void KnowledgeModule::start(void) {
+	InstanceAdjectives::start();
+	Properties::EitherOr::start();
+	Properties::Measurement::start();
 	Properties::SameRelations::start();
 	Properties::SettingRelations::start();
 	Properties::ComparativeRelations::start();

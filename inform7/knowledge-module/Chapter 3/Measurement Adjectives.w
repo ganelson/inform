@@ -233,12 +233,26 @@ always to match <property-name>, and the text in the range must match
 		"container is large if its carrying capacity is 10 or more.'");
 	return FALSE;
 
-@ =
-adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
-	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
-	if (sense == 0) return NULL;
+@
 
-	if (<measurement-adjective-definition>(CONW) == FALSE) return NULL;
+=
+adjective_meaning_family *measurement_amf = NULL; /* defined by numerical comparison with a property value */
+
+void Properties::Measurement::start(void) {
+	measurement_amf = AdjectiveMeanings::new_family(3);
+	METHOD_ADD(measurement_amf, ASSERT_ADJM_MTID, Properties::Measurement::ADJ_assert);
+	METHOD_ADD(measurement_amf, COMPILING_SOON_ADJM_MTID, Properties::Measurement::compiling_soon);
+	METHOD_ADD(measurement_amf, PARSE_ADJM_MTID, Properties::Measurement::ADJ_parse);
+}
+
+
+@ =
+int Properties::Measurement::ADJ_parse(adjective_meaning_family *f,
+	adjective_meaning **result, parse_node *q,
+	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
+	if (sense == 0) return FALSE;
+
+	if (<measurement-adjective-definition>(CONW) == FALSE) return FALSE;
 	int shape = <<r>>;
 	wording PRW = GET_RW(<measurement-adjective-definition>, 1);
 	wording THRESW = GET_RW(<measurement-range>, 1);
@@ -251,7 +265,8 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 	@<Initialise the measurement definition@>;
 	if (shape != MEASURE_T_EXACTLY) @<Create the superlative form@>;
 	@<Create the adjectival meaning arising from this measurement@>;
-	return mdef->headword_as_adjective;
+	*result = mdef->headword_as_adjective;
+	return TRUE;
 }
 
 @<Reject some overly elaborate attempts to define overly elaborate measurements@> =
@@ -262,7 +277,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 				"as in 'Definition: a container is large if its carrying capacity is "
 				"10 or more.': 'fairly large' would not be allowed because it would "
 				"make no sense to talk about 'fairly larger' or 'fairly largest'.");
-		return NULL;
+		return FALSE;
 	}
 
 	if (Wordings::nonempty(CALLW)) {
@@ -273,7 +288,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 				"or more.' is fine, but so 'Definition: a container (called the bag) "
 				"is large if its carrying capacity is 10 or more.' is not - then again, "
 				"there's very little call for it.");
-		return NULL;
+		return FALSE;
 	}
 
 	if (sense != 1) {
@@ -285,7 +300,7 @@ adjective_meaning *Properties::Measurement::ADJ_parse(parse_node *q,
 				"its carrying capacity is 10 or more.' is not - of course a similar "
 				"effect could be achieved by 'Definition: a container is modest if its "
 				"carrying capacity is 9 or less.'");
-		return NULL;
+		return FALSE;
 	}
 
 @ Perhaps this is a good point to say why we allow any exact measurements at
@@ -293,21 +308,21 @@ all. After all, if we didn't, a definition like:
 
 >> Definition: a person is handy if his carrying capacity is 7.
 
-...would still work; and "handy" would then be created as a |CONDITION_KADJ|
+...would still work; and "handy" would then be created as a |condition_amf|
 adjective. So why not let that happen?
 
-The answer is that our |MEASUREMENT_KADJ| adjectives behave exactly the same
+The answer is that our |measurement_amf| adjectives behave exactly the same
 at run-time, but can also be asserted true in the model world at compile-time.
 In particular, we could write:
 
 >> Peter is a handy person.
 
-This can't be done with general |CONDITION_KADJ| adjectives, because conditions
+This can't be done with general |condition_amf| adjectives, because conditions
 can't normally be unravelled at compile time.
 
 @<Allow an exact measurement to be created only if we can already parse the threshold@> =
 	if (shape == MEASURE_T_EXACTLY) {
-		if (<s-literal>(THRESW) == FALSE) return NULL;
+		if (<s-literal>(THRESW) == FALSE) return FALSE;
 	}
 
 @<Initialise the measurement definition@> =
@@ -354,32 +369,32 @@ can't normally be unravelled at compile time.
 	DISCARD_TEXT(TEMP)
 
 @<Create the adjectival meaning arising from this measurement@> =
-	adjective_meaning *am = Adjectives::Meanings::new(MEASUREMENT_KADJ,
+	adjective_meaning *am = AdjectiveMeanings::new(measurement_amf,
 		STORE_POINTER_measurement_definition(mdef), Node::get_text(q));
 	mdef->headword_as_adjective = am;
-	Adjectives::Meanings::declare(am, AW, 3);
-	Adjectives::Meanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-	Adjectives::Meanings::set_domain_text(am, DNW);
+	AdjectiveMeanings::declare(am, AW, 3);
+	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
+	AdjectiveMeanings::set_domain_text(am, DNW);
 
 @ =
-void Properties::Measurement::ADJ_compiling_soon(adjective_meaning *am,
-	measurement_definition *mdef, int T) {
+void Properties::Measurement::compiling_soon(adjective_meaning_family *family, adjective_meaning *am,
+	int T) {
+	measurement_definition *mdef =
+		RETRIEVE_POINTER_measurement_definition(am->detailed_meaning);
 	if ((mdef->prop) && (mdef->region_threshold_evaluated) &&
 		(mdef->property_schema_written == FALSE)) {
-		i6_schema *sch = Adjectives::Meanings::set_i6_schema(
+		i6_schema *sch = AdjectiveMeanings::set_i6_schema(
 			mdef->headword_as_adjective, TEST_ADJECTIVE_TASK, FALSE);
 		Calculus::Schemas::modify(sch, "%n(*1)", mdef->mdef_iname);
 		mdef->property_schema_written = TRUE;
 	}
 }
 
-int Properties::Measurement::ADJ_compile(measurement_definition *mdef,
-	int T, int emit_flag, ph_stack_frame *phsf) {
-	return FALSE;
-}
-
-int Properties::Measurement::ADJ_assert(measurement_definition *mdef,
+int Properties::Measurement::ADJ_assert(adjective_meaning_family *f,
+	adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
+	measurement_definition *mdef =
+		RETRIEVE_POINTER_measurement_definition(am->detailed_meaning);
 	Properties::Measurement::validate(mdef);
 	if ((Properties::Measurement::is_valid(mdef)) && (mdef->prop) && (parity == TRUE)) {
 		parse_node *val = NULL;
@@ -388,10 +403,6 @@ int Properties::Measurement::ADJ_assert(measurement_definition *mdef,
 		World::Inferences::draw_property(infs_to_assert_on, mdef->prop, val);
 		return TRUE;
 	}
-	return FALSE;
-}
-
-int Properties::Measurement::ADJ_index(OUTPUT_STREAM, measurement_definition *mdef) {
 	return FALSE;
 }
 
@@ -406,7 +417,7 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 			local_variable *lv = LocalVariables::add_call_parameter(
 				Frames::current_stack_frame(),
 				EMPTY_WORDING,
-				Adjectives::Meanings::get_domain(mdef->headword_as_adjective));
+				AdjectiveMeanings::get_domain(mdef->headword_as_adjective));
 			parse_node *var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lv);
 			parse_node *evaluated_prop = Lvalues::new_PROPERTY_VALUE(
 				Rvalues::from_property(mdef->prop), var);

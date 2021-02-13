@@ -9,8 +9,26 @@ that a ball might have a colour, we can declare that "the ball is green",
 or speak of "something blue", whereas "number" is not a coinciding property,
 and we would not ordinarily write "the ball is 4".[1]
 
+These instances make "enumerative adjectives" because they arise from
+enumerations such as:
+
+>> The ball can be red, green or blue.
+
 [1] A quirk in English does allow this, implicitly construing number as an
 age property, but we don't go there in Inform.
+
+=
+adjective_meaning_family *enumerative_amf = NULL; /* defined by a property like "colour" with named values */
+
+void InstanceAdjectives::start(void) {
+	enumerative_amf = AdjectiveMeanings::new_family(2);
+	METHOD_ADD(enumerative_amf, ASSERT_ADJM_MTID, InstanceAdjectives::assert);
+}
+
+int InstanceAdjectives::is_enumerative(adjective_meaning *am) {
+	if ((am) && (am->family == enumerative_amf)) return TRUE;
+	return FALSE;
+}
 
 @ Let's reconstruct the chain of events, shall we? It has been found that an
 instance, though a noun, must be used as an adjective: for example, "red".
@@ -43,17 +61,17 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 
 @<Create the adjective meaning for this use of the instance@> =
 	wording NW = Instances::get_name(I, FALSE);
-	am = Adjectives::Meanings::new(ENUMERATIVE_KADJ, STORE_POINTER_instance(I), NW);
-	I->as_adjective = Adjectives::Meanings::declare(am, NW, 4);
-	if (singleton) Adjectives::Meanings::set_domain_from_instance(am, singleton);
-	else if (set) Adjectives::Meanings::set_domain_from_kind(am, set);
+	am = AdjectiveMeanings::new(enumerative_amf, STORE_POINTER_instance(I), NW);
+	I->as_adjective = AdjectiveMeanings::declare(am, NW, 4);
+	if (singleton) AdjectiveMeanings::set_domain_from_instance(am, singleton);
+	else if (set) AdjectiveMeanings::set_domain_from_kind(am, set);
 
 @<Write I6 schemas for asserting and testing this use of the instance@> =
-	i6_schema *sch = Adjectives::Meanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 	Calculus::Schemas::modify(sch,
 		"GProperty(%k, *1, %n) == %d",
 			D, Properties::iname(P), I->enumeration_index);
-	sch = Adjectives::Meanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+	sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
 	Calculus::Schemas::modify(sch,
 		"WriteGProperty(%k, *1, %n, %d)",
 			D, Properties::iname(P), I->enumeration_index);
@@ -65,27 +83,16 @@ adjective *InstanceAdjectives::as_adjective(instance *I) {
 	return I->as_adjective;
 }
 
-adjective_meaning *InstanceAdjectives::parse(parse_node *pn,
-	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
-	return NULL;
-}
-
-void InstanceAdjectives::compiling_soon(adjective_meaning *am, instance *I, int T) {
-}
-
-int InstanceAdjectives::compile(instance *I, int T, int emit_flag, ph_stack_frame *phsf) {
-	return FALSE;
-}
-
 @ Asserting such an adjective simply asserts its property. We refuse to assert
 the falseness of such an adjective since it's unclear what to infer from, e.g.,
 "the ball is not green": we would need to give it a colour, and there's no
 good basis for choosing which.
 
 =
-int InstanceAdjectives::assert(instance *I,
+int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
 	if (parity == FALSE) return FALSE;
+	instance *I = RETRIEVE_POINTER_instance(am->detailed_meaning);
 	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 	if (P == NULL) internal_error("enumerative adjective on non-property");
 	World::Inferences::draw_property(infs_to_assert_on, P, Rvalues::from_instance(I));
