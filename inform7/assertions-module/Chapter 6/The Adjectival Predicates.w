@@ -46,7 +46,7 @@ void AdjectivalPredicates::log(up_family *self, OUTPUT_STREAM, unary_predicate *
 
 void AdjectivalPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
-	adjective_meaning *am = AdjectiveMeanings::first_meaning(aph);
+	adjective_meaning *am = AdjectiveAmbiguity::first_meaning(aph);
 	kind *D = AdjectiveMeanings::get_domain(am);
 	if (D) *K = D;
 }
@@ -55,7 +55,7 @@ int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	kind *K = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
-	if ((aph) && (AdjectiveMeanings::applicable_to(aph, K) == FALSE)) {
+	if ((aph) && (AdjectiveAmbiguity::can_be_applied_to(aph, K) == FALSE)) {
 		wording W = Adjectives::get_nominative_singular(aph);
 		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
 		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
@@ -68,7 +68,7 @@ int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 @ Next, asserting $adjective(t)$. We know that $t$ evaluates to a kind
 of value over which $adjective$ is defined, or the proposition would
 not have survived type-checking. But only some adjectives can be asserted;
-"open" can, but "visible" can't, for instance. |AdjectiveMeanings::assert| returns a
+"open" can, but "visible" can't, for instance. |AdjectiveAmbiguity::assert| returns a
 success flag.
 
 =
@@ -95,15 +95,15 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	if (domain_of_definition == NULL)
 		domain_of_definition = Node::get_kind_of_value(ots);
 
-	if (ox) found = AdjectiveMeanings::assert(aph, domain_of_definition, ox, NULL, parity);
-	else found = AdjectiveMeanings::assert(aph, domain_of_definition, NULL, ots, parity);
+	if (ox) found = AdjectiveAmbiguity::assert(aph, domain_of_definition, ox, NULL, parity);
+	else found = AdjectiveAmbiguity::assert(aph, domain_of_definition, NULL, ots, parity);
 
 	if (found == FALSE) Assert::issue_couldnt_problem(aph, parity);
 }
 
 int AdjectivalPredicates::testable(up_family *self, unary_predicate *up) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
-	property *prn = AdjectiveMeanings::has_EORP_meaning(aph, NULL);
+	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 	if (prn == NULL) return FALSE;
 	return TRUE;
 }
@@ -112,7 +112,7 @@ int AdjectivalPredicates::test(up_family *self, unary_predicate *up,
 	TERM_DOMAIN_CALCULUS_TYPE *about) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	int sense = AdjectivalPredicates::parity(up);
-	property *prn = AdjectiveMeanings::has_EORP_meaning(aph, NULL);
+	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 	if (prn) {
 		possession_marker *adj = Properties::get_possession_marker(prn);
 		if (sense) {
@@ -138,7 +138,7 @@ void AdjectivalPredicates::get_schema(up_family *self, int task, unary_predicate
 		case NOW_ATOM_FALSE_TASK: atask = NOW_ADJECTIVE_FALSE_TASK; break;
 	}
 
-	asch->schema = AdjectiveMeanings::get_i6_schema(aph, K, atask);
+	asch->schema = AdjectiveAmbiguity::schema_for_task(aph, K, atask);
 }
 
 @ Access:

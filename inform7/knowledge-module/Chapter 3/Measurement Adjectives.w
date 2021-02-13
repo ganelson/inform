@@ -372,7 +372,8 @@ can't normally be unravelled at compile time.
 	adjective_meaning *am = AdjectiveMeanings::new(measurement_amf,
 		STORE_POINTER_measurement_definition(mdef), Node::get_text(q));
 	mdef->headword_as_adjective = am;
-	AdjectiveMeanings::declare(am, AW, 3);
+	adjective *adj = Adjectives::declare(AW, NULL);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
 	AdjectiveMeanings::set_domain_text(am, DNW);
 

@@ -35,7 +35,7 @@ property *Properties::Conditions::new(inference_subject *infs, wording NW, parse
 				PW = Node::get_text(option);
 			adjective *adj = Adjectives::parse(PW);
 			if (adj) {
-				instance *I = AdjectiveMeanings::has_ENUMERATIVE_meaning(adj);
+				instance *I = AdjectiveAmbiguity::has_enumerative_meaning(adj);
 				kind *K = (I)?Instances::to_kind(I):NULL;
 				if (common_kind == NULL) {
 					common_kind = K;

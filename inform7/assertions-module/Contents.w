@@ -62,5 +62,6 @@ Chapter 6: Predicates
 	The Universal Relation
 	Explicit Relations
 	Listed-In Relations
+	Adjective Ambiguity
 	Adjective Meanings
 	Calculus Utilities

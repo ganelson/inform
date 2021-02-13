@@ -97,7 +97,7 @@ enumerations such as:
 age property, but we don't go there in Inform.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> defined by a property like "colour" with named values</span>
+<span class="identifier-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InstanceAdjectives::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InstanceAdjectives::start</span></span>:<br/>Knowledge Module - <a href="1-km.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::new_family</span><span class="plain-syntax">(2);</span>
@@ -150,8 +150,9 @@ following function: twice with the domain <span class="extract"><span class="ext
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">NW</span><span class="plain-syntax"> = </span><a href="2-ins.html#SP5" class="function-link"><span class="function-syntax">Instances::get_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="identifier-syntax">adj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Adjectives::declare</span><span class="plain-syntax">(</span><span class="identifier-syntax">NW</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">NW</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_adjective</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::declare</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">NW</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_adjective</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveAmbiguity::add_meaning_to_adjective</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">adj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">singleton</span><span class="plain-syntax">) </span><span class="identifier-syntax">AdjectiveMeanings::set_domain_from_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">singleton</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">set</span><span class="plain-syntax">) </span><span class="identifier-syntax">AdjectiveMeanings::set_domain_from_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">set</span><span class="plain-syntax">);</span>
 </pre>
@@ -170,7 +171,7 @@ following function: twice with the domain <span class="extract"><span class="ext
 <span class="plain-syntax">            </span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="3-prp.html#SP26" class="function-link"><span class="function-syntax">Properties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enumeration_index</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-iaa.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>And access to the adjectival form is provided by:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>So that creates the adjectival form, and access to it is provided by:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -178,10 +179,13 @@ following function: twice with the domain <span class="extract"><span class="ext
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_adjective</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Asserting such an adjective simply asserts its property. We refuse to assert
-the falseness of such an adjective since it's unclear what to infer from, e.g.,
-"the ball is not green": we would need to give it a colour, and there's no
-good basis for choosing which.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Asserting such an adjective simply asserts that the property has this value:
+for example, asserting "green" on X is saying that the value of the "colour"
+property of X is "green".
+</p>
+
+<p class="commentary">We refuse to assert the falseness of such an adjective since it's unclear what
+to infer from, e.g., "the ball is not green": is it red, or blue?
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

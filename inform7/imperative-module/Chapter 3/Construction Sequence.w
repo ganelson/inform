@@ -280,7 +280,7 @@ of Inform.
 			DEFINITIONAL_PHRASE_EFF)
 			Phrases::compile(ph, &total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL, NULL);
-	AdjectiveMeanings::compile_support_code();
+	RTAdjectives::compile_support_code();
 
 @ As we'll see, it's legal in Inform to define "To..." phrases with vague
 kinds: "To expose (X - a value)", for example. This can't be compiled as

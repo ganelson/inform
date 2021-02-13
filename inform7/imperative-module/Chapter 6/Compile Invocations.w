@@ -70,7 +70,7 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 				Node::get_modal_verb(inv),
 				Annotations::read_int(inv, say_verb_negated_ANNOT));
 		} else if (Node::get_say_adjective(inv)) {
-			AdjectiveMeanings::emit(Node::get_say_adjective(inv));
+			RTAdjectives::emit(Node::get_say_adjective(inv));
 		} else {
 			@<Otherwise, use the standard way to compile an invoked phrase@>;
 		}
@@ -390,7 +390,7 @@ no subsequent lines are looked at.
 			Node::get_modal_verb(inv),
 			Annotations::read_int(inv, say_verb_negated_ANNOT));
 	else if (Node::get_say_adjective(inv))
-		AdjectiveMeanings::emit(Node::get_say_adjective(inv));
+		RTAdjectives::emit(Node::get_say_adjective(inv));
 	else {
 		phrase *ph = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;
@@ -407,7 +407,7 @@ no subsequent lines are looked at.
 			Node::get_modal_verb(inv),
 			Annotations::read_int(inv, say_verb_negated_ANNOT));
 	else if (Node::get_say_adjective(inv))
-		AdjectiveMeanings::emit(Node::get_say_adjective(inv));
+		RTAdjectives::emit(Node::get_say_adjective(inv));
 	else {
 		phrase *ph = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;

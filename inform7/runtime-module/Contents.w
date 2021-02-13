@@ -46,6 +46,7 @@ Chapter 4: Compilation Utilities
 	Use Options at Run Time
 	Variables
 	Instances
+	Adjectives
 	Runtime Support for Kinds
 	Extension Files at Run Time
 	Noun Identifiers

@@ -624,7 +624,7 @@ further sub-cases later.
 @<Case 13 - X OF Y vs ADJECTIVE@> =
 	if (global_pass_state.pass == 1) return;
 	unary_predicate *pred = Node::get_predicate(py);
-	if (AdjectiveMeanings::has_ENUMERATIVE_meaning(AdjectivalPredicates::to_adjective(pred))) {
+	if (AdjectiveAmbiguity::has_enumerative_meaning(AdjectivalPredicates::to_adjective(pred))) {
 		property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
 		if (Node::get_type(px->down) == WITH_NT) {
 			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),

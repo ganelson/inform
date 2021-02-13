@@ -265,20 +265,22 @@ int Properties::EitherOr::is_either_or_adjective(adjective_meaning *am) {
 }
 
 void Properties::EitherOr::create_adjective_from_property(property *prn, wording W, kind *K) {
+	adjective *adj = Adjectives::declare(W, NULL);
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
-	AdjectiveMeanings::declare(am, W, 1);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::set_domain_from_kind(am, K);
 	prn->adjective_registered = AdjectiveMeanings::get_aph_from_am(am);
 	prn->adjectival_meaning_registered = am;
 }
 
 void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn, wording W, kind *K) {
+	adjective *adj = Adjectives::declare(W, NULL);
 	adjective *aph = prn->adjective_registered;
-	if (AdjectiveMeanings::applicable_to(aph, K)) return;
+	if (AdjectiveAmbiguity::can_be_applied_to(aph, K)) return;
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
-	AdjectiveMeanings::declare(am, W, 2);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::set_domain_from_kind(am, K);
 }
 

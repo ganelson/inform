@@ -1531,10 +1531,10 @@ against "value".)
 		prn = Rvalues::to_property(new_value);
 	else if (Descriptions::number_of_adjectives_applied_to(new_value) == 1) {
 		adjective *aph = AdjectivalPredicates::to_adjective(Descriptions::first_unary_predicate(new_value));
-		if (AdjectiveMeanings::has_ENUMERATIVE_meaning(aph))
-			prn = Properties::Conditions::get_coinciding_property(Instances::to_kind(AdjectiveMeanings::has_ENUMERATIVE_meaning(aph)));
-		else if (AdjectiveMeanings::has_EORP_meaning(aph, NULL))
-			prn = AdjectiveMeanings::has_EORP_meaning(aph, NULL);
+		if (AdjectiveAmbiguity::has_enumerative_meaning(aph))
+			prn = Properties::Conditions::get_coinciding_property(Instances::to_kind(AdjectiveAmbiguity::has_enumerative_meaning(aph)));
+		else if (AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL))
+			prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 	}
 	make_check = TRUE;
 

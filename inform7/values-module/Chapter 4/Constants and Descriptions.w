@@ -329,7 +329,7 @@ int SPDesc::adjlist_applies_to_kind(parse_node *A, kind *K) {
 	pcalc_prop *au_prop = NULL;
 	LOOP_THROUGH_ADJECTIVE_LIST(au, au_prop, A) {
 		adjective *aph = AdjectivalPredicates::to_adjective(au);
-		if (AdjectiveMeanings::applicable_to(aph, K) == FALSE) return FALSE;
+		if (AdjectiveAmbiguity::can_be_applied_to(aph, K) == FALSE) return FALSE;
 	}
 	return TRUE;
 }

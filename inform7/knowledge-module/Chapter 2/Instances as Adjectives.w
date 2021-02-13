@@ -18,7 +18,7 @@ enumerations such as:
 age property, but we don't go there in Inform.
 
 =
-adjective_meaning_family *enumerative_amf = NULL; /* defined by a property like "colour" with named values */
+adjective_meaning_family *enumerative_amf = NULL;
 
 void InstanceAdjectives::start(void) {
 	enumerative_amf = AdjectiveMeanings::new_family(2);
@@ -61,8 +61,9 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 
 @<Create the adjective meaning for this use of the instance@> =
 	wording NW = Instances::get_name(I, FALSE);
+	adjective *adj = Adjectives::declare(NW, NULL);
 	am = AdjectiveMeanings::new(enumerative_amf, STORE_POINTER_instance(I), NW);
-	I->as_adjective = AdjectiveMeanings::declare(am, NW, 4);
+	I->as_adjective = AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	if (singleton) AdjectiveMeanings::set_domain_from_instance(am, singleton);
 	else if (set) AdjectiveMeanings::set_domain_from_kind(am, set);
 
@@ -76,17 +77,19 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 		"WriteGProperty(%k, *1, %n, %d)",
 			D, Properties::iname(P), I->enumeration_index);
 
-@ And access to the adjectival form is provided by:
+@ So that creates the adjectival form, and access to it is provided by:
 
 =
 adjective *InstanceAdjectives::as_adjective(instance *I) {
 	return I->as_adjective;
 }
 
-@ Asserting such an adjective simply asserts its property. We refuse to assert
-the falseness of such an adjective since it's unclear what to infer from, e.g.,
-"the ball is not green": we would need to give it a colour, and there's no
-good basis for choosing which.
+@ Asserting such an adjective simply asserts that the property has this value:
+for example, asserting "green" on X is saying that the value of the "colour"
+property of X is "green".
+
+We refuse to assert the falseness of such an adjective since it's unclear what
+to infer from, e.g., "the ball is not green": is it red, or blue?
 
 =
 int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *am, 

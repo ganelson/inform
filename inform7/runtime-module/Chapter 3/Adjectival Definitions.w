@@ -172,8 +172,9 @@ offer the new adjective around and see if anybody claims it.
 	if (am == NULL) internal_error("unclaimed adjective definition");
 
 	if (Wordings::nonempty(NW)) {
+		adjective *adj = Adjectives::declare(NW, NULL);
 		adjective_meaning *neg = AdjectiveMeanings::negate(am);
-		AdjectiveMeanings::declare(neg, NW, 5);
+		AdjectiveAmbiguity::add_meaning_to_adjective(neg, adj);
 	}
 
 @

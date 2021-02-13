@@ -2,33 +2,6 @@
 
 One individual meaning which an adjective can have.
 
-@ An adjective can have a long list of meanings in different contexts:
-
-=
-typedef struct adjective_meaning_data {
-	struct adjective_meaning *possible_meanings; /* list of definitions in order given */
-	struct adjective_meaning *sorted_meanings; /* the same list sorted into logical order */
-} adjective_meaning_data;
-
-
-@ Adjectives are simpler than verbs, since they define unary rather than
-binary predicates. The word "open" applies to only one term -- logically, we
-regard it as |open(x)|, whereas a verb like "suspects" would appear
-in formulae as |suspects(x, y)|.
-
-But they are nevertheless complicated enough to have multiple meanings. For
-instance, two of the senses of "empty" in the Standard Rules are:
-
->> Definition: a text is empty rather than non-empty if it is "".
-
->> Definition: a table name is empty rather than non-empty if the number of filled rows in it is 0.
-
-(Which also defines two of the senses of "non-empty", another adjective.)
-The clause |empty(x)| can be fully understood only when we know what
-kind of value x has; for a text, the first sense applies, and for a table
-name, the second.
-
-
 @ Each individual sense of an adjective has its own |adjective_meaning|
 structure, which we define next. It consists of some logistical data to keep
 its place in the linked lists (see above), some data to specify its domain
@@ -139,7 +112,7 @@ which is why the |adjective_meaning| structure contains these -- see below.
 adjectival phrase in sorted order, so:
 
 @d LOOP_OVER_SORTED_MEANINGS(aph, am)
-	for (am = AdjectiveMeanings::get_sorted_definition_list(aph); am; am=am->next_sorted)
+	for (am = AdjectiveAmbiguity::get_sorted_definition_list(aph); am; am=am->next_sorted)
 
 @h Symbols.
 
@@ -181,42 +154,6 @@ inter_name *AdjectiveMeanings::iname(adjective *aph, int task, int weak_id) {
 	return aih->iname_held;
 }
 
-@h The block of definitions.
-
-@d ADJECTIVE_MEANING_LINGUISTICS_CALLBACK AdjectiveMeanings::new_block
-
-=
-void AdjectiveMeanings::new_block(adjective *adj) {
-	adj->adjective_meanings.possible_meanings = NULL;
-	adj->adjective_meanings.sorted_meanings = NULL;
-}
-
-@ The following assigns a new meaning to a given word range: we find the
-appropriate APH (creating if necessary) and then add the new meaning to the
-end of its unsorted meaning list.
-
-We eventually need to sort this list of definitions into logical priority
-order -- so that a definition applying to just Count Dracula precedes one
-applying to men, which in turn precedes one applying to things. (Priority
-order is irrelevant when two senses apply to domains with no overlap, as
-in the case of texts and table names.) It's convenient and costs little
-memory to keep the sorted list as a second linked list.
-
-=
-adjective *AdjectiveMeanings::declare(adjective_meaning *am,
-	wording W, int route) {
-	adjective *aph = Adjectives::declare(W, NULL);
-	adjective_meaning *aml = aph->adjective_meanings.possible_meanings;
-	if (aml == NULL) aph->adjective_meanings.possible_meanings = am;
-	else {
-		while (aml->next_meaning) aml = aml->next_meaning;
-		aml->next_meaning = am;
-	}
-	am->next_meaning = NULL;
-	am->owning_adjective = aph;
-	return aph;
-}
-
 @ Once declared, an AM stays with the same APH for the whole of Inform's run,
 and it can only be declared once. So every AM belongs to one and only one
 APH, which we can read off as follows:
@@ -226,218 +163,13 @@ adjective *AdjectiveMeanings::get_aph_from_am(adjective_meaning *am) {
 	return am->owning_adjective;
 }
 
-@ And here we log the unsorted meaning list.
-
-=
-void AdjectiveMeanings::log_meanings(adjective *aph) {
-	adjective_meaning *am;
-	int n;
-	if (aph == NULL) { LOG("<null-APH>\n"); return; }
-	for (n=1, am = aph->adjective_meanings.possible_meanings; am; n++, am = am->next_meaning)
-		LOG("%d: %W (domain:$j) (dk:%u)\n", n, am->adjective_index_text,
-			am->domain_infs, am->domain_kind);
-}
-
-@h Checking an adjective's applicability.
-If the source tries to apply the word "open", say, to a given value or
-object $X$, when does that make sense?
-
-We can only find out by checking every possible meaning of "open" to see
-if it can accommodate the kind of value of $X$. But this time we use weak
-checking, and make it weaker still since a null kind is taken to mean "any
-object", either in the AM's definition -- which can happen if we are very
-early in Inform's run -- or because the caller doesn't actually know the
-kind of value of $X$. (In other words, adjectives tend to assume they apply
-to objects rather than other values.) This means we will accept some
-logically impossible outcomes -- we would say that it's acceptable to apply
-"open" to an animal, say -- but that is actually a good thing. It means
-that "list of open things" or "something open" are allowed. Source text
-such as:
-
->> The labrador puppy is an open animal.
-
-will successfully parse, but then result in higher-level problem messages.
-The following does compile:
-
->> now the labrador puppy is open;
-
-but results in a run-time problem message when it executes.
-
-It makes no difference what order we check the AMs in, so we can use the
-unsorted list, which is helpful since we may need to call this routine
-early in the run when sorting cannot yet be done.
-
-=
-int AdjectiveMeanings::applicable_to(adjective *aph, kind *K) {
-	if (aph) {
-		adjective_meaning *am;
-		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
-			if (am->domain_infs == NULL) {
-				if (am->setting_domain) @<Issue a problem for a circularity@>;
-				am->setting_domain = TRUE;
-				AdjectiveMeanings::set_definition_domain(am, TRUE);
-				am->setting_domain = FALSE;
-			}
-			kind *am_kind = AdjectiveMeanings::get_domain(am);
-			if (Kinds::Behaviour::is_object(am_kind)) {
-				if (K == NULL) return TRUE;
-				if (Kinds::Behaviour::is_object(K)) return TRUE;
-			} else {
-				if ((K) && (Kinds::Behaviour::is_object(K) == FALSE) &&
-					(Kinds::compatible(K, am_kind) == ALWAYS_MATCH))
-					return TRUE;
-			}
-		}
-	}
-	return FALSE;
-}
-
-@<Issue a problem for a circularity@> =
-	if (problem_count == 0) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Clusters::get_form(aph->adjective_names, FALSE));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectiveCircular));
-		Problems::issue_problem_segment(
-			"In the sentence %1, it looks as if the definition of the adjective "
-			"'%2' may be circular.");
-		Problems::issue_problem_end();
-	}
-	return FALSE;
-
-@h Broad applicability tests.
-Does a given APH have any interpretation as an enumerated property value,
-or an either/or property? If so we return the earliest known.
-
-=
-instance *AdjectiveMeanings::has_ENUMERATIVE_meaning(adjective *aph) {
-	adjective_meaning *am;
-	for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
-		if (InstanceAdjectives::is_enumerative(am))
-			return RETRIEVE_POINTER_instance(am->detailed_meaning);
-	return NULL;
-}
-
-property *AdjectiveMeanings::has_EORP_meaning(adjective *aph, int *sense) {
-	if (aph)
-		for (adjective_meaning *am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
-			if (Properties::EitherOr::is_either_or_adjective(am)) {
-				if (sense) *sense = am->meaning_parity;
-				return RETRIEVE_POINTER_property(am->detailed_meaning);
-			}
-	return NULL;
-}
-
-@h Asserting the initial state.
-All that domain-checking machinery means we can begin to use an adjective.
-
-Suppose an assertion sentence in the source text claims that, in the initial
-state of things, what the adjective tests is true. For example:
-
->> The ormolu clock is fixed in place.
-
-The S-parser, finding that this sentence is syntactically reasonable,
-identifies "fixed in place" as an adjective, and stores a pointer to its
-APH structure, but goes no further. Later on, the A-parser, working through
-sentences like this, works out that the adjective is to be applied to
-the instance "ormolu clock", whose kind is "thing"; and that the
-sentence asserts a truth, not a falsity. It then calls the following
-routine, with |parity| equal to |TRUE|.
-
-What happens is that the list of definitions for "fixed in place" is
-strictly checked in logical precedence order, and that |AdjectiveMeanings::assert| is
-eventually called on the logically narrowest definition which the "ormolu
-clock" matches. (That will probably be the definition for the "fixed
-in place" either/or property for things, unless someone has given the
-adjective some special meaning unique to the clock.)
-
-The following routine therefore acts as a junction-box, deciding which
-sense of the adjective is to be applied. We return |TRUE| if we were
-able to find a definition which could be asserted and which the clock
-matched, and |FALSE| if there was no definition which applied, or if
-none of those which did could be asserted for it.
-
-=
-int AdjectiveMeanings::assert(adjective *aph, kind *kind_domain,
-	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
-	adjective_meaning *am;
-	AdjectiveMeanings::sort(aph);
-	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted) {
-		if (AdjectiveMeanings::domain_weak_match(kind_domain,
-			AdjectiveMeanings::get_domain(am)) == FALSE) continue;
-		if (AdjectiveMeanings::domain_subj_compare(infs_to_assert_on, am) == FALSE) continue;
-		if (AdjectiveMeanings::assert_single(am, infs_to_assert_on, val_to_assert_on, parity)) return TRUE;
-	}
-	return FALSE;
-}
-
-@h Sorting lists of meanings.
-After meanings have been declared, a typical APH will have a disordered
-"possible meaning" list and an empty "sorted meaning" list. The following
-sorts the possibles list into the sorted list.
-
-=
-void AdjectiveMeanings::sort(adjective *aph) {
-	if (aph == NULL) internal_error("tried to sort meanings for null APH");
-	aph->adjective_meanings.sorted_meanings =
-		AdjectiveMeanings::list_sort(aph->adjective_meanings.possible_meanings);
-}
-
-@ And voil\`a, the result can be read here:
-
-=
-adjective_meaning *AdjectiveMeanings::get_sorted_definition_list(adjective *aph) {
-	return aph->adjective_meanings.sorted_meanings;
-}
-
-@ Occasionally we just want one meaning:
-
-=
-adjective_meaning *AdjectiveMeanings::first_meaning(adjective *aph) {
-	return aph->adjective_meanings.possible_meanings;
-}
-
-adjective_meaning *AdjectiveMeanings::list_sort(adjective_meaning *unsorted_head) {
-	adjective_meaning *sorted_head = NULL;
-	adjective_meaning *am, *am2;
-	for (am = unsorted_head; am; am = am->next_meaning)
-		if (am->domain_infs == NULL)
-			AdjectiveMeanings::set_definition_domain(am, TRUE);
-	for (am = unsorted_head; am; am = am->next_meaning) {
-		if (sorted_head == NULL) {
-			sorted_head = am;
-			am->next_sorted = NULL;
-		} else {
-			adjective_meaning *lastdef = NULL;
-			for (am2 = sorted_head; am2; am2 = am2->next_sorted) {
-				if (AdjectiveMeanings::compare(am, am2) == 1) {
-					if (lastdef == NULL) {
-						sorted_head = am;
-						am->next_sorted = am2;
-					} else {
-						lastdef->next_sorted = am;
-						am->next_sorted = am2;
-					}
-					break;
-				}
-				if (am2->next_sorted == NULL) {
-					am2->next_sorted = am;
-					am->next_sorted = NULL;
-					break;
-				}
-				lastdef = am2;
-			}
-		}
-	}
-	return sorted_head;
-}
-
 @h Individual meanings.
 So you want to define a new meaning for an adjective? Here's the procedure:
 
 (1) Call |AdjectiveMeanings::new| to create it. The |form| should
 be one of the |*_KADJ| constants, and the |details| should contain a pointer to
 the data structure it uses. The word range is used for indexing only.
-(2) Call |AdjectiveMeanings::declare| to associate it with a given
+(2) Call |AdjectiveAmbiguity::add_meaning_to_adjective| to associate it with a given
 adjective name, and thus have it added to the possible meanings list of the
 appropriate APH.
 (3) Give it a domain of definition (see below).
@@ -474,7 +206,7 @@ adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
 If you want to define an adjective as the logical negation of an existing one,
 take any AM which has been through stages (1) to (4) and then apply
 |AdjectiveMeanings::negate| to create a new AM. Then use
-|AdjectiveMeanings::declare| to associate this with a (presumably
+|AdjectiveAmbiguity::add_meaning_to_adjective| to associate this with a (presumably
 different) name, but there's no need to specify its I6 schemas or its domain --
 those are inherited.
 
@@ -859,56 +591,6 @@ i6_schema *AdjectiveMeanings::set_i6_schema(adjective_meaning *am,
 	return &(am->i6s_for_runtime_task[T]);
 }
 
-@ When Inform's code-generator needs to compile one of the tasks, then, it
-calls the following to obtain the correct I6 schema.
-
-Note that the |task_via_support_routine| values are not flags: they can be
-|TRUE| (allowed, done via support routine), |FALSE| (allowed, done directly)
-or |NOT_APPLICABLE| (the task certainly can't be done). If none of the
-applicable meanings for the adjective are able to perform the task at
-run-time, we return |NULL| as our schema, and the code-generator will use
-that to issue a suitable problem message.
-
-=
-i6_schema *AdjectiveMeanings::get_i6_schema(adjective *aph,
-	kind *kind_domain, int T) {
-	adjective_meaning *am;
-	if (kind_domain == NULL) kind_domain = K_object;
-	AdjectiveMeanings::sort(aph);
-	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted) {
-		kind *am_kind = AdjectiveMeanings::get_domain(am);
-		if (am_kind == NULL) AdjectiveMeanings::set_definition_domain(am, FALSE);
-		if (AdjectiveMeanings::domain_weak_match(kind_domain, am_kind) == FALSE) continue;
-		AdjectiveMeanings::compiling_soon(am, T);
-		switch (am->task_via_support_routine[T]) {
-			case FALSE: return &(am->i6s_for_runtime_task[T]);
-			case TRUE:
-				if (Calculus::Schemas::empty(&(am->i6s_to_transfer_to_SR[T])))
-					@<Construct a schema for this adjective, using the standard routine naming@>;
-				return &(am->i6s_to_transfer_to_SR[T]);
-		}
-	}
-	return NULL;
-}
-
-@ Where the following is complicated by the need to respect negations; it may
-be that the original adjective has a support routine defined, but that the
-negation does not, and so must use those of the original.
-
-@<Construct a schema for this adjective, using the standard routine naming@> =
-	int task = T; char *negation_operator = "";
-	adjective *use_aph = aph;
-	if (am->am_negated_from) {
-		use_aph = am->am_negated_from->owning_adjective;
-		switch (T) {
-			case TEST_ADJECTIVE_TASK: negation_operator = "~~"; break;
-			case NOW_ADJECTIVE_TRUE_TASK: task = NOW_ADJECTIVE_FALSE_TASK; break;
-			case NOW_ADJECTIVE_FALSE_TASK: task = NOW_ADJECTIVE_TRUE_TASK; break;
-		}
-	}
-	inter_name *iname = AdjectiveMeanings::iname(use_aph, task, RTKinds::weak_id(am_kind));
-	Calculus::Schemas::modify(&(am->i6s_to_transfer_to_SR[T]), "*=-(%s%n(*1))",
-		negation_operator, iname);
 
 @ The following is needed when making sense of the I6-to-I7 escape sequence
 |(+ adj +)|, where |adj| is the name of an adjective. Since I6 is typeless,
@@ -921,12 +603,12 @@ int AdjectiveMeanings::write_adjective_test_routine(value_holster *VH,
 	adjective *aph) {
 	i6_schema *sch;
 	int weak_id = RTKinds::weak_id(K_object);
-	sch = AdjectiveMeanings::get_i6_schema(aph, NULL,
+	sch = AdjectiveAmbiguity::schema_for_task(aph, NULL,
 		TEST_ADJECTIVE_TASK);
 	if (sch == NULL) {
-		if (aph->adjective_meanings.possible_meanings == NULL) return FALSE;
-		kind *am_kind =
-			AdjectiveMeanings::get_domain(aph->adjective_meanings.possible_meanings);
+		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(aph);
+		if (am == NULL) return FALSE;
+		kind *am_kind = AdjectiveMeanings::get_domain(am);
 		if (am_kind == NULL) return FALSE;
 		weak_id = RTKinds::weak_id(am_kind);
 	}
@@ -954,162 +636,46 @@ void AdjectiveMeanings::set_ready_flag(adjective_meaning *am) {
 	am->am_ready_flag = TRUE;
 }
 
-@h Support routines.
-Using these is only passing the buck: and the buck stops here.
+@ Note that the |task_via_support_routine| values are not flags: they can be
+|TRUE| (allowed, done via support routine), |FALSE| (allowed, done directly)
+or |NOT_APPLICABLE| (the task certainly can't be done). If none of the
+applicable meanings for the adjective are able to perform the task at
+run-time, we return |NULL| as our schema, and the code-generator will use
+that to issue a suitable problem message.
 
-The following utility is used to loop through the sorted meaning list,
-skipping over any which have been dealt with already.
-
-=
-adjective_meaning *AdjectiveMeanings::list_next_domain_kind(adjective_meaning *am, kind **K, int T) {
-	while ((am) && ((am->defined_already) || (AdjectiveMeanings::compilation_possible(am, T) == FALSE)))
-		am = am->next_sorted;
-	if (am == NULL) return NULL;
-	*K = AdjectiveMeanings::get_domain(am);
-	return am->next_sorted;
-}
-
-@ And this is where we do the iteration. The idea is that one adjective
-definition routine is defined (for each task number) which covers all of
-the weakly-domain-equal definitions for the same adjective. Thus one
-routine might handle "detailed" for rulebooks, and another might handle
-"detailed" for all of its meanings associated with objects -- possibly
-many AMs.
 
 =
-void AdjectiveMeanings::compile_support_code(void) {
-	@<Ensure, just in case, that domains exist and are sorted on@>;
-	int T;
-	for (T=1; T<=NO_ADJECTIVE_TASKS; T++) {
-		adjective *aph;
-		LOOP_OVER(aph, adjective) {
-			adjective_meaning *am;
-			for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
-				am->defined_already = FALSE;
-			for (am = aph->adjective_meanings.sorted_meanings; am; ) {
-				kind *K = NULL;
-				am = AdjectiveMeanings::list_next_domain_kind(am, &K, T);
-				if (K)
-					@<Compile adjective definition for this atomic kind of value@>;
-			}
-		}
+i6_schema *AdjectiveMeanings::schema_for_task(adjective_meaning *am, int T) {
+	AdjectiveMeanings::compiling_soon(am, T);
+	switch (am->task_via_support_routine[T]) {
+		case FALSE: return &(am->i6s_for_runtime_task[T]);
+		case TRUE:
+			if (Calculus::Schemas::empty(&(am->i6s_to_transfer_to_SR[T])))
+				@<Construct a schema for this adjective, using the standard routine naming@>;
+			return &(am->i6s_to_transfer_to_SR[T]);
 	}
+	return NULL;
 }
 
-@ It's unlikely that we have got this far without the domains for the AMs
-having been established, but certainly possible. We need the domains to be
-known in order to sort.
+@ Where the following is complicated by the need to respect negations; it may
+be that the original adjective has a support routine defined, but that the
+negation does not, and so must use those of the original.
 
-@<Ensure, just in case, that domains exist and are sorted on@> =
-	adjective *aph;
-	LOOP_OVER(aph, adjective) {
-		adjective_meaning *am;
-		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
-			AdjectiveMeanings::set_definition_domain(am, FALSE);
-			am->defined_already = FALSE;
+@<Construct a schema for this adjective, using the standard routine naming@> =
+	int task = T; char *negation_operator = "";
+	adjective *use_adj = am->owning_adjective;
+	if (am->am_negated_from) {
+		use_adj = am->am_negated_from->owning_adjective;
+		switch (T) {
+			case TEST_ADJECTIVE_TASK: negation_operator = "~~"; break;
+			case NOW_ADJECTIVE_TRUE_TASK: task = NOW_ADJECTIVE_FALSE_TASK; break;
+			case NOW_ADJECTIVE_FALSE_TASK: task = NOW_ADJECTIVE_TRUE_TASK; break;
 		}
-		AdjectiveMeanings::sort(aph);
 	}
-
-@ The following is a standard way to compile a one-off routine.
-
-@<Compile adjective definition for this atomic kind of value@> =
-	wording W = Adjectives::get_nominative_singular(aph);
-	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to %u, task %d\n",
-		W, K, T);
-
-	inter_name *iname = AdjectiveMeanings::iname(aph, T, RTKinds::weak_id(K));
-	packaging_state save = Routines::begin(iname);
-	@<Add an it-variable to represent the value or object in the domain@>;
-
-	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "meaning of \"");
-	if (Wordings::nonempty(W)) WRITE_TO(C, "%~W", W);
-	else WRITE_TO(C, "<nameless>");
-	WRITE_TO(C, "\"");
-	Emit::code_comment(C);
-	DISCARD_TEXT(C)
-
-	if (problem_count == 0) {
-		local_variable *it_lv = LocalVariables::it_variable();
-		inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
-		AdjectiveMeanings::list_compile(aph->adjective_meanings.sorted_meanings, Frames::current_stack_frame(), K, T, it_s);
-	}
-	Produce::rfalse(Emit::tree());
-
-	Routines::end(save);
-
-@ The stack frame has just one call parameter: the value $x$ which might, or
-might not, be such that adjective($x$) is true. We allow this to be called
-"it", though it can also have a calling name in some cases (see below).
-
-Clearly it ought to have the kind which defines the domain -- so it's a rulebook
-if the domain is all rulebooks, and so on -- but it doesn't always do so. The
-exception is that it is bogusly given the kind "number" if the adjective is
-being defined only by I6 routines. This is done to avoid compiling very
-inefficient code from the Standard Rules. For instance, the SR reads, in
-slightly simplified form:
-
->> Definition: a text is empty if I6 routine |"TEXT\_TY\_Empty"| says so.
-
-rather than the more obvious:
-
->> Definition: a text is empty if it is not |""|.
-
-Both of these definitions work. But if the routine defining "empty" for text
-is allowed to act on a text variable, Inform needs to compile code which acts
-on block values held on the memory heap at run-time. That means it needs to
-compile a memory heap; and that costs 8K or so of storage, making large
-Z-machine games which don't need text alteration or lists impossible to fit into
-the 64K array space limit. (There's also a benefit even if we do need a heap;
-the adjective can act on a direct pointer to the structure, and no time is
-wasted allocating memory and copying the block value first.)
-
-@<Add an it-variable to represent the value or object in the domain@> =
-	kind *add_K = K_number;
-	adjective_meaning *am;
-	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted)
-		if ((Phrases::RawPhrasal::is_by_Inter_function(am) == FALSE) &&
-			(AdjectiveMeanings::domain_weak_match(K, AdjectiveMeanings::get_domain(am))))
-			add_K = K;
-
-	LocalVariables::add_pronoun(Frames::current_stack_frame(), EMPTY_WORDING, add_K);
-	LocalVariables::enable_possessive_form_of_it();
-
-@ We run through possible meanings of the APH which share the current weak
-domain, and compile code which performs the stronger part of the domain
-test at run-time. In practice, at present the only weak domain which might
-have multiple definitions is "object", but that may change.
-
-=
-void AdjectiveMeanings::list_compile(adjective_meaning *list_head,
-	ph_stack_frame *phsf, kind *K, int T, inter_symbol *t0_s) {
-	adjective_meaning *am;
-	for (am = list_head; am; am = am->next_sorted)
-		if ((AdjectiveMeanings::compilation_possible(am, T)) &&
-			(AdjectiveMeanings::domain_weak_match(K, AdjectiveMeanings::get_domain(am)))) {
-			current_sentence = am->defined_at;
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
-				InferenceSubjects::emit_element_of_condition(am->domain_infs, t0_s);
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
-						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
-							Produce::inv_primitive(Emit::tree(), NOT_BIP);
-							Produce::down(Emit::tree());
-						}
-						AdjectiveMeanings::emit_meaning(am, T, phsf);
-						am->defined_already = TRUE;
-						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
-							Produce::up(Emit::tree());
-						}
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		}
-}
+	inter_name *iname = AdjectiveMeanings::iname(use_adj, task,
+		RTKinds::weak_id(AdjectiveMeanings::get_domain(am)));
+	Calculus::Schemas::modify(&(am->i6s_to_transfer_to_SR[T]), "*=-(%s%n(*1))",
+		negation_operator, iname);
 
 @h Kinds of adjectives.
 This is where |inweb|'s use of C rather than |C++| or Python as a base
@@ -1297,144 +863,3 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 	==> { fail nonterminal };
 }
 
-@ Compiling to:
-
-=
-void AdjectiveMeanings::agreements(void) {
-	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return;
-	adjective *aph;
-	LOOP_OVER(aph, adjective) {
-		wording PW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
-		if (Wordings::empty(PW)) continue;
-
-		packaging_state save = Routines::begin(aph->adjective_compilation.aph_iname);
-		inter_symbol *o_s = LocalVariables::add_named_call_as_symbol(I"o");
-		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
-		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
-
-		Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, o_s);
-				Produce::val_nothing(Emit::tree());
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, gna_s);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 6);
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, gna_s);
-					inter_name *iname = Hierarchy::find(GETGNAOFOBJECT_HL);
-					Produce::inv_call_iname(Emit::tree(), iname);
-					Produce::down(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, o_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, force_plural_s);
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), NE_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
-					Produce::up(Emit::tree());
-					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Produce::down(Emit::tree());
-							Produce::ref_symbol(Emit::tree(), K_value, gna_s);
-							Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-							Produce::down(Emit::tree());
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_LIST_GENDER_HL));
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Produce::down(Emit::tree());
-							Produce::ref_symbol(Emit::tree(), K_value, gna_s);
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 3);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, gna_s);
-			Produce::inv_primitive(Emit::tree(), MODULO_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, gna_s);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 6);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_symbol(Emit::tree(), K_value, gna_s);
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				for (int gna=0; gna<6; gna++) {
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) gna);
-						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
-							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
-								TEMPORARY_TEXT(T)
-								int number_sought = 1, gender_sought = NEUTER_GENDER;
-								if (gna%3 == 0) gender_sought = MASCULINE_GENDER;
-								if (gna%3 == 1) gender_sought = FEMININE_GENDER;
-								if (gna >= 3) number_sought = 2;
-								wording AW = Clusters::get_form_general(aph->adjective_names,
-									Projects::get_language_of_play(Task::project()), number_sought, gender_sought);
-								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
-								else WRITE_TO(T, "%W", PW);
-								Produce::val_text(Emit::tree(), T);
-								DISCARD_TEXT(T)
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				}
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Routines::end(save);
-	}
-}
-
-void AdjectiveMeanings::emit(adjective *aph) {
-	Produce::inv_call_iname(Emit::tree(), aph->adjective_compilation.aph_iname);
-	Produce::down(Emit::tree());
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
-		Produce::inv_primitive(Emit::tree(), GE_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_LIST_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
-}

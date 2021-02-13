@@ -698,12 +698,12 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 							&& (AdjectivalPredicates::parity(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
 							adjective *aph =
 								AdjectivalPredicates::to_adjective(Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
-							instance *q = AdjectiveMeanings::has_ENUMERATIVE_meaning(aph);
+							instance *q = AdjectiveAmbiguity::has_enumerative_meaning(aph);
 							if (q) {
 								spec = Rvalues::from_instance(q);
 								goto RetryValue;
 							}
-							property *prn = AdjectiveMeanings::has_EORP_meaning(aph, NULL);
+							property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 							if (prn) {
 								gv_is = GV_IS_PROPERTY_NAME;
 								gv_prn = prn;

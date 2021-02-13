@@ -32,7 +32,8 @@ int Phrases::RawCondition::ADJ_parse(adjective_meaning_family *f,
 		AdjectiveMeanings::new(inter_condition_amf,
 			STORE_POINTER_definition(def), IN);
 	def->am_of_def = am;
-	AdjectiveMeanings::declare(am, AW, 8);
+	adjective *adj = Adjectives::declare(AW, NULL);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
 	AdjectiveMeanings::set_domain_text(am, DNW);
 	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);

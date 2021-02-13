@@ -158,9 +158,9 @@ again.
 #ifdef CORE_MODULE
 pcalc_term Terms::adj_to_noun_conversion(unary_predicate *tr) {
 	adjective *aph = AdjectivalPredicates::to_adjective(tr);
-	instance *I = AdjectiveMeanings::has_ENUMERATIVE_meaning(aph);
+	instance *I = AdjectiveAmbiguity::has_enumerative_meaning(aph);
 	if (I) return Terms::new_constant(Rvalues::from_instance(I));
-	property *prn = AdjectiveMeanings::has_EORP_meaning(aph, NULL);
+	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 	if (prn) return Terms::new_constant(Rvalues::from_property(prn));
 	return Terms::new_variable(0);
 }

@@ -46,7 +46,8 @@ int Phrases::RawPhrasal::ADJ_parse(adjective_meaning_family *f,
 	adjective_meaning *am =
 		AdjectiveMeanings::new(inter_routine_amf, STORE_POINTER_definition(def), EW);
 	def->am_of_def = am;
-	AdjectiveMeanings::declare(am, AW, 9);
+	adjective *adj = Adjectives::declare(AW, NULL);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::set_domain_text(am, DNW);
 	if (setting) {
 		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, TRUE);

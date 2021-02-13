@@ -26,7 +26,8 @@ int Phrases::Condition::ADJ_parse(adjective_meaning_family *f,
 	def->format = sense;
 	def->domain_calling = CALLW;
 	def->am_of_def = am;
-	AdjectiveMeanings::declare(am, AW, 6);
+	adjective *adj = Adjectives::declare(AW, NULL);
+	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
 	AdjectiveMeanings::set_domain_text(am, DNW);
 	*result = am;
