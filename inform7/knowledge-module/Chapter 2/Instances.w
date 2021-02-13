@@ -61,11 +61,8 @@ instance *Instances::latest(void) {
 instance *Instances::new(wording W, kind *K) {
 	PROTECTED_MODEL_PROCEDURE;
 	@<Simplify the initial kind of the instance@>;
-	property *cp = Properties::Conditions::get_coinciding_property(K);
 	instance *I = CREATE(instance);
-	@<Initialise the instance except for its noun@>;
-	@<Make a noun for the new instance@>;
-	Instances::set_kind(I, K);
+	@<Initialise the instance@>;
 	@<Add the new instance to its enumeration@>;
 	RTInstances::initialise_icd(I);
 	IXInstances::initialise_iid(I);
@@ -89,46 +86,14 @@ more specific than "object", we nevertheless make it just "object" for now.
 	if (K == NULL) K = K_object;
 	K = Kinds::weaken(K, K_object);
 
-@<Initialise the instance except for its noun@> =
+@<Initialise the instance@> =
 	I->creating_sentence = current_sentence;
 	I->where_kind_is_set = current_sentence;
 	I->as_adjective = NULL;
 	I->enumeration_index = 0;
 	I->as_subject = InstanceSubjects::new(I, K);
-
-@ When we create instances of a kind whose name coincides with a property
-used as a condition, as here:
-
->> A door can be ajar, sealed or wedged open.
-
-we will need "ajar" and so on to be (in most contexts) adjectives rather
-than nouns; so, even though they are instances, we do not add those to
-the lexicon.
-
-Otherwise, we have a choice of whether to allow ambiguous references or not.
-Inform traditionally allows these for instances of object, but not for other
-instances: thus "submarine green" (a colour, say) must be spelled out in
-full, whereas a "tuna fish" (an object) can be called just "tuna".
-
-@<Make a noun for the new instance@> =
-	int exact_parsing = TRUE, any_parsing = TRUE;
-	if ((cp) && (Properties::Conditions::of_what(cp))) any_parsing = FALSE;
-	if (Kinds::Behaviour::is_object(K)) exact_parsing = FALSE;
-
-	if (any_parsing) {
-		if (exact_parsing)
-			I->as_noun =
-				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NAMED_CONSTANT_MC, Rvalues::from_instance(I), Task::language_of_syntax());
-		else
-			I->as_noun =
-				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NOUN_MC, Rvalues::from_instance(I), Task::language_of_syntax());
-	} else {
-		I->as_noun = Nouns::new_proper_noun(W, NEUTER_GENDER, 0,
-			NAMED_CONSTANT_MC, NULL, Task::language_of_syntax());
-	}
-	NameResolution::initialise(I->as_noun);
+	InstancesPreform::create_as_noun(I, K, W);
+	Instances::set_kind(I, K);
 
 @ The values in an enumerated kind such as our perpetual "colour" example
 are numbered 1, 2, 3, ..., in order of creation. This is where we assign
@@ -148,6 +113,7 @@ be done later on: see //Instance Counting//.
 		if (Kinds::Behaviour::has_named_constant_values(K) == FALSE)
 			internal_error("tried to make an instance value for impossible kind");
 		I->enumeration_index = Kinds::Behaviour::new_enumerated_value(K);
+		property *cp = Properties::Conditions::get_coinciding_property(K);
 		if (cp) Instances::register_as_adjectival_constant(I, cp);
 	}
 

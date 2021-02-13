@@ -372,21 +372,6 @@ them with conditions like
 <s-qualifiable-proper-noun> ::=
 	<s-object-instance>  ==> { -, RP[1] }; s_adj_domain = NULL;
 
-<s-object-instance> internal {
-	parse_node *p = Lexicon::retrieve(NOUN_MC, W);
-	if (p) {
-		noun_usage *nu = Nouns::disambiguate(p, FALSE);
-		noun *nt = nu->noun_used;
-		if (Nouns::is_proper(nt)) {
-			instance *I = Rvalues::to_object_instance(
-				RETRIEVE_POINTER_parse_node(Nouns::meaning(nt)));
-			==> { -, Rvalues::from_instance(I) };
-			return TRUE;
-		}
-	}
-	==> { fail nonterminal };
-}
-
 @ The following is used only in combination with a qualifiable noun: it
 simply provides a filter on <s-adjective-list> to require that each
 adjective listed must be one which applies to the noun. For example,
