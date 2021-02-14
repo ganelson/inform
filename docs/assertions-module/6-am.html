@@ -20,22 +20,7 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
-
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -87,7 +72,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#6">Chapter 6: Predicates</a></li><li><b>Adjective Meanings</b></li></ul></div>
 <p class="purpose">One individual meaning which an adjective can have.</p>
 
-<ul class="toc"><li><a href="6-am.html#SP1">&#167;1. Meanings</a></li><li><a href="6-am.html#SP5">&#167;5. Tasks and their schemas</a></li><li><a href="6-am.html#SP7">&#167;7. Testing and asserting in play</a></li><li><a href="6-am.html#SP12">&#167;12. Kinds of adjectives</a></li><li><a href="6-am.html#SP18">&#167;18. Parsing for adaptive text</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="6-am.html#SP1">&#167;1. Meanings</a></li><li><a href="6-am.html#SP4">&#167;4. Task data</a></li><li><a href="6-am.html#SP8">&#167;8. Families of adjective meanings</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Meanings. </b>For example, "odd" in the sense of numbers is a single meaning. Each meaning
 is an instance of:
@@ -106,10 +91,10 @@ is an instance of:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">indexing_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> text to use in the Phrasebook index</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defined_at</span><span class="plain-syntax">; </span><span class="comment-syntax"> from what sentence this came (if it did)</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">schemas_prepared</span><span class="plain-syntax">; </span><span class="comment-syntax"> optional flag to mark whether schemas prepared yet</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_data</span><span class="plain-syntax">[</span><span class="constant-syntax">NO_ADJECTIVE_TASKS</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">schemas_prepared</span><span class="plain-syntax">; </span><span class="comment-syntax"> have schemas been prepared yet?</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">]; </span><span class="comment-syntax"> see below</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">support_function_compiled</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary workspace used when compiling support routines</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">has_been_compiled_in_support_function</span><span class="plain-syntax">; </span><span class="comment-syntax"> which may never happen</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">;</span>
@@ -128,14 +113,10 @@ is an instance of:
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax"> = </span><a href="6-amd.html#SP2" class="function-link"><span class="function-syntax">AdjectiveMeaningDomains::new_from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">family</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">details</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">support_function_compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">has_been_compiled_in_support_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schemas_prepared</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="constant-syntax">NO_ADJECTIVE_TASKS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">task_via_support_routine</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="6-am.html#SP5" class="function-link"><span class="function-syntax">AdjectiveMeanings::initialise_all_task_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -144,246 +125,152 @@ might be created as the negation of "even" for numbers):
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::negate</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cannot negate an already negated AM"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">neg</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defined_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_adjective</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">support_function_compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schemas_prepared</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="constant-syntax">NO_ADJECTIVE_TASKS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+<span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::negate</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">other</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cannot negate an already negated AM"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defined_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_adjective</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax"> = </span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_specific_data</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">has_been_compiled_in_support_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schemas_prepared</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">other</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="6-am.html#SP5" class="function-link"><span class="function-syntax">AdjectiveMeanings::negate_task_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">other</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="constant-syntax">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="constant-syntax">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">task_via_support_routine</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">task_via_support_routine</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><a href="6-am.html#SP4" class="function-link"><span class="function-syntax">AdjectiveMeanings::copy_task_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]), &amp;(</span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">neg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">neg</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>There are currently seven families of adjective meanings, each represented
-by an instance of the following:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Task data. </b>When Inform needs to compile code for testing if an adjective is true as
+applied to something, or to make it now true (or false), it does this by
+compiling code for the associated unary predicate &mdash; see
+<a href="6-tap.html" class="internal">The Adjectival Predicates</a>. What to compile depends on the meaning or
+meanings which might apply; if it's this meaning, then we will need an
+I6 schema to carry out one of three tasks, <span class="extract"><span class="extract-syntax">TEST_ATOM_TASK</span></span>,
+<span class="extract"><span class="extract-syntax">NOW_ATOM_TRUE_TASK</span></span>, or <span class="extract"><span class="extract-syntax">NOW_ATOM_FALSE_TASK</span></span>.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">methods</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parsing_priority</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::new_family</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parsing_priority</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">methods</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>The structure adjective_meaning_family is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Tasks and their schemas. </b></p>
+<p class="commentary">A meaning has one of these for each of the possible tasks:
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_via_support_routine</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">; </span><span class="comment-syntax"> where </span><span class="extract"><span class="extract-syntax">TRUE</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6s_for_runtime_task</span><span class="plain-syntax">; </span><span class="comment-syntax"> where </span><span class="extract"><span class="extract-syntax">TRUE</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task_mode</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">*_TASKMODE</span></span><span class="comment-syntax"> constants: see below</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">call_to_support_function</span><span class="plain-syntax">; </span><span class="comment-syntax"> where </span><span class="extract"><span class="extract-syntax">TRUE</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> </span><span class="identifier-syntax">code_to_perform</span><span class="plain-syntax">; </span><span class="comment-syntax"> where </span><span class="extract"><span class="extract-syntax">TRUE</span></span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::initialise_task_data</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::initialise_task_data</span></span>:<br/><a href="6-am.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">atd</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">atd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TASKMODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">atd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">atd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::copy_task_data</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::copy_task_data</span></span>:<br/><a href="6-am.html#SP3">&#167;3</a>, <a href="6-am.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_task_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">to</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_mode</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">to</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">to</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure adjective_task_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>What are adjectives for? Since an adjective is a unary predicate, it can be
-thought of as an assignment from its domain set to the set of two possibilities:
-true, false. Thus one sense of "open" maps doors to true if they are currently
-open, false if they are closed.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>These functions set up the task data for a new meaning. Note the transposition,
+so that a negated meaning has the <span class="extract"><span class="extract-syntax">NOW_ATOM_TRUE_TASK</span></span> and <span class="extract"><span class="extract-syntax">NOW_ATOM_FALSE_TASK</span></span>
+switched around from the original.
 </p>
 
-<p class="commentary">There are altogether five things we might want to do with an adjective:
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::initialise_all_task_data</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::initialise_all_task_data</span></span>:<br/><a href="6-am.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
+<span class="plain-syntax">        </span><a href="6-am.html#SP4" class="function-link"><span class="function-syntax">AdjectiveMeanings::initialise_task_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]));</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::negate_task_data</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::negate_task_data</span></span>:<br/><a href="6-am.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">other</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">NO_ATOM_TASKS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><a href="6-am.html#SP4" class="function-link"><span class="function-syntax">AdjectiveMeanings::copy_task_data</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">]), &amp;(</span><span class="identifier-syntax">other</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">].</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The schema for a task generates code to perform it. There are three strategies:
 </p>
 
-<ul class="items"><li>(1) Test whether it is true at any given point during play.
-</li><li>(2) Assert that it is true at the start of play.
-</li><li>(3) Assert that it is false at the start of play.
-</li><li>(4) Assert that it is now to be true from this point on during play.
-</li><li>(5) Assert that it is now to be false from this point on during play.
+<ul class="items"><li>&#9679; produce a problem message, saying this is impossible;
+</li><li>&#9679; compile direct inline code;
+</li><li>&#9679; compile a function call to a function, which actually performs the task;
 </li></ul>
-<p class="commentary">We do not need to test whether it is false, since we need only test whether
-it is true and negate the result.
+<p class="commentary">Those strategies correspond to the three <span class="extract"><span class="extract-syntax">*_TASKMODE</span></span> constants.
 </p>
 
-<p class="commentary">Adjectives for which all five of these operations can be carried out are
-the exception rather than the rule. "Open" is an example:
+<p class="commentary">By default, an adjective meaning is unable to perform any of the three tasks,
+and the creator of it has to call <a href="6-am.html#SP6" class="internal">AdjectiveMeanings::make_schema</a> to say
+otherwise. This puts us by default into <span class="extract"><span class="extract-syntax">DIRECT_TASKMODE</span></span>, unless we're working
+in the world of objects where run-time typechecking will be needed &mdash; in which
+case <span class="extract"><span class="extract-syntax">VIA_SUPPORT_FUNCTION_TASKMODE</span></span>. But the creator can insist on the latter
+anyway with a subsequent call to <a href="6-am.html#SP6" class="internal">AdjectiveMeanings::perform_task_via_function</a>.
 </p>
 
-<blockquote>
-    <p>[1] if the marble door is open, ...</p>
-</blockquote>
-
-<blockquote>
-    <p>[2] The marble door is open.</p>
-</blockquote>
-
-<blockquote>
-    <p>[3] The marble door is not open.</p>
-</blockquote>
-
-<blockquote>
-    <p>[4] now the marble door is open;</p>
-</blockquote>
-
-<blockquote>
-    <p>[5] now the marble door is not open;</p>
-</blockquote>
-
-<p class="commentary">Every adjective in practice supports (1), testing for truth, but this is
-not required by the code below. Many adjectives &mdash; properly speaking, many
-senses of an adjective &mdash; only support testing: "empty" in the sense of
-texts, for instance.
-</p>
-
-<p class="commentary">Of the five possibilities, (1), (4) and (5) happen at run-time. These are
-called "tasks" and are identified by the following constants. While in
-theory an adjective's handling code can compile anything it likes to carry
-out these tasks, in practice most are defined by providing an I6 schema,
-which is why the <span class="extract"><span class="extract-syntax">adjective_meaning</span></span> structure contains these &mdash; see below.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_ADJECTIVE_TASKS</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">TEST_ADJECTIVE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax"> test if currently true</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax"> assert now true</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax"> assert now false</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_TASKMODE</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">DIRECT_TASKMODE</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">VIA_SUPPORT_FUNCTION_TASKMODE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Testing and asserting in play. </b>Now for testing, making true and making false in play. We won't be there when
-the story file is played, of course, so what we have to do is to compile code
-to perform the test or force the state.
-</p>
-
-<p class="commentary">In fact what we do is to supply an I6 schema, which for this purpose is
-simply the text of I6 code in which the escape <span class="extract"><span class="extract-syntax">*1</span></span> represents the value
-to which the adjective is applied. In the example of "open" for containers,
-we might choose:
-</p>
-
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    if the sack is open, ...  --&gt;   (Adj_53_t1_v61(*1))</span>
-<span class="plain-syntax">    now the sack is open; ...  --&gt;   Adj_53_t2_v61(*1)</span>
-<span class="plain-syntax">    now the sack is not open; ...  --&gt;   Adj_53_t3_v61(*1)</span>
-</pre>
-<p class="commentary">These schemas call an I6 routine called a "support routine". The names
-here are schematic: "open" on this run was APH number 53, the run-time
-tasks to perform were task 1, task 2 and task 3, and the sense of the
-adjective was the one applying to domain 61 &mdash; which in this example run
-was the weak ID of "object". In other words, these are routines to "test
-open in the sense of objects", "now open in the sense of objects", and
-"now not open in the sense of objects".
-</p>
-
-<p class="commentary">If we make a choice like that, then we say that the task is provided
-"via a support routine". We need not do so: for instance,
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    if the Entire Game is happening, ...  --&gt;  (scene_status-&gt;(*1 - 1)==1)</span>
-</pre>
-<p class="commentary">is an example where the sense of "happening" for scenes can be tested
-directly using a schema, without calling a support routine. And clearly
-support routines only put off the problem, because we will also have to
-compile the routine itself. So why use them? The answer is that in
-complicated situations where run-time type checking is needed, they
-avoid duplication of code, and can make repeated use of the <span class="extract"><span class="extract-syntax">*1</span></span> value
-without repeating any side-effects produced by the calculation of this
-value. They also make the code simpler for human eyes to read.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>When an AM has been declared, the provider can choose to set an I6
-schema for it, for any of the tasks, immediately; or can wait and do it
-later; or can choose not to do it, and instead provide code which
-generates a suitable schema on the fly. If at whatever stage the
-provider does set an I6 schema for a task, it should call the following.
-</p>
-
-<p class="commentary">Note that any AM working on objects always has to go via a support
-routine &mdash; this is because, thanks to weak domain-checking, there may
-be run-time type-checking code to apply. In other cases, the provider
-can choose to go via a support routine or not.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::set_i6_schema</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::set_i6_schema</span></span>:<br/><a href="6-am.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">via_support</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::make_schema</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><a href="6-amd.html#SP7" class="function-link"><span class="function-syntax">AdjectiveMeaningDomains::get_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) </span><span class="identifier-syntax">via_support</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_via_support_routine</span><span class="plain-syntax"> = </span><span class="identifier-syntax">via_support</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">via_support</span><span class="plain-syntax"> = </span><span class="constant-syntax">DIRECT_TASKMODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) </span><span class="identifier-syntax">via_support</span><span class="plain-syntax"> = </span><span class="constant-syntax">VIA_SUPPORT_FUNCTION_TASKMODE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_mode</span><span class="plain-syntax"> = </span><span class="identifier-syntax">via_support</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::perform_task_via_function</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">VIA_SUPPORT_FUNCTION_TASKMODE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following is needed when making sense of the I6-to-I7 escape sequence
-<span class="extract"><span class="extract-syntax">(+ adj +)</span></span>, where <span class="extract"><span class="extract-syntax">adj</span></span> is the name of an adjective. Since I6 is typeless,
-there's no good way to choose which sense of the adjective is meant, so we
-don't know which routine to expand out. The convention is: a meaning for
-objects, if there is one; otherwise the first-declared meaning.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And this function reads it back, automatically generating the function call
+schema if it's needed.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::write_adjective_test_routine</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="identifier-syntax">adj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">weak_id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTKinds::weak_id</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_object</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><a href="6-aa.html#SP9" class="function-link"><span class="function-syntax">AdjectiveAmbiguity::schema_for_task</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">adj</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">TEST_ADJECTIVE_TASK</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><a href="6-aa.html#SP6" class="function-link"><span class="function-syntax">AdjectiveAmbiguity::first_meaning</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">adj</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am_kind</span><span class="plain-syntax"> = </span><a href="6-amd.html#SP7" class="function-link"><span class="function-syntax">AdjectiveMeaningDomains::get_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am_kind</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">weak_id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTKinds::weak_id</span><span class="plain-syntax">(</span><span class="identifier-syntax">am_kind</span><span class="plain-syntax">);</span>
+<span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::get_schema</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::get_schema</span></span>:<br/>Adjective Ambiguity - <a href="6-aa.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="6-am.html#SP11" class="function-link"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_mode</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DIRECT_TASKMODE:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">VIA_SUPPORT_FUNCTION_TASKMODE:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Schemas::empty</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Construct a schema for calling the support function</span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Produce::val_iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">RTAdjectives::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">adj</span><span class="plain-syntax">, </span><span class="constant-syntax">TEST_ADJECTIVE_TASK</span><span class="plain-syntax">, </span><span class="identifier-syntax">weak_id</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following instructs an AM to use a support routine to handle a given
-task.
-</p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::pass_task_to_support_routine</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="6-am.html#SP8" class="function-link"><span class="function-syntax">AdjectiveMeanings::set_i6_schema</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Note that the <span class="extract"><span class="extract-syntax">task_via_support_routine</span></span> values are not flags: they can be
-<span class="extract"><span class="extract-syntax">TRUE</span></span> (allowed, done via support routine), <span class="extract"><span class="extract-syntax">FALSE</span></span> (allowed, done directly)
-or <span class="extract"><span class="extract-syntax">NOT_APPLICABLE</span></span> (the task certainly can't be done). If none of the
-applicable meanings for the adjective are able to perform the task at
-run-time, we return <span class="extract"><span class="extract-syntax">NULL</span></span> as our schema, and the code-generator will use
-that to issue a suitable problem message.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::schema_for_task</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::schema_for_task</span></span>:<br/>Adjective Ambiguity - <a href="6-aa.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="6-am.html#SP14" class="function-link"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_via_support_routine</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE:</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Schemas::empty</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP11_1" class="named-paragraph-link"><span class="named-paragraph">Construct a schema for this adjective, using the standard routine naming</span><span class="named-paragraph-number">11.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">);</span>
+<span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::get_schema_without_call</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::get_schema_without_call</span></span>:<br/><a href="6-am.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="6-am.html#SP11" class="function-link"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">task_mode</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DIRECT_TASKMODE:</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">VIA_SUPPORT_FUNCTION_TASKMODE:</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">code_to_perform</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b>Where the following is complicated by the need to respect negations; it may
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Where the following is complicated by the need to respect negations; it may
 be that the original adjective has a support routine defined, but that the
 negation does not, and so must use those of the original.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Construct a schema for this adjective, using the standard routine naming</span><span class="named-paragraph-number">11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Construct a schema for calling the support function</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -392,179 +279,238 @@ negation does not, and so must use those of the original.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">use_adj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_adjective</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_ADJECTIVE_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">negation_operator</span><span class="plain-syntax"> = </span><span class="string-syntax">"~~"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ADJECTIVE_TRUE_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax"> = </span><span class="constant-syntax">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ADJECTIVE_FALSE_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax"> = </span><span class="constant-syntax">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_ATOM_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">negation_operator</span><span class="plain-syntax"> = </span><span class="string-syntax">"~~"</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOW_ATOM_FALSE_TASK:</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NOW_ATOM_TRUE_TASK</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTAdjectives::iname</span><span class="plain-syntax">(</span><span class="identifier-syntax">use_adj</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTKinds::weak_id</span><span class="plain-syntax">(</span><a href="6-amd.html#SP7" class="function-link"><span class="function-syntax">AdjectiveMeaningDomains::get_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">)));</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_to_transfer_to_SR</span><span class="plain-syntax">), </span><span class="string-syntax">"*=-(%s%n(*1))"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">negation_operator</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Calculus::Schemas::modify</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">call_to_support_function</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"*=-(%s%n(*1))"</span><span class="plain-syntax">, </span><span class="identifier-syntax">negation_operator</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP11">&#167;11</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Kinds of adjectives. </b>This is where <span class="extract"><span class="extract-syntax">inweb</span></span>'s use of C rather than <span class="extract"><span class="extract-syntax">C++</span></span> or Python as a base
-language becomes a little embarrassing: we really want to have seven or
-eight subclasses of an "adjective" class, and provide a group of methods.
-Instead we simulate this with the following clumsy code. (More elegant
-code using pointers to functions would trip up <span class="extract"><span class="extract-syntax">inweb</span></span>'s structure-element
-usage checking.)
+<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP7">&#167;7</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Families of adjective meanings. </b>The above API would allow us to make fairly arbitrary one-off adjectives,
+but in practice we have a number of distinct purposes and want to make a
+whole pile of related adjectives for each one. So we actually create
+adjective meanings in "families".
 </p>
 
-<p class="commentary">To define a new kind of adjective, first allocate it a new <span class="extract"><span class="extract-syntax">*_KADJ</span></span>
-constant (see above). Then declare functions to handle the following
-methods.
+<p class="commentary">Each family is represented by an instance of the following:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>1. <span class="extract"><span class="extract-syntax">*_KADJ_parse</span></span>. This enables the kind of adjective to claim a definition
-which the user has explicitly written, like so:
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">methods</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">definition_claim_priority</span><span class="plain-syntax">; </span><span class="comment-syntax"> 0 to 9: lower is better</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::new_family</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_claim_priority</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">methods</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>The structure adjective_meaning_family is private to this section.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Families provide a number of methods to tweak how adjectives behave,
+and here goes. All of these methods are optional.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">CLAIM_DEFINITION_SENTENCE_ADJM_MTID</span></span> is an opportunity to say that a
+definition in the source text is asking for this kind of adjective.
+Suppose the source has a line like so:
 </p>
 
 <blockquote>
     <p>Definition: A ... (called ...) is ... if ...</p>
 </blockquote>
 
-<p class="commentary">In place of the ellipses are the adjective name, domain name, condition
-text and (optionally) also the calling name. The routine should return a
-pointer to the AM it creates, if it does want to claim the definition;
-and <span class="extract"><span class="extract-syntax">NULL</span></span> if it doesn't want it. <span class="extract"><span class="extract-syntax">sense</span></span> is either \(1\), meaning that
-"if" was used (the condition has positive sense); or \(-1\), meaning
-that it was "unless" (a negative sense); or \(0\), meaning that instead
-of a condition, a rule was supplied. (Most kinds of adjective will only
-claim if the sense is \(1\); some never claim at all.)
+<p class="commentary">In place of the ellipses are respectively <span class="extract"><span class="extract-syntax">DNW</span></span> (domain wording), <span class="extract"><span class="extract-syntax">CALLW</span></span>
+(the calling), <span class="extract"><span class="extract-syntax">AW</span></span> (the adjective) and <span class="extract"><span class="extract-syntax">CONW</span></span> (the condition). <span class="extract"><span class="extract-syntax">sense</span></span> is
+either 1, meaning that "if" was used (the condition has positive sense);
+or -1, meaning that it was "unless" (a negative sense); or 0, meaning
+that instead of a condition, a rule was supplied.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PARSE_ADJM_MTID</span>
+<p class="commentary">If the method is provided, it should look at these and decide if this is
+the sort of adjective it wants to make. If so, it should return <span class="extract"><span class="extract-syntax">TRUE</span></span>
+and copy a pointer to the new adjective meaning into <span class="extract"><span class="extract-syntax">result</span></span>. If not,
+it should return <span class="extract"><span class="extract-syntax">FALSE</span></span>.
+</p>
+
+<p class="commentary">Of course, only one family can take the prize, and so the sequence in which
+the families are offered the chance to claim is significant. This sequence
+is ascending order of the family's <span class="extract"><span class="extract-syntax">definition_claim_priority</span></span> field.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CLAIM_DEFINITION_SENTENCE_ADJM_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">PARSE_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> **</span><span class="identifier-syntax">result</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sense</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">AW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">DNW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CALLW</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">CLAIM_DEFINITION_SENTENCE_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> **</span><span class="identifier-syntax">result</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sense</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">AW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">DNW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CALLW</span><span class="plain-syntax">)</span>
 
-<span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::parse</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">AdjectiveMeanings::claim_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sense</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">AW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">DNW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CALLW</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">priority</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">priority</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">10</span><span class="plain-syntax">; </span><span class="identifier-syntax">priority</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parsing_priority</span><span class="plain-syntax"> == </span><span class="identifier-syntax">priority</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Try the f family</span><span class="named-paragraph-number">13.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">f</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">definition_claim_priority</span><span class="plain-syntax"> == </span><span class="identifier-syntax">priority</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Try the f family</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Try the f family</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Try the f family</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">PARSE_ADJM_MTID</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">sense</span><span class="plain-syntax">, </span><span class="identifier-syntax">AW</span><span class="plain-syntax">, </span><span class="identifier-syntax">DNW</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONW</span><span class="plain-syntax">, </span><span class="identifier-syntax">CALLW</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">CLAIM_DEFINITION_SENTENCE_ADJM_MTID</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">sense</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">AW</span><span class="plain-syntax">, </span><span class="identifier-syntax">DNW</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONW</span><span class="plain-syntax">, </span><span class="identifier-syntax">CALLW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">am</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>2. <span class="extract"><span class="extract-syntax">*_KADJ_compiling_soon</span></span>. This warns the adjective that it will shortly be
-needed in compilation, that is, that code will soon be compiled which uses it.
-This advance warning is an opportunity to compile a schema for the adjective
-at the last minute, but there is no obligation. There is also no return value.
+<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>By default, an adjective meaning cannot be asserted, that is, said to be
+true of something (an inference subject) in the model world. So if "fizzy"
+is a newly created adjective, the sentence "The drink is fizzy" would be
+rejected. But if the family for "fizzy" provides an <span class="extract"><span class="extract-syntax">ASSERT_ADJM_MTID</span></span> method,
+it's a different matter. The method should either return <span class="extract"><span class="extract-syntax">FALSE</span></span> to decline
+after all, or draw some inferences and then return <span class="extract"><span class="extract-syntax">TRUE</span></span>.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">parity</span></span> is <span class="extract"><span class="extract-syntax">TRUE</span></span> if the assertion claims the meaning <span class="extract"><span class="extract-syntax">am</span></span> is true about the
+subject <span class="extract"><span class="extract-syntax">subj</span></span>, and otherwise <span class="extract"><span class="extract-syntax">FALSE</span></span>.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSERT_ADJM_MTID</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">)</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::assert</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::assert</span></span>:<br/>Adjective Ambiguity - <a href="6-aa.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">; </span><span class="identifier-syntax">parity</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">parity</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">, </span><span class="identifier-syntax">parity</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Next, <span class="extract"><span class="extract-syntax">PREPARE_SCHEMAS_ADJM_MTID</span></span>. Just before code is about to be
+generated for the adjective to perform some task, this method is called.
+The idea is that this is an opportunity to compile a schema for the adjective
+at the last minute (as an alternative to having set the schemas up at
+creation time), but there is no obligation.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PREPARE_SCHEMAS_ADJM_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">PREPARE_SCHEMAS_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">)</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></span>:<br/><a href="6-am.html#SP11">&#167;11</a>, <a href="6-am.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">PREPARE_SCHEMAS_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></span>:<br/><a href="6-am.html#SP7">&#167;7</a>, <a href="6-am.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">PREPARE_SCHEMAS_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">task</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">schemas_prepared</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>3. <span class="extract"><span class="extract-syntax">*_KADJ_compile</span></span>. We should now either compile code which, in the
-given stack frame and writing code to the given file handle, carries out the
-given task for the adjective, and return <span class="extract"><span class="extract-syntax">TRUE</span></span>; or return <span class="extract"><span class="extract-syntax">FALSE</span></span> to
-tell Inform that the task is impossible.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b><span class="extract"><span class="extract-syntax">GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID</span></span> offers a way to bypass the usual code
+generation process. It is called on only when <a href="../runtime-module/4-adj.html" class="internal">Adjectives (in runtime)</a> is
+compiling a support function &mdash; and therefore it will never be called on if
+the adjective doesn't perform this task with a support function; see above.
 </p>
 
-<p class="commentary">Note that if an adjective has defined a schema to handle the task, then its
-<span class="extract"><span class="extract-syntax">*_KADJ_compile</span></span> is not needed and not consulted.
+<p class="commentary">It is called twice, first with <span class="extract"><span class="extract-syntax">emit_flag</span></span> set to <span class="extract"><span class="extract-syntax">FALSE</span></span>; it should do nothing,
+but return <span class="extract"><span class="extract-syntax">TRUE</span></span> to indicate that it wants to generate wacky code of its own.
+On the second call, <span class="extract"><span class="extract-syntax">emit_flag</span></span> will be <span class="extract"><span class="extract-syntax">TRUE</span></span>, and this time the method should
+follow through on its earlier promise.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_ADJM_MTID</span>
+<p class="commentary">If the method is not provided or returns <span class="extract"><span class="extract-syntax">FALSE</span></span>, then the code will be generated
+from the schema in the normal way.
+</p>
+
+<p class="commentary">As with schemas, <span class="extract"><span class="extract-syntax">T</span></span> is the task to be performed.
+</p>
+
+<p class="commentary">If <span class="extract"><span class="extract-syntax">emit_flag</span></span> is <span class="extract"><span class="extract-syntax">TRUE</span></span>, then code should actually be generated, and within
+the given stack frame. If it is <span class="extract"><span class="extract-syntax">FALSE</span></span>, the function should simply return
+whether it is able to do this or not.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::emit_meaning</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><a href="6-am.html#SP15" class="function-link"><span class="function-syntax">AdjectiveMeanings::compile_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">support_function_compiled</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::compilation_possible</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="6-am.html#SP15" class="function-link"><span class="function-syntax">AdjectiveMeanings::compile_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
-<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
+<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">)</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::compile_inner</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="6-am.html#SP14" class="function-link"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Use the I6 schema instead to compile the task, if one exists</span><span class="named-paragraph-number">15.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">COMPILE_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>We expand the I6 schema, placing the "it" variable &mdash; a nameless call
-parameter which is always local variable number 0 for this stack frame &mdash;
-into <span class="extract"><span class="extract-syntax">*1</span></span>.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use the I6 schema instead to compile the task, if one exists</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>This dual behaviour means there are two function calls invoking it:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Schemas::empty</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::generate_in_support_function</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><a href="6-am.html#SP13" class="function-link"><span class="function-syntax">AdjectiveMeanings::nscg_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">has_been_compiled_in_support_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::can_generate_in_support_function</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="6-am.html#SP13" class="function-link"><span class="function-syntax">AdjectiveMeanings::nscg_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::nscg_inner</span><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="6-am.html#SP11" class="function-link"><span class="function-syntax">AdjectiveMeanings::prepare_schemas</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP13_1" class="named-paragraph-link"><span class="named-paragraph">Use the I6 schema instead to compile the task, if one exists</span><span class="named-paragraph-number">13.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">, </span><span class="identifier-syntax">phsf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>Because we are inside the support function, we need to call
+<a href="6-am.html#SP7" class="internal">AdjectiveMeanings::get_schema_without_call</a> not <a href="6-am.html#SP7" class="internal">AdjectiveMeanings::get_schema</a> &mdash;
+otherwise, we would be given the schema for a function call to the very thing
+we are now trying to compile, and the result would be code which recursed
+forever.
+</p>
+
+<p class="commentary">The stack frame for the support function has a single variable "it" as number 0,
+and we set <span class="extract"><span class="extract-syntax">*1</span></span> to be this parameter. This is in fact the term we are performing
+the task on. <span class="extract"><span class="extract-syntax">*2</span></span> is unset.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use the I6 schema instead to compile the task, if one exists</span><span class="named-paragraph-number">13.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">i6_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sch</span><span class="plain-syntax"> = </span><a href="6-am.html#SP7" class="function-link"><span class="function-syntax">AdjectiveMeanings::get_schema_without_call</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Calculus::Schemas::empty</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">emit_flag</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">it_var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Lvalues::new_LOCAL_VARIABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">LocalVariables::it_variable</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">pcalc_term</span><span class="plain-syntax"> </span><span class="identifier-syntax">it_term</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Terms::new_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">it_var</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">EmitSchemas::emit_expand_from_terms</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">task_data</span><span class="plain-syntax">[</span><span class="identifier-syntax">T</span><span class="plain-syntax">].</span><span class="element-syntax">i6s_for_runtime_task</span><span class="plain-syntax">), &amp;</span><span class="identifier-syntax">it_term</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">EmitSchemas::emit_expand_from_terms</span><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">it_term</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>4. <span class="extract"><span class="extract-syntax">*_KADJ_assert</span></span>. We should now either take action to ensure that
-the adjective will hold (or not hold, according to <span class="extract"><span class="extract-syntax">parity</span></span>) for the given
-object or value; or return <span class="extract"><span class="extract-syntax">FALSE</span></span> to tell Inform that this cannot be
-asserted, which will trigger a problem message.
+<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP13">&#167;13</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>At last, something simpler. <span class="extract"><span class="extract-syntax">INDEX_ADJM_MTID</span></span>, if provided, should print
+a description suitable for use in the lexicon part of the index, and return
+<span class="extract"><span class="extract-syntax">TRUE</span></span>. If not provided, or it returns <span class="extract"><span class="extract-syntax">FALSE</span></span>, something sensible is done
+instead; this is only an opportunity to improve the wording.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSERT_ADJM_MTID</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_to_assert_on</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_to_assert_on</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">)</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::assert_single</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">AdjectiveMeanings::assert_single</span></span>:<br/>Adjective Ambiguity - <a href="6-aa.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs_to_assert_on</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val_to_assert_on</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">parity</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">am</span><span class="plain-syntax"> = </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">; </span><span class="identifier-syntax">parity</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">parity</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs_to_assert_on</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val_to_assert_on</span><span class="plain-syntax">, </span><span class="identifier-syntax">parity</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>5. <span class="extract"><span class="extract-syntax">*_KADJ_index</span></span>. This should print a description of the adjective to the
-index, for use in the Phrasebook lexicon. Note that it is only needed where
-the AM has been constructed positively, that is, it is not needed if the
-AM was made as a negation of something else.
-</p>
-
-<p class="commentary">Note also that if the AM was defined with any indexing text then that will
-be printed if the routine does nothing better.
+<p class="commentary">Note that this is only called for the positive sense of an adjective meaning,
+not for one which is the negated form of another.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">INDEX_ADJM_MTID</span>
@@ -573,51 +519,12 @@ be printed if the routine does nothing better.
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">INDEX_ADJM_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">)</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::print_to_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-am.html#SP17_1" class="named-paragraph-link"><span class="named-paragraph">Index the domain of validity of the AM</span><span class="named-paragraph-number">17.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Adjectives::get_nominative_singular</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_adjective</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" opposite of &lt;/i&gt;%+W&lt;i&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">INDEX_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%+W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Index::link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexing_text</span><span class="plain-syntax">));</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">AdjectiveMeanings::nonstandard_index_entry</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">INT_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">INDEX_ADJM_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">am</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17_1" class="paragraph-anchor"></a><b>&#167;17.1.  </b>This is supposed to imitate dictionaries, distinguishing meanings by
-concisely showing their usage. Thus "empty" would have indexed entries
-prefaced "(of a rulebook)", "(of an activity)", and so on.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Index the domain of validity of the AM</span><span class="named-paragraph-number">17.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax">.</span><span class="element-syntax">domain_infs</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(of &lt;/i&gt;%+W&lt;i&gt;) "</span><span class="plain-syntax">, </span><span class="identifier-syntax">InferenceSubjects::get_name_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">am</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">domain</span><span class="plain-syntax">.</span><span class="element-syntax">domain_infs</span><span class="plain-syntax">));</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-am.html#SP17">&#167;17</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Parsing for adaptive text. </b></p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;adaptive-adjective&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">Projects::get_language_of_play</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">Task::project</span><span class="Preform-plain-syntax">()) == </span><span class="Preform-identifier-syntax">DefaultLanguage::get</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">NULL</span><span class="Preform-plain-syntax">)) </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">adjective</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">adj</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">LOOP_OVER</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">adj</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">adjective</span><span class="Preform-plain-syntax">) {</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">wording</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">AW</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Clusters::get_form_general</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">adj</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-identifier-syntax">adjective_names</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">Projects::get_language_of_play</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">Task::project</span><span class="Preform-plain-syntax">()), </span><span class="Preform-constant-syntax">1</span><span class="Preform-plain-syntax">, -1);</span>
-<span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">Wordings::match</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">AW</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">)) {</span>
-<span class="Preform-plain-syntax">            ==&gt; { </span><span class="Preform-identifier-syntax">FALSE</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">adj</span><span class="Preform-plain-syntax">};</span>
-<span class="Preform-plain-syntax">            </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">        }</span>
-<span class="Preform-plain-syntax">    }</span>
-<span class="Preform-plain-syntax">    ==&gt; { </span><span class="Preform-identifier-syntax">fail</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">nonterminal</span><span class="Preform-plain-syntax"> };</span>
-<span class="Preform-plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="6-aa.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-tc.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-kpr.html">kpr</a></li><li class="progresssection"><a href="6-tap.html">tap</a></li><li class="progresssection"><a href="6-tcp.html">tcp</a></li><li class="progresssection"><a href="6-terr.html">terr</a></li><li class="progresssection"><a href="6-qr.html">qr</a></li><li class="progresssection"><a href="6-tur.html">tur</a></li><li class="progresssection"><a href="6-er.html">er</a></li><li class="progresssection"><a href="6-lr.html">lr</a></li><li class="progresssection"><a href="6-aa.html">aa</a></li><li class="progresscurrent">am</li><li class="progresssection"><a href="6-amd.html">amd</a></li><li class="progresssection"><a href="6-cu.html">cu</a></li><li class="progressnext"><a href="6-amd.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

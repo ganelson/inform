@@ -68,11 +68,11 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 	else if (set) AdjectiveMeaningDomains::set_from_kind(am, set);
 
 @<Write I6 schemas for asserting and testing this use of the instance@> =
-	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 	Calculus::Schemas::modify(sch,
 		"GProperty(%k, *1, %n) == %d",
 			D, Properties::iname(P), I->enumeration_index);
-	sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, FALSE);
+	sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 	Calculus::Schemas::modify(sch,
 		"WriteGProperty(%k, *1, %n, %d)",
 			D, Properties::iname(P), I->enumeration_index);
@@ -93,7 +93,7 @@ to infer from, e.g., "the ball is not green": is it red, or blue?
 
 =
 int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *am, 
-	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
+	inference_subject *infs_to_assert_on, int parity) {
 	if (parity == FALSE) return FALSE;
 	instance *I = RETRIEVE_POINTER_instance(am->family_specific_data);
 	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));

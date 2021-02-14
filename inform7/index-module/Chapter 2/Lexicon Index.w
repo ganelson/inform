@@ -406,7 +406,7 @@ different contexts. We want to quote all of those.
 			HTML_TAG("br");
 			WRITE("%d. ", nc-ac);
 		}
-		AdjectiveMeanings::print_to_index(OUT, am);
+		IXAdjectives::print(OUT, am);
 		if (ac >= 1) WRITE("; ");
 	}
 	@<End definition text@>;

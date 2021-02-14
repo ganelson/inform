@@ -229,6 +229,21 @@ typechecking to choose between much later on.
 	<modal-verb> <adaptive-verb-infinitive> |    ==> @<Annotate the verb with a modal@>
 	<adaptive-adjective>                         ==> { -, SPCond::say_adjective(RP[1], W) }
 
+<adaptive-adjective> internal {
+	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL))
+		return FALSE;
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		wording AW = Clusters::get_form_general(adj->adjective_names,
+			Projects::get_language_of_play(Task::project()), 1, -1);
+		if (Wordings::match(AW, W)) {
+			==> { FALSE, adj};
+			return TRUE;
+		}
+	}
+	==> { fail nonterminal };
+}
+
 @ "To..." phrases are easy, or at least, easy to delegate:
 
 =

@@ -168,7 +168,7 @@ is defined by routine or not.
 offer the new adjective around and see if anybody claims it.
 
 @<Register the resulting adjective@> =
-	adjective_meaning *am = AdjectiveMeanings::parse(q, the_format, AW, DNW, CONW, CALLW);
+	adjective_meaning *am = AdjectiveMeanings::claim_definition(q, the_format, AW, DNW, CONW, CALLW);
 	if (am == NULL) internal_error("unclaimed adjective definition");
 
 	if (Wordings::nonempty(NW)) {

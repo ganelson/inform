@@ -8,7 +8,7 @@ To compile run-time support for adjective definitions.
 typedef struct adjective_compilation_data {
 	struct inter_name *aph_iname;
 	struct package_request *aph_package;
-	struct linked_list *held_inames[NO_ADJECTIVE_TASKS + 1]; /* of |adjective_iname_holder| */
+	struct linked_list *held_inames[NO_ATOM_TASKS + 1]; /* of |adjective_iname_holder| */
 } adjective_compilation_data;
 
 @
@@ -21,7 +21,7 @@ void RTAdjectives::initialise_compilation_data(adjective *adj) {
 		Hierarchy::package(CompilationUnits::current(), ADJECTIVES_HAP);
 	adj->adjective_compilation.aph_iname =
 		Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
-	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++)
+	for (int i=1; i<=NO_ATOM_TASKS; i++)
 		adj->adjective_compilation.held_inames[i] = NEW_LINKED_LIST(adjective_iname_holder);
 }
 
@@ -55,14 +55,15 @@ many AMs.
 =
 void RTAdjectives::compile_support_code(void) {
 	@<Ensure, just in case, that domains exist and are sorted on@>;
-	for (int T=1; T<=NO_ADJECTIVE_TASKS; T++) {
+	for (int T=1; T<=NO_ATOM_TASKS; T++) {
 		adjective *adj;
 		LOOP_OVER(adj, adjective) {
 			adjective_meaning *am;
 			LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
-				am->support_function_compiled = FALSE;
+				am->has_been_compiled_in_support_function = FALSE;
 			LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order) {
-				if ((am->support_function_compiled) || (AdjectiveMeanings::compilation_possible(am, T) == FALSE))
+				if ((am->has_been_compiled_in_support_function) ||
+					(AdjectiveMeanings::can_generate_in_support_function(am, T) == FALSE))
 					continue;
 				kind *K = AdjectiveMeaningDomains::get_kind(am);
 				if (K) @<Compile adjective definition for this kind@>;
@@ -159,7 +160,7 @@ void RTAdjectives::list_compile(adjective *adj,
 	ph_stack_frame *phsf, kind *K, int T, inter_symbol *t0_s) {
 	adjective_meaning *am;
 	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
-		if ((AdjectiveMeanings::compilation_possible(am, T)) &&
+		if ((AdjectiveMeanings::can_generate_in_support_function(am, T)) &&
 			(AdjectiveMeaningDomains::weak_match(K, am))) {
 			current_sentence = am->defined_at;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -170,12 +171,12 @@ void RTAdjectives::list_compile(adjective *adj,
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 					Produce::down(Emit::tree());
-						if ((am->negated_from) && (T == TEST_ADJECTIVE_TASK)) {
+						if ((am->negated_from) && (T == TEST_ATOM_TASK)) {
 							Produce::inv_primitive(Emit::tree(), NOT_BIP);
 							Produce::down(Emit::tree());
 						}
-						AdjectiveMeanings::emit_meaning(am, T, phsf);
-						if ((am->negated_from) && (T == TEST_ADJECTIVE_TASK)) {
+						AdjectiveMeanings::generate_in_support_function(am, T, phsf);
+						if ((am->negated_from) && (T == TEST_ATOM_TASK)) {
 							Produce::up(Emit::tree());
 						}
 					Produce::up(Emit::tree());
@@ -324,4 +325,27 @@ void RTAdjectives::emit(adjective *adj) {
 		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 	Produce::up(Emit::tree());
+}
+
+@ The following is needed when making sense of the I6-to-I7 escape sequence
+|(+ adj +)|, where |adj| is the name of an adjective. Since I6 is typeless,
+there's no good way to choose which sense of the adjective is meant, so we
+don't know which routine to expand out. The convention is: a meaning for
+objects, if there is one; otherwise the first-declared meaning.
+
+=
+int RTAdjectives::write_adjective_test_routine(value_holster *VH, adjective *adj) {
+	i6_schema *sch;
+	int weak_id = RTKinds::weak_id(K_object);
+	sch = AdjectiveAmbiguity::schema_for_task(adj, NULL, TEST_ATOM_TASK);
+	if (sch == NULL) {
+		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
+		if (am == NULL) return FALSE;
+		kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
+		if (am_kind == NULL) return FALSE;
+		weak_id = RTKinds::weak_id(am_kind);
+	}
+	Produce::val_iname(Emit::tree(), K_value,
+		RTAdjectives::iname(adj, TEST_ATOM_TASK, weak_id));
+	return TRUE;
 }

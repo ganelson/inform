@@ -15,10 +15,10 @@ adjective_meaning_family *inter_condition_amf = NULL; /* defined by an explicit 
 
 void Phrases::RawCondition::start(void) {
 	inter_condition_amf = AdjectiveMeanings::new_family(4);
-	METHOD_ADD(inter_condition_amf, PARSE_ADJM_MTID, Phrases::RawCondition::ADJ_parse);
+	METHOD_ADD(inter_condition_amf, CLAIM_DEFINITION_SENTENCE_ADJM_MTID, Phrases::RawCondition::claim_definition);
 }
 
-int Phrases::RawCondition::ADJ_parse(adjective_meaning_family *f,
+int Phrases::RawCondition::claim_definition(adjective_meaning_family *f,
 	adjective_meaning **result, parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	if (sense != 1) return FALSE;
@@ -34,9 +34,8 @@ int Phrases::RawCondition::ADJ_parse(adjective_meaning_family *f,
 	def->am_of_def = am;
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
 	AdjectiveMeaningDomains::set_from_text(am, DNW);
-	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
+	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 	Word::dequote(text_wn);
 	Calculus::Schemas::modify(sch, "(%N)", text_wn);
 	*result = am;

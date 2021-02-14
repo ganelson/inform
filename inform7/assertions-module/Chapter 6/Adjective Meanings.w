@@ -19,10 +19,10 @@ typedef struct adjective_meaning {
 	struct wording indexing_text; /* text to use in the Phrasebook index */
 	struct parse_node *defined_at; /* from what sentence this came (if it did) */
 
-	int schemas_prepared; /* optional flag to mark whether schemas prepared yet */
-	struct adjective_task_data task_data[NO_ADJECTIVE_TASKS + 1];
+	int schemas_prepared; /* have schemas been prepared yet? */
+	struct adjective_task_data task_data[NO_ATOM_TASKS + 1]; /* see below */
 
-	int support_function_compiled; /* temporary workspace used when compiling support routines */
+	int has_been_compiled_in_support_function; /* which may never happen */
 
 	CLASS_DEFINITION
 } adjective_meaning;
@@ -39,14 +39,10 @@ adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
 	am->domain = AdjectiveMeaningDomains::new_from_text(EMPTY_WORDING);
 	am->family = family;
 	am->family_specific_data = details;
-	am->support_function_compiled = FALSE;
+	am->has_been_compiled_in_support_function = FALSE;
 	am->schemas_prepared = FALSE;
-	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
-		am->task_data[i].task_via_support_routine = NOT_APPLICABLE;
-		Calculus::Schemas::modify(&(am->task_data[i].i6s_for_runtime_task), "");
-		Calculus::Schemas::modify(&(am->task_data[i].i6s_to_transfer_to_SR), "");
-	}
 	am->negated_from = NULL;
+	AdjectiveMeanings::initialise_all_task_data(am);
 	return am;
 }
 
@@ -54,204 +50,135 @@ adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
 might be created as the negation of "even" for numbers):
 
 =
-adjective_meaning *AdjectiveMeanings::negate(adjective_meaning *am) {
-	if (am->negated_from) internal_error("cannot negate an already negated AM");
-	adjective_meaning *neg = CREATE(adjective_meaning);
-	neg->defined_at = current_sentence;
-	neg->indexing_text = am->indexing_text;
-	neg->owning_adjective = NULL;
-	neg->domain = am->domain;
-	neg->family = am->family;
-	neg->family_specific_data = am->family_specific_data;
-	neg->support_function_compiled = FALSE;
-	neg->schemas_prepared = FALSE;
-	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
+adjective_meaning *AdjectiveMeanings::negate(adjective_meaning *other) {
+	if (other->negated_from) internal_error("cannot negate an already negated AM");
+	adjective_meaning *am = CREATE(adjective_meaning);
+	am->defined_at = current_sentence;
+	am->indexing_text = other->indexing_text;
+	am->owning_adjective = NULL;
+	am->domain = other->domain;
+	am->family = other->family;
+	am->family_specific_data = other->family_specific_data;
+	am->has_been_compiled_in_support_function = FALSE;
+	am->schemas_prepared = FALSE;
+	am->negated_from = other;
+	AdjectiveMeanings::negate_task_data(am, other);
+	for (int i=1; i<=NO_ATOM_TASKS; i++) {
 		int j = i;
-		if (i == NOW_ADJECTIVE_TRUE_TASK) j = NOW_ADJECTIVE_FALSE_TASK;
-		if (i == NOW_ADJECTIVE_FALSE_TASK) j = NOW_ADJECTIVE_TRUE_TASK;
-		neg->task_data[j].task_via_support_routine = am->task_data[i].task_via_support_routine;
-		neg->task_data[j].i6s_for_runtime_task = am->task_data[i].i6s_for_runtime_task;
-		Calculus::Schemas::modify(&(neg->task_data[j].i6s_to_transfer_to_SR), "");
+		if (i == NOW_ATOM_TRUE_TASK) j = NOW_ATOM_FALSE_TASK;
+		if (i == NOW_ATOM_FALSE_TASK) j = NOW_ATOM_TRUE_TASK;
+		AdjectiveMeanings::copy_task_data(&(am->task_data[j]), &(other->task_data[i]));
+		Calculus::Schemas::modify(&(am->task_data[j].call_to_support_function), "");
 	}
-	neg->negated_from = am;
-	return neg;
+	return am;
 }
 
-@ There are currently seven families of adjective meanings, each represented
-by an instance of the following:
+@h Task data.
+When Inform needs to compile code for testing if an adjective is true as
+applied to something, or to make it now true (or false), it does this by
+compiling code for the associated unary predicate -- see
+//The Adjectival Predicates//. What to compile depends on the meaning or
+meanings which might apply; if it's this meaning, then we will need an
+I6 schema to carry out one of three tasks, |TEST_ATOM_TASK|,
+|NOW_ATOM_TRUE_TASK|, or |NOW_ATOM_FALSE_TASK|.
 
-=
-typedef struct adjective_meaning_family {
-	struct method_set *methods;
-	int parsing_priority;
-	CLASS_DEFINITION
-} adjective_meaning_family;
-
-adjective_meaning_family *AdjectiveMeanings::new_family(int N) {
-	adjective_meaning_family *f = CREATE(adjective_meaning_family);
-	f->parsing_priority = N;
-	f->methods = Methods::new_set();
-	return f;
-}
-
-@h Tasks and their schemas.
+A meaning has one of these for each of the possible tasks:
 
 =
 typedef struct adjective_task_data {
-	int task_via_support_routine;
-	struct i6_schema i6s_to_transfer_to_SR; /* where |TRUE| */
-	struct i6_schema i6s_for_runtime_task; /* where |TRUE| */
+	int task_mode; /* one of the |*_TASKMODE| constants: see below */
+	struct i6_schema call_to_support_function; /* where |TRUE| */
+	struct i6_schema code_to_perform; /* where |TRUE| */
 } adjective_task_data;
 
-@ What are adjectives for? Since an adjective is a unary predicate, it can be
-thought of as an assignment from its domain set to the set of two possibilities:
-true, false. Thus one sense of "open" maps doors to true if they are currently
-open, false if they are closed.
+void AdjectiveMeanings::initialise_task_data(adjective_task_data *atd) {
+	atd->task_mode = NO_TASKMODE;
+	Calculus::Schemas::modify(&(atd->code_to_perform), "");
+	Calculus::Schemas::modify(&(atd->call_to_support_function), "");
+}
 
-There are altogether five things we might want to do with an adjective:
+void AdjectiveMeanings::copy_task_data(adjective_task_data *to, adjective_task_data *from) {
+	to->task_mode = from->task_mode;
+	to->code_to_perform = from->code_to_perform;
+	to->call_to_support_function = from->call_to_support_function;
+}
 
-(1) Test whether it is true at any given point during play.
-(2) Assert that it is true at the start of play.
-(3) Assert that it is false at the start of play.
-(4) Assert that it is now to be true from this point on during play.
-(5) Assert that it is now to be false from this point on during play.
-
-We do not need to test whether it is false, since we need only test whether
-it is true and negate the result.
-
-Adjectives for which all five of these operations can be carried out are
-the exception rather than the rule. "Open" is an example:
-
->> [1] if the marble door is open, ...
->> [2] The marble door is open.
->> [3] The marble door is not open.
->> [4] now the marble door is open;
->> [5] now the marble door is not open;
-
-Every adjective in practice supports (1), testing for truth, but this is
-not required by the code below. Many adjectives -- properly speaking, many
-senses of an adjective -- only support testing: "empty" in the sense of
-texts, for instance.
-
-Of the five possibilities, (1), (4) and (5) happen at run-time. These are
-called "tasks" and are identified by the following constants. While in
-theory an adjective's handling code can compile anything it likes to carry
-out these tasks, in practice most are defined by providing an I6 schema,
-which is why the |adjective_meaning| structure contains these -- see below.
-
-@d NO_ADJECTIVE_TASKS 3
-
-@d TEST_ADJECTIVE_TASK 1 /* test if currently true */
-@d NOW_ADJECTIVE_TRUE_TASK 2 /* assert now true */
-@d NOW_ADJECTIVE_FALSE_TASK 3 /* assert now false */
-
-@h Testing and asserting in play.
-Now for testing, making true and making false in play. We won't be there when
-the story file is played, of course, so what we have to do is to compile code
-to perform the test or force the state.
-
-In fact what we do is to supply an I6 schema, which for this purpose is
-simply the text of I6 code in which the escape |*1| represents the value
-to which the adjective is applied. In the example of "open" for containers,
-we might choose:
-= (text)
-	if the sack is open, ...  -->   (Adj_53_t1_v61(*1))
-	now the sack is open; ...  -->   Adj_53_t2_v61(*1)
-	now the sack is not open; ...  -->   Adj_53_t3_v61(*1)
-=
-These schemas call an I6 routine called a "support routine". The names
-here are schematic: "open" on this run was APH number 53, the run-time
-tasks to perform were task 1, task 2 and task 3, and the sense of the
-adjective was the one applying to domain 61 -- which in this example run
-was the weak ID of "object". In other words, these are routines to "test
-open in the sense of objects", "now open in the sense of objects", and
-"now not open in the sense of objects".
-
-If we make a choice like that, then we say that the task is provided
-"via a support routine". We need not do so: for instance,
-= (text)
-	if the Entire Game is happening, ...  -->  (scene_status->(*1 - 1)==1)
-=
-is an example where the sense of "happening" for scenes can be tested
-directly using a schema, without calling a support routine. And clearly
-support routines only put off the problem, because we will also have to
-compile the routine itself. So why use them? The answer is that in
-complicated situations where run-time type checking is needed, they
-avoid duplication of code, and can make repeated use of the |*1| value
-without repeating any side-effects produced by the calculation of this
-value. They also make the code simpler for human eyes to read.
-
-@ When an AM has been declared, the provider can choose to set an I6
-schema for it, for any of the tasks, immediately; or can wait and do it
-later; or can choose not to do it, and instead provide code which
-generates a suitable schema on the fly. If at whatever stage the
-provider does set an I6 schema for a task, it should call the following.
-
-Note that any AM working on objects always has to go via a support
-routine -- this is because, thanks to weak domain-checking, there may
-be run-time type-checking code to apply. In other cases, the provider
-can choose to go via a support routine or not.
+@ These functions set up the task data for a new meaning. Note the transposition,
+so that a negated meaning has the |NOW_ATOM_TRUE_TASK| and |NOW_ATOM_FALSE_TASK|
+switched around from the original.
 
 =
-i6_schema *AdjectiveMeanings::set_i6_schema(adjective_meaning *am,
-	int T, int via_support) {
+void AdjectiveMeanings::initialise_all_task_data(adjective_meaning *am) {
+	for (int i=1; i<=NO_ATOM_TASKS; i++)
+		AdjectiveMeanings::initialise_task_data(&(am->task_data[i]));
+}
+
+void AdjectiveMeanings::negate_task_data(adjective_meaning *am, adjective_meaning *other) {
+	for (int i=1; i<=NO_ATOM_TASKS; i++) {
+		int j = i;
+		if (i == NOW_ATOM_TRUE_TASK) j = NOW_ATOM_FALSE_TASK;
+		if (i == NOW_ATOM_FALSE_TASK) j = NOW_ATOM_TRUE_TASK;
+		AdjectiveMeanings::copy_task_data(&(am->task_data[j]), &(other->task_data[i]));
+		Calculus::Schemas::modify(&(am->task_data[j].call_to_support_function), "");
+	}
+}
+
+@ The schema for a task generates code to perform it. There are three strategies:
+
+(*) produce a problem message, saying this is impossible;
+(*) compile direct inline code;
+(*) compile a function call to a function, which actually performs the task;
+
+Those strategies correspond to the three |*_TASKMODE| constants.
+
+By default, an adjective meaning is unable to perform any of the three tasks,
+and the creator of it has to call //AdjectiveMeanings::make_schema// to say
+otherwise. This puts us by default into |DIRECT_TASKMODE|, unless we're working
+in the world of objects where run-time typechecking will be needed -- in which
+case |VIA_SUPPORT_FUNCTION_TASKMODE|. But the creator can insist on the latter
+anyway with a subsequent call to //AdjectiveMeanings::perform_task_via_function//.
+
+@e NO_TASKMODE from 1
+@e DIRECT_TASKMODE
+@e VIA_SUPPORT_FUNCTION_TASKMODE
+
+=
+i6_schema *AdjectiveMeanings::make_schema(adjective_meaning *am, int T) {
 	kind *K = AdjectiveMeaningDomains::get_kind(am);
 	if (K == NULL) K = K_object;
-	if (Kinds::Behaviour::is_object(K)) via_support = TRUE;
-	am->task_data[T].task_via_support_routine = via_support;
-	return &(am->task_data[T].i6s_for_runtime_task);
+	int via_support = DIRECT_TASKMODE;
+	if (Kinds::Behaviour::is_object(K)) via_support = VIA_SUPPORT_FUNCTION_TASKMODE;
+	am->task_data[T].task_mode = via_support;
+	return &(am->task_data[T].code_to_perform);
 }
 
-
-@ The following is needed when making sense of the I6-to-I7 escape sequence
-|(+ adj +)|, where |adj| is the name of an adjective. Since I6 is typeless,
-there's no good way to choose which sense of the adjective is meant, so we
-don't know which routine to expand out. The convention is: a meaning for
-objects, if there is one; otherwise the first-declared meaning.
-
-=
-int AdjectiveMeanings::write_adjective_test_routine(value_holster *VH, adjective *adj) {
-	i6_schema *sch;
-	int weak_id = RTKinds::weak_id(K_object);
-	sch = AdjectiveAmbiguity::schema_for_task(adj, NULL,
-		TEST_ADJECTIVE_TASK);
-	if (sch == NULL) {
-		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
-		if (am == NULL) return FALSE;
-		kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
-		if (am_kind == NULL) return FALSE;
-		weak_id = RTKinds::weak_id(am_kind);
-	}
-	Produce::val_iname(Emit::tree(), K_value,
-		RTAdjectives::iname(adj, TEST_ADJECTIVE_TASK, weak_id));
-	return TRUE;
+void AdjectiveMeanings::perform_task_via_function(adjective_meaning *am, int T) {
+	am->task_data[T].task_mode = VIA_SUPPORT_FUNCTION_TASKMODE;
 }
 
-@ The following instructs an AM to use a support routine to handle a given
-task.
+@ And this function reads it back, automatically generating the function call
+schema if it's needed.
 
 =
-void AdjectiveMeanings::pass_task_to_support_routine(adjective_meaning *am,
-	int T) {
-	AdjectiveMeanings::set_i6_schema(am, T, TRUE);
-}
-
-@ Note that the |task_via_support_routine| values are not flags: they can be
-|TRUE| (allowed, done via support routine), |FALSE| (allowed, done directly)
-or |NOT_APPLICABLE| (the task certainly can't be done). If none of the
-applicable meanings for the adjective are able to perform the task at
-run-time, we return |NULL| as our schema, and the code-generator will use
-that to issue a suitable problem message.
-
-=
-i6_schema *AdjectiveMeanings::schema_for_task(adjective_meaning *am, int T) {
+i6_schema *AdjectiveMeanings::get_schema(adjective_meaning *am, int T) {
 	AdjectiveMeanings::prepare_schemas(am, T);
-	switch (am->task_data[T].task_via_support_routine) {
-		case FALSE: return &(am->task_data[T].i6s_for_runtime_task);
-		case TRUE:
-			if (Calculus::Schemas::empty(&(am->task_data[T].i6s_to_transfer_to_SR)))
-				@<Construct a schema for this adjective, using the standard routine naming@>;
-			return &(am->task_data[T].i6s_to_transfer_to_SR);
+	switch (am->task_data[T].task_mode) {
+		case DIRECT_TASKMODE:
+			return &(am->task_data[T].code_to_perform);
+		case VIA_SUPPORT_FUNCTION_TASKMODE:
+			if (Calculus::Schemas::empty(&(am->task_data[T].call_to_support_function)))
+				@<Construct a schema for calling the support function@>;
+			return &(am->task_data[T].call_to_support_function);
+	}
+	return NULL;
+}
+
+i6_schema *AdjectiveMeanings::get_schema_without_call(adjective_meaning *am, int T) {
+	AdjectiveMeanings::prepare_schemas(am, T);
+	switch (am->task_data[T].task_mode) {
+		case DIRECT_TASKMODE:
+		case VIA_SUPPORT_FUNCTION_TASKMODE:
+			return &(am->task_data[T].code_to_perform);
 	}
 	return NULL;
 }
@@ -260,61 +187,81 @@ i6_schema *AdjectiveMeanings::schema_for_task(adjective_meaning *am, int T) {
 be that the original adjective has a support routine defined, but that the
 negation does not, and so must use those of the original.
 
-@<Construct a schema for this adjective, using the standard routine naming@> =
+@<Construct a schema for calling the support function@> =
 	int task = T; char *negation_operator = "";
 	adjective *use_adj = am->owning_adjective;
 	if (am->negated_from) {
 		use_adj = am->negated_from->owning_adjective;
 		switch (T) {
-			case TEST_ADJECTIVE_TASK: negation_operator = "~~"; break;
-			case NOW_ADJECTIVE_TRUE_TASK: task = NOW_ADJECTIVE_FALSE_TASK; break;
-			case NOW_ADJECTIVE_FALSE_TASK: task = NOW_ADJECTIVE_TRUE_TASK; break;
+			case TEST_ATOM_TASK: negation_operator = "~~"; break;
+			case NOW_ATOM_TRUE_TASK: task = NOW_ATOM_FALSE_TASK; break;
+			case NOW_ATOM_FALSE_TASK: task = NOW_ATOM_TRUE_TASK; break;
 		}
 	}
 	inter_name *iname = RTAdjectives::iname(use_adj, task,
 		RTKinds::weak_id(AdjectiveMeaningDomains::get_kind(am)));
-	Calculus::Schemas::modify(&(am->task_data[T].i6s_to_transfer_to_SR), "*=-(%s%n(*1))",
-		negation_operator, iname);
+	Calculus::Schemas::modify(&(am->task_data[T].call_to_support_function),
+		"*=-(%s%n(*1))", negation_operator, iname);
 
-@h Kinds of adjectives.
-This is where |inweb|'s use of C rather than |C++| or Python as a base
-language becomes a little embarrassing: we really want to have seven or
-eight subclasses of an "adjective" class, and provide a group of methods.
-Instead we simulate this with the following clumsy code. (More elegant
-code using pointers to functions would trip up |inweb|'s structure-element
-usage checking.)
+@h Families of adjective meanings.
+The above API would allow us to make fairly arbitrary one-off adjectives,
+but in practice we have a number of distinct purposes and want to make a
+whole pile of related adjectives for each one. So we actually create
+adjective meanings in "families".
 
-To define a new kind of adjective, first allocate it a new |*_KADJ|
-constant (see above). Then declare functions to handle the following
-methods.
+Each family is represented by an instance of the following:
 
-@ 1. |*_KADJ_parse|. This enables the kind of adjective to claim a definition
-which the user has explicitly written, like so:
+=
+typedef struct adjective_meaning_family {
+	struct method_set *methods;
+	int definition_claim_priority; /* 0 to 9: lower is better */
+	CLASS_DEFINITION
+} adjective_meaning_family;
+
+adjective_meaning_family *AdjectiveMeanings::new_family(int N) {
+	adjective_meaning_family *f = CREATE(adjective_meaning_family);
+	f->definition_claim_priority = N;
+	f->methods = Methods::new_set();
+	return f;
+}
+
+@ Families provide a number of methods to tweak how adjectives behave,
+and here goes. All of these methods are optional.
+
+|CLAIM_DEFINITION_SENTENCE_ADJM_MTID| is an opportunity to say that a
+definition in the source text is asking for this kind of adjective.
+Suppose the source has a line like so:
 
 >> Definition: A ... (called ...) is ... if ...
 
-In place of the ellipses are the adjective name, domain name, condition
-text and (optionally) also the calling name. The routine should return a
-pointer to the AM it creates, if it does want to claim the definition;
-and |NULL| if it doesn't want it. |sense| is either $1$, meaning that
-"if" was used (the condition has positive sense); or $-1$, meaning
-that it was "unless" (a negative sense); or $0$, meaning that instead
-of a condition, a rule was supplied. (Most kinds of adjective will only
-claim if the sense is $1$; some never claim at all.)
+In place of the ellipses are respectively |DNW| (domain wording), |CALLW|
+(the calling), |AW| (the adjective) and |CONW| (the condition). |sense| is
+either 1, meaning that "if" was used (the condition has positive sense);
+or -1, meaning that it was "unless" (a negative sense); or 0, meaning
+that instead of a condition, a rule was supplied.
 
-@e PARSE_ADJM_MTID
+If the method is provided, it should look at these and decide if this is
+the sort of adjective it wants to make. If so, it should return |TRUE|
+and copy a pointer to the new adjective meaning into |result|. If not,
+it should return |FALSE|.
+
+Of course, only one family can take the prize, and so the sequence in which
+the families are offered the chance to claim is significant. This sequence
+is ascending order of the family's |definition_claim_priority| field.
+
+@e CLAIM_DEFINITION_SENTENCE_ADJM_MTID
 
 =
-INT_METHOD_TYPE(PARSE_ADJM_MTID, adjective_meaning_family *f,
-	adjective_meaning **result, parse_node *q,
-	int sense, wording AW, wording DNW, wording CONW, wording CALLW)
+INT_METHOD_TYPE(CLAIM_DEFINITION_SENTENCE_ADJM_MTID, adjective_meaning_family *f,
+	adjective_meaning **result, parse_node *q, int sense,
+	wording AW, wording DNW, wording CONW, wording CALLW)
 
-adjective_meaning *AdjectiveMeanings::parse(parse_node *q,
+adjective_meaning *AdjectiveMeanings::claim_definition(parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	for (int priority = 0; priority < 10; priority++) {
 		adjective_meaning_family *f;
 		LOOP_OVER(f, adjective_meaning_family)
-			if (f->parsing_priority == priority)
+			if (f->definition_claim_priority == priority)
 				@<Try the f family@>;
 	}
 	return NULL;
@@ -323,102 +270,131 @@ adjective_meaning *AdjectiveMeanings::parse(parse_node *q,
 @<Try the f family@> =
 	adjective_meaning *am = NULL;
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, f, PARSE_ADJM_MTID, &am, q, sense, AW, DNW, CONW, CALLW);
+	INT_METHOD_CALL(rv, f, CLAIM_DEFINITION_SENTENCE_ADJM_MTID, &am, q, sense,
+		AW, DNW, CONW, CALLW);
 	if (rv) return am;
 
-@ 2. |*_KADJ_compiling_soon|. This warns the adjective that it will shortly be
-needed in compilation, that is, that code will soon be compiled which uses it.
-This advance warning is an opportunity to compile a schema for the adjective
-at the last minute, but there is no obligation. There is also no return value.
+@ By default, an adjective meaning cannot be asserted, that is, said to be
+true of something (an inference subject) in the model world. So if "fizzy"
+is a newly created adjective, the sentence "The drink is fizzy" would be
+rejected. But if the family for "fizzy" provides an |ASSERT_ADJM_MTID| method,
+it's a different matter. The method should either return |FALSE| to decline
+after all, or draw some inferences and then return |TRUE|.
+
+|parity| is |TRUE| if the assertion claims the meaning |am| is true about the
+subject |subj|, and otherwise |FALSE|.
+
+@e ASSERT_ADJM_MTID
+
+=
+INT_METHOD_TYPE(ASSERT_ADJM_MTID, adjective_meaning_family *f, adjective_meaning *am,
+	inference_subject *subj, int parity)
+
+int AdjectiveMeanings::assert(adjective_meaning *am, inference_subject *subj,
+	int parity) {
+	if (am->negated_from) {
+		am = am->negated_from; parity = (parity)?FALSE:TRUE;
+	}
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, am->family, ASSERT_ADJM_MTID, am, subj, parity);
+	return rv;
+}
+
+@ Next, |PREPARE_SCHEMAS_ADJM_MTID|. Just before code is about to be
+generated for the adjective to perform some task, this method is called.
+The idea is that this is an opportunity to compile a schema for the adjective
+at the last minute (as an alternative to having set the schemas up at
+creation time), but there is no obligation.
 
 @e PREPARE_SCHEMAS_ADJM_MTID
 
 =
 VOID_METHOD_TYPE(PREPARE_SCHEMAS_ADJM_MTID, adjective_meaning_family *f,
-	adjective_meaning *am, int T)
+	adjective_meaning *am, int task)
 
-void AdjectiveMeanings::prepare_schemas(adjective_meaning *am, int T) {
-	VOID_METHOD_CALL(am->family, PREPARE_SCHEMAS_ADJM_MTID, am, T);
+void AdjectiveMeanings::prepare_schemas(adjective_meaning *am, int task) {
+	VOID_METHOD_CALL(am->family, PREPARE_SCHEMAS_ADJM_MTID, am, task);
 	am->schemas_prepared = TRUE;
 }
 
-@ 3. |*_KADJ_compile|. We should now either compile code which, in the
-given stack frame and writing code to the given file handle, carries out the
-given task for the adjective, and return |TRUE|; or return |FALSE| to
-tell Inform that the task is impossible.
+@ |GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID| offers a way to bypass the usual code
+generation process. It is called on only when //runtime: Adjectives// is
+compiling a support function -- and therefore it will never be called on if
+the adjective doesn't perform this task with a support function; see above.
 
-Note that if an adjective has defined a schema to handle the task, then its
-|*_KADJ_compile| is not needed and not consulted.
+It is called twice, first with |emit_flag| set to |FALSE|; it should do nothing,
+but return |TRUE| to indicate that it wants to generate wacky code of its own.
+On the second call, |emit_flag| will be |TRUE|, and this time the method should
+follow through on its earlier promise.
 
-@e COMPILE_ADJM_MTID
+If the method is not provided or returns |FALSE|, then the code will be generated
+from the schema in the normal way.
+
+As with schemas, |T| is the task to be performed.
+
+If |emit_flag| is |TRUE|, then code should actually be generated, and within
+the given stack frame. If it is |FALSE|, the function should simply return
+whether it is able to do this or not.
+
+@e GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID
 
 =
-int AdjectiveMeanings::emit_meaning(adjective_meaning *am, int T, ph_stack_frame *phsf) {
-	int rv = AdjectiveMeanings::compile_inner(am, T, TRUE, phsf);
-	am->support_function_compiled = TRUE;
+INT_METHOD_TYPE(GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID, adjective_meaning_family *f,
+	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf)
+
+@ This dual behaviour means there are two function calls invoking it:
+
+=
+int AdjectiveMeanings::generate_in_support_function(adjective_meaning *am,
+	int T, ph_stack_frame *phsf) {
+	int rv = AdjectiveMeanings::nscg_inner(am, T, TRUE, phsf);
+	am->has_been_compiled_in_support_function = TRUE;
 	return rv;
 }
 
-int AdjectiveMeanings::compilation_possible(adjective_meaning *am, int T) {
-	return AdjectiveMeanings::compile_inner(am, T, FALSE, NULL);
+int AdjectiveMeanings::can_generate_in_support_function(adjective_meaning *am, int T) {
+	return AdjectiveMeanings::nscg_inner(am, T, FALSE, NULL);
 }
 
-INT_METHOD_TYPE(COMPILE_ADJM_MTID, adjective_meaning_family *f,
-	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf)
-
-int AdjectiveMeanings::compile_inner(adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf) {
+int AdjectiveMeanings::nscg_inner(adjective_meaning *am, int T, int emit_flag,
+	ph_stack_frame *phsf) {
 	AdjectiveMeanings::prepare_schemas(am, T);
 	@<Use the I6 schema instead to compile the task, if one exists@>;
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, am->family, COMPILE_ADJM_MTID, am, T, emit_flag, phsf);
+	INT_METHOD_CALL(rv, am->family, GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID, am, T,
+		emit_flag, phsf);
 	return rv;
 }
 
-@ We expand the I6 schema, placing the "it" variable -- a nameless call
-parameter which is always local variable number 0 for this stack frame --
-into |*1|.
+@ Because we are inside the support function, we need to call 
+//AdjectiveMeanings::get_schema_without_call// not //AdjectiveMeanings::get_schema// --
+otherwise, we would be given the schema for a function call to the very thing
+we are now trying to compile, and the result would be code which recursed
+forever.
+
+The stack frame for the support function has a single variable "it" as number 0,
+and we set |*1| to be this parameter. This is in fact the term we are performing
+the task on. |*2| is unset.
 
 @<Use the I6 schema instead to compile the task, if one exists@> =
-	if (Calculus::Schemas::empty(&(am->task_data[T].i6s_for_runtime_task)) == FALSE) {
+	i6_schema *sch = AdjectiveMeanings::get_schema_without_call(am, T);
+	if (Calculus::Schemas::empty(sch) == FALSE) {
 		if (emit_flag) {
 			parse_node *it_var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 				LocalVariables::it_variable());
 			pcalc_term it_term = Terms::new_constant(it_var);
-			EmitSchemas::emit_expand_from_terms(&(am->task_data[T].i6s_for_runtime_task), &it_term, NULL, FALSE);
+			EmitSchemas::emit_expand_from_terms(sch, &it_term, NULL, FALSE);
 		}
 		return TRUE;
 	}
 
-@ 4. |*_KADJ_assert|. We should now either take action to ensure that
-the adjective will hold (or not hold, according to |parity|) for the given
-object or value; or return |FALSE| to tell Inform that this cannot be
-asserted, which will trigger a problem message.
+@ At last, something simpler. |INDEX_ADJM_MTID|, if provided, should print
+a description suitable for use in the lexicon part of the index, and return
+|TRUE|. If not provided, or it returns |FALSE|, something sensible is done
+instead; this is only an opportunity to improve the wording.
 
-@e ASSERT_ADJM_MTID
-
-=
-INT_METHOD_TYPE(ASSERT_ADJM_MTID, adjective_meaning_family *f,
-	adjective_meaning *am, inference_subject *infs_to_assert_on,
-	parse_node *val_to_assert_on, int parity)
-
-int AdjectiveMeanings::assert_single(adjective_meaning *am,
-	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
-	if (am->negated_from) {
-		am = am->negated_from; parity = (parity)?FALSE:TRUE;
-	}
-	int rv = FALSE;
-	INT_METHOD_CALL(rv, am->family, ASSERT_ADJM_MTID, am, infs_to_assert_on,
-		val_to_assert_on, parity);
-	return rv;
-}
-
-@ 5. |*_KADJ_index|. This should print a description of the adjective to the
-index, for use in the Phrasebook lexicon. Note that it is only needed where
-the AM has been constructed positively, that is, it is not needed if the
-AM was made as a negation of something else.
-
-Note also that if the AM was defined with any indexing text then that will
-be printed if the routine does nothing better.
+Note that this is only called for the positive sense of an adjective meaning,
+not for one which is the negated form of another.
 
 @e INDEX_ADJM_MTID
 
@@ -426,42 +402,8 @@ be printed if the routine does nothing better.
 INT_METHOD_TYPE(INDEX_ADJM_MTID, adjective_meaning_family *f, text_stream *OUT,
 	adjective_meaning *am)
 
-void AdjectiveMeanings::print_to_index(OUTPUT_STREAM, adjective_meaning *am) {
-	@<Index the domain of validity of the AM@>;
-	if (am->negated_from) {
-		wording W = Adjectives::get_nominative_singular(am->negated_from->owning_adjective);
-		WRITE(" opposite of </i>%+W<i>", W);
-	} else {
-		int rv = FALSE;
-		INT_METHOD_CALL(rv, am->family, INDEX_ADJM_MTID, OUT, am);
-		if ((rv == FALSE) && (Wordings::nonempty(am->indexing_text)))
-			WRITE("%+W", am->indexing_text);
-	}
-	if (Wordings::nonempty(am->indexing_text))
-		Index::link(OUT, Wordings::first_wn(am->indexing_text));
+int AdjectiveMeanings::nonstandard_index_entry(OUTPUT_STREAM, adjective_meaning *am) {
+	int rv = FALSE;
+	INT_METHOD_CALL(rv, am->family, INDEX_ADJM_MTID, OUT, am);
+	return rv;
 }
-
-@ This is supposed to imitate dictionaries, distinguishing meanings by
-concisely showing their usage. Thus "empty" would have indexed entries
-prefaced "(of a rulebook)", "(of an activity)", and so on.
-
-@<Index the domain of validity of the AM@> =
-	if (am->domain.domain_infs)
-		WRITE("(of </i>%+W<i>) ", InferenceSubjects::get_name_text(am->domain.domain_infs));
-
-@h Parsing for adaptive text.
-
-=
-<adaptive-adjective> internal {
-	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return FALSE;
-	adjective *adj;
-	LOOP_OVER(adj, adjective) {
-		wording AW = Clusters::get_form_general(adj->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
-		if (Wordings::match(AW, W)) {
-			==> { FALSE, adj};
-			return TRUE;
-		}
-	}
-	==> { fail nonterminal };
-}
-

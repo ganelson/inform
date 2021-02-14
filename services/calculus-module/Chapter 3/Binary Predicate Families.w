@@ -96,6 +96,8 @@ The answer is that there's no need, since "test false" can be done by
 compiling "test true" and then negating. No similar trick can be used to
 combine making something true or false into a single operation.
 
+@d NO_ATOM_TASKS 3
+
 @d TEST_ATOM_TASK 1
 @d NOW_ATOM_TRUE_TASK 2
 @d NOW_ATOM_FALSE_TASK 3

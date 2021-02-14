@@ -17,7 +17,7 @@ adjective_meaning_family *inter_routine_amf = NULL; /* defined by a named I6 rou
 
 void Phrases::RawPhrasal::start(void) {
 	inter_routine_amf = AdjectiveMeanings::new_family(5);
-	METHOD_ADD(inter_routine_amf, PARSE_ADJM_MTID, Phrases::RawPhrasal::ADJ_parse);
+	METHOD_ADD(inter_routine_amf, CLAIM_DEFINITION_SENTENCE_ADJM_MTID, Phrases::RawPhrasal::claim_definition);
 }
 
 int Phrases::RawPhrasal::is_by_Inter_function(adjective_meaning *am) {
@@ -25,7 +25,7 @@ int Phrases::RawPhrasal::is_by_Inter_function(adjective_meaning *am) {
 	return FALSE;
 }
 
-int Phrases::RawPhrasal::ADJ_parse(adjective_meaning_family *f,
+int Phrases::RawPhrasal::claim_definition(adjective_meaning_family *f,
 	adjective_meaning **result, parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	int setting = FALSE;
@@ -50,16 +50,19 @@ int Phrases::RawPhrasal::ADJ_parse(adjective_meaning_family *f,
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeaningDomains::set_from_text(am, DNW);
 	if (setting) {
-		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, TRUE);
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "*=-(%N(*1, -1))", rname_wn);
-		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_TRUE_TASK, TRUE);
+		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 		Calculus::Schemas::modify(sch, "*=-(%N(*1, true))", rname_wn);
-		sch = AdjectiveMeanings::set_i6_schema(am, NOW_ADJECTIVE_FALSE_TASK, TRUE);
+		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_TRUE_TASK);
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
 		Calculus::Schemas::modify(sch, "*=-(%N(*1, false))", rname_wn);
+		AdjectiveMeanings::perform_task_via_function(am, NOW_ATOM_FALSE_TASK);
 	} else {
-		AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, TRUE);
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "*=-(%N(*1))", rname_wn);
+		AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
 	}
 	*result = am;
 	return TRUE;

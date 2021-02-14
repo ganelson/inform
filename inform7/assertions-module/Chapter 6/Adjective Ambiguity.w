@@ -223,12 +223,11 @@ been an assertion sentence like this:
 >> The ormolu clock is fixed in place.
 
 "Fixed in place" is identified as an adjective, |adj|; the "ormulo clock" is
-what it applies to, stored in either |infs_to_assert_on| or |val_to_assert_on|
-depending on what it is. |kind_domain| is what kind we think this has. |parity|
-is equal to |TRUE|.
+what it applies to, stored in either |infs_to_assert_on|. |kind_domain| is what
+kind we think this has. |parity| is equal to |TRUE|.
 
 What happens is that the list of definitions for "fixed in place" is checked
-in logical precedence order, and //AdjectiveMeanings::assert_single// called
+in logical precedence order, and //AdjectiveMeanings::assert// called
 on any kind which the "ormolu clock" matches. (That will probably be the
 definition for the "fixed in place" either/or property for things, unless
 someone has given the adjective some special meaning unique to the clock.) The
@@ -247,14 +246,13 @@ int AdjectiveAmbiguity::assert(adjective *adj, kind *kind_domain,
 	adjective_meaning *am;
 	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
 		if (AdjectiveMeaningDomains::strong_match(kind_domain, infs_to_assert_on, am))
-			if (AdjectiveMeanings::assert_single(am,
-				infs_to_assert_on, val_to_assert_on, parity))
+			if (AdjectiveMeanings::assert(am, infs_to_assert_on, parity))
 				return TRUE;
 	return FALSE;
 }
 
 @ Similarly, the following produces an I6 schema to carry out a task for the
-adjective. (See //AdjectiveMeanings::set_i6_schema// for tasks.)
+adjective. (See //AdjectiveMeanings::make_schema// for tasks.)
 
 =
 i6_schema *AdjectiveAmbiguity::schema_for_task(adjective *adj, kind *kind_domain, int T) {
@@ -264,7 +262,7 @@ i6_schema *AdjectiveAmbiguity::schema_for_task(adjective *adj, kind *kind_domain
 	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order) {
 		AdjectiveMeaningDomains::determine(am);
 		if (AdjectiveMeaningDomains::weak_match(kind_domain, am) == FALSE) continue;
-		i6_schema *i6s = AdjectiveMeanings::schema_for_task(am, T);
+		i6_schema *i6s = AdjectiveMeanings::get_schema(am, T);
 		if (i6s) return i6s;
 	}
 	return NULL;

@@ -240,14 +240,14 @@ adjective_meaning_family *measurement_amf = NULL; /* defined by numerical compar
 
 void Properties::Measurement::start(void) {
 	measurement_amf = AdjectiveMeanings::new_family(3);
-	METHOD_ADD(measurement_amf, ASSERT_ADJM_MTID, Properties::Measurement::ADJ_assert);
+	METHOD_ADD(measurement_amf, ASSERT_ADJM_MTID, Properties::Measurement::assert);
 	METHOD_ADD(measurement_amf, PREPARE_SCHEMAS_ADJM_MTID, Properties::Measurement::prepare_schemas);
-	METHOD_ADD(measurement_amf, PARSE_ADJM_MTID, Properties::Measurement::ADJ_parse);
+	METHOD_ADD(measurement_amf, CLAIM_DEFINITION_SENTENCE_ADJM_MTID, Properties::Measurement::claim_definition);
 }
 
 
 @ =
-int Properties::Measurement::ADJ_parse(adjective_meaning_family *f,
+int Properties::Measurement::claim_definition(adjective_meaning_family *f,
 	adjective_meaning **result, parse_node *q,
 	int sense, wording AW, wording DNW, wording CONW, wording CALLW) {
 	if (sense == 0) return FALSE;
@@ -374,7 +374,7 @@ can't normally be unravelled at compile time.
 	mdef->headword_as_adjective = am;
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
+	AdjectiveMeanings::perform_task_via_function(am, TEST_ATOM_TASK);
 	AdjectiveMeaningDomains::set_from_text(am, DNW);
 
 @ =
@@ -384,16 +384,15 @@ void Properties::Measurement::prepare_schemas(adjective_meaning_family *family, 
 		RETRIEVE_POINTER_measurement_definition(am->family_specific_data);
 	if ((mdef->prop) && (mdef->region_threshold_evaluated) &&
 		(mdef->property_schema_written == FALSE)) {
-		i6_schema *sch = AdjectiveMeanings::set_i6_schema(
-			mdef->headword_as_adjective, TEST_ADJECTIVE_TASK, FALSE);
+		i6_schema *sch = AdjectiveMeanings::make_schema(
+			mdef->headword_as_adjective, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "%n(*1)", mdef->mdef_iname);
 		mdef->property_schema_written = TRUE;
 	}
 }
 
-int Properties::Measurement::ADJ_assert(adjective_meaning_family *f,
-	adjective_meaning *am, 
-	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
+int Properties::Measurement::assert(adjective_meaning_family *f,
+	adjective_meaning *am, inference_subject *infs_to_assert_on, int parity) {
 	measurement_definition *mdef =
 		RETRIEVE_POINTER_measurement_definition(am->family_specific_data);
 	Properties::Measurement::validate(mdef);

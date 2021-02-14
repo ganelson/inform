@@ -21,21 +21,21 @@ void AdjectivalPredicates::start(void) {
 	METHOD_ADD(adjectival_up_family, LOG_UPF_MTID, AdjectivalPredicates::log);
 }
 
-unary_predicate *AdjectivalPredicates::new_up(adjective *aph, int pos) {
+unary_predicate *AdjectivalPredicates::new_up(adjective *adj, int pos) {
 	unary_predicate *au = UnaryPredicates::new(adjectival_up_family);
-	au->lcon = Stock::to_lcon(aph->in_stock);
+	au->lcon = Stock::to_lcon(adj->in_stock);
 	if (pos) au->lcon = Lcon::set_sense(au->lcon, POSITIVE_SENSE);
 	else au->lcon = Lcon::set_sense(au->lcon, NEGATIVE_SENSE);
 	return au;
 }
 
-pcalc_prop *AdjectivalPredicates::new_atom(adjective *aph, int negated, pcalc_term t) {
+pcalc_prop *AdjectivalPredicates::new_atom(adjective *adj, int negated, pcalc_term t) {
 	return Atoms::unary_PREDICATE_new(
-		AdjectivalPredicates::new_up(aph, (negated)?FALSE:TRUE), t);
+		AdjectivalPredicates::new_up(adj, (negated)?FALSE:TRUE), t);
 }
 
-pcalc_prop *AdjectivalPredicates::new_atom_on_x(adjective *aph, int negated) {
-	return AdjectivalPredicates::new_atom(aph, negated, Terms::new_variable(0));
+pcalc_prop *AdjectivalPredicates::new_atom_on_x(adjective *adj, int negated) {
+	return AdjectivalPredicates::new_atom(adj, negated, Terms::new_variable(0));
 }
 
 void AdjectivalPredicates::log(up_family *self, OUTPUT_STREAM, unary_predicate *up) {
@@ -45,18 +45,18 @@ void AdjectivalPredicates::log(up_family *self, OUTPUT_STREAM, unary_predicate *
 }
 
 void AdjectivalPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) {
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
-	adjective_meaning *am = AdjectiveAmbiguity::first_meaning(aph);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
+	adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
 	kind *D = AdjectiveMeaningDomains::get_kind(am);
 	if (D) *K = D;
 }
 
 int AdjectivalPredicates::typecheck(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
 	kind *K = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
-	if ((aph) && (AdjectiveAmbiguity::can_be_applied_to(aph, K) == FALSE)) {
-		wording W = Adjectives::get_nominative_singular(aph);
+	if ((adj) && (AdjectiveAmbiguity::can_be_applied_to(adj, K) == FALSE)) {
+		wording W = Adjectives::get_nominative_singular(adj);
 		if (tck->log_to_I6_text) LOG("Adjective '%W' undefined on %u\n", W, K);
 		Propositions::Checker::problem(UnaryMisapplied_CALCERROR,
 			NULL, W, K, NULL, NULL, tck);
@@ -74,7 +74,7 @@ success flag.
 =
 void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *pl) {
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
 	int parity = (now_negated)?FALSE:TRUE, found;
 	if (AdjectivalPredicates::parity(up) == FALSE) parity = (parity)?FALSE:TRUE;
 	inference_subject *ox = Assert::subject_of_term(pl->terms[0]);
@@ -95,24 +95,24 @@ void AdjectivalPredicates::assert(up_family *self, unary_predicate *up,
 	if (domain_of_definition == NULL)
 		domain_of_definition = Node::get_kind_of_value(ots);
 
-	if (ox) found = AdjectiveAmbiguity::assert(aph, domain_of_definition, ox, NULL, parity);
-	else found = AdjectiveAmbiguity::assert(aph, domain_of_definition, NULL, ots, parity);
+	if (ox) found = AdjectiveAmbiguity::assert(adj, domain_of_definition, ox, NULL, parity);
+	else found = AdjectiveAmbiguity::assert(adj, domain_of_definition, NULL, ots, parity);
 
-	if (found == FALSE) Assert::issue_couldnt_problem(aph, parity);
+	if (found == FALSE) Assert::issue_couldnt_problem(adj, parity);
 }
 
 int AdjectivalPredicates::testable(up_family *self, unary_predicate *up) {
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
-	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
+	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(adj, NULL);
 	if (prn == NULL) return FALSE;
 	return TRUE;
 }
 
 int AdjectivalPredicates::test(up_family *self, unary_predicate *up,
 	TERM_DOMAIN_CALCULUS_TYPE *about) {
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
 	int sense = AdjectivalPredicates::parity(up);
-	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
+	property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(adj, NULL);
 	if (prn) {
 		possession_marker *adj = Properties::get_possession_marker(prn);
 		if (sense) {
@@ -127,18 +127,11 @@ int AdjectivalPredicates::test(up_family *self, unary_predicate *up,
 
 void AdjectivalPredicates::get_schema(up_family *self, int task, unary_predicate *up,
 	annotated_i6_schema *asch, kind *K) {
-	int atask = 0; /* redundant assignment to appease |gcc -O2| */
-	adjective *aph = AdjectivalPredicates::to_adjective(up);
+	adjective *adj = AdjectivalPredicates::to_adjective(up);
 
 	if (AdjectivalPredicates::parity(up) == FALSE) asch->negate_schema = TRUE;
 
-	switch(task) {
-		case TEST_ATOM_TASK: atask = TEST_ADJECTIVE_TASK; break;
-		case NOW_ATOM_TRUE_TASK: atask = NOW_ADJECTIVE_TRUE_TASK; break;
-		case NOW_ATOM_FALSE_TASK: atask = NOW_ADJECTIVE_FALSE_TASK; break;
-	}
-
-	asch->schema = AdjectiveAmbiguity::schema_for_task(aph, K, atask);
+	asch->schema = AdjectiveAmbiguity::schema_for_task(adj, K, task);
 }
 
 @ Access:

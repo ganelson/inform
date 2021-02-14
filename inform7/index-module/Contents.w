@@ -17,3 +17,4 @@ Chapter 2: Indexing
 	Index Extensions
 	Index Headings
 	Instances
+	Adjectives
