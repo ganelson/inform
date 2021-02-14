@@ -18,7 +18,6 @@ DECLARE_CLASS(compile_task_data)
 
 @ //assertions// --
 
-@e adjective_iname_holder_CLASS
 @e adjective_meaning_CLASS
 @e adjective_meaning_family_CLASS
 @e application_CLASS
@@ -35,7 +34,6 @@ DECLARE_CLASS(compile_task_data)
 @e use_option_CLASS
 
 =
-DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(adjective_meaning)
 DECLARE_CLASS(adjective_meaning_family)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
@@ -153,6 +151,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner_list, 100)
 @e use_as_event_CLASS
 
 =
+DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
@@ -168,6 +167,7 @@ DECLARE_CLASS(use_as_event)
 
 @ //runtime// --
 
+@e adjective_iname_holder_CLASS
 @e bp_runtime_implementation_CLASS
 @e definition_CLASS
 @e dval_written_CLASS

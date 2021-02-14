@@ -1172,8 +1172,8 @@ int RTRelations::infs_in_domain(inference_subject *infs, binary_predicate *bp, i
 	if (KindSubjects::to_kind(infs) != NULL) return FALSE;
 	kind *K = BinaryPredicates::term_kind(bp, index);
 	if (K == NULL) return FALSE;
-	inference_subject *domain_infs = KindSubjects::from_kind(K);
-	if (InferenceSubjects::is_strictly_within(infs, domain_infs)) return TRUE;
+	inference_subject *dom_infs = KindSubjects::from_kind(K);
+	if (InferenceSubjects::is_strictly_within(infs, dom_infs)) return TRUE;
 	return FALSE;
 }
 

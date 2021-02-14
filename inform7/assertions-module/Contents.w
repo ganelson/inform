@@ -64,4 +64,5 @@ Chapter 6: Predicates
 	Listed-In Relations
 	Adjective Ambiguity
 	Adjective Meanings
+	Adjective Meaning Domains
 	Calculus Utilities

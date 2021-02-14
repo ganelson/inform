@@ -2,16 +2,47 @@
 
 To compile run-time support for adjective definitions.
 
-@ The following utility is used to loop through the sorted meaning list,
-skipping over any which have been dealt with already.
+@h Symbols.
 
 =
-adjective_meaning *RTAdjectives::list_next_domain_kind(adjective_meaning *am, kind **K, int T) {
-	while ((am) && ((am->defined_already) || (AdjectiveMeanings::compilation_possible(am, T) == FALSE)))
-		am = am->next_sorted;
-	if (am == NULL) return NULL;
-	*K = AdjectiveMeanings::get_domain(am);
-	return am->next_sorted;
+typedef struct adjective_compilation_data {
+	struct inter_name *aph_iname;
+	struct package_request *aph_package;
+	struct linked_list *held_inames[NO_ADJECTIVE_TASKS + 1]; /* of |adjective_iname_holder| */
+} adjective_compilation_data;
+
+@
+
+@d ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK RTAdjectives::initialise_compilation_data
+
+=
+void RTAdjectives::initialise_compilation_data(adjective *adj) {
+	adj->adjective_compilation.aph_package =
+		Hierarchy::package(CompilationUnits::current(), ADJECTIVES_HAP);
+	adj->adjective_compilation.aph_iname =
+		Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
+	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++)
+		adj->adjective_compilation.held_inames[i] = NEW_LINKED_LIST(adjective_iname_holder);
+}
+
+typedef struct adjective_iname_holder {
+	int weak_ID_of_domain;
+	struct inter_name *iname_held;
+	CLASS_DEFINITION
+} adjective_iname_holder;
+
+inter_name *RTAdjectives::iname(adjective *adj, int task, int weak_id) {
+	adjective_iname_holder *aih;
+	LOOP_OVER_LINKED_LIST(aih, adjective_iname_holder, adj->adjective_compilation.held_inames[task])
+		if (aih->weak_ID_of_domain == weak_id)
+			return aih->iname_held;
+	aih = CREATE(adjective_iname_holder);
+	aih->weak_ID_of_domain = weak_id;
+	package_request *PR =
+		Hierarchy::package_within(ADJECTIVE_TASKS_HAP, adj->adjective_compilation.aph_package);
+	aih->iname_held = Hierarchy::make_iname_in(TASK_FN_HL, PR);
+	ADD_TO_LINKED_LIST(aih, adjective_iname_holder, adj->adjective_compilation.held_inames[task]);
+	return aih->iname_held;
 }
 
 @ And this is where we do the iteration. The idea is that one adjective
@@ -24,46 +55,43 @@ many AMs.
 =
 void RTAdjectives::compile_support_code(void) {
 	@<Ensure, just in case, that domains exist and are sorted on@>;
-	int T;
-	for (T=1; T<=NO_ADJECTIVE_TASKS; T++) {
-		adjective *aph;
-		LOOP_OVER(aph, adjective) {
+	for (int T=1; T<=NO_ADJECTIVE_TASKS; T++) {
+		adjective *adj;
+		LOOP_OVER(adj, adjective) {
 			adjective_meaning *am;
-			for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning)
-				am->defined_already = FALSE;
-			for (am = aph->adjective_meanings.sorted_meanings; am; ) {
-				kind *K = NULL;
-				am = RTAdjectives::list_next_domain_kind(am, &K, T);
-				if (K)
-					@<Compile adjective definition for this atomic kind of value@>;
+			LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
+				am->support_function_compiled = FALSE;
+			LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order) {
+				if ((am->support_function_compiled) || (AdjectiveMeanings::compilation_possible(am, T) == FALSE))
+					continue;
+				kind *K = AdjectiveMeaningDomains::get_kind(am);
+				if (K) @<Compile adjective definition for this kind@>;
 			}
 		}
 	}
 }
 
-@ It's unlikely that we have got this far without the domains for the AMs
-having been established, but certainly possible. We need the domains to be
-known in order to sort.
+@ It's very likely that this sort has already been performed, and that the
+domains of each meaning have long since been established. But performing a
+"set" one last time can catch problems which could not previously be diagnosed.
 
 @<Ensure, just in case, that domains exist and are sorted on@> =
-	adjective *aph;
-	LOOP_OVER(aph, adjective) {
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
 		adjective_meaning *am;
-		for (am = aph->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
-			AdjectiveMeanings::set_definition_domain(am, FALSE);
-			am->defined_already = FALSE;
-		}
-		AdjectiveAmbiguity::sort(aph);
+		LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
+			AdjectiveMeaningDomains::determine(am);
+		AdjectiveAmbiguity::sort(adj);
 	}
 
 @ The following is a standard way to compile a one-off routine.
 
-@<Compile adjective definition for this atomic kind of value@> =
-	wording W = Adjectives::get_nominative_singular(aph);
+@<Compile adjective definition for this kind@> =
+	wording W = Adjectives::get_nominative_singular(adj);
 	LOGIF(VARIABLE_CREATIONS, "Compiling support code for %W applying to %u, task %d\n",
 		W, K, T);
 
-	inter_name *iname = AdjectiveMeanings::iname(aph, T, RTKinds::weak_id(K));
+	inter_name *iname = RTAdjectives::iname(adj, T, RTKinds::weak_id(K));
 	packaging_state save = Routines::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 
@@ -78,7 +106,7 @@ known in order to sort.
 	if (problem_count == 0) {
 		local_variable *it_lv = LocalVariables::it_variable();
 		inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
-		RTAdjectives::list_compile(aph->adjective_meanings.sorted_meanings, Frames::current_stack_frame(), K, T, it_s);
+		RTAdjectives::list_compile(adj, Frames::current_stack_frame(), K, T, it_s);
 	}
 	Produce::rfalse(Emit::tree());
 
@@ -113,9 +141,9 @@ wasted allocating memory and copying the block value first.)
 @<Add an it-variable to represent the value or object in the domain@> =
 	kind *add_K = K_number;
 	adjective_meaning *am;
-	for (am = aph->adjective_meanings.sorted_meanings; am; am = am->next_sorted)
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
 		if ((Phrases::RawPhrasal::is_by_Inter_function(am) == FALSE) &&
-			(AdjectiveMeanings::domain_weak_match(K, AdjectiveMeanings::get_domain(am))))
+			(AdjectiveMeaningDomains::weak_match(K, am)))
 			add_K = K;
 
 	LocalVariables::add_pronoun(Frames::current_stack_frame(), EMPTY_WORDING, add_K);
@@ -127,27 +155,27 @@ test at run-time. In practice, at present the only weak domain which might
 have multiple definitions is "object", but that may change.
 
 =
-void RTAdjectives::list_compile(adjective_meaning *list_head,
+void RTAdjectives::list_compile(adjective *adj,
 	ph_stack_frame *phsf, kind *K, int T, inter_symbol *t0_s) {
 	adjective_meaning *am;
-	for (am = list_head; am; am = am->next_sorted)
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
 		if ((AdjectiveMeanings::compilation_possible(am, T)) &&
-			(AdjectiveMeanings::domain_weak_match(K, AdjectiveMeanings::get_domain(am)))) {
+			(AdjectiveMeaningDomains::weak_match(K, am))) {
 			current_sentence = am->defined_at;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
-				InferenceSubjects::emit_element_of_condition(am->domain_infs, t0_s);
+				InferenceSubjects::emit_element_of_condition(
+					AdjectiveMeaningDomains::get_subject(am), t0_s);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 					Produce::down(Emit::tree());
-						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
+						if ((am->negated_from) && (T == TEST_ADJECTIVE_TASK)) {
 							Produce::inv_primitive(Emit::tree(), NOT_BIP);
 							Produce::down(Emit::tree());
 						}
 						AdjectiveMeanings::emit_meaning(am, T, phsf);
-						am->defined_already = TRUE;
-						if ((am->meaning_parity == FALSE) && (T == TEST_ADJECTIVE_TASK)) {
+						if ((am->negated_from) && (T == TEST_ADJECTIVE_TASK)) {
 							Produce::up(Emit::tree());
 						}
 					Produce::up(Emit::tree());
@@ -161,12 +189,12 @@ void RTAdjectives::list_compile(adjective_meaning *list_head,
 =
 void RTAdjectives::agreements(void) {
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return;
-	adjective *aph;
-	LOOP_OVER(aph, adjective) {
-		wording PW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		wording PW = Clusters::get_form_general(adj->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::empty(PW)) continue;
 
-		packaging_state save = Routines::begin(aph->adjective_compilation.aph_iname);
+		packaging_state save = Routines::begin(adj->adjective_compilation.aph_iname);
 		inter_symbol *o_s = LocalVariables::add_named_call_as_symbol(I"o");
 		inter_symbol *force_plural_s = LocalVariables::add_named_call_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::add_internal_local_as_symbol(I"gna");
@@ -264,7 +292,7 @@ void RTAdjectives::agreements(void) {
 								if (gna%3 == 0) gender_sought = MASCULINE_GENDER;
 								if (gna%3 == 1) gender_sought = FEMININE_GENDER;
 								if (gna >= 3) number_sought = 2;
-								wording AW = Clusters::get_form_general(aph->adjective_names,
+								wording AW = Clusters::get_form_general(adj->adjective_names,
 									Projects::get_language_of_play(Task::project()), number_sought, gender_sought);
 								if (Wordings::nonempty(AW)) WRITE_TO(T, "%W", AW);
 								else WRITE_TO(T, "%W", PW);
@@ -281,8 +309,8 @@ void RTAdjectives::agreements(void) {
 	}
 }
 
-void RTAdjectives::emit(adjective *aph) {
-	Produce::inv_call_iname(Emit::tree(), aph->adjective_compilation.aph_iname);
+void RTAdjectives::emit(adjective *adj) {
+	Produce::inv_call_iname(Emit::tree(), adj->adjective_compilation.aph_iname);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PRIOR_NAMED_NOUN_HL));
 		Produce::inv_primitive(Emit::tree(), GE_BIP);

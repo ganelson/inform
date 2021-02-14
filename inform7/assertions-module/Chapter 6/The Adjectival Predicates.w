@@ -47,7 +47,7 @@ void AdjectivalPredicates::log(up_family *self, OUTPUT_STREAM, unary_predicate *
 void AdjectivalPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) {
 	adjective *aph = AdjectivalPredicates::to_adjective(up);
 	adjective_meaning *am = AdjectiveAmbiguity::first_meaning(aph);
-	kind *D = AdjectiveMeanings::get_domain(am);
+	kind *D = AdjectiveMeaningDomains::get_kind(am);
 	if (D) *K = D;
 }
 

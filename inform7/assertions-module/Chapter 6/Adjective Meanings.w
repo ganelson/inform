@@ -2,22 +2,83 @@
 
 One individual meaning which an adjective can have.
 
-@ Each individual sense of an adjective has its own |adjective_meaning|
-structure, which we define next. It consists of some logistical data to keep
-its place in the linked lists (see above), some data to specify its domain
-(see below), some indexing data which is not very important, and then the
-crucial part: its "detailed meaning".
+@h Meanings.
+For example, "odd" in the sense of numbers is a single meaning. Each meaning
+is an instance of:
 
-The general model is that adjective meanings come in different "kinds",
-for which specific code is scattered across Inform. In each case, the
-|detailed_meaning| points to an appropriate data structure, and specialised
-routines are called to create and use the adjective.
+=
+typedef struct adjective_meaning {
+	struct adjective *owning_adjective; /* of which this is a meaning */
 
-We can also specify that the meaning implied by this pointer is to be
-understood reversely: that the adjective is the negation of the one specified.
-This enables "non-empty" for texts (say) to be defined identically with
-"empty" for texts, but with the |meaning_parity| flag set to |FALSE|
-rather than |TRUE|.
+	struct adjective_domain_data domain; /* to what can this meaning be applied? */
+
+	struct adjective_meaning_family *family;
+	general_pointer family_specific_data; /* to the relevant structure */
+	struct adjective_meaning *negated_from; /* if explicitly constructed as such */
+
+	struct wording indexing_text; /* text to use in the Phrasebook index */
+	struct parse_node *defined_at; /* from what sentence this came (if it did) */
+
+	int schemas_prepared; /* optional flag to mark whether schemas prepared yet */
+	struct adjective_task_data task_data[NO_ADJECTIVE_TASKS + 1];
+
+	int support_function_compiled; /* temporary workspace used when compiling support routines */
+
+	CLASS_DEFINITION
+} adjective_meaning;
+
+@ This can be created in two ways: straightforwardly --
+
+=
+adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
+	general_pointer details, wording W) {
+	adjective_meaning *am = CREATE(adjective_meaning);
+	am->defined_at = current_sentence;
+	am->indexing_text = W;
+	am->owning_adjective = NULL;
+	am->domain = AdjectiveMeaningDomains::new_from_text(EMPTY_WORDING);
+	am->family = family;
+	am->family_specific_data = details;
+	am->support_function_compiled = FALSE;
+	am->schemas_prepared = FALSE;
+	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
+		am->task_data[i].task_via_support_routine = NOT_APPLICABLE;
+		Calculus::Schemas::modify(&(am->task_data[i].i6s_for_runtime_task), "");
+		Calculus::Schemas::modify(&(am->task_data[i].i6s_to_transfer_to_SR), "");
+	}
+	am->negated_from = NULL;
+	return am;
+}
+
+@ Or as the logical negation of an existing meaning (thus, "odd" for numbers
+might be created as the negation of "even" for numbers):
+
+=
+adjective_meaning *AdjectiveMeanings::negate(adjective_meaning *am) {
+	if (am->negated_from) internal_error("cannot negate an already negated AM");
+	adjective_meaning *neg = CREATE(adjective_meaning);
+	neg->defined_at = current_sentence;
+	neg->indexing_text = am->indexing_text;
+	neg->owning_adjective = NULL;
+	neg->domain = am->domain;
+	neg->family = am->family;
+	neg->family_specific_data = am->family_specific_data;
+	neg->support_function_compiled = FALSE;
+	neg->schemas_prepared = FALSE;
+	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
+		int j = i;
+		if (i == NOW_ADJECTIVE_TRUE_TASK) j = NOW_ADJECTIVE_FALSE_TASK;
+		if (i == NOW_ADJECTIVE_FALSE_TASK) j = NOW_ADJECTIVE_TRUE_TASK;
+		neg->task_data[j].task_via_support_routine = am->task_data[i].task_via_support_routine;
+		neg->task_data[j].i6s_for_runtime_task = am->task_data[i].i6s_for_runtime_task;
+		Calculus::Schemas::modify(&(neg->task_data[j].i6s_to_transfer_to_SR), "");
+	}
+	neg->negated_from = am;
+	return neg;
+}
+
+@ There are currently seven families of adjective meanings, each represented
+by an instance of the following:
 
 =
 typedef struct adjective_meaning_family {
@@ -33,38 +94,14 @@ adjective_meaning_family *AdjectiveMeanings::new_family(int N) {
 	return f;
 }
 
-@
+@h Tasks and their schemas.
 
 =
-typedef struct adjective_meaning {
-	struct adjective_meaning_family *family;
-
-	struct wording adjective_index_text; /* text to use in the Phrasebook index */
-	struct parse_node *defined_at; /* from what sentence this came (if it did) */
-
-	struct adjective *owning_adjective; /* of which this is a definition */
-	struct adjective_meaning *next_meaning; /* next in order of definition */
-	struct adjective_meaning *next_sorted; /* next in logically sorted order */
-
-	struct wording domain_text; /* domain to which defn applies */
-	struct inference_subject *domain_infs; /* what domain the defn applies to */
-	int setting_domain; /* are we currently working this out? */
-	struct kind *domain_kind; /* what kind of values */
-	int problems_thrown; /* complaining about the domain of this adjective */
-
-	int meaning_parity; /* meaning understood positively? */
-	struct adjective_meaning *am_negated_from; /* if explicitly constructed as such */
-
-	general_pointer detailed_meaning; /* to the relevant structure */
-	int task_via_support_routine[NO_ADJECTIVE_TASKS + 1];
-	struct i6_schema i6s_to_transfer_to_SR[NO_ADJECTIVE_TASKS + 1]; /* where |TRUE| */
-	struct i6_schema i6s_for_runtime_task[NO_ADJECTIVE_TASKS + 1]; /* where |TRUE| */
-	int am_ready_flag; /* optional flag to mark whether schemas prepared yet */
-
-	int defined_already; /* temporary workspace used when compiling support routines */
-
-	CLASS_DEFINITION
-} adjective_meaning;
+typedef struct adjective_task_data {
+	int task_via_support_routine;
+	struct i6_schema i6s_to_transfer_to_SR; /* where |TRUE| */
+	struct i6_schema i6s_for_runtime_task; /* where |TRUE| */
+} adjective_task_data;
 
 @ What are adjectives for? Since an adjective is a unary predicate, it can be
 thought of as an assignment from its domain set to the set of two possibilities:
@@ -107,432 +144,6 @@ which is why the |adjective_meaning| structure contains these -- see below.
 @d TEST_ADJECTIVE_TASK 1 /* test if currently true */
 @d NOW_ADJECTIVE_TRUE_TASK 2 /* assert now true */
 @d NOW_ADJECTIVE_FALSE_TASK 3 /* assert now false */
-
-@ For indexing (only) we need to run through the definitions of a given
-adjectival phrase in sorted order, so:
-
-@d LOOP_OVER_SORTED_MEANINGS(aph, am)
-	for (am = AdjectiveAmbiguity::get_sorted_definition_list(aph); am; am=am->next_sorted)
-
-@h Symbols.
-
-=
-typedef struct adjective_compilation_data {
-	struct inter_name *aph_iname;
-	struct package_request *aph_package;
-} adjective_compilation_data;
-
-@
-
-@d ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK AdjectiveMeanings::initialise
-
-=
-void AdjectiveMeanings::initialise(adjective *adj) {
-	adj->adjective_compilation.aph_package = Hierarchy::package(CompilationUnits::current(), ADJECTIVES_HAP);
-	adj->adjective_compilation.aph_iname = Hierarchy::make_iname_in(ADJECTIVE_HL, adj->adjective_compilation.aph_package);
-}
-
-typedef struct adjective_iname_holder {
-	struct adjective *aph_held;
-	int task_code;
-	int weak_ID_of_domain;
-	struct inter_name *iname_held;
-	CLASS_DEFINITION
-} adjective_iname_holder;
-
-inter_name *AdjectiveMeanings::iname(adjective *aph, int task, int weak_id) {
-	adjective_iname_holder *aih;
-	LOOP_OVER(aih, adjective_iname_holder)
-		if ((aih->aph_held == aph) && (aih->task_code == task) && (aih->weak_ID_of_domain == weak_id))
-			return aih->iname_held;
-	aih = CREATE(adjective_iname_holder);
-	aih->aph_held = aph;
-	aih->task_code = task;
-	aih->weak_ID_of_domain = weak_id;
-	package_request *PR = Hierarchy::package_within(ADJECTIVE_TASKS_HAP, aph->adjective_compilation.aph_package);
-	aih->iname_held = Hierarchy::make_iname_in(TASK_FN_HL, PR);
-	return aih->iname_held;
-}
-
-@ Once declared, an AM stays with the same APH for the whole of Inform's run,
-and it can only be declared once. So every AM belongs to one and only one
-APH, which we can read off as follows:
-
-=
-adjective *AdjectiveMeanings::get_aph_from_am(adjective_meaning *am) {
-	return am->owning_adjective;
-}
-
-@h Individual meanings.
-So you want to define a new meaning for an adjective? Here's the procedure:
-
-(1) Call |AdjectiveMeanings::new| to create it. The |form| should
-be one of the |*_KADJ| constants, and the |details| should contain a pointer to
-the data structure it uses. The word range is used for indexing only.
-(2) Call |AdjectiveAmbiguity::add_meaning_to_adjective| to associate it with a given
-adjective name, and thus have it added to the possible meanings list of the
-appropriate APH.
-(3) Give it a domain of definition (see below).
-(4) Optionally, give it explicit I6 schemas for testing and asserting (see
-below) -- this makes coding what the adjective compiles to much easier.
-
-=
-adjective_meaning *AdjectiveMeanings::new(adjective_meaning_family *family,
-	general_pointer details, wording W) {
-	adjective_meaning *am = CREATE(adjective_meaning);
-	am->defined_at = current_sentence;
-	am->adjective_index_text = W;
-	am->owning_adjective = NULL;
-	am->next_meaning = NULL;
-	am->next_sorted = NULL;
-	am->domain_text = EMPTY_WORDING;
-	am->domain_infs = NULL; am->domain_kind = NULL; am->setting_domain = FALSE;
-	am->family = family;
-	am->detailed_meaning = details;
-	am->defined_already = FALSE;
-	am->problems_thrown = 0;
-	am->meaning_parity = TRUE;
-	am->am_ready_flag = FALSE;
-	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
-		am->task_via_support_routine[i] = NOT_APPLICABLE;
-		Calculus::Schemas::modify(&(am->i6s_for_runtime_task[i]), "");
-		Calculus::Schemas::modify(&(am->i6s_to_transfer_to_SR[i]), "");
-	}
-	am->am_negated_from = NULL;
-	return am;
-}
-
-@ Negating an AM.
-If you want to define an adjective as the logical negation of an existing one,
-take any AM which has been through stages (1) to (4) and then apply
-|AdjectiveMeanings::negate| to create a new AM. Then use
-|AdjectiveAmbiguity::add_meaning_to_adjective| to associate this with a (presumably
-different) name, but there's no need to specify its I6 schemas or its domain --
-those are inherited.
-
-=
-adjective_meaning *AdjectiveMeanings::negate(adjective_meaning *am) {
-	adjective_meaning *neg = CREATE(adjective_meaning);
-	neg->defined_at = current_sentence;
-	neg->adjective_index_text = am->adjective_index_text;
-	neg->owning_adjective = NULL;
-	neg->next_meaning = NULL;
-	neg->next_sorted = NULL;
-	neg->domain_text = am->domain_text;
-	neg->domain_infs = am->domain_infs; neg->domain_kind = am->domain_kind;
-	neg->family = am->family;
-	neg->detailed_meaning = am->detailed_meaning;
-	neg->defined_already = FALSE;
-	neg->problems_thrown = 0;
-	neg->am_ready_flag = FALSE;
-	neg->meaning_parity = (am->meaning_parity)?FALSE:TRUE;
-	for (int i=1; i<=NO_ADJECTIVE_TASKS; i++) {
-		int j = i;
-		if (i == NOW_ADJECTIVE_TRUE_TASK) j = NOW_ADJECTIVE_FALSE_TASK;
-		if (i == NOW_ADJECTIVE_FALSE_TASK) j = NOW_ADJECTIVE_TRUE_TASK;
-		neg->task_via_support_routine[j] = am->task_via_support_routine[i];
-		neg->i6s_for_runtime_task[j] = am->i6s_for_runtime_task[i];
-		Calculus::Schemas::modify(&(neg->i6s_to_transfer_to_SR[j]), "");
-	}
-	neg->am_negated_from = am;
-	return neg;
-}
-
-adjective_meaning_family *AdjectiveMeanings::get_form(adjective_meaning *am) {
-	if (am == NULL) return NULL;
-	return am->family;
-}
-
-@h The domain of validity.
-Every AM has a clearly defined range of values or objects to which it applies.
-For example, "odd" for numbers has |domain_infs| equal to "number",
-while the sense of "odd" created by
-
->> Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
-
-would have |domain_infs| equal to Mrs Spong herself.
-
-@ In comparing and testing domains, we use two different levels of matching:
-weak and strong.
-
-Strong checking makes an exact match, but weak checking blurs the definitions
-so that two domains are counted as equal if they are close enough that run-time
-type checking can be used to tell them apart.
-
-In general, any two base kinds are different even in weak checking -- "scene"
-and "number", for instance. On the other hand, "list of scenes" weakly
-matches "list of numbers", and "container" weakly matches "animal".
-As this last example shows, two domains can be completely disjoint and still
-make a weak match.
-
-=
-int AdjectiveMeanings::domain_weak_match(kind *K1, kind *K2) {
-	if (RTKinds::weak_id(K1) == RTKinds::weak_id(K2))
-		return TRUE;
-	return FALSE;
-}
-
-@ Whereas the following makes a strict check of whether a given subject is
-within the domain of an adjective meaning.
-
-=
-int AdjectiveMeanings::domain_subj_compare(inference_subject *infs, adjective_meaning *am) {
-	instance *I = InstanceSubjects::to_object_instance(infs);
-	if (I == NULL) return TRUE;
-	if (am->domain_infs == KindSubjects::from_kind(K_object)) return TRUE;
-	while (infs) {
-		if (am->domain_infs == infs) return TRUE;
-		infs = InferenceSubjects::narrowest_broader_subject(infs);
-	}
-	return FALSE;
-}
-
-@h Specifying the domain of a new AM.
-In principle the domain should be set as soon as the AM is created, but in
-practice some AMs -- those coming from properties -- might need to be
-created very early in Inform's run, at a time when objects and kinds of
-object do not exist. For those cases, an alternative is to give a word range --
-"a number", say, or "a container" -- and if necessary this is left
-until later on in the run to parse. (For "a number", it wouldn't be
-necessary; for "a container", it would.)
-
-The inclusion of |domain_kind| may seem redundant here; surely the INFS is
-sufficient? But it isn't, because "list of numbers" -- say -- has the
-same INFS as "list of texts" or a list of anything else, so that if we
-recorded the domain only as an INFS then we couldn't define adjectives
-over specific constructed kinds.
-
-To set the domain, call exactly one of the following three routines:
-
-=
-void AdjectiveMeanings::set_domain_text(adjective_meaning *am, wording W) {
-	am->domain_infs = NULL; am->domain_kind = NULL;
-	am->domain_text = W;
-	AdjectiveMeanings::set_definition_domain(am, TRUE);
-}
-
-void AdjectiveMeanings::set_domain_from_instance(adjective_meaning *am,
-	instance *I) {
-	if (I == NULL) {
-		am->domain_infs = KindSubjects::from_kind(K_object);
-		am->domain_kind = K_object;
-	} else {
-		am->domain_infs = Instances::as_subject(I);
-		am->domain_kind = Kinds::weaken(Instances::to_kind(I), K_object);
-	}
-	am->domain_text = EMPTY_WORDING;
-}
-
-@ Note that we round up the kind to "object" if it's more specialised than that
--- say, if it's "door" -- because run-time rather than compile-time
-disambiguation is used when applying adjectives to objects.
-
-=
-void AdjectiveMeanings::set_domain_from_kind(adjective_meaning *am, kind *K) {
-	if ((K == NULL) || (Kinds::Behaviour::is_object(K))) K = K_object;
-	am->domain_infs = KindSubjects::from_kind(K);
-	am->domain_kind = K;
-	am->domain_text = EMPTY_WORDING;
-}
-
-@ And we can read the main domain thus:
-
-=
-kind *AdjectiveMeanings::get_domain(adjective_meaning *am) {
-	if (am->domain_infs == NULL) return NULL;
-	return am->domain_kind;
-}
-
-kind *AdjectiveMeanings::get_domain_forcing(adjective_meaning *am) {
-	AdjectiveMeanings::set_definition_domain(am, TRUE);
-	if (am->domain_infs == NULL) return NULL;
-	return am->domain_kind;
-}
-
-@ In the case where the domain is declared as a word range, the following
-routine eventually converts it to the correct form. In effect, this is a
-lazy evaluation trick -- the routine is called just before the domain is
-actually needed.
-
-=
-void AdjectiveMeanings::set_definition_domain(adjective_meaning *am, int early) {
-	if (am->domain_infs) return;
-	current_sentence = am->defined_at;
-	if (Wordings::empty(am->domain_text)) internal_error("undeclared domain kind for AM");
-	parse_node *supplied = NULL;
-	if (<s-type-expression>(am->domain_text))
-		supplied = <<rp>>;
-	if (supplied == NULL) @<Reject domain of adjective@>;
-	@<Reject domain of adjective unless a kind of value or description of objects@>;
-	kind *K = NULL;
-	if (Specifications::is_condition(supplied)) {
-		if (Specifications::to_kind(supplied))
-			K = Specifications::to_kind(supplied);
-		else K = K_object;
-		@<Reject domain of adjective if it is a set of objects which may vary in play@>;
-	} else if (Rvalues::is_rvalue(supplied))
-		K = Rvalues::to_kind(supplied);
-	if (K == NULL) @<Reject domain of adjective@>;
-	if (Kinds::Behaviour::is_kind_of_kind(K)) @<Reject domain as vague@>;
-	if ((K_understanding) && (Kinds::eq(K, K_understanding))) @<Reject domain as topic@>;
-	@<Set the domain INFS as needed@>;
-}
-
-@ Note that we throw only one problem message per AM, as otherwise duplication
-can't be avoided.
-
-@<Reject domain of adjective@> =
-	if ((early) || (am->problems_thrown++ > 0)) return;
-	current_sentence = am->defined_at;
-	StandardProblems::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainUnknown),
-		am->adjective_index_text, am->domain_text,
-		"this isn't a thing, a kind of thing or a kind of value",
-		"and indeed doesn't have any meaning I can make sense of.");
-	return;
-
-@<Reject domain as vague@> =
-	if ((early) || (am->problems_thrown++ > 0)) return;
-	current_sentence = am->defined_at;
-	StandardProblems::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainVague),
-		am->adjective_index_text, am->domain_text,
-		"this isn't allowed as the domain of a definition",
-		"since it potentially describes many different kinds, not just one.");
-	return;
-
-@<Reject domain as topic@> =
-	if ((early) || (am->problems_thrown++ > 0)) return;
-	current_sentence = am->defined_at;
-	StandardProblems::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainTopic),
-		am->adjective_index_text, am->domain_text,
-		"this isn't allowed as the domain of a definition",
-		"because 'topic' doesn't behave the way other kinds of value do when "
-		"it comes to making comparisons.");
-	return;
-
-@ Similarly:
-
-@<Reject domain of adjective unless a kind of value or description of objects@> =
-	if ((Node::is(supplied, CONSTANT_NT)) &&
-		(Specifications::is_description_like(supplied) == FALSE) &&
-		(Rvalues::to_instance(supplied) == NULL)) {
-		if ((early) || (am->problems_thrown++ > 0)) return;
-		current_sentence = am->defined_at;
-		StandardProblems::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainSurreal),
-			am->adjective_index_text, am->domain_text,
-			"this isn't allowed as the domain of a definition",
-			"since adjectives like this can be applied only to specific things, "
-			"kinds of things or kinds of values: so 'Definition: a door is ajar "
-			"if...' is fine, because a door is a kind of thing, and 'Definition: "
-			"a number is prime if ...' is fine too, but 'Definition: 5 is prime "
-			"if ...' is not allowed.");
-		return;
-	}
-
-@ And a final possible objection:
-
-@<Reject domain of adjective if it is a set of objects which may vary in play@> =
-	if (Descriptions::is_qualified(supplied)) {
-		if (am->problems_thrown++ > 0) return;
-		current_sentence = am->defined_at;
-		StandardProblems::adjective_problem(Task::syntax_tree(), _p_(PM_AdjDomainSlippery),
-			am->adjective_index_text, am->domain_text,
-			"this is slippery",
-			"because it can change during play. Definitions can only be "
-			"made in cases where it's clear for any given value or object "
-			"what definition will apply. For instance, 'Definition: a "
-			"door is shiny if ...' is fine, but 'Definition: an open "
-			"door is shiny if ...' is not allowed - Inform wouldn't know "
-			"whether or not to apply it to the Big Blue Door (say), since "
-			"it would only apply some of the time.");
-		return;
-	}
-
-@<Set the domain INFS as needed@> =
-	instance *I = Rvalues::to_object_instance(supplied);
-	if (I) supplied = Rvalues::from_instance(I);
-	else if (Kinds::Behaviour::is_subkind_of_object(K))
-		supplied = Specifications::from_kind(K);
-	am->domain_infs = InferenceSubjects::from_specification(supplied);
-	am->domain_kind = K;
-
-@h Comparing domains of validity.
-In order to sort AMs into logical precedence order, we rely on the
-following routine, which like |strcmp| returns a positive number to favour
-the first term, a negative to favour the second, and zero if they are
-equally good. Note that zero is only in fact returned when the two AMs
-compared are one and the same -- we want to ensure that there is one
-and only one possible sorted state for any given list of AMs.
-
-Suppose the adjectives $A_1$ and $A_2$ have domain sets $D_1$ and $D_2$. Then:
-
-(i) If $D_1\subseteq D_2$ and $D_1\neq D_2$, then $A_1$ precedes $A_2$.
-(ii) If $D_2\subseteq D_1$ and $D_2\neq D_1$, then $A_2$ precedes $A_1$.
-(iii) If $D_1 = D_2$ or if $D_1\cap D_2 = \emptyset$ then we have to be
-pragmatic: see below.
-
-Those are the only possibilities; the range of possible domains is set up
-so that there can never be an interesting Venn diagram of overlaps
-between them.
-
-Unlike our weak domain tests above, this is a strict test.
-
-=
-int AdjectiveMeanings::compare(adjective_meaning *am1, adjective_meaning *am2) {
-	if (am1 == am2) return 0;
-	if ((am1->domain_infs) && (am2->domain_infs == NULL)) return 1;
-	if ((am1->domain_infs == NULL) && (am2->domain_infs)) return -1;
-
-	if (InferenceSubjects::is_strictly_within(am1->domain_infs, am2->domain_infs)) return 1;
-	if (InferenceSubjects::is_strictly_within(am2->domain_infs, am1->domain_infs)) return -1;
-
-	kind *K1 = KindSubjects::to_nonobject_kind(am1->domain_infs);
-	kind *K2 = KindSubjects::to_nonobject_kind(am2->domain_infs);
-	if ((K1) && (K2)) {
-		int c1 = Kinds::compatible(K1, K2);
-		int c2 = Kinds::compatible(K2, K1);
-		if ((c1 == ALWAYS_MATCH) && (c2 != ALWAYS_MATCH)) return 1;
-		if ((c1 != ALWAYS_MATCH) && (c2 == ALWAYS_MATCH)) return -1;
-	}
-	if (am1->domain_infs == am2->domain_infs)
-		@<Worry about definitions of the same adjective on the same domain@>;
-
-	return am2->allocation_id - am1->allocation_id;
-}
-
-@ In general, it's an error to define the same adjective on the same domain
-twice, except for a redefinition in the source text of a definition in an
-extension. (We exclude enumerative adjectives because they are defined
-internally by a method which involves occasional duplication but where
-the duplicates are all mutually consistent; these do not arise from the
-author's source text.)
-
-@<Worry about definitions of the same adjective on the same domain@> =
-	if ((Wordings::nonempty(Node::get_text(am1->defined_at))) &&
-		(Wordings::nonempty(Node::get_text(am2->defined_at))) &&
-		(InstanceAdjectives::is_enumerative(am1) == FALSE) &&
-		(InstanceAdjectives::is_enumerative(am2) == FALSE)) {
-		inform_extension *ef1 =
-			Extensions::corresponding_to(
-				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am1->defined_at))));
-		inform_extension *ef2 =
-			Extensions::corresponding_to(
-				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am2->defined_at))));
-		if ((ef1 == ef2) || ((ef1) && (ef2))) {
-			current_sentence = am1->defined_at;
-			Problems::quote_wording_as_source(1, am1->adjective_index_text);
-			Problems::quote_wording_as_source(2, am2->adjective_index_text);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AdjDomainDuplicated));
-			Problems::issue_problem_segment(
-				"The definitions %1 and %2 both try to cover the same situation: "
-				"the same adjective applied to the exact same range. %P"
-				"It's okay to override a definition in an extension with another "
-				"one in the main source text, but it's not okay to define the same "
-				"adjective twice over the same domain in the same file.");
-			Problems::issue_problem_end();
-		}
-		if (ef1 == NULL) return 1;
-		if (ef2 == NULL) return -1;
-	}
 
 @h Testing and asserting in play.
 Now for testing, making true and making false in play. We won't be there when
@@ -584,11 +195,11 @@ can choose to go via a support routine or not.
 =
 i6_schema *AdjectiveMeanings::set_i6_schema(adjective_meaning *am,
 	int T, int via_support) {
-	kind *K = AdjectiveMeanings::get_domain(am);
+	kind *K = AdjectiveMeaningDomains::get_kind(am);
 	if (K == NULL) K = K_object;
 	if (Kinds::Behaviour::is_object(K)) via_support = TRUE;
-	am->task_via_support_routine[T] = via_support;
-	return &(am->i6s_for_runtime_task[T]);
+	am->task_data[T].task_via_support_routine = via_support;
+	return &(am->task_data[T].i6s_for_runtime_task);
 }
 
 
@@ -599,20 +210,20 @@ don't know which routine to expand out. The convention is: a meaning for
 objects, if there is one; otherwise the first-declared meaning.
 
 =
-int AdjectiveMeanings::write_adjective_test_routine(value_holster *VH,
-	adjective *aph) {
+int AdjectiveMeanings::write_adjective_test_routine(value_holster *VH, adjective *adj) {
 	i6_schema *sch;
 	int weak_id = RTKinds::weak_id(K_object);
-	sch = AdjectiveAmbiguity::schema_for_task(aph, NULL,
+	sch = AdjectiveAmbiguity::schema_for_task(adj, NULL,
 		TEST_ADJECTIVE_TASK);
 	if (sch == NULL) {
-		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(aph);
+		adjective_meaning *am = AdjectiveAmbiguity::first_meaning(adj);
 		if (am == NULL) return FALSE;
-		kind *am_kind = AdjectiveMeanings::get_domain(am);
+		kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
 		if (am_kind == NULL) return FALSE;
 		weak_id = RTKinds::weak_id(am_kind);
 	}
-	Produce::val_iname(Emit::tree(), K_value, AdjectiveMeanings::iname(aph, TEST_ADJECTIVE_TASK, weak_id));
+	Produce::val_iname(Emit::tree(), K_value,
+		RTAdjectives::iname(adj, TEST_ADJECTIVE_TASK, weak_id));
 	return TRUE;
 }
 
@@ -625,17 +236,6 @@ void AdjectiveMeanings::pass_task_to_support_routine(adjective_meaning *am,
 	AdjectiveMeanings::set_i6_schema(am, T, TRUE);
 }
 
-@ Some kinds of adjective find it useful to do some preparation work just
-before first compilation, but only once. For those, the ready flag is available:
-
-=
-int AdjectiveMeanings::get_ready_flag(adjective_meaning *am) {
-	return am->am_ready_flag;
-}
-void AdjectiveMeanings::set_ready_flag(adjective_meaning *am) {
-	am->am_ready_flag = TRUE;
-}
-
 @ Note that the |task_via_support_routine| values are not flags: they can be
 |TRUE| (allowed, done via support routine), |FALSE| (allowed, done directly)
 or |NOT_APPLICABLE| (the task certainly can't be done). If none of the
@@ -643,16 +243,15 @@ applicable meanings for the adjective are able to perform the task at
 run-time, we return |NULL| as our schema, and the code-generator will use
 that to issue a suitable problem message.
 
-
 =
 i6_schema *AdjectiveMeanings::schema_for_task(adjective_meaning *am, int T) {
-	AdjectiveMeanings::compiling_soon(am, T);
-	switch (am->task_via_support_routine[T]) {
-		case FALSE: return &(am->i6s_for_runtime_task[T]);
+	AdjectiveMeanings::prepare_schemas(am, T);
+	switch (am->task_data[T].task_via_support_routine) {
+		case FALSE: return &(am->task_data[T].i6s_for_runtime_task);
 		case TRUE:
-			if (Calculus::Schemas::empty(&(am->i6s_to_transfer_to_SR[T])))
+			if (Calculus::Schemas::empty(&(am->task_data[T].i6s_to_transfer_to_SR)))
 				@<Construct a schema for this adjective, using the standard routine naming@>;
-			return &(am->i6s_to_transfer_to_SR[T]);
+			return &(am->task_data[T].i6s_to_transfer_to_SR);
 	}
 	return NULL;
 }
@@ -664,17 +263,17 @@ negation does not, and so must use those of the original.
 @<Construct a schema for this adjective, using the standard routine naming@> =
 	int task = T; char *negation_operator = "";
 	adjective *use_adj = am->owning_adjective;
-	if (am->am_negated_from) {
-		use_adj = am->am_negated_from->owning_adjective;
+	if (am->negated_from) {
+		use_adj = am->negated_from->owning_adjective;
 		switch (T) {
 			case TEST_ADJECTIVE_TASK: negation_operator = "~~"; break;
 			case NOW_ADJECTIVE_TRUE_TASK: task = NOW_ADJECTIVE_FALSE_TASK; break;
 			case NOW_ADJECTIVE_FALSE_TASK: task = NOW_ADJECTIVE_TRUE_TASK; break;
 		}
 	}
-	inter_name *iname = AdjectiveMeanings::iname(use_adj, task,
-		RTKinds::weak_id(AdjectiveMeanings::get_domain(am)));
-	Calculus::Schemas::modify(&(am->i6s_to_transfer_to_SR[T]), "*=-(%s%n(*1))",
+	inter_name *iname = RTAdjectives::iname(use_adj, task,
+		RTKinds::weak_id(AdjectiveMeaningDomains::get_kind(am)));
+	Calculus::Schemas::modify(&(am->task_data[T].i6s_to_transfer_to_SR), "*=-(%s%n(*1))",
 		negation_operator, iname);
 
 @h Kinds of adjectives.
@@ -732,14 +331,15 @@ needed in compilation, that is, that code will soon be compiled which uses it.
 This advance warning is an opportunity to compile a schema for the adjective
 at the last minute, but there is no obligation. There is also no return value.
 
-@e COMPILING_SOON_ADJM_MTID
+@e PREPARE_SCHEMAS_ADJM_MTID
 
 =
-VOID_METHOD_TYPE(COMPILING_SOON_ADJM_MTID, adjective_meaning_family *f,
+VOID_METHOD_TYPE(PREPARE_SCHEMAS_ADJM_MTID, adjective_meaning_family *f,
 	adjective_meaning *am, int T)
 
-void AdjectiveMeanings::compiling_soon(adjective_meaning *am, int T) {
-	VOID_METHOD_CALL(am->family, COMPILING_SOON_ADJM_MTID, am, T);
+void AdjectiveMeanings::prepare_schemas(adjective_meaning *am, int T) {
+	VOID_METHOD_CALL(am->family, PREPARE_SCHEMAS_ADJM_MTID, am, T);
+	am->schemas_prepared = TRUE;
 }
 
 @ 3. |*_KADJ_compile|. We should now either compile code which, in the
@@ -754,7 +354,9 @@ Note that if an adjective has defined a schema to handle the task, then its
 
 =
 int AdjectiveMeanings::emit_meaning(adjective_meaning *am, int T, ph_stack_frame *phsf) {
-	return AdjectiveMeanings::compile_inner(am, T, TRUE, phsf);
+	int rv = AdjectiveMeanings::compile_inner(am, T, TRUE, phsf);
+	am->support_function_compiled = TRUE;
+	return rv;
 }
 
 int AdjectiveMeanings::compilation_possible(adjective_meaning *am, int T) {
@@ -765,7 +367,7 @@ INT_METHOD_TYPE(COMPILE_ADJM_MTID, adjective_meaning_family *f,
 	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf)
 
 int AdjectiveMeanings::compile_inner(adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf) {
-	AdjectiveMeanings::compiling_soon(am, T);
+	AdjectiveMeanings::prepare_schemas(am, T);
 	@<Use the I6 schema instead to compile the task, if one exists@>;
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, am->family, COMPILE_ADJM_MTID, am, T, emit_flag, phsf);
@@ -777,12 +379,12 @@ parameter which is always local variable number 0 for this stack frame --
 into |*1|.
 
 @<Use the I6 schema instead to compile the task, if one exists@> =
-	if (Calculus::Schemas::empty(&(am->i6s_for_runtime_task[T])) == FALSE) {
+	if (Calculus::Schemas::empty(&(am->task_data[T].i6s_for_runtime_task)) == FALSE) {
 		if (emit_flag) {
 			parse_node *it_var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING,
 				LocalVariables::it_variable());
 			pcalc_term it_term = Terms::new_constant(it_var);
-			EmitSchemas::emit_expand_from_terms(&(am->i6s_for_runtime_task[T]), &it_term, NULL, FALSE);
+			EmitSchemas::emit_expand_from_terms(&(am->task_data[T].i6s_for_runtime_task), &it_term, NULL, FALSE);
 		}
 		return TRUE;
 	}
@@ -801,8 +403,8 @@ INT_METHOD_TYPE(ASSERT_ADJM_MTID, adjective_meaning_family *f,
 
 int AdjectiveMeanings::assert_single(adjective_meaning *am,
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
-	if (am->meaning_parity == FALSE) {
-		am = am->am_negated_from; parity = (parity)?FALSE:TRUE;
+	if (am->negated_from) {
+		am = am->negated_from; parity = (parity)?FALSE:TRUE;
 	}
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, am->family, ASSERT_ADJM_MTID, am, infs_to_assert_on,
@@ -826,17 +428,17 @@ INT_METHOD_TYPE(INDEX_ADJM_MTID, adjective_meaning_family *f, text_stream *OUT,
 
 void AdjectiveMeanings::print_to_index(OUTPUT_STREAM, adjective_meaning *am) {
 	@<Index the domain of validity of the AM@>;
-	if (am->am_negated_from) {
-		wording W = Adjectives::get_nominative_singular(am->am_negated_from->owning_adjective);
+	if (am->negated_from) {
+		wording W = Adjectives::get_nominative_singular(am->negated_from->owning_adjective);
 		WRITE(" opposite of </i>%+W<i>", W);
 	} else {
 		int rv = FALSE;
 		INT_METHOD_CALL(rv, am->family, INDEX_ADJM_MTID, OUT, am);
-		if ((rv == FALSE) && (Wordings::nonempty(am->adjective_index_text)))
-			WRITE("%+W", am->adjective_index_text);
+		if ((rv == FALSE) && (Wordings::nonempty(am->indexing_text)))
+			WRITE("%+W", am->indexing_text);
 	}
-	if (Wordings::nonempty(am->adjective_index_text))
-		Index::link(OUT, Wordings::first_wn(am->adjective_index_text));
+	if (Wordings::nonempty(am->indexing_text))
+		Index::link(OUT, Wordings::first_wn(am->indexing_text));
 }
 
 @ This is supposed to imitate dictionaries, distinguishing meanings by
@@ -844,19 +446,19 @@ concisely showing their usage. Thus "empty" would have indexed entries
 prefaced "(of a rulebook)", "(of an activity)", and so on.
 
 @<Index the domain of validity of the AM@> =
-	if (am->domain_infs)
-		WRITE("(of </i>%+W<i>) ", InferenceSubjects::get_name_text(am->domain_infs));
+	if (am->domain.domain_infs)
+		WRITE("(of </i>%+W<i>) ", InferenceSubjects::get_name_text(am->domain.domain_infs));
 
 @h Parsing for adaptive text.
 
 =
 <adaptive-adjective> internal {
 	if (Projects::get_language_of_play(Task::project()) == DefaultLanguage::get(NULL)) return FALSE;
-	adjective *aph;
-	LOOP_OVER(aph, adjective) {
-		wording AW = Clusters::get_form_general(aph->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
+	adjective *adj;
+	LOOP_OVER(adj, adjective) {
+		wording AW = Clusters::get_form_general(adj->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::match(AW, W)) {
-			==> { FALSE, aph};
+			==> { FALSE, adj};
 			return TRUE;
 		}
 	}

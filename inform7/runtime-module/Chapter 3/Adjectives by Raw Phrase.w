@@ -48,7 +48,7 @@ int Phrases::RawPhrasal::ADJ_parse(adjective_meaning_family *f,
 	def->am_of_def = am;
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	AdjectiveMeanings::set_domain_text(am, DNW);
+	AdjectiveMeaningDomains::set_from_text(am, DNW);
 	if (setting) {
 		i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, TRUE);
 		Calculus::Schemas::modify(sch, "*=-(%N(*1, -1))", rname_wn);

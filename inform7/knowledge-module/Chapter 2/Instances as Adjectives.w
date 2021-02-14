@@ -64,8 +64,8 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 	adjective *adj = Adjectives::declare(NW, NULL);
 	am = AdjectiveMeanings::new(enumerative_amf, STORE_POINTER_instance(I), NW);
 	I->as_adjective = AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	if (singleton) AdjectiveMeanings::set_domain_from_instance(am, singleton);
-	else if (set) AdjectiveMeanings::set_domain_from_kind(am, set);
+	if (singleton) AdjectiveMeaningDomains::set_from_instance(am, singleton);
+	else if (set) AdjectiveMeaningDomains::set_from_kind(am, set);
 
 @<Write I6 schemas for asserting and testing this use of the instance@> =
 	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
@@ -95,7 +95,7 @@ to infer from, e.g., "the ball is not green": is it red, or blue?
 int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
 	if (parity == FALSE) return FALSE;
-	instance *I = RETRIEVE_POINTER_instance(am->detailed_meaning);
+	instance *I = RETRIEVE_POINTER_instance(am->family_specific_data);
 	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 	if (P == NULL) internal_error("enumerative adjective on non-property");
 	World::Inferences::draw_property(infs_to_assert_on, P, Rvalues::from_instance(I));

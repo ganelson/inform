@@ -13,6 +13,11 @@ void Phrases::Phrasal::start(void) {
 	METHOD_ADD(phrase_amf, PARSE_ADJM_MTID, Phrases::Phrasal::ADJ_parse);
 }
 
+int Phrases::Phrasal::is_defined_by_phrase(adjective_meaning *am) {
+	if ((am) && (am->family == phrase_amf)) return TRUE;
+	return FALSE;
+}
+
 void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, phrase *ph, wording *CW,
 	kind **K) {
 	definition *def;
@@ -20,11 +25,12 @@ void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, phrase *ph, wor
 	if (ph == NULL) return;
 
 	LOOP_OVER(def, definition)
-		if ((def->definition_node == p) && (AdjectiveMeanings::get_form(def->am_of_def) == phrase_amf)) {
+		if ((def->definition_node == p) && (Phrases::Phrasal::is_defined_by_phrase(def->am_of_def))) {
 			i6_schema *sch = AdjectiveMeanings::set_i6_schema(def->am_of_def, TEST_ADJECTIVE_TASK, FALSE);
 			Calculus::Schemas::modify(sch, "(%n(*1))", Phrases::iname(ph));
 			*CW = def->domain_calling;
-			*K = AdjectiveMeanings::get_domain_forcing(def->am_of_def);
+			AdjectiveMeaningDomains::determine_if_possible(def->am_of_def);
+			*K = AdjectiveMeaningDomains::get_kind(def->am_of_def);
 			if ((*K == NULL) || (Kinds::Behaviour::is_object(*K)))
 				*K = K_object;
 			return;
@@ -43,7 +49,7 @@ int Phrases::Phrasal::ADJ_parse(adjective_meaning_family *f,
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-	AdjectiveMeanings::set_domain_text(am, DNW);
+	AdjectiveMeaningDomains::set_from_text(am, DNW);
 	*result = am;
 	return TRUE;
 }

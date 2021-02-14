@@ -255,7 +255,7 @@ void Properties::EitherOr::start(void) {
 	either_or_property_amf = AdjectiveMeanings::new_family(1);
 
 	METHOD_ADD(either_or_property_amf, ASSERT_ADJM_MTID, Properties::EitherOr::ADJ_assert);
-	METHOD_ADD(either_or_property_amf, COMPILING_SOON_ADJM_MTID, Properties::EitherOr::compiling_soon);
+	METHOD_ADD(either_or_property_amf, PREPARE_SCHEMAS_ADJM_MTID, Properties::EitherOr::prepare_schemas);
 	METHOD_ADD(either_or_property_amf, INDEX_ADJM_MTID, Properties::EitherOr::ADJ_index);
 }
 
@@ -269,8 +269,8 @@ void Properties::EitherOr::create_adjective_from_property(property *prn, wording
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	AdjectiveMeanings::set_domain_from_kind(am, K);
-	prn->adjective_registered = AdjectiveMeanings::get_aph_from_am(am);
+	AdjectiveMeaningDomains::set_from_kind(am, K);
+	prn->adjective_registered = adj;
 	prn->adjectival_meaning_registered = am;
 }
 
@@ -281,7 +281,7 @@ void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn,
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
-	AdjectiveMeanings::set_domain_from_kind(am, K);
+	AdjectiveMeaningDomains::set_from_kind(am, K);
 }
 
 @ ...but writing those schemata is not so easy, partly because of the way
@@ -289,19 +289,17 @@ either/or properties may be paired, partly because of the attribute storage
 optimisation applied to some but not all of them.
 
 =
-void Properties::EitherOr::compiling_soon(adjective_meaning_family *family, adjective_meaning *am, int T) {
-	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
+void Properties::EitherOr::prepare_schemas(adjective_meaning_family *family, adjective_meaning *am, int T) {
+	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
 	if (prn == NULL) internal_error("Unregistered adjectival either/or property in either/or atom");
 
-	if (AdjectiveMeanings::get_ready_flag(am)) return;
-	AdjectiveMeanings::set_ready_flag(am);
-
-	kind *K = AdjectiveMeanings::get_domain(am);
-	if (Kinds::Behaviour::is_object(K))
-		@<Set the schemata for an either/or property adjective with objects as domain@>
-	else
-		@<Set the schemata for an either/or property adjective with some other domain@>;
-	return;
+	if (am->schemas_prepared == FALSE) {
+		kind *K = AdjectiveMeaningDomains::get_kind(am);
+		if (Kinds::Behaviour::is_object(K))
+			@<Set the schemata for an either/or property adjective with objects as domain@>
+		else
+			@<Set the schemata for an either/or property adjective with some other domain@>;
+	}
 }
 
 @ The "objects" domain is not really very different, but it's the one used
@@ -371,7 +369,7 @@ property.
 int Properties::EitherOr::ADJ_assert(adjective_meaning_family *f,
 	adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
-	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
+	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
 	if (parity == FALSE) World::Inferences::draw_negated_property(infs_to_assert_on, prn, NULL);
 	else World::Inferences::draw_property(infs_to_assert_on, prn, NULL);
 	return TRUE;
@@ -382,7 +380,7 @@ int Properties::EitherOr::ADJ_assert(adjective_meaning_family *f,
 =
 int Properties::EitherOr::ADJ_index(adjective_meaning_family *f, text_stream *OUT,
 	adjective_meaning *am) {
-	property *prn = RETRIEVE_POINTER_property(am->detailed_meaning);
+	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
 	property *neg = Properties::EitherOr::get_negation(prn);
 	WRITE("either/or property");
 	if (Properties::permission_list(prn)) {

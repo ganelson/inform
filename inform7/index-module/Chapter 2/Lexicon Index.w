@@ -394,11 +394,13 @@ different contexts. We want to quote all of those.
 @<Definition of adjectival phrase entry@> =
 	int ac = 0, nc;
 	adjective_meaning *am;
-	adjective *aph = RETRIEVE_POINTER_adjective(lex->entry_refers_to);
+	adjective *adj = RETRIEVE_POINTER_adjective(lex->entry_refers_to);
 	@<Begin definition text@>;
 	WRITE(": ");
-	LOOP_OVER_SORTED_MEANINGS(aph, am) ac++; nc = ac;
-	LOOP_OVER_SORTED_MEANINGS(aph, am) {
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
+		ac++;
+	nc = ac;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order) {
 		ac--;
 		if (nc > 1) {
 			HTML_TAG("br");

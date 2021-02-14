@@ -21,13 +21,13 @@ So, then, every adjective has the following data attached to it:
 
 =
 typedef struct adjective_meaning_data {
-	struct adjective_meaning *possible_meanings; /* list in the order defined */
-	struct adjective_meaning *sorted_meanings; /* list in logical precedence order */
+	struct linked_list *in_defn_order; /* of |adjective_meaning| */
+	struct linked_list *in_precedence_order; /* of |adjective_meaning| */
 } adjective_meaning_data;
 
 void AdjectiveAmbiguity::new_set(adjective *adj) {
-	adj->adjective_meanings.possible_meanings = NULL;
-	adj->adjective_meanings.sorted_meanings = NULL;
+	adj->adjective_meanings.in_defn_order = NEW_LINKED_LIST(adjective_meaning);
+	adj->adjective_meanings.in_precedence_order = NEW_LINKED_LIST(adjective_meaning);
 }
 
 @ The following assigns a new meaning to a given word range: we find the
@@ -44,13 +44,7 @@ memory to keep the sorted list as a second linked list.
 =
 adjective *AdjectiveAmbiguity::add_meaning_to_adjective(adjective_meaning *am,
 	adjective *adj) {
-	adjective_meaning *aml = adj->adjective_meanings.possible_meanings;
-	if (aml == NULL) adj->adjective_meanings.possible_meanings = am;
-	else {
-		while (aml->next_meaning) aml = aml->next_meaning;
-		aml->next_meaning = am;
-	}
-	am->next_meaning = NULL;
+	ADD_TO_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order);
 	am->owning_adjective = adj;
 	return adj;
 }
@@ -60,12 +54,13 @@ adjective *AdjectiveAmbiguity::add_meaning_to_adjective(adjective_meaning *am,
 =
 void AdjectiveAmbiguity::log(adjective *adj) {
 	if (adj == NULL) { LOG("<null-APH>\n"); return; }
+	int n = 1;
 	adjective_meaning *am;
-	int n;
-	for (n=1, am = adj->adjective_meanings.possible_meanings; am;
-		n++, am = am->next_meaning)
-		LOG("%d: %W (domain:$j) (dk:%u)\n", n, am->adjective_index_text,
-			am->domain_infs, am->domain_kind);
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order) {
+		LOG("%d: %W ", n, am->indexing_text);
+		AdjectiveMeaningDomains::log(&(am->domain));
+		n++;
+	}
 }
 
 @ If the source tries to apply the word "open", say, to a given value or
@@ -100,14 +95,10 @@ early in the run when sorting cannot yet be done.
 int AdjectiveAmbiguity::can_be_applied_to(adjective *adj, kind *K) {
 	if (adj) {
 		adjective_meaning *am;
-		for (am = adj->adjective_meanings.possible_meanings; am; am = am->next_meaning) {
-			if (am->domain_infs == NULL) {
-				if (am->setting_domain) @<Issue a problem for a circularity@>;
-				am->setting_domain = TRUE;
-				AdjectiveMeanings::set_definition_domain(am, TRUE);
-				am->setting_domain = FALSE;
-			}
-			kind *am_kind = AdjectiveMeanings::get_domain(am);
+		LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order) {
+			if (AdjectiveMeaningDomains::determine_avoiding_circularity(am) == FALSE)
+				return FALSE;
+			kind *am_kind = AdjectiveMeaningDomains::get_kind(am);
 			if (Kinds::Behaviour::is_object(am_kind)) {
 				if (K == NULL) return TRUE;
 				if (Kinds::Behaviour::is_object(K)) return TRUE;
@@ -121,37 +112,28 @@ int AdjectiveAmbiguity::can_be_applied_to(adjective *adj, kind *K) {
 	return FALSE;
 }
 
-@<Issue a problem for a circularity@> =
-	if (problem_count == 0) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Clusters::get_form(adj->adjective_names, FALSE));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AdjectiveCircular));
-		Problems::issue_problem_segment(
-			"In the sentence %1, it looks as if the definition of the adjective "
-			"'%2' may be circular.");
-		Problems::issue_problem_end();
-	}
-	return FALSE;
-
 @ Does a given adjective have any interpretation as an enumerated property
 value, or an either/or property? If so we return the earliest known.
 
 =
 instance *AdjectiveAmbiguity::has_enumerative_meaning(adjective *adj) {
 	adjective_meaning *am;
-	for (am = adj->adjective_meanings.possible_meanings; am; am = am->next_meaning)
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
 		if (InstanceAdjectives::is_enumerative(am))
-			return RETRIEVE_POINTER_instance(am->detailed_meaning);
+			return RETRIEVE_POINTER_instance(am->family_specific_data);
 	return NULL;
 }
 
 property *AdjectiveAmbiguity::has_either_or_property_meaning(adjective *adj, int *sense) {
+	adjective_meaning *am;
 	if (adj)
-		for (adjective_meaning *am = adj->adjective_meanings.possible_meanings;
-			am; am = am->next_meaning)
+		LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
 			if (Properties::EitherOr::is_either_or_adjective(am)) {
-				if (sense) *sense = am->meaning_parity;
-				return RETRIEVE_POINTER_property(am->detailed_meaning);
+				if (sense) {
+					if (am->negated_from) *sense = FALSE;
+					else *sense = TRUE;
+				}
+				return RETRIEVE_POINTER_property(am->family_specific_data);
 			}
 	return NULL;
 }
@@ -161,7 +143,8 @@ property *AdjectiveAmbiguity::has_either_or_property_meaning(adjective *adj, int
 =
 adjective_meaning *AdjectiveAmbiguity::first_meaning(adjective *adj) {
 	if (adj == NULL) return NULL;
-	return adj->adjective_meanings.possible_meanings;
+	return FIRST_IN_LINKED_LIST(adjective_meaning,
+		adj->adjective_meanings.in_defn_order);
 }
 
 @h Sorting lists of meanings.
@@ -174,44 +157,65 @@ insertion-sorts[1] the possibles list into the sorted list.
 =
 void AdjectiveAmbiguity::sort(adjective *adj) {
 	if (adj == NULL) internal_error("tried to sort meanings for null adjective");
-	adjective_meaning *unsorted_head = adj->adjective_meanings.possible_meanings;
-	adjective_meaning *sorted_head = NULL;
-	adjective_meaning *am, *am2;
-	for (am = unsorted_head; am; am = am->next_meaning)
-		if (am->domain_infs == NULL)
-			AdjectiveMeanings::set_definition_domain(am, TRUE);
-	for (am = unsorted_head; am; am = am->next_meaning) {
-		if (sorted_head == NULL) {
-			sorted_head = am;
-			am->next_sorted = NULL;
-		} else {
-			adjective_meaning *lastdef = NULL;
-			for (am2 = sorted_head; am2; am2 = am2->next_sorted) {
-				if (AdjectiveMeanings::compare(am, am2) == 1) {
-					if (lastdef == NULL) {
-						sorted_head = am;
-						am->next_sorted = am2;
-					} else {
-						lastdef->next_sorted = am;
-						am->next_sorted = am2;
-					}
-					break;
-				}
-				if (am2->next_sorted == NULL) {
-					am2->next_sorted = am;
-					am->next_sorted = NULL;
-					break;
-				}
-				lastdef = am2;
-			}
+	adjective_meaning *am;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
+		AdjectiveMeaningDomains::determine_if_possible(am);
+	LinkedLists::empty(adj->adjective_meanings.in_precedence_order);
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order) {
+		adjective_meaning *am2; int pos = 0;
+		LOOP_OVER_LINKED_LIST(am2, adjective_meaning, 
+			adj->adjective_meanings.in_precedence_order) {
+			if (AdjectiveAmbiguity::cmp(am, am2) == 1) break;
+			pos++;
 		}
+		LinkedLists::insert(adj->adjective_meanings.in_precedence_order, pos, am);
 	}
-	adj->adjective_meanings.sorted_meanings = sorted_head;
 }
 
-adjective_meaning *AdjectiveAmbiguity::get_sorted_definition_list(adjective *adj) {
-	return adj->adjective_meanings.sorted_meanings;
+int AdjectiveAmbiguity::cmp(adjective_meaning *am1, adjective_meaning *am2) {
+	if (am1 == am2) return 0;
+	int d = AdjectiveMeaningDomains::cmp(&(am1->domain), &(am2->domain));
+	if (d != 0) return d;
+	if (am1->domain.domain_infs == am2->domain.domain_infs)
+		@<Worry about definitions of the same adjective on the same domain@>;
+	return am2->allocation_id - am1->allocation_id;
 }
+
+@ In general, it's an error to define the same adjective on the same domain
+twice, except for a redefinition in the source text of a definition in an
+extension. (We exclude enumerative adjectives because they are defined
+internally by a method which involves occasional duplication but where
+the duplicates are all mutually consistent; these do not arise from the
+author's source text.)
+
+@<Worry about definitions of the same adjective on the same domain@> =
+	if ((Wordings::nonempty(Node::get_text(am1->defined_at))) &&
+		(Wordings::nonempty(Node::get_text(am2->defined_at))) &&
+		(InstanceAdjectives::is_enumerative(am1) == FALSE) &&
+		(InstanceAdjectives::is_enumerative(am2) == FALSE)) {
+		inform_extension *ef1 =
+			Extensions::corresponding_to(
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am1->defined_at))));
+		inform_extension *ef2 =
+			Extensions::corresponding_to(
+				Lexer::file_of_origin(Wordings::first_wn(Node::get_text(am2->defined_at))));
+		if ((ef1 == ef2) || ((ef1) && (ef2))) {
+			current_sentence = am1->defined_at;
+			Problems::quote_wording_as_source(1, am1->indexing_text);
+			Problems::quote_wording_as_source(2, am2->indexing_text);
+			StandardProblems::handmade_problem(Task::syntax_tree(), 
+				_p_(PM_AdjDomainDuplicated));
+			Problems::issue_problem_segment(
+				"The definitions %1 and %2 both try to cover the same situation: "
+				"the same adjective applied to the exact same range. %P"
+				"It's okay to override a definition in an extension with another "
+				"one in the main source text, but it's not okay to define the same "
+				"adjective twice over the same domain in the same file.");
+			Problems::issue_problem_end();
+		}
+		if (ef1 == NULL) return 1;
+		if (ef2 == NULL) return -1;
+	}
 
 @ With that sorting done, we can begin to use an adjective. Suppose there has
 been an assertion sentence like this:
@@ -240,15 +244,12 @@ asserted for it.
 int AdjectiveAmbiguity::assert(adjective *adj, kind *kind_domain,
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
 	AdjectiveAmbiguity::sort(adj);
-	for (adjective_meaning *am = adj->adjective_meanings.sorted_meanings;
-		am; am = am->next_sorted) {
-		if (AdjectiveMeanings::domain_weak_match(kind_domain,
-			AdjectiveMeanings::get_domain(am)) == FALSE) continue;
-		if (AdjectiveMeanings::domain_subj_compare(infs_to_assert_on, am) == FALSE)
-			continue;
-		if (AdjectiveMeanings::assert_single(am, infs_to_assert_on, val_to_assert_on, parity))
-			return TRUE;
-	}
+	adjective_meaning *am;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
+		if (AdjectiveMeaningDomains::strong_match(kind_domain, infs_to_assert_on, am))
+			if (AdjectiveMeanings::assert_single(am,
+				infs_to_assert_on, val_to_assert_on, parity))
+				return TRUE;
 	return FALSE;
 }
 
@@ -259,13 +260,10 @@ adjective. (See //AdjectiveMeanings::set_i6_schema// for tasks.)
 i6_schema *AdjectiveAmbiguity::schema_for_task(adjective *adj, kind *kind_domain, int T) {
 	if (kind_domain == NULL) kind_domain = K_object;
 	AdjectiveAmbiguity::sort(adj);
-	for (adjective_meaning *am = adj->adjective_meanings.sorted_meanings; am; am = am->next_sorted) {
-		kind *am_kind = AdjectiveMeanings::get_domain(am);
-		if (am_kind == NULL) {
-			AdjectiveMeanings::set_definition_domain(am, FALSE);
-			am_kind = AdjectiveMeanings::get_domain(am);
-		}
-		if (AdjectiveMeanings::domain_weak_match(kind_domain, am_kind) == FALSE) continue;
+	adjective_meaning *am;
+	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order) {
+		AdjectiveMeaningDomains::determine(am);
+		if (AdjectiveMeaningDomains::weak_match(kind_domain, am) == FALSE) continue;
 		i6_schema *i6s = AdjectiveMeanings::schema_for_task(am, T);
 		if (i6s) return i6s;
 	}

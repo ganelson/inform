@@ -241,7 +241,7 @@ adjective_meaning_family *measurement_amf = NULL; /* defined by numerical compar
 void Properties::Measurement::start(void) {
 	measurement_amf = AdjectiveMeanings::new_family(3);
 	METHOD_ADD(measurement_amf, ASSERT_ADJM_MTID, Properties::Measurement::ADJ_assert);
-	METHOD_ADD(measurement_amf, COMPILING_SOON_ADJM_MTID, Properties::Measurement::compiling_soon);
+	METHOD_ADD(measurement_amf, PREPARE_SCHEMAS_ADJM_MTID, Properties::Measurement::prepare_schemas);
 	METHOD_ADD(measurement_amf, PARSE_ADJM_MTID, Properties::Measurement::ADJ_parse);
 }
 
@@ -375,13 +375,13 @@ can't normally be unravelled at compile time.
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-	AdjectiveMeanings::set_domain_text(am, DNW);
+	AdjectiveMeaningDomains::set_from_text(am, DNW);
 
 @ =
-void Properties::Measurement::compiling_soon(adjective_meaning_family *family, adjective_meaning *am,
+void Properties::Measurement::prepare_schemas(adjective_meaning_family *family, adjective_meaning *am,
 	int T) {
 	measurement_definition *mdef =
-		RETRIEVE_POINTER_measurement_definition(am->detailed_meaning);
+		RETRIEVE_POINTER_measurement_definition(am->family_specific_data);
 	if ((mdef->prop) && (mdef->region_threshold_evaluated) &&
 		(mdef->property_schema_written == FALSE)) {
 		i6_schema *sch = AdjectiveMeanings::set_i6_schema(
@@ -395,7 +395,7 @@ int Properties::Measurement::ADJ_assert(adjective_meaning_family *f,
 	adjective_meaning *am, 
 	inference_subject *infs_to_assert_on, parse_node *val_to_assert_on, int parity) {
 	measurement_definition *mdef =
-		RETRIEVE_POINTER_measurement_definition(am->detailed_meaning);
+		RETRIEVE_POINTER_measurement_definition(am->family_specific_data);
 	Properties::Measurement::validate(mdef);
 	if ((Properties::Measurement::is_valid(mdef)) && (mdef->prop) && (parity == TRUE)) {
 		parse_node *val = NULL;
@@ -418,7 +418,7 @@ void Properties::Measurement::compile_MADJ_routines(void) {
 			local_variable *lv = LocalVariables::add_call_parameter(
 				Frames::current_stack_frame(),
 				EMPTY_WORDING,
-				AdjectiveMeanings::get_domain(mdef->headword_as_adjective));
+				AdjectiveMeaningDomains::get_kind(mdef->headword_as_adjective));
 			parse_node *var = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, lv);
 			parse_node *evaluated_prop = Lvalues::new_PROPERTY_VALUE(
 				Rvalues::from_property(mdef->prop), var);

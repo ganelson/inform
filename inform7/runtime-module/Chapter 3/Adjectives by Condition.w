@@ -29,14 +29,14 @@ int Phrases::Condition::ADJ_parse(adjective_meaning_family *f,
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-	AdjectiveMeanings::set_domain_text(am, DNW);
+	AdjectiveMeaningDomains::set_from_text(am, DNW);
 	*result = am;
 	return TRUE;
 }
 
 int Phrases::Condition::ADJ_compile(adjective_meaning_family *family,
 	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf) {
-	definition *def = RETRIEVE_POINTER_definition(am->detailed_meaning);
+	definition *def = RETRIEVE_POINTER_definition(am->family_specific_data);
 	switch (T) {
 		case TEST_ADJECTIVE_TASK:
 			if (emit_flag) {

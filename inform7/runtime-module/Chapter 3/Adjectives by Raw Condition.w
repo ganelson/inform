@@ -35,7 +35,7 @@ int Phrases::RawCondition::ADJ_parse(adjective_meaning_family *f,
 	adjective *adj = Adjectives::declare(AW, NULL);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeanings::pass_task_to_support_routine(am, TEST_ADJECTIVE_TASK);
-	AdjectiveMeanings::set_domain_text(am, DNW);
+	AdjectiveMeaningDomains::set_from_text(am, DNW);
 	i6_schema *sch = AdjectiveMeanings::set_i6_schema(am, TEST_ADJECTIVE_TASK, FALSE);
 	Word::dequote(text_wn);
 	Calculus::Schemas::modify(sch, "(%N)", text_wn);

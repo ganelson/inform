@@ -1690,9 +1690,9 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 		return;
 	}
 
-	adjective *aph = Adjectives::parse(LW);
-	if (aph) {
-		if (AdjectiveMeanings::write_adjective_test_routine(VH, aph)) return;
+	adjective *adj = Adjectives::parse(LW);
+	if (adj) {
+		if (AdjectiveMeanings::write_adjective_test_routine(VH, adj)) return;
 		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"You tried to use '(+' and '+)' to expand to the Inform 6 routine "
 			"address of an adjective, but it was an adjective with no meaning.");
