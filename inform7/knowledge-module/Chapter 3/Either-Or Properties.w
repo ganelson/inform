@@ -382,10 +382,10 @@ int Properties::EitherOr::ADJ_index(adjective_meaning_family *f, text_stream *OU
 	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
 	property *neg = Properties::EitherOr::get_negation(prn);
 	WRITE("either/or property");
-	if (Properties::permission_list(prn)) {
-		WRITE(" of "); World::Permissions::index(OUT, prn);
-	} else if ((neg) && (Properties::permission_list(neg))) {
-		WRITE(" of "); World::Permissions::index(OUT, neg);
+	if (Properties::get_permissions(prn)) {
+		WRITE(" of "); IXProperties::index_permissions(OUT, prn);
+	} else if ((neg) && (Properties::get_permissions(neg))) {
+		WRITE(" of "); IXProperties::index_permissions(OUT, neg);
 	}
 	if (neg) WRITE(", opposite of </i>%+W<i>", neg->name);
 	return TRUE;

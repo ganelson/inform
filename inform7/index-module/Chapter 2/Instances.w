@@ -102,8 +102,8 @@ void IXInstances::index_usages(OUTPUT_STREAM, instance *I) {
 int IXInstances::as_adjective(OUTPUT_STREAM, instance *I) {
 	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 	if (Properties::Conditions::of_what(P) == NULL) {
-		if (Properties::permission_list(P)) {
-			WRITE("(of "); World::Permissions::index(OUT, P); WRITE(") ");
+		if (Properties::get_permissions(P)) {
+			WRITE("(of "); IXProperties::index_permissions(OUT, P); WRITE(") ");
 		}
 		WRITE("having this %+W", P->name);
 	} else {

@@ -1,6 +1,6 @@
-Total memory consumption was 257518K = 251 MB
+Total memory consumption was 258318K = 252 MB
 
-62.4% was used for 1332967 objects, in 274686 frames in 201 x 800K = 160800K = 157 MB:
+62.5% was used for 1333781 objects, in 275500 frames in 202 x 800K = 161600K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2592 x 100 = 259200 objects, 14598144 bytes
@@ -8,9 +8,9 @@ Total memory consumption was 257518K = 251 MB
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
      2.3%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes
-     2.0%  linked_list                              9589 objects, 5369840 bytes
+     2.2%  linked_list                              10403 objects, 5825680 bytes
      1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
-     1.2%  map_data                                 668 objects, 3168992 bytes
+     1.1%  map_data                                 668 objects, 3168992 bytes
      0.9%  kind_array                               65 x 1000 = 65000 objects, 2602080 bytes
      0.7%  inter_schema_token                       13492 objects, 1942848 bytes
      0.6%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes
@@ -62,9 +62,9 @@ Total memory consumption was 257518K = 251 MB
      ----  kind_macro_definition                    9 objects, 62280 bytes
      ----  booking                                  860 objects, 61920 bytes
      ----  grammar_verb                             130 objects, 57200 bytes
-     ----  property_permission                      96 objects, 56832 bytes
      ----  pcalc_func_array                         1 x 1000 objects, 56032 bytes
      ----  ph_stack_frame_box                       577 objects, 55392 bytes
+     ----  property_permission                      96 objects, 55296 bytes
      ----  kind_constructor                         77 objects, 54824 bytes
      ----  text_substitution                        436 objects, 48832 bytes
      ----  grammar_line                             230 objects, 46000 bytes
@@ -219,9 +219,9 @@ Total memory consumption was 257518K = 251 MB
      ----  kind_template_definition                 1 object, 40 bytes
      ----  parse_name_notice                        1 object, 40 bytes
 
-37.5% was used for memory not allocated for objects:
+37.4% was used for memory not allocated for objects:
 
-    16.0%  text stream storage                      42223988 bytes in 265557 claims
+    15.9%  text stream storage                      42223988 bytes in 265557 claims
      3.5%  dictionary storage                       9266176 bytes in 16348 claims
      ----  sorting                                  1048 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -238,5 +238,5 @@ Total memory consumption was 257518K = 251 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.1% was overhead - 53019328 bytes = 51776K = 50 MB
+20.1% was overhead - 53384224 bytes = 52133K = 50 MB
 

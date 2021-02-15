@@ -41,8 +41,8 @@ Chapter 4: Subjects
 	Relation Subjects
 
 Chapter 5: Model
-	Property Permissions
 	Inferences
+	Property Permissions
 	Complete Model World
 	Compile Model World
 	Instance Counting

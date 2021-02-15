@@ -19,3 +19,4 @@ Chapter 2: Indexing
 	Instances
 	Adjectives
 	Variables
+	Properties

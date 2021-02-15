@@ -28,7 +28,7 @@ typedef struct property {
 
 	/* the basic nature of this property */
 	int either_or; /* is this an either/or property? if not, it is a valued one */
-	struct property_permission *applicable_to; /* lists who has permission to have this */
+	struct linked_list *applicable_to; /* of |property_permission| */
 	int do_not_compile; /* for e.g. the "specification" pseudo-property */
 	int include_in_index; /* is this property shown in the indexes? */
 
@@ -193,7 +193,7 @@ something.
 	prn->name = W;
 	prn->owning_module = CompilationUnits::find(current_sentence);
 	prn->ambiguous_name = <name-looking-like-property-test>(W);
-	prn->applicable_to = NULL;
+	prn->applicable_to = NEW_LINKED_LIST(property_permission);
 	prn->either_or = FALSE;
 	prn->prop_package = using_package;
 	prn->prop_iname = using_iname;
@@ -388,11 +388,8 @@ Each property has a list of permissions for its usage attached. These are
 important enough to have their own section: here, all we do is...
 
 =
-property_permission *Properties::permission_list(property *prn) {
+linked_list *Properties::get_permissions(property *prn) {
 	return prn->applicable_to;
-}
-void Properties::set_permission_list(property *prn, property_permission *pp) {
-	prn->applicable_to = pp;
 }
 
 @h Logging.

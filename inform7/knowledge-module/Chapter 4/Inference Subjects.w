@@ -119,7 +119,7 @@ typedef struct inference_subject {
 	struct inference *inf_list; /* contingently true: inferences drawn about this subject */
 	struct implication *imp_list; /* necessarily true: implications applying to this  */
 
-	struct property_permission *permissions_list; /* what properties this can have, if any */
+	struct linked_list *permissions_list; /* of |property_permission| */
 	struct assemblies_data assemblies; /* what generalisations have been made about this? */
 	struct nonlocal_variable *alias_variable; /* in the way that "player" aliases "yourself" */
 
@@ -157,7 +157,7 @@ void InferenceSubjects::infs_initialise(inference_subject *infs,
 	infs->inf_list = NULL;
 	infs->imp_list = NULL;
 	infs->broader_than = from;
-	infs->permissions_list = NULL;
+	infs->permissions_list = NEW_LINKED_LIST(property_permission);
 	infs->infs_name_in_log = log_name;
 	infs->alias_variable = NULL;
 	Assertions::Assemblies::initialise_assemblies_data(&(infs->assemblies));
@@ -258,8 +258,8 @@ void InferenceSubjects::set_implications(inference_subject *infs, implication *i
 	infs->imp_list = imp;
 }
 
-property_permission **InferenceSubjects::get_permissions(inference_subject *infs) {
-	return &(infs->permissions_list);
+linked_list *InferenceSubjects::get_permissions(inference_subject *infs) {
+	return infs->permissions_list;
 }
 
 @h Conversions to and from kinds and instances.
