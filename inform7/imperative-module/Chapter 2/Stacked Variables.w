@@ -42,20 +42,6 @@ typedef struct stacked_variable_owner_list {
 int max_frame_size_needed = 0;
 
 @ =
-nonlocal_variable_emission StackedVariables::how_to_lvalue(stacked_variable *stv) {
-	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
-		return NonlocalVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
-	else
-		return NonlocalVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, FALSE);
-}
-
-nonlocal_variable_emission StackedVariables::how_to_rvalue(stacked_variable *stv) {
-	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
-		return NonlocalVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
-	else
-		return NonlocalVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, TRUE);
-}
-
 int StackedVariables::get_owner_id(stacked_variable *stv) {
 	return stv->owner_id;
 }
@@ -117,10 +103,10 @@ stacked_variable *StackedVariables::add_empty(stacked_variable_owner *stvo,
 	stvo->list_of_stvs = StackedVariables::add_to_list(stvo->list_of_stvs, stv);
 	if (stvo->no_stvs > max_frame_size_needed)
 		max_frame_size_needed = stvo->no_stvs;
-	q = NonlocalVariables::new_stacked(W, K, stv);
+	q = NonlocalVariables::new_with_scope(W, K, stv);
 	stv->underlying_var = q;
-	NonlocalVariables::set_I6_identifier(q, FALSE, StackedVariables::how_to_rvalue(stv));
-	NonlocalVariables::set_I6_identifier(q, TRUE, StackedVariables::how_to_lvalue(stv));
+	RTVariables::set_I6_identifier(q, FALSE, RTVariables::stv_rvalue(stv));
+	RTVariables::set_I6_identifier(q, TRUE, RTVariables::stv_lvalue(stv));
 	return stv;
 }
 
@@ -167,7 +153,7 @@ void StackedVariables::index_owner(OUTPUT_STREAM, stacked_variable_owner *stvo) 
 	for (stvl=stvo->list_of_stvs; stvl; stvl = stvl->next)
 		if ((stvl->the_stv) && (stvl->the_stv->underlying_var)) {
 			HTML::open_indented_p(OUT, 2, "tight");
-			NonlocalVariables::index_single(OUT, stvl->the_stv->underlying_var);
+			IXVariables::index_one(OUT, stvl->the_stv->underlying_var);
 			HTML_CLOSE("p");
 		}
 }
@@ -255,7 +241,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 			if (Kinds::Behaviour::uses_pointer_values(K))
 				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
 			else
-				NonlocalVariables::emit_initial_value_as_val(q);
+				RTVariables::emit_initial_value_as_val(q);
 		Produce::up(Emit::tree());
 
 		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);

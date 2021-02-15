@@ -207,10 +207,10 @@ void PL::Bibliographic::compile_constants(void) {
 
 @<Compile the I6 Story constant@> =
 	inter_name *iname = Hierarchy::find(STORY_HL);
-	NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
+	NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
 	inter_ti v1 = 0, v2 = 0;
 	if (VariableSubjects::has_initial_value_set(story_title_VAR))
-		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
+		RTVariables::seek_initial_value(iname, &v1, &v2, story_title_VAR);
 	else
 		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"Welcome\"");
 	Emit::named_generic_constant(iname, v1, v2);
@@ -222,8 +222,8 @@ void PL::Bibliographic::compile_constants(void) {
 	inter_name *iname = Hierarchy::find(HEADLINE_HL);
 	inter_ti v1 = 0, v2 = 0;
 	if (VariableSubjects::has_initial_value_set(story_headline_VAR)) {
-		NonlocalVariables::treat_as_plain_text_word(story_headline_VAR);
-		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
+		NonlocalVariables::initial_value_as_plain_text(story_headline_VAR);
+		RTVariables::seek_initial_value(iname, &v1, &v2, story_headline_VAR);
 	} else {
 		TextLiterals::compile_literal_from_text(iname, &v1, &v2, L"\"An Interactive Fiction\"");
 	}
@@ -236,8 +236,8 @@ void PL::Bibliographic::compile_constants(void) {
 	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
 		inter_name *iname = Hierarchy::find(STORY_AUTHOR_HL);
 		inter_ti v1 = 0, v2 = 0;
-		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
-		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
+		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
+		RTVariables::seek_initial_value(iname, &v1, &v2, story_author_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
 		Hierarchy::make_available(Emit::tree(), iname);
 		global_compilation_settings.story_author_given = TRUE;
@@ -254,7 +254,7 @@ void PL::Bibliographic::compile_constants(void) {
 	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
 		inter_name *iname = Hierarchy::find(RELEASE_HL);
 		inter_ti v1 = 0, v2 = 0;
-		NonlocalVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
+		RTVariables::seek_initial_value(iname, &v1, &v2, story_release_number_VAR);
 		Emit::named_generic_constant(iname, v1, v2);
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
@@ -350,7 +350,7 @@ void PL::Bibliographic::index_bibliographic_variable(OUTPUT_STREAM, nonlocal_var
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
 	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
-		wording W = NonlocalVariables::treat_as_plain_text_word(nlv);
+		wording W = NonlocalVariables::initial_value_as_plain_text(nlv);
 		PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(Wordings::first_wn(W)));
 	} else {
 		WRITE("%S", t);

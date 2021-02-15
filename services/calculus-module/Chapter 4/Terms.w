@@ -177,7 +177,7 @@ unary_predicate *Terms::noun_to_adj_conversion(pcalc_term pt) {
 	if (Properties::Conditions::get_coinciding_property(K) == NULL) return NULL;
 	if (Kinds::Behaviour::is_an_enumeration(K)) {
 		instance *I = Node::get_constant_instance(C);
-		return AdjectivalPredicates::new_up(InstanceAdjectives::as_adjective(I), TRUE);
+		return AdjectivalPredicates::new_up(Instances::as_adjective(I), TRUE);
 	}
 	#endif
 	return NULL;

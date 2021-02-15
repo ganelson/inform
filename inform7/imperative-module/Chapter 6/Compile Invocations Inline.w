@@ -1180,7 +1180,7 @@ story title).
 @<Check that we're not copying to something the user isn't allowed to change@> =
 	nonlocal_variable *nlv = Lvalues::get_nonlocal_variable_if_any(to);
 	if ((nlv) && (NonlocalVariables::must_be_constant(nlv))) return;
-	if (nlv) NonlocalVariables::warn_about_change(nlv);
+	if (nlv) RTVariables::warn_about_change(nlv);
 
 	local_variable *lvar = Lvalues::get_local_variable_if_any(to);
 	if ((lvar) && (LocalVariables::protected(lvar))) return;
@@ -1717,10 +1717,10 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 	if (VH)
 		Specifications::Compiler::emit_as_val(K_value, spec);
 	else {
-		nonlocal_variable *nlv = NonlocalVariables::parse(LW);
+		nonlocal_variable *nlv = NonlocalVariables::parse_global(LW);
 		if (nlv) {
 			PUT(URL_SYMBOL_CHAR);
-			Inter::SymbolsTables::symbol_to_url_name(OUT, InterNames::to_symbol(NonlocalVariables::iname(nlv)));
+			Inter::SymbolsTables::symbol_to_url_name(OUT, InterNames::to_symbol(RTVariables::iname(nlv)));
 			PUT(URL_SYMBOL_CHAR);
 		} else {
 			value_holster VH2 = Holsters::new(INTER_DATA_VHMODE);

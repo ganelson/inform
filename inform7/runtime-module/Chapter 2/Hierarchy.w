@@ -1557,7 +1557,8 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_RESPONSE_XPACKAGE: return Kinds::Behaviour::package(K_response);
 		case K_SCENE_XPACKAGE: return Kinds::Behaviour::package(K_scene);
 		case V_COMMAND_PROMPT_XPACKAGE:
-			return InterNames::location(NonlocalVariables::iname(command_prompt_VAR));
+			return InterNames::location(
+				RTVariables::iname(RTTemporaryVariables::command_prompt_variable()));
 	}
 	internal_error("unknown exotic package");
 	return NULL;

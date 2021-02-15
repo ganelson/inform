@@ -18,3 +18,4 @@ Chapter 2: Indexing
 	Index Headings
 	Instances
 	Adjectives
+	Variables

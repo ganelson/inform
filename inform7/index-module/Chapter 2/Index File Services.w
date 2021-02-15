@@ -581,7 +581,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Vl")) {
-		NonlocalVariables::index_all(OUT);
+		IXVariables::index_all(OUT);
 		Equations::index(OUT);
 		return;
 	}

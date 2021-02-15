@@ -278,7 +278,7 @@ void Lvalues::compile(value_holster *VH, parse_node *spec_found) {
 
 @<Compile a non-local variable specification@> =
 	nonlocal_variable *nlv = Node::get_constant_nonlocal_variable(spec_found);
-	NonlocalVariables::emit_lvalue(nlv);
+	RTVariables::emit_lvalue(nlv);
 	return;
 
 @<Compile a property value specification@> =

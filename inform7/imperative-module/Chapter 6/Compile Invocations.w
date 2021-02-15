@@ -282,10 +282,10 @@ right to left: we want T1 to evaluate first, then T2, and so on.
 at run-time; we assign 0 to it for the sake of tidiness.
 
 @<Compile the actual assignment@> =
-	NonlocalVariables::temporary_formal(i);
+	RTTemporaryVariables::formal_parameter(i);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
-		Produce::ref_iname(Emit::tree(), K_value, NonlocalVariables::formal_par(i));
+		Produce::ref_iname(Emit::tree(), K_value, RTTemporaryVariables::iname_of_formal_parameter(i));
 		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		else {
@@ -424,7 +424,7 @@ no subsequent lines are looked at.
 
 @<Substitute the formal parameter variables into the tokens@> =
 	for (int i=0; i<tokens.tokens_count; i++) {
-		nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
+		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 		NonlocalVariables::set_kind(nlv, tokens.kind_required[i]);
 		tokens.args[i] = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 	}
@@ -473,7 +473,7 @@ no subsequent lines are looked at.
 				Produce::down(Emit::tree()); ands_made++;
 				BEGIN_COMPILATION_MODE;
 				COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-				nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
+				nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 				parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 				@<Compile a check that this formal variable matches the token, emission version@>;
 				END_COMPILATION_MODE;
@@ -499,7 +499,7 @@ a list divided by logical-and |&&| operators.
 				and_depth++;
 			}
 
-			nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
+			nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 			parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(nlv);
 			@<Compile a check that this formal variable matches the token, emission version@>;
 		}

@@ -740,7 +740,7 @@ LISP.
 
 @ =
 int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv, int desc_mode) {
-	NonlocalVariables::treat_as_plain_text_word(nlv);
+	NonlocalVariables::initial_value_as_plain_text(nlv);
 	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
 		parse_node *val =
 			NonlocalVariables::substitute_constants(
@@ -927,21 +927,21 @@ brackets [THUS].
 	} else WRITE("placeholder [YEAR] = \"%d\"\n", (the_present->tm_year)+1900);
 
 	if (VariableSubjects::has_initial_value_set(story_title_VAR)) {
-		NonlocalVariables::treat_as_plain_text_word(story_title_VAR);
+		NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
 		WRITE("placeholder [TITLE] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_title_VAR);
 		WRITE("\"\n");
 	} else WRITE("placeholder [TITLE] = \"Untitled\"\n");
 
 	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
-		NonlocalVariables::treat_as_plain_text_word(story_author_VAR);
+		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
 		WRITE("placeholder [AUTHOR] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_author_VAR);
 		WRITE("\"\n");
 	} else WRITE("placeholder [AUTHOR] = \"Anonymous\"\n");
 
 	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
-		NonlocalVariables::treat_as_plain_text_word(story_description_VAR);
+		NonlocalVariables::initial_value_as_plain_text(story_description_VAR);
 		WRITE("placeholder [BLURB] = \"");
 		PL::Bibliographic::Release::write_var_to_text(OUT, story_description_VAR);
 		WRITE("\"\n");

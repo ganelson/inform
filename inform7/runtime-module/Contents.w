@@ -44,6 +44,7 @@ Chapter 4: Compilation Utilities
 	Test Scripts
 	Internal Test Cases
 	Use Options at Run Time
+	Temporary Variables
 	Variables
 	Instances
 	Adjectives

@@ -156,7 +156,7 @@ messages if these have the wrong kind, so we don't need to.
 =
 void VariableSubjects::check_model(inference_subject_family *family,
 	inference_subject *infs) {
-	NonlocalVariables::allocate_storage(); /* in case this hasn't happened already */
+	RTVariables::allocate_storage(); /* in case this hasn't happened already */
 	nonlocal_variable *nlv = VariableSubjects::to_variable(infs);
 	if (nlv) {
 		@<Verify that externally-stored nonlocals haven't been initialised@>;
@@ -174,14 +174,13 @@ source text to specify its initial value -- the initial value is whatever
 that faraway Inter code said it was.
 
 @<Verify that externally-stored nonlocals haven't been initialised@> =
-	if ((nlv->housed_in_variables_array == FALSE) &&
-		(nlv->var_is_initialisable_anyway == FALSE) &&
-		(nlv->alias_to_infs == NULL) &&
+	if ((RTVariables::is_initialisable(nlv) == FALSE) &&
+		(nlv->alias_subject == NULL) &&
 		(VariableSubjects::has_initial_value_set(nlv))) {
 		current_sentence = VariableSubjects::origin_of_initial_value(nlv);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, nlv->name);
-		Problems::quote_stream(3, nlv->lvalue_nve.textual_form);
+		Problems::quote_stream(3, nlv->compilation_data.lvalue_nve.textual_form);
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_InaccessibleVariable));
 		Problems::issue_problem_segment(

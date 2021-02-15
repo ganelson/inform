@@ -147,6 +147,11 @@ inference_subject *Instances::as_subject(instance *I) {
 	return I->as_subject;
 }
 
+adjective *Instances::as_adjective(instance *I) {
+	if (I == NULL) return NULL;
+	return I->as_adjective;
+}
+
 parse_node *Instances::get_creating_sentence(instance *I) {
 	if (I == NULL) return NULL;
 	return I->creating_sentence;

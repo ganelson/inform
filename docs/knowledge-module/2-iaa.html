@@ -101,7 +101,7 @@ age property, but we don't go there in Inform.
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InstanceAdjectives::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InstanceAdjectives::start</span></span>:<br/>Knowledge Module - <a href="1-km.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AdjectiveMeanings::new_family</span><span class="plain-syntax">(2);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax">, </span><span class="identifier-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><a href="2-iaa.html#SP4" class="function-link"><span class="function-syntax">InstanceAdjectives::assert</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">enumerative_amf</span><span class="plain-syntax">, </span><span class="identifier-syntax">ASSERT_ADJM_MTID</span><span class="plain-syntax">, </span><a href="2-iaa.html#SP3" class="function-link"><span class="function-syntax">InstanceAdjectives::assert</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">InstanceAdjectives::is_enumerative</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">am</span><span class="plain-syntax">) {</span>
@@ -171,15 +171,7 @@ following function: twice with the domain <span class="extract"><span class="ext
 <span class="plain-syntax">            </span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><a href="3-prp.html#SP26" class="function-link"><span class="function-syntax">Properties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">), </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">enumeration_index</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-iaa.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>So that creates the adjectival form, and access to it is provided by:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="function-syntax">InstanceAdjectives::as_adjective</span><span class="plain-syntax">(</span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_adjective</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Asserting such an adjective simply asserts that the property has this value:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Asserting such an adjective simply asserts that the property has this value:
 for example, asserting "green" on X is saying that the value of the "colour"
 property of X is "green".
 </p>

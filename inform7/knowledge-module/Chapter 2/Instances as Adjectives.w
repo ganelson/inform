@@ -77,13 +77,6 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 		"WriteGProperty(%k, *1, %n, %d)",
 			D, Properties::iname(P), I->enumeration_index);
 
-@ So that creates the adjectival form, and access to it is provided by:
-
-=
-adjective *InstanceAdjectives::as_adjective(instance *I) {
-	return I->as_adjective;
-}
-
 @ Asserting such an adjective simply asserts that the property has this value:
 for example, asserting "green" on X is saying that the value of the "colour"
 property of X is "green".

@@ -82,7 +82,7 @@ int Refiner::turn_player_to_yourself(parse_node *pn) {
 	if ((Wordings::nonempty(Node::get_text(pn))) &&
 		(Node::get_type(pn) == PROPER_NOUN_NT) &&
 		(Annotations::read_int(pn, turned_already_ANNOT) == FALSE)) {
-		nonlocal_variable *q = NonlocalVariables::parse(Node::get_text(pn));
+		nonlocal_variable *q = NonlocalVariables::parse_global(Node::get_text(pn));
 		inference_subject *diversion = NonlocalVariables::get_alias(q);
 		if (diversion) {
 			Refiner::give_subject_to_noun(pn, diversion);

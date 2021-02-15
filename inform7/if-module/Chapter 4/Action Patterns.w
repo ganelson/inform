@@ -2061,7 +2061,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
-				NonlocalVariables::temporary_from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
+				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
 				ap.noun_spec, kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
@@ -2070,7 +2070,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
-				NonlocalVariables::temporary_from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
+				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
 				ap.second_spec, kind_of_second, FALSE);
 			break;
 		case PLAYER_LOCATION_MATCHES_CPMC:
@@ -2101,7 +2101,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		case OPTIONAL_CLAUSE_CPMC: {
 			kind *K = StackedVariables::get_kind(apoc->stv_to_match);
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
-				NonlocalVariables::temporary_from_nve(apoc->stv_to_match->underlying_var->rvalue_nve, K),
+				RTTemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
 				apoc->clause_spec, K, apoc->allow_region_as_room);
 			break;
 		}
@@ -2123,7 +2123,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
 			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
-				NonlocalVariables::temporary_from_nve(NonlocalVariables::nve_from_mstack(20007, 1, TRUE),
+				RTTemporaryVariables::from_nve(RTVariables::nve_from_mstack(20007, 1, TRUE),
 					K_object),
 					somewhere, K_object, FALSE);
 			break;
@@ -2147,7 +2147,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
 			PL::Actions::Patterns::compile_pattern_match_clause(FALSE, VH,
-				NonlocalVariables::temporary_from_iname(RTInstances::iname(to_be_present), K_object),
+				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
 				ap.presence_spec, K_object, FALSE);
 			break;
 		}

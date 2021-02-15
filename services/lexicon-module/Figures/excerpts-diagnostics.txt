@@ -9,7 +9,7 @@ Number of attempts to retrieve: 104653
   of which unsuccessful: 87152
   of which successful: 17501
 
-Total attempts to match against excerpt meanings: 249459
-  of which, total with incorrect hash codes: 227470
+Total attempts to match against excerpt meanings: 249447
+  of which, total with incorrect hash codes: 227458
   of which, total with correct hash codes: 21989
   of which, total which matched: 19267

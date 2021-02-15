@@ -93,15 +93,15 @@ int PL::Player::player_new_quantity_notify(nonlocal_variable *nlv) {
 			case 0:
 				player_VAR = nlv;
 				if (I_yourself) @<Alias the player variable to the yourself object@>;
-				NonlocalVariables::set_write_schema(nlv, "ChangePlayer(*2)");
+				RTVariables::set_write_schema(nlv, I"ChangePlayer(*2)");
 				break;
 			case 1:
 				score_VAR = nlv;
-				NonlocalVariables::make_initalisable(score_VAR);
+				RTVariables::make_initialisable(score_VAR);
 				break;
 			case 2:
 				time_of_day_VAR = nlv;
-				NonlocalVariables::make_initalisable(time_of_day_VAR);
+				RTVariables::make_initialisable(time_of_day_VAR);
 				break;
 		}
 	}
@@ -351,12 +351,12 @@ void PL::Player::InitialSituation(void) {
 	
 		inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
-		NonlocalVariables::emit_initial_value(player_VAR);
+		RTVariables::emit_initial_value(player_VAR);
 		if (start_object == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(RTInstances::iname(start_object));
 		if (start_room == NULL) Emit::array_numeric_entry(0);
 		else Emit::array_iname_entry(RTInstances::iname(start_room));
-		NonlocalVariables::emit_initial_value(time_of_day_VAR);
+		RTVariables::emit_initial_value(time_of_day_VAR);
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
 		Hierarchy::make_available(Emit::tree(), iname);

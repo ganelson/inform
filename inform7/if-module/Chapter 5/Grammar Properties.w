@@ -100,10 +100,10 @@ int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var)
 		switch (<<r>>) {
 			case 0:
 				if (<<kind:understood>> == NonlocalVariables::kind(var)) {
-					NonlocalVariables::set_I6_identifier(var, FALSE,
-						NonlocalVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
-					NonlocalVariables::set_I6_identifier(var, TRUE,
-						NonlocalVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
+					RTVariables::set_I6_identifier(var, FALSE,
+						RTVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
+					RTVariables::set_I6_identifier(var, TRUE,
+						RTVariables::nve_from_iname(Hierarchy::find(PARSED_NUMBER_HL)));
 					NonlocalVariables::allow_to_be_zero(var);
 				}
 				break;
@@ -113,7 +113,7 @@ int PL::Parsing::Visibility::parsing_new_variable_notify(nonlocal_variable *var)
 			case 4: I6_second_VAR = var; break;
 			case 5: I6_actor_VAR = var; break;
 			case 6: max_score_VAR = var;
-				NonlocalVariables::make_initalisable(var); break;
+				RTVariables::make_initialisable(var); break;
 		}
 	}
 	return FALSE;

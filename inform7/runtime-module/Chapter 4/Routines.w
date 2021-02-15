@@ -132,8 +132,8 @@ after the call parameters, and is used only as a scratch variable.
 		RTKinds::emit_heap_allocation(pall->allocation);
 
 	for (int i=0; i<currently_compiling_in_frame->no_formal_parameters_needed; i++) {
-		nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
-		Produce::push(Emit::tree(), NonlocalVariables::iname(nlv));
+		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
+		Produce::push(Emit::tree(), RTVariables::iname(nlv));
 	}
 
 @<Compile a call to the kernel@> =
@@ -161,8 +161,8 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile some teardown code now that the kernel has finished@> =
 	for (int i=currently_compiling_in_frame->no_formal_parameters_needed-1; i>=0; i--) {
-		nonlocal_variable *nlv = NonlocalVariables::temporary_formal(i);
-		Produce::pull(Emit::tree(), NonlocalVariables::iname(nlv));
+		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
+		Produce::pull(Emit::tree(), RTVariables::iname(nlv));
 	}
 
 	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {

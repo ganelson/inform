@@ -161,8 +161,8 @@ is orange" so that "orange" will be used not as a noun but as an adjective.
 		(Specifications::is_description_like(subject_phrase_subtree))) {
 		parse_node *adjq = object_phrase_subtree;
 		instance *I = Rvalues::to_instance(adjq);
-		if (InstanceAdjectives::as_adjective(I)) {
-			unary_predicate *ale = AdjectivalPredicates::new_up(InstanceAdjectives::as_adjective(I), TRUE);
+		if (Instances::as_adjective(I)) {
+			unary_predicate *ale = AdjectivalPredicates::new_up(Instances::as_adjective(I), TRUE);
 			parse_node *spec = Descriptions::from_proposition(NULL, Node::get_text(adjq));
 			Descriptions::add_to_adjective_list(ale, spec);
 			verb_phrase_subtree->down = spec;
