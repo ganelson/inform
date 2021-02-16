@@ -230,13 +230,13 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 @<Draw inferences using only the standard Spatial conventions@> =
 	inference_subject *item = Instances::as_subject(I1);
 	inference_subject *loc = Instances::as_subject(I0);
-	Inferences::draw(PART_OF_INF, item,
-		(bp == R_incorporation)?CERTAIN_CE:IMPOSSIBLE_CE,
-		loc, NULL);
+	PL::Spatial::infer_part_of(item,
+		(bp == R_incorporation)?CERTAIN_CE:IMPOSSIBLE_CE, loc);
 	if (bp == R_containment)
-		Inferences::draw(CONTAINS_THINGS_INF, loc, CERTAIN_CE, item, NULL);
-	Inferences::draw(PARENTAGE_INF, item, CERTAIN_CE, loc, NULL);
-	Inferences::draw(IS_ROOM_INF, item, IMPOSSIBLE_CE, NULL, NULL);
+		Inferences::join_inference(
+			Inferences::create_inference(CONTAINS_THINGS_INF, NULL_GENERAL_POINTER, CERTAIN_CE), loc);
+	PL::Spatial::infer_parentage(item, CERTAIN_CE, loc);
+	PL::Spatial::infer_is_room(item, IMPOSSIBLE_CE);
 
 @ If something is being worn, it needs to have the I7 either/or property
 "wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought

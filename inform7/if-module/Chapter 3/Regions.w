@@ -273,7 +273,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 @<A region is being put inside a region@> =
 	inference_subject *inner = Instances::as_subject(I1);
 	inference_subject *outer = Instances::as_subject(I0);
-	Inferences::draw(PARENTAGE_INF, inner, CERTAIN_CE, outer, NULL);
+	PL::Spatial::infer_parentage(inner, CERTAIN_CE, outer);
 
 @ Anything in or part of a region is necessarily a room, if it isn't known
 to be a region already:
@@ -316,7 +316,7 @@ int PL::Regions::regions_complete_model(int stage) {
 		if ((Instances::of_kind(I, K_room)) ||
 			(Instances::of_kind(I, K_region))) {
 			parse_node *where = NULL;
-			parse_node *val = Inferences::get_prop_state_at(
+			parse_node *val = PropertyInferences::get_prop_state_at(
 				Instances::as_subject(I), P_map_region, &where);
 			if (val) {
 				instance *reg =

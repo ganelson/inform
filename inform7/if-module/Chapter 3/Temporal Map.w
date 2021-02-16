@@ -124,7 +124,7 @@ fact, end.
 	Index::anchor_numbered(OUT, sc->allocation_id);
 	WRITE("<b>The <i>%+W</i> scene</b>", PL::Scenes::get_name(sc));
 	Index::link(OUT, Wordings::first_wn(Node::get_text(sc->scene_declared_at)));
-	if (Inferences::get_EO_state(
+	if (PropertyInferences::either_or_state(
 		Instances::as_subject(sc->as_instance), P_recurring) > 0)
 		WRITE("&nbsp;&nbsp;<i>recurring</i>");
 	HTML_CLOSE("p");
@@ -271,7 +271,7 @@ void PL::Scenes::Index::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
 
 @<Show the recurring icon if appropriate@> =
 	inference_subject *subj = Instances::as_subject(sc->as_instance);
-	if (Inferences::get_EO_state(subj, P_recurring) > UNKNOWN_CE)
+	if (PropertyInferences::either_or_state(subj, P_recurring) > UNKNOWN_CE)
 		PL::Scenes::Index::scene_icon_append(OUT, "Recurring");
 
 @ And this is where the routine recurses, so that consequent scenes are

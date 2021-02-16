@@ -1210,9 +1210,9 @@ to send the pairs in that row in any order.
 
 @<Find all pairs belonging to this row, and set the relevant flags@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
 		inference_subject *left_infs, *right_infs;
-		Inferences::get_references(inf, &left_infs, &right_infs);
+		RelationInferences::get_term_subjects(inf, &left_infs, &right_infs);
 		if (infs == left_infs) row_flags[RTRelations::get_relation_index(right_infs, 1)] = 1;
 	}
 
@@ -1366,15 +1366,14 @@ void RTRelations::equivalence_relation_merge_classes(binary_predicate *bp,
 		internal_error("attempt to merge classes for a non-equivalence relation");
 	explicit_bp_data *D = RETRIEVE_POINTER_explicit_bp_data(bp->family_specific);
 	if (bp->right_way_round == FALSE) bp = bp->reversal;
-	int *partition_array = D->equiv_data->equivalence_partition;;
+	int *partition_array = D->equiv_data->equivalence_partition;
 	if (partition_array == NULL)
 		internal_error("attempt to use null equivalence partition array");
 	int little, big; /* or, The Fairies' Parliament */
 	big = partition_array[ix1]; little = partition_array[ix2];
 	if (big == little) return;
 	if (big < little) { int swap = little; little = big; big = swap; }
-	int i;
-	for (i=0; i<domain_size; i++)
+	for (int i=0; i<domain_size; i++)
 		if (partition_array[i] == big)
 			partition_array[i] = little;
 }
@@ -1868,9 +1867,9 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
+			POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
 				parse_node *spec0, *spec1;
-				Inferences::get_references_spec(i, &spec0, &spec1);
+				RelationInferences::get_term_specs(i, &spec0, &spec1);
 				RTRelations::mark_as_needed(bp);
 				Produce::inv_call_iname(Emit::tree(), rtiname);
 				Produce::down(Emit::tree());

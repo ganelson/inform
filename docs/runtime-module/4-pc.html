@@ -81,7 +81,6 @@ function togglePopup(material_id) {
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_NEW_VARIABLE_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_IRREGULAR_GENITIVE</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_SET_KIND_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_CREATE_INFERENCE_FAMILIES</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_COMPLETE_MODEL</span><span class="plain-syntax"> </span><span class="constant-syntax">11</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_PARSE_COMPOSITE_NQS</span><span class="plain-syntax"> </span><span class="constant-syntax">12</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_REFINE_IMPLICIT_NOUN</span><span class="plain-syntax"> </span><span class="constant-syntax">14</span>
@@ -89,9 +88,7 @@ function togglePopup(material_id) {
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_NEW_PROPERTY_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">16</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_PROPERTY_VALUE_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_MORE_SPECIFIC</span><span class="plain-syntax"> </span><span class="constant-syntax">18</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_INFERENCES_CONTRADICT</span><span class="plain-syntax"> </span><span class="constant-syntax">19</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_INTERVENE_IN_ASSERTION</span><span class="plain-syntax"> </span><span class="constant-syntax">20</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_LOG_INFERENCE_TYPE</span><span class="plain-syntax"> </span><span class="constant-syntax">21</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_COMPILE_OBJECT_HEADER</span><span class="plain-syntax"> </span><span class="constant-syntax">22</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_ESTIMATE_PROPERTY_USAGE</span><span class="plain-syntax"> </span><span class="constant-syntax">23</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_CHECK_GOING</span><span class="plain-syntax"> </span><span class="constant-syntax">24</span>
@@ -109,7 +106,6 @@ function togglePopup(material_id) {
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_VARIABLE_SET_WARNING</span><span class="plain-syntax"> </span><span class="constant-syntax">36</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_DETECT_BODYSNATCHING</span><span class="plain-syntax"> </span><span class="constant-syntax">37</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_NEW_SUBJECT_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">38</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_EXPLAIN_CONTRADICTION</span><span class="plain-syntax"> </span><span class="constant-syntax">39</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_ADD_TO_WORLD_INDEX</span><span class="plain-syntax"> </span><span class="constant-syntax">40</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_ANNOTATE_IN_WORLD_INDEX</span><span class="plain-syntax"> </span><span class="constant-syntax">41</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">PLUGIN_SET_SUBKIND_NOTIFY</span><span class="plain-syntax"> </span><span class="constant-syntax">42</span>
@@ -229,12 +225,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_SET_SUBKIND_NOTIFY</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">super</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::create_inference_families</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_CREATE_INFERENCE_FAMILIES</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::complete_model</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Inferences::diversion_off</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> Inferences::diversion_off();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_COMPLETE_MODEL</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
@@ -264,21 +256,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_MORE_SPECIFIC</span><span class="plain-syntax">, </span><span class="identifier-syntax">I1</span><span class="plain-syntax">, </span><span class="identifier-syntax">I2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::inferences_contradict</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">similarity</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_INFERENCES_CONTRADICT</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">similarity</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::explain_contradiction</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">similarity</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_EXPLAIN_CONTRADICTION</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">similarity</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::intervene_in_assertion</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">py</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_INTERVENE_IN_ASSERTION</span><span class="plain-syntax">, </span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::log_inference_type</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">it</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PLUGIN_LOG_INFERENCE_TYPE</span><span class="plain-syntax">, </span><span class="identifier-syntax">it</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Plugins::Call::estimate_property_usage</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">words_used</span><span class="plain-syntax">) {</span>

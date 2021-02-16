@@ -288,8 +288,8 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
-	if (I) Inferences::index(OUT, Instances::as_subject(I), TRUE);
-	else Inferences::index(OUT, KindSubjects::from_kind(K), TRUE);
+	if (I) IXInferences::index(OUT, Instances::as_subject(I), TRUE);
+	else IXInferences::index(OUT, KindSubjects::from_kind(K), TRUE);
 	if (K) {
 		HTML_CLOSE("p");
 		Data::Objects::index_instances(OUT, K, depth);
@@ -319,7 +319,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	HTML_CLOSE("p");
 
 @<Add the catalogue of specific properties@> =
-	Inferences::index_specific(OUT, Instances::as_subject(I));
+	IXInferences::index_specific(OUT, Instances::as_subject(I));
 
 @ =
 void Data::Objects::index_instances(OUTPUT_STREAM, kind *K, int depth) {

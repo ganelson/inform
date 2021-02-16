@@ -103,6 +103,7 @@ DECLARE_CLASS(text_substitution)
 @e property_permission_CLASS
 @e property_of_value_storage_CLASS
 @e property_setting_bp_data_CLASS
+@e relation_inference_data_CLASS
 @e rule_CLASS
 @e rulebook_CLASS
 @e rulebook_outcome_CLASS
@@ -131,6 +132,7 @@ DECLARE_CLASS(property_permission)
 DECLARE_CLASS(property)
 DECLARE_CLASS(property_inference_data)
 DECLARE_CLASS(property_setting_bp_data)
+DECLARE_CLASS(relation_inference_data)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook)
 DECLARE_CLASS(rulebook_outcome)

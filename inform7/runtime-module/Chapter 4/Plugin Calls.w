@@ -9,7 +9,6 @@ To place calls to the plugins.
 @d PLUGIN_NEW_VARIABLE_NOTIFY 1
 @d PLUGIN_IRREGULAR_GENITIVE 4
 @d PLUGIN_SET_KIND_NOTIFY 6
-@d PLUGIN_CREATE_INFERENCE_FAMILIES 10
 @d PLUGIN_COMPLETE_MODEL 11
 @d PLUGIN_PARSE_COMPOSITE_NQS 12
 @d PLUGIN_REFINE_IMPLICIT_NOUN 14
@@ -17,9 +16,7 @@ To place calls to the plugins.
 @d PLUGIN_NEW_PROPERTY_NOTIFY 16
 @d PLUGIN_PROPERTY_VALUE_NOTIFY 17
 @d PLUGIN_MORE_SPECIFIC 18
-@d PLUGIN_INFERENCES_CONTRADICT 19
 @d PLUGIN_INTERVENE_IN_ASSERTION 20
-@d PLUGIN_LOG_INFERENCE_TYPE 21
 @d PLUGIN_COMPILE_OBJECT_HEADER 22
 @d PLUGIN_ESTIMATE_PROPERTY_USAGE 23
 @d PLUGIN_CHECK_GOING 24
@@ -37,7 +34,6 @@ To place calls to the plugins.
 @d PLUGIN_VARIABLE_SET_WARNING 36
 @d PLUGIN_DETECT_BODYSNATCHING 37
 @d PLUGIN_NEW_SUBJECT_NOTIFY 38
-@d PLUGIN_EXPLAIN_CONTRADICTION 39
 @d PLUGIN_ADD_TO_WORLD_INDEX 40
 @d PLUGIN_ANNOTATE_IN_WORLD_INDEX 41
 @d PLUGIN_SET_SUBKIND_NOTIFY 42
@@ -155,12 +151,8 @@ int Plugins::Call::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(PLUGIN_SET_SUBKIND_NOTIFY, sub, super);
 }
 
-int Plugins::Call::create_inference_families(void) {
-	PLUGINS_CALLV(PLUGIN_CREATE_INFERENCE_FAMILIES);
-}
-
 int Plugins::Call::complete_model(int stage) {
-	Inferences::diversion_off();
+	// Inferences::diversion_off();
 	PLUGINS_CALL(PLUGIN_COMPLETE_MODEL, stage);
 }
 
@@ -190,21 +182,8 @@ int Plugins::Call::more_specific(instance *I1, instance *I2) {
 	PLUGINS_CALL(PLUGIN_MORE_SPECIFIC, I1, I2);
 }
 
-int Plugins::Call::inferences_contradict(inference *A, inference *B, int similarity) {
-	PLUGINS_CALL(PLUGIN_INFERENCES_CONTRADICT, A, B, similarity);
-}
-
-int Plugins::Call::explain_contradiction(inference *A, inference *B, int similarity,
-	inference_subject *subj) {
-	PLUGINS_CALL(PLUGIN_EXPLAIN_CONTRADICTION, A, B, similarity, subj);
-}
-
 int Plugins::Call::intervene_in_assertion(parse_node *px, parse_node *py) {
 	PLUGINS_CALL(PLUGIN_INTERVENE_IN_ASSERTION, px, py);
-}
-
-int Plugins::Call::log_inference_type(int it) {
-	PLUGINS_CALL(PLUGIN_LOG_INFERENCE_TYPE, it);
 }
 
 int Plugins::Call::estimate_property_usage(kind *k, int *words_used) {

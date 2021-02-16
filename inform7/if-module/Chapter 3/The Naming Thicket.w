@@ -126,9 +126,9 @@ This is needed when assemblies name one new creation after another; for instance
 void PL::Naming::transfer_details(inference_subject *from, inference_subject *to) {
 	instance *wto = InstanceSubjects::to_object_instance(to);
 	if (wto) {
-		if (Inferences::get_EO_state(from, P_proper_named) > 0)
+		if (PropertyInferences::either_or_state(from, P_proper_named) > 0)
 			PL::Naming::now_has_proper_name(to);
-		parse_node *art = Inferences::get_prop_state(from, P_article);
+		parse_node *art = PropertyInferences::get_prop_state(from, P_article);
 		if (art) Properties::Valued::assert(P_article, to, art, LIKELY_CE);
 	}
 }
@@ -145,7 +145,7 @@ we do here is provide its state on request.
 
 =
 int PL::Naming::object_is_privately_named(instance *I) {
-	int certainty = Inferences::get_EO_state(Instances::as_subject(I), P_privately_named);
+	int certainty = PropertyInferences::either_or_state(Instances::as_subject(I), P_privately_named);
 	if (certainty > 0) return TRUE;
 	if (certainty < 0) return FALSE;
 	return NOT_APPLICABLE;
@@ -267,7 +267,7 @@ actually means it's rarely needed.)
 	if (this_is_named_for_something_with_a_printed_name) {
 		@<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@>
 	} else {
-		if ((Inferences::get_EO_state(subj, P_proper_named) > 0)
+		if ((PropertyInferences::either_or_state(subj, P_proper_named) > 0)
 			&& (begins_with_lower_case))
 			@<Compose the I6 cap-short-name as a piece of text@>
 		else set_csn = FALSE;
@@ -331,7 +331,7 @@ together in lists.
 @<Assert the printed plural name property for kinds other than thing or kinds of room@> =
 	if ((Kinds::Behaviour::is_object_of_kind(K, K_room) == FALSE) &&
 		(Kinds::eq(K, K_thing) == FALSE) &&
-		(Inferences::get_prop_state_without_inheritance(
+		(PropertyInferences::get_prop_state_without_inheritance(
 			subj, P_printed_plural_name, NULL) == NULL)) {
 		if (Wordings::nonempty(PW)) {
 			text_stream *PROP = Str::new();
@@ -344,7 +344,7 @@ together in lists.
 @ The following isn't done in English.
 
 @<Assert male, female, neuter adjectives from grammatical gender@> =
-	parse_node *spec = Inferences::get_prop_state(subj, P_grammatical_gender);
+	parse_node *spec = PropertyInferences::get_prop_state(subj, P_grammatical_gender);
 	if (spec) {
 		int g = Annotations::read_int(spec, constant_enumeration_ANNOT);
 		switch (g) {
@@ -521,7 +521,7 @@ int PL::Naming::adaptive_combination(inform_language *L) {
 	if (L->adaptive_person >= 0) return L->adaptive_person;
 	if ((L->adaptive_person == -1) && (P_adaptive_text_viewpoint)) {
 		instance *I = L->nl_instance;
-		parse_node *val = Inferences::get_prop_state(
+		parse_node *val = PropertyInferences::get_prop_state(
 			Instances::as_subject(I), P_adaptive_text_viewpoint);
 		if (Node::is(val, CONSTANT_NT)) {
 			instance *V = Node::get_constant_instance(val);

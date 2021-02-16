@@ -1,7 +1,13 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 23 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
+Problem__ PM_Contradiction
+  >--> You wrote 'There is a hairstyle' (source text, line 5), but in another
+    sentence 'There is a hairstyle' (source text, line 4): but this looks like
+    a contradiction, which might be because I have misunderstood what was meant
+    to be the subject of one or both of those sentences.
 Problem__ PM_SpatialContradiction
   >--> You wrote 'There is a hairstyle' (source text, line 4), but also 'There
     is a hairstyle' (source text, line 5): that seems to be saying that the
@@ -13,4 +19,4 @@ Problem__ PM_SpatialContradiction
     doesn't know 'bag' as the name of any kind - so that it makes only a single
     thing called 'bag', and then the sentence looks as if it says everyone is
     carrying the same bag.
-Inform 7 has finished: 17 centiseconds used.
+Inform 7 has finished.

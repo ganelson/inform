@@ -21,6 +21,10 @@ inference_subject_family *RelationSubjects::family(void) {
 	return relations_family;
 }
 
+inference_subject *RelationSubjects::from_bp(binary_predicate *bp) {
+	return bp->knowledge_about_bp;
+}
+
 inference_subject *RelationSubjects::new(binary_predicate *bp) {
 	return InferenceSubjects::new(relations, RelationSubjects::family(),
 		STORE_POINTER_binary_predicate(bp), NULL);
@@ -56,9 +60,9 @@ void RelationSubjects::complete_model(inference_subject_family *family,
 		(bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
-		POSITIVE_KNOWLEDGE_LOOP(i, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
+		POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
 			inference_subject *infs0, *infs1;
-			Inferences::get_references(i, &infs0, &infs1);
+			RelationInferences::get_term_subjects(i, &infs0, &infs1);
 			RTRelations::equivalence_relation_merge_classes(bp, domain_size,
 				infs0->allocation_id, infs1->allocation_id);
 		}
@@ -157,10 +161,10 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
 
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
 		parse_node *left_val = NULL;
 		parse_node *right_val = NULL;
-		Inferences::get_references_spec(inf, &left_val, &right_val);
+		RelationInferences::get_term_specs(inf, &left_val, &right_val);
 		inference_subject *left_infs = InferenceSubjects::from_specification(left_val);
 		inference_subject *right_infs = InferenceSubjects::from_specification(right_val);
 		int left_id = (left_infs)?(left_infs->allocation_id):(-1);

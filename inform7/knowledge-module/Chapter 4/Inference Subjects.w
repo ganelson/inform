@@ -175,7 +175,7 @@ void InferenceSubjects::alias_to_nonlocal_variable(inference_subject *infs, nonl
 }
 
 int InferenceSubjects::aliased_but_diverted(inference_subject *infs) {
-	if (infs->alias_variable) {
+	if ((infs) && (infs->alias_variable)) {
 		inference_subject *vs =
 			Instances::as_subject(
 				Rvalues::to_object_instance(
@@ -184,6 +184,27 @@ int InferenceSubjects::aliased_but_diverted(inference_subject *infs) {
 		if ((vs) && (vs != infs)) return TRUE;
 	}
 	return FALSE;
+}
+
+@ Diversion is a similar tactic used to re-route knowledge about the "yourself"
+instance to become knowledge about the initial value of "player" instead:
+
+=
+inference_subject *InferenceSubjects::divert(inference_subject *infs) {
+	if (World::current_building_stage() == 0)
+/*		if ((I_yourself) && (player_VAR) &&
+			(infs == Instances::as_subject(I_yourself))) {
+			parse_node *val = VariableSubjects::get_initial_value(player_VAR);
+			inference_subject *divert = InferenceSubjects::from_specification(val);
+			if (divert) return divert;
+		}
+*/
+		if ((infs) && (infs->alias_variable)) {
+			parse_node *val = VariableSubjects::get_initial_value(infs->alias_variable);
+			inference_subject *divert = InferenceSubjects::from_specification(val);
+			if (divert) return divert;
+		}
+	return infs;
 }
 
 @h Breadth.
@@ -499,7 +520,7 @@ void InferenceSubjects::emit_all(void) {
 	inference_subject *infs;
 
 	LOOP_OVER(infs, inference_subject)
-		Inferences::verify_prop_states(infs);
+		PropertyInferences::verify_prop_states(infs);
 
 	inference_subject_family *family;
 	LOOP_OVER(family, inference_subject_family) {

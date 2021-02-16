@@ -179,7 +179,7 @@ about the Portal, to stand.
 			if (abcn == CERTAIN_CE)
 				 @<Issue a problem message for clash with wider inference@>
 			else
-				Inferences::set_certainty(narrow, IMPOSSIBLE_CE);
+				Inferences::render_impossible(narrow);
 		}
 	}
 

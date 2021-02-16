@@ -1120,7 +1120,7 @@ void PL::EPSMap::plot_text_at(OUTPUT_STREAM, wchar_t *text_to_plot, instance *I,
 
 @<Try taking the name from the printed name property of the room@> =
 	if (P_printed_name) {
-		parse_node *V = Inferences::get_prop_state_at(
+		parse_node *V = PropertyInferences::get_prop_state_at(
 			Instances::as_subject(I), P_printed_name, NULL);
 		if ((Rvalues::is_CONSTANT_of_kind(V, K_text)) &&
 			(Wordings::nonempty(Node::get_text(V)))) {

@@ -20,3 +20,4 @@ Chapter 2: Indexing
 	Adjectives
 	Variables
 	Properties
+	Inferences

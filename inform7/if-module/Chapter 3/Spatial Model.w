@@ -57,6 +57,104 @@ inference_family *PARENTAGE_HERE_INF = NULL; /* 53 located vaguely as "here"? */
 inference_family *PARENTAGE_NOWHERE_INF = NULL; /* 54 located vaguely as "nowhere"? */
 inference_family *PART_OF_INF = NULL; /* 55 is O a part of another object? */
 
+@ =
+void PL::Spatial::infer_is_room(inference_subject *R, int certitude) {
+	Inferences::join_inference(Inferences::create_inference(IS_ROOM_INF, NULL_GENERAL_POINTER, certitude), R);
+}
+void PL::Spatial::infer_is_nowhere(inference_subject *R, int certitude) {
+	Inferences::join_inference(Inferences::create_inference(PARENTAGE_NOWHERE_INF, NULL_GENERAL_POINTER, certitude), R);
+}
+void PL::Spatial::infer_part_of(inference_subject *inner, int certitude, inference_subject *outer) {
+	part_of_inference_data *data = CREATE(part_of_inference_data);
+	data->parent = InferenceSubjects::divert(outer);
+	inference *i = Inferences::create_inference(PART_OF_INF,
+		STORE_POINTER_part_of_inference_data(data), certitude);
+	Inferences::join_inference(i, inner);
+}
+void PL::Spatial::infer_parentage(inference_subject *inner, int certitude, inference_subject *outer) {
+	parentage_inference_data *data = CREATE(parentage_inference_data);
+	data->parent = InferenceSubjects::divert(outer);
+	inference *i = Inferences::create_inference(PARENTAGE_INF,
+		STORE_POINTER_parentage_inference_data(data), certitude);
+	Inferences::join_inference(i, inner);
+}
+void PL::Spatial::infer_parentage_here(inference_subject *inner, int certitude, inference_subject *outer) {
+	parentage_here_inference_data *data = CREATE(parentage_here_inference_data);
+	data->parent = InferenceSubjects::divert(outer);
+	inference *i = Inferences::create_inference(PARENTAGE_HERE_INF,
+		STORE_POINTER_parentage_here_inference_data(data), certitude);
+	Inferences::join_inference(i, inner);
+}
+
+typedef struct part_of_inference_data {
+	struct inference_subject *parent;
+	CLASS_DEFINITION	
+} part_of_inference_data;
+
+typedef struct parentage_inference_data {
+	struct inference_subject *parent;
+	CLASS_DEFINITION	
+} parentage_inference_data;
+
+typedef struct parentage_here_inference_data {
+	struct inference_subject *parent;
+	CLASS_DEFINITION	
+} parentage_here_inference_data;
+
+void PL::Spatial::log_parentage_inf(inference_family *f, inference *inf) {
+	parentage_inference_data *data = RETRIEVE_POINTER_parentage_inference_data(inf->data);
+	if (data->parent) LOG(" parent:$j", data->parent);
+}
+
+int PL::Spatial::cmp_parentage_inf(inference_family *f, inference *i1, inference *i2) {
+	parentage_inference_data *data1 = RETRIEVE_POINTER_parentage_inference_data(i1->data);
+	parentage_inference_data *data2 = RETRIEVE_POINTER_parentage_inference_data(i2->data);
+
+	int c = Inferences::measure_infs(data1->parent) -
+			Inferences::measure_infs(data2->parent);
+	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
+
+	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
+	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
+	return CI_IDENTICAL;
+}
+
+void PL::Spatial::log_parentage_here_inf(inference_family *f, inference *inf) {
+	parentage_here_inference_data *data = RETRIEVE_POINTER_parentage_here_inference_data(inf->data);
+	if (data->parent) LOG(" parent:$j", data->parent);
+}
+
+int PL::Spatial::cmp_parentage_here_inf(inference_family *f, inference *i1, inference *i2) {
+	parentage_here_inference_data *data1 = RETRIEVE_POINTER_parentage_here_inference_data(i1->data);
+	parentage_here_inference_data *data2 = RETRIEVE_POINTER_parentage_here_inference_data(i2->data);
+
+	int c = Inferences::measure_infs(data1->parent) -
+			Inferences::measure_infs(data2->parent);
+	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
+
+	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
+	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
+	return CI_IDENTICAL;
+}
+
+void PL::Spatial::log_part_of_inference(inference_family *f, inference *inf) {
+	part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);
+	if (data->parent) LOG(" part-of:$j", data->parent);
+}
+
+int PL::Spatial::cmp_part_of_inference(inference_family *f, inference *i1, inference *i2) {
+	part_of_inference_data *data1 = RETRIEVE_POINTER_part_of_inference_data(i1->data);
+	part_of_inference_data *data2 = RETRIEVE_POINTER_part_of_inference_data(i2->data);
+
+	int c = Inferences::measure_infs(data1->parent) -
+			Inferences::measure_infs(data2->parent);
+	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
+
+	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
+	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
+	return CI_IDENTICAL;
+}
+
 @ The Spatial plugin also needs to know about a considerable number of special
 kinds and properties:
 
@@ -96,24 +194,26 @@ inference_subject *infs_person = NULL;
 
 =
 void PL::Spatial::start(void) {
-	IS_ROOM_INF = Inferences::new_family(I"IS_ROOM_INF", CI_DIFFER_IN_INFS1);
+	IS_ROOM_INF = Inferences::new_family(I"IS_ROOM_INF");
 	METHOD_ADD(IS_ROOM_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::is_room_explain_contradiction);
-	CONTAINS_THINGS_INF = Inferences::new_family(I"CONTAINS_THINGS_INF", CI_DIFFER_IN_INFS1);
-	PARENTAGE_INF = Inferences::new_family(I"PARENTAGE_INF", CI_DIFFER_IN_INFS1);
+	CONTAINS_THINGS_INF = Inferences::new_family(I"CONTAINS_THINGS_INF");
+	PARENTAGE_INF = Inferences::new_family(I"PARENTAGE_INF");
+	METHOD_ADD(PARENTAGE_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_parentage_inf);
+	METHOD_ADD(PARENTAGE_INF, COMPARE_INF_MTID, PL::Spatial::cmp_parentage_inf);
 	METHOD_ADD(PARENTAGE_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::parentage_explain_contradiction);
-	PARENTAGE_HERE_INF = Inferences::new_family(I"PARENTAGE_HERE_INF", CI_DIFFER_IN_INFS1);
-	PARENTAGE_NOWHERE_INF = Inferences::new_family(I"PARENTAGE_NOWHERE_INF", CI_DIFFER_IN_INFS1);
-	PART_OF_INF = Inferences::new_family(I"PART_OF_INF", CI_DIFFER_IN_INFS1);
+	PARENTAGE_HERE_INF = Inferences::new_family(I"PARENTAGE_HERE_INF");
+	METHOD_ADD(PARENTAGE_HERE_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_parentage_here_inf);
+	METHOD_ADD(PARENTAGE_HERE_INF, COMPARE_INF_MTID, PL::Spatial::cmp_parentage_here_inf);
+	PARENTAGE_NOWHERE_INF = Inferences::new_family(I"PARENTAGE_NOWHERE_INF");
+	PART_OF_INF = Inferences::new_family(I"PART_OF_INF");
+	METHOD_ADD(PART_OF_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_part_of_inference);
+	METHOD_ADD(PART_OF_INF, COMPARE_INF_MTID, PL::Spatial::cmp_part_of_inference);
 
-	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCE_FAMILIES, PL::Spatial::create_inference_families);
 	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Spatial::create_inference_subjects);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Spatial::spatial_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_ACT_ON_SPECIAL_NPS, PL::Spatial::spatial_act_on_special_NPs);
 	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Spatial::IF_complete_model);
 	PLUGIN_REGISTER(PLUGIN_DEFAULT_APPEARANCE, PL::Spatial::spatial_default_appearance);
-	PLUGIN_REGISTER(PLUGIN_INFERENCES_CONTRADICT, PL::Spatial::spatial_inferences_contradict);
-	PLUGIN_REGISTER(PLUGIN_EXPLAIN_CONTRADICTION, PL::Spatial::spatial_explain_contradiction);
-	PLUGIN_REGISTER(PLUGIN_LOG_INFERENCE_TYPE, PL::Spatial::spatial_log_inference_type);
 	PLUGIN_REGISTER(PLUGIN_NAME_TO_EARLY_INFS, PL::Spatial::spatial_name_to_early_infs);
 	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Spatial::spatial_new_subject_notify);
 	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Spatial::spatial_new_property_notify);
@@ -134,14 +234,30 @@ int PL::Spatial::is_room_explain_contradiction(inference_family *f, inference *A
 	return TRUE;
 }
 
+instance *PL::Spatial::get_inferred_parent(inference *inf) {
+	if (inf->family == PARENTAGE_INF) {
+		parentage_inference_data *data = RETRIEVE_POINTER_parentage_inference_data(inf->data);
+		return InstanceSubjects::to_object_instance(data->parent);
+	}
+	if (inf->family == PARENTAGE_HERE_INF) {
+		parentage_here_inference_data *data = RETRIEVE_POINTER_parentage_here_inference_data(inf->data);
+		return InstanceSubjects::to_object_instance(data->parent);
+	}
+	if (inf->family == PART_OF_INF) {
+		part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);
+		return InstanceSubjects::to_object_instance(data->parent);
+	}
+	return NULL;
+}
+
 int PL::Spatial::parentage_explain_contradiction(inference_family *f, inference *A,
 	inference *B, int similarity, inference_subject *subj) {
-	if (Inferences::get_reference_as_object(A) != Inferences::get_reference_as_object(B)) {
+	if (PL::Spatial::get_inferred_parent(A) != PL::Spatial::get_inferred_parent(B)) {
 		Problems::quote_source(1, Inferences::where_inferred(A));
 		Problems::quote_source(2, Inferences::where_inferred(B));
 		Problems::quote_subject(3, subj);
-		Problems::quote_object(4, Inferences::get_reference_as_object(A));
-		Problems::quote_object(5, Inferences::get_reference_as_object(B));
+		Problems::quote_object(4, PL::Spatial::get_inferred_parent(A));
+		Problems::quote_object(5, PL::Spatial::get_inferred_parent(B));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
 		Problems::issue_problem_segment(
 			"You wrote %1, but also %2: that seems to be saying that the same "
@@ -154,10 +270,6 @@ int PL::Spatial::parentage_explain_contradiction(inference_family *f, inference 
 		Problems::issue_problem_end();
 		return TRUE;
 	}
-	return FALSE;
-}
-
-int PL::Spatial::create_inference_families(void) {
 	return FALSE;
 }
 
@@ -220,50 +332,6 @@ spatial_data *PL::Spatial::new_data(inference_subject *subj) {
 	return sd;
 }
 
-@h Special inferences.
-Four of these are quite simple inferences, but |PARENTAGE_INF| stores the
-object to which a spatial relationship is being inferred; and this means that
-multiple |PARENTAGE_INF|s can contradict each other.
-
-=
-int PL::Spatial::spatial_log_inference_type(int it) {
-	return FALSE;
-}
-
-int PL::Spatial::spatial_inferences_contradict(inference *A, inference *B, int similarity) {
-	if ((Inferences::get_inference_type(A) == PARENTAGE_INF) &&
-		(Inferences::get_reference_as_object(A) !=
-			Inferences::get_reference_as_object(B)))
-		return TRUE;
-	return FALSE;
-}
-
-int PL::Spatial::spatial_explain_contradiction(inference *A, inference *B, int similarity,
-	inference_subject *subj) {
-/*	if ((Inferences::get_inference_type(A) == PARENTAGE_INF) &&
-		(Inferences::get_reference_as_object(A) !=
-			Inferences::get_reference_as_object(B))) {
-		Problems::quote_source(1, Inferences::where_inferred(A));
-		Problems::quote_source(2, Inferences::where_inferred(B));
-		Problems::quote_subject(3, subj);
-		Problems::quote_object(4, Inferences::get_reference_as_object(A));
-		Problems::quote_object(5, Inferences::get_reference_as_object(B));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
-		Problems::issue_problem_segment(
-			"You wrote %1, but also %2: that seems to be saying that the same "
-			"object (%3) must be in two different places (%4 and %5). This "
-			"looks like a contradiction. %P"
-			"This sometimes happens as a result of a sentence like 'Every person "
-			"carries a bag', when Inform doesn't know 'bag' as the name of any "
-			"kind - so that it makes only a single thing called 'bag', and then "
-			"the sentence looks as if it says everyone is carrying the same bag.");
-		Problems::issue_problem_end();
-		return TRUE;
-	}
-*/
-	return FALSE;
-}
-
 @h Special kinds.
 These are kind names to do with spatial layout which Inform provides special
 support for; it recognises the Englishs name when defined by the Standard
@@ -307,8 +375,7 @@ int PL::Spatial::spatial_set_kind_notify(instance *I, kind *k) {
 	kind *kw = Instances::to_kind(I);
 	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_room))) &&
 		(Kinds::Behaviour::is_object_of_kind(k, K_room)))
-		Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
-			NULL, NULL);
+		PL::Spatial::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
 	return FALSE;
 }
 
@@ -562,20 +629,16 @@ void PL::Spatial::infer_presence_here(instance *I) {
 			"in a single assertion sentence. This avoids potential confusion, "
 			"since 'here' can mean different things in different sentences.");
 	}
-
-	Inferences::draw(PARENTAGE_HERE_INF, infs, CERTAIN_CE,
-		Anaphora::get_current_subject(), NULL);
-	Inferences::draw(IS_ROOM_INF, infs, IMPOSSIBLE_CE, NULL, NULL);
+	PL::Spatial::infer_parentage_here(infs, CERTAIN_CE, Anaphora::get_current_subject());
+	PL::Spatial::infer_is_room(infs, IMPOSSIBLE_CE);
 }
 
 @ Similarly:
 
 =
 void PL::Spatial::infer_presence_nowhere(instance *I) {
-	Inferences::draw(PARENTAGE_NOWHERE_INF,
-		Instances::as_subject(I), CERTAIN_CE, NULL, NULL);
-	Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), IMPOSSIBLE_CE,
-		NULL, NULL);
+	PL::Spatial::infer_is_nowhere(Instances::as_subject(I), CERTAIN_CE);
+	PL::Spatial::infer_is_room(Instances::as_subject(I), IMPOSSIBLE_CE);
 }
 
 @h Completing the model, stages I and II.
@@ -853,7 +916,7 @@ object under investigation.
 	@<Find the inference which will decide the progenitor@>;
 	if (parent_setting_inference) {
 		instance *whereabouts =
-			Inferences::get_reference_as_object(parent_setting_inference);
+			PL::Spatial::get_inferred_parent(parent_setting_inference);
 		if (SPATIAL_DATA(I)->here_flag) @<Find the whereabouts of something here@>;
 		if (whereabouts) {
 			PL::Spatial::set_progenitor(I, whereabouts, parent_setting_inference);
