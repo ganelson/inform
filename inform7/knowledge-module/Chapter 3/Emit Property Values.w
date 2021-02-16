@@ -26,17 +26,6 @@ void Properties::Emit::emit_subject(inference_subject *subj) {
 	Produce::annotate_i(iname, DECLARATION_ORDER_IANN, cs_sequence_counter++);
 
 	@<Compile the actual object@>;
-	if (K) {
-		World::Compile::set_rough_memory_usage(K, words_used);
-		int nw = 0;
-		for (inference_subject *infs = subj;
-			infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-			kind *K2 = KindSubjects::to_kind(infs);
-			if (K2) nw += World::Compile::get_rough_memory_usage(K2);
-		}
-		nw += 16;
-		LOGIF(OBJECT_COMPILATION, "Rough size estimate: %d words\n", nw);
-	}
 	LOGIF(OBJECT_COMPILATION, "Compilation of $j complete\n", subj);
 }
 
@@ -82,9 +71,9 @@ the class hierarchy at I6 level exactly match the kind hierarchy at I7 level.
 
 @<Emit inferred object properties@> =
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, subj, PROPERTY_INF) {
-		property *prn = World::Inferences::get_property(inf);
-		current_sentence = World::Inferences::where_inferred(inf);
+	KNOWLEDGE_LOOP(inf, subj, property_inf) {
+		property *prn = PropertyInferences::get_property(inf);
+		current_sentence = Inferences::where_inferred(inf);
 		LOGIF(OBJECT_COMPILATION, "Compiling property $Y\n", prn);
 		words_used += Properties::Emit::emit_propertyvalue(subj, prn);
 	}

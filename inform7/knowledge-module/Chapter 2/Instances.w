@@ -106,7 +106,7 @@ the same object may be thing number 17 but vehicle number 3 -- and secondly,
 because we won't know the exact kind of objects until much later on; for now
 the only thing we are sure of is that they are indeed objects. Enumeration
 for objects within kinds is certainly useful, but it's harder to do and will
-be done later on: see //Instance Counting//.
+be done later on: see //runtime: Instance Counting//.
 
 @<Add the new instance to its enumeration@> =
 	if (!(Kinds::Behaviour::is_object(K))) {

@@ -235,10 +235,10 @@ void StandardProblems::inference_problem(SIGIL_ARGUMENTS, inference_subject *inf
 		char *message, char *explanation) {
 	ACT_ON_SIGIL
 	Problems::quote_subject(1, infs);
-	Problems::quote_source(2, World::Inferences::where_inferred(inf));
+	Problems::quote_source(2, Inferences::where_inferred(inf));
 	Problems::quote_text(3, message);
 	Problems::quote_text(4, explanation);
-	Problems::quote_property(5, World::Inferences::get_property(inf));
+	Problems::quote_property(5, PropertyInferences::get_property(inf));
 	Problems::issue_problem_begin(Task::syntax_tree(), explanation);
 	Problems::issue_problem_segment(
 		"You wrote %2: but the property %5 for the %1 %3%S.%L, %4");

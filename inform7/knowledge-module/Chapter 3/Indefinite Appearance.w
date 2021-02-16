@@ -20,8 +20,8 @@ So as an interim measure the text is inferred into a pseudo-property called
 =
 void Properties::Appearance::infer(inference_subject *infs, parse_node *spec) {
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
-		if (World::Inferences::get_property(inf) == P_indefinite_appearance_text)
+	KNOWLEDGE_LOOP(inf, infs, property_inf)
+		if (PropertyInferences::get_property(inf) == P_indefinite_appearance_text)
 			@<Issue a problem for a second appearance@>;
 
 	prevailing_mood = CERTAIN_CE;
@@ -36,7 +36,7 @@ ambiguously.
 
 @<Issue a problem for a second appearance@> =
 	StandardProblems::infs_contradiction_problem(_p_(PM_TwoAppearances),
-		World::Inferences::where_inferred(inf), current_sentence, infs,
+		Inferences::where_inferred(inf), current_sentence, infs,
 		"seems to have two different descriptions",
 		"perhaps because you intended the second description to apply to something "
 		"mentioned in between, but declared it in such a way that it was never the "
@@ -60,10 +60,10 @@ available;
 =
 void Properties::Appearance::reallocate(inference_subject *infs) {
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
-		if (World::Inferences::get_property(inf) == P_indefinite_appearance_text) {
-			parse_node *txt = World::Inferences::get_property_value(inf);
-			current_sentence = World::Inferences::where_inferred(inf);
+	KNOWLEDGE_LOOP(inf, infs, property_inf) {
+		if (PropertyInferences::get_property(inf) == P_indefinite_appearance_text) {
+			parse_node *txt = PropertyInferences::get_value(inf);
+			current_sentence = Inferences::where_inferred(inf);
 			if (Plugins::Call::default_appearance(infs, txt) == FALSE) {
 				if ((P_description) &&
 					(World::Permissions::find(infs, P_description, TRUE))) {

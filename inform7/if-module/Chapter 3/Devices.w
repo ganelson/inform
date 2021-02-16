@@ -30,7 +30,7 @@ int PL::Devices::devices_new_base_kind_notify(kind *new_base, text_stream *name,
 
 @ =
 int PL::Devices::IF_complete_model(int stage) {
-	if (stage == 3) {
+	if (stage == WORLD_STAGE_III) {
 		P_switchable = Properties::EitherOr::new_nameless(L"switchable");
 		Properties::EitherOr::implement_as_attribute(P_switchable, TRUE);
 		instance *I;

@@ -638,11 +638,11 @@ we find it, we compile it and return |TRUE|; if not we do nothing and return
 =
 int Properties::compile_property_value_inner(value_holster *VH, inference_subject *infs, property *prn) {
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
-		if (World::Inferences::get_inference_type(inf) == PROPERTY_INF) {
-			current_sentence = World::Inferences::where_inferred(inf);
-			int sense = (World::Inferences::get_certainty(inf) > 0)?TRUE:FALSE;
-			property *inferred_property = World::Inferences::get_property(inf);
+	KNOWLEDGE_LOOP(inf, infs, property_inf) {
+		if (Inferences::get_inference_type(inf) == property_inf) {
+			current_sentence = Inferences::where_inferred(inf);
+			int sense = (Inferences::get_certainty(inf) > 0)?TRUE:FALSE;
+			property *inferred_property = PropertyInferences::get_property(inf);
 			if (Properties::is_either_or(prn)) {
 				if (inferred_property == prn) {
 					Properties::EitherOr::compile_value(VH, inferred_property, sense);
@@ -655,7 +655,7 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 			} else {
 				if (inferred_property == prn) {
 					if (sense) {
-						parse_node *val = World::Inferences::get_property_value(inf);
+						parse_node *val = PropertyInferences::get_value(inf);
 						if (val == NULL) internal_error("malformed property inference");
 						Properties::Valued::compile_value(VH, inferred_property, val);
 						return TRUE;

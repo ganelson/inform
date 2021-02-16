@@ -49,12 +49,13 @@ typedef struct spatial_data {
 @ Here, first, are the special kinds of inference needed to store these vague
 indications of spatial structure:
 
-@d IS_ROOM_INF 50 /* is O a room? */
-@d CONTAINS_THINGS_INF 51 /* does O contain things? */
-@d PARENTAGE_INF 52 /* where is O located? */
-@d PARENTAGE_HERE_INF 53 /* located vaguely as "here"? */
-@d PARENTAGE_NOWHERE_INF 54 /* located vaguely as "nowhere"? */
-@d PART_OF_INF 55 /* is O a part of another object? */
+= (early code)
+inference_family *IS_ROOM_INF = NULL; /* 50 is O a room? */
+inference_family *CONTAINS_THINGS_INF = NULL; /* 51 does O contain things? */
+inference_family *PARENTAGE_INF = NULL; /* 52 where is O located? */
+inference_family *PARENTAGE_HERE_INF = NULL; /* 53 located vaguely as "here"? */
+inference_family *PARENTAGE_NOWHERE_INF = NULL; /* 54 located vaguely as "nowhere"? */
+inference_family *PART_OF_INF = NULL; /* 55 is O a part of another object? */
 
 @ The Spatial plugin also needs to know about a considerable number of special
 kinds and properties:
@@ -95,6 +96,16 @@ inference_subject *infs_person = NULL;
 
 =
 void PL::Spatial::start(void) {
+	IS_ROOM_INF = Inferences::new_family(I"IS_ROOM_INF", CI_DIFFER_IN_INFS1);
+	METHOD_ADD(IS_ROOM_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::is_room_explain_contradiction);
+	CONTAINS_THINGS_INF = Inferences::new_family(I"CONTAINS_THINGS_INF", CI_DIFFER_IN_INFS1);
+	PARENTAGE_INF = Inferences::new_family(I"PARENTAGE_INF", CI_DIFFER_IN_INFS1);
+	METHOD_ADD(PARENTAGE_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::parentage_explain_contradiction);
+	PARENTAGE_HERE_INF = Inferences::new_family(I"PARENTAGE_HERE_INF", CI_DIFFER_IN_INFS1);
+	PARENTAGE_NOWHERE_INF = Inferences::new_family(I"PARENTAGE_NOWHERE_INF", CI_DIFFER_IN_INFS1);
+	PART_OF_INF = Inferences::new_family(I"PART_OF_INF", CI_DIFFER_IN_INFS1);
+
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCE_FAMILIES, PL::Spatial::create_inference_families);
 	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Spatial::create_inference_subjects);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Spatial::spatial_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_ACT_ON_SPECIAL_NPS, PL::Spatial::spatial_act_on_special_NPs);
@@ -111,6 +122,43 @@ void PL::Spatial::start(void) {
 	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Spatial::spatial_set_subkind_notify);
 	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Spatial::spatial_add_to_World_index);
 	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Spatial::spatial_intervene_in_assertion);
+}
+
+int PL::Spatial::is_room_explain_contradiction(inference_family *f, inference *A,
+	inference *B, int similarity, inference_subject *subj) {
+	StandardProblems::two_sentences_problem(_p_(PM_WhenIsARoomNotARoom),
+		A->inferred_from,
+		"this looks like a contradiction",
+		"because apparently something would have to be both a room and not a "
+		"room at the same time.");
+	return TRUE;
+}
+
+int PL::Spatial::parentage_explain_contradiction(inference_family *f, inference *A,
+	inference *B, int similarity, inference_subject *subj) {
+	if (Inferences::get_reference_as_object(A) != Inferences::get_reference_as_object(B)) {
+		Problems::quote_source(1, Inferences::where_inferred(A));
+		Problems::quote_source(2, Inferences::where_inferred(B));
+		Problems::quote_subject(3, subj);
+		Problems::quote_object(4, Inferences::get_reference_as_object(A));
+		Problems::quote_object(5, Inferences::get_reference_as_object(B));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
+		Problems::issue_problem_segment(
+			"You wrote %1, but also %2: that seems to be saying that the same "
+			"object (%3) must be in two different places (%4 and %5). This "
+			"looks like a contradiction. %P"
+			"This sometimes happens as a result of a sentence like 'Every person "
+			"carries a bag', when Inform doesn't know 'bag' as the name of any "
+			"kind - so that it makes only a single thing called 'bag', and then "
+			"the sentence looks as if it says everyone is carrying the same bag.");
+		Problems::issue_problem_end();
+		return TRUE;
+	}
+	return FALSE;
+}
+
+int PL::Spatial::create_inference_families(void) {
+	return FALSE;
 }
 
 @ In talking about some of the fundamental spatial domains we potentially have
@@ -179,35 +227,27 @@ multiple |PARENTAGE_INF|s can contradict each other.
 
 =
 int PL::Spatial::spatial_log_inference_type(int it) {
-	switch(it) {
-		case CONTAINS_THINGS_INF: LOG("CONTAINS_THINGS_INF"); return TRUE;
-		case IS_ROOM_INF: LOG("IS_ROOM_INF"); return TRUE;
-		case PARENTAGE_HERE_INF: LOG("PARENTAGE_HERE_INF"); return TRUE;
-		case PARENTAGE_NOWHERE_INF: LOG("PARENTAGE_NOWHERE_INF"); return TRUE;
-		case PARENTAGE_INF: LOG("PARENTAGE_INF"); return TRUE;
-		case PART_OF_INF: LOG("PART_OF_INF"); return TRUE;
-	}
 	return FALSE;
 }
 
 int PL::Spatial::spatial_inferences_contradict(inference *A, inference *B, int similarity) {
-	if ((World::Inferences::get_inference_type(A) == PARENTAGE_INF) &&
-		(World::Inferences::get_reference_as_object(A) !=
-			World::Inferences::get_reference_as_object(B)))
+	if ((Inferences::get_inference_type(A) == PARENTAGE_INF) &&
+		(Inferences::get_reference_as_object(A) !=
+			Inferences::get_reference_as_object(B)))
 		return TRUE;
 	return FALSE;
 }
 
 int PL::Spatial::spatial_explain_contradiction(inference *A, inference *B, int similarity,
 	inference_subject *subj) {
-	if ((World::Inferences::get_inference_type(A) == PARENTAGE_INF) &&
-		(World::Inferences::get_reference_as_object(A) !=
-			World::Inferences::get_reference_as_object(B))) {
-		Problems::quote_source(1, World::Inferences::where_inferred(A));
-		Problems::quote_source(2, World::Inferences::where_inferred(B));
+/*	if ((Inferences::get_inference_type(A) == PARENTAGE_INF) &&
+		(Inferences::get_reference_as_object(A) !=
+			Inferences::get_reference_as_object(B))) {
+		Problems::quote_source(1, Inferences::where_inferred(A));
+		Problems::quote_source(2, Inferences::where_inferred(B));
 		Problems::quote_subject(3, subj);
-		Problems::quote_object(4, World::Inferences::get_reference_as_object(A));
-		Problems::quote_object(5, World::Inferences::get_reference_as_object(B));
+		Problems::quote_object(4, Inferences::get_reference_as_object(A));
+		Problems::quote_object(5, Inferences::get_reference_as_object(B));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
 		Problems::issue_problem_segment(
 			"You wrote %1, but also %2: that seems to be saying that the same "
@@ -220,6 +260,7 @@ int PL::Spatial::spatial_explain_contradiction(inference *A, inference *B, int s
 		Problems::issue_problem_end();
 		return TRUE;
 	}
+*/
 	return FALSE;
 }
 
@@ -266,7 +307,7 @@ int PL::Spatial::spatial_set_kind_notify(instance *I, kind *k) {
 	kind *kw = Instances::to_kind(I);
 	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_room))) &&
 		(Kinds::Behaviour::is_object_of_kind(k, K_room)))
-		World::Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
+		Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
 			NULL, NULL);
 	return FALSE;
 }
@@ -375,9 +416,9 @@ int PL::Spatial::spatial_default_appearance(inference_subject *infs, parse_node 
 			instance *I = InstanceSubjects::to_object_instance(infs);
 			if ((I) && (PL::Backdrops::object_is_scenery(I))) {
 				inference *inf;
-				KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
-					property *prn = World::Inferences::get_property(inf);
-					if (((prn) && (World::Inferences::get_certainty(inf) > 0)) &&
+				KNOWLEDGE_LOOP(inf, infs, property_inf) {
+					property *prn = PropertyInferences::get_property(inf);
+					if (((prn) && (Inferences::get_certainty(inf) > 0)) &&
 						(prn == P_description)) {
 						@<Produce a problem for doubly described scenery@>;
 						return TRUE;
@@ -514,7 +555,7 @@ void PL::Spatial::infer_presence_here(instance *I) {
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PARENTAGE_HERE_INF) {
 		StandardProblems::contradiction_problem(_p_(PM_DuplicateHere),
-			World::Inferences::where_inferred(inf),
+			Inferences::where_inferred(inf),
 			current_sentence,
 			I,
 			"can only be said to be 'here' once",
@@ -522,18 +563,18 @@ void PL::Spatial::infer_presence_here(instance *I) {
 			"since 'here' can mean different things in different sentences.");
 	}
 
-	World::Inferences::draw(PARENTAGE_HERE_INF, infs, CERTAIN_CE,
+	Inferences::draw(PARENTAGE_HERE_INF, infs, CERTAIN_CE,
 		Anaphora::get_current_subject(), NULL);
-	World::Inferences::draw(IS_ROOM_INF, infs, IMPOSSIBLE_CE, NULL, NULL);
+	Inferences::draw(IS_ROOM_INF, infs, IMPOSSIBLE_CE, NULL, NULL);
 }
 
 @ Similarly:
 
 =
 void PL::Spatial::infer_presence_nowhere(instance *I) {
-	World::Inferences::draw(PARENTAGE_NOWHERE_INF,
+	Inferences::draw(PARENTAGE_NOWHERE_INF,
 		Instances::as_subject(I), CERTAIN_CE, NULL, NULL);
-	World::Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), IMPOSSIBLE_CE,
+	Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), IMPOSSIBLE_CE,
 		NULL, NULL);
 }
 
@@ -639,16 +680,16 @@ probably suggested by inferences.
 @<Determine the geography choice@> =
 	inference *inf;
 	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), CONTAINS_THINGS_INF)
-		if (World::Inferences::get_certainty(inf) > geography_certainty) {
+		if (Inferences::get_certainty(inf) > geography_certainty) {
 			geography_choice = K_container;
-			geography_certainty = World::Inferences::get_certainty(inf);
+			geography_certainty = Inferences::get_certainty(inf);
 			geography_inference = inf;
 		}
 	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), IS_ROOM_INF)
-		if ((World::Inferences::get_certainty(inf) > UNKNOWN_CE) ||
-			(World::Inferences::get_certainty(inf) > geography_certainty)) {
+		if ((Inferences::get_certainty(inf) > UNKNOWN_CE) ||
+			(Inferences::get_certainty(inf) > geography_certainty)) {
 			geography_choice = K_room;
-			geography_certainty = World::Inferences::get_certainty(inf);
+			geography_certainty = Inferences::get_certainty(inf);
 			geography_inference = inf;
 		}
 
@@ -690,7 +731,7 @@ when it's legitimately a door.
 @<Issue a problem message for implied containment by a person@> =
 	StandardProblems::contradiction_problem(_p_(PM_PersonContaining),
 		sentence_setting_kind,
-		World::Inferences::where_inferred(geography_inference), I,
+		Inferences::where_inferred(geography_inference), I,
 		"cannot contain or support things like something inanimate",
 		"which is what you are implying. Instead, people must carry or wear them: "
 		"so 'The briefcase is in Daphne.' is disallowed, but 'The briefcase is "
@@ -701,7 +742,7 @@ Inform spatial model:
 
 @<Issue a problem message for simultaneous containment and support@> =
 	StandardProblems::contradiction_problem(_p_(PM_CantContainAndSupport),
-		decider, World::Inferences::where_inferred(geography_inference), I,
+		decider, Inferences::where_inferred(geography_inference), I,
 		"cannot both contain things and support things",
 		"which is what you're implying here. If you need both, the easiest way is "
 		"to make it either a supporter with a container attached or vice versa. "
@@ -712,7 +753,7 @@ Inform spatial model:
 @<Issue a more generic problem message for irreconcilable kinds@> =
 	StandardProblems::contradiction_problem(_p_(PM_BothRoomAndSupporter),
 		decider,
-		World::Inferences::where_inferred(geography_inference), I,
+		Inferences::where_inferred(geography_inference), I,
 		"would need to have two different and incompatible kinds to make both "
 		"sentences true",
 		"and this is a contradiction.");
@@ -740,7 +781,7 @@ void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) 
 	if (to == NULL) internal_error("set progenitor of nothing");
 	SPATIAL_DATA(of)->progenitor = to;
 	SPATIAL_DATA(of)->progenitor_set_at =
-		(reason)?World::Inferences::where_inferred(reason):NULL;
+		(reason)?Inferences::where_inferred(reason):NULL;
 }
 
 @ This is used for error recovery only.
@@ -812,7 +853,7 @@ object under investigation.
 	@<Find the inference which will decide the progenitor@>;
 	if (parent_setting_inference) {
 		instance *whereabouts =
-			World::Inferences::get_reference_as_object(parent_setting_inference);
+			Inferences::get_reference_as_object(parent_setting_inference);
 		if (SPATIAL_DATA(I)->here_flag) @<Find the whereabouts of something here@>;
 		if (whereabouts) {
 			PL::Spatial::set_progenitor(I, whereabouts, parent_setting_inference);
@@ -833,8 +874,8 @@ object under investigation.
 @<Make this the determining inference@> =
 	if (parent_setting_inference) {
 		StandardProblems::contradiction_problem(_p_(PM_DuplicateParentage),
-			World::Inferences::where_inferred(parent_setting_inference),
-			World::Inferences::where_inferred(inf),
+			Inferences::where_inferred(parent_setting_inference),
+			Inferences::where_inferred(inf),
 			I,
 			"can only be given its position once",
 			"in a single assertion sentence.");
@@ -845,7 +886,7 @@ object under investigation.
 	if (PL::Spatial::object_is_a_room(whereabouts) == FALSE) whereabouts = NULL;
 	if (whereabouts == NULL) {
 		parse_node *here_sentence =
-			World::Inferences::where_inferred(parent_setting_inference);
+			Inferences::where_inferred(parent_setting_inference);
 		@<Set the whereabouts to the last discussed room prior to this inference being drawn@>;
 		if (whereabouts == NULL) {
 			current_sentence = here_sentence;
@@ -1150,8 +1191,8 @@ as a value for |description| from the room class.
 	if (K_room) {
 		inference *inf;
 		int desc_seen = FALSE;
-		POSITIVE_KNOWLEDGE_LOOP(inf, KindSubjects::from_kind(K_room), PROPERTY_INF)
-			if (World::Inferences::get_property(inf) == P_description)
+		POSITIVE_KNOWLEDGE_LOOP(inf, KindSubjects::from_kind(K_room), property_inf)
+			if (PropertyInferences::get_property(inf) == P_description)
 				desc_seen = TRUE;
 		if (desc_seen == FALSE) {
 			TEMPORARY_TEXT(val)
@@ -1299,8 +1340,8 @@ void PL::Spatial::index_spatial_relationship(OUTPUT_STREAM, instance *I) {
 		if (Instances::of_kind(P, K_person)) rel = "carried";
 		if (SPATIAL_DATA(I)->part_flag) rel = "part";
 		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PROPERTY_INF)
-			if (World::Inferences::get_property(inf) == P_worn)
+		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
+			if (PropertyInferences::get_property(inf) == P_worn)
 				rel = "worn";
 	}
 	if (rel) WRITE("<i>%s</i> ", rel);
@@ -1362,8 +1403,8 @@ int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
 			if (Instances::of_kind(P, K_person)) rel = "carried by";
 			if (SPATIAL_DATA(O)->part_flag) rel = "part of";
 			inference *inf;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(O), PROPERTY_INF)
-				if (World::Inferences::get_property(inf) == P_worn)
+			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(O), property_inf)
+				if (PropertyInferences::get_property(inf) == P_worn)
 					rel = "worn by";
 			WRITE("%s ", rel);
 			IXInstances::index_name(OUT, P);

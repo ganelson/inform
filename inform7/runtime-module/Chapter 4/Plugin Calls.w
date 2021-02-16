@@ -9,6 +9,7 @@ To place calls to the plugins.
 @d PLUGIN_NEW_VARIABLE_NOTIFY 1
 @d PLUGIN_IRREGULAR_GENITIVE 4
 @d PLUGIN_SET_KIND_NOTIFY 6
+@d PLUGIN_CREATE_INFERENCE_FAMILIES 10
 @d PLUGIN_COMPLETE_MODEL 11
 @d PLUGIN_PARSE_COMPOSITE_NQS 12
 @d PLUGIN_REFINE_IMPLICIT_NOUN 14
@@ -154,8 +155,12 @@ int Plugins::Call::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(PLUGIN_SET_SUBKIND_NOTIFY, sub, super);
 }
 
+int Plugins::Call::create_inference_families(void) {
+	PLUGINS_CALLV(PLUGIN_CREATE_INFERENCE_FAMILIES);
+}
+
 int Plugins::Call::complete_model(int stage) {
-	World::Inferences::diversion_off();
+	Inferences::diversion_off();
 	PLUGINS_CALL(PLUGIN_COMPLETE_MODEL, stage);
 }
 

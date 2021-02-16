@@ -56,10 +56,9 @@ void RelationSubjects::complete_model(inference_subject_family *family,
 		(bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
-		POSITIVE_KNOWLEDGE_LOOP(i, World::Inferences::bp_as_subject(bp),
-			ARBITRARY_RELATION_INF) {
+		POSITIVE_KNOWLEDGE_LOOP(i, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
 			inference_subject *infs0, *infs1;
-			World::Inferences::get_references(i, &infs0, &infs1);
+			Inferences::get_references(i, &infs0, &infs1);
 			RTRelations::equivalence_relation_merge_classes(bp, domain_size,
 				infs0->allocation_id, infs1->allocation_id);
 		}
@@ -102,10 +101,10 @@ void RelationSubjects::check_OtoO_relation(binary_predicate *bp) {
 		inference *inf1 = NULL;
 		int leftc = 0;
 		inference *inf;
-		KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
-			if ((World::Inferences::get_property(inf) == prn) &&
-				(World::Inferences::get_certainty(inf) == CERTAIN_CE)) {
-				parse_node *val = World::Inferences::get_property_value(inf);
+		KNOWLEDGE_LOOP(inf, infs, property_inf) {
+			if ((PropertyInferences::get_property(inf) == prn) &&
+				(Inferences::get_certainty(inf) == CERTAIN_CE)) {
+				parse_node *val = PropertyInferences::get_value(inf);
 				inference_subject *infs2 = InferenceSubjects::from_specification(val);
 				leftc++;
 				if (infs2) {
@@ -116,8 +115,8 @@ void RelationSubjects::check_OtoO_relation(binary_predicate *bp) {
 				if (leftc == 1) inf1 = inf;
 				if (leftc == 2) {
 					StandardProblems::infs_contradiction_problem(_p_(BelievedImpossible),
-						World::Inferences::where_inferred(inf1),
-						World::Inferences::where_inferred(inf),
+						Inferences::where_inferred(inf1),
+						Inferences::where_inferred(inf),
 						infs, "can only relate to one other thing in this way",
 						"since the relation in question is one-to-one.");
 				}
@@ -127,8 +126,8 @@ void RelationSubjects::check_OtoO_relation(binary_predicate *bp) {
 	LOOP_OVER(infs, inference_subject) {
 		if (right_counts[infs->allocation_id] >= 2) {
 			StandardProblems::infs_contradiction_problem(_p_(PM_Relation1to1Right),
-				World::Inferences::where_inferred(right_first[infs->allocation_id]),
-				World::Inferences::where_inferred(right_second[infs->allocation_id]),
+				Inferences::where_inferred(right_first[infs->allocation_id]),
+				Inferences::where_inferred(right_second[infs->allocation_id]),
 				infs, "can only relate to one other thing in this way",
 				"since the relation in question is one-to-one.");
 		}
@@ -158,11 +157,10 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
 
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, World::Inferences::bp_as_subject(bp),
-		ARBITRARY_RELATION_INF) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
 		parse_node *left_val = NULL;
 		parse_node *right_val = NULL;
-		World::Inferences::get_references_spec(inf, &left_val, &right_val);
+		Inferences::get_references_spec(inf, &left_val, &right_val);
 		inference_subject *left_infs = InferenceSubjects::from_specification(left_val);
 		inference_subject *right_infs = InferenceSubjects::from_specification(right_val);
 		int left_id = (left_infs)?(left_infs->allocation_id):(-1);
@@ -186,8 +184,8 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 			if (left_counts[infs->allocation_id] >= 2) {
 				StandardProblems::infs_contradiction_problem(
 					_p_(PM_RelationVtoOContradiction),
-					World::Inferences::where_inferred(left_first[infs->allocation_id]),
-					World::Inferences::where_inferred(left_second[infs->allocation_id]),
+					Inferences::where_inferred(left_first[infs->allocation_id]),
+					Inferences::where_inferred(left_second[infs->allocation_id]),
 					infs, "can only relate to one other thing in this way",
 					"since the relation in question is various-to-one.");
 			}
@@ -197,8 +195,8 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 			if (right_counts[infs->allocation_id] >= 2) {
 				StandardProblems::infs_contradiction_problem(
 					_p_(PM_RelationOtoVContradiction),
-					World::Inferences::where_inferred(right_first[infs->allocation_id]),
-					World::Inferences::where_inferred(right_second[infs->allocation_id]),
+					Inferences::where_inferred(right_first[infs->allocation_id]),
+					Inferences::where_inferred(right_second[infs->allocation_id]),
 					infs, "can only be related to by one other thing in this way",
 					"since the relation in question is one-to-various.");
 			}

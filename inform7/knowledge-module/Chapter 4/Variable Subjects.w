@@ -52,8 +52,8 @@ inference *VariableSubjects::get_initial_value_inference(nonlocal_variable *nlv)
 	if (nlv) {
 		inference_subject *infs = NonlocalVariables::to_subject(nlv);
 		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
-			if (World::Inferences::get_property(inf) == P_variable_initial_value)
+		POSITIVE_KNOWLEDGE_LOOP(inf, infs, property_inf)
+			if (PropertyInferences::get_property(inf) == P_variable_initial_value)
 				return inf;
 	}
 	return NULL;
@@ -61,13 +61,13 @@ inference *VariableSubjects::get_initial_value_inference(nonlocal_variable *nlv)
 
 parse_node *VariableSubjects::get_initial_value(nonlocal_variable *nlv) {
 	inference *inf = VariableSubjects::get_initial_value_inference(nlv);
-	if (inf) return World::Inferences::get_property_value(inf);
+	if (inf) return PropertyInferences::get_value(inf);
 	return Specifications::new_UNKNOWN(EMPTY_WORDING);
 }
 
 parse_node *VariableSubjects::origin_of_initial_value(nonlocal_variable *nlv) {
 	inference *inf = VariableSubjects::get_initial_value_inference(nlv);
-	if (inf) return World::Inferences::where_inferred(inf);
+	if (inf) return Inferences::where_inferred(inf);
 	return NULL;
 }
 

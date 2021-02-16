@@ -247,7 +247,7 @@ int Properties::SettingRelations::REL_assert(bp_family *self, binary_predicate *
 		inference_subject *infs1, parse_node *spec1) {
 	property_setting_bp_data *PSD =
 		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
-	World::Inferences::draw_property(infs0, PSD->set_property, spec1);
+	PropertyInferences::draw(infs0, PSD->set_property, spec1);
 	return TRUE;
 }
 

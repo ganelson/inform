@@ -273,7 +273,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 @<A region is being put inside a region@> =
 	inference_subject *inner = Instances::as_subject(I1);
 	inference_subject *outer = Instances::as_subject(I0);
-	World::Inferences::draw(PARENTAGE_INF, inner, CERTAIN_CE, outer, NULL);
+	Inferences::draw(PARENTAGE_INF, inner, CERTAIN_CE, outer, NULL);
 
 @ Anything in or part of a region is necessarily a room, if it isn't known
 to be a region already:
@@ -282,7 +282,7 @@ to be a region already:
 	inference_subject *rm = Instances::as_subject(I1);
 	parse_node *spec = Rvalues::from_instance(I0);
 	Propositions::Abstract::assert_kind_of_instance(I1, K_room);
-	World::Inferences::draw_property(rm, P_map_region, spec);
+	PropertyInferences::draw(rm, P_map_region, spec);
 
 @ Note that because we use regular |PARENTAGE_INF| inferences to remember
 that one region is inside another, it follows that the progenitor of a
@@ -301,8 +301,8 @@ instance *PL::Regions::enclosing(instance *reg) {
 
 =
 int PL::Regions::regions_complete_model(int stage) {
-	if (stage == 2) @<Assert map-region properties of rooms and regions@>;
-	if (stage == 3) @<Assert regional-found-in properties of regions@>;
+	if (stage == WORLD_STAGE_II) @<Assert map-region properties of rooms and regions@>;
+	if (stage == WORLD_STAGE_III) @<Assert regional-found-in properties of regions@>;
 	return FALSE;
 }
 
@@ -316,7 +316,7 @@ int PL::Regions::regions_complete_model(int stage) {
 		if ((Instances::of_kind(I, K_room)) ||
 			(Instances::of_kind(I, K_region))) {
 			parse_node *where = NULL;
-			parse_node *val = World::Inferences::get_prop_state_at(
+			parse_node *val = Inferences::get_prop_state_at(
 				Instances::as_subject(I), P_map_region, &where);
 			if (val) {
 				instance *reg =

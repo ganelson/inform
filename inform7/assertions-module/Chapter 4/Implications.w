@@ -14,10 +14,9 @@ description only, whereas B could be any subtree of an assertion.
 
 =
 typedef struct implication {
-	struct pcalc_prop *if_spec; /* which objects are affected */
+	struct pcalc_prop *if_proposition; /* which objects are affected */
 	struct parse_node *then_pn; /* what assertion is implied about them */
 	int implied_likelihood; /* with what certainty level */
-	struct implication *next_implication; /* in list of implications */
 	CLASS_DEFINITION
 } implication;
 
@@ -61,15 +60,13 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	@<Check that the conclusion involves only a single either/or property@>;
 
 	implication *imp = CREATE(implication);
-	imp->if_spec = premiss;
+	imp->if_proposition = premiss;
 	imp->then_pn = py;
 	imp->implied_likelihood = prevailing_mood;
-
-	imp->next_implication = InferenceSubjects::get_implications(premiss_kind);
-	InferenceSubjects::set_implications(premiss_kind, imp);
+	ADD_TO_LINKED_LIST(imp, implication, InferenceSubjects::get_implications(premiss_kind));
 
 	LOGIF(IMPLICATIONS, "Forming implication for $j: $D implies\n  $T",
-		premiss_kind, imp->if_spec, imp->then_pn);
+		premiss_kind, imp->if_proposition, imp->then_pn);
 
 @<Find the premiss kind and specification@> =
 	parse_node *loc = px;
@@ -156,9 +153,9 @@ void Assertions::Implications::set_possessed_flags(inference_subject *infs) {
 	if (k) Assertions::Implications::set_possessed_flags(k);
 
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF) {
-		property *prn = World::Inferences::get_property(inf);
-		if ((Properties::is_either_or(prn)) && (World::Inferences::get_certainty(inf) != UNKNOWN_CE))
+	KNOWLEDGE_LOOP(inf, infs, property_inf) {
+		property *prn = PropertyInferences::get_property(inf);
+		if ((Properties::is_either_or(prn)) && (Inferences::get_certainty(inf) != UNKNOWN_CE))
 			@<See what we can get out of this inference@>;
 	}
 }
@@ -168,7 +165,7 @@ both of them, because an inference of being closed is as good as an inference
 of not being open, and vice versa.
 
 @<See what we can get out of this inference@> =
-	int truth_state = TRUE, certainty = World::Inferences::get_certainty(inf);
+	int truth_state = TRUE, certainty = Inferences::get_certainty(inf);
 	if (certainty < 0) { certainty = -certainty; truth_state = FALSE; }
 
 	possession_marker *pom = Properties::get_possession_marker(prn);
@@ -202,12 +199,12 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	inference_subject *k = InferenceSubjects::narrowest_broader_subject(domain);
 	if ((k) && (Assertions::Implications::check_implications_of(k, candidate))) return TRUE;
 
-	if (InferenceSubjects::get_implications(domain))
+	if (LinkedLists::len(InferenceSubjects::get_implications(domain)) > 0)
 		LOGIF(IMPLICATIONS, "Considering implications about $j as they apply to $j:\n",
 			domain, candidate);
 
 	implication *imp;
-	for (imp = InferenceSubjects::get_implications(domain); imp; imp = imp->next_implication)
+	LOOP_OVER_LINKED_LIST(imp, implication, InferenceSubjects::get_implications(domain))
 		@<Consider this individual implication as it applies to the candidate@>;
 
 	return FALSE;
@@ -220,7 +217,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	if (imp->implied_likelihood < 0) conclusion_state = (conclusion_state)?FALSE:TRUE;
 
 	LOGIF(IMPLICATIONS, "$D => $T (certainty %d; changed state %d)\n",
-		imp->if_spec, imp->then_pn, imp->implied_likelihood, conclusion_state);
+		imp->if_proposition, imp->then_pn, imp->implied_likelihood, conclusion_state);
 
 	property *conclusion_prop = AdjectiveAmbiguity::has_either_or_property_meaning(
 		AdjectivalPredicates::to_adjective(pred), NULL);
@@ -229,7 +226,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	possession_marker *pom = Properties::get_possession_marker(conclusion_prop);
 	@<Check that the conclusion is not redundant or irrelevant@>;
 
-	int candidate_qualifies = Assert::test_at_compile_time(imp->if_spec, candidate);
+	int candidate_qualifies = Assert::test_at_compile_time(imp->if_proposition, candidate);
 
 	if (candidate_qualifies) {
 		LOGIF(IMPLICATIONS, "PASS: changing property $Y of $j\n", conclusion_prop, candidate);

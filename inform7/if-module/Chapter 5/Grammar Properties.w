@@ -135,7 +135,7 @@ for parsing:
 
 =
 int PL::Parsing::Visibility::parsing_complete_model(int stage) {
-	if (stage == 5) {
+	if (stage == WORLD_STAGE_V) {
 		instance *I;
 		P_name = Properties::Valued::new_nameless(I"name", K_text);
 		Hierarchy::make_available(Emit::tree(), PL::Parsing::Visibility::name_name());

@@ -2746,7 +2746,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 	if (Instances::of_kind(R, K_door)) {
 		wording W = Instances::get_name(R, FALSE);
 		LOG("%+W is a door.\n", W);
-		parse_node *S = World::Inferences::get_prop_state(
+		parse_node *S = Inferences::get_prop_state(
 			Instances::as_subject(R), P_other_side);
 		instance *X = Rvalues::to_object_instance(S);
 		if (X) {

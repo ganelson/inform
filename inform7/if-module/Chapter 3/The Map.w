@@ -80,7 +80,8 @@ property *P_found_in = NULL; /* I6 only: needed for multiply-present objects */
 in connection with the "mapped D of" relations, it's altogether easier and
 makes for more legible code if we use a special inference type of our own:
 
-@d DIRECTION_INF 100 /* where do map connections from O lead? */
+= (early code)
+inference_family *DIRECTION_INF = NULL; /* 100; where do map connections from O lead? */
 
 @ One useful constant:
 
@@ -110,6 +111,9 @@ typedef struct door_to_notice {
 
 =
 void PL::Map::start(void) {
+	DIRECTION_INF = Inferences::new_family(I"DIRECTION_INF", CI_DIFFER_IN_INFS1);
+
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCE_FAMILIES, PL::Map::create_inference_families);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Map::map_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Map::map_new_subject_notify);
 	PLUGIN_REGISTER(PLUGIN_SET_KIND_NOTIFY, PL::Map::map_set_kind_notify);
@@ -120,12 +124,17 @@ void PL::Map::start(void) {
 	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Map::map_estimate_property_usage);
 	PLUGIN_REGISTER(PLUGIN_LOG_INFERENCE_TYPE, PL::Map::map_log_inference_type);
 	PLUGIN_REGISTER(PLUGIN_INFERENCES_CONTRADICT, PL::Map::map_inferences_contradict);
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCE_FAMILIES, PL::Map::create_inference_families);
 	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Map::map_complete_model);
 	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Map::map_new_property_notify);
 	PLUGIN_REGISTER(PLUGIN_PROPERTY_VALUE_NOTIFY, PL::Map::map_property_value_notify);
 	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Map::map_intervene_in_assertion);
 	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Map::map_add_to_World_index);
 	PLUGIN_REGISTER(PLUGIN_ANNOTATE_IN_WORLD_INDEX, PL::Map::map_annotate_in_World_index);
+}
+
+int PL::Map::create_inference_families(void) {
+	return FALSE;
 }
 
 @ =
@@ -150,9 +159,6 @@ map_data *PL::Map::new_data(inference_subject *subj) {
 
 =
 int PL::Map::map_log_inference_type(int it) {
-	switch(it) {
-		case DIRECTION_INF: LOG("DIRECTION_INF"); return TRUE;
-	}
 	return FALSE;
 }
 
@@ -163,11 +169,9 @@ direction -- this of course is a contradiction.
 
 =
 int PL::Map::map_inferences_contradict(inference *A, inference *B, int similarity) {
-	switch (World::Inferences::get_inference_type(A)) {
-		case DIRECTION_INF:
-			if (similarity == CI_DIFFER_IN_INFS1) return TRUE;
-			break;
-	}
+	if (Inferences::get_inference_type(A) == DIRECTION_INF)
+		if (similarity == CI_DIFFER_IN_INFS1)
+			return TRUE;
 	return FALSE;
 }
 
@@ -352,7 +356,7 @@ void PL::Map::build_exits_array(void) {
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1, *infs2;
-			World::Inferences::get_references(inf, &infs1, &infs2);
+			Inferences::get_references(inf, &infs1, &infs2);
 			instance *to = NULL, *dir = NULL;
 			if (infs1) to = InstanceSubjects::to_object_instance(infs1);
 			if (infs2) dir = InstanceSubjects::to_object_instance(infs2);
@@ -360,7 +364,7 @@ void PL::Map::build_exits_array(void) {
 				int dn = MAP_DATA(dir)->direction_index;
 				if ((dn >= 0) && (dn < MAX_DIRECTIONS)) {
 					MAP_EXIT(I, dn) = to;
-					MAP_DATA(I)->exits_set_at[dn] = World::Inferences::where_inferred(inf);
+					MAP_DATA(I)->exits_set_at[dn] = Inferences::where_inferred(inf);
 				}
 			}
 		}
@@ -478,7 +482,7 @@ int PL::Map::map_property_value_notify(property *prn, parse_node *val) {
 	if (prn == P_other_side) {
 		instance *I = Rvalues::to_object_instance(val);
 		if (I) {
-			World::Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
+			Inferences::draw(IS_ROOM_INF, Instances::as_subject(I), CERTAIN_CE,
 				NULL, NULL);
 		}
 	}
@@ -496,7 +500,7 @@ void PL::Map::set_found_in(instance *I, inter_name *S) {
 	if (P_found_in == NULL)
 		P_found_in = Properties::Valued::new_nameless(I"found_in",
 			K_value);
-	if (World::Inferences::get_prop_state(
+	if (Inferences::get_prop_state(
 		Instances::as_subject(I), P_found_in))
 			internal_error("rival found_in interpretations");
 	Properties::Valued::assert(P_found_in, Instances::as_subject(I),
@@ -510,7 +514,7 @@ and there seems little point in writing this any better.
 
 =
 instance *PL::Map::get_value_of_opposite_property(instance *I) {
-	parse_node *val = World::Inferences::get_prop_state(
+	parse_node *val = Inferences::get_prop_state(
 		Instances::as_subject(I), P_opposite);
 	if (val) return Rvalues::to_object_instance(val);
 	return NULL;
@@ -732,14 +736,14 @@ checks that various mapping impossibilities do not occur.
 		inference *inf;
 		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 			inference_subject *infs1;
-			World::Inferences::get_references(inf, &infs1, NULL);
+			Inferences::get_references(inf, &infs1, NULL);
 			instance *to = InstanceSubjects::to_object_instance(infs1);
 			if ((PL::Spatial::object_is_a_room(I)) && (to) &&
 				(PL::Map::object_is_a_door(to) == FALSE) &&
 				(PL::Spatial::object_is_a_room(to) == FALSE))
 				StandardProblems::contradiction_problem(_p_(PM_BadMapCell),
 					Instances::get_creating_sentence(to),
-					World::Inferences::where_inferred(inf), to,
+					Inferences::where_inferred(inf), to,
 					"appears to be something which can be reached via a map "
 					"connection, but it seems to be neither a room nor a door",
 					"and these are the only possibilities allowed by Inform.");
@@ -764,31 +768,30 @@ checks that various mapping impossibilities do not occur.
 			inference *front_side_inf = NULL, *back_side_inf = NULL;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1, *infs2;
-				World::Inferences::get_references(inf, &infs1, &infs2);
+				Inferences::get_references(inf, &infs1, &infs2);
 				instance *to = InstanceSubjects::to_object_instance(infs1);
 				instance *dir = InstanceSubjects::to_object_instance(infs2);
 				if (to) {
 					if (connections_in == 0) {
 						MAP_DATA(I)->map_connection_a = to;
 						MAP_DATA(I)->map_direction_a = dir;
-						where[0] = World::Inferences::where_inferred(inf);
+						where[0] = Inferences::where_inferred(inf);
 						front_side_inf = inf;
 					}
 					if (connections_in == 1) {
 						MAP_DATA(I)->map_connection_b = to;
 						MAP_DATA(I)->map_direction_b = dir;
-						where[1] = World::Inferences::where_inferred(inf);
+						where[1] = Inferences::where_inferred(inf);
 						back_side_inf = inf;
 					}
 					if (connections_in == 2) {
-						where[2] = World::Inferences::where_inferred(inf);
+						where[2] = Inferences::where_inferred(inf);
 					}
 					connections_in++;
 				}
 			}
 			if ((front_side_inf) && (back_side_inf)) {
-				if (World::Inferences::get_timestamp(front_side_inf) >
-					World::Inferences::get_timestamp(back_side_inf)) {
+				if (front_side_inf->allocation_id > back_side_inf->allocation_id) {
 					instance *X = MAP_DATA(I)->map_connection_a;
 					MAP_DATA(I)->map_connection_a = MAP_DATA(I)->map_connection_b;
 					MAP_DATA(I)->map_connection_b = X;
@@ -837,7 +840,7 @@ from which there's no way back.)
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1;
-				World::Inferences::get_references(inf, &infs1, NULL);
+				Inferences::get_references(inf, &infs1, NULL);
 				instance *to = InstanceSubjects::to_object_instance(infs1);
 				if (PL::Map::object_is_a_door(to)) {
 					instance *exit1 = MAP_DATA(to)->map_connection_a;
@@ -876,7 +879,7 @@ from which there's no way back.)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_a) &&
 			(MAP_DATA(I)->map_connection_b) &&
-			(World::Inferences::get_prop_state(
+			(Inferences::get_prop_state(
 				Instances::as_subject(I), P_other_side)))
 				StandardProblems::object_problem(_p_(PM_BothWaysDoor),
 					I, "seems to be a door whose connections have been given in both "
@@ -1132,7 +1135,7 @@ int PL::Map::map_annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 		instance *X = A;
 		if (A == Data::Objects::room_being_indexed()) X = B;
 		if (X == NULL) {
-			parse_node *S = World::Inferences::get_prop_state(
+			parse_node *S = Inferences::get_prop_state(
 				Instances::as_subject(O), P_other_side);
 			X = Rvalues::to_object_instance(S);
 		}

@@ -239,10 +239,10 @@ of model completion:
 
 =
 int PL::Counting::counting_complete_model(int stage) {
-	if (stage == 1) {
+	if (stage == WORLD_STAGE_I) {
 		@<Create and assert zero values of the vector property@>;
 	}
-	if (stage == 4) {
+	if (stage == WORLD_STAGE_V) {
 		@<Create the two instance properties for each kind of object@>;
 		PL::Counting::make_instance_counts();
 		@<Assert values of the two instance properties for each instance@>;

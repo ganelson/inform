@@ -226,10 +226,10 @@ data variable (such as "story title") to be treated as text.
 wording NonlocalVariables::initial_value_as_plain_text(nonlocal_variable *nlv) {
 	inference *inf;
 	inference_subject *infs = NonlocalVariables::to_subject(nlv);
-	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PROPERTY_INF)
-		if (World::Inferences::get_property(inf) == P_variable_initial_value)
+	POSITIVE_KNOWLEDGE_LOOP(inf, infs, property_inf)
+		if (PropertyInferences::get_property(inf) == P_variable_initial_value)
 			return Node::get_text(
-				World::Inferences::set_property_value_kind(inf, K_text));
+				PropertyInferences::set_value_kind(inf, K_text));
 	return EMPTY_WORDING;
 }
 

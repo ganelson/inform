@@ -83,7 +83,7 @@ any additional sentences generated.
 @<Extend the pass to sentences needed when implicit kinds are set@> =
 	current_sentence = last;
 	global_pass_state.assembly_position = current_sentence;
-	Plugins::Call::complete_model(1);
+	World::deduce_object_instance_kinds();
 	SyntaxTree::traverse_nodep_from(last, MajorNodes::visit, &last);
 
 @ Let us go, and make our visit:

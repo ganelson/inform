@@ -47,6 +47,7 @@ Chapter 4: Compilation Utilities
 	Temporary Variables
 	Variables
 	Instances
+	Instance Counting
 	Adjectives
 	Runtime Support for Kinds
 	Extension Files at Run Time

@@ -258,10 +258,10 @@ int PL::MapDirections::REL_assert(bp_family *self, binary_predicate *bp,
 	inference_subject *infs_from = infs0;
 	inference_subject *infs_to = infs1;
 
-	World::Inferences::draw(IS_ROOM_INF, infs_from, prevailing_mood, NULL, NULL);
+	Inferences::draw(IS_ROOM_INF, infs_from, prevailing_mood, NULL, NULL);
 	if ((prevailing_mood >= 0) && (infs_to))
-		World::Inferences::draw(IS_ROOM_INF, infs_to, LIKELY_CE, NULL, NULL);
-	World::Inferences::draw(DIRECTION_INF, infs_from, prevailing_mood,
+		Inferences::draw(IS_ROOM_INF, infs_to, LIKELY_CE, NULL, NULL);
+	Inferences::draw(DIRECTION_INF, infs_from, prevailing_mood,
 		infs_to, o_dir?(Instances::as_subject(o_dir)):NULL);
 
 	return TRUE;

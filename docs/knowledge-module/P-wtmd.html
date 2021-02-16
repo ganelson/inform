@@ -132,15 +132,8 @@ proposition to a set of facts concerning things in the model; as we have
 seen, the model includes kinds, variables, instances and relations, and so
 we need a unified type for "something you can know a fact about". That
 type is called <a href="4-is.html#SP6" class="internal">inference_subject</a>. Each subject has its own list of known
-facts: we call such a fact an <a href="5-inf.html#SP4" class="internal">inference</a> because it has (usually) been
+facts: we call such a fact an <a href="5-inf.html#SP8" class="internal">inference</a> because it has (usually) been
 inferred from a proposition.
-</p>
-
-<p class="commentary"><a href="2-ins.html" class="internal">Chapter 2: Instances and Variables</a> gives a general API for dealing with <a href="4-is.html" class="internal">Inference Subjects</a>,
-and then works systematically through the various categories of these.
-Kinds and binary predicates already exist from other modules (see
-<a href="../kinds-module/2-knd.html" class="internal">Chapter 2: Kinds (in kinds)</a> and <a href="../calculus-module/3-bpf.html" class="internal">Chapter 3: Binary Predicates (in calculus)</a>
-respectively), but <a href="2-ins.html" class="internal">Instances</a> and <a href="2-nv.html" class="internal">Nonlocal Variables</a> are new.
 </p>
 
 <p class="commentary"><a href="3-prp.html" class="internal">Chapter 3: Properties</a> implements our system of properties: each different value
@@ -151,7 +144,16 @@ of <span class="extract"><span class="extract-syntax">binary_predicate</span></s
 but I do not think this would clarify anything.
 </p>
 
-<p class="commentary">Finally, <a href="4-is.html" class="internal">Chapter 4: Subjects</a> builds the actual model.
+<p class="commentary"><a href="4-is.html" class="internal">Chapter 4: Subjects</a> gives a general API for dealing with <a href="4-is.html" class="internal">Inference Subjects</a>,
+and then works systematically through the various categories of these.
+Kinds and binary predicates already exist from other modules (see
+<a href="../kinds-module/2-knd.html" class="internal">Chapter 2: Kinds (in kinds)</a> and <a href="../calculus-module/3-bpf.html" class="internal">Chapter 3: Binary Predicates (in calculus)</a>
+respectively), but <a href="2-ins.html" class="internal">Instances</a> and <a href="2-nv.html" class="internal">Nonlocal Variables</a> are new.
+</p>
+
+<p class="commentary">Finally, <a href="5-inf.html" class="internal">Chapter 5: Modelling</a> deals with the actual inferences, and with how the
+model world is constructed. The core of Inform does nothing very interesting
+here, but plugins from the <a href="../if-module/index.html" class="internal">if</a> module add some domain-specific savvy.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

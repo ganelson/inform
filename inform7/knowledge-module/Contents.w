@@ -40,9 +40,9 @@ Chapter 4: Subjects
 	Kind Subjects
 	Relation Subjects
 
-Chapter 5: Model
+Chapter 5: Modelling
 	Inferences
+	Property Inferences
+	Relation Inferences
 	Property Permissions
-	Complete Model World
-	Compile Model World
-	Instance Counting
+	The Model World

@@ -400,7 +400,7 @@ int Properties::Measurement::assert(adjective_meaning_family *f,
 		parse_node *val = NULL;
 		if (<s-literal>(mdef->region_threshold_text)) val = <<rp>>;
 		else internal_error("literal unreadable");
-		World::Inferences::draw_property(infs_to_assert_on, mdef->prop, val);
+		PropertyInferences::draw(infs_to_assert_on, mdef->prop, val);
 		return TRUE;
 	}
 	return FALSE;

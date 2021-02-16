@@ -153,7 +153,8 @@ so on. Those absolute basics are made here.
 	BENCH(NounIdentifiers::name_all)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
 	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world", -1);
-	BENCH(World::complete)
+	BENCH(World::stages_II_and_III)
+	BENCH(World::stage_IV)
 
 @<Tables and grammar@> =
 	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
@@ -166,7 +167,7 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::check_tables_for_kind_clashes)
 	BENCH(RTTables::compile_print_table_names)
 	BENCH(PL::Parsing::traverse)
-	BENCH(World::complete_additions)
+	BENCH(World::stage_V)
 
 @<Phrases and rules@> =
 	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules", 3);
@@ -199,7 +200,8 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::I7_Kind_Name_routine)
-	BENCH(World::Compile::compile)
+	BENCH(Plugins::Call::compile_model_tables)
+	BENCH(InferenceSubjects::emit_all)
 	BENCH_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines)
 	BENCH_IF(map_plugin, PL::Map::write_door_dir_routines)
 	BENCH_IF(map_plugin, PL::Map::write_door_to_routines)

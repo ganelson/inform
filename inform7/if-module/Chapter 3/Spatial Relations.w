@@ -230,13 +230,13 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 @<Draw inferences using only the standard Spatial conventions@> =
 	inference_subject *item = Instances::as_subject(I1);
 	inference_subject *loc = Instances::as_subject(I0);
-	World::Inferences::draw(PART_OF_INF, item,
+	Inferences::draw(PART_OF_INF, item,
 		(bp == R_incorporation)?CERTAIN_CE:IMPOSSIBLE_CE,
 		loc, NULL);
 	if (bp == R_containment)
-		World::Inferences::draw(CONTAINS_THINGS_INF, loc, CERTAIN_CE, item, NULL);
-	World::Inferences::draw(PARENTAGE_INF, item, CERTAIN_CE, loc, NULL);
-	World::Inferences::draw(IS_ROOM_INF, item, IMPOSSIBLE_CE, NULL, NULL);
+		Inferences::draw(CONTAINS_THINGS_INF, loc, CERTAIN_CE, item, NULL);
+	Inferences::draw(PARENTAGE_INF, item, CERTAIN_CE, loc, NULL);
+	Inferences::draw(IS_ROOM_INF, item, IMPOSSIBLE_CE, NULL, NULL);
 
 @ If something is being worn, it needs to have the I7 either/or property
 "wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought
@@ -246,12 +246,12 @@ special to make it work, so this doesn't seem worth the trouble.)
 @<Assert the worn and wearable properties@> =
 	inference_subject *item = Instances::as_subject(I1);
 	if (P_wearable)
-		World::Inferences::draw_property(item, P_wearable, NULL);
+		PropertyInferences::draw(item, P_wearable, NULL);
 	if (P_worn == NULL) {
 		P_worn = Properties::EitherOr::new_nameless(L"worn");
 		Properties::EitherOr::implement_as_attribute(P_worn, TRUE);
 	}
-	World::Inferences::draw_property(item, P_worn, NULL);
+	PropertyInferences::draw(item, P_worn, NULL);
 
 @h Compilation.
 We need do nothing special: these relations can be compiled from their schemas.

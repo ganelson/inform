@@ -114,7 +114,7 @@ int EqualityDetails::REL_assert(bp_family *self, binary_predicate *bp,
 				"a variable can only be given its value straightforwardly or "
 				"qualified by 'usually'",
 				"not with 'always', 'seldom' or 'never'.");
-		else World::Inferences::draw_property(
+		else PropertyInferences::draw(
 			NonlocalVariables::to_subject(q), P_variable_initial_value, spec1);
 		return TRUE;
 	}

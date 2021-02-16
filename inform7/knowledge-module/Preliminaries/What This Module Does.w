@@ -64,12 +64,6 @@ type is called //inference_subject//. Each subject has its own list of known
 facts: we call such a fact an //inference// because it has (usually) been
 inferred from a proposition.
 
-//Chapter 2// gives a general API for dealing with //Inference Subjects//,
-and then works systematically through the various categories of these.
-Kinds and binary predicates already exist from other modules (see
-//kinds: Chapter 2: Kinds// and //calculus: Chapter 3: Binary Predicates//
-respectively), but //Instances// and //Nonlocal Variables// are new.
-
 //Chapter 3// implements our system of properties: each different value
 or either-or property is a //property// object. There might be a puritan
 case for abolishing this type in favour of regarding either-or properties
@@ -77,4 +71,12 @@ as special cases of |unary_predicate| and value properties as special cases
 of |binary_predicate| (by identifying a predicate with its setting relation),
 but I do not think this would clarify anything.
 
-Finally, //Chapter 4// builds the actual model.
+//Chapter 4// gives a general API for dealing with //Inference Subjects//,
+and then works systematically through the various categories of these.
+Kinds and binary predicates already exist from other modules (see
+//kinds: Chapter 2: Kinds// and //calculus: Chapter 3: Binary Predicates//
+respectively), but //Instances// and //Nonlocal Variables// are new.
+
+Finally, //Chapter 5// deals with the actual inferences, and with how the
+model world is constructed. The core of Inform does nothing very interesting
+here, but plugins from the //if// module add some domain-specific savvy.

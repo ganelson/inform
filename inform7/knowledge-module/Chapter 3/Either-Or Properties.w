@@ -369,8 +369,8 @@ property.
 int Properties::EitherOr::assert_adj(adjective_meaning_family *f,
 	adjective_meaning *am, inference_subject *infs_to_assert_on, int parity) {
 	property *prn = RETRIEVE_POINTER_property(am->family_specific_data);
-	if (parity == FALSE) World::Inferences::draw_negated_property(infs_to_assert_on, prn, NULL);
-	else World::Inferences::draw_property(infs_to_assert_on, prn, NULL);
+	if (parity == FALSE) PropertyInferences::draw_negated(infs_to_assert_on, prn, NULL);
+	else PropertyInferences::draw(infs_to_assert_on, prn, NULL);
 	return TRUE;
 }
 

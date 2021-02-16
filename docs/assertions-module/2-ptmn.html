@@ -169,7 +169,7 @@ any additional sentences generated.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">last</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">assembly_position</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Plugins::Call::complete_model</span><span class="plain-syntax">(1);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">World::deduce_object_instance_kinds</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SyntaxTree::traverse_nodep_from</span><span class="plain-syntax">(</span><span class="identifier-syntax">last</span><span class="plain-syntax">, </span><a href="2-ptmn.html#SP3" class="function-link"><span class="function-syntax">MajorNodes::visit</span></a><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">last</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ptmn.html#SP2">&#167;2</a>.</li></ul>

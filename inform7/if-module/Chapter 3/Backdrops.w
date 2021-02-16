@@ -9,10 +9,10 @@ spread, probably background, things, such as the sky, and they placing one
 inside something generates |FOUND_IN_INF| rather than |PARENTAGE_INF|
 inferences to avoid piling up bogus inconsistencies.
 
-@d FOUND_IN_INF 56 /* for backdrop things in many places */
-@d FOUND_EVERYWHERE_INF 57 /* ditto */
-
 = (early code)
+inference_family *FOUND_IN_INF = NULL; /* 56; for backdrop things in many places */
+inference_family *FOUND_EVERYWHERE_INF = NULL; /* 57; ditto */
+
 kind *K_backdrop = NULL;
 property *P_scenery = NULL; /* an I7 either/or property marking something as scenery */
 property *P_absent = NULL; /* an I6-only property for backdrops out of play */
@@ -29,12 +29,20 @@ typedef struct backdrop_found_in_notice {
 
 =
 void PL::Backdrops::start(void) {
+	FOUND_IN_INF = Inferences::new_family(I"FOUND_IN_INF", CI_DIFFER_IN_INFS1);
+	FOUND_EVERYWHERE_INF = Inferences::new_family(I"FOUND_EVERYWHERE_INF", CI_DIFFER_IN_INFS1);
+
+	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCE_FAMILIES, PL::Backdrops::create_inference_families);
 	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Backdrops::backdrops_new_base_kind_notify);
 	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Backdrops::backdrops_new_property_notify);
 	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Backdrops::backdrops_complete_model);
 	PLUGIN_REGISTER(PLUGIN_LOG_INFERENCE_TYPE, PL::Backdrops::backdrops_log_inference_type);
 	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Backdrops::backdrops_estimate_property_usage);
 	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Backdrops::backdrops_intervene_in_assertion);
+}
+
+int PL::Backdrops::create_inference_families(void) {
+	return FALSE;
 }
 
 @h Kinds.
@@ -78,7 +86,7 @@ int PL::Backdrops::backdrops_new_property_notify(property *prn) {
 }
 
 int PL::Backdrops::object_is_scenery(instance *I) {
-	if (World::Inferences::get_EO_state(Instances::as_subject(I), P_scenery) > 0)
+	if (Inferences::get_EO_state(Instances::as_subject(I), P_scenery) > 0)
 		return TRUE;
 	return FALSE;
 }
@@ -95,10 +103,6 @@ int PL::Backdrops::backdrops_estimate_property_usage(kind *k, int *words_used) {
 
 =
 int PL::Backdrops::backdrops_log_inference_type(int it) {
-	switch(it) {
-		case FOUND_IN_INF: LOG("FOUND_IN_INF"); return TRUE;
-		case FOUND_EVERYWHERE_INF: LOG("FOUND_EVERYWHERE_INF"); return TRUE;
-	}
 	return FALSE;
 }
 
@@ -121,9 +125,9 @@ int PL::Backdrops::assert_relations(binary_predicate *relation,
 			(relation == R_regional_containment))) {
 		inference_subject *bd = Instances::as_subject(I1);
 		inference_subject *loc = Instances::as_subject(I0);
-		World::Inferences::draw(PART_OF_INF, bd, IMPOSSIBLE_CE, loc, NULL);
-		World::Inferences::draw(IS_ROOM_INF, bd, IMPOSSIBLE_CE, NULL, NULL);
-		World::Inferences::draw(FOUND_IN_INF, bd, CERTAIN_CE, loc, loc);
+		Inferences::draw(PART_OF_INF, bd, IMPOSSIBLE_CE, loc, NULL);
+		Inferences::draw(IS_ROOM_INF, bd, IMPOSSIBLE_CE, NULL, NULL);
+		Inferences::draw(FOUND_IN_INF, bd, CERTAIN_CE, loc, loc);
 		return TRUE;
 	}
 
@@ -136,7 +140,7 @@ int PL::Backdrops::assert_relations(binary_predicate *relation,
 	LOOP_OVER_INSTANCES(B, K_object)
 		if (PL::Backdrops::object_is_a_backdrop(B))
 			POSITIVE_KNOWLEDGE_LOOP(I, Instances::as_subject(B), FOUND_IN_INF)
-				if (World::Inferences::get_reference_as_object(I) == P)
+				if (Inferences::get_reference_as_object(I) == P)
 
 @d LOOP_OVER_BACKDROPS_EVERYWHERE(B, I)
 	LOOP_OVER_INSTANCES(B, K_object)
@@ -225,7 +229,7 @@ void PL::Backdrops::infer_presence_everywhere(instance *I) {
 			"is a vehicle which is everywhere.' is not.");
 		return;
 	}
-	World::Inferences::draw(FOUND_EVERYWHERE_INF,
+	Inferences::draw(FOUND_EVERYWHERE_INF,
 		Instances::as_subject(I), prevailing_mood, NULL, NULL);
 }
 
@@ -234,7 +238,7 @@ We intervene only at Stage II, the spatial modelling stage.
 
 =
 int PL::Backdrops::backdrops_complete_model(int stage) {
-	if (stage == 2) {
+	if (stage == WORLD_STAGE_II) {
 		P_absent = Properties::EitherOr::new_nameless(L"absent");
 		Properties::EitherOr::implement_as_attribute(P_absent, TRUE);
 		instance *I;
@@ -265,7 +269,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 @<Find how many rooms or regions the object is found inside@> =
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF) {
-		instance *loc = World::Inferences::get_reference_as_object(inf);
+		instance *loc = Inferences::get_reference_as_object(inf);
 		if ((K_region) && (Instances::of_kind(loc, K_region))) region_count++;
 		else room_count++;
 	}
@@ -276,7 +280,7 @@ int PL::Backdrops::backdrops_complete_model(int stage) {
 	packaging_state save = Emit::named_array_begin(FOUNDIN, K_value);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF)
-		Emit::array_iname_entry(RTInstances::iname(World::Inferences::get_reference_as_object(inf)));
+		Emit::array_iname_entry(RTInstances::iname(Inferences::get_reference_as_object(inf)));
 	Emit::array_end(save);
 	Produce::annotate_i(FOUNDIN, INLINE_ARRAY_IANN, 1);
 
@@ -319,7 +323,7 @@ void PL::Backdrops::write_found_in_routines(void) {
 	packaging_state save = Routines::begin(notice->found_in_routine_iname);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), FOUND_IN_INF) {
-		instance *loc = World::Inferences::get_reference_as_object(inf);
+		instance *loc = Inferences::get_reference_as_object(inf);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 		if ((K_region) && (Instances::of_kind(loc, K_region))) {

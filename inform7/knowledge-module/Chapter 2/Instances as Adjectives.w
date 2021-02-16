@@ -91,6 +91,6 @@ int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *a
 	instance *I = RETRIEVE_POINTER_instance(am->family_specific_data);
 	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
 	if (P == NULL) internal_error("enumerative adjective on non-property");
-	World::Inferences::draw_property(infs_to_assert_on, P, Rvalues::from_instance(I));
+	PropertyInferences::draw(infs_to_assert_on, P, Rvalues::from_instance(I));
 	return TRUE;
 }

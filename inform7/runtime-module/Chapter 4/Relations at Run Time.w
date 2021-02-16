@@ -1210,9 +1210,9 @@ to send the pairs in that row in any order.
 
 @<Find all pairs belonging to this row, and set the relevant flags@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
 		inference_subject *left_infs, *right_infs;
-		World::Inferences::get_references(inf, &left_infs, &right_infs);
+		Inferences::get_references(inf, &left_infs, &right_infs);
 		if (infs == left_infs) row_flags[RTRelations::get_relation_index(right_infs, 1)] = 1;
 	}
 
@@ -1868,9 +1868,9 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, World::Inferences::bp_as_subject(bp), ARBITRARY_RELATION_INF) {
+			POSITIVE_KNOWLEDGE_LOOP(i, Inferences::bp_as_subject(bp), arbitrary_relation_inf) {
 				parse_node *spec0, *spec1;
-				World::Inferences::get_references_spec(i, &spec0, &spec1);
+				Inferences::get_references_spec(i, &spec0, &spec1);
 				RTRelations::mark_as_needed(bp);
 				Produce::inv_call_iname(Emit::tree(), rtiname);
 				Produce::down(Emit::tree());

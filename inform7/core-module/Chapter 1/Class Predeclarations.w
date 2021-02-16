@@ -92,12 +92,14 @@ DECLARE_CLASS(text_substitution)
 @e comparative_bp_data_CLASS
 @e counting_data_CLASS
 @e inference_CLASS
+@e inference_family_CLASS
 @e inference_subject_CLASS
 @e inference_subject_family_CLASS
 @e measurement_definition_CLASS
 @e named_rulebook_outcome_CLASS
 @e placement_affecting_CLASS
 @e property_CLASS
+@e property_inference_data_CLASS
 @e property_permission_CLASS
 @e property_of_value_storage_CLASS
 @e property_setting_bp_data_CLASS
@@ -118,6 +120,7 @@ DECLARE_CLASS(booking)
 DECLARE_CLASS(comparative_bp_data)
 DECLARE_CLASS(counting_data)
 DECLARE_CLASS(inference)
+DECLARE_CLASS(inference_family)
 DECLARE_CLASS(inference_subject)
 DECLARE_CLASS(inference_subject_family)
 DECLARE_CLASS(measurement_definition)
@@ -126,6 +129,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(property_permission)
 DECLARE_CLASS(property)
+DECLARE_CLASS(property_inference_data)
 DECLARE_CLASS(property_setting_bp_data)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook)

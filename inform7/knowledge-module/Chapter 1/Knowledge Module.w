@@ -12,11 +12,11 @@ which use this module:
 
 =
 COMPILE_WRITER(booking *, Rules::Bookings::log)
-COMPILE_WRITER(inference *, World::Inferences::log)
+COMPILE_WRITER(inference *, Inferences::log)
 COMPILE_WRITER(inference_subject *, InferenceSubjects::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(rulebook *, Rulebooks::log)
-COMPILE_WRITER_I(int, World::Inferences::log_kind)
+COMPILE_WRITER(inference_family *, Inferences::log_kind)
 
 @
 
@@ -34,6 +34,9 @@ COMPILE_WRITER_I(int, World::Inferences::log_kind)
 
 =
 void KnowledgeModule::start(void) {
+	Inferences::start();
+	PropertyInferences::start();
+	RelationInferences::start();
 	InstanceAdjectives::start();
 	Properties::EitherOr::start();
 	Properties::Measurement::start();
@@ -42,10 +45,10 @@ void KnowledgeModule::start(void) {
 	Properties::ComparativeRelations::start();
 	Properties::ProvisionRelation::start();
 	REGISTER_WRITER('b', Rules::Bookings::log);
-	REGISTER_WRITER('I', World::Inferences::log);
+	REGISTER_WRITER('I', Inferences::log);
 	REGISTER_WRITER('j', InferenceSubjects::log);
 	REGISTER_WRITER('K', Rulebooks::log);
-	REGISTER_WRITER_I('n', World::Inferences::log_kind)
+	REGISTER_WRITER('n', Inferences::log_kind)
 	REGISTER_WRITER('Y', Properties::log);
 	Log::declare_aspect(ACTIVITY_CREATIONS_DA, L"activity creations", FALSE, FALSE);
 	Log::declare_aspect(INFERENCES_DA, L"inferences", FALSE, TRUE);

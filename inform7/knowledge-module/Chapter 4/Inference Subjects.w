@@ -116,8 +116,8 @@ typedef struct inference_subject {
 	struct general_pointer represents; /* family-specific data */
 	void *additional_data_for_plugins[MAX_PLUGINS]; /* and managed by those plugins */
 
-	struct inference *inf_list; /* contingently true: inferences drawn about this subject */
-	struct implication *imp_list; /* necessarily true: implications applying to this  */
+	struct linked_list *inf_list; /* contingently true: each |inference| drawn about this */
+	struct linked_list *imp_list; /* necessarily true: each |implication| applying to this  */
 
 	struct linked_list *permissions_list; /* of |property_permission| */
 	struct assemblies_data assemblies; /* what generalisations have been made about this? */
@@ -154,8 +154,8 @@ void InferenceSubjects::infs_initialise(inference_subject *infs,
 	infs->infs_created_at = current_sentence;
 	infs->represents = gp;
 	infs->infs_family = family;
-	infs->inf_list = NULL;
-	infs->imp_list = NULL;
+	infs->inf_list = NEW_LINKED_LIST(inference);
+	infs->imp_list = NEW_LINKED_LIST(implication);
 	infs->broader_than = from;
 	infs->permissions_list = NEW_LINKED_LIST(property_permission);
 	infs->infs_name_in_log = log_name;
@@ -241,21 +241,12 @@ assemblies_data *InferenceSubjects::get_assemblies_data(inference_subject *infs)
 	return &(infs->assemblies);
 }
 
-inference *InferenceSubjects::get_inferences(inference_subject *infs) {
+linked_list *InferenceSubjects::get_inferences(inference_subject *infs) {
 	return (infs)?(infs->inf_list):NULL;
 }
 
-void InferenceSubjects::set_inferences(inference_subject *infs, inference *inf) {
-	if (infs == NULL) internal_error("null INFS");
-	infs->inf_list = inf;
-}
-
-implication *InferenceSubjects::get_implications(inference_subject *infs) {
+linked_list *InferenceSubjects::get_implications(inference_subject *infs) {
 	return infs->imp_list;
-}
-
-void InferenceSubjects::set_implications(inference_subject *infs, implication *imp) {
-	infs->imp_list = imp;
 }
 
 linked_list *InferenceSubjects::get_permissions(inference_subject *infs) {
@@ -328,9 +319,10 @@ void InferenceSubjects::log(inference_subject *infs) {
 }
 
 void InferenceSubjects::log_knowledge_about(inference_subject *infs) {
-	inference *inf;
 	LOG("Inferences drawn about $j:\n", infs); LOG_INDENT;
-	for (inf = InferenceSubjects::get_inferences(infs); inf; inf = inf->next) LOG("$I\n", inf);
+	inference *inf;
+	LOOP_OVER_LINKED_LIST(inf, inference, InferenceSubjects::get_inferences(infs))
+		LOG("$I\n", inf);
 	LOG_OUTDENT;
 }
 
@@ -507,7 +499,7 @@ void InferenceSubjects::emit_all(void) {
 	inference_subject *infs;
 
 	LOOP_OVER(infs, inference_subject)
-		World::Inferences::verify_prop_states(infs);
+		Inferences::verify_prop_states(infs);
 
 	inference_subject_family *family;
 	LOOP_OVER(family, inference_subject_family) {

@@ -248,7 +248,7 @@ is made, so that the following sentence can't have an empty list in it.
 		WRITE("%S", explanation);
 		HTML_TAG("br");
 	}
-	World::Inferences::index(OUT, KindSubjects::from_kind(K), FALSE);
+	Inferences::index(OUT, KindSubjects::from_kind(K), FALSE);
 
 @<Explain about covariance and contravariance@> =
 	HTML_OPEN("p");

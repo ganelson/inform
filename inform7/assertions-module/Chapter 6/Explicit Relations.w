@@ -161,14 +161,14 @@ int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
 
 	@<Reject non-assertable relations@>;
 	if (Relations::Explicit::stored_dynamically(bp)) {
-		World::Inferences::draw_relation_spec(bp, spec0, spec1);
+		Inferences::draw_relation_spec(bp, spec0, spec1);
 		return TRUE;
 	} else {
 		if ((infs0 == NULL) || (infs1 == NULL)) @<Reject relationship with nothing@>;
 		if (Relations::Explicit::allow_arbitrary_assertions(bp)) {
-			World::Inferences::draw_relation(bp, infs0, infs1);
+			Inferences::draw_relation(bp, infs0, infs1);
 			if ((Relations::Explicit::get_form_of_relation(bp) == Relation_Sym_VtoV) && (infs0 != infs1))
-				World::Inferences::draw_relation(bp, infs1, infs0);
+				Inferences::draw_relation(bp, infs1, infs0);
 			return TRUE;
 		}
 		if (Relations::Explicit::is_explicit_with_runtime_storage(bp)) {
@@ -218,7 +218,7 @@ void Relations::Explicit::infer_property_based_relation(binary_predicate *bp,
 		inference_subject *swap=infs0; infs0=infs1; infs1=swap;
 	}
 	property *prn = Relations::Explicit::get_i6_storage_property(bp);
-	World::Inferences::draw_property(infs0, prn, InferenceSubjects::as_constant(infs1));
+	PropertyInferences::draw(infs0, prn, InferenceSubjects::as_constant(infs1));
 }
 
 @ We need do nothing special: these relations can be compiled from their schemas.

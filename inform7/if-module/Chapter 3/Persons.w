@@ -20,7 +20,7 @@ void PL::Persons::start(void) {
 
 @ =
 int PL::Persons::IF_complete_model(int stage) {
-	if ((stage == 3) && (K_person)) {
+	if ((stage == WORLD_STAGE_III) && (K_person)) {
 		P_animate = Properties::EitherOr::new_nameless(L"animate");
 		Properties::EitherOr::implement_as_attribute(P_animate, TRUE);
 		P_before = Properties::Valued::new_nameless(I"before", K_value);
