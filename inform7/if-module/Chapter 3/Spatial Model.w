@@ -462,7 +462,7 @@ int PL::Spatial::spatial_new_property_notify(property *prn) {
 			case 1: P_wearable = prn; break;
 			case 2: P_fixed_in_place = prn; break;
 			case 3: P_matching_key = prn;
-				Properties::set_translation(P_matching_key, L"with_key");
+				RTProperties::set_translation(P_matching_key, L"with_key");
 				break;
 		}
 	}
@@ -1273,9 +1273,9 @@ extensive maps.
 
 @<Assert room and thing indicator properties@> =
 	P_mark_as_room = Properties::EitherOr::new_nameless(L"mark_as_room");
-	Properties::EitherOr::implement_as_attribute(P_mark_as_room, TRUE);
+	RTProperties::implement_as_attribute(P_mark_as_room, TRUE);
 	P_mark_as_thing = Properties::EitherOr::new_nameless(L"mark_as_thing");
-	Properties::EitherOr::implement_as_attribute(P_mark_as_thing, TRUE);
+	RTProperties::implement_as_attribute(P_mark_as_thing, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_room))
@@ -1288,9 +1288,9 @@ extensive maps.
 
 @<Assert container and supporter indicator properties@> =
 	P_container = Properties::EitherOr::new_nameless(L"container");
-	Properties::EitherOr::implement_as_attribute(P_container, TRUE);
+	RTProperties::implement_as_attribute(P_container, TRUE);
 	P_supporter = Properties::EitherOr::new_nameless(L"supporter");
-	Properties::EitherOr::implement_as_attribute(P_supporter, TRUE);
+	RTProperties::implement_as_attribute(P_supporter, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_container))

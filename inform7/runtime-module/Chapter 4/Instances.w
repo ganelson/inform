@@ -67,8 +67,8 @@ int RTInstances::emit_all(inference_subject_family *family, int ignored) {
 void RTInstances::emit_one(inference_subject_family *family, inference_subject *infs) {
 	instance *I = InstanceSubjects::to_instance(infs);
 	RTInstances::emitted_iname(I);
-	Properties::emit_instance_permissions(I);
-	Properties::Emit::emit_subject(infs);
+	RTProperties::emit_instance_permissions(I);
+	RTPropertyValues::emit_subject(infs);
 }
 
 inter_name *RTInstances::emitted_iname(instance *I) {

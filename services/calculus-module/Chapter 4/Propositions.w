@@ -636,7 +636,7 @@ pcalc_term Propositions::convert_adj_to_noun(pcalc_prop *prop) {
 	}
 	if (KindPredicates::is_kind_atom(prop)) {
  		kind *K = KindPredicates::get_kind(prop);
- 		property *pname = Properties::Conditions::get_coinciding_property(K);
+ 		property *pname = Properties::property_with_same_name_as(K);
 		if (pname) return Terms::new_constant(Rvalues::from_property(pname));
 	}
 	return pct;

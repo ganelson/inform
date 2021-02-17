@@ -1551,7 +1551,7 @@ There is also one case in which an object can be set equal to another object:
 	@<Allow the case of a new value for a kind which coincides with a property name@>;
 
 	kind *K = Specifications::to_kind(Node::get_evaluation(py));
-	property *pname = Properties::Conditions::get_coinciding_property(K);
+	property *pname = Properties::property_with_same_name_as(K);
 	if (pname) {
 		if (global_pass_state.pass == 2)
 			Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(pname, Node::get_subject(px), py);
@@ -1758,7 +1758,7 @@ but that's not evident without a lot of contextual checking.
 	if ((Rvalues::to_instance(constant)) ||
 		(Specifications::is_kind_like(constant))) {
 		instance *q = Rvalues::to_instance(Node::get_evaluation(py));
-		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(q));
+		property *pname = Properties::property_with_same_name_as(Instances::to_kind(q));
 		if (pname) {
 			if (global_pass_state.pass == 2)
 				Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(pname, Instances::as_subject(q), py);

@@ -148,9 +148,9 @@ and simplicity.
 =
 void Properties::SettingRelations::set_property_BP_schemas(binary_predicate *bp, property *prn) {
 	bp->task_functions[TEST_ATOM_TASK] =
-		Calculus::Schemas::new("*1.%n == *2", Properties::iname(prn));
+		Calculus::Schemas::new("*1.%n == *2", RTProperties::iname(prn));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] =
-		Calculus::Schemas::new("*1.%n = *2", Properties::iname(prn));
+		Calculus::Schemas::new("*1.%n = *2", RTProperties::iname(prn));
 	BPTerms::set_domain(&(bp->term_details[1]),
 		Properties::Valued::kind(prn));
 }
@@ -267,13 +267,13 @@ int Properties::SettingRelations::REL_compile(bp_family *self, int task,
 	switch (task) {
 		case TEST_ATOM_TASK:
 			Calculus::Schemas::modify(asch->schema,
-				"GProperty(%k, *1, %n) == *2", K, Properties::iname(prn));
+				"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
 			break;
 		case NOW_ATOM_FALSE_TASK:
 			break;
 		case NOW_ATOM_TRUE_TASK:
 			Calculus::Schemas::modify(asch->schema,
-				"WriteGProperty(%k, *1, %n, *2)", K, Properties::iname(prn));
+				"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
 			break;
 	}
 	return TRUE;

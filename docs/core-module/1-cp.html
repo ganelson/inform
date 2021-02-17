@@ -157,6 +157,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">applicability_condition_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">booking_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">comparative_bp_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">condition_of_subject_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">counting_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inference_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inference_family_CLASS</span>
@@ -168,7 +169,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_inference_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_permission_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">property_of_value_storage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_setting_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">relation_inference_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">rule_CLASS</span>
@@ -186,6 +186,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">applicability_condition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">booking</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">comparative_bp_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">condition_of_subject</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">counting_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_family</span><span class="plain-syntax">)</span>
@@ -194,7 +195,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">measurement_definition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">named_rulebook_outcome</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">placement_affecting</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_of_value_storage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_permission</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_inference_data</span><span class="plain-syntax">)</span>
@@ -254,6 +254,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">nascent_array_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">plugin_call_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">property_of_value_storage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">runtime_kind_structure_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">test_scenario_CLASS</span>
 </pre>
@@ -269,6 +270,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">nascent_array</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">plugin</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">plugin_call</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_of_value_storage</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">runtime_kind_structure</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">test_scenario</span><span class="plain-syntax">)</span>
 </pre>

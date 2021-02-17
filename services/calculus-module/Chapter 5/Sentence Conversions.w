@@ -713,7 +713,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 @<If this is an instance of a kind, but can be used adjectivally, convert it as such@> =
 	instance *I = Rvalues::to_instance(spec);
 	if (I) {
-		property *pname = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
+		property *pname = Properties::property_with_same_name_as(Instances::to_kind(I));
 		if (pname) {
 			prop = AdjectivalPredicates::new_atom_on_x(Instances::as_adjective(I), FALSE);
 			@<Typecheck the propositional form, and return@>;

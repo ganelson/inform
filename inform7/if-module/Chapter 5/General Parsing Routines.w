@@ -691,7 +691,7 @@ void PL::Parsing::Tokens::General::consider_visible_properties(gpr_kit *gprk, in
 		property *pr;
 		PL::Parsing::Tokens::General::start_considering_visible_properties(gprk, phase);
 		LOOP_OVER(pr, property) {
-			if ((Properties::is_either_or(pr)) && (Properties::EitherOr::stored_in_negation(pr))) continue;
+			if ((Properties::is_either_or(pr)) && (RTProperties::stored_in_negation(pr))) continue;
 			property_permission *pp =
 				PropertyPermissions::find(subj, pr, TRUE);
 			if ((pp) && (PL::Parsing::Visibility::get_level(pp) > 0))
@@ -864,7 +864,7 @@ void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gp
 
 void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, property *prn) {
 	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "Distinguishing property %n", Properties::iname(prn));
+	WRITE_TO(C, "Distinguishing property %n", RTProperties::iname(prn));
 	Emit::code_comment(C);
 	DISCARD_TEXT(C)
 
@@ -873,10 +873,10 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
-				Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
+				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
 				Produce::inv_primitive(Emit::tree(), NOT_BIP);
 				Produce::down(Emit::tree());
-					Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
+					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -889,10 +889,10 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
-				Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
+				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_TWO_HL), prn);
 				Produce::inv_primitive(Emit::tree(), NOT_BIP);
 				Produce::down(Emit::tree());
-					Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
+					RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(PARSER_ONE_HL), prn);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
@@ -911,12 +911,12 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 					Produce::up(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			} else {
@@ -925,12 +925,12 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_ONE_HL));
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 					Produce::up(Emit::tree());
 					Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSER_TWO_HL));
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
 			}
@@ -1005,7 +1005,7 @@ int unique_pvp_counter = 0;
 void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 	inference_subject *subj, property *prn, int visibility_level) {
 	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "Parsing property %n", Properties::iname(prn));
+	WRITE_TO(C, "Parsing property %n", RTProperties::iname(prn));
 	Emit::code_comment(C);
 	DISCARD_TEXT(C)
 
@@ -1053,7 +1053,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 						Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-							Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+							Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
@@ -1073,7 +1073,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-								Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 							Produce::up(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
 						Produce::up(Emit::tree());
@@ -1086,7 +1086,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-								Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_NUMBER_HL));
@@ -1104,7 +1104,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 							Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-								Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 							Produce::up(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
 						Produce::up(Emit::tree());
@@ -1156,7 +1156,7 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 		int j = 0; LOOP_THROUGH_WORDING(i, W) j++;
 		int ands = 0;
 		if (j > 0) { Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree()); ands++; }
-		Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
+		RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 		int k = 0;
 		LOOP_THROUGH_WORDING(i, W) {
 			if (k < j-1) { Produce::inv_primitive(Emit::tree(), AND_BIP); Produce::down(Emit::tree()); ands++; }
@@ -1184,7 +1184,7 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
-				Properties::Emit::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
+				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), gv->gv_prn_iname);

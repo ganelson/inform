@@ -268,7 +268,7 @@ We intervene only at Stage II, the spatial modelling stage.
 int PL::Backdrops::backdrops_complete_model(int stage) {
 	if (stage == WORLD_STAGE_II) {
 		P_absent = Properties::EitherOr::new_nameless(L"absent");
-		Properties::EitherOr::implement_as_attribute(P_absent, TRUE);
+		RTProperties::implement_as_attribute(P_absent, TRUE);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object) {
 			inter_name *FOUNDIN = NULL;

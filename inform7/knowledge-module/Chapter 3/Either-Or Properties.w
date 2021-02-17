@@ -66,7 +66,7 @@ property *Properties::EitherOr::obtain(wording W, inference_subject *infs) {
 	property *prn = Properties::obtain(W, FALSE);
 	prn->either_or = TRUE;
 	kind *K = KindSubjects::to_kind(infs);
-	if (prn->adjectival_meaning_registered == NULL)
+	if (prn->as_adjective_meaning == NULL)
 		Properties::EitherOr::create_adjective_from_property(prn, W, K);
 	else
 		Properties::EitherOr::make_new_adjective_sense_from_property(prn, W, K);
@@ -91,9 +91,9 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	property *prn = Properties::create(EMPTY_WORDING, R, iname);
 	prn->either_or = TRUE;
 	Properties::exclude_from_index(prn);
-	Properties::set_translation(prn, I6_form);
+	RTProperties::set_translation(prn, I6_form);
 	Properties::EitherOr::create_adjective_from_property(prn, EMPTY_WORDING, K_object);
-	prn->run_time_only = TRUE;
+	prn->Inter_level_only = TRUE;
 	return prn;
 }
 
@@ -102,10 +102,7 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 =
 void Properties::EitherOr::initialise(property *prn) {
 	prn->negation = NULL;
-	prn->stored_in_negation = FALSE;
-	prn->implemented_as_attribute = NOT_APPLICABLE;
-	prn->adjectival_meaning_registered = NULL;
-	prn->adjective_registered = NULL;
+	prn->as_adjective_meaning = NULL;
 	#ifdef IF_MODULE
 	prn->eo_parsing_grammar = NULL;
 	#endif
@@ -143,26 +140,12 @@ void Properties::EitherOr::make_negations(property *prn, property *neg) {
 	}
 
 	prn->negation = neg; neg->negation = prn;
-	Properties::EitherOr::make_stored_in_negation(neg);
+	RTProperties::store_in_negation(neg);
 }
 
 property *Properties::EitherOr::get_negation(property *prn) {
 	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
 	return prn->negation;
-}
-
-@ =
-int Properties::EitherOr::stored_in_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	return prn->stored_in_negation;
-}
-
-void Properties::EitherOr::make_stored_in_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	if (prn->negation == NULL) internal_error("singleton EO cannot store in negation");
-
-	prn->stored_in_negation = TRUE;
-	if (prn->negation) prn->negation->stored_in_negation = FALSE;
 }
 
 @ Miscellaneous details:
@@ -182,7 +165,8 @@ void Properties::EitherOr::set_parsing_grammar(property *prn, grammar_verb *gv) 
 
 adjective *Properties::EitherOr::get_aph(property *prn) {
 	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	return prn->adjective_registered;
+	if (prn->as_adjective_meaning == NULL) return NULL;
+	return prn->as_adjective_meaning->owning_adjective;
 }
 
 @h Assertion.
@@ -193,52 +177,6 @@ void Properties::EitherOr::assert(property *prn,
 	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
 		Properties::EitherOr::get_aph(prn), (parity)?FALSE:TRUE);
 	Assert::true_about(prop, owner, certainty);
-}
-
-@h Compilation.
-Inform 6 provides "attributes" as a faster-access, more memory-efficient
-form of object properties, stored at run-time in a bitmap rather than as
-key-value pairs in a small dictionary. Because the bitmap is inflexibly sized,
-only some of our either/or properties will be able to make use of it. See
-"Properties of Objects" for how these are chosen; the following simply
-keep a flag recording the outcome.
-
-=
-int Properties::EitherOr::implemented_as_attribute(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	if (prn->implemented_as_attribute == NOT_APPLICABLE) return TRUE;
-	return prn->implemented_as_attribute;
-}
-
-void Properties::EitherOr::implement_as_attribute(property *prn, int state) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	prn->implemented_as_attribute = state;
-	if (prn->negation) prn->negation->implemented_as_attribute = state;
-}
-
-@ Otherwise, each either/or property is stored as either |true| or |false|
-in a given cell of memory at run-time -- wastefully since only 1 of the
-16 or 32 bits in that memory word is used, but at least rapidly. The
-following compiles this |true| or |false| value.
-
-(Because of the way the attribute optimisation works, it's very important not to
-change the strings of compiled code here without making a matching change in
-"Properties of Objects".)
-
-=
-void Properties::EitherOr::compile_value(value_holster *VH, property *prn, int val) {
-	if (val) {
-		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 1);
-	} else {
-		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
-	}
-}
-
-void Properties::EitherOr::compile_default_value(value_holster *VH, property *prn) {
-	if (Holsters::data_acceptable(VH))
-		Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 }
 
 @h Either/or properties as adjectives.
@@ -270,13 +208,12 @@ void Properties::EitherOr::create_adjective_from_property(property *prn, wording
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeaningDomains::set_from_kind(am, K);
-	prn->adjective_registered = adj;
-	prn->adjectival_meaning_registered = am;
+	prn->as_adjective_meaning = am;
 }
 
 void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn, wording W, kind *K) {
 	adjective *adj = Adjectives::declare(W, NULL);
-	adjective *aph = prn->adjective_registered;
+	adjective *aph = Properties::EitherOr::get_aph(prn);
 	if (AdjectiveAmbiguity::can_be_applied_to(aph, K)) return;
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
@@ -308,9 +245,9 @@ than accessing them via the unifying routines |GProperty| and |WriteGProperty| -
 which would work just as well, but more slowly.
 
 @<Set the schemata for an either/or property adjective with objects as domain@> =
-	if (Properties::EitherOr::stored_in_negation(prn)) {
+	if (RTProperties::stored_in_negation(prn)) {
 		property *neg = Properties::EitherOr::get_negation(prn);
-		inter_name *identifier = Properties::iname(neg);
+		inter_name *identifier = RTProperties::iname(neg);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n) == false", identifier);
@@ -321,7 +258,7 @@ which would work just as well, but more slowly.
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
 		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
 	} else {
-		inter_name *identifier = Properties::iname(prn);
+		inter_name *identifier = RTProperties::iname(prn);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n)", identifier);
@@ -334,32 +271,32 @@ which would work just as well, but more slowly.
 	}
 
 @<Set the schemata for an either/or property adjective with some other domain@> =
-	if (Properties::EitherOr::stored_in_negation(prn)) {
+	if (RTProperties::stored_in_negation(prn)) {
 		property *neg = Properties::EitherOr::get_negation(prn);
 
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n) == false", K,
-			Properties::iname(neg));
+			RTProperties::iname(neg));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
-			Properties::iname(neg));
+			RTProperties::iname(neg));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
-			Properties::iname(neg));
+			RTProperties::iname(neg));
 	} else {
 		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n)", K,
-			Properties::iname(prn));
+			RTProperties::iname(prn));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
-			Properties::iname(prn));
+			RTProperties::iname(prn));
 
 		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
 		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
-			Properties::iname(prn));
+			RTProperties::iname(prn));
 	}
 
 @ To assert an adjective like "open" is to draw an inference about its

@@ -147,8 +147,8 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
 	BENCH(RTKinds::kind_declarations)
 	BENCH(RTUseOptions::compile)
-	BENCH(Properties::emit)
-	BENCH(Properties::Emit::allocate_attributes)
+	BENCH(RTProperties::emit)
+	BENCH(RTPropertyValues::allocate_attributes)
 	BENCH(PL::Actions::name_all)
 	BENCH(NounIdentifiers::name_all)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
@@ -179,7 +179,7 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Manager::parse_rule_placements)
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
-	BENCH(Properties::annotate_attributes)
+	BENCH(RTProperties::annotate_attributes)
 	BENCH(Rulebooks::Outcomes::RulebookOutcomePrintingRule)
 	BENCH(RTKinds::compile_instance_counts)
 

@@ -19,8 +19,8 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 =
 void InstancesPreform::create_as_noun(instance *I, kind *K, wording W) {
 	int exact_parsing = TRUE, any_parsing = TRUE;
-	property *cp = Properties::Conditions::get_coinciding_property(K);
-	if ((cp) && (Properties::Conditions::of_what(cp))) any_parsing = FALSE;
+	property *cp = Properties::property_with_same_name_as(K);
+	if ((cp) && (ConditionsOfSubjects::of_what(cp))) any_parsing = FALSE;
 	if (Kinds::Behaviour::is_object(K)) exact_parsing = FALSE;
 	if (any_parsing) {
 		if (exact_parsing)

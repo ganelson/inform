@@ -132,7 +132,7 @@ void PL::Showme::compile_property_SHOWME(inference_subject *subj, property *prn,
 =
 int PL::Showme::SHOWME_primitive(inference_subject *subj, property *prn, int comp, inter_symbol *t_0_s, inter_symbol *na_s) {
 	if (Properties::is_shown_in_index(prn) == FALSE) return FALSE;
-	if (Properties::can_be_compiled(prn) == FALSE) return FALSE;
+	if (RTProperties::can_be_compiled(prn) == FALSE) return FALSE;
 
 	inference_subject *parent = InferenceSubjects::narrowest_broader_subject(subj);
 
@@ -172,7 +172,7 @@ routine for colours; and the best thing is to print nothing at all.
 	kind *K = Properties::Valued::kind(prn);
 	if (K) {
 		int require_nonzero = FALSE;
-		if ((Properties::Valued::is_used_for_non_typesafe_relation(prn)) ||
+		if ((RTProperties::uses_non_typesafe_0(prn)) ||
 			(Kinds::Behaviour::is_object(K)))
 			require_nonzero = TRUE;
 		if (require_nonzero) {
@@ -183,7 +183,7 @@ routine for colours; and the best thing is to print nothing at all.
 				Produce::down(Emit::tree());
 					RTKinds::emit_weak_id_as_val(K_object);
 					Produce::val_symbol(Emit::tree(), K_value, t_0_s);
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
@@ -215,7 +215,7 @@ routine for colours; and the best thing is to print nothing at all.
 					Produce::down(Emit::tree());
 						RTKinds::emit_weak_id_as_val(K_object);
 						Produce::val_symbol(Emit::tree(), K_value, t_0_s);
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 					Produce::up(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(EMPTY_TEXT_VALUE_HL));
 				Produce::up(Emit::tree());
@@ -258,7 +258,7 @@ routine for colours; and the best thing is to print nothing at all.
 		Produce::down(Emit::tree());
 			RTKinds::emit_weak_id_as_val(K_object);
 			Produce::val_symbol(Emit::tree(), K_value, t_0_s);
-			Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+			Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
@@ -269,7 +269,7 @@ turn by turn.
 
 @<Compile the SHOWME printing code for an either/or property@> =
 	property *allow = prn;
-	if (Properties::EitherOr::stored_in_negation(prn))
+	if (RTProperties::stored_in_negation(prn))
 		allow = Properties::EitherOr::get_negation(prn);
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -279,12 +279,12 @@ turn by turn.
 			if (TargetVMs::debug_enabled(Task::vm())) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(ALLOWINSHOWME_HL));
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 				Produce::up(Emit::tree());
 			} else {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			}
-			Properties::Emit::emit_has_property(K_value, t_0_s, prn);
+			RTPropertyValues::emit_has_property(K_value, t_0_s, prn);
 		Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());

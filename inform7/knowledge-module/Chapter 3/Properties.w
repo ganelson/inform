@@ -23,33 +23,19 @@ a value with the owner; it isn't that either/or properties are unloved.)
 =
 typedef struct property {
 	struct wording name; /* name of property */
-	int ambiguous_name; /* does this look like a property test, e.g., "point of view"? */
-	struct compilation_unit *owning_module; /* where defined */
+	int has_of_in_the_name; /* looks like a property test, e.g., "point of view"? */
+	int name_coincides_with_kind; /* and is its name the same as that of a kind? */
+
+	struct linked_list *permissions; /* of |property_permission|: who can have this? */
 
 	/* the basic nature of this property */
 	int either_or; /* is this an either/or property? if not, it is a valued one */
-	struct linked_list *applicable_to; /* of |property_permission| */
-	int do_not_compile; /* for e.g. the "specification" pseudo-property */
 	int include_in_index; /* is this property shown in the indexes? */
-
-	/* runtime implementation */
-	int metadata_table_offset; /* position in the |property_metadata| word array at run-time */
-	struct package_request *prop_package; /* where to find: */
-	struct inter_name *prop_iname; /* the identifier we would like to use at run-time for this property */
-	int translated; /* has this been given an explicit translation? */
-	int prn_emitted; /* has this been emitted to Inter yet? */
-
-	/* temporary use only */
-	int indexed_already; /* and has it been, thus far in index construction? */
-	int visited_on_traverse; /* for temporary use when compiling objects */
-	struct possession_marker pom; /* for temporary use when checking implications */
+	int Inter_level_only; /* i.e., does not correspond to an I7 property */
 
 	/* used only for either-or properties */
-	int implemented_as_attribute; /* if so: is it an I6 attribute at run-time? */
 	struct property *negation; /* and which property name (if any) negates it? */
-	int stored_in_negation; /* this is the dummy half of an either/or pair */
-	struct adjective_meaning *adjectival_meaning_registered; /* and has it been made an adjective yet? */
-	struct adjective *adjective_registered; /* similarly */
+	struct adjective_meaning *as_adjective_meaning; /* and has it been made an adjective yet? */
 	#ifdef IF_MODULE
 	struct grammar_verb *eo_parsing_grammar; /* exotic forms used in parsing */
 	#endif
@@ -57,14 +43,14 @@ typedef struct property {
 	/* used only for valued properties */
 	struct kind *property_value_kind; /* if not either/or, what kind of value does it hold? */
 	struct binary_predicate *setting_bp; /* and which relation sets it? */
-	struct binary_predicate *stored_bp; /* does it store the content of a relation? */
-	int used_for_non_typesafe_relation; /* expressing, e.g., a 1-1 relation to a kind */
-	int also_a_type; /* and is its name the same as that of the kind of value? */
-	int run_time_only; /* does not correspond to an I7 property */
+	struct binary_predicate *relation_whose_state_this_stores; /* or |NULL| if it doesn't */
+	struct condition_of_subject *as_condition_of_subject; /* or |NULL| if it isn't one */
 
-	/* used only for condition properties, a special kind of valued properties */
-	struct inference_subject *condition_of; /* or is it a condition of an object? */
-	int condition_anonymously_named; /* if so, is it named just "... condition"? */
+	struct property_compilation_data compilation_data; /* runtime implementation */
+
+	/* temporary use only */
+	int indexed_already; /* and has it been, thus far in index construction? */
+	struct possession_marker pom; /* for temporary use when checking implications */
 
 	CLASS_DEFINITION
 } property;
@@ -191,20 +177,14 @@ something.
 
 @<Initialise the property name structure@> =
 	prn->name = W;
-	prn->owning_module = CompilationUnits::find(current_sentence);
-	prn->ambiguous_name = <name-looking-like-property-test>(W);
-	prn->applicable_to = NEW_LINKED_LIST(property_permission);
+	prn->has_of_in_the_name = <name-looking-like-property-test>(W);
+	prn->permissions = NEW_LINKED_LIST(property_permission);
 	prn->either_or = FALSE;
-	prn->prop_package = using_package;
-	prn->prop_iname = using_iname;
-	prn->prn_emitted = FALSE;
-	prn->translated = FALSE;
-	prn->do_not_compile = FALSE;
 	prn->indexed_already = FALSE;
-	prn->visited_on_traverse = -1;
 	prn->include_in_index = TRUE;
-	prn->metadata_table_offset = UNSET_TABLE_OFFSET;
-	prn->run_time_only = FALSE;
+	prn->Inter_level_only = FALSE;
+	prn->as_condition_of_subject = NULL;
+	RTProperties::initialise_pcd(prn, using_package, using_iname);
 	Properties::EitherOr::initialise(prn);
 	Properties::Valued::initialise(prn);
 
@@ -231,19 +211,19 @@ this to any other language).
 				break;
 			case 1: P_specification = prn;
 				Properties::Valued::set_kind(prn, K_text);
-				prn->do_not_compile = TRUE;
+				RTProperties::do_not_compile(prn);
 				prn->include_in_index = FALSE;
 				PropertyPermissions::grant(model_world, P_specification, TRUE);
 				break;
 			case 2: P_indefinite_appearance_text = prn;
 				Properties::Valued::set_kind(prn, K_text);
-				prn->do_not_compile = TRUE;
+				RTProperties::do_not_compile(prn);
 				prn->include_in_index = FALSE;
 				PropertyPermissions::grant(global_constants,
 					P_indefinite_appearance_text, TRUE);
 				break;
 			case 3: P_variable_initial_value = prn;
-				prn->do_not_compile = TRUE;
+				RTProperties::do_not_compile(prn);
 				Properties::Valued::set_kind(prn, K_value);
 				prn->include_in_index = FALSE;
 				PropertyPermissions::grant(global_variables, P_variable_initial_value, TRUE);
@@ -359,7 +339,7 @@ matches ambiguous cases.
 <ambiguous-property-name> internal ? {
 	property *prn;
 	LOOP_OVER(prn, property)
-		if (prn->ambiguous_name) {
+		if (prn->has_of_in_the_name) {
 			if (Wordings::starts_with(W, prn->name)) {
 				==> { -, prn };
 				return Wordings::first_wn(W) + Wordings::length(prn->name) - 1;
@@ -389,7 +369,7 @@ important enough to have their own section: here, all we do is...
 
 =
 linked_list *Properties::get_permissions(property *prn) {
-	return prn->applicable_to;
+	return prn->permissions;
 }
 
 @h Logging.
@@ -409,7 +389,7 @@ void Properties::log(property *prn) {
 void Properties::log_basic_pname(property *prn) {
 	if (prn == NULL) { LOG("<null-property>"); return; }
 	if (Wordings::nonempty(prn->name)) { LOG("'%W'", prn->name); }
-	else if (prn->prop_iname) { LOG("%n", prn->prop_iname); }
+	else if (prn->compilation_data.prop_iname) { LOG("%n", prn->compilation_data.prop_iname); }
 	else { LOG("nameless"); }
 }
 
@@ -425,17 +405,6 @@ int Properties::is_either_or(property *prn) {
 int Properties::is_value_property(property *prn) {
 	if (prn->either_or == FALSE) return TRUE;
 	return FALSE;
-}
-
-@ More miscellaneously: the following flags correspond to two ways
-in which properties can be "unofficial". First, the pseudo-properties
-like "indefinite appearance" have no existence at run-time, and can't
-be compiled, so:
-
-=
-int Properties::can_be_compiled(property *prn) {
-	if ((prn == NULL) || (prn->do_not_compile)) return FALSE;
-	return TRUE;
 }
 
 @ Second, a property might be missed out of the Index pages for clarity's
@@ -459,71 +428,6 @@ int Properties::get_indexed_already_flag(property *prn) {
 	return prn->indexed_already;
 }
 
-@ Used to support the run-time storage code: see "Properties of Objects".
-
-=
-void Properties::offset_in_runtime_metadata_table_is(property *prn, int pos) {
-	prn->metadata_table_offset = pos;
-}
-int Properties::get_offset_in_runtime_metadata_table(property *prn) {
-	return prn->metadata_table_offset;
-}
-
-@h Translated names of properties.
-Some properties have translated names mechanically generated by Inform (indeed
-all properties initially have, as we saw above), but others must have names
-corresponding to those used in the template: these are, we say, "translated".
-The following routine accomplishes that. It is normally used in response to
-explicit requests in the source text (see below), but can also be used by
-plugins to give their favourite properties names which will help their own
-run-time support code to work.
-
-=
-void Properties::set_translation(property *prn, wchar_t *t) {
-	if (prn == NULL) internal_error("translation set for null property");
-	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation)) {
-		Properties::set_translation(Properties::EitherOr::get_negation(prn), t);
-		return;
-	}
-	Properties::iname(prn);
-	TEMPORARY_TEXT(T)
-	for (int i=0; ((t[i]) && (i<31)); i++) {
-		if ((Characters::isalpha(t[i])) || (Characters::isdigit(t[i])) || (t[i] == '_'))
-			PUT_TO(T, t[i]);
-		else
-			PUT_TO(T, '_');
-	}
-	Produce::change_translation(prn->prop_iname, T);
-	Hierarchy::make_available(Emit::tree(), prn->prop_iname);
-	DISCARD_TEXT(T)
-	prn->translated = TRUE;
-}
-
-void Properties::set_translation_S(property *prn, text_stream *t) {
-	if (prn == NULL) internal_error("translation set for null property");
-	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation)) {
-		Properties::set_translation_S(Properties::EitherOr::get_negation(prn), t);
-		return;
-	}
-	Properties::iname(prn);
-	TEMPORARY_TEXT(T)
-	LOOP_THROUGH_TEXT(pos, t) {
-		wchar_t c = Str::get(pos);
-		if ((isalpha(c)) || (Characters::isdigit(c)) || (c == '_'))
-			PUT_TO(T, (int) c);
-		else
-			PUT_TO(T, '_');
-	}
-	Str::truncate(T, 31);
-	Produce::change_translation(prn->prop_iname, T);
-	DISCARD_TEXT(T)
-	prn->translated = TRUE;
-}
-
-int Properties::has_been_translated(property *prn) {
-	return prn->translated;
-}
-
 @ And this is the routine which is called by the assertion parser in response
 to sentences like:
 
@@ -537,7 +441,7 @@ void Properties::translates(wording W, parse_node *p2) {
 
 	@<Make sure this is a genuine and previously untranslated property@>;
 
-	Properties::set_translation(prn, text);
+	RTProperties::set_translation(prn, text);
 	LOGIF(PROPERTY_TRANSLATIONS, "Property <$Y> translates as <%w>\n", prn, text);
 
 	if (prn->either_or)
@@ -551,8 +455,8 @@ void Properties::translates(wording W, parse_node *p2) {
 			"so cannot be translated.");
 		return;
 	}
-	if ((prn->translated) &&
-		(Str::eq_wide_string(Produce::get_translation(Properties::iname(prn)), text) == FALSE)) {
+	if ((RTProperties::has_been_translated(prn)) &&
+		(Str::eq_wide_string(RTProperties::current_translation(prn), text) == FALSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
@@ -578,30 +482,9 @@ to their analogous Inform 6 ones.)
 @<Check to see if a sense reversal has taken place in translation@> =
 	property *neg = Properties::EitherOr::get_negation(prn);
 	if (neg) {
-		Properties::EitherOr::make_stored_in_negation(neg);
+		RTProperties::store_in_negation(neg);
 		LOGIF(PROPERTY_TRANSLATIONS, "Storing this way round: $Y\n", prn);
 	}
-
-@h Traversing properties.
-These routines are to help other parts of Inform to visit each property just
-once, when working through some complicated search space. (Visiting an either/or
-property also visits its negation.)
-
-=
-int property_traverse_count = 0;
-void Properties::begin_traverse(void) {
-	property_traverse_count++;
-}
-
-int Properties::visited_in_traverse(property *prn) {
-	if (prn->visited_on_traverse == property_traverse_count) return TRUE;
-	prn->visited_on_traverse = property_traverse_count;
-	if (Properties::is_either_or(prn)) {
-		property *prnbar = Properties::EitherOr::get_negation(prn);
-		if (prnbar) prnbar->visited_on_traverse = property_traverse_count;
-	}
-	return FALSE;
-}
 
 @ The "possession marker" is similarly used to keep tabs on which either/or
 properties things seem to have, but only as temporary data used when working
@@ -620,15 +503,15 @@ in a default value.
 
 =
 void Properties::compile_inferred_value(value_holster *VH, inference_subject *infs, property *prn) {
-	if ((prn == NULL) || (Properties::can_be_compiled(prn) == FALSE)) return;
+	if ((prn == NULL) || (RTProperties::can_be_compiled(prn) == FALSE)) return;
 	while (infs) {
 		if (Properties::compile_property_value_inner(VH, infs, prn)) return;
 		infs = InferenceSubjects::narrowest_broader_subject(infs);
 	}
 	if (Properties::is_either_or(prn))
-		Properties::EitherOr::compile_default_value(VH, prn);
+		RTProperties::compile_default_value(VH, prn);
 	else
-		Properties::Valued::compile_default_value(VH, prn);
+		RTProperties::compile_vp_default_value(VH, prn);
 }
 
 @ Here we look for a specific subject's knowledge about our property, and if
@@ -645,11 +528,11 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 			property *inferred_property = PropertyInferences::get_property(inf);
 			if (Properties::is_either_or(prn)) {
 				if (inferred_property == prn) {
-					Properties::EitherOr::compile_value(VH, inferred_property, sense);
+					RTProperties::compile_value(VH, inferred_property, sense);
 					return TRUE;
 				}
 				if (inferred_property == Properties::EitherOr::get_negation(prn)) {
-					Properties::EitherOr::compile_value(VH, inferred_property, sense?FALSE:TRUE);
+					RTProperties::compile_value(VH, inferred_property, sense?FALSE:TRUE);
 					return TRUE;
 				}
 			} else {
@@ -657,7 +540,7 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 					if (sense) {
 						parse_node *val = PropertyInferences::get_value(inf);
 						if (val == NULL) internal_error("malformed property inference");
-						Properties::Valued::compile_value(VH, inferred_property, val);
+						RTProperties::compile_vp_value(VH, inferred_property, val);
 						return TRUE;
 					} else {
 						internal_error("valued property with negative certainty");
@@ -669,107 +552,29 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 	return FALSE;
 }
 
-@h Emitting to Inter.
+@h Coincidence.
+Coincidence of kinds and properties occurs where a kind has the same name
+exactly as a property, allowing the same name to be used grammatically in
+two different contexts. We say that the kind and the property "coincide".
+In particular, this happens with conditions:
+
+>> Brightness is a kind of value. The brightnesses are guttering, weak, radiant and blazing. The lantern has a brightness. The lantern is blazing.
+
+Here "brightness" becomes the name of a new kind, but "brightness" also
+becomes the name of a property.
 
 =
-inter_name *Properties::iname(property *prn) {
-	if (prn == NULL) internal_error("tried to find iname for null property");
-	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation))
-		return Properties::iname(Properties::EitherOr::get_negation(prn));
-	if (prn->prop_iname == NULL) {
-		prn->prop_package = Hierarchy::package(prn->owning_module, PROPERTIES_HAP);
-		Hierarchy::markup_wording(prn->prop_package, PROPERTY_NAME_HMD, prn->name);
-		prn->prop_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, prn->prop_package, prn->name);
-	}
-	return prn->prop_iname;
+int Properties::can_name_coincide_with_kind(kind *K) {
+	if (K == NULL) return FALSE;
+	return K->construct->can_coincide_with_property;
 }
 
-package_request *Properties::package(property *prn) {
-	if (prn == NULL) internal_error("tried to find package for null property");
-	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation))
-		return Properties::package(Properties::EitherOr::get_negation(prn));
-	Properties::iname(prn);
-	return prn->prop_package;
+property *Properties::property_with_same_name_as(kind *K) {
+	if (K == NULL) return NULL;
+	return K->construct->coinciding_property;
 }
 
-void Properties::emit_single(property *prn) {
-	if (prn == NULL) internal_error("tried to find emit single for null property");
-	if ((Properties::is_either_or(prn)) && (prn->stored_in_negation)) {
-		Properties::emit_single(Properties::EitherOr::get_negation(prn));
-		return;
-	}
-	if (prn->prn_emitted == FALSE) {
-		inter_name *iname = Properties::iname(prn);
-
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) K = K_truth_state;
-		if (K == NULL) internal_error("kindless property");
-		prn->prn_emitted = TRUE;
-
-		Emit::property(iname, K);
-		if (prn->run_time_only) Emit::permission(prn, K_object, NULL);
-		if (prn->translated) Produce::annotate_i(iname, EXPLICIT_ATTRIBUTE_IANN, 1);
-		Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
-	}
-}
-
-void Properties::emit(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) {
-			if (prn->stored_in_negation) continue;
-			K = K_truth_state;
-		}
-		if (K == NULL) internal_error("kindless property");
-		Properties::emit_single(prn);
-		property_permission *pp;
-		LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
-			inference_subject *subj = pp->property_owner;
-			if (subj == NULL) internal_error("unowned property");
-			kind *K = KindSubjects::to_kind(subj);
-			if (K) Emit::permission(prn, K, Properties::OfValues::annotate_table_storage(pp));
-		}
-	}
-}
-
-void Properties::emit_default_values(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) {
-			if (prn->stored_in_negation) continue;
-			K = K_truth_state;
-		}
-		Emit::ensure_defaultvalue(K);
-	}
-}
-
-void Properties::annotate_attributes(void) {
-	property *prn;
-	LOOP_OVER(prn, property) {
-		if (Properties::is_either_or(prn)) {
-			if (prn->stored_in_negation) continue;
-			Produce::annotate_i(Properties::iname(prn), EITHER_OR_IANN, 0);
-			if (Properties::EitherOr::implemented_as_attribute(prn)) {
-				Produce::annotate_i(Properties::iname(prn), ATTRIBUTE_IANN, 0);
-			}
-		}
-		if (Wordings::nonempty(prn->name))
-			Produce::annotate_w(Properties::iname(prn), PROPERTY_NAME_IANN, prn->name);
-		if (prn->run_time_only)
-			Produce::annotate_i(Properties::iname(prn), RTO_IANN, 0);
-	}
-	Properties::emit_default_values();
-}
-
-void Properties::emit_instance_permissions(instance *I) {
-	inference_subject *subj = Instances::as_subject(I);
-	property_permission *pp;
-	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, subj) {
-		property *prn = pp->property_granted;
-		if (Properties::is_either_or(prn))
-			if (prn->stored_in_negation) continue;
-		Emit::instance_permission(prn, RTInstances::emitted_iname(I));
-	}
+void Properties::mark_kind_as_having_same_name_as(kind *K, property *P) {
+	if (K == NULL) return;
+	K->construct->coinciding_property = P;
 }

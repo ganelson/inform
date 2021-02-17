@@ -1,4 +1,4 @@
-[Properties::Emit::] Emit Property Values.
+[RTPropertyValues::] Emit Property Values.
 
 To feed the hierarchy of instances and their property values into Inter.
 
@@ -10,7 +10,7 @@ manage that here.
 
 =
 inter_ti cs_sequence_counter = 0;
-void Properties::Emit::emit_subject(inference_subject *subj) {
+void RTPropertyValues::emit_subject(inference_subject *subj) {
 	LOGIF(OBJECT_COMPILATION, "Compiling object definition for $j\n", subj);
 	kind *K = KindSubjects::to_kind(subj);
 	instance *I = InstanceSubjects::to_instance(subj);
@@ -39,7 +39,7 @@ each one is marked when visited.
 	@<Annotate with the spatial depth@>;
 	if ((I) && (Kinds::Behaviour::is_object(Instances::to_kind(I)))) words_used++;
 	@<Append any inclusions the source text requested@>;
-	Properties::begin_traverse();
+	RTProperties::begin_traverse();
 	@<Emit inferred object properties@>;
 	@<Emit permitted but unspecified object properties@>;
 
@@ -75,7 +75,7 @@ the class hierarchy at I6 level exactly match the kind hierarchy at I7 level.
 		property *prn = PropertyInferences::get_property(inf);
 		current_sentence = Inferences::where_inferred(inf);
 		LOGIF(OBJECT_COMPILATION, "Compiling property $Y\n", prn);
-		words_used += Properties::Emit::emit_propertyvalue(subj, prn);
+		words_used += RTPropertyValues::emit_propertyvalue(subj, prn);
 	}
 
 @ We now wander through the permitted properties, even those which we have
@@ -89,7 +89,7 @@ no actual knowledge about.
 			property *prn = PropertyPermissions::get_property(pp);
 			if ((infs == subj) ||
 				(Kinds::Behaviour::uses_pointer_values(Properties::Valued::kind(prn))))
-				words_used += Properties::Emit::emit_propertyvalue(subj, prn);
+				words_used += RTPropertyValues::emit_propertyvalue(subj, prn);
 		}
 	}
 
@@ -97,17 +97,17 @@ no actual knowledge about.
 value the property will have, and compiles a clause as appropriate.
 
 =
-int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn) {
+int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn) {
 	package_request *R = NULL;
 	instance *I = InstanceSubjects::to_instance(know);
 	if (I) R = RTInstances::package(I);
 	kind *K = KindSubjects::to_kind(know);
 	if (K) R = Kinds::Behaviour::package(K);
 	int storage_cost = 0;
-	if ((Properties::visited_in_traverse(prn) == FALSE) &&
-		(Properties::can_be_compiled(prn))) {
+	if ((RTProperties::visited_in_traverse(prn) == FALSE) &&
+		(RTProperties::can_be_compiled(prn))) {
 		if ((Properties::is_either_or(prn)) &&
-			(Properties::EitherOr::stored_in_negation(prn)))
+			(RTProperties::stored_in_negation(prn)))
 			prn = Properties::EitherOr::get_negation(prn);
 		value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 		Properties::compile_inferred_value(&VH, know, prn);
@@ -124,8 +124,8 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 
 	Holsters::unholster_pair(&VH, &v1, &v2);
 
-	if ((Properties::is_either_or(prn)) && (Properties::EitherOr::implemented_as_attribute(prn))) {
-		if (Properties::EitherOr::stored_in_negation(prn)) {
+	if ((Properties::is_either_or(prn)) && (RTProperties::implemented_as_attribute(prn))) {
+		if (RTProperties::stored_in_negation(prn)) {
 			in = Properties::EitherOr::get_negation(prn);
 			v2 = (inter_ti) (v2)?FALSE:TRUE;
 		}
@@ -139,17 +139,17 @@ at I6 run-time as attributes will be solely up to the code generator.
 For now, though, we make a parallel decision here.
 
 =
-void Properties::Emit::allocate_attributes(void) {
+void RTPropertyValues::allocate_attributes(void) {
 	int slots_given_away = 0;
 	property *prn;
 	LOOP_OVER(prn, property) {
 		if ((Properties::is_either_or(prn)) &&
-			(Properties::EitherOr::stored_in_negation(prn) == FALSE)) {
+			(RTProperties::stored_in_negation(prn) == FALSE)) {
 			int make_attribute = NOT_APPLICABLE;
 			@<Any either/or property which some value can hold is ineligible@>;
 			@<An either/or property translated to an existing attribute must be chosen@>;
 			@<Otherwise give away attribute slots on a first-come-first-served basis@>;
-			Properties::EitherOr::implement_as_attribute(prn, make_attribute);
+			RTProperties::implement_as_attribute(prn, make_attribute);
 		}
 	}
 }
@@ -164,7 +164,7 @@ void Properties::Emit::allocate_attributes(void) {
 	}
 
 @<An either/or property translated to an existing attribute must be chosen@> =
-	if (Properties::has_been_translated(prn)) make_attribute = TRUE;
+	if (RTProperties::has_been_translated(prn)) make_attribute = TRUE;
 
 @<Otherwise give away attribute slots on a first-come-first-served basis@> =
 	if (make_attribute == NOT_APPLICABLE) {
@@ -183,35 +183,35 @@ want the fastest possible access and know that it will be valid, we can use
 the following.
 
 =
-void Properties::Emit::emit_iname_has_property(kind *K, inter_name *N, property *prn) {
-	Properties::Emit::emit_has_property(K, InterNames::to_symbol(N), prn);
+void RTPropertyValues::emit_iname_has_property(kind *K, inter_name *N, property *prn) {
+	RTPropertyValues::emit_has_property(K, InterNames::to_symbol(N), prn);
 }
-void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn) {
-	if (Properties::EitherOr::implemented_as_attribute(prn)) {
-		if (Properties::EitherOr::stored_in_negation(prn)) {
+void RTPropertyValues::emit_has_property(kind *K, inter_symbol *S, property *prn) {
+	if (RTProperties::implemented_as_attribute(prn)) {
+		if (RTProperties::stored_in_negation(prn)) {
 			Produce::inv_primitive(Emit::tree(), NOT_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), HAS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K, S);
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(Properties::EitherOr::get_negation(prn)));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		} else {
 			Produce::inv_primitive(Emit::tree(), HAS_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K, S);
-				Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 			Produce::up(Emit::tree());
 		}
 	} else {
-		if (Properties::EitherOr::stored_in_negation(prn)) {
+		if (RTProperties::stored_in_negation(prn)) {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K, S);
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(Properties::EitherOr::get_negation(prn)));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(Properties::EitherOr::get_negation(prn)));
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
@@ -221,10 +221,55 @@ void Properties::Emit::emit_has_property(kind *K, inter_symbol *S, property *prn
 				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K, S);
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 			Produce::up(Emit::tree());
 		}
 	}
+}
+
+@h In-table storage.
+Some kinds of non-object are created by table, with the table columns holding the
+relevant property values. The following structure indicates which column of
+which table will store the property values at run-time, or else is left as
+|-1, 0| if the property values aren't living inside a table structure.
+
+=
+typedef struct property_of_value_storage {
+	struct inter_name *storage_table_iname; /* for the relevant column array */
+	CLASS_DEFINITION
+} property_of_value_storage;
+
+property_of_value_storage *latest_povs = NULL; /* see below */
+
+@ It's a little inconvenient to work out some elegant mechanism for the table
+compilation code to tell each kind where it will be living, so instead we
+rely on the fact that we're doing one at a time. The table-compiler simply
+calls this routine to notify us of where the next batch of properties will be,
+and we mark them down in the most recently created property permission.
+
+=
+property_of_value_storage *RTPropertyValues::get_storage(void) {
+	property_of_value_storage *povs = CREATE(property_of_value_storage);
+	povs->storage_table_iname = NULL;
+	latest_povs = povs;
+	return povs;
+}
+
+void RTPropertyValues::pp_set_table_storage(inter_name *store) {
+if (store == NULL) internal_error("ugh");
+	if (latest_povs) {
+		latest_povs->storage_table_iname = store;
+	}
+}
+
+@ The code generator will need to know these numbers, so we will annotate
+the property-permission symbol accordingly:
+
+=
+inter_name *RTPropertyValues::annotate_table_storage(property_permission *pp) {
+	property_of_value_storage *povs =
+		RETRIEVE_POINTER_property_of_value_storage(PropertyPermissions::get_storage_data(pp));
+	return povs->storage_table_iname;
 }

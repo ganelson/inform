@@ -16,6 +16,7 @@ Chapter 2: Declarations
 	Passes through Major Nodes
 	Anaphoric References
 	Classifying Sentences
+	Property Sentences
 
 Chapter 3: Requests
 "Sentences, often imperative, which have special meanings."

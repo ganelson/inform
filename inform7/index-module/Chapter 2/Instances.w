@@ -100,8 +100,8 @@ void IXInstances::index_usages(OUTPUT_STREAM, instance *I) {
 
 =
 int IXInstances::as_adjective(OUTPUT_STREAM, instance *I) {
-	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
-	if (Properties::Conditions::of_what(P) == NULL) {
+	property *P = Properties::property_with_same_name_as(Instances::to_kind(I));
+	if (ConditionsOfSubjects::of_what(P) == NULL) {
 		if (Properties::get_permissions(P)) {
 			WRITE("(of "); IXProperties::index_permissions(OUT, P); WRITE(") ");
 		}

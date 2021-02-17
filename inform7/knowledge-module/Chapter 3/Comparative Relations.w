@@ -68,7 +68,7 @@ int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_pred
 		return NEVER_MATCH;
 	}
 
-	property *prn = Properties::Conditions::get_coinciding_property(kinds_of_terms[1]);
+	property *prn = Properties::property_with_same_name_as(kinds_of_terms[1]);
 	comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 	if ((prn) && (prn != D->comparative_property)) {
 		if (tck->log_to_I6_text)
@@ -115,12 +115,12 @@ so symmetrically; we rewrite the annotated schema on the fly.
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
-		(Properties::Conditions::name_can_coincide_with_property(st[1]))) {
-		property *prn = Properties::Conditions::get_coinciding_property(st[1]);
+		(Properties::can_name_coincide_with_kind(st[1]))) {
+		property *prn = Properties::property_with_same_name_as(st[1]);
 		if (prn) {
 			comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 			Calculus::Schemas::modify(asch->schema,
-				"*1.%n %s *2", Properties::iname(prn),
+				"*1.%n %s *2", RTProperties::iname(prn),
 				Properties::Measurement::strict_comparison(D->comparison_sign));
 			return TRUE;
 		}

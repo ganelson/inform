@@ -170,7 +170,7 @@ void Emit::property(inter_name *name, kind *K) {
 
 void Emit::permission(property *prn, kind *K, inter_name *name) {
 	packaging_state save = Packaging::enter(Kinds::Behaviour::package(K));
-	inter_name *prop_name = Properties::iname(prn);
+	inter_name *prop_name = RTProperties::iname(prn);
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	inter_symbol *store = (name)?InterNames::to_symbol(name):NULL;
 	Emit::basic_permission(Packaging::at(Emit::tree()), prop_name, owner_kind, store);
@@ -178,7 +178,7 @@ void Emit::permission(property *prn, kind *K, inter_name *name) {
 }
 
 void Emit::instance_permission(property *prn, inter_name *inst_iname) {
-	inter_name *prop_name = Properties::iname(prn);
+	inter_name *prop_name = RTProperties::iname(prn);
 	inter_symbol *inst_name = InterNames::to_symbol(inst_iname);
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	Emit::basic_permission(Packaging::at(Emit::tree()), prop_name, inst_name, NULL);
@@ -227,16 +227,16 @@ void Emit::defaultvalue(kind *K, inter_ti v1, inter_ti v2) {
 }
 
 void Emit::propertyvalue(property *P, kind *K, inter_ti v1, inter_ti v2) {
-	Properties::emit_single(P);
-	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
+	RTProperties::emit_single(P);
+	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(Emit::tree()),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));
 }
 
 void Emit::instance_propertyvalue(property *P, instance *I, inter_ti v1, inter_ti v2) {
-	Properties::emit_single(P);
-	inter_symbol *prop_name = InterNames::to_symbol(Properties::iname(P));
+	RTProperties::emit_single(P);
+	inter_symbol *prop_name = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_kind = InterNames::to_symbol(RTInstances::emitted_iname(I));
 	Produce::guard(Inter::PropertyValue::new(Packaging::at(Emit::tree()),
 		Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), prop_name), Inter::SymbolsTables::id_from_IRS_and_symbol(Packaging::at(Emit::tree()), owner_kind), v1, v2, Produce::baseline(Packaging::at(Emit::tree())), NULL));

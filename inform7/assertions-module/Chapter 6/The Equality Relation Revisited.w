@@ -33,7 +33,7 @@ int EqualityDetails::REL_typecheck(bp_family *self, binary_predicate *bp,
 	if (Plugins::Call::typecheck_equality(kinds_of_terms[0], kinds_of_terms[1]))
 		return ALWAYS_MATCH;
 	if ((Kinds::Behaviour::is_object(kinds_of_terms[0])) &&
-		(Properties::Conditions::name_can_coincide_with_property(kinds_of_terms[1])))
+		(Properties::can_name_coincide_with_kind(kinds_of_terms[1])))
 		@<Apply rule for "is" applied to an object and a value@>
 	else if ((K_understanding) && (Kinds::eq(kinds_of_terms[1], K_understanding)) &&
 			(Kinds::eq(kinds_of_terms[0], K_snippet)))
@@ -53,7 +53,7 @@ int EqualityDetails::REL_typecheck(bp_family *self, binary_predicate *bp,
 for a fairly common mistake:
 
 @<Apply rule for "is" applied to an object and a value@> =
-	property *prn = Properties::Conditions::get_coinciding_property(kinds_of_terms[1]);
+	property *prn = Properties::property_with_same_name_as(kinds_of_terms[1]);
 	if (prn == NULL) {
 		if (tck->log_to_I6_text)
 			LOG("Comparison of object with %u value\n", kinds_of_terms[1]);
@@ -159,7 +159,7 @@ int EqualityDetails::REL_compile(bp_family *self, int task, binary_predicate *bp
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
 
 	if ((Kinds::Behaviour::is_object(st[0])) &&
-		(Properties::Conditions::name_can_coincide_with_property(st[1])) && (Properties::Conditions::get_coinciding_property(st[1])))
+		(Properties::can_name_coincide_with_kind(st[1])) && (Properties::property_with_same_name_as(st[1])))
 		@<Handle the case of setting a property of A separately@>;
 
 	if ((Kinds::eq(st[0], K_response)) && (Kinds::eq(st[1], K_text)))
@@ -215,15 +215,15 @@ lantern equals the constant value "bright"; and similarly for "now the
 lantern is bright".
 
 @<Handle the case of setting a property of A separately@> =
-	property *prn = Properties::Conditions::get_coinciding_property(st[1]);
+	property *prn = Properties::property_with_same_name_as(st[1]);
 	switch (task) {
 		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(asch->schema, "*1.%n == *2", Properties::iname(prn));
+			Calculus::Schemas::modify(asch->schema, "*1.%n == *2", RTProperties::iname(prn));
 			return TRUE;
 		case NOW_ATOM_FALSE_TASK:
 			break;
 		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema, "*1.%n = *2", Properties::iname(prn));
+			Calculus::Schemas::modify(asch->schema, "*1.%n = *2", RTProperties::iname(prn));
 			return TRUE;
 	}
 	return FALSE;

@@ -116,7 +116,7 @@ concerning our kind.
 void KindSubjects::new_permission_granted(inference_subject_family *f,
 	inference_subject *from, general_pointer *G) {
 	*G = STORE_POINTER_property_of_value_storage(
-		Properties::OfValues::get_storage());
+		RTPropertyValues::get_storage());
 }
 
 @ When a property value comes along which might have an adjectival use -- say,

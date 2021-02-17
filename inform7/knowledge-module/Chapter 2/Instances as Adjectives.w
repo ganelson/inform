@@ -71,11 +71,11 @@ void InstanceAdjectives::make_adjectival(instance *I, property *P,
 	i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
 	Calculus::Schemas::modify(sch,
 		"GProperty(%k, *1, %n) == %d",
-			D, Properties::iname(P), I->enumeration_index);
+			D, RTProperties::iname(P), I->enumeration_index);
 	sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
 	Calculus::Schemas::modify(sch,
 		"WriteGProperty(%k, *1, %n, %d)",
-			D, Properties::iname(P), I->enumeration_index);
+			D, RTProperties::iname(P), I->enumeration_index);
 
 @ Asserting such an adjective simply asserts that the property has this value:
 for example, asserting "green" on X is saying that the value of the "colour"
@@ -89,7 +89,7 @@ int InstanceAdjectives::assert(adjective_meaning_family *f, adjective_meaning *a
 	inference_subject *infs_to_assert_on, int parity) {
 	if (parity == FALSE) return FALSE;
 	instance *I = RETRIEVE_POINTER_instance(am->family_specific_data);
-	property *P = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
+	property *P = Properties::property_with_same_name_as(Instances::to_kind(I));
 	if (P == NULL) internal_error("enumerative adjective on non-property");
 	PropertyInferences::draw(infs_to_assert_on, P, Rvalues::from_instance(I));
 	return TRUE;

@@ -473,7 +473,7 @@ void Properties::Measurement::create_comparatives(void) {
 @ This schema compares the property values:
 
 @<Work out property comparison schema@> =
-	inter_name *identifier = Properties::iname(mdef->prop);
+	inter_name *identifier = RTProperties::iname(mdef->prop);
 	char *operation = Properties::Measurement::strict_comparison(mdef->region_shape);
 	schema_to_compare_property_values =
 		Calculus::Schemas::new("(*1.%n %s *2.%n)", identifier, operation, identifier);

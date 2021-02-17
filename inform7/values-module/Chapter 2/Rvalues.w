@@ -825,14 +825,14 @@ contexts by using a tilde: |~attr|.
 		int parity = 1;
 		property *prn_to_eval = prn;
 		if (<negated-clause>(Node::get_text(spec_found))) parity = -1;
-		if (Properties::EitherOr::stored_in_negation(prn)) {
+		if (RTProperties::stored_in_negation(prn)) {
 			parity = -parity;
 			prn_to_eval = Properties::EitherOr::get_negation(prn_to_eval);
 		}
 
 		if (Holsters::data_acceptable(VH)) {
 			if (parity == 1) {
-				Emit::holster(VH, Properties::iname(prn_to_eval));
+				Emit::holster(VH, RTProperties::iname(prn_to_eval));
 			} else {
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 					"this refers to an either-or property with a negative "
@@ -843,6 +843,6 @@ contexts by using a tilde: |~attr|.
 		}
 	} else {
 		if (Holsters::data_acceptable(VH)) {
-			Emit::holster(VH, Properties::iname(prn));
+			Emit::holster(VH, RTProperties::iname(prn));
 		}
 	}

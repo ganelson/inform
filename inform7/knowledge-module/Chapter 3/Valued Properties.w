@@ -67,11 +67,11 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	property *prn = Properties::create(EMPTY_WORDING, R, using_iname);
 	Properties::exclude_from_index(prn);
 	prn->either_or = FALSE;
-	Properties::set_translation_S(prn, I6_form);
+	RTProperties::set_translation_S(prn, I6_form);
 	prn->property_value_kind = K;
 	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
-	prn->stored_bp = NULL;
-	prn->run_time_only = TRUE;
+	prn->relation_whose_state_this_stores = NULL;
+	prn->Inter_level_only = TRUE;
 	return prn;
 }
 
@@ -82,9 +82,9 @@ property *Properties::Valued::new_nameless_using(kind *K, package_request *R, in
 	prn->either_or = FALSE;
 	prn->property_value_kind = K;
 	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
-	prn->stored_bp = NULL;
-	prn->run_time_only = TRUE;
-	Properties::set_translation_S(prn, Emit::to_text(using));
+	prn->relation_whose_state_this_stores = NULL;
+	prn->Inter_level_only = TRUE;
+	RTProperties::set_translation_S(prn, Emit::to_text(using));
 	return prn;
 }
 
@@ -94,9 +94,7 @@ property *Properties::Valued::new_nameless_using(kind *K, package_request *R, in
 void Properties::Valued::initialise(property *prn) {
 	prn->property_value_kind = NULL;
 	prn->setting_bp = NULL;
-	prn->used_for_non_typesafe_relation = FALSE;
-	prn->also_a_type = FALSE;
-	Properties::Conditions::initialise(prn);
+	prn->name_coincides_with_kind = FALSE;
 }
 
 void Properties::Valued::make_setting_relation(property *prn, wording W) {
@@ -119,7 +117,7 @@ kind *Properties::Valued::kind(property *prn) {
 void Properties::Valued::set_kind(property *prn, kind *K) {
 	if (K == NULL) internal_error("tried to set null kind");
 	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	if ((Kinds::Behaviour::definite(K) == FALSE) && (prn->do_not_compile == FALSE)) {
+	if ((Kinds::Behaviour::definite(K) == FALSE) && (RTProperties::can_be_compiled(prn))) {
 		Problems::quote_wording(1, prn->name);
 		Problems::quote_kind(2, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyIndefinite));
@@ -155,14 +153,14 @@ then say that a thing has a weight: that makes a property also called
 void Properties::Valued::make_coincide_with_kind(property *prn, kind *K) {
 	Properties::Valued::set_kind(prn, K);
 	if (Kinds::eq(K, K_grammatical_gender)) P_grammatical_gender = prn;
-	prn->also_a_type = TRUE;
-	if (Properties::Conditions::name_can_coincide_with_property(K))
+	prn->name_coincides_with_kind = TRUE;
+	if (Properties::can_name_coincide_with_kind(K))
 		Instances::make_kind_coincident(K, prn);
 }
 
 int Properties::Valued::coincides_with_kind(property *prn) {
 	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->also_a_type;
+	return prn->name_coincides_with_kind;
 }
 
 @ Every valued property has an associated relation to set its value.
@@ -178,30 +176,12 @@ binary_predicate *Properties::Valued::get_setting_bp(property *prn) {
 =
 void Properties::Valued::set_stored_relation(property *prn, binary_predicate *bp) {
 	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	prn->stored_bp = bp;
+	prn->relation_whose_state_this_stores = bp;
 }
 
 binary_predicate *Properties::Valued::get_stored_relation(property *prn) {
 	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->stored_bp;
-}
-
-@ When a property is used to store certain forms of relation, it then needs
-to store either a value within one of the domains, or else a null value used
-to mean "this is not set at the moment". Since that null value isn't
-a member of the domain, it follows that the property is breaking type safety
-when it stores it. This means we need to relax typechecking to enable this
-all to work; the following keep a flag to mark that.
-
-=
-void Properties::Valued::now_used_for_non_typesafe_relation(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	prn->used_for_non_typesafe_relation = TRUE;
-}
-
-int Properties::Valued::is_used_for_non_typesafe_relation(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->used_for_non_typesafe_relation;
+	return prn->relation_whose_state_this_stores;
 }
 
 @h Assertion.
@@ -211,40 +191,4 @@ void Properties::Valued::assert(property *prn, inference_subject *owner,
 	parse_node *val, int certainty) {
 	pcalc_prop *prop = Propositions::Abstract::to_set_property(prn, val);
 	Assert::true_about(prop, owner, certainty);
-}
-
-@h Compilation.
-When we compile the value of a valued property, the following is called.
-In theory the result could depend on the property name; in practice it doesn't.
-(But this would enable us to implement certain properties with different
-storage methods at run-time if we wanted.)
-
-=
-void Properties::Valued::compile_value(value_holster *VH, property *prn, parse_node *val) {
-	kind *K = Properties::Valued::kind(prn);
-	if (K) Specifications::Compiler::compile_constant_to_kind_vh(VH, val, K);
-	else {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
-		Specifications::Compiler::compile_inner(VH, val);
-		END_COMPILATION_MODE;
-	}
-}
-
-void Properties::Valued::compile_default_value(value_holster *VH, property *prn) {
-	if (Properties::Valued::is_used_for_non_typesafe_relation(prn)) {
-		if (Holsters::data_acceptable(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
-		return;
-	}
-	kind *K = Properties::Valued::kind(prn);
-	current_sentence = NULL;
-	if (RTKinds::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
-		Problems::quote_wording(1, prn->name);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyUninitialisable));
-		Problems::issue_problem_segment(
-			"I am unable to put any value into the property '%1', because "
-			"it seems to have a kind of value which has no actual values.");
-		Problems::issue_problem_end();
-	}
 }

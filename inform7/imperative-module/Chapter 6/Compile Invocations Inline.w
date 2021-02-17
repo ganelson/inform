@@ -1664,9 +1664,9 @@ void Invocations::Inline::compile_I7_expression_from_text_inner(value_holster *V
 
 	if (<property-name>(LW)) {
 		if (VH)
-			Produce::val_iname(Emit::tree(), K_value, Properties::iname(<<rp>>));
+			Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(<<rp>>));
 		else
-			WRITE_TO(OUT, "%n", Properties::iname(<<rp>>));
+			WRITE_TO(OUT, "%n", RTProperties::iname(<<rp>>));
 		return;
 	}
 

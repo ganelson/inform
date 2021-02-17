@@ -359,7 +359,7 @@ differently as a result.
 
 @<Create the property and have the new owner provide it@> =
 	if (count <= 2) prn = Properties::EitherOr::obtain(FW, owner_infs);
-	else prn = Properties::Conditions::new(owner_infs, CNW, the_list,
+	else prn = ConditionsOfSubjects::parse(owner_infs, CNW, the_list,
 		&already_created_instances);
 	Assert::true_about(
 		Propositions::Abstract::to_provide_property(prn),

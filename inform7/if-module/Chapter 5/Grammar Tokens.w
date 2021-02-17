@@ -566,7 +566,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::inv_primitive(Emit::tree(), HAS_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-								Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_worn));
+								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
 							Produce::up(Emit::tree());
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
@@ -582,7 +582,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::inv_primitive(Emit::tree(), HAS_BIP);
 								Produce::down(Emit::tree());
 									Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-									Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_worn));
+									Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::code(Emit::tree());
@@ -734,7 +734,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 					Produce::inv_primitive(Emit::tree(), HAS_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-						Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_worn));
+						Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
 					Produce::up(Emit::tree());
 					@<Then jump to our doom@>;
 				Produce::up(Emit::tree());
@@ -747,7 +747,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						Produce::inv_primitive(Emit::tree(), HAS_BIP);
 						Produce::down(Emit::tree());
 							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-							Produce::val_iname(Emit::tree(), K_value, Properties::iname(P_worn));
+							Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(P_worn));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 					@<Then jump to our doom@>;
@@ -888,7 +888,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::inv_primitive(Emit::tree(), PROVIDES_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-								Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+								Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 							Produce::up(Emit::tree());
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
@@ -899,7 +899,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 									Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 									Produce::down(Emit::tree());
 										Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-										Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+										Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 									Produce::up(Emit::tree());
 								Produce::up(Emit::tree());
 								Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -941,14 +941,14 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 											Produce::inv_primitive(Emit::tree(), PROVIDES_BIP);
 											Produce::down(Emit::tree());
 												Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-												Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+												Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 											Produce::up(Emit::tree());
 											Produce::inv_primitive(Emit::tree(), EQ_BIP);
 											Produce::down(Emit::tree());
 												Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 												Produce::down(Emit::tree());
 													Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-													Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+													Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 												Produce::up(Emit::tree());
 												Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
 											Produce::up(Emit::tree());

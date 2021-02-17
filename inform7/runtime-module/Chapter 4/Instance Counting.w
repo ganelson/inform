@@ -337,7 +337,7 @@ inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
 		inference_subject *subj = KindSubjects::from_kind(K);
 		property *P = COUNTING_DATA(subj)->instance_count_prop;
-		if (P) return Properties::iname(P);
+		if (P) return RTProperties::iname(P);
 	}
 	return NULL;
 }

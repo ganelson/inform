@@ -249,7 +249,7 @@ special to make it work, so this doesn't seem worth the trouble.)
 		PropertyInferences::draw(item, P_wearable, NULL);
 	if (P_worn == NULL) {
 		P_worn = Properties::EitherOr::new_nameless(L"worn");
-		Properties::EitherOr::implement_as_attribute(P_worn, TRUE);
+		RTProperties::implement_as_attribute(P_worn, TRUE);
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
 

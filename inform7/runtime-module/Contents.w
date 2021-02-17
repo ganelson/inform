@@ -46,6 +46,8 @@ Chapter 4: Compilation Utilities
 	Use Options at Run Time
 	Temporary Variables
 	Variables
+	Properties
+	Emit Property Values
 	Instances
 	Instance Counting
 	Adjectives

@@ -1234,7 +1234,7 @@ which until runtime -- when its identity will be found in the I6 variable
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 				} else {
 					prn = RETRIEVE_POINTER_property(pdef->defn_ref);
-					Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 				}
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
@@ -1414,7 +1414,7 @@ multiplying by $-1$ is order-reversing.
 		if (multipurpose_routine) {
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
 		} else {
-			Produce::val_iname(Emit::tree(), K_value, Properties::iname(def_prn));
+			Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(def_prn));
 		}
 	Produce::up(Emit::tree());
 

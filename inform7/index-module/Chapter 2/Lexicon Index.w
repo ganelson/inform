@@ -185,8 +185,8 @@ on. (Sometimes these will also be listed separately with an adjectival sense.)
 	LOOP_OVER(qn, instance)
 		if (Kinds::Behaviour::is_an_enumeration(Instances::to_kind(qn))) {
 			property *prn =
-				Properties::Conditions::get_coinciding_property(Instances::to_kind(qn));
-			if ((prn) && (Properties::Conditions::of_what(prn))) continue;
+				Properties::property_with_same_name_as(Instances::to_kind(qn));
+			if ((prn) && (ConditionsOfSubjects::of_what(prn))) continue;
 			wording NW = Instances::get_name(qn, FALSE);
 			lex = IndexLexicon::lexicon_new_entry(NW);
 			lex->part_of_speech = ENUMERATED_CONSTANT_LEXE;

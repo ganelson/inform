@@ -324,7 +324,7 @@ void RTRelations::compile_relation_records(void) {
 			case Relation_Sym_OtoO:
 			case Relation_Equiv: /* Field 0 is the property used for run-time storage */
 				Emit::array_iname_entry(
-					Properties::iname(Relations::Explicit::get_i6_storage_property(dbp)));
+					RTProperties::iname(Relations::Explicit::get_i6_storage_property(dbp)));
 				break;
 			case Relation_VtoV:
 			case Relation_Sym_VtoV: {

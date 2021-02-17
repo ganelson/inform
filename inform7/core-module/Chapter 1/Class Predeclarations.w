@@ -90,6 +90,7 @@ DECLARE_CLASS(text_substitution)
 @e applicability_condition_CLASS
 @e booking_CLASS
 @e comparative_bp_data_CLASS
+@e condition_of_subject_CLASS
 @e counting_data_CLASS
 @e inference_CLASS
 @e inference_family_CLASS
@@ -101,7 +102,6 @@ DECLARE_CLASS(text_substitution)
 @e property_CLASS
 @e property_inference_data_CLASS
 @e property_permission_CLASS
-@e property_of_value_storage_CLASS
 @e property_setting_bp_data_CLASS
 @e relation_inference_data_CLASS
 @e rule_CLASS
@@ -119,6 +119,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
 DECLARE_CLASS(applicability_condition)
 DECLARE_CLASS(booking)
 DECLARE_CLASS(comparative_bp_data)
+DECLARE_CLASS(condition_of_subject)
 DECLARE_CLASS(counting_data)
 DECLARE_CLASS(inference)
 DECLARE_CLASS(inference_family)
@@ -127,7 +128,6 @@ DECLARE_CLASS(inference_subject_family)
 DECLARE_CLASS(measurement_definition)
 DECLARE_CLASS(named_rulebook_outcome)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
-DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(property_permission)
 DECLARE_CLASS(property)
 DECLARE_CLASS(property_inference_data)
@@ -185,6 +185,7 @@ DECLARE_CLASS(use_as_event)
 @e nascent_array_CLASS
 @e plugin_CLASS
 @e plugin_call_CLASS
+@e property_of_value_storage_CLASS
 @e runtime_kind_structure_CLASS
 @e test_scenario_CLASS
 
@@ -200,6 +201,7 @@ DECLARE_CLASS(list_together_routine)
 DECLARE_CLASS(nascent_array)
 DECLARE_CLASS(plugin)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(plugin_call, 100)
+DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(test_scenario)
 

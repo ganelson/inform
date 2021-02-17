@@ -59,7 +59,7 @@ void InstanceSubjects::get_name(inference_subject_family *family,
 
 void InstanceSubjects::new_permission_granted(inference_subject_family *f,
 	inference_subject *from, general_pointer *G) {
-	*G = STORE_POINTER_property_of_value_storage(Properties::OfValues::get_storage());
+	*G = STORE_POINTER_property_of_value_storage(RTPropertyValues::get_storage());
 }
 
 void InstanceSubjects::make_adj_const_domain(inference_subject_family *family,

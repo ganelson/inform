@@ -257,7 +257,7 @@ int PropertyInferences::has_or_can_have(inference_subject *subj, property *prn) 
 	if (Properties::is_either_or(prn)) {
 		int has = PropertyInferences::either_or_state(subj, prn);
 		if ((has == UNKNOWN_CE) && (PropertyPermissions::find(subj, prn, TRUE))) {
-			if (Properties::EitherOr::stored_in_negation(prn))
+			if (RTProperties::stored_in_negation(prn))
 				return LIKELY_CE;
 			else
 				return UNLIKELY_CE;

@@ -141,7 +141,7 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 		Hierarchy::make_available(Emit::tree(), PL::Parsing::Visibility::name_name());
 		P_parse_name = Properties::Valued::new_nameless(I"parse_name", K_value);
 		P_action_bitmap = Properties::Valued::new_nameless(I"action_bitmap", K_value);
-		Hierarchy::make_available(Emit::tree(), Properties::iname(P_action_bitmap));
+		Hierarchy::make_available(Emit::tree(), RTProperties::iname(P_action_bitmap));
 
 		LOOP_OVER_INSTANCES(I, K_object) {
 			inference_subject *subj = Instances::as_subject(I);
@@ -164,7 +164,7 @@ int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 }
 
 inter_name *PL::Parsing::Visibility::name_name(void) {
-	return Properties::iname(P_name);
+	return RTProperties::iname(P_name);
 }
 
 @ The name property requires special care, partly over I6 eccentricities

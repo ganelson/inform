@@ -950,7 +950,7 @@ trust that there is nothing surprising here.
 
 @<Assert found-in, door-to and door-dir properties for doors@> =
 	P_door = Properties::EitherOr::new_nameless(L"door");
-	Properties::EitherOr::implement_as_attribute(P_door, TRUE);
+	RTProperties::implement_as_attribute(P_door, TRUE);
 	P_door_dir = Properties::Valued::new_nameless(I"door_dir", K_value);
 	P_door_to = Properties::Valued::new_nameless(I"door_to", K_value);
 

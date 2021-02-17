@@ -505,7 +505,7 @@ omitted from the index.
 		if (prn == NULL) return;
 		Properties::exclude_from_index(prn);
 	}
-	i6_prn_name = Properties::iname(prn);
+	i6_prn_name = RTProperties::iname(prn);
 	storage_kind = RR->terms[0].domain;
 	kind *PK = NULL;
 	if (RR->terms[0].unique) {
@@ -520,7 +520,7 @@ omitted from the index.
 	else storage_infs = NULL;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
 		(Kinds::Behaviour::is_object(PK) == FALSE))
-		Properties::Valued::now_used_for_non_typesafe_relation(prn);
+		RTProperties::use_non_typesafe_0(prn);
 
 @<Issue a problem message since this won't be stored in a property@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelNotStoredInProperty),

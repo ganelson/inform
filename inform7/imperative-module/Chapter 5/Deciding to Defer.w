@@ -741,7 +741,7 @@ void Calculus::Deferrals::emit_total_of_S(property *prn, parse_node *spec) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), INDIRECT1_BIP);
 			Produce::down(Emit::tree());
@@ -809,7 +809,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
-				Produce::val_iname(Emit::tree(), K_value, Properties::iname(prn));
+				Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(prn));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());

@@ -40,7 +40,7 @@ void Properties::SameRelations::stock(bp_family *self, int n) {
 		LOOP_OVER(prn, property) {
 			if ((Properties::is_value_property(prn)) && (Wordings::nonempty(prn->name))) {
 				vocabulary_entry *rel_name;
-				inter_name *i6_pname = Properties::iname(prn);
+				inter_name *i6_pname = RTProperties::iname(prn);
 				@<Work out the name for the same-property-value-as relation@>;
 
 				TEMPORARY_TEXT(relname)

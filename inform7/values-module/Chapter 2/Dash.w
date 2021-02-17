@@ -1507,7 +1507,7 @@ to the colour property of the canvas.)
 	instance *I = Rvalues::to_instance(new_value);
 	if (I == NULL) outcome = NEVER_MATCH;
 	else {
-		prn = Properties::Conditions::get_coinciding_property(Instances::to_kind(I));
+		prn = Properties::property_with_same_name_as(Instances::to_kind(I));
 		if (prn == NULL) outcome = NEVER_MATCH;
 		else make_check = TRUE;
 	}
@@ -1532,7 +1532,7 @@ against "value".)
 	else if (Descriptions::number_of_adjectives_applied_to(new_value) == 1) {
 		adjective *aph = AdjectivalPredicates::to_adjective(Descriptions::first_unary_predicate(new_value));
 		if (AdjectiveAmbiguity::has_enumerative_meaning(aph))
-			prn = Properties::Conditions::get_coinciding_property(Instances::to_kind(AdjectiveAmbiguity::has_enumerative_meaning(aph)));
+			prn = Properties::property_with_same_name_as(Instances::to_kind(AdjectiveAmbiguity::has_enumerative_meaning(aph)));
 		else if (AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL))
 			prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
 	}

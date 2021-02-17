@@ -113,7 +113,7 @@ be done later on: see //runtime: Instance Counting//.
 		if (Kinds::Behaviour::has_named_constant_values(K) == FALSE)
 			internal_error("tried to make an instance value for impossible kind");
 		I->enumeration_index = Kinds::Behaviour::new_enumerated_value(K);
-		property *cp = Properties::Conditions::get_coinciding_property(K);
+		property *cp = Properties::property_with_same_name_as(K);
 		if (cp) Instances::register_as_adjectival_constant(I, cp);
 	}
 
@@ -173,7 +173,7 @@ and the property "colour", whose names coincide:
 
 =
 void Instances::make_kind_coincident(kind *K, property *P) {
-	Properties::Conditions::set_coinciding_property(K, P);
+	Properties::mark_kind_as_having_same_name_as(K, P);
 	Instances::update_adjectival_forms(P);
 }
 
@@ -189,7 +189,7 @@ use of colour turns up subsequently, e.g., in response to:
 void Instances::update_adjectival_forms(property *P) {
 	if (Properties::is_either_or(P) == TRUE) return;
 	kind *K = Properties::Valued::kind(P);
-	if (P == Properties::Conditions::get_coinciding_property(K)) {
+	if (P == Properties::property_with_same_name_as(K)) {
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K)
 			Instances::register_as_adjectival_constant(I, P);

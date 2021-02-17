@@ -327,7 +327,7 @@ we use here. We replace "self" as a default owner by the only possible owner.
 
 @<Reinterpret the "self" for what are unambiguously conditions of single things@> =
 	if (Rvalues::is_self_object_constant(owner)) {
-		inference_subject *infs = Properties::Conditions::of_what(prn);
+		inference_subject *infs = ConditionsOfSubjects::of_what(prn);
 		instance *I = InstanceSubjects::to_object_instance(infs);
 		if (I) owner = Rvalues::from_instance(I);
 	}

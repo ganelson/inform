@@ -1909,7 +1909,7 @@ int RTKinds::emit_element_of_condition(inference_subject_family *family,
 @ These functions emit the great stream of Inter commands needed to define the
 kinds and their properties.
 
-First, we will call |Properties::Emit::emit_subject| for all kinds of object,
+First, we will call |RTPropertyValues::emit_subject| for all kinds of object,
 beginning with object and working downwards through the tree of its subkinds.
 After that, we call it for all other kinds able to have properties, in no
 particular order.
@@ -1923,7 +1923,7 @@ int RTKinds::emit_all(inference_subject_family *f, int ignored) {
 }
 
 void RTKinds::emit_recursive(inference_subject *within) {
-	Properties::Emit::emit_subject(within);
+	RTPropertyValues::emit_subject(within);
 	inference_subject *subj;
 	LOOP_OVER(subj, inference_subject)
 		if ((InferenceSubjects::narrowest_broader_subject(subj) == within) &&
@@ -1936,6 +1936,58 @@ void RTKinds::emit_one(inference_subject_family *f, inference_subject *infs) {
 	kind *K = KindSubjects::to_kind(infs);
 	if ((KindSubjects::has_properties(K)) &&
 		(Kinds::Behaviour::is_object(K) == FALSE))
-		Properties::Emit::emit_subject(infs);
-	Properties::OfValues::check_allowable(K);
+		RTPropertyValues::emit_subject(infs);
+	RTKinds::check_can_have_property(K);
 }
+
+@h Avoiding a hacky Inter-level problem.
+This is a rather distasteful provision, like everything to do with Inter
+translation. But we don't want to hand the problem downstream to the code
+generator; we want to deal with it now. The issue arises with source text like:
+
+>> A keyword is a kind of value. The keywords are xyzzy, plugh. A keyword can be mentioned.
+
+where "mentioned" is implemented for objects as an attribute in Inter.
+
+That would make it impossible for the code-generator to store the property
+instead in a flat array, which is how it will want to handle properties of
+values. There are ways we could fix this, but property lookup needs to be fast,
+and it seems best to reject the extra complexity needed.
+
+=
+void RTKinds::check_can_have_property(kind *K) {
+	if (Kinds::Behaviour::is_object(K)) return;
+	if (Kinds::Behaviour::definite(K) == FALSE) return;
+	property *prn;
+	property_permission *pp;
+	instance *I_of;
+	inference_subject *infs;
+	LOOP_OVER_INSTANCES(I_of, K)
+		for (infs = Instances::as_subject(I_of); infs;
+			infs = InferenceSubjects::narrowest_broader_subject(infs))
+			LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs)
+				if (((prn = PropertyPermissions::get_property(pp))) &&
+					(RTProperties::can_be_compiled(prn)) &&
+					(problem_count == 0) &&
+					(RTProperties::has_been_translated(prn)) &&
+					(Properties::is_either_or(prn)))
+					@<Bitch about our implementation woes, like it's not our fault@>;
+}
+
+@<Bitch about our implementation woes, like it's not our fault@> =
+	current_sentence = PropertyPermissions::where_granted(pp);
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_property(2, prn);
+	Problems::quote_kind(3, K);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AnomalousProperty));
+	Problems::issue_problem_segment(
+		"Sorry, but I'm going to have to disallow the sentence %1, even "
+		"though it asks for something reasonable. A very small number "
+		"of either-or properties with meanings special to Inform, like '%2', "
+		"are restricted so that only kinds of object can have them. Since "
+		"%3 isn't a kind of object, it can't be said to be %2. %P"
+		"Probably you only need to call the property something else. The "
+		"built-in meaning would only make sense if it were a kind of object "
+		"in any case, so nothing is lost. Sorry for the inconvenience, all "
+		"the same; there are good implementation reasons.");
+	Problems::issue_problem_end();

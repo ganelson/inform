@@ -22,16 +22,11 @@ Chapter 3: Properties
 	Properties
 	Either-Or Properties
 	Valued Properties
-	Property Sentences
-	Condition Properties
-	Indefinite Appearance
 	The Provision Relation
 	Comparative Relations
-	Measurement Adjectives
 	Same Property Relation
 	Setting Property Relation
-	Properties of Values
-	Emit Property Values
+	Measurement Adjectives
 
 Chapter 4: Subjects
 	Inference Subjects
@@ -40,9 +35,11 @@ Chapter 4: Subjects
 	Kind Subjects
 	Relation Subjects
 	Property Permissions
+	Conditions of Subjects
 
 Chapter 5: Modelling
 	Inferences
 	Property Inferences
+	Indefinite Appearance
 	Relation Inferences
 	The Model World

@@ -1,13 +1,10 @@
 [Properties::Appearance::] Indefinite Appearance.
 
-To look after the indefinite appearance pseudo-property, used when
-the source text comments on something with a sentence consisting only of a
-double-quoted literal text.
+When the source text comments on something with a sentence consisting only
+of a double-quoted literal text, we infer that as an indefinite appearance
+property.
 
-@h Inference.
-The "indefinite appearance text" is a property given to something by the
-A-parser when it appears as a double-quoted sentence with no other explanation.
-For instance:
+@ For instance:
 
 >> The drapery is in the Crypt. "The drapery hangs, poignantly waiting to fall."
 
@@ -47,15 +44,13 @@ ambiguously.
 		"the sentence.");
 	return;
 
-@h Reallocation.
-Later, then, during model completion, we will have to make those decisions
+@ During stage II of world model completion, we will have to make those decisions
 about what property the indefinite appearance text should go into. This is
 called "reallocation", and as can be seen the method is:
 
 (a) See if any plugin wants to take action;
-(b) And otherwise reallocate to the "description" property, if that is
-available;
-(c) But otherwise give up and issue a problem message.
+(b) Otherwise reallocate to the "description" property, if available;
+(c) Otherwise give up and issue a problem message.
 
 =
 void Properties::Appearance::reallocate(inference_subject *infs) {
