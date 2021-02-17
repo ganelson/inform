@@ -523,7 +523,7 @@ void PL::Map::set_found_in(instance *I, inter_name *S) {
 	if (P_found_in == NULL)
 		P_found_in = Properties::Valued::new_nameless(I"found_in",
 			K_value);
-	if (PropertyInferences::get_prop_state(
+	if (PropertyInferences::value_of(
 		Instances::as_subject(I), P_found_in))
 			internal_error("rival found_in interpretations");
 	Properties::Valued::assert(P_found_in, Instances::as_subject(I),
@@ -537,7 +537,7 @@ and there seems little point in writing this any better.
 
 =
 instance *PL::Map::get_value_of_opposite_property(instance *I) {
-	parse_node *val = PropertyInferences::get_prop_state(
+	parse_node *val = PropertyInferences::value_of(
 		Instances::as_subject(I), P_opposite);
 	if (val) return Rvalues::to_object_instance(val);
 	return NULL;
@@ -902,7 +902,7 @@ from which there's no way back.)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_a) &&
 			(MAP_DATA(I)->map_connection_b) &&
-			(PropertyInferences::get_prop_state(
+			(PropertyInferences::value_of(
 				Instances::as_subject(I), P_other_side)))
 				StandardProblems::object_problem(_p_(PM_BothWaysDoor),
 					I, "seems to be a door whose connections have been given in both "
@@ -1158,7 +1158,7 @@ int PL::Map::map_annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 		instance *X = A;
 		if (A == Data::Objects::room_being_indexed()) X = B;
 		if (X == NULL) {
-			parse_node *S = PropertyInferences::get_prop_state(
+			parse_node *S = PropertyInferences::value_of(
 				Instances::as_subject(O), P_other_side);
 			X = Rvalues::to_object_instance(S);
 		}

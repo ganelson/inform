@@ -693,7 +693,7 @@ void PL::Parsing::Tokens::General::consider_visible_properties(gpr_kit *gprk, in
 		LOOP_OVER(pr, property) {
 			if ((Properties::is_either_or(pr)) && (Properties::EitherOr::stored_in_negation(pr))) continue;
 			property_permission *pp =
-				World::Permissions::find(subj, pr, TRUE);
+				PropertyPermissions::find(subj, pr, TRUE);
 			if ((pp) && (PL::Parsing::Visibility::get_level(pp) > 0))
 				PL::Parsing::Tokens::General::consider_visible_property(gprk, subj, pr, pp, phase);
 		}

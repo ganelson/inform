@@ -233,20 +233,20 @@ this to any other language).
 				Properties::Valued::set_kind(prn, K_text);
 				prn->do_not_compile = TRUE;
 				prn->include_in_index = FALSE;
-				World::Permissions::grant(model_world, P_specification, TRUE);
+				PropertyPermissions::grant(model_world, P_specification, TRUE);
 				break;
 			case 2: P_indefinite_appearance_text = prn;
 				Properties::Valued::set_kind(prn, K_text);
 				prn->do_not_compile = TRUE;
 				prn->include_in_index = FALSE;
-				World::Permissions::grant(global_constants,
+				PropertyPermissions::grant(global_constants,
 					P_indefinite_appearance_text, TRUE);
 				break;
 			case 3: P_variable_initial_value = prn;
 				prn->do_not_compile = TRUE;
 				Properties::Valued::set_kind(prn, K_value);
 				prn->include_in_index = FALSE;
-				World::Permissions::grant(global_variables, P_variable_initial_value, TRUE);
+				PropertyPermissions::grant(global_variables, P_variable_initial_value, TRUE);
 				break;
 		}
 	}

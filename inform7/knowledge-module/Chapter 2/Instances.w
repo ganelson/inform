@@ -206,7 +206,7 @@ turns up subsequently, e.g., in response to
 void Instances::register_as_adjectival_constant(instance *I, property *P) {
 	property_permission *pp;
 	LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, P) {
-		inference_subject *infs = World::Permissions::get_subject(pp);
+		inference_subject *infs = PropertyPermissions::get_subject(pp);
 		InferenceSubjects::make_adj_const_domain(infs, I, P);
 	}
 }

@@ -1210,7 +1210,7 @@ to send the pairs in that row in any order.
 
 @<Find all pairs belonging to this row, and set the relevant flags@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), relation_inf) {
 		inference_subject *left_infs, *right_infs;
 		RelationInferences::get_term_subjects(inf, &left_infs, &right_infs);
 		if (infs == left_infs) row_flags[RTRelations::get_relation_index(right_infs, 1)] = 1;
@@ -1867,7 +1867,7 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
-			POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
+			POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), relation_inf) {
 				parse_node *spec0, *spec1;
 				RelationInferences::get_term_specs(i, &spec0, &spec1);
 				RTRelations::mark_as_needed(bp);

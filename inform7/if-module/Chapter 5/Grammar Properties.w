@@ -286,8 +286,8 @@ int PL::Parsing::Visibility::seek(property *pr, inference_subject *subj,
 	for (parity = 0; parity <= upto; parity++) {
 		property *seek_prn = (parity == 0)?pr:(Properties::EitherOr::get_negation(pr));
 		if (seek_prn == NULL) continue;
-		if (World::Permissions::find(subj, seek_prn, TRUE) == NULL) continue;
-		property_permission *pp = World::Permissions::grant(subj, seek_prn, FALSE);
+		if (PropertyPermissions::find(subj, seek_prn, TRUE) == NULL) continue;
+		property_permission *pp = PropertyPermissions::grant(subj, seek_prn, FALSE);
 		PLUGIN_PP(parsing, pp)->visibility_level_in_parser = level;
 		PLUGIN_PP(parsing, pp)->visibility_sentence = current_sentence;
 		PLUGIN_PP(parsing, pp)->visibility_condition = WHENW;
@@ -300,7 +300,7 @@ int PL::Parsing::Visibility::any_property_visible_to_subject(inference_subject *
 	property *pr;
 	LOOP_OVER(pr, property) {
 		property_permission *pp =
-			World::Permissions::find(subj, pr, allow_inheritance);
+			PropertyPermissions::find(subj, pr, allow_inheritance);
 		if ((pp) && (PLUGIN_PP(parsing, pp)->visibility_level_in_parser > 0))
 			return TRUE;
 	}
@@ -335,7 +335,7 @@ void PL::Parsing::Visibility::log_parsing_visibility(inference_subject *infs) {
 	property_permission *pp = NULL;
 	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs) {
 		LOG("$Y: visibility %d, condition %W\n",
-			World::Permissions::get_property(pp),
+			PropertyPermissions::get_property(pp),
 			PLUGIN_PP(parsing, pp)->visibility_level_in_parser,
 			PLUGIN_PP(parsing, pp)->visibility_condition);
 	}

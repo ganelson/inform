@@ -86,7 +86,7 @@ no actual knowledge about.
 	for (infs = subj; infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		property_permission *pp;
 		LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs) {
-			property *prn = World::Permissions::get_property(pp);
+			property *prn = PropertyPermissions::get_property(pp);
 			if ((infs == subj) ||
 				(Kinds::Behaviour::uses_pointer_values(Properties::Valued::kind(prn))))
 				words_used += Properties::Emit::emit_propertyvalue(subj, prn);
@@ -157,7 +157,7 @@ void Properties::Emit::allocate_attributes(void) {
 @<Any either/or property which some value can hold is ineligible@> =
 	property_permission *pp;
 	LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn) {
-		inference_subject *infs = World::Permissions::get_subject(pp);
+		inference_subject *infs = PropertyPermissions::get_subject(pp);
 		if ((InferenceSubjects::is_an_object(infs) == FALSE) &&
 			(InferenceSubjects::is_a_kind_of_object(infs) == FALSE))
 			make_attribute = FALSE;

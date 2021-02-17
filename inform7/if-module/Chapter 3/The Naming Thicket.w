@@ -128,7 +128,7 @@ void PL::Naming::transfer_details(inference_subject *from, inference_subject *to
 	if (wto) {
 		if (PropertyInferences::either_or_state(from, P_proper_named) > 0)
 			PL::Naming::now_has_proper_name(to);
-		parse_node *art = PropertyInferences::get_prop_state(from, P_article);
+		parse_node *art = PropertyInferences::value_of(from, P_article);
 		if (art) Properties::Valued::assert(P_article, to, art, LIKELY_CE);
 	}
 }
@@ -331,7 +331,7 @@ together in lists.
 @<Assert the printed plural name property for kinds other than thing or kinds of room@> =
 	if ((Kinds::Behaviour::is_object_of_kind(K, K_room) == FALSE) &&
 		(Kinds::eq(K, K_thing) == FALSE) &&
-		(PropertyInferences::get_prop_state_without_inheritance(
+		(PropertyInferences::value_and_where_without_inheritance(
 			subj, P_printed_plural_name, NULL) == NULL)) {
 		if (Wordings::nonempty(PW)) {
 			text_stream *PROP = Str::new();
@@ -344,20 +344,20 @@ together in lists.
 @ The following isn't done in English.
 
 @<Assert male, female, neuter adjectives from grammatical gender@> =
-	parse_node *spec = PropertyInferences::get_prop_state(subj, P_grammatical_gender);
+	parse_node *spec = PropertyInferences::value_of(subj, P_grammatical_gender);
 	if (spec) {
 		int g = Annotations::read_int(spec, constant_enumeration_ANNOT);
 		switch (g) {
 			case NEUTER_GENDER:
-				if (World::Permissions::grant(subj, P_neuter, TRUE))
+				if (PropertyPermissions::grant(subj, P_neuter, TRUE))
 					Properties::EitherOr::assert(P_neuter, subj, TRUE, LIKELY_CE);
 				break;
 			case MASCULINE_GENDER:
-				if (World::Permissions::grant(subj, P_female, TRUE))
+				if (PropertyPermissions::grant(subj, P_female, TRUE))
 					Properties::EitherOr::assert(P_female, subj, FALSE, LIKELY_CE);
 				break;
 			case FEMININE_GENDER:
-				if (World::Permissions::grant(subj, P_female, TRUE))
+				if (PropertyPermissions::grant(subj, P_female, TRUE))
 					Properties::EitherOr::assert(P_female, subj, TRUE, LIKELY_CE);
 				break;
 		}
@@ -521,7 +521,7 @@ int PL::Naming::adaptive_combination(inform_language *L) {
 	if (L->adaptive_person >= 0) return L->adaptive_person;
 	if ((L->adaptive_person == -1) && (P_adaptive_text_viewpoint)) {
 		instance *I = L->nl_instance;
-		parse_node *val = PropertyInferences::get_prop_state(
+		parse_node *val = PropertyInferences::value_of(
 			Instances::as_subject(I), P_adaptive_text_viewpoint);
 		if (Node::is(val, CONSTANT_NT)) {
 			instance *V = Node::get_constant_instance(val);

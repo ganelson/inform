@@ -86,7 +86,7 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 	LOOP_OVER(prn, property)
 		if (Properties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn)) {
-				if (World::Permissions::find(infs, prn, TRUE)) {
+				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
 					int S = PropertyInferences::either_or_state_without_inheritance(infs, prn, &P);
 					property *prnbar = Properties::EitherOr::get_negation(prn);
@@ -105,9 +105,9 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 	LOOP_OVER(prn, property)
 		if (Properties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn) == FALSE)
-				if (World::Permissions::find(infs, prn, TRUE)) {
+				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
-					parse_node *S = PropertyInferences::get_prop_state_without_inheritance(infs, prn, &P);
+					parse_node *S = PropertyInferences::value_and_where_without_inheritance(infs, prn, &P);
 					if ((S) && (Wordings::nonempty(Node::get_text(S)))) {
 						HTML::open_indented_p(OUT, 1, "hanging");
 						WRITE("%+W: ", prn->name);

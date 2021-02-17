@@ -73,7 +73,7 @@ int Properties::ProvisionRelation::REL_assert(bp_family *self, binary_predicate 
 		inference_subject *infs1, parse_node *spec1) {
 	property *prn = Rvalues::to_property(spec1);
 	if ((infs0) && (prn)) {
-		World::Permissions::grant(infs0, prn, TRUE);
+		PropertyPermissions::grant(infs0, prn, TRUE);
 		Instances::update_adjectival_forms(prn);
 		return TRUE;
 	}
@@ -125,7 +125,7 @@ of object the left operand is, we can only test property provision at run-time:
 answer now.
 
 @<Determine the result now, since we know already, and compile only the outcome@> =
-	if (World::Permissions::find(KindSubjects::from_kind(K), prn, TRUE))
+	if (PropertyPermissions::find(KindSubjects::from_kind(K), prn, TRUE))
 		Calculus::Schemas::modify(asch->schema, "true");
 	else
 		Calculus::Schemas::modify(asch->schema, "false");

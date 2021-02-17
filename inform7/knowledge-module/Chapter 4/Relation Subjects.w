@@ -60,7 +60,7 @@ void RelationSubjects::complete_model(inference_subject_family *family,
 		(bp->right_way_round)) {
 		RTRelations::equivalence_relation_make_singleton_partitions(bp, domain_size);
 		inference *i;
-		POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
+		POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), relation_inf) {
 			inference_subject *infs0, *infs1;
 			RelationInferences::get_term_subjects(i, &infs0, &infs1);
 			RTRelations::equivalence_relation_merge_classes(bp, domain_size,
@@ -161,7 +161,7 @@ void RelationSubjects::check_OtoV_relation(binary_predicate *bp) {
 	LOOP_OVER(infs, inference_subject) right_counts[infs->allocation_id] = 0;
 
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), arbitrary_relation_inf) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, RelationSubjects::from_bp(bp), relation_inf) {
 		parse_node *left_val = NULL;
 		parse_node *right_val = NULL;
 		RelationInferences::get_term_specs(inf, &left_val, &right_val);

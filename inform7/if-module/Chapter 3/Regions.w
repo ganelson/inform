@@ -316,7 +316,7 @@ int PL::Regions::regions_complete_model(int stage) {
 		if ((Instances::of_kind(I, K_room)) ||
 			(Instances::of_kind(I, K_region))) {
 			parse_node *where = NULL;
-			parse_node *val = PropertyInferences::get_prop_state_at(
+			parse_node *val = PropertyInferences::value_and_where(
 				Instances::as_subject(I), P_map_region, &where);
 			if (val) {
 				instance *reg =

@@ -39,10 +39,10 @@ Chapter 4: Subjects
 	Instance Subjects
 	Kind Subjects
 	Relation Subjects
+	Property Permissions
 
 Chapter 5: Modelling
 	Inferences
 	Property Inferences
 	Relation Inferences
-	Property Permissions
 	The Model World

@@ -237,7 +237,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 
 @<Check that the conclusion is not impossible@> =
 	if ((conclusion_prop == NULL) ||
-		(World::Permissions::find(candidate, conclusion_prop, TRUE) == NULL)) {
+		(PropertyPermissions::find(candidate, conclusion_prop, TRUE) == NULL)) {
 		LOGIF(IMPLICATIONS, "IMPOSSIBLE: property not provided\n");
 		continue;
 	}

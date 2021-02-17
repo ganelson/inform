@@ -2,57 +2,67 @@
 
 Inferences that a relation holds between two subjects or values.
 
-@ We will make:
+@ Relation inferences are made about a relation, and say that two other
+subjects or values are related by it. Thus, if Charles "knows" Sebastian,
+this fact is an inference about the knowledge relation, not about either
+Charles or Sebastian, who are only the terms listed in its data.
 
 = (early code)
-inference_family *arbitrary_relation_inf = NULL;
+inference_family *relation_inf = NULL;
 
-@
-
-=
+@ =
 void RelationInferences::start(void) {
-	arbitrary_relation_inf = Inferences::new_family(I"arbitrary_relation_inf");
-	METHOD_ADD(arbitrary_relation_inf, LOG_DETAILS_INF_MTID, RelationInferences::log);
-	METHOD_ADD(arbitrary_relation_inf, COMPARE_INF_MTID, RelationInferences::cmp);
+	relation_inf = Inferences::new_family(I"relation_inf");
+	METHOD_ADD(relation_inf, LOG_DETAILS_INF_MTID, RelationInferences::log_details);
+	METHOD_ADD(relation_inf, COMPARE_INF_MTID, RelationInferences::cmp);
 }
 
+@ Terms can be given either as subjects or as arbitrary values. This was a late
+change to Inform, which came in with dynamic relations between (say) numbers,
+and therefore the need to set up an initial state for those relations.
+
+The terms will either both be subjects, or both be values, so at all times
+exactly one of these pairs of pointers is |NULL|.
+
+=
 typedef struct relation_inference_data {
 	struct inference_subject *terms_as_subjects[2];
 	struct parse_node *terms_as_values[2];
 	CLASS_DEFINITION
 } relation_inference_data;
 
-inference *RelationInferences::new(inference_subject *infs0,
-	inference_subject *infs1, parse_node *spec0, parse_node *spec1) {
+inference *RelationInferences::new(inference_subject *subj0,
+	inference_subject *subj1, parse_node *val0, parse_node *val1) {
 	PROTECTED_MODEL_PROCEDURE;
 	relation_inference_data *data = CREATE(relation_inference_data);
-	data->terms_as_subjects[0] = InferenceSubjects::divert(infs0);
-	data->terms_as_subjects[1] = InferenceSubjects::divert(infs1);
-	data->terms_as_values[0] = spec0;
-	data->terms_as_values[1] = spec1;
-	return Inferences::create_inference(arbitrary_relation_inf,
+	data->terms_as_subjects[0] = InferenceSubjects::divert(subj0);
+	data->terms_as_subjects[1] = InferenceSubjects::divert(subj1);
+	data->terms_as_values[0] = val0;
+	data->terms_as_values[1] = val1;
+	return Inferences::create_inference(relation_inf,
 		STORE_POINTER_relation_inference_data(data), prevailing_mood);
 }
 
-void RelationInferences::get_term_subjects(inference *i,
-	inference_subject **infs1, inference_subject **infs2) {
-	if ((i == NULL) || (i->family != arbitrary_relation_inf))
-		internal_error("not a relation inf");
-	relation_inference_data *data = RETRIEVE_POINTER_relation_inference_data(i->data);
-	if (infs1) *infs1 = data->terms_as_subjects[0];
-	if (infs2) *infs2 = data->terms_as_subjects[1];
+@ As promised, these are drawn using either subjects or values, but not both:
+
+=
+void RelationInferences::draw(binary_predicate *bp,
+	inference_subject *subj0, inference_subject *subj1) {
+	inference *i = RelationInferences::new(subj0, subj1, NULL, NULL);
+	Inferences::join_inference(i, RelationSubjects::from_bp(bp));
 }
 
-void RelationInferences::get_term_specs(inference *i,
-	parse_node **spec1, parse_node **spec2) {
-	if ((i == NULL) || (i->family != arbitrary_relation_inf))
-		internal_error("not a relation inf");
-	relation_inference_data *data = RETRIEVE_POINTER_relation_inference_data(i->data);
-	if (spec1) *spec1 = data->terms_as_values[0];
-	if (spec2) *spec2 = data->terms_as_values[1];
+void RelationInferences::draw_spec(binary_predicate *bp,
+	parse_node *val0, parse_node *val1) {
+	if ((val0 == NULL) || (val1 == NULL)) internal_error("malformed value relation");
+	inference *i = RelationInferences::new(NULL, NULL, val0, val1);
+	Inferences::join_inference(i, RelationSubjects::from_bp(bp));
 }
 
-void RelationInferences::log(inference_family *f, inference *inf) {
+@ And here are the method calls:
+
+=
+void RelationInferences::log_details(inference_family *f, inference *inf) {
 	relation_inference_data *data = RETRIEVE_POINTER_relation_inference_data(inf->data);
 	if (data->terms_as_subjects[0]) LOG("-1:$j", data->terms_as_subjects[0]);
 	if (data->terms_as_subjects[1]) LOG("-2:$j", data->terms_as_subjects[1]);
@@ -60,6 +70,14 @@ void RelationInferences::log(inference_family *f, inference *inf) {
 	if (data->terms_as_values[1]) LOG("-s2:$P", data->terms_as_values[1]);
 }
 
+@ Note that the topic of a relation inference depends on both terms. If
+Charles knows Sebastian and Charles also knows Julia, then these two inferences
+both belong to the knowledge relation, but "differ in topic", so that there
+is no contradiction. If in fact the knowledge relation wants to make this a
+one-to-one relationship, it will have to detect the contradiction of Charles
+knowing both of them elsewhere: the inference machinery can't do so for it.
+
+=
 int RelationInferences::cmp(inference_family *f, inference *i1, inference *i2) {
 	relation_inference_data *data1 = RETRIEVE_POINTER_relation_inference_data(i1->data);
 	relation_inference_data *data2 = RETRIEVE_POINTER_relation_inference_data(i2->data);
@@ -82,15 +100,21 @@ int RelationInferences::cmp(inference_family *f, inference *i1, inference *i2) {
 	return CI_IDENTICAL;
 }
 
-void RelationInferences::draw(binary_predicate *bp,
-	inference_subject *infs0, inference_subject *infs1) {
-	inference *i = RelationInferences::new(infs0, infs1, NULL, NULL);
-	Inferences::join_inference(i, RelationSubjects::from_bp(bp));
+@ And finally two access functions:
+
+=
+void RelationInferences::get_term_subjects(inference *i,
+	inference_subject **subj1, inference_subject **infs2) {
+	if ((i == NULL) || (i->family != relation_inf)) internal_error("not a relation inf");
+	relation_inference_data *data = RETRIEVE_POINTER_relation_inference_data(i->data);
+	if (subj1) *subj1 = data->terms_as_subjects[0];
+	if (infs2) *infs2 = data->terms_as_subjects[1];
 }
 
-void RelationInferences::draw_spec(binary_predicate *bp,
-	parse_node *spec0, parse_node *spec1) {
-	if ((spec0 == NULL) || (spec1 == NULL)) internal_error("malformed value relation");
-	inference *i = RelationInferences::new(NULL, NULL, spec0, spec1);
-	Inferences::join_inference(i, RelationSubjects::from_bp(bp));
+void RelationInferences::get_term_specs(inference *i,
+	parse_node **val1, parse_node **spec2) {
+	if ((i == NULL) || (i->family != relation_inf)) internal_error("not a relation inf");
+	relation_inference_data *data = RETRIEVE_POINTER_relation_inference_data(i->data);
+	if (val1) *val1 = data->terms_as_values[0];
+	if (spec2) *spec2 = data->terms_as_values[1];
 }

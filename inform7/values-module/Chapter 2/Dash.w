@@ -1570,7 +1570,7 @@ this case in the type-checker is never exercised.
 		}
 	}
 	if ((target_wo) && (prn) &&
-		(World::Permissions::find(Instances::as_subject(target_wo), prn, TRUE) == NULL)) {
+		(PropertyPermissions::find(Instances::as_subject(target_wo), prn, TRUE) == NULL)) {
 		THIS_IS_AN_INTERESTING_PROBLEM {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(target));
@@ -1868,7 +1868,7 @@ us there.
 
 	inference_subject *owning_subject = InferenceSubjects::from_specification(the_owner);
 	if (owning_subject == NULL) owning_subject = KindSubjects::from_kind(K2);
-	if (World::Permissions::find(owning_subject, prn, TRUE) == NULL) {
+	if (PropertyPermissions::find(owning_subject, prn, TRUE) == NULL) {
 		if ((Kinds::Behaviour::is_object(K2) == FALSE) ||
 			((Rvalues::is_object(the_owner)) &&
 				(Rvalues::is_self_object_constant(the_owner) == FALSE)))

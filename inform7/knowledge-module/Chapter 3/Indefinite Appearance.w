@@ -66,7 +66,7 @@ void Properties::Appearance::reallocate(inference_subject *infs) {
 			current_sentence = Inferences::where_inferred(inf);
 			if (Plugins::Call::default_appearance(infs, txt) == FALSE) {
 				if ((P_description) &&
-					(World::Permissions::find(infs, P_description, TRUE))) {
+					(PropertyPermissions::find(infs, P_description, TRUE))) {
 					Properties::Valued::assert(P_description, infs, txt, CERTAIN_CE);
 				} else StandardProblems::inference_problem(_p_(PM_IndefiniteTextMeaningless),
 					infs, inf, "is not allowed",

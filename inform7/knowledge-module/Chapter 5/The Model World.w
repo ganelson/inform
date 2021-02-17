@@ -110,7 +110,7 @@ A nameless property added in Stages II and III does not need permission.
 	KNOWLEDGE_LOOP(inf, infs, property_inf) {
 		property *prn = PropertyInferences::get_property(inf);
 		if (Wordings::nonempty(prn->name))
-			if (World::Permissions::find(infs, prn, TRUE) == NULL)
+			if (PropertyPermissions::find(infs, prn, TRUE) == NULL)
 				StandardProblems::inference_problem(_p_(PM_PropertyNotPermitted),
 					infs, inf, "is not allowed to exist",
 					"because you haven't said it is. What properties something can "

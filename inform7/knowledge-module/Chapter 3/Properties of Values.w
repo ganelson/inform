@@ -44,7 +44,7 @@ the property-permission symbol accordingly:
 =
 inter_name *Properties::OfValues::annotate_table_storage(property_permission *pp) {
 	property_of_value_storage *povs =
-		RETRIEVE_POINTER_property_of_value_storage(World::Permissions::get_storage_data(pp));
+		RETRIEVE_POINTER_property_of_value_storage(PropertyPermissions::get_storage_data(pp));
 	return povs->storage_table_iname;
 }
 
@@ -72,7 +72,7 @@ void Properties::OfValues::check_allowable(kind *K) {
 	LOOP_OVER_INSTANCES(I_of, K)
 		for (infs = Instances::as_subject(I_of); infs; infs = InferenceSubjects::narrowest_broader_subject(infs))
 			LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs)
-				if (((prn = World::Permissions::get_property(pp))) &&
+				if (((prn = PropertyPermissions::get_property(pp))) &&
 					(Properties::can_be_compiled(prn)))
 					@<Check that the property is allowable here@>;
 }
@@ -81,7 +81,7 @@ void Properties::OfValues::check_allowable(kind *K) {
 	if ((problem_count == 0) &&
 		(Properties::has_been_translated(prn)) &&
 		(Properties::is_either_or(prn))) {
-		current_sentence = World::Permissions::where_granted(pp);
+		current_sentence = PropertyPermissions::where_granted(pp);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_property(2, prn);
 		Problems::quote_kind(3, K);

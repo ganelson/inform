@@ -1,4 +1,4 @@
-[World::Permissions::] Property Permissions.
+[PropertyPermissions::] Property Permissions.
 
 To enforce the domain of properties: for instance, that a door can
 be open or closed but that an animal cannot, or that a person can have a
@@ -48,7 +48,7 @@ whereas the unpredictable order might make testing Inform more annoying.
 	LOOP_OVER_LINKED_LIST(pp, property_permission, InferenceSubjects::get_permissions(infs))
 
 =
-property_permission *World::Permissions::find(inference_subject *infs,
+property_permission *PropertyPermissions::find(inference_subject *infs,
 	property *prn, int allow_inheritance) {
 	property *prnbar = NULL;
 	if (Properties::is_either_or(prn)) prnbar = Properties::EitherOr::get_negation(prn);
@@ -77,9 +77,9 @@ kind ("person") already has one. This is intentional.[1]
 applied to specific instances -- see the example of the jar below.
 
 =
-property_permission *World::Permissions::grant(inference_subject *infs, property *prn,
+property_permission *PropertyPermissions::grant(inference_subject *infs, property *prn,
 	int allow_inheritance) {
-	property_permission *new_pp = World::Permissions::find(infs, prn, allow_inheritance);
+	property_permission *new_pp = PropertyPermissions::find(infs, prn, allow_inheritance);
 	if (new_pp == NULL) {
 		LOGIF(PROPERTY_PROVISION, "Allowing $j to provide $Y\n", infs, prn);
 		@<Create the new permission structure@>;
@@ -126,18 +126,18 @@ in the case of a broken jar.
 @h Boring access functions.
 
 =
-property *World::Permissions::get_property(property_permission *pp) {
+property *PropertyPermissions::get_property(property_permission *pp) {
 	return pp->property_granted;
 }
 
-inference_subject *World::Permissions::get_subject(property_permission *pp) {
+inference_subject *PropertyPermissions::get_subject(property_permission *pp) {
 	return pp->property_owner;
 }
 
-general_pointer World::Permissions::get_storage_data(property_permission *pp) {
+general_pointer PropertyPermissions::get_storage_data(property_permission *pp) {
 	return pp->pp_storage_data;
 }
 
-parse_node *World::Permissions::where_granted(property_permission *pp) {
+parse_node *PropertyPermissions::where_granted(property_permission *pp) {
 	return pp->where_granted;
 }

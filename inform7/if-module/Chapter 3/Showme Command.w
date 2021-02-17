@@ -136,8 +136,8 @@ int PL::Showme::SHOWME_primitive(inference_subject *subj, property *prn, int com
 
 	inference_subject *parent = InferenceSubjects::narrowest_broader_subject(subj);
 
-	if ((World::Permissions::find(subj, prn, FALSE)) &&
-		(World::Permissions::find(parent, prn, TRUE) == FALSE)) {
+	if ((PropertyPermissions::find(subj, prn, FALSE)) &&
+		(PropertyPermissions::find(parent, prn, TRUE) == FALSE)) {
 		if (comp) {
 			if (Properties::is_value_property(prn))
 				@<Compile the SHOWME printing code for a value property@>
