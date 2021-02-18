@@ -149,13 +149,12 @@ clashes; it isn't essential to Inform's running.
 	Assert::true(prop, prevailing_mood);
 
 	property *prn = Properties::Valued::obtain(cond_W);
-	prn->either_or = FALSE;
-	prn->as_condition_of_subject = ConditionsOfSubjects::new(infs, anon);
+	prn->value_data->as_condition_of_subject = ConditionsOfSubjects::new(infs, anon);
 	return prn;
 
 @ =
 inference_subject *ConditionsOfSubjects::of_what(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) return NULL;
-	if (prn->as_condition_of_subject == NULL) return NULL;
-	return prn->as_condition_of_subject->condition_of;
+	if ((prn == NULL) || (prn->either_or_data)) return NULL;
+	if (prn->value_data->as_condition_of_subject == NULL) return NULL;
+	return prn->value_data->as_condition_of_subject->condition_of;
 }

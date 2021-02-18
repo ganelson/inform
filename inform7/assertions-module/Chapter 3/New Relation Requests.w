@@ -503,7 +503,7 @@ omitted from the index.
 		wording PW = WordAssemblages::to_wording(&pw_wa);
 		prn = Properties::Valued::obtain_within_kind(PW, K_object);
 		if (prn == NULL) return;
-		Properties::exclude_from_index(prn);
+		IXProperties::dont_show_in_index(prn);
 	}
 	i6_prn_name = RTProperties::iname(prn);
 	storage_kind = RR->terms[0].domain;

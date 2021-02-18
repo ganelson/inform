@@ -62,11 +62,11 @@ property *Properties::EitherOr::obtain(wording W, inference_subject *infs) {
 			"and that can never change during play. 'Container' is a kind, and "
 			"those are fixed. 'A hopper is a container' would be allowed, because "
 			"that makes a definite statement.");
+		return NULL;
 	}
 	property *prn = Properties::obtain(W, FALSE);
-	prn->either_or = TRUE;
 	kind *K = KindSubjects::to_kind(infs);
-	if (prn->as_adjective_meaning == NULL)
+	if (prn->either_or_data->as_adjective_meaning == NULL)
 		Properties::EitherOr::create_adjective_from_property(prn, W, K);
 	else
 		Properties::EitherOr::make_new_adjective_sense_from_property(prn, W, K);
@@ -88,9 +88,8 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 	wording W = Feeds::feed_C_string(I6_form);
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
 	inter_name *iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
-	property *prn = Properties::create(EMPTY_WORDING, R, iname);
-	prn->either_or = TRUE;
-	Properties::exclude_from_index(prn);
+	property *prn = Properties::create(EMPTY_WORDING, R, iname, TRUE);
+	IXProperties::dont_show_in_index(prn);
 	RTProperties::set_translation(prn, I6_form);
 	Properties::EitherOr::create_adjective_from_property(prn, EMPTY_WORDING, K_object);
 	prn->Inter_level_only = TRUE;
@@ -100,12 +99,23 @@ property *Properties::EitherOr::new_nameless(wchar_t *I6_form) {
 @h Initialising details.
 
 =
-void Properties::EitherOr::initialise(property *prn) {
-	prn->negation = NULL;
-	prn->as_adjective_meaning = NULL;
+typedef struct either_or_property_data {
+	struct property *negation; /* and which property name (if any) negates it? */
+	struct adjective_meaning *as_adjective_meaning; /* and has it been made an adjective yet? */
 	#ifdef IF_MODULE
-	prn->eo_parsing_grammar = NULL;
+	struct grammar_verb *eo_parsing_grammar; /* exotic forms used in parsing */
 	#endif
+	CLASS_DEFINITION
+} either_or_property_data;
+
+either_or_property_data *Properties::EitherOr::new_eo_data(property *prn) {
+	either_or_property_data *eod = CREATE(either_or_property_data);
+	eod->negation = NULL;
+	eod->as_adjective_meaning = NULL;
+	#ifdef IF_MODULE
+	eod->eo_parsing_grammar = NULL;
+	#endif
+	return eod;
 }
 
 @ When created, all properties start out as singletons; the following joins
@@ -114,19 +124,19 @@ around), but not to break one.
 
 =
 void Properties::EitherOr::make_negations(property *prn, property *neg) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	if ((neg == NULL) || (neg->either_or == FALSE)) internal_error("non-EO property");
-	if ((prn->negation) || (neg->negation)) {
-		if ((prn->negation != neg) || (neg->negation != prn)) {
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
+	if ((neg == NULL) || (neg->either_or_data == NULL)) internal_error("non-EO property");
+	if ((Properties::EitherOr::get_negation(prn)) || (Properties::EitherOr::get_negation(neg))) {
+		if ((Properties::EitherOr::get_negation(prn) != neg) || (Properties::EitherOr::get_negation(neg) != prn)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_property(2, prn);
 			Problems::quote_property(3, neg);
-			if (prn->negation) {
+			if (Properties::EitherOr::get_negation(prn)) {
 				Problems::quote_property(4, prn);
-				Problems::quote_property(5, prn->negation);
+				Problems::quote_property(5, Properties::EitherOr::get_negation(prn));
 			} else {
 				Problems::quote_property(4, neg);
-				Problems::quote_property(5, neg->negation);
+				Problems::quote_property(5, Properties::EitherOr::get_negation(neg));
 			}
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BrokenNegationPair));
 			Problems::issue_problem_segment(
@@ -139,13 +149,13 @@ void Properties::EitherOr::make_negations(property *prn, property *neg) {
 		return;
 	}
 
-	prn->negation = neg; neg->negation = prn;
+	prn->either_or_data->negation = neg; neg->either_or_data->negation = prn;
 	RTProperties::store_in_negation(neg);
 }
 
 property *Properties::EitherOr::get_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	return prn->negation;
+	if ((prn == NULL) || (prn->either_or_data == NULL)) return NULL;
+	return prn->either_or_data->negation;
 }
 
 @ Miscellaneous details:
@@ -153,20 +163,20 @@ property *Properties::EitherOr::get_negation(property *prn) {
 =
 #ifdef IF_MODULE
 grammar_verb *Properties::EitherOr::get_parsing_grammar(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) return NULL;
-	return prn->eo_parsing_grammar;
+	if ((prn == NULL) || (prn->either_or_data == NULL)) return NULL;
+	return prn->either_or_data->eo_parsing_grammar;
 }
 
 void Properties::EitherOr::set_parsing_grammar(property *prn, grammar_verb *gv) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	prn->eo_parsing_grammar = gv;
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
+	prn->either_or_data->eo_parsing_grammar = gv;
 }
 #endif
 
 adjective *Properties::EitherOr::get_aph(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	if (prn->as_adjective_meaning == NULL) return NULL;
-	return prn->as_adjective_meaning->owning_adjective;
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
+	if (prn->either_or_data->as_adjective_meaning == NULL) return NULL;
+	return prn->either_or_data->as_adjective_meaning->owning_adjective;
 }
 
 @h Assertion.
@@ -203,12 +213,13 @@ int Properties::EitherOr::is_either_or_adjective(adjective_meaning *am) {
 }
 
 void Properties::EitherOr::create_adjective_from_property(property *prn, wording W, kind *K) {
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("not either-or");
 	adjective *adj = Adjectives::declare(W, NULL);
 	adjective_meaning *am =
 		AdjectiveMeanings::new(either_or_property_amf, STORE_POINTER_property(prn), W);
 	AdjectiveAmbiguity::add_meaning_to_adjective(am, adj);
 	AdjectiveMeaningDomains::set_from_kind(am, K);
-	prn->as_adjective_meaning = am;
+	prn->either_or_data->as_adjective_meaning = am;
 }
 
 void Properties::EitherOr::make_new_adjective_sense_from_property(property *prn, wording W, kind *K) {

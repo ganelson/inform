@@ -1,8 +1,7 @@
 [Properties::] Properties.
 
-Elements of the model world, such as objects, have properties
-associated with them. Here we look after the identities of these different
-properties.
+Subjects in the model world have properties associated with them: some either/or,
+others with values.
 
 @ The English word "property" is a little vague. It can mean a particular
 property of a given thing -- say, the weight of a car -- or it
@@ -24,32 +23,17 @@ a value with the owner; it isn't that either/or properties are unloved.)
 typedef struct property {
 	struct wording name; /* name of property */
 	int has_of_in_the_name; /* looks like a property test, e.g., "point of view"? */
-	int name_coincides_with_kind; /* and is its name the same as that of a kind? */
+	int Inter_level_only; /* i.e., does not correspond to an I7 property */
 
 	struct linked_list *permissions; /* of |property_permission|: who can have this? */
 
-	/* the basic nature of this property */
-	int either_or; /* is this an either/or property? if not, it is a valued one */
-	int include_in_index; /* is this property shown in the indexes? */
-	int Inter_level_only; /* i.e., does not correspond to an I7 property */
+	/* exactly one of these must be non-|NULL|: */
+	struct either_or_property_data *either_or_data; /* for an either/or property */
+	struct value_property_data *value_data; /* for a value property */
 
-	/* used only for either-or properties */
-	struct property *negation; /* and which property name (if any) negates it? */
-	struct adjective_meaning *as_adjective_meaning; /* and has it been made an adjective yet? */
-	#ifdef IF_MODULE
-	struct grammar_verb *eo_parsing_grammar; /* exotic forms used in parsing */
-	#endif
+	struct property_compilation_data compilation_data;
+	struct property_indexing_data indexing_data;
 
-	/* used only for valued properties */
-	struct kind *property_value_kind; /* if not either/or, what kind of value does it hold? */
-	struct binary_predicate *setting_bp; /* and which relation sets it? */
-	struct binary_predicate *relation_whose_state_this_stores; /* or |NULL| if it doesn't */
-	struct condition_of_subject *as_condition_of_subject; /* or |NULL| if it isn't one */
-
-	struct property_compilation_data compilation_data; /* runtime implementation */
-
-	/* temporary use only */
-	int indexed_already; /* and has it been, thus far in index construction? */
 	struct possession_marker pom; /* for temporary use when checking implications */
 
 	CLASS_DEFINITION
@@ -76,27 +60,27 @@ property *Properties::obtain(wording W, int valued) {
 	parse_node *p = Lexicon::retrieve(PROPERTY_MC, W);
 	property *prn;
 	if (p == NULL) {
-		prn = Properties::create(W, NULL, NULL);
-		if (valued) {
-			Properties::Valued::make_setting_relation(prn, W);
-			prn->either_or = FALSE;
-		} else {
-			prn->either_or = TRUE;
-		}
+		prn = Properties::create(W, NULL, NULL, (valued)?FALSE:TRUE);
+		if (valued) Properties::Valued::make_setting_relation(prn, W);
 	} else {
 		prn = Rvalues::to_property(p);
-		if ((valued) && (prn->either_or))
+		if ((valued) && (prn->either_or_data))
 			internal_error("either/or property made into valued");
-		if ((valued == FALSE) && (prn->either_or == FALSE))
+		if ((valued == FALSE) && (prn->either_or_data == NULL))
 			internal_error("valued property made into either/or");
 	}
 	return prn;
 }
 
+void Properties::make_valued(property *prn) {
+	
+}
+
 @ And: (2) To create a new structure outright.
 
 =
-property *Properties::create(wording W, package_request *using_package, inter_name *using_iname) {
+property *Properties::create(wording W, package_request *using_package,
+	inter_name *using_iname, int eo) {
 	W = Articles::remove_article(W);
 	@<Ensure that the new property name is one we can live with@>;
 	@<See if the property name already has a meaning, which may or may not be okay@>;
@@ -107,7 +91,7 @@ property *Properties::create(wording W, package_request *using_package, inter_na
 	@<Note the significance of this property, if it needs compiler support@>;
 
 	if (Wordings::nonempty(W)) @<Register the property name as a noun@>
-	else Properties::exclude_from_index(prn);
+	else IXProperties::dont_show_in_index(prn);
 
 	LOGIF(PROPERTY_CREATIONS, "Created property: $Y\n", prn);
 	return prn;
@@ -179,14 +163,16 @@ something.
 	prn->name = W;
 	prn->has_of_in_the_name = <name-looking-like-property-test>(W);
 	prn->permissions = NEW_LINKED_LIST(property_permission);
-	prn->either_or = FALSE;
-	prn->indexed_already = FALSE;
-	prn->include_in_index = TRUE;
 	prn->Inter_level_only = FALSE;
-	prn->as_condition_of_subject = NULL;
 	RTProperties::initialise_pcd(prn, using_package, using_iname);
-	Properties::EitherOr::initialise(prn);
-	Properties::Valued::initialise(prn);
+	IXProperties::initialise_pid(prn);
+	if (eo) {
+		prn->either_or_data = Properties::EitherOr::new_eo_data(prn);
+		prn->value_data = NULL;
+	} else {
+		prn->either_or_data = NULL;
+		prn->value_data = Properties::Valued::new_value_data(prn);
+	}
 
 @<Does the new property have the same name as a kind of value?@> =
 	if (<k-kind>(W))
@@ -212,20 +198,20 @@ this to any other language).
 			case 1: P_specification = prn;
 				Properties::Valued::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
-				prn->include_in_index = FALSE;
+				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(model_world, P_specification, TRUE);
 				break;
 			case 2: P_indefinite_appearance_text = prn;
 				Properties::Valued::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
-				prn->include_in_index = FALSE;
+				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_constants,
 					P_indefinite_appearance_text, TRUE);
 				break;
 			case 3: P_variable_initial_value = prn;
 				RTProperties::do_not_compile(prn);
 				Properties::Valued::set_kind(prn, K_value);
-				prn->include_in_index = FALSE;
+				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_variables, P_variable_initial_value, TRUE);
 				break;
 		}
@@ -255,9 +241,13 @@ name in both forms. The following grammar is used to construct this prefix.
 =
 kind *Properties::to_kind(property *prn) {
 	if (prn == NULL) internal_error("took kind of null property");
-	kind *stored = prn->property_value_kind;
-	if (prn->either_or) stored = K_truth_state;
-	return Kinds::unary_con(CON_property, stored);
+	return Kinds::unary_con(CON_property, Properties::kind_of_contents(prn));
+}
+
+kind *Properties::kind_of_contents(property *prn) {
+	if (prn == NULL) internal_error("took kind of null property");
+	if (prn->either_or_data) return K_truth_state;
+	return prn->value_data->property_value_kind;
 }
 
 @ =
@@ -289,7 +279,7 @@ article:
 	W = Articles::remove_the(W);
 	property *prn;
 	LOOP_OVER(prn, property)
-		if (prn->either_or)
+		if (prn->either_or_data)
 			if (Wordings::match(W, prn->name)) {
 				==> { -, prn };
 				return TRUE;
@@ -301,7 +291,7 @@ article:
 	W = Articles::remove_the(W);
 	property *prn;
 	LOOP_OVER(prn, property)
-		if (prn->either_or == FALSE)
+		if (prn->either_or_data == NULL)
 			if (Wordings::match(W, prn->name)) {
 				==> { -, prn };
 				return TRUE;
@@ -378,7 +368,7 @@ linked_list *Properties::get_permissions(property *prn) {
 void Properties::log(property *prn) {
 	Properties::log_basic_pname(prn);
 	if ((Streams::I6_escapes_enabled(DL)) || (prn == NULL)) return;
-	if (prn->either_or) {
+	if (prn->either_or_data) {
 		property *neg = Properties::EitherOr::get_negation(prn);
 		if (neg) { LOG("=~"); Properties::log_basic_pname(neg); }
 	} else {
@@ -400,32 +390,10 @@ of the other:
 
 =
 int Properties::is_either_or(property *prn) {
-	return prn->either_or;
+	return (prn->either_or_data)?TRUE:FALSE;
 }
 int Properties::is_value_property(property *prn) {
-	if (prn->either_or == FALSE) return TRUE;
-	return FALSE;
-}
-
-@ Second, a property might be missed out of the Index pages for clarity's
-sake:
-
-=
-int Properties::is_shown_in_index(property *prn) {
-	return prn->include_in_index;
-}
-void Properties::exclude_from_index(property *prn) {
-	prn->include_in_index = FALSE;
-}
-
-@ During indexing we try to avoid mentioning properties more than once:
-
-=
-void Properties::set_indexed_already_flag(property *prn, int state) {
-	prn->indexed_already = state;
-}
-int Properties::get_indexed_already_flag(property *prn) {
-	return prn->indexed_already;
+	return (prn->value_data)?TRUE:FALSE;
 }
 
 @ And this is the routine which is called by the assertion parser in response
@@ -444,7 +412,7 @@ void Properties::translates(wording W, parse_node *p2) {
 	RTProperties::set_translation(prn, text);
 	LOGIF(PROPERTY_TRANSLATIONS, "Property <$Y> translates as <%w>\n", prn, text);
 
-	if (prn->either_or)
+	if (prn->either_or_data)
 		@<Check to see if a sense reversal has taken place in translation@>;
 }
 

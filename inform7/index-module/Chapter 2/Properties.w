@@ -2,6 +2,39 @@
 
 To index properties.
 
+@
+
+=
+typedef struct property_indexing_data {
+	int include_in_index; /* is this property shown in the indexes? */
+	int indexed_already; /* and has it been, thus far in index construction? */
+} property_indexing_data;
+
+void IXProperties::initialise_pid(property *prn) {
+	prn->indexing_data.indexed_already = FALSE;
+	prn->indexing_data.include_in_index = TRUE;
+}
+
+@ A property might be missed out of the Index pages for clarity's sake:
+
+=
+int IXProperties::is_shown_in_index(property *prn) {
+	return prn->indexing_data.include_in_index;
+}
+void IXProperties::dont_show_in_index(property *prn) {
+	prn->indexing_data.include_in_index = FALSE;
+}
+
+@ During indexing we try to avoid mentioning properties more than once:
+
+=
+void IXProperties::set_indexed_already_flag(property *prn, int state) {
+	prn->indexing_data.indexed_already = state;
+}
+int IXProperties::get_indexed_already_flag(property *prn) {
+	return prn->indexing_data.indexed_already;
+}
+
 @ Who can own a property?
 
 =

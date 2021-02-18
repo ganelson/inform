@@ -549,7 +549,7 @@ kind *Rvalues::to_kind(parse_node *spec) {
 
 @<Work out the kind for a constant property name@> =
 	property *prn = Rvalues::to_property(spec);
-	if (prn->either_or) return Kinds::unary_con(CON_property, K_truth_state);
+	if (prn->either_or_data) return Kinds::unary_con(CON_property, K_truth_state);
 	return Kinds::unary_con(CON_property, Properties::Valued::kind(prn));
 
 @<Work out the kind for a constant list@> =

@@ -79,16 +79,16 @@ int RTProperties::get_offset_in_runtime_metadata_table(property *prn) {
 
 @ =
 int RTProperties::stored_in_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	return prn->compilation_data.store_in_negation;
 }
 
 void RTProperties::store_in_negation(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
-	if (prn->negation == NULL) internal_error("singleton EO cannot store in negation");
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
+	if (Properties::EitherOr::get_negation(prn) == NULL) internal_error("singleton EO cannot store in negation");
 
 	prn->compilation_data.store_in_negation = TRUE;
-	if (prn->negation) prn->negation->compilation_data.store_in_negation = FALSE;
+	if (Properties::EitherOr::get_negation(prn)) Properties::EitherOr::get_negation(prn)->compilation_data.store_in_negation = FALSE;
 }
 
 @h Translated names of properties.
@@ -178,8 +178,7 @@ void RTProperties::emit_single(property *prn) {
 	if (prn->compilation_data.prn_emitted == FALSE) {
 		inter_name *iname = RTProperties::iname(prn);
 
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) K = K_truth_state;
+		kind *K = Properties::kind_of_contents(prn);
 		if (K == NULL) internal_error("kindless property");
 		prn->compilation_data.prn_emitted = TRUE;
 
@@ -194,11 +193,9 @@ void RTProperties::emit_single(property *prn) {
 void RTProperties::emit(void) {
 	property *prn;
 	LOOP_OVER(prn, property) {
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) {
-			if (prn->compilation_data.store_in_negation) continue;
-			K = K_truth_state;
-		}
+		if ((Properties::is_either_or(prn)) &&
+			(prn->compilation_data.store_in_negation)) continue;
+		kind *K = Properties::kind_of_contents(prn);
 		if (K == NULL) internal_error("kindless property");
 		RTProperties::emit_single(prn);
 		property_permission *pp;
@@ -214,11 +211,9 @@ void RTProperties::emit(void) {
 void RTProperties::emit_default_values(void) {
 	property *prn;
 	LOOP_OVER(prn, property) {
-		kind *K = prn->property_value_kind;
-		if (Properties::is_either_or(prn)) {
-			if (prn->compilation_data.store_in_negation) continue;
-			K = K_truth_state;
-		}
+		if ((Properties::is_either_or(prn)) &&
+			(prn->compilation_data.store_in_negation)) continue;
+		kind *K = Properties::kind_of_contents(prn);
 		Emit::ensure_defaultvalue(K);
 	}
 }
@@ -262,15 +257,15 @@ keep a flag recording the outcome.
 
 =
 int RTProperties::implemented_as_attribute(property *prn) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	if (prn->compilation_data.implemented_as_attribute == NOT_APPLICABLE) return TRUE;
 	return prn->compilation_data.implemented_as_attribute;
 }
 
 void RTProperties::implement_as_attribute(property *prn, int state) {
-	if ((prn == NULL) || (prn->either_or == FALSE)) internal_error("non-EO property");
+	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	prn->compilation_data.implemented_as_attribute = state;
-	if (prn->negation) prn->negation->compilation_data.implemented_as_attribute = state;
+	if (Properties::EitherOr::get_negation(prn)) Properties::EitherOr::get_negation(prn)->compilation_data.implemented_as_attribute = state;
 }
 
 @ Otherwise, each either/or property is stored as either |true| or |false|
@@ -313,12 +308,12 @@ all to work; the following keep a flag to mark that.
 
 =
 void RTProperties::use_non_typesafe_0(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
 	prn->compilation_data.use_non_typesafe_0 = TRUE;
 }
 
 int RTProperties::uses_non_typesafe_0(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
 	return prn->compilation_data.use_non_typesafe_0;
 }
 

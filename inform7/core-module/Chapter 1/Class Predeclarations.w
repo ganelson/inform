@@ -92,6 +92,7 @@ DECLARE_CLASS(text_substitution)
 @e comparative_bp_data_CLASS
 @e condition_of_subject_CLASS
 @e counting_data_CLASS
+@e either_or_property_data_CLASS
 @e inference_CLASS
 @e inference_family_CLASS
 @e inference_subject_CLASS
@@ -111,6 +112,7 @@ DECLARE_CLASS(text_substitution)
 @e stacked_variable_list_CLASS
 @e stacked_variable_owner_CLASS
 @e stacked_variable_owner_list_CLASS
+@e value_property_data_CLASS
 
 =
 DECLARE_CLASS(activity)
@@ -121,6 +123,7 @@ DECLARE_CLASS(booking)
 DECLARE_CLASS(comparative_bp_data)
 DECLARE_CLASS(condition_of_subject)
 DECLARE_CLASS(counting_data)
+DECLARE_CLASS(either_or_property_data)
 DECLARE_CLASS(inference)
 DECLARE_CLASS(inference_family)
 DECLARE_CLASS(inference_subject)
@@ -140,6 +143,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_list, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner_list, 100)
+DECLARE_CLASS(value_property_data)
 
 @ //imperative// --
 

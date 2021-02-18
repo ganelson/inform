@@ -17,7 +17,7 @@ void IXInferences::index(OUTPUT_STREAM, inference_subject *infs, int brief) {
 		}
 
 	property *prn;
-	LOOP_OVER(prn, property) Properties::set_indexed_already_flag(prn, FALSE);
+	LOOP_OVER(prn, property) IXProperties::set_indexed_already_flag(prn, FALSE);
 
 	int c;
 	for (c = CERTAIN_CE; c >= IMPOSSIBLE_CE; c--) {
@@ -43,8 +43,8 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 	int f = TRUE;
 	property *prn;
 	LOOP_OVER(prn, property) {
-		if (Properties::is_shown_in_index(prn) == FALSE) continue;
-		if (Properties::get_indexed_already_flag(prn)) continue;
+		if (IXProperties::is_shown_in_index(prn) == FALSE) continue;
+		if (IXProperties::get_indexed_already_flag(prn)) continue;
 		if (Properties::is_either_or(prn) != bool) continue;
 
 		int state = PropertyInferences::has_or_can_have(infs, prn);
@@ -56,13 +56,13 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 		if (f) { WRITE("<i>%s</i> ", cert); f = FALSE; }
 		else WRITE(", ");
 		WRITE("%+W", prn->name);
-		Properties::set_indexed_already_flag(prn, TRUE);
+		IXProperties::set_indexed_already_flag(prn, TRUE);
 
 		if (Properties::is_either_or(prn)) {
 			property *prnbar = Properties::EitherOr::get_negation(prn);
 			if (prnbar) {
 				WRITE(" <i>not</i> %+W", prnbar->name);
-				Properties::set_indexed_already_flag(prnbar, TRUE);
+				IXProperties::set_indexed_already_flag(prnbar, TRUE);
 			}
 		} else {
 			kind *K = Properties::Valued::kind(prn);
@@ -84,7 +84,7 @@ This only tells about specific property settings for a given instance.
 void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 	property *prn; int k = 0;
 	LOOP_OVER(prn, property)
-		if (Properties::is_shown_in_index(prn))
+		if (IXProperties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn)) {
 				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
@@ -103,7 +103,7 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 			}
 	if (k > 0) HTML_CLOSE("p");
 	LOOP_OVER(prn, property)
-		if (Properties::is_shown_in_index(prn))
+		if (IXProperties::is_shown_in_index(prn))
 			if (Properties::is_either_or(prn) == FALSE)
 				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;

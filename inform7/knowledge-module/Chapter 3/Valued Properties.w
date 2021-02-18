@@ -23,19 +23,20 @@ property *Properties::Valued::obtain_within_kind(wording W, kind *K) {
 	K = Kinds::weaken(K, K_object);
 	if (<property-name>(W)) {
 		prn = <<rp>>;
-		kind *existing_kind = prn->property_value_kind;
+		if (prn->value_data == NULL) @<Issue an incompatible property kind message@>;
+		kind *existing_kind = prn->value_data->property_value_kind;
 		switch(Kinds::compatible(K, existing_kind)) {
 			case SOMETIMES_MATCH:
 				if (Kinds::compatible(existing_kind, K) != ALWAYS_MATCH)
 					@<Issue an incompatible property kind message@>;
-				prn->property_value_kind = K; /* widen the kind of the property to make this fit */
+				prn->value_data->property_value_kind = K; /* widen the kind of the property to make this fit */
 				break;
 			case NEVER_MATCH:
 				@<Issue an incompatible property kind message@>;
 		}
 	} else {
 		prn = Properties::obtain(W, TRUE);
-		prn->property_value_kind = K;
+		prn->value_data->property_value_kind = K;
 	}
 	return prn;
 }
@@ -64,25 +65,21 @@ property *Properties::Valued::new_nameless(text_stream *I6_form, kind *K) {
 	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
 	Hierarchy::markup(R, PROPERTY_NAME_HMD, I6_form);
 	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
-	property *prn = Properties::create(EMPTY_WORDING, R, using_iname);
-	Properties::exclude_from_index(prn);
-	prn->either_or = FALSE;
+	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
+	IXProperties::dont_show_in_index(prn);
 	RTProperties::set_translation_S(prn, I6_form);
-	prn->property_value_kind = K;
-	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
-	prn->relation_whose_state_this_stores = NULL;
+	prn->value_data->property_value_kind = K;
+	prn->value_data->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
 	prn->Inter_level_only = TRUE;
 	return prn;
 }
 
 property *Properties::Valued::new_nameless_using(kind *K, package_request *R, inter_name *using) {
 	if (K == NULL) internal_error("new nameless property without kind");
-	property *prn = Properties::create(EMPTY_WORDING, R, using);
-	Properties::exclude_from_index(prn);
-	prn->either_or = FALSE;
-	prn->property_value_kind = K;
-	prn->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
-	prn->relation_whose_state_this_stores = NULL;
+	property *prn = Properties::create(EMPTY_WORDING, R, using, FALSE);
+	IXProperties::dont_show_in_index(prn);
+	prn->value_data->property_value_kind = K;
+	prn->value_data->setting_bp = Properties::SettingRelations::make_set_nameless_property_BP(prn);
 	prn->Inter_level_only = TRUE;
 	RTProperties::set_translation_S(prn, Emit::to_text(using));
 	return prn;
@@ -91,18 +88,32 @@ property *Properties::Valued::new_nameless_using(kind *K, package_request *R, in
 @h Initialising details.
 
 =
-void Properties::Valued::initialise(property *prn) {
-	prn->property_value_kind = NULL;
-	prn->setting_bp = NULL;
-	prn->name_coincides_with_kind = FALSE;
+typedef struct value_property_data {
+	struct kind *property_value_kind; /* if not either/or, what kind of value does it hold? */
+	struct binary_predicate *setting_bp; /* and which relation sets it? */
+	struct binary_predicate *relation_whose_state_this_stores; /* or |NULL| if it doesn't */
+	struct condition_of_subject *as_condition_of_subject; /* or |NULL| if it isn't one */
+	int name_coincides_with_kind; /* and is its name the same as that of a kind? */
+	CLASS_DEFINITION
+} value_property_data;
+
+value_property_data *Properties::Valued::new_value_data(property *prn) {
+	value_property_data *vod = CREATE(value_property_data);
+	vod->property_value_kind = NULL;
+	vod->setting_bp = NULL;
+	vod->name_coincides_with_kind = FALSE;
+	vod->as_condition_of_subject = NULL;
+	vod->relation_whose_state_this_stores = NULL;
+	return vod;
 }
 
 void Properties::Valued::make_setting_relation(property *prn, wording W) {
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
 	binary_predicate *bp = Properties::SettingRelations::find_set_property_BP(W);
 	if (bp == NULL) bp = Properties::SettingRelations::make_set_property_BP(W);
 	Properties::SettingRelations::fix_property_bp(bp);
 	Properties::SettingRelations::fix_property_bp(BinaryPredicates::get_reversal(bp));
-	prn->setting_bp = bp;
+	prn->value_data->setting_bp = bp;
 }
 
 @h Details.
@@ -110,13 +121,13 @@ The most important fact about a valued property is what the kind of value is:
 
 =
 kind *Properties::Valued::kind(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) return NULL; /* for better type-checking Problems */
-	return prn->property_value_kind;
+	if ((prn == NULL) || (prn->either_or_data)) return NULL; /* for better type-checking Problems */
+	return prn->value_data->property_value_kind;
 }
 
 void Properties::Valued::set_kind(property *prn, kind *K) {
 	if (K == NULL) internal_error("tried to set null kind");
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
 	if ((Kinds::Behaviour::definite(K) == FALSE) && (RTProperties::can_be_compiled(prn))) {
 		Problems::quote_wording(1, prn->name);
 		Problems::quote_kind(2, K);
@@ -141,7 +152,7 @@ void Properties::Valued::set_kind(property *prn, kind *K) {
 		}
 		Problems::issue_problem_end();
 	}
-	prn->property_value_kind = K;
+	prn->value_data->property_value_kind = K;
 }
 
 @ Sometimes the name of a property is the same as that of a kind of value.
@@ -151,37 +162,38 @@ then say that a thing has a weight: that makes a property also called
 
 =
 void Properties::Valued::make_coincide_with_kind(property *prn, kind *K) {
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
 	Properties::Valued::set_kind(prn, K);
 	if (Kinds::eq(K, K_grammatical_gender)) P_grammatical_gender = prn;
-	prn->name_coincides_with_kind = TRUE;
+	prn->value_data->name_coincides_with_kind = TRUE;
 	if (Properties::can_name_coincide_with_kind(K))
 		Instances::make_kind_coincident(K, prn);
 }
 
 int Properties::Valued::coincides_with_kind(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->name_coincides_with_kind;
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
+	return prn->value_data->name_coincides_with_kind;
 }
 
 @ Every valued property has an associated relation to set its value.
 
 =
 binary_predicate *Properties::Valued::get_setting_bp(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->setting_bp;
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
+	return prn->value_data->setting_bp;
 }
 
 @ Some value properties are used for relation storage:
 
 =
 void Properties::Valued::set_stored_relation(property *prn, binary_predicate *bp) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	prn->relation_whose_state_this_stores = bp;
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
+	prn->value_data->relation_whose_state_this_stores = bp;
 }
 
 binary_predicate *Properties::Valued::get_stored_relation(property *prn) {
-	if ((prn == NULL) || (prn->either_or)) internal_error("non-value property");
-	return prn->relation_whose_state_this_stores;
+	if ((prn == NULL) || (prn->either_or_data)) internal_error("non-value property");
+	return prn->value_data->relation_whose_state_this_stores;
 }
 
 @h Assertion.

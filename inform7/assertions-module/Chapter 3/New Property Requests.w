@@ -358,8 +358,10 @@ differently as a result.
 	}
 
 @<Create the property and have the new owner provide it@> =
-	if (count <= 2) prn = Properties::EitherOr::obtain(FW, owner_infs);
-	else prn = ConditionsOfSubjects::parse(owner_infs, CNW, the_list,
+	if (count <= 2) {
+		prn = Properties::EitherOr::obtain(FW, owner_infs);
+		if (prn == NULL) return; /* a problem was thrown */
+	} else prn = ConditionsOfSubjects::parse(owner_infs, CNW, the_list,
 		&already_created_instances);
 	Assert::true_about(
 		Propositions::Abstract::to_provide_property(prn),
@@ -367,10 +369,12 @@ differently as a result.
 
 @<Make the second option an either/or property which negates the first@> =
 	property *prnbar = Properties::EitherOr::obtain(SW, owner_infs);
-	Assert::true_about(
-		Propositions::Abstract::to_provide_property(prnbar),
-		owner_infs, prevailing_mood);
-	Properties::EitherOr::make_negations(prn, prnbar);
+	if (prnbar) { /* i.e., unless that threw a problem message */
+		Assert::true_about(
+			Propositions::Abstract::to_provide_property(prnbar),
+			owner_infs, prevailing_mood);
+		Properties::EitherOr::make_negations(prn, prnbar);
+	}
 
 @ An interesting anomaly in the language here is that when an either/or
 pair is created, like so:
