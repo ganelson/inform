@@ -7,7 +7,7 @@ This whole template contains material used only if the "Glulx external files"
 element is part of Inform's current definition, so:
 
 =
-#IFDEF PLUGIN_FILES;
+#IFDEF FILES_PLUGIN;
 
 @h Structure.
 The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
@@ -408,6 +408,6 @@ run-time problem when there is no alternative.
 @h Back To Core.
 
 =
-#IFNOT; ! PLUGIN_FILES
+#IFNOT; ! FILES_PCALL
 [ FileIO_GetC extf; return -1; ];
-#ENDIF; ! PLUGIN_FILES
+#ENDIF; ! FILES_PCALL

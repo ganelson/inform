@@ -209,19 +209,19 @@ void PL::Spatial::start(void) {
 	METHOD_ADD(PART_OF_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_part_of_inference);
 	METHOD_ADD(PART_OF_INF, COMPARE_INF_MTID, PL::Spatial::cmp_part_of_inference);
 
-	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Spatial::create_inference_subjects);
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Spatial::spatial_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_ACT_ON_SPECIAL_NPS, PL::Spatial::spatial_act_on_special_NPs);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Spatial::IF_complete_model);
-	PLUGIN_REGISTER(PLUGIN_DEFAULT_APPEARANCE, PL::Spatial::spatial_default_appearance);
-	PLUGIN_REGISTER(PLUGIN_NAME_TO_EARLY_INFS, PL::Spatial::spatial_name_to_early_infs);
-	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Spatial::spatial_new_subject_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Spatial::spatial_new_property_notify);
-	PLUGIN_REGISTER(PLUGIN_PARSE_COMPOSITE_NQS, PL::Spatial::spatial_parse_composite_NQs);
-	PLUGIN_REGISTER(PLUGIN_SET_KIND_NOTIFY, PL::Spatial::spatial_set_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Spatial::spatial_set_subkind_notify);
-	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Spatial::spatial_add_to_World_index);
-	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Spatial::spatial_intervene_in_assertion);
+	REGISTER(CREATE_INFERENCES_PCALL, PL::Spatial::create_inference_subjects);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Spatial::spatial_new_base_kind_notify);
+	REGISTER(ACT_ON_SPECIAL_NPS_PCALL, PL::Spatial::spatial_act_on_special_NPs);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Spatial::IF_complete_model);
+	REGISTER(DEFAULT_APPEARANCE_PCALL, PL::Spatial::spatial_default_appearance);
+	REGISTER(NAME_TO_EARLY_INFS_PCALL, PL::Spatial::spatial_name_to_early_infs);
+	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Spatial::spatial_new_subject_notify);
+	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Spatial::spatial_new_property_notify);
+	REGISTER(PARSE_COMPOSITE_NQS_PCALL, PL::Spatial::spatial_parse_composite_NQs);
+	REGISTER(SET_KIND_NOTIFY_PCALL, PL::Spatial::spatial_set_kind_notify);
+	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Spatial::spatial_set_subkind_notify);
+	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Spatial::spatial_add_to_World_index);
+	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Spatial::spatial_intervene_in_assertion);
 }
 
 int PL::Spatial::is_room_explain_contradiction(inference_family *f, inference *A,
@@ -420,7 +420,7 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 
 =
 int PL::Spatial::object_is_a_room(instance *I) {
-	if ((Plugins::Manage::plugged_in(spatial_plugin)) && (K_room) && (I) &&
+	if ((PluginManager::active(spatial_plugin)) && (K_room) && (I) &&
 		(Instances::of_kind(I, K_room)))
 		return TRUE;
 	return FALSE;
@@ -834,12 +834,12 @@ provide access routines to read and write:
 =
 instance *PL::Spatial::progenitor(instance *I) {
 	if (I == NULL) return NULL;
-	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE) return NULL;
+	if (PluginManager::active(spatial_plugin) == FALSE) return NULL;
 	return SPATIAL_DATA(I)->progenitor;
 }
 
 void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
-	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE)
+	if (PluginManager::active(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
 	if (to == NULL) internal_error("set progenitor of nothing");
 	SPATIAL_DATA(of)->progenitor = to;
@@ -851,7 +851,7 @@ void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) 
 
 =
 void PL::Spatial::void_progenitor(instance *of) {
-	if (Plugins::Manage::plugged_in(spatial_plugin) == FALSE)
+	if (PluginManager::active(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
 	SPATIAL_DATA(of)->progenitor = NULL;
 	SPATIAL_DATA(of)->progenitor_set_at = NULL;
@@ -1364,7 +1364,7 @@ void PL::Spatial::add_to_object_sequence(instance *I, int depth) {
 
 =
 int PL::Spatial::get_definition_depth(instance *I) {
-	if (Plugins::Manage::plugged_in(spatial_plugin))
+	if (PluginManager::active(spatial_plugin))
 		return SPATIAL_DATA(I)->I6_definition_depth;
 	return 0;
 }

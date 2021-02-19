@@ -85,7 +85,7 @@ as possible.
 }
 
 @d BENCH_IF(plugin, routine) {
-	if ((problem_count == 0) && (Plugins::Manage::plugged_in(plugin))) {
+	if ((problem_count == 0) && (PluginManager::active(plugin))) {
 		TEMPORARY_TEXT(name)
 		WRITE_TO(name, "//");
 		WRITE_TO(name, #routine);
@@ -200,7 +200,7 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::I7_Kind_Name_routine)
-	BENCH(Plugins::Call::compile_model_tables)
+	BENCH(PluginCalls::compile_model_tables)
 	BENCH(InferenceSubjects::emit_all)
 	BENCH_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines)
 	BENCH_IF(map_plugin, PL::Map::write_door_dir_routines)

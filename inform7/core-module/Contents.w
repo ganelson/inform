@@ -17,6 +17,8 @@ Chapter 1: Control
 	Progress Percentages
 	Compilation Settings
 	Inform-Only Nodes and Annotations
+	Plugins
+	Plugin Calls
 
 Chapter 2: Problem Messages
 "The issuing of Problem messages."

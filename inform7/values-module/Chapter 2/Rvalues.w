@@ -662,7 +662,7 @@ a number: all that matters is that the correct integer value is compiled.
 kinds of value:
 
 @<Compile a special-compilation-mode constant@> =
-	if (Plugins::Call::compile_constant(VH, kind_of_constant, spec_found))
+	if (PluginCalls::compile_constant(VH, kind_of_constant, spec_found))
 		return;
 	if (Kinds::get_construct(kind_of_constant) == CON_activity) {
 		activity *act = Rvalues::to_activity(spec_found);

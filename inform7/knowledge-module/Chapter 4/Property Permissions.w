@@ -113,11 +113,11 @@ in the case of a broken jar.
 
 @<Notify plugins that a new permission has been issued@> =
 	for (int i=0; i<MAX_PLUGINS; i++) new_pp->plugin_pp[i] = NULL;
-	Plugins::Call::new_permission_notify(new_pp);
+	PluginCalls::new_permission_notify(new_pp);
 
 @ These two macros provide access to plugin-specific permission data:
 
-@d PLUGIN_PP(id, pp)
+@d PP_PLUGIN_DATA(id, pp)
 	((id##_pp_data *) pp->plugin_pp[id##_plugin->allocation_id])
 
 @d CREATE_PLUGIN_PP_DATA(id, pp, creator)

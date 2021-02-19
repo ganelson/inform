@@ -35,11 +35,11 @@ void PL::Backdrops::start(void) {
 
 	FOUND_EVERYWHERE_INF = Inferences::new_family(I"FOUND_EVERYWHERE_INF");
 
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Backdrops::backdrops_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Backdrops::backdrops_new_property_notify);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Backdrops::backdrops_complete_model);
-	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Backdrops::backdrops_estimate_property_usage);
-	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Backdrops::backdrops_intervene_in_assertion);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Backdrops::backdrops_new_base_kind_notify);
+	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Backdrops::backdrops_new_property_notify);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Backdrops::backdrops_complete_model);
+	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Backdrops::backdrops_estimate_property_usage);
+	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Backdrops::backdrops_intervene_in_assertion);
 }
 
 typedef struct found_in_inference_data {
@@ -99,7 +99,7 @@ int PL::Backdrops::backdrops_new_base_kind_notify(kind *new_base, text_stream *n
 
 @ =
 int PL::Backdrops::object_is_a_backdrop(instance *I) {
-	if ((Plugins::Manage::plugged_in(regions_plugin)) && (K_backdrop) && (I) &&
+	if ((PluginManager::active(regions_plugin)) && (K_backdrop) && (I) &&
 		(Instances::of_kind(I, K_backdrop))) return TRUE;
 	return FALSE;
 }

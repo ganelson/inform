@@ -30,7 +30,7 @@ int EqualityDetails::typecheck(bp_family *self, binary_predicate *bp,
 	}
 
 
-	if (Plugins::Call::typecheck_equality(kinds_of_terms[0], kinds_of_terms[1]))
+	if (PluginCalls::typecheck_equality(kinds_of_terms[0], kinds_of_terms[1]))
 		return ALWAYS_MATCH;
 	if ((Kinds::Behaviour::is_object(kinds_of_terms[0])) &&
 		(Properties::can_name_coincide_with_kind(kinds_of_terms[1])))
@@ -185,7 +185,7 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 			if ((storage_class == UNKNOWN_NT) &&
 				(Kinds::get_construct(st[0]) == CON_property))
 				storage_class = PROPERTY_VALUE_NT;
-			if (Plugins::Call::forbid_setting(asch->pt1.term_checked_as_kind)) {
+			if (PluginCalls::forbid_setting(asch->pt1.term_checked_as_kind)) {
 				asch->schema = NULL;
 				return TRUE;
 			}

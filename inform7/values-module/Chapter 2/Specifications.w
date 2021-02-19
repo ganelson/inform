@@ -268,7 +268,7 @@ equal status.)
 @<Enclosing regions beat enclosed ones, and regions beat rooms@> =
 	LOGIF(SPECIFICITIES, "Test %d: Comparing specificity of instances $O and $O\n",
 		cco, I1, I2);
-	int pref = Plugins::Call::more_specific(I1, I2);
+	int pref = PluginCalls::more_specific(I1, I2);
 	if (pref != 0) return pref;
 
 @<If one matches the other, but not vice versa, it must be more specific@> =

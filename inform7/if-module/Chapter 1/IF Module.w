@@ -87,6 +87,16 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(scene_connector, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 
+@h Plugins.
+
+= (early code)
+plugin *if_plugin, *parsing_plugin, *actions_plugin,
+	*spatial_plugin, *map_plugin, *persons_plugin,
+	*player_plugin, *regions_plugin, *backdrops_plugin,
+	*devices_plugin, *showme_plugin,
+	*times_plugin, *scenes_plugin, *scoring_plugin,
+	*bibliographic_plugin, *chronology_plugin;
+
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the
 foundation module does that automatically.)
@@ -99,6 +109,7 @@ COMPILE_WRITER(action_name_list *, PL::Actions::ConstantLists::log)
 COMPILE_WRITER(action_name *, PL::Actions::log)
 
 void IFModule::start(void) {
+	@<Create this module's plugins@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 	WherePredicates::start();
@@ -107,6 +118,24 @@ void IFModule::start(void) {
 }
 void IFModule::end(void) {
 }
+
+@<Create this module's plugins@> =
+	if_plugin = PluginManager::new(NULL, I"interactive fiction", NULL);
+	parsing_plugin = PluginManager::new(&PL::Parsing::Visibility::start, I"command", if_plugin);
+	actions_plugin = PluginManager::new(&PL::Actions::start, I"actions", if_plugin);
+	spatial_plugin = PluginManager::new(&PL::Spatial::start, I"spatial model", if_plugin);
+	map_plugin = PluginManager::new(&PL::Map::start, I"mapping", if_plugin);
+	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", if_plugin);
+	player_plugin = PluginManager::new(&PL::Player::start, I"player", if_plugin);
+	scoring_plugin = PluginManager::new(&PL::Score::start, I"scoring", if_plugin);
+	regions_plugin = PluginManager::new(&PL::Regions::start, I"regions", if_plugin);
+	backdrops_plugin = PluginManager::new(&PL::Backdrops::start, I"backdrops", if_plugin);
+	devices_plugin = PluginManager::new(&PL::Devices::start, I"devices", if_plugin);
+	showme_plugin = PluginManager::new(&PL::Showme::start, I"showme", if_plugin);
+	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", if_plugin);
+	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", if_plugin);
+	bibliographic_plugin = PluginManager::new(&PL::Bibliographic::start, I"bibliographic data", if_plugin);
+	chronology_plugin = PluginManager::new(NULL, I"chronology", if_plugin);
 
 @
 

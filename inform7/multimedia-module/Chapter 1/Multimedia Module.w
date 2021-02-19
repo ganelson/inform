@@ -19,12 +19,22 @@ DECLARE_CLASS(blorb_figure)
 DECLARE_CLASS(blorb_sound)
 DECLARE_CLASS(external_file)
 
+@
+
+= (early code)
+plugin *multimedia_plugin, *figures_plugin, *sounds_plugin, *files_plugin;
+
 @ Like all modules, this one must define a |start| and |end| function:
 
 @e FIGURE_CREATIONS_DA
 
 =
 void MultimediaModule::start(void) {
+	multimedia_plugin = PluginManager::new(NULL, I"multimedia", NULL);
+	figures_plugin = PluginManager::new(&PL::Figures::start, I"figures", multimedia_plugin);
+	sounds_plugin = PluginManager::new(&PL::Sounds::start, I"sounds", multimedia_plugin);
+	files_plugin = PluginManager::new(&PL::Files::start, I"glulx external files", multimedia_plugin);
+
 	Log::declare_aspect(FIGURE_CREATIONS_DA, L"figure creations", FALSE, FALSE);
 }
 void MultimediaModule::end(void) {

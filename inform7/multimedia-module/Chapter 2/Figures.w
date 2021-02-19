@@ -33,8 +33,8 @@ kind *K_figure_name = NULL;
 
 @ =
 void PL::Figures::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_INSTANCE_NOTIFY, PL::Figures::figures_new_named_instance_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Figures::figures_new_base_kind_notify);
+	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Figures::figures_new_named_instance_notify);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Figures::figures_new_base_kind_notify);
 }
 
 @ =
@@ -99,7 +99,7 @@ int PL::Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 			}
 			break;
 		case PASS_1_SMFT:
-			if (Plugins::Manage::plugged_in(figures_plugin) == FALSE)
+			if (PluginManager::active(figures_plugin) == FALSE)
 				internal_error("Figures plugin inactive");
 			PL::Figures::register_figure(Node::get_text(V->next),
 				Node::get_text(V->next->next));
@@ -189,7 +189,7 @@ to the Materials folder for its project.
 =
 void PL::Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 	char *cover_art_format) {
-	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
+	if (PluginManager::active(figures_plugin) == FALSE) return;
 	blorb_figure *bf;
 	WRITE("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 	WRITE("<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
@@ -227,7 +227,7 @@ the cover art, which is handled by Bibliographic Data.
 
 =
 void PL::Figures::write_blurb_commands(OUTPUT_STREAM) {
-	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
+	if (PluginManager::active(figures_plugin) == FALSE) return;
 	blorb_figure *bf;
 	LOOP_OVER(bf, blorb_figure)
 		if (bf->figure_number > 1) {
@@ -245,7 +245,7 @@ void PL::Figures::write_blurb_commands(OUTPUT_STREAM) {
 
 =
 void PL::Figures::write_copy_commands(void) {
-	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
+	if (PluginManager::active(figures_plugin) == FALSE) return;
 	blorb_figure *bf;
 	LOOP_OVER(bf, blorb_figure)
 		if (bf->figure_number > 1)
@@ -255,7 +255,7 @@ void PL::Figures::write_copy_commands(void) {
 
 @ =
 void PL::Figures::compile_ResourceIDsOfFigures_array(void) {
-	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
+	if (PluginManager::active(figures_plugin) == FALSE) return;
 	inter_name *iname = Hierarchy::find(RESOURCEIDSOFFIGURES_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);
@@ -274,7 +274,7 @@ to match this width, preserving the aspect ratio.
 
 =
 void PL::Figures::index_all(OUTPUT_STREAM) {
-	if (Plugins::Manage::plugged_in(figures_plugin) == FALSE) return;
+	if (PluginManager::active(figures_plugin) == FALSE) return;
 	blorb_figure *bf; FILE *FIGURE_FILE;
 	int MAX_INDEXED_FIGURES = global_compilation_settings.index_figure_thumbnails;
 	int rv;

@@ -189,7 +189,7 @@ kind is considered to be action-based and resulting in nothing.
 kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
-		if (Plugins::Manage::plugged_in(actions_plugin))
+		if (PluginManager::active(actions_plugin))
 			K = Kinds::binary_con(CON_rule, K_action_name, K_void);
 		else
 			K = Kinds::binary_con(CON_rule, K_void, K_void);

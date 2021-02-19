@@ -30,10 +30,10 @@ property *P_KD_Count = NULL; /* see below */
 
 =
 void PL::Counting::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Counting::counting_new_subject_notify);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Counting::counting_complete_model);
-	PLUGIN_REGISTER(PLUGIN_COMPILE_MODEL_TABLES, PL::Counting::counting_compile_model_tables);
-	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Counting::counting_estimate_property_usage);
+	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Counting::counting_new_subject_notify);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Counting::counting_complete_model);
+	REGISTER(COMPILE_MODEL_TABLES_PCALL, PL::Counting::counting_compile_model_tables);
+	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Counting::counting_estimate_property_usage);
 }
 
 @h Initialising.
@@ -365,7 +365,7 @@ constants, and use the Link constants to progress; we stop at |nothing|.
 
 =
 int PL::Counting::optimise_loop(i6_schema *sch, kind *K) {
-	if (Plugins::Manage::plugged_in(counting_plugin) == FALSE) return FALSE;
+	if (PluginManager::active(counting_plugin) == FALSE) return FALSE;
 	inference_subject *subj = KindSubjects::from_kind(K);
 	if (COUNTING_DATA(subj)->has_instances == FALSE) /* (to avoid writing misleading code) */
 		Calculus::Schemas::modify(sch,

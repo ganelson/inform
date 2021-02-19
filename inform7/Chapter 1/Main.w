@@ -33,6 +33,7 @@ int Main::deputy(int argc, char *argv[]) {
     @<Start up the modules@>;
 	@<Banner and startup@>;
 	int proceed = Main::read_command_line(argc, argv);
+	PluginManager::start();
 	if (proceed) {
 		inform_project *proj = NULL;
 		@<Find the project identified for us by Inbuild@>;
@@ -82,7 +83,6 @@ plain text error written to |stderr|. See the |problems| module for more.
 @<Banner and startup@> =
 	Errors::set_internal_handler(&StandardProblems::internal_error_fn);
 	PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);
-	Plugins::Manage::start();
 	Task::start_timers();
 
 @ The //supervisor// would happily send us instructions to compile multiple

@@ -61,11 +61,11 @@ parsing_pp_data *PL::Parsing::Visibility::new_pp_data(property_permission *pp) {
 
 =
 void PL::Parsing::Visibility::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_VARIABLE_NOTIFY, PL::Parsing::Visibility::parsing_new_variable_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Parsing::Visibility::parsing_new_subject_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_PERMISSION_NOTIFY, PL::Parsing::Visibility::parsing_new_permission_notify);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Parsing::Visibility::parsing_complete_model);
-	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Parsing::Visibility::parsing_estimate_property_usage);
+	REGISTER(NEW_VARIABLE_NOTIFY_PCALL, PL::Parsing::Visibility::parsing_new_variable_notify);
+	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Parsing::Visibility::parsing_new_subject_notify);
+	REGISTER(NEW_PERMISSION_NOTIFY_PCALL, PL::Parsing::Visibility::parsing_new_permission_notify);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Parsing::Visibility::parsing_complete_model);
+	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Parsing::Visibility::parsing_estimate_property_usage);
 }
 
 int PL::Parsing::Visibility::parsing_new_subject_notify(inference_subject *subj) {
@@ -288,9 +288,9 @@ int PL::Parsing::Visibility::seek(property *pr, inference_subject *subj,
 		if (seek_prn == NULL) continue;
 		if (PropertyPermissions::find(subj, seek_prn, TRUE) == NULL) continue;
 		property_permission *pp = PropertyPermissions::grant(subj, seek_prn, FALSE);
-		PLUGIN_PP(parsing, pp)->visibility_level_in_parser = level;
-		PLUGIN_PP(parsing, pp)->visibility_sentence = current_sentence;
-		PLUGIN_PP(parsing, pp)->visibility_condition = WHENW;
+		PP_PLUGIN_DATA(parsing, pp)->visibility_level_in_parser = level;
+		PP_PLUGIN_DATA(parsing, pp)->visibility_sentence = current_sentence;
+		PP_PLUGIN_DATA(parsing, pp)->visibility_condition = WHENW;
 		return TRUE;
 	}
 	return FALSE;
@@ -301,30 +301,30 @@ int PL::Parsing::Visibility::any_property_visible_to_subject(inference_subject *
 	LOOP_OVER(pr, property) {
 		property_permission *pp =
 			PropertyPermissions::find(subj, pr, allow_inheritance);
-		if ((pp) && (PLUGIN_PP(parsing, pp)->visibility_level_in_parser > 0))
+		if ((pp) && (PP_PLUGIN_DATA(parsing, pp)->visibility_level_in_parser > 0))
 			return TRUE;
 	}
 	return FALSE;
 }
 
 int PL::Parsing::Visibility::get_level(property_permission *pp) {
-	return PLUGIN_PP(parsing, pp)->visibility_level_in_parser;
+	return PP_PLUGIN_DATA(parsing, pp)->visibility_level_in_parser;
 }
 
 parse_node *PL::Parsing::Visibility::get_condition(property_permission *pp) {
 	parse_node *spec;
-	if (Wordings::empty(PLUGIN_PP(parsing, pp)->visibility_condition)) return NULL;
+	if (Wordings::empty(PP_PLUGIN_DATA(parsing, pp)->visibility_condition)) return NULL;
 	spec = NULL;
-	if (<s-condition>(PLUGIN_PP(parsing, pp)->visibility_condition)) spec = <<rp>>;
-	else spec = Specifications::new_UNKNOWN(PLUGIN_PP(parsing, pp)->visibility_condition);
+	if (<s-condition>(PP_PLUGIN_DATA(parsing, pp)->visibility_condition)) spec = <<rp>>;
+	else spec = Specifications::new_UNKNOWN(PP_PLUGIN_DATA(parsing, pp)->visibility_condition);
 	if (Dash::validate_conditional_clause(spec) == FALSE) {
 		LOG("$T", spec);
-		current_sentence = PLUGIN_PP(parsing, pp)->visibility_sentence;
+		current_sentence = PP_PLUGIN_DATA(parsing, pp)->visibility_sentence;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadVisibilityWhen),
 			"the condition after 'when' makes no sense to me",
 			"although otherwise this worked - it is only the part after 'when' "
 			"which I can't follow.");
-		PLUGIN_PP(parsing, pp)->visibility_condition = EMPTY_WORDING;
+		PP_PLUGIN_DATA(parsing, pp)->visibility_condition = EMPTY_WORDING;
 		return NULL;
 	}
 	return spec;
@@ -336,8 +336,8 @@ void PL::Parsing::Visibility::log_parsing_visibility(inference_subject *infs) {
 	LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs) {
 		LOG("$Y: visibility %d, condition %W\n",
 			PropertyPermissions::get_property(pp),
-			PLUGIN_PP(parsing, pp)->visibility_level_in_parser,
-			PLUGIN_PP(parsing, pp)->visibility_condition);
+			PP_PLUGIN_DATA(parsing, pp)->visibility_level_in_parser,
+			PP_PLUGIN_DATA(parsing, pp)->visibility_condition);
 	}
 	if (InferenceSubjects::narrowest_broader_subject(infs))
 		PL::Parsing::Visibility::log_parsing_visibility(InferenceSubjects::narrowest_broader_subject(infs));

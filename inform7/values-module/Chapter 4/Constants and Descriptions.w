@@ -619,7 +619,7 @@ to the kind "thing", whereas "somebody" does refer to people and
 <s-specifying-noun> internal ? {
 	wording DW = Wordings::first_word(W);
 	quantifier *quantifier_used = NULL; kind *some_kind = NULL;
-	Plugins::Call::parse_composite_NQs(&W, &DW, &quantifier_used, &some_kind);
+	PluginCalls::parse_composite_NQs(&W, &DW, &quantifier_used, &some_kind);
 	if (some_kind) {
 		parse_node *p = Descriptions::from_kind(some_kind, TRUE);
 		if (quantifier_used) Descriptions::quantify(p, quantifier_used, -1);

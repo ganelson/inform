@@ -10,12 +10,23 @@ Setting up the use of this module.
 
 =
 void CoreModule::start(void) {
+	core_plugin = PluginManager::new(NULL, I"core", NULL);
+	naming_plugin = PluginManager::new(&PL::Naming::start, I"naming",
+		core_plugin);
+	counting_plugin = PluginManager::new(&PL::Counting::start,
+		I"instance counting", core_plugin);
 	Writers::register_writer_I('B', &CoreModule::writer);
 	CorePreform::set_core_internal_NTIs();
 	CoreSyntax::declare_annotations();
 }
 void CoreModule::end(void) {
 }
+
+@ The main part of Inform contains only two plugins, and one of those ("core")
+is compulsory anyway:
+
+= (early code)
+plugin *core_plugin, *naming_plugin, *counting_plugin;
 
 @ The |%B| string escape prints the build number, lying about it when we
 want to produce predictable output for easier testing.

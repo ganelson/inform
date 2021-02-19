@@ -86,7 +86,7 @@ matched up with the inference subject already existing.
 =
 void KindSubjects::renew(kind *K, kind *super, wording W) {
 	inference_subject *revised = NULL;
-	if (Wordings::nonempty(W)) Plugins::Call::name_to_early_infs(W, &revised);
+	if (Wordings::nonempty(W)) PluginCalls::name_to_early_infs(W, &revised);
 	if (revised) {
 		InferenceSubjects::infs_initialise(revised,
 			STORE_POINTER_kind_constructor(K->construct), KindSubjects::family(),

@@ -71,7 +71,7 @@ instance *Instances::new(wording W, kind *K) {
 		I, K, RTInstances::iname(I));
 
 	latest_instance = I;
-	Plugins::Call::new_named_instance_notify(I);
+	PluginCalls::new_named_instance_notify(I);
 	if (Kinds::eq(K, K_grammatical_gender)) Instances::new_grammatical(I);
 
 	Assertions::Assemblies::satisfies_generalisations(I->as_subject);
@@ -257,7 +257,7 @@ void Instances::set_kind(instance *I, kind *new) {
 		@<Issue a problem message for a contradictory change of kind@>;
 		return;
 	}
-	Plugins::Call::set_kind_notify(I, new);
+	PluginCalls::set_kind_notify(I, new);
 	InferenceSubjects::falls_within(I->as_subject, KindSubjects::from_kind(new));
 	Assertions::Assemblies::satisfies_generalisations(I->as_subject);
 	I->where_kind_is_set = current_sentence;

@@ -30,7 +30,7 @@ effect is only to make a small number of variables special.
 
 =
 void PL::Bibliographic::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_VARIABLE_NOTIFY, PL::Bibliographic::bibliographic_new_variable_notify);
+	REGISTER(NEW_VARIABLE_NOTIFY_PCALL, PL::Bibliographic::bibliographic_new_variable_notify);
 }
 
 @ The following grammar contains the names of all of the bibliographic

@@ -27,14 +27,14 @@ nonlocal_variable *score_VAR = NULL;
 
 =
 void PL::Player::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_VARIABLE_NOTIFY, PL::Player::player_new_quantity_notify);
-	PLUGIN_REGISTER(PLUGIN_VARIABLE_SET_WARNING, PL::Player::player_variable_set_warning);
-	PLUGIN_REGISTER(PLUGIN_NEW_INSTANCE_NOTIFY, PL::Player::player_new_instance_notify);
-	PLUGIN_REGISTER(PLUGIN_IRREGULAR_GENITIVE, PL::Player::player_irregular_genitive);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Player::player_complete_model);
-	PLUGIN_REGISTER(PLUGIN_REFINE_IMPLICIT_NOUN, PL::Player::player_refine_implicit_noun);
-	PLUGIN_REGISTER(PLUGIN_DETECT_BODYSNATCHING, PL::Player::player_detect_bodysnatching);
-	PLUGIN_REGISTER(PLUGIN_ANNOTATE_IN_WORLD_INDEX, PL::Player::player_annotate_in_World_index);
+	REGISTER(NEW_VARIABLE_NOTIFY_PCALL, PL::Player::player_new_quantity_notify);
+	REGISTER(VARIABLE_SET_WARNING_PCALL, PL::Player::player_variable_set_warning);
+	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Player::player_new_instance_notify);
+	REGISTER(IRREGULAR_GENITIVE_PCALL, PL::Player::player_irregular_genitive);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Player::player_complete_model);
+	REGISTER(REFINE_IMPLICIT_NOUN_PCALL, PL::Player::player_refine_implicit_noun);
+	REGISTER(DETECT_BODYSNATCHING_PCALL, PL::Player::player_detect_bodysnatching);
+	REGISTER(ANNOTATE_IN_WORLD_INDEX_PCALL, PL::Player::player_annotate_in_World_index);
 }
 
 @h Special objects.
@@ -342,7 +342,7 @@ void PL::Player::InitialSituation_define(int id, int val) {
 }
 
 void PL::Player::InitialSituation(void) {
-	if (Plugins::Manage::plugged_in(player_plugin)) {
+	if (PluginManager::active(player_plugin)) {
 		PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
 		PL::Player::InitialSituation_define(START_OBJECT_INIS_HL, 1);
 		PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);

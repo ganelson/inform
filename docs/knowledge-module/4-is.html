@@ -201,7 +201,7 @@ one and only subject with no broader subject:
 <span class="plain-syntax">    </span><span class="identifier-syntax">global_variables</span><span class="plain-syntax"> = </span><a href="4-is.html#SP2" class="function-link"><span class="function-syntax">InferenceSubjects::new_fundamental</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">model_world</span><span class="plain-syntax">, </span><span class="string-syntax">"global-variables"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">global_constants</span><span class="plain-syntax"> = </span><a href="4-is.html#SP2" class="function-link"><span class="function-syntax">InferenceSubjects::new_fundamental</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">model_world</span><span class="plain-syntax">, </span><span class="string-syntax">"global-constants"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">relations</span><span class="plain-syntax"> = </span><a href="4-is.html#SP2" class="function-link"><span class="function-syntax">InferenceSubjects::new_fundamental</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">model_world</span><span class="plain-syntax">, </span><span class="string-syntax">"relations"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Plugins::Call::create_inference_subjects</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::create_inference_subjects</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Creation of subjects. </b>Each subject is an instance of:
@@ -263,7 +263,7 @@ kind once the kind itself is created.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">infs</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">alias_variable</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Assertions::Assemblies::initialise_assemblies_data</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">assemblies</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">MAX_PLUGINS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">infs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">additional_data_for_plugins</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Plugins::Call::new_subject_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::new_subject_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Aliasing. </b>See <a href="../if-module/3-tp.html" class="internal">The Player (in if)</a>, which is the only place where this is needed at present.
@@ -650,7 +650,7 @@ for an individual subject.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Plugin data. </b>See <a href="../runtime-module/4-plg.html" class="internal">Plugins (in runtime)</a>, but to recap, plugins are inessential components
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Plugin data. </b>See <a href="../core-module/1-plg.html" class="internal">Plugins (in core)</a>, but to recap, plugins are inessential components
 of Inform which might or might not be in use for any given compilation run.
 </p>
 
@@ -666,7 +666,7 @@ returning a pointer to it.
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>Then, to access that same data, the following &mdash; though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
 the plugins from the <a href="../if-module/index.html" class="internal">if</a> module are concerned only with instances &mdash; rooms
-and doors, say &mdash; so <span class="extract"><span class="extract-syntax">PLUGIN_DATA_ON_INSTANCE</span></span> pays its way.
+and doors, say &mdash; so <span class="extract"><span class="extract-syntax">DATA_ON_INSTANCE</span></span>_PCALL pays its way.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PLUGIN_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">)</span>

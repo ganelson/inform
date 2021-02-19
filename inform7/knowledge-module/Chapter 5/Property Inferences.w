@@ -68,7 +68,7 @@ void PropertyInferences::log_details(inference_family *f, inference *inf) {
 =
 void PropertyInferences::join(inference_family *f, inference *inf, inference_subject *subj) {
 	property_inference_data *data = RETRIEVE_POINTER_property_inference_data(inf->data);
-	Plugins::Call::property_value_notify(
+	PluginCalls::property_value_notify(
 		data->inferred_property, data->inferred_property_value);
 }
 

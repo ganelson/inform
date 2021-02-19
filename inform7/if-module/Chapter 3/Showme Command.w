@@ -23,7 +23,7 @@ properties.
 
 =
 void PL::Showme::compile_SHOWME_details(void) {
-	if (Plugins::Manage::plugged_in(showme_plugin) == FALSE) return;
+	if (PluginManager::active(showme_plugin) == FALSE) return;
 	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");

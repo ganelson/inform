@@ -111,8 +111,8 @@ stream, though there aren't very many of them.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Naming::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_NEW_PROPERTY_NOTIFY</span><span class="plain-syntax">, </span><a href="3-tnt.html#SP5" class="function-link"><span class="function-syntax">PL::Naming::naming_new_property_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGIN_REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">PLUGIN_COMPLETE_MODEL</span><span class="plain-syntax">, </span><a href="3-tnt.html#SP10" class="function-link"><span class="function-syntax">PL::Naming::naming_complete_model</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_PROPERTY_NOTIFY_PCALL</span><span class="plain-syntax">, </span><a href="3-tnt.html#SP5" class="function-link"><span class="function-syntax">PL::Naming::naming_new_property_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">REGISTER</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPLETE_MODEL_PCALL</span><span class="plain-syntax">, </span><a href="3-tnt.html#SP10" class="function-link"><span class="function-syntax">PL::Naming::naming_complete_model</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Recognising significant properties. </b>These are property names to do with naming which Inform provides special

@@ -97,12 +97,12 @@ kind *K_description_of_action = NULL;
 
 @ =
 void PL::Actions::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Actions::actions_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_COMPILE_CONSTANT, PL::Actions::actions_compile_constant);
-	PLUGIN_REGISTER(PLUGIN_OFFERED_PROPERTY, PL::Actions::actions_offered_property);
-	PLUGIN_REGISTER(PLUGIN_OFFERED_SPECIFICATION, PL::Actions::actions_offered_specification);
-	PLUGIN_REGISTER(PLUGIN_TYPECHECK_EQUALITY, PL::Actions::actions_typecheck_equality);
-	PLUGIN_REGISTER(PLUGIN_FORBID_SETTING, PL::Actions::actions_forbid_setting);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Actions::actions_new_base_kind_notify);
+	REGISTER(COMPILE_CONSTANT_PCALL, PL::Actions::actions_compile_constant);
+	REGISTER(OFFERED_PROPERTY_PCALL, PL::Actions::actions_offered_property);
+	REGISTER(OFFERED_SPECIFICATION_PCALL, PL::Actions::actions_offered_specification);
+	REGISTER(TYPECHECK_EQUALITY_PCALL, PL::Actions::actions_typecheck_equality);
+	REGISTER(FORBID_SETTING_PCALL, PL::Actions::actions_forbid_setting);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
@@ -124,7 +124,7 @@ int PL::Actions::actions_new_base_kind_notify(kind *new_base, text_stream *name,
 
 @ =
 int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node *spec) {
-	if (Plugins::Manage::plugged_in(actions_plugin) == FALSE)
+	if (PluginManager::active(actions_plugin) == FALSE)
 		internal_error("actions plugin inactive");
 	if (Kinds::eq(K, K_action_name)) {
 		action_name *an = Rvalues::to_action_name(spec);

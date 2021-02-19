@@ -294,7 +294,7 @@ we actually do is to insert new sentences after the current one.
 int implicit_recursion_exception = FALSE; /* thrown when we've gone into infinite regress */
 void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, generalisation *g) {
 	inference_subject *counterpart = NULL; int snatcher = FALSE;
-	if (Plugins::Call::detect_bodysnatching(infs, &snatcher, &counterpart)) {
+	if (PluginCalls::detect_bodysnatching(infs, &snatcher, &counterpart)) {
 		LOGIF(ASSEMBLIES, "Body-snatcher found! Subj $j, snatcher %d, counterpart $j\n",
 			infs, snatcher, counterpart);
 		if (snatcher) return;

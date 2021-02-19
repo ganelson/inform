@@ -989,7 +989,7 @@ and an |COMMON_NOUN_NT| node, "nose".
 
 @<Insert the appropriate possessive@> =
 	TEMPORARY_TEXT(genitive_form)
-	if (Plugins::Call::irregular_genitive(owner, genitive_form, &propriety) == FALSE) {
+	if (PluginCalls::irregular_genitive(owner, genitive_form, &propriety) == FALSE) {
 		if (Wordings::nonempty(OW)) {
 			if (Wordings::length(OW) > 1)
 				Feeds::feed_wording(Wordings::trim_last_word(OW));

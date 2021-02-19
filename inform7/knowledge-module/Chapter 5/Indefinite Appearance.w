@@ -59,7 +59,7 @@ void Properties::Appearance::reallocate(inference_subject *infs) {
 		if (PropertyInferences::get_property(inf) == P_indefinite_appearance_text) {
 			parse_node *txt = PropertyInferences::get_value(inf);
 			current_sentence = Inferences::where_inferred(inf);
-			if (Plugins::Call::default_appearance(infs, txt) == FALSE) {
+			if (PluginCalls::default_appearance(infs, txt) == FALSE) {
 				if ((P_description) &&
 					(PropertyPermissions::find(infs, P_description, TRUE))) {
 					ValueProperties::assert(P_description, infs, txt, CERTAIN_CE);

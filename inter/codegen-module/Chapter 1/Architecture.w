@@ -127,7 +127,7 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 			LITERAL_IVAL, 1,
 			(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	}
-	inter_symbol *P_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"PLUGIN_FILES");
+	inter_symbol *P_name = Inter::SymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"FILES_PLUGIN");
 	Inter::Constant::new_numerical(in_veneer,
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, P_name),
 		Inter::SymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),

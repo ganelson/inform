@@ -16,7 +16,7 @@ void RTPropertyValues::emit_subject(inference_subject *subj) {
 	instance *I = InstanceSubjects::to_instance(subj);
 
 	int words_used = 0;
-	if (K) Plugins::Call::estimate_property_usage(K, &words_used);
+	if (K) PluginCalls::estimate_property_usage(K, &words_used);
 
 	inter_name *iname = NULL;
 	if (K) iname = RTKinds::iname(K);

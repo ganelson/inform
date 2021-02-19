@@ -219,7 +219,7 @@ void Assertions::make_assertion_recursive_inner(parse_node *px, parse_node *py) 
 
 @<See if any plugin wants to intervene in this assertion@> =
 	int pc = problem_count;
-	if (Plugins::Call::intervene_in_assertion(px, py)) return;
+	if (PluginCalls::intervene_in_assertion(px, py)) return;
 	if (problem_count > pc) return;
 
 @ These are better taken care of before we split up into cases.
@@ -812,7 +812,7 @@ or a kind of value.
 	if (Node::get_subject(px) == NULL) {
 		kind *K = Specifications::to_kind(spec);
 		if (Node::is(spec, CONSTANT_NT)) {
-			if (Plugins::Call::offered_property(K, spec, py->down)) return;
+			if (PluginCalls::offered_property(K, spec, py->down)) return;
 			if (Kinds::get_construct(K) == CON_activity) @<Assign a new activity variable@>;
 			if (Kinds::get_construct(K) == CON_rulebook) @<Assign a new rulebook variable@>;
 		}
@@ -937,7 +937,7 @@ properties) and for kinds (which do, but differently).
 			DISCARD_TEXT(st)
 			return;
 		}
-	} else if (Plugins::Call::offered_specification(owner, W)) {
+	} else if (PluginCalls::offered_specification(owner, W)) {
 		return;
 	} else if (Node::get_type(px->down) != COMMON_NOUN_NT) {
 		LOG("$T\n", current_sentence);
@@ -1719,7 +1719,7 @@ yet during traverse 1.
 				Assertions::PropertyKnowledge::initialise_global_variable(nlv, val);
 			} else {
 				if (Node::is(val, CONSTANT_NT))
-					if (Plugins::Call::variable_set_warning(nlv, val))
+					if (PluginCalls::variable_set_warning(nlv, val))
 						Assertions::PropertyKnowledge::initialise_global_variable(nlv, val);
 			}
 			return;

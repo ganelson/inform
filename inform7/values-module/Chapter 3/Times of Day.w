@@ -38,7 +38,7 @@ kind *K_time = NULL;
 
 =
 void TimesOfDay::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, TimesOfDay::times_new_base_kind_notify);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, TimesOfDay::times_new_base_kind_notify);
 }
 
 int TimesOfDay::times_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {

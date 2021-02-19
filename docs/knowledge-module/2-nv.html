@@ -213,7 +213,7 @@ of the model, since they do not exist at the start of play.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTVariables::new_compilation_data</span><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">RTTemporaryVariables::new_variable_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Plugins::Call::new_variable_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::new_variable_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">VARIABLE_CREATIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Created nonlocal variable: $Z\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">;</span>

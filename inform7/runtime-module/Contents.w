@@ -39,8 +39,6 @@ Chapter 4: Compilation Utilities
 	Routines
 	Equations Support
 	I6 Template Interpreter
-	Plugins
-	Plugin Calls
 	Test Scripts
 	Internal Test Cases
 	Use Options at Run Time

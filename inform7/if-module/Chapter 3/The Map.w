@@ -167,20 +167,20 @@ void PL::Map::start(void) {
 	METHOD_ADD(DIRECTION_INF, LOG_DETAILS_INF_MTID, PL::Map::log_direction_inf);
 	METHOD_ADD(DIRECTION_INF, COMPARE_INF_MTID, PL::Map::cmp_direction_inf);
 
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Map::map_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Map::map_new_subject_notify);
-	PLUGIN_REGISTER(PLUGIN_SET_KIND_NOTIFY, PL::Map::map_set_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Map::map_set_subkind_notify);
-	PLUGIN_REGISTER(PLUGIN_ACT_ON_SPECIAL_NPS, PL::Map::map_act_on_special_NPs);
-	PLUGIN_REGISTER(PLUGIN_CHECK_GOING, PL::Map::map_check_going);
-	PLUGIN_REGISTER(PLUGIN_COMPILE_MODEL_TABLES, PL::Map::map_compile_model_tables);
-	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Map::map_estimate_property_usage);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Map::map_complete_model);
-	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Map::map_new_property_notify);
-	PLUGIN_REGISTER(PLUGIN_PROPERTY_VALUE_NOTIFY, PL::Map::map_property_value_notify);
-	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Map::map_intervene_in_assertion);
-	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Map::map_add_to_World_index);
-	PLUGIN_REGISTER(PLUGIN_ANNOTATE_IN_WORLD_INDEX, PL::Map::map_annotate_in_World_index);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Map::map_new_base_kind_notify);
+	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Map::map_new_subject_notify);
+	REGISTER(SET_KIND_NOTIFY_PCALL, PL::Map::map_set_kind_notify);
+	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Map::map_set_subkind_notify);
+	REGISTER(ACT_ON_SPECIAL_NPS_PCALL, PL::Map::map_act_on_special_NPs);
+	REGISTER(CHECK_GOING_PCALL, PL::Map::map_check_going);
+	REGISTER(COMPILE_MODEL_TABLES_PCALL, PL::Map::map_compile_model_tables);
+	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Map::map_estimate_property_usage);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Map::map_complete_model);
+	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Map::map_new_property_notify);
+	REGISTER(PROPERTY_VALUE_NOTIFY_PCALL, PL::Map::map_property_value_notify);
+	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Map::map_intervene_in_assertion);
+	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Map::map_add_to_World_index);
+	REGISTER(ANNOTATE_IN_WORLD_INDEX_PCALL, PL::Map::map_annotate_in_World_index);
 }
 
 @ =
@@ -268,7 +268,7 @@ int PL::Map::map_new_subject_notify(inference_subject *subj) {
 
 @ =
 int PL::Map::object_is_a_direction(instance *I) {
-	if ((Plugins::Manage::plugged_in(map_plugin)) && (K_direction) && (I) &&
+	if ((PluginManager::active(map_plugin)) && (K_direction) && (I) &&
 		(Instances::of_kind(I, K_direction)))
 		return TRUE;
 	return FALSE;
@@ -276,7 +276,7 @@ int PL::Map::object_is_a_direction(instance *I) {
 
 @ =
 int PL::Map::object_is_a_door(instance *I) {
-	if ((Plugins::Manage::plugged_in(map_plugin)) && (K_door) && (I) &&
+	if ((PluginManager::active(map_plugin)) && (K_door) && (I) &&
 		(Instances::of_kind(I, K_door)))
 		return TRUE;
 	return FALSE;

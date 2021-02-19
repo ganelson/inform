@@ -443,7 +443,7 @@ inference subject representing the domain to which any new kind would belong.
 			return;
 		}
 		if (pro->pronoun_used == implied_pronoun) {
-			Plugins::Call::refine_implicit_noun(p);
+			PluginCalls::refine_implicit_noun(p);
 			return;
 		}
 		Node::set_type(p, PROPER_NOUN_NT);
@@ -493,7 +493,7 @@ complicated description is as follows:
 is active, and "nowhere" if the spatial one is.
 
 @<Act on any special noun phrases significant to plugins@> =
-	if (Plugins::Call::act_on_special_NPs(p)) return;
+	if (PluginCalls::act_on_special_NPs(p)) return;
 
 @<Interpret this as an existing noun if possible@> =
 	parse_node *spec = NULL;

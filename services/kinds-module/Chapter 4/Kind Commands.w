@@ -72,7 +72,7 @@ void KindCommands::apply(single_kind_command stc, kind_constructor *con) {
 	if (tcc == compatible_with_KCC) {
 		#ifdef CORE_MODULE
 		if ((Str::eq(stc.constructor_argument, I"SNIPPET_TY")) &&
-			(Plugins::Manage::plugged_in(parsing_plugin) == FALSE)) return;
+			(PluginManager::active(parsing_plugin) == FALSE)) return;
 		#endif
 		kind_constructor_casting_rule *dtcr = CREATE(kind_constructor_casting_rule);
 		dtcr->next_casting_rule = con->first_casting_rule;

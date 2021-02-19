@@ -883,7 +883,7 @@ action_pattern PL::Actions::Patterns::parse_action_pattern_dash(wording W) {
 	ap.second_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.second_spec);
 	ap.room_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.room_spec);
 
-	int ch = Plugins::Call::check_going(ap.from_spec, ap.to_spec, ap.by_spec, ap.through_spec, ap.pushing_spec);
+	int ch = PluginCalls::check_going(ap.from_spec, ap.to_spec, ap.by_spec, ap.through_spec, ap.pushing_spec);
 	if (ch == FALSE) ap.valid = FALSE;
 
 	if (ap.valid == FALSE) goto Failed;

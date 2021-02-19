@@ -421,12 +421,12 @@ void Projects::load_built_in_kind_constructors(inform_project *project) {
 #ifdef CORE_MODULE
 void Projects::activate_elements(inform_project *project) {
 	LOG("Activate elements...\n");
-	Plugins::Manage::activate(CORE_PLUGIN_NAME);
+	PluginManager::activate(core_plugin);
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
-	Plugins::Manage::show(DL, "Included", TRUE);
-	Plugins::Manage::show(DL, "Excluded", FALSE);
+	PluginManager::list_plugins(DL, "Included", TRUE);
+	PluginManager::list_plugins(DL, "Excluded", FALSE);
 }
 #endif
 

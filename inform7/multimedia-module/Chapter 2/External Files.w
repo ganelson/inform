@@ -33,8 +33,8 @@ kind *K_external_file = NULL;
 
 @ =
 void PL::Files::start(void) {
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Files::files_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_INSTANCE_NOTIFY, PL::Files::files_new_named_instance_notify);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Files::files_new_base_kind_notify);
+	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Files::files_new_named_instance_notify);
 }
 
 @ =
@@ -146,7 +146,7 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 			}
 			break;
 		case PASS_1_SMFT:
-			if (Plugins::Manage::plugged_in(files_plugin) == FALSE)
+			if (PluginManager::active(files_plugin) == FALSE)
 				internal_error("Files plugin inactive");
 			PL::Files::register_file(Node::get_text(V->next),
 				Node::get_text(V->next->next));
@@ -252,7 +252,7 @@ External files are written in I6 as their array names:
 
 =
 void PL::Files::arrays(void) {
-	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
+	if (PluginManager::active(files_plugin) == FALSE) return;
 
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
 	Emit::named_numeric_constant(iname, (inter_ti) (NUMBER_CREATED(external_file)));
@@ -305,7 +305,7 @@ More or less perfunctory, but still of some use, if only as a list.
 
 =
 void PL::Files::index_all(OUTPUT_STREAM) {
-	if (Plugins::Manage::plugged_in(files_plugin) == FALSE) return;
+	if (PluginManager::active(files_plugin) == FALSE) return;
 	external_file *exf;
 	if (NUMBER_CREATED(external_file) == 0) {
 		HTML_OPEN("p");

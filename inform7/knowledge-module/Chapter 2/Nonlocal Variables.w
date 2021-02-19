@@ -129,7 +129,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, stacked_variable *
 	nlv->compilation_data = RTVariables::new_compilation_data();
 
 	RTTemporaryVariables::new_variable_notify(nlv, W);
-	Plugins::Call::new_variable_notify(nlv);
+	PluginCalls::new_variable_notify(nlv);
 	LOGIF(VARIABLE_CREATIONS, "Created nonlocal variable: $Z\n", nlv);
 
 	return nlv;

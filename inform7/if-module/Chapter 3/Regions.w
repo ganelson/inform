@@ -36,17 +36,17 @@ typedef struct regions_data {
 
 =
 void PL::Regions::start(void) {
-	PLUGIN_REGISTER(PLUGIN_CREATE_INFERENCES, PL::Regions::create_inference_subjects);
-	PLUGIN_REGISTER(PLUGIN_NEW_BASE_KIND_NOTIFY, PL::Regions::regions_new_base_kind_notify);
-	PLUGIN_REGISTER(PLUGIN_SET_SUBKIND_NOTIFY, PL::Regions::regions_set_subkind_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_SUBJECT_NOTIFY, PL::Regions::regions_new_subject_notify);
-	PLUGIN_REGISTER(PLUGIN_NEW_PROPERTY_NOTIFY, PL::Regions::regions_new_property_notify);
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Regions::regions_complete_model);
-	PLUGIN_REGISTER(PLUGIN_MORE_SPECIFIC, PL::Regions::regions_more_specific);
-	PLUGIN_REGISTER(PLUGIN_ESTIMATE_PROPERTY_USAGE, PL::Regions::regions_estimate_property_usage);
-	PLUGIN_REGISTER(PLUGIN_INTERVENE_IN_ASSERTION, PL::Regions::regions_intervene_in_assertion);
-	PLUGIN_REGISTER(PLUGIN_NAME_TO_EARLY_INFS, PL::Regions::regions_name_to_early_infs);
-	PLUGIN_REGISTER(PLUGIN_ADD_TO_WORLD_INDEX, PL::Regions::regions_add_to_World_index);
+	REGISTER(CREATE_INFERENCES_PCALL, PL::Regions::create_inference_subjects);
+	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Regions::regions_new_base_kind_notify);
+	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Regions::regions_set_subkind_notify);
+	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Regions::regions_new_subject_notify);
+	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Regions::regions_new_property_notify);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Regions::regions_complete_model);
+	REGISTER(MORE_SPECIFIC_PCALL, PL::Regions::regions_more_specific);
+	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Regions::regions_estimate_property_usage);
+	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Regions::regions_intervene_in_assertion);
+	REGISTER(NAME_TO_EARLY_INFS_PCALL, PL::Regions::regions_name_to_early_infs);
+	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Regions::regions_add_to_World_index);
 }
 
 void PL::Regions::create_inference_subjects(void) {
@@ -107,7 +107,7 @@ int PL::Regions::regions_set_subkind_notify(kind *sub, kind *super) {
 
 @ =
 int PL::Regions::object_is_a_region(instance *I) {
-	if ((Plugins::Manage::plugged_in(regions_plugin)) && (K_region) && (I) &&
+	if ((PluginManager::active(regions_plugin)) && (K_region) && (I) &&
 		(Instances::of_kind(I, K_region))) return TRUE;
 	return FALSE;
 }

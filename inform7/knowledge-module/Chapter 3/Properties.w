@@ -210,7 +210,7 @@ kind "grammatical gender" -- see //Instances::make_kind_coincident//.
 				break;
 		}
 	}
-	Plugins::Call::new_property_notify(prn);
+	PluginCalls::new_property_notify(prn);
 
 @ To clarify their meanings as nouns, the word "property" can be prepended;
 thus "the property open", for instance. We achieve this by registering the

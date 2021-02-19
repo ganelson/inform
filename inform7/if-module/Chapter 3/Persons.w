@@ -14,7 +14,7 @@ property *P_before = NULL;
 
 @ =
 void PL::Persons::start(void) {
-	PLUGIN_REGISTER(PLUGIN_COMPLETE_MODEL, PL::Persons::IF_complete_model);
+	REGISTER(COMPLETE_MODEL_PCALL, PL::Persons::IF_complete_model);
 }
 
 

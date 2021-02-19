@@ -21,7 +21,7 @@ int current_model_world_stage = 0; /* not yet building the world model */
 void World::ask_plugins_at_stage(int S) {
 	if (S != current_model_world_stage + 1) internal_error("Stage mistimed");
 	current_model_world_stage = S;
-	Plugins::Call::complete_model(S);
+	PluginCalls::complete_model(S);
 }
 
 int World::current_building_stage(void) {

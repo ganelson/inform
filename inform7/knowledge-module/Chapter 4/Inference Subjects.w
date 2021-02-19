@@ -102,7 +102,7 @@ void InferenceSubjects::make_built_in(void) {
 	global_variables = InferenceSubjects::new_fundamental(model_world, "global-variables");
 	global_constants = InferenceSubjects::new_fundamental(model_world, "global-constants");
 	relations = InferenceSubjects::new_fundamental(model_world, "relations");
-	Plugins::Call::create_inference_subjects();
+	PluginCalls::create_inference_subjects();
 }
 
 @h Creation of subjects.
@@ -162,7 +162,7 @@ void InferenceSubjects::infs_initialise(inference_subject *infs,
 	infs->alias_variable = NULL;
 	Assertions::Assemblies::initialise_assemblies_data(&(infs->assemblies));
 	for (int i=0; i<MAX_PLUGINS; i++) infs->additional_data_for_plugins[i] = NULL;
-	Plugins::Call::new_subject_notify(infs);
+	PluginCalls::new_subject_notify(infs);
 }
 
 @h Aliasing.
@@ -537,7 +537,7 @@ void InferenceSubjects::emit_all(void) {
 }
 
 @h Plugin data.
-See //runtime: Plugins//, but to recap, plugins are inessential components
+See //core: Plugins//, but to recap, plugins are inessential components
 of Inform which might or might not be in use for any given compilation run.
 
 If a plugin is in use, it may need to attach data of its own to a subject,
@@ -551,7 +551,7 @@ returning a pointer to it.
 @ Then, to access that same data, the following -- though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
 the plugins from the //if// module are concerned only with instances -- rooms
-and doors, say -- so |PLUGIN_DATA_ON_INSTANCE| pays its way.
+and doors, say -- so |DATA_ON_INSTANCE|_PCALL pays its way.
 
 @d PLUGIN_DATA_ON_SUBJECT(name, S)
 	((name##_data *) (S)->additional_data_for_plugins[name##_plugin->allocation_id])

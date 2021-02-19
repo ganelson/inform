@@ -596,7 +596,7 @@ inference subject representing the domain to which any new kind would belong.
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pro</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">pronoun_used</span><span class="plain-syntax"> == </span><span class="identifier-syntax">implied_pronoun</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Plugins::Call::refine_implicit_noun</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">PluginCalls::refine_implicit_noun</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Node::set_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROPER_NOUN_NT</span><span class="plain-syntax">);</span>
@@ -656,7 +656,7 @@ is active, and "nowhere" if the spatial one is.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Plugins::Call::act_on_special_NPs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PluginCalls::act_on_special_NPs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-rpt.html#SP11_8">&#167;11.8</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11_8_2" class="paragraph-anchor"></a><b>&#167;11.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Interpret this as an existing noun if possible</span><span class="named-paragraph-number">11.8.2</span></span><span class="comment-syntax"> =</span>

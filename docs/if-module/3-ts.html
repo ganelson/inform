@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -77,7 +85,7 @@ reports asking why it wouldn't change in play.
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Initialisation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Score::start</span></span>:<br/>IF Module - <a href="1-im.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The maximum score and rankings table. </b>A special rule is that if a table is called "Rankings" and contains a column
