@@ -399,7 +399,7 @@ from a text substitution.)
 	if (Rvalues::is_CONSTANT_construction(itpt->as_parsed, CON_property)) {
 		property *prn = Node::get_constant_property(itpt->as_parsed);
 		if (Properties::is_value_property(prn)) {
-			binary_predicate *bp = Properties::Valued::get_stored_relation(prn);
+			binary_predicate *bp = ValueProperties::get_stored_relation(prn);
 			if (bp) {
 				seg = "%1 = <i>%3</i>, which is used to store %4, "
 					"but is not the same thing as the relation itself";
@@ -1071,7 +1071,7 @@ Room" is a number, because the kind of the property "carrying capacity" is
 	if ((rv != NEVER_MATCH) && (Rvalues::is_CONSTANT_construction(P, CON_property))) {
 		property *prn = Rvalues::to_property(P);
 		if (Properties::is_value_property(prn))
-			Node::set_kind_resulting(inv, Properties::Valued::kind(prn));
+			Node::set_kind_resulting(inv, ValueProperties::kind(prn));
 		else {
 			THIS_IS_AN_INTERESTING_PROBLEM {
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TotalEitherOr),
@@ -1282,8 +1282,8 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 		if ((K == NULL) && (<k-kind>(W))) K = <<rp>>;
 		if (K == NULL) {
 			if ((<value-property-name>(W)) &&
-				(Properties::Valued::coincides_with_kind(<<rp>>)))
-				K = Properties::Valued::kind(<<rp>>);
+				(ValueProperties::coincides_with_kind(<<rp>>)))
+				K = ValueProperties::kind(<<rp>>);
 		}
 
 		LOGIF(MATCHING, "(4I.b) reparsed as: %u (vs spec $P)\n", K, ith_spec);
@@ -2043,7 +2043,7 @@ kind *Dash::fix_arithmetic_operand(parse_node *operand) {
 	if (Rvalues::is_CONSTANT_construction(check, CON_property)) {
 		property *prn = Rvalues::to_property(check);
 		if (Properties::is_either_or(prn) == FALSE)
-			expected = Properties::Valued::kind(prn);
+			expected = ValueProperties::kind(prn);
 	}
 	kind *K = Node::get_kind_required_by_context(operand);
 	Node::set_kind_required_by_context(operand, expected);
@@ -2829,7 +2829,7 @@ stack frame, and this is unlikely to be what anyone wanted.
 	LOG_DASH("(5.b.2a)");
 		if (Properties::is_value_property(prn)) {
 	LOG_DASH("(5.b.2b)");
-			kind *kind_if_coerced = Properties::Valued::kind(prn);
+			kind *kind_if_coerced = ValueProperties::kind(prn);
 			int verdict = Kinds::compatible(kind_if_coerced, kind_expected);
 			if (verdict != NEVER_MATCH) {
 	LOG_DASH("(5.b.2c)");

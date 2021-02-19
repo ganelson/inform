@@ -19,10 +19,10 @@ bp_family *universal_bp_family = NULL;
 void Relations::Universal::start(void) {
 	universal_bp_family = BinaryPredicateFamilies::new();
 	METHOD_ADD(universal_bp_family, STOCK_BPF_MTID, Relations::Universal::stock);
-	METHOD_ADD(universal_bp_family, TYPECHECK_BPF_MTID, Relations::Universal::REL_typecheck);
-	METHOD_ADD(universal_bp_family, ASSERT_BPF_MTID, Relations::Universal::REL_assert);
-	METHOD_ADD(universal_bp_family, SCHEMA_BPF_MTID, Relations::Universal::REL_compile);
-	METHOD_ADD(universal_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Universal::REL_describe_for_problems);
+	METHOD_ADD(universal_bp_family, TYPECHECK_BPF_MTID, Relations::Universal::typecheck);
+	METHOD_ADD(universal_bp_family, ASSERT_BPF_MTID, Relations::Universal::assert);
+	METHOD_ADD(universal_bp_family, SCHEMA_BPF_MTID, Relations::Universal::schema);
+	METHOD_ADD(universal_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Universal::describe_for_problems);
 }
 
 @h Initial stock.
@@ -48,7 +48,7 @@ void Relations::Universal::stock(bp_family *self, int n) {
 Universality is tricky to check.
 
 =
-int Relations::Universal::REL_typecheck(bp_family *self, binary_predicate *bp,
+int Relations::Universal::typecheck(bp_family *self, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if (bp == R_meaning) {
 		if (Kinds::eq(kinds_of_terms[0], K_verb) == FALSE) {
@@ -113,7 +113,7 @@ int Relations::Universal::REL_typecheck(bp_family *self, binary_predicate *bp,
 This can't be asserted; it's for use at run-time only.
 
 =
-int Relations::Universal::REL_assert(bp_family *self, binary_predicate *bp,
+int Relations::Universal::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -124,7 +124,7 @@ Run-time is too late to change which verbs mean what, so this relation
 can't be changed at compile time, but the universal relation can.
 
 =
-int Relations::Universal::REL_compile(bp_family *self, int task, binary_predicate *bp,
+int Relations::Universal::schema(bp_family *self, int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
 	if (bp == R_meaning) {
 		switch(task) {
@@ -152,6 +152,6 @@ int Relations::Universal::REL_compile(bp_family *self, int task, binary_predicat
 Nothing special is needed here.
 
 =
-int Relations::Universal::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int Relations::Universal::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }

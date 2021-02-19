@@ -92,13 +92,13 @@ void PL::Naming::now_has_proper_name(inference_subject *infs) {
 
 void PL::Naming::object_now_has_proper_name(instance *I) {
 	if (P_proper_named)
-		Properties::EitherOr::assert(P_proper_named,
+		EitherOrProperties::assert(P_proper_named,
 			Instances::as_subject(I), TRUE, LIKELY_CE);
 }
 
 void PL::Naming::object_now_has_plural_name(instance *I) {
 	if (P_plural_named)
-		Properties::EitherOr::assert(P_plural_named,
+		EitherOrProperties::assert(P_plural_named,
 			Instances::as_subject(I), TRUE, LIKELY_CE);
 }
 
@@ -115,7 +115,7 @@ parse_node *text_of_word_the = NULL;
 void PL::Naming::object_takes_definite_article(inference_subject *subj) {
 	if (text_of_word_the == NULL)
 		text_of_word_the = Rvalues::from_wording(Feeds::feed_C_string(L"\"the\""));
-	Properties::Valued::assert(P_article, subj, text_of_word_the, LIKELY_CE);
+	ValueProperties::assert(P_article, subj, text_of_word_the, LIKELY_CE);
 }
 
 @h Transferring name details.
@@ -129,7 +129,7 @@ void PL::Naming::transfer_details(inference_subject *from, inference_subject *to
 		if (PropertyInferences::either_or_state(from, P_proper_named) > 0)
 			PL::Naming::now_has_proper_name(to);
 		parse_node *art = PropertyInferences::value_of(from, P_article);
-		if (art) Properties::Valued::assert(P_article, to, art, LIKELY_CE);
+		if (art) ValueProperties::assert(P_article, to, art, LIKELY_CE);
 	}
 }
 
@@ -249,10 +249,10 @@ a comma, and that's caught here:
 	else @<Compose the I6 short-name as a piece of text@>;
 
 	if (faux)
-		Properties::Valued::assert(P_printed_name, subj,
+		ValueProperties::assert(P_printed_name, subj,
 			Rvalues::from_iname(faux), CERTAIN_CE);
 	else
-		Properties::Valued::assert(P_printed_name, subj,
+		ValueProperties::assert(P_printed_name, subj,
 			Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 
 @ The I6 |cap_short_name| has no corresponding property in I7. Note that it's
@@ -275,15 +275,15 @@ actually means it's rarely needed.)
 	if (set_csn) {
 		if (P_cap_short_name == NULL) {
 			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
-			P_cap_short_name = Properties::Valued::new_nameless_using(
+			P_cap_short_name = ValueProperties::new_nameless_using(
 				K_text, Kinds::Behaviour::package(K_object), property_iname);
 			Hierarchy::make_available(Emit::tree(), property_iname);
 		}
 		if (faux)
-			Properties::Valued::assert(P_cap_short_name, subj,
+			ValueProperties::assert(P_cap_short_name, subj,
 				Rvalues::from_iname(faux), CERTAIN_CE);
 		else
-			Properties::Valued::assert(P_cap_short_name, subj,
+			ValueProperties::assert(P_cap_short_name, subj,
 				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 	}
 
@@ -336,7 +336,7 @@ together in lists.
 		if (Wordings::nonempty(PW)) {
 			text_stream *PROP = Str::new();
 			PL::Naming::compose_words_to_I6_naming_text(PROP, PW, FALSE, TRUE);
-			Properties::Valued::assert(P_printed_plural_name, subj,
+			ValueProperties::assert(P_printed_plural_name, subj,
 				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
 		}
 	}
@@ -350,15 +350,15 @@ together in lists.
 		switch (g) {
 			case NEUTER_GENDER:
 				if (PropertyPermissions::grant(subj, P_neuter, TRUE))
-					Properties::EitherOr::assert(P_neuter, subj, TRUE, LIKELY_CE);
+					EitherOrProperties::assert(P_neuter, subj, TRUE, LIKELY_CE);
 				break;
 			case MASCULINE_GENDER:
 				if (PropertyPermissions::grant(subj, P_female, TRUE))
-					Properties::EitherOr::assert(P_female, subj, FALSE, LIKELY_CE);
+					EitherOrProperties::assert(P_female, subj, FALSE, LIKELY_CE);
 				break;
 			case FEMININE_GENDER:
 				if (PropertyPermissions::grant(subj, P_female, TRUE))
-					Properties::EitherOr::assert(P_female, subj, TRUE, LIKELY_CE);
+					EitherOrProperties::assert(P_female, subj, TRUE, LIKELY_CE);
 				break;
 		}
 	}

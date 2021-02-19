@@ -184,7 +184,7 @@ void Lvalues::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 				property *prn = Rvalues::to_property(
 					spec->down);
 				WRITE("a property whose value is ");
-				Kinds::Textual::write_articled(OUT, Properties::Valued::kind(prn));
+				Kinds::Textual::write_articled(OUT, ValueProperties::kind(prn));
 			} else WRITE("a property belonging to something");
 			break;
 		default: WRITE("a stored value"); break;
@@ -237,7 +237,7 @@ is enough to determine the kind:
 @<Return the kind of a property value@> =
 	if (Node::no_children(spec) == 2) {
 		property *prn = Rvalues::to_property(spec->down);
-		if ((prn) && (Properties::is_either_or(prn) == FALSE)) return Properties::Valued::kind(prn);
+		if ((prn) && (Properties::is_either_or(prn) == FALSE)) return ValueProperties::kind(prn);
 		return K_value; /* to help the type-checker produce better problem messages */
 	}
 	return NULL; /* can happen when scanning phrase arguments, which are generic */

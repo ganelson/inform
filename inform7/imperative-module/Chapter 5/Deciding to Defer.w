@@ -826,7 +826,7 @@ void Calculus::Deferrals::emit_extremal_of_S(parse_node *spec,
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
-		measurement_definition *mdef_found = Properties::Measurement::retrieve(prn, sign);
+		measurement_definition *mdef_found = Measurements::retrieve(prn, sign);
 		if (mdef_found) {
 			pcalc_prop *prop = SentencePropositions::from_spec(spec);
 			Calculus::Deferrals::prop_verify_descriptive(prop,

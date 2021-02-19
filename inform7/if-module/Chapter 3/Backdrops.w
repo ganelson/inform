@@ -267,7 +267,7 @@ We intervene only at Stage II, the spatial modelling stage.
 =
 int PL::Backdrops::backdrops_complete_model(int stage) {
 	if (stage == WORLD_STAGE_II) {
-		P_absent = Properties::EitherOr::new_nameless(L"absent");
+		P_absent = EitherOrProperties::new_nameless(L"absent");
 		RTProperties::implement_as_attribute(P_absent, TRUE);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object) {
@@ -332,7 +332,7 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 	notice->found_in_routine_iname = Hierarchy::make_iname_in(BACKDROP_FOUND_IN_FN_HL, R);
 	notice->many_places = FALSE;
 	FOUNDIN = notice->found_in_routine_iname;
-	Properties::EitherOr::assert(
+	EitherOrProperties::assert(
 		P_absent, Instances::as_subject(I), TRUE, CERTAIN_CE);
 
 @ =

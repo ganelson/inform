@@ -1,27 +1,36 @@
-[Properties::SettingRelations::] Setting Property Relation.
+[SettingPropertyRelations::] Setting Property Relation.
 
 Each value property has an associated relation to set its value.
 
 @h Family.
+There is exactly one member of this family for each different valued property.
 
 =
 bp_family *property_setting_bp_family = NULL;
 
-void Properties::SettingRelations::start(void) {
+void SettingPropertyRelations::start(void) {
 	property_setting_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(property_setting_bp_family, STOCK_BPF_MTID, Properties::SettingRelations::stock);
-	METHOD_ADD(property_setting_bp_family, TYPECHECK_BPF_MTID, Properties::SettingRelations::REL_typecheck);
-	METHOD_ADD(property_setting_bp_family, ASSERT_BPF_MTID, Properties::SettingRelations::REL_assert);
-	METHOD_ADD(property_setting_bp_family, SCHEMA_BPF_MTID, Properties::SettingRelations::REL_compile);
-	METHOD_ADD(property_setting_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::SettingRelations::REL_describe_for_problems);
+	METHOD_ADD(property_setting_bp_family, STOCK_BPF_MTID,
+		SettingPropertyRelations::stock);
+	METHOD_ADD(property_setting_bp_family, TYPECHECK_BPF_MTID,
+		SettingPropertyRelations::typecheck);
+	METHOD_ADD(property_setting_bp_family, ASSERT_BPF_MTID,
+		SettingPropertyRelations::assert);
+	METHOD_ADD(property_setting_bp_family, SCHEMA_BPF_MTID,
+		SettingPropertyRelations::schema);
+}
+
+int SettingPropertyRelations::bp_sets_a_property(binary_predicate *bp) {
+	if (bp->relation_family == property_setting_bp_family) return TRUE;
+	return FALSE;
 }
 
 @h Initial stock.
-For |n == 2| the following is called after all properties have been created, making it
+The case of |n| being 2 is when all properties have been created, making it
 the perfect opportunity to go over all of the property-setting BPs:
 
 =
-void Properties::SettingRelations::stock(bp_family *self, int n) {
+void SettingPropertyRelations::stock(bp_family *self, int n) {
 	if (n == 2) {
 		binary_predicate *bp;
 		LOOP_OVER(bp, binary_predicate)
@@ -29,7 +38,7 @@ void Properties::SettingRelations::stock(bp_family *self, int n) {
 				property_setting_bp_data *PSD =
 					RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
 				if (Wordings::nonempty(PSD->property_pending_text))
-					Properties::SettingRelations::fix_property_bp(bp);
+					SettingPropertyRelations::fix_property_bp(bp);
 			}
 	}
 }
@@ -38,8 +47,8 @@ void Properties::SettingRelations::stock(bp_family *self, int n) {
 Relations like this lead to a timing problem, because we have to create the
 relation early enough that we can make sense of the sentences in the source
 text; but at that early time, the properties haven't been created yet. We
-therefore store the text of the property name (say, "weight") in
-|property_pending_text| and come back to it later on.
+therefore store the text (say, "weight") in |property_pending_text| and come
+back to it later.
 
 =
 typedef struct property_setting_bp_data {
@@ -48,7 +57,7 @@ typedef struct property_setting_bp_data {
 	CLASS_DEFINITION
 } property_setting_bp_data;
 
-binary_predicate *Properties::SettingRelations::make_set_property_BP(wording W) {
+binary_predicate *SettingPropertyRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
 		BPTerms::new(KindSubjects::from_kind(K_object)),
 		BPTerms::new(NULL),
@@ -65,7 +74,7 @@ the property may not exist yet; we have to use the text of the name of the
 property as a key, clumsy as that may seem.
 
 =
-binary_predicate *Properties::SettingRelations::find_set_property_BP(wording W) {
+binary_predicate *SettingPropertyRelations::find_set_property_BP(wording W) {
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
 		if (bp->relation_family == property_setting_bp_family)
@@ -82,7 +91,7 @@ binary_predicate *Properties::SettingRelations::find_set_property_BP(wording W) 
 that the two can never fall out of step with each other.
 
 =
-void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
+void SettingPropertyRelations::fix_property_bp(binary_predicate *bp) {
 	if (bp->relation_family == property_setting_bp_family) {
 		property_setting_bp_data *PSD =
 			RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
@@ -95,9 +104,9 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 			property *prn = <<rp>>;
 			PSD->set_property = prn;
 			if (bp->right_way_round)
-				Properties::SettingRelations::set_property_BP_schemas(bp, prn);
+				SettingPropertyRelations::set_property_BP_schemas(bp, prn);
 			else
-				Properties::SettingRelations::set_property_BP_schemas(bp->reversal, prn);
+				SettingPropertyRelations::set_property_BP_schemas(bp->reversal, prn);
 		}
 	}
 }
@@ -115,13 +124,15 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 	...                          ==> @<Issue PM_RelationWithBadProperty problem@>
 
 @<Issue PM_RelationWithEitherOrProperty problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithEitherOrProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_RelationWithEitherOrProperty),
 		"verbs can only set properties with values",
 		"not either/or properties like this one.");
 	==> { FALSE, - };
 
 @<Issue PM_RelationWithBadProperty problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RelationWithBadProperty),
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_RelationWithBadProperty),
 		"that doesn't seem to be a property",
 		"perhaps because you haven't defined it yet?");
 	==> { FALSE, - };
@@ -130,12 +141,12 @@ void Properties::SettingRelations::fix_property_bp(binary_predicate *bp) {
 Inform:
 
 =
-binary_predicate *Properties::SettingRelations::make_set_nameless_property_BP(property *prn) {
-	binary_predicate *bp = Properties::SettingRelations::make_set_property_BP(EMPTY_WORDING);
+binary_predicate *SettingPropertyRelations::make_set_nameless_property_BP(property *prn) {
+	binary_predicate *bp = SettingPropertyRelations::make_set_property_BP(EMPTY_WORDING);
 	property_setting_bp_data *PSD =
 		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
 	PSD->set_property = prn;
-	Properties::SettingRelations::set_property_BP_schemas(bp, prn);
+	SettingPropertyRelations::set_property_BP_schemas(bp, prn);
 	return bp;
 }
 
@@ -146,13 +157,14 @@ guarantees that it does have permission, and as a result we gain some speed
 and simplicity.
 
 =
-void Properties::SettingRelations::set_property_BP_schemas(binary_predicate *bp, property *prn) {
+void SettingPropertyRelations::set_property_BP_schemas(binary_predicate *bp,
+	property *prn) {
 	bp->task_functions[TEST_ATOM_TASK] =
 		Calculus::Schemas::new("*1.%n == *2", RTProperties::iname(prn));
 	bp->task_functions[NOW_ATOM_TRUE_TASK] =
 		Calculus::Schemas::new("*1.%n = *2", RTProperties::iname(prn));
 	BPTerms::set_domain(&(bp->term_details[1]),
-		Properties::Valued::kind(prn));
+		ValueProperties::kind(prn));
 }
 
 @h Typechecking.
@@ -168,12 +180,12 @@ It might be an object which will eventually be deduced to be a room, for
 instance, but hasn't been yet.
 
 =
-int Properties::SettingRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
+int SettingPropertyRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	property_setting_bp_data *PSD =
 		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
 	property *prn = PSD->set_property;
-	kind *val_kind = Properties::Valued::kind(prn);
+	kind *val_kind = ValueProperties::kind(prn);
 	@<Require the value to be type-safe for storage in the property@>;
 	@<Require the subject to be able to have properties@>;
 	return ALWAYS_MATCH;
@@ -242,7 +254,7 @@ be caught later on Inform's run.
 @h Assertion.
 
 =
-int Properties::SettingRelations::REL_assert(bp_family *self, binary_predicate *bp,
+int SettingPropertyRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	property_setting_bp_data *PSD =
@@ -252,43 +264,17 @@ int Properties::SettingRelations::REL_assert(bp_family *self, binary_predicate *
 }
 
 @h Compilation.
-We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Properties::SettingRelations::REL_compile(bp_family *self, int task,
+int SettingPropertyRelations::schema(bp_family *self, int task,
 	binary_predicate *bp, annotated_i6_schema *asch) {
-	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
-
-	if (Kinds::Behaviour::is_object(K)) return FALSE;
-
 	property_setting_bp_data *PSD =
 		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
 	property *prn = PSD->set_property;
 	switch (task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(asch->schema,
-				"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
-			break;
-		case NOW_ATOM_FALSE_TASK:
-			break;
-		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema,
-				"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
-			break;
+		case TEST_ATOM_TASK: return RTProperties::test_property_value_schema(asch, prn);
+		case NOW_ATOM_FALSE_TASK: break;
+		case NOW_ATOM_TRUE_TASK: return RTProperties::set_property_value_schema(asch, prn);
 	}
-	return TRUE;
-}
-
-@ =
-int Properties::SettingRelations::bp_sets_a_property(binary_predicate *bp) {
-	if (bp->relation_family == property_setting_bp_family) return TRUE;
-//	if ((bp->set_property) || (Wordings::nonempty(bp->property_pending_text))) return TRUE;
-	return FALSE;
-}
-
-@h Problem message text.
-
-=
-int Properties::SettingRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }

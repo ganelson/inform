@@ -493,7 +493,7 @@ int PL::Spatial::spatial_default_appearance(inference_subject *infs, parse_node 
 				}
 			} else set_prn = P_initial_appearance;
 		}
-		Properties::Valued::assert(set_prn, infs, txt, CERTAIN_CE);
+		ValueProperties::assert(set_prn, infs, txt, CERTAIN_CE);
 		return TRUE;
 	}
 	return FALSE;
@@ -1233,7 +1233,7 @@ the absence of other information.)
 				}
 			}
 		if (portable) {
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_fixed_in_place, Instances::as_subject(I), FALSE, CERTAIN_CE);
 		}
 	}
@@ -1260,7 +1260,7 @@ as a value for |description| from the room class.
 		if (desc_seen == FALSE) {
 			TEMPORARY_TEXT(val)
 			WRITE_TO(val, "\"\"");
-			Properties::Valued::assert(P_description, KindSubjects::from_kind(K_room),
+			ValueProperties::assert(P_description, KindSubjects::from_kind(K_room),
 				Rvalues::from_unescaped_wording(Feeds::feed_text(val)), LIKELY_CE);
 			DISCARD_TEXT(val)
 		}
@@ -1272,32 +1272,32 @@ overhead for their storage. That shaves a little time off route-finding in
 extensive maps.
 
 @<Assert room and thing indicator properties@> =
-	P_mark_as_room = Properties::EitherOr::new_nameless(L"mark_as_room");
+	P_mark_as_room = EitherOrProperties::new_nameless(L"mark_as_room");
 	RTProperties::implement_as_attribute(P_mark_as_room, TRUE);
-	P_mark_as_thing = Properties::EitherOr::new_nameless(L"mark_as_thing");
+	P_mark_as_thing = EitherOrProperties::new_nameless(L"mark_as_thing");
 	RTProperties::implement_as_attribute(P_mark_as_thing, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_room))
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_mark_as_room, Instances::as_subject(I), TRUE, CERTAIN_CE);
 		if (Instances::of_kind(I, K_thing))
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_mark_as_thing, Instances::as_subject(I), TRUE, CERTAIN_CE);
 	}
 
 @<Assert container and supporter indicator properties@> =
-	P_container = Properties::EitherOr::new_nameless(L"container");
+	P_container = EitherOrProperties::new_nameless(L"container");
 	RTProperties::implement_as_attribute(P_container, TRUE);
-	P_supporter = Properties::EitherOr::new_nameless(L"supporter");
+	P_supporter = EitherOrProperties::new_nameless(L"supporter");
 	RTProperties::implement_as_attribute(P_supporter, TRUE);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		if (Instances::of_kind(I, K_container))
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_container, Instances::as_subject(I), TRUE, CERTAIN_CE);
 		if (Instances::of_kind(I, K_supporter))
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_supporter, Instances::as_subject(I), TRUE, CERTAIN_CE);
 	}
 
@@ -1307,32 +1307,32 @@ a triplet of I6-only properties:
 
 @<Assert incorporation tree properties@> =
 	P_component_parent =
-		Properties::Valued::new_nameless(I"component_parent", K_object);
+		ValueProperties::new_nameless(I"component_parent", K_object);
 	P_component_child =
-		Properties::Valued::new_nameless(I"component_child", K_object);
+		ValueProperties::new_nameless(I"component_child", K_object);
 	P_component_sibling =
-		Properties::Valued::new_nameless(I"component_sibling", K_object);
+		ValueProperties::new_nameless(I"component_sibling", K_object);
 
 	if (K_thing) {
 		parse_node *nothing_constant = Rvalues::new_nothing_object_constant();
-		Properties::Valued::assert(P_component_parent, KindSubjects::from_kind(K_thing),
+		ValueProperties::assert(P_component_parent, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
-		Properties::Valued::assert(P_component_child, KindSubjects::from_kind(K_thing),
+		ValueProperties::assert(P_component_child, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
-		Properties::Valued::assert(P_component_sibling, KindSubjects::from_kind(K_thing),
+		ValueProperties::assert(P_component_sibling, KindSubjects::from_kind(K_thing),
 			nothing_constant, CERTAIN_CE);
 	}
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		instance *cp = SPATIAL_DATA(I)->incorp_tree_parent;
-		if (cp) Properties::Valued::assert(P_component_parent, Instances::as_subject(I),
+		if (cp) ValueProperties::assert(P_component_parent, Instances::as_subject(I),
 			Rvalues::from_instance(cp), CERTAIN_CE);
 		instance *cc = SPATIAL_DATA(I)->incorp_tree_child;
-		if (cc) Properties::Valued::assert(P_component_child, Instances::as_subject(I),
+		if (cc) ValueProperties::assert(P_component_child, Instances::as_subject(I),
 			Rvalues::from_instance(cc), CERTAIN_CE);
 		instance *cs = SPATIAL_DATA(I)->incorp_tree_sibling;
-		if (cs) Properties::Valued::assert(P_component_sibling, Instances::as_subject(I),
+		if (cs) ValueProperties::assert(P_component_sibling, Instances::as_subject(I),
 			Rvalues::from_instance(cs), CERTAIN_CE);
 	}
 

@@ -175,6 +175,7 @@ and the property "colour", whose names coincide:
 void Instances::make_kind_coincident(kind *K, property *P) {
 	Properties::mark_kind_as_having_same_name_as(K, P);
 	Instances::update_adjectival_forms(P);
+	if (Kinds::eq(K, K_grammatical_gender)) P_grammatical_gender = P;
 }
 
 @ That causes us to "update adjectival forms" for the property "colour",
@@ -188,7 +189,7 @@ use of colour turns up subsequently, e.g., in response to:
 =
 void Instances::update_adjectival_forms(property *P) {
 	if (Properties::is_either_or(P) == TRUE) return;
-	kind *K = Properties::Valued::kind(P);
+	kind *K = ValueProperties::kind(P);
 	if (P == Properties::property_with_same_name_as(K)) {
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K)

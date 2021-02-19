@@ -1299,7 +1299,7 @@ we don't, and have to look that up at run-time.
 	} else {
 		measurement_definition *mdef =
 			RETRIEVE_POINTER_measurement_definition(pdef->defn_ref);
-		Properties::Measurement::read_property_details(mdef, &def_prn, &def_prn_sign);
+		Measurements::read_property_details(mdef, &def_prn, &def_prn_sign);
 		if (def_prn_sign == 1) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());

@@ -104,7 +104,7 @@ production of <has-property-name>.
 	presence |                       ==> @<Issue PM_PropertyCalledPresence problem@>
 	*** , *** |                      ==> @<Issue PM_PropertyNameForbidden problem@>
 	*** <quoted-text> *** |          ==> @<Issue PM_PropertyNameForbidden problem@>
-	...                              ==> { 0, Properties::Valued::obtain(W) }
+	...                              ==> { 0, ValueProperties::obtain(W) }
 
 @<Issue PM_PropertyCalledArticle problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyCalledArticle),

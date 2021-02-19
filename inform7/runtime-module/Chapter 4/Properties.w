@@ -4,6 +4,8 @@ To compile run-time support for properties.
 
 @
 
+@d UNSET_TABLE_OFFSET -654321
+
 =
 typedef struct property_compilation_data {
 	int do_not_compile; /* for e.g. the "specification" pseudo-property */
@@ -52,7 +54,7 @@ int RTProperties::visited_in_traverse(property *prn) {
 	if (prn->compilation_data.visited_on_traverse == property_traverse_count) return TRUE;
 	prn->compilation_data.visited_on_traverse = property_traverse_count;
 	if (Properties::is_either_or(prn)) {
-		property *prnbar = Properties::EitherOr::get_negation(prn);
+		property *prnbar = EitherOrProperties::get_negation(prn);
 		if (prnbar) prnbar->compilation_data.visited_on_traverse = property_traverse_count;
 	}
 	return FALSE;
@@ -85,10 +87,10 @@ int RTProperties::stored_in_negation(property *prn) {
 
 void RTProperties::store_in_negation(property *prn) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
-	if (Properties::EitherOr::get_negation(prn) == NULL) internal_error("singleton EO cannot store in negation");
+	if (EitherOrProperties::get_negation(prn) == NULL) internal_error("singleton EO cannot store in negation");
 
 	prn->compilation_data.store_in_negation = TRUE;
-	if (Properties::EitherOr::get_negation(prn)) Properties::EitherOr::get_negation(prn)->compilation_data.store_in_negation = FALSE;
+	if (EitherOrProperties::get_negation(prn)) EitherOrProperties::get_negation(prn)->compilation_data.store_in_negation = FALSE;
 }
 
 @h Translated names of properties.
@@ -104,7 +106,7 @@ run-time support code to work.
 void RTProperties::set_translation(property *prn, wchar_t *t) {
 	if (prn == NULL) internal_error("translation set for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::set_translation(Properties::EitherOr::get_negation(prn), t);
+		RTProperties::set_translation(EitherOrProperties::get_negation(prn), t);
 		return;
 	}
 	RTProperties::iname(prn);
@@ -124,7 +126,7 @@ void RTProperties::set_translation(property *prn, wchar_t *t) {
 void RTProperties::set_translation_S(property *prn, text_stream *t) {
 	if (prn == NULL) internal_error("translation set for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::set_translation_S(Properties::EitherOr::get_negation(prn), t);
+		RTProperties::set_translation_S(EitherOrProperties::get_negation(prn), t);
 		return;
 	}
 	RTProperties::iname(prn);
@@ -157,14 +159,14 @@ text_stream *RTProperties::current_translation(property *prn) {
 inter_name *RTProperties::iname(property *prn) {
 	if (prn == NULL) internal_error("tried to find iname for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
-		return RTProperties::iname(Properties::EitherOr::get_negation(prn));
+		return RTProperties::iname(EitherOrProperties::get_negation(prn));
 	return prn->compilation_data.prop_iname;
 }
 
 package_request *RTProperties::package(property *prn) {
 	if (prn == NULL) internal_error("tried to find package for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation))
-		return RTProperties::package(Properties::EitherOr::get_negation(prn));
+		return RTProperties::package(EitherOrProperties::get_negation(prn));
 	RTProperties::iname(prn);
 	return prn->compilation_data.prop_package;
 }
@@ -172,7 +174,7 @@ package_request *RTProperties::package(property *prn) {
 void RTProperties::emit_single(property *prn) {
 	if (prn == NULL) internal_error("tried to find emit single for null property");
 	if ((Properties::is_either_or(prn)) && (prn->compilation_data.store_in_negation)) {
-		RTProperties::emit_single(Properties::EitherOr::get_negation(prn));
+		RTProperties::emit_single(EitherOrProperties::get_negation(prn));
 		return;
 	}
 	if (prn->compilation_data.prn_emitted == FALSE) {
@@ -265,7 +267,7 @@ int RTProperties::implemented_as_attribute(property *prn) {
 void RTProperties::implement_as_attribute(property *prn, int state) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
 	prn->compilation_data.implemented_as_attribute = state;
-	if (Properties::EitherOr::get_negation(prn)) Properties::EitherOr::get_negation(prn)->compilation_data.implemented_as_attribute = state;
+	if (EitherOrProperties::get_negation(prn)) EitherOrProperties::get_negation(prn)->compilation_data.implemented_as_attribute = state;
 }
 
 @ Otherwise, each either/or property is stored as either |true| or |false|
@@ -318,7 +320,7 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 }
 
 void RTProperties::compile_vp_value(value_holster *VH, property *prn, parse_node *val) {
-	kind *K = Properties::Valued::kind(prn);
+	kind *K = ValueProperties::kind(prn);
 	if (K) Specifications::Compiler::compile_constant_to_kind_vh(VH, val, K);
 	else {
 		BEGIN_COMPILATION_MODE;
@@ -334,7 +336,7 @@ void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		return;
 	}
-	kind *K = Properties::Valued::kind(prn);
+	kind *K = ValueProperties::kind(prn);
 	current_sentence = NULL;
 	if (RTKinds::compile_default_value_vh(VH, K, prn->name, "property") == FALSE) {
 		Problems::quote_wording(1, prn->name);
@@ -345,3 +347,150 @@ void RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 		Problems::issue_problem_end();
 	}
 }
+
+@ Now for the methods.
+
+=
+void RTProperties::write_either_or_schemas(adjective_meaning *am, property *prn, int T) {
+	kind *K = AdjectiveMeaningDomains::get_kind(am);
+	if (Kinds::Behaviour::is_object(K))
+		@<Set the schemata for an either/or property adjective with objects as domain@>
+	else
+		@<Set the schemata for an either/or property adjective with some other domain@>;
+}
+
+@ The "objects" domain is not really very different, but it's the one used
+overwhelmingly most often, so we will call the relevant routines directly rather
+than accessing them via the unifying routines |GProperty| and |WriteGProperty| --
+which would work just as well, but more slowly.
+
+@<Set the schemata for an either/or property adjective with objects as domain@> =
+	if (RTProperties::stored_in_negation(prn)) {
+		property *neg = EitherOrProperties::get_negation(prn);
+		inter_name *identifier = RTProperties::iname(neg);
+
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n) == false", identifier);
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
+	} else {
+		inter_name *identifier = RTProperties::iname(prn);
+
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GetEitherOrProperty(*1, %n)", identifier);
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, false)", identifier);
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "SetEitherOrProperty(*1, %n, true)", identifier);
+	}
+
+@<Set the schemata for an either/or property adjective with some other domain@> =
+	if (RTProperties::stored_in_negation(prn)) {
+		property *neg = EitherOrProperties::get_negation(prn);
+
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n) == false", K,
+			RTProperties::iname(neg));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
+			RTProperties::iname(neg));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
+			RTProperties::iname(neg));
+	} else {
+		i6_schema *sch = AdjectiveMeanings::make_schema(am, TEST_ATOM_TASK);
+		Calculus::Schemas::modify(sch, "GProperty(%k, *1, %n)", K,
+			RTProperties::iname(prn));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_TRUE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n, true)", K,
+			RTProperties::iname(prn));
+
+		sch = AdjectiveMeanings::make_schema(am, NOW_ATOM_FALSE_TASK);
+		Calculus::Schemas::modify(sch, "WriteGProperty(%k, *1, %n)", K,
+			RTProperties::iname(prn));
+	}
+
+@
+
+=
+property *RTProperties::make_valued_property_identified_thus(text_stream *Inter_identifier) {
+	wording W = Feeds::feed_text(Inter_identifier);
+	package_request *R = Hierarchy::synoptic_package(PROPERTIES_HAP);
+	Hierarchy::markup(R, PROPERTY_NAME_HMD, Inter_identifier);
+	inter_name *using_iname = Hierarchy::make_iname_with_memo(PROPERTY_HL, R, W);
+	property *prn = Properties::create(EMPTY_WORDING, R, using_iname, FALSE);
+	RTProperties::set_translation_S(prn, Inter_identifier);
+	return prn;
+}
+
+@
+
+=
+int RTProperties::test_provision_schema(annotated_i6_schema *asch) {
+	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	property *prn = Rvalues::to_property(asch->pt1.constant);
+	if (K) {
+		if (prn) {
+			if (Kinds::Behaviour::is_object(K))
+				@<Compile a run-time test of property provision@>
+			else
+				@<Determine the result now, since we know already, and compile only the outcome@>;
+			return TRUE;
+		} else if (Kinds::Behaviour::is_object(K)) {
+			kind *PK = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
+			if (Kinds::get_construct(PK) == CON_property) {
+				if (Kinds::eq(K_truth_state, Kinds::unary_construction_material(PK)))
+					Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
+				else
+					Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, false, *2)");
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}
+
+@ Since type-checking for "object" is too weak to make it certain what kind
+of object the left operand is, we can only test property provision at run-time:
+
+@<Compile a run-time test of property provision@> =
+	if (Properties::is_value_property(prn))
+		Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, false, *2)");
+	else
+		Calculus::Schemas::modify(asch->schema, "WhetherProvides(*1, true, *2)");
+
+@ For all other kinds, type-checking is strong enough that we can prove the
+answer now.
+
+@<Determine the result now, since we know already, and compile only the outcome@> =
+	if (PropertyPermissions::find(KindSubjects::from_kind(K), prn, TRUE))
+		Calculus::Schemas::modify(asch->schema, "true");
+	else
+		Calculus::Schemas::modify(asch->schema, "false");
+
+@ =
+int RTProperties::test_property_value_schema(annotated_i6_schema *asch, property *prn) {
+	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
+	Calculus::Schemas::modify(asch->schema,
+		"GProperty(%k, *1, %n) == *2", K, RTProperties::iname(prn));
+	return TRUE;
+}
+
+int RTProperties::set_property_value_schema(annotated_i6_schema *asch, property *prn) {
+	kind *K = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
+	if (Kinds::Behaviour::is_object(K)) return FALSE;
+	Calculus::Schemas::modify(asch->schema,
+		"WriteGProperty(%k, *1, %n, *2)", K, RTProperties::iname(prn));
+	return TRUE;
+}
+

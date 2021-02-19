@@ -550,7 +550,7 @@ kind *Rvalues::to_kind(parse_node *spec) {
 @<Work out the kind for a constant property name@> =
 	property *prn = Rvalues::to_property(spec);
 	if (prn->either_or_data) return Kinds::unary_con(CON_property, K_truth_state);
-	return Kinds::unary_con(CON_property, Properties::Valued::kind(prn));
+	return Kinds::unary_con(CON_property, ValueProperties::kind(prn));
 
 @<Work out the kind for a constant list@> =
 	return Lists::kind_of_list_at(Node::get_text(spec));
@@ -827,7 +827,7 @@ contexts by using a tilde: |~attr|.
 		if (<negated-clause>(Node::get_text(spec_found))) parity = -1;
 		if (RTProperties::stored_in_negation(prn)) {
 			parity = -parity;
-			prn_to_eval = Properties::EitherOr::get_negation(prn_to_eval);
+			prn_to_eval = EitherOrProperties::get_negation(prn_to_eval);
 		}
 
 		if (Holsters::data_acceptable(VH)) {

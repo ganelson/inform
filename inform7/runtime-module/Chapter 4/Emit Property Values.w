@@ -88,7 +88,7 @@ no actual knowledge about.
 		LOOP_OVER_PERMISSIONS_FOR_INFS(pp, infs) {
 			property *prn = PropertyPermissions::get_property(pp);
 			if ((infs == subj) ||
-				(Kinds::Behaviour::uses_pointer_values(Properties::Valued::kind(prn))))
+				(Kinds::Behaviour::uses_pointer_values(ValueProperties::kind(prn))))
 				words_used += RTPropertyValues::emit_propertyvalue(subj, prn);
 		}
 	}
@@ -108,7 +108,7 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 		(RTProperties::can_be_compiled(prn))) {
 		if ((Properties::is_either_or(prn)) &&
 			(RTProperties::stored_in_negation(prn)))
-			prn = Properties::EitherOr::get_negation(prn);
+			prn = EitherOrProperties::get_negation(prn);
 		value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 		Properties::compile_inferred_value(&VH, know, prn);
 		@<Now emit a propertyvalue@>;
@@ -126,7 +126,7 @@ int RTPropertyValues::emit_propertyvalue(inference_subject *know, property *prn)
 
 	if ((Properties::is_either_or(prn)) && (RTProperties::implemented_as_attribute(prn))) {
 		if (RTProperties::stored_in_negation(prn)) {
-			in = Properties::EitherOr::get_negation(prn);
+			in = EitherOrProperties::get_negation(prn);
 			v2 = (inter_ti) (v2)?FALSE:TRUE;
 		}
 	}
@@ -194,7 +194,7 @@ void RTPropertyValues::emit_has_property(kind *K, inter_symbol *S, property *prn
 				Produce::inv_primitive(Emit::tree(), HAS_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K, S);
-					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(Properties::EitherOr::get_negation(prn)));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(EitherOrProperties::get_negation(prn)));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		} else {
@@ -211,7 +211,7 @@ void RTPropertyValues::emit_has_property(kind *K, inter_symbol *S, property *prn
 				Produce::inv_primitive(Emit::tree(), PROPERTYVALUE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val_symbol(Emit::tree(), K, S);
-					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(Properties::EitherOr::get_negation(prn)));
+					Produce::val_iname(Emit::tree(), K_value, RTProperties::iname(EitherOrProperties::get_negation(prn)));
 				Produce::up(Emit::tree());
 				Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());

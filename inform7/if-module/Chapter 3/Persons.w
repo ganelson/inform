@@ -21,15 +21,15 @@ void PL::Persons::start(void) {
 @ =
 int PL::Persons::IF_complete_model(int stage) {
 	if ((stage == WORLD_STAGE_III) && (K_person)) {
-		P_animate = Properties::EitherOr::new_nameless(L"animate");
+		P_animate = EitherOrProperties::new_nameless(L"animate");
 		RTProperties::implement_as_attribute(P_animate, TRUE);
-		P_before = Properties::Valued::new_nameless(I"before", K_value);
+		P_before = ValueProperties::new_nameless(I"before", K_value);
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
 			if (Instances::of_kind(I, K_person)) {
-				Properties::EitherOr::assert(
+				EitherOrProperties::assert(
 					P_animate, Instances::as_subject(I), TRUE, CERTAIN_CE);
-				Properties::Valued::assert(P_before, Instances::as_subject(I),
+				ValueProperties::assert(P_before, Instances::as_subject(I),
 					Rvalues::from_iname(Hierarchy::find(NULL_HL)), CERTAIN_CE);
 			}
 	}

@@ -35,7 +35,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 @<Standard relationship nodes (the vast majority)@> =
 	binary_predicate *bp = BinaryPredicates::get_reversal(Node::get_relationship(relationship_subtree));
 	if (bp == NULL) internal_error("asserted bp-less relationship subtree");
-	Properties::SettingRelations::fix_property_bp(bp);
+	SettingPropertyRelations::fix_property_bp(bp);
 	Assertions::Relational::assert_relation_between_subtrees(value, bp, relationship_subtree->down);
 	return;
 

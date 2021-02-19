@@ -59,13 +59,13 @@ void IXInferences::index_provided(OUTPUT_STREAM, inference_subject *infs, int bo
 		IXProperties::set_indexed_already_flag(prn, TRUE);
 
 		if (Properties::is_either_or(prn)) {
-			property *prnbar = Properties::EitherOr::get_negation(prn);
+			property *prnbar = EitherOrProperties::get_negation(prn);
 			if (prnbar) {
 				WRITE(" <i>not</i> %+W", prnbar->name);
 				IXProperties::set_indexed_already_flag(prnbar, TRUE);
 			}
 		} else {
-			kind *K = Properties::Valued::kind(prn);
+			kind *K = ValueProperties::kind(prn);
 			if (K) {
 				WRITE(" (<i>"); Kinds::Textual::write(OUT, K); WRITE("</i>)");
 			}
@@ -89,7 +89,7 @@ void IXInferences::index_specific(OUTPUT_STREAM, inference_subject *infs) {
 				if (PropertyPermissions::find(infs, prn, TRUE)) {
 					parse_node *P = NULL;
 					int S = PropertyInferences::either_or_state_without_inheritance(infs, prn, &P);
-					property *prnbar = Properties::EitherOr::get_negation(prn);
+					property *prnbar = EitherOrProperties::get_negation(prn);
 					if ((prnbar) && (S < 0)) continue;
 					if (S != UNKNOWN_CE) {
 						k++;

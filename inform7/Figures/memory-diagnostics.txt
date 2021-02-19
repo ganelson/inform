@@ -1,6 +1,6 @@
 Total memory consumption was 260170K = 254 MB
 
-62.7% was used for 1338103 objects, in 278625 frames in 204 x 800K = 163200K = 159 MB:
+62.7% was used for 1338096 objects, in 278618 frames in 204 x 800K = 163200K = 159 MB:
 
      9.7%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.4%  text_stream_array                        2594 x 100 = 259400 objects, 14609408 bytes
@@ -89,9 +89,9 @@ Total memory consumption was 260170K = 254 MB
      ----  action_name                              90 objects, 18720 bytes
      ----  property                                 146 objects, 18688 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
-     ----  method                                   335 objects, 16080 bytes
-     ----  linked_list_item_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
+     ----  linked_list_item_array                   1 x 1000 objects, 16032 bytes
+     ----  method                                   328 objects, 15744 bytes
      ----  to_phrase_request                        59 objects, 15576 bytes
      ----  adjective                                137 objects, 14248 bytes
      ----  plugin                                   23 objects, 13432 bytes
@@ -228,7 +228,7 @@ Total memory consumption was 260170K = 254 MB
 
 37.2% was used for memory not allocated for objects:
 
-    15.8%  text stream storage                      42245308 bytes in 265786 claims
+    15.8%  text stream storage                      42245232 bytes in 265786 claims
      3.4%  dictionary storage                       9278976 bytes in 16372 claims
      ----  sorting                                  1064 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -244,5 +244,5 @@ Total memory consumption was 260170K = 254 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.3% was overhead - 54220568 bytes = 52949K = 51 MB
+20.3% was overhead - 54220904 bytes = 52950K = 51 MB
 

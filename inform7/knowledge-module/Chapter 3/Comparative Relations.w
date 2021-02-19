@@ -1,27 +1,27 @@
-[Properties::ComparativeRelations::] Comparative Relations.
+[ComparativeRelations::] Comparative Relations.
 
-When a measurement adjective like "tall" is defined, so is a
-comparative relation like "taller than".
+When a measurement adjective like "tall" is defined, so is a comparative
+relation like "taller than".
 
 @h Family.
-Unlike the other relations to do with property values, these do not correspond
-exactly with the properties. Some properties, like "carrying capacity", might
-never be compared with measurement adjectives; others, like "height", might
-be compared with more than one ("short", "tall").
+There can be many of these. Each is associated with a property, but some
+properties may never be measured ("carrying capacity", say) while others may
+have more than one comparative (a property such as "height" might have
+relations for both "shorter" and "taller"). So comparative relations do not
+correspond exactly with properties.
 
-=
+= (early code)
 bp_family *property_comparison_bp_family = NULL;
 
-void Properties::ComparativeRelations::start(void) {
+@ =
+void ComparativeRelations::start(void) {
 	property_comparison_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(property_comparison_bp_family, STOCK_BPF_MTID, Properties::ComparativeRelations::stock);
-	METHOD_ADD(property_comparison_bp_family, TYPECHECK_BPF_MTID, Properties::ComparativeRelations::REL_typecheck);
-	METHOD_ADD(property_comparison_bp_family, ASSERT_BPF_MTID, Properties::ComparativeRelations::REL_assert);
-	METHOD_ADD(property_comparison_bp_family, SCHEMA_BPF_MTID, Properties::ComparativeRelations::REL_compile);
-	METHOD_ADD(property_comparison_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Properties::ComparativeRelations::REL_describe_for_problems);
+	METHOD_ADD(property_comparison_bp_family, STOCK_BPF_MTID, ComparativeRelations::stock);
+	METHOD_ADD(property_comparison_bp_family, TYPECHECK_BPF_MTID, ComparativeRelations::typecheck);
+	METHOD_ADD(property_comparison_bp_family, SCHEMA_BPF_MTID, ComparativeRelations::schema);
 }
 
-@h Second stock.
+@h Creation.
 When an adjective is defined so that it performs an inequality comparison
 of a property value, like so:
 
@@ -29,22 +29,24 @@ of a property value, like so:
 
 ...Inform automatically generates a comparative form (here "taller than").
 This is where our comparative relations come from, but the work is done in
-the previous section.
+//Measurement Adjectives//, not here.
 
 =
-void Properties::ComparativeRelations::stock(bp_family *self, int n) {
-	if (n == 2) {
-		Properties::Measurement::create_comparatives();
-	}
+void ComparativeRelations::stock(bp_family *self, int n) {
+	if (n == 2) Measurements::create_comparatives();
 }
 
+@ However, whenever a comparative is made, an instance of the following is
+created and attached to it:
+
+=
 typedef struct comparative_bp_data {
 	struct property *comparative_property; /* (if right way) if a comparative adjective */
 	int comparison_sign; /* ...and |+1| or |-1| according to sign of definition */
 	CLASS_DEFINITION
 } comparative_bp_data;
 
-void Properties::ComparativeRelations::initialise(binary_predicate *bp,
+void ComparativeRelations::initialise(binary_predicate *bp,
 	int sign, property *prn) {
 	comparative_bp_data *D = CREATE(comparative_bp_data);
 	D->comparison_sign = sign; D->comparative_property = prn;
@@ -52,12 +54,17 @@ void Properties::ComparativeRelations::initialise(binary_predicate *bp,
 }
 
 @h Typechecking.
-Because of the ambiguity between absolute and relative comparisons (see
-below), we'll typecheck this asymmetrically; the left term is typechecked
-as usual, but the right is more leniently handled.
+Comparatives can be used in two different senses, which we'll call absolute
+and relative:
+
+(*) "if Geoff is taller than 4 foot 5 inches" is absolute, while
+(*) "if Geoff is taller than Miranda" is relative.
+
+To allow for these two different usages, we'll typecheck this asymmetrically;
+the left term is typechecked as usual, but the right is more leniently handled.
 
 =
-int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
+int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 
 	if ((kinds_required[0]) &&
@@ -82,33 +89,17 @@ int Properties::ComparativeRelations::REL_typecheck(bp_family *self, binary_pred
 	return ALWAYS_MATCH;
 }
 
-@h Assertion.
-
-=
-int Properties::ComparativeRelations::REL_assert(bp_family *self, binary_predicate *bp,
-		inference_subject *infs0, parse_node *spec0,
-		inference_subject *infs1, parse_node *spec1) {
-	return FALSE;
-}
-
 @h Compilation.
-We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Properties::ComparativeRelations::REL_compile(bp_family *self, int task, binary_predicate *bp,
+int ComparativeRelations::schema(bp_family *self, int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
 	if (task == TEST_ATOM_TASK)
 		@<Rewrite the annotated schema if it turns out to be an absolute comparison@>;
 	return FALSE;
 }
 
-@ Normally, "taller than" would relate two people, and compare their heights.
-But we also want to allow absolute comparison like this one:
-
->> if Geoff is taller than 4 foot 5 inches, ...
-
-In that case we need a different schema, where right and left are not handled
-so symmetrically; we rewrite the annotated schema on the fly.
+@ And here the relative and absolute cases have to be compiled differently.
 
 @<Rewrite the annotated schema if it turns out to be an absolute comparison@> =
 	kind *st[2];
@@ -118,17 +109,11 @@ so symmetrically; we rewrite the annotated schema on the fly.
 		(Properties::can_name_coincide_with_kind(st[1]))) {
 		property *prn = Properties::property_with_same_name_as(st[1]);
 		if (prn) {
-			comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
+			comparative_bp_data *D =
+				RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 			Calculus::Schemas::modify(asch->schema,
 				"*1.%n %s *2", RTProperties::iname(prn),
-				Properties::Measurement::strict_comparison(D->comparison_sign));
+				Measurements::strict_comparison(D->comparison_sign));
 			return TRUE;
 		}
 	}
-
-@h Problem message text.
-
-=
-int Properties::ComparativeRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
-	return FALSE;
-}

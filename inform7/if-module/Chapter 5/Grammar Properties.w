@@ -137,10 +137,10 @@ for parsing:
 int PL::Parsing::Visibility::parsing_complete_model(int stage) {
 	if (stage == WORLD_STAGE_V) {
 		instance *I;
-		P_name = Properties::Valued::new_nameless(I"name", K_text);
+		P_name = ValueProperties::new_nameless(I"name", K_text);
 		Hierarchy::make_available(Emit::tree(), PL::Parsing::Visibility::name_name());
-		P_parse_name = Properties::Valued::new_nameless(I"parse_name", K_value);
-		P_action_bitmap = Properties::Valued::new_nameless(I"action_bitmap", K_value);
+		P_parse_name = ValueProperties::new_nameless(I"parse_name", K_value);
+		P_action_bitmap = ValueProperties::new_nameless(I"action_bitmap", K_value);
 		Hierarchy::make_available(Emit::tree(), RTProperties::iname(P_action_bitmap));
 
 		LOOP_OVER_INSTANCES(I, K_object) {
@@ -239,7 +239,7 @@ for the kinds we inherit from.
 
 		Emit::array_end(save);
 		Produce::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
-		Properties::Valued::assert(P_name, Instances::as_subject(I),
+		ValueProperties::assert(P_name, Instances::as_subject(I),
 			Rvalues::from_iname(name_array), CERTAIN_CE);
 	}
 
@@ -249,7 +249,7 @@ where grammar has specified a need. (By default, this will not happen.)
 @<Assert the I6 parse-name property@> =
 	inter_name *S = PL::Parsing::Tokens::General::compile_parse_name_property(subj);
 	if (S)
-		Properties::Valued::assert(P_parse_name, subj,
+		ValueProperties::assert(P_parse_name, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);
 
 @ The action bitmap is an array of bits attached to each object, one
@@ -264,7 +264,7 @@ i.e., all I6 objects corresponding to I7 things.
 	if (InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE) {
 		instance *I = InstanceSubjects::to_instance(subj);
 		inter_name *S = PL::Actions::compile_action_bitmap_property(I);
-		Properties::Valued::assert(P_action_bitmap, subj,
+		ValueProperties::assert(P_action_bitmap, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);
 	}
 
@@ -284,7 +284,7 @@ int PL::Parsing::Visibility::seek(property *pr, inference_subject *subj,
 	int parity, upto = 1;
 	if (Properties::is_either_or(pr) == FALSE) upto = 0;
 	for (parity = 0; parity <= upto; parity++) {
-		property *seek_prn = (parity == 0)?pr:(Properties::EitherOr::get_negation(pr));
+		property *seek_prn = (parity == 0)?pr:(EitherOrProperties::get_negation(pr));
 		if (seek_prn == NULL) continue;
 		if (PropertyPermissions::find(subj, seek_prn, TRUE) == NULL) continue;
 		property_permission *pp = PropertyPermissions::grant(subj, seek_prn, FALSE);

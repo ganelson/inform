@@ -47,6 +47,7 @@ Chapter 4: Compilation Utilities
 	Temporary Variables
 	Variables
 	Properties
+	Measurements
 	Emit Property Values
 	Instances
 	Instance Counting

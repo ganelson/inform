@@ -356,7 +356,7 @@ void RelationRequests::new(binary_predicate *bp, relation_request *RR) {
 	if (RR->frf) RTRelations::use_frf(bp);
 	if (prn) {
 		ED->i6_storage_property = prn;
-		Properties::Valued::set_stored_relation(prn, bp);
+		ValueProperties::set_stored_relation(prn, bp);
 	}
 	if (dynamic) {
 		Relations::Explicit::store_dynamically(bp);
@@ -491,17 +491,17 @@ omitted from the index.
 
 @<Determine property used for run-time storage@> =
 	if (Wordings::nonempty(RR->terms[0].CALLW)) {
-		prn = Properties::Valued::obtain_within_kind(RR->terms[0].CALLW, RR->terms[0].domain);
+		prn = ValueProperties::obtain_within_kind(RR->terms[0].CALLW, RR->terms[0].domain);
 		if (prn == NULL) return;
 	} else if (Wordings::nonempty(RR->terms[1].CALLW)) {
-		prn = Properties::Valued::obtain_within_kind(RR->terms[1].CALLW, RR->terms[1].domain);
+		prn = ValueProperties::obtain_within_kind(RR->terms[1].CALLW, RR->terms[1].domain);
 		if (prn == NULL) return;
 	} else {
 		word_assemblage pw_wa =
 			PreformUtilities::merge(<relation-storage-construction>, 0,
 				WordAssemblages::from_wording(RR->RW));
 		wording PW = WordAssemblages::to_wording(&pw_wa);
-		prn = Properties::Valued::obtain_within_kind(PW, K_object);
+		prn = ValueProperties::obtain_within_kind(PW, K_object);
 		if (prn == NULL) return;
 		IXProperties::dont_show_in_index(prn);
 	}
@@ -515,7 +515,7 @@ omitted from the index.
 		storage_kind = RR->terms[0].domain;
 		if (RR->terms[1].domain) PK = RR->terms[1].domain;
 	}
-	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) Properties::Valued::set_kind(prn, PK);
+	if ((PK) && (Kinds::Behaviour::is_object(PK) == FALSE)) ValueProperties::set_kind(prn, PK);
 	if (storage_kind) storage_infs = KindSubjects::from_kind(storage_kind);
 	else storage_infs = NULL;
 	if (((RR->terms[0].unique) || (RR->terms[1].unique)) && (PK) &&
@@ -649,7 +649,7 @@ other in groups".
 		bp->task_functions[NOW_ATOM_FALSE_TASK] =
 			Calculus::Schemas::new("Relation_NowNEquivV(*1,*2,%k,%n)", storage_kind, i6_prn_name);
 	}
-	Properties::Valued::set_kind(prn, K_number);
+	ValueProperties::set_kind(prn, K_number);
 
 @ The case of a relation tested by a routine: "R relates K to L when (some
 condition)".

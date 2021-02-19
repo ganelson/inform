@@ -268,7 +268,7 @@ verb.
 		case PROP_VERBM: {
 			wording RW = GET_RW(<verb-definition>, 1);
 			vm = VerbMeanings::regular(
-				Properties::SettingRelations::make_set_property_BP(RW));
+				SettingPropertyRelations::make_set_property_BP(RW));
 			break;
 		}
 		case REL_VERBM:

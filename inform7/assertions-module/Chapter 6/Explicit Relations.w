@@ -23,16 +23,16 @@ typedef struct explicit_bp_data {
 @ =
 void Relations::Explicit::start(void) {
 	explicit_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::REL_typecheck);
-	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::REL_assert);
-	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::REL_compile);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::REL_describe_for_problems);
-	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_describe_briefly);
+	METHOD_ADD(explicit_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::typecheck);
+	METHOD_ADD(explicit_bp_family, ASSERT_BPF_MTID, Relations::Explicit::assert);
+	METHOD_ADD(explicit_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::schema);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::describe_for_problems);
+	METHOD_ADD(explicit_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::describe_for_index);
 	by_routine_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(by_routine_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::REL_typecheck);
-	METHOD_ADD(by_routine_bp_family, ASSERT_BPF_MTID, Relations::Explicit::REL_assert);
-	METHOD_ADD(by_routine_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::REL_compile);
-	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::REL_describe_for_problems);
+	METHOD_ADD(by_routine_bp_family, TYPECHECK_BPF_MTID, Relations::Explicit::typecheck);
+	METHOD_ADD(by_routine_bp_family, ASSERT_BPF_MTID, Relations::Explicit::assert);
+	METHOD_ADD(by_routine_bp_family, SCHEMA_BPF_MTID, Relations::Explicit::schema);
+	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Relations::Explicit::describe_for_problems);
 	METHOD_ADD(by_routine_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Relations::Explicit::REL_br_describe_briefly);
 }
 
@@ -145,7 +145,7 @@ char *Relations::Explicit::form_to_text(binary_predicate *bp) {
 @ They typecheck by the default rule only:
 
 =
-int Relations::Explicit::REL_typecheck(bp_family *self, binary_predicate *bp,
+int Relations::Explicit::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -155,7 +155,7 @@ to behave as if $B(y, x)$ had also been asserted whenever $B(x, y)$ has, if
 $x\neq y$.
 
 =
-int Relations::Explicit::REL_assert(bp_family *self, binary_predicate *bp,
+int Relations::Explicit::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 
@@ -224,17 +224,17 @@ void Relations::Explicit::infer_property_based_relation(binary_predicate *bp,
 @ We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int Relations::Explicit::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Relations::Explicit::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @ Problem message text:
 
 =
-int Relations::Explicit::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int Relations::Explicit::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }
-void Relations::Explicit::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void Relations::Explicit::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	switch (Relations::Explicit::get_form_of_relation(bp)) {
 		case Relation_OtoO: WRITE("one-to-one"); break;
 		case Relation_OtoV: WRITE("one-to-various"); break;

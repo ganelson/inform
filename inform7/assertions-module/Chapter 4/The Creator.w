@@ -243,8 +243,8 @@ in the node's subject, so this case is easy.
 	if (Rvalues::is_CONSTANT_construction(spec, CON_property)) {
 		property *prn = Rvalues::to_property(spec);
 		if ((Properties::is_either_or(prn) == FALSE) &&
-			(Properties::Valued::coincides_with_kind(prn)))
-			return Properties::Valued::kind(prn);
+			(ValueProperties::coincides_with_kind(prn)))
+			return ValueProperties::kind(prn);
 	}
 
 
@@ -626,7 +626,7 @@ to abbreviated forms of object names are normally allowed.
 		if ((g != 0) && (P_grammatical_gender)) {
 			instance *GI = Instances::grammatical(g);
 			if (GI)
-				Properties::Valued::assert(P_grammatical_gender,
+				ValueProperties::assert(P_grammatical_gender,
 					Instances::as_subject(recent_creation),
 					Rvalues::from_instance(GI),
 					gender_certainty);

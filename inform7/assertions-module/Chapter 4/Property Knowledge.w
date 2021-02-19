@@ -120,7 +120,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 
 	parse_node *val = NonlocalVariables::substitute_constants(
 		Node::get_evaluation(py));
-	kind *property_kind = Properties::Valued::kind(prn);
+	kind *property_kind = ValueProperties::kind(prn);
 
 	if ((Specifications::is_value(val)) && (Node::is(val, CONSTANT_NT) == FALSE))
 		@<Issue a problem for a property value which isn't a constant@>;

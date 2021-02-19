@@ -254,11 +254,11 @@ int PL::Counting::counting_complete_model(int stage) {
 for the relation-route-finding code at run time.
 
 @<Create and assert zero values of the vector property@> =
-	P_vector = Properties::Valued::new_nameless(I"vector", K_number);
+	P_vector = ValueProperties::new_nameless(I"vector", K_number);
 	parse_node *zero = Rvalues::from_int(0, EMPTY_WORDING);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		Properties::Valued::assert(P_vector,
+		ValueProperties::assert(P_vector,
 			Instances::as_subject(I), zero, CERTAIN_CE);
 
 @<Create the two instance properties for each kind of object@> =
@@ -269,13 +269,13 @@ for the relation-route-finding code at run time.
 			inter_name *count_iname = PL::Counting::instance_count_iname(K);
 
 			COUNTING_DATA(subj)->instance_count_prop =
-				Properties::Valued::new_nameless_using(K_number, Kinds::Behaviour::package(K), count_iname);
+				ValueProperties::new_nameless_using(K_number, Kinds::Behaviour::package(K), count_iname);
 
 			inter_name *next_iname = PL::Counting::next_instance(K);
 			COUNTING_DATA(subj)->instance_link_prop =
-				Properties::Valued::new_nameless_using(K_object, Kinds::Behaviour::package(K), next_iname);
+				ValueProperties::new_nameless_using(K_object, Kinds::Behaviour::package(K), next_iname);
 		}
-	P_KD_Count = Properties::Valued::new_nameless(I"KD_Count", K_number);
+	P_KD_Count = ValueProperties::new_nameless(I"KD_Count", K_number);
 
 @<Assert values of the two instance properties for each instance@> =
 	instance *I;
@@ -307,7 +307,7 @@ usage is legal.
 @<Fill in the special IK0-Count property@> =
 	int ic = PL::Counting::kind_of_object_count(Instances::to_kind(I));
 	parse_node *the_count = Rvalues::from_int(ic, EMPTY_WORDING);
-	Properties::Valued::assert(
+	ValueProperties::assert(
 		P_KD_Count, Instances::as_subject(I), the_count, CERTAIN_CE);
 
 @ And otherwise, for every kind that the instance belongs to (directly or
@@ -320,7 +320,7 @@ and so on for all other kinds.
 @<Fill in this IK-Count property@> =
 	int ic = INSTANCE_COUNT(I, K);
 	parse_node *the_count = Rvalues::from_int(ic, EMPTY_WORDING);
-	Properties::Valued::assert(
+	ValueProperties::assert(
 		COUNTING_DATA(subj)->instance_count_prop,
 		Instances::as_subject(I), the_count, CERTAIN_CE);
 
@@ -328,7 +328,7 @@ and so on for all other kinds.
 records the next instance in compilation order:
 
 @<Fill in this IK-Link property@> =
-	Properties::Valued::assert(
+	ValueProperties::assert(
 		COUNTING_DATA(subj)->instance_link_prop,
 		Instances::as_subject(I), PL::Counting::next_instance_of_as_value(I, K), CERTAIN_CE);
 

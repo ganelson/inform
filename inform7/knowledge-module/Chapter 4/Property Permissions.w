@@ -51,7 +51,7 @@ whereas the unpredictable order might make testing Inform more annoying.
 property_permission *PropertyPermissions::find(inference_subject *infs,
 	property *prn, int allow_inheritance) {
 	property *prnbar = NULL;
-	if (Properties::is_either_or(prn)) prnbar = Properties::EitherOr::get_negation(prn);
+	if (Properties::is_either_or(prn)) prnbar = EitherOrProperties::get_negation(prn);
 
 	if (prn)
 		while (infs) {

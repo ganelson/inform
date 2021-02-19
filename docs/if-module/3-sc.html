@@ -263,7 +263,7 @@ routine for colours; and the best thing is to print nothing at all.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Properties::Valued::kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ValueProperties::kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">require_nonzero</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">RTProperties::uses_non_typesafe_0</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">)) ||</span>
@@ -377,7 +377,7 @@ turn by turn.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">allow</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">RTProperties::stored_in_negation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">allow</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Properties::EitherOr::get_negation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">allow</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EitherOrProperties::get_negation</span><span class="plain-syntax">(</span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">IF_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">());</span>

@@ -25,7 +25,7 @@ void Properties::Appearance::infer(inference_subject *infs, parse_node *spec) {
 	if ((KindSubjects::to_kind(infs)) &&
 		(InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_object))))
 		prevailing_mood = LIKELY_CE;
-	Properties::Valued::assert(P_indefinite_appearance_text, infs, spec, prevailing_mood);
+	ValueProperties::assert(P_indefinite_appearance_text, infs, spec, prevailing_mood);
 }
 
 @ ...but we produce a firm and explicit problem message if somebody sets it
@@ -62,7 +62,7 @@ void Properties::Appearance::reallocate(inference_subject *infs) {
 			if (Plugins::Call::default_appearance(infs, txt) == FALSE) {
 				if ((P_description) &&
 					(PropertyPermissions::find(infs, P_description, TRUE))) {
-					Properties::Valued::assert(P_description, infs, txt, CERTAIN_CE);
+					ValueProperties::assert(P_description, infs, txt, CERTAIN_CE);
 				} else StandardProblems::inference_problem(_p_(PM_IndefiniteTextMeaningless),
 					infs, inf, "is not allowed",
 					"i.e., you can't write a double-quoted piece of text as a "

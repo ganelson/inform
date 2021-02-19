@@ -3,21 +3,19 @@
 Subjects in the model world have properties associated with them: some either/or,
 others with values.
 
-@ The English word "property" is a little vague. It can mean a particular
-property of a given thing -- say, the weight of a car -- or it
-can mean the measurement in general terms as applied to a range of
-things -- say, the notion of weight.
+@h Introduction.
+Each differently-named property has a //property// instance. It can be
+had by multiple subjects -- usually kinds or instances -- which is why it
+has a list of |permissions| saying who can have it, and not just one subject;
+but it is the same essential property whoever has it, and in particular has
+the same kind. A door and a scene could both have the property "style", but
+it would have to hold the same kind of value in each case.
 
-When we need to distinguish these, we'll call the latter a "property name".
-In this and the following sections we will lay down the foundations for
-knowledge about things by establishing how property names are created,
-what makes some property names unlike others, and so on.
-
-They are divided into two groups: the either/or properties, which something
-either has or doesn't have, such as "closed"; and the valued properties,
-which something has in degrees or in different flavours, such as "carrying
-capacity" or "colour". (These are called "valued" because they associate
-a value with the owner; it isn't that either/or properties are unloved.)
+Properties come in two types: either/or, such as "open", which has a named
+property acting as its negation, "closed"; or valued, such as "carrying
+capacity". These have different semantics, and very different run-time
+implementations. In this section of code, we deal with what they have in
+common.
 
 =
 typedef struct property {
@@ -39,16 +37,6 @@ typedef struct property {
 	CLASS_DEFINITION
 } property;
 
-@ The only four properties which have special significance to core Inform
-(though plugins are interested in many others):
-
-= (early code)
-property *P_specification = NULL; /* a pseudo-property for indexing kinds */
-property *P_variable_initial_value = NULL; /* a pseudo-property for initialising variables */
-property *P_indefinite_appearance_text = NULL;
-property *P_description = NULL; /* a text property for holding annotations */
-property *P_grammatical_gender = NULL; /* a value property describing names */
-
 @h Creation.
 We have two basic operations: (1) To find the structure corresponding to a
 given textual name, creating it afresh if necessary. If we do obtain an
@@ -61,7 +49,7 @@ property *Properties::obtain(wording W, int valued) {
 	property *prn;
 	if (p == NULL) {
 		prn = Properties::create(W, NULL, NULL, (valued)?FALSE:TRUE);
-		if (valued) Properties::Valued::make_setting_relation(prn, W);
+		if (valued) ValueProperties::make_setting_bp(prn, W);
 	} else {
 		prn = Rvalues::to_property(p);
 		if ((valued) && (prn->either_or_data))
@@ -70,10 +58,6 @@ property *Properties::obtain(wording W, int valued) {
 			internal_error("valued property made into either/or");
 	}
 	return prn;
-}
-
-void Properties::make_valued(property *prn) {
-	
 }
 
 @ And: (2) To create a new structure outright.
@@ -111,7 +95,8 @@ property *Properties::create(wording W, package_request *using_package,
 			"room number' would be fine.");
 	}
 	if (Wordings::length(W) > MAX_WORDS_IN_ASSEMBLAGE-2) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyNameTooLong),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_PropertyNameTooLong),
 			"this is too long a name for a single property to have",
 			"and would become unwieldy.");
 		W = Wordings::truncate(W, MAX_WORDS_IN_ASSEMBLAGE-2);
@@ -120,7 +105,8 @@ property *Properties::create(wording W, package_request *using_package,
 		unfortunate = TRUE;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNameUnsuitable));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_PropertyNameUnsuitable));
 		Problems::issue_problem_segment(
 			"The sentence %1 seems to create a new property called '%2', but "
 			"this is not a good name, and I think I must have misread what "
@@ -147,7 +133,8 @@ something.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
 			Problems::quote_kind_of(3, spec);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PropertyNameClash));
+			StandardProblems::handmade_problem(Task::syntax_tree(), 
+				_p_(PM_PropertyNameClash));
 			Problems::issue_problem_segment(
 				"You wrote %1, but '%2' is not free to be the name of a fresh "
 				"property: it already has a meaning (as %3).");
@@ -157,8 +144,6 @@ something.
 
 @ So by this point the new property will be allowed.
 
-@d UNSET_TABLE_OFFSET -654321
-
 @<Initialise the property name structure@> =
 	prn->name = W;
 	prn->has_of_in_the_name = <name-looking-like-property-test>(W);
@@ -167,21 +152,30 @@ something.
 	RTProperties::initialise_pcd(prn, using_package, using_iname);
 	IXProperties::initialise_pid(prn);
 	if (eo) {
-		prn->either_or_data = Properties::EitherOr::new_eo_data(prn);
+		prn->either_or_data = EitherOrProperties::new_eo_data(prn);
 		prn->value_data = NULL;
 	} else {
 		prn->either_or_data = NULL;
-		prn->value_data = Properties::Valued::new_value_data(prn);
+		prn->value_data = ValueProperties::new_value_data(prn);
 	}
 
 @<Does the new property have the same name as a kind of value?@> =
 	if (<k-kind>(W))
-		Properties::Valued::make_coincide_with_kind(prn, <<rp>>);
+		ValueProperties::make_coincide_with_kind(prn, <<rp>>);
 
-@ This is a collection of the English names of some properties which have
-special significance to Inform. Each one is recognised as it is created
-by the Standard Rules (which are in English, so there's no need to translate
-this to any other language).
+@ A few properties have special significance to core Inform, though plugins
+are interested in many others:
+
+= (early code)
+property *P_description = NULL; /* a text property for holding annotations */
+property *P_specification = NULL; /* a pseudo-property for indexing kinds */
+property *P_indefinite_appearance_text = NULL; /* quoted text which seems to describe this */
+property *P_variable_initial_value = NULL; /* a pseudo-property for initialising variables */
+property *P_grammatical_gender = NULL; /* a value property describing names */
+
+@ The first four of these are recognised by having the names in this Preform
+nonterminal; the fifth is detected instead by having the same name as the
+kind "grammatical gender" -- see //Instances::make_kind_coincident//.
 
 =
 <notable-properties> ::=
@@ -196,13 +190,13 @@ this to any other language).
 			case 0: P_description = prn;
 				break;
 			case 1: P_specification = prn;
-				Properties::Valued::set_kind(prn, K_text);
+				ValueProperties::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
 				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(model_world, P_specification, TRUE);
 				break;
 			case 2: P_indefinite_appearance_text = prn;
-				Properties::Valued::set_kind(prn, K_text);
+				ValueProperties::set_kind(prn, K_text);
 				RTProperties::do_not_compile(prn);
 				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_constants,
@@ -210,7 +204,7 @@ this to any other language).
 				break;
 			case 3: P_variable_initial_value = prn;
 				RTProperties::do_not_compile(prn);
-				Properties::Valued::set_kind(prn, K_value);
+				ValueProperties::set_kind(prn, K_value);
 				IXProperties::dont_show_in_index(prn);
 				PropertyPermissions::grant(global_variables, P_variable_initial_value, TRUE);
 				break;
@@ -236,7 +230,9 @@ name in both forms. The following grammar is used to construct this prefix.
 	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		PROPERTY_MC, Rvalues::from_property(prn), Task::language_of_syntax());
 
-@h As kinds.
+@h The kinds of properties and their contents.
+For any kind $K$, "$K$-valued property" is also a kind. Note that an either-or
+property is treated as if a valued property holding a "truth state".
 
 =
 kind *Properties::to_kind(property *prn) {
@@ -250,15 +246,11 @@ kind *Properties::kind_of_contents(property *prn) {
 	return prn->value_data->property_value_kind;
 }
 
-@ =
-wording Properties::get_name(property *prn) {
-	if (prn == NULL) return EMPTY_WORDING;
-	return prn->name;
-}
-
-@h Parsing property names.
-The following matches any property name, optionally preceded by the definite
-article:
+@h Nonterminals for bare property names.
+The following are slow nonterminals, but are used only in places where speed
+does not matter. They match any property name, optionally preceded by the
+definite article; note that they match the name itself, not the confection
+made above when the noun "... property" was entered into the lexicon.
 
 =
 <property-name> internal {
@@ -272,7 +264,7 @@ article:
 	==> { fail nonterminal };
 }
 
-@ With two variants:
+@ With two variants, one matching only either-ors and the other only values:
 
 =
 <either-or-property-name> internal {
@@ -313,16 +305,17 @@ article:
 	==> { fail nonterminal };
 }
 
-@ We call a property name "ambiguous" if, syntactically, it looks like a
-reference to a property of something. For example, "point of view" could
-be mistaken for the "point" property of something called "view". Formally,
-it's ambiguous if it matches the following:
+@ The trickiest property names are those which syntactically look like a
+value of a property and not just a name. For example, a property called
+"point of view" could easily be mistaken for the "point" property of something
+called "view". The following should match anything with that potential
+ambiguity:
 
 =
 <name-looking-like-property-test> ::=
 	*** of ***
 
-@ And this internal is exactly like <property-name> except that it only
+@ And this internal is exactly like <property-name-v> except that it only
 matches ambiguous cases.
 
 =
@@ -338,7 +331,7 @@ matches ambiguous cases.
 	==> { fail nonterminal };
 }
 
-@ But the following slow routine, not used very often, is also convenient for
+@ The following slow function, also not used very often, is also convenient for
 finding the length of the longest property name at the start of an excerpt.
 (The assertion parser uses this to break text like "carrying capacity 20".)
 
@@ -353,13 +346,35 @@ int Properties::match_longest(wording W) {
 	return maxlen;
 }
 
-@h Permissions.
-Each property has a list of permissions for its usage attached. These are
-important enough to have their own section: here, all we do is...
+@h Access functions.
 
 =
 linked_list *Properties::get_permissions(property *prn) {
 	return prn->permissions;
+}
+
+wording Properties::get_name(property *prn) {
+	if (prn == NULL) return EMPTY_WORDING;
+	return prn->name;
+}
+
+@ The "possession marker" is used to keep tabs on which either/or properties
+things seem to have, but only as temporary workspace: see //assertions: Implications//.
+
+=
+possession_marker *Properties::get_possession_marker(property *prn) {
+	return &(prn->pom);
+}
+
+@ These are frequently used. As noted above, exactly one of |either_or_data|
+and |value_data| is |NULL|, so these are in fact antonyms:
+
+=
+int Properties::is_either_or(property *prn) {
+	return (prn->either_or_data)?TRUE:FALSE;
+}
+int Properties::is_value_property(property *prn) {
+	return (prn->value_data)?TRUE:FALSE;
 }
 
 @h Logging.
@@ -369,10 +384,10 @@ void Properties::log(property *prn) {
 	Properties::log_basic_pname(prn);
 	if ((Streams::I6_escapes_enabled(DL)) || (prn == NULL)) return;
 	if (prn->either_or_data) {
-		property *neg = Properties::EitherOr::get_negation(prn);
+		property *neg = EitherOrProperties::get_negation(prn);
 		if (neg) { LOG("=~"); Properties::log_basic_pname(neg); }
 	} else {
-		LOG("=%u", Properties::Valued::kind(prn));
+		LOG("=%u", ValueProperties::kind(prn));
 	}
 }
 
@@ -383,23 +398,11 @@ void Properties::log_basic_pname(property *prn) {
 	else { LOG("nameless"); }
 }
 
-@h Access to details.
-As we have seen, there are two fundamentally different forms of property,
-and for clarity we define two test routines, even though each is the negation
-of the other:
-
-=
-int Properties::is_either_or(property *prn) {
-	return (prn->either_or_data)?TRUE:FALSE;
-}
-int Properties::is_value_property(property *prn) {
-	return (prn->value_data)?TRUE:FALSE;
-}
-
-@ And this is the routine which is called by the assertion parser in response
+@h Inter translation requests.
+This is the function which is called by the assertion parser in response
 to sentences like:
 
->> The initial appearance property translates into I6 as "initial".
+>> The initial appearance property translates into Inter as "initial".
 
 =
 void Properties::translates(wording W, parse_node *p2) {
@@ -418,14 +421,16 @@ void Properties::translates(wording W, parse_node *p2) {
 
 @<Make sure this is a genuine and previously untranslated property@> =
 	if (prn == NULL)  {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonPropertyTranslated),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_NonPropertyTranslated),
 			"this property does not exist",
 			"so cannot be translated.");
 		return;
 	}
 	if ((RTProperties::has_been_translated(prn)) &&
 		(Str::eq_wide_string(RTProperties::current_translation(prn), text) == FALSE)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatedTwice),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatedTwice),
 			"this property has already been translated",
 			"so there must be some duplication somewhere.");
 		return;
@@ -434,43 +439,36 @@ void Properties::translates(wording W, parse_node *p2) {
 @ But there is a kick in the tail, which is that translation can reverse the
 run-time parity of an either/or property. The Standard Rules normally say:
 
->> The open property translates into I6 as "open".
+>> The open property translates into Inter as "open".
 
 This means that information about openness is stored as |open| within the
 template; an open door has |open| set, for instance. If we had written:
 
->> The closed property translates into I6 as "open".
+>> The closed property translates into Inter as "open".
 
 then the relevant data would still have been stored as |open|, but with the
-opposite sense; an open door would now be one with |open| cleared. (Of
-course we'd never want to do something so confusing, but the facility
+opposite sense; an open door would now be one with |open| cleared.[1]
+
+[1] Of course we'd never want to do something so confusing, but the facility
 exists because Inform 7 made a few either/or properties opposite in sense
-to their analogous Inform 6 ones.)
+to their analogous Inform 6 ones.
 
 @<Check to see if a sense reversal has taken place in translation@> =
-	property *neg = Properties::EitherOr::get_negation(prn);
+	property *neg = EitherOrProperties::get_negation(prn);
 	if (neg) {
 		RTProperties::store_in_negation(neg);
 		LOGIF(PROPERTY_TRANSLATIONS, "Storing this way round: $Y\n", prn);
 	}
 
-@ The "possession marker" is similarly used to keep tabs on which either/or
-properties things seem to have, but only as temporary data used when working
-on implications. Here we only make it available as storage.
-
-=
-possession_marker *Properties::get_possession_marker(property *prn) {
-	return &(prn->pom);
-}
-
 @h Compiling property values.
-Small as it may be, this routine contains two important principles: one, that
+Small as it may be, this function contains two important principles: one, that
 property values of something are drawn from the most specific knowledge we have
 about it; and two, that if we have no knowledge of any specificity, then we fill
 in a default value.
 
 =
-void Properties::compile_inferred_value(value_holster *VH, inference_subject *infs, property *prn) {
+void Properties::compile_inferred_value(value_holster *VH, inference_subject *infs,
+	property *prn) {
 	if ((prn == NULL) || (RTProperties::can_be_compiled(prn) == FALSE)) return;
 	while (infs) {
 		if (Properties::compile_property_value_inner(VH, infs, prn)) return;
@@ -487,7 +485,8 @@ we find it, we compile it and return |TRUE|; if not we do nothing and return
 |FALSE|.
 
 =
-int Properties::compile_property_value_inner(value_holster *VH, inference_subject *infs, property *prn) {
+int Properties::compile_property_value_inner(value_holster *VH, inference_subject *infs,
+	property *prn) {
 	inference *inf;
 	KNOWLEDGE_LOOP(inf, infs, property_inf) {
 		if (Inferences::get_inference_type(inf) == property_inf) {
@@ -499,7 +498,7 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 					RTProperties::compile_value(VH, inferred_property, sense);
 					return TRUE;
 				}
-				if (inferred_property == Properties::EitherOr::get_negation(prn)) {
+				if (inferred_property == EitherOrProperties::get_negation(prn)) {
 					RTProperties::compile_value(VH, inferred_property, sense?FALSE:TRUE);
 					return TRUE;
 				}

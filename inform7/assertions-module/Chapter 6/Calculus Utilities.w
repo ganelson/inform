@@ -88,8 +88,8 @@ pcalc_prop *Propositions::Abstract::to_provide_property(property *prn) {
 
 pcalc_prop *Propositions::Abstract::to_set_property(property *prn, parse_node *val) {
 	if (val == NULL) return NULL;
-	if (Properties::Valued::get_setting_bp(prn) == NULL) internal_error("no BP for this property");
-	return Atoms::binary_PREDICATE_new(Properties::Valued::get_setting_bp(prn),
+	if (ValueProperties::get_setting_bp(prn) == NULL) internal_error("no BP for this property");
+	return Atoms::binary_PREDICATE_new(ValueProperties::get_setting_bp(prn),
 		Terms::new_variable(0), Terms::new_constant(val));
 }
 
@@ -186,7 +186,7 @@ parse the text to find what which property is referred to.
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));
 			Problems::quote_property(3, prn);
-			Problems::quote_kind(4, Properties::Valued::kind(prn));
+			Problems::quote_kind(4, ValueProperties::kind(prn));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WithValuelessValue));
 			Problems::issue_problem_segment(
 				"The sentence '%1' seems to be trying to create something which "

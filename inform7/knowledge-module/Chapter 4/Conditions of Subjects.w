@@ -148,7 +148,7 @@ clashes; it isn't essential to Inform's running.
 		Propositions::Abstract::to_make_a_kind(K_value));
 	Assert::true(prop, prevailing_mood);
 
-	property *prn = Properties::Valued::obtain(cond_W);
+	property *prn = ValueProperties::obtain(cond_W);
 	prn->value_data->as_condition_of_subject = ConditionsOfSubjects::new(infs, anon);
 	return prn;
 

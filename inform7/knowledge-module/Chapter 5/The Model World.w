@@ -131,8 +131,8 @@ convenience, and don't have to follow the I7 rules.
 			if (Inferences::get_certainty(narrow) < 0) sign = -1;
 			@<Look for clashes concerning this property from wider inferences@>;
 			if ((Properties::is_either_or(prn)) &&
-				(Properties::EitherOr::get_negation(prn))) {
-				prn = Properties::EitherOr::get_negation(prn);
+				(EitherOrProperties::get_negation(prn))) {
+				prn = EitherOrProperties::get_negation(prn);
 				sign = -sign;
 				@<Look for clashes concerning this property from wider inferences@>;
 			}

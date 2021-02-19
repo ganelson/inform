@@ -24,9 +24,9 @@ void Calculus::Equality::start(void) {
 	METHOD_ADD(equality_bp_family, STOCK_BPF_MTID,
 		Calculus::Equality::stock);
 	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID,
-		Calculus::Equality::REL_describe_for_problems);
+		Calculus::Equality::describe_for_problems);
 	METHOD_ADD(equality_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
-		Calculus::Equality::REL_describe_briefly);
+		Calculus::Equality::describe_for_index);
 
 	spatial_bp_family = BinaryPredicateFamilies::new();
 	#ifndef IF_MODULE
@@ -62,11 +62,11 @@ void Calculus::Equality::stock_spatial(bp_family *self, int n) {
 @h Problem message text.
 
 =
-int Calculus::Equality::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM,
+int Calculus::Equality::describe_for_problems(bp_family *self, OUTPUT_STREAM,
 	binary_predicate *bp) {
 	return FALSE;
 }
-void Calculus::Equality::REL_describe_briefly(bp_family *self, OUTPUT_STREAM,
+void Calculus::Equality::describe_for_index(bp_family *self, OUTPUT_STREAM,
 	binary_predicate *bp) {
 	WRITE("equality");
 }

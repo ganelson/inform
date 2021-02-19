@@ -158,7 +158,7 @@ so on. Those absolute basics are made here.
 
 @<Tables and grammar@> =
 	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
-	BENCH(Properties::Measurement::validate_definitions)
+	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
 	BENCH(PL::Bibliographic::IFID::define_UUID)
 	BENCH(PL::Figures::compile_ResourceIDsOfFigures_array)
@@ -261,7 +261,7 @@ so on. Those absolute basics are made here.
 	BENCH_IF(chronology_plugin, Chronology::allow_no_further_past_tenses)
 	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::compile_all)
 	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)
-	BENCH(Properties::Measurement::compile_MADJ_routines)
+	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Propositions::Deferred::compile_remaining_deferred)
 	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
 	BENCH(Lists::check)

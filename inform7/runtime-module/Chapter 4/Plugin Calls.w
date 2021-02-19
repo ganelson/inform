@@ -114,9 +114,8 @@ int Plugins::Call::new_base_kind_notify(kind *K, kind *super, text_stream *d, wo
 	KindSubjects::renew(K, super, W);
 	if (<property-name>(W)) {
 		property *P = <<rp>>;
-		Properties::Valued::set_kind(P, K);
+		ValueProperties::set_kind(P, K);
 		Instances::make_kind_coincident(K, P);
-		if (Kinds::eq(K, K_grammatical_gender)) P_grammatical_gender = P;
 	}
 	PLUGINS_CALL(PLUGIN_NEW_BASE_KIND_NOTIFY, K, d, W);
 }

@@ -169,7 +169,7 @@ not a valid colour. Because of this, we can't print 0 using the printing
 routine for colours; and the best thing is to print nothing at all.
 
 @<Compile the SHOWME printing code for a value property@> =
-	kind *K = Properties::Valued::kind(prn);
+	kind *K = ValueProperties::kind(prn);
 	if (K) {
 		int require_nonzero = FALSE;
 		if ((RTProperties::uses_non_typesafe_0(prn)) ||
@@ -270,7 +270,7 @@ turn by turn.
 @<Compile the SHOWME printing code for an either/or property@> =
 	property *allow = prn;
 	if (RTProperties::stored_in_negation(prn))
-		allow = Properties::EitherOr::get_negation(prn);
+		allow = EitherOrProperties::get_negation(prn);
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());

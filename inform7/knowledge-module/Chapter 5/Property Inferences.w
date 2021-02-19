@@ -84,8 +84,8 @@ int PropertyInferences::cmp(inference_family *f, inference *i1, inference *i2) {
 	property *pr2 = data2->inferred_property;
 	if ((pr1) && (Properties::is_either_or(pr1)) &&
 		(pr2) && (Properties::is_either_or(pr2)) &&
-		((pr1 == Properties::EitherOr::get_negation(pr2)) ||
-		 (pr2 == Properties::EitherOr::get_negation(pr1)))) pr2 = pr1;
+		((pr1 == EitherOrProperties::get_negation(pr2)) ||
+		 (pr2 == EitherOrProperties::get_negation(pr1)))) pr2 = pr1;
 	int c = Inferences::measure_property(pr1) - Inferences::measure_property(pr2);
 	if (c > 0) return CI_DIFFER_IN_TOPIC; if (c < 0) return -CI_DIFFER_IN_TOPIC;
 
@@ -122,7 +122,7 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 	} else {
 		if (Properties::is_value_property(B_data->inferred_property)) {
 			binary_predicate *bp =
-				Properties::Valued::get_stored_relation(B_data->inferred_property);
+				ValueProperties::get_stored_relation(B_data->inferred_property);
 			if (bp) {
 				if (Wordings::match(Node::get_text(current_sentence),
 					Node::get_text(A->inferred_from))) {
@@ -204,7 +204,7 @@ int PropertyInferences::either_or_state(inference_subject *subj, property *prn) 
 	if ((prn == NULL) || (subj == NULL)) return UNKNOWN_CE;
 	inference_subject *k;
 	property *prnbar = NULL;
-	if (Properties::is_either_or(prn)) prnbar = Properties::EitherOr::get_negation(prn);
+	if (Properties::is_either_or(prn)) prnbar = EitherOrProperties::get_negation(prn);
 	for (k = subj; k; k = InferenceSubjects::narrowest_broader_subject(k)) {
 		inference *inf;
 		KNOWLEDGE_LOOP(inf, k, property_inf) {
@@ -230,7 +230,7 @@ int PropertyInferences::either_or_state_without_inheritance(inference_subject *s
 	property *prn, parse_node **where) {
 	if ((prn == NULL) || (subj == NULL)) return UNKNOWN_CE;
 	property *prnbar = NULL;
-	if (Properties::is_either_or(prn)) prnbar = Properties::EitherOr::get_negation(prn);
+	if (Properties::is_either_or(prn)) prnbar = EitherOrProperties::get_negation(prn);
 	inference *inf;
 	KNOWLEDGE_LOOP(inf, subj, property_inf) {
 		property *known = PropertyInferences::get_property(inf);
@@ -280,7 +280,7 @@ void PropertyInferences::verify_prop_states(inference_subject *subj) {
 	POSITIVE_KNOWLEDGE_LOOP(inf, subj, property_inf) {
 		property *prn = PropertyInferences::get_property(inf);
 		parse_node *val = PropertyInferences::get_value(inf);
-		kind *PK = Properties::Valued::kind(prn);
+		kind *PK = ValueProperties::kind(prn);
 		kind *VK = Specifications::to_kind(val);
 		if (Kinds::compatible(VK, PK) != ALWAYS_MATCH) {
 			LOG("Property value given as %u not %u\n", VK, PK);

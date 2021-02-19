@@ -542,10 +542,10 @@ one arising below, which is to do with enumerated value properties.)
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
 			*subject_of_NP = Terms::new_variable(0);
-			NP_prop = AdjectivalPredicates::new_atom_on_x(Properties::EitherOr::get_aph(prn), FALSE);
-		} else if (Properties::Valued::coincides_with_kind(prn)) {
+			NP_prop = AdjectivalPredicates::new_atom_on_x(EitherOrProperties::as_adjective(prn), FALSE);
+		} else if (ValueProperties::coincides_with_kind(prn)) {
 			*subject_of_NP = Terms::new_variable(0);
-			kind *K = Properties::Valued::kind(prn);
+			kind *K = ValueProperties::kind(prn);
 			NP_prop = KindPredicates::new_atom(K, Terms::new_variable(0));
 		}
 	}
@@ -727,7 +727,7 @@ noun, we return the proposition testing it adjectivally: {\it pink}($x$).
 		property *prn = Rvalues::to_property(spec);
 		if (Properties::is_either_or(prn)) {
 			prop = AdjectivalPredicates::new_atom_on_x(
-					Properties::EitherOr::get_aph(prn), FALSE);
+					EitherOrProperties::as_adjective(prn), FALSE);
 			@<Typecheck the propositional form, and return@>;
 		}
 	}

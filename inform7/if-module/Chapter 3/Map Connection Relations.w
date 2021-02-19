@@ -10,11 +10,11 @@ bp_family *map_connecting_bp_family = NULL;
 
 void PL::MapDirections::start(void) {
 	map_connecting_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(map_connecting_bp_family, TYPECHECK_BPF_MTID, PL::MapDirections::REL_typecheck);
-	METHOD_ADD(map_connecting_bp_family, ASSERT_BPF_MTID, PL::MapDirections::REL_assert);
-	METHOD_ADD(map_connecting_bp_family, SCHEMA_BPF_MTID, PL::MapDirections::REL_compile);
-	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::MapDirections::REL_describe_for_problems);
-	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::MapDirections::REL_describe_briefly);
+	METHOD_ADD(map_connecting_bp_family, TYPECHECK_BPF_MTID, PL::MapDirections::typecheck);
+	METHOD_ADD(map_connecting_bp_family, ASSERT_BPF_MTID, PL::MapDirections::assert);
+	METHOD_ADD(map_connecting_bp_family, SCHEMA_BPF_MTID, PL::MapDirections::schema);
+	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::MapDirections::describe_for_problems);
+	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::MapDirections::describe_for_index);
 }
 
 @ This section creates a family of implicit relations (implemented as binary
@@ -230,7 +230,7 @@ This won't catch everything, but it will do. Run-time checking will pick up
 remaining anomalies.
 
 =
-int PL::MapDirections::REL_typecheck(bp_family *self, binary_predicate *bp,
+int PL::MapDirections::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	int t;
 	for (t=0; t<2; t++)
@@ -251,7 +251,7 @@ explicitly given in the source text; and doors must always be specified as
 such.
 
 =
-int PL::MapDirections::REL_assert(bp_family *self, binary_predicate *bp,
+int PL::MapDirections::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	instance *o_dir = PL::MapDirections::get_mapping_direction(bp);
@@ -269,17 +269,17 @@ int PL::MapDirections::REL_assert(bp_family *self, binary_predicate *bp,
 We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int PL::MapDirections::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int PL::MapDirections::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @h Problem message text.
 
 =
-int PL::MapDirections::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int PL::MapDirections::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }
-void PL::MapDirections::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void PL::MapDirections::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("map");
 }
 

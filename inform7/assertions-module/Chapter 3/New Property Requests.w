@@ -342,11 +342,11 @@ differently as a result.
 		if (Properties::is_either_or(alreadybar) == FALSE)
 			error_text = "this already has a meaning as a value property";
 		else if ((already) &&
-			(Properties::EitherOr::get_negation(already) != alreadybar))
+			(EitherOrProperties::get_negation(already) != alreadybar))
 			error_text = "this is not the same negation as the last "
 					"time this either/or property was used";
 		else if ((already == NULL) ||
-			(Properties::EitherOr::get_negation(already) != alreadybar))
+			(EitherOrProperties::get_negation(already) != alreadybar))
 			error_text =
 				"this already has a meaning as an either/or property";
 	} else {
@@ -359,7 +359,7 @@ differently as a result.
 
 @<Create the property and have the new owner provide it@> =
 	if (count <= 2) {
-		prn = Properties::EitherOr::obtain(FW, owner_infs);
+		prn = EitherOrProperties::obtain(FW, owner_infs);
 		if (prn == NULL) return; /* a problem was thrown */
 	} else prn = ConditionsOfSubjects::parse(owner_infs, CNW, the_list,
 		&already_created_instances);
@@ -368,12 +368,12 @@ differently as a result.
 		owner_infs, prevailing_mood);
 
 @<Make the second option an either/or property which negates the first@> =
-	property *prnbar = Properties::EitherOr::obtain(SW, owner_infs);
+	property *prnbar = EitherOrProperties::obtain(SW, owner_infs);
 	if (prnbar) { /* i.e., unless that threw a problem message */
 		Assert::true_about(
 			Propositions::Abstract::to_provide_property(prnbar),
 			owner_infs, prevailing_mood);
-		Properties::EitherOr::make_negations(prn, prnbar);
+		EitherOrProperties::make_pair(prn, prnbar);
 	}
 
 @ An interesting anomaly in the language here is that when an either/or
@@ -408,7 +408,7 @@ or sky blue pink".
 
 @<Make the three or more options the range of possibilities for this new kind@> =
 	parse_node *option;
-	kind *cnd_kind = Properties::Valued::kind(prn);
+	kind *cnd_kind = ValueProperties::kind(prn);
 	for (option = the_list; option; option = (option->down)?(option->down->next):NULL) {
 		wording PW;
 		if (Node::get_type(option) == AND_NT)

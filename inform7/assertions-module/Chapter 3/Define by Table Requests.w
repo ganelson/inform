@@ -349,8 +349,8 @@ table-stocking the column will have a kind for its entries.
 @<Ensure that a property with the same name as the column name exists@> =
 	wording PW = Nouns::nominative_singular(tc->name);
 	<unfortunate-table-column-property>(PW);
-	P = Properties::Valued::obtain(PW);
-	if (Properties::Valued::kind(P) == NULL) {
+	P = ValueProperties::obtain(PW);
+	if (ValueProperties::kind(P) == NULL) {
 		kind *CK = Tables::Columns::get_kind(tc);
 		if ((Kinds::get_construct(CK) == CON_rule) ||
 			(Kinds::get_construct(CK) == CON_rulebook)) {
@@ -362,7 +362,7 @@ table-stocking the column will have a kind for its entries.
 				Tables::Columns::set_kind(tc, t, CK);
 			}
 		}
-		if (CK) Properties::Valued::set_kind(P, CK);
+		if (CK) ValueProperties::set_kind(P, CK);
 	}
 
 @ When a table column is used to create a property of an object, its name

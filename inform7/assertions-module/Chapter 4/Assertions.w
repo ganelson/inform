@@ -625,7 +625,7 @@ further sub-cases later.
 	if (global_pass_state.pass == 1) return;
 	unary_predicate *pred = Node::get_predicate(py);
 	if (AdjectiveAmbiguity::has_enumerative_meaning(AdjectivalPredicates::to_adjective(pred))) {
-		property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
+		property *prn = ValueProperties::obtain(Node::get_text(px->down->next));
 		if (Node::get_type(px->down) == WITH_NT) {
 			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
 				"either/or properties have to be given to clearly identifiable "
@@ -801,8 +801,8 @@ or a kind of value.
 	if ((Node::get_subject(px) == NULL) &&
 		(Rvalues::is_CONSTANT_construction(spec, CON_property))) {
 		property *prn = Node::get_constant_property(spec);
-		if ((prn) && (Properties::Valued::coincides_with_kind(prn))) {
-			kind *K = Properties::Valued::kind(prn);
+		if ((prn) && (ValueProperties::coincides_with_kind(prn))) {
+			kind *K = ValueProperties::kind(prn);
 			Node::set_type_and_clear_annotations(px, COMMON_NOUN_NT);
 			Node::set_subject(px, KindSubjects::from_kind(K));
 			Node::set_evaluation(px, Specifications::from_kind(K));
@@ -894,7 +894,7 @@ but in fact isn't one;
 	}
 
 	parse_node *owner = Node::get_evaluation(px->down);
-	property *prn = Properties::Valued::obtain(Node::get_text(px->down->next));
+	property *prn = ValueProperties::obtain(Node::get_text(px->down->next));
 	if (prn == P_specification) @<We're setting the specification pseudo-property@>;
 	Refiner::nominalise_adjective(px->down);
 
@@ -1198,7 +1198,7 @@ in general.
 
 @<Certain non-spatial relationships are allowed too@> =
 	binary_predicate *bp = Node::get_relationship(py);
-	if ((bp) && ((Properties::SettingRelations::bp_sets_a_property(bp)) ||
+	if ((bp) && ((SettingPropertyRelations::bp_sets_a_property(bp)) ||
 		(Relations::Explicit::relates_values_not_objects(bp)))) {
 		if (global_pass_state.pass == 2) Assertions::Relational::assert_subtree_in_relationship(px, py);
 		return;
@@ -1790,8 +1790,8 @@ need to switch interpretations to avoid the problem message.
 	if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(py), CON_property)) {
 		property *prn = Rvalues::to_property(Node::get_evaluation(py));
 		if ((Properties::is_either_or(prn) == FALSE) &&
-			(Properties::Valued::coincides_with_kind(prn))) {
-			kind *K = Properties::Valued::kind(prn);
+			(ValueProperties::coincides_with_kind(prn))) {
+			kind *K = ValueProperties::kind(prn);
 			Node::set_type_and_clear_annotations(py, COMMON_NOUN_NT);
 			Node::set_evaluation(py, Specifications::from_kind(K));
 			Assertions::make_coupling(px, py);

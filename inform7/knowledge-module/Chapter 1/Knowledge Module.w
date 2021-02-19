@@ -37,12 +37,12 @@ void KnowledgeModule::start(void) {
 	PropertyInferences::start();
 	RelationInferences::start();
 	InstanceAdjectives::start();
-	Properties::EitherOr::start();
-	Properties::Measurement::start();
-	Properties::SameRelations::start();
-	Properties::SettingRelations::start();
-	Properties::ComparativeRelations::start();
-	Properties::ProvisionRelation::start();
+	EitherOrPropertyAdjectives::start();
+	MeasurementAdjectives::start();
+	SameAsRelations::start();
+	SettingPropertyRelations::start();
+	ComparativeRelations::start();
+	ProvisionRelation::start();
 	REGISTER_WRITER('b', Rules::Bookings::log);
 	REGISTER_WRITER('I', Inferences::log);
 	REGISTER_WRITER('j', InferenceSubjects::log);

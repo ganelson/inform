@@ -261,8 +261,8 @@ we assume he is freestanding in the earliest defined room.
 =
 int PL::Player::player_complete_model(int stage) {
 	if ((stage == WORLD_STAGE_III) && (I_yourself)) {
-		P_saved_short_name = Properties::Valued::new_nameless(I"saved_short_name", K_text);
-		Properties::Valued::assert(P_saved_short_name, Instances::as_subject(I_yourself),
+		P_saved_short_name = ValueProperties::new_nameless(I"saved_short_name", K_text);
+		ValueProperties::assert(P_saved_short_name, Instances::as_subject(I_yourself),
 			Rvalues::from_unescaped_wording(Feeds::feed_text(I"yourself")), CERTAIN_CE);
 	}
 	if (stage == WORLD_STAGE_IV) {

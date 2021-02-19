@@ -128,7 +128,7 @@ property *AdjectiveAmbiguity::has_either_or_property_meaning(adjective *adj, int
 	adjective_meaning *am;
 	if (adj)
 		LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_defn_order)
-			if (Properties::EitherOr::is_either_or_adjective(am)) {
+			if (EitherOrPropertyAdjectives::is(am)) {
 				if (sense) {
 					if (am->negated_from) *sense = FALSE;
 					else *sense = TRUE;

@@ -549,9 +549,9 @@ void PL::Parsing::understand_the_command(wording W, wording ASW) {
 =
 void PL::Parsing::understand_property_block(property *pr, int level, inference_subject *subj, wording WHENW) {
 	if ((Properties::is_either_or(pr) == FALSE) &&
-		(Str::len(Kinds::Behaviour::get_recognition_only_GPR(Properties::Valued::kind(pr))) == 0) &&
-		((Kinds::Behaviour::is_object(Properties::Valued::kind(pr))) ||
-			(Kinds::Behaviour::request_I6_GPR(Properties::Valued::kind(pr)) == FALSE))) {
+		(Str::len(Kinds::Behaviour::get_recognition_only_GPR(ValueProperties::kind(pr))) == 0) &&
+		((Kinds::Behaviour::is_object(ValueProperties::kind(pr))) ||
+			(Kinds::Behaviour::request_I6_GPR(ValueProperties::kind(pr)) == FALSE))) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadReferringProperty),
 			"that property is of a kind which I can't recognise in "
 			"typed commands",

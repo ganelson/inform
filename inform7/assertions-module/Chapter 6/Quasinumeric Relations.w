@@ -29,11 +29,11 @@ bp_family *quasinumeric_bp_family = NULL;
 void Calculus::QuasinumericRelations::start(void) {
 	quasinumeric_bp_family = BinaryPredicateFamilies::new();
 	METHOD_ADD(quasinumeric_bp_family, STOCK_BPF_MTID, Calculus::QuasinumericRelations::stock);
-	METHOD_ADD(quasinumeric_bp_family, TYPECHECK_BPF_MTID, Calculus::QuasinumericRelations::REL_typecheck);
-	METHOD_ADD(quasinumeric_bp_family, ASSERT_BPF_MTID, Calculus::QuasinumericRelations::REL_assert);
-	METHOD_ADD(quasinumeric_bp_family, SCHEMA_BPF_MTID, Calculus::QuasinumericRelations::REL_compile);
-	METHOD_ADD(quasinumeric_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Calculus::QuasinumericRelations::REL_describe_for_problems);
-	METHOD_ADD(quasinumeric_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Calculus::QuasinumericRelations::REL_describe_briefly);
+	METHOD_ADD(quasinumeric_bp_family, TYPECHECK_BPF_MTID, Calculus::QuasinumericRelations::typecheck);
+	METHOD_ADD(quasinumeric_bp_family, ASSERT_BPF_MTID, Calculus::QuasinumericRelations::assert);
+	METHOD_ADD(quasinumeric_bp_family, SCHEMA_BPF_MTID, Calculus::QuasinumericRelations::schema);
+	METHOD_ADD(quasinumeric_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Calculus::QuasinumericRelations::describe_for_problems);
+	METHOD_ADD(quasinumeric_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, Calculus::QuasinumericRelations::describe_for_index);
 }
 
 @h Initial stock.
@@ -77,7 +77,7 @@ void Calculus::QuasinumericRelations::stock(bp_family *self, int n) {
 @h Typechecking.
 
 =
-int Calculus::QuasinumericRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
+int Calculus::QuasinumericRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if ((Kinds::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
 		(Kinds::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
@@ -97,7 +97,7 @@ int Calculus::QuasinumericRelations::REL_typecheck(bp_family *self, binary_predi
 These relations cannot be asserted.
 
 =
-int Calculus::QuasinumericRelations::REL_assert(bp_family *self, binary_predicate *bp,
+int Calculus::QuasinumericRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -109,7 +109,7 @@ compiled from their schemas. But real numbers have to be handled by a function
 call in I6.
 
 =
-int Calculus::QuasinumericRelations::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Calculus::QuasinumericRelations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *st[2];
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);
@@ -169,9 +169,9 @@ int Calculus::QuasinumericRelations::REL_compile(bp_family *self, int task, bina
 @h Problem message text.
 
 =
-int Calculus::QuasinumericRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int Calculus::QuasinumericRelations::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }
-void Calculus::QuasinumericRelations::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void Calculus::QuasinumericRelations::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("numeric");
 }

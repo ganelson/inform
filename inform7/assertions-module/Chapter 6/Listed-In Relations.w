@@ -10,10 +10,10 @@ bp_family *listed_in_bp_family = NULL;
 
 void Tables::Relations::start(void) {
 	listed_in_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(listed_in_bp_family, TYPECHECK_BPF_MTID, Tables::Relations::REL_typecheck);
-	METHOD_ADD(listed_in_bp_family, ASSERT_BPF_MTID, Tables::Relations::REL_assert);
-	METHOD_ADD(listed_in_bp_family, SCHEMA_BPF_MTID, Tables::Relations::REL_compile);
-	METHOD_ADD(listed_in_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Tables::Relations::REL_describe_for_problems);
+	METHOD_ADD(listed_in_bp_family, TYPECHECK_BPF_MTID, Tables::Relations::typecheck);
+	METHOD_ADD(listed_in_bp_family, ASSERT_BPF_MTID, Tables::Relations::assert);
+	METHOD_ADD(listed_in_bp_family, SCHEMA_BPF_MTID, Tables::Relations::schema);
+	METHOD_ADD(listed_in_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, Tables::Relations::describe_for_problems);
 }
 
 @h Subsequent creations.
@@ -56,7 +56,7 @@ void Tables::Relations::supply_kind_for_listed_in_tc(binary_predicate *bp, kind 
 @h Typechecking.
 
 =
-int Tables::Relations::REL_typecheck(bp_family *self, binary_predicate *bp,
+int Tables::Relations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -65,7 +65,7 @@ int Tables::Relations::REL_typecheck(bp_family *self, binary_predicate *bp,
 These relations cannot be asserted.
 
 =
-int Tables::Relations::REL_assert(bp_family *self, binary_predicate *bp,
+int Tables::Relations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
@@ -77,7 +77,7 @@ present in the current stack frame, since we're going to need them to hold
 the table reference for any successful lookup.
 
 =
-int Tables::Relations::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int Tables::Relations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	if (task == TEST_ATOM_TASK) LocalVariables::add_table_lookup();
 	return FALSE;
 }
@@ -85,7 +85,7 @@ int Tables::Relations::REL_compile(bp_family *self, int task, binary_predicate *
 @h Problem message text.
 
 =
-int Tables::Relations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int Tables::Relations::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("the listed in relation");
 	return TRUE;
 }

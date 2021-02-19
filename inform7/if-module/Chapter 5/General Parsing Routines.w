@@ -901,7 +901,7 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	} else {
-		kind *K = Properties::Valued::kind(prn);
+		kind *K = ValueProperties::kind(prn);
 		inter_name *distinguisher = Kinds::Behaviour::get_distinguisher_as_iname(K);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
@@ -1017,7 +1017,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 
 		PL::Parsing::Tokens::General::parse_visible_either_or(
 			gprk, prn, visibility_level, pass_label);
-		property *prnbar = Properties::EitherOr::get_negation(prn);
+		property *prnbar = EitherOrProperties::get_negation(prn);
 		if (prnbar)
 			PL::Parsing::Tokens::General::parse_visible_either_or(
 				gprk, prnbar, visibility_level, pass_label);
@@ -1043,7 +1043,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
-			kind *K = Properties::Valued::kind(prn);
+			kind *K = ValueProperties::kind(prn);
 			inter_name *recog_gpr = Kinds::Behaviour::get_recognition_only_GPR_as_iname(K);
 			if (recog_gpr) {
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -1148,7 +1148,7 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 
 void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, property *prn, int visibility_level,
 	inter_symbol *pass_l) {
-	grammar_verb *gv = Properties::EitherOr::get_parsing_grammar(prn);
+	grammar_verb *gv = EitherOrProperties::get_parsing_grammar(prn);
 	PL::Parsing::Tokens::General::pvp_test_begins_dash(gprk);
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());

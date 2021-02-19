@@ -327,13 +327,13 @@ int PL::Regions::regions_complete_model(int stage) {
 		}
 
 @<Assert regional-found-in properties of regions@> =
-	P_regional_found_in = Properties::Valued::new_nameless(
+	P_regional_found_in = ValueProperties::new_nameless(
 		I"regional_found_in", K_text);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = PL::Regions::found_in_iname(I);
-			Properties::Valued::assert(P_regional_found_in, Instances::as_subject(I),
+			ValueProperties::assert(P_regional_found_in, Instances::as_subject(I),
 				Rvalues::from_iname(iname), CERTAIN_CE);
 		}
 

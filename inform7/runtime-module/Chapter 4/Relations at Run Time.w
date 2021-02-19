@@ -1404,7 +1404,7 @@ void RTRelations::equivalence_relation_add_properties(binary_predicate *bp) {
 @<Set the partition number property@> =
 	parse_node *val = Rvalues::from_int(
 		RTRelations::equivalence_relation_get_class(bp, infs->allocation_id), EMPTY_WORDING);
-	Properties::Valued::assert(Relations::Explicit::get_i6_storage_property(bp),
+	ValueProperties::assert(Relations::Explicit::get_i6_storage_property(bp),
 		infs, val, CERTAIN_CE);
 
 @ Where:

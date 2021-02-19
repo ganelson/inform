@@ -21,12 +21,14 @@ Chapter 2: Instances and Variables
 Chapter 3: Properties
 	Properties
 	Either-Or Properties
+	Either-Or Property Adjectives
 	Valued Properties
 	The Provision Relation
-	Comparative Relations
 	Same Property Relation
 	Setting Property Relation
+	Measurements
 	Measurement Adjectives
+	Comparative Relations
 
 Chapter 4: Subjects
 	Inference Subjects

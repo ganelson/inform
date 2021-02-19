@@ -27,11 +27,11 @@ These relations are all hard-wired in.
 =
 void PL::SpatialRelations::start(void) {
 	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, PL::SpatialRelations::stock);
-	METHOD_ADD(spatial_bp_family, TYPECHECK_BPF_MTID, PL::SpatialRelations::REL_typecheck);
-	METHOD_ADD(spatial_bp_family, ASSERT_BPF_MTID, PL::SpatialRelations::REL_assert);
-	METHOD_ADD(spatial_bp_family, SCHEMA_BPF_MTID, PL::SpatialRelations::REL_compile);
-	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::SpatialRelations::REL_describe_for_problems);
-	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::SpatialRelations::REL_describe_briefly);
+	METHOD_ADD(spatial_bp_family, TYPECHECK_BPF_MTID, PL::SpatialRelations::typecheck);
+	METHOD_ADD(spatial_bp_family, ASSERT_BPF_MTID, PL::SpatialRelations::assert);
+	METHOD_ADD(spatial_bp_family, SCHEMA_BPF_MTID, PL::SpatialRelations::schema);
+	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::SpatialRelations::describe_for_problems);
+	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::SpatialRelations::describe_for_index);
 }
 
 void PL::SpatialRelations::stock(bp_family *self, int n) {
@@ -157,7 +157,7 @@ can be tested at run-time, but which can't be asserted or made true or false.
 No special rules apply.
 
 =
-int PL::SpatialRelations::REL_typecheck(bp_family *self, binary_predicate *bp,
+int PL::SpatialRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
@@ -169,7 +169,7 @@ sometimes transitively and sometimes not. "The passport is in the desk",
 place the same object in a container, a room or a region respectively.
 
 =
-int PL::SpatialRelations::REL_assert(bp_family *self, binary_predicate *bp,
+int PL::SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	instance *I0 = InstanceSubjects::to_object_instance(infs0),
@@ -248,7 +248,7 @@ special to make it work, so this doesn't seem worth the trouble.)
 	if (P_wearable)
 		PropertyInferences::draw(item, P_wearable, NULL);
 	if (P_worn == NULL) {
-		P_worn = Properties::EitherOr::new_nameless(L"worn");
+		P_worn = EitherOrProperties::new_nameless(L"worn");
 		RTProperties::implement_as_attribute(P_worn, TRUE);
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
@@ -257,16 +257,16 @@ special to make it work, so this doesn't seem worth the trouble.)
 We need do nothing special: these relations can be compiled from their schemas.
 
 =
-int PL::SpatialRelations::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int PL::SpatialRelations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	return FALSE;
 }
 
 @h Problem message text.
 
 =
-int PL::SpatialRelations::REL_describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+int PL::SpatialRelations::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	return FALSE;
 }
-void PL::SpatialRelations::REL_describe_briefly(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void PL::SpatialRelations::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
 	WRITE("spatial");
 }

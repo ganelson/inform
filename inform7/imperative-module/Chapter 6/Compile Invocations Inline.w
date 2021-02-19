@@ -846,7 +846,7 @@ token, because that would be "property name". Instead:
 	if ((prn == NULL) || (Properties::is_either_or(prn))) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
 	} else {
-		kind *K = Properties::Valued::kind(prn);
+		kind *K = ValueProperties::kind(prn);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 		} else {

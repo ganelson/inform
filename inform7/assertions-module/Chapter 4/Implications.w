@@ -171,8 +171,8 @@ of not being open, and vice versa.
 	possession_marker *pom = Properties::get_possession_marker(prn);
 	@<Mark this property if its possession is not already equally certainly known@>;
 
-	if (Properties::EitherOr::get_negation(prn)) {
-		prn = Properties::EitherOr::get_negation(prn);
+	if (EitherOrProperties::get_negation(prn)) {
+		prn = EitherOrProperties::get_negation(prn);
 		pom = Properties::get_possession_marker(prn);
 		truth_state = (truth_state)?FALSE:TRUE;
 		@<Mark this property if its possession is not already equally certainly known@>;
@@ -254,7 +254,7 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	}
 
 @<Apply the conclusion to the candidate@> =
-	adjective *aph = Properties::EitherOr::get_aph(conclusion_prop);
+	adjective *aph = EitherOrProperties::as_adjective(conclusion_prop);
 	pcalc_prop *prop = KindPredicates::new_atom(
 		KindSubjects::to_kind(domain), Terms::new_variable(0));
 	if (conclusion_state == FALSE) {

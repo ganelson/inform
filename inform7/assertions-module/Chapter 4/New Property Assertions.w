@@ -50,7 +50,7 @@ automatically creates it.
 	Kinds::Behaviour::convert_to_enumeration(K);
 	if ((K) && (KindSubjects::has_properties(K) == FALSE))
 		@<Disallow this kind as a new owner of a value property@>;
-	property *prn = Properties::Valued::obtain(Node::get_text(p));
+	property *prn = ValueProperties::obtain(Node::get_text(p));
 	Assert::true_about(Propositions::Abstract::to_provide_property(prn),
 		owner_infs, prevailing_mood);
 	return prn;
@@ -103,8 +103,8 @@ void NewPropertyAssertions::recursively_call(parse_node *owner_ref,
 	kind *K = NULL;
 	@<Find the kind of value being asked for@>;
 	@<Issue a problem message if the property kind is just "value"@>;
-	kind *current_kind = Properties::Valued::kind(prn);
-	if (current_kind == NULL) Properties::Valued::set_kind(prn, K);
+	kind *current_kind = ValueProperties::kind(prn);
+	if (current_kind == NULL) ValueProperties::set_kind(prn, K);
 	else if (Kinds::eq(current_kind, K) == FALSE)
 		@<Issue a problem message for giving the wrong kind of an existing property@>;
 

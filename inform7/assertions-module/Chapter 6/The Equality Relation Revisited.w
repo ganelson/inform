@@ -6,9 +6,9 @@ To define how equality behaves in the Inform language.
 
 =
 void EqualityDetails::start(void) {
-	METHOD_ADD(equality_bp_family, TYPECHECK_BPF_MTID, EqualityDetails::REL_typecheck);
-	METHOD_ADD(equality_bp_family, ASSERT_BPF_MTID, EqualityDetails::REL_assert);
-	METHOD_ADD(equality_bp_family, SCHEMA_BPF_MTID, EqualityDetails::REL_compile);
+	METHOD_ADD(equality_bp_family, TYPECHECK_BPF_MTID, EqualityDetails::typecheck);
+	METHOD_ADD(equality_bp_family, ASSERT_BPF_MTID, EqualityDetails::assert);
+	METHOD_ADD(equality_bp_family, SCHEMA_BPF_MTID, EqualityDetails::schema);
 }
 
 @h Typechecking.
@@ -16,7 +16,7 @@ This is a very polymorphic relation, in that it can accept terms of almost
 any kind.
 
 =
-int EqualityDetails::REL_typecheck(bp_family *self, binary_predicate *bp,
+int EqualityDetails::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	LOGIF(MATCHING, "Typecheck %u '==' %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 	if ((K_understanding) && (Kinds::eq(kinds_of_terms[0], K_understanding)) &&
@@ -99,7 +99,7 @@ In general values differ, and cannot be equated by fiat. But an exception is
 setting a global variable.
 
 =
-int EqualityDetails::REL_assert(bp_family *self, binary_predicate *bp,
+int EqualityDetails::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	if (Lvalues::is_actual_NONLOCAL_VARIABLE(spec0)) {
@@ -153,7 +153,7 @@ schema is a function of both the storage class of A and the kinds of value
 of both A and B.
 
 =
-int EqualityDetails::REL_compile(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
+int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
 	kind *st[2];
 	st[0] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt0);
 	st[1] = Calculus::Deferrals::Cinders::kind_of_value_of_term(asch->pt1);

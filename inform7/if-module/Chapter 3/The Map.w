@@ -521,12 +521,12 @@ one and Backdrops), and this is where they set it.
 =
 void PL::Map::set_found_in(instance *I, inter_name *S) {
 	if (P_found_in == NULL)
-		P_found_in = Properties::Valued::new_nameless(I"found_in",
+		P_found_in = ValueProperties::new_nameless(I"found_in",
 			K_value);
 	if (PropertyInferences::value_of(
 		Instances::as_subject(I), P_found_in))
 			internal_error("rival found_in interpretations");
-	Properties::Valued::assert(P_found_in, Instances::as_subject(I),
+	ValueProperties::assert(P_found_in, Instances::as_subject(I),
 		Rvalues::from_iname(S), CERTAIN_CE);
 }
 
@@ -741,13 +741,13 @@ tasks at run-time, which is why we keep complicating the I7 code to
 accommodate it.)
 
 @<Give each room a room-index property as workspace for route finding@> =
-	P_room_index = Properties::Valued::new_nameless(I"room_index", K_number);
+	P_room_index = ValueProperties::new_nameless(I"room_index", K_number);
 	parse_node *minus_one = Rvalues::from_int(-1, EMPTY_WORDING);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Spatial::object_is_a_room(I))
-			Properties::Valued::assert(P_room_index,
+			ValueProperties::assert(P_room_index,
 				Instances::as_subject(I), minus_one, CERTAIN_CE);
 
 @ The following code does little if the source is correct: it mostly
@@ -949,15 +949,15 @@ of how to compile one and two-sided doors in I6. Alternatively, take it on
 trust that there is nothing surprising here.
 
 @<Assert found-in, door-to and door-dir properties for doors@> =
-	P_door = Properties::EitherOr::new_nameless(L"door");
+	P_door = EitherOrProperties::new_nameless(L"door");
 	RTProperties::implement_as_attribute(P_door, TRUE);
-	P_door_dir = Properties::Valued::new_nameless(I"door_dir", K_value);
-	P_door_to = Properties::Valued::new_nameless(I"door_to", K_value);
+	P_door_dir = ValueProperties::new_nameless(I"door_dir", K_value);
+	P_door_to = ValueProperties::new_nameless(I"door_to", K_value);
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (PL::Map::object_is_a_door(I)) {
-			Properties::EitherOr::assert(
+			EitherOrProperties::assert(
 				P_door, Instances::as_subject(I), TRUE, CERTAIN_CE);
 			instance *R1 = MAP_DATA(I)->map_connection_a;
 			instance *R2 = MAP_DATA(I)->map_connection_b;
@@ -994,7 +994,7 @@ always the way to the other room -- the one we are not in.
 	notice->R1 = R1;
 	notice->D1 = D1;
 	notice->D2 = D2;
-	Properties::Valued::assert(P_door_dir, Instances::as_subject(I),
+	ValueProperties::assert(P_door_dir, Instances::as_subject(I),
 		Rvalues::from_iname(notice->ddn_iname), CERTAIN_CE);
 
 @ Here |door_to| is a routine looking at the current location and returning
@@ -1006,7 +1006,7 @@ always the other room -- the one we are not in.
 	notice->door = I;
 	notice->R1 = R1;
 	notice->R2 = R2;
-	Properties::Valued::assert(P_door_to, Instances::as_subject(I),
+	ValueProperties::assert(P_door_to, Instances::as_subject(I),
 		Rvalues::from_iname(notice->dtn_iname), CERTAIN_CE);
 
 @ The reversal of direction here looks peculiar, but is correct. Suppose
@@ -1023,7 +1023,7 @@ why we don't need to compile |door_to| here.
 @<Assert door-dir for a one-sided door@> =
 	instance *backwards = PL::Map::get_value_of_opposite_property(D1);
 	if (backwards)
-		Properties::Valued::assert(P_door_dir, Instances::as_subject(I),
+		ValueProperties::assert(P_door_dir, Instances::as_subject(I),
 			Rvalues::from_iname(RTInstances::emitted_iname(backwards)), CERTAIN_CE);
 
 @h Redeeming those notices.
