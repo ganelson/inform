@@ -27,14 +27,14 @@ nonlocal_variable *score_VAR = NULL;
 
 =
 void PL::Player::start(void) {
-	REGISTER(NEW_VARIABLE_NOTIFY_PCALL, PL::Player::player_new_quantity_notify);
-	REGISTER(VARIABLE_SET_WARNING_PCALL, PL::Player::player_variable_set_warning);
-	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Player::player_new_instance_notify);
-	REGISTER(IRREGULAR_GENITIVE_PCALL, PL::Player::player_irregular_genitive);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Player::player_complete_model);
-	REGISTER(REFINE_IMPLICIT_NOUN_PCALL, PL::Player::player_refine_implicit_noun);
-	REGISTER(DETECT_BODYSNATCHING_PCALL, PL::Player::player_detect_bodysnatching);
-	REGISTER(ANNOTATE_IN_WORLD_INDEX_PCALL, PL::Player::player_annotate_in_World_index);
+	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Player::player_new_quantity_notify);
+	PluginManager::plug(VARIABLE_VALUE_NOTIFY_PLUG, PL::Player::player_variable_set_warning);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Player::player_new_instance_notify);
+	PluginManager::plug(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, PL::Player::player_irregular_genitive);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Player::player_complete_model);
+	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, PL::Player::player_refine_implicit_noun);
+	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, PL::Player::player_detect_bodysnatching);
+	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Player::player_annotate_in_World_index);
 }
 
 @h Special objects.

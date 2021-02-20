@@ -209,19 +209,19 @@ void PL::Spatial::start(void) {
 	METHOD_ADD(PART_OF_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_part_of_inference);
 	METHOD_ADD(PART_OF_INF, COMPARE_INF_MTID, PL::Spatial::cmp_part_of_inference);
 
-	REGISTER(CREATE_INFERENCES_PCALL, PL::Spatial::create_inference_subjects);
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Spatial::spatial_new_base_kind_notify);
-	REGISTER(ACT_ON_SPECIAL_NPS_PCALL, PL::Spatial::spatial_act_on_special_NPs);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Spatial::IF_complete_model);
-	REGISTER(DEFAULT_APPEARANCE_PCALL, PL::Spatial::spatial_default_appearance);
-	REGISTER(NAME_TO_EARLY_INFS_PCALL, PL::Spatial::spatial_name_to_early_infs);
-	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Spatial::spatial_new_subject_notify);
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Spatial::spatial_new_property_notify);
-	REGISTER(PARSE_COMPOSITE_NQS_PCALL, PL::Spatial::spatial_parse_composite_NQs);
-	REGISTER(SET_KIND_NOTIFY_PCALL, PL::Spatial::spatial_set_kind_notify);
-	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Spatial::spatial_set_subkind_notify);
-	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Spatial::spatial_add_to_World_index);
-	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Spatial::spatial_intervene_in_assertion);
+	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, PL::Spatial::create_inference_subjects);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Spatial::spatial_new_base_kind_notify);
+	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, PL::Spatial::spatial_act_on_special_NPs);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Spatial::IF_complete_model);
+	PluginManager::plug(DEFAULT_APPEARANCE_PLUG, PL::Spatial::spatial_default_appearance);
+	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, PL::Spatial::spatial_name_to_early_infs);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Spatial::spatial_new_subject_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Spatial::spatial_new_property_notify);
+	PluginManager::plug(PARSE_COMPOSITE_NQS_PLUG, PL::Spatial::spatial_parse_composite_NQs);
+	PluginManager::plug(SET_KIND_NOTIFY_PLUG, PL::Spatial::spatial_set_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Spatial::spatial_set_subkind_notify);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Spatial::spatial_add_to_World_index);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Spatial::spatial_intervene_in_assertion);
 }
 
 int PL::Spatial::is_room_explain_contradiction(inference_family *f, inference *A,
@@ -292,11 +292,12 @@ we will make them correspond to the actual kinds later on, at some point
 after stage (d) when they exist.
 
 =
-void PL::Spatial::create_inference_subjects(void) {
+int PL::Spatial::create_inference_subjects(void) {
 	infs_room =      InferenceSubjects::new_fundamental(global_constants, "room(early)");
 	infs_thing =     InferenceSubjects::new_fundamental(global_constants, "thing(early)");
 	infs_supporter = InferenceSubjects::new_fundamental(global_constants, "supporter(early)");
 	infs_person =    InferenceSubjects::new_fundamental(global_constants, "person(early)");
+	return FALSE;
 }
 
 @ And this is where those IOUs are redeemed. What happens is that, ordinarily,

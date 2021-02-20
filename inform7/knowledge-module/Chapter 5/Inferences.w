@@ -199,7 +199,7 @@ void Inferences::join_inference(inference *inf, inference_subject *infs) {
 @<Insert the newly-drawn inference here@> =
 	LinkedLists::insert(SL, insertion_point, inf);
 	Inferences::report_inference(inf, infs, "drawn");
-	Inferences::join_family(inf, infs);
+	PluginCalls::inference_drawn(inf, infs);
 	return;
 
 @ For example, we would be here if |inf| said that the carrying capacity of
@@ -214,6 +214,7 @@ the same basic fact, i.e., what the carrying capacity of the jar is.
 	} else if (existing_sureness < inf_sureness) {
 		LinkedLists::set_entry(insertion_point, SL, inf);
 		Inferences::report_inference(inf, infs, "replaced existing less certain one");
+		PluginCalls::inference_drawn(inf, infs);
 	} else {
 		int contradiction_flag = FALSE;
 		@<Determine whether or not they contradict each other@>;
@@ -300,6 +301,7 @@ likely properties.)
 @<Later generalisations beat earlier ones@> =
 	LinkedLists::set_entry(insertion_point, SL, inf);
 	Inferences::report_inference(inf, infs, "replaced existing also only likely one");
+	PluginCalls::inference_drawn(inf, infs);
 	return;
 
 @h Logging inferences.
@@ -360,18 +362,6 @@ VOID_METHOD_TYPE(LOG_DETAILS_INF_MTID, inference_family *f, inference *inf)
 
 void Inferences::log_family_details(inference *inf) {
 	VOID_METHOD_CALL(inf->family, LOG_DETAILS_INF_MTID, inf);
-}
-
-@ This notifies an inference that it is being joined to a subject, though this
-must not be very exciting news, since most inferences ignore it.
-
-@e JOIN_INF_MTID
-
-=
-VOID_METHOD_TYPE(JOIN_INF_MTID, inference_family *f, inference *inf, inference_subject *infs)
-
-void Inferences::join_family(inference *inf, inference_subject *infs) {
-	VOID_METHOD_CALL(inf->family, JOIN_INF_MTID, inf, infs);
 }
 
 @ This is called when //Inferences::cmp// is comparing two inferences which both

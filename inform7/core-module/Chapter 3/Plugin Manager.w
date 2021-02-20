@@ -1,20 +1,18 @@
-[PluginManager::] Plugins.
+[PluginManager::] Plugin Manager.
 
-Plugins are optional extras for the Inform compiler: additions which can be
+Creating, activating or deactivating plugins.
+
+@ Plugins are optional extras for the Inform compiler: additions which can be
 active or inactive on any given compilation run.
 
-@ Except for one not-really-a-plugin called "core", each plugin is a piece of
+Except for one not-really-a-plugin called "core", each plugin is a piece of
 functionality that can be "activated" or "deactivated". Plugins have an
 ability to tweak or extend what the compiler does, giving it, for example,
 an ability to reason about spatial relationships when the compiler is being
 used for interactive fiction; or not, when it isn't.
 
-=
-void PluginManager::start(void) {
-	PluginCalls::initialise_calls();
-}
-
-@
+There is no harm in this hard-wired maximum, since plugins are not things an
+author can create in source text; we know exactly how many there are.
 
 @d MAX_PLUGINS 32
 
@@ -23,7 +21,7 @@ typedef struct plugin {
 	struct text_stream *textual_name;
 	struct wording wording_name;
 	struct plugin *parent_plugin;
-	void (*starter_routine)(void);
+	void (*activation_function)(void);
 	int active;
 	CLASS_DEFINITION
 } plugin;
@@ -32,7 +30,7 @@ plugin *PluginManager::new(void (*starter)(void), text_stream *tname, plugin *se
 	plugin *P = CREATE(plugin);
 	P->textual_name = Str::duplicate(tname);
 	P->wording_name = Feeds::feed_text(tname);
-	P->starter_routine = starter;
+	P->activation_function = starter;
 	P->active = FALSE;
 	P->parent_plugin = set;
 	if (P->allocation_id >= MAX_PLUGINS) internal_error("Too many plugins");
@@ -109,7 +107,7 @@ void PluginManager::start_plugins(void) {
 	plugin *P;
 	LOOP_OVER(P, plugin)
 		if (P->active) {
-			void (*start)() = (void (*)()) P->starter_routine;
+			void (*start)() = (void (*)()) P->activation_function;
 			if (start) (*start)();
 		}
 }
@@ -148,4 +146,60 @@ plugin *PluginManager::parse(text_stream *S) {
 		if (Str::eq_insensitive(P->textual_name, S))
 			return P;
 	return NULL;
+}
+
+@h Plugs.
+Plugins affect the running of the compiler by inserting functions called plugs
+into the following "plugin rulebooks" -- there's a mixed metaphor here, but
+the idea is that they behave like Inform rulebooks. When a rulebook is called,
+the compiler works through each plug until one of them returns something other
+than |FALSE|.
+
+Plugins should add plugs in their activation functions, by calling
+//PluginManager::plug//, which has an interestingly vague type. The next
+screenful of code looks like something of a workout for the C typechecker, but
+it compiles under |clang| without even the |-Wpedantic| warning, and honestly
+you're barely living as a C programmer if you never generate that one.
+
+=
+linked_list *plugin_rulebooks[NO_DEFINED_PLUG_VALUES+1]; /* of |void|, reprehensibly */
+
+void PluginManager::start(void) {
+	for (int i=0; i<=NO_DEFINED_PLUG_VALUES; i++)
+		plugin_rulebooks[i] = NEW_LINKED_LIST(void);
+}
+
+void PluginManager::plug(int code, int (*R)()) {
+	if (code > NO_DEFINED_PLUG_VALUES) internal_error("not a plugin call");
+	void *vR = (void *) R;
+	ADD_TO_LINKED_LIST(vR, void, plugin_rulebooks[code]);
+}
+
+@ The functions in //Plugin Calls// then make use of these macros, which are
+the easiest way to persuade the C typechecker to allow variable arguments to
+be passed in a portable way. Similarly, there are two macros not one because
+C does not allow a void variable argument list.
+
+We must take care that the variables introduced in the macro body do not mask
+existing variables used in the arguments; the only way to do this is to give
+them implausible names.
+
+@d PLUGINS_CALL(code, args...) {
+	void *R_plugin_pointer_XYZZY; /* no argument can have this name */
+	LOOP_OVER_LINKED_LIST(R_plugin_pointer_XYZZY, void, plugin_rulebooks[code]) {
+		int (*R_plugin_rule_ZOOGE)() = (int (*)()) R_plugin_pointer_XYZZY; /* or this one */
+		int Q_plugin_return_PLUGH = (*R_plugin_rule_ZOOGE)(args); /* or this */
+		if (Q_plugin_return_PLUGH) return Q_plugin_return_PLUGH;
+	}
+	return FALSE;
+}
+
+@d PLUGINS_CALLV(code) {
+	void *R_plugin_pointer_XYZZY;
+	LOOP_OVER_LINKED_LIST(R_plugin_pointer_XYZZY, void, plugin_rulebooks[code]) {
+		int (*R_plugin_rule_ZOOGE)() = (int (*)()) R_plugin_pointer_XYZZY;
+		int Q_plugin_return_PLUGH = (*R_plugin_rule_ZOOGE)();
+		if (Q_plugin_return_PLUGH) return Q_plugin_return_PLUGH;
+	}
+	return FALSE;
 }

@@ -17,8 +17,6 @@ Chapter 1: Control
 	Progress Percentages
 	Compilation Settings
 	Inform-Only Nodes and Annotations
-	Plugins
-	Plugin Calls
 
 Chapter 2: Problem Messages
 "The issuing of Problem messages."
@@ -28,3 +26,8 @@ Chapter 2: Problem Messages
 	Problems With Source Text
 	Calculus Problems
 	Kinds Problems
+
+Chapter 3: Plugins
+"Extensions to the main compiler, which can be either active or inactive."
+	Plugin Manager
+	Plugin Calls

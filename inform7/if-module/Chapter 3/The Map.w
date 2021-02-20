@@ -167,20 +167,19 @@ void PL::Map::start(void) {
 	METHOD_ADD(DIRECTION_INF, LOG_DETAILS_INF_MTID, PL::Map::log_direction_inf);
 	METHOD_ADD(DIRECTION_INF, COMPARE_INF_MTID, PL::Map::cmp_direction_inf);
 
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Map::map_new_base_kind_notify);
-	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Map::map_new_subject_notify);
-	REGISTER(SET_KIND_NOTIFY_PCALL, PL::Map::map_set_kind_notify);
-	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Map::map_set_subkind_notify);
-	REGISTER(ACT_ON_SPECIAL_NPS_PCALL, PL::Map::map_act_on_special_NPs);
-	REGISTER(CHECK_GOING_PCALL, PL::Map::map_check_going);
-	REGISTER(COMPILE_MODEL_TABLES_PCALL, PL::Map::map_compile_model_tables);
-	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Map::map_estimate_property_usage);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Map::map_complete_model);
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Map::map_new_property_notify);
-	REGISTER(PROPERTY_VALUE_NOTIFY_PCALL, PL::Map::map_property_value_notify);
-	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Map::map_intervene_in_assertion);
-	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Map::map_add_to_World_index);
-	REGISTER(ANNOTATE_IN_WORLD_INDEX_PCALL, PL::Map::map_annotate_in_World_index);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Map::map_new_base_kind_notify);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Map::map_new_subject_notify);
+	PluginManager::plug(SET_KIND_NOTIFY_PLUG, PL::Map::map_set_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Map::map_set_subkind_notify);
+	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, PL::Map::map_act_on_special_NPs);
+	PluginManager::plug(CHECK_GOING_PLUG, PL::Map::map_check_going);
+	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Map::map_compile_model_tables);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Map::map_complete_model);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Map::map_new_property_notify);
+	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, PL::Map::map_inference_drawn);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Map::map_intervene_in_assertion);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Map::map_add_to_World_index);
+	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Map::map_annotate_in_World_index);
 }
 
 @ =
@@ -504,8 +503,10 @@ connections, Inform may well think it's just an object. This is where that
 deduction is made:
 
 =
-int PL::Map::map_property_value_notify(property *prn, parse_node *val) {
-	if (prn == P_other_side) {
+int PL::Map::map_inference_drawn(inference *I, inference_subject *subj) {
+	property *prn = PropertyInferences::get_property(I);
+	if ((prn) && (prn == P_other_side)) {
+		parse_node *val = PropertyInferences::get_value(I);
 		instance *I = Rvalues::to_object_instance(val);
 		if (I) PL::Spatial::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
 	}
@@ -541,15 +542,6 @@ instance *PL::Map::get_value_of_opposite_property(instance *I) {
 		Instances::as_subject(I), P_opposite);
 	if (val) return Rvalues::to_object_instance(val);
 	return NULL;
-}
-
-@ This really is very approximate, but:
-
-=
-int PL::Map::map_estimate_property_usage(kind *k, int *words_used) {
-	if (Kinds::eq(k, K_door)) *words_used += 14;
-	if (Kinds::eq(k, K_room)) *words_used += 2;
-	return FALSE;
 }
 
 @h Linguistic extras.

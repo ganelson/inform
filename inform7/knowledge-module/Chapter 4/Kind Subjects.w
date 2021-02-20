@@ -178,3 +178,31 @@ int KindSubjects::allow_sometimes(kind *from) {
 	}
 	return FALSE;
 }
+
+@ Lastly, a bridge to the //kinds// module: the main compiler has to provide
+callbacks for it, as follows. When the //kinds// module creates a new base kind,
+it calls this:
+
+@d NEW_BASE_KINDS_CALLBACK KindSubjects::new_base_kind_notify
+
+=
+int KindSubjects::new_base_kind_notify(kind *K, kind *super, text_stream *d, wording W) {
+	KindSubjects::renew(K, super, W);
+	if (<property-name>(W)) {
+		property *P = <<rp>>;
+		ValueProperties::set_kind(P, K);
+		Instances::make_kind_coincident(K, P);
+	}
+	PluginCalls::new_base_kind_notify(K, super, d, W);
+	return FALSE;
+}
+
+@ And here goes:
+
+@d HIERARCHY_VETO_MOVE_KINDS_CALLBACK KindSubjects::set_subkind_notify
+
+=
+int KindSubjects::set_subkind_notify(kind *sub, kind *super) {
+	if (Kinds::Behaviour::is_subkind_of_object(sub) == FALSE) return TRUE;
+	return PluginCalls::set_subkind_notify(sub, super);
+}

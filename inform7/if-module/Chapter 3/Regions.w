@@ -36,21 +36,21 @@ typedef struct regions_data {
 
 =
 void PL::Regions::start(void) {
-	REGISTER(CREATE_INFERENCES_PCALL, PL::Regions::create_inference_subjects);
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Regions::regions_new_base_kind_notify);
-	REGISTER(SET_SUBKIND_NOTIFY_PCALL, PL::Regions::regions_set_subkind_notify);
-	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Regions::regions_new_subject_notify);
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Regions::regions_new_property_notify);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Regions::regions_complete_model);
-	REGISTER(MORE_SPECIFIC_PCALL, PL::Regions::regions_more_specific);
-	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Regions::regions_estimate_property_usage);
-	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Regions::regions_intervene_in_assertion);
-	REGISTER(NAME_TO_EARLY_INFS_PCALL, PL::Regions::regions_name_to_early_infs);
-	REGISTER(ADD_TO_WORLD_INDEX_PCALL, PL::Regions::regions_add_to_World_index);
+	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, PL::Regions::create_inference_subjects);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Regions::regions_new_base_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Regions::regions_set_subkind_notify);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Regions::regions_new_subject_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Regions::regions_new_property_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Regions::regions_complete_model);
+	PluginManager::plug(MORE_SPECIFIC_PLUG, PL::Regions::regions_more_specific);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Regions::regions_intervene_in_assertion);
+	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, PL::Regions::regions_name_to_early_infs);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Regions::regions_add_to_World_index);
 }
 
-void PL::Regions::create_inference_subjects(void) {
+int PL::Regions::create_inference_subjects(void) {
 	infs_region = InferenceSubjects::new_fundamental(global_constants, "region(early)");
+	return FALSE;
 }
 
 regions_data *PL::Regions::new_data(inference_subject *subj) {
@@ -145,12 +145,6 @@ Standard Rules. (So there is no need to translate this to other languages.)
 int PL::Regions::regions_new_property_notify(property *prn) {
 	if (<notable-regions-properties>(prn->name))
 		P_map_region = prn;
-	return FALSE;
-}
-
-@ =
-int PL::Regions::regions_estimate_property_usage(kind *k, int *words_used) {
- 	if (Kinds::eq(k, K_region)) *words_used += 2;
 	return FALSE;
 }
 

@@ -1,5 +1,8 @@
 [CalculusProblems::] Calculus Problems.
 
+Errors with formulating logical statements are sometimes caught by the calculus
+module: this section collects and issues such errors as tidy Inform problems.
+
 @ The |:calculus| group of tests for //inform7// generates all of the problems
 below.
 

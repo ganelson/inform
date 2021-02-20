@@ -15,9 +15,6 @@ void RTPropertyValues::emit_subject(inference_subject *subj) {
 	kind *K = KindSubjects::to_kind(subj);
 	instance *I = InstanceSubjects::to_instance(subj);
 
-	int words_used = 0;
-	if (K) PluginCalls::estimate_property_usage(K, &words_used);
-
 	inter_name *iname = NULL;
 	if (K) iname = RTKinds::iname(K);
 	else if (I) iname = RTInstances::emitted_iname(I);
@@ -37,7 +34,6 @@ each one is marked when visited.
 
 @<Compile the actual object@> =
 	@<Annotate with the spatial depth@>;
-	if ((I) && (Kinds::Behaviour::is_object(Instances::to_kind(I)))) words_used++;
 	@<Append any inclusions the source text requested@>;
 	RTProperties::begin_traverse();
 	@<Emit inferred object properties@>;
@@ -75,7 +71,7 @@ the class hierarchy at I6 level exactly match the kind hierarchy at I7 level.
 		property *prn = PropertyInferences::get_property(inf);
 		current_sentence = Inferences::where_inferred(inf);
 		LOGIF(OBJECT_COMPILATION, "Compiling property $Y\n", prn);
-		words_used += RTPropertyValues::emit_propertyvalue(subj, prn);
+		RTPropertyValues::emit_propertyvalue(subj, prn);
 	}
 
 @ We now wander through the permitted properties, even those which we have
@@ -89,7 +85,7 @@ no actual knowledge about.
 			property *prn = PropertyPermissions::get_property(pp);
 			if ((infs == subj) ||
 				(Kinds::Behaviour::uses_pointer_values(ValueProperties::kind(prn))))
-				words_used += RTPropertyValues::emit_propertyvalue(subj, prn);
+				RTPropertyValues::emit_propertyvalue(subj, prn);
 		}
 	}
 

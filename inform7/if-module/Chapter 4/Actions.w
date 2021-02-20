@@ -97,12 +97,11 @@ kind *K_description_of_action = NULL;
 
 @ =
 void PL::Actions::start(void) {
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Actions::actions_new_base_kind_notify);
-	REGISTER(COMPILE_CONSTANT_PCALL, PL::Actions::actions_compile_constant);
-	REGISTER(OFFERED_PROPERTY_PCALL, PL::Actions::actions_offered_property);
-	REGISTER(OFFERED_SPECIFICATION_PCALL, PL::Actions::actions_offered_specification);
-	REGISTER(TYPECHECK_EQUALITY_PCALL, PL::Actions::actions_typecheck_equality);
-	REGISTER(FORBID_SETTING_PCALL, PL::Actions::actions_forbid_setting);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Actions::actions_new_base_kind_notify);
+	PluginManager::plug(COMPILE_CONSTANT_PLUG, PL::Actions::actions_compile_constant);
+	PluginManager::plug(OFFERED_PROPERTY_PLUG, PL::Actions::actions_offered_property);
+	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, PL::Actions::actions_offered_specification);
+	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, PL::Actions::actions_typecheck_equality);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
@@ -163,7 +162,8 @@ int PL::Actions::actions_offered_property(kind *K, parse_node *owner, parse_node
 
 int PL::Actions::actions_offered_specification(parse_node *owner, wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(owner, K_action_name)) {
-		PL::Actions::actions_set_specification_text(Rvalues::to_action_name(owner), Wordings::first_wn(W));
+		PL::Actions::actions_set_specification_text(
+			Rvalues::to_action_name(owner), Wordings::first_wn(W));
 		return TRUE;
 	}
 	return FALSE;
@@ -178,17 +178,6 @@ int PL::Actions::actions_typecheck_equality(kind *K1, kind *K2) {
 	if ((Kinds::eq(K1, K_stored_action)) &&
 		(Kinds::eq(K2, K_description_of_action)))
 		return TRUE;
-	return FALSE;
-}
-
-@ It could be argued that this ought to be a typechecking rule, but it applies
-only to setting true, so is here instead. The distinction is there because we
-can check whether an action is "taking a container" (say) but can't set a
-stored action equal to it, because it's too vague: what is the container to be
-taken?
-
-=
-int PL::Actions::actions_forbid_setting(kind *K) {
 	return FALSE;
 }
 

@@ -30,10 +30,9 @@ property *P_KD_Count = NULL; /* see below */
 
 =
 void PL::Counting::start(void) {
-	REGISTER(NEW_SUBJECT_NOTIFY_PCALL, PL::Counting::counting_new_subject_notify);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Counting::counting_complete_model);
-	REGISTER(COMPILE_MODEL_TABLES_PCALL, PL::Counting::counting_compile_model_tables);
-	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Counting::counting_estimate_property_usage);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Counting::counting_new_subject_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Counting::counting_complete_model);
+	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Counting::counting_compile_model_tables);
 }
 
 @h Initialising.
@@ -340,22 +339,6 @@ inter_name *PL::Counting::instance_count_property_symbol(kind *K) {
 		if (P) return RTProperties::iname(P);
 	}
 	return NULL;
-}
-
-@h Memory estimation.
-We're going to need about 4 words of extra memory to store the two properties
-per instance per kind, so:
-
-=
-int PL::Counting::counting_estimate_property_usage(kind *k, int *words_used) {
-	inference_subject *infs;
-	for (infs = InferenceSubjects::narrowest_broader_subject(KindSubjects::from_kind(k));
-		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
-		kind *k2 = KindSubjects::to_kind(infs);
-		if (Kinds::Behaviour::is_subkind_of_object(k2))
-			*words_used += 4;
-	}
-	return FALSE;
 }
 
 @h Loop optimisation.

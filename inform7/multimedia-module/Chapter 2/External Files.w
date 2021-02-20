@@ -33,8 +33,8 @@ kind *K_external_file = NULL;
 
 @ =
 void PL::Files::start(void) {
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Files::files_new_base_kind_notify);
-	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Files::files_new_named_instance_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Files::files_new_base_kind_notify);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Files::files_new_named_instance_notify);
 }
 
 @ =

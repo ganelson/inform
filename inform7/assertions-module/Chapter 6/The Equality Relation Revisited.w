@@ -185,10 +185,6 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 			if ((storage_class == UNKNOWN_NT) &&
 				(Kinds::get_construct(st[0]) == CON_property))
 				storage_class = PROPERTY_VALUE_NT;
-			if (PluginCalls::forbid_setting(asch->pt1.term_checked_as_kind)) {
-				asch->schema = NULL;
-				return TRUE;
-			}
 			@<Make a further check that kinds permit this assignment@>;
 			if (storage_class == UNKNOWN_NT) {
 				@<Issue problem message for being unable to set equal@>

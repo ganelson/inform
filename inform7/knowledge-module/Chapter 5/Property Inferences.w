@@ -13,7 +13,6 @@ void PropertyInferences::start(void) {
 	property_inf = Inferences::new_family(I"property_inf");
 	METHOD_ADD(property_inf, LOG_DETAILS_INF_MTID, PropertyInferences::log_details);
 	METHOD_ADD(property_inf, COMPARE_INF_MTID, PropertyInferences::cmp);
-	METHOD_ADD(property_inf, JOIN_INF_MTID, PropertyInferences::join);
 	METHOD_ADD(property_inf, EXPLAIN_CONTRADICTION_INF_MTID,
 		PropertyInferences::explain_contradiction);
 }
@@ -61,15 +60,6 @@ void PropertyInferences::log_details(inference_family *f, inference *inf) {
 	property_inference_data *data = RETRIEVE_POINTER_property_inference_data(inf->data);
 	LOG("(%W)", data->inferred_property->name);
 	if (data->inferred_property_value) LOG(":=$P", data->inferred_property_value);
-}
-
-@ Plugins are allowed to react to the earliest news of a new property value, so:
-
-=
-void PropertyInferences::join(inference_family *f, inference *inf, inference_subject *subj) {
-	property_inference_data *data = RETRIEVE_POINTER_property_inference_data(inf->data);
-	PluginCalls::property_value_notify(
-		data->inferred_property, data->inferred_property_value);
 }
 
 @ By convention, a pair of attached either/or properties which are negations of
@@ -173,11 +163,13 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 
 =
 property *PropertyInferences::get_property(inference *i) {
+	if (i->family != property_inf) return NULL;
 	property_inference_data *data = RETRIEVE_POINTER_property_inference_data(i->data);
 	return data->inferred_property;
 }
 
 parse_node *PropertyInferences::get_value(inference *i) {
+	if (i->family != property_inf) return NULL;
 	property_inference_data *data = RETRIEVE_POINTER_property_inference_data(i->data);
 	return data->inferred_property_value;
 }

@@ -35,11 +35,10 @@ void PL::Backdrops::start(void) {
 
 	FOUND_EVERYWHERE_INF = Inferences::new_family(I"FOUND_EVERYWHERE_INF");
 
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Backdrops::backdrops_new_base_kind_notify);
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Backdrops::backdrops_new_property_notify);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Backdrops::backdrops_complete_model);
-	REGISTER(ESTIMATE_PROPERTY_USAGE_PCALL, PL::Backdrops::backdrops_estimate_property_usage);
-	REGISTER(INTERVENE_IN_ASSERTION_PCALL, PL::Backdrops::backdrops_intervene_in_assertion);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Backdrops::backdrops_new_base_kind_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Backdrops::backdrops_new_property_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Backdrops::backdrops_complete_model);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Backdrops::backdrops_intervene_in_assertion);
 }
 
 typedef struct found_in_inference_data {
@@ -123,14 +122,6 @@ int PL::Backdrops::backdrops_new_property_notify(property *prn) {
 int PL::Backdrops::object_is_scenery(instance *I) {
 	if (PropertyInferences::either_or_state(Instances::as_subject(I), P_scenery) > 0)
 		return TRUE;
-	return FALSE;
-}
-
-@ Every backdrop needs a single-word property (|found_in| at the I6 level):
-
-=
-int PL::Backdrops::backdrops_estimate_property_usage(kind *k, int *words_used) {
-	if (Kinds::eq(k, K_backdrop)) *words_used += 2;
 	return FALSE;
 }
 

@@ -188,7 +188,6 @@ DECLARE_CLASS(use_as_event)
 @e list_together_routine_CLASS
 @e nascent_array_CLASS
 @e plugin_CLASS
-@e plugin_call_CLASS
 @e property_of_value_storage_CLASS
 @e runtime_kind_structure_CLASS
 @e test_scenario_CLASS
@@ -204,7 +203,6 @@ DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(list_together_routine)
 DECLARE_CLASS(nascent_array)
 DECLARE_CLASS(plugin)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(plugin_call, 100)
 DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(test_scenario)

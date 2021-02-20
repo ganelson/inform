@@ -88,9 +88,9 @@ including bit 1 which records whether the scene has started.
 
 =
 void PL::Scenes::start(void) {
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Scenes::scenes_new_property_notify);
-	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Scenes::scenes_new_named_instance_notify);
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Scenes::scenes_new_base_kind_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Scenes::scenes_new_property_notify);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Scenes::scenes_new_named_instance_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Scenes::scenes_new_base_kind_notify);
 }
 
 @ To detect "scene" and "recurring":

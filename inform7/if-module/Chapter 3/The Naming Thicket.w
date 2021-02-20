@@ -37,8 +37,8 @@ typedef struct short_name_notice {
 
 =
 void PL::Naming::start(void) {
-	REGISTER(NEW_PROPERTY_NOTIFY_PCALL, PL::Naming::naming_new_property_notify);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Naming::naming_complete_model);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Naming::naming_new_property_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Naming::naming_complete_model);
 }
 
 @h Recognising significant properties.

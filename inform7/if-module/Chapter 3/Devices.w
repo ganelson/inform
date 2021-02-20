@@ -13,8 +13,8 @@ property *P_switchable = NULL;
 
 @ =
 void PL::Devices::start(void) {
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Devices::devices_new_base_kind_notify);
-	REGISTER(COMPLETE_MODEL_PCALL, PL::Devices::IF_complete_model);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Devices::devices_new_base_kind_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Devices::IF_complete_model);
 }
 
 

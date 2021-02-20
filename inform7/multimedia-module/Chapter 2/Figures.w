@@ -33,8 +33,8 @@ kind *K_figure_name = NULL;
 
 @ =
 void PL::Figures::start(void) {
-	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Figures::figures_new_named_instance_notify);
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Figures::figures_new_base_kind_notify);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Figures::figures_new_named_instance_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Figures::figures_new_base_kind_notify);
 }
 
 @ =

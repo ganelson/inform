@@ -408,6 +408,6 @@ run-time problem when there is no alternative.
 @h Back To Core.
 
 =
-#IFNOT; ! FILES_PCALL
+#IFNOT; ! FILES_PLUGIN
 [ FileIO_GetC extf; return -1; ];
-#ENDIF; ! FILES_PCALL
+#ENDIF; ! FILES_PLUGIN

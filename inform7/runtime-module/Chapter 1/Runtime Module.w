@@ -26,3 +26,7 @@ void RuntimeModule::start(void) {
 }
 void RuntimeModule::end(void) {
 }
+
+void RuntimeModule::compile_runtime_data(void) {
+	PluginCalls::compile_runtime_data();
+}

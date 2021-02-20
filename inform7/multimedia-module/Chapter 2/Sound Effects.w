@@ -29,8 +29,8 @@ kind *K_sound_name = NULL;
 
 @ =
 void PL::Sounds::start(void) {
-	REGISTER(NEW_INSTANCE_NOTIFY_PCALL, PL::Sounds::sounds_new_named_instance_notify);
-	REGISTER(NEW_BASE_KIND_NOTIFY_PCALL, PL::Sounds::sounds_new_base_kind_notify);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Sounds::sounds_new_named_instance_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Sounds::sounds_new_base_kind_notify);
 }
 
 @ =
