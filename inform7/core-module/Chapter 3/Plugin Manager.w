@@ -148,8 +148,7 @@ plugin *PluginManager::parse(text_stream *S) {
 	return NULL;
 }
 
-@h Plugs.
-Plugins affect the running of the compiler by inserting functions called plugs
+@ Plugins affect the running of the compiler by inserting functions called plugs
 into the following "plugin rulebooks" -- there's a mixed metaphor here, but
 the idea is that they behave like Inform rulebooks. When a rulebook is called,
 the compiler works through each plug until one of them returns something other

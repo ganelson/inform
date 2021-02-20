@@ -44,4 +44,6 @@ for a compiled project, viewable in the Inform user interface applications.
 
 There are then two expansion packs, as it were: the //if// and //multimedia//
 modules, which do nothing essential but add support for interactive fiction
-and for sound and images respectively.
+and for sound and images respectively. These are implemented very largely
+as sets of //Plugins//, an architecture which allows the basic Inform
+language to be made more domain-specific.
