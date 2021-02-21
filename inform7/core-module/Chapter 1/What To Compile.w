@@ -21,7 +21,7 @@ void Task::log_stopwatch(void) {
 	Time::log_timing(inform7_timer, inform7_timer->time_taken);
 }
 
-@h Task data.
+@h The task.
 When Inbuild (a copy of which is included in the Inform 7 executable) decides
 that an Inform source text must be compiled, it calls |Task::carry_out|. By
 this point Inbuild will have set up an |inform_project| structure to

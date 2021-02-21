@@ -587,9 +587,9 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Fi")) {
 		#ifdef MULTIMEDIA_MODULE
-		PL::Figures::index_all(OUT);
-		PL::Sounds::index_all(OUT);
-		PL::Files::index_all(OUT);
+		IXFigures::index_all(OUT);
+		IXSounds::index_all(OUT);
+		ExternalFiles::index_all(OUT);
 		#endif
 		return;
 	}

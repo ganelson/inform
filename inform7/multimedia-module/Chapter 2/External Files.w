@@ -1,7 +1,9 @@
-[PL::Files::] External Files.
+[ExternalFiles::] External Files.
 
 To register the names associated with external files, and build
 the small I6 arrays associated with each.
+
+@ The test group |:files| exercises the features below.
 
 @ Each file can be text or binary, has a name, and can be owned by a this
 project, by an unspecified other project, or by a project named by IFID.
@@ -32,13 +34,19 @@ with an external file, read or written by the story file during play.
 kind *K_external_file = NULL;
 
 @ =
-void PL::Files::start(void) {
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Files::files_new_base_kind_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Files::files_new_named_instance_notify);
+void ExternalFiles::start(void) {
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
 }
 
 @ =
-int PL::Files::files_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
+int ExternalFiles::make_special_meanings(void) {
+	SpecialMeanings::declare(ExternalFiles::new_file_SMF, I"new-file", 2);
+	return FALSE;
+}
+
+int ExternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	if (Str::eq_wide_string(name, L"EXTERNAL_FILE_TY")) {
 		K_external_file = new_base; return TRUE;
 	}
@@ -46,7 +54,7 @@ int PL::Files::files_new_base_kind_notify(kind *new_base, text_stream *name, wor
 }
 
 int allow_exf_creations = FALSE;
-int PL::Files::files_new_named_instance_notify(instance *nc) {
+int ExternalFiles::files_new_named_instance_notify(instance *nc) {
 	if (K_external_file == NULL) return FALSE;
 	kind *K = Instances::to_kind(nc);
 	if (Kinds::eq(K, K_external_file)) {
@@ -55,14 +63,14 @@ int PL::Files::files_new_named_instance_notify(instance *nc) {
 				"this is not the way to create a new external file",
 				"which should be done with a special 'The File ... is called ...' "
 				"sentence.");
-		ATTACH_PLUGIN_DATA_TO_SUBJECT(files, nc->as_subject, PL::Files::new_external_file(nc));
+		ATTACH_PLUGIN_DATA_TO_SUBJECT(files, nc->as_subject, ExternalFiles::new_external_file(nc));
 		return TRUE;
 	}
 	return FALSE;
 }
 
 @ =
-external_file *PL::Files::new_external_file(instance *nc) {
+external_file *ExternalFiles::new_external_file(instance *nc) {
 	external_file *exf = CREATE(external_file);
 	return exf;
 }
@@ -132,7 +140,7 @@ letters or digits, with the first being a letter.
 	<external-file-sentence-subject>    ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 @ =
-int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
+int ExternalFiles::new_file_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "File... is the file..." */
@@ -148,14 +156,14 @@ int PL::Files::new_file_SMF(int task, parse_node *V, wording *NPs) {
 		case PASS_1_SMFT:
 			if (PluginManager::active(files_plugin) == FALSE)
 				internal_error("Files plugin inactive");
-			PL::Files::register_file(Node::get_text(V->next),
+			ExternalFiles::register_file(Node::get_text(V->next),
 				Node::get_text(V->next->next));
 			break;
 	}
 	return FALSE;
 }
 
-void PL::Files::register_file(wording F, wording FN) {
+void ExternalFiles::register_file(wording F, wording FN) {
 	int bad_filename = FALSE;
 	<external-file-sentence-object>(FN);
 	FN = Wordings::from(FN, <<r>>);
@@ -251,7 +259,7 @@ void PL::Files::register_file(wording F, wording FN) {
 External files are written in I6 as their array names:
 
 =
-void PL::Files::arrays(void) {
+void ExternalFiles::arrays(void) {
 	if (PluginManager::active(files_plugin) == FALSE) return;
 
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
@@ -304,7 +312,7 @@ void PL::Files::arrays(void) {
 More or less perfunctory, but still of some use, if only as a list.
 
 =
-void PL::Files::index_all(OUTPUT_STREAM) {
+void ExternalFiles::index_all(OUTPUT_STREAM) {
 	if (PluginManager::active(files_plugin) == FALSE) return;
 	external_file *exf;
 	if (NUMBER_CREATED(external_file) == 0) {

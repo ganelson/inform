@@ -277,10 +277,10 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			break;
 		}
 		case SEPARATE_FIGURES_PAYLOAD:
-			PL::Figures::write_copy_commands();
+			Figures::write_copy_commands();
 			break;
 		case SEPARATE_SOUNDS_PAYLOAD:
-			PL::Sounds::write_copy_commands();
+			Sounds::write_copy_commands();
 			break;
 	}
 
@@ -340,7 +340,7 @@ application sandboxing in Mac OS X in 2012 may force us to revisit this.
 	create_Materials = TRUE; /* thus making the next condition irrelevant */
 	if ((release_website) || (release_interpreter) || (release_booklet) || (release_postcard) ||
 		(release_cover) || (release_source) || (release_card) || (release_solution) ||
-		(Task::wraps_existing_storyfile()) || (NUMBER_CREATED(blorb_figure) > 1)) {
+		(Task::wraps_existing_storyfile()) || (NUMBER_CREATED(figures_data) > 1)) {
 		create_Materials = TRUE;
 	}
 	if (create_Materials) {
@@ -526,7 +526,7 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 	text_stream xf_struct; text_stream *xf = &xf_struct;
 	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
 		Problems::fatal_on_file("Can't open manifest file", F);
-	PL::Figures::write_picture_manifest(xf, release_cover, cover_art_format);
+	Figures::write_picture_manifest(xf, release_cover, cover_art_format);
 	STREAM_CLOSE(xf);
 
 @ For the format of this file, see the Treaty of Babel.
@@ -641,7 +641,7 @@ in February 2014.
 		Word::dequote(cover_alt_text);
 		WRITE("<description>%N</description>\n", cover_alt_text);
 	} else {
-		WRITE("<description>%w</description>\n", PL::Figures::description_of_cover_art());
+		WRITE("<description>%w</description>\n", Figures::description_of_cover_art());
 	}
 	OUTDENT; WRITE("</cover>\n");
 
@@ -852,8 +852,8 @@ the Blorb-file's filename won't be too long for the file system.
 	WRITE("\n! Blorb instructions\n\n");
 	@<Tell Inblorb where the story file and iFiction files are@>;
 	@<Give instructions about the cover image@>;
-	PL::Figures::write_blurb_commands(OUT);
-	PL::Sounds::write_blurb_commands(OUT);
+	Figures::write_blurb_commands(OUT);
+	Sounds::write_blurb_commands(OUT);
 	WRITE("\n! Placeholder variables\n\n");
 	@<Write numerous placeholder variables@>;
 	WRITE("\n! Other material to release\n\n");

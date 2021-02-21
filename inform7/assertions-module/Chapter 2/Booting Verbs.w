@@ -103,9 +103,7 @@ be a single word, and are hyphenated.
 	SpecialMeanings::declare(Sentences::DLRs::include_in_SMF, I"include-in", 4);
 	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF, I"omit-from", 4);
 
-	#ifdef MULTIMEDIA_MODULE
-	MultimediaMeanings::bootstrap();
-	#endif
+	PluginCalls::make_special_meanings();
 	#ifdef IF_MODULE
 	IFModuleMeanings::bootstrap();
 	#endif

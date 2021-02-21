@@ -21,3 +21,7 @@ Chapter 2: Indexing
 	Variables
 	Properties
 	Inferences
+
+Chapter 3: Indexing for Plugins
+	Figures
+	Sound Effects

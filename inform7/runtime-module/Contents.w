@@ -57,3 +57,7 @@ Chapter 4: Compilation Utilities
 	Relations at Run Time
 	Literal Patterns at Run Time
 	Runtime Support for Tables
+
+Chapter 5: Plugin Support
+	Figures
+	Sound Effects

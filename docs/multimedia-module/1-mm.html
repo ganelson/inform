@@ -74,13 +74,13 @@ which use this module:
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This module defines the following classes:
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">blorb_figure_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">blorb_sound_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">figures_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">sounds_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">external_file_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">blorb_figure</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">blorb_sound</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">figures_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">sounds_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">external_file</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
@@ -96,9 +96,9 @@ which use this module:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MultimediaModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"multimedia"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">figures_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-fgr.html#SP4" class="function-link"><span class="function-syntax">PL::Figures::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"figures"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">sounds_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-se.html#SP3" class="function-link"><span class="function-syntax">PL::Sounds::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"sounds"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">files_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-ef.html#SP3" class="function-link"><span class="function-syntax">PL::Files::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"glulx external files"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">figures_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-fgr.html#SP1" class="function-link"><span class="function-syntax">Figures::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"figures"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sounds_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-se.html#SP1" class="function-link"><span class="function-syntax">Sounds::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"sounds"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">files_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-ef.html#SP4" class="function-link"><span class="function-syntax">ExternalFiles::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"glulx external files"</span><span class="plain-syntax">, </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">FIGURE_CREATIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"figure creations"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -106,7 +106,7 @@ which use this module:
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">mm</li><li class="progresssection"><a href="1-msm.html">msm</a></li><li class="progresschapter"><a href="2-fgr.html">2</a></li><li class="progressnext"><a href="1-msm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">mm</li><li class="progresschapter"><a href="2-fgr.html">2</a></li><li class="progressnext"><a href="2-fgr.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

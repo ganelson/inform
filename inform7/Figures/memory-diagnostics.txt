@@ -1,13 +1,13 @@
 Total memory consumption was 260176K = 254 MB
 
-62.7% was used for 1338083 objects, in 278605 frames in 204 x 800K = 163200K = 159 MB:
+62.7% was used for 1338084 objects, in 278606 frames in 204 x 800K = 163200K = 159 MB:
 
      9.7%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.4%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
      3.9%  parse_node                               129993 objects, 10399440 bytes
      2.7%  verb_conjugation                         160 objects, 7425280 bytes
      2.5%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
-     2.4%  linked_list                              11777 objects, 6595120 bytes
+     2.4%  linked_list                              11778 objects, 6595680 bytes
      2.3%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes
      1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
      1.1%  map_data                                 670 objects, 3178480 bytes
@@ -218,7 +218,7 @@ Total memory consumption was 260176K = 254 MB
      ----  inter_warehouse                          1 object, 56 bytes
      ----  build_methodology                        1 object, 56 bytes
      ----  star_invention                           1 object, 48 bytes
-     ----  blorb_figure                             1 object, 48 bytes
+     ----  figures_data                             1 object, 48 bytes
      ----  HTML_file_state                          1 object, 48 bytes
      ----  parse_name_notice                        1 object, 40 bytes
      ----  by_routine_bp_data                       1 object, 40 bytes
@@ -243,5 +243,5 @@ Total memory consumption was 260176K = 254 MB
      ----  emitter array storage                    14368 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.4% was overhead - 54402376 bytes = 53127K = 51 MB
+20.4% was overhead - 54401816 bytes = 53126K = 51 MB
 

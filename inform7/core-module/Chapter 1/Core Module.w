@@ -11,10 +11,9 @@ Setting up the use of this module.
 =
 void CoreModule::start(void) {
 	core_plugin = PluginManager::new(NULL, I"core", NULL);
-	naming_plugin = PluginManager::new(&PL::Naming::start, I"naming",
-		core_plugin);
-	counting_plugin = PluginManager::new(&PL::Counting::start,
-		I"instance counting", core_plugin);
+	naming_plugin = PluginManager::new(&PL::Naming::start, I"naming", core_plugin);
+	counting_plugin = PluginManager::new(&PL::Counting::start, I"instance counting", core_plugin);
+
 	Writers::register_writer_I('B', &CoreModule::writer);
 	CorePreform::set_core_internal_NTIs();
 	CoreSyntax::declare_annotations();
@@ -22,7 +21,7 @@ void CoreModule::start(void) {
 void CoreModule::end(void) {
 }
 
-@ The main part of Inform contains only two plugins, and one of those ("core")
+@ The main part of Inform contains only three plugins, and one of those ("core")
 is compulsory anyway:
 
 = (early code)

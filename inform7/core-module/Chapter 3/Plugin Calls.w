@@ -63,6 +63,19 @@ int PluginCalls::irregular_genitive(inference_subject *owner, text_stream *genit
 	PLUGINS_CALL(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, owner, genitive, propriety);
 }
 
+@ Called from //assertions: Booting Verbs// to give each plugin a chance to
+create any special sentence meanings it would like to. For example, the
+sounds plugin defines a special form of assertion sentence this way. The
+plugin should always return |FALSE|, since otherwise it may gazump other
+plugins and cause them to stop working.
+
+@e MAKE_SPECIAL_MEANINGS_PLUG
+
+=
+int PluginCalls::make_special_meanings(void) {
+	PLUGINS_CALLV(MAKE_SPECIAL_MEANINGS_PLUG);
+}
+
 @ Called from //assertions: Assertions// when it seems that the author wants
 to create a property of something with a sentence like "A container has a
 number called security rating." A plugin can intervene and act on that,
