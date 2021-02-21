@@ -10,6 +10,7 @@ void Figures::start(void) {
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Figures::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Figures::figures_new_base_kind_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Figures::figures_new_named_instance_notify);
+	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, RTFigures::compile_ResourceIDsOfFigures_array);
 }
 
 @h One special meaning.
@@ -97,7 +98,7 @@ void Figures::register_figure(wording W, wording FN) {
 		WRITE_TO(leaf, "%N", wn);
 		DISCARD_TEXT(leaf)
 		filename *figure_file = NULL;
-		if (wn >= 0) Filenames::in(Task::figures_path(), leaf);
+		if (wn >= 0) figure_file = Filenames::in(Task::figures_path(), leaf);
 		Figures::figures_create(W, id, figure_file, <<alttext>>);
 		LOGIF(MULTIMEDIA_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
 			W, figure_file, id);

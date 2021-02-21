@@ -12,6 +12,7 @@ void ExternalFiles::start(void) {
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
+	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, RTExternalFiles::arrays);
 }
 
 @h One special meaning.

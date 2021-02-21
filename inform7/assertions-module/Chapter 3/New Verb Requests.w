@@ -259,8 +259,10 @@ now absolutely any non-empty word range is accepted as the property name.
 		==> { NONE_VERBM, - };
 	}
 
-@ So we can now use the above grammar to understand the definition of the
-verb.
+@ So we can now use the above grammar to understand the definition of the verb.
+Note that it is legal, but does nothing, to request a built-in meaning which
+does not exist: this allows for Basic Inform to mention built-in meanings
+which exist only when certain plugins are active.
 
 @<Find the verb meaning and priority@> =
 	<verb-definition>(Node::get_text(V->next->next));
@@ -278,17 +280,7 @@ verb.
 			wording MW = GET_RW(<verb-definition>, 1);
 			special_meaning_holder *smh = SpecialMeanings::find_from_wording(MW);
 			if (smh == NULL) {
-				#ifndef IF_MODULE
-				source_file *pos = Lexer::file_of_origin(Wordings::first_wn(MW));
-				inform_extension *loc = Extensions::corresponding_to(pos);
-				if (Extensions::is_standard(loc)) return;
-				#endif
-				StandardProblems::sentence_problem(Task::syntax_tree(),
-					_p_(PM_NoSuchBuiltInMeaning),
-					"that's not one of the built-in meanings I know",
-					"and should be one of the ones used in the Preamble to the "
-					"Standard Rules.");
-				vm = VerbMeanings::regular(R_equality);
+				return;
 			} else {
 				vm = VerbMeanings::special(smh);
 				priority = SpecialMeanings::get_metadata_N(smh);

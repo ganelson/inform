@@ -16,9 +16,7 @@ external_file_compilation_data RTExternalFiles::new_data(wording W) {
 	return efcd;
 }
 
-void RTExternalFiles::arrays(void) {
-	if (PluginManager::active(files_plugin) == FALSE) return;
-
+int RTExternalFiles::arrays(void) {
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
 	Emit::named_numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -26,7 +24,8 @@ void RTExternalFiles::arrays(void) {
 	files_data *exf;
 	LOOP_OVER(exf, files_data) {
 		if (exf->file_ownership == OWNED_BY_SPECIFIC_PROJECT) {
-			packaging_state save = Emit::named_string_array_begin(exf->compilation_data.IFID_array_iname, K_value);
+			packaging_state save =
+				Emit::named_string_array_begin(exf->compilation_data.IFID_array_iname, K_value);
 			TEMPORARY_TEXT(II)
 			WRITE_TO(II, "//%S//", exf->IFID_of_owner);
 			Emit::array_text_entry(II);
@@ -63,4 +62,5 @@ void RTExternalFiles::arrays(void) {
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
+	return FALSE;
 }
