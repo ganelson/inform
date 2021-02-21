@@ -50,10 +50,10 @@ int Figures::new_figure_SMF(int task, parse_node *V, wording *NPs) {
 	<new-figure-sentence-object-unarticled>                       ==> { pass 1 }
 
 <new-figure-sentence-object-unarticled> ::=
-	file <np-unparsed>                                       ==> { TRUE, RP[1] }
+	file <np-unparsed>                                            ==> { TRUE, RP[1] }
 
 <nounphrase-figure> ::=
-	figure ...                         ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
+	figure ...                           ==> { 0, Diagrams::new_UNPARSED_NOUN(W) }
 
 <figure-sentence-object> ::=
 	<figure-source> ( <quoted-text> ) |  ==> { R[1], -, <<alttext>> = R[2] }
@@ -99,7 +99,7 @@ void Figures::register_figure(wording W, wording FN) {
 		filename *figure_file = NULL;
 		if (wn >= 0) Filenames::in(Task::figures_path(), leaf);
 		Figures::figures_create(W, id, figure_file, <<alttext>>);
-		LOGIF(FIGURE_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
+		LOGIF(MULTIMEDIA_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
 			W, figure_file, id);
 	}
 }

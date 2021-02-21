@@ -207,7 +207,7 @@ DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(test_scenario)
 
-@ And finally //index// --
+@ //index// --
 
 @e contents_entry_CLASS
 @e documentation_ref_CLASS
@@ -221,3 +221,14 @@ DECLARE_CLASS(documentation_ref)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
 DECLARE_CLASS(index_lexicon_entry)
+
+@ //multimedia// --
+
+@e figures_data_CLASS
+@e sounds_data_CLASS
+@e files_data_CLASS
+
+=
+DECLARE_CLASS(figures_data)
+DECLARE_CLASS(sounds_data)
+DECLARE_CLASS(files_data)

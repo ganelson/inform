@@ -221,7 +221,7 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Manager::rulebooks_array)
 	BENCH_IF(scenes_plugin, PL::Scenes::DetectSceneChange_routine)
 	BENCH_IF(scenes_plugin, PL::Scenes::ShowSceneStatus_routine)
-	BENCH(ExternalFiles::arrays)
+	BENCH(RTExternalFiles::arrays)
 	BENCH(Rulebooks::rulebook_var_creators)
 	BENCH(Activities::activity_var_creators)
 	BENCH(RTRelations::IterateRelations)

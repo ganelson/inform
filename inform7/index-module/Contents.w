@@ -25,3 +25,4 @@ Chapter 2: Indexing
 Chapter 3: Indexing for Plugins
 	Figures
 	Sound Effects
+	External Files

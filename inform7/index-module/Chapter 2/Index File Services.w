@@ -589,7 +589,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		#ifdef MULTIMEDIA_MODULE
 		IXFigures::index_all(OUT);
 		IXSounds::index_all(OUT);
-		ExternalFiles::index_all(OUT);
+		IXExternalFiles::index_all(OUT);
 		#endif
 		return;
 	}

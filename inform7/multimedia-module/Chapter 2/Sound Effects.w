@@ -91,7 +91,7 @@ void Sounds::register_sound(wording W, wording FN) {
 		DISCARD_TEXT(leaf)
 		filename *sound_file = Filenames::in(Task::sounds_path(), leaf);
 		Sounds::sounds_create(W, id, sound_file, <<alttext>>);
-		LOGIF(FIGURE_CREATIONS,
+		LOGIF(MULTIMEDIA_CREATIONS,
 			"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);
 	}
 }
