@@ -255,12 +255,12 @@ void Figures::write_blurb_commands(OUTPUT_STREAM) {
 @ The following is used only with the "separate figures" release option.
 
 =
-void Figures::write_copy_commands(void) {
+void Figures::write_copy_commands(release_instructions *rel) {
 	if (PluginManager::active(figures_plugin) == FALSE) return;
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
 		if (figd->figure_number > 1)
-			PL::Bibliographic::Release::create_aux_file(figd->filename_of_image_file,
+			ReleaseInstructions::add_aux_file(rel, figd->filename_of_image_file,
 				Task::released_figures_path(), L"--", SEPARATE_FIGURES_PAYLOAD);
 }
 

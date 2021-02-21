@@ -214,11 +214,11 @@ void Sounds::write_blurb_commands(OUTPUT_STREAM) {
 @ The following is used only with the "separate figures" release option.
 
 =
-void Sounds::write_copy_commands(void) {
+void Sounds::write_copy_commands(release_instructions *rel) {
 	if (PluginManager::active(sounds_plugin) == FALSE) return;
 	sounds_data *sd;
 	LOOP_OVER(sd, sounds_data)
-		PL::Bibliographic::Release::create_aux_file(
+		ReleaseInstructions::add_aux_file(rel, 
 			sd->filename_of_sound_file,
 			Task::released_sounds_path(),
 			L"--",

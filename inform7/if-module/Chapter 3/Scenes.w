@@ -88,9 +88,16 @@ including bit 1 which records whether the scene has started.
 
 =
 void PL::Scenes::start(void) {
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Scenes::make_special_meanings);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Scenes::scenes_new_property_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Scenes::scenes_new_named_instance_notify);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Scenes::scenes_new_base_kind_notify);
+}
+
+int PL::Scenes::make_special_meanings(void) {
+	SpecialMeanings::declare(PL::Scenes::begins_when_SMF, I"scene-begins-when", 1);
+	SpecialMeanings::declare(PL::Scenes::ends_when_SMF, I"scene-ends-when", 1);
+	return FALSE;
 }
 
 @ To detect "scene" and "recurring":

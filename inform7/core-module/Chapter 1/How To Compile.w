@@ -160,7 +160,6 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
-	BENCH(PL::Bibliographic::IFID::define_UUID)
 	BENCH(PL::Player::InitialSituation)
 	BENCH(Tables::check_tables_for_kind_clashes)
 	BENCH(RTTables::compile_print_table_names)
@@ -185,7 +184,6 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
 	BENCH(RTUseOptions::compile_pragmas)
 	BENCH(FundamentalConstants::emit_build_number)
-	BENCH(PL::Bibliographic::compile_constants)
 	BENCH(RTExtensions::ShowExtensionVersions_routine)
 	BENCH(Kinds::Constructors::emit_constants)
 	BENCH_IF(scoring_plugin, PL::Score::compile_max_score)
@@ -278,5 +276,5 @@ so on. Those absolute basics are made here.
 
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);
-	BENCH_IF(bibliographic_plugin, PL::Bibliographic::Release::write_ifiction_and_blurb);
+	BENCH(PluginCalls::post_compilation);
 	BENCH(I6T::produce_index);

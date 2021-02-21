@@ -30,7 +30,7 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 		WRITE_TO(the_author_name, "%S", E->as_copy->edition->work->author_name);
 		int self_penned = FALSE;
 		#ifdef IF_MODULE
-		if (PL::Bibliographic::story_author_is(the_author_name)) self_penned = TRUE;
+		if (BibliographicData::story_author_is(the_author_name)) self_penned = TRUE;
 		#endif
 		if (((E == NULL) || (E->authorial_modesty == FALSE)) && /* if (1) extension doesn't ask to be modest */
 			((general_authorial_modesty == FALSE) || /* and (2) author doesn't ask to be modest, or... */

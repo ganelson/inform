@@ -48,7 +48,7 @@ int RTExternalFiles::arrays(void) {
 		Emit::array_text_entry(WW);
 		DISCARD_TEXT(WW)
 		switch (exf->file_ownership) {
-			case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(PL::Bibliographic::IFID::UUID()); break;
+			case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(RTBibliographicData::IFID_iname()); break;
 			case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;
 			case OWNED_BY_SPECIFIC_PROJECT: Emit::array_iname_entry(exf->compilation_data.IFID_array_iname); break;
 		}

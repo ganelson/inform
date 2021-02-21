@@ -4,16 +4,19 @@ Purpose: The interactive-fiction specific layer of Inform, as a module.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Starting Up
 	IF Module
-	IF Special Meanings
 
 Chapter 2: Bibliographic Data
 "Our project is a kind of interactive book, with ISBN-like data and various
 cataloguing information, and which needs to be bound up in various ways."
-	Interactive Fiction ID
 	Bibliographic Data
 	Release Instructions
+	The iFiction Record
+	The Blurb File
 
 Chapter 3: Space and Time
 "The default model domain for Inform is one which is adapted to interactive

@@ -104,9 +104,6 @@ be a single word, and are hyphenated.
 	SpecialMeanings::declare(Sentences::DLRs::omit_from_SMF, I"omit-from", 4);
 
 	PluginCalls::make_special_meanings();
-	#ifdef IF_MODULE
-	IFModuleMeanings::bootstrap();
-	#endif
 
 @ We need the English infinitive forms of two verbs to get started. In each
 case we use the //inflections// module to conjugate them -- i.e., to generate

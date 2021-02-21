@@ -382,3 +382,16 @@ the mapping plugin uses this to say where a door leads.
 int PluginCalls::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 	PLUGINS_CALL(ANNOTATE_IN_WORLD_INDEX_PLUG, OUT, O);
 }
+
+@h Influencing core itself.
+Called from //core: How To Compile//. This is called when a successful
+compilation has finished, and is used, for example, by the bibliographic data
+plugin as an opportunity to write out release instructions.
+
+@e POST_COMPILATION_PLUG
+
+=
+int PluginCalls::post_compilation(void) {
+	PLUGINS_CALLV(POST_COMPILATION_PLUG);
+}
+

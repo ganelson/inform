@@ -61,10 +61,16 @@ parsing_pp_data *PL::Parsing::Visibility::new_pp_data(property_permission *pp) {
 
 =
 void PL::Parsing::Visibility::start(void) {
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Parsing::Visibility::make_special_meanings);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Parsing::Visibility::parsing_new_variable_notify);
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Parsing::Visibility::parsing_new_subject_notify);
 	PluginManager::plug(NEW_PERMISSION_NOTIFY_PLUG, PL::Parsing::Visibility::parsing_new_permission_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Parsing::Visibility::parsing_complete_model);
+}
+
+int PL::Parsing::Visibility::make_special_meanings(void) {
+	SpecialMeanings::declare(PL::Parsing::understand_as_SMF, I"understand-as", 1);
+	return FALSE;
 }
 
 int PL::Parsing::Visibility::parsing_new_subject_notify(inference_subject *subj) {

@@ -34,6 +34,7 @@ which use this module:
 @e parsing_pp_data_CLASS
 @e part_of_inference_data_CLASS
 @e regions_data_CLASS
+@e release_instructions_CLASS
 @e reserved_command_verb_CLASS
 @e rubric_holder_CLASS
 @e scene_CLASS
@@ -73,6 +74,7 @@ DECLARE_CLASS(parsing_data)
 DECLARE_CLASS(parsing_pp_data)
 DECLARE_CLASS(part_of_inference_data)
 DECLARE_CLASS(regions_data)
+DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(reserved_command_verb)
 DECLARE_CLASS(rubric_holder)
 DECLARE_CLASS(scene)
@@ -112,6 +114,7 @@ void IFModule::start(void) {
 	@<Create this module's plugins@>;
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	ReleaseInstructions::start();
 	WherePredicates::start();
 	PL::SpatialRelations::start();
 	PL::MapDirections::start();
@@ -134,7 +137,7 @@ void IFModule::end(void) {
 	showme_plugin = PluginManager::new(&PL::Showme::start, I"showme", if_plugin);
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", if_plugin);
 	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", if_plugin);
-	bibliographic_plugin = PluginManager::new(&PL::Bibliographic::start, I"bibliographic data", if_plugin);
+	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", if_plugin);
 	chronology_plugin = PluginManager::new(NULL, I"chronology", if_plugin);
 
 @

@@ -586,11 +586,9 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Fi")) {
-		#ifdef MULTIMEDIA_MODULE
 		IXFigures::index_all(OUT);
 		IXSounds::index_all(OUT);
 		IXExternalFiles::index_all(OUT);
-		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Tb")) {
@@ -599,7 +597,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"Cd")) {
 		#ifdef IF_MODULE
-		PL::Bibliographic::index_library_card(OUT);
+		IXBibliographicData::Library_Card(OUT);
 		#endif
 		return;
 	}

@@ -167,6 +167,7 @@ void PL::Map::start(void) {
 	METHOD_ADD(DIRECTION_INF, LOG_DETAILS_INF_MTID, PL::Map::log_direction_inf);
 	METHOD_ADD(DIRECTION_INF, COMPARE_INF_MTID, PL::Map::cmp_direction_inf);
 
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Map::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Map::map_new_base_kind_notify);
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Map::map_new_subject_notify);
 	PluginManager::plug(SET_KIND_NOTIFY_PLUG, PL::Map::map_set_kind_notify);
@@ -180,6 +181,11 @@ void PL::Map::start(void) {
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Map::map_intervene_in_assertion);
 	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Map::map_add_to_World_index);
 	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Map::map_annotate_in_World_index);
+}
+
+int PL::Map::make_special_meanings(void) {
+	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF, I"index-map-with", 4);
+	return FALSE;
 }
 
 @ =

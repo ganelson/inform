@@ -3,7 +3,7 @@ What This Module Does.
 An overview of the multimedia module's role and abilities.
 
 @h Prerequisites.
-The knowledge module is a part of the Inform compiler toolset. It is
+The multimedia module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
 (a) It helps to have some experience of reading webs: see //inweb// for more.
 (b) The module is written in C, in fact ANSI C99, but this is disguised by the

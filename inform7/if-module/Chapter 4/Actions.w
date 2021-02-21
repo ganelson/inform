@@ -97,6 +97,7 @@ kind *K_description_of_action = NULL;
 
 @ =
 void PL::Actions::start(void) {
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Actions::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Actions::actions_new_base_kind_notify);
 	PluginManager::plug(COMPILE_CONSTANT_PLUG, PL::Actions::actions_compile_constant);
 	PluginManager::plug(OFFERED_PROPERTY_PLUG, PL::Actions::actions_offered_property);
@@ -105,6 +106,11 @@ void PL::Actions::start(void) {
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
+}
+
+int PL::Actions::make_special_meanings(void) {
+	SpecialMeanings::declare(PL::Actions::new_action_SMF, I"new-action", 2);
+	return FALSE;
 }
 
 @ =

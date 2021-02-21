@@ -129,7 +129,7 @@ organisation, and are not directly functional in themselves.
 			break;
 		case BIBLIOGRAPHIC_NT:
 			#ifdef IF_MODULE
-			if (global_pass_state.pass == 2) PL::Bibliographic::bibliographic_data(p);
+			if (global_pass_state.pass == 2) BibliographicData::bibliographic_data(p);
 			#endif
 			break;
 

@@ -1,34 +1,80 @@
-[PL::Bibliographic::Release::] Release Instructions.
+[ReleaseInstructions::] Release Instructions.
 
 To write the iFiction record for the work of IF compiled, its
 release instructions and its picture manifest, if any.
 
-@ Much of this section is best understood by reference to the Treaty of
-Babel, a cross-IF-system standard for bibliographic data and packaging
-agreed between the major IF design systems in 2006. Inform aims to comply
-fully with the Treaty and the code below should be maintained as such.
+@h Sets of release instructions.
+It is hard to imagine that we will ever need to think about two sets of
+release instructions at the same time, but for tidiness we still bundle up
+everything to do with a release into a singleton instance of the following.
 
-@ The following somewhat miscellaneous variables hold the instructions given
-in the source text for how to release the story file -- the content of
-any "Release along with..." sentences, in fact.
+A "zbyte" is a byte from a Z-machine story file.
+
+@d LENGTH_OF_STORY_FILE_HEADER 0x40
+@d zbyte unsigned char
 
 =
-int release_website = FALSE; /* Release along with a website? */
-wchar_t *website_template_leafname = L"Standard"; /* If so, the template name for it */
-int release_interpreter = FALSE; /* Release along with an interpreter? */
-text_stream *interpreter_template_leafname = NULL; /* If so, the template name for it */
-int release_booklet = FALSE; /* Release along with introductory booklet? */
-int release_postcard = FALSE; /* Release along with Zarf's IF card? */
-int release_cover = FALSE; /* Release along with cover art? */
-parse_node *cover_filename_sentence = NULL; /* Where this was requested */
-int cover_alt_text = -1; /* ALT text in case cover is displayed in HTML */
-int release_solution = FALSE; /* Release along with a solution? */
-int release_source = FALSE; /* Release along with the source text? */
-int release_card = FALSE; /* Release along with the iFiction card? */
-int solution_public = FALSE; /* If released, will this be linked on a website? */
-int source_public = TRUE; /* If released, will this be linked on a website? */
-int card_public = FALSE; /* If released, will this be linked on a website? */
-int create_Materials = FALSE; /* Create a Materials folder if one doesn't exist already */
+typedef struct release_instructions {
+	int release_website; /* Release along with a website? */
+	wchar_t *website_template_leafname; /* If so, the template name for it */
+	int release_interpreter; /* Release along with an interpreter? */
+	struct text_stream *interpreter_template_leafname; /* If so, the template name for it */
+	int release_booklet; /* Release along with introductory booklet? */
+	int release_postcard; /* Release along with Zarf's IF card? */
+	int release_cover; /* Release along with cover art? */
+	struct parse_node *cover_filename_sentence; /* Where this was requested */
+	int cover_alt_text; /* ALT text in case cover is displayed in HTML */
+	int release_solution; /* Release along with a solution? */
+	int release_source; /* Release along with the source text? */
+	int release_card; /* Release along with the iFiction card? */
+	int solution_public; /* If released, will this be linked on a website? */
+	int source_public; /* If released, will this be linked on a website? */
+	int card_public; /* If released, will this be linked on a website? */
+	struct linked_list *aux_files; /* of |auxiliary_file| */
+	int create_Materials; /* Create a Materials folder if one doesn't exist already */
+	int cover_picture_number; /* ID for the cover art (usually 1) */
+	char *cover_art_format; /* such as "jpg" */
+	unsigned int width; /* in pixels */
+	unsigned int height; /* in pixels */
+	zbyte existing_story_header[LENGTH_OF_STORY_FILE_HEADER]; /* a byte array, not a C string */
+	CLASS_DEFINITION
+} release_instructions;
+
+@ =
+release_instructions *ReleaseInstructions::new_set(void) {
+	release_instructions *set = CREATE(release_instructions);
+	set->release_website = FALSE;
+	set->website_template_leafname = L"Standard";
+	set->release_interpreter = FALSE;
+	set->interpreter_template_leafname = NULL;
+	set->release_booklet = FALSE;
+	set->release_postcard = FALSE;
+	set->release_cover = FALSE;
+	set->cover_filename_sentence = NULL;
+	set->cover_alt_text = -1;
+	set->release_solution = FALSE;
+	set->release_source = FALSE;
+	set->release_card = FALSE;
+	set->solution_public = FALSE;
+	set->source_public = TRUE;
+	set->card_public = FALSE;
+	set->aux_files = NEW_LINKED_LIST(auxiliary_file);
+	set->create_Materials = FALSE;
+	set->cover_picture_number = 0;
+	set->cover_art_format = NULL;
+	set->width = 0; set->height = 0;
+	for (int i=0; i<LENGTH_OF_STORY_FILE_HEADER; i++) set->existing_story_header[i] = 0;
+	return set;
+}
+
+@ And this is the singleton set of instructions for our current project:
+
+=
+release_instructions *my_instructions = NULL;
+
+void ReleaseInstructions::start(void) {
+	my_instructions = ReleaseInstructions::new_set();
+}
 
 @ Auxiliary files are not really files to us at all: simply names passed along.
 They are the auxiliary files included in the iFiction record generated
@@ -46,11 +92,46 @@ typedef struct auxiliary_file {
 	CLASS_DEFINITION
 } auxiliary_file;
 
-@ A sentence like this allows for a shopping list of release ingredients:
+@ =
+void ReleaseInstructions::add_aux_file(release_instructions *rel,
+	filename *name, pathname *fold, wchar_t *desc, int payload) {
+	auxiliary_file *af = CREATE(auxiliary_file);
+	af->name_of_original_file = name;
+	af->folder_to_release_to = fold;
+	af->brief_description = Str::new();
+	WRITE_TO(af->brief_description, "%w", desc);
+	af->from_payload = payload;
+	ADD_TO_LINKED_LIST(af, auxiliary_file, rel->aux_files);
+}
+
+@h Release with sentences.
+A sentence like the following allows for a shopping list of release ingredients:
 
 >> Release along with a public source text and a website.
 
 The object noun phrase is an articled list, and each entry must match this.
+Most of the things in this list are "payloads", that is, individual items to
+release as part of the complete collection, and these are numbered thus:
+
+@d SOLUTION_PAYLOAD 0
+@d SOURCE_TEXT_PAYLOAD 1
+@d LIBRARY_CARD_PAYLOAD 2
+@d COVER_ART_PAYLOAD 3
+@d EXISTING_STORY_FILE_PAYLOAD 4
+@d AUXILIARY_FILE_PAYLOAD 5
+@d BOOKLET_PAYLOAD 6
+@d POSTCARD_PAYLOAD 7
+@d WEBSITE_PAYLOAD 8
+@d THEMED_WEBSITE_PAYLOAD 9
+@d INTERPRETER_PAYLOAD 10
+@d THEMED_INTERPRETER_PAYLOAD 11
+@d HIDDEN_FILE_PAYLOAD 12
+@d HIDDEN_FILE_IN_PAYLOAD 13
+@d SEPARATE_FIGURES_PAYLOAD 14
+@d SEPARATE_SOUNDS_PAYLOAD 15
+@d CSS_PAYLOAD 16
+@d JAVASCRIPT_PAYLOAD 17
+@d NAMED_EXISTING_STORY_FILE_PAYLOAD 18
 
 =
 <release-sentence-object> ::=
@@ -99,10 +180,12 @@ optionally be marked "public" (they appear on any website about it) or
 	source text |
 	library card
 
-@ And here is the handling code which uses the grammar above:
+@ And here is the special meaning function which uses the grammar above. Note
+that we accept almost any sentence here -- but that this is because the meaning
+is only given for sentences beginning "Release with...".
 
 =
-int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, wording *NPs) {
+int ReleaseInstructions::release_along_with_SMF(int task, parse_node *V, wording *NPs) {
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	switch (task) { /* "Use American dialect." */
 		case ACCEPT_SMFT:
@@ -112,35 +195,16 @@ int PL::Bibliographic::Release::release_along_with_SMF(int task, parse_node *V, 
 		case ALLOW_IN_OPTIONS_FILE_SMFT:
 			return TRUE;
 		case PASS_1_SMFT:
-			PL::Bibliographic::Release::handle_release_declaration_inner(V->next);
+			ReleaseInstructions::handle_release_declaration_inner(V->next);
 			break;
 	}
 	return FALSE;
 }
 
-@ =
-void PL::Bibliographic::Release::visit_to_quote(OUTPUT_STREAM, parse_node *p) {
-	if ((Node::get_type(p) == SENTENCE_NT) && (p->down)) {
-		special_meaning_holder *sm = Node::get_special_meaning(p->down);
-		if (SpecialMeanings::is(sm, PL::Bibliographic::Release::release_along_with_SMF)) {
-			TEMPORARY_TEXT(TEMP)
-			Index::link_to(TEMP, Wordings::first_wn(Node::get_text(p)), TRUE);
-			WRITE("status instruction ||");
-			STREAM_COPY(OUT, TEMP);
-			WRITE("||\n");
-			DISCARD_TEXT(TEMP)
-		}
-	}
-}
-
-void PL::Bibliographic::Release::handle_release_declaration(parse_node *p) {
-	PL::Bibliographic::Release::handle_release_declaration_inner(p->down->next);
-}
-
-void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p) {
+void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 	if (Node::get_type(p) == AND_NT) {
-		PL::Bibliographic::Release::handle_release_declaration_inner(p->down);
-		PL::Bibliographic::Release::handle_release_declaration_inner(p->down->next);
+		ReleaseInstructions::handle_release_declaration_inner(p->down);
+		ReleaseInstructions::handle_release_declaration_inner(p->down->next);
 		return;
 	}
 	current_sentence = p;
@@ -150,52 +214,32 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		@<Issue a bad release instruction problem message@>;
 }
 
-@ The items to release are called "payloads".
-
-@d SOLUTION_PAYLOAD 0
-@d SOURCE_TEXT_PAYLOAD 1
-@d LIBRARY_CARD_PAYLOAD 2
-@d COVER_ART_PAYLOAD 3
-@d EXISTING_STORY_FILE_PAYLOAD 4
-@d AUXILIARY_FILE_PAYLOAD 5
-@d BOOKLET_PAYLOAD 6
-@d POSTCARD_PAYLOAD 7
-@d WEBSITE_PAYLOAD 8
-@d THEMED_WEBSITE_PAYLOAD 9
-@d INTERPRETER_PAYLOAD 10
-@d THEMED_INTERPRETER_PAYLOAD 11
-@d HIDDEN_FILE_PAYLOAD 12
-@d HIDDEN_FILE_IN_PAYLOAD 13
-@d SEPARATE_FIGURES_PAYLOAD 14
-@d SEPARATE_SOUNDS_PAYLOAD 15
-@d CSS_PAYLOAD 16
-@d JAVASCRIPT_PAYLOAD 17
-@d NAMED_EXISTING_STORY_FILE_PAYLOAD 18
+@ 
 
 @<Respond to an individual release instruction@> =
 	int payload = <<r>>;
 	switch (payload) {
 		case SOLUTION_PAYLOAD:
-			release_solution = TRUE;
-			if (<<privacy>> != NOT_APPLICABLE) solution_public = <<privacy>>;
+			my_instructions->release_solution = TRUE;
+			if (<<privacy>> != NOT_APPLICABLE) my_instructions->solution_public = <<privacy>>;
 			break;
 		case SOURCE_TEXT_PAYLOAD:
-			release_source = TRUE;
-			if (<<privacy>> != NOT_APPLICABLE) source_public = <<privacy>>;
+			my_instructions->release_source = TRUE;
+			if (<<privacy>> != NOT_APPLICABLE) my_instructions->source_public = <<privacy>>;
 			break;
 		case LIBRARY_CARD_PAYLOAD:
-			release_card = TRUE;
-			if (<<privacy>> != NOT_APPLICABLE) card_public = <<privacy>>;
+			my_instructions->release_card = TRUE;
+			if (<<privacy>> != NOT_APPLICABLE) my_instructions->card_public = <<privacy>>;
 			break;
 		case COVER_ART_PAYLOAD:
-			release_cover = TRUE;
-			cover_alt_text = <<alttext>>;
-			cover_filename_sentence = current_sentence;
+			my_instructions->release_cover = TRUE;
+			my_instructions->cover_alt_text = <<alttext>>;
+			my_instructions->cover_filename_sentence = current_sentence;
 			break;
 		case EXISTING_STORY_FILE_PAYLOAD:
 		case NAMED_EXISTING_STORY_FILE_PAYLOAD:
 			if (TargetVMs::is_16_bit(Task::vm()) == FALSE) {
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* not usefully testable */
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
 					"existing story files can only be used with the Z-machine",
 					"not with the Glulx setting.");
 				return;
@@ -220,7 +264,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
 			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
 			DISCARD_TEXT(leaf)
-			PL::Bibliographic::Release::create_aux_file(A,
+			ReleaseInstructions::add_aux_file(my_instructions, A,
 				Task::release_path(),
 				Lexer::word_text(Wordings::first_wn(DW)),
 				payload);
@@ -233,7 +277,7 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			WRITE_TO(leaf, "%N", Wordings::first_wn(LW));
 			filename *A = Filenames::in(Projects::materials_path(Task::project()), leaf);
 			DISCARD_TEXT(leaf)
-			PL::Bibliographic::Release::create_aux_file(A,
+			ReleaseInstructions::add_aux_file(my_instructions, A,
 				Task::release_path(),
 				L"--",
 				payload);
@@ -252,35 +296,35 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 			WRITE_TO(folder, "%N", Wordings::first_wn(FW));
 			pathname *P = Pathnames::down(Task::release_path(), folder);
 			DISCARD_TEXT(folder)
-			PL::Bibliographic::Release::create_aux_file(A, P, L"--", payload);
+			ReleaseInstructions::add_aux_file(my_instructions, A, P, L"--", payload);
 			break;
 		}
-		case BOOKLET_PAYLOAD: release_booklet = TRUE; break;
-		case POSTCARD_PAYLOAD: release_postcard = TRUE; break;
-		case WEBSITE_PAYLOAD: release_website = TRUE; break;
+		case BOOKLET_PAYLOAD: my_instructions->release_booklet = TRUE; break;
+		case POSTCARD_PAYLOAD: my_instructions->release_postcard = TRUE; break;
+		case WEBSITE_PAYLOAD: my_instructions->release_website = TRUE; break;
 		case THEMED_WEBSITE_PAYLOAD: {
 			wording TW = GET_RW(<release-sentence-object>, 1);
 			Word::dequote(Wordings::first_wn(TW));
-			website_template_leafname = Lexer::word_text(Wordings::first_wn(TW));
-			release_website = TRUE;
+			my_instructions->website_template_leafname = Lexer::word_text(Wordings::first_wn(TW));
+			my_instructions->release_website = TRUE;
 			break;
 		}
 		case INTERPRETER_PAYLOAD:
-			release_interpreter = TRUE; release_website = TRUE;
+			my_instructions->release_interpreter = TRUE; my_instructions->release_website = TRUE;
 			break;
 		case THEMED_INTERPRETER_PAYLOAD: {
 			wording TW = GET_RW(<release-sentence-object>, 1);
 			Word::dequote(Wordings::first_wn(TW));
-			interpreter_template_leafname = Str::new();
-			WRITE_TO(interpreter_template_leafname, "%W", Wordings::first_wn(TW));
-			release_interpreter = TRUE; release_website = TRUE;
+			my_instructions->interpreter_template_leafname = Str::new();
+			WRITE_TO(my_instructions->interpreter_template_leafname, "%W", Wordings::first_wn(TW));
+			my_instructions->release_interpreter = TRUE; my_instructions->release_website = TRUE;
 			break;
 		}
 		case SEPARATE_FIGURES_PAYLOAD:
-			Figures::write_copy_commands();
+			Figures::write_copy_commands(my_instructions);
 			break;
 		case SEPARATE_SOUNDS_PAYLOAD:
-			Sounds::write_copy_commands();
+			Sounds::write_copy_commands(my_instructions);
 			break;
 	}
 
@@ -295,112 +339,65 @@ void PL::Bibliographic::Release::handle_release_declaration_inner(parse_node *p)
 		"\"Something Useful\" called \"Something.pdf\"'.");
 	Problems::issue_problem_end();
 
-@ =
-auxiliary_file *PL::Bibliographic::Release::create_aux_file(filename *name,
-	pathname *fold, wchar_t *desc, int payload) {
-	auxiliary_file *af = CREATE(auxiliary_file);
-	af->name_of_original_file = name;
-	af->folder_to_release_to = fold;
-	af->brief_description = Str::new();
-	WRITE_TO(af->brief_description, "%w", desc);
-	af->from_payload = payload;
-	return af;
-}
-
-@ So much for taking down instructions; now we must act on them. In this
+@h Writing out files.
+So much for taking down instructions; now we must act on them. In this
 routine we combine writing the iFiction record and the release instructions --
 done together since they have so much in common, being essentially two ways
 of writing the same thing.
 
-@d LENGTH_OF_STORY_FILE_HEADER 0x40
-
-@d zbyte unsigned char
-
 =
-void PL::Bibliographic::Release::write_ifiction_and_blurb(void) {
-	@<Decide whether we need to create a Materials folder@>;
-
-	int cover_picture_number = (release_cover)?1:0;
-	char *cover_art_format = NULL;
-	unsigned int width = 0, height = 0;
-	@<Check cover art image if any@>;
-
-	zbyte header[LENGTH_OF_STORY_FILE_HEADER]; /* a sequence of bytes, not a C string */
-	if (Task::wraps_existing_storyfile()) @<Read header of existing story file if present@>
-
-	if (problem_count == 0) @<Finally, write out our three metadata files@>;
+int ReleaseInstructions::write_ifiction_and_blurb(void) {
+	release_instructions *rel = my_instructions;
+	if (ReleaseInstructions::ensure_Materials(rel) == FALSE) return FALSE;
+	if (ReleaseInstructions::check_cover_art(rel) == FALSE) return FALSE;
+	if (Task::wraps_existing_storyfile()) {
+		if (ReleaseInstructions::read_existing_header(rel) == FALSE) return FALSE;
+	}
+	if (problem_count == 0) {
+		@<Write iFiction record@>;
+		@<Write release blurb@>;
+		@<Write manifest file@>;
+	}
+	return FALSE;
 }
 
-@ Until March 2010, Materials folders weren't needed for very simple releases;
-but they were needed for absolutely everything else. In the end we simplified
-matters by always releasing to a Materials folder, though the advent of
-application sandboxing in Mac OS X in 2012 may force us to revisit this.
+@<Write iFiction record@> =
+	text_stream xf_struct; text_stream *xf = &xf_struct;
+	filename *F = Task::ifiction_record_file();
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::fatal_on_file("Can't open metadata file", F);
+	BEGIN_COMPILATION_MODE;
+	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
+	iFiction::write_ifiction_record(xf, rel);
+	END_COMPILATION_MODE;
+	STREAM_CLOSE(xf);
 
-@<Decide whether we need to create a Materials folder@> =
-	create_Materials = TRUE; /* thus making the next condition irrelevant */
-	if ((release_website) || (release_interpreter) || (release_booklet) || (release_postcard) ||
-		(release_cover) || (release_source) || (release_card) || (release_solution) ||
-		(Task::wraps_existing_storyfile()) || (NUMBER_CREATED(figures_data) > 1)) {
-		create_Materials = TRUE;
-	}
-	if (create_Materials) {
-		@<Create the Materials folder if not already present@>;
-		@<Create the Release subfolder if not already present@>;
-		if (release_interpreter) @<Create the Interpreter subfolder if not already present@>;
-	}
+@<Write release blurb@> =
+	filename *F = Task::blurb_file();
+	text_stream xf_struct; text_stream *xf = &xf_struct;
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::fatal_on_file("Can't open blurb file", F);
+	BlurbFile::write(xf, rel);
+	STREAM_CLOSE(xf);
 
-@<Create the Materials folder if not already present@> =
-	if (Pathnames::create_in_file_system(
-		Projects::materials_path(Task::project())) == FALSE) {
-		StandardProblems::release_problem_path(_p_(Untestable),
-			"In order to release the story file along with other "
-			"resources, I tried to create a folder alongside this "
-			"Inform project, but was unable to do so. The folder "
-			"was to have been called",
-			Projects::materials_path(Task::project()));
-		return;
-	}
+@<Write manifest file@> =
+	filename *F = Task::manifest_file();
+	text_stream xf_struct; text_stream *xf = &xf_struct;
+	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
+		Problems::fatal_on_file("Can't open manifest file", F);
+	Figures::write_picture_manifest(xf, rel->release_cover, rel->cover_art_format);
+	STREAM_CLOSE(xf);
 
-@<Create the Release subfolder if not already present@> =
-	if (Pathnames::create_in_file_system(Task::release_path()) == FALSE) {
-		StandardProblems::release_problem_path(_p_(Untestable),
-			"In order to release the story file along with other "
-			"resources, I tried to create a folder alongside this "
-			"Inform project, but was unable to do so. The folder "
-			"was to have been called",
-			Task::release_path());
-		return;
-	}
-	auxiliary_file *af;
-	LOOP_OVER(af, auxiliary_file)
-		if (Pathnames::create_in_file_system(af->folder_to_release_to) == FALSE) {
-			StandardProblems::release_problem_path(_p_(Untestable),
-				"In order to release the story file along with other "
-				"resources, I tried to create a folder alongside this "
-				"Inform project, but was unable to do so. The folder "
-				"was to have been called",
-				af->folder_to_release_to);
-			return;
-		}
+@h Cover art, if any.
+We find out the format of the cover art and see that its dimensions conform
+to Treaty of Babel requirements.
 
-@<Create the Interpreter subfolder if not already present@> =
-	if (Pathnames::create_in_file_system(Task::released_interpreter_path()) == FALSE) {
-		StandardProblems::release_problem_path(_p_(Untestable),
-			"In order to release the story file along with an "
-			"interpreter, I tried to create a folder alongside this "
-			"Inform project, but was unable to do so. The folder "
-			"was to have been called",
-			Task::released_interpreter_path());
-		return;
-	}
-
-@ Using the utility routines above, we find out the format of the cover
-art and see that its dimensions conform to Treaty of Babel requirements.
-
-@<Check cover art image if any@> =
-	if (release_cover) {
-		current_sentence = cover_filename_sentence;
-		cover_art_format = "";
+=
+int ReleaseInstructions::check_cover_art(release_instructions *rel) {
+	rel->cover_picture_number = (rel->release_cover)?1:0;
+	if (rel->release_cover) {
+		current_sentence = rel->cover_filename_sentence;
+		rel->cover_art_format = "";
 		filename *cover_filename = Task::large_cover_art_file(TRUE);
 		FILE *COVER_FILE = Filenames::fopen(cover_filename, "rb" );
 		if (COVER_FILE) @<The cover seems to be a JPEG@>
@@ -412,27 +409,29 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 		}
 		@<Check that the pixel height and width are sensible@>;
 	}
+	return TRUE;
+}
 
 @<The cover seems to be a JPEG@> =
-	cover_art_format = "jpg";
-	int rv = ImageFiles::get_JPEG_dimensions(COVER_FILE, &width, &height);
+	rel->cover_art_format = "jpg";
+	int rv = ImageFiles::get_JPEG_dimensions(COVER_FILE, &rel->width, &rel->height);
 	fclose(COVER_FILE);
 	if (rv == FALSE) {
 		StandardProblems::release_problem(_p_(Untestable),
 			"The cover image seems not to be a JPEG despite the name",
 			cover_filename);
-		return;
+		return FALSE;
 	}
 
 @<The cover seems to be a PNG@> =
-	cover_art_format = "png";
-	int rv = ImageFiles::get_PNG_dimensions(COVER_FILE, &width, &height);
+	rel->cover_art_format = "png";
+	int rv = ImageFiles::get_PNG_dimensions(COVER_FILE, &rel->width, &rel->height);
 	fclose(COVER_FILE);
 	if (rv == FALSE) {
 		StandardProblems::release_problem(_p_(Untestable),
 			"The cover image seems not to be a PNG despite the name",
 			cover_filename);
-		return;
+		return FALSE;
 	}
 
 @<There seems to be no cover at all@> =
@@ -441,45 +440,50 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 		"to attach to the story file, but I was unable to find it, "
 		"having looked for both 'Cover.png' and 'Cover.jpg' in the "
 		"'.materials' folder for this project", cover_filename);
-	return;
+	return FALSE;
 
 @<Check that the pixel height and width are sensible@> =
-	if ((width < 120) || (width > 1200) || (height < 120) || (height > 1200)) {
+	if ((rel->width < 120) || (rel->width > 1200) ||
+		(rel->height < 120) || (rel->height > 1200)) {
 		StandardProblems::release_problem(_p_(Untestable),
 			"The height and width of the cover image, in pixels, must be "
 			"between 120 and 1024 inclusive",
 			cover_filename);
-		return;
+		return FALSE;
 	}
-	if ((width > 2*height) || (height > 2*width)) {
+	if ((rel->width > 2*rel->height) || (rel->height > 2*rel->width)) {
 		StandardProblems::release_problem(_p_(Untestable),
 			"We recommend a square cover image, but at any rate it is "
 			"required to be no more rectangular than twice as wide as it "
 			"is high (or vice versa)",
 			cover_filename);
-		return;
+		return FALSE;
 	}
 
-@<Read header of existing story file if present@> =
+@h Existing story file headers.
+
+=
+int ReleaseInstructions::read_existing_header(release_instructions *rel) {
 	if (Projects::currently_releasing(Task::project()) == FALSE)
 		@<Issue a problem if this isn't a Release run@>;
 	FILE *STORYF = Filenames::fopen(Task::existing_storyfile_file(), "rb");
 	if (STORYF == NULL) {
 		StandardProblems::unlocated_problem_on_file(Task::syntax_tree(), 
-			_p_(BelievedImpossible), /* i.e., not testable by intest */
+			_p_(Untestable),
 			"The instruction 'Release along with an existing story file' "
 			"means that I need to bind up a story file called '%1', in "
 			"the .materials folder for this project. But it doesn't seem "
 			"to be there.", Task::existing_storyfile_file());
-		return;
+		return FALSE;
 	}
-	int i;
-	for (i=0; i<LENGTH_OF_STORY_FILE_HEADER; i++) {
+	for (int i=0; i<LENGTH_OF_STORY_FILE_HEADER; i++) {
 		int c = fgetc(STORYF);
-		if (c == EOF) header[i] = 0;
-		else header[i] = (zbyte) c;
+		if (c == EOF) rel->existing_story_header[i] = 0;
+		else rel->existing_story_header[i] = (zbyte) c;
 	}
 	fclose(STORYF);
+	return TRUE;
+}
 
 @<Issue a problem if this isn't a Release run@> =
 	StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_UnreleasedRelease),
@@ -493,609 +497,65 @@ art and see that its dimensions conform to Treaty of Babel requirements.
 		"something to play. (Of course, you can play the released "
 		"story file using an interpreter such as Zoom or Windows "
 		"Frotz, etc.: just not here, within Inform.)");
-	return;
+	return FALSE;
 
-@ That's it for the preliminaries: time to do some actual work.
-
-@<Finally, write out our three metadata files@> =
-	@<Write iFiction record@>;
-	@<Write release blurb@>;
-	@<Write manifest file@>;
-
-@<Write iFiction record@> =
-	text_stream xf_struct; text_stream *xf = &xf_struct;
-	filename *F = Task::ifiction_record_file();
-	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::fatal_on_file("Can't open metadata file", F);
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
-	PL::Bibliographic::Release::write_ifiction_record(xf, header, cover_picture_number, cover_art_format, height, width);
-	END_COMPILATION_MODE;
-	STREAM_CLOSE(xf);
-
-@<Write release blurb@> =
-	filename *F = Task::blurb_file();
-	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::fatal_on_file("Can't open blurb file", F);
-	PL::Bibliographic::Release::write_release_blurb(xf, cover_picture_number, cover_art_format);
-	STREAM_CLOSE(xf);
-
-@<Write manifest file@> =
-	filename *F = Task::manifest_file();
-	text_stream xf_struct; text_stream *xf = &xf_struct;
-	if (STREAM_OPEN_TO_FILE(xf, F, UTF8_ENC) == FALSE)
-		Problems::fatal_on_file("Can't open manifest file", F);
-	Figures::write_picture_manifest(xf, release_cover, cover_art_format);
-	STREAM_CLOSE(xf);
-
-@ For the format of this file, see the Treaty of Babel.
+@h Releasing and the Materials folder.
+Until March 2010, Materials folders weren't needed for very simple releases;
+but they were needed for absolutely everything else. In the end we simplified
+matters by always releasing to a Materials folder, though the advent of
+application sandboxing in Mac OS X made this troublesome for a while in 2012,
+when we had to change the filenaming convention to comply.
 
 =
-void PL::Bibliographic::Release::write_ifiction_record(OUTPUT_STREAM, zbyte *header,
-	int cover_picture_number, char *cover_art_format,
-	unsigned int height, unsigned int width) {
-	WRITE("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-	WRITE("<ifindex version=\"1.0\" "
-		"xmlns=\"http://babel.ifarchive.org/protocol/iFiction/\">\n"); INDENT;
-	WRITE("<story>\n"); INDENT;
-	@<Write the body of the iFiction record@>;
-	OUTDENT; WRITE("</story>\n");
-	OUTDENT; WRITE("</ifindex>\n");
+int ReleaseInstructions::ensure_Materials(release_instructions *rel) {
+	@<Create the Materials folder if not already present@>;
+	@<Create the Release subfolder if not already present@>;
+	if (rel->release_interpreter)
+		@<Create the Interpreter subfolder if not already present@>;
+	return TRUE;
 }
 
-@<Write the body of the iFiction record@> =
-	text_stream *story_format = TargetVMs::get_iFiction_format(Task::vm());
-
-	@<Write the identification tag of the iFiction record@>;
-	@<Write the bibliographic tag of the iFiction record@>;
-	if (NUMBER_CREATED(auxiliary_file) > 0)
-		@<Write the resources tag of the iFiction record@>;
-	if (release_cover)
-		@<Write the cover tag of the iFiction record@>;
-	@<Write the releases tag of the iFiction record@>;
-	@<Write the colophon tag of the iFiction record@>;
-	WRITE("<%S>\n", story_format); INDENT;
-	@<Write the format-specific tag of the iFiction record@>;
-	OUTDENT; WRITE("</%S>\n", story_format);
-
-@<Write the identification tag of the iFiction record@> =
-	WRITE("<identification>\n"); INDENT;
-	WRITE("<ifid>%S</ifid>\n", PL::Bibliographic::IFID::read_uuid());
-	if (Task::wraps_existing_storyfile()) {
-		WRITE("<ifid>ZCODE-%d-%c%c%c%c%c%c",
-			header[2]*256+header[3],
-			header[0x12], header[0x13], header[0x14],
-			header[0x15], header[0x16], header[0x17]);
-		if ((header[0x12] != '8') || (Characters::isdigit(header[0x12])))
-			WRITE("-%04x", header[0x1c]*256 + header[0x1d]);
-		WRITE("</ifid>\n");
-	}
-	WRITE("<format>%S</format>\n", story_format);
-	OUTDENT; WRITE("</identification>\n");
-
-@<Write the bibliographic tag of the iFiction record@> =
-	WRITE("<bibliographic>\n"); INDENT;
-	WRITE("<title>");
-	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_title_VAR, FALSE) == FALSE) WRITE("Untitled");
-	WRITE("</title>\n");
-	WRITE("<author>");
-	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_author_VAR, FALSE) == FALSE) WRITE("Anonymous");
-	WRITE("</author>\n");
-	WRITE("<headline>");
-	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_headline_VAR, FALSE) == FALSE)
-		WRITE("An Interactive Fiction");
-	WRITE("</headline>\n");
-	WRITE("<genre>");
-	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_genre_VAR, FALSE) == FALSE) WRITE("Fiction");
-	WRITE("</genre>\n");
-	WRITE("<firstpublished>");
-	if (PL::Bibliographic::Release::write_var_to_XML(OUT, story_creation_year_VAR, FALSE) == FALSE)
-		WRITE("%d", (the_present->tm_year)+1900);
-	WRITE("</firstpublished>\n");
-	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
-		WRITE("<description>");
-		PL::Bibliographic::Release::write_var_to_XML(OUT, story_description_VAR, TRUE);
-		WRITE("</description>\n");
-	}
-	WRITE("<language>");
-	Languages::write_ISO_code(OUT, Projects::get_language_of_play(Task::project()));
-	WRITE("</language>\n");
-	WRITE("<group>Inform</group>\n");
-	if (episode_number >= 0) {
-		WRITE("<seriesnumber>%d</seriesnumber>\n", episode_number);
-		WRITE("<series>%w</series>\n", series_name);
-	}
-	OUTDENT; WRITE("</bibliographic>\n");
-
-@<Write the resources tag of the iFiction record@> =
-	auxiliary_file *af;
-	WRITE("<resources>\n"); INDENT;
-	LOOP_OVER(af, auxiliary_file) {
-		WRITE("<auxiliary>\n"); INDENT;
-		WRITE("<leafname>");
-		TEMPORARY_TEXT(rel)
-		Filenames::to_text_relative(rel, af->name_of_original_file,
+@<Create the Materials folder if not already present@> =
+	if (Pathnames::create_in_file_system(
+		Projects::materials_path(Task::project())) == FALSE) {
+		StandardProblems::release_problem_path(_p_(Untestable),
+			"In order to release the story file along with other "
+			"resources, I tried to create a folder alongside this "
+			"Inform project, but was unable to do so. The folder "
+			"was to have been called",
 			Projects::materials_path(Task::project()));
-		HTML::write_xml_safe_text(OUT, rel);
-		DISCARD_TEXT(rel)
-		WRITE("</leafname>\n");
-		if (Str::len(af->brief_description) > 0) {
-			WRITE("<description>");
-			HTML::write_xml_safe_text(OUT, af->brief_description);
-			WRITE("</description>\n");
-		}
-		OUTDENT; WRITE("</auxiliary>\n");
-	}
-	OUTDENT; WRITE("</resources>\n");
-
-@ The |<description>| key here was added in version 8 of the Treaty of Babel,
-in February 2014.
-
-@<Write the cover tag of the iFiction record@> =
-	WRITE("<cover>\n"); INDENT;
-	WRITE("<format>%s</format>\n", cover_art_format);
-	WRITE("<height>%d</height>\n", height);
-	WRITE("<width>%d</width>\n", width);
-	if (cover_alt_text >= 0) {
-		Word::dequote(cover_alt_text);
-		WRITE("<description>%N</description>\n", cover_alt_text);
-	} else {
-		WRITE("<description>%w</description>\n", Figures::description_of_cover_art());
-	}
-	OUTDENT; WRITE("</cover>\n");
-
-@<Write the releases tag of the iFiction record@> =
-	WRITE("<releases>\n"); INDENT;
-	WRITE("<attached>\n"); INDENT;
-	WRITE("<release>\n"); INDENT;
-	if (Task::wraps_existing_storyfile()) @<Write release data for an existing story file@>
-	else @<Write release data for an Inform 7 project@>;
-	OUTDENT; WRITE("</release>\n");
-	OUTDENT; WRITE("</attached>\n");
-	OUTDENT; WRITE("</releases>\n");
-
-@ ZILCH was Infocom's in-house compiler of Z-machine story files, and prior
-to Inform the only one to exist. Inform differs from it in using the last four
-bytes of the header to store its own version number.
-
-(The following code will be incorrect on 1 January 2080.)
-
-@<Write release data for an existing story file@> =
-	WRITE("<releasedate>%s%c%c-%c%c-%c%c</releasedate>\n",
-		((Characters::isdigit(header[0x12])) &&
-			(header[0x12] != '8') && (header[0x12] != '9'))?"20":"19",
-		header[0x12], header[0x13], header[0x14],
-		header[0x15], header[0x16], header[0x17]);
-	WRITE("<version>%d</version>\n", header[2]*256+header[3]);
-	if ((Characters::isdigit(header[0x3c])) &&
-		((Characters::isdigit(header[0x3d])) || (header[0x3d] == '.')) &&
-		(Characters::isdigit(header[0x3e])) && (Characters::isdigit(header[0x3f]))) {
-		if (header[0x3d] == '.') {
-			WRITE("<compiler>Inform 6</compiler>\n");
-			WRITE("<compilerversion>%c%c%c%c</compilerversion>\n",
-				header[0x3c], header[0x3d], header[0x3e], header[0x3f]);
-		}
-		else {
-			WRITE("<compiler>Inform 1-5</compiler>\n");
-			WRITE("<compilerversion>%c%c%c%c</compilerversion>\n",
-				header[0x3c], header[0x3d], header[0x3e], header[0x3f]);
-		}
-	} else {
-		WRITE("<compiler>ZILCH</compiler>\n");
-		WRITE("<compilerversion>%d</compilerversion>\n", header[0x00]);
+		return FALSE;
 	}
 
-@<Write release data for an Inform 7 project@> =
-	WRITE("<releasedate>%04d-%02d-%02d</releasedate>\n",
-		(the_present->tm_year)+1900, (the_present->tm_mon)+1, the_present->tm_mday);
-	if ((story_release_number_VAR != NULL) &&
-		(VariableSubjects::has_initial_value_set(story_release_number_VAR))) {
-		WRITE("<version>");
-		PL::Bibliographic::Release::write_var_to_XML(OUT, story_release_number_VAR, FALSE);
-		WRITE("</version>\n");
-	} else WRITE("<version>1</version>\n");
-	WRITE("<compiler>Inform 7</compiler>\n");
-	WRITE("<compilerversion>%B (build %B)</compilerversion>\n", FALSE, TRUE);
-
-@<Write the colophon tag of the iFiction record@> =
-	WRITE("<colophon>\n"); INDENT;
-	WRITE("<generator>Inform 7</generator>\n");
-	WRITE("<generatorversion>%B (build %B)</generatorversion>\n", FALSE, TRUE);
-	WRITE("<originated>20%02d-%02d-%02d</originated>\n",
-		(the_present->tm_year)-100, (the_present->tm_mon)+1, the_present->tm_mday);
-	OUTDENT; WRITE("</colophon>\n");
-
-@ ZIL was Infocom's in-house language, a variant of MDL which in turn resembled
-LISP.
-
-@<Write the format-specific tag of the iFiction record@> =
-	if (Task::wraps_existing_storyfile()) {
-		WRITE("<serial>%c%c%c%c%c%c</serial>\n",
-			header[0x12], header[0x13], header[0x14],
-			header[0x15], header[0x16], header[0x17]);
-		WRITE("<release>%d</release>\n", header[2]*256+header[3]);
-		WRITE("<checksum>%04x</checksum>\n", header[0x1c]*256 + header[0x1d]);
-		if ((Characters::isdigit(header[0x3c])) &&
-			((Characters::isdigit(header[0x3d])) || (header[0x3d] == '.')) &&
-			(Characters::isdigit(header[0x3e])) && (Characters::isdigit(header[0x3f]))) {
-			WRITE("<compiler>Inform v%c%c%c%c</compiler>\n",
-				header[0x3c], header[0x3d], header[0x3e], header[0x3f]);
-		} else {
-			WRITE("<compiler>Infocom ZIL</compiler>\n");
-		}
-	} else {
-		WRITE("<serial>%02d%02d%02d</serial>\n",
-			(the_present->tm_year)-100, (the_present->tm_mon)+1, the_present->tm_mday);
-		if ((story_release_number_VAR != NULL) &&
-			(VariableSubjects::has_initial_value_set(story_release_number_VAR))) {
-			WRITE("<release>");
-			PL::Bibliographic::Release::write_var_to_XML(OUT, story_release_number_VAR, FALSE);
-			WRITE("</release>\n");
-		} else WRITE("<release>1</release>\n");
-		WRITE("<compiler>Inform %B (build %B)</compiler>\n", FALSE, TRUE);
+@<Create the Release subfolder if not already present@> =
+	if (Pathnames::create_in_file_system(Task::release_path()) == FALSE) {
+		StandardProblems::release_problem_path(_p_(Untestable),
+			"In order to release the story file along with other "
+			"resources, I tried to create a folder alongside this "
+			"Inform project, but was unable to do so. The folder "
+			"was to have been called",
+			Task::release_path());
+		return FALSE;
 	}
-	if (release_cover)
-		WRITE("<coverpicture>%d</coverpicture>\n", cover_picture_number);
-
-@ =
-int PL::Bibliographic::Release::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv, int desc_mode) {
-	NonlocalVariables::initial_value_as_plain_text(nlv);
-	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
-		parse_node *val =
-			NonlocalVariables::substitute_constants(
-				VariableSubjects::get_initial_value(
-					nlv));
-		kind *K = NonlocalVariables::kind(nlv);
-		if (Node::is(val, UNKNOWN_NT)) {
-			if (Kinds::eq(K, K_number)) WRITE("0");
-		} else {
-			if (Kinds::eq(K, K_number)) {
-				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
-				inter_ti v1 = 0, v2 = 0;
-				Holsters::unholster_pair(&VH, &v1, &v2);
-				WRITE("%d", (inter_ti) v2);
-			} else {
-				wording W = Node::get_text(val);
-				int w1 = Wordings::first_wn(W);
-				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
-			}
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@ =
-int PL::Bibliographic::Release::write_var_to_text(OUTPUT_STREAM, nonlocal_variable *nlv) {
-	if ((nlv) && (VariableSubjects::has_initial_value_set(nlv))) {
-		parse_node *val =
-			NonlocalVariables::substitute_constants(
-				VariableSubjects::get_initial_value(
-					nlv));
-		kind *K = NonlocalVariables::kind(nlv);
-		if (Node::is(val, UNKNOWN_NT)) {
-			if (Kinds::eq(K, K_number)) WRITE("0");
-		} else {
-			if (Kinds::eq(K, K_number)) {
-				value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-				Specifications::Compiler::compile_constant_to_kind_vh(&VH, val, K);
-				inter_ti v1 = 0, v2 = 0;
-				Holsters::unholster_pair(&VH, &v1, &v2);
-				WRITE("%d", (inter_ti) v2);
-			} else {
-				wording W = Node::get_text(val);
-				int w1 = Wordings::first_wn(W);
-				PL::Bibliographic::compile_bibliographic_text(OUT, Lexer::word_text(w1));
-			}
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@ Releasing requires four programs to work together: this one, Inform 6
-to turn our output into a story file, a releasing agent called "Inblorb"
-which binds up the result into a blorbed file, and lastly the user interface,
-which calls the other three in the right sequence.
-
-Although the user interface looks as if it's in charge, in fact we are
-pulling the strings, because we write a "blurb file" of instructions
-telling Inblorb exactly what to do. The format for this is an extension of
-the "blurb" format documented in the "Inform Designer's Manual",
-fourth edition (the "DM4"); see the published source code for Inblorb.
-
-Note that the code below does not generate an |author| blurb instruction,
-which would lead to an AUTH chunk in the final blorb. This is partly
-because the AUTH chunk is now obsolete in the wake of the Treaty of
-Babel, but also because it avoids problems with Unicode: an AUTH can
-only contain plainest ASCII, whereas the author's name known to Inform
-may very well use characters not representable in ASCII. There is no
-good way round this: so, farewell AUTH.
-
-Similarly, we do not supply a release number. The release number of a blorb
-has a different meaning from that of the story file embedded in it: the
-number refers to the release of the picture and sound resources found
-in the blorb, and we know nothing about that. (It's a feature provided
-for archival re-releases of 1980s IF.)
-
-@d BIBLIOGRAPHIC_TEXT_TRUNCATION 31
-
-=
-void PL::Bibliographic::Release::write_release_blurb(OUTPUT_STREAM,
-	int cover_picture_number, char *cover_art_format) {
-	TEMPORARY_TEXT(TEMP)
-	@<Compose the blorbed story filename into the TEMP stream@>;
-	WRITE("! Blurb file created by Inform %B (build %B)\n\n", FALSE, TRUE);
-	@<Write the body of the Blurb file@>;
-	DISCARD_TEXT(TEMP)
-}
-
-@ Note that we truncate the title if it becomes vastly long, to make sure
-the Blorb-file's filename won't be too long for the file system.
-
-@<Compose the blorbed story filename into the TEMP stream@> =
-	if ((story_title_VAR != NULL) &&
-		(VariableSubjects::has_initial_value_set(story_title_VAR))) {
-		BEGIN_COMPILATION_MODE;
-		COMPILATION_MODE_ENTER(TRUNCATE_TEXT_CMODE);
-		PL::Bibliographic::Release::write_var_to_text(TEMP, story_title_VAR);
-		END_COMPILATION_MODE;
-	} else WRITE_TO(TEMP, "story");
-	WRITE_TO(TEMP, ".%S", TargetVMs::get_blorbed_extension(Task::vm()));
-
-@<Write the body of the Blurb file@> =
-	@<Tell Inblorb where to write its report to@>;
-	WRITE("\n! Identification\n\n");
-	@<Tell Inblorb where the project and release folders are@>;
-	WRITE("\n! Blorb instructions\n\n");
-	@<Tell Inblorb where the story file and iFiction files are@>;
-	@<Give instructions about the cover image@>;
-	Figures::write_blurb_commands(OUT);
-	Sounds::write_blurb_commands(OUT);
-	WRITE("\n! Placeholder variables\n\n");
-	@<Write numerous placeholder variables@>;
-	WRITE("\n! Other material to release\n\n");
-	@<Give instructions about source text, solution and library card@>;
-	@<Give instructions about auxiliary files@>;
-	if (release_interpreter) @<Give instructions to release with an interpreter for Web play@>;
-	if (release_website) @<Give instructions to construct a website around the release@>;
-	@<Give hints to Inblorb for its HTML status page@>;
-
-@<Tell Inblorb where to write its report to@> =
-	WRITE("status \"%f\" \"%f\"\n\n",
-		Supervisor::file_from_installation(CBLORB_REPORT_MODEL_IRES),
-		Task::cblorb_report_file());
-
-@<Tell Inblorb where the project and release folders are@> =
-	WRITE("project folder \"%p\"\n", Projects::path(Task::project()));
-	if (create_Materials)
-		WRITE("release to \"%p\"\n", Task::release_path());
-
-@<Tell Inblorb where the story file and iFiction files are@> =
-	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
-	if (Task::wraps_existing_storyfile())
-		WRITE("storyfile \"%f\" include\n", Task::existing_storyfile_file());
-	else
-		WRITE("storyfile \"%f\" include\n", Task::storyfile_file());
-	WRITE("ifiction \"%f\" include\n", Task::ifiction_record_file());
-
-@ A controversial point here is that if the author supplies no cover art, we
-supply it for him, and if necessary copy a suitable image into any website
-released along with the work.
-
-@<Give instructions about the cover image@> =
-	if (release_cover) {
-		filename *large = NULL;
-		if (strcmp(cover_art_format, "jpg") == 0)
-			large = Task::large_cover_art_file(TRUE);
-		else
-			large = Task::large_cover_art_file(FALSE);
-		WRITE("cover \"%f\"\n", large);
-		WRITE("picture %d \"%f\"\n", cover_picture_number, large);
-	} else {
-		WRITE("cover \"%f\"\n", Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
-		WRITE("picture %d \"%f\"\n", 1, Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
-		if (release_website) {
-			WRITE("release file \"%f\"\n", Supervisor::file_from_installation(LARGE_DEFAULT_COVER_ART_IRES));
-			WRITE("release file \"%f\"\n", Supervisor::file_from_installation(SMALL_DEFAULT_COVER_ART_IRES));
-		}
-	}
-
-@ This will be recognisable as yet another form of the Library Card information.
-"Placeholders" are the only data structure in the primitive blurb language, and
-are in effect strings, whose names appear in block capitals within square
-brackets [THUS].
-
-@<Write numerous placeholder variables@> =
-	WRITE("placeholder [IFID] = \"%S\"\n", PL::Bibliographic::IFID::read_uuid());
-
-	if (VariableSubjects::has_initial_value_set(story_release_number_VAR)) {
-		WRITE("placeholder [RELEASE] = \"");
-		PL::Bibliographic::Release::write_var_to_text(OUT, story_release_number_VAR);
-		WRITE("\"\n");
-	} else WRITE("placeholder [RELEASE] = \"1\"\n");
-
-	BEGIN_COMPILATION_MODE;
-	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_XML_CMODE);
-
-	if (VariableSubjects::has_initial_value_set(story_creation_year_VAR)) {
-		WRITE("placeholder [YEAR] = \"");
-		PL::Bibliographic::Release::write_var_to_text(OUT, story_creation_year_VAR);
-		WRITE("\"\n");
-	} else WRITE("placeholder [YEAR] = \"%d\"\n", (the_present->tm_year)+1900);
-
-	if (VariableSubjects::has_initial_value_set(story_title_VAR)) {
-		NonlocalVariables::initial_value_as_plain_text(story_title_VAR);
-		WRITE("placeholder [TITLE] = \"");
-		PL::Bibliographic::Release::write_var_to_text(OUT, story_title_VAR);
-		WRITE("\"\n");
-	} else WRITE("placeholder [TITLE] = \"Untitled\"\n");
-
-	if (VariableSubjects::has_initial_value_set(story_author_VAR)) {
-		NonlocalVariables::initial_value_as_plain_text(story_author_VAR);
-		WRITE("placeholder [AUTHOR] = \"");
-		PL::Bibliographic::Release::write_var_to_text(OUT, story_author_VAR);
-		WRITE("\"\n");
-	} else WRITE("placeholder [AUTHOR] = \"Anonymous\"\n");
-
-	if (VariableSubjects::has_initial_value_set(story_description_VAR)) {
-		NonlocalVariables::initial_value_as_plain_text(story_description_VAR);
-		WRITE("placeholder [BLURB] = \"");
-		PL::Bibliographic::Release::write_var_to_text(OUT, story_description_VAR);
-		WRITE("\"\n");
-	} else WRITE("placeholder [BLURB] = \"A work of interactive fiction.\"\n");
-
-	END_COMPILATION_MODE;
-
-@<Give instructions about source text, solution and library card@> =
-	if (release_source) {
-		if (source_public) WRITE("source public\n"); else WRITE("source\n");
-	}
-	if (release_solution) {
-		if (solution_public) WRITE("solution public\n"); else WRITE("solution\n");
-	}
-	if (release_card) {
-		if (card_public) WRITE("ifiction public\n"); else WRITE("ifiction\n");
-	}
-
-@ The Introduction booklet and the Postcard are both squirreled away inside
-a standard Inform installation. Under the Creative Commons licence terms for
-the Postcard, we have to credit its authors here; but the booklet contains its
-own credits.
-
-@<Give instructions about auxiliary files@> =
 	auxiliary_file *af;
-	LOOP_OVER(af, auxiliary_file) {
-		TEMPORARY_TEXT(rel)
-		Pathnames::to_text_relative(rel, af->folder_to_release_to, Task::release_path());
-		WRITE("auxiliary \"%f\" \"%S\" \"%S\"\n",
-			af->name_of_original_file,
-			(Str::len(af->brief_description) > 0)?(af->brief_description):I"--",
-			(Str::len(rel) > 0)?rel:I"--");
-		DISCARD_TEXT(rel)
-	}
-	if (release_booklet) {
-		WRITE("auxiliary \"%f\" \"Introduction to IF\" \"--\"\n", Supervisor::file_from_installation(INTRO_BOOKLET_IRES));
-	}
-	if (release_postcard) {
-		WRITE("auxiliary \"%f\" \"IF Postcard\" \"--\"\n", Supervisor::file_from_installation(INTRO_POSTCARD_IRES));
-		WRITE("placeholder [OTHERCREDITS] = \"The postcard was written by Andrew Plotkin "
-			"and designed by Lea Albaugh.\"\n");
-	}
-
-@ Facilities for a Javascript interpreter to play a base64-encoded story
-file online.
-
-@<Give instructions to release with an interpreter for Web play@> =
-	WRITE("\n! Website instructions\n\n");
-	WRITE("placeholder [ENCODEDSTORYFILE] = \"");
-	STREAM_COPY(OUT, TEMP);
-	WRITE(".js\"\n");
-	@<Tell Inblorb where to find the website templates@>;
-
-	if (Str::len(interpreter_template_leafname) == 0)
-		interpreter_template_leafname = TargetVMs::get_default_interpreter(Task::vm());
-	text_stream *ext = TargetVMs::get_blorbed_extension(Task::vm());
-	WRITE("placeholder [INTERPRETERSCRIPTS] = \" ");
-	auxiliary_file *af;
-	LOOP_OVER(af, auxiliary_file)
-		if (af->from_payload == JAVASCRIPT_PAYLOAD) {
-			TEMPORARY_TEXT(rel)
-			Filenames::to_text_relative(rel, af->name_of_original_file,
-				Projects::materials_path(Task::project()));
-			WRITE("<script src='%S'></script>", rel);
-			DISCARD_TEXT(rel)
+	LOOP_OVER_LINKED_LIST(af, auxiliary_file, rel->aux_files)
+		if (Pathnames::create_in_file_system(af->folder_to_release_to) == FALSE) {
+			StandardProblems::release_problem_path(_p_(Untestable),
+				"In order to release the story file along with other "
+				"resources, I tried to create a folder alongside this "
+				"Inform project, but was unable to do so. The folder "
+				"was to have been called",
+				af->folder_to_release_to);
+			return FALSE;
 		}
-	LOOP_OVER(af, auxiliary_file)
-		if (af->from_payload == CSS_PAYLOAD) {
-			TEMPORARY_TEXT(rel)
-			Filenames::to_text_relative(rel, af->name_of_original_file,
-				Projects::materials_path(Task::project()));
-			WRITE("<link rel='stylesheet' href='%S' type='text/css' media='all'></link>", rel);
-			DISCARD_TEXT(rel)
-		}
-	WRITE("\"\n");
-	WRITE("interpreter \"%S\" \"%c\"\n", interpreter_template_leafname, Str::get_first_char(ext));
-	WRITE("base64 \"%f\" to \"%p%c",
-		Task::storyfile_file(), Task::released_interpreter_path(), FOLDER_SEPARATOR);
-	STREAM_COPY(OUT, TEMP);
-	WRITE(".js\"\n");
 
-@<Give instructions to construct a website around the release@> =
-	WRITE("\n! Website instructions\n\n");
-	@<Tell Inblorb where to find the website templates@>;
-	if (Wide::cmp(website_template_leafname, L"Classic") != 0) WRITE("css\n");
-	WRITE("website \"%w\"\n", website_template_leafname);
-
-@ The order here is significant, since Inblorb searches the folders in order,
-with the earliest quoted searched first.
-
-@<Tell Inblorb where to find the website templates@> =
-	inbuild_nest *N;
-	linked_list *L = Projects::nest_list(Task::project());
-	LOOP_OVER_LINKED_LIST(N, inbuild_nest, L)
-		WRITE("template path \"%p\"\n", TemplateManager::path_within_nest(N));
-
-@ Inblorb reports its progress, or lack of it, with an HTML page, just as we do.
-This page however includes some hints on what the user might have chosen
-instead of what he actually did choose, and we'll write those hints now, for
-Inblorb to copy out later.
-
-@<Give hints to Inblorb for its HTML status page@> =
-	SyntaxTree::traverse_text(Task::syntax_tree(), OUT, PL::Bibliographic::Release::visit_to_quote);
-	if (release_cover == FALSE) {
-		WRITE("status alternative ||Using 'Release along with cover art', to "
-			"provide something more distinctive than the default artwork above");
-		Index::DocReferences::link_to(OUT, I"release_cover", FALSE);
-		WRITE("||\n");
-	}
-	if (release_website == FALSE) {
-		WRITE("status alternative ||Using 'Release along with a website'");
-		Index::DocReferences::link_to(OUT, I"release_website", FALSE);
-		WRITE("||\n");
-	}
-	if (release_interpreter == FALSE) {
-		WRITE("status alternative ||Using 'Release along with an interpreter', "
-			"for in-browser play on your website");
-		Index::DocReferences::link_to(OUT, I"release_interpreter", FALSE);
-		WRITE("||\n");
-	}
-	if (NUMBER_CREATED(auxiliary_file) == 0) {
-		WRITE("status alternative ||Using 'Release along with a file of "
-			"\"Such-and-Such\" called \"whatever.pdf\"', perhaps to add a "
-			"manual, or a welcoming note");
-		Index::DocReferences::link_to(OUT, I"release_files", FALSE);
-		WRITE("||\n");
-	}
-
-	if (release_source == FALSE) {
-		WRITE("status alternative ||Using 'Release along with the source text'");
-		Index::DocReferences::link_to(OUT, I"release_source", FALSE);
-		WRITE("||\n");
-	}
-
-	if (release_solution == FALSE) {
-		WRITE("status alternative ||Using 'Release along with a solution'");
-		Index::DocReferences::link_to(OUT, I"release_solution", FALSE);
-		WRITE("||\n");
-	}
-
-	if (release_card == FALSE) {
-		WRITE("status alternative ||Using 'Release along with the library card'");
-		Index::DocReferences::link_to(OUT, I"release_card", FALSE);
-		WRITE("||\n");
-	}
-
-	if (release_booklet == FALSE) {
-		WRITE("status alternative ||Using 'Release along with the introductory booklet'");
-		Index::DocReferences::link_to(OUT, I"release_booklet", FALSE);
-		WRITE("||\n");
-	}
-
-	if (release_postcard == FALSE) {
-		WRITE("status alternative ||Using 'Release along with the introductory postcard'");
-		Index::DocReferences::link_to(OUT, I"release_postcard", FALSE);
-		WRITE("||\n");
+@<Create the Interpreter subfolder if not already present@> =
+	if (Pathnames::create_in_file_system(Task::released_interpreter_path()) == FALSE) {
+		StandardProblems::release_problem_path(_p_(Untestable),
+			"In order to release the story file along with an "
+			"interpreter, I tried to create a folder alongside this "
+			"Inform project, but was unable to do so. The folder "
+			"was to have been called",
+			Task::released_interpreter_path());
+		return FALSE;
 	}

@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -64,7 +72,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">core</a></li><li><a href="index.html#3">Chapter 3: Plugins</a></li><li><b>Plugin Calls</b></li></ul></div>
 <p class="purpose">The interface between the main compiler and its plugins.</p>
 
-<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing assertions</a></li><li><a href="3-pc.html#SP12">&#167;12. Influencing values</a></li><li><a href="3-pc.html#SP15">&#167;15. Influencing knowledge</a></li><li><a href="3-pc.html#SP28">&#167;28. Influencing runtime</a></li><li><a href="3-pc.html#SP29">&#167;29. Influencing if</a></li><li><a href="3-pc.html#SP30">&#167;30. Influencing index</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing assertions</a></li><li><a href="3-pc.html#SP12">&#167;12. Influencing values</a></li><li><a href="3-pc.html#SP15">&#167;15. Influencing knowledge</a></li><li><a href="3-pc.html#SP28">&#167;28. Influencing runtime</a></li><li><a href="3-pc.html#SP29">&#167;29. Influencing if</a></li><li><a href="3-pc.html#SP30">&#167;30. Influencing index</a></li><li><a href="3-pc.html#SP32">&#167;32. Influencing core itself</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following set of functions is an API for the main compiler to consult
 with the plugins; put another way, it is also an API for the plugins to
@@ -475,6 +483,18 @@ the mapping plugin uses this to say where a door leads.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::annotate_in_World_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ANNOTATE_IN_WORLD_INDEX_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">O</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Influencing core itself. </b>Called from <a href="1-htc.html" class="internal">How To Compile (in core)</a>. This is called when a successful
+compilation has finished, and is used, for example, by the bibliographic data
+plugin as an opportunity to write out release instructions.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">POST_COMPILATION_PLUG</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::post_compilation</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PluginCalls::post_compilation</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_9">&#167;2.9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_COMPILATION_PLUG</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

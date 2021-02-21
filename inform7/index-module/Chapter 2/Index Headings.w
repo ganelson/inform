@@ -55,7 +55,7 @@ int headings_indexed = 0;
 void IndexHeadings::index(OUTPUT_STREAM) {
 	#ifdef IF_MODULE
 	HTML_OPEN("p");
-	WRITE("<b>"); PL::Bibliographic::contents_heading(OUT); WRITE("</b>");
+	WRITE("<b>"); IXBibliographicData::contents_heading(OUT); WRITE("</b>");
 	HTML_CLOSE("p");
 	#endif
 	HTML_OPEN("p");

@@ -62,3 +62,4 @@ Chapter 5: Plugin Support
 	Figures
 	Sound Effects
 	External Files
+	Bibliographic Data
