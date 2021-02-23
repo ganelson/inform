@@ -3,7 +3,8 @@
 @ Just one array will do us:
 
 =
-int RTSounds::compile_ResourceIDsOfSounds_array(void) {
+int RTSounds::compile_ResourceIDsOfSounds_array(int stage, int debugging) {
+	if (stage != 1) return FALSE;
 	inter_name *iname = Hierarchy::find(RESOURCEIDSOFSOUNDS_HL);
 	packaging_state save = Emit::named_array_begin(iname, K_number);
 	Emit::array_numeric_entry(0);

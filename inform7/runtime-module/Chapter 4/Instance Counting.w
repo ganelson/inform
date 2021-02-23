@@ -191,7 +191,8 @@ inter_name *PL::Counting::instance_count_iname(kind *K) {
 	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKinds::iname(K), Kinds::Behaviour::package(K));
 }
 
-int PL::Counting::counting_compile_model_tables(void) {
+int PL::Counting::counting_compile_model_tables(int stage, int debugging) {
+	if (stage != 1) return FALSE;
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {

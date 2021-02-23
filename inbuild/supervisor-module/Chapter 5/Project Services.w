@@ -420,8 +420,7 @@ void Projects::load_built_in_kind_constructors(inform_project *project) {
 =
 #ifdef CORE_MODULE
 void Projects::activate_elements(inform_project *project) {
-	LOG("Activate elements...\n");
-	PluginManager::activate(core_plugin);
+	PluginManager::activate_bare_minimum();
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);

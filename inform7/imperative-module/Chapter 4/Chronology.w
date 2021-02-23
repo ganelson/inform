@@ -307,44 +307,46 @@ ever tampered with.
 =
 void Chronology::past_actions_i6_routines(void) {
 #ifdef IF_MODULE
-	int once_only = TRUE;
-	past_tense_action_record *pta;
-	LOOP_OVER(pta, past_tense_action_record) {
-		current_sentence = pta->where_pta_tested; /* ensure problems reported correctly */
-		packaging_state save = Routines::begin(pta->pta_iname);
+	if (PluginManager::active(actions_plugin)) {
+		int once_only = TRUE;
+		past_tense_action_record *pta;
+		LOOP_OVER(pta, past_tense_action_record) {
+			current_sentence = pta->where_pta_tested; /* ensure problems reported correctly */
+			packaging_state save = Routines::begin(pta->pta_iname);
 
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Chronology::ap_compile_forced_to_present(pta->historic_action);
-			Produce::code(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
-				Produce::rtrue(Emit::tree());
+				Chronology::ap_compile_forced_to_present(pta->historic_action);
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::rtrue(Emit::tree());
+				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-		Produce::rfalse(Emit::tree());
+			Produce::rfalse(Emit::tree());
 
-		if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {
-			once_only = FALSE;
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableLookup),
-				"it's not safe to look up table entries in a way referring "
-				"to past history",
-				"because it leads to dangerous ambiguities. For instance, "
-				"does 'taking an item listed in the Table of Treasure "
-				"for the first time' mean that this is the first time taking "
-				"any of the things in the table, or only the first time "
-				"this one? And so on.");
+			if ((LocalVariables::are_we_using_table_lookup()) && (once_only)) {
+				once_only = FALSE;
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastTableLookup),
+					"it's not safe to look up table entries in a way referring "
+					"to past history",
+					"because it leads to dangerous ambiguities. For instance, "
+					"does 'taking an item listed in the Table of Treasure "
+					"for the first time' mean that this is the first time taking "
+					"any of the things in the table, or only the first time "
+					"this one? And so on.");
+			}
+
+			Routines::end(save);
 		}
-
-		Routines::end(save);
+		inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_HL);
+		packaging_state save = Emit::named_array_begin(iname, K_value);
+		LOOP_OVER(pta, past_tense_action_record)
+			Emit::array_iname_entry(pta->pta_iname);
+		Emit::array_numeric_entry(0);
+		Emit::array_numeric_entry(0);
+		Emit::array_end(save);
+		Hierarchy::make_available(Emit::tree(), iname);
 	}
-	inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	LOOP_OVER(pta, past_tense_action_record)
-		Emit::array_iname_entry(pta->pta_iname);
-	Emit::array_numeric_entry(0);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
 #endif
 }
 
@@ -796,4 +798,16 @@ void Chronology::chronology_extents_i6_escape(void) {
 	inter_name *iname2 = Hierarchy::find(NO_PAST_TENSE_ACTIONS_HL);
 	Hierarchy::make_available(Emit::tree(), iname2);
 	Emit::named_numeric_constant(iname2, (inter_ti) no_past_actions);
+}
+
+@ =
+void Chronology::start_plugin(void) {
+}
+
+void Chronology::compile_runtime(void) {
+	if (PluginManager::active(chronology_plugin)) {
+		Chronology::chronology_extents_i6_escape();
+		Chronology::past_tenses_i6_escape();
+		Chronology::allow_no_further_past_tenses();
+	}
 }

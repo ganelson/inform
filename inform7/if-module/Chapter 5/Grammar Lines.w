@@ -1202,6 +1202,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 		}
 
 		if ((Node::get_grammar_token_relation(pn)) && (gv_is != GV_IS_OBJECT)) {
+			if (problem_count == 0)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
 				"a grammar token in an 'Understand...' can only be based "
 				"on a relation if it is to understand the name of a room or thing",

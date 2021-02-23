@@ -23,6 +23,7 @@ typedef struct plugin {
 	struct plugin *parent_plugin;
 	void (*activation_function)(void);
 	int active;
+	int permanently_active;
 	CLASS_DEFINITION
 } plugin;
 
@@ -59,11 +60,23 @@ void PluginManager::list_plugins(OUTPUT_STREAM, char *label, int state) {
 }
 
 @ In the code above, plugins are set up as inactive by default -- even "core",
-which the compiler absolutely cannot live without. See //supervisor: Project Services//
-for how the set of active plugins for a compilation is determined in practice;
-note, in particularly, that it wisely chooses to activate the core.
+which the compiler absolutely cannot live without. So //supervisor: Project Services//
+calls the following before switching on optional things that it wants.
 
-Most plugins are subordinate to a parent plugin: for example, a dozen more
+=
+void PluginManager::activate_bare_minimum(void) {
+	plugin *P;
+	LOOP_OVER(P, plugin)
+		if ((P->permanently_active) && (P->active == FALSE))
+			PluginManager::activate(P);
+}
+
+void PluginManager::make_permanently_active(plugin *P) {
+	if (P == NULL) internal_error("no plugin");
+	P->permanently_active = TRUE;
+}
+
+@ Most plugins are subordinate to a parent plugin: for example, a dozen more
 specific IF-related plugins are subordinate to the "interactive fiction" one.
 Activating or deactivating a parent like that automatically activates
 or deactivates its children.
@@ -75,27 +88,28 @@ void PluginManager::activate(plugin *P) {
 		plugin *Q;
 		LOOP_OVER(Q, plugin)
 			if (Q->parent_plugin == P)
-				Q->active = TRUE;
+				PluginManager::activate(Q);
 	}
 }
 
 void PluginManager::deactivate(plugin *P) {
 	if (P) {
-		P->active = FALSE;
+		if (P->permanently_active)
+			@<Issue problem for trying to remove the core@>
+		else
+			P->active = FALSE;
 		plugin *Q;
 		LOOP_OVER(Q, plugin)
-			if (Q->parent_plugin == P) {
-				if (Q == core_plugin)
-					@<Issue problem for trying to remove the core@>
-				else Q->active = FALSE;
-		}
+			if (Q->parent_plugin == P)
+				PluginManager::deactivate(Q);
 	}
 }
 
 @<Issue problem for trying to remove the core@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
-		"the core of the Inform language cannot be removed",
-		"because then what should we do? What should we ever do?");
+	if (problem_count == 0)
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+			"the core of the Inform language cannot be removed",
+			"because then what should we do? What should we ever do?");
 	return;
 
 @ Every active plugin gets to run its start function, if it provides one.

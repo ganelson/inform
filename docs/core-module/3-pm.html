@@ -97,6 +97,7 @@ author can create in source text; we know exactly how many there are.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_plugin</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">activation_function</span><span class="plain-syntax">)(</span><span class="reserved-syntax">void</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">active</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permanently_active</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">plugin</span><span class="plain-syntax">;</span>
 
@@ -117,7 +118,7 @@ the compiler at all.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::active</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PluginManager::active</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::active</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -135,59 +136,72 @@ the compiler at all.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the code above, plugins are set up as inactive by default &mdash; even "core",
-which the compiler absolutely cannot live without. See <a href="../supervisor-module/5-ps2.html" class="internal">Project Services (in supervisor)</a>
-for how the set of active plugins for a compilation is determined in practice;
-note, in particularly, that it wisely chooses to activate the core.
+which the compiler absolutely cannot live without. So <a href="../supervisor-module/5-ps2.html" class="internal">Project Services (in supervisor)</a>
+calls the following before switching on optional things that it wants.
 </p>
 
-<p class="commentary">Most plugins are subordinate to a parent plugin: for example, a dozen more
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::activate_bare_minimum</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permanently_active</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><a href="3-pm.html#SP4" class="function-link"><span class="function-syntax">PluginManager::activate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::make_permanently_active</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PluginManager::make_permanently_active</span></span>:<br/>Core Module - <a href="1-cm.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no plugin"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permanently_active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Most plugins are subordinate to a parent plugin: for example, a dozen more
 specific IF-related plugins are subordinate to the "interactive fiction" one.
 Activating or deactivating a parent like that automatically activates
 or deactivates its children.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::activate</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::activate</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PluginManager::activate</span></span>:<br/><a href="3-pm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Q</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">Q</span><span class="plain-syntax">, </span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_plugin</span><span class="plain-syntax"> == </span><span class="identifier-syntax">P</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Q</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><a href="3-pm.html#SP4" class="function-link"><span class="function-syntax">PluginManager::activate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Q</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::deactivate</span><span class="plain-syntax">(</span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">permanently_active</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-pm.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Issue problem for trying to remove the core</span><span class="named-paragraph-number">4.1</span></a></span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Q</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">Q</span><span class="plain-syntax">, </span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_plugin</span><span class="plain-syntax"> == </span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q</span><span class="plain-syntax"> == </span><span class="identifier-syntax">core_plugin</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="3-pm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Issue problem for trying to remove the core</span><span class="named-paragraph-number">3.1</span></a></span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Q</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Q</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_plugin</span><span class="plain-syntax"> == </span><span class="identifier-syntax">P</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><a href="3-pm.html#SP4" class="function-link"><span class="function-syntax">PluginManager::deactivate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Q</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for trying to remove the core</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem for trying to remove the core</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">Untestable</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"the core of the Inform language cannot be removed"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"because then what should we do? What should we ever do?"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">Untestable</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"the core of the Inform language cannot be removed"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"because then what should we do? What should we ever do?"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-pm.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Every active plugin gets to run its start function, if it provides one.
+<ul class="endnotetexts"><li>This code is used in <a href="3-pm.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Every active plugin gets to run its start function, if it provides one.
 </p>
 
 <p class="commentary">It's kind of incredible that C's grammar for round brackets is unambiguous.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::start_plugins</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PluginManager::start_plugins</span></span>:<br/>What To Compile - <a href="1-wtc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PluginManager::start_plugins</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PluginManager::start_plugins</span></span>:<br/>What To Compile - <a href="1-wtc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">plugin</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active</span><span class="plain-syntax">) {</span>
@@ -196,7 +210,7 @@ or deactivates its children.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The names of the great plugins are hard-wired into the compiler rather
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The names of the great plugins are hard-wired into the compiler rather
 than being stored in Preform grammar, and they therefore cannot be translated
 out of English. But this is intentional, for now at least. Authors are not
 intended to be aware of plugins; it is really kits of Inter code which choose
@@ -224,7 +238,7 @@ Preform nonterminal to parse them, and here it is.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>It's convenient also to provide:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>It's convenient also to provide:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -236,7 +250,7 @@ Preform nonterminal to parse them, and here it is.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Plugins affect the running of the compiler by inserting functions called plugs
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Plugins affect the running of the compiler by inserting functions called plugs
 into the following "plugin rulebooks" &mdash; there's a mixed metaphor here, but
 the idea is that they behave like Inform rulebooks. When a rulebook is called,
 the compiler works through each plug until one of them returns something other
@@ -244,7 +258,7 @@ than <span class="extract"><span class="extract-syntax">FALSE</span></span>.
 </p>
 
 <p class="commentary">Plugins should add plugs in their activation functions, by calling
-<a href="3-pm.html#SP7" class="internal">PluginManager::plug</a>, which has an interestingly vague type. The next
+<a href="3-pm.html#SP8" class="internal">PluginManager::plug</a>, which has an interestingly vague type. The next
 screenful of code looks like something of a workout for the C typechecker, but
 it compiles under <span class="extract"><span class="extract-syntax">clang</span></span> without even the <span class="extract"><span class="extract-syntax">-Wpedantic</span></span> warning, and honestly
 you're barely living as a C programmer if you never generate that one.
@@ -264,7 +278,7 @@ you're barely living as a C programmer if you never generate that one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">vR</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax">, </span><span class="identifier-syntax">plugin_rulebooks</span><span class="plain-syntax">[</span><span class="identifier-syntax">code</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The functions in <a href="3-pc.html" class="internal">Plugin Calls</a> then make use of these macros, which are
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The functions in <a href="3-pc.html" class="internal">Plugin Calls</a> then make use of these macros, which are
 the easiest way to persuade the C typechecker to allow variable arguments to
 be passed in a portable way. Similarly, there are two macros not one because
 C does not allow a void variable argument list.

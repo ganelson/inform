@@ -71,12 +71,18 @@ which use this module:
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MULTIMEDIA_MODULE</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Like all modules, this one must define a <span class="extract"><span class="extract-syntax">start</span></span> and <span class="extract"><span class="extract-syntax">end</span></span> function.
+</p>
+
+<p class="commentary">Note that the "multimedia" plugin itself does nothihg except to be a parent
+to the other three; it doesn't even have an activation function.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">MULTIMEDIA_CREATIONS_DA</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">figures_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">sounds_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">files_plugin</span><span class="plain-syntax">;</span>
+
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MultimediaModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"multimedia"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">figures_plugin</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginManager::new</span><span class="plain-syntax">(&amp;</span><a href="2-fgr.html#SP1" class="function-link"><span class="function-syntax">Figures::start</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"figures"</span><span class="plain-syntax">,</span>
@@ -90,13 +96,6 @@ which use this module:
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MultimediaModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Note that the "multimedia" plugin itself does nothihg except to be a parent
-to the other three; it doesn't even have an activation function.
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">multimedia_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">figures_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">sounds_plugin</span><span class="plain-syntax">, *</span><span class="identifier-syntax">files_plugin</span><span class="plain-syntax">;</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">mm</li><li class="progresschapter"><a href="2-fgr.html">2</a></li><li class="progressnext"><a href="2-fgr.html">&#10095;</a></li></ul></div>

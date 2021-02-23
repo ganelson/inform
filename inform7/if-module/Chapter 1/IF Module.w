@@ -90,14 +90,21 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 
 @h Plugins.
+Note that the "if" plugin itself does nothihg except to be a parent
+to all these others; it doesn't even have an activation function.
 
-= (early code)
-plugin *if_plugin, *parsing_plugin, *actions_plugin,
+=
+plugin *if_plugin,
 	*spatial_plugin, *map_plugin, *persons_plugin,
 	*player_plugin, *regions_plugin, *backdrops_plugin,
 	*devices_plugin, *showme_plugin,
 	*times_plugin, *scenes_plugin, *scoring_plugin,
-	*bibliographic_plugin, *chronology_plugin;
+	*bibliographic_plugin;
+
+@
+
+= (early code)
+	plugin *parsing_plugin, *chronology_plugin, *actions_plugin;
 
 @h The beginning.
 (The client doesn't need to call the start and end routines, because the
@@ -138,7 +145,7 @@ void IFModule::end(void) {
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", if_plugin);
 	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", if_plugin);
 	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", if_plugin);
-	chronology_plugin = PluginManager::new(NULL, I"chronology", if_plugin);
+	chronology_plugin = PluginManager::new(&Chronology::start_plugin, I"chronology", if_plugin);
 
 @
 

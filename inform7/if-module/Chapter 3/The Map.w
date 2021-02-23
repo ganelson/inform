@@ -174,13 +174,21 @@ void PL::Map::start(void) {
 	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Map::map_set_subkind_notify);
 	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, PL::Map::map_act_on_special_NPs);
 	PluginManager::plug(CHECK_GOING_PLUG, PL::Map::map_check_going);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Map::map_compile_model_tables);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Map::map_complete_model);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Map::map_new_property_notify);
 	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, PL::Map::map_inference_drawn);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Map::map_intervene_in_assertion);
 	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Map::map_add_to_World_index);
 	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Map::map_annotate_in_World_index);
+	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Map::compile_runtime);
+}
+
+int PL::Map::compile_runtime(int stage, int debugging) {
+	if (stage != 1) return FALSE;
+	PL::Map::map_compile_model_tables();
+	PL::Map::write_door_dir_routines();
+	PL::Map::write_door_to_routines();
+	return FALSE;
 }
 
 int PL::Map::make_special_meanings(void) {

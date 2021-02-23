@@ -8,11 +8,16 @@ which use this module:
 
 @d MULTIMEDIA_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a |start| and |end| function.
+
+Note that the "multimedia" plugin itself does nothihg except to be a parent
+to the other three; it doesn't even have an activation function.
 
 @e MULTIMEDIA_CREATIONS_DA
 
 =
+plugin *multimedia_plugin, *figures_plugin, *sounds_plugin, *files_plugin;
+
 void MultimediaModule::start(void) {
 	multimedia_plugin = PluginManager::new(NULL, I"multimedia", NULL);
 	figures_plugin = PluginManager::new(&Figures::start, I"figures",
@@ -26,9 +31,3 @@ void MultimediaModule::start(void) {
 }
 void MultimediaModule::end(void) {
 }
-
-@ Note that the "multimedia" plugin itself does nothihg except to be a parent
-to the other three; it doesn't even have an activation function.
-
-= (early code)
-plugin *multimedia_plugin, *figures_plugin, *sounds_plugin, *files_plugin;

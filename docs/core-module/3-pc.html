@@ -77,7 +77,7 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following set of functions is an API for the main compiler to consult
 with the plugins; put another way, it is also an API for the plugins to
 influence the main compiler. They do so by adding plugs to the relevant rulebooks:
-see <a href="3-pm.html#SP7" class="internal">PluginManager::plug</a>.
+see <a href="3-pm.html#SP8" class="internal">PluginManager::plug</a>.
 </p>
 
 <p class="commentary">Nothing can prevent this from being a big old miscellany, so we take them by
@@ -439,14 +439,21 @@ regions plugin does with the "region" kind.
 </pre>
 <p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Influencing runtime. </b>Called from <a href="../runtime-module/1-rm.html" class="internal">Runtime Module (in runtime)</a>. This tells a plugin to compile any
 static data it will need. For example, the mapping plugin compiles an array to
-hold the map.
+hold the map. <span class="extract"><span class="extract-syntax">debugging</span></span> is <span class="extract"><span class="extract-syntax">TRUE</span></span> if this is a debugging run, and allows
+a plugin to generate diagnostic features.
+</p>
+
+<p class="commentary">There are two stages of this, happening earlier and later in the process of
+emitting Inter code, because this allows for timing issues to be taken care of.
+That is, if a plugin wants to generate code which might depend on something
+another plugin did earlier, it should wait until round two.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_RUNTIME_DATA_PLUG</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_runtime_data</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_RUNTIME_DATA_PLUG</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_runtime_data</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_RUNTIME_DATA_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Influencing if. </b>Called from <a href="../if-module/4-ap.html" class="internal">Action Patterns (in if)</a> to validate optional parameters on the

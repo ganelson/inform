@@ -84,24 +84,6 @@ as possible.
 	}
 }
 
-@d BENCH_IF(plugin, routine) {
-	if ((problem_count == 0) && (PluginManager::active(plugin))) {
-		TEMPORARY_TEXT(name)
-		WRITE_TO(name, "//");
-		WRITE_TO(name, #routine);
-		WRITE_TO(name, "//");
-		for (int i=0; i<Str::len(name)-1; i++)
-			if ((Str::get_at(name, i) == '_') && (Str::get_at(name, i+1) == '_')) {
-				Str::put_at(name, i, ':'); Str::put_at(name, i+1, ':');
-			}
-		stopwatch_timer *st = Time::start_stopwatch(sequence_timer, name);
-		DISCARD_TEXT(name)
-		routine();
-		int cs = Time::stop_stopwatch(st);
-		if (cs > 0) LOG(".... " #routine "() took %dcs\n", cs);
-	}
-}
-
 @ Here, then, are the steps in the production line, presented without
 commentary. For what they do, see the relevant sections. Note that although
 most of these worker functions are in the |core| module, some are not.
@@ -180,13 +162,14 @@ so on. Those absolute basics are made here.
 	BENCH(Rulebooks::Outcomes::RulebookOutcomePrintingRule)
 	BENCH(RTKinds::compile_instance_counts)
 
+@ This proceeds in stages.
+
 @<Generate inter@> =
 	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
 	BENCH(RTUseOptions::compile_pragmas)
 	BENCH(FundamentalConstants::emit_build_number)
 	BENCH(RTExtensions::ShowExtensionVersions_routine)
 	BENCH(Kinds::Constructors::emit_constants)
-	BENCH_IF(scoring_plugin, PL::Score::compile_max_score)
 	BENCH(RTUseOptions::TestUseOption_routine)
 	BENCH(Activities::compile_activity_constants)
 	BENCH(Activities::Activity_before_rulebooks_array)
@@ -196,47 +179,30 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::I7_Kind_Name_routine)
-	BENCH(RuntimeModule::compile_runtime_data)
+	if (debugging) {
+		BENCH(RuntimeModule::compile_debugging_runtime_data_1)
+	} else {
+		BENCH(RuntimeModule::compile_runtime_data_1)
+	}
 	BENCH(InferenceSubjects::emit_all)
-	BENCH_IF(backdrops_plugin, PL::Backdrops::write_found_in_routines)
-	BENCH_IF(map_plugin, PL::Map::write_door_dir_routines)
-	BENCH_IF(map_plugin, PL::Map::write_door_to_routines)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::General::write_parse_name_routines)
-	BENCH_IF(regions_plugin, PL::Regions::write_regional_found_in_routines)
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
 	BENCH(RTEquations::compile_identifiers)
-	BENCH_IF(actions_plugin, PL::Actions::Patterns::Named::compile)
-	BENCH_IF(actions_plugin, PL::Actions::ActionData)
-	BENCH_IF(actions_plugin, PL::Actions::ActionCoding_array)
-	BENCH_IF(actions_plugin, PL::Actions::ActionHappened)
-	BENCH_IF(actions_plugin, PL::Actions::compile_action_routines)
-	BENCH_IF(parsing_plugin, PL::Parsing::Lines::MistakeActionSub_routine)
 	BENCH(Phrases::Manager::compile_first_block)
 	BENCH(Phrases::Manager::compile_rulebooks)
 	BENCH(Phrases::Manager::rulebooks_array)
-	BENCH_IF(scenes_plugin, PL::Scenes::DetectSceneChange_routine)
-	BENCH_IF(scenes_plugin, PL::Scenes::ShowSceneStatus_routine)
 	BENCH(Rulebooks::rulebook_var_creators)
 	BENCH(Activities::activity_var_creators)
 	BENCH(RTRelations::IterateRelations)
 	BENCH(Phrases::Manager::RulebookNames_array)
 	BENCH(Phrases::Manager::RulePrintingRule_routine)
-	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::prepare)
-	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::compile_conditions)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::number)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::truth_state)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::time)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Values::compile_type_gprs)
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
-
 	if (debugging) {
-		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::write_text)
-		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_routine)
+		BENCH(RuntimeModule::compile_debugging_runtime_data_2)
 		BENCH(InternalTests::InternalTestCases_routine)
 	} else {
-		BENCH_IF(parsing_plugin, PL::Parsing::TestScripts::TestScriptSub_stub_routine)
+		BENCH(RuntimeModule::compile_runtime_data_2)
 	}
 
 	BENCH(Lists::check)
@@ -249,13 +215,18 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Phrases::Manager::compile_as_needed)
 	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)
-	BENCH_IF(actions_plugin, Chronology::past_actions_i6_routines)
-	BENCH_IF(chronology_plugin, Chronology::chronology_extents_i6_escape)
-	BENCH_IF(chronology_plugin, Chronology::past_tenses_i6_escape)
-	BENCH_IF(chronology_plugin, Chronology::allow_no_further_past_tenses)
-	BENCH_IF(parsing_plugin, PL::Parsing::Verbs::compile_all)
-	BENCH_IF(parsing_plugin, PL::Parsing::Tokens::Filters::compile)
+	if (debugging) {
+		BENCH(RuntimeModule::compile_debugging_runtime_data_3)
+	} else {
+		BENCH(RuntimeModule::compile_runtime_data_3)
+	}
+	BENCH(Chronology::past_actions_i6_routines)
+	BENCH(Chronology::compile_runtime)
+	if (debugging) {
+		BENCH(RuntimeModule::compile_debugging_runtime_data_4)
+	} else {
+		BENCH(RuntimeModule::compile_runtime_data_4)
+	}
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Propositions::Deferred::compile_remaining_deferred)
 	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
@@ -273,6 +244,7 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Timed::TimedEventTimesTable)
 	BENCH(PL::Naming::compile_cap_short_name)
 	BENCH(RTUseOptions::configure_template)
+	BENCH(RTBibliographicData::IFID_text);
 
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);

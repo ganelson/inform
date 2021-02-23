@@ -341,13 +341,19 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 @h Influencing runtime.
 Called from //runtime: Runtime Module//. This tells a plugin to compile any
 static data it will need. For example, the mapping plugin compiles an array to
-hold the map.
+hold the map. |debugging| is |TRUE| if this is a debugging run, and allows
+a plugin to generate diagnostic features.
+
+There are two stages of this, happening earlier and later in the process of
+emitting Inter code, because this allows for timing issues to be taken care of.
+That is, if a plugin wants to generate code which might depend on something
+another plugin did earlier, it should wait until round two.
 
 @e COMPILE_RUNTIME_DATA_PLUG
 
 =
-int PluginCalls::compile_runtime_data(void) {
-	PLUGINS_CALLV(COMPILE_RUNTIME_DATA_PLUG);
+int PluginCalls::compile_runtime_data(int stage, int debugging) {
+	PLUGINS_CALL(COMPILE_RUNTIME_DATA_PLUG, stage, debugging);
 }
 
 @h Influencing if.
