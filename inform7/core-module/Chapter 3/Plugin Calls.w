@@ -10,13 +10,39 @@ see //PluginManager::plug//.
 Nothing can prevent this from being a big old miscellany, so we take them by
 compiler module, and within each module in alphabetical order.
 
+@h Influencing core.
+Called from //Task::advance_stage_to//. This allows plugins to run additional
+production-line steps in compilation, and that is done mostly at the Inter
+generation stage, to add extra arrays or functions needed at run-time to
+support whatever feature the plugin implements. For example, the mapping plugin
+compiles an array to hold the map during stage |INTER1_CSEQ|.
+
+Because the following is called at the end of every main stage of compilation
+except for |FINISHED_CSEQ|, it is called about 15 times in all, so it is
+essential to check |stage| and act only on the right occasion. |debugging| is
+|TRUE| if this is a debugging run, and allows a plugin to generate diagnostic
+features if so.
+
+A function attached to this plug should then ideally divide its work up into
+major subtasks and call each one with the |BENCH| macro, so that the time it
+takes will (if appreciable) be included in the //inform7: Performance Metrics//.
+
+See //How To Compile// for the stages and their |*_CSEQ| numbers.
+
+@e PRODUCTION_LINE_PLUG from 1
+
+=
+int PluginCalls::production_line(int stage, int debugging, stopwatch_timer *timer) {
+	PLUGINS_CALL(PRODUCTION_LINE_PLUG, stage, debugging, timer);
+}
+
 @h Influencing assertions.
 Called from //assertions: Refine Parse Tree// to ask if this node is a noun
 phrase with special significance: for example, "below" is significant to the
 mapping plugin. If so, the plugin should set the subject of the node to say
 what it refers to, and return |TRUE|.
 
-@e ACT_ON_SPECIAL_NPS_PLUG from 1
+@e ACT_ON_SPECIAL_NPS_PLUG
 
 =
 int PluginCalls::act_on_special_NPs(parse_node *p) {
@@ -338,24 +364,6 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
-@h Influencing runtime.
-Called from //runtime: Runtime Module//. This tells a plugin to compile any
-static data it will need. For example, the mapping plugin compiles an array to
-hold the map. |debugging| is |TRUE| if this is a debugging run, and allows
-a plugin to generate diagnostic features.
-
-There are two stages of this, happening earlier and later in the process of
-emitting Inter code, because this allows for timing issues to be taken care of.
-That is, if a plugin wants to generate code which might depend on something
-another plugin did earlier, it should wait until round two.
-
-@e COMPILE_RUNTIME_DATA_PLUG
-
-=
-int PluginCalls::compile_runtime_data(int stage, int debugging) {
-	PLUGINS_CALL(COMPILE_RUNTIME_DATA_PLUG, stage, debugging);
-}
-
 @h Influencing if.
 Called from //if: Action Patterns// to validate optional parameters on the
 "going" action. The mapping plugin uses this.
@@ -388,16 +396,3 @@ the mapping plugin uses this to say where a door leads.
 int PluginCalls::annotate_in_World_index(OUTPUT_STREAM, instance *O) {
 	PLUGINS_CALL(ANNOTATE_IN_WORLD_INDEX_PLUG, OUT, O);
 }
-
-@h Influencing core itself.
-Called from //core: How To Compile//. This is called when a successful
-compilation has finished, and is used, for example, by the bibliographic data
-plugin as an opportunity to write out release instructions.
-
-@e POST_COMPILATION_PLUG
-
-=
-int PluginCalls::post_compilation(void) {
-	PLUGINS_CALLV(POST_COMPILATION_PLUG);
-}
-

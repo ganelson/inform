@@ -8,8 +8,7 @@ Note that some of the bibliographic variables are actually compiled to
 constants.
 
 =
-int RTBibliographicData::compile_constants(int stage, int debugging) {
-	if (stage != 1) return FALSE;
+void RTBibliographicData::compile_constants(void) {
 	encode_constant_text_bibliographically = TRUE;
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_ENTER(COMPILE_TEXT_TO_I6_CMODE);
@@ -22,7 +21,6 @@ int RTBibliographicData::compile_constants(int stage, int debugging) {
 
 	END_COMPILATION_MODE;
 	encode_constant_text_bibliographically = FALSE;
-	return FALSE;
 }
 
 @ If the author doesn't name a work, then its title is properly "", not

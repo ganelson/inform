@@ -113,10 +113,13 @@ void Task::issue_problems_arising(build_vertex *V) {
 rough stages. Twenty is plenty.
 
 =
-void Task::advance_stage_to(int stage, text_stream *name, int X) {
+void Task::advance_stage_to(int stage, text_stream *name, int X, int debugging,
+	stopwatch_timer *timer) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	if (stage <= inform7_task->stage_of_compilation) internal_error("not an advance");
 	if (stage >= 20) internal_error("went too far");
+	if ((inform7_task->stage_of_compilation >= 0) && (problem_count == 0))
+		PluginCalls::production_line(inform7_task->stage_of_compilation, debugging, timer);
 	char *roman[] = {
 		"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
 		"XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" };

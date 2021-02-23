@@ -19,10 +19,19 @@ void BibliographicData::start(void) {
 		BibliographicData::make_special_meanings);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG,
 		BibliographicData::bibliographic_new_variable_notify);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG,
-		RTBibliographicData::compile_constants);
-	PluginManager::plug(POST_COMPILATION_PLUG,
-		ReleaseInstructions::write_ifiction_and_blurb);
+	PluginManager::plug(PRODUCTION_LINE_PLUG,
+		BibliographicData::production_line);
+}
+
+int BibliographicData::production_line(int stage, int debugging,
+	stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTBibliographicData::compile_constants);
+	}
+	if (stage == BIBLIOGRAPHIC_CSEQ) {
+		BENCH(ReleaseInstructions::write_ifiction_and_blurb);
+	}
+	return FALSE;
 }
 
 @ This enables two special sentence shapes: one which really should never

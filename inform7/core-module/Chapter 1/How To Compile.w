@@ -3,13 +3,12 @@
 The long production line on which products of Inform are built, one step at a time.
 
 @ Having seen the top management of the factory, we now reach the factory
-floor, which is one long production line: around 130 steps must be performed
+floor, which is one long production line: over 100 steps must be performed
 in sequence to finish making the product. We can picture each of these
 steps as carried out by a worker function: each does its work and passes
 on to the next.
 
-130 is a great many, so we group the stages into 12 departments, which are,
-in order of when they work:
+We group the steps into departments, which are in order of when they work:
 
 @e SUBDIVIDING_CSEQ from 0
 @e BUILT_IN_STUFF_CSEQ
@@ -20,17 +19,16 @@ in order of when they work:
 @e MODEL_COMPLETE_CSEQ
 @e TABLES_CSEQ
 @e PHRASES_CSEQ
-@e INTER_CSEQ
+@e INTER1_CSEQ
+@e INTER2_CSEQ
+@e INTER3_CSEQ
+@e INTER4_CSEQ
+@e INTER5_CSEQ
 @e BIBLIOGRAPHIC_CSEQ
 @e FINISHED_CSEQ
 
-@ The aim of this section is to contain as little logic as possible. However,
-a few of the steps are carried out only if debugging features are enabled,
-or disabled; or only if certain elements of the Inform language are enabled.
-For example, a Basic Inform source text is not allowed to contain command
-parser grammar in the way that an IF source text would, so the steps to do
-with building that grammar are skipped unless the relevant language element
-is active.
+@ The aim of this section is to contain as little logic as possible other
+then the sequence itself.
 
 =
 int Sequence::carry_out(int debugging) {
@@ -42,22 +40,26 @@ int Sequence::carry_out(int debugging) {
 	@<Make the model world@>;
 	@<Tables and grammar@>;
 	@<Phrases and rules@>;
-	@<Generate inter@>;
+	@<Generate inter, part 1@>
+	@<Generate inter, part 2@>
+	@<Generate inter, part 3@>
+	@<Generate inter, part 4@>
+	@<Generate inter, part 5@>
 	@<Generate index and bibliographic file@>;
 
-	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1);
+	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1, debugging, sequence_timer);
 	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
 	if (problem_count > 0) return FALSE;
 	return TRUE;
 }
 
-@ Here are macros for the unconditional and conditional steps, respectively,
-taking place at what we think of as benches in the production line. Continuing
-the analogy, there is an ongoing time and motion study: any step which takes
-more than 1 centisecond of CPU time is reported to the debugging log. That
-isn't necessarily a sign of something wrong: a few of these steps are always
-going to take serious computation. But we want to know which ones.
+@ This macro carries out a step at what we think of as "benches" in the
+production line: hence the name |BENCH|. Continuing the analogy, there is an
+ongoing time and motion study: any step which takes more than 1 centisecond of
+CPU time is reported to the debugging log. That isn't necessarily a sign of
+something wrong: a few of these steps are always going to take serious
+computation. But we want to know which ones.
 
 As soon as any step generates problem messages, all subsequent steps are
 skipped, so that each of the worker functions can assume that the
@@ -85,8 +87,9 @@ as possible.
 }
 
 @ Here, then, are the steps in the production line, presented without
-commentary. For what they do, see the relevant sections. Note that although
-most of these worker functions are in the |core| module, some are not.
+commentary. For what they do, see the relevant sections. Note that at the
+end of each stage, plugins are allowed to add further steps; see
+//Task::advance_stage_to//.
 
 Before anything else can be done, we must create an empty Inter hierarchy
 into which we will "emit" an Inter program. No actual code will be emitted for
@@ -96,7 +99,8 @@ main source text and one for each extension -- because the Inter hierarchy
 will divide according to these units.
 
 @<Divide into compilation units@> =
-	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units", -1);
+	Task::advance_stage_to(SUBDIVIDING_CSEQ, I"Dividing source into compilation units",
+		-1, debugging, sequence_timer);
 	BENCH(CompilationSettings::initialise_gcs)
 	BENCH(Emit::begin);
 	BENCH(NameResolution::make_the_tree)
@@ -109,24 +113,29 @@ value such as "number", or the verb "to mean", or the meaning relation, and
 so on. Those absolute basics are made here.
 
 @<Build a rudimentary set of kinds, relations, verbs and inference subjects@> =
-	Task::advance_stage_to(BUILT_IN_STUFF_CSEQ, I"Making built in infrastructure", -1);
+	Task::advance_stage_to(BUILT_IN_STUFF_CSEQ, I"Making built in infrastructure",
+		-1, debugging, sequence_timer);
 	BENCH(InferenceSubjects::make_built_in);
 	BENCH(Task::make_built_in_kind_constructors);
 	BENCH(BinaryPredicateFamilies::first_stock)
 	BENCH(BootVerbs::make_built_in)
 
 @<Pass three times through the major nodes@> =
-	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes", 1);
+	Task::advance_stage_to(SEMANTIC_ANALYSIS_CSEQ, I"Pre-pass through major nodes",
+		1, debugging, sequence_timer);
 	BENCH(MajorNodes::pre_pass)
 	BENCH(Task::verify)
-	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through major nodes", 2);
+	Task::advance_stage_to(ASSERTIONS_PASS_1_CSEQ, I"First pass through major nodes",
+		2, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)
-	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes", -1);
+	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes",
+		-1, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_2)
 
 @<Make the model world@> =
-	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world", -1);
+	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",
+		-1, debugging, sequence_timer);
 	BENCH(RTKinds::kind_declarations)
 	BENCH(RTUseOptions::compile)
 	BENCH(RTProperties::emit)
@@ -134,12 +143,14 @@ so on. Those absolute basics are made here.
 	BENCH(PL::Actions::name_all)
 	BENCH(NounIdentifiers::name_all)
 	BENCH(OrderingInstances::objects_in_definition_sequence)
-	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world", -1);
+	Task::advance_stage_to(MODEL_COMPLETE_CSEQ, I"Completing the model world",
+		-1, debugging, sequence_timer);
 	BENCH(World::stages_II_and_III)
 	BENCH(World::stage_IV)
 
 @<Tables and grammar@> =
-	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar", -1);
+	Task::advance_stage_to(TABLES_CSEQ, I"Tables and grammar",
+		-1, debugging, sequence_timer);
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
 	BENCH(PL::Player::InitialSituation)
@@ -149,7 +160,8 @@ so on. Those absolute basics are made here.
 	BENCH(World::stage_V)
 
 @<Phrases and rules@> =
-	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules", 3);
+	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules",
+		3, debugging, sequence_timer);
 	BENCH(LiteralPatterns::define_named_phrases)
 	BENCH(Phrases::Manager::traverse)
 	BENCH(Phrases::Manager::register_meanings)
@@ -164,8 +176,9 @@ so on. Those absolute basics are made here.
 
 @ This proceeds in stages.
 
-@<Generate inter@> =
-	Task::advance_stage_to(INTER_CSEQ, I"Generating inter", 4);
+@<Generate inter, part 1@> =
+	Task::advance_stage_to(INTER1_CSEQ, I"Generating inter (1)",
+		4, debugging, sequence_timer);
 	BENCH(RTUseOptions::compile_pragmas)
 	BENCH(FundamentalConstants::emit_build_number)
 	BENCH(RTExtensions::ShowExtensionVersions_routine)
@@ -179,11 +192,10 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relation_constants)
 	BENCH(RTKinds::compile_data_type_support_routines)
 	BENCH(RTKinds::I7_Kind_Name_routine)
-	if (debugging) {
-		BENCH(RuntimeModule::compile_debugging_runtime_data_1)
-	} else {
-		BENCH(RuntimeModule::compile_runtime_data_1)
-	}
+	
+@<Generate inter, part 2@> =
+	Task::advance_stage_to(INTER2_CSEQ, I"Generating inter (2)",
+		-1, debugging, sequence_timer);
 	BENCH(InferenceSubjects::emit_all)
 	BENCH(Tables::complete)
 	BENCH(RTTables::compile)
@@ -199,12 +211,12 @@ so on. Those absolute basics are made here.
 	BENCH(RTVerbs::ConjugateVerb)
 	BENCH(RTAdjectives::agreements)
 	if (debugging) {
-		BENCH(RuntimeModule::compile_debugging_runtime_data_2)
 		BENCH(InternalTests::InternalTestCases_routine)
-	} else {
-		BENCH(RuntimeModule::compile_runtime_data_2)
 	}
 
+@<Generate inter, part 3@> =
+	Task::advance_stage_to(INTER3_CSEQ, I"Generating inter (3)",
+		-1, debugging, sequence_timer);
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(Phrases::invoke_to_begin)
@@ -215,18 +227,16 @@ so on. Those absolute basics are made here.
 	BENCH(RTRelations::compile_defined_relations)
 	BENCH(Phrases::Manager::compile_as_needed)
 	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
-	if (debugging) {
-		BENCH(RuntimeModule::compile_debugging_runtime_data_3)
-	} else {
-		BENCH(RuntimeModule::compile_runtime_data_3)
-	}
+
+@<Generate inter, part 4@> =
+	Task::advance_stage_to(INTER4_CSEQ, I"Generating inter (4)",
+		-1, debugging, sequence_timer);
 	BENCH(Chronology::past_actions_i6_routines)
 	BENCH(Chronology::compile_runtime)
-	if (debugging) {
-		BENCH(RuntimeModule::compile_debugging_runtime_data_4)
-	} else {
-		BENCH(RuntimeModule::compile_runtime_data_4)
-	}
+	
+@<Generate inter, part 5@> =
+	Task::advance_stage_to(INTER5_CSEQ, I"Generating inter (5)",
+		-1, debugging, sequence_timer);
 	BENCH(RTMeasurements::compile_test_functions)
 	BENCH(Propositions::Deferred::compile_remaining_deferred)
 	BENCH(Calculus::Deferrals::allow_no_further_deferrals)
@@ -247,6 +257,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTBibliographicData::IFID_text);
 
 @<Generate index and bibliographic file@> =
-	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work", -1);
-	BENCH(PluginCalls::post_compilation);
+	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
+		-1, debugging, sequence_timer);
 	BENCH(I6T::produce_index);

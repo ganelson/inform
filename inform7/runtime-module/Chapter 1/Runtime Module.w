@@ -26,35 +26,3 @@ void RuntimeModule::start(void) {
 }
 void RuntimeModule::end(void) {
 }
-
-void RuntimeModule::compile_debugging_runtime_data_1(void) {
-	PluginCalls::compile_runtime_data(1, TRUE);
-}
-
-void RuntimeModule::compile_runtime_data_1(void) {
-	PluginCalls::compile_runtime_data(1, FALSE);
-}
-
-void RuntimeModule::compile_debugging_runtime_data_2(void) {
-	PluginCalls::compile_runtime_data(2, TRUE);
-}
-
-void RuntimeModule::compile_runtime_data_2(void) {
-	PluginCalls::compile_runtime_data(2, FALSE);
-}
-
-void RuntimeModule::compile_debugging_runtime_data_3(void) {
-	PluginCalls::compile_runtime_data(3, TRUE);
-}
-
-void RuntimeModule::compile_runtime_data_3(void) {
-	PluginCalls::compile_runtime_data(3, FALSE);
-}
-
-void RuntimeModule::compile_debugging_runtime_data_4(void) {
-	PluginCalls::compile_runtime_data(4, TRUE);
-}
-
-void RuntimeModule::compile_runtime_data_4(void) {
-	PluginCalls::compile_runtime_data(4, FALSE);
-}

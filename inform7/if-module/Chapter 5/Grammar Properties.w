@@ -66,34 +66,32 @@ void PL::Parsing::Visibility::start(void) {
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Parsing::Visibility::parsing_new_subject_notify);
 	PluginManager::plug(NEW_PERMISSION_NOTIFY_PLUG, PL::Parsing::Visibility::parsing_new_permission_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Parsing::Visibility::parsing_complete_model);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Parsing::Visibility::compile_runtime);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Parsing::Visibility::compile_runtime);
 }
 
-int PL::Parsing::Visibility::compile_runtime(int stage, int debugging) {
-	if (stage == 2) {
-		PL::Parsing::Tokens::General::write_parse_name_routines();
-		PL::Parsing::Lines::MistakeActionSub_routine();
-		PL::Parsing::Verbs::prepare();
-		PL::Parsing::Verbs::compile_conditions();
-		PL::Parsing::Tokens::Values::number();
-		PL::Parsing::Tokens::Values::truth_state();
-		PL::Parsing::Tokens::Values::time();
-		PL::Parsing::Tokens::Values::compile_type_gprs();
-	}
-	if (stage == 2) {
+int PL::Parsing::Visibility::compile_runtime(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER2_CSEQ) {
+		BENCH(PL::Parsing::Tokens::General::write_parse_name_routines);
+		BENCH(PL::Parsing::Lines::MistakeActionSub_routine);
+		BENCH(PL::Parsing::Verbs::prepare);
+		BENCH(PL::Parsing::Verbs::compile_conditions);
+		BENCH(PL::Parsing::Tokens::Values::number);
+		BENCH(PL::Parsing::Tokens::Values::truth_state);
+		BENCH(PL::Parsing::Tokens::Values::time);
+		BENCH(PL::Parsing::Tokens::Values::compile_type_gprs);
 		if (debugging) {
-			PL::Parsing::TestScripts::write_text();
-			PL::Parsing::TestScripts::TestScriptSub_routine();
+			BENCH(PL::Parsing::TestScripts::write_text);
+			BENCH(PL::Parsing::TestScripts::TestScriptSub_routine);
 		} else {
-			PL::Parsing::TestScripts::TestScriptSub_stub_routine();
+			BENCH(PL::Parsing::TestScripts::TestScriptSub_stub_routine);
 		}
 	}
-	if (stage == 3) {
-		PL::Parsing::Tokens::Filters::compile();
+	if (stage == INTER3_CSEQ) {
+		BENCH(PL::Parsing::Tokens::Filters::compile);
 	}
-	if (stage == 4) {
-		PL::Parsing::Verbs::compile_all();
-		PL::Parsing::Tokens::Filters::compile();
+	if (stage == INTER4_CSEQ) {
+		BENCH(PL::Parsing::Verbs::compile_all);
+		BENCH(PL::Parsing::Tokens::Filters::compile);
 	}
 	return FALSE;
 }

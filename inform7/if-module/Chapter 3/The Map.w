@@ -180,14 +180,15 @@ void PL::Map::start(void) {
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Map::map_intervene_in_assertion);
 	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Map::map_add_to_World_index);
 	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Map::map_annotate_in_World_index);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Map::compile_runtime);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Map::production_line);
 }
 
-int PL::Map::compile_runtime(int stage, int debugging) {
-	if (stage != 1) return FALSE;
-	PL::Map::map_compile_model_tables();
-	PL::Map::write_door_dir_routines();
-	PL::Map::write_door_to_routines();
+int PL::Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Map::map_compile_model_tables);
+		BENCH(PL::Map::write_door_dir_routines);
+		BENCH(PL::Map::write_door_to_routines);
+	}
 	return FALSE;
 }
 

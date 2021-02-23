@@ -4766,7 +4766,7 @@
 
 <definite-article> internal hits 21513/254408 nti r2 constraint (none) extremes [1, 1]
 
-<indefinite-article> internal hits 2234/40600 nti r2 constraint (none) extremes [1, 1]
+<indefinite-article> internal hits 2243/40622 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article-table> nti r2 constraint CS = {r2} extremes [6, 6]
     English:
@@ -4911,11 +4911,11 @@
         here here here here here here 
           constraint CS = {12} extremes [6, 6]
 
-<nonimperative-verb> internal hits 3986/8928 nti 6 constraint FS = {6} extremes [1, infinity)
+<nonimperative-verb> internal hits 3986/8900 nti 6 constraint FS = {6} extremes [1, infinity)
 
 <copular-verb> internal hits 16/128 nti 7 constraint FS = {7} extremes [1, infinity)
 
-<negated-noncopular-verb-present> internal hits 1/8730 nti 8 constraint FS = {8} extremes [1, infinity)
+<negated-noncopular-verb-present> internal hits 1/8616 nti 8 constraint FS = {8} extremes [1, infinity)
 
 <universal-verb> internal hits 0/1480 nti 9 constraint FS = {9} extremes [1, infinity)
 
@@ -5256,7 +5256,7 @@
 <np-x-of-y> hits 196/9062 nti 6 constraint DS = {6} extremes [2, infinity)
     English:
         of {...} 
-          (hits 196/2387) (matched: 'of day -- documented at var_time --') constraint DS = {6} extremes [2, infinity)
+          (hits 196/2364) (matched: 'of day -- documented at var_time --') constraint DS = {6} extremes [2, infinity)
 
 <notable-linguistic-kinds> hits 5/60 nti 7 constraint CS = {7} extremes [2, 2]
     English:
@@ -6593,18 +6593,18 @@
 <new-adjective-sentence-object> hits 0/856 nti 14 constraint DS = {8} extremes [1, infinity)
     English:
         <indefinite-article> <new-adjective-sentence-object-unarticled> 
-          (hits 0/64) constraint DS = {8} extremes [2, infinity)
+          (hits 0/75) constraint DS = {8} extremes [2, infinity)
         <new-adjective-sentence-object-unarticled> 
-          (hits 0/65) constraint DS = {8} extremes [1, infinity)
+          (hits 0/76) constraint DS = {8} extremes [1, infinity)
 
-<new-adjective-sentence-object-unarticled> hits 0/184 nti 8 constraint DS = {8} extremes [1, infinity)
+<new-adjective-sentence-object-unarticled> hits 0/224 nti 8 constraint DS = {8} extremes [1, infinity)
     English:
         adjective 
           (hits 0/1) constraint CS = {8} extremes [1, 1]
         adjective implying/meaning <definite-article> <np-unparsed> 
-          (hits 0/60) constraint DS = {8} extremes [4, infinity)
+          (hits 0/71) constraint DS = {8} extremes [4, infinity)
         adjective implying/meaning <np-unparsed> 
-          (hits 0/91) constraint DS = {8} extremes [3, infinity)
+          (hits 0/110) constraint DS = {8} extremes [3, infinity)
 
 <adjective-definition-subject> nti 9 constraint (none) extremes [1, infinity)
     English:
@@ -7027,9 +7027,9 @@
         <s-literal-real-number> 
           (hits 11/9823) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         <s-literal-truth-state> 
-          (hits 78/395) (matched: 'false') constraint CS = {6} extremes [1, 1]
+          (hits 78/392) (matched: 'false') constraint CS = {6} extremes [1, 1]
         <s-literal-list> 
-          (hits 0/1518) constraint DS = {8} extremes [2, infinity)
+          (hits 0/1692) constraint DS = {8} extremes [2, infinity)
         unicode <s-unicode-character> 
           (hits 0/4359) constraint DS = {12} extremes [2, infinity)
         <s-literal-time> 
@@ -7039,12 +7039,12 @@
 
 <response-letter> internal hits 680/1360 nti 22 constraint (none) extremes [1, 1]
 
-<s-literal-truth-state> hits 78/790 nti 6 constraint CS = {6} extremes [1, 1]
+<s-literal-truth-state> hits 78/784 nti 6 constraint CS = {6} extremes [1, 1]
     English:
         false 
-          (hits 29/395) (matched: 'false') constraint CS = {6} extremes [1, 1]
+          (hits 29/392) (matched: 'false') constraint CS = {6} extremes [1, 1]
         true 
-          (hits 49/366) (matched: 'true') constraint CS = {6} extremes [1, 1]
+          (hits 49/363) (matched: 'true') constraint CS = {6} extremes [1, 1]
 
 <lp-group-name> internal nti 23 constraint (none) extremes [1, infinity)
 
@@ -7121,12 +7121,12 @@
 
 <unicode-character-name> internal nti 30 constraint (none) extremes [1, infinity)
 
-<s-literal-list> hits 0/3036 nti 8 constraint DS = {8} extremes [2, infinity)
+<s-literal-list> hits 0/3384 nti 8 constraint DS = {8} extremes [2, infinity)
     English:
         { } 
-          constraint CS = {8} extremes [2, 2]
+          (hits 0/27) constraint CS = {8} extremes [2, 2]
         { <list-conts> } 
-          (hits 0/1396) constraint DS = {8} extremes [3, infinity)
+          (hits 0/1412) constraint DS = {8} extremes [3, infinity)
 
 <list-conts> nti 7 constraint (none) extremes [1, infinity)
     English:
@@ -7531,7 +7531,7 @@
 <property-of-shape> hits 105/18348 nti 7 constraint DS = {7} extremes [3, infinity)
     English:
         <s-property-name> of {...} 
-          (hits 105/1293) (matched long text) constraint DS = {7} extremes [3, infinity)
+          (hits 105/1288) (matched long text) constraint DS = {7} extremes [3, infinity)
 
 <s-value-phrase-non-of> internal hits 490/18348 nti 31 constraint (none) extremes [1, infinity)
 
@@ -7569,9 +7569,9 @@
         <universal-verb> <s-universal-term> 
           (hits 0/667) constraint DS = {29} & FS = {9} extremes [4, infinity)
         <nonimperative-verb> <permitted-preposition> <s-noun-phrase> 
-          (hits 224/1690) (matched long text) constraint DS = {14} & FS = {6} extremes [3, infinity)
+          (hits 224/1684) (matched long text) constraint DS = {14} & FS = {6} extremes [3, infinity)
         <nonimperative-verb> <s-noun-phrase> 
-          (hits 1925/2182) (matched long text) constraint FS = {6} extremes [2, infinity)
+          (hits 1925/2174) (matched long text) constraint FS = {6} extremes [2, infinity)
 
 <s-universal-term> nti 29 constraint DS = {29} extremes [3, infinity)
     English:
@@ -8633,38 +8633,38 @@
         parameter-object 
           (hits 1/1) (matched: 'parameter-object') constraint CS = {31} extremes [1, 1]
 
-<notable-bibliographic-variables> hits 7/186 nti 6 constraint CS = {6} extremes [2, 3]
-    English:
-        story title 
-          (hits 1/7) (matched: 'story title') constraint CS = {6} extremes [2, 2]
-        story author 
-          (hits 1/6) (matched: 'story author') constraint CS = {6} extremes [2, 2]
-        story headline 
-          (hits 1/5) (matched: 'story headline') constraint CS = {6} extremes [2, 2]
-        story genre 
-          (hits 1/4) (matched: 'story genre') constraint CS = {6} extremes [2, 2]
-        story description 
-          (hits 1/3) (matched: 'story description') constraint CS = {6} extremes [2, 2]
-        story creation year 
-          (hits 1/1) (matched: 'story creation year') constraint CS = {6} extremes [3, 3]
-        release number 
-          (hits 1/2) (matched: 'release number') constraint CS = {6} extremes [2, 2]
-
-<episode-sentence-subject> hits 0/688 nti 7 constraint DS = {7} extremes [1, 2]
+<episode-sentence-subject> hits 0/688 nti 6 constraint DS = {6} extremes [1, 2]
     English:
         <definite-article> story 
-          (hits 0/7) constraint DS = {7} extremes [2, 2]
+          (hits 0/29) constraint DS = {6} extremes [2, 2]
         this story 
-          constraint CS = {7} extremes [2, 2]
+          (hits 0/2) constraint CS = {6} extremes [2, 2]
         story 
-          constraint CS = {7} extremes [1, 1]
+          constraint CS = {6} extremes [1, 1]
 
-<episode-sentence-object> nti 8 constraint DS = {8} extremes [2, infinity)
+<episode-sentence-object> nti 7 constraint DS = {7} extremes [2, infinity)
     English:
         episode <cardinal-number> of <quoted-text-without-subs> 
-          constraint DS = {8} extremes [4, 4]
+          constraint DS = {7} extremes [4, 4]
         episode {...} 
-          constraint DS = {8} extremes [2, infinity)
+          constraint DS = {7} extremes [2, infinity)
+
+<notable-bibliographic-variables> hits 7/186 nti 8 constraint CS = {8} extremes [2, 3]
+    English:
+        story title 
+          (hits 1/7) (matched: 'story title') constraint CS = {8} extremes [2, 2]
+        story author 
+          (hits 1/6) (matched: 'story author') constraint CS = {8} extremes [2, 2]
+        story headline 
+          (hits 1/5) (matched: 'story headline') constraint CS = {8} extremes [2, 2]
+        story genre 
+          (hits 1/4) (matched: 'story genre') constraint CS = {8} extremes [2, 2]
+        story description 
+          (hits 1/3) (matched: 'story description') constraint CS = {8} extremes [2, 2]
+        story creation year 
+          (hits 1/1) (matched: 'story creation year') constraint CS = {8} extremes [3, 3]
+        release number 
+          (hits 1/2) (matched: 'release number') constraint CS = {8} extremes [2, 2]
 
 <release-sentence-object> nti 11 constraint DW = {9, 10, 11} extremes [1, infinity)
     English:
@@ -9320,15 +9320,15 @@
 <action-pattern> hits 556/21224 nti 7 constraint (none) extremes [1, infinity)
     English:
         asking <action-parameter> to try <action-pattern-core> 
-          (hits 0/938) constraint DS = {7} extremes [5, infinity)
+          (hits 0/936) constraint DS = {7} extremes [5, infinity)
         <action-parameter> trying <action-pattern-core> 
-          (hits 23/1978) (matched long text) constraint DS = {7} extremes [3, infinity)
+          (hits 23/1972) (matched long text) constraint DS = {7} extremes [3, infinity)
         an actor trying <action-pattern-core> 
-          (hits 0/1556) constraint DS = {7} extremes [4, infinity)
+          (hits 0/1551) constraint DS = {7} extremes [4, infinity)
         an actor <action-pattern-core> 
-          (hits 408/1955) (matched long text) constraint DS = {7} extremes [3, infinity)
+          (hits 408/1949) (matched long text) constraint DS = {7} extremes [3, infinity)
         trying <action-pattern-core> 
-          (hits 0/1958) constraint DS = {7} extremes [2, infinity)
+          (hits 0/1947) constraint DS = {7} extremes [2, infinity)
         <action-pattern-core-actor> 
           (hits 125/10181) (matched long text) constraint (none) extremes [1, infinity)
 

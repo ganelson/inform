@@ -10,7 +10,14 @@ void Sounds::start(void) {
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Sounds::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Sounds::new_base_kind_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Sounds::new_named_instance_notify);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, RTSounds::compile_ResourceIDsOfSounds_array);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, Sounds::production_line);
+}
+
+int Sounds::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTSounds::compile_ResourceIDsOfSounds_array);
+	}
+	return FALSE;
 }
 
 @h One special meaning.

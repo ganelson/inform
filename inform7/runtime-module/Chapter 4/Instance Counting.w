@@ -32,7 +32,14 @@ property *P_KD_Count = NULL; /* see below */
 void PL::Counting::start(void) {
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Counting::counting_new_subject_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Counting::counting_complete_model);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Counting::counting_compile_model_tables);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Counting::production_line);
+}
+
+int PL::Counting::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Counting::counting_compile_model_tables);
+	}
+	return FALSE;
 }
 
 @h Initialising.
@@ -191,8 +198,7 @@ inter_name *PL::Counting::instance_count_iname(kind *K) {
 	return Hierarchy::derive_iname_in(COUNT_INSTANCE_HL, RTKinds::iname(K), Kinds::Behaviour::package(K));
 }
 
-int PL::Counting::counting_compile_model_tables(int stage, int debugging) {
-	if (stage != 1) return FALSE;
+void PL::Counting::counting_compile_model_tables(void) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
@@ -204,7 +210,6 @@ int PL::Counting::counting_compile_model_tables(int stage, int debugging) {
 				Emit::named_iname_constant(iname, K_object, NULL);
 			}
 		}
-	return FALSE;
 }
 
 @ Counting kinds of object, not very quickly:

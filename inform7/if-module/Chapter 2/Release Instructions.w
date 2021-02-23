@@ -346,19 +346,19 @@ done together since they have so much in common, being essentially two ways
 of writing the same thing.
 
 =
-int ReleaseInstructions::write_ifiction_and_blurb(void) {
+void ReleaseInstructions::write_ifiction_and_blurb(void) {
 	release_instructions *rel = my_instructions;
-	if (ReleaseInstructions::ensure_Materials(rel) == FALSE) return FALSE;
-	if (ReleaseInstructions::check_cover_art(rel) == FALSE) return FALSE;
+	if (ReleaseInstructions::ensure_Materials(rel) == FALSE) return;
+	if (ReleaseInstructions::check_cover_art(rel) == FALSE) return;
 	if (Task::wraps_existing_storyfile()) {
-		if (ReleaseInstructions::read_existing_header(rel) == FALSE) return FALSE;
+		if (ReleaseInstructions::read_existing_header(rel) == FALSE) return;
 	}
 	if (problem_count == 0) {
 		@<Write iFiction record@>;
 		@<Write release blurb@>;
 		@<Write manifest file@>;
 	}
-	return FALSE;
+	return;
 }
 
 @<Write iFiction record@> =

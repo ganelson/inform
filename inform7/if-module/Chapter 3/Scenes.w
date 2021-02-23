@@ -92,13 +92,15 @@ void PL::Scenes::start(void) {
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Scenes::scenes_new_property_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Scenes::scenes_new_named_instance_notify);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Scenes::scenes_new_base_kind_notify);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Scenes::compile_runtime);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Scenes::production_line);
 }
 
-int PL::Scenes::compile_runtime(int stage, int debugging) {
-	if (stage != 1) return FALSE;
-	PL::Scenes::DetectSceneChange_routine();
-	PL::Scenes::ShowSceneStatus_routine();
+int PL::Scenes::production_line(int stage, int debugging,
+	stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Scenes::DetectSceneChange_routine);
+		BENCH(PL::Scenes::ShowSceneStatus_routine);
+	}
 	return FALSE;
 }
 

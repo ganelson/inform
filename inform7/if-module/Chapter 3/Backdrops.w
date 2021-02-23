@@ -39,7 +39,15 @@ void PL::Backdrops::start(void) {
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Backdrops::backdrops_new_property_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Backdrops::backdrops_complete_model);
 	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Backdrops::backdrops_intervene_in_assertion);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG,  PL::Backdrops::write_found_in_routines);
+	PluginManager::plug(PRODUCTION_LINE_PLUG,  PL::Backdrops::production_line);
+}
+
+int PL::Backdrops::production_line(int stage, int debugging,
+	stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Backdrops::write_found_in_routines);
+	}
+	return FALSE;
 }
 
 typedef struct found_in_inference_data {
@@ -328,8 +336,7 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 		P_absent, Instances::as_subject(I), TRUE, CERTAIN_CE);
 
 @ =
-int PL::Backdrops::write_found_in_routines(int stage, int debugging) {
-	if (stage != 1) return FALSE;
+void PL::Backdrops::write_found_in_routines(void) {
 	backdrop_found_in_notice *notice;
 	LOOP_OVER(notice, backdrop_found_in_notice) {
 		instance *I = notice->backdrop;
@@ -338,7 +345,6 @@ int PL::Backdrops::write_found_in_routines(int stage, int debugging) {
 		else
 			@<The object is found nowhere@>;
 	}
-	return FALSE;
 }
 
 @<The object is found in many rooms or in whole regions@> =

@@ -103,19 +103,20 @@ void PL::Actions::start(void) {
 	PluginManager::plug(OFFERED_PROPERTY_PLUG, PL::Actions::actions_offered_property);
 	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, PL::Actions::actions_offered_specification);
 	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, PL::Actions::actions_typecheck_equality);
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Actions::compile_runtime);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Actions::compile_runtime);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
 }
 
-int PL::Actions::compile_runtime(int stage, int debugging) {
-	if (stage != 1) return FALSE;
-	PL::Actions::Patterns::Named::compile();
-	PL::Actions::ActionData();
-	PL::Actions::ActionCoding_array();
-	PL::Actions::ActionHappened();
-	PL::Actions::compile_action_routines();
+int PL::Actions::compile_runtime(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Actions::Patterns::Named::compile);
+		BENCH(PL::Actions::ActionData);
+		BENCH(PL::Actions::ActionCoding_array);
+		BENCH(PL::Actions::ActionHappened);
+		BENCH(PL::Actions::compile_action_routines);
+	}
 	return FALSE;
 }
 

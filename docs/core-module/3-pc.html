@@ -72,7 +72,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">core</a></li><li><a href="index.html#3">Chapter 3: Plugins</a></li><li><b>Plugin Calls</b></li></ul></div>
 <p class="purpose">The interface between the main compiler and its plugins.</p>
 
-<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing assertions</a></li><li><a href="3-pc.html#SP12">&#167;12. Influencing values</a></li><li><a href="3-pc.html#SP15">&#167;15. Influencing knowledge</a></li><li><a href="3-pc.html#SP28">&#167;28. Influencing runtime</a></li><li><a href="3-pc.html#SP29">&#167;29. Influencing if</a></li><li><a href="3-pc.html#SP30">&#167;30. Influencing index</a></li><li><a href="3-pc.html#SP32">&#167;32. Influencing core itself</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing core</a></li><li><a href="3-pc.html#SP3">&#167;3. Influencing assertions</a></li><li><a href="3-pc.html#SP13">&#167;13. Influencing values</a></li><li><a href="3-pc.html#SP16">&#167;16. Influencing knowledge</a></li><li><a href="3-pc.html#SP29">&#167;29. Influencing if</a></li><li><a href="3-pc.html#SP30">&#167;30. Influencing index</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following set of functions is an API for the main compiler to consult
 with the plugins; put another way, it is also an API for the plugins to
@@ -84,20 +84,49 @@ see <a href="3-pm.html#SP8" class="internal">PluginManager::plug</a>.
 compiler module, and within each module in alphabetical order.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Influencing assertions. </b>Called from <a href="../assertions-module/4-rpt.html" class="internal">Refine Parse Tree (in assertions)</a> to ask if this node is a noun
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Influencing core. </b>Called from <a href="1-wtc.html#SP5" class="internal">Task::advance_stage_to</a>. This allows plugins to run additional
+production-line steps in compilation, and that is done mostly at the Inter
+generation stage, to add extra arrays or functions needed at run-time to
+support whatever feature the plugin implements. For example, the mapping plugin
+compiles an array to hold the map during stage <span class="extract"><span class="extract-syntax">INTER1_CSEQ</span></span>.
+</p>
+
+<p class="commentary">Because the following is called at the end of every main stage of compilation
+except for <span class="extract"><span class="extract-syntax">FINISHED_CSEQ</span></span>, it is called about 15 times in all, so it is
+essential to check <span class="extract"><span class="extract-syntax">stage</span></span> and act only on the right occasion. <span class="extract"><span class="extract-syntax">debugging</span></span> is
+<span class="extract"><span class="extract-syntax">TRUE</span></span> if this is a debugging run, and allows a plugin to generate diagnostic
+features if so.
+</p>
+
+<p class="commentary">A function attached to this plug should then ideally divide its work up into
+major subtasks and call each one with the <span class="extract"><span class="extract-syntax">BENCH</span></span> macro, so that the time it
+takes will (if appreciable) be included in the <a href="../inform7/M-pm.html" class="internal">Performance Metrics (in inform7)</a>.
+</p>
+
+<p class="commentary">See <a href="1-htc.html" class="internal">How To Compile</a> for the stages and their <span class="extract"><span class="extract-syntax">*_CSEQ</span></span> numbers.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::production_line</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PluginCalls::production_line</span></span>:<br/>What To Compile - <a href="1-wtc.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">timer</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">timer</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Influencing assertions. </b>Called from <a href="../assertions-module/4-rpt.html" class="internal">Refine Parse Tree (in assertions)</a> to ask if this node is a noun
 phrase with special significance: for example, "below" is significant to the
 mapping plugin. If so, the plugin should set the subject of the node to say
 what it refers to, and return <span class="extract"><span class="extract-syntax">TRUE</span></span>.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ACT_ON_SPECIAL_NPS_PLUG</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ACT_ON_SPECIAL_NPS_PLUG</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::act_on_special_NPs</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ACT_ON_SPECIAL_NPS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Called from <a href="../assertions-module/4-ass2.html" class="internal">Assemblies (in assertions)</a>. Body-snatching is used only by the
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Called from <a href="../assertions-module/4-ass2.html" class="internal">Assemblies (in assertions)</a>. Body-snatching is used only by the
 "player" plugin, and is explained there; it handles the consequences of sentences
 like "The player is Lord Collingwood".
 </p>
@@ -110,7 +139,7 @@ like "The player is Lord Collingwood".
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">DETECT_BODYSNATCHING_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">body</span><span class="plain-syntax">, </span><span class="identifier-syntax">snatcher</span><span class="plain-syntax">, </span><span class="identifier-syntax">counterpart</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> to see if any plugin wants to
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> to see if any plugin wants to
 intepret a sentence its own way, either taking direct action or issuing a
 more nuanced problem message than the usual machinery would have issued.
 If so, the plugin should return <span class="extract"><span class="extract-syntax">TRUE</span></span>, which both ensures that no other
@@ -125,7 +154,7 @@ with the sentence.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">INTERVENE_IN_ASSERTION_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Called from <a href="../assertions-module/4-tc.html" class="internal">The Creator (in assertions)</a> when an instance is being made in
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Called from <a href="../assertions-module/4-tc.html" class="internal">The Creator (in assertions)</a> when an instance is being made in
 an assembly, and its name may involve a genitive. For example, if the
 assembly says "every person has a nose", then normally this would be called
 something like "Mr Rogers's nose"; but the player plugin uses the following
@@ -140,7 +169,7 @@ to have "your nose" in the case of the player instance.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">genitive</span><span class="plain-syntax">, </span><span class="identifier-syntax">propriety</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Called from <a href="../assertions-module/2-bv.html" class="internal">Booting Verbs (in assertions)</a> to give each plugin a chance to
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Called from <a href="../assertions-module/2-bv.html" class="internal">Booting Verbs (in assertions)</a> to give each plugin a chance to
 create any special sentence meanings it would like to. For example, the
 sounds plugin defines a special form of assertion sentence this way. The
 plugin should always return <span class="extract"><span class="extract-syntax">FALSE</span></span>, since otherwise it may gazump other
@@ -154,7 +183,7 @@ plugins and cause them to stop working.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> when it seems that the author wants
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> when it seems that the author wants
 to create a property of something with a sentence like "A container has a
 number called security rating." A plugin can intervene and act on that,
 returning <span class="extract"><span class="extract-syntax">TRUE</span></span> to stop the usual machinery. For example, the actions
@@ -169,7 +198,7 @@ can be intercepted to create an action variable, not a property.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">OFFERED_PROPERTY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">what</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> when the specification pseudo-variable
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> when the specification pseudo-variable
 is about to be set for something; the plugin can then intercept this.
 </p>
 
@@ -180,7 +209,7 @@ is about to be set for something; the plugin can then intercept this.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">OFFERED_SPECIFICATION_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">owner</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Called from <a href="../assertions-module/4-rpt.html" class="internal">Refine Parse Tree (in assertions)</a> to ask plugins if a noun phrase
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Called from <a href="../assertions-module/4-rpt.html" class="internal">Refine Parse Tree (in assertions)</a> to ask plugins if a noun phrase
 has a noun implicit within it, even though none is explicitly given. For
 example, the player plugin uses this to say that "initially carried" means
 "...by the player", and sets the subject of the node to be the player character
@@ -194,7 +223,7 @@ instance.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">REFINE_IMPLICIT_NOUN_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Called from <a href="../assertions-module/6-terr.html" class="internal">The Equality Relation Revisited (in assertions)</a> when we have
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Called from <a href="../assertions-module/6-terr.html" class="internal">The Equality Relation Revisited (in assertions)</a> when we have
 to decide if it's valid to ask or declare that two things are the same.
 Returning <span class="extract"><span class="extract-syntax">TRUE</span></span> says that it is always valid; returning <span class="extract"><span class="extract-syntax">FALSE</span></span> leaves
 it to the regular machinery. This plug can therefore only be used to permit
@@ -208,7 +237,7 @@ additional usages, not to restrict existing ones.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">TYPECHECK_EQUALITY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">K1</span><span class="plain-syntax">, </span><span class="identifier-syntax">K2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> to warn plugins that a variable
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Called from <a href="../assertions-module/4-ass.html" class="internal">Assertions (in assertions)</a> to warn plugins that a variable
 is now being assigned a value by an explicit assertion sentence.
 </p>
 
@@ -219,7 +248,7 @@ is now being assigned a value by an explicit assertion sentence.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">VARIABLE_VALUE_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Influencing values. </b>Called from <a href="../values-module/2-rvl.html" class="internal">Rvalues (in values)</a> to allow plugins to compile rvalues in
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Influencing values. </b>Called from <a href="../values-module/2-rvl.html" class="internal">Rvalues (in values)</a> to allow plugins to compile rvalues in
 eccentric ways of their own: not in fact just for the whimsy of it, but to
 make it possible for plugins to support base kinds of their own. For example,
 the "actions" plugin needs this to deal with the "stored action" kind.
@@ -232,7 +261,7 @@ the "actions" plugin needs this to deal with the "stored action" kind.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_CONSTANT_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Called from <a href="../values-module/2-spc.html" class="internal">Specifications (in values)</a> to ask if there is some reason why
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Called from <a href="../values-module/2-spc.html" class="internal">Specifications (in values)</a> to ask if there is some reason why
 a rule about <span class="extract"><span class="extract-syntax">I1</span></span> should be thought broader in scope than one about <span class="extract"><span class="extract-syntax">I2</span></span>. This
 is used by the regions plugin when one is a sub-region of the other. This is
 expected to behave as a <span class="extract"><span class="extract-syntax">strcmp</span></span>-like sorting function, with a positive
@@ -246,7 +275,7 @@ return value saying <span class="extract"><span class="extract-syntax">I1</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">MORE_SPECIFIC_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">I1</span><span class="plain-syntax">, </span><span class="identifier-syntax">I2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Called from <a href="../values-module/4-cad.html" class="internal">Constants and Descriptions (in values)</a> to give plugins a chance
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Called from <a href="../values-module/4-cad.html" class="internal">Constants and Descriptions (in values)</a> to give plugins a chance
 to parse text which might otherwise be meaningless (or mean something different)
 and make it a "composite noun-quantifier" such as "everywhere" or "nothing".
 The main compiler does not recognise "everywhere" because it has no concept
@@ -261,7 +290,7 @@ of space, but the spatial plugin does, and this is how.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PARSE_COMPOSITE_NQS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">DW</span><span class="plain-syntax">, </span><span class="identifier-syntax">quantifier_used</span><span class="plain-syntax">, </span><span class="identifier-syntax">some_kind</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Influencing knowledge. </b>Called from <a href="../knowledge-module/5-tmw.html" class="internal">The Model World (in knowledge)</a> to invite the plugin to participate
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Influencing knowledge. </b>Called from <a href="../knowledge-module/5-tmw.html" class="internal">The Model World (in knowledge)</a> to invite the plugin to participate
 in stages I to V of the completion process. This may involve using contextual
 reasoning to draw further inferences.
 </p>
@@ -273,7 +302,7 @@ reasoning to draw further inferences.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPLETE_MODEL_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Called from <a href="../knowledge-module/4-is.html" class="internal">Inference Subjects (in knowledge)</a> to invite the plugin to
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Called from <a href="../knowledge-module/4-is.html" class="internal">Inference Subjects (in knowledge)</a> to invite the plugin to
 create any additional inference subjects it might want to reason about. In
 practice, this tends to be used to create preliminary subjects to stand in
 for significant kinds before those kinds are ready to be created.
@@ -286,7 +315,7 @@ for significant kinds before those kinds are ready to be created.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">CREATE_INFERENCE_SUBJECTS_PLUG</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Called from <a href="../knowledge-module/5-ia.html" class="internal">Indefinite Appearance (in knowledge)</a> to ask the plugins what
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Called from <a href="../knowledge-module/5-ia.html" class="internal">Indefinite Appearance (in knowledge)</a> to ask the plugins what
 inferences, if any, to draw from a double-quoted text standing as an entire
 sentence. The <span class="extract"><span class="extract-syntax">infs</span></span> is the subject which was being talked about at the time
 the text was quoted, and therefore presumably is what the text should describe.
@@ -299,7 +328,7 @@ the text was quoted, and therefore presumably is what the text should describe.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">DEFAULT_APPEARANCE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">txt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Called from <a href="../knowledge-module/5-inf.html" class="internal">Inferences (in knowledge)</a> when an inference is drawn about
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Called from <a href="../knowledge-module/5-inf.html" class="internal">Inferences (in knowledge)</a> when an inference is drawn about
 something. This does not, of course, necessarily mean that this will actually
 be the property of something: the inference might turn out to be mistaken. The
 mapping plugin uses this to infer further that if something is said to be a
@@ -313,7 +342,7 @@ map connection to somewhere else, then it is probably a room.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">INFERENCE_DRAWN_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a>. Early in the run, before some kinds
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a>. Early in the run, before some kinds
 are created, placeholder inference subjects are created to stand in for them;
 this call enables plugins to recognise certain texts as referring to those.
 </p>
@@ -325,7 +354,7 @@ this call enables plugins to recognise certain texts as referring to those.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NAME_TO_EARLY_INFS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a> to warn plugins about a new kind,
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a> to warn plugins about a new kind,
 which in practice enables them to spot from the name that it is actually a kind
 they want to provide built-in support for: thus the actions plugin reacts to
 the name "stored action", for example. <span class="extract"><span class="extract-syntax">K</span></span> is the newcomer, <span class="extract"><span class="extract-syntax">super</span></span> its super-kind,
@@ -341,7 +370,7 @@ source text (such as "container").
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_BASE_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">d</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Called from <a href="../knowledge-module/2-ins.html" class="internal">Instances (in knowledge)</a> to warn plugins that a new instance has
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Called from <a href="../knowledge-module/2-ins.html" class="internal">Instances (in knowledge)</a> to warn plugins that a new instance has
 been created. For example, the figures plugin needs to know this so that it
 can see when a new illustration has been created.
 </p>
@@ -358,7 +387,7 @@ sure you're not dealing with an object.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_INSTANCE_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">nc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Called from <a href="../knowledge-module/4-pp.html" class="internal">Property Permissions (in knowledge)</a> to warn plugins that a subject
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Called from <a href="../knowledge-module/4-pp.html" class="internal">Property Permissions (in knowledge)</a> to warn plugins that a subject
 has been given permission to hold a property; the parsing plugin, for example,
 uses this to attach a visibility flag.
 </p>
@@ -370,7 +399,7 @@ uses this to attach a visibility flag.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_PERMISSION_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">pp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Called from <a href="../knowledge-module/3-prp.html" class="internal">Properties (in knowledge)</a> to warn plugins that a property has
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Called from <a href="../knowledge-module/3-prp.html" class="internal">Properties (in knowledge)</a> to warn plugins that a property has
 been created, which they can use to spot properties with special significance
 to them.
 </p>
@@ -382,7 +411,7 @@ to them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_PROPERTY_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Called from <a href="../knowledge-module/4-is.html" class="internal">Inference Subjects (in knowledge)</a> to warn plugins that a subject
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Called from <a href="../knowledge-module/4-is.html" class="internal">Inference Subjects (in knowledge)</a> to warn plugins that a subject
 has been created, which they can use to spot subjects with special significance
 to them.
 </p>
@@ -394,7 +423,7 @@ to them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_SUBJECT_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Called from <a href="../knowledge-module/2-nv.html" class="internal">Nonlocal Variables (in knowledge)</a> to warn plugins that a new
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Called from <a href="../knowledge-module/2-nv.html" class="internal">Nonlocal Variables (in knowledge)</a> to warn plugins that a new
 variable has been created, which they can use to spot variables with special
 significance to them.
 </p>
@@ -406,7 +435,7 @@ significance to them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_VARIABLE_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>Called from <a href="../knowledge-module/2-ins.html" class="internal">Instances (in knowledge)</a> to warn plugins that the kind of an
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Called from <a href="../knowledge-module/2-ins.html" class="internal">Instances (in knowledge)</a> to warn plugins that the kind of an
 instance is about to be set. This happens most often when the instance is
 created, but can also happen again, refining the kind to a subkind, when
 the instance is an object.
@@ -419,7 +448,7 @@ the instance is an object.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a> when one kind of object is made a
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Called from <a href="../knowledge-module/4-ks.html" class="internal">Kind Subjects (in knowledge)</a> when one kind of object is made a
 subkind of another, as for example when "container" is a made a subkind of
 "thing". The plugin should return <span class="extract"><span class="extract-syntax">TRUE</span></span> if it wishes to forbid this,
 and if so, it had better throw a problem message, or the user will be
@@ -435,25 +464,6 @@ regions plugin does with the "region" kind.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::set_subkind_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">super</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_SUBKIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">super</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Influencing runtime. </b>Called from <a href="../runtime-module/1-rm.html" class="internal">Runtime Module (in runtime)</a>. This tells a plugin to compile any
-static data it will need. For example, the mapping plugin compiles an array to
-hold the map. <span class="extract"><span class="extract-syntax">debugging</span></span> is <span class="extract"><span class="extract-syntax">TRUE</span></span> if this is a debugging run, and allows
-a plugin to generate diagnostic features.
-</p>
-
-<p class="commentary">There are two stages of this, happening earlier and later in the process of
-emitting Inter code, because this allows for timing issues to be taken care of.
-That is, if a plugin wants to generate code which might depend on something
-another plugin did earlier, it should wait until round two.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_RUNTIME_DATA_PLUG</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_runtime_data</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_RUNTIME_DATA_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Influencing if. </b>Called from <a href="../if-module/4-ap.html" class="internal">Action Patterns (in if)</a> to validate optional parameters on the
@@ -490,18 +500,6 @@ the mapping plugin uses this to say where a door leads.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::annotate_in_World_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">O</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ANNOTATE_IN_WORLD_INDEX_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">O</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. Influencing core itself. </b>Called from <a href="1-htc.html" class="internal">How To Compile (in core)</a>. This is called when a successful
-compilation has finished, and is used, for example, by the bibliographic data
-plugin as an opportunity to write out release instructions.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">POST_COMPILATION_PLUG</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::post_compilation</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PluginCalls::post_compilation</span></span>:<br/>How To Compile - <a href="1-htc.html#SP2_9">&#167;2.9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALLV</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_COMPILATION_PLUG</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

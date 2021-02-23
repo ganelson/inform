@@ -103,7 +103,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			else if (D->W.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
 			else return Inode::error(P, I"nonconstant symbol", symb->symbol_name);
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
-				WRITE_TO(STDERR, "cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
+				LOG("cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
 				return Inode::error(P, I"value of wrong kind", symb->symbol_name);
 			}
 			return NULL;

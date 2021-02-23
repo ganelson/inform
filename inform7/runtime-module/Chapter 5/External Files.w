@@ -16,8 +16,7 @@ external_file_compilation_data RTExternalFiles::new_data(wording W) {
 	return efcd;
 }
 
-int RTExternalFiles::arrays(int stage, int debugging) {
-	if (stage != 1) return FALSE;
+void RTExternalFiles::arrays(void) {
 	inter_name *iname = Hierarchy::find(NO_EXTERNAL_FILES_HL);
 	Emit::named_numeric_constant(iname, (inter_ti) (NUMBER_CREATED(files_data)));
 	Hierarchy::make_available(Emit::tree(), iname);
@@ -63,5 +62,4 @@ int RTExternalFiles::arrays(int stage, int debugging) {
 	Emit::array_numeric_entry(0);
 	Emit::array_end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
-	return FALSE;
 }

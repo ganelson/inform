@@ -86,7 +86,14 @@ reports asking why it wouldn't change in play.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PL::Score::start</span></span>:<br/>IF Module - <a href="1-im.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPILE_RUNTIME_DATA_PLUG</span><span class="plain-syntax">, </span><a href="3-ts.html#SP4" class="function-link"><span class="function-syntax">PL::Score::compile_max_score</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">, </span><a href="3-ts.html#SP2" class="function-link"><span class="function-syntax">PL::Score::production_line</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::production_line</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stage</span><span class="plain-syntax"> == </span><span class="identifier-syntax">INTER1_CSEQ</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="3-ts.html#SP4" class="function-link"><span class="function-syntax">PL::Score::compile_max_score</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The maximum score and rankings table. </b>A special rule is that if a table is called "Rankings" and contains a column
@@ -108,8 +115,7 @@ score corresponding to successful completion and the highest rank.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::compile_max_score</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PL::Score::compile_max_score</span></span>:<br/><a href="3-ts.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stage</span><span class="plain-syntax"> != </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PL::Score::compile_max_score</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">PL::Score::compile_max_score</span></span>:<br/><a href="3-ts.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rt_made</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">, </span><span class="identifier-syntax">table</span><span class="plain-syntax">) {</span>
@@ -145,7 +151,6 @@ score corresponding to successful completion and the highest rank.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Emit::named_numeric_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

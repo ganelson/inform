@@ -12,7 +12,14 @@ nonlocal_variable *max_score_VAR = NULL;
 
 =
 void PL::Score::start(void) {
-	PluginManager::plug(COMPILE_RUNTIME_DATA_PLUG, PL::Score::compile_max_score);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Score::production_line);
+}
+
+int PL::Score::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Score::compile_max_score);
+	}
+	return FALSE;
 }
 
 @h The maximum score and rankings table.
@@ -32,8 +39,7 @@ equal to the number in the bottom row of the table, which is assumed to be the
 score corresponding to successful completion and the highest rank.
 
 =
-int PL::Score::compile_max_score(int stage, int debugging) {
-	if (stage != 1) return FALSE;
+void PL::Score::compile_max_score(void) {
 	int rt_made = FALSE;
 	table *t;
 	LOOP_OVER(t, table) {
@@ -69,5 +75,4 @@ int PL::Score::compile_max_score(int stage, int debugging) {
 	} else {
 		Emit::named_numeric_constant(iname, 0);
 	}
-	return FALSE;
 }
