@@ -368,7 +368,7 @@ is why the following only applies to those.)
 		inference_subject *subj = Node::get_subject(p);
 		if ((InferenceSubjects::is_an_object(subj)) ||
 			(InferenceSubjects::is_a_kind_of_object(subj)))
-			PL::Naming::object_takes_definite_article(subj);
+			Naming::object_takes_definite_article(subj);
 	}
 	#endif
 
@@ -610,9 +610,9 @@ to abbreviated forms of object names are normally allowed.
 		article_usage *au = Node::get_article(p);
 		#ifdef IF_MODULE
 		if (au == NULL)
-			PL::Naming::object_now_has_proper_name(recent_creation);
+			Naming::object_now_has_proper_name(recent_creation);
 		else if (Stock::usage_might_be_singular(au->usage) == FALSE)
-			PL::Naming::object_now_has_plural_name(recent_creation);
+			Naming::object_now_has_plural_name(recent_creation);
 		#endif
 		int g = 0, gender_certainty = UNKNOWN_CE;
 		if (au) {
@@ -935,14 +935,14 @@ to a different vehicle object.
 	new_instance = Instances::as_subject(Instances::latest());
 	if (named_after) {
 		#ifdef IF_MODULE
-		PL::Naming::transfer_details(named_after, new_instance);
+		Naming::transfer_details(named_after, new_instance);
 		#endif
 		Assertions::Assemblies::name_object_after(new_instance, named_after, NAW);
 		if ((InferenceSubjects::is_an_object(named_after) == FALSE) &&
 			(InferenceSubjects::is_a_kind_of_object(named_after) == FALSE)) propriety = TRUE;
 	}
 	#ifdef IF_MODULE
-	if (propriety) PL::Naming::now_has_proper_name(new_instance);
+	if (propriety) Naming::now_has_proper_name(new_instance);
 	#endif
 	Refiner::give_subject_to_noun(pz, new_instance);
 	Annotations::write_int(pz, creation_site_ANNOT, TRUE);

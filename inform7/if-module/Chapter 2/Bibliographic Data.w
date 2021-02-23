@@ -15,12 +15,12 @@ fully with the Treaty and the code below should be maintained as such.
 
 =
 void BibliographicData::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG,
+		BibliographicData::production_line);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG,
 		BibliographicData::make_special_meanings);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG,
 		BibliographicData::bibliographic_new_variable_notify);
-	PluginManager::plug(PRODUCTION_LINE_PLUG,
-		BibliographicData::production_line);
 }
 
 int BibliographicData::production_line(int stage, int debugging,

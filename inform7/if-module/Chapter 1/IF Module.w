@@ -38,7 +38,6 @@ which use this module:
 @e reserved_command_verb_CLASS
 @e rubric_holder_CLASS
 @e scene_CLASS
-@e short_name_notice_CLASS
 @e slash_gpr_CLASS
 @e spatial_data_CLASS
 
@@ -78,7 +77,6 @@ DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(reserved_command_verb)
 DECLARE_CLASS(rubric_holder)
 DECLARE_CLASS(scene)
-DECLARE_CLASS(short_name_notice)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(spatial_data)
 

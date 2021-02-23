@@ -1,50 +1,42 @@
-[PL::Naming::] The Naming Thicket.
+[Naming::] The Naming Thicket.
 
 Inform has a thicket of properties to do with names: not just the
 name itself, but whether it is a plural, a proper name, and so on. Here we
 look after these properties, and give them their initial states.
 
-@ A few properties are treated specially by Inform, and need to have their
-references stored in global variables. They are set as they are created,
-during the parsing of assertions in the Standard Rules.
-
-= (early code)
-property *P_proper_named = NULL; /* an either/or property for names */
-property *P_plural_named = NULL; /* an either/or property for names */
-property *P_neuter = NULL; /* an either/or property for names */
-property *P_female = NULL; /* an either/or property for names */
-property *P_article = NULL; /* a value property for names */
-property *P_privately_named = NULL;
-property *P_printed_name = NULL;
-property *P_printed_plural_name = NULL;
-property *P_cap_short_name = NULL;
-property *P_adaptive_text_viewpoint = NULL;
-
-@ We need to accumulate routines used for naming properties in a separate
-stream, though there aren't very many of them.
+@h As a plugin.
+This section of code is used even in Basic Inform, but it is structured
+as a plugin called "naming", even though it is permanently active, as a way
+to contain its complexity.
 
 =
-typedef struct short_name_notice {
-	struct inter_name *routine_iname;
-	struct inter_name *snn_iname;
-	struct instance *namee;
-	struct inference_subject *after_subject;
-	int capped;
-	CLASS_DEFINITION
-} short_name_notice;
-
-@h Plugin startup.
-
-=
-void PL::Naming::start(void) {
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Naming::naming_new_property_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Naming::naming_complete_model);
+void Naming::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, Naming::production_line);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Naming::naming_new_property_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, Naming::naming_complete_model);
 }
 
-@h Recognising significant properties.
-These are property names to do with naming which Inform provides special
-support for; it recognises the English names when they are defined by the
-Standard Rules. (So there is no need to translate this to other languages.)
+int Naming::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER5_CSEQ) {
+		BENCH(RTNaming::compile_cap_short_name);
+	}
+	return FALSE;
+}
+
+@ So, then, here is the promised thicket of nine naming properties:
+
+=
+property *P_article = NULL;
+property *P_plural_named = NULL;
+property *P_proper_named = NULL;
+property *P_printed_name = NULL;
+property *P_printed_plural_name = NULL;
+property *P_privately_named = NULL;
+property *P_adaptive_text_viewpoint = NULL;
+property *P_neuter = NULL;
+property *P_female = NULL;
+
+@ These properties are recognised as they are created with this nonterminal:
 
 =
 <notable-naming-properties> ::=
@@ -59,8 +51,11 @@ Standard Rules. (So there is no need to translate this to other languages.)
 	neuter |
 	female
 
-@ =
-int PL::Naming::naming_new_property_notify(property *prn) {
+@ "Publicly-named" is the antonym of "privately-named", so we don't need to
+catch that other than to hide it in the index.
+
+=
+int Naming::naming_new_property_notify(property *prn) {
 	if (<notable-naming-properties>(prn->name)) {
 		switch (<<r>>) {
 			case 0: P_article = prn; break;
@@ -69,7 +64,7 @@ int PL::Naming::naming_new_property_notify(property *prn) {
 			case 3: P_printed_name = prn; break;
 			case 4: P_printed_plural_name = prn; break;
 			case 5: IXProperties::dont_show_in_index(prn); break;
-			case 6: P_privately_named = prn; /* this is the negation of "publicly named" */
+			case 6: P_privately_named = prn;
 				IXProperties::dont_show_in_index(prn); break;
 			case 7: P_adaptive_text_viewpoint = prn;
 				IXProperties::dont_show_in_index(prn); break;
@@ -85,26 +80,26 @@ Only objects can be proper-named or plural-named, so we do nothing if told by
 the Creator to make something else have a proper name.
 
 =
-void PL::Naming::now_has_proper_name(inference_subject *infs) {
+void Naming::now_has_proper_name(inference_subject *infs) {
 	instance *wto = InstanceSubjects::to_object_instance(infs);
-	if (wto) PL::Naming::object_now_has_proper_name(wto);
+	if (wto) Naming::object_now_has_proper_name(wto);
 }
 
-void PL::Naming::object_now_has_proper_name(instance *I) {
+void Naming::object_now_has_proper_name(instance *I) {
 	if (P_proper_named)
 		EitherOrProperties::assert(P_proper_named,
 			Instances::as_subject(I), TRUE, LIKELY_CE);
 }
 
-void PL::Naming::object_now_has_plural_name(instance *I) {
+void Naming::object_now_has_plural_name(instance *I) {
 	if (P_plural_named)
 		EitherOrProperties::assert(P_plural_named,
 			Instances::as_subject(I), TRUE, LIKELY_CE);
 }
 
-@ It's a rather ugly fact of Inform 6 life that we indicate something is
+@ It's a traditional feature of Inform 6 that we indicate something is
 unique, yet not proper-named, by giving it the indefinite article "the";
-thus the following routine is called for creations of directions ("the north")
+thus the following function is called for creations of directions ("the north")
 and where "called..." absolutely requires the definite article ("There is
 a room called the Counting House").
 
@@ -112,7 +107,7 @@ We cache the text literal "the" rather than create it over and over.
 
 =
 parse_node *text_of_word_the = NULL;
-void PL::Naming::object_takes_definite_article(inference_subject *subj) {
+void Naming::object_takes_definite_article(inference_subject *subj) {
 	if (text_of_word_the == NULL)
 		text_of_word_the = Rvalues::from_wording(Feeds::feed_C_string(L"\"the\""));
 	ValueProperties::assert(P_article, subj, text_of_word_the, LIKELY_CE);
@@ -123,17 +118,17 @@ This is needed when assemblies name one new creation after another; for instance
 "Cleopatra's nose" must be proper-named because "Cleopatra" is.
 
 =
-void PL::Naming::transfer_details(inference_subject *from, inference_subject *to) {
+void Naming::transfer_details(inference_subject *from, inference_subject *to) {
 	instance *wto = InstanceSubjects::to_object_instance(to);
 	if (wto) {
 		if (PropertyInferences::either_or_state(from, P_proper_named) > 0)
-			PL::Naming::now_has_proper_name(to);
+			Naming::now_has_proper_name(to);
 		parse_node *art = PropertyInferences::value_of(from, P_article);
 		if (art) ValueProperties::assert(P_article, to, art, LIKELY_CE);
 	}
 }
 
-instance *PL::Naming::object_this_is_named_after(instance *I) {
+instance *Naming::object_this_is_named_after(instance *I) {
 	return InstanceSubjects::to_object_instance(
 		Assertions::Assemblies::what_this_is_named_after(
 			Instances::as_subject(I)));
@@ -144,32 +139,35 @@ instance *PL::Naming::object_this_is_named_after(instance *I) {
 we do here is provide its state on request.
 
 =
-int PL::Naming::object_is_privately_named(instance *I) {
-	int certainty = PropertyInferences::either_or_state(Instances::as_subject(I), P_privately_named);
+int Naming::object_is_privately_named(instance *I) {
+	int certainty = PropertyInferences::either_or_state(
+		Instances::as_subject(I), P_privately_named);
 	if (certainty > 0) return TRUE;
 	if (certainty < 0) return FALSE;
 	return NOT_APPLICABLE;
 }
 
 @h Model completion.
-Quite a lot of work is entailed in producing all of the necessary I6 properties
+Quite a lot of work is entailed in producing all of the necessary properties
 to fill in the naming details for objects, so here goes.
 
 =
-int PL::Naming::naming_complete_model(int stage) {
+int Naming::naming_complete_model(int stage) {
 	if (stage == WORLD_STAGE_III) @<Add naming properties implicit from context@>;
 	return FALSE;
 }
 
-@ Stage 3 of world model completion is adding properties not inferred directly
-from sentences, and this can include I6 properties with no I7 analogue.
+@ Stage III of world model completion is adding properties not inferred directly
+from sentences, and this can include Inter-level properties with no I7 analogue.
 
 @<Add naming properties implicit from context@> =
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE, Projects::get_language_of_play(Task::project()));
-			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE, Projects::get_language_of_play(Task::project()));
+			wording W = Kinds::Behaviour::get_name_in_play(K, FALSE,
+				Projects::get_language_of_play(Task::project()));
+			wording PW = Kinds::Behaviour::get_name_in_play(K, TRUE,
+				Projects::get_language_of_play(Task::project()));
 			inference_subject *subj = KindSubjects::from_kind(K);
 			@<Issue problem message if the name contains a comma@>;
 			@<Assert the printed plural name property for kinds other than thing or kinds of room@>;
@@ -179,11 +177,11 @@ from sentences, and this can include I6 properties with no I7 analogue.
 		wording W = Instances::get_name_in_play(I, FALSE);
 		inference_subject *subj = Instances::as_subject(I);
 		int this_is_a_room = PL::Spatial::object_is_a_room(I);
-		int this_has_a_printed_name = PL::Naming::look_for_printed_name(subj);
+		int this_has_a_printed_name = Naming::look_for_printed_name(subj);
 		int this_is_named_for_something_with_a_printed_name = FALSE;
-		if (PL::Naming::object_this_is_named_after(I))
-			if (PL::Naming::look_for_printed_name(
-				Instances::as_subject(PL::Naming::object_this_is_named_after(I))))
+		if (Naming::object_this_is_named_after(I))
+			if (Naming::look_for_printed_name(
+				Instances::as_subject(Naming::object_this_is_named_after(I))))
 				this_is_named_for_something_with_a_printed_name = TRUE;
 		@<Issue problem message if the name contains a comma@>;
 		if (this_has_a_printed_name == FALSE) @<Assert the printed name property@>;
@@ -227,7 +225,8 @@ a comma, and that's caught here:
 		wording W = Instances::get_name_in_play(I, FALSE);
 		if (Wordings::empty(W)) {
 			kind *k = Instances::to_kind(I);
-			W = Kinds::Behaviour::get_name_in_play(k, FALSE, Projects::get_language_of_play(Task::project()));
+			W = Kinds::Behaviour::get_name_in_play(k, FALSE,
+				Projects::get_language_of_play(Task::project()));
 		}
 		int begins_with_lower_case = FALSE;
 		if (Wordings::nonempty(W)) {
@@ -238,11 +237,11 @@ a comma, and that's caught here:
 		@<Assert the I6 cap-short-name property@>;
 	}
 
-@ The I7 property "printed name" translates to I6 |short_name|.
+@ The I7 property "printed name" translates to Inter |short_name|.
 
 @<Assert the I6 short-name property@> =
 	inter_name *faux = NULL;
-	text_stream *PROP = Str::new();
+	text_stream *textual_value = Str::new();
 
 	if (this_is_named_for_something_with_a_printed_name)
 		@<Compose the I6 short-name as a routine dynamically using its owner's short-name@>
@@ -253,7 +252,7 @@ a comma, and that's caught here:
 			Rvalues::from_iname(faux), CERTAIN_CE);
 	else
 		ValueProperties::assert(P_printed_name, subj,
-			Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
+			Rvalues::from_unescaped_wording(Feeds::feed_text(textual_value)), CERTAIN_CE);
 
 @ The I6 |cap_short_name| has no corresponding property in I7. Note that it's
 only needed if the object is named after something else which might need it,
@@ -263,7 +262,7 @@ actually means it's rarely needed.)
 @<Assert the I6 cap-short-name property@> =
 	inter_name *faux = NULL;
 	int set_csn = TRUE;
-	text_stream *PROP = Str::new();
+	text_stream *textual_value = Str::new();
 	if (this_is_named_for_something_with_a_printed_name) {
 		@<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@>
 	} else {
@@ -273,18 +272,13 @@ actually means it's rarely needed.)
 		else set_csn = FALSE;
 	}
 	if (set_csn) {
-		if (P_cap_short_name == NULL) {
-			inter_name *property_iname = Hierarchy::find(CAPSHORTNAME_HL);
-			P_cap_short_name = ValueProperties::new_nameless_using(
-				K_text, Kinds::Behaviour::package(K_object), property_iname);
-			Hierarchy::make_available(Emit::tree(), property_iname);
-		}
+		property *prn = RTNaming::cap_short_name_property();
 		if (faux)
-			ValueProperties::assert(P_cap_short_name, subj,
+			ValueProperties::assert(prn, subj,
 				Rvalues::from_iname(faux), CERTAIN_CE);
 		else
-			ValueProperties::assert(P_cap_short_name, subj,
-				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
+			ValueProperties::assert(prn, subj,
+				Rvalues::from_unescaped_wording(Feeds::feed_text(textual_value)), CERTAIN_CE);
 	}
 
 @ Note that it is important here to preserve the cases of the original
@@ -292,39 +286,31 @@ source text description, so that "Mr Beebe" will not be flattened to "mr
 beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 
+If the "spatial" plugin is inactive, |this_is_a_room| is akways |FALSE|.
+
 @<Compose the I6 short-name as a piece of text@> =
-	PL::Naming::compose_words_to_I6_naming_text(PROP, W, FALSE, (this_is_a_room)?FALSE:TRUE);
+	Naming::compose_words_to_I6_naming_text(textual_value, W, FALSE,
+		(this_is_a_room)?FALSE:TRUE);
 
 @<Compose the I6 cap-short-name as a piece of text@> =
-	PL::Naming::compose_words_to_I6_naming_text(PROP, W, TRUE, (this_is_a_room)?FALSE:TRUE);
+	Naming::compose_words_to_I6_naming_text(textual_value, W, TRUE,
+		(this_is_a_room)?FALSE:TRUE);
 
-@ The following need to be routines so that the printed name will dynamically
+@ The following need to be functions so that the printed name will dynamically
 change if the owner changes its own printed name during play: e.g. if the
 "masked maiden" changes to "Cleopatra", then "masked maiden's nose"
 must become "Cleopatra's nose", or at least several bug-reporters thought
 so. These routines allow that to happen.
 
 @<Compose the I6 short-name as a routine dynamically using its owner's short-name@> =
-	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, RTInstances::package(I));
-	notice->namee = I;
-	notice->after_subject = subj;
-	notice->capped = FALSE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, RTInstances::package(I));
-	faux = notice->snn_iname;
+	faux = RTNaming::iname_for_short_name_fn(I, subj, FALSE);
 
 @<Compose the I6 cap-short-name as a routine dynamically using its owner's cap-short-name@> =
-	short_name_notice *notice = CREATE(short_name_notice);
-	notice->routine_iname = Hierarchy::make_iname_in(SHORT_NAME_FN_HL, RTInstances::package(I));
-	notice->namee = I;
-	notice->after_subject = subj;
-	notice->capped = TRUE;
-	notice->snn_iname = Hierarchy::make_iname_in(SHORT_NAME_PROPERTY_FN_HL, RTInstances::package(I));
-	faux = notice->snn_iname;
+	faux = RTNaming::iname_for_short_name_fn(I, subj, TRUE);
 
 @ Lastly, then. We don't give this to kinds of room, because it's never necessary
 to pluralise them at run-time in practice, so it would carry an unnecessary cost
-in Z-machine memory. We don't give it to "thing" because this would be too
+in runtime memory. We don't give it to "thing" because this would be too
 vague, and might cause Inform at run-time to spuriously group unrelated things
 together in lists.
 
@@ -334,10 +320,10 @@ together in lists.
 		(PropertyInferences::value_and_where_without_inheritance(
 			subj, P_printed_plural_name, NULL) == NULL)) {
 		if (Wordings::nonempty(PW)) {
-			text_stream *PROP = Str::new();
-			PL::Naming::compose_words_to_I6_naming_text(PROP, PW, FALSE, TRUE);
+			text_stream *textual_value = Str::new();
+			Naming::compose_words_to_I6_naming_text(textual_value, PW, FALSE, TRUE);
 			ValueProperties::assert(P_printed_plural_name, subj,
-				Rvalues::from_unescaped_wording(Feeds::feed_text(PROP)), CERTAIN_CE);
+				Rvalues::from_unescaped_wording(Feeds::feed_text(textual_value)), CERTAIN_CE);
 		}
 	}
 
@@ -364,13 +350,13 @@ together in lists.
 	}
 
 @ We needed the following utility above. Note that only printed names
-inferred from sentences count here -- not printed names added in model
+inferred from sentences matter here -- not printed names added in model
 completion. (This is important because we might be working on these objects
 in any order, and might have completed X but not Y where either X is named
 after Y or vice versa.)
 
 =
-int PL::Naming::look_for_printed_name(inference_subject *subj) {
+int Naming::look_for_printed_name(inference_subject *subj) {
 	inference_subject *check;
 	for (check = subj; check; check = InferenceSubjects::narrowest_broader_subject(check)) {
 		inference *inf;
@@ -382,11 +368,12 @@ int PL::Naming::look_for_printed_name(inference_subject *subj) {
 	return FALSE;
 }
 
-@ And here we transcribe a word range to text suitable for an I6 property,
+@ And here we transcribe a word range to text suitable for an Inter property,
 capitalising and fixing "your" as needed.
 
 =
-void PL::Naming::compose_words_to_I6_naming_text(OUTPUT_STREAM, wording W, int cap, int your_flag) {
+void Naming::compose_words_to_I6_naming_text(OUTPUT_STREAM, wording W, int cap,
+	int your_flag) {
 	WRITE("\"");
 	if (Wordings::nonempty(W)) {
 		LOOP_THROUGH_WORDING(j, W) {
@@ -415,82 +402,6 @@ void PL::Naming::compose_words_to_I6_naming_text(OUTPUT_STREAM, wording W, int c
 	WRITE("\"");
 }
 
-@ Finally:
-
-=
-void PL::Naming::compile_small_names(void) {
-	short_name_notice *notice;
-	LOOP_OVER(notice, short_name_notice) {
-		instance *owner = PL::Naming::object_this_is_named_after(notice->namee);
-		packaging_state save = Routines::begin(notice->routine_iname);
-		wording NA = Assertions::Assemblies::get_named_after_text(notice->after_subject);
-		if (notice->capped) {
-			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
-
-			Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), PROPERTYADDRESS_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
-				Produce::up(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), porname);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(CAPSHORTNAME_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), porname);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SHORT_NAME_HL));
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		} else {
-			Produce::inv_primitive(Emit::tree(), PRINTNAME_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(owner));
-			Produce::up(Emit::tree());
-		}
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_text(Emit::tree(), I"'s ");
-		Produce::up(Emit::tree());
-		TEMPORARY_TEXT(SNAMES)
-		LOOP_THROUGH_WORDING(j, NA) {
-			CompiledText::from_wide_string(SNAMES, Lexer::word_raw_text(j), 0);
-			if (j<Wordings::last_wn(NA)) WRITE_TO(SNAMES, " ");
-		}
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_text(Emit::tree(), SNAMES);
-		Produce::up(Emit::tree());
-		DISCARD_TEXT(SNAMES)
-
-		Produce::rtrue(Emit::tree());
-		Routines::end(save);
-
-		save = Emit::named_array_begin(notice->snn_iname, NULL);
-		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-		Emit::array_iname_entry(notice->routine_iname);
-		Emit::array_end(save);
-	}
-}
-void PL::Naming::compile_cap_short_name(void) {
-	if (P_cap_short_name == NULL) {
-		inter_name *iname = Hierarchy::find(CAPSHORTNAME_HL);
-		Emit::named_iname_constant(iname, K_value, Hierarchy::find(SHORT_NAME_HL));
-		Hierarchy::make_available(Emit::tree(), iname);
-	}
-}
-
 @h The adaptive person.
 The following is only relevant for the language of play, whose extension will
 always be read in. That in turn is expected to contain a declaration like
@@ -501,23 +412,23 @@ this one:
 The following routine picks up on the result of this declaration. (We cache
 this because we need access to it very quickly when parsing text substitutions.)
 
-@d ADAPTIVE_PERSON_LINGUISTICS_CALLBACK PL::Naming::adaptive_person
-@d ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK PL::Naming::adaptive_number
+@d ADAPTIVE_PERSON_LINGUISTICS_CALLBACK Naming::adaptive_person
+@d ADAPTIVE_NUMBER_LINGUISTICS_CALLBACK Naming::adaptive_number
 
 =
-int PL::Naming::adaptive_person(inform_language *L) {
-	int C = PL::Naming::adaptive_combination(L);
+int Naming::adaptive_person(inform_language *L) {
+	int C = Naming::adaptive_combination(L);
 	if (C < 0) return -1;
 	return C % NO_KNOWN_PERSONS;
 }
 
-int PL::Naming::adaptive_number(inform_language *L) {
-	int C = PL::Naming::adaptive_combination(L);
+int Naming::adaptive_number(inform_language *L) {
+	int C = Naming::adaptive_combination(L);
 	if (C < 0) return -1;
 	return C / NO_KNOWN_PERSONS;
 }
 
-int PL::Naming::adaptive_combination(inform_language *L) {
+int Naming::adaptive_combination(inform_language *L) {
 	if (L->adaptive_person >= 0) return L->adaptive_person;
 	if ((L->adaptive_person == -1) && (P_adaptive_text_viewpoint)) {
 		instance *I = L->nl_instance;

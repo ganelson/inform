@@ -59,6 +59,7 @@ Chapter 4: Compilation Utilities
 	Runtime Support for Tables
 
 Chapter 5: Plugin Support
+	Naming
 	Figures
 	Sound Effects
 	External Files

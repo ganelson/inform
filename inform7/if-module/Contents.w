@@ -21,7 +21,6 @@ cataloguing information, and which needs to be bound up in various ways."
 Chapter 3: Space and Time
 "The default model domain for Inform is one which is adapted to interactive
 fiction, which provides for geography, spatial containment and scenes."
-	The Naming Thicket
 	Spatial Model
 	Everywhere, Nowhere and Here
 	Spatial Relations

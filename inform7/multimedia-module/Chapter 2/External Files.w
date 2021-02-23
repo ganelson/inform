@@ -9,10 +9,10 @@ The following is called to activate the plugin:
 
 =
 void ExternalFiles::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
 }
 
 int ExternalFiles::production_line(int stage, int debugging,

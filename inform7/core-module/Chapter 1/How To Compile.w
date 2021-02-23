@@ -252,7 +252,6 @@ so on. Those absolute basics are made here.
 	BENCH(PL::Showme::compile_SHOWME_details)
 	BENCH(Phrases::Timed::TimedEventsTable)
 	BENCH(Phrases::Timed::TimedEventTimesTable)
-	BENCH(PL::Naming::compile_cap_short_name)
 	BENCH(RTUseOptions::configure_template)
 	BENCH(RTBibliographicData::IFID_text);
 

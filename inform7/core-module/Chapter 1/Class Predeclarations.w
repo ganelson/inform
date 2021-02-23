@@ -108,6 +108,7 @@ DECLARE_CLASS(text_substitution)
 @e rule_CLASS
 @e rulebook_CLASS
 @e rulebook_outcome_CLASS
+@e short_name_notice_CLASS
 @e stacked_variable_CLASS
 @e stacked_variable_list_CLASS
 @e stacked_variable_owner_CLASS
@@ -139,6 +140,7 @@ DECLARE_CLASS(relation_inference_data)
 DECLARE_CLASS(rule)
 DECLARE_CLASS(rulebook)
 DECLARE_CLASS(rulebook_outcome)
+DECLARE_CLASS(short_name_notice)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_list, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner, 100)

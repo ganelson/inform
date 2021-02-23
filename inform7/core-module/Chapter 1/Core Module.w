@@ -17,7 +17,7 @@ plugin *core_plugin, *naming_plugin, *counting_plugin;
 void CoreModule::start(void) {
 	core_plugin = PluginManager::new(NULL, I"core", NULL);
 	PluginManager::make_permanently_active(core_plugin);
-	naming_plugin = PluginManager::new(&PL::Naming::start, I"naming", core_plugin);
+	naming_plugin = PluginManager::new(&Naming::start, I"naming", core_plugin);
 	counting_plugin = PluginManager::new(&PL::Counting::start, I"instance counting", core_plugin);
 
 	Writers::register_writer_I('B', &CoreModule::writer);

@@ -343,7 +343,7 @@ int PL::Map::map_set_kind_notify(instance *I, kind *k) {
 				case 1: I_down = I; break;
 			}
 		}
-		PL::Naming::object_takes_definite_article(Instances::as_subject(I));
+		Naming::object_takes_definite_article(Instances::as_subject(I));
 		@<Assign the object a direction number and a mapped-D-of relation@>;
 	}
 	return FALSE;

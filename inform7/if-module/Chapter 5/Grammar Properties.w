@@ -207,7 +207,7 @@ it into the |name| property instead. And we need to perform the same trick
 for the kinds we inherit from.
 
 @<Assert the I6 name property@> =
-	if (PL::Naming::object_is_privately_named(I) == FALSE) {
+	if (Naming::object_is_privately_named(I) == FALSE) {
 		kind *K = Instances::to_kind(I);
 		int from_kind = FALSE;
 		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));

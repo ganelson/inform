@@ -45,3 +45,4 @@ Chapter 5: Modelling
 	Indefinite Appearance
 	Relation Inferences
 	The Model World
+	The Naming Thicket
