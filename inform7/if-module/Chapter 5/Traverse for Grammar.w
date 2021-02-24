@@ -561,7 +561,7 @@ void PL::Parsing::understand_property_block(property *pr, int level, inference_s
 			"of day, or units; but certain built-into-Inform kinds of value "
 			"(like snippet or rulebook, for instance) I can't use.");
 	}
-	if (PL::Parsing::Visibility::seek(pr, subj, level, WHENW) == FALSE) {
+	if (Visibility::seek(pr, subj, level, WHENW) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnknownUnpermittedProperty),
 			"that property is not allowed for the thing or kind in question",
 			"just as (ordinarily) 'understand the open property as describing a "

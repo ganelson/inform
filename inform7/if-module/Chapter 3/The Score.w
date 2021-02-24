@@ -2,22 +2,35 @@
 
 A plugin to support the maximum score variable.
 
+@h Initialisation.
+
+=
+void PL::Score::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Score::production_line);
+	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Score::new_variable_notify);
+}
+
+int PL::Score::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(PL::Score::compile_max_score);
+	}
+	return FALSE;
+}
+
 @ For many years this was a defined I6 constant, but then people sent in bug
 reports asking why it wouldn't change in play.
 
 =
 nonlocal_variable *max_score_VAR = NULL;
 
-@h Initialisation.
+<notable-scoring-variables> ::=
+	maximum score
 
-=
-void PL::Score::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Score::production_line);
-}
-
-int PL::Score::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(PL::Score::compile_max_score);
+@ =
+int PL::Score::new_variable_notify(nonlocal_variable *var) {
+	if (<notable-scoring-variables>(var->name)) {
+		max_score_VAR = var;
+		RTVariables::make_initialisable(var);
 	}
 	return FALSE;
 }

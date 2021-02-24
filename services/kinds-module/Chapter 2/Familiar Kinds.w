@@ -89,10 +89,10 @@ the letter |K|:
 kind_constructor *CON_KIND_VARIABLE = NULL;
 
 @ So much for the exotica: back onto familiar ground for anyone who uses
-Inform. Some standard kinds:
+Inform. Some standard kinds follow. Some belong only to plugins; if the
+plugin in question is inactive, they will remain |NULL| and do nothing.
 
 = (early code)
-kind *K_action_name = NULL;
 kind *K_equation = NULL;
 kind *K_grammatical_gender = NULL;
 kind *K_natural_language = NULL;
@@ -101,13 +101,16 @@ kind *K_object = NULL;
 kind *K_real_number = NULL;
 kind *K_response = NULL;
 kind *K_snippet = NULL;
-kind *K_stored_action = NULL;
 kind *K_table = NULL;
 kind *K_text = NULL;
 kind *K_truth_state = NULL;
 kind *K_unicode_character = NULL;
 kind *K_use_option = NULL;
 kind *K_verb = NULL;
+
+kind *K_action_name = NULL;
+kind *K_description_of_action = NULL;
+kind *K_stored_action = NULL;
 
 @ And here are two more standard kinds, but which most Inform uses don't
 realise are there, because they are omitted from the Kinds index:

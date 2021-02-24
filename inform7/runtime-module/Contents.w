@@ -60,6 +60,7 @@ Chapter 4: Compilation Utilities
 
 Chapter 5: Plugin Support
 	Naming
+	Parsing
 	Figures
 	Sound Effects
 	External Files

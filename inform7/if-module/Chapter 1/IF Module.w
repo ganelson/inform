@@ -129,8 +129,7 @@ void IFModule::end(void) {
 
 @<Create this module's plugins@> =
 	if_plugin = PluginManager::new(NULL, I"interactive fiction", NULL);
-	parsing_plugin = PluginManager::new(&PL::Parsing::Visibility::start, I"command", if_plugin);
-	actions_plugin = PluginManager::new(&PL::Actions::start, I"actions", if_plugin);
+
 	spatial_plugin = PluginManager::new(&PL::Spatial::start, I"spatial model", if_plugin);
 	map_plugin = PluginManager::new(&PL::Map::start, I"mapping", if_plugin);
 	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", if_plugin);
@@ -144,6 +143,10 @@ void IFModule::end(void) {
 	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", if_plugin);
 	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", if_plugin);
 	chronology_plugin = PluginManager::new(&Chronology::start_plugin, I"chronology", if_plugin);
+
+	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", if_plugin);
+
+	parsing_plugin = PluginManager::new(&ParsingPlugin::start, I"command", if_plugin);
 
 @
 

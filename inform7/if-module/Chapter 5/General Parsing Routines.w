@@ -98,7 +98,7 @@ inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_
 	if (PL::Parsing::Verbs::is_empty(gv) == FALSE) {
 		symb = PL::Parsing::Tokens::General::get_gv_parse_name(gv);
 	} else {
-		if (PL::Parsing::Visibility::any_property_visible_to_subject(subj, FALSE)) {
+		if (Visibility::any_property_visible_to_subject(subj, FALSE)) {
 			parse_name_notice *notice = CREATE(parse_name_notice);
 			compilation_unit *C = CompilationUnits::find(subj->infs_created_at);
 			package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
@@ -178,10 +178,10 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
 
 	if (gv) {
 		sometimes_has_visible_properties =
-			PL::Parsing::Visibility::any_property_visible_to_subject(subj, TRUE);
+			Visibility::any_property_visible_to_subject(subj, TRUE);
 		N = PL::Parsing::Tokens::General::get_gv_parse_name(gv);
 	} else {
-		if (PL::Parsing::Visibility::any_property_visible_to_subject(subj, FALSE)
+		if (Visibility::any_property_visible_to_subject(subj, FALSE)
 			== FALSE) return FALSE;
 	}
 
@@ -325,7 +325,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 								Produce::down(Emit::tree());
 									Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-									Produce::val_iname(Emit::tree(), K_value, PL::Parsing::Visibility::name_name());
+									Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
 								Produce::up(Emit::tree());
 								Produce::code(Emit::tree());
 								Produce::down(Emit::tree());
@@ -393,7 +393,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 								Produce::down(Emit::tree());
 									Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-									Produce::val_iname(Emit::tree(), K_value, PL::Parsing::Visibility::name_name());
+									Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
 								Produce::up(Emit::tree());
 								Produce::code(Emit::tree());
 								Produce::down(Emit::tree());
@@ -483,7 +483,7 @@ void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
 				Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(NEXTWORDSTOPPED_HL));
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
-					Produce::val_iname(Emit::tree(), K_value, PL::Parsing::Visibility::name_name());
+					Produce::val_iname(Emit::tree(), K_value, RTParsing::name_iname());
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
@@ -694,7 +694,7 @@ void PL::Parsing::Tokens::General::consider_visible_properties(gpr_kit *gprk, in
 			if ((Properties::is_either_or(pr)) && (RTProperties::stored_in_negation(pr))) continue;
 			property_permission *pp =
 				PropertyPermissions::find(subj, pr, TRUE);
-			if ((pp) && (PL::Parsing::Visibility::get_level(pp) > 0))
+			if ((pp) && (Visibility::get_level(pp) > 0))
 				PL::Parsing::Tokens::General::consider_visible_property(gprk, subj, pr, pp, phase);
 		}
 		PL::Parsing::Tokens::General::finish_considering_visible_properties(gprk, phase);
@@ -728,7 +728,7 @@ void PL::Parsing::Tokens::General::consider_visible_property(gpr_kit *gprk, infe
 			PL::Parsing::Tokens::General::begin_parsing_visible_properties(gprk);
 	}
 
-	spec = PL::Parsing::Visibility::get_condition(pp);
+	spec = Visibility::get_condition(pp);
 
 	if (spec) {
 		conditional_vis = TRUE;
@@ -741,7 +741,7 @@ void PL::Parsing::Tokens::General::consider_visible_property(gpr_kit *gprk, infe
 	if (phase == 1)
 		PL::Parsing::Tokens::General::distinguish_visible_property(gprk, pr);
 	else
-		PL::Parsing::Tokens::General::parse_visible_property(gprk, subj, pr, PL::Parsing::Visibility::get_level(pp));
+		PL::Parsing::Tokens::General::parse_visible_property(gprk, subj, pr, Visibility::get_level(pp));
 
 	if (conditional_vis) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
 }

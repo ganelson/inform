@@ -187,11 +187,11 @@ the letter <span class="extract"><span class="extract-syntax">K</span></span>:
 <span class="reserved-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CON_KIND_VARIABLE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So much for the exotica: back onto familiar ground for anyone who uses
-Inform. Some standard kinds:
+Inform. Some standard kinds follow. Some belong only to plugins; if the
+plugin in question is inactive, they will remain <span class="extract"><span class="extract-syntax">NULL</span></span> and do nothing.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_action_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_equation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_grammatical_gender</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_natural_language</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -200,13 +200,16 @@ Inform. Some standard kinds:
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_response</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_snippet</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_stored_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_table</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_truth_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_unicode_character</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_use_option</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_verb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_action_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_description_of_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_stored_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>And here are two more standard kinds, but which most Inform uses don't
 realise are there, because they are omitted from the Kinds index:

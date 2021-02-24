@@ -1,6 +1,6 @@
 Total memory consumption was 258576K = 253 MB
 
-62.4% was used for 1337983 objects, in 278604 frames in 202 x 800K = 161600K = 157 MB:
+62.4% was used for 1337985 objects, in 278606 frames in 202 x 800K = 161600K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
@@ -45,7 +45,7 @@ Total memory consumption was 258576K = 253 MB
      ----  binary_predicate                         321 objects, 156648 bytes
      ----  stacked_variable_owner_list_array        38 x 100 = 3800 objects, 153216 bytes
      ----  index_lexicon_entry                      395 objects, 142200 bytes
-     ----  nonterminal                              757 objects, 139288 bytes
+     ----  nonterminal                              758 objects, 139472 bytes
      ----  action_pattern_array                     6 x 100 = 600 objects, 129792 bytes
      ----  documentation_ref                        1275 objects, 112200 bytes
      ----  inference                                1703 objects, 108992 bytes
@@ -72,7 +72,7 @@ Total memory consumption was 258576K = 253 MB
      ----  inter_node_list                          750 objects, 42000 bytes
      ----  activity_list_array                      1 x 1000 objects, 40032 bytes
      ----  response_message                         407 objects, 35816 bytes
-     ----  production_list                          617 objects, 34552 bytes
+     ----  production_list                          618 objects, 34608 bytes
      ----  regions_data                             670 objects, 32160 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 30720 bytes
@@ -244,5 +244,5 @@ Total memory consumption was 258576K = 253 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52766376 bytes = 51529K = 50 MB
+19.9% was overhead - 52766136 bytes = 51529K = 50 MB
 
