@@ -8748,7 +8748,7 @@
         library card 
           constraint CS = {11} extremes [2, 2]
 
-<notable-spatial-kinds> hits 12/204 nti 13 constraint CS = {13} extremes [1, 2]
+<notable-spatial-kinds> hits 12/210 nti 13 constraint CS = {13} extremes [1, 2]
     English:
         room 
           (hits 2/10) (matched: 'room') constraint CS = {13} extremes [1, 1]
@@ -8823,12 +8823,12 @@
         initially carried 
           constraint CS = {19} extremes [2, 2]
 
-<notable-device-kinds> hits 1/124 nti 20 constraint CS = {20} extremes [1, 1]
+<notable-device-kinds> hits 1/130 nti 20 constraint CS = {20} extremes [1, 1]
     English:
         device 
           (hits 1/1) (matched: 'device') constraint CS = {20} extremes [1, 1]
 
-<notable-backdrops-kinds> hits 1/126 nti 21 constraint CS = {21} extremes [1, 1]
+<notable-backdrops-kinds> hits 1/132 nti 21 constraint CS = {21} extremes [1, 1]
     English:
         backdrop 
           (hits 1/1) (matched: 'backdrop') constraint CS = {21} extremes [1, 1]
@@ -8843,7 +8843,7 @@
         everywhere 
           constraint CS = {23} extremes [1, 1]
 
-<notable-regions-kinds> hits 2/188 nti 24 constraint CS = {24} extremes [1, 1]
+<notable-regions-kinds> hits 2/194 nti 24 constraint CS = {24} extremes [1, 1]
     English:
         region 
           (hits 2/3) (matched: 'region') constraint CS = {24} extremes [1, 1]
@@ -8853,7 +8853,7 @@
         map region 
           (hits 1/1) (matched: 'map region') constraint CS = {25} extremes [2, 2]
 
-<notable-map-kinds> hits 19/2126 nti 26 constraint CS = {26} extremes [1, 1]
+<notable-map-kinds> hits 19/2132 nti 26 constraint CS = {26} extremes [1, 1]
     English:
         direction 
           (hits 13/19) (matched: 'direction') constraint CS = {26} extremes [1, 1]

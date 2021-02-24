@@ -8,6 +8,8 @@ entire chapter.
 =
 @ =
 void ActionsPlugin::start(void) {
+	ActionsNodes::nodes_and_annotations();
+
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ActionsPlugin::actions_new_base_kind_notify);
 	PluginManager::plug(COMPILE_CONSTANT_PLUG, PL::Actions::actions_compile_constant);

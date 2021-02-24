@@ -1,6 +1,6 @@
 Total memory consumption was 258576K = 253 MB
 
-62.4% was used for 1337985 objects, in 278606 frames in 202 x 800K = 161600K = 157 MB:
+62.4% was used for 1337885 objects, in 278605 frames in 202 x 800K = 161600K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
@@ -27,7 +27,7 @@ Total memory consumption was 258576K = 253 MB
      0.3%  inter_symbols_table                      13227 objects, 846528 bytes
      0.3%  inter_schema_node                        8692 objects, 834432 bytes
      0.2%  dictionary                               16372 objects, 785856 bytes
-     0.2%  dict_entry_array                         232 x 100 = 23200 objects, 749824 bytes
+     0.2%  dict_entry_array                         231 x 100 = 23100 objects, 746592 bytes
      0.2%  package_request                          7954 objects, 699952 bytes
      0.2%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes
      0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes
@@ -228,7 +228,7 @@ Total memory consumption was 258576K = 253 MB
 
 37.5% was used for memory not allocated for objects:
 
-    15.9%  text stream storage                      42248540 bytes in 265815 claims
+    15.9%  text stream storage                      42248220 bytes in 265815 claims
      3.5%  dictionary storage                       9278976 bytes in 16372 claims
      ----  sorting                                  1056 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -244,5 +244,5 @@ Total memory consumption was 258576K = 253 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52766136 bytes = 51529K = 50 MB
+19.9% was overhead - 52769368 bytes = 51532K = 50 MB
 

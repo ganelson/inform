@@ -43,6 +43,7 @@ fiction, which provides for geography, spatial containment and scenes."
 Chapter 4: Actions
 "Actions are impulses to do something within the simulated world."
 	Actions Plugin
+	Actions-Only Nodes and Annotations
 	Actions
 	Action Name Lists
 	Action Patterns
@@ -52,10 +53,9 @@ Chapter 4: Actions
 
 Chapter 5: Command Grammar
 "In which Understand sentences in the source text are converted into a
-parsing grammar, which tells the player's computer how to understand his
-typed commands during play, converting these into actions by the protagonist
-in the model world."
+grammar for a command parser at run-time."
 	Parsing Plugin
+	Parsing-Only Nodes and Annotations
 	Introduction to Grammar
 	Traverse for Grammar
 	Grammar Properties

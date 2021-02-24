@@ -43,9 +43,6 @@ void CoreSyntax::create_node_types(void) {
 	@<Create the rvalue nodes@>;
 	@<Create the lvalue nodes@>;
 	@<Create the condition nodes@>;
-	#ifdef IF_MODULE
-	IFModule::create_node_types();
-	#endif
 }
 
 @
@@ -243,9 +240,6 @@ void CoreSyntax::declare_annotations(void) {
 	CoreSyntax::declare_L3_annotations();
 	CoreSyntax::declare_code_annotations();
 	CoreSyntax::declare_spec_annotations();
-	#ifdef IF_MODULE
-	IFModule::declare_annotations();
-	#endif
 }
 
 void CoreSyntax::grant_annotation_permissions(void) {
@@ -254,9 +248,6 @@ void CoreSyntax::grant_annotation_permissions(void) {
 	CoreSyntax::grant_L3_permissions();
 	CoreSyntax::grant_code_permissions();
 	CoreSyntax::grant_spec_permissions();
-	#ifdef IF_MODULE
-	IFModule::grant_annotation_permissions();
-	#endif
 }
 
 @ The unit annotation is applied to every structural node, and indicates to
@@ -553,7 +544,6 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow(PROPER_NOUN_NT, quant_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, quantification_parameter_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, row_amendable_ANNOT);
-	Annotations::allow(PROPER_NOUN_NT, slash_dash_dash_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, table_cell_unspecified_ANNOT);
 	Annotations::allow(PROPER_NOUN_NT, turned_already_ANNOT);
 }

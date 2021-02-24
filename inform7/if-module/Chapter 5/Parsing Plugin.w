@@ -8,6 +8,8 @@ chapter.
 
 =
 void ParsingPlugin::start(void) {
+	ParsingNodes::nodes_and_annotations();
+
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ParsingPlugin::make_special_meanings);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, ParsingPlugin::new_variable_notify);

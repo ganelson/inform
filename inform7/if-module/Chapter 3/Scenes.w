@@ -88,12 +88,38 @@ including bit 1 which records whether the scene has started.
 
 =
 void PL::Scenes::start(void) {
+	PL::Scenes::declare_annotations();
+	PL::Scenes::grant_annotation_permissions();
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Scenes::make_special_meanings);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Scenes::scenes_new_property_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Scenes::scenes_new_named_instance_notify);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Scenes::scenes_new_base_kind_notify);
 	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Scenes::production_line);
 }
+
+@ And these annotations to the syntax tree:
+
+@e constant_scene_ANNOT /* |scene|: for constant values */
+
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
+
+@ =
+MAKE_ANNOTATION_FUNCTIONS(constant_scene, scene)
+
+@ =
+void PL::Scenes::declare_annotations(void) {
+	Annotations::declare_type(constant_scene_ANNOT, PL::Scenes::write_constant_scene_ANNOT);
+}
+void PL::Scenes::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_scene(p))
+		WRITE(" {scene: %I}", Node::get_constant_scene(p)->as_instance);
+}
+
+void PL::Scenes::grant_annotation_permissions(void) {
+	Annotations::allow(CONSTANT_NT, constant_scene_ANNOT);
+}
+
 
 int PL::Scenes::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {

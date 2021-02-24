@@ -99,10 +99,15 @@ enumerated node types, not on meaning codes such as |RULE_MC|, for which
 the following function will return |NULL|.
 
 =
+int any_node_types_created = FALSE;
+int node_type_created[NO_DEFINED_NT_VALUES];
 node_type_metadata node_type_metadatas[NO_DEFINED_NT_VALUES];
 
 node_type_metadata *NodeType::get_metadata(node_type_t t) {
 	if (NodeType::is_enumerated(t)) {
+		if ((any_node_types_created == FALSE) ||
+			(node_type_created[t - ENUMERATED_NT_BASE] == FALSE))
+			return NULL;
 		node_type_metadata *metadata =
 			&(node_type_metadatas[t - ENUMERATED_NT_BASE]);
 		if (metadata->identity != t) {
@@ -147,6 +152,12 @@ void NodeType::new(node_type_t identity, text_stream *node_type_name, int min_ch
 	ptnt->max_children = max_children;
 	ptnt->category = category;
 	ptnt->node_flags = node_flags;
+	if (any_node_types_created == FALSE) {
+		for (int i=0; i<NO_DEFINED_NT_VALUES; i++)
+			node_type_created[i] = FALSE;
+		any_node_types_created = TRUE;
+	}
+	node_type_created[identity - ENUMERATED_NT_BASE] = TRUE;
 }
 
 @h Basic properties.
