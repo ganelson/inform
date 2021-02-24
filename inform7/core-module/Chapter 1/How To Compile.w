@@ -153,7 +153,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
-	BENCH(PL::Player::InitialSituation)
+//	BENCH(PL::Player::InitialSituation)
 	BENCH(Tables::check_tables_for_kind_clashes)
 	BENCH(RTTables::compile_print_table_names)
 	BENCH(PL::Parsing::traverse)
@@ -249,7 +249,6 @@ so on. Those absolute basics are made here.
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
 	BENCH(Phrases::Timed::check_for_unused)
-	BENCH(PL::Showme::compile_SHOWME_details)
 	BENCH(Phrases::Timed::TimedEventsTable)
 	BENCH(Phrases::Timed::TimedEventTimesTable)
 	BENCH(RTUseOptions::configure_template)

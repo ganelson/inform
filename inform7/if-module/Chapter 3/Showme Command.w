@@ -8,6 +8,15 @@ plugged in.
 
 =
 void PL::Showme::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Showme::production_line);
+}
+
+int PL::Showme::production_line(int stage, int debugging,
+	stopwatch_timer *sequence_timer) {
+	if (stage == INTER5_CSEQ) {
+		BENCH(PL::Showme::compile_SHOWME_details)
+	}
+	return FALSE;
 }
 
 @h Support for the SHOWME command.
@@ -23,7 +32,6 @@ properties.
 
 =
 void PL::Showme::compile_SHOWME_details(void) {
-	if (PluginManager::active(showme_plugin) == FALSE) return;
 	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");

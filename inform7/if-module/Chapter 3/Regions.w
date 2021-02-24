@@ -116,8 +116,7 @@ int PL::Regions::regions_set_subkind_notify(kind *sub, kind *super) {
 
 @ =
 int PL::Regions::object_is_a_region(instance *I) {
-	if ((PluginManager::active(regions_plugin)) && (K_region) && (I) &&
-		(Instances::of_kind(I, K_region))) return TRUE;
+	if ((K_region) && (I) && (Instances::of_kind(I, K_region))) return TRUE;
 	return FALSE;
 }
 

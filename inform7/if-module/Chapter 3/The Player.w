@@ -27,6 +27,7 @@ nonlocal_variable *score_VAR = NULL;
 
 =
 void PL::Player::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Player::production_line);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Player::player_new_quantity_notify);
 	PluginManager::plug(VARIABLE_VALUE_NOTIFY_PLUG, PL::Player::player_variable_set_warning);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Player::player_new_instance_notify);
@@ -35,6 +36,14 @@ void PL::Player::start(void) {
 	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, PL::Player::player_refine_implicit_noun);
 	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, PL::Player::player_detect_bodysnatching);
 	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Player::player_annotate_in_World_index);
+}
+
+int PL::Player::production_line(int stage, int debugging,
+	stopwatch_timer *sequence_timer) {
+	if (stage == TABLES_CSEQ) {
+		BENCH(PL::Player::InitialSituation);
+	}
+	return FALSE;
 }
 
 @h Special objects.
@@ -342,25 +351,23 @@ void PL::Player::InitialSituation_define(int id, int val) {
 }
 
 void PL::Player::InitialSituation(void) {
-	if (PluginManager::active(player_plugin)) {
-		PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
-		PL::Player::InitialSituation_define(START_OBJECT_INIS_HL, 1);
-		PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);
-		PL::Player::InitialSituation_define(START_TIME_INIS_HL, 3);
-		PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
-	
-		inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
-		packaging_state save = Emit::named_array_begin(iname, K_value);
-		RTVariables::emit_initial_value(player_VAR);
-		if (start_object == NULL) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(RTInstances::iname(start_object));
-		if (start_room == NULL) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(RTInstances::iname(start_room));
-		RTVariables::emit_initial_value(time_of_day_VAR);
-		Emit::array_numeric_entry(0);
-		Emit::array_end(save);
-		Hierarchy::make_available(Emit::tree(), iname);
-	}
+	PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
+	PL::Player::InitialSituation_define(START_OBJECT_INIS_HL, 1);
+	PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);
+	PL::Player::InitialSituation_define(START_TIME_INIS_HL, 3);
+	PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
+
+	inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
+	RTVariables::emit_initial_value(player_VAR);
+	if (start_object == NULL) Emit::array_numeric_entry(0);
+	else Emit::array_iname_entry(RTInstances::iname(start_object));
+	if (start_room == NULL) Emit::array_numeric_entry(0);
+	else Emit::array_iname_entry(RTInstances::iname(start_room));
+	RTVariables::emit_initial_value(time_of_day_VAR);
+	Emit::array_numeric_entry(0);
+	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h World Index details.

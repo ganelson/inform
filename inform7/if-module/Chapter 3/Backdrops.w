@@ -107,8 +107,7 @@ int PL::Backdrops::backdrops_new_base_kind_notify(kind *new_base, text_stream *n
 
 @ =
 int PL::Backdrops::object_is_a_backdrop(instance *I) {
-	if ((PluginManager::active(regions_plugin)) && (K_backdrop) && (I) &&
-		(Instances::of_kind(I, K_backdrop))) return TRUE;
+	if ((K_backdrop) && (I) && (Instances::of_kind(I, K_backdrop))) return TRUE;
 	return FALSE;
 }
 
