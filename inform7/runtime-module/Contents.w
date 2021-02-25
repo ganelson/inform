@@ -68,3 +68,4 @@ Chapter 5: Plugin Support
 	Spatial
 	The Player
 	Backdrops
+	Regions

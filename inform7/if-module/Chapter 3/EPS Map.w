@@ -190,7 +190,7 @@ void PL::EPSMap::put_mp(wchar_t *name, map_parameter_scope *scope, instance *sco
 	if (scope_I) {
 		if (Spatial::object_is_a_room(scope_I))
 			scope = PL::EPSMap::scope_for_single_room(scope_I);
-		else if (PL::Regions::object_is_a_region(scope_I)) {
+		else if (Regions::object_is_a_region(scope_I)) {
 			instance *rm;
 			LOOP_OVER_INSTANCES(rm, K_room)
 				if (PL::EPSMap::obj_in_region(rm, scope_I))
@@ -221,8 +221,8 @@ map_parameter_scope *PL::EPSMap::scope_for_single_room(instance *rm) {
 
 int PL::EPSMap::obj_in_region(instance *I, instance *reg) {
 	if ((I == NULL) || (reg == NULL)) return FALSE;
-	if (PL::Regions::enclosing(I) == reg) return TRUE;
-	return PL::EPSMap::obj_in_region(PL::Regions::enclosing(I), reg);
+	if (Regions::enclosing(I) == reg) return TRUE;
+	return PL::EPSMap::obj_in_region(Regions::enclosing(I), reg);
 }
 
 @ String parameters.
@@ -684,7 +684,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 			break;
 		case INSTANCE_MAP_SCOPE:
 			if ((Spatial::object_is_a_room(<<instance:iscope>>)) ||
-				(PL::Regions::object_is_a_region(<<instance:iscope>>)))
+				(Regions::object_is_a_region(<<instance:iscope>>)))
 				scope_I = <<instance:iscope>>;
 			if (scope_I) {
 				LOGIF(SPATIAL_MAP, "Setting for object $O\n", scope_I);

@@ -433,7 +433,7 @@ from each other.)
 	instance *R;
 	LOOP_OVER_ROOMS(R)
 		if (MAP_DATA(R)->world_index_colour == NULL) {
-			instance *reg = PL::Regions::enclosing(R);
+			instance *reg = Regions::enclosing(R);
 			if (reg)
 				MAP_DATA(R)->world_index_colour = MAP_DATA(reg)->world_index_colour;
 			else
@@ -1045,7 +1045,7 @@ int PL::HTMLMap::add_key_for(OUTPUT_STREAM, instance *reg) {
 	int count = 0;
 	instance *R;
 	LOOP_OVER_ROOMS(R) {
-		if (PL::Regions::enclosing(R) == reg) {
+		if (Regions::enclosing(R) == reg) {
 			if (count++ == 0) {
 				@<Start the region key table for this region@>;
 			} else {

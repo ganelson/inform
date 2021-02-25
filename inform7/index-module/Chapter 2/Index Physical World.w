@@ -72,13 +72,13 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 @<Give room details within each region in turn in the World index@> =
 	instance *reg;
 	LOOP_OVER_INSTANCES(reg, K_object)
-		if (PL::Regions::object_is_a_region(reg)) {
+		if (Regions::object_is_a_region(reg)) {
 			int subheaded = FALSE;
 			IXInstances::increment_indexing_count(reg);
 			instance *rm;
 			LOOP_OVER_INSTANCES(rm, K_object)
 				if ((Spatial::object_is_a_room(rm)) &&
-					(PL::Regions::enclosing(rm) == reg)) {
+					(Regions::enclosing(rm) == reg)) {
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
 						@<Index the name and super-region of the region@>;
@@ -93,7 +93,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 
 @<Index the name and super-region of the region@> =
 	WRITE("<b>The <i>%+W</i> region", Instances::get_name(reg, FALSE));
-	instance *within = PL::Regions::enclosing(reg);
+	instance *within = Regions::enclosing(reg);
 	if (within) WRITE(" within the <i>%+W</i> region", Instances::get_name(within, FALSE));
 	WRITE("</b>");
 

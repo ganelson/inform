@@ -30,3 +30,4 @@ Chapter 3: Indexing for Plugins
 	Spatial
 	The Player
 	Backdrops
+	Regions

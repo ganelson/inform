@@ -1,107 +1,73 @@
-[PL::Regions::] Regions.
+[Regions::] Regions.
 
 A plugin providing support for grouping rooms together into named
 and nestable regions.
 
-@ The relation "R in S" behaves so differently for regions that we need to
-define it separately, even though there's no difference in English syntax. So:
-
-= (early code)
-binary_predicate *R_regional_containment = NULL;
-
 @ "Region" is in fact one of the four top-level kinds in the standard I7
-hierarchy, alongside thing, room and direction.
-
-= (early code)
-kind *K_region = NULL;
-inference_subject *infs_region = NULL;
-property *P_map_region = NULL; /* a value property giving the region of a room */
-property *P_regional_found_in = NULL; /* an I6-only property used for implementation */
-
-@ Every inference subject contains a pointer to its own unique copy of the
-following minimal structure, though it will only be relevant for instances of
-"room":
-
-@d REGIONS_DATA(I) PLUGIN_DATA_ON_INSTANCE(regions, I)
+world model, alongside thing, room and direction. What makes it complicated
+is that it can contain rooms and other regions, but that this form of
+containment is implemented differently from spatial containment: as a
+result, a new "regional containment" relation is needed.
 
 =
-typedef struct regions_data {
-	struct instance *in_region; /* smallest region containing me (rooms only) */
-	struct parse_node *in_region_set_at; /* where this is decided */
-	struct inter_name *in_region_iname; /* for testing regional containment found-ins */
-	CLASS_DEFINITION
-} regions_data;
-
-@h Initialising.
-
-=
-void PL::Regions::start(void) {
-	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, PL::Regions::create_inference_subjects);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Regions::regions_new_base_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Regions::regions_set_subkind_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Regions::regions_new_subject_notify);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Regions::regions_new_property_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Regions::regions_complete_model);
-	PluginManager::plug(MORE_SPECIFIC_PLUG, PL::Regions::regions_more_specific);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Regions::regions_intervene_in_assertion);
-	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, PL::Regions::regions_name_to_early_infs);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Regions::regions_add_to_World_index);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Regions::production_line);
+void Regions::start(void) {
+	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Regions::create_inference_subjects);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Regions::new_base_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Regions::set_subkind_notify);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Regions::new_subject_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Regions::new_property_notify);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, Regions::complete_model);
+	PluginManager::plug(MORE_SPECIFIC_PLUG, Regions::more_specific);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
+	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXRegions::add_to_World_index);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, Regions::production_line);
 }
 
-int PL::Regions::production_line(int stage, int debugging,
+int Regions::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(PL::Regions::write_regional_found_in_routines);
+		BENCH(RTRegions::write_found_in_functions);
 	}
 	return FALSE;
 }
 
-int PL::Regions::create_inference_subjects(void) {
-	infs_region = InferenceSubjects::new_fundamental(global_constants, "region(early)");
-	return FALSE;
-}
+@ There is one kind of interest: "region", of course. It is recognised by the English
+name in the Standard Rules. (So there is no need to translate this to other languages.)
 
-regions_data *PL::Regions::new_data(inference_subject *subj) {
-	regions_data *rd = CREATE(regions_data);
-	rd->in_region = NULL;
-	rd->in_region_set_at = NULL;
-	rd->in_region_iname = NULL;
-	return rd;
-}
+= (early code)
+kind *K_region = NULL;
+inference_subject *infs_region = NULL;
 
-inter_name *PL::Regions::found_in_iname(instance *I) {
-	if (REGIONS_DATA(I)->in_region_iname == NULL)
-		REGIONS_DATA(I)->in_region_iname = Hierarchy::make_iname_in(REGION_FOUND_IN_FN_HL, RTInstances::package(I));
-	return REGIONS_DATA(I)->in_region_iname;
-}
-
-@h Kinds.
-This a kind name to do with regions which Inform provides special support
-for; it recognises the English name when defined by the Standard Rules. (So
-there is no need to translate this to other languages.)
-
-=
+@ =
 <notable-regions-kinds> ::=
 	region
 
 @ =
-int PL::Regions::regions_new_base_kind_notify(kind *new_base, char *text_stream, wording W) {
+int Regions::new_base_kind_notify(kind *new_base, char *text_stream, wording W) {
 	if (<notable-regions-kinds>(W)) {
 		K_region = new_base; return TRUE;
 	}
 	return FALSE;
 }
 
-int PL::Regions::regions_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, PL::Regions::new_data(subj));
+@ As with the handling of the main spatial kinds, we need a placeholder for the
+"region" subject until |K_region| is ready to be created.
+
+=
+int Regions::create_inference_subjects(void) {
+	infs_region = InferenceSubjects::new_fundamental(global_constants, "region(early)");
+	return FALSE;
+}
+int Regions::name_to_early_infs(wording W, inference_subject **infs) {
+	if ((<notable-regions-kinds>(W)) && (K_region == NULL)) *infs = infs_region;
 	return FALSE;
 }
 
-@ Region needs to be an abstract object, not a thing or a room, so:
+@ Region is not allowed to be made a subkind of anything else:
 
 =
-int PL::Regions::regions_set_subkind_notify(kind *sub, kind *super) {
+int Regions::set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_region) && (super != K_object)) {
 		if (problem_count == 0)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionAdrift),
@@ -114,10 +80,17 @@ int PL::Regions::regions_set_subkind_notify(kind *sub, kind *super) {
 	return FALSE;
 }
 
-@ =
-int PL::Regions::object_is_a_region(instance *I) {
-	if ((K_region) && (I) && (Instances::of_kind(I, K_region))) return TRUE;
-	return FALSE;
+@ Note that because we use regular |parentage_inf| inferences to remember
+that one region is inside another, it follows that the progenitor of a
+region is either the next broadest region containing it, or else |NULL|.
+
+=
+instance *Regions::enclosing(instance *reg) {
+	instance *P = NULL;
+	if (Spatial::object_is_a_room(reg)) P = REGIONS_DATA(reg)->in_region;
+	if (Regions::object_is_a_region(reg)) P = Spatial::progenitor(reg);
+	if (Regions::object_is_a_region(P) == FALSE) return NULL;
+	return P;
 }
 
 @ Rooms are always more specific than regions; if region X is within
@@ -126,7 +99,7 @@ equally specific. (This is used in sorting rules by the specificity of their
 domains.)
 
 =
-int PL::Regions::regions_more_specific(instance *I1, instance *I2) {
+int Regions::more_specific(instance *I1, instance *I2) {
 	int r1 = Instances::of_kind(I1, K_room);
 	int r2 = Instances::of_kind(I2, K_room);
 	int reg1 = Instances::of_kind(I1, K_region);
@@ -140,8 +113,39 @@ int PL::Regions::regions_more_specific(instance *I1, instance *I2) {
 	return 0;
 }
 
-@h Properties.
-This is a property name to do with regions which Inform provides special
+@ Detecting regions is easy. Note that if this plugin is inactive then
+|K_region| will be null, and this will always return false.
+
+=
+int Regions::object_is_a_region(instance *I) {
+	if ((K_region) && (I) && (Instances::of_kind(I, K_region))) return TRUE;
+	return FALSE;
+}
+
+@ Every inference subject contains a pointer to its own unique copy of the
+following minimal structure, though it will only be relevant for instances of
+"region":
+
+@d REGIONS_DATA(I) PLUGIN_DATA_ON_INSTANCE(regions, I)
+
+=
+typedef struct regions_data {
+	struct instance *in_region; /* smallest region containing me (rooms only) */
+	struct parse_node *in_region_set_at; /* where this is decided */
+	struct inter_name *in_region_iname; /* for testing regional containment found-ins */
+	CLASS_DEFINITION
+} regions_data;
+
+int Regions::new_subject_notify(inference_subject *subj) {
+	regions_data *rd = CREATE(regions_data);
+	rd->in_region = NULL;
+	rd->in_region_set_at = NULL;
+	rd->in_region_iname = NULL;
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, rd);
+	return FALSE;
+}
+
+@ This is a property name to do with regions which Inform provides special
 support for; it recognises the English name when it is defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 
@@ -150,18 +154,18 @@ Standard Rules. (So there is no need to translate this to other languages.)
 	map region
 
 @ =
-int PL::Regions::regions_new_property_notify(property *prn) {
+property *P_map_region = NULL; /* a value property giving the region of a room */
+int Regions::new_property_notify(property *prn) {
 	if (<notable-regions-properties>(prn->name))
 		P_map_region = prn;
 	return FALSE;
 }
 
-@h Assertions.
-The following doesn't really intervene at all: it simply produces two problem
+@ The following doesn't really intervene at all: it simply produces two problem
 messages which would have been less helpful if core Inform had produced them.
 
 =
-int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) {
+int Regions::intervene_in_assertion(parse_node *px, parse_node *py) {
 	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
 		(Node::get_type(py) == COMMON_NOUN_NT)) {
 		inference_subject *left_subject = Node::get_subject(px);
@@ -199,110 +203,10 @@ int PL::Regions::regions_intervene_in_assertion(parse_node *px, parse_node *py) 
 	return FALSE;
 }
 
-@h Relations.
+@ Model completion:
 
 =
-int PL::Regions::regions_name_to_early_infs(wording W, inference_subject **infs) {
-	if ((<notable-regions-kinds>(W)) && (K_region == NULL)) *infs = infs_region;
-	return FALSE;
-}
-
-@ =
-void PL::Regions::create_relations(void) {
-	R_regional_containment =
-		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new(infs_region),
-			BPTerms::new(KindSubjects::from_kind(K_object)),
-			I"region-contains", I"in-region",
-			NULL, Calculus::Schemas::new("TestRegionalContainment(*2,*1)"),
-			PreformUtilities::wording(<relation-names>,
-				REGIONAL_CONTAINMENT_RELATION_NAME));
-	BinaryPredicates::set_index_details(R_regional_containment, NULL, "room/region");
-}
-
-@ We intervene only in limited cases: X contains Y, X regionally contains Y,
-or X incorporates Y; and only when X is a region. (This of course only
-applies to the built-in spatial relationships; regions are entirely free
-to participate in nonspatial relations.)
-
-=
-int PL::Regions::assert_relations(binary_predicate *relation,
-	instance *I0, instance *I1) {
-	int I0_is_region = FALSE;
-	if (Instances::of_kind(I0, K_region)) I0_is_region = TRUE;
-	int I1_is_region = FALSE;
-	if (Instances::of_kind(I1, K_region)) I1_is_region = TRUE;
-
-	if (I0_is_region) {
-		if ((relation == R_incorporation) ||
-			(relation == R_containment) ||
-			(relation == R_regional_containment)) {
-			@<You can only be declared as in one region@>;
-			if (I1_is_region) @<A region is being put inside a region@>
-			else @<A room is being put inside a region@>;
-		} else {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation),
-				"regions can only contain rooms",
-				"and have no other relationships.");
-		}
-		return TRUE;
-	} else if (I1_is_region) {
-		if ((relation == R_incorporation) ||
-			(relation == R_containment) ||
-			(relation == R_regional_containment)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionRelation2),
-				"regions can only be contained in other regions",
-				"and not for example in rooms.");
-		}
-	}
-
-	return FALSE;
-}
-
-@<You can only be declared as in one region@> =
-	if ((REGIONS_DATA(I1)->in_region) &&
-		(REGIONS_DATA(I1)->in_region != I0)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RegionInTwoRegions),
-			"each region can only be declared to be inside a single "
-			"other region",
-			"since although regions can be placed inside each other, "
-			"they are not permitted to overlap.");
-		return TRUE;
-	}
-	REGIONS_DATA(I1)->in_region = I0;
-	REGIONS_DATA(I1)->in_region_set_at = current_sentence;
-
-@<A region is being put inside a region@> =
-	inference_subject *inner = Instances::as_subject(I1);
-	inference_subject *outer = Instances::as_subject(I0);
-	SpatialInferences::infer_parentage(inner, CERTAIN_CE, outer);
-
-@ Anything in or part of a region is necessarily a room, if it isn't known
-to be a region already:
-
-@<A room is being put inside a region@> =
-	inference_subject *rm = Instances::as_subject(I1);
-	parse_node *spec = Rvalues::from_instance(I0);
-	Propositions::Abstract::assert_kind_of_instance(I1, K_room);
-	PropertyInferences::draw(rm, P_map_region, spec);
-
-@ Note that because we use regular |PARENTAGE_INF| inferences to remember
-that one region is inside another, it follows that the progenitor of a
-region is either the next broadest region containing it, or else |NULL|.
-
-=
-instance *PL::Regions::enclosing(instance *reg) {
-	instance *P = NULL;
-	if (Spatial::object_is_a_room(reg)) P = REGIONS_DATA(reg)->in_region;
-	if (PL::Regions::object_is_a_region(reg)) P = Spatial::progenitor(reg);
-	if (PL::Regions::object_is_a_region(P) == FALSE) return NULL;
-	return P;
-}
-
-@h Model completion.
-
-=
-int PL::Regions::regions_complete_model(int stage) {
+int Regions::complete_model(int stage) {
 	if (stage == WORLD_STAGE_II) @<Assert map-region properties of rooms and regions@>;
 	if (stage == WORLD_STAGE_III) @<Assert regional-found-in properties of regions@>;
 	return FALSE;
@@ -329,45 +233,101 @@ int PL::Regions::regions_complete_model(int stage) {
 		}
 
 @<Assert regional-found-in properties of regions@> =
-	P_regional_found_in = ValueProperties::new_nameless(
+	property *P_regional_found_in = ValueProperties::new_nameless(
 		I"regional_found_in", K_text);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
-			inter_name *iname = PL::Regions::found_in_iname(I);
+			inter_name *iname = RTRegions::found_in_iname(I);
 			ValueProperties::assert(P_regional_found_in, Instances::as_subject(I),
 				Rvalues::from_iname(iname), CERTAIN_CE);
 		}
 
-@ =
-void PL::Regions::write_regional_found_in_routines(void) {
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
-		if (Instances::of_kind(I, K_region)) {
-			inter_name *iname = PL::Regions::found_in_iname(I);
-			packaging_state save = Routines::begin(iname);
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTREGIONALCONTAINMENT_HL));
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(LOCATION_HL));
-						Produce::val_iname(Emit::tree(), K_object, RTInstances::iname(I));
-					Produce::up(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-			Produce::rfalse(Emit::tree());
-			Routines::end(save);
-		}
-}
+@ The relation "R in S" behaves so differently for regions that we need to
+define it separately, even though there's no difference in English syntax. So:
+
+= (early code)
+binary_predicate *R_regional_containment = NULL;
 
 @ =
-int PL::Regions::regions_add_to_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_room))) {
-		instance *R = PL::Regions::enclosing(O);
-		if (R) PL::HTMLMap::colour_chip(OUT, O, R, REGIONS_DATA(O)->in_region_set_at);
+void Regions::create_relations(void) {
+	R_regional_containment =
+		BinaryPredicates::make_pair(spatial_bp_family,
+			BPTerms::new(infs_region),
+			BPTerms::new(KindSubjects::from_kind(K_object)),
+			I"region-contains", I"in-region",
+			NULL, Calculus::Schemas::new("TestRegionalContainment(*2,*1)"),
+			PreformUtilities::wording(<relation-names>,
+				REGIONAL_CONTAINMENT_RELATION_NAME));
+	BinaryPredicates::set_index_details(R_regional_containment, NULL, "room/region");
+}
+
+@ We intervene only in limited cases: X contains Y, X regionally contains Y,
+or X incorporates Y; and only when X is a region. (This of course only
+applies to the built-in spatial relationships; regions are entirely free
+to participate in nonspatial relations.)
+
+=
+int Regions::assert_relations(binary_predicate *relation,
+	instance *I0, instance *I1) {
+	int I0_is_region = FALSE;
+	if (Instances::of_kind(I0, K_region)) I0_is_region = TRUE;
+	int I1_is_region = FALSE;
+	if (Instances::of_kind(I1, K_region)) I1_is_region = TRUE;
+
+	if (I0_is_region) {
+		if ((relation == R_incorporation) ||
+			(relation == R_containment) ||
+			(relation == R_regional_containment)) {
+			@<You can only be declared as in one region@>;
+			if (I1_is_region) @<A region is being put inside a region@>
+			else @<A room is being put inside a region@>;
+		} else {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_RegionRelation),
+				"regions can only contain rooms",
+				"and have no other relationships.");
+		}
+		return TRUE;
+	} else if (I1_is_region) {
+		if ((relation == R_incorporation) ||
+			(relation == R_containment) ||
+			(relation == R_regional_containment)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_RegionRelation2),
+				"regions can only be contained in other regions",
+				"and not for example in rooms.");
+		}
 	}
+
 	return FALSE;
 }
+
+@<You can only be declared as in one region@> =
+	if ((REGIONS_DATA(I1)->in_region) &&
+		(REGIONS_DATA(I1)->in_region != I0)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_RegionInTwoRegions),
+			"each region can only be declared to be inside a single "
+			"other region",
+			"since although regions can be placed inside each other, "
+			"they are not permitted to overlap.");
+		return TRUE;
+	}
+	REGIONS_DATA(I1)->in_region = I0;
+	REGIONS_DATA(I1)->in_region_set_at = current_sentence;
+
+@<A region is being put inside a region@> =
+	inference_subject *inner = Instances::as_subject(I1);
+	inference_subject *outer = Instances::as_subject(I0);
+	SpatialInferences::infer_parentage(inner, CERTAIN_CE, outer);
+
+@ Anything in or part of a region is necessarily a room, if it isn't known
+to be a region already:
+
+@<A room is being put inside a region@> =
+	inference_subject *rm = Instances::as_subject(I1);
+	parse_node *spec = Rvalues::from_instance(I0);
+	Propositions::Abstract::assert_kind_of_instance(I1, K_room);
+	PropertyInferences::draw(rm, P_map_region, spec);
+

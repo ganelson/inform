@@ -2498,8 +2498,8 @@ int PL::SpatialMap::compare_components(const void *ent1, const void *ent2) {
 		instance *R1 = mc1->first_room_in_submap;
 		instance *R2 = mc2->first_room_in_submap;
 		if ((R1) && (R2)) { /* which should always happen, but just in case of an error */
-			instance *reg1 = PL::Regions::enclosing(R1);
-			instance *reg2 = PL::Regions::enclosing(R2);
+			instance *reg1 = Regions::enclosing(R1);
+			instance *reg2 = Regions::enclosing(R2);
 			if ((reg1) && (reg2 == NULL)) return -1;
 			if ((reg1 == NULL) && (reg2)) return 1;
 			if (reg1) {
@@ -2622,12 +2622,12 @@ running time in check.
 	if (sub->bounds.population == 1) {
 		instance *R = sub->first_room_in_submap;
 		if (R) { /* which should always happen, but just in case of an error */
-			instance *reg = PL::Regions::enclosing(R);
+			instance *reg = Regions::enclosing(R);
 			if (reg) {
 				instance *S, *closest_S = NULL;
 				int closest = 0;
 				LOOP_OVER_ROOMS(S)
-					if ((S != R) && (PL::Regions::enclosing(S) == reg))
+					if ((S != R) && (Regions::enclosing(S) == reg))
 						if ((posnd == FALSE) || (MAP_DATA(S)->submap->positioned)) {
 							int diff = 2*(R->allocation_id - S->allocation_id);
 							if (diff < 0) diff = 1-diff;
@@ -2759,7 +2759,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 	if (Instances::of_kind(R, K_room)) {
 		wording RW = Instances::get_name(R, FALSE);
 		LOG("%+W is a room.\n", RW);
-		instance *reg = PL::Regions::enclosing(R);
+		instance *reg = Regions::enclosing(R);
 		if (reg) {
 			wording RGW = Instances::get_name(reg, FALSE);
 			if (MAP_DATA(reg)->zone == 1) {

@@ -83,7 +83,7 @@ void IFModule::create_plugins(void) {
 	map_plugin = PluginManager::new(&PL::Map::start, I"mapping", ifp);
 	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", ifp);
 	player_plugin = PluginManager::new(&Player::start, I"player", ifp);
-	regions_plugin = PluginManager::new(&PL::Regions::start, I"regions", ifp);
+	regions_plugin = PluginManager::new(&Regions::start, I"regions", ifp);
 	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", ifp);
 	scoring_plugin = PluginManager::new(&PL::Score::start, I"scoring", ifp);
 	showme_plugin = PluginManager::new(&PL::Showme::start, I"showme", ifp);

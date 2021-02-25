@@ -703,7 +703,7 @@ int Spatial::spatial_stage_II(void) {
 		if ((Spatial::progenitor(I)) &&
 			(Instances::of_kind(I, K_thing) == FALSE) &&
 			(Instances::of_kind(I, K_room) == FALSE) &&
-			(PL::Regions::object_is_a_region(I) == FALSE)) {
+			(Regions::object_is_a_region(I) == FALSE)) {
 			Problems::quote_source(1, Instances::get_creating_sentence(I));
 			Problems::quote_object(2, I);
 			Problems::quote_object(3, Spatial::progenitor(I));
