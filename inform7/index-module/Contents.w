@@ -27,3 +27,6 @@ Chapter 3: Indexing for Plugins
 	Sound Effects
 	External Files
 	Bibliographic Data
+	Spatial
+	The Player
+	Backdrops

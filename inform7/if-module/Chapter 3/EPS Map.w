@@ -188,7 +188,7 @@ If all are null, then the global scope is used.
 void PL::EPSMap::put_mp(wchar_t *name, map_parameter_scope *scope, instance *scope_I,
 	kind *scope_k, wchar_t *put_string, int put_integer) {
 	if (scope_I) {
-		if (PL::Spatial::object_is_a_room(scope_I))
+		if (Spatial::object_is_a_room(scope_I))
 			scope = PL::EPSMap::scope_for_single_room(scope_I);
 		else if (PL::Regions::object_is_a_region(scope_I)) {
 			instance *rm;
@@ -552,12 +552,12 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 	instance *I2 = <<instance:y>>;
 	int exit = MAP_DATA(<<instance:dir>>)->direction_index;
 
-	if ((I == NULL) || (PL::Spatial::object_is_a_room(I) == FALSE)) {
+	if ((I == NULL) || (Spatial::object_is_a_room(I) == FALSE)) {
 		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapFromNonRoom),
 			p, "The first-named thing must be a room (beware ambiguities!).");
 		return;
 	}
-	if ((I2 == NULL) || (PL::Spatial::object_is_a_room(I2) == FALSE)) {
+	if ((I2 == NULL) || (Spatial::object_is_a_room(I2) == FALSE)) {
 		if (pass == 1) StandardProblems::map_problem(_p_(PM_MapToNonRoom),
 			p, "The second-named thing must be a room (beware ambiguities!).");
 		return;
@@ -683,7 +683,7 @@ void PL::EPSMap::new_map_hint_sentence(int pass, parse_node *p) {
 			} else bad_scope = TRUE;
 			break;
 		case INSTANCE_MAP_SCOPE:
-			if ((PL::Spatial::object_is_a_room(<<instance:iscope>>)) ||
+			if ((Spatial::object_is_a_room(<<instance:iscope>>)) ||
 				(PL::Regions::object_is_a_region(<<instance:iscope>>)))
 				scope_I = <<instance:iscope>>;
 			if (scope_I) {
@@ -987,7 +987,7 @@ rectangle around the whole thing...
 	LOOP_OVER_STORY_DIRECTIONS(dir) {
 		instance *T = PL::SpatialMap::room_exit(R, dir, NULL);
 		int exit = story_dir_to_page_dir[dir];
-		if (PL::Spatial::object_is_a_room(T))
+		if (Spatial::object_is_a_room(T))
 			@<Draw a single map connection as an EPS arrow@>;
 	}
 	PL::EPSMap::EPS_compile_line_width_unsetting(OUT);

@@ -51,7 +51,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 	PL::HTMLMap::add_region_key(OUT);
 	PL::EPSMap::render_map_as_EPS();
 
-	PL::Backdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
+	IXBackdrops::index_object_further(OUT, NULL, 0, FALSE, 1);
 
 	Index::anchor(OUT, I"MDETAILS");
 	int unruly = FALSE;
@@ -65,7 +65,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 @<Mark parts, directions and kinds as ineligible for listing in the World index@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Spatial::no_detail_index(I))
+		if ((IXSpatial::no_detail_index(I))
 			|| (PL::Map::object_is_a_direction(I)))
 			IXInstances::increment_indexing_count(I);
 
@@ -77,12 +77,12 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 			IXInstances::increment_indexing_count(reg);
 			instance *rm;
 			LOOP_OVER_INSTANCES(rm, K_object)
-				if ((PL::Spatial::object_is_a_room(rm)) &&
+				if ((Spatial::object_is_a_room(rm)) &&
 					(PL::Regions::enclosing(rm) == reg)) {
 					if (subheaded == FALSE) {
 						@<Start a new details panel on the World index@>;
 						@<Index the name and super-region of the region@>;
-						PL::Backdrops::index_object_further(OUT, reg, 0, FALSE, 2);
+						IXBackdrops::index_object_further(OUT, reg, 0, FALSE, 2);
 						HTML_OPEN("p");
 						subheaded = TRUE;
 					}
@@ -100,7 +100,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 @<Give room details for rooms outside any region in the World index@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Spatial::object_is_a_room(I)) &&
+		if ((Spatial::object_is_a_room(I)) &&
 			(IXInstances::indexed_yet(I) == FALSE)) {
 			@<Start a new details panel on the World index@>;
 			PL::HTMLMap::render_single_room_as_HTML(OUT, I);
@@ -116,7 +116,7 @@ will be things which are offstage (and their contents and any parts thereof):
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if ((IXInstances::indexed_yet(I) == FALSE) &&
-			(PL::Spatial::progenitor(I) == NULL)) {
+			(Spatial::progenitor(I) == NULL)) {
 			@<Start a new details panel on the World index@>;
 			if (++out_of_play_count == 1) {
 				suppress_panel_changes = TRUE;
@@ -191,7 +191,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 		if ((K) || (I != indexing_room)) Index::anchor(OUT, NounIdentifiers::identifier(nt));
 	} else {
 		#ifdef IF_MODULE
-		if (I) PL::Spatial::index_spatial_relationship(OUT, I);
+		if (I) IXSpatial::index_spatial_relationship(OUT, I);
 		#endif
 	}
 
@@ -225,7 +225,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 	} else {
 		int embolden = details;
 		#ifdef IF_MODULE
-		if (PL::Spatial::object_is_a_room(I)) embolden = TRUE;
+		if (Spatial::object_is_a_room(I)) embolden = TRUE;
 		#endif
 		if (embolden) WRITE("<b>");
 		WRITE("%+W", W);
@@ -282,7 +282,7 @@ void Data::Objects::index(OUTPUT_STREAM, instance *I, kind *K, int depth, int de
 				Data::Objects::index(OUT, NULL, K2, depth+1, details);
 	} else {
 		#ifdef IF_MODULE
-		PL::Spatial::index_object_further(OUT, I, depth, details);
+		IXSpatial::index_object_further(OUT, I, depth, details);
 		#endif
 	}
 

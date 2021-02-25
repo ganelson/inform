@@ -35,7 +35,7 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 		int rooms = 0, things = 0;
 		Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
 		#ifdef IF_MODULE
-		PL::Spatial::get_world_size(&rooms, &things);
+		Spatial::get_world_size(&rooms, &things);
 		#endif
 		Problems::quote_number(1, &rooms);
 		if (rooms == 1) Problems::quote_text(2, "room"); else Problems::quote_text(2, "rooms");

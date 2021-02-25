@@ -94,7 +94,7 @@ than the number of rooms in the submap; this is why we keep the linked list.
 
 @d LOOP_OVER_ROOMS(R)
 	LOOP_OVER_INSTANCES(R, K_object)
-		if (PL::Spatial::object_is_a_room(R))
+		if (Spatial::object_is_a_room(R))
 
 @d LOOP_OVER_SUBMAP(R, sub)
 	for (R = sub->first_room_in_submap; R; R = MAP_DATA(R)->next_room_in_submap)
@@ -441,7 +441,7 @@ char *PL::SpatialMap::usual_Inform_direction_name(int story_direction) {
 =
 void PL::SpatialMap::establish_benchmark_room(void) {
 	if (benchmark_room == NULL) {
-		benchmark_room = PL::Player::get_start_room();
+		benchmark_room = Player::get_start_room();
 		if (benchmark_room == NULL) {
 			instance *R;
 			LOOP_OVER_ROOMS(R) { benchmark_room = R; return; }
@@ -458,12 +458,12 @@ door, which we take a note of if asked to do so.
 =
 instance *PL::SpatialMap::room_exit(instance *origin, int dir_num, instance **via) {
 	if (via) *via = NULL;
-	if ((origin == NULL) || (PL::Spatial::object_is_a_room(origin) == FALSE) ||
+	if ((origin == NULL) || (Spatial::object_is_a_room(origin) == FALSE) ||
 		(dir_num < 0) || (dir_num >= MAX_DIRECTIONS)) return NULL;
 	instance *ultimate_destination = NULL;
 	instance *immediate_destination = MAP_EXIT(origin, dir_num);
 	if (immediate_destination) {
-		if (PL::Spatial::object_is_a_room(immediate_destination))
+		if (Spatial::object_is_a_room(immediate_destination))
 			ultimate_destination = immediate_destination;
 		if (PL::Map::object_is_a_door(immediate_destination)) {
 			if (via) *via = immediate_destination;
@@ -2768,7 +2768,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 			}
 			LOG("%+W is in %+W.\n", RW, RGW);
 		}
-		instance *start = PL::Player::get_start_room();
+		instance *start = Player::get_start_room();
 		if (R == start) {
 			LOG("The player is in %+W.\n", RW);
 		}

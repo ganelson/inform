@@ -455,7 +455,7 @@ at run-time, so we can't know now how many we will need.
 		Emit::array_divider(I"one row per room");
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
-			if (PL::Spatial::object_is_a_room(I)) {
+			if (Spatial::object_is_a_room(I)) {
 				int i;
 				for (i=0; i<registered_directions; i++) {
 					instance *to = MAP_EXIT(I, i);
@@ -523,7 +523,7 @@ int PL::Map::map_inference_drawn(inference *I, inference_subject *subj) {
 	if ((prn) && (prn == P_other_side)) {
 		parse_node *val = PropertyInferences::get_value(I);
 		instance *I = Rvalues::to_object_instance(val);
-		if (I) PL::Spatial::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
+		if (I) SpatialInferences::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
 	}
 	return FALSE;
 }
@@ -535,15 +535,14 @@ and two-sided doors. Two different plugins therefore need access to it (this
 one and Backdrops), and this is where they set it.
 
 =
-void PL::Map::set_found_in(instance *I, inter_name *S) {
+void PL::Map::set_found_in(instance *I, parse_node *val) {
 	if (P_found_in == NULL)
 		P_found_in = ValueProperties::new_nameless(I"found_in",
 			K_value);
 	if (PropertyInferences::value_of(
 		Instances::as_subject(I), P_found_in))
 			internal_error("rival found_in interpretations");
-	ValueProperties::assert(P_found_in, Instances::as_subject(I),
-		Rvalues::from_iname(S), CERTAIN_CE);
+	ValueProperties::assert(P_found_in, Instances::as_subject(I), val, CERTAIN_CE);
 }
 
 @ This utility routine which looks for the "opposite"
@@ -753,7 +752,7 @@ accommodate it.)
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if (PL::Spatial::object_is_a_room(I))
+		if (Spatial::object_is_a_room(I))
 			ValueProperties::assert(P_room_index,
 				Instances::as_subject(I), minus_one, CERTAIN_CE);
 
@@ -768,9 +767,9 @@ checks that various mapping impossibilities do not occur.
 			inference_subject *infs1;
 			PL::Map::get_map_references(inf, &infs1, NULL);
 			instance *to = InstanceSubjects::to_object_instance(infs1);
-			if ((PL::Spatial::object_is_a_room(I)) && (to) &&
+			if ((Spatial::object_is_a_room(I)) && (to) &&
 				(PL::Map::object_is_a_door(to) == FALSE) &&
-				(PL::Spatial::object_is_a_room(to) == FALSE))
+				(Spatial::object_is_a_room(to) == FALSE))
 				StandardProblems::contradiction_problem(_p_(PM_BadMapCell),
 					Instances::get_creating_sentence(to),
 					Inferences::where_inferred(inf), to,
@@ -778,7 +777,7 @@ checks that various mapping impossibilities do not occur.
 					"connection, but it seems to be neither a room nor a door",
 					"and these are the only possibilities allowed by Inform.");
 			if ((PL::Map::object_is_a_door(I)) &&
-				(PL::Spatial::object_is_a_room(to) == FALSE))
+				(Spatial::object_is_a_room(to) == FALSE))
 				StandardProblems::object_problem(_p_(PM_DoorToNonRoom),
 					I,
 					"seems to be a door opening on something not a room",
@@ -866,7 +865,7 @@ from which there's no way back.)
 @<Ensure that no door has spurious other connections to it@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if (PL::Spatial::object_is_a_room(I)) {
+		if (Spatial::object_is_a_room(I)) {
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
 				inference_subject *infs1;
@@ -930,9 +929,9 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Map::object_is_a_door(I)) &&
-			(PL::Spatial::progenitor(I)) &&
-			(PL::Spatial::progenitor(I) != MAP_DATA(I)->map_connection_a) &&
-			(PL::Spatial::progenitor(I) != MAP_DATA(I)->map_connection_b))
+			(Spatial::progenitor(I)) &&
+			(Spatial::progenitor(I) != MAP_DATA(I)->map_connection_a) &&
+			(Spatial::progenitor(I) != MAP_DATA(I)->map_connection_b))
 			StandardProblems::object_problem(_p_(PM_DoorInThirdRoom),
 				I, "seems to be a door which is present in a room to which it is not connected",
 				"but this is not allowed. A door must be in one or both of the rooms it is "
@@ -947,8 +946,8 @@ to them.
 	LOOP_OVER_INSTANCES(I, K_object)
 		if ((PL::Map::object_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_b == NULL) &&
-			(PL::Spatial::progenitor(I) == NULL))
-			PL::Spatial::set_progenitor(I, MAP_DATA(I)->map_connection_a, NULL);
+			(Spatial::progenitor(I) == NULL))
+			Spatial::set_progenitor(I, MAP_DATA(I)->map_connection_a, NULL);
 
 @ At this point we know that the doors are correctly plumbed in, and all we
 need to do is compile properties to implement them. See the DM4 for details
@@ -989,7 +988,7 @@ trust that there is nothing surprising here.
 	Emit::array_iname_entry(RTInstances::iname(R2));
 	Emit::array_end(save);
 	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
-	PL::Map::set_found_in(I, S);
+	PL::Map::set_found_in(I, Rvalues::from_iname(S));
 
 @ Here |door_dir| is a routine looking at the current location and returning
 always the way to the other room -- the one we are not in.

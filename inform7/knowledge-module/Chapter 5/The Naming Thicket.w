@@ -176,7 +176,7 @@ from sentences, and this can include Inter-level properties with no I7 analogue.
 	LOOP_OVER_INSTANCES(I, K_object) {
 		wording W = Instances::get_name_in_play(I, FALSE);
 		inference_subject *subj = Instances::as_subject(I);
-		int this_is_a_room = PL::Spatial::object_is_a_room(I);
+		int this_is_a_room = Spatial::object_is_a_room(I);
 		int this_has_a_printed_name = Naming::look_for_printed_name(subj);
 		int this_is_named_for_something_with_a_printed_name = FALSE;
 		if (Naming::object_this_is_named_after(I))

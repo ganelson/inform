@@ -1,341 +1,47 @@
-[PL::Spatial::] Spatial Model.
+[Spatial::] Spatial Model.
 
 A plugin which constructs the fundamental spatial model used by
 IF, to represent containment, support, carrying, wearing, and incorporation.
 
-@ The "spatial model" is the aspect of the IF model world which represents
+@h Introduction.
+The "spatial model" is the aspect of the IF model world which represents
 containment, support, carrying, wearing, and incorporation; say, a button
 which is part of a shirt which is in a tumble-drier which is in a room
 called the Laundry, where there's also a man carrying a box of washing
 powder and wearing a dressing gown. That's quite a lot of concepts, but
-note that it doesn't include the geographical model (directions, the map,
-regions, and so on), which are formally separated from the spatial model
-and are therefore managed by other plugins.
-
-This is the largest and most complicated of the plugins. It has two basic
-tasks: to infer the spatial structure from context and rather vague indications
-of kinds and forms of containment; and then to compile an Inform 6
-representation of the result, which is quite a messy business.
-
-@ Every inference subject contains a pointer to its own unique copy of the
-following structure, though it will only be relevant for instances of
-"room" and "thing" -- the raw materials of our model world. The
-fundamental spatial data we will keep for each object is its "progenitor",
-which may be |NULL|, representing the object which immediately contains,
-carries, wears, supports or incorporates it.
-
-@d SPATIAL_DATA(I) PLUGIN_DATA_ON_INSTANCE(spatial, I)
+note that it doesn't include the geographical model of directions, the map,
+regions, and so on.
 
 =
-typedef struct spatial_data {
-	/* fundamental spatial information about an object's location */
-	struct instance *progenitor;
-	struct parse_node *progenitor_set_at;
-	int part_flag; /* is this a component part of something else? */
-	int here_flag; /* was this declared simply as being "here"? */
+void Spatial::start(void) {
+	SpatialInferences::create();
 
-	/* temporary storage needed when compiling spatial data to I6 code */
-	struct instance *object_tree_parent; /* in/on/worn by/carried by tree structure */
-	struct instance *object_tree_child;
-	struct instance *object_tree_sibling;
-	struct instance *incorp_tree_parent; /* part-of tree structure */
-	struct instance *incorp_tree_child;
-	struct instance *incorp_tree_sibling;
-	int I6_definition_depth; /* i.e., how many arrows |->| appear in its I6 header */
-
-	CLASS_DEFINITION
-} spatial_data;
-
-@ Here, first, are the special kinds of inference needed to store these vague
-indications of spatial structure:
-
-= (early code)
-inference_family *IS_ROOM_INF = NULL; /* 50 is O a room? */
-inference_family *CONTAINS_THINGS_INF = NULL; /* 51 does O contain things? */
-inference_family *PARENTAGE_INF = NULL; /* 52 where is O located? */
-inference_family *PARENTAGE_HERE_INF = NULL; /* 53 located vaguely as "here"? */
-inference_family *PARENTAGE_NOWHERE_INF = NULL; /* 54 located vaguely as "nowhere"? */
-inference_family *PART_OF_INF = NULL; /* 55 is O a part of another object? */
-
-@ =
-void PL::Spatial::infer_is_room(inference_subject *R, int certitude) {
-	Inferences::join_inference(Inferences::create_inference(IS_ROOM_INF, NULL_GENERAL_POINTER, certitude), R);
-}
-void PL::Spatial::infer_is_nowhere(inference_subject *R, int certitude) {
-	Inferences::join_inference(Inferences::create_inference(PARENTAGE_NOWHERE_INF, NULL_GENERAL_POINTER, certitude), R);
-}
-void PL::Spatial::infer_part_of(inference_subject *inner, int certitude, inference_subject *outer) {
-	part_of_inference_data *data = CREATE(part_of_inference_data);
-	data->parent = InferenceSubjects::divert(outer);
-	inference *i = Inferences::create_inference(PART_OF_INF,
-		STORE_POINTER_part_of_inference_data(data), certitude);
-	Inferences::join_inference(i, inner);
-}
-void PL::Spatial::infer_parentage(inference_subject *inner, int certitude, inference_subject *outer) {
-	parentage_inference_data *data = CREATE(parentage_inference_data);
-	data->parent = InferenceSubjects::divert(outer);
-	inference *i = Inferences::create_inference(PARENTAGE_INF,
-		STORE_POINTER_parentage_inference_data(data), certitude);
-	Inferences::join_inference(i, inner);
-}
-void PL::Spatial::infer_parentage_here(inference_subject *inner, int certitude, inference_subject *outer) {
-	parentage_here_inference_data *data = CREATE(parentage_here_inference_data);
-	data->parent = InferenceSubjects::divert(outer);
-	inference *i = Inferences::create_inference(PARENTAGE_HERE_INF,
-		STORE_POINTER_parentage_here_inference_data(data), certitude);
-	Inferences::join_inference(i, inner);
+	PluginManager::plug(PRODUCTION_LINE_PLUG,  Spatial::production_line);
+	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Spatial::create_inference_subjects);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Spatial::new_base_kind_notify);
+	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Spatial::act_on_special_NPs);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, Spatial::IF_complete_model);
+	PluginManager::plug(DEFAULT_APPEARANCE_PLUG, Spatial::default_appearance);
+	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Spatial::name_to_early_infs);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Spatial::new_subject_notify);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Spatial::new_property_notify);
+	PluginManager::plug(PARSE_COMPOSITE_NQS_PLUG, Spatial::parse_composite_NQs);
+	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Spatial::set_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Spatial::set_subkind_notify);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXSpatial::add_to_World_index);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Spatial::intervene_in_assertion);
 }
 
-typedef struct part_of_inference_data {
-	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} part_of_inference_data;
-
-typedef struct parentage_inference_data {
-	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_inference_data;
-
-typedef struct parentage_here_inference_data {
-	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_here_inference_data;
-
-void PL::Spatial::log_parentage_inf(inference_family *f, inference *inf) {
-	parentage_inference_data *data = RETRIEVE_POINTER_parentage_inference_data(inf->data);
-	if (data->parent) LOG(" parent:$j", data->parent);
-}
-
-int PL::Spatial::cmp_parentage_inf(inference_family *f, inference *i1, inference *i2) {
-	parentage_inference_data *data1 = RETRIEVE_POINTER_parentage_inference_data(i1->data);
-	parentage_inference_data *data2 = RETRIEVE_POINTER_parentage_inference_data(i2->data);
-
-	int c = Inferences::measure_infs(data1->parent) -
-			Inferences::measure_infs(data2->parent);
-	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
-
-	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
-	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
-	return CI_IDENTICAL;
-}
-
-void PL::Spatial::log_parentage_here_inf(inference_family *f, inference *inf) {
-	parentage_here_inference_data *data = RETRIEVE_POINTER_parentage_here_inference_data(inf->data);
-	if (data->parent) LOG(" parent:$j", data->parent);
-}
-
-int PL::Spatial::cmp_parentage_here_inf(inference_family *f, inference *i1, inference *i2) {
-	parentage_here_inference_data *data1 = RETRIEVE_POINTER_parentage_here_inference_data(i1->data);
-	parentage_here_inference_data *data2 = RETRIEVE_POINTER_parentage_here_inference_data(i2->data);
-
-	int c = Inferences::measure_infs(data1->parent) -
-			Inferences::measure_infs(data2->parent);
-	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
-
-	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
-	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
-	return CI_IDENTICAL;
-}
-
-void PL::Spatial::log_part_of_inference(inference_family *f, inference *inf) {
-	part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);
-	if (data->parent) LOG(" part-of:$j", data->parent);
-}
-
-int PL::Spatial::cmp_part_of_inference(inference_family *f, inference *i1, inference *i2) {
-	part_of_inference_data *data1 = RETRIEVE_POINTER_part_of_inference_data(i1->data);
-	part_of_inference_data *data2 = RETRIEVE_POINTER_part_of_inference_data(i2->data);
-
-	int c = Inferences::measure_infs(data1->parent) -
-			Inferences::measure_infs(data2->parent);
-	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
-
-	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
-	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
-	return CI_IDENTICAL;
-}
-
-@ The Spatial plugin also needs to know about a considerable number of special
-kinds and properties:
-
-= (early code)
-kind *K_room = NULL;
-kind *K_thing = NULL;
-kind *K_container = NULL;
-kind *K_supporter = NULL;
-kind *K_person = NULL;
-kind *K_players_holdall = NULL;
-property *P_initial_appearance = NULL;
-property *P_wearable = NULL;
-property *P_fixed_in_place = NULL;
-
-property *P_component_parent = NULL;
-property *P_component_child = NULL;
-property *P_component_sibling = NULL;
-property *P_worn = NULL;
-property *P_mark_as_room = NULL;
-property *P_mark_as_thing = NULL;
-property *P_container = NULL;
-property *P_supporter = NULL;
-property *P_matching_key = NULL;
-
-@ We will also need constants to talk about the inference subjects which
-correspond to four of the special kinds -- ordinarily that would be redundant,
-since you can get the subject as a function of the kind, but there's a tricky
-timing issue to get around (see below).
-
-= (early code)
-inference_subject *infs_room = NULL;
-inference_subject *infs_thing = NULL;
-inference_subject *infs_supporter = NULL;
-inference_subject *infs_person = NULL;
-
-@h Initialisation.
-
-=
-void PL::Spatial::start(void) {
-	IS_ROOM_INF = Inferences::new_family(I"IS_ROOM_INF");
-	METHOD_ADD(IS_ROOM_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::is_room_explain_contradiction);
-	CONTAINS_THINGS_INF = Inferences::new_family(I"CONTAINS_THINGS_INF");
-	PARENTAGE_INF = Inferences::new_family(I"PARENTAGE_INF");
-	METHOD_ADD(PARENTAGE_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_parentage_inf);
-	METHOD_ADD(PARENTAGE_INF, COMPARE_INF_MTID, PL::Spatial::cmp_parentage_inf);
-	METHOD_ADD(PARENTAGE_INF, EXPLAIN_CONTRADICTION_INF_MTID, PL::Spatial::parentage_explain_contradiction);
-	PARENTAGE_HERE_INF = Inferences::new_family(I"PARENTAGE_HERE_INF");
-	METHOD_ADD(PARENTAGE_HERE_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_parentage_here_inf);
-	METHOD_ADD(PARENTAGE_HERE_INF, COMPARE_INF_MTID, PL::Spatial::cmp_parentage_here_inf);
-	PARENTAGE_NOWHERE_INF = Inferences::new_family(I"PARENTAGE_NOWHERE_INF");
-	PART_OF_INF = Inferences::new_family(I"PART_OF_INF");
-	METHOD_ADD(PART_OF_INF, LOG_DETAILS_INF_MTID, PL::Spatial::log_part_of_inference);
-	METHOD_ADD(PART_OF_INF, COMPARE_INF_MTID, PL::Spatial::cmp_part_of_inference);
-
-	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, PL::Spatial::create_inference_subjects);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Spatial::spatial_new_base_kind_notify);
-	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, PL::Spatial::spatial_act_on_special_NPs);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Spatial::IF_complete_model);
-	PluginManager::plug(DEFAULT_APPEARANCE_PLUG, PL::Spatial::spatial_default_appearance);
-	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, PL::Spatial::spatial_name_to_early_infs);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Spatial::spatial_new_subject_notify);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Spatial::spatial_new_property_notify);
-	PluginManager::plug(PARSE_COMPOSITE_NQS_PLUG, PL::Spatial::spatial_parse_composite_NQs);
-	PluginManager::plug(SET_KIND_NOTIFY_PLUG, PL::Spatial::spatial_set_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Spatial::spatial_set_subkind_notify);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Spatial::spatial_add_to_World_index);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Spatial::spatial_intervene_in_assertion);
-}
-
-int PL::Spatial::is_room_explain_contradiction(inference_family *f, inference *A,
-	inference *B, int similarity, inference_subject *subj) {
-	StandardProblems::two_sentences_problem(_p_(PM_WhenIsARoomNotARoom),
-		A->inferred_from,
-		"this looks like a contradiction",
-		"because apparently something would have to be both a room and not a "
-		"room at the same time.");
-	return TRUE;
-}
-
-instance *PL::Spatial::get_inferred_parent(inference *inf) {
-	if (inf->family == PARENTAGE_INF) {
-		parentage_inference_data *data = RETRIEVE_POINTER_parentage_inference_data(inf->data);
-		return InstanceSubjects::to_object_instance(data->parent);
-	}
-	if (inf->family == PARENTAGE_HERE_INF) {
-		parentage_here_inference_data *data = RETRIEVE_POINTER_parentage_here_inference_data(inf->data);
-		return InstanceSubjects::to_object_instance(data->parent);
-	}
-	if (inf->family == PART_OF_INF) {
-		part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);
-		return InstanceSubjects::to_object_instance(data->parent);
-	}
-	return NULL;
-}
-
-int PL::Spatial::parentage_explain_contradiction(inference_family *f, inference *A,
-	inference *B, int similarity, inference_subject *subj) {
-	if (PL::Spatial::get_inferred_parent(A) != PL::Spatial::get_inferred_parent(B)) {
-		Problems::quote_source(1, Inferences::where_inferred(A));
-		Problems::quote_source(2, Inferences::where_inferred(B));
-		Problems::quote_subject(3, subj);
-		Problems::quote_object(4, PL::Spatial::get_inferred_parent(A));
-		Problems::quote_object(5, PL::Spatial::get_inferred_parent(B));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SpatialContradiction));
-		Problems::issue_problem_segment(
-			"You wrote %1, but also %2: that seems to be saying that the same "
-			"object (%3) must be in two different places (%4 and %5). This "
-			"looks like a contradiction. %P"
-			"This sometimes happens as a result of a sentence like 'Every person "
-			"carries a bag', when Inform doesn't know 'bag' as the name of any "
-			"kind - so that it makes only a single thing called 'bag', and then "
-			"the sentence looks as if it says everyone is carrying the same bag.");
-		Problems::issue_problem_end();
-		return TRUE;
+int Spatial::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTSpatial::compile_players_holdall);
 	}
 	return FALSE;
 }
 
-@ In talking about some of the fundamental spatial domains we potentially have
-a vicious circle, because
-(a) we need fundamental kinds like "thing" and "room" in order to
-specify the domains for built-in relations like "containment",
-(b) we need built-in relations like "containment" in order to specify
-the meanings of prepositional usages like "to be inside",
-(c) we need to have defined usages like "to be inside" in order to
-break up sentences in the parse tree and identify their primary verbs and
-noun phrases, but
-(d) we need a parse tree already in place before we can act on sentences
-like "A room is a kind of object." which create the fundamental kinds.
-
-We break the deadlock at (a) by specifying the domains of the built-in
-relations using inference subject structures created in advance of the
-kinds they will one day infer about. These amount to promisory notes that
-we will make them correspond to the actual kinds later on, at some point
-after stage (d) when they exist.
-
-=
-int PL::Spatial::create_inference_subjects(void) {
-	infs_room =      InferenceSubjects::new_fundamental(global_constants, "room(early)");
-	infs_thing =     InferenceSubjects::new_fundamental(global_constants, "thing(early)");
-	infs_supporter = InferenceSubjects::new_fundamental(global_constants, "supporter(early)");
-	infs_person =    InferenceSubjects::new_fundamental(global_constants, "person(early)");
-	return FALSE;
-}
-
-@ And this is where those IOUs are redeemed. What happens is that, ordinarily,
-the machinery creating objects (and kinds) will allocate a new inference
-structure for each object, but it first invites plugins to choose an existing
-one instead. (The INFS structure is rewritten, but the important thing is that
-pointers to it remain consistent and valid.)
-
-=
-int PL::Spatial::spatial_name_to_early_infs(wording W, inference_subject **infs) {
-	if (<notable-spatial-kinds>(W)) {
-		switch (<<r>>) {
-			case 0: if (K_room == NULL) *infs = infs_room; break;
-			case 1: if (K_thing == NULL) *infs = infs_thing; break;
-			/* container isn't an early case, surprisingly */
-			case 3: if (K_supporter == NULL) *infs = infs_supporter; break;
-			case 4: if (K_person == NULL) *infs = infs_person; break;
-		}
-	}
-	return FALSE;
-}
-
-@ Here we initialise the data used by Spatial for each object:
-
-=
-spatial_data *PL::Spatial::new_data(inference_subject *subj) {
-	spatial_data *sd = CREATE(spatial_data);
-	sd->progenitor = NULL; sd->progenitor_set_at = NULL; sd->part_flag = FALSE;
-	sd->object_tree_parent = NULL; sd->object_tree_child = NULL; sd->object_tree_sibling = NULL;
-	sd->incorp_tree_child = NULL; sd->incorp_tree_sibling = NULL; sd->incorp_tree_parent = NULL;
-	sd->I6_definition_depth = 0;
-	sd->here_flag = FALSE;
-	return sd;
-}
-
-@h Special kinds.
+@h Kinds of interest.
 These are kind names to do with spatial layout which Inform provides special
-support for; it recognises the Englishs name when defined by the Standard
+support for; it recognises the English name when defined by the Standard
 Rules. (So there is no need to translate this to other languages.)
 
 =
@@ -347,8 +53,18 @@ Rules. (So there is no need to translate this to other languages.)
 	person |
 	player's holdall
 
+@ 
+
+= (early code)
+kind *K_room = NULL;
+kind *K_thing = NULL;
+kind *K_container = NULL;
+kind *K_supporter = NULL;
+kind *K_person = NULL;
+kind *K_players_holdall = NULL;
+
 @ =
-int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
+int Spatial::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	if (<notable-spatial-kinds>(W)) {
 		switch (<<r>>) {
 			case 0: K_room = new_base; return TRUE;
@@ -362,21 +78,16 @@ int PL::Spatial::spatial_new_base_kind_notify(kind *new_base, text_stream *name,
 	return FALSE;
 }
 
-int PL::Spatial::spatial_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, PL::Spatial::new_data(subj));
-	return FALSE;
-}
-
 @ When the rest of Inform makes something a room, for instance in response to
 an explicit sentence like "The Hall of Mirrors is a room.", we take notice;
-if it turns out to be news, we infer |IS_ROOM_INF| with certainty.
+if it turns out to be news, we infer |is_room_inf| with certainty.
 
 =
-int PL::Spatial::spatial_set_kind_notify(instance *I, kind *k) {
+int Spatial::set_kind_notify(instance *I, kind *k) {
 	kind *kw = Instances::to_kind(I);
 	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_room))) &&
 		(Kinds::Behaviour::is_object_of_kind(k, K_room)))
-		PL::Spatial::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
+		SpatialInferences::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
 	return FALSE;
 }
 
@@ -384,7 +95,7 @@ int PL::Spatial::spatial_set_kind_notify(instance *I, kind *k) {
 of vehicle, and so on, but this would cause mayhem in the model world. So:
 
 =
-int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
+int Spatial::set_subkind_notify(kind *sub, kind *super) {
 	if ((sub == K_thing) && (super != K_object)) {
 		if (problem_count == 0)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ThingAdrift),
@@ -420,10 +131,8 @@ int PL::Spatial::spatial_set_subkind_notify(kind *sub, kind *super) {
 @ This tests whether an object is an instance of "room":
 
 =
-int PL::Spatial::object_is_a_room(instance *I) {
-	if ((PluginManager::active(spatial_plugin)) && (K_room) && (I) &&
-		(Instances::of_kind(I, K_room)))
-		return TRUE;
+int Spatial::object_is_a_room(instance *I) {
+	if ((K_room) && (I) && (Instances::of_kind(I, K_room))) return TRUE;
 	return FALSE;
 }
 
@@ -431,15 +140,71 @@ int PL::Spatial::object_is_a_room(instance *I) {
 with 5 rooms and 27 things"-style text in a successful report on its run.
 
 =
-void PL::Spatial::get_world_size(int *rooms, int *things) {
+void Spatial::get_world_size(int *rooms, int *things) {
 	instance *I;
 	*rooms = 0; *things = 0;
 	LOOP_OVER_INSTANCES(I, K_room) (*rooms)++;
 	LOOP_OVER_INSTANCES(I, K_thing) (*things)++;
 }
 
-@h Special properties.
-These are property names to do with spatial layout which Inform provides
+@ We also need inference subjects to refer to those kinds, but there's a
+timing issue with that: the kinds will not exist until Inform's run is fairly
+advanced, since they are created by source text. We need the subjects earlier
+than that, and so we have to have placeholders until the real thing is ready:
+
+= (early code)
+inference_subject *infs_room = NULL;
+inference_subject *infs_thing = NULL;
+inference_subject *infs_supporter = NULL;
+inference_subject *infs_person = NULL;
+
+@ =
+int Spatial::create_inference_subjects(void) {
+	infs_room =      InferenceSubjects::new_fundamental(global_constants, "room(early)");
+	infs_thing =     InferenceSubjects::new_fundamental(global_constants, "thing(early)");
+	infs_supporter = InferenceSubjects::new_fundamental(global_constants, "supporter(early)");
+	infs_person =    InferenceSubjects::new_fundamental(global_constants, "person(early)");
+	return FALSE;
+}
+
+@ And this is where those placeholders give up their places for the real kind
+subjects. What happens is that, ordinarily, the machinery creating objects
+(and kinds) will allocate a new inference structure for each object, but it
+first invites plugins to choose an existing one instead. (The |inference_subject|
+structure is rewritten, but pointers to it remain consistent and valid.)
+
+=
+int Spatial::name_to_early_infs(wording W, inference_subject **infs) {
+	if (<notable-spatial-kinds>(W)) {
+		switch (<<r>>) {
+			case 0: if (K_room == NULL) *infs = infs_room; break;
+			case 1: if (K_thing == NULL) *infs = infs_thing; break;
+			/* container isn't an early case, surprisingly */
+			case 3: if (K_supporter == NULL) *infs = infs_supporter; break;
+			case 4: if (K_person == NULL) *infs = infs_person; break;
+		}
+	}
+	return FALSE;
+}
+
+@h Properties of interest.
+
+= (early code)
+property *P_initial_appearance = NULL;
+property *P_wearable = NULL;
+property *P_fixed_in_place = NULL;
+
+property *P_component_parent = NULL;
+property *P_component_child = NULL;
+property *P_component_sibling = NULL;
+property *P_worn = NULL;
+property *P_mark_as_room = NULL;
+property *P_mark_as_thing = NULL;
+property *P_container = NULL;
+property *P_supporter = NULL;
+property *P_matching_key = NULL;
+
+@ These are property names to do with spatial layout which Inform provides
 special support for; it recognises the English names when they are defined by
 the Standard Rules. (So there is no need to translate this to other languages.)
 
@@ -456,7 +221,7 @@ special with it at all.
 	matching key
 
 @ =
-int PL::Spatial::spatial_new_property_notify(property *prn) {
+int Spatial::new_property_notify(property *prn) {
 	if (<notable-spatial-properties>(prn->name)) {
 		switch (<<r>>) {
 			case 0: P_initial_appearance = prn; break;
@@ -470,19 +235,63 @@ int PL::Spatial::spatial_new_property_notify(property *prn) {
 	return FALSE;
 }
 
-@h Default appearances.
-Spatial gets to decide here what raw text following a new object will be
+@h Spatial data on instances.
+Every inference subject contains a pointer to its own unique copy of the
+following structure, though we really only use it for instance subjects,
+which correspond to the objects in the world model.
+
+An important concept here is the "progenitor" of something in the model,
+which may be |NULL|: the "progenitor" is the object which immediately contains,
+carries, wears, supports or incorporates it.
+
+@d SPATIAL_DATA(I) PLUGIN_DATA_ON_INSTANCE(spatial, I)
+
+=
+typedef struct spatial_data {
+	/* fundamental spatial information about an object's location */
+	struct instance *progenitor;
+	struct parse_node *progenitor_set_at;
+	int part_flag; /* is this a component part of something else? */
+	int here_flag; /* was this declared simply as being "here"? */
+
+	/* temporary storage needed when compiling spatial data to Inter */
+	struct instance *object_tree_parent; /* in/on/worn by/carried by tree structure */
+	struct instance *object_tree_child;
+	struct instance *object_tree_sibling;
+	struct instance *incorp_tree_parent; /* part-of tree structure */
+	struct instance *incorp_tree_child;
+	struct instance *incorp_tree_sibling;
+	int definition_depth;
+
+	CLASS_DEFINITION
+} spatial_data;
+
+@ The attachment of this data is done here:
+
+=
+int Spatial::new_subject_notify(inference_subject *subj) {
+	spatial_data *sd = CREATE(spatial_data);
+	sd->progenitor = NULL; sd->progenitor_set_at = NULL;
+	sd->part_flag = FALSE; sd->here_flag = FALSE;
+	sd->object_tree_parent = NULL; sd->object_tree_child = NULL; sd->object_tree_sibling = NULL;
+	sd->incorp_tree_child = NULL; sd->incorp_tree_sibling = NULL; sd->incorp_tree_parent = NULL;
+	sd->definition_depth = 0;
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(spatial, subj, sd);
+	return FALSE;
+}
+
+@ Spatial gets to decide here what raw text following a new object will be
 taken to mean: for scenery it will be the "description" (i.e., the text
 produced on examining), for any other thing it will be the "initial
 appearance".
 
 =
-int PL::Spatial::spatial_default_appearance(inference_subject *infs, parse_node *txt) {
+int Spatial::default_appearance(inference_subject *infs, parse_node *txt) {
 	if (InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_object))) {
 		property *set_prn = P_description;
 		if (InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_thing))) {
 			instance *I = InstanceSubjects::to_object_instance(infs);
-			if ((I) && (PL::Backdrops::object_is_scenery(I))) {
+			if ((I) && (Backdrops::object_is_scenery(I))) {
 				inference *inf;
 				KNOWLEDGE_LOOP(inf, infs, property_inf) {
 					property *prn = PropertyInferences::get_property(inf);
@@ -516,6 +325,9 @@ inference.
 		"which means we have a subtle little contradiction here.");
 
 @h Composite noun-quantifiers.
+Words like "something" or "everywhere" combine a common noun -- thing,
+and implicitly room -- with a determiner -- one thing, all rooms. 
+
 "Nothing" is conspicuously absent from the possibilities below. It gets
 special treatment elsewhere since it can also double as a value (the "not
 an object" pseudo-value).
@@ -532,27 +344,25 @@ an object" pseudo-value).
 	_nobody/no-one *** |                    ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 	_no _one ***                            ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 
-@ Words like "something" or "everywhere" combine a common noun -- thing,
-and implicitly room -- with a determiner -- one thing, all rooms. When we
-detect them, we set both |quantifier_used| and |some_kind| appropriately.
-None can be recognised if the basic kinds are not created yet, which we
-check for by inspecting |K_thing|. (Note that the S-parser may indeed be
-asked to parse "something" before this point, as when it scans the
-domains of adjective definitions, but that it's okay that it produces a
-null result.)
+@ When we detect them, we set both |quantifier_used| and |some_kind|
+appropriately. None can be recognised if the basic kinds are not created yet,
+which we check for by inspecting |K_thing|. (Note that the S-parser may indeed
+be asked to parse "something" before this point, as when it scans the domains
+of adjective definitions, but that it's okay that it produces a null result.)
 
-With the "some-" words, no quantifier is set because the meaning here is
-the |exists_quantifier|. Since this is the default behaviour for
-unquantified descriptions anyway -- "a door is in the Great Hall" means
-that such a door exists -- we needn't set the variable.
+With the "some-" words, no quantifier is set because the meaning here is the
+|exists_quantifier|. Since this is the default behaviour for unquantified
+descriptions anyway -- "a door is in the Great Hall" means that such a door
+exists -- we needn't set the variable.
 
 =
-int PL::Spatial::spatial_parse_composite_NQs(wording *W, wording *DW,
+int Spatial::parse_composite_NQs(wording *W, wording *DW,
 	quantifier **quant, kind **some_kind) {
 	if (K_thing) {
 		<<quantifier:q>> = NULL;
 		if (<spatial-specifying-nouns>(*W)) {
-			*W = Wordings::from(*W, Wordings::first_wn(GET_RW(<spatial-specifying-nouns>, 1)));
+			*W = Wordings::from(*W,
+				Wordings::first_wn(GET_RW(<spatial-specifying-nouns>, 1)));
 			*quant = <<quantifier:q>>; *some_kind = <<rp>>;
 			return TRUE;
 		}
@@ -569,7 +379,7 @@ node using this wording in order to produce better problem messages if need be.
 	nowhere
 
 @ =
-int PL::Spatial::spatial_act_on_special_NPs(parse_node *p) {
+int Spatial::act_on_special_NPs(parse_node *p) {
 	if ((<notable-spatial-noun-phrases>(Node::get_text(p))) &&
 		(Word::unexpectedly_upper_case(Wordings::first_wn(Node::get_text(p))) == FALSE) &&
 		(K_room)) {
@@ -583,7 +393,7 @@ int PL::Spatial::spatial_act_on_special_NPs(parse_node *p) {
 @ Now in fact this often does get picked up:
 
 =
-int PL::Spatial::spatial_intervene_in_assertion(parse_node *px, parse_node *py) {
+int Spatial::intervene_in_assertion(parse_node *px, parse_node *py) {
 	if (Annotations::read_int(py, nowhere_ANNOT)) {
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject) {
@@ -618,10 +428,10 @@ with certainty read
 as creating a container called "washing machine", not a room.
 
 @ =
-void PL::Spatial::infer_presence_here(instance *I) {
+void Spatial::infer_presence_here(instance *I) {
 	inference_subject *infs = Instances::as_subject(I);
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, infs, PARENTAGE_HERE_INF) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, infs, parentage_here_inf) {
 		StandardProblems::contradiction_problem(_p_(PM_DuplicateHere),
 			Inferences::where_inferred(inf),
 			current_sentence,
@@ -630,29 +440,30 @@ void PL::Spatial::infer_presence_here(instance *I) {
 			"in a single assertion sentence. This avoids potential confusion, "
 			"since 'here' can mean different things in different sentences.");
 	}
-	PL::Spatial::infer_parentage_here(infs, CERTAIN_CE, Anaphora::get_current_subject());
-	PL::Spatial::infer_is_room(infs, IMPOSSIBLE_CE);
+	SpatialInferences::infer_parentage_here(infs, CERTAIN_CE,
+		Anaphora::get_current_subject());
+	SpatialInferences::infer_is_room(infs, IMPOSSIBLE_CE);
 }
 
 @ Similarly:
 
 =
-void PL::Spatial::infer_presence_nowhere(instance *I) {
-	PL::Spatial::infer_is_nowhere(Instances::as_subject(I), CERTAIN_CE);
-	PL::Spatial::infer_is_room(Instances::as_subject(I), IMPOSSIBLE_CE);
+void Spatial::infer_presence_nowhere(instance *I) {
+	SpatialInferences::infer_is_nowhere(Instances::as_subject(I), CERTAIN_CE);
+	SpatialInferences::infer_is_room(Instances::as_subject(I), IMPOSSIBLE_CE);
 }
 
-@h Completing the model, stages I and II.
+@h Completing the world model.
 That's enough preliminaries; time to get on with adding a sense of space
 to the model world.
 
 =
-int PL::Spatial::IF_complete_model(int stage) {
+int Spatial::IF_complete_model(int stage) {
 	switch(stage) {
-		case 1: PL::Spatial::spatial_stage_I(); break;
-		case 2: PL::Spatial::spatial_stage_II(); break;
-		case 3: PL::Spatial::spatial_stage_III(); break;
-		case 4: PL::Spatial::spatial_stage_IV(); break;
+		case 1: Spatial::spatial_stage_I(); break;
+		case 2: Spatial::spatial_stage_II(); break;
+		case 3: Spatial::spatial_stage_III(); break;
+		case 4: Spatial::spatial_stage_IV(); break;
 	}
 	return FALSE;
 }
@@ -666,7 +477,7 @@ container, and we might need to look at other sentences -- say, establishing
 that Y is the destination of a map connection -- to see which.
 
 =
-int PL::Spatial::spatial_stage_I(void) {
+int Spatial::spatial_stage_I(void) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		@<Perform kind determination for this object@>;
@@ -743,13 +554,13 @@ probably suggested by inferences.
 
 @<Determine the geography choice@> =
 	inference *inf;
-	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), CONTAINS_THINGS_INF)
+	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), contains_things_inf)
 		if (Inferences::get_certainty(inf) > geography_certainty) {
 			geography_choice = K_container;
 			geography_certainty = Inferences::get_certainty(inf);
 			geography_inference = inf;
 		}
-	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), IS_ROOM_INF)
+	KNOWLEDGE_LOOP(inf, Instances::as_subject(I), is_room_inf)
 		if ((Inferences::get_certainty(inf) > UNKNOWN_CE) ||
 			(Inferences::get_certainty(inf) > geography_certainty)) {
 			geography_choice = K_room;
@@ -833,13 +644,13 @@ since other plugins can decide on this, not just Spatial, we had better
 provide access routines to read and write:
 
 =
-instance *PL::Spatial::progenitor(instance *I) {
+instance *Spatial::progenitor(instance *I) {
 	if (I == NULL) return NULL;
 	if (PluginManager::active(spatial_plugin) == FALSE) return NULL;
 	return SPATIAL_DATA(I)->progenitor;
 }
 
-void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
+void Spatial::set_progenitor(instance *of, instance *to, inference *reason) {
 	if (PluginManager::active(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
 	if (to == NULL) internal_error("set progenitor of nothing");
@@ -851,7 +662,7 @@ void PL::Spatial::set_progenitor(instance *of, instance *to, inference *reason) 
 @ This is used for error recovery only.
 
 =
-void PL::Spatial::void_progenitor(instance *of) {
+void Spatial::void_progenitor(instance *of) {
 	if (PluginManager::active(spatial_plugin) == FALSE)
 		internal_error("spatial plugin inactive");
 	SPATIAL_DATA(of)->progenitor = NULL;
@@ -864,7 +675,7 @@ and we solve this problem by determining the kind of non-here objects before
 the kind of here-objects.
 
 =
-int PL::Spatial::spatial_stage_II(void) {
+int Spatial::spatial_stage_II(void) {
 	@<Set the here flag for all those objects whose parentage is only thus known@>;
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
@@ -882,20 +693,20 @@ int PL::Spatial::spatial_stage_II(void) {
 	LOOP_OVER_INSTANCES(I, K_object) {
 		SPATIAL_DATA(I)->here_flag = FALSE;
 		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_HERE_INF)
+		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), parentage_here_inf)
 			SPATIAL_DATA(I)->here_flag = TRUE;
 	}
 
 @<Issue problem messages if non-physical objects are spatially enclosed@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
-		if ((PL::Spatial::progenitor(I)) &&
+		if ((Spatial::progenitor(I)) &&
 			(Instances::of_kind(I, K_thing) == FALSE) &&
 			(Instances::of_kind(I, K_room) == FALSE) &&
 			(PL::Regions::object_is_a_region(I) == FALSE)) {
 			Problems::quote_source(1, Instances::get_creating_sentence(I));
 			Problems::quote_object(2, I);
-			Problems::quote_object(3, PL::Spatial::progenitor(I));
+			Problems::quote_object(3, Spatial::progenitor(I));
 			Problems::quote_kind(4, Instances::to_kind(I));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonThingInModel));
 			Problems::issue_problem_segment(
@@ -917,10 +728,10 @@ object under investigation.
 	@<Find the inference which will decide the progenitor@>;
 	if (parent_setting_inference) {
 		instance *whereabouts =
-			PL::Spatial::get_inferred_parent(parent_setting_inference);
+			SpatialInferences::get_inferred_progenitor(parent_setting_inference);
 		if (SPATIAL_DATA(I)->here_flag) @<Find the whereabouts of something here@>;
 		if (whereabouts) {
-			PL::Spatial::set_progenitor(I, whereabouts, parent_setting_inference);
+			Spatial::set_progenitor(I, whereabouts, parent_setting_inference);
 			LOGIF(OBJECT_TREE, "Progenitor of $O is $O\n", I, whereabouts);
 		}
 	}
@@ -928,11 +739,11 @@ object under investigation.
 
 @<Find the inference which will decide the progenitor@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_NOWHERE_INF)
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), parentage_nowhere_inf)
 		@<Make this the determining inference@>;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_HERE_INF)
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), parentage_here_inf)
 		@<Make this the determining inference@>;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PARENTAGE_INF)
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), parentage_inf)
 		@<Make this the determining inference@>;
 
 @<Make this the determining inference@> =
@@ -947,7 +758,7 @@ object under investigation.
 	parent_setting_inference = inf;
 
 @<Find the whereabouts of something here@> =
-	if (PL::Spatial::object_is_a_room(whereabouts) == FALSE) whereabouts = NULL;
+	if (Spatial::object_is_a_room(whereabouts) == FALSE) whereabouts = NULL;
 	if (whereabouts == NULL) {
 		parse_node *here_sentence =
 			Inferences::where_inferred(parent_setting_inference);
@@ -968,12 +779,12 @@ when it finishes this will be set to the most recently mentioned.
 
 @<Set the whereabouts to the last discussed room prior to this inference being drawn@> =
 	SyntaxTree::traverse_up_to_ip(Task::syntax_tree(), here_sentence,
-		PL::Spatial::seek_room, (void **) &whereabouts);
+		Spatial::seek_room, (void **) &whereabouts);
 
 @<Determine whether the object in question is a component part@> =
 	inference *inf;
-	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), PART_OF_INF) {
-		if ((PL::Spatial::object_is_a_room(I)) || (PL::Map::object_is_a_door(I))) {
+	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), part_of_inf) {
+		if ((Spatial::object_is_a_room(I)) || (PL::Map::object_is_a_door(I))) {
 			StandardProblems::object_problem(_p_(PM_RoomOrDoorAsPart),
 				I,
 				"was set up as being part of something else, which doors and rooms "
@@ -990,11 +801,11 @@ when it finishes this will be set to the most recently mentioned.
 	}
 
 @ =
-void PL::Spatial::seek_room(parse_node *sent, void **v_I) {
+void Spatial::seek_room(parse_node *sent, void **v_I) {
 	instance **I = (instance **) v_I;
 	inference_subject *isub = Node::get_interpretation_of_subject(sent);
 	instance *sub = InstanceSubjects::to_object_instance(isub);
-	if (PL::Spatial::object_is_a_room(sub)) *I = sub;
+	if (Spatial::object_is_a_room(sub)) *I = sub;
 }
 
 @h Completing the model, stages III and IV.
@@ -1016,32 +827,31 @@ If it has a parent in either one, then that parent is required to be its progeni
 @ The following logs the more interesting tree:
 
 =
-void PL::Spatial::log_object_tree(void) {
+void Spatial::log_object_tree(void) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
-			PL::Spatial::log_object_tree_recursively(I, 0);
+			Spatial::log_object_tree_recursively(I, 0);
 }
 
-void PL::Spatial::log_object_tree_recursively(instance *I, int depth) {
+void Spatial::log_object_tree_recursively(instance *I, int depth) {
 	int i = depth;
 	while (i>0) { LOG("  "); i--; }
 	LOG("$O\n", I);
 	if (SPATIAL_DATA(I)->object_tree_child)
-		PL::Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_child, depth+1);
+		Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_child, depth+1);
 	if (SPATIAL_DATA(I)->object_tree_sibling)
-		PL::Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_sibling, depth);
+		Spatial::log_object_tree_recursively(SPATIAL_DATA(I)->object_tree_sibling, depth);
 }
 
 @ The initial state of both trees is total disconnection. They are then produced
 using only two operations, which we'll call "adoption" and "parting".
 
-The adoption routine is the equivalent of the Inform 6 statement "move
-X to Y", and moves X and its children to become the youngest child of Y.
+The adoption routine moves X and its children to become the youngest child of Y.
 The tree is grown entirely from its root by repeated use of this one operation.
 
 =
-void PL::Spatial::adopt_object(instance *orphan, instance *foster) {
+void Spatial::adopt_object(instance *orphan, instance *foster) {
 	LOGIF(OBJECT_TREE, "Grafting $O to be child of $O\n", orphan, foster);
 	if (orphan == NULL) internal_error("orphan is null in adoption");
 	if (foster == NULL) internal_error("foster is null in adoption");
@@ -1055,7 +865,7 @@ void PL::Spatial::adopt_object(instance *orphan, instance *foster) {
 in the incorporation tree instead, but with the same parent.
 
 =
-void PL::Spatial::part_object(instance *orphan) {
+void Spatial::part_object(instance *orphan) {
 	LOGIF(OBJECT_TREE, "Parting $O\n", orphan);
 	if (orphan == NULL) internal_error("new part is null in parting");
 
@@ -1108,44 +918,29 @@ void PL::Spatial::part_object(instance *orphan) {
 which depend on Spatial whether or not one object spatially contains another:
 
 =
-int PL::Spatial::encloses(instance *I1, instance *I2) {
+int Spatial::encloses(instance *I1, instance *I2) {
 	while (I1) {
-		I1 = PL::Spatial::progenitor(I1);
+		I1 = Spatial::progenitor(I1);
 		if (I1 == I2) return TRUE;
 	}
 	return FALSE;
 }
 
 @ But the main use for the trees is, as noted above, to form a convenient
-intermediate state between the mass of progenitor data and the messy Inform 6
+intermediate state between the mass of progenitor data and the messy Inter
 code it turns into. Here goes:
 
 =
-int PL::Spatial::spatial_stage_III(void) {
+int Spatial::spatial_stage_III(void) {
 	int well_founded = TRUE;
-	@<Define the Rucksack Class constant@>;
 	@<Check the well-foundedness of the hierarchy of the set of progenitors@>;
 	if (well_founded) @<Expand the progenitor data into the two object trees@>;
 	@<Assert the portability of any item carried or supported by a person@>;
-	@<Assert I6-level properties to express the spatial structure@>;
+	@<Assert Inter-level properties to express the spatial structure@>;
 	@<Set up the compilation sequence so that it traverses the main object tree@>;
-	if (Log::aspect_switched_on(OBJECT_TREE_DA)) PL::Spatial::log_object_tree();
+	if (Log::aspect_switched_on(OBJECT_TREE_DA)) Spatial::log_object_tree();
 	return FALSE;
 }
-
-@ To enable the use of player's holdalls, we must declare a constant
-|RUCKSACK_CLASS| to tell some code in the template layer to use possessions
-with this I6 class as the rucksack pro tem. This is all a bit of a hack, to retrofit
-a degree of generality onto the original I6 library feature, and even then
-it isn't really fully general: only the player has the benefit of a "player's
-holdall" (hence the name), with other actors oblivious.
-
-@<Define the Rucksack Class constant@> =
-	if (K_players_holdall) {
-		inter_name *iname = Hierarchy::find(RUCKSACK_CLASS_HL);
-		Hierarchy::make_available(Emit::tree(), iname);
-		Emit::named_iname_constant(iname, K_value, RTKinds::I6_classname(K_players_holdall));
-	}
 
 @ The following verifies, in a brute-force way, that there are no cycles in
 the directed graph formed by the objects and progeniture. (We're doing this
@@ -1158,11 +953,11 @@ changed progenitors at Stage II.)
 	LOOP_OVER_INSTANCES(I, K_object) {
 		int k;
 		instance *I2;
-		for (I2 = PL::Spatial::progenitor(I), k=0; (I2) && (k<max_loop);
-			I2 = PL::Spatial::progenitor(I2), k++) {
+		for (I2 = Spatial::progenitor(I), k=0; (I2) && (k<max_loop);
+			I2 = Spatial::progenitor(I2), k++) {
 			if (I2 == I) {
 				@<Diagnose the ill-foundedness with a problem message@>;
-				PL::Spatial::void_progenitor(I); /* thus cutting the cycle */
+				Spatial::void_progenitor(I); /* thus cutting the cycle */
 				well_founded = FALSE;
 			}
 		}
@@ -1183,7 +978,7 @@ changed progenitors at Stage II.)
 		Problems::issue_problem_segment("%2 (created by %3) ");
 		if (SPATIAL_DATA(I3)->part_flag) Problems::issue_problem_segment("part of ");
 		else Problems::issue_problem_segment("in ");
-		I3 = PL::Spatial::progenitor(I3);
+		I3 = Spatial::progenitor(I3);
 		if (I3 == I) break;
 	}
 	Problems::issue_problem_segment("%1... and so on. This is forbidden.");
@@ -1209,10 +1004,10 @@ to the trees in creation order achieves this nicely:
 @<Expand the progenitor data into the two object trees@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
-		if (PL::Spatial::progenitor(I))
-			PL::Spatial::adopt_object(I, PL::Spatial::progenitor(I));
+		if (Spatial::progenitor(I))
+			Spatial::adopt_object(I, Spatial::progenitor(I));
 		if (SPATIAL_DATA(I)->part_flag)
-			PL::Spatial::part_object(I);
+			Spatial::part_object(I);
 	}
 
 @ As a brief aside: if something is carried by a living person, we can
@@ -1226,7 +1021,7 @@ the absence of other information.)
 		int portable = FALSE;
 		instance *J = I;
 		if (SPATIAL_DATA(I)->part_flag == FALSE)
-			for (J = PL::Spatial::progenitor(I); J; J = PL::Spatial::progenitor(J)) {
+			for (J = Spatial::progenitor(I); J; J = Spatial::progenitor(J)) {
 				if (SPATIAL_DATA(J)->part_flag) break;
 				if (Instances::of_kind(J, K_person)) {
 					portable = TRUE;
@@ -1239,13 +1034,13 @@ the absence of other information.)
 		}
 	}
 
-@<Assert I6-level properties to express the spatial structure@> =
+@<Assert Inter-level properties to express the spatial structure@> =
 	@<Assert an explicit default description value for the room kind@>;
 	@<Assert room and thing indicator properties@>;
 	@<Assert container and supporter indicator properties@>;
 	@<Assert incorporation tree properties@>;
 
-@ We need to make sure that every room does have an I6 |description| value
+@ We need to make sure that every room does have an Inter |description| value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
 that any room with no explicit description will inherit |EMPTY_TEXT_VALUE|
@@ -1267,7 +1062,7 @@ as a value for |description| from the room class.
 		}
 	}
 
-@ These I6-only properties exist for speed. They're implemented in I6 as
+@ These Inter-only properties exist for speed. They're implemented in Inter as
 attributes, which means that testing them is very fast and there is no memory
 overhead for their storage. That shaves a little time off route-finding in
 extensive maps.
@@ -1302,9 +1097,9 @@ extensive maps.
 				P_supporter, Instances::as_subject(I), TRUE, CERTAIN_CE);
 	}
 
-@ The main spatial tree is expressed in the compiled I6 code in an implicit
-way, using the I6 object tree, but the incorporation tree is expressed using
-a triplet of I6-only properties:
+@ The main spatial tree is expressed in the compiled Inter code in an implicit
+way, using the Inter object tree, but the incorporation tree is expressed using
+a triplet of Inter-only properties:
 
 @<Assert incorporation tree properties@> =
 	P_component_parent =
@@ -1338,7 +1133,7 @@ a triplet of I6-only properties:
 	}
 
 @ Because Inform 6 requires objects to be defined in a traversal order for
-the main spatial tree (only the main one because I6 has no concept of
+the main spatial tree (only the main one because Inter has no concept of
 incorporation), we use the main tree to determine the compilation sequence
 for objects:
 
@@ -1347,26 +1142,26 @@ for objects:
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (SPATIAL_DATA(I)->object_tree_parent == NULL)
-			PL::Spatial::add_to_object_sequence(I, 0);
+			Spatial::add_to_object_sequence(I, 0);
 
 @ =
-void PL::Spatial::add_to_object_sequence(instance *I, int depth) {
+void Spatial::add_to_object_sequence(instance *I, int depth) {
 	OrderingInstances::place_next(I);
-	SPATIAL_DATA(I)->I6_definition_depth = depth;
+	SPATIAL_DATA(I)->definition_depth = depth;
 
 	if (SPATIAL_DATA(I)->object_tree_child)
-		PL::Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_child, depth+1);
+		Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_child, depth+1);
 	if (SPATIAL_DATA(I)->object_tree_sibling)
-		PL::Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_sibling, depth);
+		Spatial::add_to_object_sequence(SPATIAL_DATA(I)->object_tree_sibling, depth);
 }
 
 @ The "definition depth" is the same thing as the depth in the main tree;
 0 for a room, 1 for a player standing in that room, 2 for his hat, and so on.
 
 =
-int PL::Spatial::get_definition_depth(instance *I) {
+int Spatial::get_definition_depth(instance *I) {
 	if (PluginManager::active(spatial_plugin))
-		return SPATIAL_DATA(I)->I6_definition_depth;
+		return SPATIAL_DATA(I)->definition_depth;
 	return 0;
 }
 
@@ -1376,12 +1171,13 @@ that there's really no spatial model at all -- the world is, or should be,
 empty.
 
 =
-int PL::Spatial::spatial_stage_IV(void) {
+int Spatial::spatial_stage_IV(void) {
 	if (Task::wraps_existing_storyfile()) {
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
-			if (PL::Spatial::object_is_a_room(I)) {
-				StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(PM_RoomInIgnoredSource),
+			if (Spatial::object_is_a_room(I)) {
+				StandardProblems::unlocated_problem(Task::syntax_tree(),
+					_p_(PM_RoomInIgnoredSource),
 					"This is supposed to be a source text which only contains "
 					"release instructions to bind up an existing story file "
 					"(for instance, one produced using Inform 6). That's because "
@@ -1390,93 +1186,6 @@ int PL::Spatial::spatial_stage_IV(void) {
 					"other game design - these would be ignored.");
 				break;
 			}
-	}
-	return FALSE;
-}
-
-@ =
-void PL::Spatial::index_spatial_relationship(OUTPUT_STREAM, instance *I) {
-	char *rel = NULL;
-	instance *P = PL::Spatial::progenitor(I);
-	if (P) {
-		/* we could set |rel| to "in" here, but the index omits that for clarity */
-		if (Instances::of_kind(P, K_supporter)) rel = "on";
-		if (Instances::of_kind(P, K_person)) rel = "carried";
-		if (SPATIAL_DATA(I)->part_flag) rel = "part";
-		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), property_inf)
-			if (PropertyInferences::get_property(inf) == P_worn)
-				rel = "worn";
-	}
-	if (rel) WRITE("<i>%s</i> ", rel);
-}
-
-@ If something is a part, we don't detail it on the World index page, since
-it already turns up under its owner.
-
-=
-int PL::Spatial::no_detail_index(instance *I) {
-	if (SPATIAL_DATA(I)->incorp_tree_parent != NULL) return TRUE;
-	return FALSE;
-}
-
-@ In the World index, we recurse to show the contents and parts:
-
-=
-void PL::Spatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int details) {
-	if (depth > NUMBER_CREATED(instance) + 1) return; /* to recover from errors */
-	if (SPATIAL_DATA(I)->incorp_tree_child != NULL) {
-		instance *I2 = SPATIAL_DATA(I)->incorp_tree_child;
-		while (I2 != NULL) {
-			Data::Objects::index(OUT, I2, NULL, depth+1, details);
-			I2 = SPATIAL_DATA(I2)->incorp_tree_sibling;
-		}
-	}
-	if (SPATIAL_DATA(I)->object_tree_child)
-		Data::Objects::index(OUT, SPATIAL_DATA(I)->object_tree_child, NULL, depth+1, details);
-	if ((PL::Spatial::object_is_a_room(I)) &&
-		(PL::Map::object_is_a_door(I) == FALSE)) {
-		instance *I2;
-		LOOP_OVER_INSTANCES(I2, K_object) {
-			if ((PL::Map::object_is_a_door(I2)) && (PL::Spatial::progenitor(I2) != I)) {
-				instance *A = NULL, *B = NULL;
-				PL::Map::get_door_data(I2, &A, &B);
-				if (A == I) Data::Objects::index(OUT, I2, NULL, depth+1, details);
-				if (B == I) Data::Objects::index(OUT, I2, NULL, depth+1, details);
-			}
-		}
-	}
-	PL::Player::index_object_further(OUT, I, depth, details);
-	PL::Backdrops::index_object_further(OUT, I, depth, details, 0);
-
-	if (SPATIAL_DATA(I)->object_tree_sibling)
-		Data::Objects::index(OUT, SPATIAL_DATA(I)->object_tree_sibling, NULL, depth, details);
-}
-
-@ And also:
-
-=
-int PL::Spatial::spatial_add_to_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_thing))) {
-		HTML::open_indented_p(OUT, 1, "tight");
-		instance *P = PL::Spatial::progenitor(O);
-		if (P) {
-			WRITE("<i>initial location:</i> ");
-			char *rel = "in";
-			if (Instances::of_kind(P, K_supporter)) rel = "on";
-			if (Instances::of_kind(P, K_person)) rel = "carried by";
-			if (SPATIAL_DATA(O)->part_flag) rel = "part of";
-			inference *inf;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(O), property_inf)
-				if (PropertyInferences::get_property(inf) == P_worn)
-					rel = "worn by";
-			WRITE("%s ", rel);
-			IXInstances::index_name(OUT, P);
-			parse_node *at = SPATIAL_DATA(O)->progenitor_set_at;
-			if (at) Index::link(OUT, Wordings::first_wn(Node::get_text(at)));
-
-		}
-		HTML_CLOSE("p");
 	}
 	return FALSE;
 }

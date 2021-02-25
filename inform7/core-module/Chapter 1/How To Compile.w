@@ -153,7 +153,7 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
-//	BENCH(PL::Player::InitialSituation)
+//	BENCH(RTPlayer::InitialSituation)
 	BENCH(Tables::check_tables_for_kind_clashes)
 	BENCH(RTTables::compile_print_table_names)
 	BENCH(PL::Parsing::traverse)

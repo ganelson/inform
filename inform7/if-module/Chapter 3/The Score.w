@@ -20,17 +20,28 @@ int PL::Score::production_line(int stage, int debugging, stopwatch_timer *sequen
 @ For many years this was a defined I6 constant, but then people sent in bug
 reports asking why it wouldn't change in play.
 
-=
+= (early code)
+nonlocal_variable *score_VAR = NULL;
 nonlocal_variable *max_score_VAR = NULL;
 
+@ =
 <notable-scoring-variables> ::=
+	score |
 	maximum score
 
 @ =
 int PL::Score::new_variable_notify(nonlocal_variable *var) {
 	if (<notable-scoring-variables>(var->name)) {
-		max_score_VAR = var;
-		RTVariables::make_initialisable(var);
+		switch(<<r>>) {
+			case 0:
+				score_VAR = var;
+				RTVariables::make_initialisable(score_VAR);
+				break;
+			case 1:
+				max_score_VAR = var;
+				RTVariables::make_initialisable(max_score_VAR);
+				break;
+		}
 	}
 	return FALSE;
 }

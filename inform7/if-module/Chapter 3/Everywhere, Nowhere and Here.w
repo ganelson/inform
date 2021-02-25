@@ -2,7 +2,9 @@
 
 To define the unary predicates for some anaphoric location adjectives.
 
-@
+@ We extend the predicate calculus with three unary predicates corresponding
+to the English words "everywhere", "nowhere" and "here". Each one of these
+is the singleton member of its own predicate family.
 
 = (early code)
 up_family *everywhere_up_family = NULL;
@@ -13,53 +15,33 @@ unary_predicate *everywhere_up = NULL;
 unary_predicate *nowhere_up = NULL;
 unary_predicate *here_up = NULL;
 
-@h Start.
-
-=
+@ =
 void WherePredicates::start(void) {
 	everywhere_up_family = UnaryPredicateFamilies::new();
 	METHOD_ADD(everywhere_up_family, STOCK_UPF_MTID, WherePredicates::stock_everywhere);
 	METHOD_ADD(everywhere_up_family, LOG_UPF_MTID, WherePredicates::log_everywhere);
+	METHOD_ADD(everywhere_up_family, TYPECHECK_UPF_MTID, WherePredicates::typecheck_everywhere);
+	METHOD_ADD(everywhere_up_family, ASSERT_UPF_MTID, WherePredicates::assert_everywhere);
+	METHOD_ADD(everywhere_up_family, SCHEMA_UPF_MTID, RTSpatial::schema_everywhere);
+
 	nowhere_up_family = UnaryPredicateFamilies::new();
 	METHOD_ADD(nowhere_up_family, STOCK_UPF_MTID, WherePredicates::stock_nowhere);
 	METHOD_ADD(nowhere_up_family, LOG_UPF_MTID, WherePredicates::log_nowhere);
+	METHOD_ADD(nowhere_up_family, TYPECHECK_UPF_MTID, WherePredicates::typecheck_nowhere);
+	METHOD_ADD(nowhere_up_family, ASSERT_UPF_MTID, WherePredicates::assert_nowhere);
+	METHOD_ADD(nowhere_up_family, SCHEMA_UPF_MTID, RTSpatial::schema_nowhere);
+
 	here_up_family = UnaryPredicateFamilies::new();
 	METHOD_ADD(here_up_family, STOCK_UPF_MTID, WherePredicates::stock_here);
 	METHOD_ADD(here_up_family, LOG_UPF_MTID, WherePredicates::log_here);
-	#ifdef CORE_MODULE
-	METHOD_ADD(everywhere_up_family, TYPECHECK_UPF_MTID, WherePredicates::typecheck_everywhere);
-	METHOD_ADD(everywhere_up_family, ASSERT_UPF_MTID, WherePredicates::assert_everywhere);
-	METHOD_ADD(everywhere_up_family, SCHEMA_UPF_MTID, WherePredicates::schema_everywhere);
-	METHOD_ADD(nowhere_up_family, TYPECHECK_UPF_MTID, WherePredicates::typecheck_nowhere);
-	METHOD_ADD(nowhere_up_family, ASSERT_UPF_MTID, WherePredicates::assert_nowhere);
-	METHOD_ADD(nowhere_up_family, SCHEMA_UPF_MTID, WherePredicates::schema_nowhere);
 	METHOD_ADD(here_up_family, TYPECHECK_UPF_MTID, WherePredicates::typecheck_here);
 	METHOD_ADD(here_up_family, ASSERT_UPF_MTID, WherePredicates::assert_here);
-	METHOD_ADD(here_up_family, SCHEMA_UPF_MTID, WherePredicates::schema_here);
-	#endif
+	METHOD_ADD(here_up_family, SCHEMA_UPF_MTID, RTSpatial::schema_here);
 }
 
-@h Initial stock.
-This relation is hard-wired in, and it is made in a slightly special way
-since (alone among binary predicates) it has no distinct reversal.
+@ And here are corresponding propositions, $here(x)$ and so on.
 
 =
-void WherePredicates::stock_everywhere(up_family *self, int n) {
-	if (n == 1) {
-		everywhere_up = UnaryPredicates::new(everywhere_up_family);
-	}
-}
-void WherePredicates::stock_nowhere(up_family *self, int n) {
-	if (n == 1) {
-		nowhere_up = UnaryPredicates::new(nowhere_up_family);
-	}
-}
-void WherePredicates::stock_here(up_family *self, int n) {
-	if (n == 1) {
-		here_up = UnaryPredicates::new(here_up_family);
-	}
-}
-
 pcalc_prop *WherePredicates::everywhere_up(pcalc_term t) {
 	return Atoms::unary_PREDICATE_new(everywhere_up, t);
 }
@@ -72,7 +54,23 @@ pcalc_prop *WherePredicates::here_up(pcalc_term t) {
 	return Atoms::unary_PREDICATE_new(here_up, t);
 }
 
-#ifdef CORE_MODULE
+@ These are automatically created, not defined in source text:
+
+=
+void WherePredicates::stock_everywhere(up_family *self, int n) {
+	if (n == 1) everywhere_up = UnaryPredicates::new(everywhere_up_family);
+}
+void WherePredicates::stock_nowhere(up_family *self, int n) {
+	if (n == 1) nowhere_up = UnaryPredicates::new(nowhere_up_family);
+}
+void WherePredicates::stock_here(up_family *self, int n) {
+	if (n == 1) here_up = UnaryPredicates::new(here_up_family);
+}
+
+@ Typechecking is a matter of verifying that these apply only to objects,
+and generating better problem messages than the normal machinery would if not:
+
+=
 int WherePredicates::typecheck_everywhere(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
@@ -90,9 +88,7 @@ int WherePredicates::typecheck_everywhere(up_family *self, unary_predicate *up,
 	}
 	return ALWAYS_MATCH;
 }
-#endif
 
-#ifdef CORE_MODULE
 int WherePredicates::typecheck_nowhere(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
@@ -109,13 +105,11 @@ int WherePredicates::typecheck_nowhere(up_family *self, unary_predicate *up,
 	}
 	return ALWAYS_MATCH;
 }
-#endif
 
 @ It seems to be true that Inform never generates propositions which
 apply "here" incorrectly, but just in case:
 
 =
-#ifdef CORE_MODULE
 int WherePredicates::typecheck_here(up_family *self, unary_predicate *up,
 	pcalc_prop *prop, variable_type_assignment *vta, tc_problem_kit *tck) {
 	kind *actually_find = Propositions::Checker::kind_of_term(&(prop->terms[0]), vta, tck);
@@ -131,16 +125,11 @@ int WherePredicates::typecheck_here(up_family *self, unary_predicate *up,
 	}
 	return ALWAYS_MATCH;
 }
-#endif
 
-@ EVERYWHERE declares that something is found
-in every room. While we could simply deduce that the object must be a
-backdrop (and set the kind to make it so), this is such an extreme business,
-so rarely needed, that it seems better to make the user spell out that
-we're dealing with a backdrop. So we play dumb.
+@ "Everywhere" in an assertion would say that something is found in every room,
+and for that we have to ask the Backdrops plugin to handle it.
 
 =
-#ifdef CORE_MODULE
 void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
 	if (now_negated) {
@@ -150,18 +139,16 @@ void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,
 			"which is too vague. You must say where it is.");
 		return;
 	}
-	#ifdef IF_MODULE
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
 	instance *ox = InstanceSubjects::to_object_instance(subj);
-	PL::Backdrops::infer_presence_everywhere(ox);
-	#endif
+	Backdrops::infer_presence_everywhere(ox);
 }
-#endif
 
-@ NOWHERE is similar:
+@ What is nowhere is not necessarily useless: it is probably something which
+is out of play at the start of the narrative, but will appear later. So it
+is meaningful to assert that something is nowhere.
 
 =
-#ifdef CORE_MODULE
 void WherePredicates::assert_nowhere(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
@@ -178,19 +165,15 @@ void WherePredicates::assert_nowhere(up_family *self, unary_predicate *up,
 			"which suggests it could some day have a physical location.");
 		return;
 	}
-	#ifdef IF_MODULE
-	PL::Spatial::infer_presence_nowhere(ox);
-	#endif
+	Spatial::infer_presence_nowhere(ox);
 }
-#endif
 
-@ HERE means "this object is in the current room", which is not as easy to
-resolve as it looks, because at this point we don't know for certain what
-will be a room and what won't. So we record a special inference and put the
-problem aside for now.
+@ "Here" means "in the current room", which is tricky on two counts: we need
+to know what the current topic of conversation is, an anaphora, and also we
+might not yet know what is and is not a room. So we record a special inference
+and put the issue aside for now.
 
 =
-#ifdef CORE_MODULE
 void WherePredicates::assert_here(up_family *self, unary_predicate *up,
 	int now_negated, pcalc_prop *prop) {
 	inference_subject *subj = Assert::subject_of_term(prop->terms[0]);
@@ -208,75 +191,10 @@ void WherePredicates::assert_here(up_family *self, unary_predicate *up,
 			"'A number is here' - well, numbers are everywhere and nowhere.)");
 		return;
 	}
-	#ifdef IF_MODULE
-	PL::Spatial::infer_presence_here(ox);
-	#endif
+	Spatial::infer_presence_here(ox);
 }
-#endif
 
-@ Note that |FoundEverywhere| is a template routine existing
-to provide a common value of the I6 |found_in| property -- common that is
-to all backdrops which are currently everywhere.
-
-=
-#ifdef CORE_MODULE
-void WherePredicates::schema_everywhere(up_family *self, int task, unary_predicate *up,
-	annotated_i6_schema *asch, kind *K) {
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(asch->schema, "BackdropEverywhere(*1)");
-			break;
-		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema, "MoveObject(*1, FoundEverywhere); MoveFloatingObjects();");
-			break;
-		case NOW_ATOM_FALSE_TASK:
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantChangeEverywhere),
-				"not being 'everywhere' is not something which can be changed "
-				"during play using 'now'",
-				"because it's not exact enough about what needs to be done.");
-			asch->schema = NULL; break;
-	}
-}
-#endif
-
-#ifdef CORE_MODULE
-void WherePredicates::schema_nowhere(up_family *self, int task, unary_predicate *up,
-	annotated_i6_schema *asch, kind *K) {
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(asch->schema, "LocationOf(*1) == nothing");
-			break;
-		case NOW_ATOM_TRUE_TASK:
-			Calculus::Schemas::modify(asch->schema, "RemoveFromPlay(*1);");
-			break;
-		case NOW_ATOM_FALSE_TASK:
-			Calculus::Schemas::modify(asch->schema, "MoveObject(*1, real_location, 1, false);");
-			break;
-	}
-}
-#endif
-
-@ In fact, at present "here" predicates are never included in propositions to
-be compiled, so this code is never used.
-
-=
-#ifdef CORE_MODULE
-void WherePredicates::schema_here(up_family *self, int task, unary_predicate *up,
-	annotated_i6_schema *asch, kind *K) {
-	switch(task) {
-		case TEST_ATOM_TASK:
-			Calculus::Schemas::modify(asch->schema, "LocationOf(*1) == location");
-			break;
-		case NOW_ATOM_TRUE_TASK:
-		case NOW_ATOM_FALSE_TASK:
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-				"being 'here' is not something which can be changed during play",
-				"so it cannot be brought about or cancelled out with 'now'.");
-			asch->schema = NULL; break;
-	}
-}
-#endif
-
+@ =
 void WherePredicates::log_everywhere(up_family *self, OUTPUT_STREAM, unary_predicate *up) {
 	WRITE("everywhere");
 }

@@ -24,6 +24,7 @@ fiction, which provides for geography, spatial containment and scenes."
 	Spatial Model
 	Everywhere, Nowhere and Here
 	Spatial Relations
+	Spatial Inferences
 	Persons
 	The Player
 	Devices

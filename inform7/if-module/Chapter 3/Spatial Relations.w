@@ -1,7 +1,6 @@
-[PL::SpatialRelations::] Spatial Relations.
+[SpatialRelations::] Spatial Relations.
 
-A continuation of the Spatial plugin which defines the binary
-predicates corresponding to basic spatial relationships.
+Binary predicates for spatial relationships.
 
 @ So this section of code is all about the following:
 
@@ -21,20 +20,18 @@ binary_predicate *R_touchability = NULL;
 binary_predicate *R_concealment = NULL;
 binary_predicate *R_enclosure = NULL;
 
-@h Initial stock.
-These relations are all hard-wired in.
+@ These relations are all hard-wired in:
 
 =
-void PL::SpatialRelations::start(void) {
-	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, PL::SpatialRelations::stock);
-	METHOD_ADD(spatial_bp_family, TYPECHECK_BPF_MTID, PL::SpatialRelations::typecheck);
-	METHOD_ADD(spatial_bp_family, ASSERT_BPF_MTID, PL::SpatialRelations::assert);
-	METHOD_ADD(spatial_bp_family, SCHEMA_BPF_MTID, PL::SpatialRelations::schema);
-	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::SpatialRelations::describe_for_problems);
-	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::SpatialRelations::describe_for_index);
+void SpatialRelations::start(void) {
+	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID, SpatialRelations::stock);
+	METHOD_ADD(spatial_bp_family, TYPECHECK_BPF_MTID, SpatialRelations::typecheck);
+	METHOD_ADD(spatial_bp_family, ASSERT_BPF_MTID, SpatialRelations::assert);
+	METHOD_ADD(spatial_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
+		SpatialRelations::describe_for_index);
 }
 
-void PL::SpatialRelations::stock(bp_family *self, int n) {
+void SpatialRelations::stock(bp_family *self, int n) {
 	if (n == 1) {
 		@<Make built-in spatial relationships@>;
 		@<Make built-in indirect spatial relationships@>;
@@ -48,14 +45,15 @@ possession. The "loop parent optimisation" is explained elsewhere, but
 the basic idea is that given a fixed $y$ you can search for all $x$ such
 that $B(x, y)$ by looking at the object-tree children of $y$ at run-time.
 On a large work of IF, this cuts the number of cases to check by a factor
-of 100 or more. (But it can't be used for component parts, since those are
+of 100 or more. (It can't be used for component parts, since those are
 not stored in the I6 object tree; nor for the holding relation, since that's
 a union of the others, and therefore includes incorporation.)
 
 @<Make built-in spatial relationships@> =
 	R_containment =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(NULL, NULL, EMPTY_WORDING, Calculus::Schemas::new("ContainerOf(*1)")),
+			BPTerms::new_full(NULL, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("ContainerOf(*1)")),
 			BPTerms::new(NULL),
 			I"contains", I"is-in",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -65,7 +63,8 @@ a union of the others, and therefore includes incorporation.)
 	BinaryPredicates::set_index_details(R_containment, "container/room", "thing");
 	R_support =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_supporter, NULL, EMPTY_WORDING, Calculus::Schemas::new("SupporterOf(*1)")),
+			BPTerms::new_full(infs_supporter, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("SupporterOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"supports", I"is-on",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -73,14 +72,16 @@ a union of the others, and therefore includes incorporation.)
 	R_support->loop_parent_optimisation_proviso = "SupporterOf";
 	R_incorporation =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_thing, NULL, EMPTY_WORDING, Calculus::Schemas::new("(*1.component_parent)")),
+			BPTerms::new_full(infs_thing, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("(*1.component_parent)")),
 			BPTerms::new(infs_thing),
 			I"incorporates", I"is-part-of",
 			Calculus::Schemas::new("MakePart(*2,*1)"), NULL,
 			PreformUtilities::wording(<relation-names>, INCORPORATION_RELATION_NAME));
 	R_carrying =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("CarrierOf(*1)")),
+			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("CarrierOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"carries", I"is-carried-by",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -88,7 +89,8 @@ a union of the others, and therefore includes incorporation.)
 	R_carrying->loop_parent_optimisation_proviso = "CarrierOf";
 	R_holding =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("HolderOf(*1)")),
+			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("HolderOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"holds", I"is-held-by",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -96,7 +98,8 @@ a union of the others, and therefore includes incorporation.)
 	/* can't be optimised, because parts are also held */
 	R_wearing =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING, Calculus::Schemas::new("WearerOf(*1)")),
+			BPTerms::new_full(infs_person, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("WearerOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"wears", I"is-worn-by",
 			Calculus::Schemas::new("WearObject(*2,*1)"), NULL,
@@ -104,7 +107,8 @@ a union of the others, and therefore includes incorporation.)
 	R_wearing->loop_parent_optimisation_proviso = "WearerOf";
 	a_has_b_predicate =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(NULL, NULL, EMPTY_WORDING, Calculus::Schemas::new("OwnerOf(*1)")),
+			BPTerms::new_full(NULL, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("OwnerOf(*1)")),
 			BPTerms::new(NULL),
 			I"has", I"is-had-by",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -113,7 +117,8 @@ a union of the others, and therefore includes incorporation.)
 	BinaryPredicates::set_index_details(a_has_b_predicate, "person", "thing");
 	room_containment_predicate =
 		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new_full(infs_room, NULL, EMPTY_WORDING, Calculus::Schemas::new("LocationOf(*1)")),
+			BPTerms::new_full(infs_room, NULL, EMPTY_WORDING,
+				Calculus::Schemas::new("LocationOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"is-room-of", I"is-in-room",
 			Calculus::Schemas::new("MoveObject(*2,*1)"), NULL,
@@ -153,23 +158,21 @@ can be tested at run-time, but which can't be asserted or made true or false.
 			NULL, Calculus::Schemas::new("IndirectlyContains(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, ENCLOSURE_RELATION_NAME));
 
-@h Typechecking.
-No special rules apply.
+@ No special rules apply to typechecking:
 
 =
-int PL::SpatialRelations::typecheck(bp_family *self, binary_predicate *bp,
+int SpatialRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
 
-@h Assertion.
-"In" requires delicate handling, because of the way that English uses it
-sometimes transitively and sometimes not. "The passport is in the desk",
-"The passport is in the Dining Room" and "The passport is in Venezuela"
-place the same object in a container, a room or a region respectively.
+@ "In" requires delicate handling, because of the way that English uses it
+sometimes transitively and sometimes not. "The passport is in the desk", "The
+passport is in the Dining Room" and "The passport is in Venezuela" place the
+same object in a container, a room or a region respectively.
 
 =
-int PL::SpatialRelations::assert(bp_family *self, binary_predicate *bp,
+int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	instance *I0 = InstanceSubjects::to_object_instance(infs0),
@@ -202,7 +205,7 @@ putting a backdrop inside a region clearly has to be implemented in some
 way which isn't symmetrical between the two, and this way round is cleanest.
 
 @<Offer our dependent plugins a chance to assert the relation instead@> =
-	if (PL::Backdrops::assert_relations(bp, I0, I1)) return TRUE;
+	if (Backdrops::assert_relations(bp, I0, I1)) return TRUE;
 	if (PL::MapDirections::assert_relations(bp, I0, I1)) return TRUE;
 	if (PL::Regions::assert_relations(bp, I0, I1)) return TRUE;
 
@@ -230,13 +233,12 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 @<Draw inferences using only the standard Spatial conventions@> =
 	inference_subject *item = Instances::as_subject(I1);
 	inference_subject *loc = Instances::as_subject(I0);
-	PL::Spatial::infer_part_of(item,
+	SpatialInferences::infer_part_of(item,
 		(bp == R_incorporation)?CERTAIN_CE:IMPOSSIBLE_CE, loc);
 	if (bp == R_containment)
-		Inferences::join_inference(
-			Inferences::create_inference(CONTAINS_THINGS_INF, NULL_GENERAL_POINTER, CERTAIN_CE), loc);
-	PL::Spatial::infer_parentage(item, CERTAIN_CE, loc);
-	PL::Spatial::infer_is_room(item, IMPOSSIBLE_CE);
+		SpatialInferences::infer_contains_things(loc, CERTAIN_CE);
+	SpatialInferences::infer_parentage(item, CERTAIN_CE, loc);
+	SpatialInferences::infer_is_room(item, IMPOSSIBLE_CE);
 
 @ If something is being worn, it needs to have the I7 either/or property
 "wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought
@@ -253,20 +255,10 @@ special to make it work, so this doesn't seem worth the trouble.)
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
 
-@h Compilation.
-We need do nothing special: these relations can be compiled from their schemas.
+@h Cursory description.
 
 =
-int PL::SpatialRelations::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
-	return FALSE;
-}
-
-@h Problem message text.
-
-=
-int PL::SpatialRelations::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
-	return FALSE;
-}
-void PL::SpatialRelations::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void SpatialRelations::describe_for_index(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
 	WRITE("spatial");
 }

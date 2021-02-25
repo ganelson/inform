@@ -134,8 +134,8 @@ int PL::Regions::regions_more_specific(instance *I1, instance *I2) {
 	if ((r1) && (reg2)) return 1;
 	if ((reg1) && (r2)) return -1;
 	if ((reg1) && (reg2)) {
-		if (PL::Spatial::encloses(I1, I2)) return 1;
-		if (PL::Spatial::encloses(I2, I1)) return -1;
+		if (Spatial::encloses(I1, I2)) return 1;
+		if (Spatial::encloses(I2, I1)) return -1;
 	}
 	return 0;
 }
@@ -275,7 +275,7 @@ int PL::Regions::assert_relations(binary_predicate *relation,
 @<A region is being put inside a region@> =
 	inference_subject *inner = Instances::as_subject(I1);
 	inference_subject *outer = Instances::as_subject(I0);
-	PL::Spatial::infer_parentage(inner, CERTAIN_CE, outer);
+	SpatialInferences::infer_parentage(inner, CERTAIN_CE, outer);
 
 @ Anything in or part of a region is necessarily a room, if it isn't known
 to be a region already:
@@ -293,8 +293,8 @@ region is either the next broadest region containing it, or else |NULL|.
 =
 instance *PL::Regions::enclosing(instance *reg) {
 	instance *P = NULL;
-	if (PL::Spatial::object_is_a_room(reg)) P = REGIONS_DATA(reg)->in_region;
-	if (PL::Regions::object_is_a_region(reg)) P = PL::Spatial::progenitor(reg);
+	if (Spatial::object_is_a_room(reg)) P = REGIONS_DATA(reg)->in_region;
+	if (PL::Regions::object_is_a_region(reg)) P = Spatial::progenitor(reg);
 	if (PL::Regions::object_is_a_region(P) == FALSE) return NULL;
 	return P;
 }

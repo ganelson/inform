@@ -1,114 +1,66 @@
-[PL::Player::] The Player.
+[Player::] The Player.
 
-A plugin to give a special role to the player object.
+A plugin to give a special role to a person who is the protagonist.
 
-@ Altogether we keep track of four objects, though the first pair often coincide,
-and so do the second pair. (|I_yourself| is constant once set, like |K_room| and
-other such "constants" in the Inform source code.)
+@h Introduction.
+The player is, in some ways, just another instance of the "person" kind, so
+how hard can this be?
 
-= (early code)
-instance *start_room = NULL; /* room in which play begins: e.g., Barber's Shop */
-instance *start_object = NULL; /* object in which play begins: e.g., a barber's chair */
-instance *player_character_object = NULL; /* the player character object used in this run */
-
-instance *I_yourself = NULL; /* the default player character object, |selfobj| in I6 */
-
-property *P_saved_short_name = NULL;
-
-@ Two variables are also special. The time of day might not look as if it belongs
-to this plugin, but the idea is to position the player in both space and time.
-
-= (early code)
-nonlocal_variable *player_VAR = NULL; /* initially |player_character_object| and often always |I_yourself| */
-nonlocal_variable *time_of_day_VAR = NULL;
-nonlocal_variable *score_VAR = NULL;
-
-@h Initialisation.
+One issue is that, uniquely of all instances in the world model, the player is not
+explicitly created and located by the source text; it is simply implicit that
+there is a player. Except, of course, that an author can sometimes write about
+"the player" being a person who is indeed explicitly created; and can write
+about "the player" as if this were a constant, when in fact it is a variable
+because of the possibility of changing avatar in play. All in all, "the player"
+has highly unusual semantics, even though an Inform user is barely aware of that.
 
 =
-void PL::Player::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Player::production_line);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Player::player_new_quantity_notify);
-	PluginManager::plug(VARIABLE_VALUE_NOTIFY_PLUG, PL::Player::player_variable_set_warning);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, PL::Player::player_new_instance_notify);
-	PluginManager::plug(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, PL::Player::player_irregular_genitive);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Player::player_complete_model);
-	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, PL::Player::player_refine_implicit_noun);
-	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, PL::Player::player_detect_bodysnatching);
-	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Player::player_annotate_in_World_index);
+void Player::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, Player::production_line);
+	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, Player::new_variable_notify);
+	PluginManager::plug(VARIABLE_VALUE_NOTIFY_PLUG, Player::variable_set_warning);
+	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Player::new_instance_notify);
+	PluginManager::plug(IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG, Player::irregular_genitive);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, Player::complete_model);
+	PluginManager::plug(REFINE_IMPLICIT_NOUN_PLUG, Player::refine_implicit_noun);
+	PluginManager::plug(DETECT_BODYSNATCHING_PLUG, Player::detect_bodysnatching);
+	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, IXPlayer::annotate_in_World_index);
 }
 
-int PL::Player::production_line(int stage, int debugging,
+int Player::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
 	if (stage == TABLES_CSEQ) {
-		BENCH(PL::Player::InitialSituation);
+		BENCH(RTPlayer::InitialSituation);
 	}
 	return FALSE;
 }
 
-@h Special objects.
-The "yourself" object is special in being tied, or "aliased", to the
-"player" variable, so Inform needs to recognise it. (No need to translate; it
-is created in English.)
+@h Variables of interest.
+"Time of day" is a perfectly normal variable, and we only note down its
+identity in order to find out if the author is setting an initial time of day.
+"Player", though, behaves quite unusually: see above.
 
-=
-<notable-player-instances> ::=
-	yourself
+= (early code)
+nonlocal_variable *player_VAR = NULL;
+nonlocal_variable *time_of_day_VAR = NULL;
 
-@ =
-int PL::Player::player_new_instance_notify(instance *inst) {
-	wording IW = Instances::get_name(inst, FALSE);
-	if (<notable-player-instances>(IW)) {
-		I_yourself = inst; player_character_object = I_yourself;
-		if (player_VAR) @<Alias the player variable to the yourself object@>;
-	}
-	return FALSE;
-}
-
-instance *PL::Player::get_start_room(void) {
-	return start_room;
-}
-
-@h Special variables.
-"Time of day" is a perfectly normal variable and we only note down its
-identity in order to find out the initial time of day intended by the
-source text.
-
-"Player", on the other hand, is unusual in two respects. First, it's aliased
-to an object; second, it's set in an unusual way. That is, Inform does not
-compile
-
->> now the player is Mr Chasuble;
-
-to something like |player = O31_mr_chasuble|, as it would do for a typical
-variable. It's very important that code compiled by Inform 7 doesn't do
-this, because if executed it would break the invariants for the various I6
-variables about the current situation. The correct thing is always to call
-the template routine |ChangePlayer|. We ensure that by supplying an I6
-schema which overrides the standard one for setting global variables:
-
-As usual, no need to translate these; they are created in English.
+@ As usual, no need to translate these; they are created in English.
 
 =
 <notable-player-variables> ::=
 	player |
-	score |
 	time of day
 
 @ =
-int PL::Player::player_new_quantity_notify(nonlocal_variable *nlv) {
+int Player::new_variable_notify(nonlocal_variable *nlv) {
 	if (<notable-player-variables>(nlv->name)) {
 		switch (<<r>>) {
 			case 0:
 				player_VAR = nlv;
+				RTPlayer::player_schema(player_VAR);
 				if (I_yourself) @<Alias the player variable to the yourself object@>;
-				RTVariables::set_write_schema(nlv, I"ChangePlayer(*2)");
 				break;
 			case 1:
-				score_VAR = nlv;
-				RTVariables::make_initialisable(score_VAR);
-				break;
-			case 2:
 				time_of_day_VAR = nlv;
 				RTVariables::make_initialisable(time_of_day_VAR);
 				break;
@@ -117,8 +69,40 @@ int PL::Player::player_new_quantity_notify(nonlocal_variable *nlv) {
 	return FALSE;
 }
 
-@h Aliasing and bodysnatching.
-As can be seen, as soon as both "yourself" (object) and "player" (variable)
+@h Instances of interest.
+Altogether we keep track of four instances, though the first pair often coincide,
+and so do the second pair.
+
+= (early code)
+instance *start_room = NULL; /* room in which play begins: e.g., Barber's Shop */
+instance *start_object = NULL; /* object in which play begins: e.g., a barber's chair */
+
+instance *player_character_object = NULL; /* the player character object used in this run */
+instance *I_yourself = NULL; /* the default player character object, |selfobj| in I6 */
+
+@ The "yourself" instance is special in being tied, or "aliased", to the
+"player" variable, so Inform needs to recognise it. (No need to translate; it
+is created in English.)
+
+=
+<notable-player-instances> ::=
+	yourself
+
+@ =
+int Player::new_instance_notify(instance *inst) {
+	wording IW = Instances::get_name(inst, FALSE);
+	if (<notable-player-instances>(IW)) {
+		I_yourself = inst; player_character_object = I_yourself;
+		if (player_VAR) @<Alias the player variable to the yourself object@>;
+	}
+	return FALSE;
+}
+
+instance *Player::get_start_room(void) {
+	return start_room;
+}
+
+@ As can be seen, as soon as both "yourself" (object) and "player" (variable)
 have been created, they are aliased together. This is a form of tacit pointer
 dereferencing, though authors probably don't think of it that way. A normal
 object variable is like a pointer to an object, rather than an object itself,
@@ -151,11 +135,11 @@ aliasing.
 
 >> The player is Lord Collingwood.
 
-because an assertion like this causes |player_character_object| to diverge from |I_yourself|;
-here of course it becomes the Lord Collingwood object.
+because an assertion like this causes |player_character_object| to diverge from
+|I_yourself|; here of course it becomes the Lord Collingwood object.
 
 =
-int PL::Player::player_variable_set_warning(nonlocal_variable *nlv, parse_node *val) {
+int Player::variable_set_warning(nonlocal_variable *nlv, parse_node *val) {
 	if (nlv == player_VAR) {
 		instance *npc = Rvalues::to_object_instance(val);
 		if (npc) {
@@ -189,7 +173,7 @@ Bodysnatching is used only when |player_character_object| differs from |I_yourse
 that is, when the source text explicitly sets a value for "player".
 
 =
-int PL::Player::player_detect_bodysnatching(inference_subject *body, int *snatcher,
+int Player::detect_bodysnatching(inference_subject *body, int *snatcher,
 	inference_subject **counterpart) {
 	if ((player_character_object == I_yourself) ||
 		(player_character_object == NULL) || (I_yourself == NULL)) return FALSE;
@@ -199,14 +183,26 @@ int PL::Player::player_detect_bodysnatching(inference_subject *body, int *snatch
 
 	if ((Kinds::conforms_to(KP, KY)) && (Kinds::ne(KP, KY))) {
 		if (body == Instances::as_subject(player_character_object)) {
-			*snatcher = FALSE; *counterpart = Instances::as_subject(I_yourself); return TRUE; }
+			*snatcher = FALSE;
+			*counterpart = Instances::as_subject(I_yourself);
+			return TRUE;
+		}
 		if (body == Instances::as_subject(I_yourself)) {
-			*snatcher = TRUE; *counterpart = Instances::as_subject(player_character_object); return TRUE; }
+			*snatcher = TRUE;
+			*counterpart = Instances::as_subject(player_character_object);
+			return TRUE;
+		}
 	} else {
 		if (body == Instances::as_subject(player_character_object)) {
-			*snatcher = TRUE; *counterpart = Instances::as_subject(I_yourself); return TRUE; }
+			*snatcher = TRUE;
+			*counterpart = Instances::as_subject(I_yourself);
+			return TRUE;
+		}
 		if (body == Instances::as_subject(I_yourself)) {
-			*snatcher = FALSE; *counterpart = Instances::as_subject(player_character_object); return TRUE; }
+			*snatcher = FALSE;
+			*counterpart = Instances::as_subject(player_character_object);
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -217,7 +213,8 @@ ensure that assemblies such as "A nose is part of every person" produces
 "your nose" rather than "yourself's nose":
 
 =
-int PL::Player::player_irregular_genitive(inference_subject *owner, text_stream *genitive, int *propriety) {
+int Player::irregular_genitive(inference_subject *owner, text_stream *genitive,
+	int *propriety) {
 	if (owner == Instances::as_subject(I_yourself)) {
 		WRITE_TO(genitive, "your ");
 		*propriety = TRUE;
@@ -247,7 +244,7 @@ and people still sometimes type it.
 	initially carried
 
 @ =
-int PL::Player::player_refine_implicit_noun(parse_node *p) {
+int Player::refine_implicit_noun(parse_node *p) {
 	if (<implicit-player-relationship>(Node::get_text(p))) {
 		Refiner::give_subject_to_noun(p, Instances::as_subject(player_character_object));
 		return TRUE;
@@ -268,10 +265,10 @@ Very often, the source text doesn't specify where the player is, and then
 we assume he is freestanding in the earliest defined room.
 
 =
-int PL::Player::player_complete_model(int stage) {
+int Player::complete_model(int stage) {
 	if ((stage == WORLD_STAGE_III) && (I_yourself)) {
-		P_saved_short_name = ValueProperties::new_nameless(I"saved_short_name", K_text);
-		ValueProperties::assert(P_saved_short_name, Instances::as_subject(I_yourself),
+		property *P_ssn = ValueProperties::new_nameless(I"saved_short_name", K_text);
+		ValueProperties::assert(P_ssn, Instances::as_subject(I_yourself),
 			Rvalues::from_unescaped_wording(Feeds::feed_text(I"yourself")), CERTAIN_CE);
 	}
 	if (stage == WORLD_STAGE_IV) {
@@ -285,11 +282,12 @@ int PL::Player::player_complete_model(int stage) {
 @<Set the start room to the earliest room defined in the source text@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL)
-			&& (Projects::draws_from_source_file(Task::project(), Instances::get_creating_file(I))))
+		if ((Spatial::object_is_a_room(I)) && (start_room == NULL)
+			&& (Projects::draws_from_source_file(Task::project(),
+				Instances::get_creating_file(I))))
 			start_room = I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Spatial::object_is_a_room(I)) && (start_room == NULL))
+		if ((Spatial::object_is_a_room(I)) && (start_room == NULL))
 			start_room = I;
 	start_object = start_room;
 
@@ -312,12 +310,12 @@ will do. But otherwise:
 
 @<Otherwise see if the player has explicitly been placed in the model world@> =
 	if (player_character_object) {
-		start_object = PL::Spatial::progenitor(player_character_object);
+		start_object = Spatial::progenitor(player_character_object);
 		if (start_object) {
 			start_room = start_object;
-			while ((start_room) && (PL::Spatial::progenitor(start_room)))
-				start_room = PL::Spatial::progenitor(start_room);
-			if ((start_room) && (PL::Spatial::object_is_a_room(start_room) == FALSE)) {
+			while ((start_room) && (Spatial::progenitor(start_room)))
+				start_room = Spatial::progenitor(start_room);
+			if ((start_room) && (Spatial::object_is_a_room(start_room) == FALSE)) {
 				StandardProblems::object_problem(_p_(PM_StartsOutsideRooms),
 					start_object,
 					"seems to be where the player is supposed to begin",
@@ -326,7 +324,7 @@ will do. But otherwise:
 			}
 			inference *inf;
 			POSITIVE_KNOWLEDGE_LOOP(inf,
-				Instances::as_subject(player_character_object), PART_OF_INF) {
+				Instances::as_subject(player_character_object), part_of_inf) {
 				StandardProblems::object_problem(_p_(PM_PlayerIsPart),
 					start_object,
 					"seems to have the player attached as a component part",
@@ -336,56 +334,3 @@ will do. But otherwise:
 			}
 		}
 	}
-
-@h Initial time and place.
-Well: the point of tracking all of those variables was solely to be able to
-compile this little array, which provides enough details for the I6 template
-code to set things up correctly at run-time.
-
-=
-void PL::Player::InitialSituation_define(int id, int val) {
-	inter_name *iname = Hierarchy::find(id);
-	Emit::named_array_begin(iname, K_value);
-	Emit::named_numeric_constant(iname, (inter_ti) val);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void PL::Player::InitialSituation(void) {
-	PL::Player::InitialSituation_define(PLAYER_OBJECT_INIS_HL, 0);
-	PL::Player::InitialSituation_define(START_OBJECT_INIS_HL, 1);
-	PL::Player::InitialSituation_define(START_ROOM_INIS_HL, 2);
-	PL::Player::InitialSituation_define(START_TIME_INIS_HL, 3);
-	PL::Player::InitialSituation_define(DONE_INIS_HL, 4);
-
-	inter_name *iname = Hierarchy::find(INITIALSITUATION_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	RTVariables::emit_initial_value(player_VAR);
-	if (start_object == NULL) Emit::array_numeric_entry(0);
-	else Emit::array_iname_entry(RTInstances::iname(start_object));
-	if (start_room == NULL) Emit::array_numeric_entry(0);
-	else Emit::array_iname_entry(RTInstances::iname(start_room));
-	RTVariables::emit_initial_value(time_of_day_VAR);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-@h World Index details.
-We explicitly mention the player in the World index, since otherwise it won't
-usually appear anywhere.
-
-=
-void PL::Player::index_object_further(OUTPUT_STREAM, instance *I, int depth, int details) {
-	if ((I == start_room) && (I_yourself) &&
-		(IXInstances::indexed_yet(I_yourself) == FALSE))
-		Data::Objects::index(OUT, I_yourself, NULL, depth+1, details);
-}
-
-int PL::Player::player_annotate_in_World_index(OUTPUT_STREAM, instance *I) {
-	if (I == PL::Player::get_start_room()) {
-		WRITE(" - <i>room where play begins</i>");
-		Index::DocReferences::link(OUT, I"ROOMPLAYBEGINS");
-		return TRUE;
-	}
-	return FALSE;
-}

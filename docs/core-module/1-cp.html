@@ -231,7 +231,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">use_as_event_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_iname_holder</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_phrase</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">invocation_options</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">local_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
@@ -249,6 +248,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_iname_holder_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">backdrop_found_in_notice_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">bp_runtime_implementation_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">definition_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">dval_written_CLASS</span>
@@ -264,6 +264,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">test_scenario_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_iname_holder</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">backdrop_found_in_notice</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp_runtime_implementation</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">definition</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">dval_written</span><span class="plain-syntax">)</span>
@@ -294,7 +296,84 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">index_page</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">index_lexicon_entry</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><a href="../multimedia-module/index.html" class="internal">multimedia</a> &mdash;
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><a href="../if-module/index.html" class="internal">if</a> &mdash;
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">action_name_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">auxiliary_file_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">cached_understanding_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">command_index_entry_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">connected_submap_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">direction_inference_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">door_dir_notice_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">door_to_notice_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">EPS_map_level_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">found_in_inference_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">grammar_line_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">grammar_verb_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">loop_over_scope_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">map_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">named_action_pattern_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">noun_filter_token_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parentage_here_inference_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parentage_inference_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parse_name_notice_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parsing_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">parsing_pp_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">part_of_inference_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">regions_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">release_instructions_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">reserved_command_verb_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rubric_holder_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">scene_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">slash_gpr_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">spatial_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">action_name_list_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">action_pattern_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ap_optional_clause_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">scene_connector_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">understanding_item_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">understanding_reference_CLASS</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_name</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">auxiliary_file</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">cached_understanding</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">command_index_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">connected_submap</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">direction_inference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">door_dir_notice</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">door_to_notice</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">EPS_map_level</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">found_in_inference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">grammar_line</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">grammar_verb</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">loop_over_scope</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">map_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">named_action_pattern</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">noun_filter_token</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">parentage_here_inference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">parentage_inference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_name_notice</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">parsing_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">parsing_pp_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">part_of_inference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">regions_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">release_instructions</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">reserved_command_verb</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rubric_holder</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scene</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">slash_gpr</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_data</span><span class="plain-syntax">)</span>
+
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_name_list</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap_optional_clause</span><span class="plain-syntax">, </span><span class="constant-syntax">400</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scene_connector</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">understanding_item</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">understanding_reference</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><a href="../multimedia-module/index.html" class="internal">multimedia</a> &mdash;
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">figures_data_CLASS</span>

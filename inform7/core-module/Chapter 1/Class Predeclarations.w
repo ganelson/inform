@@ -163,7 +163,6 @@ DECLARE_CLASS(value_property_data)
 @e use_as_event_CLASS
 
 =
-DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
@@ -180,6 +179,7 @@ DECLARE_CLASS(use_as_event)
 @ //runtime// --
 
 @e adjective_iname_holder_CLASS
+@e backdrop_found_in_notice_CLASS
 @e bp_runtime_implementation_CLASS
 @e definition_CLASS
 @e dval_written_CLASS
@@ -195,6 +195,8 @@ DECLARE_CLASS(use_as_event)
 @e test_scenario_CLASS
 
 =
+DECLARE_CLASS(adjective_iname_holder)
+DECLARE_CLASS(backdrop_found_in_notice)
 DECLARE_CLASS(bp_runtime_implementation)
 DECLARE_CLASS(definition)
 DECLARE_CLASS(dval_written)
@@ -228,7 +230,6 @@ DECLARE_CLASS(index_lexicon_entry)
 
 @e action_name_CLASS
 @e auxiliary_file_CLASS
-@e backdrop_found_in_notice_CLASS
 @e cached_understanding_CLASS
 @e command_index_entry_CLASS
 @e connected_submap_CLASS
@@ -267,7 +268,6 @@ DECLARE_CLASS(index_lexicon_entry)
 =
 DECLARE_CLASS(action_name)
 DECLARE_CLASS(auxiliary_file)
-DECLARE_CLASS(backdrop_found_in_notice)
 DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(command_index_entry)
 DECLARE_CLASS(connected_submap)

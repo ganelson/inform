@@ -21,7 +21,7 @@ void IFModule::start(void) {
 	@<Register this module's debugging log writers@>;
 	ReleaseInstructions::start();
 	WherePredicates::start();
-	PL::SpatialRelations::start();
+	SpatialRelations::start();
 	PL::MapDirections::start();
 }
 
@@ -73,18 +73,20 @@ plugin *actions_plugin, *backdrops_plugin, *bibliographic_plugin, *chronology_pl
 void IFModule::create_plugins(void) {
 	plugin *ifp = PluginManager::new(NULL, I"interactive fiction", NULL);
 
-	backdrops_plugin = PluginManager::new(&PL::Backdrops::start, I"backdrops", ifp);
+	/* must be created before the other world model plugins */
+	spatial_plugin = PluginManager::new(&Spatial::start, I"spatial model", ifp);
+
+	backdrops_plugin = PluginManager::new(&Backdrops::start, I"backdrops", ifp);
 	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", ifp);
 	chronology_plugin = PluginManager::new(&Chronology::start_plugin, I"chronology", ifp);
 	devices_plugin = PluginManager::new(&PL::Devices::start, I"devices", ifp);
 	map_plugin = PluginManager::new(&PL::Map::start, I"mapping", ifp);
 	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", ifp);
-	player_plugin = PluginManager::new(&PL::Player::start, I"player", ifp);
+	player_plugin = PluginManager::new(&Player::start, I"player", ifp);
 	regions_plugin = PluginManager::new(&PL::Regions::start, I"regions", ifp);
 	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", ifp);
 	scoring_plugin = PluginManager::new(&PL::Score::start, I"scoring", ifp);
 	showme_plugin = PluginManager::new(&PL::Showme::start, I"showme", ifp);
-	spatial_plugin = PluginManager::new(&PL::Spatial::start, I"spatial model", ifp);
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
 
 	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);

@@ -65,3 +65,6 @@ Chapter 5: Plugin Support
 	Sound Effects
 	External Files
 	Bibliographic Data
+	Spatial
+	The Player
+	Backdrops
