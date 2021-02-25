@@ -41,7 +41,7 @@ int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_tim
 }
 
 @ This special sentence is used as a hint in making map documents; it has no
-effect on the world model itself, and so is dealt with elsewhere, in //EPS Map//.
+effect on the world model itself, and so is dealt with elsewhere, in //index: EPS Map//.
 
 =
 int Map::make_special_meanings(void) {
@@ -75,7 +75,7 @@ int Map::look_for_direction_creation(parse_node *pn) {
 		return FALSE;
 	}
 	direction_relations_noticed[no_directions_noticed] =
-		PL::MapDirections::create_sketchy_mapping_direction(Node::get_text(pn));
+		MapRelations::create_sketchy_mapping_direction(Node::get_text(pn));
 	directions_noticed[no_directions_noticed++] = pn;
 	return FALSE;
 }
@@ -86,7 +86,7 @@ in connection with the "mapped D of" relations, it's altogether easier and
 makes for more legible code if we use a special inference family of our own:
 
 = (early code)
-inference_family *direction_inf = NULL; /* 100; where do map connections from O lead? */
+inference_family *direction_inf = NULL; /* where do map connections from O lead? */
 
 @ =
 void Map::create_inference(void) {
@@ -322,7 +322,7 @@ int Map::set_kind_notify(instance *I, kind *k) {
 	registered_directions++;
 	inter_name *dname = RTMap::new_direction_iname();
 	MAP_DATA(I)->direction_iname = dname;
-	PL::MapDirections::make_mapped_predicate(I);
+	MapRelations::make_mapped_predicate(I);
 
 @h Map data on instances.
 We will use quite a lot of temporary work-space to put all of this together,
@@ -452,8 +452,8 @@ noted above are keys into these arrays.
 It might look a little wasteful of I7's memory to expand the direction
 inferences, a nicely compact representation, into large and sparse arrays.
 But it's convenient, and profiling suggests that the memory overhead is not
-significant. It also means that the //Spatial Map// mapping code, which contains
-quite crunchy algorithms, has the fastest possible access to the layout.
+significant. It also means that the //index: Spatial Map// mapping code, which
+contains quite crunchy algorithms, has the fastest possible access to the layout.
 
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
@@ -665,7 +665,7 @@ void Map::connect(inference_subject *i_from, inference_subject *i_to,
 
 void Map::oneway_map_connection(instance *go_from, instance *go_to,
 	instance *forwards_dir, int certainty_level) {
-	binary_predicate *bp = PL::MapDirections::get_mapping_relation(forwards_dir);
+	binary_predicate *bp = MapRelations::get_mapping_relation(forwards_dir);
 	if (bp == NULL) internal_error("map connection in non-direction");
 	int x = prevailing_mood;
 	prevailing_mood = certainty_level;

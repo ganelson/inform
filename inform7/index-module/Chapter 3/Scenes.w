@@ -1,4 +1,4 @@
-[PL::Scenes::Index::] Temporal Map.
+[IXScenes::] Scenes.
 
 Parallel to the World index of space is the Scenes index of time,
 and in this section we render it as HTML.
@@ -11,7 +11,7 @@ with a notation which takes a little bit of on-screen explanation, but
 seems natural enough to learn in practice.
 
 =
-void PL::Scenes::Index::index(OUTPUT_STREAM) {
+void IXScenes::index(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(scene);
 	scene **sorted = Memory::calloc(nr, sizeof(scene *), INDEX_SORTING_MREASON);
 	@<Sort the scenes@>;
@@ -23,7 +23,7 @@ void PL::Scenes::Index::index(OUTPUT_STREAM) {
 	Memory::I7_array_free(sorted, INDEX_SORTING_MREASON, nr, sizeof(scene *));
 }
 
-void PL::Scenes::Index::index_rules(OUTPUT_STREAM) {
+void IXScenes::index_rules(OUTPUT_STREAM) {
 	Rulebooks::index_scene(OUT); /* rules in generic scene-ending rulebooks */
 	@<Show the generic scene-change rules@>;
 }
@@ -34,7 +34,7 @@ void PL::Scenes::Index::index_rules(OUTPUT_STREAM) {
 	int i = 0;
 	scene *sc;
 	LOOP_OVER(sc, scene) sorted[i++] = sc;
-	qsort(sorted, (size_t) nr, sizeof(scene *), PL::Scenes::Index::compare_scenes);
+	qsort(sorted, (size_t) nr, sizeof(scene *), IXScenes::compare_scenes);
 
 @ The sorted ordering is used as-is later on, when we get to the details, but
 for the tabulation it's refined further. First we have the start-of-play
@@ -45,39 +45,38 @@ third category is usually empty except for scenes the author has forgotten
 about and created but never made use of.)
 
 @<Tabulate the scenes@> =
-	int i;
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		scene *sc = sorted[i];
 		if ((sc->start_of_play) || (sc == SC_entire_game))
-			PL::Scenes::Index::index_from_scene(OUT, sc, 0, START_OF_PLAY_END, NULL, sorted, nr);
+			IXScenes::index_from_scene(OUT, sc, 0, START_OF_PLAY_END, NULL, sorted, nr);
 	}
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		scene *sc = sorted[i];
-		if ((sc->anchor_condition[0]) && (sc != SC_entire_game))
-			PL::Scenes::Index::index_from_scene(OUT, sc, 0, START_OF_PLAY_END, NULL, sorted, nr);
+		if ((sc->ends[0].anchor_condition) && (sc != SC_entire_game))
+			IXScenes::index_from_scene(OUT, sc, 0, START_OF_PLAY_END, NULL, sorted, nr);
 	}
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		scene *sc = sorted[i];
 		if (sc->indexed == FALSE)
-			PL::Scenes::Index::index_from_scene(OUT, sc, 0, NEVER_HAPPENS_END, NULL, sorted, nr);
+			IXScenes::index_from_scene(OUT, sc, 0, NEVER_HAPPENS_END, NULL, sorted, nr);
 	}
 
 
 @<Show the legend for the scene table icons@> =
 	HTML_OPEN("p"); WRITE("Legend: ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "WPB", "Begins when play begins");
+	IXScenes::scene_icon_legend(OUT, "WPB", "Begins when play begins");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "WhenC", "can begin whenever some condition holds");
+	IXScenes::scene_icon_legend(OUT, "WhenC", "can begin whenever some condition holds");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "Segue", "follows when a previous scene ends");
+	IXScenes::scene_icon_legend(OUT, "Segue", "follows when a previous scene ends");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "Simul", "begins simultaneously");
+	IXScenes::scene_icon_legend(OUT, "Simul", "begins simultaneously");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "WNever", "never begins");
+	IXScenes::scene_icon_legend(OUT, "WNever", "never begins");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "ENever", "never ends");
+	IXScenes::scene_icon_legend(OUT, "ENever", "never ends");
 	WRITE("; ");
-	PL::Scenes::Index::scene_icon_legend(OUT, "Recurring", "recurring (can happen more than once)");
+	IXScenes::scene_icon_legend(OUT, "Recurring", "recurring (can happen more than once)");
 	WRITE(". <i>Scene names are italicised when and if they appear for a second "
 		"or subsequent time because the scene can begin in more than one way</i>.");
 	HTML_CLOSE("p");
@@ -94,8 +93,7 @@ about and created but never made use of.)
 
 @<Give details of each scene in turn@> =
 	Index::anchor(OUT, I"SDETAILS");
-	int i;
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		HTML_TAG("hr");
 		scene *sc = sorted[i];
 		@<Give details of a specific scene@>;
@@ -109,10 +107,9 @@ fact, end.
 	@<Index the name and recurrence status of the scene@>;
 	if (sc == SC_entire_game) @<Explain the Entire Game scene@>;
 
-	int end;
-	for (end=0; end<sc->no_ends; end++) {
+	for (int end=0; end<sc->no_ends; end++) {
 		if ((end == 1) && (sc->no_ends > 2) &&
-			(sc->anchor_condition[1]==NULL) && (sc->anchor_scene[1]==NULL))
+			(sc->ends[1].anchor_condition==NULL) && (sc->ends[1].anchor_connectors==NULL))
 			continue;
 		@<Index the conditions for this scene end to occur@>;
 		@<Index the rules which apply when this scene end occurs@>;
@@ -122,8 +119,8 @@ fact, end.
 @<Index the name and recurrence status of the scene@> =
 	HTML::open_indented_p(OUT, 1, "hanging");
 	Index::anchor_numbered(OUT, sc->allocation_id);
-	WRITE("<b>The <i>%+W</i> scene</b>", PL::Scenes::get_name(sc));
-	Index::link(OUT, Wordings::first_wn(Node::get_text(sc->scene_declared_at)));
+	WRITE("<b>The <i>%+W</i> scene</b>", Scenes::get_name(sc));
+	Index::link(OUT, Wordings::first_wn(Node::get_text(Instances::get_creating_sentence(sc->as_instance))));
 	if (PropertyInferences::either_or_state(
 		Instances::as_subject(sc->as_instance), P_recurring) > 0)
 		WRITE("&nbsp;&nbsp;<i>recurring</i>");
@@ -156,7 +153,7 @@ fact, end.
 @<Index the conditions for this scene end to occur@> =
 	HTML::open_indented_p(OUT, 1, "hanging");
 	WRITE("<i>%s ", (end==0)?"Begins":"Ends");
-	if (end >= 2) WRITE("%+W ", sc->end_names[end]);
+	if (end >= 2) WRITE("%+W ", sc->ends[end].end_names);
 	WRITE("when:</i> ");
 	int count = 0;
 	@<Index the play-begins condition@>;
@@ -176,36 +173,35 @@ fact, end.
 	}
 
 @<Index the I7 condition for a scene to end@> =
-	if (sc->anchor_condition[end]) {
+	if (sc->ends[end].anchor_condition) {
 		if (count > 0) {
 			HTML_TAG("br");
 			WRITE("<i>or when:</i> ");
 		}
-		WRITE("%+W", Node::get_text(sc->anchor_condition[end]));
-		Index::link(OUT, Wordings::first_wn(Node::get_text(sc->anchor_condition_set[end])));
+		WRITE("%+W", Node::get_text(sc->ends[end].anchor_condition));
+		Index::link(OUT, Wordings::first_wn(Node::get_text(sc->ends[end].anchor_condition_set)));
 		count++;
 	}
 
 @<Index connections to other scene ends@> =
-	scene_connector *scon;
-	for (scon = sc->anchor_scene[end]; scon; scon=scon->next) {
+	for (scene_connector *scon = sc->ends[end].anchor_connectors; scon; scon=scon->next) {
 		if (count > 0) {
 			HTML_TAG("br");
 			WRITE("<i>or when:</i> ");
 		}
 		wording NW = Instances::get_name(scon->connect_to->as_instance, FALSE);
 		WRITE("<b>%+W</b> <i>%s</i>", NW, (scon->end==0)?"begins":"ends");
-		if (scon->end >= 2) WRITE(" %+W", scon->connect_to->end_names[scon->end]);
+		if (scon->end >= 2) WRITE(" %+W", scon->connect_to->ends[scon->end].end_names);
 		Index::link(OUT, Wordings::first_wn(Node::get_text(scon->where_said)));
 		count++;
 	}
 
 @<Index the rules which apply when this scene end occurs@> =
-	if (Rulebooks::is_empty(sc->end_rulebook[end], Rulebooks::no_rule_context()) == FALSE) {
+	if (Rulebooks::is_empty(sc->ends[end].end_rulebook, Rulebooks::no_rule_context()) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
 		int ignore_me = 0;
-		Rulebooks::index(OUT, sc->end_rulebook[end], "", Rulebooks::no_rule_context(), &ignore_me);
+		Rulebooks::index(OUT, sc->ends[end].end_rulebook, "", Rulebooks::no_rule_context(), &ignore_me);
 	}
 
 @h Table of Scenes.
@@ -224,7 +220,7 @@ on the initial call when |depth| is 0.
 @d NEVER_HAPPENS_END -2
 
 =
-void PL::Scenes::Index::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
+void IXScenes::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
 	int end, scene *sc_from, scene **sorted, int nr) {
 	HTML::open_indented_p(OUT, depth+1, "tight");
 	@<Indicate the route by which this scene was reached@>;
@@ -241,18 +237,18 @@ void PL::Scenes::Index::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
 
 @<Indicate the route by which this scene was reached@> =
 	switch(end) {
-		case 0: PL::Scenes::Index::scene_icon(OUT, "Simul"); break;
-		case 1: PL::Scenes::Index::scene_icon(OUT, "Segue"); break;
+		case 0: IXScenes::scene_icon(OUT, "Simul"); break;
+		case 1: IXScenes::scene_icon(OUT, "Segue"); break;
 		case START_OF_PLAY_END: break;
-		case NEVER_HAPPENS_END: PL::Scenes::Index::scene_icon(OUT, "WNever"); break;
+		case NEVER_HAPPENS_END: IXScenes::scene_icon(OUT, "WNever"); break;
 		default:
-			PL::Scenes::Index::scene_icon(OUT, "Segue");
-			WRITE("[ends %+W]&nbsp;", sc_from->end_names[end]); break;
+			IXScenes::scene_icon(OUT, "Segue");
+			WRITE("[ends %+W]&nbsp;", sc_from->ends[end].end_names); break;
 	}
 	if ((sc->indexed == FALSE) || (depth == 0)) {
-		if (sc == SC_entire_game) PL::Scenes::Index::scene_icon(OUT, "WPB");
-		else if (sc->anchor_condition[0]) PL::Scenes::Index::scene_icon(OUT, "WhenC");
-		if (sc->start_of_play) PL::Scenes::Index::scene_icon(OUT, "WPB");
+		if (sc == SC_entire_game) IXScenes::scene_icon(OUT, "WPB");
+		else if (sc->ends[0].anchor_condition) IXScenes::scene_icon(OUT, "WhenC");
+		if (sc->start_of_play) IXScenes::scene_icon(OUT, "WPB");
 	}
 
 @<Name the scene in the table, italicised if we've seen it already@> =
@@ -262,17 +258,17 @@ void PL::Scenes::Index::index_from_scene(OUTPUT_STREAM, scene *sc, int depth,
 	else Index::below_link_numbered(OUT, sc->allocation_id);
 
 @<Show the never-ends icon if appropriate@> =
-	int ways_to_end = 0, e;
-	for (e=1; e<sc->no_ends; e++) {
-		if (sc->anchor_scene[e]) ways_to_end++;
-		if (sc->anchor_condition[e]) ways_to_end++;
+	int ways_to_end = 0;
+	for (int e=1; e<sc->no_ends; e++) {
+		if (sc->ends[e].anchor_connectors) ways_to_end++;
+		if (sc->ends[e].anchor_condition) ways_to_end++;
 	}
-	if (ways_to_end == 0) PL::Scenes::Index::scene_icon_append(OUT, "ENever");
+	if (ways_to_end == 0) IXScenes::scene_icon_append(OUT, "ENever");
 
 @<Show the recurring icon if appropriate@> =
 	inference_subject *subj = Instances::as_subject(sc->as_instance);
 	if (PropertyInferences::either_or_state(subj, P_recurring) > UNKNOWN_CE)
-		PL::Scenes::Index::scene_icon_append(OUT, "Recurring");
+		IXScenes::scene_icon_append(OUT, "Recurring");
 
 @ And this is where the routine recurses, so that consequent scenes are
 tabulated underneath the present one, indented one step further in (since
@@ -280,38 +276,37 @@ indentation is coupled to |depth|). First we recurse to scenes which end when
 this one does; then to scenes which begin when this one ends.
 
 @<Indent to tabulate other scenes connected to the ends of this one@> =
-	int i;
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		scene *sc2 = sorted[i];
 		scene_connector *scon;
-		for (scon = sc2->anchor_scene[0]; scon; scon=scon->next)
+		for (scon = sc2->ends[0].anchor_connectors; scon; scon=scon->next)
 			if ((scon->connect_to == sc) && (scon->end >= 1))
-				PL::Scenes::Index::index_from_scene(OUT, sc2, depth + 1, scon->end, sc, sorted, nr);
+				IXScenes::index_from_scene(OUT, sc2, depth + 1, scon->end, sc, sorted, nr);
 	}
-	for (i=0; i<nr; i++) {
+	for (int i=0; i<nr; i++) {
 		scene *sc2 = sorted[i];
 		scene_connector *scon;
-		for (scon = sc2->anchor_scene[0]; scon; scon=scon->next)
+		for (scon = sc2->ends[0].anchor_connectors; scon; scon=scon->next)
 			if ((scon->connect_to == sc) && (scon->end == 0))
-				PL::Scenes::Index::index_from_scene(OUT, sc2, depth, scon->end, sc, sorted, nr);
+				IXScenes::index_from_scene(OUT, sc2, depth, scon->end, sc, sorted, nr);
 	}
 
 @ We have been using:
 
 =
-void PL::Scenes::Index::scene_icon(OUTPUT_STREAM, char *si) {
-	PL::Scenes::Index::scene_icon_unspaced(OUT, si); WRITE("&nbsp;&nbsp;");
+void IXScenes::scene_icon(OUTPUT_STREAM, char *si) {
+	IXScenes::scene_icon_unspaced(OUT, si); WRITE("&nbsp;&nbsp;");
 }
 
-void PL::Scenes::Index::scene_icon_append(OUTPUT_STREAM, char *si) {
-	WRITE("&nbsp;&nbsp;"); PL::Scenes::Index::scene_icon_unspaced(OUT, si);
+void IXScenes::scene_icon_append(OUTPUT_STREAM, char *si) {
+	WRITE("&nbsp;&nbsp;"); IXScenes::scene_icon_unspaced(OUT, si);
 }
 
-void PL::Scenes::Index::scene_icon_legend(OUTPUT_STREAM, char *si, char *gloss) {
-	PL::Scenes::Index::scene_icon_unspaced(OUT, si); WRITE("&nbsp;<i>%s</i>", gloss);
+void IXScenes::scene_icon_legend(OUTPUT_STREAM, char *si, char *gloss) {
+	IXScenes::scene_icon_unspaced(OUT, si); WRITE("&nbsp;<i>%s</i>", gloss);
 }
 
-void PL::Scenes::Index::scene_icon_unspaced(OUTPUT_STREAM, char *si) {
+void IXScenes::scene_icon_unspaced(OUTPUT_STREAM, char *si) {
 	HTML_TAG_WITH("img", "border=0 src=inform:/scene_icons/%s.png", si);
 }
 
@@ -320,7 +315,7 @@ their indexing order. The Entire Game always comes first, and then come the
 rest in ascending alphabetical order.
 
 =
-int PL::Scenes::Index::compare_scenes(const void *ent1, const void *ent2) {
+int IXScenes::compare_scenes(const void *ent1, const void *ent2) {
 	const scene *sc1 = *((const scene **) ent1);
 	const scene *sc2 = *((const scene **) ent2);
 	if ((sc1 == SC_entire_game) && (sc2 != SC_entire_game)) return -1;

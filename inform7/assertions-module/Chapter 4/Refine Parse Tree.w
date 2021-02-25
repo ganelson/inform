@@ -368,7 +368,7 @@ has the marble and the box as its children, the relationship being containment.
 	if (p->down) {
 		Refiner::refine(p->down, creation_rule);
 		#ifdef IF_MODULE
-		instance *dir = PL::MapDirections::get_mapping_relationship(p);
+		instance *dir = MapRelations::get_mapping_relationship(p);
 		if (dir) @<Make the relation one which refers to a map direction@>;
 		#endif
 		if (p->down->next) Refiner::refine(p->down->next, creation_rule);

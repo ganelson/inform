@@ -1,24 +1,28 @@
-[PL::Score::] The Score.
+[TheScore::] The Score.
 
-A plugin to support the maximum score variable.
+A plugin to support the score variables.
 
-@h Initialisation.
+@ At one time, all interactive fiction had a scoring system, because that's
+what computers did for our entertainment: they rewarded us with points. Having
+its distant roots in that period, Inform handles a numerical score with just
+a little compiler support, and this is where.
 
 =
-void PL::Score::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Score::production_line);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, PL::Score::new_variable_notify);
+void TheScore::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, TheScore::production_line);
+	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, TheScore::new_variable_notify);
 }
 
-int PL::Score::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
-		BENCH(PL::Score::compile_max_score);
+		BENCH(TheScore::max_score_and_ranking_table);
 	}
 	return FALSE;
 }
 
-@ For many years this was a defined I6 constant, but then people sent in bug
-reports asking why it wouldn't change in play.
+@ For many years "maximum score" was compiled to a constant, but then people sent
+in bug reports asking why it wouldn't change in play. "Score", of course, is
+more evidently variable.
 
 = (early code)
 nonlocal_variable *score_VAR = NULL;
@@ -29,8 +33,13 @@ nonlocal_variable *max_score_VAR = NULL;
 	score |
 	maximum score
 
-@ =
-int PL::Score::new_variable_notify(nonlocal_variable *var) {
+@ These are marked "initialisable" because of the way they are implemented at
+run-time, using special variables in //WorldModelKit// rather than being
+storage allocated by I7. Variables stored that way would not ordinarily be
+possible to give values to in I7 assertions; but these are.
+
+=
+int TheScore::new_variable_notify(nonlocal_variable *var) {
 	if (<notable-scoring-variables>(var->name)) {
 		switch(<<r>>) {
 			case 0:
@@ -46,57 +55,38 @@ int PL::Score::new_variable_notify(nonlocal_variable *var) {
 	return FALSE;
 }
 
-@h The maximum score and rankings table.
-A special rule is that if a table is called "Rankings" and contains a column
+@ A special rule is that if a table is called "Rankings" and contains a column
 of numbers followed by a column of text, then it is used by the run-time
 scoring system. In retrospect, Inform really shouldn't support this at the
-compiler level (not that it does much), and in any case it's a very old-school
-idea of IF. Still, it does little harm.
+compiler level (not that it does much), but it does little harm.
 
 =
 <rankings-table-name> ::=
 	rankings
 
-@ This can only happen if we declare it somehow in I6 code, which
-we do with the constant |RANKING_TABLE|. We also set the |MAX_SCORE| variable
-equal to the number in the bottom row of the table, which is assumed to be the
-score corresponding to successful completion and the highest rank.
+@ Nothing will happen unless a table has both this magic name, and also the
+right shape: two columns, number then text. If so, the maximum score is
+initialised to the number in the final row of the table, which is assumed to
+be the score corresponding to successful completion and the highest rank.
+
+The test case |Cooking|, an example from the documentation, tests this.
 
 =
-void PL::Score::compile_max_score(void) {
-	int rt_made = FALSE;
-	table *t;
-	LOOP_OVER(t, table) {
+void TheScore::max_score_and_ranking_table(void) {
+	table *t, *ranking_table = NULL;
+	LOOP_OVER(t, table)
 		if ((<rankings-table-name>(t->table_name_text)) &&
 			(Tables::get_no_columns(t) >= 2) &&
 			(Kinds::eq(Tables::kind_of_ith_column(t, 0), K_number)) &&
-			(Kinds::eq(Tables::kind_of_ith_column(t, 1), K_text))) {
-			inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
-			Emit::named_iname_constant(iname, K_value, RTTables::identifier(t));
-			parse_node *PN = Tables::cells_in_ith_column(t, 0);
-			while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
-			if ((PN != NULL) && (max_score_VAR) &&
-				(VariableSubjects::has_initial_value_set(max_score_VAR) == FALSE))
-				Assertions::PropertyKnowledge::initialise_global_variable(
-					max_score_VAR, Node::get_evaluation(PN));
-			Hierarchy::make_available(Emit::tree(), iname);
-			global_compilation_settings.ranking_table_given = TRUE;
-			rt_made = TRUE;
-			break;
-		}
+			(Kinds::eq(Tables::kind_of_ith_column(t, 1), K_text)))
+			ranking_table = t;
+	if (ranking_table) {
+		parse_node *PN = Tables::cells_in_ith_column(ranking_table, 0);
+		while ((PN != NULL) && (PN->next != NULL)) PN = PN->next;
+		if ((PN != NULL) && (max_score_VAR) &&
+			(VariableSubjects::has_initial_value_set(max_score_VAR) == FALSE))
+			Assertions::PropertyKnowledge::initialise_global_variable(
+				max_score_VAR, Node::get_evaluation(PN));
 	}
-	if (rt_made == FALSE) {
-		inter_name *iname = Hierarchy::find(RANKING_TABLE_HL);
-		Emit::named_generic_constant(iname, LITERAL_IVAL, 0);
-		Hierarchy::make_available(Emit::tree(), iname);
-	}
-	inter_name *iname = Hierarchy::find(INITIAL_MAX_SCORE_HL);
-	Hierarchy::make_available(Emit::tree(), iname);
-	if (VariableSubjects::has_initial_value_set(max_score_VAR)) {
-		inter_ti v1 = 0, v2 = 0;
-		RTVariables::seek_initial_value(iname, &v1, &v2, max_score_VAR);
-		Emit::named_generic_constant(iname, v1, v2);
-	} else {
-		Emit::named_numeric_constant(iname, 0);
-	}
+	RTTheScore::support(ranking_table);
 }

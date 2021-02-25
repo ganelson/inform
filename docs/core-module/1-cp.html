@@ -287,18 +287,24 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b><a href="../index-module/index.html" class="internal">index</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">contents_entry_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">connected_submap_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">contents_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">documentation_ref_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">EPS_map_level_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_page_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_element_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">index_lexicon_entry_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rubric_holder_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">connected_submap</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">contents_entry</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">documentation_ref</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">EPS_map_level</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">index_element</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">index_page</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">index_lexicon_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rubric_holder</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><a href="../if-module/index.html" class="internal">if</a> &mdash;
 </p>
@@ -307,9 +313,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">auxiliary_file_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">cached_understanding_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">command_index_entry_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">connected_submap_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">direction_inference_data_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EPS_map_level_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">found_in_inference_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">grammar_line_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">grammar_verb_CLASS</span>
@@ -326,7 +330,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">regions_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">release_instructions_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">reserved_command_verb_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rubric_holder_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">scene_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">slash_gpr_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">spatial_data_CLASS</span>
@@ -342,9 +345,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">auxiliary_file</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">cached_understanding</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">command_index_entry</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">connected_submap</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">direction_inference_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">EPS_map_level</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">found_in_inference_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">grammar_line</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">grammar_verb</span><span class="plain-syntax">)</span>
@@ -361,7 +362,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">regions_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">release_instructions</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">reserved_command_verb</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rubric_holder</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scene</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">slash_gpr</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_data</span><span class="plain-syntax">)</span>

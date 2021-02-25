@@ -22,7 +22,7 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 		return;
 	}
 	#ifdef IF_MODULE
-	if (PL::MapDirections::get_mapping_relationship(relationship_subtree))
+	if (MapRelations::get_mapping_relationship(relationship_subtree))
 		@<Exceptional relationship nodes for map connections@>;
 	pronoun_usage *pro = Node::get_pronoun(relationship_subtree->down);
 	if ((pro) && (pro->pronoun_used == here_pronoun))

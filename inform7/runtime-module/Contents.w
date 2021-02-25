@@ -70,3 +70,6 @@ Chapter 5: Plugin Support
 	Backdrops
 	Regions
 	The Map
+	Showme Command
+	The Score
+	Scenes

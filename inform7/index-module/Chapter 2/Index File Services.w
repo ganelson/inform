@@ -644,7 +644,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 
 	if (Str::eq_wide_string(elt, L"Pl")) {
 		#ifdef IF_MODULE
-		PL::Scenes::Index::index(OUT);
+		IXScenes::index(OUT);
 		#endif
 		return;
 	}
@@ -654,7 +654,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 	if (Str::eq_wide_string(elt, L"RS")) {
 		#ifdef IF_MODULE
-		PL::Scenes::Index::index_rules(OUT);
+		IXScenes::index_rules(OUT);
 		#endif
 		return;
 	}

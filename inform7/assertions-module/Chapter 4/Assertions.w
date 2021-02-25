@@ -1023,8 +1023,8 @@ in this case.
 
 @<Case 28 - RELATIONSHIP on both sides@> =
 	#ifdef IF_MODULE
-	if ((PL::MapDirections::get_mapping_relationship(px)) &&
-		(PL::MapDirections::get_mapping_relationship(py))) {
+	if ((MapRelations::get_mapping_relationship(px)) &&
+		(MapRelations::get_mapping_relationship(py))) {
 		Map::enter_one_way_mode();
 		Assertions::make_coupling(px, py->down);
 		Assertions::make_coupling(px->down, py);

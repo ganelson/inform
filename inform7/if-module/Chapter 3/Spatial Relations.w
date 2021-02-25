@@ -35,7 +35,7 @@ void SpatialRelations::stock(bp_family *self, int n) {
 	if (n == 1) {
 		@<Make built-in spatial relationships@>;
 		@<Make built-in indirect spatial relationships@>;
-		PL::MapDirections::create_relations();
+		MapRelations::create_relations();
 		Regions::create_relations();
 	}
 }

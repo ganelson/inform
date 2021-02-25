@@ -744,7 +744,7 @@ int Rules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	#ifdef IF_MODULE
 	if (rc.scene_context) {
 		WRITE(" during ");
-		wording SW = PL::Scenes::get_name(rc.scene_context);
+		wording SW = Scenes::get_name(rc.scene_context);
 		WRITE("%+W", SW);
 	}
 	#endif

@@ -1,4 +1,4 @@
-[PL::Showme::] Showme Command.
+[RTShowmeCommand::] Showme Command.
 
 A plugin to provide some support for the SHOWME testing command.
 
@@ -7,14 +7,14 @@ This doesn't in fact do anything, except to provide one service when it's
 plugged in.
 
 =
-void PL::Showme::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Showme::production_line);
+void RTShowmeCommand::start(void) {
+	PluginManager::plug(PRODUCTION_LINE_PLUG, RTShowmeCommand::production_line);
 }
 
-int PL::Showme::production_line(int stage, int debugging,
+int RTShowmeCommand::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
 	if (stage == INTER5_CSEQ) {
-		BENCH(PL::Showme::compile_SHOWME_details)
+		BENCH(RTShowmeCommand::compile_SHOWME_details)
 	}
 	return FALSE;
 }
@@ -31,7 +31,7 @@ We will show either/or properties first, on their own line, and then value
 properties.
 
 =
-void PL::Showme::compile_SHOWME_details(void) {
+void RTShowmeCommand::compile_SHOWME_details(void) {
 	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *t_0_s = LocalVariables::add_named_call_as_symbol(I"t_0");
@@ -40,25 +40,25 @@ void PL::Showme::compile_SHOWME_details(void) {
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			PL::Showme::compile_SHOWME_type(FALSE, t_0_s, na_s);
-			PL::Showme::compile_SHOWME_type(TRUE, t_0_s, na_s);
+			RTShowmeCommand::compile_SHOWME_type(FALSE, t_0_s, na_s);
+			RTShowmeCommand::compile_SHOWME_type(TRUE, t_0_s, na_s);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Routines::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
-void PL::Showme::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol *na_s) {
+void RTShowmeCommand::compile_SHOWME_type(int val, inter_symbol *t_0_s, inter_symbol *na_s) {
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
 		if (Kinds::Behaviour::is_object(K))
-			PL::Showme::compile_SHOWME_type_subj(val, KindSubjects::from_kind(K), t_0_s, na_s);
+			RTShowmeCommand::compile_SHOWME_type_subj(val, KindSubjects::from_kind(K), t_0_s, na_s);
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		PL::Showme::compile_SHOWME_type_subj(val, Instances::as_subject(I), t_0_s, na_s);
+		RTShowmeCommand::compile_SHOWME_type_subj(val, Instances::as_subject(I), t_0_s, na_s);
 }
 
-void PL::Showme::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
+void RTShowmeCommand::compile_SHOWME_type_subj(int val, inference_subject *subj, inter_symbol *t_0_s, inter_symbol *na_s) {
 	@<Skip if this object's definition has nothing to offer SHOWME@>;
 
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -79,7 +79,7 @@ void PL::Showme::compile_SHOWME_type_subj(int val, inference_subject *subj, inte
 	property *prn;
 	LOOP_OVER(prn, property)
 		if (Properties::is_value_property(prn) == val)
-			if (PL::Showme::is_property_worth_SHOWME(subj, prn, t_0_s, na_s))
+			if (RTShowmeCommand::is_property_worth_SHOWME(subj, prn, t_0_s, na_s))
 				todo = TRUE;
 	if (todo == FALSE) return;
 
@@ -122,23 +122,23 @@ second of just one from "person".
 	property *prn;
 	LOOP_OVER(prn, property)
 		if (Properties::is_value_property(prn) == val)
-			PL::Showme::compile_property_SHOWME(subj, prn, t_0_s, na_s);
+			RTShowmeCommand::compile_property_SHOWME(subj, prn, t_0_s, na_s);
 
 @ We actually use the same routine for both testing and compiling:
 
 =
-int PL::Showme::is_property_worth_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
-	return PL::Showme::SHOWME_primitive(subj, prn, FALSE, t_0_s, na_s);
+int RTShowmeCommand::is_property_worth_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
+	return RTShowmeCommand::SHOWME_primitive(subj, prn, FALSE, t_0_s, na_s);
 }
 
-void PL::Showme::compile_property_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
-	PL::Showme::SHOWME_primitive(subj, prn, TRUE, t_0_s, na_s);
+void RTShowmeCommand::compile_property_SHOWME(inference_subject *subj, property *prn, inter_symbol *t_0_s, inter_symbol *na_s) {
+	RTShowmeCommand::SHOWME_primitive(subj, prn, TRUE, t_0_s, na_s);
 }
 
 @ So here goes.
 
 =
-int PL::Showme::SHOWME_primitive(inference_subject *subj, property *prn, int comp, inter_symbol *t_0_s, inter_symbol *na_s) {
+int RTShowmeCommand::SHOWME_primitive(inference_subject *subj, property *prn, int comp, inter_symbol *t_0_s, inter_symbol *na_s) {
 	if (IXProperties::is_shown_in_index(prn) == FALSE) return FALSE;
 	if (RTProperties::can_be_compiled(prn) == FALSE) return FALSE;
 

@@ -22,7 +22,7 @@ void IFModule::start(void) {
 	ReleaseInstructions::start();
 	WherePredicates::start();
 	SpatialRelations::start();
-	PL::MapDirections::start();
+	MapRelations::start();
 }
 
 @
@@ -84,12 +84,12 @@ void IFModule::create_plugins(void) {
 	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", ifp);
 	player_plugin = PluginManager::new(&Player::start, I"player", ifp);
 	regions_plugin = PluginManager::new(&Regions::start, I"regions", ifp);
-	scenes_plugin = PluginManager::new(&PL::Scenes::start, I"scenes", ifp);
-	scoring_plugin = PluginManager::new(&PL::Score::start, I"scoring", ifp);
-	showme_plugin = PluginManager::new(&PL::Showme::start, I"showme", ifp);
+	scenes_plugin = PluginManager::new(&Scenes::start, I"scenes", ifp);
+	scoring_plugin = PluginManager::new(&TheScore::start, I"scoring", ifp);
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
 
 	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);
 
 	parsing_plugin = PluginManager::new(&ParsingPlugin::start, I"command", ifp);
+	showme_plugin = PluginManager::new(&RTShowmeCommand::start, I"showme", parsing_plugin);
 }

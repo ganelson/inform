@@ -32,3 +32,10 @@ Chapter 3: Indexing for Plugins
 	Backdrops
 	Regions
 	The Map
+	Scenes
+
+Chapter 4: Visualising Space
+	Spatial Geometry
+	Spatial Map
+	HTML Map
+	EPS Map

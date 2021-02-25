@@ -32,13 +32,7 @@ fiction, which provides for geography, spatial containment and scenes."
 	Regions
 	The Map
 	Map Connection Relations
-	Spatial Geometry
-	Spatial Map
-	HTML Map
-	EPS Map
-	Showme Command
 	Scenes
-	Temporal Map
 	The Score
 
 Chapter 4: Actions

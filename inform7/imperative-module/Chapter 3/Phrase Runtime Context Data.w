@@ -137,7 +137,7 @@ scene *Phrases::Context::get_scene(ph_runtime_context_data *phrcd) {
 	if (phrcd == NULL) return NULL;
 	if (Rvalues::is_rvalue(phrcd->during_scene)) {
 		instance *q = Rvalues::to_instance(phrcd->during_scene);
-		if (q) return PL::Scenes::from_named_constant(q);
+		if (q) return Scenes::from_named_constant(q);
 	}
 	return NULL;
 }
@@ -377,7 +377,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 @<Compile a scene test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
-		PL::Scenes::emit_during_clause(phrcd->during_scene);
+		RTScenes::emit_during_clause(phrcd->during_scene);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 

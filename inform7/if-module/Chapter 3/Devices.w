@@ -7,7 +7,7 @@ to things of the kind "device". This used to be accomplished by the Standard
 Rules in a clumsy sort of way (with a direct I6 code injection), but in the
 age of Inter we want to avoid that sort of tomfoolery.
 
-@ =
+=
 void PL::Devices::start(void) {
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Devices::new_base_kind_notify);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Devices::IF_complete_model);

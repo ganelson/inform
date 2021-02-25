@@ -217,18 +217,24 @@ DECLARE_CLASS(test_scenario)
 
 @ //index// --
 
+@e connected_submap_CLASS
 @e contents_entry_CLASS
 @e documentation_ref_CLASS
+@e EPS_map_level_CLASS
 @e index_page_CLASS
 @e index_element_CLASS
 @e index_lexicon_entry_CLASS
+@e rubric_holder_CLASS
 
 =
+DECLARE_CLASS(connected_submap)
 DECLARE_CLASS(contents_entry)
 DECLARE_CLASS(documentation_ref)
+DECLARE_CLASS(EPS_map_level)
 DECLARE_CLASS(index_element)
 DECLARE_CLASS(index_page)
 DECLARE_CLASS(index_lexicon_entry)
+DECLARE_CLASS(rubric_holder)
 
 @ //if// --
 
@@ -236,9 +242,7 @@ DECLARE_CLASS(index_lexicon_entry)
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
 @e command_index_entry_CLASS
-@e connected_submap_CLASS
 @e direction_inference_data_CLASS
-@e EPS_map_level_CLASS
 @e found_in_inference_data_CLASS
 @e grammar_line_CLASS
 @e grammar_verb_CLASS
@@ -255,7 +259,6 @@ DECLARE_CLASS(index_lexicon_entry)
 @e regions_data_CLASS
 @e release_instructions_CLASS
 @e reserved_command_verb_CLASS
-@e rubric_holder_CLASS
 @e scene_CLASS
 @e slash_gpr_CLASS
 @e spatial_data_CLASS
@@ -272,9 +275,7 @@ DECLARE_CLASS(action_name)
 DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(command_index_entry)
-DECLARE_CLASS(connected_submap)
 DECLARE_CLASS(direction_inference_data)
-DECLARE_CLASS(EPS_map_level)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(grammar_line)
 DECLARE_CLASS(grammar_verb)
@@ -291,7 +292,6 @@ DECLARE_CLASS(part_of_inference_data)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(reserved_command_verb)
-DECLARE_CLASS(rubric_holder)
 DECLARE_CLASS(scene)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(spatial_data)

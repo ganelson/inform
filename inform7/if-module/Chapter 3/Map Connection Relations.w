@@ -1,4 +1,4 @@
-[PL::MapDirections::] Map Connection Relations.
+[MapRelations::] Map Connection Relations.
 
 To define one binary predicate for each map direction, such as
 "mapped north of".
@@ -14,12 +14,12 @@ Metro" tests the "mapped-north" BP.
 =
 bp_family *map_connecting_bp_family = NULL;
 
-void PL::MapDirections::start(void) {
+void MapRelations::start(void) {
 	map_connecting_bp_family = BinaryPredicateFamilies::new();
-	METHOD_ADD(map_connecting_bp_family, TYPECHECK_BPF_MTID, PL::MapDirections::typecheck);
-	METHOD_ADD(map_connecting_bp_family, ASSERT_BPF_MTID, PL::MapDirections::assert);
+	METHOD_ADD(map_connecting_bp_family, TYPECHECK_BPF_MTID, MapRelations::typecheck);
+	METHOD_ADD(map_connecting_bp_family, ASSERT_BPF_MTID, MapRelations::assert);
 	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
-		PL::MapDirections::describe_for_index);
+		MapRelations::describe_for_index);
 }
 
 @h Subsequent creations.
@@ -30,7 +30,7 @@ parse sentences are needed. In fact, however, directions are "noticed"
 at an earlier stage in Inform's run, so another two-step is needed:
 
 =
-binary_predicate *PL::MapDirections::create_sketchy_mapping_direction(wording W) {
+binary_predicate *MapRelations::create_sketchy_mapping_direction(wording W) {
 	binary_predicate *bp;
 	@<Create the mapping BP for the new direction@>;
 	return bp;
@@ -47,25 +47,20 @@ outside" instead of "mapped inside of" and "mapped outside of." This
 is done to avoid ambiguities with the already-existing meanings of inside
 and outside to do with spatial containment.
 
-The use of the word "mapped" may seem itself off. Why define "to be mapped
+The use of the word "mapped" may seem itself odd. Why define "to be mapped
 east of" rather than "to be east of"? After all, that seems to be what is
 used in assertions like:
 
 >> The Bakery is east of Pudding Lane.
 
-In fact, the A-parser reads sentences like that by looking out specially for
-direction names plus "of" -- so this is parsed without using the mapping
+In fact, the assertion parser reads sentences like that by looking out specially
+for direction names plus "of" -- so this is parsed without using the mapping
 predicate for "east". But it cannot read:
 
 >> The Flour Cellar is below the Bakery.
 
 as a direction name plus "of", since "below" is not the name of the direction
 "down", and anyway there is no "of".
-
-We do not allow direction names with unexpected capital letters because we
-want to allow room names to contain direction names on occasion:
-
->> The fire hydrant is in West from 47th Street.
 
 =
 <mapping-relation-construction> ::=
@@ -135,7 +130,7 @@ makes it possible to complete the details of the BP.
 
 =
 int mmp_call_counter = 0;
-void PL::MapDirections::make_mapped_predicate(instance *I) {
+void MapRelations::make_mapped_predicate(instance *I) {
 	wording W = Instances::get_name(I, FALSE);
 	if ((Wordings::empty(W)) || (Wordings::length(W) > MAX_WORDS_IN_DIRECTION))
 		internal_error("bad direction name");
@@ -164,7 +159,7 @@ This won't catch everything, but it will do. Run-time checking will pick up
 remaining anomalies.
 
 =
-int PL::MapDirections::typecheck(bp_family *self, binary_predicate *bp,
+int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	int t;
 	for (t=0; t<2; t++)
@@ -186,10 +181,10 @@ explicitly given in the source text; and doors must always be specified as
 such.
 
 =
-int PL::MapDirections::assert(bp_family *self, binary_predicate *bp,
+int MapRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
-	instance *o_dir = PL::MapDirections::get_mapping_direction(bp);
+	instance *o_dir = MapRelations::get_mapping_direction(bp);
 	inference_subject *infs_from = infs0;
 	inference_subject *infs_to = infs1;
 
@@ -203,7 +198,7 @@ int PL::MapDirections::assert(bp_family *self, binary_predicate *bp,
 @h Indexing.
 
 =
-void PL::MapDirections::describe_for_index(bp_family *self, OUTPUT_STREAM,
+void MapRelations::describe_for_index(bp_family *self, OUTPUT_STREAM,
 	binary_predicate *bp) {
 	WRITE("map");
 }
@@ -212,12 +207,12 @@ void PL::MapDirections::describe_for_index(bp_family *self, OUTPUT_STREAM,
 Speed really does not matter here.
 
 =
-binary_predicate *PL::MapDirections::get_mapping_relation(instance *dir) {
+binary_predicate *MapRelations::get_mapping_relation(instance *dir) {
 	if (dir == NULL) return NULL;
 	return MAP_DATA(dir)->direction_relation;
 }
 
-instance *PL::MapDirections::get_mapping_direction(binary_predicate *bp) {
+instance *MapRelations::get_mapping_direction(binary_predicate *bp) {
 	if (bp == NULL) return NULL;
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
@@ -226,12 +221,12 @@ instance *PL::MapDirections::get_mapping_direction(binary_predicate *bp) {
 	return NULL;
 }
 
-instance *PL::MapDirections::get_mapping_relationship(parse_node *p) {
+instance *MapRelations::get_mapping_relationship(parse_node *p) {
 	binary_predicate *bp = Node::get_relationship(p);
 	if ((bp) && (PluginManager::active(map_plugin))) {
-		instance *dir = PL::MapDirections::get_mapping_direction(
+		instance *dir = MapRelations::get_mapping_direction(
 			BinaryPredicates::get_reversal(bp));
-		if (dir == NULL) dir = PL::MapDirections::get_mapping_direction(bp);
+		if (dir == NULL) dir = MapRelations::get_mapping_direction(bp);
 		return dir;
 	}
 	return NULL;
@@ -241,7 +236,7 @@ instance *PL::MapDirections::get_mapping_relationship(parse_node *p) {
 There is also one general relation built in, though it belongs to the spatial family:
 
 =
-void PL::MapDirections::create_relations(void) {
+void MapRelations::create_relations(void) {
 	BinaryPredicates::make_pair(spatial_bp_family,
 		BPTerms::new(infs_room),
 		BPTerms::new(infs_room),
