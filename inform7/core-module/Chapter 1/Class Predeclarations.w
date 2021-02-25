@@ -182,6 +182,8 @@ DECLARE_CLASS(use_as_event)
 @e backdrop_found_in_notice_CLASS
 @e bp_runtime_implementation_CLASS
 @e definition_CLASS
+@e door_dir_notice_CLASS
+@e door_to_notice_CLASS
 @e dval_written_CLASS
 @e i6_inclusion_matter_CLASS
 @e internal_test_case_CLASS
@@ -199,6 +201,8 @@ DECLARE_CLASS(adjective_iname_holder)
 DECLARE_CLASS(backdrop_found_in_notice)
 DECLARE_CLASS(bp_runtime_implementation)
 DECLARE_CLASS(definition)
+DECLARE_CLASS(door_dir_notice)
+DECLARE_CLASS(door_to_notice)
 DECLARE_CLASS(dval_written)
 DECLARE_CLASS(i6_inclusion_matter)
 DECLARE_CLASS(internal_test_case)
@@ -234,8 +238,6 @@ DECLARE_CLASS(index_lexicon_entry)
 @e command_index_entry_CLASS
 @e connected_submap_CLASS
 @e direction_inference_data_CLASS
-@e door_dir_notice_CLASS
-@e door_to_notice_CLASS
 @e EPS_map_level_CLASS
 @e found_in_inference_data_CLASS
 @e grammar_line_CLASS
@@ -272,8 +274,6 @@ DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(command_index_entry)
 DECLARE_CLASS(connected_submap)
 DECLARE_CLASS(direction_inference_data)
-DECLARE_CLASS(door_dir_notice)
-DECLARE_CLASS(door_to_notice)
 DECLARE_CLASS(EPS_map_level)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(grammar_line)

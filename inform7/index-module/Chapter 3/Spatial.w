@@ -43,12 +43,12 @@ void IXSpatial::index_object_further(OUTPUT_STREAM, instance *I, int depth, int 
 	if (SPATIAL_DATA(I)->object_tree_child)
 		Data::Objects::index(OUT, SPATIAL_DATA(I)->object_tree_child, NULL, depth+1, details);
 	if ((Spatial::object_is_a_room(I)) &&
-		(PL::Map::object_is_a_door(I) == FALSE)) {
+		(Map::instance_is_a_door(I) == FALSE)) {
 		instance *I2;
 		LOOP_OVER_INSTANCES(I2, K_object) {
-			if ((PL::Map::object_is_a_door(I2)) && (Spatial::progenitor(I2) != I)) {
+			if ((Map::instance_is_a_door(I2)) && (Spatial::progenitor(I2) != I)) {
 				instance *A = NULL, *B = NULL;
-				PL::Map::get_door_data(I2, &A, &B);
+				Map::get_door_data(I2, &A, &B);
 				if (A == I) Data::Objects::index(OUT, I2, NULL, depth+1, details);
 				if (B == I) Data::Objects::index(OUT, I2, NULL, depth+1, details);
 			}

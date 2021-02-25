@@ -69,3 +69,4 @@ Chapter 5: Plugin Support
 	The Player
 	Backdrops
 	Regions
+	The Map

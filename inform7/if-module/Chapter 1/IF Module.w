@@ -80,7 +80,7 @@ void IFModule::create_plugins(void) {
 	bibliographic_plugin = PluginManager::new(&BibliographicData::start, I"bibliographic data", ifp);
 	chronology_plugin = PluginManager::new(&Chronology::start_plugin, I"chronology", ifp);
 	devices_plugin = PluginManager::new(&PL::Devices::start, I"devices", ifp);
-	map_plugin = PluginManager::new(&PL::Map::start, I"mapping", ifp);
+	map_plugin = PluginManager::new(&Map::start, I"mapping", ifp);
 	persons_plugin = PluginManager::new(&PL::Persons::start, I"persons", ifp);
 	player_plugin = PluginManager::new(&Player::start, I"player", ifp);
 	regions_plugin = PluginManager::new(&Regions::start, I"regions", ifp);

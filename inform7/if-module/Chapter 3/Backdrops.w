@@ -170,7 +170,7 @@ int Backdrops::complete_model(int stage) {
 				@<The object is found in many rooms or in whole regions, so make it a routine@>;
 			if ((val_of_found_in == NULL) && (Instances::of_kind(I, K_backdrop)))
 				@<The object is found nowhere, so give it a stub found-in property and mark it absent@>;
-			if (val_of_found_in) PL::Map::set_found_in(I, val_of_found_in);
+			if (val_of_found_in) Map::set_found_in(I, val_of_found_in);
 		}
 	}
 	return FALSE;

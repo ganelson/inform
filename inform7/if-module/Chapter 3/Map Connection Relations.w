@@ -4,6 +4,12 @@ To define one binary predicate for each map direction, such as
 "mapped north of".
 
 @h Family.
+This section creates a family of implicit relations (implemented as binary
+predicates) corresponding to the different directions.
+
+For every direction created, a predicate is created for the possibility of
+a map connection. For instance, "if Versailles is mapped north of the
+Metro" tests the "mapped-north" BP.
 
 =
 bp_family *map_connecting_bp_family = NULL;
@@ -12,42 +18,8 @@ void PL::MapDirections::start(void) {
 	map_connecting_bp_family = BinaryPredicateFamilies::new();
 	METHOD_ADD(map_connecting_bp_family, TYPECHECK_BPF_MTID, PL::MapDirections::typecheck);
 	METHOD_ADD(map_connecting_bp_family, ASSERT_BPF_MTID, PL::MapDirections::assert);
-	METHOD_ADD(map_connecting_bp_family, SCHEMA_BPF_MTID, PL::MapDirections::schema);
-	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID, PL::MapDirections::describe_for_problems);
-	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID, PL::MapDirections::describe_for_index);
-}
-
-@ This section creates a family of implicit relations (implemented as binary
-predicates) corresponding to the different directions.
-
-For every direction created, a predicate is created for the possibility of
-a map connection. For instance, "if Versailles is mapped north of the
-Metro" tests the "mapped-north" BP. There is also one general relation
-built in:
-
-=
-binary_predicate *R_adjacency = NULL;
-
-@h The adjacency relation.
-We may as well do this here: creating the relation "X is adjacent to Y".
-
-=
-void PL::MapDirections::create_relations(void) {
-	R_adjacency =
-		BinaryPredicates::make_pair(spatial_bp_family,
-			BPTerms::new(infs_room),
-			BPTerms::new(infs_room),
-			I"adjacent-to", I"adjacent-from",
-			NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
-			PreformUtilities::wording(<relation-names>, ADJACENCY_RELATION_NAME));
-
-}
-
-@ There is nothing special about asserting this, so we don't intervene:
-
-=
-int PL::MapDirections::assert_relations(binary_predicate *relation, instance *I0, instance *I1) {
-	return FALSE;
+	METHOD_ADD(map_connecting_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
+		PL::MapDirections::describe_for_index);
 }
 
 @h Subsequent creations.
@@ -118,14 +90,6 @@ this to other languages.)
 is intentionally done very early on.
 
 @d MAX_DIRECTIONS 100 /* the Standard Rules define only 12, so this is plenty */
-
-=
-parse_node *directions_noticed[MAX_DIRECTIONS];
-binary_predicate *direction_relations_noticed[MAX_DIRECTIONS];
-int no_directions_noticed = 0;
-
-@
-
 @d MAX_MAPPING_RELATION_NAME_LENGTH MAX_WORDS_IN_DIRECTION*MAX_WORD_LENGTH+10
 
 @<Create the mapping BP for the new direction@> =
@@ -169,22 +133,17 @@ int no_directions_noticed = 0;
 instance |I| for the direction, and given it the kind "direction". That
 makes it possible to complete the details of the BP.
 
-|ident| can be any string of text which evaluates in I6 to the
-object number of the direction object. It seems redundant here because
-surely if we know |I|, we know its runtime representation; but that's not
-true -- we need to call this routine at a time when the final identifier
-names for I6 objects have not yet been settled.
-
 =
 int mmp_call_counter = 0;
-void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
+void PL::MapDirections::make_mapped_predicate(instance *I) {
 	wording W = Instances::get_name(I, FALSE);
 	if ((Wordings::empty(W)) || (Wordings::length(W) > MAX_WORDS_IN_DIRECTION))
 		internal_error("bad direction name");
 	binary_predicate *bp = direction_relations_noticed[mmp_call_counter++];
 	if (bp == NULL) {
 		LOG("Improper text: %W\n", W);
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ImproperlyMadeDirection),
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_ImproperlyMadeDirection),
 			"directions must be created by only the simplest possible sentences",
 			"in the form 'North-north-west is a direction' only. Using adjectives, "
 			"'called', 'which', and so on is not allowed. (In practice this is not "
@@ -196,33 +155,8 @@ void PL::MapDirections::make_mapped_predicate(instance *I, inter_name *ident) {
 	bp->term_details[0] = BPTerms::new(NULL);
 	bp->term_details[1] = BPTerms::new(NULL);
 	BinaryPredicates::set_index_details(bp, "room/door", "room/door");
-	bp->task_functions[TEST_ATOM_TASK] = Calculus::Schemas::new("(MapConnection(*2,%n) == *1)", ident);
-	bp->task_functions[NOW_ATOM_TRUE_TASK] = Calculus::Schemas::new("AssertMapConnection(*2,%n,*1)", ident);
-	bp->task_functions[NOW_ATOM_FALSE_TASK] = Calculus::Schemas::new("AssertMapUnconnection(*2,%n,*1)", ident);
+	RTMap::set_map_schemas(bp, I);
 	MAP_DATA(I)->direction_relation = bp;
-}
-
-@ 
-
-=
-void PL::MapDirections::look_for_direction_creation(parse_node *pn) {
-	if (Node::get_type(pn) != SENTENCE_NT) return;
-	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL)) return;
-	if (Node::get_type(pn->down) != VERB_NT) return;
-	if (Node::get_type(pn->down->next) != UNPARSED_NOUN_NT) return;
-	if (Node::get_type(pn->down->next->next) != UNPARSED_NOUN_NT) return;
-	current_sentence = pn;
-	pn = pn->down->next;
-	if (!((<notable-map-kinds>(Node::get_text(pn->next)))
-			&& (<<r>> == 0))) return;
-	if (no_directions_noticed >= MAX_DIRECTIONS) {
-		StandardProblems::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
-			"different directions", MAX_DIRECTIONS);
-		return;
-	}
-	direction_relations_noticed[no_directions_noticed] =
-		PL::MapDirections::create_sketchy_mapping_direction(Node::get_text(pn));
-	directions_noticed[no_directions_noticed++] = pn;
 }
 
 @h Typechecking.
@@ -237,7 +171,8 @@ int PL::MapDirections::typecheck(bp_family *self, binary_predicate *bp,
 		if ((Kinds::compatible(kinds_of_terms[t], K_room) == NEVER_MATCH) &&
 			(Kinds::compatible(kinds_of_terms[t], K_door) == NEVER_MATCH)) {
 		LOG("Term %d is %u but should be a room or door\n", t, kinds_of_terms[t]);
-		Propositions::Checker::issue_bp_typecheck_error(bp, kinds_of_terms[0], kinds_of_terms[1], tck);
+		Propositions::Checker::issue_bp_typecheck_error(bp, kinds_of_terms[0],
+			kinds_of_terms[1], tck);
 		return NEVER_MATCH;
 	}
 	return ALWAYS_MATCH;
@@ -261,30 +196,20 @@ int PL::MapDirections::assert(bp_family *self, binary_predicate *bp,
 	SpatialInferences::infer_is_room(infs_from, prevailing_mood);
 	if ((prevailing_mood >= 0) && (infs_to))
 		SpatialInferences::infer_is_room(infs_to, LIKELY_CE);
-	PL::Map::infer_direction(infs_from, infs_to, o_dir);
+	Map::infer_direction(infs_from, infs_to, o_dir);
 	return TRUE;
 }
 
-@h Compilation.
-We need do nothing special: these relations can be compiled from their schemas.
+@h Indexing.
 
 =
-int PL::MapDirections::schema(bp_family *self, int task, binary_predicate *bp, annotated_i6_schema *asch) {
-	return FALSE;
-}
-
-@h Problem message text.
-
-=
-int PL::MapDirections::describe_for_problems(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
-	return FALSE;
-}
-void PL::MapDirections::describe_for_index(bp_family *self, OUTPUT_STREAM, binary_predicate *bp) {
+void PL::MapDirections::describe_for_index(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
 	WRITE("map");
 }
 
 @h The correspondence with directions.
-(Speed really does not matter here.)
+Speed really does not matter here.
 
 =
 binary_predicate *PL::MapDirections::get_mapping_relation(instance *dir) {
@@ -310,4 +235,17 @@ instance *PL::MapDirections::get_mapping_relationship(parse_node *p) {
 		return dir;
 	}
 	return NULL;
+}
+
+@h The adjacency relation.
+There is also one general relation built in, though it belongs to the spatial family:
+
+=
+void PL::MapDirections::create_relations(void) {
+	BinaryPredicates::make_pair(spatial_bp_family,
+		BPTerms::new(infs_room),
+		BPTerms::new(infs_room),
+		I"adjacent-to", I"adjacent-from",
+		NULL, Calculus::Schemas::new("TestAdjacency(*1,*2)"),
+		PreformUtilities::wording(<relation-names>, ADJACENCY_RELATION_NAME));
 }

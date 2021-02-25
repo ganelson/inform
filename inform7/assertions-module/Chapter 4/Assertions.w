@@ -379,7 +379,7 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 @<Case 3 - Miscellaneous vs WITH@> =
 	#ifdef IF_MODULE
 	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
-		(PL::Map::is_a_direction(Node::get_subject(px))) &&
+		(Map::subject_is_a_direction(Node::get_subject(px))) &&
 		(Node::get_type(py->down) == PROPER_NOUN_NT)) {
 		int np = problem_count;
 		Assertions::make_coupling(px, py->down); /* A is a B */
@@ -1025,10 +1025,10 @@ in this case.
 	#ifdef IF_MODULE
 	if ((PL::MapDirections::get_mapping_relationship(px)) &&
 		(PL::MapDirections::get_mapping_relationship(py))) {
-		PL::Map::enter_one_way_mode();
+		Map::enter_one_way_mode();
 		Assertions::make_coupling(px, py->down);
 		Assertions::make_coupling(px->down, py);
-		PL::Map::exit_one_way_mode();
+		Map::exit_one_way_mode();
 		return;
 	}
 	#endif
@@ -1559,8 +1559,8 @@ There is also one case in which an object can be set equal to another object:
 	}
 
 	#ifdef IF_MODULE
-	if ((PL::Map::is_a_direction(Node::get_subject(px))) ||
-		(PL::Map::is_a_direction(Node::get_subject(py))))
+	if ((Map::subject_is_a_direction(Node::get_subject(px))) ||
+		(Map::subject_is_a_direction(Node::get_subject(py))))
 		@<This is a map connection referred to metonymically@>
 	else
 	#endif
@@ -1592,7 +1592,7 @@ There is also one case in which an object can be set equal to another object:
 		return;
 	}
 	inference_subject *target = Node::get_subject(py), *way = Node::get_subject(px);
-	if (PL::Map::is_a_direction(target)) {
+	if (Map::subject_is_a_direction(target)) {
 		target = Node::get_subject(px); way = Node::get_subject(py);
 	}
 	if (global_pass_state.pass == 2) {
@@ -1603,7 +1603,7 @@ There is also one case in which an object can be set equal to another object:
 				"like saying '20 is north'. This is an odd thing "
 				"to say, and makes me think that I've misunderstood you.");
 		} else {
-			PL::Map::connect(Anaphora::get_current_subject(), target, way);
+			Map::connect(Anaphora::get_current_subject(), target, way);
 		}
 	}
 

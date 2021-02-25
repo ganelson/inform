@@ -105,7 +105,7 @@ void Anaphora::change_discussion_topic(inference_subject *infsx,
 	if (Annotations::node_has(current_sentence, implicit_in_creation_of_ANNOT))
 		return;
 	#ifdef IF_MODULE
-	if ((PL::Map::is_a_direction(infsx)) &&
+	if ((Map::subject_is_a_direction(infsx)) &&
 			((InstanceSubjects::to_object_instance(infsx) == NULL) ||
 				(InstanceSubjects::to_object_instance(infsy_full)))) infsx = NULL;
 	#endif

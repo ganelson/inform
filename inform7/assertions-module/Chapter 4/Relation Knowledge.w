@@ -76,9 +76,9 @@ void Assertions::Relational::assert_subtree_in_relationship(parse_node *value, p
 	if ((iy == NULL) || (id == NULL))
 		internal_error("malformed directional subtree");
 	if (Rvalues::is_nothing_object_constant(value))
-		PL::Map::connect(iy, NULL, id);
+		Map::connect(iy, NULL, id);
 	else if (Rvalues::is_object(Node::get_evaluation(value)))
-		PL::Map::connect(iy, Node::get_subject(value), id);
+		Map::connect(iy, Node::get_subject(value), id);
 	else {
 		LOG("Val is $P\n", value);
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MapToNonobject),

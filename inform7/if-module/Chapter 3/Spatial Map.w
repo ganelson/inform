@@ -221,8 +221,8 @@ for any subsequent story directions to be unshown:
 int story_dir_to_page_dir[MAX_DIRECTIONS];
 
 void PL::SpatialMap::initialise_page_directions(void) {
-	int i;
-	for (i=0; i<registered_directions; i++)
+	int N = Map::number_of_directions();
+	for (int i=0; i<N; i++)
 		story_dir_to_page_dir[i] = i;
 }
 
@@ -358,7 +358,7 @@ we use these hard-wired macros instead.
 	for (i=0; i<12; i++)
 
 @d LOOP_OVER_STORY_DIRECTIONS(i)
-	for (i=0; i<registered_directions; i++)
+	for (i=0; i<Map::number_of_directions(); i++)
 
 @d LOOP_OVER_LATTICE_DIRECTIONS(i)
 	for (i=0; i<10; i++)
@@ -465,10 +465,10 @@ instance *PL::SpatialMap::room_exit(instance *origin, int dir_num, instance **vi
 	if (immediate_destination) {
 		if (Spatial::object_is_a_room(immediate_destination))
 			ultimate_destination = immediate_destination;
-		if (PL::Map::object_is_a_door(immediate_destination)) {
+		if (Map::instance_is_a_door(immediate_destination)) {
 			if (via) *via = immediate_destination;
 			instance *A = NULL, *B = NULL;
-			PL::Map::get_door_data(immediate_destination, &A, &B);
+			Map::get_door_data(immediate_destination, &A, &B);
 			if (A == origin) ultimate_destination = B;
 			if (B == origin) ultimate_destination = A;
 		}
@@ -2736,7 +2736,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 	if ((Instances::of_kind(R, K_direction)) &&
 		(MAP_DATA(R)->direction_index >= 12)) {
 		wording W = Instances::get_name(R, FALSE);
-		wording OW = Instances::get_name(PL::Map::get_value_of_opposite_property(R), FALSE);
+		wording OW = Instances::get_name(Map::get_value_of_opposite_property(R), FALSE);
 		LOG("%+W is a direction. The opposite of %+W is %+W.\n", W, W, OW);
 	}
 	if (Instances::of_kind(R, K_region)) {
@@ -2799,7 +2799,7 @@ void PL::SpatialMap::log_precis_of_map(void) {
 						if (MAP_DATA(dir)->direction_index == i) {
 							wording DW = Instances::get_name(dir, FALSE);
 							LOG("%+W is %W of %+W.\n", OW, DW, RW);
-							instance *opp = PL::Map::get_value_of_opposite_property(dir);
+							instance *opp = Map::get_value_of_opposite_property(dir);
 							int od = MAP_DATA(opp)->direction_index;
 							if ((S) && (PL::SpatialMap::room_exit(S, od, NULL) == NULL)) {
 								wording OPW = Instances::get_name(dir, FALSE);
@@ -2830,7 +2830,7 @@ void PL::SpatialMap::index_room_connections(OUTPUT_STREAM, instance *R) {
 	instance *dir;
 	LOOP_OVER_INSTANCES(dir, K_direction) {
 		int i = MAP_DATA(dir)->direction_index;
-		instance *opp = PL::Map::get_value_of_opposite_property(dir);
+		instance *opp = Map::get_value_of_opposite_property(dir);
 		int od = opp?(MAP_DATA(opp)->direction_index):(-1);
 		instance *D = NULL;
 		instance *S = PL::SpatialMap::room_exit(R, i, &D);

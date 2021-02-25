@@ -206,7 +206,6 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 
 @<Offer our dependent plugins a chance to assert the relation instead@> =
 	if (Backdrops::assert_relations(bp, I0, I1)) return TRUE;
-	if (PL::MapDirections::assert_relations(bp, I0, I1)) return TRUE;
 	if (Regions::assert_relations(bp, I0, I1)) return TRUE;
 
 @ This is the point at which non-assertable relations are thrown out.

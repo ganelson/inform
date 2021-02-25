@@ -784,7 +784,7 @@ when it finishes this will be set to the most recently mentioned.
 @<Determine whether the object in question is a component part@> =
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), part_of_inf) {
-		if ((Spatial::object_is_a_room(I)) || (PL::Map::object_is_a_door(I))) {
+		if ((Spatial::object_is_a_room(I)) || (Map::instance_is_a_door(I))) {
 			StandardProblems::object_problem(_p_(PM_RoomOrDoorAsPart),
 				I,
 				"was set up as being part of something else, which doors and rooms "

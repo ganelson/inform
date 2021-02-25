@@ -66,7 +66,7 @@ void Data::Objects::page_World(OUTPUT_STREAM) {
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
 		if ((IXSpatial::no_detail_index(I))
-			|| (PL::Map::object_is_a_direction(I)))
+			|| (Map::instance_is_a_direction(I)))
 			IXInstances::increment_indexing_count(I);
 
 @<Give room details within each region in turn in the World index@> =

@@ -31,3 +31,4 @@ Chapter 3: Indexing for Plugins
 	The Player
 	Backdrops
 	Regions
+	The Map

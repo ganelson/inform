@@ -139,6 +139,17 @@ int PluginCalls::refine_implicit_noun(parse_node *p) {
 	PLUGINS_CALL(REFINE_IMPLICIT_NOUN_PLUG, p);
 }
 
+@ Called from //assertions: Classifying Sentences// to give plugins the chance
+of an early look at a newly-read assertion. For example, the map plugin uses
+this to spot that a sentence will create a new direction.
+
+@e NEW_ASSERTION_NOTIFY_PLUG
+
+=
+int PluginCalls::new_assertion_notify(parse_node *p) {
+	PLUGINS_CALL(NEW_ASSERTION_NOTIFY_PLUG, p);
+}
+
 @ Called from //assertions: The Equality Relation Revisited// when we have
 to decide if it's valid to ask or declare that two things are the same.
 Returning |TRUE| says that it is always valid; returning |FALSE| leaves

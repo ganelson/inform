@@ -52,14 +52,13 @@ void Classifying::sentence(parse_node *p) {
 			SyntaxTree::graft(Task::syntax_tree(), VP_PN, p);
 			if (SyntaxTree::is_trace_set(Task::syntax_tree())) LOG("$T\n", p);
 			@<Check that this is allowed, if it occurs in the Options file@>;
-			#ifdef IF_MODULE
-			PL::MapDirections::look_for_direction_creation(p);
-			#endif
 			PropertySentences::look_for_property_creation(p);
 			@<Issue problem message if either subject or object contains mismatched brackets@>;
 			@<Issue problem message if subject starts with double-quoted literal text@>;
-			if ((VP_PN->next) && (VP_PN->next->next) && (Diagrams::is_possessive_RELATIONSHIP(VP_PN->next->next)))
+			if ((VP_PN->next) && (VP_PN->next->next) &&
+				(Diagrams::is_possessive_RELATIONSHIP(VP_PN->next->next)))
 				@<Diagram property callings@>;
+			PluginCalls::new_assertion_notify(p);
 		} else {
 			LOG("$T\n", p);
 			<no-primary-verb-diagnosis>(W);

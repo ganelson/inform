@@ -408,10 +408,7 @@ just too short to care overmuch about this.
 
 @<Compile bibliographic text as a truncated filename@> =
 	int i, pos = STREAM_EXTENT(OUT), whitespace_count=0, black_chars_written = 0;
-	int N = 100;
-	#ifdef IF_MODULE
-	N = BIBLIOGRAPHIC_TEXT_TRUNCATION;
-	#endif
+	int N = BIBLIOGRAPHIC_TEXT_TRUNCATION;
 	if (p[0] == '"') p++;
 	for (i=0; p[i]; i++) {
 		if (STREAM_EXTENT(OUT) - pos >= N) break;

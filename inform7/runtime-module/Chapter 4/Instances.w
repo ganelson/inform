@@ -55,9 +55,7 @@ int RTInstances::emit_all(inference_subject_family *family, int ignored) {
 	LOOP_OVER(I, instance)
 		if (Kinds::Behaviour::is_object(Instances::to_kind(I)) == FALSE)
 			RTInstances::emit_one(family, Instances::as_subject(I));
-	#ifdef IF_MODULE
 	RTNaming::compile_small_names();
-	#endif
 	return TRUE;
 }
 

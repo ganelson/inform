@@ -1,19 +1,334 @@
-[PL::Map::] The Map.
+[Map::] The Map.
 
 A plugin to provide a geographical model, linking rooms and doors
 together in oppositely-paired directions.
 
-@ The map is a complicated data structure, both because it amounts to a
+@h Introduction.
+The map is a complicated data structure, both because it amounts to a
 ternary relation (though being implemented by many binary ones) and because
 of an ambiguity: a map connection from a room R can lead to another room S,
 to a door, or to nothing. Doors come in two sorts, one and two-sided, and
 checking the physical realism of all this means we need to produce many
 quite specific problem messages.
 
-We will use quite a lot of temporary work-space to put all of this
-together, but the details can be ignored. If we expected very large numbers
-of objects then it would be worth economising here, but profiling suggests
-that it really isn't.
+=
+void Map::start(void) {
+	Map::create_inference();
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Map::make_special_meanings);
+	PluginManager::plug(NEW_ASSERTION_NOTIFY_PLUG, Map::look_for_direction_creation);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Map::new_base_kind_notify);
+	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Map::new_subject_notify);
+	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Map::set_kind_notify);
+	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Map::set_subkind_notify);
+	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Map::act_on_special_NPs);
+	PluginManager::plug(CHECK_GOING_PLUG, Map::check_going);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, Map::complete_model);
+	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Map::new_property_notify);
+	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
+	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Map::intervene_in_assertion);
+	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, IXMap::add_to_World_index);
+	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, IXMap::annotate_in_World_index);
+	PluginManager::plug(PRODUCTION_LINE_PLUG, Map::production_line);
+}
+
+int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
+	if (stage == INTER1_CSEQ) {
+		BENCH(RTMap::compile_model_tables);
+		BENCH(RTMap::write_door_dir_routines);
+		BENCH(RTMap::write_door_to_routines);
+	}
+	return FALSE;
+}
+
+@ This special sentence is used as a hint in making map documents; it has no
+effect on the world model itself, and so is dealt with elsewhere, in //EPS Map//.
+
+=
+int Map::make_special_meanings(void) {
+	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF, I"index-map-with", 4);
+	return FALSE;
+}
+
+@ Though it isn't implemented as a special meaning, we do look by hand early
+in Inform's run for sentences in the form "X is a direction", so that they can
+be "noticed". We need to do that in order to make sense of subsequent sentences
+using directions to imply relations, as in "East of Eden is the Land of Nod."
+
+=
+parse_node *directions_noticed[MAX_DIRECTIONS];
+binary_predicate *direction_relations_noticed[MAX_DIRECTIONS];
+int no_directions_noticed = 0;
+
+int Map::look_for_direction_creation(parse_node *pn) {
+	if (Node::get_type(pn) != SENTENCE_NT) return FALSE;
+	if ((pn->down == NULL) || (pn->down->next == NULL) || (pn->down->next->next == NULL))
+		return FALSE;
+	if (Node::get_type(pn->down) != VERB_NT) return FALSE;
+	if (Node::get_type(pn->down->next) != UNPARSED_NOUN_NT) return FALSE;
+	if (Node::get_type(pn->down->next->next) != UNPARSED_NOUN_NT) return FALSE;
+	current_sentence = pn;
+	pn = pn->down->next;
+	if (!((<notable-map-kinds>(Node::get_text(pn->next))) && (<<r>> == 0))) return FALSE;
+	if (no_directions_noticed >= MAX_DIRECTIONS) {
+		StandardProblems::limit_problem(Task::syntax_tree(), _p_(PM_TooManyDirections),
+			"different directions", MAX_DIRECTIONS);
+		return FALSE;
+	}
+	direction_relations_noticed[no_directions_noticed] =
+		PL::MapDirections::create_sketchy_mapping_direction(Node::get_text(pn));
+	directions_noticed[no_directions_noticed++] = pn;
+	return FALSE;
+}
+
+@h The direction inference.
+While we could probably represent map knowledge using relation inferences
+in connection with the "mapped D of" relations, it's altogether easier and
+makes for more legible code if we use a special inference family of our own:
+
+= (early code)
+inference_family *direction_inf = NULL; /* 100; where do map connections from O lead? */
+
+@ =
+void Map::create_inference(void) {
+	direction_inf = Inferences::new_family(I"direction_inf");
+	METHOD_ADD(direction_inf, LOG_DETAILS_INF_MTID, Map::log_direction_inf);
+	METHOD_ADD(direction_inf, COMPARE_INF_MTID, Map::cmp_direction_inf);
+}
+
+typedef struct direction_inference_data {
+	struct inference_subject *to;
+	struct inference_subject *dir;
+	CLASS_DEFINITION
+} direction_inference_data;
+
+inference *Map::new_direction_inference(inference_subject *infs_from,
+	inference_subject *infs_to, instance *o_dir) {
+	PROTECTED_MODEL_PROCEDURE;
+	direction_inference_data *data = CREATE(direction_inference_data);
+	data->to = infs_to;
+	data->dir = (o_dir)?(Instances::as_subject(o_dir)):NULL;
+	return Inferences::create_inference(direction_inf,
+		STORE_POINTER_direction_inference_data(data), prevailing_mood);
+}
+
+void Map::infer_direction(inference_subject *infs_from, inference_subject *infs_to,
+	instance *o_dir) { 
+	inference *i = Map::new_direction_inference(infs_from, infs_to, o_dir);
+	Inferences::join_inference(i, infs_from);
+}
+
+void Map::log_direction_inf(inference_family *f, inference *inf) {
+	direction_inference_data *data = RETRIEVE_POINTER_direction_inference_data(inf->data);
+	LOG("-to:$j -dir:$j", data->to, data->dir);
+}
+
+@ Inferences about different directions from a location are different topics;
+but different destinations in the same direction are different in content.
+
+=
+int Map::cmp_direction_inf(inference_family *f, inference *i1, inference *i2) {
+	direction_inference_data *data1 = RETRIEVE_POINTER_direction_inference_data(i1->data);
+	direction_inference_data *data2 = RETRIEVE_POINTER_direction_inference_data(i2->data);
+
+	int c = Inferences::measure_infs(data1->dir) - Inferences::measure_infs(data2->dir);
+	if (c > 0) return CI_DIFFER_IN_TOPIC; if (c < 0) return -CI_DIFFER_IN_TOPIC;
+	c = Inferences::measure_infs(data1->to) - Inferences::measure_infs(data2->to);
+	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
+
+	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
+	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
+	return CI_IDENTICAL;
+}
+
+void Map::get_map_references(inference *i,
+	inference_subject **infs1, inference_subject **infs2) {
+	if ((i == NULL) || (i->family != direction_inf))
+		internal_error("not a direction inf");
+	direction_inference_data *data = RETRIEVE_POINTER_direction_inference_data(i->data);
+	if (infs1) *infs1 = data->to; if (infs2) *infs2 = data->dir;
+}
+
+@h Special kinds.
+It's obvious why the kinds direction and door are special.
+
+= (early code)
+kind *K_direction = NULL;
+kind *K_door = NULL;
+
+@ These are recognised by the English name when defined by the Standard
+Rules. (So there is no need to translate this to other languages.)
+
+=
+<notable-map-kinds> ::=
+	direction |
+	door
+
+@ =
+int Map::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
+	if (<notable-map-kinds>(W)) {
+		switch (<<r>>) {
+			case 0: K_direction = new_base; return TRUE;
+			case 1: K_door = new_base; return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+@ Direction needs to be an abstract object, not a thing or a room, so:
+
+=
+int Map::set_subkind_notify(kind *sub, kind *super) {
+	if ((sub == K_direction) && (super != K_object)) {
+		if (problem_count == 0)
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_DirectionAdrift),
+				"'direction' is not allowed to be a kind of anything (other than "
+				"'object')",
+				"because it's too fundamental to the way Inform maps out the "
+				"geography of the physical world.");
+		return TRUE;
+	}
+	if (super == K_direction) {
+		if (problem_count == 0)
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_DirectionSubkinded),
+				"'direction' is not allowed to have more specific kinds",
+				"because it's too fundamental to the way Inform maps out the "
+				"geography of the physical world.");
+		return TRUE;
+	}
+	if ((K_backdrop) && (sub == K_door) &&
+		(Kinds::Behaviour::is_object_of_kind(super, K_backdrop))) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_DoorAdrift),
+				"'door' is not allowed to be a kind of 'backdrop'",
+				"because it's too fundamental to the way Inform maps out the "
+				"geography of the physical world.");
+		return TRUE;
+	}
+	if ((K_backdrop) && (sub == K_backdrop) &&
+		(Kinds::Behaviour::is_object_of_kind(super, K_door))) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_BackdropAdrift),
+				"'backdrop' is not allowed to be a kind of 'door'",
+				"because it's too fundamental to the way Inform maps out the "
+				"geography of the physical world.");
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@h Spotting directions and doors.
+
+=
+int Map::subject_is_a_direction(inference_subject *infs) {
+	if (K_direction == NULL) return FALSE; /* in particular, if plugin inactive */
+	return InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_direction));
+}
+
+int Map::instance_is_a_direction(instance *I) {
+	if ((PluginManager::active(map_plugin)) && (K_direction) && (I) &&
+		(Instances::of_kind(I, K_direction)))
+		return TRUE;
+	return FALSE;
+}
+
+@ =
+int Map::subject_is_a_door(inference_subject *infs) {
+	return Map::instance_is_a_door(
+		InstanceSubjects::to_object_instance(infs));
+}
+
+int Map::instance_is_a_door(instance *I) {
+	if ((PluginManager::active(map_plugin)) && (K_door) && (I) &&
+		(Instances::of_kind(I, K_door)))
+		return TRUE;
+	return FALSE;
+}
+
+@h Directions and their numbers.
+Directions play a special role because sentences like "east of the treehouse
+is the garden" are parsed differently from sentences like "the nearby place
+property of the treehouse is the garden".
+
+For reasons to do with creating direction mapping relations, the lengths of
+direction names are capped, though very, very few Inform users have ever
+realised this:
+
+@d MAX_WORDS_IN_DIRECTION (MAX_WORDS_IN_ASSEMBLAGE - 4)
+
+@ When a new direction comes into existence (i.e., not when the underlying
+instance |I| is created, but when its kind is realised to be "direction"),
+we will assign it a number:
+
+=
+int registered_directions = 0; /* next direction number to be free */
+
+int Map::number_of_directions(void) {
+	return registered_directions;
+}
+
+@ "Up" and "down" are not really special among possible direction instances, but
+they have linguistic features not shared by lateral directions. "Above the
+garden is the treehouse", for instance, does not directly refer to either
+direction, but implies both.
+
+=
+instance *I_up = NULL;
+instance *I_down = NULL;
+
+@ These are recognised by their English names when defined by the Standard Rules.
+(So there is no need to translate this to other languages.)
+
+=
+<notable-map-directions> ::=
+	up |
+	down
+
+@ =
+int Map::set_kind_notify(instance *I, kind *k) {
+	kind *kw = Instances::to_kind(I);
+	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_direction))) &&
+		(Kinds::Behaviour::is_object_of_kind(k, K_direction))) {
+		wording IW = Instances::get_name(I, FALSE);
+		@<Vet the direction name for acceptability@>;
+		if (<notable-map-directions>(IW)) {
+			switch (<<r>>) {
+				case 0: I_up = I; break;
+				case 1: I_down = I; break;
+			}
+		}
+		Naming::object_takes_definite_article(Instances::as_subject(I));
+		@<Assign the object a direction number and a mapped-D-of relation@>;
+	}
+	return FALSE;
+}
+
+@<Vet the direction name for acceptability@> =
+	if (Wordings::empty(IW)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessDirection),
+			"nameless directions are not allowed",
+			"so writing something like 'There is a direction.' is forbidden.");
+		return TRUE;
+	}
+	if (Wordings::length(IW) > MAX_WORDS_IN_DIRECTION) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionTooLong),
+			"although direction names can be really quite long in today's Inform",
+			"they can't be as long as that.");
+		return TRUE;
+	}
+
+@<Assign the object a direction number and a mapped-D-of relation@> =
+	registered_directions++;
+	inter_name *dname = RTMap::new_direction_iname();
+	MAP_DATA(I)->direction_iname = dname;
+	PL::MapDirections::make_mapped_predicate(I);
+
+@h Map data on instances.
+We will use quite a lot of temporary work-space to put all of this together,
+but the details can be ignored. If we expected very large numbers of instances
+then it would be worth economising here, but profiling suggests that it really
+isn't.
 
 @d MAP_DATA(I) PLUGIN_DATA_ON_INSTANCE(map, I)
 
@@ -49,326 +364,85 @@ typedef struct map_data {
 	CLASS_DEFINITION
 } map_data;
 
-@ It's obvious why the kinds direction and door are special. It's not so
-obvious why "up" and "down" are: the answer is that there are linguistic
-features of these which aren't shared by lateral directions. "Above the
-garden is the treehouse", for instance, does not directly refer to either
-direction, but implies both.
-
-= (early code)
-kind *K_direction = NULL;
-kind *K_door = NULL;
-instance *I_up = NULL;
-instance *I_down = NULL;
-
-@ Special properties. The I6 implementation of two-way doors and of what, in
-I7, are called backdrops, is quite complicated. See the Inform Designer's Manual,
-fourth edition (the "DM4") for explanations. We are essentially trying to
-program all of that automatically, which is why these awkward multi-purpose
-I6 properties (|door_to|, |found_in|, etc.) have no direct I7 equivalents.
-
-= (early code)
-property *P_door = NULL; /* I6 only */
-property *P_door_dir = NULL; /* I6 only */
-property *P_door_to = NULL; /* I6 only */
-property *P_other_side = NULL; /* a value property for the other side of a door */
-property *P_opposite = NULL; /* a value property for the reverse of a direction */
-property *P_room_index = NULL; /* I6 only: workspace for path-finding through the map */
-property *P_found_in = NULL; /* I6 only: needed for multiply-present objects */
-
-@ While we could probably represent map knowledge using relation inferences
-in connection with the "mapped D of" relations, it's altogether easier and
-makes for more legible code if we use a special inference type of our own:
-
-= (early code)
-inference_family *DIRECTION_INF = NULL; /* 100; where do map connections from O lead? */
-
-@
-
-=
-typedef struct direction_inference_data {
-	struct inference_subject *to;
-	struct inference_subject *dir;
-	CLASS_DEFINITION
-} direction_inference_data;
-
-inference *PL::Map::new_direction_inference(inference_subject *infs_from,
-	inference_subject *infs_to, instance *o_dir) {
-	PROTECTED_MODEL_PROCEDURE;
-	direction_inference_data *data = CREATE(direction_inference_data);
-	data->to = infs_to;
-	data->dir = (o_dir)?(Instances::as_subject(o_dir)):NULL;
-	return Inferences::create_inference(DIRECTION_INF,
-		STORE_POINTER_direction_inference_data(data), prevailing_mood);
-}
-
-void PL::Map::infer_direction(inference_subject *infs_from, inference_subject *infs_to,
-	instance *o_dir) { 
-	inference *i = PL::Map::new_direction_inference(infs_from, infs_to, o_dir);
-	Inferences::join_inference(i, infs_from);
-}
-
-void PL::Map::get_map_references(inference *i,
-	inference_subject **infs1, inference_subject **infs2) {
-	if ((i == NULL) || (i->family != DIRECTION_INF))
-		internal_error("not a direction inf");
-	direction_inference_data *data = RETRIEVE_POINTER_direction_inference_data(i->data);
-	if (infs1) *infs1 = data->to; if (infs2) *infs2 = data->dir;
-}
-
-void PL::Map::log_direction_inf(inference_family *f, inference *inf) {
-	direction_inference_data *data = RETRIEVE_POINTER_direction_inference_data(inf->data);
-	LOG("-to:$j -dir:$j", data->to, data->dir);
-}
-
-int PL::Map::cmp_direction_inf(inference_family *f, inference *i1, inference *i2) {
-	direction_inference_data *data1 = RETRIEVE_POINTER_direction_inference_data(i1->data);
-	direction_inference_data *data2 = RETRIEVE_POINTER_direction_inference_data(i2->data);
-
-	int c = Inferences::measure_infs(data1->dir) - Inferences::measure_infs(data2->dir);
-	if (c > 0) return CI_DIFFER_IN_TOPIC; if (c < 0) return -CI_DIFFER_IN_TOPIC;
-	c = Inferences::measure_infs(data1->to) - Inferences::measure_infs(data2->to);
-	if (c > 0) return CI_DIFFER_IN_CONTENT; if (c < 0) return -CI_DIFFER_IN_CONTENT;
-
-	c = Inferences::measure_inf(i1) - Inferences::measure_inf(i2);
-	if (c > 0) return CI_DIFFER_IN_COPY_ONLY; if (c < 0) return -CI_DIFFER_IN_COPY_ONLY;
-	return CI_IDENTICAL;
-}
-
-@ One useful constant:
-
-@d MAX_WORDS_IN_DIRECTION (MAX_WORDS_IN_ASSEMBLAGE - 4)
-
-@ These little structures are needed to remember routines to compile later:
-
-=
-typedef struct door_dir_notice {
-	struct inter_name *ddn_iname;
-	struct instance *door;
-	struct instance *R1;
-	struct instance *D1;
-	struct instance *D2;
-	CLASS_DEFINITION
-} door_dir_notice;
-
-typedef struct door_to_notice {
-	struct inter_name *dtn_iname;
-	struct instance *door;
-	struct instance *R1;
-	struct instance *R2;
-	CLASS_DEFINITION
-} door_to_notice;
-
-@h Initialisation.
-
-=
-void PL::Map::start(void) {
-	DIRECTION_INF = Inferences::new_family(I"DIRECTION_INF");
-	METHOD_ADD(DIRECTION_INF, LOG_DETAILS_INF_MTID, PL::Map::log_direction_inf);
-	METHOD_ADD(DIRECTION_INF, COMPARE_INF_MTID, PL::Map::cmp_direction_inf);
-
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, PL::Map::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, PL::Map::map_new_base_kind_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, PL::Map::map_new_subject_notify);
-	PluginManager::plug(SET_KIND_NOTIFY_PLUG, PL::Map::map_set_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, PL::Map::map_set_subkind_notify);
-	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, PL::Map::map_act_on_special_NPs);
-	PluginManager::plug(CHECK_GOING_PLUG, PL::Map::map_check_going);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, PL::Map::map_complete_model);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, PL::Map::map_new_property_notify);
-	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, PL::Map::map_inference_drawn);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, PL::Map::map_intervene_in_assertion);
-	PluginManager::plug(ADD_TO_WORLD_INDEX_PLUG, PL::Map::map_add_to_World_index);
-	PluginManager::plug(ANNOTATE_IN_WORLD_INDEX_PLUG, PL::Map::map_annotate_in_World_index);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, PL::Map::production_line);
-}
-
-int PL::Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
-	if (stage == INTER1_CSEQ) {
-		BENCH(PL::Map::map_compile_model_tables);
-		BENCH(PL::Map::write_door_dir_routines);
-		BENCH(PL::Map::write_door_to_routines);
-	}
-	return FALSE;
-}
-
-int PL::Map::make_special_meanings(void) {
-	SpecialMeanings::declare(PL::EPSMap::index_map_with_SMF, I"index-map-with", 4);
-	return FALSE;
-}
-
 @ =
-map_data *PL::Map::new_data(inference_subject *subj) {
+int Map::new_subject_notify(inference_subject *subj) {
 	map_data *md = CREATE(map_data);
-	md->direction_index = -1;
-	md->direction_relation = NULL;
-
-	int i;
-	for (i=0; i<MAX_DIRECTIONS; i++) {
-		md->exits_set_at[i] = NULL;
-		md->exits[i] = NULL;
-	}
 	md->map_connection_a = NULL; md->map_connection_b = NULL;
 	md->map_direction_a = NULL; md->map_direction_b = NULL;
 
+	md->direction_index = -1;
+	md->direction_relation = NULL;
+	md->direction_iname = NULL;
+
+	for (int i=0; i<MAX_DIRECTIONS; i++) {
+		md->exits_set_at[i] = NULL;
+		md->exits[i] = NULL;
+	}
+
 	PL::SpatialMap::initialise_mapping_data(md);
-	return md;
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, md);
+	return FALSE;
 }
 
-@h Kinds.
-These are kind names to do with mapping which Inform provides special
-support for; it recognises the English name when defined by the Standard
-Rules. (So there is no need to translate this to other languages.)
+@ Special properties. 
+These are property names to do with mapping which Inform provides special
+support for. Two are visible to I7 authors, and the others are low-level
+properties needed for the run-time implementation.
+
+= (early code)
+property *P_other_side = NULL; /* a value property for the other side of a door */
+property *P_opposite = NULL; /* a value property for the reverse of a direction */
+
+property *P_door = NULL; /* Inter only */
+property *P_door_dir = NULL; /* Inter only */
+property *P_door_to = NULL; /* Inter only */
+property *P_room_index = NULL; /* Inter only: workspace for path-finding through the map */
+property *P_found_in = NULL; /* Inter only: needed for multiply-present objects */
+
+@ We recognise these by their English names when they are defined by the
+Standard Rules. (So there is no need to translate this to other languages.)
 
 =
-<notable-map-kinds> ::=
-	direction |
-	door
+<notable-map-properties> ::=
+	opposite |
+	other side
 
 @ =
-int PL::Map::map_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (<notable-map-kinds>(W)) {
+int Map::new_property_notify(property *prn) {
+	if (<notable-map-properties>(prn->name)) {
 		switch (<<r>>) {
-			case 0: K_direction = new_base; return TRUE;
-			case 1: K_door = new_base; return TRUE;
+			case 0: P_opposite = prn; break;
+			case 1: P_other_side = prn; break;
 		}
 	}
 	return FALSE;
 }
 
-@ Direction needs to be an abstract object, not a thing or a room, so:
+@ The following is used also by //Backdrops//, since both plugins use a
+shared Inter-level property at run-time. But this function will work even if
+the map plugin is inactive; so you can still have backdrops without a map.
 
 =
-int PL::Map::map_set_subkind_notify(kind *sub, kind *super) {
-	if ((sub == K_direction) && (super != K_object)) {
-		if (problem_count == 0)
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionAdrift),
-				"'direction' is not allowed to be a kind of anything (other than "
-				"'object')",
-				"because it's too fundamental to the way Inform maps out the "
-				"geography of the physical world.");
-		return TRUE;
-	}
-	if (super == K_direction) {
-		if (problem_count == 0)
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionSubkinded),
-				"'direction' is not allowed to have more specific kinds",
-				"because it's too fundamental to the way Inform maps out the "
-				"geography of the physical world.");
-		return TRUE;
-	}
-	if ((K_backdrop) && (sub == K_door) && (Kinds::Behaviour::is_object_of_kind(super, K_backdrop))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DoorAdrift),
-				"'door' is not allowed to be a kind of 'backdrop'",
-				"because it's too fundamental to the way Inform maps out the "
-				"geography of the physical world.");
-		return TRUE;
-	}
-	if ((K_backdrop) && (sub == K_backdrop) && (Kinds::Behaviour::is_object_of_kind(super, K_door))) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BackdropAdrift),
-				"'backdrop' is not allowed to be a kind of 'door'",
-				"because it's too fundamental to the way Inform maps out the "
-				"geography of the physical world.");
-		return TRUE;
-	}
-	return FALSE;
+void Map::set_found_in(instance *I, parse_node *val) {
+	if (P_found_in == NULL)
+		P_found_in = ValueProperties::new_nameless(I"found_in",
+			K_value);
+	if (PropertyInferences::value_of(
+		Instances::as_subject(I), P_found_in))
+			internal_error("rival found_in interpretations");
+	ValueProperties::assert(P_found_in, Instances::as_subject(I), val, CERTAIN_CE);
 }
 
-@ =
-int PL::Map::map_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, PL::Map::new_data(subj));
-	return FALSE;
-}
-
-@ =
-int PL::Map::object_is_a_direction(instance *I) {
-	if ((PluginManager::active(map_plugin)) && (K_direction) && (I) &&
-		(Instances::of_kind(I, K_direction)))
-		return TRUE;
-	return FALSE;
-}
-
-@ =
-int PL::Map::object_is_a_door(instance *I) {
-	if ((PluginManager::active(map_plugin)) && (K_door) && (I) &&
-		(Instances::of_kind(I, K_door)))
-		return TRUE;
-	return FALSE;
-}
-
-int PL::Map::subject_is_a_door(inference_subject *infs) {
-	return PL::Map::object_is_a_door(
-		InstanceSubjects::to_object_instance(infs));
-}
-
-@h Directions and their numbers.
-Directions play a special role because sentences like "east of the treehouse
-is the garden" are parsed differently from sentences like "the nearby place
-property of the treehouse is the garden"; they're also one domain of what
-amounts to the ternary map relation, though we actually implement it as a
-sheaf of binary relations, one for each direction. Anyway:
+@ This utility returns the "opposite" property for a direction, which is
+always another direction: for example, the opposite of northwest is southeast.
 
 =
-int PL::Map::is_a_direction(inference_subject *infs) {
-	if (K_direction == NULL) return FALSE; /* in particular, if we aren't using the IF model */
-	return InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_direction));
+instance *Map::get_value_of_opposite_property(instance *I) {
+	parse_node *val = PropertyInferences::value_of(
+		Instances::as_subject(I), P_opposite);
+	if (val) return Rvalues::to_object_instance(val);
+	return NULL;
 }
-
-@ When a new direction comes into existence (i.e., not when the underlying
-object |I| is created, but when its kind is first realised to be "direction"),
-we need to assign it a number:
-
-=
-int registered_directions = 0; /* next direction number to be free */
-
-@ These are direction names which Inform provides special support for; it
-recognises the English names when defined by the Standard Rules. (So there is
-no need to translate this to other languages.)
-
-=
-<notable-map-directions> ::=
-	up |
-	down
-
-@ =
-int PL::Map::map_set_kind_notify(instance *I, kind *k) {
-	kind *kw = Instances::to_kind(I);
-	if ((!(Kinds::Behaviour::is_object_of_kind(kw, K_direction))) &&
-		(Kinds::Behaviour::is_object_of_kind(k, K_direction))) {
-		wording IW = Instances::get_name(I, FALSE);
-		@<Vet the direction name for acceptability@>;
-		if (<notable-map-directions>(IW)) {
-			switch (<<r>>) {
-				case 0: I_up = I; break;
-				case 1: I_down = I; break;
-			}
-		}
-		Naming::object_takes_definite_article(Instances::as_subject(I));
-		@<Assign the object a direction number and a mapped-D-of relation@>;
-	}
-	return FALSE;
-}
-
-@<Vet the direction name for acceptability@> =
-	if (Wordings::empty(IW)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessDirection),
-			"nameless directions are not allowed",
-			"so writing something like 'There is a direction.' is forbidden.");
-		return TRUE;
-	}
-	if (Wordings::length(IW) > MAX_WORDS_IN_DIRECTION) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DirectionTooLong),
-			"although direction names can be really quite long in today's Inform",
-			"they can't be as long as that.");
-		return TRUE;
-	}
-
-@<Assign the object a direction number and a mapped-D-of relation@> =
-	registered_directions++;
-	package_request *PR = Hierarchy::synoptic_package(DIRECTIONS_HAP);
-	inter_name *dname = Hierarchy::make_iname_in(DIRECTION_HL, PR);
-	MAP_DATA(I)->direction_iname = dname;
-	PL::MapDirections::make_mapped_predicate(I, dname);
 
 @h The exits array.
 The bulk of the map is stored in the arrays called |exits|, which hold the
@@ -378,13 +452,13 @@ noted above are keys into these arrays.
 It might look a little wasteful of I7's memory to expand the direction
 inferences, a nicely compact representation, into large and sparse arrays.
 But it's convenient, and profiling suggests that the memory overhead is not
-significant. It also means that the World Index mapping code, which contains
+significant. It also means that the //Spatial Map// mapping code, which contains
 quite crunchy algorithms, has the fastest possible access to the layout.
 
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
-void PL::Map::build_exits_array(void) {
+void Map::build_exits_array(void) {
 	instance *I;
 	int d = 0;
 	LOOP_OVER_INSTANCES(I, K_object) {
@@ -394,9 +468,9 @@ void PL::Map::build_exits_array(void) {
 	}
 	LOOP_OVER_INSTANCES(I, K_object) {
 		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
+		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), direction_inf) {
 			inference_subject *infs1, *infs2;
-			PL::Map::get_map_references(inf, &infs1, &infs2);
+			Map::get_map_references(inf, &infs1, &infs2);
 			instance *to = NULL, *dir = NULL;
 			if (infs1) to = InstanceSubjects::to_object_instance(infs1);
 			if (infs2) dir = InstanceSubjects::to_object_instance(infs2);
@@ -411,69 +485,6 @@ void PL::Map::build_exits_array(void) {
 	}
 }
 
-@ This is easy to translate into I6 (though that's partly because I7 doesn't
-follow the traditional I6 library way to represent the map):
-
-=
-int PL::Map::map_compile_model_tables(void) {
-	@<Declare I6 constants for the directions@>;
-	@<Compile the I6 Map-Storage array@>;
-	return FALSE;
-}
-
-@<Declare I6 constants for the directions@> =
-	inter_name *ndi = Hierarchy::find(NO_DIRECTIONS_HL);
-	Emit::named_numeric_constant(ndi, (inter_ti) registered_directions);
-	Hierarchy::make_available(Emit::tree(), ndi);
-
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_direction) {
-		Emit::named_iname_constant(MAP_DATA(I)->direction_iname, K_object, RTInstances::emitted_iname(I));
-	}
-
-@ The |Map_Storage| array consists only of the |exits| arrays written out
-one after another. It looks wasteful of memory, since it is almost always
-going to be filled mostly with |0| entries (meaning: no exit that way). But
-the memory needs to be there because map connections can be added dynamically
-at run-time, so we can't know now how many we will need.
-
-@<Compile the I6 Map-Storage array@> =
-	instance *I;
-	LOOP_OVER_INSTANCES(I, K_object)
-		RTInstances::emitted_iname(I);
-	inter_name *iname = Hierarchy::find(MAP_STORAGE_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_object);
-	int words_used = 0;
-	if (Task::wraps_existing_storyfile()) {
-		Emit::array_divider(I"minimal, as there are no rooms");
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
-		Emit::array_iname_entry(NULL);
-		words_used = 4;
-	} else {
-		Emit::array_divider(I"one row per room");
-		instance *I;
-		LOOP_OVER_INSTANCES(I, K_object)
-			if (Spatial::object_is_a_room(I)) {
-				int i;
-				for (i=0; i<registered_directions; i++) {
-					instance *to = MAP_EXIT(I, i);
-					if (to)
-						Emit::array_iname_entry(RTInstances::iname(to));
-					else
-						Emit::array_numeric_entry(0);
-				}
-				words_used++;
-				TEMPORARY_TEXT(divider)
-				WRITE_TO(divider, "Exits from: %~I", I);
-				Emit::array_divider(divider);
-				DISCARD_TEXT(divider)
-			}
-	}
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-
 @h Door connectivity.
 We've seen how most of the map is represented, in the |exits| arrays. The
 missing information has to do with doors. If east of the Carousel Room is
@@ -483,30 +494,9 @@ the other side of the door. This will eventually be compiled into the
 object has four pieces of data attached:
 
 =
-void PL::Map::get_door_data(instance *door, instance **c1, instance **c2) {
+void Map::get_door_data(instance *door, instance **c1, instance **c2) {
 	if (c1) *c1 = MAP_DATA(door)->map_connection_a;
 	if (c2) *c2 = MAP_DATA(door)->map_connection_b;
-}
-
-@h Properties.
-These are property names to do with mapping which Inform provides special
-support for; it recognises the English names when they are defined by the
-Standard Rules. (So there is no need to translate this to other languages.)
-
-=
-<notable-map-properties> ::=
-	opposite |
-	other side
-
-@ =
-int PL::Map::map_new_property_notify(property *prn) {
-	if (<notable-map-properties>(prn->name)) {
-		switch (<<r>>) {
-			case 0: P_opposite = prn; break;
-			case 1: P_other_side = prn; break;
-		}
-	}
-	return FALSE;
 }
 
 @ We would like to deduce from a sentence like
@@ -514,11 +504,11 @@ int PL::Map::map_new_property_notify(property *prn) {
 >> The other side of the iron door is the Black Holding Area.
 
 that the "Black Holding Area" is a room; otherwise, if it has no map
-connections, Inform may well think it's just an object. This is where that
+connections, Inform may well think it's just a thing. This is where that
 deduction is made:
 
 =
-int PL::Map::map_inference_drawn(inference *I, inference_subject *subj) {
+int Map::inference_drawn(inference *I, inference_subject *subj) {
 	property *prn = PropertyInferences::get_property(I);
 	if ((prn) && (prn == P_other_side)) {
 		parse_node *val = PropertyInferences::get_value(I);
@@ -526,36 +516,6 @@ int PL::Map::map_inference_drawn(inference *I, inference_subject *subj) {
 		if (I) SpatialInferences::infer_is_room(Instances::as_subject(I), CERTAIN_CE);
 	}
 	return FALSE;
-}
-
-@ The I6 |found_in| property is a general mechanism for multiply-present
-objects. This causes great complications, and I7 simplifies the model world
-by hiding it from the author, and using it internally to implement backdrops
-and two-sided doors. Two different plugins therefore need access to it (this
-one and Backdrops), and this is where they set it.
-
-=
-void PL::Map::set_found_in(instance *I, parse_node *val) {
-	if (P_found_in == NULL)
-		P_found_in = ValueProperties::new_nameless(I"found_in",
-			K_value);
-	if (PropertyInferences::value_of(
-		Instances::as_subject(I), P_found_in))
-			internal_error("rival found_in interpretations");
-	ValueProperties::assert(P_found_in, Instances::as_subject(I), val, CERTAIN_CE);
-}
-
-@ This utility routine which looks for the "opposite"
-property in the linked list of inferences belonging to an object.
-(This is a property of directions.) Crude, but not time-sensitive,
-and there seems little point in writing this any better.
-
-=
-instance *PL::Map::get_value_of_opposite_property(instance *I) {
-	parse_node *val = PropertyInferences::value_of(
-		Instances::as_subject(I), P_opposite);
-	if (val) return Rvalues::to_object_instance(val);
-	return NULL;
 }
 
 @h Linguistic extras.
@@ -567,7 +527,7 @@ These NPs allow us to refer to the special directions "up" and "down":
 	above
 
 @ =
-int PL::Map::map_act_on_special_NPs(parse_node *p) {
+int Map::act_on_special_NPs(parse_node *p) {
 	if (<notable-map-noun-phrases>(Node::get_text(p))) {
 		switch (<<r>>) {
 			case 0:
@@ -590,7 +550,7 @@ int PL::Map::map_act_on_special_NPs(parse_node *p) {
 @ We also add some optional clauses to the "going" action:
 
 =
-int PL::Map::map_check_going(parse_node *from, parse_node *to,
+int Map::check_going(parse_node *from, parse_node *to,
 	parse_node *by, parse_node *through, parse_node *pushing) {
 	if (PL::Actions::Patterns::check_going(from, "from",
 		K_room, K_region) == FALSE) return FALSE;
@@ -623,18 +583,19 @@ But we must be careful not to catch "East is a direction" in the same net
 because, of course, that does set its kind.
 
 =
-int PL::Map::map_intervene_in_assertion(parse_node *px, parse_node *py) {
+int Map::intervene_in_assertion(parse_node *px, parse_node *py) {
 	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
 		(Node::get_type(py) == COMMON_NOUN_NT)) {
 		inference_subject *left_object = Node::get_subject(px);
 		inference_subject *right_kind = Node::get_subject(py);
-		if ((PL::Map::is_a_direction(left_object)) &&
-			(PL::Map::is_a_direction(right_kind) == FALSE)) {
+		if ((Map::subject_is_a_direction(left_object)) &&
+			(Map::subject_is_a_direction(right_kind) == FALSE)) {
 			Assertions::Creator::convert_instance_to_nounphrase(py, NULL);
 			return FALSE;
 		}
 		if (Annotations::read_int(px, nowhere_ANNOT)) {
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NowhereDescribed),
+			Problems::Using::assertion_problem(Task::syntax_tree(),
+				_p_(PM_NowhereDescribed),
 				"'nowhere' cannot be made specific",
 				"and so cannot have specific properties or be of any given kind.");
 			return TRUE;
@@ -654,8 +615,8 @@ make this guess; so we begin with switching in and out.
 
 =
 int oneway_map_connections_only = FALSE;
-void PL::Map::enter_one_way_mode(void) { oneway_map_connections_only = TRUE; }
-void PL::Map::exit_one_way_mode(void) { oneway_map_connections_only = FALSE; }
+void Map::enter_one_way_mode(void) { oneway_map_connections_only = TRUE; }
+void Map::exit_one_way_mode(void) { oneway_map_connections_only = FALSE; }
 
 @ Note that, in order to make the conjectural reverse map direction, we need
 to look up the "opposite" property of the forward one. This relies on all
@@ -664,14 +625,14 @@ reason for Inform's insistence that directions are always created in matched
 pairs.
 
 =
-void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
+void Map::connect(inference_subject *i_from, inference_subject *i_to,
 	inference_subject *i_dir) {
 	instance *go_from = InstanceSubjects::to_object_instance(i_from);
 	instance *go_to = InstanceSubjects::to_object_instance(i_to);
 	instance *forwards_dir = InstanceSubjects::to_object_instance(i_dir);
 	if (Instances::of_kind(forwards_dir, K_direction) == FALSE)
 		internal_error("unknown direction");
-	instance *reverse_dir = PL::Map::get_value_of_opposite_property(forwards_dir);
+	instance *reverse_dir = Map::get_value_of_opposite_property(forwards_dir);
 	if (go_from == NULL) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_object(2, forwards_dir);
@@ -684,12 +645,13 @@ void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 		return;
 	}
 
-	PL::Map::oneway_map_connection(go_from, go_to, forwards_dir, CERTAIN_CE);
+	Map::oneway_map_connection(go_from, go_to, forwards_dir, CERTAIN_CE);
 	if ((reverse_dir) && (go_to) && (oneway_map_connections_only == FALSE)) {
 		if (Instances::of_kind(reverse_dir, K_direction) == FALSE) {
 			Problems::quote_object(1, forwards_dir);
 			Problems::quote_object(2, reverse_dir);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_OppositeNotDirection));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_OppositeNotDirection));
 			Problems::issue_problem_segment(
 				"I'm trying to make a map connection in the %1 direction, "
 				"which means there ought to be map connection back in the "
@@ -697,11 +659,11 @@ void PL::Map::connect(inference_subject *i_from, inference_subject *i_to,
 				"which doesn't make sense since %2 isn't a direction. (Maybe "
 				"you forgot to say that it was?)");
 			Problems::issue_problem_end();
-		} else PL::Map::oneway_map_connection(go_to, go_from, reverse_dir, LIKELY_CE);
+		} else Map::oneway_map_connection(go_to, go_from, reverse_dir, LIKELY_CE);
 	}
 }
 
-void PL::Map::oneway_map_connection(instance *go_from, instance *go_to,
+void Map::oneway_map_connection(instance *go_from, instance *go_to,
 	instance *forwards_dir, int certainty_level) {
 	binary_predicate *bp = PL::MapDirections::get_mapping_relation(forwards_dir);
 	if (bp == NULL) internal_error("map connection in non-direction");
@@ -718,7 +680,7 @@ And here begins the fun. It's not as easy to write down the requirements for
 the map as might be thought.
 
 =
-int PL::Map::map_complete_model(int stage) {
+int Map::complete_model(int stage) {
 	switch (stage) {
 		case 2:
 			@<Give each room a room-index property as workspace for route finding@>;
@@ -735,7 +697,7 @@ int PL::Map::map_complete_model(int stage) {
 			@<Place any one-sided door inside the room which connects to it@>;
 			@<Assert found-in, door-to and door-dir properties for doors@>;
 			break;
-		case 4: PL::Map::build_exits_array(); break;
+		case 4: Map::build_exits_array(); break;
 	}
 	return FALSE;
 }
@@ -763,12 +725,12 @@ checks that various mapping impossibilities do not occur.
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object) {
 		inference *inf;
-		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
+		POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), direction_inf) {
 			inference_subject *infs1;
-			PL::Map::get_map_references(inf, &infs1, NULL);
+			Map::get_map_references(inf, &infs1, NULL);
 			instance *to = InstanceSubjects::to_object_instance(infs1);
 			if ((Spatial::object_is_a_room(I)) && (to) &&
-				(PL::Map::object_is_a_door(to) == FALSE) &&
+				(Map::instance_is_a_door(to) == FALSE) &&
 				(Spatial::object_is_a_room(to) == FALSE))
 				StandardProblems::contradiction_problem(_p_(PM_BadMapCell),
 					Instances::get_creating_sentence(to),
@@ -776,7 +738,7 @@ checks that various mapping impossibilities do not occur.
 					"appears to be something which can be reached via a map "
 					"connection, but it seems to be neither a room nor a door",
 					"and these are the only possibilities allowed by Inform.");
-			if ((PL::Map::object_is_a_door(I)) &&
+			if ((Map::instance_is_a_door(I)) &&
 				(Spatial::object_is_a_room(to) == FALSE))
 				StandardProblems::object_problem(_p_(PM_DoorToNonRoom),
 					I,
@@ -789,15 +751,15 @@ checks that various mapping impossibilities do not occur.
 @<Ensure that every door has either one or two connections from it@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if (PL::Map::object_is_a_door(I)) {
+		if (Map::instance_is_a_door(I)) {
 			int connections_in = 0;
 			inference *inf;
 			parse_node *where[3];
 			where[0] = NULL; where[1] = NULL; where[2] = NULL; /* to placate |gcc| */
 			inference *front_side_inf = NULL, *back_side_inf = NULL;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
+			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), direction_inf) {
 				inference_subject *infs1, *infs2;
-				PL::Map::get_map_references(inf, &infs1, &infs2);
+				Map::get_map_references(inf, &infs1, &infs2);
 				instance *to = InstanceSubjects::to_object_instance(infs1);
 				instance *dir = InstanceSubjects::to_object_instance(infs2);
 				if (to) {
@@ -867,18 +829,19 @@ from which there's no way back.)
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (Spatial::object_is_a_room(I)) {
 			inference *inf;
-			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), DIRECTION_INF) {
+			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), direction_inf) {
 				inference_subject *infs1;
-				PL::Map::get_map_references(inf, &infs1, NULL);
+				Map::get_map_references(inf, &infs1, NULL);
 				instance *to = InstanceSubjects::to_object_instance(infs1);
-				if (PL::Map::object_is_a_door(to)) {
+				if (Map::instance_is_a_door(to)) {
 					instance *exit1 = MAP_DATA(to)->map_connection_a;
 					instance *exit2 = MAP_DATA(to)->map_connection_b;
 					if ((I != exit1) && (exit2 == NULL)) {
 						Problems::quote_object(1, I);
 						Problems::quote_object(2, to);
 						Problems::quote_object(3, exit1);
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RoomTwistyDoor));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_RoomTwistyDoor));
 						Problems::issue_problem_segment(
 							"%1, a room, seems to have a map connection which goes "
 							"through %2, a door: but that doesn't seem physically "
@@ -890,7 +853,8 @@ from which there's no way back.)
 						Problems::quote_object(2, to);
 						Problems::quote_object(3, exit1);
 						Problems::quote_object(4, exit2);
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_RoomMissingDoor));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_RoomMissingDoor));
 						Problems::issue_problem_segment(
 							"%1, a room, seems to have a map connection which goes "
 							"through %2, a door: but that doesn't seem physically "
@@ -905,7 +869,7 @@ from which there's no way back.)
 @<Ensure that no door uses both map connections and other side@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Map::object_is_a_door(I)) &&
+		if ((Map::instance_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_a) &&
 			(MAP_DATA(I)->map_connection_b) &&
 			(PropertyInferences::value_of(
@@ -928,7 +892,7 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 @<Ensure that no door is present in a room to which it does not connect@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Map::object_is_a_door(I)) &&
+		if ((Map::instance_is_a_door(I)) &&
 			(Spatial::progenitor(I)) &&
 			(Spatial::progenitor(I) != MAP_DATA(I)->map_connection_a) &&
 			(Spatial::progenitor(I) != MAP_DATA(I)->map_connection_b))
@@ -944,7 +908,7 @@ to them.
 @<Place any one-sided door inside the room which connects to it@> =
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if ((PL::Map::object_is_a_door(I)) &&
+		if ((Map::instance_is_a_door(I)) &&
 			(MAP_DATA(I)->map_connection_b == NULL) &&
 			(Spatial::progenitor(I) == NULL))
 			Spatial::set_progenitor(I, MAP_DATA(I)->map_connection_a, NULL);
@@ -962,7 +926,7 @@ trust that there is nothing surprising here.
 
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K_object)
-		if (PL::Map::object_is_a_door(I)) {
+		if (Map::instance_is_a_door(I)) {
 			EitherOrProperties::assert(
 				P_door, Instances::as_subject(I), TRUE, CERTAIN_CE);
 			instance *R1 = MAP_DATA(I)->map_connection_a;
@@ -981,39 +945,22 @@ trust that there is nothing surprising here.
 @ Here |found_in| is a two-entry list.
 
 @<Assert found-in for a two-sided door@> =
-	package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, RTInstances::package(I));
-	inter_name *S = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	packaging_state save = Emit::named_array_begin(S, K_value);
-	Emit::array_iname_entry(RTInstances::iname(R1));
-	Emit::array_iname_entry(RTInstances::iname(R2));
-	Emit::array_end(save);
-	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
-	PL::Map::set_found_in(I, Rvalues::from_iname(S));
+	parse_node *val = RTMap::found_in_for_2_sided(I, R1, R2);
+	Map::set_found_in(I, val);
 
 @ Here |door_dir| is a routine looking at the current location and returning
 always the way to the other room -- the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
-	door_dir_notice *notice = CREATE(door_dir_notice);
-	notice->ddn_iname = Hierarchy::make_iname_in(TSD_DOOR_DIR_FN_HL, RTInstances::package(I));
-	notice->door = I;
-	notice->R1 = R1;
-	notice->D1 = D1;
-	notice->D2 = D2;
-	ValueProperties::assert(P_door_dir, Instances::as_subject(I),
-		Rvalues::from_iname(notice->ddn_iname), CERTAIN_CE);
+	parse_node *val = RTMap::door_dir_for_2_sided(I, R1, D1, D2);
+	ValueProperties::assert(P_door_dir, Instances::as_subject(I), val, CERTAIN_CE);
 
 @ Here |door_to| is a routine looking at the current location and returning
 always the other room -- the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
-	door_to_notice *notice = CREATE(door_to_notice);
-	notice->dtn_iname = Hierarchy::make_iname_in(TSD_DOOR_TO_FN_HL, RTInstances::package(I));
-	notice->door = I;
-	notice->R1 = R1;
-	notice->R2 = R2;
-	ValueProperties::assert(P_door_to, Instances::as_subject(I),
-		Rvalues::from_iname(notice->dtn_iname), CERTAIN_CE);
+	parse_node *val = RTMap::door_to_for_2_sided(I, R1, R2);
+	ValueProperties::assert(P_door_to, Instances::as_subject(I), val, CERTAIN_CE);
 
 @ The reversal of direction here looks peculiar, but is correct. Suppose
 the Drainage Room contains a one-sided door called the iron grating, and
@@ -1027,151 +974,7 @@ property for the door; "other side" is an alias for |door_to|, which is
 why we don't need to compile |door_to| here.
 
 @<Assert door-dir for a one-sided door@> =
-	instance *backwards = PL::Map::get_value_of_opposite_property(D1);
+	instance *backwards = Map::get_value_of_opposite_property(D1);
 	if (backwards)
 		ValueProperties::assert(P_door_dir, Instances::as_subject(I),
 			Rvalues::from_iname(RTInstances::emitted_iname(backwards)), CERTAIN_CE);
-
-@h Redeeming those notices.
-
-=
-void PL::Map::write_door_dir_routines(void) {
-	door_dir_notice *notice;
-	LOOP_OVER(notice, door_dir_notice) {
-		packaging_state save = Routines::begin(notice->ddn_iname);
-		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
-		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value,
-						RTInstances::iname(PL::Map::get_value_of_opposite_property(notice->D1)));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value,
-				RTInstances::iname(PL::Map::get_value_of_opposite_property(notice->D2)));
-		Produce::up(Emit::tree());
-
-		Routines::end(save);
-	}
-}
-
-void PL::Map::write_door_to_routines(void) {
-	door_to_notice *notice;
-	LOOP_OVER(notice, door_to_notice) {
-		packaging_state save = Routines::begin(notice->dtn_iname);
-		local_variable *loc = LocalVariables::add_internal_local_c(I"loc", "room of actor");
-		inter_symbol *loc_s = LocalVariables::declare_this(loc, FALSE, 8);
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LOCATION_HL));
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(THEDARK_HL));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_symbol(Emit::tree(), K_value, loc_s);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REAL_LOCATION_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, loc_s);
-				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R2));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
-		Produce::up(Emit::tree());
-
-		Routines::end(save);
-	}
-}
-
-@h Indexing.
-
-=
-int PL::Map::map_add_to_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_room))) {
-		PL::SpatialMap::index_room_connections(OUT, O);
-	}
-	return FALSE;
-}
-
-int PL::Map::map_annotate_in_World_index(OUTPUT_STREAM, instance *O) {
-	if ((O) && (Instances::of_kind(O, K_door))) {
-		instance *A = NULL, *B = NULL;
-		PL::Map::get_door_data(O, &A, &B);
-		if ((A) && (B)) WRITE(" - <i>door to ");
-		else WRITE(" - <i>one-sided door to ");
-		instance *X = A;
-		if (A == Data::Objects::room_being_indexed()) X = B;
-		if (X == NULL) {
-			parse_node *S = PropertyInferences::value_of(
-				Instances::as_subject(O), P_other_side);
-			X = Rvalues::to_object_instance(S);
-		}
-		if (X == NULL) WRITE("nowhere");
-		else IXInstances::index_name(OUT, X);
-		WRITE("</i>");
-		return TRUE;
-	}
-	return FALSE;
-}
