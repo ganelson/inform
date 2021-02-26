@@ -83,8 +83,14 @@
 	match text: $TA $TI
 	or: 'produced the wrong tree structure of files in Release'
 
-	exists: inblorb/Tests/Assistants/blorblib/blorbscan
-	or: 'incompletely tested because no blorbscan tool is available'
+	if: $$platform macos
+		exists: inblorb/Tests/Assistants/blorblib/blorbscan
+		or: 'incompletely tested because no blorbscan tool is available'
+	endif
+	if: $$platform windows
+		exists: inblorb/Tests/Assistants/blorblib/blorbscan.exe
+		or: 'incompletely tested because no blorbscan tool is available'
+	endif
 
 	mkdir: $PATH/_Scan_Actual
 	mkdir: $PATH/_Scan_Ideal
@@ -94,9 +100,6 @@
 	step: inblorb/Tests/Assistants/blorblib/blorbscan $BLORBFILE >$TA 2>&1
 	match text: $TA $TI
 	or: 'produced a blorb whose scan was incorrect'
-
-!	match binary: $BLORBFILE $PATH/_Blorb_Ideal/$CASE.$BLORBEXT
-!	or: 'produced a blorb which did not agree'
 
 	pass: 'passed'
 

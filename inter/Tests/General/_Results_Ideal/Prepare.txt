@@ -127,11 +127,11 @@ package main _plain
 		symbol public misc WORDSIZE
 		symbol public misc TARGET_ZCODE
 		symbol public misc DEBUG
-		symbol public misc PLUGIN_FILES
+		symbol public misc FILES_PLUGIN
 		constant WORDSIZE K_unchecked = 2
 		constant TARGET_ZCODE K_unchecked = 1
 		constant DEBUG K_unchecked = 1
-		constant PLUGIN_FILES K_unchecked = 1
+		constant FILES_PLUGIN K_unchecked = 1
 	package generic _module
 		symbol public misc K_unchecked
 		symbol public misc K_typeless_int

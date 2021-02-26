@@ -1,17 +1,17 @@
 100.0% in inform7 run
-     67.6% in compilation to Inter
-         25.9% in //Phrases::Manager::compile_first_block//
+     67.2% in compilation to Inter
+         25.7% in //Phrases::Manager::compile_first_block//
           8.6% in //Phrases::Manager::compile_as_needed//
-          7.2% in //Strings::compile_responses//
-          6.2% in //InferenceSubjects::emit_all//
-          4.2% in //MajorNodes::pre_pass//
-          3.3% in //MajorNodes::pass_1//
-          2.0% in //Phrases::Manager::RulePrintingRule_routine//
-          2.0% in //Phrases::Manager::rulebooks_array//
-          1.0% in //RTVerbs::ConjugateVerb//
+          6.9% in //Strings::compile_responses//
+          6.1% in //InferenceSubjects::emit_all//
+          4.1% in //MajorNodes::pre_pass//
+          3.4% in //MajorNodes::pass_1//
+          1.9% in //Phrases::Manager::RulePrintingRule_routine//
+          1.8% in //Phrases::Manager::rulebooks_array//
+          0.9% in //RTVerbs::ConjugateVerb//
           0.8% in //Phrases::Manager::traverse//
-          0.5% in //Phrases::Manager::parse_rule_parameters//
-          0.5% in //World::stage_V//
+          0.4% in //Phrases::Manager::parse_rule_parameters//
+          0.4% in //World::stage_V//
           0.3% in //MajorNodes::pass_2//
           0.3% in //Phrases::Manager::compile_rulebooks//
           0.3% in //RTRelations::compile_defined_relations//
@@ -19,11 +19,11 @@
           0.1% in //RTKinds::compile_data_type_support_routines//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          3.4% not specifically accounted for
-     29.8% in running Inter pipeline
-          9.9% in step preparation
-          9.4% in inter step 2/12: link
-          7.0% in inter step 12/12: generate inform6 -> auto.inf
+          3.7% not specifically accounted for
+     30.4% in running Inter pipeline
+         10.6% in step preparation
+          9.8% in inter step 2/12: link
+          7.1% in inter step 12/12: generate inform6 -> auto.inf
           0.3% in inter step 9/12: make-identifiers-unique
           0.1% in inter step 10/12: reconcile-verbs
           0.1% in inter step 11/12: eliminate-redundant-labels
@@ -32,6 +32,6 @@
           0.1% in inter step 6/12: assimilate
           0.1% in inter step 7/12: resolve-external-symbols
           0.1% in inter step 8/12: inspect-plugs
-          1.9% not specifically accounted for
+          1.3% not specifically accounted for
       2.1% in supervisor
-      0.4% not specifically accounted for
+      0.2% not specifically accounted for

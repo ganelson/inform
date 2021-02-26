@@ -31,7 +31,6 @@ typedef struct release_instructions {
 	int source_public; /* If released, will this be linked on a website? */
 	int card_public; /* If released, will this be linked on a website? */
 	struct linked_list *aux_files; /* of |auxiliary_file| */
-	int create_Materials; /* Create a Materials folder if one doesn't exist already */
 	int cover_picture_number; /* ID for the cover art (usually 1) */
 	char *cover_art_format; /* such as "jpg" */
 	unsigned int width; /* in pixels */
@@ -59,7 +58,6 @@ release_instructions *ReleaseInstructions::new_set(void) {
 	set->source_public = TRUE;
 	set->card_public = FALSE;
 	set->aux_files = NEW_LINKED_LIST(auxiliary_file);
-	set->create_Materials = FALSE;
 	set->cover_picture_number = 0;
 	set->cover_art_format = NULL;
 	set->width = 0; set->height = 0;

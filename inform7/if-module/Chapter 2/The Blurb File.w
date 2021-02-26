@@ -76,8 +76,7 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where the project and release folders are@> =
 	WRITE("project folder \"%p\"\n", Projects::path(Task::project()));
-	if (rel->create_Materials)
-		WRITE("release to \"%p\"\n", Task::release_path());
+	WRITE("release to \"%p\"\n", Task::release_path());
 
 @<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
