@@ -86,8 +86,8 @@ Total memory consumption was 258576K = 253 MB
      ----  instance                                 167 objects, 20040 bytes
      ----  pcalc_prop_deferral                      90 objects, 19440 bytes
      ----  nonlocal_variable                        93 objects, 19344 bytes
-     ----  action_name                              90 objects, 18720 bytes
      ----  property                                 146 objects, 18688 bytes
+     ----  action_name                              90 objects, 18000 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  linked_list_item_array                   1 x 1000 objects, 16032 bytes
@@ -228,7 +228,7 @@ Total memory consumption was 258576K = 253 MB
 
 37.5% was used for memory not allocated for objects:
 
-    15.9%  text stream storage                      42248560 bytes in 265817 claims
+    15.9%  text stream storage                      42248380 bytes in 265817 claims
      3.5%  dictionary storage                       9278976 bytes in 16372 claims
      ----  sorting                                  1064 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -244,5 +244,5 @@ Total memory consumption was 258576K = 253 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52764336 bytes = 51527K = 50 MB
+19.9% was overhead - 52765056 bytes = 51528K = 50 MB
 

@@ -167,30 +167,30 @@ void PL::Actions::Index::alphabetical(OUTPUT_STREAM) {
 	for (i=0; i<nr; i++) {
 		HTML::first_html_column(OUT, 0);
 		action_name *an = sorted[i];
-		if (an->out_of_world) HTML::begin_colour(OUT, I"800000");
+		if (an->semantics.out_of_world) HTML::begin_colour(OUT, I"800000");
 		WRITE("%W", an->present_name);
-		if (an->out_of_world) HTML::end_colour(OUT);
+		if (an->semantics.out_of_world) HTML::end_colour(OUT);
 		Index::detail_link(OUT, "A", an->allocation_id, TRUE);
 
-		if (an->requires_light) WRITE(" <i>requires light</i>");
+		if (an->semantics.requires_light) WRITE(" <i>requires light</i>");
 
 		HTML::next_html_column(OUT, 0);
-		if (an->max_parameters < 1) {
+		if (an->semantics.max_parameters < 1) {
 			WRITE("&mdash;");
 		} else {
-			if (an->noun_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (an->noun_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->noun_kind, FALSE, FALSE);
+			if (an->semantics.noun_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
+			if (an->semantics.noun_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->semantics.noun_kind, FALSE, FALSE);
 			WRITE("</b>");
 		}
 
 		HTML::next_html_column(OUT, 0);
-		if (an->max_parameters < 2) {
+		if (an->semantics.max_parameters < 2) {
 			WRITE("&mdash;");
 		} else {
-			if (an->second_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (an->second_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->second_kind, FALSE, FALSE);
+			if (an->semantics.second_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
+			if (an->semantics.second_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->semantics.second_kind, FALSE, FALSE);
 			WRITE("</b>");
 		}
 		HTML::end_html_row(OUT);
@@ -222,9 +222,9 @@ void PL::Actions::Index::page(OUTPUT_STREAM) {
 	inform_extension *ext = NULL;
 	LOOP_OVER(an, action_name) {
 		int new_par = FALSE;
-		f = PL::Actions::index(OUT, an, 1, &ext, &current_area, f, &new_par, FALSE, FALSE);
+		f = IXActions::index(OUT, an, 1, &ext, &current_area, f, &new_par, FALSE, FALSE);
 		if (new_par) par_count++;
-		an->an_index_group = par_count;
+		an->indexing_data.an_index_group = par_count;
 	}
 	if (f) HTML_CLOSE("p");
 }
@@ -243,12 +243,12 @@ void PL::Actions::Index::detail_pages(void) {
 		current_area = NULL;
 		ext = NULL;
 		LOOP_OVER(an2, action_name) {
-			if (an2->an_index_group == an->an_index_group)
-				f = PL::Actions::index(OUT, an2, 1, &ext, &current_area, f, &new_par, (an2 == an)?TRUE:FALSE, TRUE);
+			if (an2->indexing_data.an_index_group == an->indexing_data.an_index_group)
+				f = IXActions::index(OUT, an2, 1, &ext, &current_area, f, &new_par, (an2 == an)?TRUE:FALSE, TRUE);
 		}
 		if (f) HTML_CLOSE("p");
 		HTML_TAG("hr");
-		PL::Actions::index(OUT, an, 2, &ext, &current_area, FALSE, &new_par, FALSE, FALSE);
+		IXActions::index(OUT, an, 2, &ext, &current_area, FALSE, &new_par, FALSE, FALSE);
 	}
 }
 

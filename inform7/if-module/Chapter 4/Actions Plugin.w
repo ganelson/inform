@@ -6,12 +6,11 @@ A plugin for actions, by which animate characters change the world model.
 entire chapter.
 
 =
-@ =
 void ActionsPlugin::start(void) {
 	ActionsNodes::nodes_and_annotations();
 
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ActionsPlugin::actions_new_base_kind_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ActionsPlugin::new_base_kind_notify);
 	PluginManager::plug(COMPILE_CONSTANT_PLUG, PL::Actions::actions_compile_constant);
 	PluginManager::plug(OFFERED_PROPERTY_PLUG, PL::Actions::actions_offered_property);
 	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, PL::Actions::actions_offered_specification);
@@ -25,10 +24,10 @@ void ActionsPlugin::start(void) {
 int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
 	if (stage == INTER1_CSEQ) {
 		BENCH(PL::Actions::Patterns::Named::compile);
-		BENCH(PL::Actions::ActionData);
-		BENCH(PL::Actions::ActionCoding_array);
-		BENCH(PL::Actions::ActionHappened);
-		BENCH(PL::Actions::compile_action_routines);
+		BENCH(RTActions::ActionData);
+		BENCH(RTActions::ActionCoding_array);
+		BENCH(RTActions::ActionHappened);
+		BENCH(RTActions::compile_action_routines);
 	}
 	return FALSE;
 }
@@ -38,19 +37,18 @@ int ActionsPlugin::make_special_meanings(void) {
 	return FALSE;
 }
 
-@ |DESCRIPTION_OF_ACTION| is used in type-checking to represent gerunds: that
-is, actions described by what appear to be participles but which are in
-context nouns ("if taking something, ...").
+@ This plugin brings in three new base kinds:
 
-|ACTION_NAME|. For those rare occasions where we need to identify the
-basic underlying action but none of the nouns, etc., thereto. At run-time,
-this stores as the I6 action number: e.g. |##Go| for the going action.
+= (early code)
+kind *K_action_name = NULL;
+kind *K_stored_action = NULL;
+kind *K_description_of_action = NULL;
 
-|STORED_ACTION| is just what it says it is: a stored action, which can be
-tried later. This is a pointer value; see "StoredAction.i6t".
+@ These are created by a Neptune file inside //WorldModelKit//, and are
+recognised by their Inter identifiers:
 
 @ =
-int ActionsPlugin::actions_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
+int ActionsPlugin::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	if (Str::eq_wide_string(name, L"ACTION_NAME_TY")) {
 		K_action_name = new_base; return TRUE;
 	}

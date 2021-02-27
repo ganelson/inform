@@ -33,6 +33,7 @@ Chapter 3: Indexing for Plugins
 	Regions
 	The Map
 	Scenes
+	Actions
 
 Chapter 4: Visualising Space
 	Spatial Geometry

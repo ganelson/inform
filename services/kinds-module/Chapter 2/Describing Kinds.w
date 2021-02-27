@@ -163,8 +163,13 @@ addition.
 	either-or property                                               ==> @<Property on truth state@>
 
 @<Stored action@> =
+	#ifdef IF_MODULE
 	if (K_stored_action == NULL) { ==> { fail production }; }
 	==> { -, K_stored_action };
+	#endif
+	#ifndef IF_MODULE
+	==> { fail production };
+	#endif
 
 @<Rulebook obj on 2@> =
 	==> { -, Kinds::binary_con(CON_rulebook, K_object, RP[2]) }
@@ -176,8 +181,13 @@ addition.
 	==> { -, Kinds::binary_con(CON_rulebook, K_object, K_void) }
 
 @<Action rulebook@> =
+	#ifdef IF_MODULE
 	if (K_action_name == NULL) { ==> { fail production }; }
 	==> { -, Kinds::binary_con(CON_rulebook, K_action_name, K_void) };
+	#endif
+	#ifndef IF_MODULE
+	==> { fail production };
+	#endif
 
 @<Rule obj on 2@> =
 	==> { -, Kinds::binary_con(CON_rule, K_object, RP[2]) }
@@ -189,8 +199,13 @@ addition.
 	==> { -, Kinds::binary_con(CON_rule, K_object, K_void) }
 
 @<Action rule@> =
+	#ifdef IF_MODULE
 	if (K_action_name == NULL) { ==> { fail production }; }
 	==> { -, Kinds::binary_con(CON_rule, K_action_name, K_void) };
+	#endif
+	#ifndef IF_MODULE
+	==> { fail production };
+	#endif
 
 @<Property on truth state@> =
 	==> { -, Kinds::unary_con(CON_property, K_truth_state) }
@@ -255,7 +270,12 @@ unspecified because a short form of the constructor is used (e.g.,
 
 @<The rule and rulebook constructors default to actions for X@> =
 	if ((con == CON_rule) || (con == CON_rulebook)) {
+		#ifdef IF_MODULE
 		if (K_action_name) KX = K_action_name; else KX = K_void;
+		#endif
+		#ifndef IF_MODULE
+		KX = K_void;
+		#endif
 		KY = K_void;
 	}
 
@@ -277,7 +297,7 @@ be more varied.
 	( <k-optional-term> ) |            ==> { pass 1 }
 	<article> <k-optional-term> |      ==> { pass 2 }
 	nothing |                          ==> { -, K_nil }
-	action |                           ==> { -, K_action_name }
+	action |                           ==> @<The action term@>
 	<k-kind>                           ==> { pass 1 }
 
 <k-tupled-term> ::=
@@ -289,6 +309,14 @@ be more varied.
 	<k-single-term> , <k-tuple-list> | ==> { -, Kinds::binary_con(CON_TUPLE_ENTRY, RP[1], RP[2]) }
 	<k-single-term>                    ==> { -, Kinds::binary_con(CON_TUPLE_ENTRY, RP[1], K_void) }
 
+@<The action term@> =
+	#ifdef IF_MODULE
+	==> { -, K_action_name };
+	#endif
+	#ifndef IF_MODULE
+	==> { fail production };
+	#endif
+	
 @ The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
 constructed on, and returns |TRUE|; if it fails, it returns |FALSE|. For
@@ -608,7 +636,9 @@ usage.
 	@<Determine the possible forms for writing this constructor@>;
 	k_present = 1; l_present = 1;
 	if ((con == CON_rule) || (con == CON_rulebook)) {
+		#ifdef IF_MODULE
 		if (Kinds::eq(first_base, K_action_name)) k_present = 0;
+		#endif
 	} else {
 		if (Kinds::eq(first_base, K_nil)) k_present = 0;
 		if (Kinds::eq(first_base, K_void)) k_present = 0;

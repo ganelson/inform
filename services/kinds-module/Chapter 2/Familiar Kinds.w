@@ -108,10 +108,6 @@ kind *K_unicode_character = NULL;
 kind *K_use_option = NULL;
 kind *K_verb = NULL;
 
-kind *K_action_name = NULL;
-kind *K_description_of_action = NULL;
-kind *K_stored_action = NULL;
-
 @ And here are two more standard kinds, but which most Inform uses don't
 realise are there, because they are omitted from the Kinds index:
 

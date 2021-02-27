@@ -1413,7 +1413,7 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) flag_bits);
 		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
 		else Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-		Produce::val_iname(Emit::tree(), K_action_name, PL::Actions::double_sharp(an));
+		Produce::val_iname(Emit::tree(), K_action_name, RTActions::double_sharp(an));
 		if (spec0) PL::Actions::Patterns::emit_try_action_parameter(spec0, PL::Actions::get_data_type_of_noun(an));
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, PL::Actions::get_data_type_of_second_noun(an));
@@ -2270,7 +2270,7 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 		if (ap->action->next) bad_form = TRUE;
 		if (PL::Actions::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)
 			bad_form = TRUE;
-		Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(ap->action->action_listed));
+		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(ap->action->action_listed));
 	}
 	Produce::up(Emit::tree());
 

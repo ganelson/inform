@@ -466,7 +466,7 @@ void Emit::array_generic_entry(inter_ti val1, inter_ti val2) {
 void Emit::array_action_entry(action_name *an) {
 	if (current_A == NULL) internal_error("entry outside of inter array");
 	inter_ti v1 = 0, v2 = 0;
-	inter_symbol *symb = InterNames::to_symbol(PL::Actions::iname(an));
+	inter_symbol *symb = InterNames::to_symbol(RTActions::iname(an));
 	inter_bookmark *IBM = Emit::array_IRS();
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), symb, &v1, &v2);
 	Emit::add_entry(v1, v2);

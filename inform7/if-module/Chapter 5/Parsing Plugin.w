@@ -180,6 +180,6 @@ i.e., all Inter objects corresponding to I7 things.
 		if ((K_room == NULL) ||
 			(InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE)) {
 			instance *I = InstanceSubjects::to_instance(subj);
-			parse_node *S = PL::Actions::compile_action_bitmap_property(I);
+			parse_node *S = RTActions::compile_action_bitmap_property(I);
 			ValueProperties::assert(P_action_bitmap, subj, S, CERTAIN_CE);
 		}

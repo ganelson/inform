@@ -1,27 +1,14 @@
 [PL::Actions::] Actions.
 
-To define, map to I6 and index individual actions.
+Each different sort of impulse to do something is an "action name".
 
-@ An action is an impulse to do something within the model world, and which
-may not be possible. Much of the work of designing an interactive fiction
-consists in responding to the actions of the player, sometimes in ways
-which the player expects, sometimes not. Design systems for interactive
-fiction therefore need to provide flexible and convenient ways to discuss
-actions.
+@ An action is an impulse to do something within the model world, and there
+will be many different sorts of impulse which a person may have: "going"
+[i.e. somewhere], for example, or "wearing" [i.e. something].
 
-An activity is by contrast something done by the run-time code during play:
-for instance, printing the name of an object, or asking a disambiguation
-question. These tasks must similarly be customisable by the designer, and
-a system of rulebooks is used which parallels the treatment of actions.
-
-@ Some fields of this structure reflect the history of Inform 7, and of I6 for
-that matter: in particular, very few actions if any now use an I6-library
-defined verb routine, but the ability is kept against future need; and
-the idea of a flexible number of parameters -- which I6 allowed, thus
-parsing "listen" and "listen to the frog" as the same action, with
-0 and 1 parameters respectively -- has been dropped in I7. (We use the
-activities for selecting missing parameters instead.) So for now the minimum
-and maximum below are always equal.
+Each of these different sorts of action is represented by an instance of
+//action_name//, and each in turn corresponds to an instance of the enumerated
+kind |K_action_name| at run-time. 
 
 =
 typedef struct action_name {
@@ -30,37 +17,43 @@ typedef struct action_name {
 	struct wording past_name; /* such as "dropped" or "taken" */
 	int it_optional; /* noun optional when describing the second noun? */
 	int abbreviable; /* preposition optional when describing the second noun? */
-	int translated;
-	struct text_stream *translated_name;
-	struct inter_name *an_base_iname; /* e.g., |Take| */
-	struct inter_name *an_iname; /* e.g., |##Take| */
-	struct inter_name *an_routine_iname; /* e.g., |TakeSub| */
-	struct package_request *an_package;
-
-	int out_of_world; /* action is declared as out of world? */
-	int use_verb_routine_in_I6_library; /* rather than compiling our own? */
 
 	struct rulebook *check_rules; /* rulebooks private to this action */
 	struct rulebook *carry_out_rules;
 	struct rulebook *report_rules;
-	struct stacked_variable_owner *owned_by_an; /* action variables owned here */
+	struct stacked_variable_owner *action_variables;
 
-	struct parse_node *designers_specification; /* where created */
+	struct grammar_line *list_with_action; /* list of grammar producing this */
 
+	struct action_semantics semantics;
+
+	struct action_compilation_data compilation_data;
+	struct action_indexing_data indexing_data;
+	CLASS_DEFINITION
+} action_name;
+
+typedef struct action_semantics {
+	int out_of_world; /* action is declared as out of world? */
 	int requires_light; /* does this action require light to be carried out? */
 	int min_parameters, max_parameters; /* in the range 0 to 2 */
 	int noun_access; /* one of the possibilities below */
 	int second_access;
 	struct kind *noun_kind; /* if there is at least 1 parameter */
 	struct kind *second_kind; /* if there are 2 parameters */
+} action_semantics;
 
-	struct grammar_line *list_with_action; /* list of grammar producing this */
-
-	int an_specification_text_word; /* description used in index */
-	int an_index_group; /* paragraph number it belongs to (1, 2, 3, ...) */
-
-	CLASS_DEFINITION
-} action_name;
+action_semantics PL::Actions::default_semantics(void) {
+	action_semantics sem;
+	sem.requires_light = FALSE;
+	sem.noun_access = IMPOSSIBLE_ACCESS;
+	sem.second_access = IMPOSSIBLE_ACCESS;
+	sem.min_parameters = 0;
+	sem.max_parameters = 0;
+	sem.noun_kind = K_object;
+	sem.second_kind = K_object;
+	sem.out_of_world = FALSE;
+	return sem;
+}
 
 @
 
@@ -69,9 +62,22 @@ stacked_variable_owner_list *all_nonempty_stacked_action_vars = NULL;
 
 @ One action has special rules, to accommodate the "nowhere" syntax:
 
-=
+= (early code)
 action_name *going_action = NULL;
 action_name *waiting_action = NULL;
+
+@
+
+=
+void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
+	if (Wordings::first_wn(W) == start) {
+		WRITE("%W", Wordings::first_word(W));
+		W = Wordings::trim_first_word(W);
+		if (Wordings::empty(W)) return;
+		WRITE(" ");
+	}
+	WRITE("%+W", W);
+}
 
 @ The access possibilities for the noun and second noun are as follows.
 
@@ -88,7 +94,7 @@ int PL::Actions::actions_compile_constant(value_holster *VH, kind *K, parse_node
 	if (Kinds::eq(K, K_action_name)) {
 		action_name *an = Rvalues::to_action_name(spec);
 		if (Holsters::data_acceptable(VH)) {
-			inter_name *N = PL::Actions::iname(an);
+			inter_name *N = RTActions::iname(an);
 			if (N) Emit::holster(VH, N);
 		}
 		return TRUE;
@@ -122,7 +128,7 @@ int PL::Actions::actions_offered_property(kind *K, parse_node *owner, parse_node
 
 int PL::Actions::actions_offered_specification(parse_node *owner, wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(owner, K_action_name)) {
-		PL::Actions::actions_set_specification_text(
+		IXActions::actions_set_specification_text(
 			Rvalues::to_action_name(owner), Wordings::first_wn(W));
 		return TRUE;
 	}
@@ -178,27 +184,14 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	an->past_name = PastParticiples::pasturise_wording(an->present_name);
 	an->it_optional = TRUE;
 	an->abbreviable = FALSE;
-	an->translated = FALSE;
-	an->translated_name = NULL;
-
-	an->an_package = Hierarchy::local_package(ACTIONS_HAP);
-	Hierarchy::markup_wording(an->an_package, ACTION_NAME_HMD, W);
-	an->an_base_iname = NULL;
-	an->use_verb_routine_in_I6_library = TRUE;
+	an->compilation_data = RTActions::new_data(W, implemented_by_I7);
+	an->indexing_data = IXActions::new_data();
 	an->check_rules = NULL;
 	an->carry_out_rules = NULL;
 	an->report_rules = NULL;
-	an->requires_light = FALSE;
-	an->noun_access = IMPOSSIBLE_ACCESS;
-	an->second_access = IMPOSSIBLE_ACCESS;
-	an->min_parameters = 0;
-	an->max_parameters = 0;
-	an->noun_kind = K_object;
-	an->second_kind = K_object;
-	an->designers_specification = NULL;
 	an->list_with_action = NULL;
-	an->out_of_world = FALSE;
-	an->an_specification_text_word = -1;
+	
+	an->semantics = PL::Actions::default_semantics();
 
 	word_assemblage wa = PreformUtilities::merge(<action-name-construction>, 0,
 		WordAssemblages::from_wording(W));
@@ -213,13 +206,11 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
 
 	if (implemented_by_I7) {
-		an->use_verb_routine_in_I6_library = FALSE;
-
 		feed_t id = Feeds::begin();
 		Feeds::feed_C_string_expanding_strings(L"check");
 		Feeds::feed_wording(an->present_name);
 		wording W = Feeds::end(id);
-		package_request *CR = Hierarchy::make_package_in(CHECK_RB_HL, an->an_package);
+		package_request *CR = RTActions::rulebook_package(an, CHECK_RB_HL);
 		an->check_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, CR);
@@ -229,7 +220,7 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_C_string_expanding_strings(L"carry out");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
-		package_request *OR = Hierarchy::make_package_in(CARRY_OUT_RB_HL, an->an_package);
+		package_request *OR = RTActions::rulebook_package(an, CARRY_OUT_RB_HL);
 		an->carry_out_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, OR);
@@ -239,15 +230,15 @@ action_name *PL::Actions::act_new(wording W, int implemented_by_I7) {
 		Feeds::feed_C_string_expanding_strings(L"report");
 		Feeds::feed_wording(an->present_name);
 		W = Feeds::end(id);
-		package_request *RR = Hierarchy::make_package_in(REPORT_RB_HL, an->an_package);
+		package_request *RR = RTActions::rulebook_package(an, REPORT_RB_HL);
 		an->report_rules =
 			Rulebooks::new_automatic(W, K_action_name,
 				NO_OUTCOME, TRUE, FALSE, FALSE, RR);
 		Rulebooks::fragment_by_actions(an->report_rules, 1);
 
-		an->owned_by_an = StackedVariables::new_owner(20000+an->allocation_id);
+		an->action_variables = StackedVariables::new_owner(20000+an->allocation_id);
 	} else {
-		an->owned_by_an = NULL;
+		an->action_variables = NULL;
 	}
 
 	action_name *an2;
@@ -340,7 +331,7 @@ then that's what "listening" will match.)
 action_name *PL::Actions::longest_null(wording W, int tense, int *excess) {
 	action_name *an;
 	LOOP_OVER(an, action_name)
-		if (an->max_parameters == 0) {
+		if (an->semantics.max_parameters == 0) {
 			wording AW = (tense == IS_TENSE) ? (an->present_name) : (an->past_name);
 			if (Wordings::starts_with(W, AW)) {
 				*excess = Wordings::first_wn(W) + Wordings::length(AW);
@@ -358,47 +349,9 @@ int PL::Actions::abbreviable(action_name *an) {
 	return an->abbreviable;
 }
 
-text_stream *PL::Actions::identifier(action_name *an) {
-	return Emit::to_text(PL::Actions::base_iname(an));
-}
-
 action_name *PL::Actions::Wait(void) {
 	if (waiting_action == NULL) internal_error("wait action not ready");
 	return waiting_action;
-}
-
-inter_name *PL::Actions::base_iname(action_name *an) {
-	if (an->an_base_iname == NULL) {
-		if (waiting_action == an)
-			an->an_base_iname = Hierarchy::make_iname_in(WAIT_HL, an->an_package);
-		else if (Str::len(an->translated_name) > 0)
-			an->an_base_iname = Hierarchy::make_iname_with_specific_name(TRANSLATED_BASE_NAME_HL, an->translated_name, an->an_package);
-		else
-			an->an_base_iname = Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->an_package, an->present_name);
-	}
-	return an->an_base_iname;
-}
-
-inter_name *PL::Actions::double_sharp(action_name *an) {
-	if (an->an_iname == NULL) {
-		an->an_iname = Hierarchy::derive_iname_in(DOUBLE_SHARP_NAME_HL, PL::Actions::base_iname(an), an->an_package);
-		Emit::ds_named_pseudo_numeric_constant(an->an_iname, K_value, (inter_ti) an->allocation_id);
-		Hierarchy::make_available(Emit::tree(), an->an_iname);
-		Produce::annotate_i(an->an_iname, ACTION_IANN, 1);
-	}
-	return an->an_iname;
-}
-
-inter_name *PL::Actions::Sub(action_name *an) {
-	if (an->an_routine_iname == NULL) {
-		an->an_routine_iname = Hierarchy::derive_iname_in(PERFORM_FN_HL, PL::Actions::base_iname(an), an->an_package);
-		Hierarchy::make_available(Emit::tree(), an->an_routine_iname);
-	}
-	return an->an_routine_iname;
-}
-
-inter_name *PL::Actions::iname(action_name *an) {
-	return PL::Actions::double_sharp(an);
 }
 
 rulebook *PL::Actions::get_fragmented_rulebook(action_name *an, rulebook *rb) {
@@ -419,13 +372,6 @@ rulebook *PL::Actions::switch_fragmented_rulebook(action_name *new_an, rulebook 
 	return orig;
 }
 
-void PL::Actions::actions_set_specification_text(action_name *an, int wn) {
-	an->an_specification_text_word = wn;
-}
-int PL::Actions::an_get_specification_text(action_name *an) {
-	return an->an_specification_text_word;
-}
-
 @ Most actions are given automatically generated Inform 6 names in the
 compiled code: |Q4_green|, for instance. A few must however correspond to
 names of significance in the I6 library.
@@ -444,19 +390,7 @@ void PL::Actions::translates(wording W, parse_node *p2) {
 			"so cannot be translated into I6 at all.");
 		return;
 	}
-	if (an->translated) {
-		LOG("Tried action name %W = %n\n", W, PL::Actions::base_iname(an));
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TranslatesActionAlready),
-			"this action has already been translated",
-			"so there must be some duplication somewhere.");
-		return;
-	}
-	if (an->an_base_iname) internal_error("too late for action base name translation");
-
-	an->translated = TRUE;
-	an->translated_name = Str::new();
-	WRITE_TO(an->translated_name, "%N", Wordings::first_wn(Node::get_text(p2)));
-	LOGIF(ACTION_CREATIONS, "Translated action: $l as %n\n", an, PL::Actions::base_iname(an));
+	RTActions::translate(an, Node::get_text(p2));
 }
 
 int PL::Actions::get_stem_length(action_name *an) {
@@ -533,7 +467,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		return;
 	}
 
-	if (an->owned_by_an == NULL) {
+	if (an->action_variables == NULL) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(cnode->down->next));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable)); /* since we no longer define such actions */
@@ -620,12 +554,12 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 		return;
 	}
 
-	if (StackedVariables::owner_empty(an->owned_by_an)) {
+	if (StackedVariables::owner_empty(an->action_variables)) {
 		all_nonempty_stacked_action_vars =
-			StackedVariables::add_owner_to_list(all_nonempty_stacked_action_vars, an->owned_by_an);
+			StackedVariables::add_owner_to_list(all_nonempty_stacked_action_vars, an->action_variables);
 	}
 
-	stv = StackedVariables::add_empty(an->owned_by_an, NW, K);
+	stv = StackedVariables::add_empty(an->action_variables, NW, K);
 
 	LOGIF(ACTION_CREATIONS, "Created action variable for $l: %W (%u)\n",
 		an, Node::get_text(cnode->down->next), K);
@@ -637,18 +571,7 @@ void PL::Actions::an_add_variable(action_name *an, parse_node *cnode) {
 }
 
 stacked_variable *PL::Actions::parse_match_clause(action_name *an, wording W) {
-	return StackedVariables::parse_match_clause(an->owned_by_an, W);
-}
-
-void PL::Actions::compile_action_name_var_creators(void) {
-	action_name *an;
-	LOOP_OVER(an, action_name) {
-		if ((an->owned_by_an) &&
-			(StackedVariables::owner_empty(an->owned_by_an) == FALSE)) {
-			inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL, an->an_package);
-			StackedVariables::compile_frame_creator(an->owned_by_an, iname);
-		}
-	}
+	return StackedVariables::parse_match_clause(an->action_variables, W);
 }
 
 @ This handles the special meaning "X is an action...".
@@ -739,7 +662,7 @@ action to be created.
 		"action for what you need ('keyless unlocking', perhaps) and then "
 		"change the grammar to use the new action rather than the old "
 		"('Understand \"unlock [something]\" as keyless unlocking.').");
-	==> { -, K_object };
+	==> { fail nonterminal };
 
 @ The object NP is trickier, because it is a sequence
 of "action clauses" which can occur in any order, which are allowed but
@@ -830,7 +753,7 @@ It's convenient to define a single action clause first:
 void PL::Actions::act_on_clause(int N) {
 	switch (N) {
 		case OOW_ACT_CLAUSE:
-			an_being_parsed->out_of_world = TRUE; break;
+			an_being_parsed->semantics.out_of_world = TRUE; break;
 		case PP_ACT_CLAUSE: {
 			wording C = GET_RW(<action-clause>, 1);
 			if (Wordings::length(C) != 1)
@@ -847,17 +770,17 @@ void PL::Actions::act_on_clause(int N) {
 			break;
 		}
 		case APPLYING_ACT_CLAUSE:
-			an_being_parsed->noun_access = <<ac1>>; an_being_parsed->second_access = <<ac2>>;
-			an_being_parsed->noun_kind = <<kind:op1>>; an_being_parsed->second_kind = <<kind:op2>>;
-			an_being_parsed->min_parameters = <<num>>;
-			an_being_parsed->max_parameters = an_being_parsed->min_parameters;
-			if (an_being_parsed->min_parameters == -1) {
-				an_being_parsed->min_parameters = 0;
-				an_being_parsed->max_parameters = 1;
+			an_being_parsed->semantics.noun_access = <<ac1>>; an_being_parsed->semantics.second_access = <<ac2>>;
+			an_being_parsed->semantics.noun_kind = <<kind:op1>>; an_being_parsed->semantics.second_kind = <<kind:op2>>;
+			an_being_parsed->semantics.min_parameters = <<num>>;
+			an_being_parsed->semantics.max_parameters = an_being_parsed->semantics.min_parameters;
+			if (an_being_parsed->semantics.min_parameters == -1) {
+				an_being_parsed->semantics.min_parameters = 0;
+				an_being_parsed->semantics.max_parameters = 1;
 			}
 			break;
 		case LIGHT_ACT_CLAUSE:
-			an_being_parsed->requires_light = TRUE;
+			an_being_parsed->semantics.requires_light = TRUE;
 			break;
 		case ABBREV_ACT_CLAUSE:
 			an_being_parsed->abbreviable = TRUE;
@@ -881,7 +804,7 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 	if (an == NULL) return;
 
 	if (p->next->next) {
-		an->designers_specification = p->next->next;
+		an->indexing_data.designers_specification = p->next->next;
 
 		an_being_parsed = an;
 		<<ac1>> = IMPOSSIBLE_ACCESS;
@@ -893,9 +816,9 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 		<action-sentence-object>(Node::get_text(p->next->next));
 	}
 
-	if (an->max_parameters >= 2) {
-		if ((Kinds::Behaviour::is_object(an->noun_kind) == FALSE) &&
-			(Kinds::Behaviour::is_object(an->second_kind) == FALSE)) {
+	if (an->semantics.max_parameters >= 2) {
+		if ((Kinds::Behaviour::is_object(an->semantics.noun_kind) == FALSE) &&
+			(Kinds::Behaviour::is_object(an->semantics.second_kind) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActionBothValues),
 				"this action definition asks to have a single action apply "
 				"to two different things which are not objects",
@@ -908,16 +831,16 @@ void PL::Actions::act_parse_definition(parse_node *p) {
 }
 
 int PL::Actions::is_out_of_world(action_name *an) {
-	if (an->out_of_world) return TRUE;
+	if (an->semantics.out_of_world) return TRUE;
 	return FALSE;
 }
 
 kind *PL::Actions::get_data_type_of_noun(action_name *an) {
-	return an->noun_kind;
+	return an->semantics.noun_kind;
 }
 
 kind *PL::Actions::get_data_type_of_second_noun(action_name *an) {
-	return an->second_kind;
+	return an->semantics.second_kind;
 }
 
 wording PL::Actions::set_text_to_name_tensed(action_name *an, int tense) {
@@ -926,16 +849,16 @@ wording PL::Actions::set_text_to_name_tensed(action_name *an, int tense) {
 }
 
 int PL::Actions::can_have_parameters(action_name *an) {
-	if (an->max_parameters > 0) return TRUE;
+	if (an->semantics.max_parameters > 0) return TRUE;
 	return FALSE;
 }
 
 int PL::Actions::get_max_parameters(action_name *an) {
-	return an->max_parameters;
+	return an->semantics.max_parameters;
 }
 
 int PL::Actions::get_min_parameters(action_name *an) {
-	return an->min_parameters;
+	return an->semantics.min_parameters;
 }
 
 @h Past tense.
@@ -947,40 +870,12 @@ in question. This is where we compile the bitmaps in their fresh, empty form.
 
 =
 int PL::Actions::can_be_compiled_in_past_tense(action_name *an) {
-	if (an->min_parameters > 1) return FALSE;
-	if (an->max_parameters > 1) return FALSE;
-	if ((an->max_parameters == 1) &&
-		(Kinds::Behaviour::is_object(an->noun_kind) == FALSE))
+	if (an->semantics.min_parameters > 1) return FALSE;
+	if (an->semantics.max_parameters > 1) return FALSE;
+	if ((an->semantics.max_parameters == 1) &&
+		(Kinds::Behaviour::is_object(an->semantics.noun_kind) == FALSE))
 			return FALSE;
 	return TRUE;
-}
-
-parse_node *PL::Actions::compile_action_bitmap_property(instance *I) {
-	package_request *R = NULL;
-	inter_name *N = NULL;
-	if (I) {
-		R = RTInstances::package(I);
-		package_request *PR = Hierarchy::package_within(INLINE_PROPERTIES_HAP, R);
-		N = Hierarchy::make_iname_in(INLINE_PROPERTY_HL, PR);
-	} else {
-		R = Kinds::Behaviour::package(K_object);
-		package_request *PR = Hierarchy::package_within(KIND_INLINE_PROPERTIES_HAP, R);
-		N = Hierarchy::make_iname_in(KIND_INLINE_PROPERTY_HL, PR);
-	}
-	packaging_state save = Emit::named_array_begin(N, K_number);
-	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Produce::annotate_i(N, INLINE_ARRAY_IANN, 1);
-	return Rvalues::from_iname(N);
-}
-
-void PL::Actions::ActionHappened(void) {
-	inter_name *iname = Hierarchy::find(ACTIONHAPPENED_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
-	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++)
-		Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 @h The grammar list.
@@ -1002,9 +897,9 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 	kind **tok_value_kinds) {
 	int required = 0; char *failed_on = "<internal error>";
 
-	if (an->noun_access != IMPOSSIBLE_ACCESS)
+	if (an->semantics.noun_access != IMPOSSIBLE_ACCESS)
 		required++;
-	if (an->second_access != IMPOSSIBLE_ACCESS)
+	if (an->semantics.second_access != IMPOSSIBLE_ACCESS)
 		required++;
 	if (required < tok_values) {
 		switch(required) {
@@ -1028,10 +923,10 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 	}
 
 	if (tok_values >= 1) {
-		switch(an->noun_access) {
+		switch(an->semantics.noun_access) {
 			case UNRESTRICTED_ACCESS: {
 				kind *supplied_data_type = tok_value_kinds[0];
-				kind *desired_data_type = an->noun_kind;
+				kind *desired_data_type = an->semantics.noun_kind;
 				if (Kinds::compatible(supplied_data_type, desired_data_type)
 					!= ALWAYS_MATCH) {
 					failed_on =
@@ -1054,10 +949,10 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 		}
 	}
 	if (tok_values == 2) {
-		switch(an->second_access) {
+		switch(an->semantics.second_access) {
 			case UNRESTRICTED_ACCESS: {
 				kind *supplied_data_type = tok_value_kinds[1];
-				kind *desired_data_type = an->second_kind;
+				kind *desired_data_type = an->semantics.second_kind;
 				if (Kinds::compatible(supplied_data_type, desired_data_type)
 					!= ALWAYS_MATCH) {
 					failed_on =
@@ -1082,20 +977,11 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 
 	return;
 	Unmatched:
-		LOG("%d token values supplied\n", tok_values);
-		{	int i;
-			for (i=0; i<tok_values; i++)
-				LOG("Token value %d: %u\n", i, tok_value_kinds[i]);
-			LOG("Expected noun K: %u\n", an->noun_kind);
-			LOG("Expected second K: %u\n", an->second_kind);
-			LOG("Noun access level: %d\n", an->noun_access);
-			LOG("Second access level: %d\n", an->second_access);
-		}
 		Problems::quote_source(1, current_sentence);
-		if (an->designers_specification == NULL)
+		if (an->indexing_data.designers_specification == NULL)
 			Problems::quote_text(2, "<none given>");
 		else
-			Problems::quote_wording(2, Node::get_text(an->designers_specification));
+			Problems::quote_wording(2, Node::get_text(an->indexing_data.designers_specification));
 		Problems::quote_wording(3, an->present_name);
 		Problems::quote_text(4, failed_on);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_GrammarMismatchesAction));
@@ -1104,372 +990,3 @@ void PL::Actions::check_types_for_grammar(action_name *an, int tok_values,
 		Problems::issue_problem_end();
 }
 
-@h Compiling data about actions.
-In I6, there was no common infrastructure for the implementation of
-actions: each defined its own |-Sub| routine. Here, we do have a common
-infrastructure, and we access it with a single call.
-
-=
-void PL::Actions::compile_action_routines(void) {
-	action_name *an;
-	LOOP_OVER(an, action_name) {
-		if (an->use_verb_routine_in_I6_library) continue;
-		inter_name *iname = PL::Actions::Sub(an);
-		packaging_state save = Routines::begin(iname);
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
-			Produce::inv_call_iname(Emit::tree(), generic_iname);
-			Produce::down(Emit::tree());
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->check_rules->allocation_id);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->carry_out_rules->allocation_id);
-				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->report_rules->allocation_id);
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-		Routines::end(save);
-	}
-}
-
-@h Compiling data about actions.
-There are also collective tables of data about actions.
-
-=
-void PL::Actions::ActionData(void) {
-	PL::Actions::compile_action_name_var_creators();
-	action_name *an;
-	int mn, ms, ml, mnp, msp, hn, hs, record_count = 0;
-
-	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
-	packaging_state save = Emit::named_table_array_begin(iname, K_value);
-	LOOP_OVER(an, action_name) {
-		if (an->use_verb_routine_in_I6_library) continue;
-		mn = 0; ms = 0; ml = 0; mnp = 1; msp = 1; hn = 0; hs = 0;
-		if (an->requires_light) ml = 1;
-		if (an->noun_access == REQUIRES_ACCESS) mn = 1;
-		if (an->second_access == REQUIRES_ACCESS) ms = 1;
-		if (an->noun_access == REQUIRES_POSSESSION) { mn = 1; hn = 1; }
-		if (an->second_access == REQUIRES_POSSESSION) { ms = 1; hs = 1; }
-		if (an->noun_access == IMPOSSIBLE_ACCESS) mnp = 0;
-		if (an->second_access == IMPOSSIBLE_ACCESS) msp = 0;
-		record_count++;
-		Emit::array_action_entry(an);
-		inter_ti bitmap = (inter_ti) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
-			msp*0x10 + ((an->out_of_world)?1:0)*0x20 + hn*0x40 + hs*0x80);
-		Emit::array_numeric_entry(bitmap);
-		RTKinds::emit_strong_id(an->noun_kind);
-		RTKinds::emit_strong_id(an->second_kind);
-		if ((an->owned_by_an) &&
-				(StackedVariables::owner_empty(an->owned_by_an) == FALSE))
-			Emit::array_iname_entry(StackedVariables::frame_creator(an->owned_by_an));
-		else Emit::array_numeric_entry(0);
-		Emit::array_numeric_entry((inter_ti) (20000+an->allocation_id));
-	}
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-
-	inter_name *ad_iname = Hierarchy::find(AD_RECORDS_HL);
-	Emit::named_numeric_constant(ad_iname, (inter_ti) record_count);
-	Hierarchy::make_available(Emit::tree(), ad_iname);
-
-	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
-	save = Routines::begin(DB_Action_Details_iname);
-	inter_symbol *act_s = LocalVariables::add_named_call_as_symbol(I"act");
-	inter_symbol *n_s = LocalVariables::add_named_call_as_symbol(I"n");
-	inter_symbol *s_s = LocalVariables::add_named_call_as_symbol(I"s");
-	inter_symbol *for_say_s = LocalVariables::add_named_call_as_symbol(I"for_say");
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
-		Produce::val_symbol(Emit::tree(), K_value, act_s);
-		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
-
-	LOOP_OVER(an, action_name) {
-		if (an->use_verb_routine_in_I6_library) continue;
-			Produce::inv_primitive(Emit::tree(), CASE_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(an));
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-
-				int j = Wordings::first_wn(an->present_name), j0 = -1, somethings = 0, clc = 0;
-				while (j <= Wordings::last_wn(an->present_name)) {
-					if (<action-pronoun>(Wordings::one_word(j))) {
-						if (j0 >= 0) {
-							@<Insert a space here if needed to break up the action name@>;
-
-							TEMPORARY_TEXT(AT)
-							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-							Produce::down(Emit::tree());
-								Produce::val_text(Emit::tree(), AT);
-							Produce::up(Emit::tree());
-							DISCARD_TEXT(AT)
-
-							j0 = -1;
-						}
-						@<Insert a space here if needed to break up the action name@>;
-						Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
-						Produce::down(Emit::tree());
-							Produce::inv_primitive(Emit::tree(), EQ_BIP);
-							Produce::down(Emit::tree());
-								Produce::val_symbol(Emit::tree(), K_value, for_say_s);
-								Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-							Produce::up(Emit::tree());
-							Produce::code(Emit::tree());
-							Produce::down(Emit::tree());
-								Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-								Produce::down(Emit::tree());
-									Produce::val_text(Emit::tree(), I"it");
-								Produce::up(Emit::tree());
-							Produce::up(Emit::tree());
-							Produce::code(Emit::tree());
-							Produce::down(Emit::tree());
-								PL::Actions::cat_something2(an, somethings++, n_s, s_s);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					} else {
-						if (j0<0) j0 = j;
-					}
-					j++;
-				}
-				if (j0 >= 0) {
-					@<Insert a space here if needed to break up the action name@>;
-					TEMPORARY_TEXT(AT)
-					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_text(Emit::tree(), AT);
-					Produce::up(Emit::tree());
-					DISCARD_TEXT(AT)
-				}
-				if (somethings < an->max_parameters) {
-					Produce::inv_primitive(Emit::tree(), IF_BIP);
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), NE_BIP);
-						Produce::down(Emit::tree());
-							Produce::val_symbol(Emit::tree(), K_value, for_say_s);
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
-						Produce::up(Emit::tree());
-						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
-							@<Insert a space here if needed to break up the action name@>;
-							PL::Actions::cat_something2(an, somethings++, n_s, s_s);
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				}
-
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-	}
-
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
-	Routines::end(save);
-	Hierarchy::make_available(Emit::tree(), DB_Action_Details_iname);
-}
-
-@<Insert a space here if needed to break up the action name@> =
-	if (clc++ > 0) {
-		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_text(Emit::tree(), I" ");
-		Produce::up(Emit::tree());
-	}
-
-@ =
-void PL::Actions::cat_something2(action_name *an, int n, inter_symbol *n_s, inter_symbol *s_s) {
-	kind *K = an->noun_kind;
-	inter_symbol *var = n_s;
-	if (n > 0) {
-		K = an->second_kind; var = s_s;
-	}
-	if (Kinds::Behaviour::is_object(K) == FALSE)
-		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
-	Produce::inv_primitive(Emit::tree(), INDIRECT1V_BIP);
-	Produce::down(Emit::tree());
-		Produce::val_iname(Emit::tree(), K_value, Kinds::Behaviour::get_name_of_printing_rule_ACTIONS(K));
-		if ((K_understanding) && (Kinds::eq(K, K_understanding))) {
-			Produce::inv_primitive(Emit::tree(), PLUS_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), TIMES_BIP);
-				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 100);
-					Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_FROM_HL));
-				Produce::up(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(CONSULT_WORDS_HL));
-			Produce::up(Emit::tree());
-		} else {
-			Produce::val_symbol(Emit::tree(), K_value, var);
-		}
-	Produce::up(Emit::tree());
-}
-
-void PL::Actions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
-	if (Wordings::first_wn(W) == start) {
-		WRITE("%W", Wordings::first_word(W));
-		W = Wordings::trim_first_word(W);
-		if (Wordings::empty(W)) return;
-		WRITE(" ");
-	}
-	WRITE("%+W", W);
-}
-
-void PL::Actions::ActionCoding_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIONCODING_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	action_name *an;
-	LOOP_OVER(an, action_name) {
-		if (Str::get_first_char(PL::Actions::identifier(an)) == '_') Emit::array_numeric_entry(0);
-		else Emit::array_action_entry(an);
-	}
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-@h Indexing.
-
-=
-int PL::Actions::index(OUTPUT_STREAM, action_name *an, int pass,
-	inform_extension **ext, heading **current_area, int f, int *new_par, int bold,
-	int on_details_page) {
-	if (an->use_verb_routine_in_I6_library) return f;
-	heading *definition_area = Headings::of_wording(an->present_name);
-	*new_par = FALSE;
-	if (pass == 1) {
-		inform_extension *this_extension =
-			Headings::get_extension_containing(definition_area);
-		if (*ext != this_extension) {
-			*ext = this_extension;
-			if (*ext == NULL) {
-				if (f) HTML_CLOSE("p");
-				HTML_OPEN("p");
-				WRITE("<b>New actions defined in the source</b>");
-				HTML_TAG("br");
-				f = FALSE;
-				*new_par = TRUE;
-			} else if (Extensions::is_standard(*ext) == FALSE) {
-				if (f) HTML_CLOSE("p");
-				HTML_OPEN("p");
-				WRITE("<b>Actions defined by the extension ");
-				Extensions::write_name_to_file(*ext, OUT);
-				WRITE(" by ");
-				Extensions::write_author_to_file(*ext, OUT);
-				WRITE("</b>");
-				HTML_TAG("br");
-				f = FALSE;
-				*new_par = TRUE;
-			}
-		}
-		if ((definition_area != *current_area) && (Extensions::is_standard(*ext))) {
-			if (f) HTML_CLOSE("p");
-			HTML_OPEN("p");
-			wording W = Headings::get_text(definition_area);
-			if (Wordings::nonempty(W)) {
-				Phrases::Index::index_definition_area(OUT, W, TRUE);
-			} else if (*ext == NULL) {
-				WRITE("<b>");
-				WRITE("New actions");
-				WRITE("</b>");
-				HTML_TAG("br");
-			}
-			f = FALSE;
-			*new_par = TRUE;
-		}
-	}
-	if (pass == 1) {
-		if (f) WRITE(", "); else {
-			if (*new_par == FALSE) {
-				HTML_OPEN("p");
-				*new_par = TRUE;
-			}
-		}
-	}
-
-	f = TRUE;
-	*current_area = definition_area;
-	if (pass == 2) {
-		HTML_OPEN("p");
-	}
-	if (an->out_of_world) HTML::begin_colour(OUT, I"800000");
-	if (pass == 1) {
-		if (bold) WRITE("<b>");
-		WRITE("%+W", an->present_name);
-		if (bold) WRITE("</b>");
-	} else {
-		WRITE("<b>");
-		int j = Wordings::first_wn(an->present_name);
-		int somethings = 0;
-		while (j <= Wordings::last_wn(an->present_name)) {
-			if (<action-pronoun>(Wordings::one_word(j))) {
-				PL::Actions::act_index_something(OUT, an, somethings++);
-			} else {
-				WRITE("%+W ", Wordings::one_word(j));
-			}
-			j++;
-		}
-		if (somethings < an->max_parameters)
-			PL::Actions::act_index_something(OUT, an, somethings++);
-	}
-	if (an->out_of_world) HTML::end_colour(OUT);
-	if (pass == 2) {
-		int swn = PL::Actions::an_get_specification_text(an);
-		WRITE("</b>");
-		Index::link(OUT, Wordings::first_wn(Node::get_text(an->designers_specification)));
-		Index::anchor(OUT, PL::Actions::identifier(an));
-		if (an->requires_light) WRITE(" (requires light)");
-		WRITE(" (<i>past tense</i> %+W)", an->past_name);
-		HTML_CLOSE("p");
-		if (swn >= 0) { HTML_OPEN("p"); WRITE("%W", Wordings::one_word(swn)); HTML_CLOSE("p"); }
-		HTML_TAG("hr");
-		HTML_OPEN("p"); WRITE("<b>Typed commands leading to this action</b>\n"); HTML_CLOSE("p");
-		HTML_OPEN("p");
-		if (PL::Parsing::Lines::index_list_with_action(OUT, an->list_with_action) == FALSE)
-			WRITE("<i>None</i>");
-		HTML_CLOSE("p");
-		if (StackedVariables::owner_empty(an->owned_by_an) == FALSE) {
-			HTML_OPEN("p"); WRITE("<b>Named values belonging to this action</b>\n"); HTML_CLOSE("p");
-			StackedVariables::index_owner(OUT, an->owned_by_an);
-		}
-
-		HTML_OPEN("p"); WRITE("<b>Rules controlling this action</b>"); HTML_CLOSE("p");
-		HTML_OPEN("p");
-		WRITE("\n");
-		int resp_count = 0;
-		if (an->out_of_world == FALSE) {
-			Rulebooks::index_action_rules(OUT, an, NULL, PERSUASION_RB, "persuasion", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, UNSUCCESSFUL_ATTEMPT_BY_RB, "unsuccessful attempt", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, SETTING_ACTION_VARIABLES_RB, "set action variables for", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, BEFORE_RB, "before", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, INSTEAD_RB, "instead of", &resp_count);
-		}
-		Rulebooks::index_action_rules(OUT, an, an->check_rules, CHECK_RB, "check", &resp_count);
-		Rulebooks::index_action_rules(OUT, an, an->carry_out_rules, CARRY_OUT_RB, "carry out", &resp_count);
-		if (an->out_of_world == FALSE)
-			Rulebooks::index_action_rules(OUT, an, NULL, AFTER_RB, "after", &resp_count);
-		Rulebooks::index_action_rules(OUT, an, an->report_rules, REPORT_RB, "report", &resp_count);
-		if (resp_count > 1) {
-			WRITE("Click on the speech-bubble icons to see the responses, "
-				"or here to see all of them:");
-			WRITE("&nbsp;");
-			Index::extra_link_with(OUT, 2000000, "responses");
-			WRITE("%d", resp_count);
-		}
-		HTML_CLOSE("p");
-	} else {
-		Index::link(OUT, Wordings::first_wn(Node::get_text(an->designers_specification)));
-		Index::detail_link(OUT, "A", an->allocation_id, (on_details_page)?FALSE:TRUE);
-	}
-	return f;
-}
-
-void PL::Actions::act_index_something(OUTPUT_STREAM, action_name *an, int argc) {
-	kind *K = NULL; /* redundant assignment to appease |gcc -O2| */
-	HTML::begin_colour(OUT, I"000080");
-	if (argc == 0) K = an->noun_kind;
-	if (argc == 1) K = an->second_kind;
-	if (Kinds::Behaviour::is_object(K)) WRITE("something");
-	else if ((K_understanding) && (Kinds::eq(K, K_understanding))) WRITE("some text");
-	else Kinds::Textual::write(OUT, K);
-	HTML::end_colour(OUT);
-	WRITE(" ");
-}

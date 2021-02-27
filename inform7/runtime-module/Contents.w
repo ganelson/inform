@@ -73,3 +73,4 @@ Chapter 5: Plugin Support
 	Showme Command
 	The Score
 	Scenes
+	Actions

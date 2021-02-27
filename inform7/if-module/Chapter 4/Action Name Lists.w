@@ -420,7 +420,7 @@ void PL::Actions::ConstantLists::compile(OUTPUT_STREAM, action_name_list *anl) {
 	if (optimise) {
 		WRITE("action %s", (anl->parity==1)?"==":"~=");
 		for (action_name_list *L = anl; L; L = L->next) {
-			WRITE("%n", PL::Actions::double_sharp(L->action_listed));
+			WRITE("%n", RTActions::double_sharp(L->action_listed));
 			if (L->next) WRITE(" or ");
 		}
 	} else {
@@ -429,7 +429,7 @@ void PL::Actions::ConstantLists::compile(OUTPUT_STREAM, action_name_list *anl) {
 			if (L->nap_listed)
 				WRITE("(%n())", PL::Actions::Patterns::Named::identifier(L->nap_listed));
 			else
-				WRITE("action == %n", PL::Actions::double_sharp(L->action_listed));
+				WRITE("action == %n", RTActions::double_sharp(L->action_listed));
 			if (L->parity == -1) WRITE(")");
 			if (L->next) WRITE(" || ");
 		}
@@ -461,7 +461,7 @@ void PL::Actions::ConstantLists::emit(action_name_list *anl) {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
-				Produce::val_iname(Emit::tree(), K_value, PL::Actions::double_sharp(L->action_listed));
+				Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(L->action_listed));
 			Produce::up(Emit::tree());
 		}
 	}
