@@ -703,22 +703,22 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 		Frames::remove_nonphrase_stack_frame();
 		permit_trying_omission = FALSE;
 
-		if (PL::Actions::Patterns::is_valid(&(phrcd.ap)) == FALSE)
+		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE)
 			@<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
-		phrcd.ap = PL::Actions::Patterns::parse_parametric(phud->rule_parameter, pk);
-		if (PL::Actions::Patterns::is_valid(&(phrcd.ap)) == FALSE) {
+		phrcd.ap = ActionPatterns::parse_parametric(phud->rule_parameter, pk);
+		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE) {
 			if (Wordings::nonempty(phud->whenwhile)) {
 				wording F = Wordings::up_to(phud->rule_parameter, Wordings::last_wn(phud->whenwhile));
-				phrcd.ap = PL::Actions::Patterns::parse_parametric(F, pk);
-				if (PL::Actions::Patterns::is_valid(&(phrcd.ap)) == TRUE) {
+				phrcd.ap = ActionPatterns::parse_parametric(F, pk);
+				if (ActionPatterns::is_valid(&(phrcd.ap)) == TRUE) {
 					phud->rule_parameter = F;
 					phud->whenwhile = EMPTY_WORDING;
 				}
 			}
 		}
-		if (PL::Actions::Patterns::is_valid(&(phrcd.ap)) == FALSE)
+		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE)
 			@<Issue a problem message for a bad parameter@>;
 	}
 	#endif
@@ -843,10 +843,10 @@ parser, recording how it most recently failed.
 @<See if it starts with a valid action name, at least@> =
 	action_name *an;
 	LOOP_OVER(an, action_name)
-		if ((Wordings::length(phud->rule_parameter) < Wordings::length(an->naming_data.present_name)) &&
+		if ((Wordings::length(phud->rule_parameter) < Wordings::length(ActionNameNames::tensed(an, IS_TENSE))) &&
 			(Wordings::match(phud->rule_parameter,
-				Wordings::truncate(an->naming_data.present_name, Wordings::length(phud->rule_parameter))))) {
-			Problems::quote_wording(3, an->naming_data.present_name);
+				Wordings::truncate(ActionNameNames::tensed(an, IS_TENSE), Wordings::length(phud->rule_parameter))))) {
+			Problems::quote_wording(3, ActionNameNames::tensed(an, IS_TENSE));
 			Problems::issue_problem_segment(
 				" I notice that there's an action called '%3', though: perhaps "
 				"this is what you meant?");
@@ -1000,14 +1000,14 @@ might have gone wrong.
 		}
 		action_pattern *ap = <<rp>>;
 		int form = <<r>>;
-		if (PL::Actions::Patterns::is_request(ap)) {
+		if (ActionPatterns::is_request(ap)) {
 			Problems::issue_problem_segment(
 				"'%4' would make sense as an action on its own, but 'or' can't "
 				"be used in combination with 'asking... to try...' actions; ");
 			return TRUE;
 		}
 
-		if (PL::Actions::Patterns::refers_to_past(ap)) {
+		if (ActionPatterns::refers_to_past(ap)) {
 			Problems::issue_problem_segment(
 				"'%4' would make sense as an action on its own, but 'or' can't "
 				"be used in combination with actions with time periods attached; ");

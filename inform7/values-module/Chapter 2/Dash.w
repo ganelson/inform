@@ -2916,7 +2916,7 @@ action value, which is a specific action.
 	if ((Conditions::is_TEST_ACTION(p)) && (kind_expected) &&
 		(Kinds::compatible(K_stored_action, kind_expected))) {
 		action_pattern *ap = Node::get_constant_action_pattern(p->down);
-		if (PL::Actions::Patterns::is_unspecific(ap)) {
+		if (ActionPatterns::is_unspecific(ap)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));
@@ -2929,7 +2929,7 @@ action value, which is a specific action.
 			Problems::issue_problem_end();
 			return NEVER_MATCH;
 		}
-		if (PL::Actions::Patterns::is_overspecific(ap)) {
+		if (ActionPatterns::is_overspecific(ap)) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(p));

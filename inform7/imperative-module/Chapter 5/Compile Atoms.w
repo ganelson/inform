@@ -165,7 +165,7 @@ int Atoms::Compile::atom_involves_action_variables(pcalc_prop *pl) {
 	#ifdef IF_MODULE
 	for (int i=0; i<pl->arity; i++) {
 		parse_node *operand = Terms::constant_underlying(&(pl->terms[i]));
-		if (PL::Actions::Patterns::is_an_action_variable(operand)) return TRUE;
+		if (ActionPatterns::is_an_action_variable(operand)) return TRUE;
 	}
 	#endif
 	return FALSE;

@@ -29,7 +29,7 @@ int IXActions::an_get_specification_text(action_name *an) {
 int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 	inform_extension **ext, heading **current_area, int f, int *new_par, int bold,
 	int on_details_page) {
-	heading *definition_area = Headings::of_wording(an->naming_data.present_name);
+	heading *definition_area = Headings::of_wording(ActionNameNames::tensed(an, IS_TENSE));
 	*new_par = FALSE;
 	if (pass == 1) {
 		inform_extension *this_extension =
@@ -89,13 +89,13 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 	if (ActionSemantics::is_out_of_world(an)) HTML::begin_colour(OUT, I"800000");
 	if (pass == 1) {
 		if (bold) WRITE("<b>");
-		WRITE("%+W", an->naming_data.present_name);
+		WRITE("%+W", ActionNameNames::tensed(an, IS_TENSE));
 		if (bold) WRITE("</b>");
 	} else {
 		WRITE("<b>");
-		int j = Wordings::first_wn(an->naming_data.present_name);
+		int j = Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE));
 		int somethings = 0;
-		while (j <= Wordings::last_wn(an->naming_data.present_name)) {
+		while (j <= Wordings::last_wn(ActionNameNames::tensed(an, IS_TENSE))) {
 			if (<object-pronoun>(Wordings::one_word(j))) {
 				IXActions::act_index_something(OUT, an, somethings++);
 			} else {

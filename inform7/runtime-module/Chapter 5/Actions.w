@@ -55,7 +55,7 @@ inter_name *RTActions::base_iname(action_name *an) {
 				Hierarchy::make_iname_with_specific_name(TRANSLATED_BASE_NAME_HL, an->compilation_data.translated_name, an->compilation_data.an_package);
 		else
 			an->compilation_data.an_base_iname =
-				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->compilation_data.an_package, an->naming_data.present_name);
+				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->compilation_data.an_package, ActionNameNames::tensed(an, IS_TENSE));
 	}
 	return an->compilation_data.an_base_iname;
 }
@@ -220,14 +220,14 @@ void RTActions::ActionData(void) {
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 
-				int j = Wordings::first_wn(an->naming_data.present_name), j0 = -1, somethings = 0, clc = 0;
-				while (j <= Wordings::last_wn(an->naming_data.present_name)) {
+				int j = Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), j0 = -1, somethings = 0, clc = 0;
+				while (j <= Wordings::last_wn(ActionNameNames::tensed(an, IS_TENSE))) {
 					if (<object-pronoun>(Wordings::one_word(j))) {
 						if (j0 >= 0) {
 							@<Insert a space here if needed to break up the action name@>;
 
 							TEMPORARY_TEXT(AT)
-							RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->naming_data.present_name), AT);
+							RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), AT);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_text(Emit::tree(), AT);
@@ -264,7 +264,7 @@ void RTActions::ActionData(void) {
 				if (j0 >= 0) {
 					@<Insert a space here if needed to break up the action name@>;
 					TEMPORARY_TEXT(AT)
-					RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->naming_data.present_name), AT);
+					RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE)), AT);
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_text(Emit::tree(), AT);
@@ -359,15 +359,15 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 	}
 	if (Kinds::eq(K, K_description_of_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(spec);
-		PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
+		ActionPatterns::compile_pattern_match(VH, *ap, FALSE);
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_stored_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(spec);
 		if (TEST_COMPILATION_MODE(CONSTANT_CMODE))
-			PL::Actions::Patterns::as_stored_action(VH, ap);
+			ActionPatterns::as_stored_action(VH, ap);
 		else {
-			PL::Actions::Patterns::emit_try(ap, TRUE);
+			ActionPatterns::emit_try(ap, TRUE);
 		}
 		return TRUE;
 	}
@@ -376,4 +376,40 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 
 int RTActions::action_variable_set_ID(action_name *an) {
 	return 20000 + an->allocation_id;
+}
+
+void RTActions::emit_anl(anl_head *head) {
+	if (head == NULL) return;
+	action_name_list *anl = head->body;
+	if (anl == NULL) return;
+
+	LOGIF(ACTION_PATTERN_COMPILATION, "Emitting action name list: $L", head);
+
+	int C = 0;
+	for (action_name_list *L = anl; L; L = L->next) C++;
+
+	if (anl->item.parity == -1) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
+
+	int N = 0, downs = 0;
+	for (action_name_list *L = anl; L; L = L->next) {
+		if (anl->item.parity != L->item.parity) internal_error("mixed parity");
+		N++;
+		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
+		if (L->item.nap_listed) {
+			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, RTNamedActionPatterns::identifier(L->item.nap_listed));
+			Produce::up(Emit::tree());
+		} else {
+			Produce::inv_primitive(Emit::tree(), EQ_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
+				Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(L->item.action_listed));
+			Produce::up(Emit::tree());
+		}
+	}
+	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+
+	if (anl->item.parity == -1) Produce::up(Emit::tree());
+
 }

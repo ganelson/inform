@@ -48,18 +48,18 @@ void ActionsNodes::nodes_and_annotations(void) {
 void ActionsNodes::write_action_meaning_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_action_meaning(p)) {
 		WRITE(" {action meaning: ");
-		PL::Actions::Patterns::write(OUT, Node::get_action_meaning(p));
+		ActionPatterns::write(OUT, Node::get_action_meaning(p));
 		WRITE("}");
 	} 
 }
 void ActionsNodes::write_constant_action_name_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_action_name(p))
-		WRITE(" {action name: %W}", Node::get_constant_action_name(p)->naming_data.present_name);
+		WRITE(" {action name: %W}", ActionNameNames::tensed(Node::get_constant_action_name(p), IS_TENSE));
 }
 void ActionsNodes::write_constant_action_pattern_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_action_pattern(p)) {
 		WRITE(" {action pattern: ");
-		PL::Actions::Patterns::write(OUT, Node::get_constant_action_pattern(p));
+		ActionPatterns::write(OUT, Node::get_constant_action_pattern(p));
 		WRITE("}");
 	} 
 }

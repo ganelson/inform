@@ -552,15 +552,15 @@ int Map::act_on_special_NPs(parse_node *p) {
 =
 int Map::check_going(parse_node *from, parse_node *to,
 	parse_node *by, parse_node *through, parse_node *pushing) {
-	if (PL::Actions::Patterns::check_going(from, "from",
+	if (ActionPatterns::check_going(from, "from",
 		K_room, K_region) == FALSE) return FALSE;
-	if (PL::Actions::Patterns::check_going(to, "to",
+	if (ActionPatterns::check_going(to, "to",
 		K_room, K_region) == FALSE) return FALSE;
-	if (PL::Actions::Patterns::check_going(by, "by",
+	if (ActionPatterns::check_going(by, "by",
 		K_thing, NULL) == FALSE) return FALSE;
-	if (PL::Actions::Patterns::check_going(through, "through",
+	if (ActionPatterns::check_going(through, "through",
 		K_door, NULL) == FALSE) return FALSE;
-	if (PL::Actions::Patterns::check_going(pushing, "with",
+	if (ActionPatterns::check_going(pushing, "with",
 		K_thing, NULL) == FALSE) return FALSE;
 	return TRUE;
 }

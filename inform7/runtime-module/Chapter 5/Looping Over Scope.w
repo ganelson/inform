@@ -55,7 +55,7 @@ int LoopingOverScope::compilation_coroutine(void) {
 		value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 		if (los->what_to_find) {
 			parse_node *lv_sp = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, it_lv);
-			PL::Actions::Patterns::compile_pattern_match_clause_inner(FALSE, &VH,
+			ActionPatterns::compile_pattern_match_clause_inner(FALSE, &VH,
 				lv_sp, FALSE, los->what_to_find, K_object, FALSE);
 		} else
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);

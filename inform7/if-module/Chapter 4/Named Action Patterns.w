@@ -57,7 +57,7 @@ int NamedActionPatterns::within_action_context(named_action_pattern *nap, action
 	named_action_pattern_entry *nape;
 	if (nap)
 		LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns)
-			if (PL::Actions::Patterns::within_action_context(nape->behaviour, an))
+			if (ActionPatterns::within_action_context(nape->behaviour, an))
 				return TRUE;
 	return FALSE;
 }

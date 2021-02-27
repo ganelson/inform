@@ -235,7 +235,7 @@ void ActionSemantics::check_valid_application(action_name *an, int nouns_supplie
 	else
 		Problems::quote_wording(2,
 			Node::get_text(an->indexing_data.designers_specification));
-	Problems::quote_wording(3, an->naming_data.present_name);
+	Problems::quote_wording(3, ActionNameNames::tensed(an, IS_TENSE));
 	Problems::quote_text(4, failed_on);
 	StandardProblems::handmade_problem(Task::syntax_tree(),
 		_p_(PM_GrammarMismatchesAction));

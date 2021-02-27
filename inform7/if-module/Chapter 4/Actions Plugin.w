@@ -112,7 +112,7 @@ called by the function creating them:
 
 =
 void ActionsPlugin::notice_new_action_name(action_name *an) {
-	if (<notable-actions>(an->naming_data.present_name)) {
+	if (<notable-actions>(ActionNameNames::tensed(an, IS_TENSE))) {
 		if ((<<r>> == 1) && (going_action == NULL)) going_action = an;
 		if ((<<r>> == 0) && (waiting_action == NULL)) waiting_action = an;
 	}

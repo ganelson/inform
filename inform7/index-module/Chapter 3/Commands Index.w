@@ -168,7 +168,7 @@ void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 		HTML::first_html_column(OUT, 0);
 		action_name *an = sorted[i];
 		if (ActionSemantics::is_out_of_world(an)) HTML::begin_colour(OUT, I"800000");
-		WRITE("%W", an->naming_data.present_name);
+		WRITE("%W", ActionNameNames::tensed(an, IS_TENSE));
 		if (ActionSemantics::is_out_of_world(an)) HTML::end_colour(OUT);
 		Index::detail_link(OUT, "A", an->allocation_id, TRUE);
 
@@ -211,7 +211,7 @@ void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 int CommandsIndex::compare_action_names(const void *ent1, const void *ent2) {
 	const action_name *an1 = *((const action_name **) ent1);
 	const action_name *an2 = *((const action_name **) ent2);
-	return Wordings::strcmp(an1->naming_data.present_name, an2->naming_data.present_name);
+	return Wordings::strcmp(ActionNameNames::tensed((action_name *) an1, IS_TENSE), ActionNameNames::tensed((action_name *) an2, IS_TENSE));
 }
 
 @ =
@@ -268,11 +268,11 @@ void CommandsIndex::tokens(OUTPUT_STREAM) {
 }
 
 void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
-	action_name *acn;
+	action_name *an;
 	int kc = 0;
-	LOOP_OVER(acn, action_name)
-		if (Lexer::file_of_origin(Wordings::first_wn(acn->naming_data.present_name)) == E->read_into_file)
+	LOOP_OVER(an, action_name)
+		if (Lexer::file_of_origin(Wordings::first_wn(ActionNameNames::tensed(an, IS_TENSE))) == E->read_into_file)
 			kc = IndexExtensions::document_headword(OUT, kc, E, "Actions", I"action",
-				acn->naming_data.present_name);
+				ActionNameNames::tensed(an, IS_TENSE));
 	if (kc != 0) HTML_CLOSE("p");
 }

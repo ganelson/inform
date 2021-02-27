@@ -1374,7 +1374,7 @@ void PL::Parsing::Lines::gl_index_normal(OUTPUT_STREAM, grammar_line *gl, text_s
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
 	Index::link(OUT, gl->original_text);
-	WRITE(" - <i>%+W", an->naming_data.present_name);
+	WRITE(" - <i>%+W", ActionNameNames::tensed(an, IS_TENSE));
 	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
 	if (gl->reversed) WRITE(" (reversed)");
 	WRITE("</i>");

@@ -598,8 +598,8 @@ further sub-cases later.
 	#ifdef IF_MODULE
 	if (Node::get_type(py) == ACTION_NT) {
 		action_pattern *ap = Node::get_action_meaning(py);
-		if ((ap) && (PL::Actions::Patterns::is_unspecific(ap) == FALSE) &&
-			(PL::Actions::Patterns::is_overspecific(ap) == FALSE)) {
+		if ((ap) && (ActionPatterns::is_unspecific(ap) == FALSE) &&
+			(ActionPatterns::is_overspecific(ap) == FALSE)) {
 			parse_node *val = Rvalues::from_action_pattern(ap);
 			Refiner::give_spec_to_noun(py, val);
 			Assertions::make_coupling(px, py);
@@ -1002,14 +1002,14 @@ properties) and for kinds (which do, but differently).
 	#ifdef IF_MODULE
 	action_pattern *apx = Node::get_action_meaning(px);
 	action_pattern *apy = Node::get_action_meaning(py);
-	if ((PL::Actions::Patterns::is_valid(apy)) &&
-		(PL::Actions::Patterns::is_named(apy) == FALSE)) {
+	if ((ActionPatterns::is_valid(apy)) &&
+		(ActionPatterns::is_named(apy) == FALSE)) {
 		LOG("Actions: $A and $A\n", apx, apy);
 		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionsEquated),
 			"two actions are rather oddly equated here",
 			"which would only make sense if the second were a named pattern of actions "
 			"like (say) 'unseemly behaviour'.");
-	} else PL::Actions::Patterns::categorise_as(apx, Node::get_text(py));
+	} else ActionPatterns::categorise_as(apx, Node::get_text(py));
 	#endif
 
 @h Case 28. Sentence (1) below is deservedly rejected, but (2) makes a

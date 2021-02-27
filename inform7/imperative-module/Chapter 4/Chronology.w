@@ -35,8 +35,8 @@ int too_late_for_past_tenses = FALSE;
 
 #ifdef IF_MODULE
 void Chronology::ap_compile_forced_to_present(action_pattern ap) {
-	PL::Actions::Patterns::convert_to_present_tense(&ap); /* prevent recursion */
-	PL::Actions::Patterns::emit_pattern_match(ap, FALSE);
+	ActionPatterns::convert_to_present_tense(&ap); /* prevent recursion */
+	ActionPatterns::emit_pattern_match(ap, FALSE);
 }
 #endif
 
@@ -48,7 +48,7 @@ void Chronology::compile_past_action_pattern(value_holster *VH, time_period *dur
 	inter_name *pta_routine = Hierarchy::make_iname_in(PAP_FN_HL, PR);
 	LOGIF(TIME_PERIODS,
 		"Chronology::compile_past_action_pattern on: $A\nat: $t\n", &ap, duration);
-	if (PL::Actions::Patterns::makes_callings(&ap)) {
+	if (ActionPatterns::makes_callings(&ap)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PTAPMakesCallings),
 			"a description of an action cannot both refer to past history "
 			"and also use '(called ...)'",
@@ -205,7 +205,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		}
 		if ((duration == NULL) ||
 			((Occurrence::length(duration) == -1) && (Occurrence::until(duration) == -1))) {
-			PL::Actions::Patterns::emit_past_tense(ap);
+			ActionPatterns::emit_past_tense(ap);
 			return;
 		}
 		pasturise = TRUE;
@@ -671,7 +671,7 @@ a file stream, thus allowing rewinding:
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, new_s);
-			PL::Actions::Patterns::emit_past_tense(ptc->ap_to_test);
+			ActionPatterns::emit_past_tense(ptc->ap_to_test);
 		Produce::up(Emit::tree());
 		#endif
 	}

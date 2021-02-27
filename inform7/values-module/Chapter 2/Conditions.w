@@ -267,7 +267,7 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 				#ifdef IF_MODULE
 				action_pattern *ap = Rvalues::to_action_pattern(
 					Conditions::action_tested(spec_found));
-				PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
+				ActionPatterns::compile_pattern_match(VH, *ap, FALSE);
 				#endif
 			} else if (Specifications::is_description(spec_found)) {
 				/* purely for problem recovery: */

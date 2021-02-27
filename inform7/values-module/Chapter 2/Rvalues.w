@@ -33,8 +33,8 @@ pointers:
 parse_node *Rvalues::from_action_name(action_name *val) { 
 		CONV_FROM(action_name, K_action_name) }
 parse_node *Rvalues::from_action_pattern(action_pattern *val) {
-	if (((PL::Actions::Patterns::is_unspecific(val) == FALSE) &&
-		(PL::Actions::Patterns::is_overspecific(val) == FALSE)) ||
+	if (((ActionPatterns::is_unspecific(val) == FALSE) &&
+		(ActionPatterns::is_overspecific(val) == FALSE)) ||
 		(preform_lookahead_mode)) {
 		CONV_FROM(action_pattern, K_stored_action);
 	} else {

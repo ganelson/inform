@@ -182,7 +182,7 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 @<Convert stored past action pattern to condition node@> =
 	#ifdef IF_MODULE
 	action_pattern *ap = RP[1];
-	if (PL::Actions::Patterns::makes_callings(ap)) {
+	if (ActionPatterns::makes_callings(ap)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastActionCalled),
 			"a description of an action cannot both refer to past "
 			"history and also use '(called ...)'",

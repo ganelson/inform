@@ -1,4 +1,4 @@
-[PL::Actions::Patterns::] Action Patterns.
+[ActionPatterns::] Action Patterns.
 
 An action pattern is a description which may match many actions or
 none. The text "doing something" matches every action, while "throwing
@@ -24,7 +24,7 @@ not-really-action APs are used in no other context, and employ the
 typedef struct action_pattern {
 	struct wording text_of_pattern; /* text giving rise to this AP */
 
-	struct action_name_list *action; /* what the behaviour is */
+	struct anl_head *action_list; /* what the behaviour is */
 	int test_anl; /* actually test the action when compiled */
 
 	int applies_to_any_actor; /* treat player and other people equally */
@@ -89,10 +89,10 @@ STV clauses; (2) get this right:
 		say "Where did you want to go?"
 
 @ =
-action_pattern PL::Actions::Patterns::new(void) {
+action_pattern ActionPatterns::new(void) {
 	action_pattern ap;
 	ap.text_of_pattern = EMPTY_WORDING;
-	ap.action = NULL;
+	ap.action_list = NULL;
 	ap.test_anl = TRUE;
 	ap.actor_spec = NULL;
 	ap.noun_spec = NULL; ap.second_spec = NULL; ap.room_spec = NULL;
@@ -116,7 +116,7 @@ action_pattern PL::Actions::Patterns::new(void) {
 	return ap;
 }
 
-ap_optional_clause *PL::Actions::Patterns::apoc_new(stacked_variable *stv, parse_node *spec) {
+ap_optional_clause *ActionPatterns::apoc_new(stacked_variable *stv, parse_node *spec) {
 	ap_optional_clause *apoc = CREATE(ap_optional_clause);
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
@@ -125,7 +125,7 @@ ap_optional_clause *PL::Actions::Patterns::apoc_new(stacked_variable *stv, parse
 	return apoc;
 }
 
-void PL::Actions::Patterns::ap_add_optional_clause(action_pattern *ap, ap_optional_clause *apoc) {
+void ActionPatterns::ap_add_optional_clause(action_pattern *ap, ap_optional_clause *apoc) {
 	int oid = StackedVariables::get_owner_id(apoc->stv_to_match);
 	int off = StackedVariables::get_offset(apoc->stv_to_match);
 	if (ap->optional_clauses == NULL) {
@@ -168,7 +168,7 @@ void PL::Actions::Patterns::ap_add_optional_clause(action_pattern *ap, ap_option
 	ap->chief_action_owner_id = oid;
 }
 
-int PL::Actions::Patterns::ap_count_optional_clauses(action_pattern *ap) {
+int ActionPatterns::ap_count_optional_clauses(action_pattern *ap) {
 	int n = 0;
 	ap_optional_clause *apoc;
 	for (apoc = ap->optional_clauses; apoc; apoc = apoc->next) {
@@ -179,9 +179,9 @@ int PL::Actions::Patterns::ap_count_optional_clauses(action_pattern *ap) {
 	return n;
 }
 
-int PL::Actions::Patterns::compare_specificity_of_apoc_list(action_pattern *ap1, action_pattern *ap2) {
-	int rct1 = PL::Actions::Patterns::ap_count_optional_clauses(ap1);
-	int rct2 = PL::Actions::Patterns::ap_count_optional_clauses(ap2);
+int ActionPatterns::compare_specificity_of_apoc_list(action_pattern *ap1, action_pattern *ap2) {
+	int rct1 = ActionPatterns::ap_count_optional_clauses(ap1);
+	int rct2 = ActionPatterns::ap_count_optional_clauses(ap2);
 
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
@@ -204,14 +204,14 @@ int PL::Actions::Patterns::compare_specificity_of_apoc_list(action_pattern *ap1,
 	return 0;
 }
 
-void PL::Actions::Patterns::log(action_pattern *ap) {
+void ActionPatterns::log(action_pattern *ap) {
 	if (ap == NULL) LOG("  [Null]");
 	else {
 		if (ap->valid != TRUE) LOG("  [Invalid]");
 		else LOG("  [Valid]");
 		LOG("  Action: ");
-		if (ap->action == NULL) LOG("unspecified");
-		else PL::Actions::ConstantLists::log_briefly(ap->action);
+		if (ap->action_list == NULL) LOG("unspecified");
+		else ActionNameLists::log_briefly(ap->action_list);
 		if (ap->noun_spec) LOG("  Noun: $P", ap->noun_spec);
 		if (ap->second_spec) LOG("  Second: $P", ap->second_spec);
 		if (ap->from_spec) LOG("  From: $P", ap->from_spec);
@@ -229,13 +229,13 @@ void PL::Actions::Patterns::log(action_pattern *ap) {
 	LOG("\n");
 }
 
-void PL::Actions::Patterns::write(OUTPUT_STREAM, action_pattern *ap) {
+void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 	if (ap == NULL) WRITE("<null-ap>");
 	else if (ap->valid != TRUE) WRITE("<invalid>");
 	else {
 		WRITE("<action: ");
-		if (ap->action == NULL) WRITE("unspecified");
-		else PL::Actions::ConstantLists::log_briefly(ap->action);
+		if (ap->action_list == NULL) WRITE("unspecified");
+		else ActionNameLists::log_briefly(ap->action_list);
 		if (ap->noun_spec) WRITE(" noun: %P", ap->noun_spec);
 		if (ap->second_spec) WRITE(" second: %P", ap->second_spec);
 		if (ap->from_spec) WRITE(" from: %P", ap->from_spec);
@@ -253,78 +253,80 @@ void PL::Actions::Patterns::write(OUTPUT_STREAM, action_pattern *ap) {
 	}
 }
 
-action_pattern *PL::Actions::Patterns::ap_store(action_pattern ap) {
+action_pattern *ActionPatterns::ap_store(action_pattern ap) {
 	action_pattern *sap = CREATE(action_pattern);
 	*sap = ap;
 	return sap;
 }
 
-int PL::Actions::Patterns::is_named(action_pattern *ap) {
+int ActionPatterns::is_named(action_pattern *ap) {
 	if (ap == NULL) return FALSE;
-	if (ap->action == NULL) return FALSE;
-	if (ap->action->nap_listed == NULL) return FALSE;
+	if (ap->action_list == NULL) return FALSE;
+	if (ap->action_list->body == NULL) return FALSE;
+	if (ap->action_list->body->item.nap_listed == NULL) return FALSE;
 	return TRUE;
 }
 
-int PL::Actions::Patterns::is_valid(action_pattern *ap) {
+int ActionPatterns::is_valid(action_pattern *ap) {
 	if (ap == NULL) return FALSE;
 	return ap->valid;
 }
 
-int PL::Actions::Patterns::is_request(action_pattern *ap) {
+int ActionPatterns::is_request(action_pattern *ap) {
 	if (ap == NULL) return FALSE;
 	return ap->request;
 }
 
-int PL::Actions::Patterns::within_action_context(action_pattern *ap, action_name *an) {
+int ActionPatterns::within_action_context(action_pattern *ap, action_name *an) {
 	action_name_list *anl;
 	if (ap == NULL) return TRUE;
-	if (ap->action == NULL) return TRUE;
-	if (ap->action->nap_listed)
-		return NamedActionPatterns::within_action_context(ap->action->nap_listed, an);
-	for (anl = ap->action; anl; anl = anl->next)
-		if (((anl->action_listed == an) && (anl->parity == 1)) ||
-			((anl->action_listed != an) && (anl->parity == -1)))
+	if (ap->action_list == NULL) return TRUE;
+	if (ap->action_list->body == NULL) return TRUE;
+	if (ap->action_list->body->item.nap_listed)
+		return NamedActionPatterns::within_action_context(ap->action_list->body->item.nap_listed, an);
+	for (anl = ap->action_list->body; anl; anl = anl->next)
+		if (((anl->item.action_listed == an) && (anl->item.parity == 1)) ||
+			((anl->item.action_listed != an) && (anl->item.parity == -1)))
 			return TRUE;
 	return FALSE;
 }
 
-action_name_list *PL::Actions::Patterns::list(action_pattern *ap) {
+action_name_list *ActionPatterns::list(action_pattern *ap) {
 	if (ap == NULL) return NULL;
-	return ap->action;
+	return (ap->action_list)?(ap->action_list->body):NULL;
 }
 
-action_name *PL::Actions::Patterns::required_action(action_pattern *ap) {
-	if ((ap->action) && (ap->action->next == NULL) && (ap->action->parity == 1) && (ap->action->negate_pattern == FALSE))
-		return ap->action->action_listed;
+action_name *ActionPatterns::required_action(action_pattern *ap) {
+	if ((ap->action_list) && (ap->action_list->body) && (ap->action_list->body->next == NULL) && (ap->action_list->body->item.parity == 1) && (ap->action_list->body->negate_pattern == FALSE))
+		return ap->action_list->body->item.action_listed;
 	return NULL;
 }
 
-int PL::Actions::Patterns::object_based(action_pattern *ap) {
-	if ((ap) && (ap->action)) return TRUE;
+int ActionPatterns::object_based(action_pattern *ap) {
+	if ((ap) && (ap->action_list) && (ap->action_list->body)) return TRUE;
 	return FALSE;
 }
 
-int PL::Actions::Patterns::is_unspecific(action_pattern *ap) {
-	action_name *an = PL::Actions::Patterns::required_action(ap);
+int ActionPatterns::is_unspecific(action_pattern *ap) {
+	action_name *an = ActionPatterns::required_action(ap);
 	if (an == NULL) return TRUE;
 	if ((ActionSemantics::must_have_noun(an)) && (ap->noun_spec == NULL)) return TRUE;
 	if ((ActionSemantics::must_have_second(an)) && (ap->second_spec == NULL)) return TRUE;
 	if ((ActionSemantics::can_have_noun(an)) &&
-		(PL::Actions::Patterns::ap_clause_is_unspecific(ap->noun_spec))) return TRUE;
+		(ActionPatterns::ap_clause_is_unspecific(ap->noun_spec))) return TRUE;
 	if ((ActionSemantics::can_have_second(an)) &&
-		(PL::Actions::Patterns::ap_clause_is_unspecific(ap->second_spec))) return TRUE;
-	if (PL::Actions::Patterns::ap_clause_is_unspecific(ap->actor_spec)) return TRUE;
+		(ActionPatterns::ap_clause_is_unspecific(ap->second_spec))) return TRUE;
+	if (ActionPatterns::ap_clause_is_unspecific(ap->actor_spec)) return TRUE;
 	return FALSE;
 }
 
-int PL::Actions::Patterns::ap_clause_is_unspecific(parse_node *spec) {
+int ActionPatterns::ap_clause_is_unspecific(parse_node *spec) {
 	if (spec == NULL) return FALSE;
 	if (Specifications::is_description(spec) == FALSE) return FALSE;
 	return TRUE;
 }
 
-int PL::Actions::Patterns::is_overspecific(action_pattern *ap) {
+int ActionPatterns::is_overspecific(action_pattern *ap) {
 	if (ap->when != NULL) return TRUE;
 	if (ap->room_spec != NULL) return TRUE;
 	if (ap->presence_spec != NULL) return TRUE;
@@ -335,7 +337,7 @@ int PL::Actions::Patterns::is_overspecific(action_pattern *ap) {
 	return FALSE;
 }
 
-void PL::Actions::Patterns::suppress_action_testing(action_pattern *ap) {
+void ActionPatterns::suppress_action_testing(action_pattern *ap) {
 	if (ap->duration == NULL) ap->test_anl = FALSE;
 }
 
@@ -343,7 +345,7 @@ void PL::Actions::Patterns::suppress_action_testing(action_pattern *ap) {
 an action.
 
 =
-void PL::Actions::Patterns::categorise_as(action_pattern *ap, wording W) {
+void ActionPatterns::categorise_as(action_pattern *ap, wording W) {
 	LOGIF(ACTION_PATTERN_PARSING, "Categorising the action:\n$A...as %W\n", ap, W);
 
 	if (<article>(W)) {
@@ -364,13 +366,13 @@ void PL::Actions::Patterns::categorise_as(action_pattern *ap, wording W) {
 	NamedActionPatterns::add(ap, W);
 }
 
-parse_node *PL::Actions::Patterns::nullify_nonspecific_references(parse_node *spec) {
+parse_node *ActionPatterns::nullify_nonspecific_references(parse_node *spec) {
 	if (spec == NULL) return spec;
 	if (Node::is(spec, UNKNOWN_NT)) return NULL;
 	return spec;
 }
 
-int PL::Actions::Patterns::check_going(parse_node *spec, char *keyword,
+int ActionPatterns::check_going(parse_node *spec, char *keyword,
 	kind *ka, kind *kb) {
 	if (spec == NULL) return TRUE;
 	if (Specifications::is_description_like(spec)) {
@@ -411,9 +413,9 @@ int PL::Actions::Patterns::check_going(parse_node *spec, char *keyword,
 form the usage conditions for rules in object-based rulebooks.
 
 =
-action_pattern PL::Actions::Patterns::parse_parametric(wording W, kind *K) {
-	action_pattern ap = PL::Actions::Patterns::new();
-	ap.parameter_spec = PL::Actions::Patterns::parse_action_parameter(W);
+action_pattern ActionPatterns::parse_parametric(wording W, kind *K) {
+	action_pattern ap = ActionPatterns::new();
+	ap.parameter_spec = ActionPatterns::parse_action_parameter(W);
 	ap.parameter_kind = K;
 	ap.valid = Dash::validate_parameter(ap.parameter_spec, K);
 	return ap;
@@ -422,13 +424,13 @@ action_pattern PL::Actions::Patterns::parse_parametric(wording W, kind *K) {
 @ A useful utility: parsing a parameter in an action pattern.
 
 =
-parse_node *PL::Actions::Patterns::parse_action_parameter(wording W) {
+parse_node *ActionPatterns::parse_action_parameter(wording W) {
 	if (<action-parameter>(W)) return <<rp>>;
 	return Specifications::new_UNKNOWN(W);
 }
 
-parse_node *PL::Actions::Patterns::parse_verified_action_parameter(wording W) {
-	parse_node *spec = PL::Actions::Patterns::parse_action_parameter(W);
+parse_node *ActionPatterns::parse_verified_action_parameter(wording W) {
+	parse_node *spec = ActionPatterns::parse_action_parameter(W);
 	if (Node::is(spec, UNKNOWN_NT)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
@@ -585,9 +587,9 @@ would match as an abbreviated form of the name of "angry waiting man".
 					if (<k-kind>(Wordings::up_to(W, i-1))) continue;
 					parse_node *try_stem = NULL;
 					instance *I;
-					int old_state = PL::Actions::Patterns::suppress();
+					int old_state = ActionPatterns::suppress();
 					if (<action-parameter>(Wordings::up_to(W, i-1))) try_stem = <<rp>>;
-					PL::Actions::Patterns::resume(old_state);
+					ActionPatterns::resume(old_state);
 					int k = 0;
 					LOOP_THROUGH_WORDING(j, Wordings::up_to(W, i-1))
 						if (Vocabulary::test_flags(j, ACTION_PARTICIPLE_MC)) k++;
@@ -611,13 +613,13 @@ would match as an abbreviated form of the name of "angry waiting man".
 }
 
 @ =
-int PL::Actions::Patterns::suppress(void) {
+int ActionPatterns::suppress(void) {
 	int old_state = suppress_ap_parsing;
 	suppress_ap_parsing = TRUE;
 	return old_state;
 }
 
-void PL::Actions::Patterns::resume(int old_state) {
+void ActionPatterns::resume(int old_state) {
 	suppress_ap_parsing = old_state;
 }
 
@@ -644,13 +646,13 @@ trimmed away;
 =
 <action-pattern-core> internal {
 	if (suppress_ap_parsing) return FALSE;
-	action_pattern *ap = PL::Actions::Patterns::ap_parse_inner(W, IS_TENSE);
+	action_pattern *ap = ActionPatterns::ap_parse_inner(W, IS_TENSE);
 	if (ap) { ==> { -, ap }; return TRUE; }
 	==> { fail nonterminal };
 }
 
 <action-pattern-past-core> internal {
-	action_pattern *ap = PL::Actions::Patterns::ap_parse_inner(W, HASBEEN_TENSE);
+	action_pattern *ap = ActionPatterns::ap_parse_inner(W, HASBEEN_TENSE);
 	if (ap) { ==> { -, ap }; return TRUE; }
 	==> { fail nonterminal };
 }
@@ -669,7 +671,7 @@ possibility for confusion is too great; perhaps we should just cut this idea.
 	doing it
 
 @ =
-action_pattern *PL::Actions::Patterns::ap_parse_inner(wording W, int tense) {
+action_pattern *ActionPatterns::ap_parse_inner(wording W, int tense) {
 	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) return NULL;
 
 	if (Wordings::empty(W)) internal_error("PAP on illegal word range");
@@ -770,10 +772,10 @@ is valid as an AP, but this enables many natural-looking rules to be written
 	if (Dash::validate_parameter(RP[1], K_object) == FALSE) {
 		==> { fail production }; /* the "room" isn't even an object */
 	}
-	action_pattern ap = PL::Actions::Patterns::new();
+	action_pattern ap = ActionPatterns::new();
 	ap.valid = TRUE; ap.text_of_pattern = W;
 	ap.room_spec = RP[1];
-	==> { 0, PL::Actions::Patterns::ap_store(ap) };
+	==> { 0, ActionPatterns::ap_store(ap) };
 
 @ And that's as far down as we go: to level 6. Most of the complexity is gone
 now, but what's left can't very efficiently be written in Preform. Essentially
@@ -788,20 +790,20 @@ box" makes no sense since only one is transitive).
 <ap-common-core-inner-inner-inner> internal {
 	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (scanning_anl_only_mode) {
-		action_name_list *anl = PL::Actions::ConstantLists::parse(W, prevailing_ap_tense);
+		anl_head *anl = ActionNameLists::parse(W, prevailing_ap_tense);
 		if (anl == NULL) { ==> { fail nonterminal }; }
-		action_pattern ap = PL::Actions::Patterns::new(); ap.valid = TRUE;
+		action_pattern ap = ActionPatterns::new(); ap.valid = TRUE;
 		ap.text_of_pattern = W;
-		ap.action = anl;
-		==> { -, PL::Actions::Patterns::ap_store(ap) };
+		ap.action_list = anl;
+		==> { -, ActionPatterns::ap_store(ap) };
 		return TRUE;
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
 		LOG_INDENT;
-		action_pattern ap = PL::Actions::Patterns::parse_action_pattern_dash(W);
+		action_pattern ap = ActionPatterns::parse_action_pattern_dash(W);
 		LOG_OUTDENT;
-		if (PL::Actions::Patterns::is_valid(&ap)) {
-			==> { -, PL::Actions::Patterns::ap_store(ap) };
+		if (ActionPatterns::is_valid(&ap)) {
+			==> { -, ActionPatterns::ap_store(ap) };
 			return TRUE;
 		}
 	}
@@ -845,13 +847,13 @@ here -- a constant, a description, a table entry, a variable, and so on.
 @ We can't put it off any longer. Here goes.
 
 =
-action_pattern PL::Actions::Patterns::parse_action_pattern_dash(wording W) {
+action_pattern ActionPatterns::parse_action_pattern_dash(wording W) {
 	int failure_this_call = pap_failure_reason;
 	int i, j, k = 0;
 	action_name_list *anl = NULL;
 	int tense = prevailing_ap_tense;
 
-	action_pattern ap = PL::Actions::Patterns::new(); ap.valid = FALSE;
+	action_pattern ap = ActionPatterns::new(); ap.valid = FALSE;
 	ap.text_of_pattern = W;
 
 	@<PAR - (f) Parse Special Going Clauses@>;
@@ -869,14 +871,14 @@ action_pattern PL::Actions::Patterns::parse_action_pattern_dash(wording W) {
 @<With one small proviso, a valid action pattern has been parsed@> =
 	pap_failure_reason = 0;
 	ap.text_of_pattern = W;
-	ap.action = anl;
-	if ((anl != NULL) && (anl->nap_listed == NULL) && (anl->action_listed == NULL)) ap.action = NULL;
+	ap.action_list = ActionNameLists::new_head(anl);
+	if ((anl != NULL) && (anl->item.nap_listed == NULL) && (anl->item.action_listed == NULL)) ap.action_list = NULL;
 	ap.valid = TRUE;
 
-	ap.actor_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.actor_spec);
-	ap.noun_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.noun_spec);
-	ap.second_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.second_spec);
-	ap.room_spec = PL::Actions::Patterns::nullify_nonspecific_references(ap.room_spec);
+	ap.actor_spec = ActionPatterns::nullify_nonspecific_references(ap.actor_spec);
+	ap.noun_spec = ActionPatterns::nullify_nonspecific_references(ap.noun_spec);
+	ap.second_spec = ActionPatterns::nullify_nonspecific_references(ap.second_spec);
+	ap.room_spec = ActionPatterns::nullify_nonspecific_references(ap.room_spec);
 
 	int ch = PluginCalls::check_going(ap.from_spec, ap.to_spec, ap.by_spec, ap.through_spec, ap.pushing_spec);
 	if (ch == FALSE) ap.valid = FALSE;
@@ -896,10 +898,10 @@ action_pattern PL::Actions::Patterns::parse_action_pattern_dash(wording W) {
 away as they are recorded.
 
 @<PAR - (f) Parse Special Going Clauses@> =
-	action_name_list *preliminary_anl =
-		PL::Actions::ConstantLists::parse(W, tense);
+	anl_head *preliminary_anl =
+		ActionNameLists::parse(W, tense);
 	action_name *chief_an =
-		PL::Actions::ConstantLists::get_single_action(preliminary_anl);
+		ActionNameLists::get_single_action(preliminary_anl?(preliminary_anl->body):NULL);
 	if (chief_an == NULL) {
 		int x;
 		chief_an = ActionNameNames::longest_nounless(W, tense, &x);
@@ -916,16 +918,16 @@ away as they are recorded.
 				LOGIF(ACTION_PATTERN_PARSING,
 					"Special clauses found on <%W>\n", Wordings::from(W, i));
 				if (last_stv_specified == NULL) j = i-1;
-				else PL::Actions::Patterns::ap_add_optional_clause(&ap,
-					PL::Actions::Patterns::apoc_new(last_stv_specified, PL::Actions::Patterns::parse_verified_action_parameter(Wordings::new(k, i-1))));
+				else ActionPatterns::ap_add_optional_clause(&ap,
+					ActionPatterns::apoc_new(last_stv_specified, ActionPatterns::parse_verified_action_parameter(Wordings::new(k, i-1))));
 				k = i+1;
 				last_stv_specified = stv;
 			}
 			i++;
 		}
 		if (last_stv_specified != NULL)
-			PL::Actions::Patterns::ap_add_optional_clause(&ap,
-				PL::Actions::Patterns::apoc_new(last_stv_specified, PL::Actions::Patterns::parse_verified_action_parameter(Wordings::new(k, Wordings::last_wn(W)))));
+			ActionPatterns::ap_add_optional_clause(&ap,
+				ActionPatterns::apoc_new(last_stv_specified, ActionPatterns::parse_verified_action_parameter(Wordings::new(k, Wordings::last_wn(W)))));
 		if (j >= 0) W = Wordings::up_to(W, j);
 	}
 
@@ -934,9 +936,11 @@ e.g., from "taking or dropping something", that it will be
 taking or dropping.
 
 @<PAR - (i) Parse Initial Action Name List@> =
-	anl = PL::Actions::ConstantLists::parse(W, tense);
+	anl_head *head = ActionNameLists::parse(W, tense);
+	if (head == NULL) goto Failed;
+	anl = head->body;
 	if (anl == NULL) goto Failed;
-	LOGIF(ACTION_PATTERN_PARSING, "ANL from PAR(i):\n$L\n", anl);
+	LOGIF(ACTION_PATTERN_PARSING, "ANL from PAR(i):\n$8\n", anl);
 
 @ Now to fill in the gaps. At this point we have the action name
 list as a linked list of all possible lexical matches, but want to
@@ -967,7 +971,7 @@ crucial word position except for the one matched.
 	action_name_list *first_valid = NULL;
 	action_pattern trial_ap;
 	for (entry = anl; entry; entry = entry->next) {
-	LOGIF(ACTION_PATTERN_PARSING, "Entry (%d):\n$L\n", entry->parc, entry);
+	LOGIF(ACTION_PATTERN_PARSING, "Entry (%d):\n$8\n", entry->parc, entry);
 		@<Fill out the noun, second, room and nowhere fields of the AP as if this action were right@>;
 		@<Check the validity of this speculative AP@>;
 		if ((trial_ap.valid) && (first_valid == NULL) && (entry->word_position == first_position)) {
@@ -981,9 +985,9 @@ crucial word position except for the one matched.
 	if (first_valid == NULL) goto Failed;
 
 	@<Adjudicate between topic and other actions@>;
-	LOGIF(ACTION_PATTERN_PARSING, "List before action winnowing:\n$L\n", anl);
+	LOGIF(ACTION_PATTERN_PARSING, "List before action winnowing:\n$8\n", anl);
 	@<Delete those action names which are to be deleted@>;
-	LOGIF(ACTION_PATTERN_PARSING, "List after action winnowing:\n$L\n", anl);
+	LOGIF(ACTION_PATTERN_PARSING, "List after action winnowing:\n$8\n", anl);
 
 @ For example, "taking inventory or waiting" produces two positions, words
 0 and 3, and minimum parameter count 0 in each case. ("Taking inventory"
@@ -1013,7 +1017,7 @@ par-count 0, so the minimum is 0.)
 	}
 
 @<Report to the debugging log on the action decomposition@> =
-	LOGIF(ACTION_PATTERN_PARSING, "List after action decomposition:\n$L\n", anl);
+	LOGIF(ACTION_PATTERN_PARSING, "List after action decomposition:\n$8\n", anl);
 	for (i=0; i<no_positions; i++) {
 		int min = position_min_parc[i];
 		LOGIF(ACTION_PATTERN_PARSING, "ANL position %d (word %d): min parc %d\n",
@@ -1042,36 +1046,36 @@ description.
 	trial_ap.noun_spec = NULL; trial_ap.second_spec = NULL; trial_ap.room_spec = NULL; trial_ap.nowhere_flag = FALSE;
 	if (entry->parc >= 1) {
 		if (Wordings::nonempty(entry->parameter[0])) {
-			if ((entry->action_listed == going_action) && (<going-action-irregular-operand>(entry->parameter[0]))) {
+			if ((entry->item.action_listed == going_action) && (<going-action-irregular-operand>(entry->parameter[0]))) {
 				if (<<r>> == FALSE) trial_ap.nowhere_flag = TRUE;
 				else trial_ap.nowhere_flag = 2;
-			} else PL::Actions::Patterns::put_action_object_into_ap(&trial_ap, 1, entry->parameter[0]);
+			} else ActionPatterns::put_action_object_into_ap(&trial_ap, 1, entry->parameter[0]);
 		}
 	}
 
 	if (entry->parc >= 2) {
 		if (Wordings::nonempty(entry->parameter[1])) {
-			if ((entry->action_listed != NULL)
+			if ((entry->item.action_listed != NULL)
 				&& (K_understanding)
-				&& (Kinds::eq(ActionSemantics::kind_of_second(entry->action_listed), K_understanding))
+				&& (Kinds::eq(ActionSemantics::kind_of_second(entry->item.action_listed), K_understanding))
 				&& (<understanding-action-irregular-operand>(entry->parameter[1]))) {
 				trial_ap.second_spec = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
 				Node::set_text(trial_ap.second_spec, entry->parameter[1]);
 			} else {
-				PL::Actions::Patterns::put_action_object_into_ap(&trial_ap, 2, entry->parameter[1]);
+				ActionPatterns::put_action_object_into_ap(&trial_ap, 2, entry->parameter[1]);
 			}
 		}
 	}
 
 	if (Wordings::nonempty(entry->in_clause))
-		PL::Actions::Patterns::put_action_object_into_ap(&trial_ap, 3, entry->in_clause);
+		ActionPatterns::put_action_object_into_ap(&trial_ap, 3, entry->in_clause);
 
 @<Check the validity of this speculative AP@> =
 	kind *check_n = K_object;
 	kind *check_s = K_object;
-	if (entry->action_listed != NULL) {
-		check_n = ActionSemantics::kind_of_noun(entry->action_listed);
-		check_s = ActionSemantics::kind_of_second(entry->action_listed);
+	if (entry->item.action_listed != NULL) {
+		check_n = ActionSemantics::kind_of_noun(entry->item.action_listed);
+		check_s = ActionSemantics::kind_of_second(entry->item.action_listed);
 	}
 	trial_ap.valid = TRUE;
 	if ((trial_ap.noun_any == FALSE) &&
@@ -1089,27 +1093,27 @@ description.
 	K[0] = NULL; K[1] = NULL;
 	action_name_list *entry, *prev = NULL;
 	for (entry = anl; entry; prev = entry, entry = entry->next) {
-		if ((entry->delete_this_link == FALSE) && (entry->action_listed)) {
+		if ((entry->delete_this_link == FALSE) && (entry->item.action_listed)) {
 			if ((prev == NULL) || (prev->word_position != entry->word_position)) {
 				if ((entry->next == NULL) || (entry->next->word_position != entry->word_position)) {
-					if ((K[0] == NULL) && (ActionSemantics::can_have_noun(entry->action_listed)))
-						K[0] = ActionSemantics::kind_of_noun(entry->action_listed);
-					if ((K[1] == NULL) && (ActionSemantics::can_have_second(entry->action_listed)))
-						K[1] = ActionSemantics::kind_of_second(entry->action_listed);
+					if ((K[0] == NULL) && (ActionSemantics::can_have_noun(entry->item.action_listed)))
+						K[0] = ActionSemantics::kind_of_noun(entry->item.action_listed);
+					if ((K[1] == NULL) && (ActionSemantics::can_have_second(entry->item.action_listed)))
+						K[1] = ActionSemantics::kind_of_second(entry->item.action_listed);
 				}
 			}
 		}
 	}
 	LOGIF(ACTION_PATTERN_PARSING, "Necessary kinds: %u, %u\n", K[0], K[1]);
 	for (entry = anl; entry; prev = entry, entry = entry->next) {
-		if ((entry->delete_this_link == FALSE) && (entry->action_listed)) {
+		if ((entry->delete_this_link == FALSE) && (entry->item.action_listed)) {
 			int poor_choice = FALSE;
-			if ((K[0]) && (ActionSemantics::can_have_noun(entry->action_listed))) {
-				kind *L = ActionSemantics::kind_of_noun(entry->action_listed);
+			if ((K[0]) && (ActionSemantics::can_have_noun(entry->item.action_listed))) {
+				kind *L = ActionSemantics::kind_of_noun(entry->item.action_listed);
 				if (Kinds::compatible(L, K[0]) == FALSE) poor_choice = TRUE;
 			}
-			if ((K[1]) && (ActionSemantics::can_have_second(entry->action_listed))) {
-				kind *L = ActionSemantics::kind_of_second(entry->action_listed);
+			if ((K[1]) && (ActionSemantics::can_have_second(entry->item.action_listed))) {
+				kind *L = ActionSemantics::kind_of_second(entry->item.action_listed);
 				if (Kinds::compatible(L, K[1]) == FALSE) poor_choice = TRUE;
 			}
 			if (poor_choice) {
@@ -1153,12 +1157,12 @@ the case when the first action name in the list is |NULL|).
 	kinds_observed_in_list[0] = NULL;
 	kinds_observed_in_list[1] = NULL;
 	for (action_name_list *entry = anl; entry; entry = entry->next)
-		if (entry->nap_listed == NULL) {
+		if (entry->item.nap_listed == NULL) {
 			if (entry->parc > 0) {
 				if (no_of_pars > 0) immiscible = TRUE;
 				no_of_pars = entry->parc;
 			}
-			action_name *this = entry->action_listed;
+			action_name *this = entry->item.action_listed;
 			if (this) {
 				if (ActionSemantics::is_out_of_world(this)) no_oow++; else no_iw++;
 
@@ -1181,10 +1185,10 @@ the case when the first action name in the list is |NULL|).
 	if ((no_oow > 0) && (no_iw > 0)) immiscible = TRUE;
 
 	for (action_name_list *entry = anl; entry; entry = entry->next)
-		if (entry->action_listed) {
-			if ((no_of_pars >= 1) && (ActionSemantics::can_have_noun(entry->action_listed) == FALSE))
+		if (entry->item.action_listed) {
+			if ((no_of_pars >= 1) && (ActionSemantics::can_have_noun(entry->item.action_listed) == FALSE))
 				immiscible = TRUE;
-			if ((no_of_pars >= 2) && (ActionSemantics::can_have_second(entry->action_listed) == FALSE))
+			if ((no_of_pars >= 2) && (ActionSemantics::can_have_second(entry->item.action_listed) == FALSE))
 				immiscible = TRUE;
 		}
 
@@ -1201,7 +1205,7 @@ more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 
 =
-int PL::Actions::Patterns::ap_count_rooms(action_pattern *ap) {
+int ActionPatterns::ap_count_rooms(action_pattern *ap) {
 	int c = 0;
 	if (ap->room_spec) c += 2;
 	if (ap->from_spec) c += 2;
@@ -1209,7 +1213,7 @@ int PL::Actions::Patterns::ap_count_rooms(action_pattern *ap) {
 	return c;
 }
 
-int PL::Actions::Patterns::ap_count_going(action_pattern *ap) {
+int ActionPatterns::ap_count_going(action_pattern *ap) {
 	int c = 0;
 	if (ap->pushing_spec) c += 2;
 	if (ap->by_spec) c += 2;
@@ -1217,7 +1221,7 @@ int PL::Actions::Patterns::ap_count_going(action_pattern *ap) {
 	return c;
 }
 
-int PL::Actions::Patterns::count_aspects(action_pattern *ap) {
+int ActionPatterns::count_aspects(action_pattern *ap) {
 	int c = 0;
 	if (ap == NULL) return 0;
 	if ((ap->pushing_spec) ||
@@ -1239,7 +1243,7 @@ int PL::Actions::Patterns::count_aspects(action_pattern *ap) {
 	return c;
 }
 
-int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
+int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 	int rv, suspend_usual_from_and_room = FALSE, rct1, rct2;
 
 	if ((ap1 == NULL) && (ap2)) return -1;
@@ -1259,7 +1263,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.2.1 - Action/Where/Going In Exotic Ways";
 
-	rct1 = PL::Actions::Patterns::ap_count_going(ap1); rct2 = PL::Actions::Patterns::ap_count_going(ap2);
+	rct1 = ActionPatterns::ap_count_going(ap1); rct2 = ActionPatterns::ap_count_going(ap2);
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
@@ -1274,7 +1278,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
 
-	rct1 = PL::Actions::Patterns::ap_count_rooms(ap1); rct2 = PL::Actions::Patterns::ap_count_rooms(ap2);
+	rct1 = ActionPatterns::ap_count_rooms(ap1); rct2 = ActionPatterns::ap_count_rooms(ap2);
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
@@ -1312,7 +1316,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
 
-	rv = PL::Actions::Patterns::compare_specificity_of_apoc_list(ap1, ap2);
+	rv = ActionPatterns::compare_specificity_of_apoc_list(ap1, ap2);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
@@ -1335,7 +1339,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.4.1 - Action/How/What Happens";
 
-	rv = PL::Actions::ConstantLists::compare_specificity(ap1->action, ap2->action);
+	rv = ActionNameLists::compare_specificity(ap1->action_list, ap2->action_list);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.5.1 - Action/When/Duration";
@@ -1350,9 +1354,9 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 
 	c_s_stage_law = I"III.6.1 - Action/Name/Is This Named";
 
-	if ((PL::Actions::Patterns::is_named(ap1)) && (PL::Actions::Patterns::is_named(ap2) == FALSE))
+	if ((ActionPatterns::is_named(ap1)) && (ActionPatterns::is_named(ap2) == FALSE))
 		return 1;
-	if ((PL::Actions::Patterns::is_named(ap1) == FALSE) && (PL::Actions::Patterns::is_named(ap2)))
+	if ((ActionPatterns::is_named(ap1) == FALSE) && (ActionPatterns::is_named(ap2)))
 		return -1;
 	return 0;
 }
@@ -1361,7 +1365,7 @@ int PL::Actions::Patterns::compare_specificity(action_pattern *ap1, action_patte
 into action patterns in the noun or second noun position.
 
 =
-void PL::Actions::Patterns::put_action_object_into_ap(action_pattern *ap, int pos, wording W) {
+void ActionPatterns::put_action_object_into_ap(action_pattern *ap, int pos, wording W) {
 	parse_node *spec = NULL;
 	int any_flag = FALSE;
 	if (<action-operand>(W)) {
@@ -1383,7 +1387,7 @@ void PL::Actions::Patterns::put_action_object_into_ap(action_pattern *ap, int po
 @h Compiling action tries.
 
 =
-void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
+void ActionPatterns::emit_try(action_pattern *ap, int store_instead) {
 	parse_node *spec0 = ap->noun_spec; /* the noun */
 	parse_node *spec1 = ap->second_spec; /* the second noun */
 	parse_node *spec2 = ap->actor_spec; /* the actor */
@@ -1395,9 +1399,8 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 		(<subject-pronoun>(Node::get_text(spec1)) == FALSE))
 		spec1 = Rvalues::from_wording(Node::get_text(spec1));
 
-	action_name_list *anl = ap->action;
-	action_name *an = PL::Actions::ConstantLists::get_singleton_action(anl);
-	LOGIF(EXPRESSIONS, "Compiling from action name list:\n$L\n", anl);
+	action_name *an = ActionNameLists::get_singleton_action(ap->action_list);
+	LOGIF(EXPRESSIONS, "Compiling from action name list:\n$8\n", ap->action_list);
 
 	int flag_bits = 0;
 	if (Kinds::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
@@ -1409,12 +1412,12 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYACTION_HL));
 	Produce::down(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) flag_bits);
-		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
+		if (spec2) ActionPatterns::emit_try_action_parameter(spec2, K_object);
 		else Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
 		Produce::val_iname(Emit::tree(), K_action_name, RTActions::double_sharp(an));
-		if (spec0) PL::Actions::Patterns::emit_try_action_parameter(spec0, ActionSemantics::kind_of_noun(an));
+		if (spec0) ActionPatterns::emit_try_action_parameter(spec0, ActionSemantics::kind_of_noun(an));
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, ActionSemantics::kind_of_second(an));
+		if (spec1) ActionPatterns::emit_try_action_parameter(spec1, ActionSemantics::kind_of_second(an));
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		if (store_instead) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
@@ -1430,7 +1433,7 @@ text as an action parameter is correctly read as parsing grammar rather than
 text when the action expects that.
 
 =
-void PL::Actions::Patterns::emit_try_action_parameter(parse_node *spec, kind *required_kind) {
+void ActionPatterns::emit_try_action_parameter(parse_node *spec, kind *required_kind) {
 	if ((K_understanding) && (Kinds::eq(required_kind, K_understanding))) {
 		kind *K = Specifications::to_kind(spec);
 		if ((Kinds::compatible(K, K_understanding)) ||
@@ -1456,7 +1459,7 @@ the routines to compile nothing and return |f| unchanged.) The simple
 case first:
 
 =
-int PL::Actions::Patterns::CAP_insert_clause(int f, OUTPUT_STREAM, char *i6_condition) {
+int ActionPatterns::CAP_insert_clause(int f, OUTPUT_STREAM, char *i6_condition) {
 	if (f) WRITE(" && ");
 	WRITE("(%s)", i6_condition);
 	return TRUE;
@@ -1482,7 +1485,7 @@ exceptional case where the clause doesn't act on a single I6 global,
 and in this case we therefore ignore |I6_global_name|.
 
 =
-int PL::Actions::Patterns::compile_pattern_match_clause(int f,
+int ActionPatterns::compile_pattern_match_clause(int f,
 	value_holster *VH, nonlocal_variable *I6_global_variable,
 	parse_node *spec, kind *verify_as_kind, int adapt_region) {
 	if (spec == NULL) return f;
@@ -1494,11 +1497,11 @@ int PL::Actions::Patterns::compile_pattern_match_clause(int f,
 	int is_parameter = FALSE;
 	if (I6_global_variable == parameter_object_VAR) is_parameter = TRUE;
 
-	return PL::Actions::Patterns::compile_pattern_match_clause_inner(f,
+	return ActionPatterns::compile_pattern_match_clause_inner(f,
 		VH, I6_var_TS, is_parameter, spec, verify_as_kind, adapt_region);
 }
 
-int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
+int ActionPatterns::compile_pattern_match_clause_inner(int f,
 	value_holster *VH, parse_node *I6_var_TS, int is_parameter,
 	parse_node *spec, kind *verify_as_kind, int adapt_region) {
 	int force_proposition = FALSE;
@@ -1655,12 +1658,12 @@ int PL::Actions::Patterns::compile_pattern_match_clause_inner(int f,
 }
 
 @ =
-void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *ap) {
+void ActionPatterns::as_stored_action(value_holster *VH, action_pattern *ap) {
 	inter_name *N = RTKinds::new_block_constant_iname();
 	packaging_state save = Emit::named_late_array_begin(N, K_value);
 
 	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
-	action_name *an = PL::Actions::ConstantLists::get_singleton_action(ap->action);
+	action_name *an = ActionNameLists::get_singleton_action(ap->action_list);
 	Emit::array_action_entry(an);
 
 	int request_bits = ap->request;
@@ -1694,9 +1697,9 @@ void PL::Actions::Patterns::as_stored_action(value_holster *VH, action_pattern *
 	if (N) Emit::holster(VH, N);
 }
 
-void PL::Actions::Patterns::emit_pattern_match(action_pattern ap, int naming_mode) {
+void ActionPatterns::emit_pattern_match(action_pattern ap, int naming_mode) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
-	PL::Actions::Patterns::compile_pattern_match(&VH, ap, naming_mode);
+	ActionPatterns::compile_pattern_match(&VH, ap, naming_mode);
 }
 
 @
@@ -1740,7 +1743,7 @@ void PL::Actions::Patterns::emit_pattern_match(action_pattern ap, int naming_mod
 }
 
 =
-void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_pattern ap, int naming_mode) {
+void ActionPatterns::compile_pattern_match(value_holster *VH, action_pattern ap, int naming_mode) {
 	int cpm_count = 0, needed[MAX_CPM_CLAUSES];
 	ap_optional_clause *needed_apoc[MAX_CPM_CLAUSES];
 	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A", &ap);
@@ -1782,19 +1785,19 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				}
 			}
 		}
-		if ((ap.action != NULL) && (ap.test_anl)) {
+		if ((ap.action_list != NULL) && (ap.test_anl)) {
 			CPMC_NEEDED(ACTION_MATCHES_CPMC, NULL);
 		}
-		if ((ap.action == NULL) && (ap.noun_spec)) {
+		if ((ap.action_list == NULL) && (ap.noun_spec)) {
 			CPMC_NEEDED(NOUN_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(NOUN_IS_INP1_CPMC, NULL);
 		}
-		if ((ap.action == NULL) && (ap.second_spec)) {
+		if ((ap.action_list == NULL) && (ap.second_spec)) {
 			CPMC_NEEDED(SECOND_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(SECOND_IS_INP1_CPMC, NULL);
 		}
-		if ((ap.action) && (ap.action->action_listed)) {
-			kind_of_noun = ActionSemantics::kind_of_noun(ap.action->action_listed);
+		if ((ap.action_list) && (ap.action_list->body) && (ap.action_list->body->item.action_listed)) {
+			kind_of_noun = ActionSemantics::kind_of_noun(ap.action_list->body->item.action_listed);
 			if (kind_of_noun == NULL) kind_of_noun = K_object;
 		}
 
@@ -1807,8 +1810,8 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 				CPMC_NEEDED(NOUN_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
-		if ((ap.action) && (ap.action->action_listed)) {
-			kind_of_second = ActionSemantics::kind_of_second(ap.action->action_listed);
+		if ((ap.action_list) && (ap.action_list->body) && (ap.action_list->body->item.action_listed)) {
+			kind_of_second = ActionSemantics::kind_of_second(ap.action_list->body->item.action_listed);
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
 		if (Kinds::Behaviour::is_object(kind_of_second)) {
@@ -1901,7 +1904,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	int range_to_compile = 0;
 	LocalVariables::begin_condition_emit();
 
-	if (PL::Actions::ConstantLists::negated(ap.action)) {
+	if (ActionNameLists::negated(ap.action_list)) {
 		if (ranges_count[0] > 0) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
@@ -1972,7 +1975,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	}
 
 	if ((ranges_count[0] + ranges_count[1] + ranges_count[2] + ranges_count[3] == 0) &&
-		(PL::Actions::ConstantLists::negated(ap.action) == FALSE)) {
+		(ActionNameLists::negated(ap.action_list) == FALSE)) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 	}
 	LocalVariables::end_condition_emit();
@@ -2028,10 +2031,10 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Produce::up(Emit::tree());
 			break;
 		case ACTOR_MATCHES_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, ap.actor_spec, K_object, FALSE);
+			ActionPatterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, ap.actor_spec, K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
-			PL::Actions::ConstantLists::emit(ap.action);
+			RTActions::emit_anl(ap.action_list);
 			break;
 		case NOUN_EXISTS_CPMC:
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
@@ -2054,25 +2057,25 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Produce::up(Emit::tree());
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, ap.noun_spec,
+			ActionPatterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, ap.noun_spec,
 				kind_of_noun, FALSE);
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
+			ActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
 				ap.noun_spec, kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, I6_second_VAR, ap.second_spec,
+			ActionPatterns::compile_pattern_match_clause(f, VH, I6_second_VAR, ap.second_spec,
 				kind_of_second, FALSE);
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
+			ActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
 				ap.second_spec, kind_of_second, FALSE);
 			break;
 		case PLAYER_LOCATION_MATCHES_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH, real_location_VAR, ap.room_spec, K_object, TRUE);
+			ActionPatterns::compile_pattern_match_clause(f, VH, real_location_VAR, ap.room_spec, K_object, TRUE);
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -2085,20 +2088,20 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			Produce::up(Emit::tree());
 			break;
 		case ACTOR_LOCATION_MATCHES_CPMC:
-			PL::Actions::Patterns::compile_pattern_match_clause(f,
+			ActionPatterns::compile_pattern_match_clause(f,
 				VH, actor_location_VAR, ap.room_spec, K_object, TRUE);
 			break;
 		case PARAMETER_MATCHES_CPMC: {
 			kind *saved_kind = NonlocalVariables::kind(parameter_object_VAR);
 			NonlocalVariables::set_kind(parameter_object_VAR, ap.parameter_kind);
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
+			ActionPatterns::compile_pattern_match_clause(f, VH,
 				parameter_object_VAR, ap.parameter_spec, ap.parameter_kind, FALSE);
 			NonlocalVariables::set_kind(parameter_object_VAR, saved_kind);
 			break;
 		}
 		case OPTIONAL_CLAUSE_CPMC: {
 			kind *K = StackedVariables::get_kind(apoc->stv_to_match);
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
+			ActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
 				apoc->clause_spec, K, apoc->allow_region_as_room);
 			break;
@@ -2120,7 +2123,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
-			PL::Actions::Patterns::compile_pattern_match_clause(f, VH,
+			ActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_nve(RTVariables::nve_from_mstack(20007, 1, TRUE),
 					K_object),
 					somewhere, K_object, FALSE);
@@ -2144,7 +2147,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 		case PRESENCE_OF_MATCHES_CPMC: {
 			instance *to_be_present =
 				Specifications::object_exactly_described_if_any(ap.presence_spec);
-			PL::Actions::Patterns::compile_pattern_match_clause(FALSE, VH,
+			ActionPatterns::compile_pattern_match_clause(FALSE, VH,
 				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
 				ap.presence_spec, K_object, FALSE);
 			break;
@@ -2226,16 +2229,16 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 	}
 
 @ =
-int PL::Actions::Patterns::refers_to_past(action_pattern *ap) {
+int ActionPatterns::refers_to_past(action_pattern *ap) {
 	if (ap->duration) return TRUE;
 	return FALSE;
 }
 
-void PL::Actions::Patterns::convert_to_present_tense(action_pattern *ap) {
+void ActionPatterns::convert_to_present_tense(action_pattern *ap) {
 	ap->duration = NULL;
 }
 
-int PL::Actions::Patterns::pta_acceptable(parse_node *spec) {
+int ActionPatterns::pta_acceptable(parse_node *spec) {
 	instance *I;
 	if (spec == NULL) return TRUE;
 	if (Specifications::is_description(spec) == FALSE) return TRUE;
@@ -2244,7 +2247,7 @@ int PL::Actions::Patterns::pta_acceptable(parse_node *spec) {
 	return FALSE;
 }
 
-int PL::Actions::Patterns::makes_callings(action_pattern *ap) {
+int ActionPatterns::makes_callings(action_pattern *ap) {
 	if (Descriptions::makes_callings(ap->noun_spec)) return TRUE;
 	if (Descriptions::makes_callings(ap->second_spec)) return TRUE;
 	if (Descriptions::makes_callings(ap->actor_spec)) return TRUE;
@@ -2254,7 +2257,7 @@ int PL::Actions::Patterns::makes_callings(action_pattern *ap) {
 	return FALSE;
 }
 
-void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
+void ActionPatterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIONBITMAP_HL));
 	Produce::down(Emit::tree());
@@ -2262,19 +2265,20 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
 		Specifications::Compiler::emit_as_val(K_value, ap->noun_spec);
-	if (ap->action == NULL)
+	action_name_list *anl = (ap->action_list)?(ap->action_list->body):NULL;
+	if (anl == NULL)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 	else {
-		if (ap->action->next) bad_form = TRUE;
-		if (ActionSemantics::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)
+		if (ap->action_list->body->next) bad_form = TRUE;
+		if (ActionSemantics::can_be_compiled_in_past_tense(anl->item.action_listed) == FALSE)
 			bad_form = TRUE;
-		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(ap->action->action_listed));
+		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(anl->item.action_listed));
 	}
 	Produce::up(Emit::tree());
 
-	if (PL::Actions::Patterns::pta_acceptable(ap->noun_spec) == FALSE) bad_form = TRUE;
-	if (PL::Actions::Patterns::pta_acceptable(ap->second_spec) == FALSE) bad_form = TRUE;
-	if (PL::Actions::Patterns::pta_acceptable(ap->actor_spec) == FALSE) bad_form = TRUE;
+	if (ActionPatterns::pta_acceptable(ap->noun_spec) == FALSE) bad_form = TRUE;
+	if (ActionPatterns::pta_acceptable(ap->second_spec) == FALSE) bad_form = TRUE;
+	if (ActionPatterns::pta_acceptable(ap->actor_spec) == FALSE) bad_form = TRUE;
 	if (ap->room_spec) bad_form = TRUE;
 	if (ap->parameter_spec) bad_form = TRUE;
 	if (ap->presence_spec) bad_form = TRUE;
@@ -2296,7 +2300,7 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 		"else was then happening can be specified.");
 
 @ =
-int PL::Actions::Patterns::is_an_action_variable(parse_node *spec) {
+int ActionPatterns::is_an_action_variable(parse_node *spec) {
 	nonlocal_variable *nlv;
 	if (spec == NULL) return FALSE;
 	if (Lvalues::get_storage_form(spec) != NONLOCAL_VARIABLE_NT) return FALSE;
