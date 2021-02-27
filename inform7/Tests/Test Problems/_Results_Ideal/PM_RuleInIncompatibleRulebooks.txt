@@ -1,12 +1,13 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 77 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_RuleInIncompatibleRulebooks
   >--> You've asked to put the rule 'foo rule' into the rulebook 'dramatic' (source
     text, line 9), which is based on a number and produces a time; but it was
     originally written to go into a rulebook of a different kind, 'carry out
-    Dropping' (source text, line 1), which is based on an action name and
+    dropping' (source text, line 1), which is based on an action name and
     produces nothing. Because those kinds are different, 'foo rule' can't go
     into 'dramatic' (source text, line 9).
-Inform 7 has finished: 19 centiseconds used.
+Inform 7 has finished.

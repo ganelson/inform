@@ -1,4 +1,4 @@
-[PL::Actions::ScopeLoops::] Looping Over Scope.
+[LoopingOverScope::] Looping Over Scope.
 
 To compile routines capable of being passed as arguments to the
 I6 library routine for looping over parser scope at run-time, and so to provide
@@ -14,7 +14,7 @@ typedef struct loop_over_scope {
 } loop_over_scope;
 
 @ =
-loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
+loop_over_scope *LoopingOverScope::new(parse_node *what) {
 	loop_over_scope *los = CREATE(loop_over_scope);
 	los->what_to_find = Node::duplicate(what);
 	if (Specifications::is_description(what)) {
@@ -27,7 +27,7 @@ loop_over_scope *PL::Actions::ScopeLoops::new(parse_node *what) {
 }
 
 loop_over_scope *latest_los = NULL;
-int PL::Actions::ScopeLoops::compilation_coroutine(void) {
+int LoopingOverScope::compilation_coroutine(void) {
 	int N = 0;
 	while (TRUE) {
 		loop_over_scope *los;

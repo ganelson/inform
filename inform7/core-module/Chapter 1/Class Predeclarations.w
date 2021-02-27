@@ -217,6 +217,7 @@ DECLARE_CLASS(test_scenario)
 
 @ //index// --
 
+@e command_index_entry_CLASS
 @e connected_submap_CLASS
 @e contents_entry_CLASS
 @e documentation_ref_CLASS
@@ -227,6 +228,7 @@ DECLARE_CLASS(test_scenario)
 @e rubric_holder_CLASS
 
 =
+DECLARE_CLASS(command_index_entry)
 DECLARE_CLASS(connected_submap)
 DECLARE_CLASS(contents_entry)
 DECLARE_CLASS(documentation_ref)
@@ -241,7 +243,6 @@ DECLARE_CLASS(rubric_holder)
 @e action_name_CLASS
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
-@e command_index_entry_CLASS
 @e direction_inference_data_CLASS
 @e found_in_inference_data_CLASS
 @e grammar_line_CLASS
@@ -249,6 +250,7 @@ DECLARE_CLASS(rubric_holder)
 @e loop_over_scope_CLASS
 @e map_data_CLASS
 @e named_action_pattern_CLASS
+@e named_action_pattern_entry_CLASS
 @e noun_filter_token_CLASS
 @e parentage_here_inference_data_CLASS
 @e parentage_inference_data_CLASS
@@ -274,7 +276,6 @@ DECLARE_CLASS(rubric_holder)
 DECLARE_CLASS(action_name)
 DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
-DECLARE_CLASS(command_index_entry)
 DECLARE_CLASS(direction_inference_data)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(grammar_line)
@@ -282,6 +283,7 @@ DECLARE_CLASS(grammar_verb)
 DECLARE_CLASS(loop_over_scope)
 DECLARE_CLASS(map_data)
 DECLARE_CLASS(named_action_pattern)
+DECLARE_CLASS(named_action_pattern_entry)
 DECLARE_CLASS(noun_filter_token)
 DECLARE_CLASS(parentage_here_inference_data)
 DECLARE_CLASS(parentage_inference_data)

@@ -188,14 +188,14 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 
 @<Document and dictionary the kinds of action made in extension@> =
 	#ifdef IF_MODULE
-	PL::Actions::Patterns::Named::index_for_extension(OUT, E->read_into_file, E);
+	IXActions::index_named_patterns_for_extension(OUT, E->read_into_file, E);
 	#endif
 
 @ Actions:
 
 @<Document and dictionary the actions made in extension@> =
 	#ifdef IF_MODULE
-	PL::Actions::Index::index_for_extension(OUT, E->read_into_file, E);
+	CommandsIndex::index_for_extension(OUT, E->read_into_file, E);
 	#endif
 
 @ Verbs (this one we delegate):

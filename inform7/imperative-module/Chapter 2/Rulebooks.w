@@ -793,7 +793,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 		phrase *ph = Rules::get_I7_definition(Rules::Bookings::get_rule(the_new_rule));
 		if (ph) {
 			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
-			if ((an) && (PL::Actions::is_out_of_world(an)))
+			if ((an) && (ActionSemantics::is_out_of_world(an)))
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),
 					"this rulebook has no effect on actions which happen out of world",
 					"so I'm not going to let you file this rule in it. ('Check', "

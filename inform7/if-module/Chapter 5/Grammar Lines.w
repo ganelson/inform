@@ -1091,7 +1091,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Emit::array_iname_entry(VERB_DIRECTIVE_REVERSE_iname);
 			}
 
-			PL::Actions::check_types_for_grammar(gl->resulting_action, token_values,
+			ActionSemantics::check_valid_application(gl->resulting_action, token_values,
 				token_value_kinds);
 			break;
 		case GV_IS_PROPERTY_NAME:
@@ -1367,18 +1367,18 @@ void PL::Parsing::Lines::gl_index_normal(OUTPUT_STREAM, grammar_line *gl, text_s
 	action_name *an = gl->resulting_action;
 	if (an == NULL) return;
 	Index::anchor(OUT, headword);
-	if (PL::Actions::is_out_of_world(an))
+	if (ActionSemantics::is_out_of_world(an))
 		HTML::begin_colour(OUT, I"800000");
 	WRITE("&quot;");
-	PL::Actions::Index::verb_definition(OUT, Lexer::word_text(gl->original_text),
+	CommandsIndex::verb_definition(OUT, Lexer::word_text(gl->original_text),
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
 	Index::link(OUT, gl->original_text);
-	WRITE(" - <i>%+W", an->present_name);
+	WRITE(" - <i>%+W", an->naming_data.present_name);
 	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
 	if (gl->reversed) WRITE(" (reversed)");
 	WRITE("</i>");
-	if (PL::Actions::is_out_of_world(an))
+	if (ActionSemantics::is_out_of_world(an))
 		HTML::end_colour(OUT);
 	HTML_TAG("br");
 }
@@ -1427,7 +1427,7 @@ int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) 
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("&quot;");
-			PL::Actions::Index::verb_definition(OUT,
+			CommandsIndex::verb_definition(OUT,
 				Lexer::word_text(gl->original_text), trueverb, VW);
 			WRITE("&quot;");
 			Index::link(OUT, gl->original_text);
@@ -1455,7 +1455,7 @@ void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
 			HTML::open_indented_p(OUT, 2, "hanging");
 			if (k++ == 0) WRITE("="); else WRITE("or");
 			WRITE(" &quot;");
-			PL::Actions::Index::verb_definition(OUT,
+			CommandsIndex::verb_definition(OUT,
 				Lexer::word_text(gl->original_text), trueverb, EMPTY_WORDING);
 			WRITE("&quot;");
 			Index::link(OUT, gl->original_text);

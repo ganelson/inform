@@ -843,10 +843,10 @@ parser, recording how it most recently failed.
 @<See if it starts with a valid action name, at least@> =
 	action_name *an;
 	LOOP_OVER(an, action_name)
-		if ((Wordings::length(phud->rule_parameter) < Wordings::length(an->present_name)) &&
+		if ((Wordings::length(phud->rule_parameter) < Wordings::length(an->naming_data.present_name)) &&
 			(Wordings::match(phud->rule_parameter,
-				Wordings::truncate(an->present_name, Wordings::length(phud->rule_parameter))))) {
-			Problems::quote_wording(3, an->present_name);
+				Wordings::truncate(an->naming_data.present_name, Wordings::length(phud->rule_parameter))))) {
+			Problems::quote_wording(3, an->naming_data.present_name);
 			Problems::issue_problem_segment(
 				" I notice that there's an action called '%3', though: perhaps "
 				"this is what you meant?");

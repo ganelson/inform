@@ -1,6 +1,6 @@
-[PL::Actions::Index::] Actions Index.
+[CommandsIndex::] Commands Index.
 
-To construct the Actions index page.
+To construct the index of command verbs.
 
 @ The following modest structure is used for the indexing of command verbs,
 and is too deeply boring to comment upon. These are the headwords of commands
@@ -25,7 +25,7 @@ typedef struct command_index_entry {
 command_index_entry *sorted_command_index = NULL; /* in alphabetical order of |text| */
 
 @ =
-void PL::Actions::Index::index_meta_verb(char *t) {
+void CommandsIndex::index_meta_verb(char *t) {
 	command_index_entry *vie;
 	vie = CREATE(command_index_entry);
 	vie->command_headword = Str::new();
@@ -35,7 +35,7 @@ void PL::Actions::Index::index_meta_verb(char *t) {
 	vie->next_alphabetically = NULL;
 }
 
-void PL::Actions::Index::test_verb(text_stream *t) {
+void CommandsIndex::test_verb(text_stream *t) {
 	command_index_entry *vie;
 	vie = CREATE(command_index_entry);
 	vie->command_headword = Str::duplicate(t);
@@ -44,7 +44,7 @@ void PL::Actions::Index::test_verb(text_stream *t) {
 	vie->next_alphabetically = NULL;
 }
 
-void PL::Actions::Index::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *trueverb, wording W) {
+void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *trueverb, wording W) {
 	int i = 1;
 	if ((p[0] == 0) || (p[1] == 0)) return;
 	if (Str::len(trueverb) > 0) {
@@ -67,7 +67,7 @@ void PL::Actions::Index::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream 
 	}
 }
 
-command_index_entry *PL::Actions::Index::vie_new_from(OUTPUT_STREAM, wchar_t *headword, grammar_verb *gv, int nature) {
+command_index_entry *CommandsIndex::vie_new_from(OUTPUT_STREAM, wchar_t *headword, grammar_verb *gv, int nature) {
 	command_index_entry *vie;
 	vie = CREATE(command_index_entry);
 	vie->command_headword = Str::new();
@@ -78,7 +78,7 @@ command_index_entry *PL::Actions::Index::vie_new_from(OUTPUT_STREAM, wchar_t *he
 	return vie;
 }
 
-void PL::Actions::Index::commands(OUTPUT_STREAM) {
+void CommandsIndex::commands(OUTPUT_STREAM) {
 	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
 	grammar_verb *gv;
 	int head_letter;
@@ -144,7 +144,7 @@ void PL::Actions::Index::commands(OUTPUT_STREAM) {
 	}
 }
 
-void PL::Actions::Index::alphabetical(OUTPUT_STREAM) {
+void CommandsIndex::alphabetical(OUTPUT_STREAM) {
 	int nr = NUMBER_CREATED(action_name);
 	action_name **sorted = Memory::calloc(nr, sizeof(action_name *), INDEX_SORTING_MREASON);
 	if (sorted) {
@@ -167,30 +167,30 @@ void PL::Actions::Index::alphabetical(OUTPUT_STREAM) {
 	for (i=0; i<nr; i++) {
 		HTML::first_html_column(OUT, 0);
 		action_name *an = sorted[i];
-		if (an->semantics.out_of_world) HTML::begin_colour(OUT, I"800000");
-		WRITE("%W", an->present_name);
-		if (an->semantics.out_of_world) HTML::end_colour(OUT);
+		if (ActionSemantics::is_out_of_world(an)) HTML::begin_colour(OUT, I"800000");
+		WRITE("%W", an->naming_data.present_name);
+		if (ActionSemantics::is_out_of_world(an)) HTML::end_colour(OUT);
 		Index::detail_link(OUT, "A", an->allocation_id, TRUE);
 
-		if (an->semantics.requires_light) WRITE(" <i>requires light</i>");
+		if (ActionSemantics::requires_light(an)) WRITE(" <i>requires light</i>");
 
 		HTML::next_html_column(OUT, 0);
-		if (an->semantics.max_parameters < 1) {
+		if (ActionSemantics::can_have_noun(an) == FALSE) {
 			WRITE("&mdash;");
 		} else {
-			if (an->semantics.noun_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (an->semantics.noun_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->semantics.noun_kind, FALSE, FALSE);
+			if (ActionSemantics::noun_access(an) == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
+			if (ActionSemantics::noun_access(an) == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			WRITE("<b>"); Kinds::Index::index_kind(OUT, ActionSemantics::kind_of_noun(an), FALSE, FALSE);
 			WRITE("</b>");
 		}
 
 		HTML::next_html_column(OUT, 0);
-		if (an->semantics.max_parameters < 2) {
+		if (ActionSemantics::can_have_second(an) == FALSE) {
 			WRITE("&mdash;");
 		} else {
-			if (an->semantics.second_access == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
-			if (an->semantics.second_access == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
-			WRITE("<b>"); Kinds::Index::index_kind(OUT, an->semantics.second_kind, FALSE, FALSE);
+			if (ActionSemantics::second_access(an) == REQUIRES_ACCESS) WRITE("<i>touchable</i> ");
+			if (ActionSemantics::second_access(an) == REQUIRES_POSSESSION) WRITE("<i>carried</i> ");
+			WRITE("<b>"); Kinds::Index::index_kind(OUT, ActionSemantics::kind_of_second(an), FALSE, FALSE);
 			WRITE("</b>");
 		}
 		HTML::end_html_row(OUT);
@@ -203,19 +203,19 @@ void PL::Actions::Index::alphabetical(OUTPUT_STREAM) {
 	int i = 0;
 	action_name *an;
 	LOOP_OVER(an, action_name) sorted[i++] = an;
-	qsort(sorted, (size_t) nr, sizeof(action_name *), PL::Actions::Index::compare_action_names);
+	qsort(sorted, (size_t) nr, sizeof(action_name *), CommandsIndex::compare_action_names);
 
 @ The following means the table is sorted in alphabetical order of action name.
 
 =
-int PL::Actions::Index::compare_action_names(const void *ent1, const void *ent2) {
+int CommandsIndex::compare_action_names(const void *ent1, const void *ent2) {
 	const action_name *an1 = *((const action_name **) ent1);
 	const action_name *an2 = *((const action_name **) ent2);
-	return Wordings::strcmp(an1->present_name, an2->present_name);
+	return Wordings::strcmp(an1->naming_data.present_name, an2->naming_data.present_name);
 }
 
 @ =
-void PL::Actions::Index::page(OUTPUT_STREAM) {
+void CommandsIndex::page(OUTPUT_STREAM) {
 	int f = FALSE, par_count = 0;
 	action_name *an;
 	heading *current_area = NULL;
@@ -229,7 +229,7 @@ void PL::Actions::Index::page(OUTPUT_STREAM) {
 	if (f) HTML_CLOSE("p");
 }
 
-void PL::Actions::Index::detail_pages(void) {
+void CommandsIndex::detail_pages(void) {
 	int f = FALSE;
 	action_name *an;
 	heading *current_area = NULL;
@@ -252,7 +252,7 @@ void PL::Actions::Index::detail_pages(void) {
 	}
 }
 
-void PL::Actions::Index::tokens(OUTPUT_STREAM) {
+void CommandsIndex::tokens(OUTPUT_STREAM) {
 	HTML_OPEN("p");
 	WRITE("In addition to the tokens listed below, any description of an object "
 		"or value can be used: for example, \"[number]\" matches text like 127 or "
@@ -267,12 +267,12 @@ void PL::Actions::Index::tokens(OUTPUT_STREAM) {
 	PL::Parsing::Verbs::index_tokens(OUT);
 }
 
-void PL::Actions::Index::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
+void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
 	action_name *acn;
 	int kc = 0;
 	LOOP_OVER(acn, action_name)
-		if (Lexer::file_of_origin(Wordings::first_wn(acn->present_name)) == E->read_into_file)
+		if (Lexer::file_of_origin(Wordings::first_wn(acn->naming_data.present_name)) == E->read_into_file)
 			kc = IndexExtensions::document_headword(OUT, kc, E, "Actions", I"action",
-				acn->present_name);
+				acn->naming_data.present_name);
 	if (kc != 0) HTML_CLOSE("p");
 }

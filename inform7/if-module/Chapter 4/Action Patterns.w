@@ -52,9 +52,6 @@ typedef struct action_pattern {
 	struct kind *parameter_kind; /* of this expected kind */
 
 	int valid; /* recording success or failure in parsing to an AP */
-
-	struct parse_node *entered_into_NAP_here; /* sentence adding it to named behaviour */
-	struct action_pattern *next; /* for forming APs into linked lists */
 } action_pattern;
 
 typedef struct ap_optional_clause {
@@ -103,7 +100,6 @@ action_pattern PL::Actions::Patterns::new(void) {
 	ap.parameter_spec = NULL;
 	ap.parameter_kind = K_object;
 	ap.valid = FALSE;
-	ap.next = NULL;
 	ap.when = NULL;
 	ap.presence_spec = NULL;
 	ap.from_spec = NULL;
@@ -117,7 +113,6 @@ action_pattern PL::Actions::Patterns::new(void) {
 	ap.duration = NULL;
 	ap.optional_clauses = NULL;
 	ap.chief_action_owner_id = 0;
-	ap.entered_into_NAP_here = NULL;
 	return ap;
 }
 
@@ -286,7 +281,7 @@ int PL::Actions::Patterns::within_action_context(action_pattern *ap, action_name
 	if (ap == NULL) return TRUE;
 	if (ap->action == NULL) return TRUE;
 	if (ap->action->nap_listed)
-		return PL::Actions::Patterns::Named::within_action_context(ap->action->nap_listed, an);
+		return NamedActionPatterns::within_action_context(ap->action->nap_listed, an);
 	for (anl = ap->action; anl; anl = anl->next)
 		if (((anl->action_listed == an) && (anl->parity == 1)) ||
 			((anl->action_listed != an) && (anl->parity == -1)))
@@ -313,12 +308,12 @@ int PL::Actions::Patterns::object_based(action_pattern *ap) {
 int PL::Actions::Patterns::is_unspecific(action_pattern *ap) {
 	action_name *an = PL::Actions::Patterns::required_action(ap);
 	if (an == NULL) return TRUE;
-	int N = PL::Actions::get_min_parameters(an);
-	if ((N > 0) && (ap->noun_spec == NULL)) return TRUE;
-	if ((N > 1) && (ap->second_spec == NULL)) return TRUE;
-	N = PL::Actions::get_max_parameters(an);
-	if ((N > 0) && (PL::Actions::Patterns::ap_clause_is_unspecific(ap->noun_spec))) return TRUE;
-	if ((N > 1) && (PL::Actions::Patterns::ap_clause_is_unspecific(ap->second_spec))) return TRUE;
+	if ((ActionSemantics::must_have_noun(an)) && (ap->noun_spec == NULL)) return TRUE;
+	if ((ActionSemantics::must_have_second(an)) && (ap->second_spec == NULL)) return TRUE;
+	if ((ActionSemantics::can_have_noun(an)) &&
+		(PL::Actions::Patterns::ap_clause_is_unspecific(ap->noun_spec))) return TRUE;
+	if ((ActionSemantics::can_have_second(an)) &&
+		(PL::Actions::Patterns::ap_clause_is_unspecific(ap->second_spec))) return TRUE;
 	if (PL::Actions::Patterns::ap_clause_is_unspecific(ap->actor_spec)) return TRUE;
 	return FALSE;
 }
@@ -366,7 +361,7 @@ void PL::Actions::Patterns::categorise_as(action_pattern *ap, wording W) {
 		return;
 	}
 
-	PL::Actions::Patterns::Named::add(ap, W);
+	NamedActionPatterns::add(ap, W);
 }
 
 parse_node *PL::Actions::Patterns::nullify_nonspecific_references(parse_node *spec) {
@@ -907,7 +902,7 @@ away as they are recorded.
 		PL::Actions::ConstantLists::get_single_action(preliminary_anl);
 	if (chief_an == NULL) {
 		int x;
-		chief_an = PL::Actions::longest_null(W, tense, &x);
+		chief_an = ActionNameNames::longest_nounless(W, tense, &x);
 	}
 	if (chief_an) {
 		stacked_variable *last_stv_specified = NULL;
@@ -916,7 +911,7 @@ away as they are recorded.
 		while (i < Wordings::last_wn(W)) {
 			stacked_variable *stv = NULL;
 			if (Word::unexpectedly_upper_case(i) == FALSE)
-				stv = PL::Actions::parse_match_clause(chief_an, Wordings::new(i, Wordings::last_wn(W)));
+				stv = ActionVariables::parse_match_clause(chief_an, Wordings::new(i, Wordings::last_wn(W)));
 			if (stv != NULL) {
 				LOGIF(ACTION_PATTERN_PARSING,
 					"Special clauses found on <%W>\n", Wordings::from(W, i));
@@ -1058,7 +1053,7 @@ description.
 		if (Wordings::nonempty(entry->parameter[1])) {
 			if ((entry->action_listed != NULL)
 				&& (K_understanding)
-				&& (Kinds::eq(PL::Actions::get_data_type_of_second_noun(entry->action_listed), K_understanding))
+				&& (Kinds::eq(ActionSemantics::kind_of_second(entry->action_listed), K_understanding))
 				&& (<understanding-action-irregular-operand>(entry->parameter[1]))) {
 				trial_ap.second_spec = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
 				Node::set_text(trial_ap.second_spec, entry->parameter[1]);
@@ -1075,8 +1070,8 @@ description.
 	kind *check_n = K_object;
 	kind *check_s = K_object;
 	if (entry->action_listed != NULL) {
-		check_n = PL::Actions::get_data_type_of_noun(entry->action_listed);
-		check_s = PL::Actions::get_data_type_of_second_noun(entry->action_listed);
+		check_n = ActionSemantics::kind_of_noun(entry->action_listed);
+		check_s = ActionSemantics::kind_of_second(entry->action_listed);
 	}
 	trial_ap.valid = TRUE;
 	if ((trial_ap.noun_any == FALSE) &&
@@ -1097,10 +1092,10 @@ description.
 		if ((entry->delete_this_link == FALSE) && (entry->action_listed)) {
 			if ((prev == NULL) || (prev->word_position != entry->word_position)) {
 				if ((entry->next == NULL) || (entry->next->word_position != entry->word_position)) {
-					if ((K[0] == NULL) && (PL::Actions::get_max_parameters(entry->action_listed) >= 1))
-						K[0] = PL::Actions::get_data_type_of_noun(entry->action_listed);
-					if ((K[1] == NULL) && (PL::Actions::get_max_parameters(entry->action_listed) >= 2))
-						K[1] = PL::Actions::get_data_type_of_second_noun(entry->action_listed);
+					if ((K[0] == NULL) && (ActionSemantics::can_have_noun(entry->action_listed)))
+						K[0] = ActionSemantics::kind_of_noun(entry->action_listed);
+					if ((K[1] == NULL) && (ActionSemantics::can_have_second(entry->action_listed)))
+						K[1] = ActionSemantics::kind_of_second(entry->action_listed);
 				}
 			}
 		}
@@ -1109,12 +1104,12 @@ description.
 	for (entry = anl; entry; prev = entry, entry = entry->next) {
 		if ((entry->delete_this_link == FALSE) && (entry->action_listed)) {
 			int poor_choice = FALSE;
-			if ((K[0]) && (PL::Actions::get_max_parameters(entry->action_listed) >= 1)) {
-				kind *L = PL::Actions::get_data_type_of_noun(entry->action_listed);
+			if ((K[0]) && (ActionSemantics::can_have_noun(entry->action_listed))) {
+				kind *L = ActionSemantics::kind_of_noun(entry->action_listed);
 				if (Kinds::compatible(L, K[0]) == FALSE) poor_choice = TRUE;
 			}
-			if ((K[1]) && (PL::Actions::get_max_parameters(entry->action_listed) >= 2)) {
-				kind *L = PL::Actions::get_data_type_of_second_noun(entry->action_listed);
+			if ((K[1]) && (ActionSemantics::can_have_second(entry->action_listed))) {
+				kind *L = ActionSemantics::kind_of_second(entry->action_listed);
 				if (Kinds::compatible(L, K[1]) == FALSE) poor_choice = TRUE;
 			}
 			if (poor_choice) {
@@ -1165,17 +1160,17 @@ the case when the first action name in the list is |NULL|).
 			}
 			action_name *this = entry->action_listed;
 			if (this) {
-				if (PL::Actions::is_out_of_world(this)) no_oow++; else no_iw++;
+				if (ActionSemantics::is_out_of_world(this)) no_oow++; else no_iw++;
 
 				if (entry->parc >= 1) {
-					kind *K = PL::Actions::get_data_type_of_noun(this);
+					kind *K = ActionSemantics::kind_of_noun(this);
 					kind *A = kinds_observed_in_list[0];
 					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
 						immiscible = TRUE;
 					kinds_observed_in_list[0] = K;
 				}
 				if (entry->parc >= 2) {
-					kind *K = PL::Actions::get_data_type_of_second_noun(this);
+					kind *K = ActionSemantics::kind_of_second(this);
 					kind *A = kinds_observed_in_list[1];
 					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
 						immiscible = TRUE;
@@ -1186,9 +1181,12 @@ the case when the first action name in the list is |NULL|).
 	if ((no_oow > 0) && (no_iw > 0)) immiscible = TRUE;
 
 	for (action_name_list *entry = anl; entry; entry = entry->next)
-		if (entry->action_listed)
-			if (no_of_pars > PL::Actions::get_max_parameters(entry->action_listed))
+		if (entry->action_listed) {
+			if ((no_of_pars >= 1) && (ActionSemantics::can_have_noun(entry->action_listed) == FALSE))
 				immiscible = TRUE;
+			if ((no_of_pars >= 2) && (ActionSemantics::can_have_second(entry->action_listed) == FALSE))
+				immiscible = TRUE;
+		}
 
 	if (immiscible) {
 		failure_this_call = IMMISCIBLE_PAPF;
@@ -1414,9 +1412,9 @@ void PL::Actions::Patterns::emit_try(action_pattern *ap, int store_instead) {
 		if (spec2) PL::Actions::Patterns::emit_try_action_parameter(spec2, K_object);
 		else Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
 		Produce::val_iname(Emit::tree(), K_action_name, RTActions::double_sharp(an));
-		if (spec0) PL::Actions::Patterns::emit_try_action_parameter(spec0, PL::Actions::get_data_type_of_noun(an));
+		if (spec0) PL::Actions::Patterns::emit_try_action_parameter(spec0, ActionSemantics::kind_of_noun(an));
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, PL::Actions::get_data_type_of_second_noun(an));
+		if (spec1) PL::Actions::Patterns::emit_try_action_parameter(spec1, ActionSemantics::kind_of_second(an));
 		else Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		if (store_instead) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
@@ -1796,7 +1794,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			CPMC_NEEDED(SECOND_IS_INP1_CPMC, NULL);
 		}
 		if ((ap.action) && (ap.action->action_listed)) {
-			kind_of_noun = PL::Actions::get_data_type_of_noun(ap.action->action_listed);
+			kind_of_noun = ActionSemantics::kind_of_noun(ap.action->action_listed);
 			if (kind_of_noun == NULL) kind_of_noun = K_object;
 		}
 
@@ -1810,7 +1808,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			}
 		}
 		if ((ap.action) && (ap.action->action_listed)) {
-			kind_of_second = PL::Actions::get_data_type_of_second_noun(ap.action->action_listed);
+			kind_of_second = ActionSemantics::kind_of_second(ap.action->action_listed);
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
 		if (Kinds::Behaviour::is_object(kind_of_second)) {
@@ -2162,7 +2160,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
-			loop_over_scope *los = PL::Actions::ScopeLoops::new(ap.presence_spec);
+			loop_over_scope *los = LoopingOverScope::new(ap.presence_spec);
 			wording PC = Descriptions::get_calling(ap.presence_spec);
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
 				Specifications::to_kind(ap.presence_spec));
@@ -2191,7 +2189,7 @@ void PL::Actions::Patterns::compile_pattern_match(value_holster *VH, action_patt
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
-			loop_over_scope *los = PL::Actions::ScopeLoops::new(ap.presence_spec);
+			loop_over_scope *los = LoopingOverScope::new(ap.presence_spec);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -2268,7 +2266,7 @@ void PL::Actions::Patterns::emit_past_tense(action_pattern *ap) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 	else {
 		if (ap->action->next) bad_form = TRUE;
-		if (PL::Actions::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)
+		if (ActionSemantics::can_be_compiled_in_past_tense(ap->action->action_listed) == FALSE)
 			bad_form = TRUE;
 		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(ap->action->action_listed));
 	}

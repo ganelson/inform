@@ -4,7 +4,6 @@
 
 =
 typedef struct action_compilation_data {
-	int use_verb_routine_in_I6_library; /* rather than compiling our own? */
 	int translated;
 	struct text_stream *translated_name;
 	struct inter_name *an_base_iname; /* e.g., |Take| */
@@ -13,9 +12,8 @@ typedef struct action_compilation_data {
 	struct package_request *an_package;
 } action_compilation_data;
 
-action_compilation_data RTActions::new_data(wording W, int implemented_by_I7) {
+action_compilation_data RTActions::new_data(wording W) {
 	action_compilation_data acd;
-	acd.use_verb_routine_in_I6_library = (implemented_by_I7)?FALSE:TRUE;
 	acd.translated = FALSE;
 	acd.translated_name = NULL;
 	acd.an_iname = NULL;
@@ -57,7 +55,7 @@ inter_name *RTActions::base_iname(action_name *an) {
 				Hierarchy::make_iname_with_specific_name(TRANSLATED_BASE_NAME_HL, an->compilation_data.translated_name, an->compilation_data.an_package);
 		else
 			an->compilation_data.an_base_iname =
-				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->compilation_data.an_package, an->present_name);
+				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL, an->compilation_data.an_package, an->naming_data.present_name);
 	}
 	return an->compilation_data.an_base_iname;
 }
@@ -151,7 +149,6 @@ infrastructure, and we access it with a single call.
 void RTActions::compile_action_routines(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
-		if (an->compilation_data.use_verb_routine_in_I6_library) continue;
 		inter_name *iname = RTActions::Sub(an);
 		packaging_state save = Routines::begin(iname);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -176,22 +173,21 @@ void RTActions::ActionData(void) {
 	inter_name *iname = Hierarchy::find(ACTIONDATA_HL);
 	packaging_state save = Emit::named_table_array_begin(iname, K_value);
 	LOOP_OVER(an, action_name) {
-		if (an->compilation_data.use_verb_routine_in_I6_library) continue;
 		mn = 0; ms = 0; ml = 0; mnp = 1; msp = 1; hn = 0; hs = 0;
-		if (an->semantics.requires_light) ml = 1;
-		if (an->semantics.noun_access == REQUIRES_ACCESS) mn = 1;
-		if (an->semantics.second_access == REQUIRES_ACCESS) ms = 1;
-		if (an->semantics.noun_access == REQUIRES_POSSESSION) { mn = 1; hn = 1; }
-		if (an->semantics.second_access == REQUIRES_POSSESSION) { ms = 1; hs = 1; }
-		if (an->semantics.noun_access == IMPOSSIBLE_ACCESS) mnp = 0;
-		if (an->semantics.second_access == IMPOSSIBLE_ACCESS) msp = 0;
+		if (ActionSemantics::requires_light(an)) ml = 1;
+		if (ActionSemantics::noun_access(an) == REQUIRES_ACCESS) mn = 1;
+		if (ActionSemantics::second_access(an) == REQUIRES_ACCESS) ms = 1;
+		if (ActionSemantics::noun_access(an) == REQUIRES_POSSESSION) { mn = 1; hn = 1; }
+		if (ActionSemantics::second_access(an) == REQUIRES_POSSESSION) { ms = 1; hs = 1; }
+		if (ActionSemantics::can_have_noun(an) == FALSE) mnp = 0;
+		if (ActionSemantics::can_have_second(an) == FALSE) msp = 0;
 		record_count++;
 		Emit::array_action_entry(an);
 		inter_ti bitmap = (inter_ti) (mn + ms*0x02 + ml*0x04 + mnp*0x08 +
-			msp*0x10 + ((an->semantics.out_of_world)?1:0)*0x20 + hn*0x40 + hs*0x80);
+			msp*0x10 + ((ActionSemantics::is_out_of_world(an))?1:0)*0x20 + hn*0x40 + hs*0x80);
 		Emit::array_numeric_entry(bitmap);
-		RTKinds::emit_strong_id(an->semantics.noun_kind);
-		RTKinds::emit_strong_id(an->semantics.second_kind);
+		RTKinds::emit_strong_id(ActionSemantics::kind_of_noun(an));
+		RTKinds::emit_strong_id(ActionSemantics::kind_of_second(an));
 		if ((an->action_variables) &&
 				(StackedVariables::owner_empty(an->action_variables) == FALSE))
 			Emit::array_iname_entry(StackedVariables::frame_creator(an->action_variables));
@@ -218,21 +214,20 @@ void RTActions::ActionData(void) {
 		Produce::down(Emit::tree());
 
 	LOOP_OVER(an, action_name) {
-		if (an->compilation_data.use_verb_routine_in_I6_library) continue;
 			Produce::inv_primitive(Emit::tree(), CASE_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(an));
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 
-				int j = Wordings::first_wn(an->present_name), j0 = -1, somethings = 0, clc = 0;
-				while (j <= Wordings::last_wn(an->present_name)) {
-					if (<action-pronoun>(Wordings::one_word(j))) {
+				int j = Wordings::first_wn(an->naming_data.present_name), j0 = -1, somethings = 0, clc = 0;
+				while (j <= Wordings::last_wn(an->naming_data.present_name)) {
+					if (<object-pronoun>(Wordings::one_word(j))) {
 						if (j0 >= 0) {
 							@<Insert a space here if needed to break up the action name@>;
 
 							TEMPORARY_TEXT(AT)
-							PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
+							RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->naming_data.present_name), AT);
 							Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 							Produce::down(Emit::tree());
 								Produce::val_text(Emit::tree(), AT);
@@ -269,14 +264,14 @@ void RTActions::ActionData(void) {
 				if (j0 >= 0) {
 					@<Insert a space here if needed to break up the action name@>;
 					TEMPORARY_TEXT(AT)
-					PL::Actions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->present_name), AT);
+					RTActions::print_action_text_to(Wordings::new(j0, j-1), Wordings::first_wn(an->naming_data.present_name), AT);
 					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 					Produce::down(Emit::tree());
 						Produce::val_text(Emit::tree(), AT);
 					Produce::up(Emit::tree());
 					DISCARD_TEXT(AT)
 				}
-				if (somethings < an->semantics.max_parameters) {
+				if (somethings < ActionSemantics::max_parameters(an)) {
 					Produce::inv_primitive(Emit::tree(), IF_BIP);
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), NE_BIP);
@@ -310,12 +305,25 @@ void RTActions::ActionData(void) {
 		Produce::up(Emit::tree());
 	}
 
+@
+
+=
+void RTActions::print_action_text_to(wording W, int start, OUTPUT_STREAM) {
+	if (Wordings::first_wn(W) == start) {
+		WRITE("%W", Wordings::first_word(W));
+		W = Wordings::trim_first_word(W);
+		if (Wordings::empty(W)) return;
+		WRITE(" ");
+	}
+	WRITE("%+W", W);
+}
+
 @ =
 void RTActions::cat_something2(action_name *an, int n, inter_symbol *n_s, inter_symbol *s_s) {
-	kind *K = an->semantics.noun_kind;
+	kind *K = ActionSemantics::kind_of_noun(an);
 	inter_symbol *var = n_s;
 	if (n > 0) {
-		K = an->semantics.second_kind; var = s_s;
+		K = ActionSemantics::kind_of_second(an); var = s_s;
 	}
 	if (Kinds::Behaviour::is_object(K) == FALSE)
 		var = InterNames::to_symbol(Hierarchy::find(PARSED_NUMBER_HL));
@@ -336,4 +344,36 @@ void RTActions::cat_something2(action_name *an, int n, inter_symbol *n_s, inter_
 			Produce::val_symbol(Emit::tree(), K_value, var);
 		}
 	Produce::up(Emit::tree());
+}
+
+int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *spec) {
+	if (PluginManager::active(actions_plugin) == FALSE)
+		internal_error("actions plugin inactive");
+	if (Kinds::eq(K, K_action_name)) {
+		action_name *an = Rvalues::to_action_name(spec);
+		if (Holsters::data_acceptable(VH)) {
+			inter_name *N = RTActions::iname(an);
+			if (N) Emit::holster(VH, N);
+		}
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_description_of_action)) {
+		action_pattern *ap = Node::get_constant_action_pattern(spec);
+		PL::Actions::Patterns::compile_pattern_match(VH, *ap, FALSE);
+		return TRUE;
+	}
+	if (Kinds::eq(K, K_stored_action)) {
+		action_pattern *ap = Node::get_constant_action_pattern(spec);
+		if (TEST_COMPILATION_MODE(CONSTANT_CMODE))
+			PL::Actions::Patterns::as_stored_action(VH, ap);
+		else {
+			PL::Actions::Patterns::emit_try(ap, TRUE);
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+int RTActions::action_variable_set_ID(action_name *an) {
+	return 20000 + an->allocation_id;
 }

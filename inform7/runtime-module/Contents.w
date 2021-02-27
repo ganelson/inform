@@ -74,3 +74,5 @@ Chapter 5: Plugin Support
 	The Score
 	Scenes
 	Actions
+	Looping Over Scope
+	Named Action Patterns

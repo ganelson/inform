@@ -52,9 +52,9 @@ void PL::Actions::ConstantLists::log(action_name_list *anl) {
 			c, anl->word_position,
 			(anl->parity==1)?"+":"-");
 		if (anl->action_listed)
-			LOG("%W", anl->action_listed->present_name);
+			LOG("%W", anl->action_listed->naming_data.present_name);
 		if (anl->nap_listed)
-			LOG("%W", Nouns::nominative_singular(anl->nap_listed->name));
+			LOG("%W", Nouns::nominative_singular(anl->nap_listed->as_noun));
 		else LOG("NULL");
 		for (i=0; i<anl->parc; i++)
 			LOG(" [%d: %W]", i, anl->parameter[i]);
@@ -70,12 +70,12 @@ void PL::Actions::ConstantLists::log_briefly(action_name_list *anl) {
 		for (a = anl; a; a = a->next) {
 			if (a->nap_listed) {
 				if (a->parity == -1) LOG("not-");
-				LOG("%W / ", Nouns::nominative_singular(a->nap_listed->name));
+				LOG("%W / ", Nouns::nominative_singular(a->nap_listed->as_noun));
 			} else if (a->action_listed == NULL)
 				LOG("ANY / ");
 			else {
 				if (a->parity == -1) LOG("not-");
-				LOG("%W / ", a->action_listed->present_name);
+				LOG("%W / ", a->action_listed->naming_data.present_name);
 			}
 		}
 		if (anl->negate_pattern) LOG(" ]");
@@ -191,7 +191,7 @@ end, but it's syntactically valid.)
 	<anl-entry-with-action>					==> { pass 1 }
 
 <named-action-pattern> internal {
-	named_action_pattern *nap = PL::Actions::Patterns::Named::by_name(W);
+	named_action_pattern *nap = NamedActionPatterns::by_name(W);
 	if (nap) {
 		==> { -, nap }; return TRUE;
 	}
@@ -222,7 +222,7 @@ end, but it's syntactically valid.)
 @<Add to-clause to excluded ANL@> =
 	action_name_list *anl = PL::Actions::ConstantLists::flip_anl_parity(RP[1], TRUE);
 	if ((anl == NULL) ||
-		(PL::Actions::can_have_parameters(anl->action_listed) == FALSE)) {
+		(ActionSemantics::can_have_noun(anl->action_listed) == FALSE)) {
 		==> { fail production };
 	}
 	anl->parameter[anl->parc] = GET_RW(<anl-excluded>, 1);
@@ -282,9 +282,9 @@ action_name_list *PL::Actions::ConstantLists::anl_parse_internal(wording W) {
 	LOOP_OVER(an, action_name) {
 		int x_ended = FALSE;
 		int fc = 0;
-		int it_optional = PL::Actions::it_optional(an);
-		int abbreviable = PL::Actions::abbreviable(an);
-		wording XW = PL::Actions::set_text_to_name_tensed(an, tense);
+		int it_optional = ActionNameNames::it_optional(an);
+		int abbreviable = ActionNameNames::abbreviable(an);
+		wording XW = ActionNameNames::tensed(an, tense);
 		new_anl->action_listed = an;
 		new_anl->parc = 0;
 		new_anl->word_position = Wordings::first_wn(W);
@@ -296,7 +296,7 @@ action_name_list *PL::Actions::ConstantLists::anl_parse_internal(wording W) {
 				fc=1; goto DontInclude;
 			}
 			if (x_m > Wordings::last_wn(XW)) { x_ended = TRUE; break; }
-			if (<action-pronoun>(Wordings::one_word(x_m))) {
+			if (<object-pronoun>(Wordings::one_word(x_m))) {
 				if (w_m > Wordings::last_wn(W)) x_ended = TRUE; else {
 					int j = -1, k;
 					for (k=(it_optional)?(w_m):(w_m+1); k<=Wordings::last_wn(W); k++)
@@ -325,7 +325,7 @@ action_name_list *PL::Actions::ConstantLists::anl_parse_internal(wording W) {
 		else if (<anl-in-tail>(Wordings::from(W, w_m))) {
 			new_anl->in_clause = GET_RW(<anl-in-tail>, 1);
 			inc = TRUE;
-		} else if (PL::Actions::can_have_parameters(an)) {
+		} else if (ActionSemantics::can_have_noun(an)) {
 			anl_being_parsed = new_anl;
 			if (<anl-to-tail>(Wordings::from(W, w_m))) {
 				inc = TRUE;
@@ -377,7 +377,7 @@ action_name *PL::Actions::ConstantLists::get_single_action(action_name_list *anl
 		if (anl->parity == -1) return NULL;
 		if (anl->negate_pattern) return NULL;
 		if (anl->action_listed) {
-			int k = PL::Actions::get_stem_length(anl->action_listed) - anl->abbreviation_level;
+			int k = ActionNameNames::non_it_length(anl->action_listed) - anl->abbreviation_level;
 			if (anl->word_position != posn) {
 				if (posn >= 0) return NULL;
 				posn = anl->word_position;
@@ -427,7 +427,7 @@ void PL::Actions::ConstantLists::compile(OUTPUT_STREAM, action_name_list *anl) {
 		for (action_name_list *L = anl; L; L = L->next) {
 			if (L->parity == -1) WRITE("(~~");
 			if (L->nap_listed)
-				WRITE("(%n())", PL::Actions::Patterns::Named::identifier(L->nap_listed));
+				WRITE("(%n())", RTNamedActionPatterns::identifier(L->nap_listed));
 			else
 				WRITE("action == %n", RTActions::double_sharp(L->action_listed));
 			if (L->parity == -1) WRITE(")");
@@ -455,7 +455,7 @@ void PL::Actions::ConstantLists::emit(action_name_list *anl) {
 		if (L->nap_listed) {
 			Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
 			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, PL::Actions::Patterns::Named::identifier(L->nap_listed));
+				Produce::val_iname(Emit::tree(), K_value, RTNamedActionPatterns::identifier(L->nap_listed));
 			Produce::up(Emit::tree());
 		} else {
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);

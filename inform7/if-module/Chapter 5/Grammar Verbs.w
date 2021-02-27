@@ -315,7 +315,7 @@ void PL::Parsing::Verbs::reserve(text_stream *verb_name) {
 	reserved_command_verb *rcv = CREATE(reserved_command_verb);
 	rcv->reserved_text = Str::new();
 	PL::Parsing::Verbs::normalise_cv_to(rcv->reserved_text, verb_name);
-	PL::Actions::Index::test_verb(rcv->reserved_text);
+	CommandsIndex::test_verb(rcv->reserved_text);
 }
 
 int PL::Parsing::Verbs::command_verb_reserved(text_stream *verb_tried) {
@@ -349,11 +349,11 @@ needed.
 void PL::Parsing::Verbs::make_command_index_entries(OUTPUT_STREAM, grammar_verb *gv) {
 	if ((gv->gv_is == GV_IS_COMMAND) && (gv->first_line)) {
 		if (Wordings::empty(gv->command))
-			PL::Actions::Index::vie_new_from(OUT, L"0", gv, NORMAL_COMMAND);
+			CommandsIndex::vie_new_from(OUT, L"0", gv, NORMAL_COMMAND);
 		else
-			PL::Actions::Index::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(gv->command)), gv, NORMAL_COMMAND);
+			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(gv->command)), gv, NORMAL_COMMAND);
 		for (int i=0; i<gv->no_aliased_commands; i++)
-			PL::Actions::Index::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(gv->aliased_command[i])), gv, ALIAS_COMMAND);
+			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(gv->aliased_command[i])), gv, ALIAS_COMMAND);
 	}
 }
 

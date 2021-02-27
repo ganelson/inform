@@ -54,7 +54,7 @@ void ActionsNodes::write_action_meaning_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void ActionsNodes::write_constant_action_name_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_action_name(p))
-		WRITE(" {action name: %W}", Node::get_constant_action_name(p)->present_name);
+		WRITE(" {action name: %W}", Node::get_constant_action_name(p)->naming_data.present_name);
 }
 void ActionsNodes::write_constant_action_pattern_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_constant_action_pattern(p)) {
@@ -67,7 +67,7 @@ void ActionsNodes::write_constant_named_action_pattern_ANNOT(text_stream *OUT,
 	parse_node *p) {
 	if (Node::get_constant_named_action_pattern(p)) {
 		WRITE(" {named action pattern: ");
-		Nouns::write(OUT, Node::get_constant_named_action_pattern(p)->name);
+		Nouns::write(OUT, Node::get_constant_named_action_pattern(p)->as_noun);
 		WRITE("}");
 	} 
 }

@@ -133,7 +133,7 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 			wording PW = Phrases::Usage::get_prewhile_text(phud);
 			if (Wordings::nonempty(PW)) {
 				LOOP_THROUGH_WORDING(i, PW)
-					if (PL::Actions::Patterns::Named::by_name(Wordings::from(PW, i)))
+					if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
 						goto NotSingleAction;
 				anl = PL::Actions::ConstantLists::extract_actions_only(PW);
 				an = PL::Actions::ConstantLists::get_single_action(anl);
@@ -150,7 +150,7 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 			LOGIF(RULE_ATTACHMENTS, "BR is: $b\n AN is: $l\n", br, an);
 			if ((an == NULL) && (waiver == FALSE)) {
 				int x;
-				an = PL::Actions::longest_null(PW, IS_TENSE, &x);
+				an = ActionNameNames::longest_nounless(PW, IS_TENSE, &x);
 			}
 			if ((an == NULL) && (waiver == FALSE)) {
 				NotSingleAction:
@@ -173,16 +173,16 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 				#ifdef IF_MODULE
 				if (original_owner == built_in_rulebooks[CHECK_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::get_fragmented_rulebook(an, built_in_rulebooks[CHECK_RB]));
+						PL::Actions::fragment_rulebook(an, built_in_rulebooks[CHECK_RB]));
 				} else if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::get_fragmented_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]));
+						PL::Actions::fragment_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]));
 				} else if (original_owner == built_in_rulebooks[REPORT_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::get_fragmented_rulebook(an, built_in_rulebooks[REPORT_RB]));
+						PL::Actions::fragment_rulebook(an, built_in_rulebooks[REPORT_RB]));
 				} else {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::switch_fragmented_rulebook(an, original_owner));
+						PL::Actions::divert_to_another_actions_rulebook(an, original_owner));
 				}
 				#endif
 				if (original_owner != Phrases::Usage::get_rulebook(phud))

@@ -40,11 +40,12 @@ Chapter 4: Actions
 	Actions Plugin
 	Actions-Only Nodes and Annotations
 	Actions
+	Action Semantics
+	Action Variables
+	Action Name Names
 	Action Name Lists
 	Action Patterns
-	Looping Over Scope
 	Named Action Patterns
-	Actions Index
 
 Chapter 5: Command Grammar
 "In which Understand sentences in the source text are converted into a

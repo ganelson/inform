@@ -670,31 +670,31 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 
 	if (Str::eq_wide_string(elt, L"A1")) {
 		#ifdef IF_MODULE
-		PL::Actions::Index::page(OUT);
+		CommandsIndex::page(OUT);
 		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Bh")) {
 		#ifdef IF_MODULE
-		PL::Actions::Patterns::Named::index(OUT);
+		IXActions::index_named_patterns(OUT);
 		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Cm")) {
 		#ifdef IF_MODULE
-		PL::Actions::Index::commands(OUT);
+		CommandsIndex::commands(OUT);
 		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"To")) {
 		#ifdef IF_MODULE
-		PL::Actions::Index::tokens(OUT);
+		CommandsIndex::tokens(OUT);
 		#endif
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"A2")) {
 		#ifdef IF_MODULE
-		PL::Actions::Index::alphabetical(OUT);
+		CommandsIndex::alphabetical(OUT);
 		#endif
 		return;
 	}
@@ -743,7 +743,7 @@ calling |Index::complete| below.
 void Index::complete(void) {
 	if (ifl) Index::close_index_file();
 	#ifdef IF_MODULE
-	PL::Actions::Index::detail_pages();
+	CommandsIndex::detail_pages();
 	#endif
 }
 

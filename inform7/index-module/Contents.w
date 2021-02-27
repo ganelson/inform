@@ -34,6 +34,7 @@ Chapter 3: Indexing for Plugins
 	The Map
 	Scenes
 	Actions
+	Commands Index
 
 Chapter 4: Visualising Space
 	Spatial Geometry

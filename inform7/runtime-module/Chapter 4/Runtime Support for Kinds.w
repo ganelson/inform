@@ -113,7 +113,7 @@ int RTKinds::compile_default_value_vh(value_holster *VH, kind *K,
 			inter_name *N = RTKinds::new_block_constant_iname();
 			packaging_state save = Emit::named_late_array_begin(N, K_value);
 			RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
-			Emit::array_iname_entry(RTActions::double_sharp(PL::Actions::Wait()));
+			Emit::array_iname_entry(RTActions::double_sharp(ActionsPlugin::default_action_name()));
 			Emit::array_numeric_entry(0);
 			Emit::array_numeric_entry(0);
 			#ifdef IF_MODULE
@@ -275,7 +275,7 @@ void RTKinds::get_default_value(inter_ti *v1, inter_ti *v2, kind *K) {
 	}
 
 	if (Kinds::eq(K, K_action_name)) {
-		inter_name *wait = RTActions::double_sharp(PL::Actions::Wait());
+		inter_name *wait = RTActions::double_sharp(ActionsPlugin::default_action_name());
 		Emit::to_ival(v1, v2, wait);
 		return;
 	}

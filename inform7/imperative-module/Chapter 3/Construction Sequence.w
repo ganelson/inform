@@ -454,7 +454,7 @@ void Phrases::Manager::compile_as_needed(void) {
 		if (ListTogether::compilation_coroutine() > 0)
 			repeat = TRUE;
 		#ifdef IF_MODULE
-		if (PL::Actions::ScopeLoops::compilation_coroutine() > 0)
+		if (LoopingOverScope::compilation_coroutine() > 0)
 			repeat = TRUE;
 		#endif
 		if (Strings::TextSubstitutions::compilation_coroutine(FALSE) > 0)
