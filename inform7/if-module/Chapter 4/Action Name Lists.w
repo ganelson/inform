@@ -56,15 +56,17 @@ typedef struct anl_entry {
 	struct anl_item item;
 	struct anl_parsing_data parsing_data;
 	int marked_for_deletion;
-	struct anl_entry *next_link; /* next in this ANL list */
+	struct anl_entry *next_entry; /* next in this ANL list */
 } anl_entry;
 
-anl_entry *ActionNameLists::new_entry_at(int at) {
-	anl_entry *new_anl = CREATE(anl_entry);
-	new_anl->item = ActionNameLists::new_item();
-	new_anl->parsing_data = ActionNameLists::new_parsing_data(at);
-	new_anl->marked_for_deletion = FALSE;
-	return new_anl;
+anl_entry *ActionNameLists::new_entry_at(wording W) {
+	anl_entry *entry = CREATE(anl_entry);
+	entry->item = ActionNameLists::new_item();
+	int at = -1;
+	if (Wordings::nonempty(W)) at = Wordings::first_wn(W);
+	entry->parsing_data = ActionNameLists::new_parsing_data(at);
+	entry->marked_for_deletion = FALSE;
+	return entry;
 }
 
 @ The model here is that the list can be reduced in size by marking entries
@@ -90,10 +92,10 @@ entries which fail to change the word position.
 void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list) {
 	if (list) {
 		int pos = -1;
-		for (anl_entry *entry = list->entries, *prev = NULL; entry; entry = entry->next_link) {
+		for (anl_entry *entry = list->entries, *prev = NULL; entry; entry = entry->next_entry) {
 			if ((entry->marked_for_deletion) || (pos == entry->parsing_data.word_position)) {
-				if (prev == NULL) list->entries = entry->next_link;
-				else prev->next_link = entry->next_link;
+				if (prev == NULL) list->entries = entry->next_entry;
+				else prev->next_entry = entry->next_entry;
 			} else {
 				prev = entry;
 				pos = entry->parsing_data.word_position;
@@ -102,16 +104,77 @@ void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list)
 	}
 }
 
+@ The list must be kept in a strict order, as can be seen:
+
+=
+void ActionNameLists::join_to(anl_entry *earlier, anl_entry *later) {
+	if (ActionNameLists::precedes(later, earlier)) internal_error("misordering");
+	earlier->next_entry = later;
+}
+
+@ Which uses the following function:
+
+(*) Results in later word positions come first, and if that doesn't decide it
+(*) NAPs come before actions, and if that doesn't decide it
+(*) Older NAPs come before younger ones, and if that doesn't decide it
+(*) Less abbreviated results come first, and if that doesn't decide it
+(*) Older action names come before younger, and if that doesn't decide it
+(*) Later-discovered results come before earlier ones.
+
+Here, "older" and "younger" mean how long ago the relevant //named_action_pattern//
+or //action_name// objects were created, and since this happens in source text
+order, we are really saying "closer to the top of the source text" when we
+say "older".
+
+Note that this function is transitive ($p(x, y)$ and $p(y, z)$ implies $p(x, z)$)
+and antisymmetric ($p(x, y)$ implies that $p(y, x)$ is false). Strictly speaking
+it is not trichotomous, but if neither $p(x, y)$ nor $p(y, x)$ then $x$ and $y$
+have identical item data; and in that case it doesn't matter which way round they
+are in the list.
+
+=
+int ActionNameLists::precedes(anl_entry *e1, anl_entry *e2) {
+	if (e1 == NULL) return FALSE;
+	if (e2 == NULL) return TRUE;
+
+	int c = e1->parsing_data.word_position -
+			e2->parsing_data.word_position;
+	if (c > 0) return TRUE; if (c < 0) return FALSE;
+
+	c = ((e1->item.nap_listed)?(e1->item.nap_listed->allocation_id):10000000) -
+		((e2->item.nap_listed)?(e2->item.nap_listed->allocation_id):10000000);
+	if (c > 0) return TRUE; if (c < 0) return FALSE;
+
+	c = e1->parsing_data.abbreviation_level -
+		e2->parsing_data.abbreviation_level;
+	if (c < 0) return TRUE; if (c > 0) return FALSE;
+
+	c = ((e1->item.action_listed)?(e1->item.action_listed->allocation_id):10000000) -
+		((e2->item.action_listed)?(e2->item.action_listed->allocation_id):10000000);
+	if (c > 0) return TRUE; if (c < 0) return FALSE;
+
+	return FALSE;
+}
+
+anl_entry *ActionNameLists::join_entry(anl_entry *further, anl_entry *tail) {
+	if (further == NULL) return tail;
+	if (tail == NULL) return further;
+	anl_entry *entry = tail;
+	while (entry->next_entry != NULL) entry = entry->next_entry;
+	ActionNameLists::join_to(entry, further);
+	return tail;
+}
+
 @ When not pruning the list, these macros are useful for working through it:
 
 @d LOOP_THROUGH_ANL(var, list)
-	for (anl_entry *var = (list)?(list->entries):NULL; var; var = var->next_link)
+	for (anl_entry *var = (list)?(list->entries):NULL; var; var = var->next_entry)
 
 @d LOOP_THROUGH_ANL_WITH_PREV(var, prev_var, next_var, list)
 	for (anl_entry *var = (list)?(list->entries):NULL,
-		*prev_var = NULL, *next_var = (var)?(var->next_link):NULL;
+		*prev_var = NULL, *next_var = (var)?(var->next_entry):NULL;
 		var;
-		prev_var = var, var = next_var, next_var = (next_var)?(next_var->next_link):NULL)
+		prev_var = var, var = next_var, next_var = (next_var)?(next_var->next_entry):NULL)
 
 =
 int ActionNameLists::length(action_name_list *list) {
@@ -125,7 +188,10 @@ int ActionNameLists::nonempty(action_name_list *list) {
 	return FALSE;
 }
 
-@ The //anl_item// material is the actual content we are trying to get at:
+@ The //anl_item// material is the actual content we are trying to get at.
+Like life, items are a mixture of naps and actions. At most one of these
+fields is non-|NULL|. If they are both |NULL|, this represents "doing
+anything" -- a completely unrestricted action.
 
 =
 typedef struct anl_item {
@@ -138,6 +204,11 @@ anl_item ActionNameLists::new_item(void) {
 	item.action_listed = NULL;
 	item.nap_listed = NULL;
 	return item;
+}
+
+void ActionNameLists::clear_item_data(anl_entry *entry, action_name *an) {
+	entry->item.action_listed = an;
+	entry->item.nap_listed = NULL;
 }
 
 anl_item *ActionNameLists::first_item(action_name_list *list) {
@@ -226,9 +297,42 @@ anl_parsing_data ActionNameLists::new_parsing_data(int at) {
 	return parsing_data;
 }
 
+void ActionNameLists::clear_parsing_data(anl_entry *entry, wording W) {
+	entry->parsing_data.parc = 0;
+	int at = -1;
+	if (Wordings::nonempty(W)) at = Wordings::first_wn(W);
+	entry->parsing_data.word_position = at;
+	entry->parsing_data.in_clause = EMPTY_WORDING;
+	entry->parsing_data.abbreviation_level = 0;
+}
+
 int ActionNameLists::parc(anl_entry *entry) {
 	if (entry) return entry->parsing_data.parc;
 	return 0;
+}
+
+wording ActionNameLists::par(anl_entry *entry, int i) {
+	if ((entry) && (entry->parsing_data.parc > i)) return entry->parsing_data.parameter[i];
+	return EMPTY_WORDING;
+}
+
+wording ActionNameLists::in_clause(anl_entry *entry) {
+	if (entry) return entry->parsing_data.in_clause;
+	return EMPTY_WORDING;
+}
+
+anl_entry *ActionNameLists::add_parameter(anl_entry *entry, wording W) {
+	if (entry == NULL) internal_error("no entry");
+	if (entry->parsing_data.parc >= 2) internal_error("too many ANL parameters");
+	entry->parsing_data.parameter[entry->parsing_data.parc] = W;
+	entry->parsing_data.parc++;
+	return entry;
+}
+
+anl_entry *ActionNameLists::add_in_clause(anl_entry *entry, wording W) {
+	if (entry == NULL) internal_error("no entry");
+	entry->parsing_data.in_clause = W;
+	return entry;
 }
 
 int ActionNameLists::first_position(action_name_list *list) {
@@ -245,16 +349,6 @@ int ActionNameLists::same_word_position(anl_entry *entry, anl_entry *Y) {
 	if ((entry) && (Y) && (entry->parsing_data.word_position == Y->parsing_data.word_position))
 		return TRUE;
 	return FALSE;
-}
-
-wording ActionNameLists::par(anl_entry *entry, int i) {
-	if ((entry) && (entry->parsing_data.parc > i)) return entry->parsing_data.parameter[i];
-	return EMPTY_WORDING;
-}
-
-wording ActionNameLists::in_clause(anl_entry *entry) {
-	if (entry) return entry->parsing_data.in_clause;
-	return EMPTY_WORDING;
 }
 
 @h Single and best actions.
@@ -292,7 +386,6 @@ is no best action. (For example, in "throwing or removing something".)
 action_name *ActionNameLists::get_best_action(action_name_list *list) {
 	int posn = -1, best_score = -1;
 	action_name *best = NULL;
-	LOGIF(RULE_ATTACHMENTS, "Getting single action from:\n$L\n", list);
 	if (ActionNameLists::positive(list) == FALSE) return NULL;
 	LOOP_THROUGH_ANL(entry, list)
 		if (entry->item.action_listed) {
@@ -309,7 +402,6 @@ action_name *ActionNameLists::get_best_action(action_name_list *list) {
 				}
 			}
 		}
-	LOGIF(RULE_ATTACHMENTS, "Posn %d AN $l\n", posn, best);
 	return best;
 }
 
@@ -385,40 +477,64 @@ void ActionNameLists::log_entry_briefly(anl_entry *entry) {
 }
 
 @h Parsing text to an ANL.
+Action name lists arise only for parsing text, and only from the function below; 
+this might match, for example, "doing something other than waiting", or
+"dropping the box". We make no effort to understand the words which are not
+part of the action: "dropping the box" is just "dropping (two words)" here.
 
-=
-anl_entry *anl_being_parsed = NULL;
+Note that it works in either |IS_TENSE| or |HASBEEN_TENSE|, and that |sense|
+is set to |FALSE| (if it is supplied) when the text had a negative sense --
+something other than something -- or |TRUE| for a positive one.
 
-@ The following handles action name lists, such as:
+The test group |:anl| is helpful in catching errors here.
 
->> doing something other than waiting
->> taking or dropping the box
+@ =
+int anl_parsing_tense = IS_TENSE;
+action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
+	if (Wordings::mismatched_brackets(W)) return NULL;
+	int t = anl_parsing_tense;
+	anl_parsing_tense = tense;
+	int r = <action-list>(W);
+	anl_parsing_tense = t;
+	if (r) {
+		if (sense) *sense = <<r>>;
+		return <<rp>>;
+	}
+	return NULL;
+}
 
-At this stage in parsing, we are identifying possible actions, and
-what their possible operands are, but we aren't trying to parse those
-operands.
+@ The outer parts of the syntax are handled by a Preform grammar.
 
 =
 <action-list> ::=
-	doing something/anything other than <anl-excluded> |  ==> { FALSE, RP[1] }
-	doing something/anything except <anl-excluded> |      ==> { FALSE, RP[1] }
+	doing something/anything other than <excluded-list> | ==> { FALSE, RP[1] }
+	doing something/anything except <excluded-list> |     ==> { FALSE, RP[1] }
 	doing something/anything to/with <anl-to-tail> |      ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) }
 	doing something/anything |                            ==> @<Construct ANL for anything@>
 	doing something/anything ... |                        ==> { fail }
 	<anl>                                                 ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) }
 
-<anl-excluded> ::=
-	<anl> to/with {<anl-minimal-common-operand>} |        ==> @<Add to-clause to excluded ANL@>;
+<excluded-list> ::=
+	<anl> to/with {<minimal-common-to-text>} |            ==> @<Add to-clause to excluded ANL@>;
 	<anl>                                                 ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_NEGATED_LISTWISE) }
 
-<anl-minimal-common-operand> ::=
+<minimal-common-to-text> ::=
 	_,/or ... |                                           ==> { fail }
 	... to/with ... |                                     ==> { fail }
 	...
 
 @<Construct ANL for anything@> =
-	anl_entry *anl = ActionNameLists::new_entry_at(Wordings::first_wn(W));
-	==> { TRUE, ActionNameLists::new_list(anl, ANL_POSITIVE) };
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	==> { TRUE, ActionNameLists::new_list(entry, ANL_POSITIVE) };
+
+@<Add to-clause to excluded ANL@> =
+	anl_entry *entry = RP[1];
+	if ((entry == NULL) ||
+		(ActionSemantics::can_have_noun(entry->item.action_listed) == FALSE)) {
+		==> { fail production };
+	}
+	ActionNameLists::add_parameter(entry, GET_RW(<excluded-list>, 1));
+	==> { FALSE, ActionNameLists::new_list(entry, ANL_NEGATED_ITEMWISE) };
 
 @ The trickiest form is:
 
@@ -427,45 +543,55 @@ operands.
 where no explicit action occurs at all, but we have to parse the rest of
 the text as if it does, including an "in" clause.
 
-So the following finds the first "in" within its range of words, except that
-it throws out an "in" that we consider bogus for our own syntactic purposes:
+So <text-of-in-clause> finds the first "in" within its range of words, except
+that it throws out an "in" that we consider bogus for our own syntactic purposes:
 for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl-to-tail> ::=
-	<anl-operand> <anl-in-tail> |  ==> @<Augment ANL with in clause@>
-	<anl-operand>                  ==> { pass 1 }
+	<anl-operand> <text-of-in-clause> |  ==> @<Augment ANL with in clause@>
+	<anl-operand>                        ==> { pass 1 }
 
 <anl-operand> ::=
-	...                            ==> @<Construct ANL for anything applied@>
+	...                                  ==> { TRUE, ActionNameLists::entry_for_to_tail(W) };
 
-<anl-in-tail> ::=
-	fixed in place *** |                  ==> { advance Wordings::delta(WR[1], W) }
-	is/are/was/were/been/listed in *** |  ==> { advance Wordings::delta(WR[1], W) }
-	in ...                                ==> { TRUE, - }
+<text-of-in-clause> ::=
+	fixed in place *** |                 ==> { advance Wordings::delta(WR[1], W) }
+	is/are/was/were/been/listed in *** | ==> { advance Wordings::delta(WR[1], W) }
+	in ...                               ==> { TRUE, - }
 
 @<Augment ANL with in clause@> =
-	anl_entry *anl = RP[1];
-	anl->parsing_data.in_clause = GET_RW(<anl-in-tail>, 1);
+	==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
 
-@<Construct ANL for anything applied@> =
-	anl_entry *new_anl;
-	if ((!preform_lookahead_mode) && (anl_being_parsed)) new_anl = anl_being_parsed;
-	else new_anl = ActionNameLists::new_entry_at(Wordings::first_wn(W));
-	new_anl->parsing_data.parameter[new_anl->parsing_data.parc] = W;
-	new_anl->parsing_data.parc++;
-	==> { TRUE, new_anl };
-
-@ Now for the basic list of actions being included:
+@ This matches a comma/or-separated list of items:
 
 =
 <anl> ::=
-	<anl-entry> <anl-tail> |  ==> @<Join parsed ANLs@>
+	<anl-entry> <anl-tail> |  ==> { 0, ActionNameLists::join_entry(RP[1], RP[2]) }
 	<anl-entry>               ==> { pass 1 }
 
 <anl-tail> ::=
 	, _or <anl> |             ==> { pass 1 }
 	_,/or <anl>               ==> { pass 1 }
+
+@ Items can be named action patterns, so let's get those out of the way first:
+
+=
+<anl-entry> ::=
+	<named-action-pattern>	|                    ==> @<Make a NAP entry@>
+	<named-action-pattern> <text-of-in-clause> | ==> @<Make a NAP entry with an in clause@>
+	<anl-entry-with-action>					     ==> { pass 1 }
+
+@<Make a NAP entry@> =
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	entry->item.nap_listed = RP[1];
+	==> { 0, entry };
+
+@<Make a NAP entry with an in clause@> =
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	entry->item.nap_listed = RP[1];
+	ActionNameLists::add_in_clause(entry, GET_RW(<text-of-in-clause>, 1));
+	==> { 0, entry };
 
 @ Which reduces us to an internal nonterminal for an entry in this list.
 It actually produces multiple matches: for example,
@@ -478,151 +604,116 @@ operand "inventory". (It's unlikely that the last will succeed in the
 end, but it's syntactically valid.)
 
 =
-<anl-entry> ::=
-	<named-action-pattern>	|               ==> @<Make an action pattern from named behaviour@>
-	<named-action-pattern> <anl-in-tail> |  ==> @<Make an action pattern from named behaviour plus in@>
-	<anl-entry-with-action>					==> { pass 1 }
-
-<named-action-pattern> internal {
-	named_action_pattern *nap = NamedActionPatterns::by_name(W);
-	if (nap) {
-		==> { -, nap }; return TRUE;
-	}
-	==> { fail nonterminal };
-}
-
 <anl-entry-with-action> internal {
-	anl_entry *anl = ActionNameLists::anl_parse_internal(W);
-	if (anl) {
-		==> { -, anl }; return TRUE;
+	anl_entry *results = NULL;
+	@<Parse the wording into a list of results@>;
+	if (results) {
+		==> { -, results }; return TRUE;
 	}
 	==> { fail nonterminal };
 }
 
-@<Make an action pattern from named behaviour@> =
-	anl_entry *new_anl = ActionNameLists::new_entry_at(Wordings::first_wn(W));
-	new_anl->item.nap_listed = RP[1];
-	==> { 0, new_anl };
-
-@<Make an action pattern from named behaviour plus in@> =
-	anl_entry *new_anl = ActionNameLists::new_entry_at(Wordings::first_wn(W));
-	new_anl->item.nap_listed = RP[1];
-	new_anl->parsing_data.in_clause = GET_RW(<anl-in-tail>, 1);
-	==> { 0, new_anl };
-
-@<Add to-clause to excluded ANL@> =
-	anl_entry *anl = RP[1];
-	if ((anl == NULL) ||
-		(ActionSemantics::can_have_noun(anl->item.action_listed) == FALSE)) {
-		==> { fail production };
-	}
-	anl->parsing_data.parameter[anl->parsing_data.parc] = GET_RW(<anl-excluded>, 1);
-	anl->parsing_data.parc++;
-	action_name_list *list = ActionNameLists::new_list(anl, ANL_NEGATED_ITEMWISE);
-	==> { FALSE, list };
-
-@<Join parsed ANLs@> =
-	anl_entry *join;
-	anl_entry *left_atom = RP[1];
-	anl_entry *right_tail = RP[2];
-	if (left_atom == NULL) { join = right_tail; }
-	else if (right_tail == NULL) { join = left_atom; }
-	else {
-		anl_entry *new_anl = right_tail;
-		while (new_anl->next_link != NULL) new_anl = new_anl->next_link;
-		new_anl->next_link = left_atom;
-		join = right_tail;
-	}
-	==> { 0, join };
-
-@ =
-int anl_parsing_tense = IS_TENSE;
-action_name_list *ActionNameLists::parse(wording W, int tense) {
-	if (Wordings::mismatched_brackets(W)) return NULL;
-	int t = anl_parsing_tense;
-	anl_parsing_tense = tense;
-	int r = <action-list>(W);
-	anl_parsing_tense = t;
-	if (r) return <<rp>>;
-	return NULL;
-}
-
-@ =
-anl_entry *ActionNameLists::anl_parse_internal(wording W) {
+@<Parse the wording into a list of results@> =
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W (tense %d)\n", W, anl_parsing_tense);
-
-	int tense = anl_parsing_tense;
-	anl_entry *anl_list = NULL, *new_anl = NULL;
+	anl_entry *trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 
 	action_name *an;
-	new_anl = ActionNameLists::new_entry_at(-1);
-
 	LOOP_OVER(an, action_name) {
-		int x_ended = FALSE;
-		int fc = 0;
-		int it_optional = ActionNameNames::it_optional(an);
-		int abbreviable = ActionNameNames::abbreviable(an);
-		wording XW = ActionNameNames::tensed(an, tense);
-		new_anl->item.action_listed = an;
-		new_anl->parsing_data.parc = 0;
-		new_anl->parsing_data.word_position = Wordings::first_wn(W);
-		new_anl->parsing_data.in_clause = EMPTY_WORDING;
-		int w_m = Wordings::first_wn(W), x_m = Wordings::first_wn(XW);
-		while ((w_m <= Wordings::last_wn(W)) && (x_m <= Wordings::last_wn(XW))) {
-			if (Lexer::word(x_m++) != Lexer::word(w_m++)) {
-				fc=1; goto DontInclude;
-			}
-			if (x_m > Wordings::last_wn(XW)) { x_ended = TRUE; break; }
-			if (<object-pronoun>(Wordings::one_word(x_m))) {
-				if (w_m > Wordings::last_wn(W)) x_ended = TRUE; else {
-					int j = -1, k;
-					for (k=(it_optional)?(w_m):(w_m+1); k<=Wordings::last_wn(W); k++)
-						if (Lexer::word(k) == Lexer::word(x_m+1)) { j = k; break; }
-					if (j<0) { fc=2; goto DontInclude; }
-					if (j-1 >= w_m) {
-						new_anl->parsing_data.parameter[new_anl->parsing_data.parc] = Wordings::new(w_m, j-1);
-						new_anl->parsing_data.parc++;
-					} else {
-						new_anl->parsing_data.parameter[new_anl->parsing_data.parc] = EMPTY_WORDING;
-						new_anl->parsing_data.parc++;
-					}
-					w_m = j; x_m++;
-				}
-			}
-			if (x_ended) break;
-		}
-		if ((w_m > Wordings::last_wn(W)) && (x_ended == FALSE)) {
-			if (abbreviable) x_ended = TRUE;
-			else { fc=3; goto DontInclude; }
-		}
-		if (x_m <= Wordings::last_wn(XW)) new_anl->parsing_data.abbreviation_level = Wordings::last_wn(XW)-x_m+1;
-
-		int inc = FALSE;
-		if (w_m > Wordings::last_wn(W)) inc = TRUE;
-		else if (<anl-in-tail>(Wordings::from(W, w_m))) {
-			new_anl->parsing_data.in_clause = GET_RW(<anl-in-tail>, 1);
-			inc = TRUE;
-		} else if (ActionSemantics::can_have_noun(an)) {
-			anl_being_parsed = new_anl;
-			if (<anl-to-tail>(Wordings::from(W, w_m))) {
-				inc = TRUE;
-			}
-			anl_being_parsed = NULL;
-		}
-		new_anl->next_link = NULL;
-		if (inc) {
-			if (anl_list == NULL) anl_list = new_anl;
-			else {
-				anl_entry *pos = anl_list, *prev = NULL;
-				while ((pos) && (pos->parsing_data.abbreviation_level < new_anl->parsing_data.abbreviation_level))
-					prev = pos, pos = pos->next_link;
-				if (prev) prev->next_link = new_anl; else anl_list = new_anl;
-				new_anl->next_link = pos;
-			}
-		}
-		new_anl = ActionNameLists::new_entry_at(-1);
-		DontInclude: ;
+		@<Ready the trial entry for another test@>;
+		wording RW = EMPTY_WORDING;
+		@<Make the trial entry fit this action, if possible, leaving remaining text in RW@>;
+		@<Consider the trial entry for inclusion in the results list@>;
+		NoMatch: ;
 	}
-	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$8\n", W, anl_list);
-	return anl_list;
+	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$8\n", W, results);
+
+@<Ready the trial entry for another test@> =
+	trial_entry->next_entry = NULL;
+	ActionNameLists::clear_item_data(trial_entry, an);
+	ActionNameLists::clear_parsing_data(trial_entry, W);
+
+@ Here |XW| will be the wording of the action name, say "removing it from";
+we try to fit |W| to this, say "removing a heavy thing from something in the
+Dining Room"; and if we cannot, we run away to the label |NoMatch|, which is
+inelegant, but there's no elegant way to break out of nested loops in C.
+
+@<Make the trial entry fit this action, if possible, leaving remaining text in RW@> =
+	int x_ended = FALSE;
+	int it_optional = ActionNameNames::it_optional(an);
+	int abbreviable = ActionNameNames::abbreviable(an);
+	wording XW = ActionNameNames::tensed(an, anl_parsing_tense);
+	int w_m = Wordings::first_wn(W), x_m = Wordings::first_wn(XW);
+	while ((w_m <= Wordings::last_wn(W)) && (x_m <= Wordings::last_wn(XW))) {
+		if (Lexer::word(x_m++) != Lexer::word(w_m++)) goto NoMatch;
+		if (x_m > Wordings::last_wn(XW)) { x_ended = TRUE; break; }
+		if (<object-pronoun>(Wordings::one_word(x_m))) {
+			if (w_m > Wordings::last_wn(W)) x_ended = TRUE; else {
+				int j = -1, k;
+				for (k=(it_optional)?(w_m):(w_m+1); k<=Wordings::last_wn(W); k++)
+					if (Lexer::word(k) == Lexer::word(x_m+1)) { j = k; break; }
+				if (j<0) goto NoMatch;
+				if (j-1 >= w_m)
+					ActionNameLists::add_parameter(trial_entry, Wordings::new(w_m, j-1));
+				else
+					ActionNameLists::add_parameter(trial_entry, EMPTY_WORDING);
+				w_m = j; x_m++;
+			}
+		}
+		if (x_ended) break;
+	}
+	if ((w_m > Wordings::last_wn(W)) && (x_ended == FALSE)) {
+		if (abbreviable) x_ended = TRUE; else goto NoMatch;
+	}
+	if (x_m <= Wordings::last_wn(XW))
+		trial_entry->parsing_data.abbreviation_level = Wordings::last_wn(XW)-x_m+1;
+	RW = Wordings::from(W, w_m);
+
+@<Consider the trial entry for inclusion in the results list@> =
+	if (Wordings::empty(RW)) {
+		@<Include the trial entry@>;
+	} else if (<text-of-in-clause>(RW)) {
+		ActionNameLists::add_in_clause(trial_entry, GET_RW(<text-of-in-clause>, 1));
+		@<Include the trial entry@>;
+	} else if ((ActionSemantics::can_have_noun(an)) &&
+		(ActionNameLists::parse_to_tail(trial_entry, RW))) {
+		@<Include the trial entry@>;
+	}
+
+@ As an aside, the following code runs a specially adapted form of <anl-to-tail>:
+not one which parses any differently, just one which uses the trial entry and not
+newly-created ones (which would be expensive on memory).
+
+=
+anl_entry *to_tail_entry_being_parsed = NULL;
+anl_entry *ActionNameLists::entry_for_to_tail(wording W) {
+	anl_entry *entry;
+	if ((!preform_lookahead_mode) && (to_tail_entry_being_parsed))
+		entry = to_tail_entry_being_parsed;
+	else entry = ActionNameLists::new_entry_at(W);
+	ActionNameLists::add_parameter(entry, W);
+	return entry;
 }
+
+int ActionNameLists::parse_to_tail(anl_entry *entry, wording W) {
+	int result = FALSE;
+	to_tail_entry_being_parsed = entry;
+	if (<anl-to-tail>(W)) result = TRUE;
+	to_tail_entry_being_parsed = NULL;
+	return result;
+}
+
+@ So this is the happy ending. We don't copy the trial entry; we insertion-sort
+the structure itself into the results list, and make a fresh structure to be
+the trial entry for future trials.
+
+@<Include the trial entry@> =
+	if (results == NULL) {
+		results = trial_entry;
+	} else {
+		anl_entry *pos = results, *prev = NULL;
+		while ((pos) && (ActionNameLists::precedes(pos, trial_entry)))
+			prev = pos, pos = pos->next_entry;
+		if (prev) ActionNameLists::join_to(prev, trial_entry); else results = trial_entry;
+		ActionNameLists::join_to(trial_entry, pos);
+	}
+	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);

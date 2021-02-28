@@ -49,6 +49,17 @@ named_action_pattern *NamedActionPatterns::new(wording W) {
 	return nap;
 }
 
+@ A Preform version of the parser-by-name:
+
+=
+<named-action-pattern> internal {
+	named_action_pattern *nap = NamedActionPatterns::by_name(W);
+	if (nap) {
+		==> { -, nap }; return TRUE;
+	}
+	==> { fail nonterminal };
+}
+
 @ And here we test whether a given action name appears in a NAP, which it does
 if and only if it appears in one of the patterns in the list:
 

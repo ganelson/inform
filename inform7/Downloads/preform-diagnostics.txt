@@ -9139,9 +9139,9 @@
 
 <action-list> hits 958/2310 nti 27 constraint (none) extremes [1, infinity)
     English:
-        doing something/anything other than <anl-excluded> 
+        doing something/anything other than <excluded-list> 
           (hits 0/140) constraint DS = {27} extremes [5, infinity)
-        doing something/anything except <anl-excluded> 
+        doing something/anything except <excluded-list> 
           (hits 0/155) constraint DS = {27} extremes [4, infinity)
         doing something/anything to/with <anl-to-tail> 
           (hits 0/155) constraint DS = {27} extremes [4, infinity)
@@ -9152,14 +9152,14 @@
         <anl> 
           (hits 958/1155) (matched long text) constraint (none) extremes [1, infinity)
 
-<anl-excluded> nti 26 constraint (none) extremes [1, infinity)
+<excluded-list> nti 26 constraint (none) extremes [1, infinity)
     English:
-        <anl> to/with {<anl-minimal-common-operand>} 
+        <anl> to/with {<minimal-common-to-text>} 
           constraint DS = {26} extremes [3, infinity)
         <anl> 
           constraint (none) extremes [1, infinity)
 
-<anl-minimal-common-operand> nti 25 constraint (none) extremes [1, infinity)
+<minimal-common-to-text> nti 25 constraint (none) extremes [1, infinity)
     English:
         _,/or {...} 
           constraint DS = {25} extremes [2, infinity)
@@ -9170,7 +9170,7 @@
 
 <anl-to-tail> hits 326/652 nti 30 constraint (none) extremes [1, infinity)
     English:
-        <anl-operand> <anl-in-tail> 
+        <anl-operand> <text-of-in-clause> 
           (hits 0/120) constraint DS = {23} extremes [3, infinity)
         <anl-operand> 
           (hits 326/326) (matched long text) constraint (none) extremes [1, infinity)
@@ -9180,7 +9180,7 @@
         {...} 
           (hits 326/326) (matched long text) constraint (none) extremes [1, infinity)
 
-<anl-in-tail> hits 12/5510 nti 23 constraint DS = {23} extremes [2, infinity)
+<text-of-in-clause> hits 12/5510 nti 23 constraint DS = {23} extremes [2, infinity)
     English:
         fixed in place {***} 
           (hits 0/1101) constraint DS = {23} extremes [3, infinity)
@@ -9207,14 +9207,12 @@
     English:
         <named-action-pattern> 
           (hits 0/1155) constraint (none) extremes [1, infinity)
-        <named-action-pattern> <anl-in-tail> 
+        <named-action-pattern> <text-of-in-clause> 
           (hits 0/559) constraint DS = {23} extremes [3, infinity)
         <anl-entry-with-action> 
           (hits 958/1155) (matched long text) constraint (none) extremes [1, infinity)
 
-<named-action-pattern> internal hits 0/2330 nti 8 constraint (none) extremes [1, infinity)
-
-<anl-entry-with-action> internal hits 958/2310 nti 9 constraint (none) extremes [1, infinity)
+<anl-entry-with-action> internal hits 958/2310 nti 8 constraint (none) extremes [1, infinity)
 
 <action-pattern> hits 556/21224 nti 28 constraint (none) extremes [1, infinity)
     English:
@@ -9303,18 +9301,18 @@
         we have not <action-pattern-past-core> 
           (hits 0/945) constraint DS = {12} extremes [4, infinity)
 
-<action-pattern-core-actor> hits 150/23102 nti 10 constraint (none) extremes [1, infinity)
+<action-pattern-core-actor> hits 150/23102 nti 9 constraint (none) extremes [1, infinity)
     English:
         <action-pattern-core> 
           (hits 85/11551) (matched long text) constraint (none) extremes [1, infinity)
         <actor-description> <action-pattern-core> 
           (hits 65/6518) (matched long text) constraint (none) extremes [2, infinity)
 
-<actor-description> internal hits 76/13036 nti 11 constraint (none) extremes [1, infinity)
+<actor-description> internal hits 76/13036 nti 10 constraint (none) extremes [1, infinity)
 
-<action-pattern-core> internal hits 584/24122 nti 12 constraint (none) extremes [1, infinity)
+<action-pattern-core> internal hits 584/24122 nti 11 constraint (none) extremes [1, infinity)
 
-<action-pattern-past-core> internal nti 13 constraint (none) extremes [1, infinity)
+<action-pattern-past-core> internal nti 12 constraint (none) extremes [1, infinity)
 
 <action-pronominal> hits 0/1390 nti 29 constraint CS = {29} extremes [2, 2]
     English:
@@ -9332,7 +9330,7 @@
         {...} when/while {...} 
           (hits 0/53) constraint DS = {6} extremes [3, infinity)
 
-<condition-in-ap> internal hits 19/38 nti 14 constraint (none) extremes [1, infinity)
+<condition-in-ap> internal hits 19/38 nti 13 constraint (none) extremes [1, infinity)
 
 <ap-common-core-inner> hits 584/1406 nti 31 constraint (none) extremes [1, infinity)
     English:
@@ -9348,7 +9346,7 @@
         <ap-common-core-inner-inner-inner> 
           (hits 584/703) (matched long text) constraint (none) extremes [1, infinity)
 
-<ap-common-core-inner-inner-inner> internal hits 584/1406 nti 15 constraint (none) extremes [1, infinity)
+<ap-common-core-inner-inner-inner> internal hits 584/1406 nti 14 constraint (none) extremes [1, infinity)
 
 <action-operand> hits 194/444 nti 7 constraint (none) extremes [1, infinity)
     English:
@@ -9373,7 +9371,7 @@
         it 
           (hits 1/1) (matched: 'it') constraint CS = {9} extremes [1, 1]
 
-<action-parameter> hits 276/1144 nti 16 constraint (none) extremes [1, infinity)
+<action-parameter> hits 276/1144 nti 15 constraint (none) extremes [1, infinity)
     English:
         ^<if-nonconstant-action-context> <s-local-variable> 
           (hits 0/572) constraint (none) extremes [1, infinity)
@@ -9386,7 +9384,9 @@
         <s-type-expression-or-value> 
           (hits 209/505) (matched long text) constraint (none) extremes [1, infinity)
 
-<if-nonconstant-action-context> internal hits 1144/2288 nti 17 constraint (none) extremes [0, 0]
+<if-nonconstant-action-context> internal hits 1144/2288 nti 16 constraint (none) extremes [0, 0]
+
+<named-action-pattern> internal hits 0/2330 nti 17 constraint (none) extremes [1, infinity)
 
 <notable-parsing-variables> hits 21/186 nti 10 constraint DS = {10} extremes [1, infinity)
     English:

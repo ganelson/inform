@@ -801,7 +801,7 @@ box" makes no sense since only one is transitive).
 <ap-common-core-inner-inner-inner> internal {
 	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (scanning_anl_only_mode) {
-		action_name_list *list = ActionNameLists::parse(W, prevailing_ap_tense);
+		action_name_list *list = ActionNameLists::parse(W, prevailing_ap_tense, NULL);
 		if (list == NULL) { ==> { fail nonterminal }; }
 		action_pattern ap = ActionPatterns::new(); ap.valid = TRUE;
 		ap.text_of_pattern = W;
@@ -911,7 +911,7 @@ action_pattern ActionPatterns::parse_action_pattern_dash(wording W) {
 away as they are recorded.
 
 @<PAR - (f) Parse Special Going Clauses@> =
-	action_name_list *preliminary_anl = ActionNameLists::parse(W, tense);
+	action_name_list *preliminary_anl = ActionNameLists::parse(W, tense, NULL);
 	action_name *chief_an = ActionNameLists::get_best_action(preliminary_anl);
 	if (chief_an == NULL) {
 		int x;
@@ -947,7 +947,7 @@ e.g., from "taking or dropping something", that it will be
 taking or dropping.
 
 @<PAR - (i) Parse Initial Action Name List@> =
-	action_name_list *try_list = ActionNameLists::parse(W, tense);
+	action_name_list *try_list = ActionNameLists::parse(W, tense, NULL);
 	if (try_list == NULL) goto Failed;
 	list = try_list;
 	LOGIF(ACTION_PATTERN_PARSING, "ANL from PAR(i):\n$L\n", list);

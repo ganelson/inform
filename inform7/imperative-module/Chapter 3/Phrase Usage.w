@@ -879,9 +879,9 @@ allowing it to print comments on each apparent action name it sees.
 	<anl-diagnosis>(phud->rule_parameter);
 	int N = <<r>>;
 	if (N > 1) {
-		int avoids = FALSE;
-		if ((<action-list>(phud->rule_parameter)) && (<<r>> == FALSE)) avoids = TRUE;
-		if (avoids)
+		int positive = TRUE;
+		ActionNameLists::parse(phud->rule_parameter, IS_TENSE, &positive);
+		if (positive == FALSE)
 			Problems::issue_problem_segment(
 				" This looks like a list of actions to avoid: ");
 		else
