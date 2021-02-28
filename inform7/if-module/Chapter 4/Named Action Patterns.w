@@ -53,7 +53,7 @@ named_action_pattern *NamedActionPatterns::new(wording W) {
 if and only if it appears in one of the patterns in the list:
 
 =
-int NamedActionPatterns::within_action_context(named_action_pattern *nap, action_name *an) {
+int NamedActionPatterns::covers_action(named_action_pattern *nap, action_name *an) {
 	named_action_pattern_entry *nape;
 	if (nap)
 		LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns)

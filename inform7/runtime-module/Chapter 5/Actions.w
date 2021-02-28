@@ -378,21 +378,16 @@ int RTActions::action_variable_set_ID(action_name *an) {
 	return 20000 + an->allocation_id;
 }
 
-void RTActions::emit_anl(anl_head *head) {
-	if (head == NULL) return;
-	anl_link *anl = head->body;
-	if (anl == NULL) return;
-
+void RTActions::emit_anl(action_name_list *head) {
+	int C = ActionNameLists::length(head);
+	if (C == 0) return;
 	LOGIF(ACTION_PATTERN_COMPILATION, "Emitting action name list: $L", head);
 
-	int C = 0;
-	for (anl_link *L = anl; L; L = L->next) C++;
-
-	if (anl->item.parity == -1) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
+	int neg = ActionNameLists::itemwise_negated(head);
+	if (neg) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
 
 	int N = 0, downs = 0;
-	for (anl_link *L = anl; L; L = L->next) {
-		if (anl->item.parity != L->item.parity) internal_error("mixed parity");
+	LOOP_THROUGH_ANL(L, head) {
 		N++;
 		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
 		if (L->item.nap_listed) {
@@ -410,6 +405,5 @@ void RTActions::emit_anl(anl_head *head) {
 	}
 	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 
-	if (anl->item.parity == -1) Produce::up(Emit::tree());
-
+	if (neg) Produce::up(Emit::tree());
 }

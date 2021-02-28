@@ -134,10 +134,10 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 				LOOP_THROUGH_WORDING(i, PW)
 					if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
 						goto NotSingleAction;
-				anl_head *head = ActionNameLists::extract_actions_only(PW);
-				an = ActionNameLists::get_single_action(head);
-				Rules::set_marked_for_anyone(Rules::Bookings::get_rule(br),
-					ActionNameLists::get_explicit_anyone_flag(head));
+				int anyone = FALSE;
+				action_name_list *head = ActionPatterns::list_of_actions_only(PW, &anyone);
+				an = ActionNameLists::get_best_action(head);
+				Rules::set_marked_for_anyone(Rules::Bookings::get_rule(br), anyone);
 			} else {
 				an = NULL;
 				waiver = TRUE;
