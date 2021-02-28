@@ -380,18 +380,18 @@ int RTActions::action_variable_set_ID(action_name *an) {
 
 void RTActions::emit_anl(anl_head *head) {
 	if (head == NULL) return;
-	action_name_list *anl = head->body;
+	anl_link *anl = head->body;
 	if (anl == NULL) return;
 
 	LOGIF(ACTION_PATTERN_COMPILATION, "Emitting action name list: $L", head);
 
 	int C = 0;
-	for (action_name_list *L = anl; L; L = L->next) C++;
+	for (anl_link *L = anl; L; L = L->next) C++;
 
 	if (anl->item.parity == -1) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); }
 
 	int N = 0, downs = 0;
-	for (action_name_list *L = anl; L; L = L->next) {
+	for (anl_link *L = anl; L; L = L->next) {
 		if (anl->item.parity != L->item.parity) internal_error("mixed parity");
 		N++;
 		if (N < C) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }

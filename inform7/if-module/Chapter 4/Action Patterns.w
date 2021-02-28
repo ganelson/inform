@@ -260,11 +260,11 @@ action_pattern *ActionPatterns::ap_store(action_pattern ap) {
 }
 
 int ActionPatterns::is_named(action_pattern *ap) {
-	if (ap == NULL) return FALSE;
-	if (ap->action_list == NULL) return FALSE;
-	if (ap->action_list->body == NULL) return FALSE;
-	if (ap->action_list->body->item.nap_listed == NULL) return FALSE;
-	return TRUE;
+	if (ap) {
+		anl_item *item = ActionNameLists::first_item(ap->action_list);
+		if ((item) && (item->nap_listed)) return TRUE;
+	}
+	return FALSE;
 }
 
 int ActionPatterns::is_valid(action_pattern *ap) {
@@ -278,32 +278,26 @@ int ActionPatterns::is_request(action_pattern *ap) {
 }
 
 int ActionPatterns::within_action_context(action_pattern *ap, action_name *an) {
-	action_name_list *anl;
 	if (ap == NULL) return TRUE;
-	if (ap->action_list == NULL) return TRUE;
-	if (ap->action_list->body == NULL) return TRUE;
-	if (ap->action_list->body->item.nap_listed)
-		return NamedActionPatterns::within_action_context(ap->action_list->body->item.nap_listed, an);
-	for (anl = ap->action_list->body; anl; anl = anl->next)
-		if (((anl->item.action_listed == an) && (anl->item.parity == 1)) ||
-			((anl->item.action_listed != an) && (anl->item.parity == -1)))
-			return TRUE;
-	return FALSE;
+	return ActionNameLists::within_action_context(ap->action_list, an);
 }
 
-action_name_list *ActionPatterns::list(action_pattern *ap) {
+anl_head *ActionPatterns::list(action_pattern *ap) {
 	if (ap == NULL) return NULL;
-	return (ap->action_list)?(ap->action_list->body):NULL;
+	return ap->action_list;
 }
 
 action_name *ActionPatterns::required_action(action_pattern *ap) {
-	if ((ap->action_list) && (ap->action_list->body) && (ap->action_list->body->next == NULL) && (ap->action_list->body->item.parity == 1) && (ap->action_list->body->negate_pattern == FALSE))
-		return ap->action_list->body->item.action_listed;
+	if ((ActionNameLists::length(ap->action_list) == 1) &&
+		(ActionNameLists::negated(ap->action_list) == FALSE)) {
+		anl_item *item = ActionNameLists::first_item(ap->action_list);
+		if (item->parity == 1) return item->action_listed;
+	}
 	return NULL;
 }
 
 int ActionPatterns::object_based(action_pattern *ap) {
-	if ((ap) && (ap->action_list) && (ap->action_list->body)) return TRUE;
+	if ((ap) && (ActionNameLists::nonempty(ap->action_list))) return TRUE;
 	return FALSE;
 }
 
@@ -850,7 +844,7 @@ here -- a constant, a description, a table entry, a variable, and so on.
 action_pattern ActionPatterns::parse_action_pattern_dash(wording W) {
 	int failure_this_call = pap_failure_reason;
 	int i, j, k = 0;
-	action_name_list *anl = NULL;
+	anl_link *anl = NULL;
 	int tense = prevailing_ap_tense;
 
 	action_pattern ap = ActionPatterns::new(); ap.valid = FALSE;
@@ -871,7 +865,7 @@ action_pattern ActionPatterns::parse_action_pattern_dash(wording W) {
 @<With one small proviso, a valid action pattern has been parsed@> =
 	pap_failure_reason = 0;
 	ap.text_of_pattern = W;
-	ap.action_list = ActionNameLists::new_head(anl);
+	ap.action_list = ActionNameLists::new_head(anl, FALSE);
 	if ((anl != NULL) && (anl->item.nap_listed == NULL) && (anl->item.action_listed == NULL)) ap.action_list = NULL;
 	ap.valid = TRUE;
 
@@ -898,10 +892,8 @@ action_pattern ActionPatterns::parse_action_pattern_dash(wording W) {
 away as they are recorded.
 
 @<PAR - (f) Parse Special Going Clauses@> =
-	anl_head *preliminary_anl =
-		ActionNameLists::parse(W, tense);
-	action_name *chief_an =
-		ActionNameLists::get_single_action(preliminary_anl?(preliminary_anl->body):NULL);
+	anl_head *preliminary_anl = ActionNameLists::parse(W, tense);
+	action_name *chief_an = ActionNameLists::get_single_action(preliminary_anl);
 	if (chief_an == NULL) {
 		int x;
 		chief_an = ActionNameNames::longest_nounless(W, tense, &x);
@@ -966,9 +958,9 @@ crucial word position except for the one matched.
 	@<Report to the debugging log on the action decomposition@>;
 	@<Find how many different positions have each possible minimum count@>;
 
-	action_name_list *entry = anl;
+	anl_link *entry = anl;
 	int first_position = anl->word_position;
-	action_name_list *first_valid = NULL;
+	anl_link *first_valid = NULL;
 	action_pattern trial_ap;
 	for (entry = anl; entry; entry = entry->next) {
 	LOGIF(ACTION_PATTERN_PARSING, "Entry (%d):\n$8\n", entry->parc, entry);
@@ -995,7 +987,7 @@ can be read as "taking (inventory)", par-count 1, or "taking inventory",
 par-count 0, so the minimum is 0.)
 
 @<Find the positions of individual action names, and their minimum parameter counts@> =
-	action_name_list *entry;
+	anl_link *entry;
 	for (entry = anl; entry; entry = entry->next) {
 		int pos = -1;
 		@<Find the position word of this particular action name@>;
@@ -1091,7 +1083,7 @@ description.
 @<Adjudicate between topic and other actions@> =
 	kind *K[2];
 	K[0] = NULL; K[1] = NULL;
-	action_name_list *entry, *prev = NULL;
+	anl_link *entry, *prev = NULL;
 	for (entry = anl; entry; prev = entry, entry = entry->next) {
 		if ((entry->delete_this_link == FALSE) && (entry->item.action_listed)) {
 			if ((prev == NULL) || (prev->word_position != entry->word_position)) {
@@ -1128,7 +1120,7 @@ description.
 	}
 
 @<Delete those action names which are to be deleted@> =
-	action_name_list *entry, *prev = NULL;
+	anl_link *entry, *prev = NULL;
 	int pos = -1, negation_state = (anl)?(anl->negate_pattern):FALSE;
 	for (entry = anl; entry; entry = entry->next) {
 		if ((entry->delete_this_link) || (pos == entry->word_position)) {
@@ -1156,7 +1148,7 @@ the case when the first action name in the list is |NULL|).
 	kind *kinds_observed_in_list[2];
 	kinds_observed_in_list[0] = NULL;
 	kinds_observed_in_list[1] = NULL;
-	for (action_name_list *entry = anl; entry; entry = entry->next)
+	for (anl_link *entry = anl; entry; entry = entry->next)
 		if (entry->item.nap_listed == NULL) {
 			if (entry->parc > 0) {
 				if (no_of_pars > 0) immiscible = TRUE;
@@ -1184,7 +1176,7 @@ the case when the first action name in the list is |NULL|).
 		}
 	if ((no_oow > 0) && (no_iw > 0)) immiscible = TRUE;
 
-	for (action_name_list *entry = anl; entry; entry = entry->next)
+	for (anl_link *entry = anl; entry; entry = entry->next)
 		if (entry->item.action_listed) {
 			if ((no_of_pars >= 1) && (ActionSemantics::can_have_noun(entry->item.action_listed) == FALSE))
 				immiscible = TRUE;
@@ -1796,8 +1788,9 @@ void ActionPatterns::compile_pattern_match(value_holster *VH, action_pattern ap,
 			CPMC_NEEDED(SECOND_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(SECOND_IS_INP1_CPMC, NULL);
 		}
-		if ((ap.action_list) && (ap.action_list->body) && (ap.action_list->body->item.action_listed)) {
-			kind_of_noun = ActionSemantics::kind_of_noun(ap.action_list->body->item.action_listed);
+		anl_item *item = ActionNameLists::first_item(ap.action_list);
+		if ((item) && (item->action_listed)) {
+			kind_of_noun = ActionSemantics::kind_of_noun(item->action_listed);
 			if (kind_of_noun == NULL) kind_of_noun = K_object;
 		}
 
@@ -1810,8 +1803,8 @@ void ActionPatterns::compile_pattern_match(value_holster *VH, action_pattern ap,
 				CPMC_NEEDED(NOUN_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
-		if ((ap.action_list) && (ap.action_list->body) && (ap.action_list->body->item.action_listed)) {
-			kind_of_second = ActionSemantics::kind_of_second(ap.action_list->body->item.action_listed);
+		if ((item) && (item->action_listed)) {
+			kind_of_second = ActionSemantics::kind_of_second(item->action_listed);
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
 		if (Kinds::Behaviour::is_object(kind_of_second)) {
@@ -2265,14 +2258,15 @@ void ActionPatterns::emit_past_tense(action_pattern *ap) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
 		Specifications::Compiler::emit_as_val(K_value, ap->noun_spec);
-	action_name_list *anl = (ap->action_list)?(ap->action_list->body):NULL;
-	if (anl == NULL)
+	int L = ActionNameLists::length(ap->action_list);
+	if (L == 0)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);
 	else {
-		if (ap->action_list->body->next) bad_form = TRUE;
-		if (ActionSemantics::can_be_compiled_in_past_tense(anl->item.action_listed) == FALSE)
+		anl_item *item = ActionNameLists::first_item(ap->action_list);
+		if (L >= 2) bad_form = TRUE;
+		if (ActionSemantics::can_be_compiled_in_past_tense(item->action_listed) == FALSE)
 			bad_form = TRUE;
-		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(anl->item.action_listed));
+		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(item->action_listed));
 	}
 	Produce::up(Emit::tree());
 

@@ -9,28 +9,32 @@ something" -- the generic I7 text for "any action at all".
 
 =
 typedef struct anl_head {
-	struct action_name_list *body;
+	struct anl_link *body;
+	int anyone_specified;
 } anl_head;
 
-anl_head *ActionNameLists::new_head(action_name_list *anl) {
+anl_head *ActionNameLists::new_head(anl_link *anl, int negate_pattern) {
 	anl_head *head = CREATE(anl_head);
 	head->body = anl;
+	head->anyone_specified = FALSE;
+	if (negate_pattern) {
+		if (anl == NULL) internal_error("cannot");
+		anl->negate_pattern = negate_pattern;
+	}
 	return head;
 }
 
-typedef struct action_name_list {
+typedef struct anl_link {
 	struct anl_item item;
-	struct action_name_list *next; /* next in this ANL list */
+	struct anl_link *next; /* next in this ANL list */
 	int delete_this_link; /* used temporarily during parsing */
-
 	int word_position; /* and some values used temporarily during parsing */
 	int negate_pattern; /* parity of the entire list which this heads */
 	int parc;
 	struct wording parameter[2];
 	struct wording in_clause;
 	int abbreviation_level; /* number of words missing */
-	int anyone_specified;
-} action_name_list;
+} anl_link;
 
 typedef struct anl_item {
 	struct action_name *action_listed; /* the action in this ANL list entry */
@@ -38,14 +42,27 @@ typedef struct anl_item {
 	int parity; /* parity of just this individual item */
 } anl_item;
 
+anl_item *ActionNameLists::first_item(anl_head *list) {
+	if ((list) && (list->body)) return &(list->body->item);
+	return NULL;
+}
+
+int ActionNameLists::length(anl_head *list) {
+	int C = 0;
+	if (list)
+		for (anl_link *anl = list->body; anl; anl = anl->next)
+			C++;
+	return C;
+}
+
 @ The action name list is the part of an action pattern identifying
 which actions are allowed: "taking, dropping or examining" for
 example. The following routine extracts this from a potentially longer
 text (e.g. "taking, dropping or examining a door").
 
 =
-action_name_list *ActionNameLists::anl_new(void) {
-	action_name_list *new_anl = CREATE(action_name_list);
+anl_link *ActionNameLists::new_link(void) {
+	anl_link *new_anl = CREATE(anl_link);
 	new_anl->item.action_listed = NULL;
 	new_anl->item.nap_listed = NULL;
 	new_anl->parc = 0;
@@ -54,17 +71,16 @@ action_name_list *ActionNameLists::anl_new(void) {
 	new_anl->negate_pattern = FALSE;
 	new_anl->in_clause = EMPTY_WORDING;
 	new_anl->abbreviation_level = 0;
-	new_anl->anyone_specified = FALSE;
 	new_anl->delete_this_link = FALSE;
 	return new_anl;
 }
 
 void ActionNameLists::log(anl_head *head) {
-	action_name_list *anl = (head)?(head->body):NULL;
-	ActionNameLists::log_anl(anl);
+	anl_link *anl = (head)?(head->body):NULL;
+	ActionNameLists::log_anl_link(anl);
 }
 
-void ActionNameLists::log_anl(action_name_list *anl) {
+void ActionNameLists::log_anl_link(anl_link *anl) {
 	for (int c=0; anl; anl = anl->next, c++) {
 		LOG("ANL entry %s(%d@%d): %s ",
 			(anl->delete_this_link)?"(to be deleted) ":"",
@@ -82,11 +98,11 @@ void ActionNameLists::log_anl(action_name_list *anl) {
 }
 
 void ActionNameLists::log_briefly(anl_head *head) {
-	action_name_list *anl = (head)?(head->body):NULL;
+	anl_link *anl = (head)?(head->body):NULL;
 	if (anl == NULL) LOG("<null-anl>");
 	else {
 		if (anl->negate_pattern) LOG("NOT[ ");
-		action_name_list *a;
+		anl_link *a;
 		for (a = anl; a; a = a->next) {
 			if (a->item.nap_listed) {
 				if (a->item.parity == -1) LOG("not-");
@@ -111,7 +127,7 @@ action_name *ActionNameLists::get_singleton_action(anl_head *anl) {
 	return an;
 }
 
-action_name_list *anl_being_parsed = NULL;
+anl_link *anl_being_parsed = NULL;
 
 @ The following handles action name lists, such as:
 
@@ -126,14 +142,14 @@ operands.
 <action-list> ::=
 	doing something/anything other than <anl-excluded> |  ==> { FALSE, RP[1] }
 	doing something/anything except <anl-excluded> |      ==> { FALSE, RP[1] }
-	doing something/anything to/with <anl-to-tail> |      ==> { TRUE, RP[1] }
+	doing something/anything to/with <anl-to-tail> |      ==> { TRUE, ActionNameLists::new_head(RP[1], FALSE) }
 	doing something/anything |                            ==> @<Construct ANL for anything@>
 	doing something/anything ... |                        ==> { fail }
-	<anl>                                                 ==> { TRUE, RP[1] }
+	<anl>                                                 ==> { TRUE, ActionNameLists::new_head(RP[1], FALSE) }
 
 <anl-excluded> ::=
 	<anl> to/with {<anl-minimal-common-operand>} |        ==> @<Add to-clause to excluded ANL@>;
-	<anl>                                                 ==> { TRUE, ActionNameLists::flip_anl_parity(RP[1], FALSE) }
+	<anl>                                                 ==> { TRUE, ActionNameLists::new_head(RP[1], TRUE) }
 
 <anl-minimal-common-operand> ::=
 	_,/or ... |                                           ==> { fail }
@@ -141,9 +157,9 @@ operands.
 	...
 
 @<Construct ANL for anything@> =
-	action_name_list *anl = ActionNameLists::anl_new();
+	anl_link *anl = ActionNameLists::new_link();
 	anl->word_position = Wordings::first_wn(W);
-	==> { TRUE, anl };
+	==> { TRUE, ActionNameLists::new_head(anl, FALSE) };
 
 @ The trickiest form is:
 
@@ -170,14 +186,14 @@ for instance, we don't want to count the "in" from "fixed in place".
 	in ...                                ==> { TRUE, - }
 
 @<Augment ANL with in clause@> =
-	action_name_list *anl = RP[1];
+	anl_link *anl = RP[1];
 	anl->in_clause = GET_RW(<anl-in-tail>, 1);
 
 @<Construct ANL for anything applied@> =
-	action_name_list *new_anl;
+	anl_link *new_anl;
 	if ((!preform_lookahead_mode) && (anl_being_parsed)) new_anl = anl_being_parsed;
 	else {
-		new_anl = ActionNameLists::anl_new();
+		new_anl = ActionNameLists::new_link();
 		new_anl->word_position = Wordings::first_wn(W);
 	}
 	new_anl->parameter[new_anl->parc] = W;
@@ -220,7 +236,7 @@ end, but it's syntactically valid.)
 }
 
 <anl-entry-with-action> internal {
-	action_name_list *anl = ActionNameLists::anl_parse_internal(W);
+	anl_link *anl = ActionNameLists::anl_parse_internal(W);
 	if (anl) {
 		==> { -, anl }; return TRUE;
 	}
@@ -228,36 +244,38 @@ end, but it's syntactically valid.)
 }
 
 @<Make an action pattern from named behaviour@> =
-	action_name_list *new_anl = ActionNameLists::anl_new();
+	anl_link *new_anl = ActionNameLists::new_link();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->item.nap_listed = RP[1];
 	==> { 0, new_anl };
 
 @<Make an action pattern from named behaviour plus in@> =
-	action_name_list *new_anl = ActionNameLists::anl_new();
+	anl_link *new_anl = ActionNameLists::new_link();
 	new_anl->word_position = Wordings::first_wn(W);
 	new_anl->item.nap_listed = RP[1];
 	new_anl->in_clause = GET_RW(<anl-in-tail>, 1);
 	==> { 0, new_anl };
 
 @<Add to-clause to excluded ANL@> =
-	action_name_list *anl = ActionNameLists::flip_anl_parity(RP[1], TRUE);
+	anl_link *anl = RP[1];
 	if ((anl == NULL) ||
 		(ActionSemantics::can_have_noun(anl->item.action_listed) == FALSE)) {
 		==> { fail production };
 	}
 	anl->parameter[anl->parc] = GET_RW(<anl-excluded>, 1);
 	anl->parc++;
-	==> { 0, anl };
+	anl_head *head = ActionNameLists::new_head(anl, FALSE);
+	ActionNameLists::negate_all(head);
+	==> { FALSE, head };
 
 @<Join parsed ANLs@> =
-	action_name_list *join;
-	action_name_list *left_atom = RP[1];
-	action_name_list *right_tail = RP[2];
+	anl_link *join;
+	anl_link *left_atom = RP[1];
+	anl_link *right_tail = RP[2];
 	if (left_atom == NULL) { join = right_tail; }
 	else if (right_tail == NULL) { join = left_atom; }
 	else {
-		action_name_list *new_anl = right_tail;
+		anl_link *new_anl = right_tail;
 		while (new_anl->next != NULL) new_anl = new_anl->next;
 		new_anl->next = left_atom;
 		join = right_tail;
@@ -265,16 +283,10 @@ end, but it's syntactically valid.)
 	==> { 0, join };
 
 @ =
-action_name_list *ActionNameLists::flip_anl_parity(action_name_list *anl, int flip_all) {
-	if (flip_all) {
-		action_name_list *L;
-		for (L = anl; L; L = L->next) {
+void ActionNameLists::negate_all(anl_head *head) {
+	if (head)
+		for (anl_link *L = head->body; L; L = L->next)
 			L->item.parity = (L->item.parity == 1)?(-1):1;
-		}
-	} else {
-		anl->negate_pattern = (anl->negate_pattern)?FALSE:TRUE;
-	}
-	return anl;
 }
 
 @ =
@@ -285,22 +297,19 @@ anl_head *ActionNameLists::parse(wording W, int tense) {
 	anl_parsing_tense = tense;
 	int r = <action-list>(W);
 	anl_parsing_tense = t;
-	if (r) {
-		action_name_list *anl = <<rp>>;
-		return ActionNameLists::new_head(anl);
-	}
+	if (r) return <<rp>>;
 	return NULL;
 }
 
 @ =
-action_name_list *ActionNameLists::anl_parse_internal(wording W) {
+anl_link *ActionNameLists::anl_parse_internal(wording W) {
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W (tense %d)\n", W, anl_parsing_tense);
 
 	int tense = anl_parsing_tense;
-	action_name_list *anl_list = NULL, *new_anl = NULL;
+	anl_link *anl_list = NULL, *new_anl = NULL;
 
 	action_name *an;
-	new_anl = ActionNameLists::anl_new();
+	new_anl = ActionNameLists::new_link();
 
 	LOOP_OVER(an, action_name) {
 		int x_ended = FALSE;
@@ -359,14 +368,14 @@ action_name_list *ActionNameLists::anl_parse_internal(wording W) {
 		if (inc) {
 			if (anl_list == NULL) anl_list = new_anl;
 			else {
-				action_name_list *pos = anl_list, *prev = NULL;
+				anl_link *pos = anl_list, *prev = NULL;
 				while ((pos) && (pos->abbreviation_level < new_anl->abbreviation_level))
 					prev = pos, pos = pos->next;
 				if (prev) prev->next = new_anl; else anl_list = new_anl;
 				new_anl->next = pos;
 			}
 		}
-		new_anl = ActionNameLists::anl_new();
+		new_anl = ActionNameLists::new_link();
 		DontInclude: ;
 	}
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$8\n", W, anl_list);
@@ -374,15 +383,15 @@ action_name_list *ActionNameLists::anl_parse_internal(wording W) {
 }
 
 int scanning_anl_only_mode = FALSE;
-action_name_list *ActionNameLists::extract_actions_only(wording W) {
-	action_name_list *anl = NULL;
+anl_head *ActionNameLists::extract_actions_only(wording W) {
+	anl_head *anl = NULL;
 	int s = scanning_anl_only_mode;
 	scanning_anl_only_mode = TRUE;
 	int s2 = permit_trying_omission;
 	permit_trying_omission = TRUE;
 	if (<action-pattern>(W)) {
 		anl = ActionPatterns::list(<<rp>>);
-		if (anl) {
+		if ((anl) && (anl->body)) {
 			anl->anyone_specified = FALSE;
 			if (<<r>> == ACTOR_EXPLICITLY_UNIVERSAL) anl->anyone_specified = TRUE;
 		}
@@ -392,10 +401,12 @@ action_name_list *ActionNameLists::extract_actions_only(wording W) {
 	return anl;
 }
 
-action_name *ActionNameLists::get_single_action(action_name_list *anl) {
+action_name *ActionNameLists::get_single_action(anl_head *head) {
 	int posn = -1, matchl = -1;
 	action_name *anf = NULL;
-	LOGIF(RULE_ATTACHMENTS, "Getting single action from:\n$8\n", anl);
+	LOGIF(RULE_ATTACHMENTS, "Getting single action from:\n$L\n", head);
+	if (ActionNameLists::negated(head)) return NULL;
+	anl_link *anl = (head)?(head->body):NULL;
 	while (anl) {
 		if (anl->item.parity == -1) return NULL;
 		if (anl->negate_pattern) return NULL;
@@ -419,8 +430,8 @@ action_name *ActionNameLists::get_single_action(action_name_list *anl) {
 	return anf;
 }
 
-int ActionNameLists::get_explicit_anyone_flag(action_name_list *anl) {
-	if (anl == NULL) return FALSE;
+int ActionNameLists::get_explicit_anyone_flag(anl_head *anl) {
+	if ((anl == NULL) || (anl->body == NULL)) return FALSE;
 	return anl->anyone_specified;
 }
 
@@ -428,6 +439,26 @@ int ActionNameLists::negated(anl_head *head) {
 	if (head == NULL) return FALSE;
 	if (head->body == NULL) return FALSE;
 	return head->body->negate_pattern;
+}
+
+int ActionNameLists::nonempty(anl_head *head) {
+	if ((head) && (head->body)) return TRUE;
+	return FALSE;
+}
+
+int ActionNameLists::within_action_context(anl_head *head, action_name *an) {
+	if (head == NULL) return TRUE;
+	anl_item *item = ActionNameLists::first_item(head);
+	if (item == NULL) return TRUE;
+	if (item->nap_listed)
+		return NamedActionPatterns::within_action_context(item->nap_listed, an);
+	for (anl_link *anl = head->body; anl; anl = anl->next) {
+		anl_item *item = &(anl->item);
+		if (((item->action_listed == an) && (item->parity == 1)) ||
+			((item->action_listed != an) && (item->parity == -1)))
+			return TRUE;
+	}
+	return FALSE;
 }
 
 @h Specificity of ANLs.
@@ -454,8 +485,8 @@ int ActionNameLists::count_actions_covered(anl_head *head) {
 	int k = 0, parity = TRUE, infinity = NUMBER_CREATED(action_name);
 	if (head == NULL) return infinity;
 	if (head->body == NULL) return infinity;
-	if (head->body->negate_pattern) parity = FALSE;
-	action_name_list *anl = head->body;
+	if (ActionNameLists::negated(head)) parity = FALSE;
+	anl_link *anl = head->body;
 	for (; anl; anl = anl->next) {
 		if (anl->item.nap_listed) continue;
 		if (anl->item.parity == -1) parity = FALSE;

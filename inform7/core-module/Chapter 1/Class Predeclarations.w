@@ -265,7 +265,7 @@ DECLARE_CLASS(rubric_holder)
 @e slash_gpr_CLASS
 @e spatial_data_CLASS
 
-@e action_name_list_CLASS
+@e anl_link_CLASS
 @e action_pattern_CLASS
 @e anl_head_CLASS
 @e ap_optional_clause_CLASS
@@ -299,7 +299,7 @@ DECLARE_CLASS(scene)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(spatial_data)
 
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_name_list, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_link, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_pattern, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_head, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ap_optional_clause, 400)

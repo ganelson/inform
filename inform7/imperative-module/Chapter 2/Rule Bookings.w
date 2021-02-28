@@ -128,19 +128,17 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 		rulebook *original_owner = Phrases::Usage::get_rulebook(phud);
 		if (Rulebooks::requires_specific_action(original_owner)) {
 			int waiver = FALSE;
-			action_name_list *anl;
 			action_name *an;
 			wording PW = Phrases::Usage::get_prewhile_text(phud);
 			if (Wordings::nonempty(PW)) {
 				LOOP_THROUGH_WORDING(i, PW)
 					if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
 						goto NotSingleAction;
-				anl = ActionNameLists::extract_actions_only(PW);
-				an = ActionNameLists::get_single_action(anl);
+				anl_head *head = ActionNameLists::extract_actions_only(PW);
+				an = ActionNameLists::get_single_action(head);
 				Rules::set_marked_for_anyone(Rules::Bookings::get_rule(br),
-					ActionNameLists::get_explicit_anyone_flag(anl));
+					ActionNameLists::get_explicit_anyone_flag(head));
 			} else {
-				anl = NULL;
 				an = NULL;
 				waiver = TRUE;
 				if (original_owner == built_in_rulebooks[CHECK_RB]) waiver = FALSE;

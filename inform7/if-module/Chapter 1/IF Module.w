@@ -13,7 +13,7 @@ COMPILE_WRITER(action_pattern *, ActionPatterns::log)
 COMPILE_WRITER(grammar_verb *, PL::Parsing::Verbs::log)
 COMPILE_WRITER(grammar_line *, PL::Parsing::Lines::log)
 COMPILE_WRITER(anl_head *, ActionNameLists::log)
-COMPILE_WRITER(action_name_list *, ActionNameLists::log_anl)
+COMPILE_WRITER(anl_link *, ActionNameLists::log_anl_link)
 COMPILE_WRITER(action_name *, ActionNameNames::log)
 
 void IFModule::start(void) {
@@ -53,7 +53,7 @@ void IFModule::start(void) {
 	REGISTER_WRITER('G', PL::Parsing::Verbs::log);
 	REGISTER_WRITER('g', PL::Parsing::Lines::log);
 	REGISTER_WRITER('L', ActionNameLists::log);
-	REGISTER_WRITER('8', ActionNameLists::log_anl);
+	REGISTER_WRITER('8', ActionNameLists::log_anl_link);
 	REGISTER_WRITER('l', ActionNameNames::log);
 
 @ =
