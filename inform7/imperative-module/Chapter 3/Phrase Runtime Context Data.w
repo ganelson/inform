@@ -393,9 +393,9 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
 		if (phrcd->never_test_actor)
-			ActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
+			RTActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
 		else
-			ActionPatterns::emit_pattern_match(phrcd->ap, FALSE);
+			RTActionPatterns::emit_pattern_match(phrcd->ap, FALSE);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 

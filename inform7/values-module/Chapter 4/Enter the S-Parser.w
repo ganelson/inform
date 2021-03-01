@@ -70,11 +70,11 @@ as conditions, so for example "taking something" would not match.
 <s-non-action-condition> internal {
 	LocalVariables::make_necessary_callings(W);
 	#ifdef IF_MODULE
-	int old_state = ActionPatterns::suppress();
+	int old_state = ParseActionPatterns::suppress();
 	#endif
 	parse_node *spec = PreformCache::parse(W, 2, <s-condition-uncached>);
 	#ifdef IF_MODULE
-	ActionPatterns::resume(old_state);
+	ParseActionPatterns::resume(old_state);
 	#endif
 	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
 	==> { -, spec };

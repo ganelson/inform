@@ -28,7 +28,7 @@ void RTNamedActionPatterns::compile(void) {
 			current_sentence = nape->where_decided;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
-				ActionPatterns::emit_pattern_match(*ap, TRUE);
+				RTActionPatterns::emit_pattern_match(*ap, TRUE);
 				Produce::code(Emit::tree());
 				Produce::down(Emit::tree());
 					Produce::rtrue(Emit::tree());

@@ -707,11 +707,11 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 			@<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
-		phrcd.ap = ActionPatterns::parse_parametric(phud->rule_parameter, pk);
+		phrcd.ap = ParseActionPatterns::parametric(phud->rule_parameter, pk);
 		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE) {
 			if (Wordings::nonempty(phud->whenwhile)) {
 				wording F = Wordings::up_to(phud->rule_parameter, Wordings::last_wn(phud->whenwhile));
-				phrcd.ap = ActionPatterns::parse_parametric(F, pk);
+				phrcd.ap = ParseActionPatterns::parametric(F, pk);
 				if (ActionPatterns::is_valid(&(phrcd.ap)) == TRUE) {
 					phud->rule_parameter = F;
 					phud->whenwhile = EMPTY_WORDING;

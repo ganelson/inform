@@ -778,7 +778,7 @@ the problem messages are phrased differently if something goes wrong.
 @<Inline annotation "try-action"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(supplied);
-		ActionPatterns::emit_try(ap, FALSE);
+		RTActionPatterns::emit_try(ap, FALSE);
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
@@ -812,7 +812,7 @@ the problem messages are phrased differently if something goes wrong.
 		Produce::down(Emit::tree());
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
-		ActionPatterns::emit_try(ap, FALSE);
+		RTActionPatterns::emit_try(ap, FALSE);
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
 		Produce::inv_primitive(Emit::tree(), PULL_BIP);
 		Produce::down(Emit::tree());

@@ -36,7 +36,7 @@ int too_late_for_past_tenses = FALSE;
 #ifdef IF_MODULE
 void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 	ActionPatterns::convert_to_present_tense(&ap); /* prevent recursion */
-	ActionPatterns::emit_pattern_match(ap, FALSE);
+	RTActionPatterns::emit_pattern_match(ap, FALSE);
 }
 #endif
 
@@ -205,7 +205,7 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 		}
 		if ((duration == NULL) ||
 			((Occurrence::length(duration) == -1) && (Occurrence::until(duration) == -1))) {
-			ActionPatterns::emit_past_tense(ap);
+			RTActionPatterns::emit_past_tense(ap);
 			return;
 		}
 		pasturise = TRUE;
@@ -671,7 +671,7 @@ a file stream, thus allowing rewinding:
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, new_s);
-			ActionPatterns::emit_past_tense(ptc->ap_to_test);
+			RTActionPatterns::emit_past_tense(ptc->ap_to_test);
 		Produce::up(Emit::tree());
 		#endif
 	}

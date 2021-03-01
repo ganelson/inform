@@ -135,7 +135,7 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 					if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
 						goto NotSingleAction;
 				int anyone = FALSE;
-				action_name_list *list = ActionPatterns::list_of_actions_only(PW, &anyone);
+				action_name_list *list = ParseActionPatterns::list_of_actions_only(PW, &anyone);
 				LOGIF(RULE_ATTACHMENTS, "Looking at '%W' (anyone flag %d):\n$L\n",
 					PW, anyone, list);
 				an = ActionNameLists::get_best_action(list);

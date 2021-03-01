@@ -76,3 +76,4 @@ Chapter 5: Plugin Support
 	Actions
 	Looping Over Scope
 	Named Action Patterns
+	Action Patterns
