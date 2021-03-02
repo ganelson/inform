@@ -368,7 +368,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 
 =
 <ap-common-core-inner> ::=
-	<ap-common-core-inner-inner> in the presence of <action-parameter> |    ==> { 0, RP[1] }; action_pattern *ap = *XP; ap->presence_spec = RP[2];
+	<ap-common-core-inner-inner> in the presence of <action-parameter> |    ==> { 0, RP[1] }; ActionPatterns::set_presence(RP[1], RP[2]);
 	<ap-common-core-inner-inner>											==> { 0, RP[1] };
 
 @ Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
@@ -505,7 +505,7 @@ action_pattern ParseActionPatterns::dash(wording W) {
 @<No valid action pattern has been parsed@> =
 	pap_failure_reason = failure_this_call;
 	ap.valid = FALSE;
-	ap.optional_clauses = NULL;
+	ap.ap_clauses = NULL;
 	ap.from_spec = NULL; ap.to_spec = NULL; ap.by_spec = NULL; ap.through_spec = NULL;
 	ap.pushing_spec = NULL; ap.nowhere_flag = FALSE;
 	LOGIF(ACTION_PATTERN_PARSING, "Parse action failed: %W\n", W);
@@ -532,16 +532,14 @@ away as they are recorded.
 				LOGIF(ACTION_PATTERN_PARSING,
 					"Special clauses found on <%W>\n", Wordings::from(W, i));
 				if (last_stv_specified == NULL) j = i-1;
-				else ActionPatterns::ap_add_optional_clause(&ap,
-					ActionPatterns::apoc_new(last_stv_specified, ParseActionPatterns::verified_action_parameter(Wordings::new(k, i-1))));
+				else ActionPatterns::ap_add_optional_clause(&ap, last_stv_specified, Wordings::new(k, i-1));
 				k = i+1;
 				last_stv_specified = stv;
 			}
 			i++;
 		}
 		if (last_stv_specified != NULL)
-			ActionPatterns::ap_add_optional_clause(&ap,
-				ActionPatterns::apoc_new(last_stv_specified, ParseActionPatterns::verified_action_parameter(Wordings::new(k, Wordings::last_wn(W)))));
+			ActionPatterns::ap_add_optional_clause(&ap, last_stv_specified, Wordings::new(k, Wordings::last_wn(W)));
 		if (j >= 0) W = Wordings::up_to(W, j);
 	}
 

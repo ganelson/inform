@@ -11,12 +11,14 @@ list of //anl_entry// objects.
 typedef struct action_name_list {
 	struct anl_entry *entries;
 	int negation_state;
+	int test_this_in_ap_match;
 } action_name_list;
 
 action_name_list *ActionNameLists::new_list(anl_entry *first, int state) {
 	action_name_list *list = CREATE(action_name_list);
 	list->entries = first;
 	list->negation_state = state;
+	list->test_this_in_ap_match = TRUE;
 	return list;
 }
 
@@ -44,6 +46,20 @@ int ActionNameLists::itemwise_negated(action_name_list *list) {
 int ActionNameLists::positive(action_name_list *list) {
 	if ((list == NULL) || (list->negation_state == ANL_POSITIVE)) return TRUE;
 	return FALSE;
+}
+
+@ It is sometimes possible when matching action patterns to prove that it
+is unnecessary to test that the action appears in this list; and then the
+list can be marked accordingly:
+
+=
+void ActionNameLists::suppress_action_testing(action_name_list *list) {
+	list->test_this_in_ap_match = FALSE;
+}
+
+int ActionNameLists::testing(action_name_list *list) {
+	if (list == NULL) return FALSE;
+	return list->test_this_in_ap_match;
 }
 
 @ An entry has some book-keeping fields, and is otherwise divided into the

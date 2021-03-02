@@ -396,7 +396,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 				}
 			}
 		}
-		if ((ap.action_list != NULL) && (ap.test_anl)) {
+		if (ActionNameLists::testing(ap.action_list)) {
 			CPMC_NEEDED(ACTION_MATCHES_CPMC, NULL);
 		}
 		if ((ap.action_list == NULL) && (ap.noun_spec)) {
@@ -450,9 +450,9 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			CPMC_NEEDED(PARAMETER_MATCHES_CPMC, NULL);
 		}
 
-		ap_optional_clause *apoc = ap.optional_clauses;
+		ap_optional_clause *apoc = ap.ap_clauses;
 		while (apoc) {
-			if (apoc->clause_spec) {
+			if ((apoc->clause_ID == STV_AP_CLAUSE) && (apoc->clause_spec)) {
 				CPMC_NEEDED(OPTIONAL_CLAUSE_CPMC, apoc);
 			}
 			apoc = apoc->next;
@@ -472,14 +472,14 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			}
 		}
 
-		if (ap.presence_spec != NULL) {
+		if (ActionPatterns::get_presence(&ap) != NULL) {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(ap.presence_spec);
+				Specifications::object_exactly_described_if_any(ActionPatterns::get_presence(&ap));
 			if (to_be_present) {
 				CPMC_NEEDED(PRESENCE_OF_MATCHES_CPMC, NULL);
 				CPMC_NEEDED(PRESENCE_OF_IN_SCOPE_CPMC, NULL);
 			} else {
-				wording PC = Descriptions::get_calling(ap.presence_spec);
+				wording PC = Descriptions::get_calling(ActionPatterns::get_presence(&ap));
 				if (Wordings::nonempty(PC)) {
 					CPMC_NEEDED(LOOP_OVER_SCOPE_WITH_CALLING_CPMC, NULL);
 				} else {
@@ -715,7 +715,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			kind *K = StackedVariables::get_kind(apoc->stv_to_match);
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
-				apoc->clause_spec, K, apoc->allow_region_as_room);
+				apoc->clause_spec, K, ((apoc->clause_options) & ALLOW_REGION_AS_ROOM_APCOPT)?TRUE:FALSE);
 			break;
 		}
 		case NOWHERE_CPMC:
@@ -758,15 +758,15 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		case PRESENCE_OF_MATCHES_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(ap.presence_spec);
+				Specifications::object_exactly_described_if_any(ActionPatterns::get_presence(&ap));
 			RTActionPatterns::compile_pattern_match_clause(FALSE, VH,
 				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
-				ap.presence_spec, K_object, FALSE);
+				ActionPatterns::get_presence(&ap), K_object, FALSE);
 			break;
 		}
 		case PRESENCE_OF_IN_SCOPE_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(ap.presence_spec);
+				Specifications::object_exactly_described_if_any(ActionPatterns::get_presence(&ap));
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSCOPE_HL));
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(to_be_present));
@@ -775,10 +775,10 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(ap.presence_spec);
-			wording PC = Descriptions::get_calling(ap.presence_spec);
+			loop_over_scope *los = LoopingOverScope::new(ActionPatterns::get_presence(&ap));
+			wording PC = Descriptions::get_calling(ActionPatterns::get_presence(&ap));
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
-				Specifications::to_kind(ap.presence_spec));
+				Specifications::to_kind(ActionPatterns::get_presence(&ap)));
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
@@ -804,7 +804,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(ap.presence_spec);
+			loop_over_scope *los = LoopingOverScope::new(ActionPatterns::get_presence(&ap));
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -866,9 +866,9 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	if (ActionPatterns::pta_acceptable(ap->actor_spec) == FALSE) bad_form = TRUE;
 	if (ap->room_spec) bad_form = TRUE;
 	if (ap->parameter_spec) bad_form = TRUE;
-	if (ap->presence_spec) bad_form = TRUE;
+	if (ActionPatterns::get_presence(ap)) bad_form = TRUE;
 	if (ap->when) bad_form = TRUE;
-	if (ap->optional_clauses) bad_form = TRUE;
+	if (ActionPatterns::has_stv_clauses(ap)) bad_form = TRUE;
 
 	if (bad_form)
 		@<Issue too complex PT problem@>;

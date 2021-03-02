@@ -1,10 +1,10 @@
 Total memory consumption was 258576K = 253 MB
 
-62.4% was used for 1338991 objects, in 278613 frames in 202 x 800K = 161600K = 157 MB:
+62.4% was used for 1338988 objects, in 278610 frames in 202 x 800K = 161600K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
-     3.9%  parse_node                               129993 objects, 10399440 bytes
+     3.9%  parse_node                               129990 objects, 10399200 bytes
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
      2.4%  linked_list                              11779 objects, 6596240 bytes
@@ -15,7 +15,7 @@ Total memory consumption was 258576K = 253 MB
      0.7%  inter_schema_token                       13492 objects, 1942848 bytes
      0.6%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes
      0.5%  match_trie_array                         10 x 1000 = 10000 objects, 1360320 bytes
-     0.4%  phrase                                   940 objects, 1195680 bytes
+     0.4%  phrase                                   940 objects, 1180640 bytes
      0.3%  inter_name_array                         21 x 1000 = 21000 objects, 1008672 bytes
      0.3%  adjective_meaning                        202 objects, 1000304 bytes
      0.3%  excerpt_meaning                          3098 objects, 966576 bytes
@@ -46,8 +46,8 @@ Total memory consumption was 258576K = 253 MB
      ----  stacked_variable_owner_list_array        38 x 100 = 3800 objects, 153216 bytes
      ----  index_lexicon_entry                      395 objects, 142200 bytes
      ----  nonterminal                              758 objects, 139472 bytes
-     ----  action_pattern_array                     6 x 100 = 600 objects, 120192 bytes
      ----  documentation_ref                        1275 objects, 112200 bytes
+     ----  action_pattern_array                     6 x 100 = 600 objects, 110592 bytes
      ----  inference                                1703 objects, 108992 bytes
      ----  hierarchy_location                       730 objects, 105120 bytes
      ----  noun_usage                               2401 objects, 96040 bytes
@@ -80,7 +80,7 @@ Total memory consumption was 258576K = 253 MB
      ----  stacked_variable_owner_array             6 x 100 = 600 objects, 28992 bytes
      ----  heading                                  198 objects, 28512 bytes
      ----  counting_data                            670 objects, 26800 bytes
-     ----  ap_optional_clause_array                 1 x 400 objects, 22432 bytes
+     ----  ap_optional_clause_array                 1 x 400 objects, 25632 bytes
      ----  parsing_data                             670 objects, 21440 bytes
      ----  bp_runtime_implementation                321 objects, 20544 bytes
      ----  instance                                 167 objects, 20040 bytes
@@ -245,5 +245,5 @@ Total memory consumption was 258576K = 253 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.9% was overhead - 52821216 bytes = 51583K = 50 MB
+19.9% was overhead - 52842896 bytes = 51604K = 50 MB
 

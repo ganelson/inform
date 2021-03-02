@@ -20,12 +20,24 @@ object instead of an action -- "reaching inside the cabinet". These
 not-really-action APs are used in no other context, and employ the
 |parameter_spec| field below, ignoring the rest.
 
+@e ACTOR_AP_CLAUSE from 1
+@e NOUN_AP_CLAUSE
+@e SECOND_AP_CLAUSE
+@e IN_AP_CLAUSE
+@e IN_THE_PRESENCE_OF_AP_CLAUSE
+@e WHEN_AP_CLAUSE
+@e GOING_FROM_AP_CLAUSE
+@e GOING_TO_AP_CLAUSE
+@e GOING_BY_AP_CLAUSE
+@e GOING_THROUGH_AP_CLAUSE
+@e PUSHING_AP_CLAUSE
+@e STV_AP_CLAUSE
+
 =
 typedef struct action_pattern {
 	struct wording text_of_pattern; /* text giving rise to this AP */
 
 	struct action_name_list *action_list; /* what the behaviour is */
-	int test_anl; /* actually test the action when compiled */
 
 	int applies_to_any_actor; /* treat player and other people equally */
 	int request; /* a request from the player for someone to do this? */
@@ -34,7 +46,6 @@ typedef struct action_pattern {
 	int noun_any;
 	struct parse_node *second_spec;
 	int second_any;
-	struct parse_node *presence_spec; /* in the presence of... */
 	struct parse_node *room_spec; /* in... */
 	int room_any;
 	struct parse_node *when; /* when... (any condition here) */
@@ -44,7 +55,7 @@ typedef struct action_pattern {
 	struct parse_node *through_spec; /* ditto */
 	struct parse_node *pushing_spec; /* ditto */
 	int nowhere_flag; /* ditto: a flag for "going nowhere" */
-	struct ap_optional_clause *optional_clauses;
+	struct ap_optional_clause *ap_clauses;
 	int chief_action_owner_id; /* stacked variable ID number of main action */
 	struct time_period *duration; /* to hold "for the third time", etc. */
 
@@ -54,13 +65,30 @@ typedef struct action_pattern {
 	int valid; /* recording success or failure in parsing to an AP */
 } action_pattern;
 
+@
+
+@d ALLOW_REGION_AS_ROOM_APCOPT 1
+
+=
 typedef struct ap_optional_clause {
+	int clause_ID;
 	struct stacked_variable *stv_to_match;
 	struct parse_node *clause_spec;
-	int allow_region_as_room;
+	int clause_options;
 	struct ap_optional_clause *next;
 	CLASS_DEFINITION
 } ap_optional_clause;
+
+@ =
+parse_node *ActionPatterns::get_presence(action_pattern *ap) {
+	ap_optional_clause *apoc = ActionPatterns::find_clause(ap, IN_THE_PRESENCE_OF_AP_CLAUSE, FALSE);
+	return (apoc)?(apoc->clause_spec):NULL;
+}
+
+void ActionPatterns::set_presence(action_pattern *ap, parse_node *val) {
+	ap_optional_clause *apoc = ActionPatterns::find_clause(ap, IN_THE_PRESENCE_OF_AP_CLAUSE, TRUE);
+	apoc->clause_spec = val;
+}
 
 @ When we parse action patterns, we record why they fail, in order to make
 it easier to produce helpful error messages. (We can't simply fire off
@@ -93,7 +121,6 @@ action_pattern ActionPatterns::new(void) {
 	action_pattern ap;
 	ap.text_of_pattern = EMPTY_WORDING;
 	ap.action_list = NULL;
-	ap.test_anl = TRUE;
 	ap.actor_spec = NULL;
 	ap.noun_spec = NULL; ap.second_spec = NULL; ap.room_spec = NULL;
 	ap.noun_any = FALSE; ap.second_any = FALSE; ap.room_any = FALSE;
@@ -101,7 +128,6 @@ action_pattern ActionPatterns::new(void) {
 	ap.parameter_kind = K_object;
 	ap.valid = FALSE;
 	ap.when = NULL;
-	ap.presence_spec = NULL;
 	ap.from_spec = NULL;
 	ap.to_spec = NULL;
 	ap.by_spec = NULL;
@@ -111,41 +137,76 @@ action_pattern ActionPatterns::new(void) {
 	ap.request = FALSE;
 	ap.applies_to_any_actor = FALSE;
 	ap.duration = NULL;
-	ap.optional_clauses = NULL;
+	ap.ap_clauses = NULL;
 	ap.chief_action_owner_id = 0;
 	return ap;
 }
 
-ap_optional_clause *ActionPatterns::apoc_new(stacked_variable *stv, parse_node *spec) {
+ap_optional_clause *ActionPatterns::find_clause(action_pattern *ap, int clause, int make) {
+	if (ap) {
+		ap_optional_clause *last = NULL;
+		for (ap_optional_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next) {
+			if (apoc->clause_ID == clause)
+				return apoc;
+			last = apoc;
+		}
+		if (make) {
+			ap_optional_clause *new_apoc = ActionPatterns::apoc_new(clause, NULL, NULL);
+			if (last == NULL) ap->ap_clauses = new_apoc;
+			else last->next = new_apoc;
+			return new_apoc;
+		}
+	} else {
+		if (make) internal_error("cannot make clause in null AP");
+	}
+	return NULL;
+}
+
+ap_optional_clause *ActionPatterns::find_stv(action_pattern *ap, stacked_variable *stv) {
+	if (ap)
+		for (ap_optional_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next)
+			if (apoc->stv_to_match == stv)
+				return apoc;
+	return NULL;
+}
+
+ap_optional_clause *ActionPatterns::apoc_new(int clause, stacked_variable *stv, parse_node *spec) {
 	ap_optional_clause *apoc = CREATE(ap_optional_clause);
+	apoc->clause_ID = clause;
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
 	apoc->next = NULL;
-	apoc->allow_region_as_room = FALSE;
+	apoc->clause_options = FALSE;
 	return apoc;
 }
 
-void ActionPatterns::ap_add_optional_clause(action_pattern *ap, ap_optional_clause *apoc) {
+void ActionPatterns::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv,
+	wording W) {
+	if (stv == NULL) internal_error("no stacked variable for apoc");
+	ap_optional_clause *apoc = ActionPatterns::apoc_new(STV_AP_CLAUSE, stv,
+		ParseActionPatterns::verified_action_parameter(W));
 	int oid = StackedVariables::get_owner_id(apoc->stv_to_match);
 	int off = StackedVariables::get_offset(apoc->stv_to_match);
-	if (ap->optional_clauses == NULL) {
-		ap->optional_clauses = apoc;
+	if (ap->ap_clauses == NULL) {
+		ap->ap_clauses = apoc;
 		apoc->next = NULL;
 	} else {
-		ap_optional_clause *oapoc = ap->optional_clauses, *papoc = NULL;
+		ap_optional_clause *oapoc = ap->ap_clauses, *papoc = NULL;
 		while (oapoc) {
-			int ooff = StackedVariables::get_offset(oapoc->stv_to_match);
-			if (off < ooff) {
-				if (oapoc == ap->optional_clauses) {
-					apoc->next = ap->optional_clauses;
-					ap->optional_clauses = apoc;
-					papoc = NULL;
-				} else {
-					apoc->next = papoc->next;
-					papoc->next = apoc;
-					papoc = NULL;
+			if (oapoc->stv_to_match) {
+				int ooff = StackedVariables::get_offset(oapoc->stv_to_match);
+				if (off < ooff) {
+					if (oapoc == ap->ap_clauses) {
+						apoc->next = ap->ap_clauses;
+						ap->ap_clauses = apoc;
+						papoc = NULL;
+					} else {
+						apoc->next = papoc->next;
+						papoc->next = apoc;
+						papoc = NULL;
+					}
+					break;
 				}
-				break;
 			}
 			papoc = oapoc;
 			oapoc = oapoc->next;
@@ -158,8 +219,10 @@ void ActionPatterns::ap_add_optional_clause(action_pattern *ap, ap_optional_clau
 
 	if (oid == 20007 /* i.e., going */ ) {
 		switch (off) {
-			case 0: ap->from_spec = apoc->clause_spec; apoc->allow_region_as_room = TRUE; break;
-			case 1: ap->to_spec = apoc->clause_spec; apoc->allow_region_as_room = TRUE; break;
+			case 0: ap->from_spec = apoc->clause_spec;
+				apoc->clause_options |= ALLOW_REGION_AS_ROOM_APCOPT; break;
+			case 1: ap->to_spec = apoc->clause_spec;
+				apoc->clause_options |= ALLOW_REGION_AS_ROOM_APCOPT; break;
 			case 2: ap->through_spec = apoc->clause_spec; break;
 			case 3: ap->by_spec = apoc->clause_spec; break;
 			case 4: ap->pushing_spec = apoc->clause_spec; break;
@@ -170,13 +233,18 @@ void ActionPatterns::ap_add_optional_clause(action_pattern *ap, ap_optional_clau
 
 int ActionPatterns::ap_count_optional_clauses(action_pattern *ap) {
 	int n = 0;
-	ap_optional_clause *apoc;
-	for (apoc = ap->optional_clauses; apoc; apoc = apoc->next) {
-		if ((ap->chief_action_owner_id != 20007) ||
-			(StackedVariables::get_offset(apoc->stv_to_match) >= 5))
-			n++;
-	}
+	if (ap)
+		for (ap_optional_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next)
+			if (apoc->stv_to_match)
+				if ((ap->chief_action_owner_id != 20007) ||
+					(StackedVariables::get_offset(apoc->stv_to_match) >= 5))
+					n++;
 	return n;
+}
+
+int ActionPatterns::has_stv_clauses(action_pattern *ap) {
+	if ((ap) && (ActionPatterns::nudge_to_stv_apoc(ap->ap_clauses))) return TRUE;
+	return FALSE;
 }
 
 int ActionPatterns::compare_specificity_of_apoc_list(action_pattern *ap1, action_pattern *ap2) {
@@ -188,20 +256,26 @@ int ActionPatterns::compare_specificity_of_apoc_list(action_pattern *ap1, action
 	if (rct1 == 0) return 0;
 	if (ap1->chief_action_owner_id != ap2->chief_action_owner_id) return 0;
 
-	ap_optional_clause *apoc1 = ap1->optional_clauses, *apoc2 = ap2->optional_clauses;
+	ap_optional_clause *apoc1 = ActionPatterns::nudge_to_stv_apoc(ap1->ap_clauses),
+		*apoc2 = ActionPatterns::nudge_to_stv_apoc(ap2->ap_clauses);
 	while ((apoc1) && (apoc2)) {
 		int off1 = StackedVariables::get_offset(apoc1->stv_to_match);
 		int off2 = StackedVariables::get_offset(apoc2->stv_to_match);
 		if (off1 == off2) {
 			int rv = Specifications::compare_specificity(apoc1->clause_spec, apoc2->clause_spec, NULL);
 			if (rv != 0) return rv;
-			apoc1 = apoc1->next;
-			apoc2 = apoc2->next;
+			apoc1 = ActionPatterns::nudge_to_stv_apoc(apoc1->next);
+			apoc2 = ActionPatterns::nudge_to_stv_apoc(apoc2->next);
 		}
-		if (off1 < off2) apoc1 = apoc1->next;
-		if (off1 > off2) apoc2 = apoc2->next;
+		if (off1 < off2) apoc1 = ActionPatterns::nudge_to_stv_apoc(apoc1->next);
+		if (off1 > off2) apoc2 = ActionPatterns::nudge_to_stv_apoc(apoc2->next);
 	}
 	return 0;
+}
+
+ap_optional_clause *ActionPatterns::nudge_to_stv_apoc(ap_optional_clause *apoc) {
+	while ((apoc) && (apoc->stv_to_match == NULL)) apoc = apoc->next;
+	return apoc;
 }
 
 void ActionPatterns::log(action_pattern *ap) {
@@ -221,7 +295,7 @@ void ActionPatterns::log(action_pattern *ap) {
 		if (ap->pushing_spec) LOG("  Pushing: $P", ap->pushing_spec);
 		if (ap->room_spec) LOG("  Room: $P", ap->room_spec);
 		if (ap->parameter_spec) LOG("  Parameter: $P", ap->parameter_spec);
-		if (ap->presence_spec) LOG("  Presence: $P", ap->presence_spec);
+		if (ActionPatterns::get_presence(ap)) LOG("  Presence: $P", ActionPatterns::get_presence(ap));
 		if (ap->nowhere_flag) LOG("  Nowhere  ");
 		if (ap->when) LOG("  When: $P  ", ap->when);
 		if (ap->duration) LOG("  Duration: $t  ", ap->duration);
@@ -245,7 +319,7 @@ void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 		if (ap->pushing_spec) WRITE(" pushing: %P", ap->pushing_spec);
 		if (ap->room_spec) WRITE(" room: %P", ap->room_spec);
 		if (ap->parameter_spec) WRITE(" parameter: %P", ap->parameter_spec);
-		if (ap->presence_spec) WRITE(" presence: %P", ap->presence_spec);
+		if (ActionPatterns::get_presence(ap)) WRITE(" presence: %P", ActionPatterns::get_presence(ap));
 		if (ap->nowhere_flag) WRITE(" nowhere");
 		if (ap->when) WRITE(" when: %P", ap->when);
 		if (ap->duration) { WRITE(" duration: "); Occurrence::log(OUT, ap->duration); }
@@ -319,8 +393,8 @@ int ActionPatterns::ap_clause_is_unspecific(parse_node *spec) {
 int ActionPatterns::is_overspecific(action_pattern *ap) {
 	if (ap->when != NULL) return TRUE;
 	if (ap->room_spec != NULL) return TRUE;
-	if (ap->presence_spec != NULL) return TRUE;
-	if (ap->optional_clauses != NULL) return TRUE;
+	if (ActionPatterns::get_presence(ap) != NULL) return TRUE;
+	if (ActionPatterns::has_stv_clauses(ap)) return TRUE;
 	if (ap->nowhere_flag) return TRUE;
 	if (ap->applies_to_any_actor) return TRUE;
 	if (ap->duration) return TRUE;
@@ -328,7 +402,8 @@ int ActionPatterns::is_overspecific(action_pattern *ap) {
 }
 
 void ActionPatterns::suppress_action_testing(action_pattern *ap) {
-	if (ap->duration == NULL) ap->test_anl = FALSE;
+	if ((ap->duration == NULL) && (ap->action_list))
+		ActionNameLists::suppress_action_testing(ap->action_list);
 }
 
 @ We are allowed to give names to certain kinds of behaviour by "categorising"
@@ -439,7 +514,7 @@ int ActionPatterns::count_aspects(action_pattern *ap) {
 		(ap->second_spec) ||
 		(ap->actor_spec))
 		c++;
-	if (ap->presence_spec) c++;
+	if (ActionPatterns::get_presence(ap)) c++;
 	if ((ap->duration) || (ap->when)) c++;
 	if (ap->parameter_spec) c++;
 	return c;
@@ -513,7 +588,7 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 
 	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
 
-	rv = Specifications::compare_specificity(ap1->presence_spec, ap2->presence_spec, NULL);
+	rv = Specifications::compare_specificity(ActionPatterns::get_presence(ap1), ActionPatterns::get_presence(ap2), NULL);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
@@ -611,7 +686,7 @@ int ActionPatterns::makes_callings(action_pattern *ap) {
 	if (Descriptions::makes_callings(ap->actor_spec)) return TRUE;
 	if (Descriptions::makes_callings(ap->room_spec)) return TRUE;
 	if (Descriptions::makes_callings(ap->parameter_spec)) return TRUE;
-	if (Descriptions::makes_callings(ap->presence_spec)) return TRUE;
+	if (Descriptions::makes_callings(ActionPatterns::get_presence(ap))) return TRUE;
 	return FALSE;
 }
 
