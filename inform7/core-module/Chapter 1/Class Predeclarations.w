@@ -268,7 +268,7 @@ DECLARE_CLASS(rubric_holder)
 @e anl_entry_CLASS
 @e action_pattern_CLASS
 @e action_name_list_CLASS
-@e ap_optional_clause_CLASS
+@e ap_clause_CLASS
 @e scene_connector_CLASS
 @e understanding_item_CLASS
 @e understanding_reference_CLASS
@@ -302,7 +302,7 @@ DECLARE_CLASS(spatial_data)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_entry, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_pattern, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_name_list, 1000)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ap_optional_clause, 400)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ap_clause, 400)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(scene_connector, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)

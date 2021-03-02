@@ -510,8 +510,8 @@ result.
 	permit_trying_omission = pto;
 	if (r) {
 		action_pattern *ap = <<rp>>;
-		if ((ap->actor_spec) &&
-			(Dash::validate_parameter(ap->actor_spec, K_person) == FALSE)) {
+		if ((APClauses::get_actor(ap)) &&
+			(Dash::validate_parameter(APClauses::get_actor(ap), K_person) == FALSE)) {
 			r = <action-pattern>(W);
 		}
 	}
