@@ -496,7 +496,7 @@ action_pattern ParseActionPatterns::dash(wording W) {
 	APClauses::set_second(&ap, ActionPatterns::nullify_nonspecific_references(APClauses::get_second(&ap)));
 	APClauses::nullify_nonspecific(&ap, IN_AP_CLAUSE);
 
-	int ch = PluginCalls::check_going(ap.from_spec, ap.to_spec, ap.by_spec, ap.through_spec, ap.pushing_spec);
+	int ch = PluginCalls::check_going(APClauses::get_val(&ap, GOING_FROM_AP_CLAUSE), APClauses::get_val(&ap, GOING_TO_AP_CLAUSE), APClauses::get_val(&ap, GOING_BY_AP_CLAUSE), APClauses::get_val(&ap, GOING_THROUGH_AP_CLAUSE), APClauses::get_val(&ap, PUSHING_AP_CLAUSE));
 	if (ch == FALSE) ap.valid = FALSE;
 
 	if (ap.valid == FALSE) goto Failed;
@@ -506,8 +506,7 @@ action_pattern ParseActionPatterns::dash(wording W) {
 	pap_failure_reason = failure_this_call;
 	ap.valid = FALSE;
 	ap.ap_clauses = NULL;
-	ap.from_spec = NULL; ap.to_spec = NULL; ap.by_spec = NULL; ap.through_spec = NULL;
-	ap.pushing_spec = NULL; ap.nowhere_flag = FALSE;
+	ap.nowhere_flag = FALSE;
 	LOGIF(ACTION_PATTERN_PARSING, "Parse action failed: %W\n", W);
 
 @ Special clauses are allowed after "going..."; trim them

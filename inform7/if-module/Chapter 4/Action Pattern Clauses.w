@@ -10,12 +10,12 @@ Pattern-matches on individual nouns in an action are called clauses.
 @e IN_AP_CLAUSE
 @e IN_THE_PRESENCE_OF_AP_CLAUSE
 @e WHEN_AP_CLAUSE
+
 @e GOING_FROM_AP_CLAUSE
 @e GOING_TO_AP_CLAUSE
-@e GOING_BY_AP_CLAUSE
 @e GOING_THROUGH_AP_CLAUSE
+@e GOING_BY_AP_CLAUSE
 @e PUSHING_AP_CLAUSE
-@e STV_AP_CLAUSE
 
 =
 typedef struct ap_clause {
@@ -32,6 +32,7 @@ clauses.
 
 @d ALLOW_REGION_AS_ROOM_APCOPT 1
 @d DO_NOT_VALIDATE_APCOPT 2
+@d TEST_BY_HAND_APCOPT 4
 
 @ =
 int APClauses::opt(ap_clause *apoc, int opt) {
@@ -116,19 +117,20 @@ ap_clause *APClauses::ensure_clause(action_pattern *ap, int C) {
 	return APClauses::find_clause(ap, C, TRUE);
 }
 
-ap_clause *APClauses::find_clause(action_pattern *ap, int clause, int make) {
+ap_clause *APClauses::find_clause(action_pattern *ap, int C, int make) {
 	if (ap) {
 		ap_clause *last = NULL;
 		for (ap_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next) {
-			if (apoc->clause_ID == clause)
-				return apoc;
+			if (apoc->clause_ID == C) return apoc;
+			if (apoc->clause_ID > C) {
+				if (make) @<Make a new clause@>
+				else return NULL;
+			}
 			last = apoc;
 		}
 		if (make) {
-			ap_clause *new_apoc = APClauses::apoc_new(clause, NULL, NULL);
-			if (last == NULL) ap->ap_clauses = new_apoc;
-			else last->next = new_apoc;
-			return new_apoc;
+			ap_clause *apoc = NULL;
+			@<Make a new clause@>;
 		}
 	} else {
 		if (make) internal_error("cannot make clause in null AP");
@@ -136,84 +138,40 @@ ap_clause *APClauses::find_clause(action_pattern *ap, int clause, int make) {
 	return NULL;
 }
 
-ap_clause *APClauses::find_stv(action_pattern *ap, stacked_variable *stv) {
-	if (ap)
-		for (ap_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next)
-			if (apoc->stv_to_match == stv)
-				return apoc;
-	return NULL;
-}
+@<Make a new clause@> =
+	ap_clause *new_apoc = CREATE(ap_clause);
+	new_apoc->clause_ID = C;
+	new_apoc->stv_to_match = NULL;
+	new_apoc->clause_spec = NULL;
+	new_apoc->clause_options = 0;
+	if (last == NULL) ap->ap_clauses = new_apoc; else last->next = new_apoc;
+	new_apoc->next = apoc;
+	return new_apoc;
 
-ap_clause *APClauses::apoc_new(int clause, stacked_variable *stv, parse_node *spec) {
-	ap_clause *apoc = CREATE(ap_clause);
-	apoc->clause_ID = clause;
-	apoc->stv_to_match = stv;
-	apoc->clause_spec = spec;
-	apoc->next = NULL;
-	apoc->clause_options = FALSE;
-	return apoc;
-}
-
+@ =
 void APClauses::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv,
 	wording W) {
 	if (stv == NULL) internal_error("no stacked variable for apoc");
-	ap_clause *apoc = APClauses::apoc_new(STV_AP_CLAUSE, stv,
-		ParseActionPatterns::verified_action_parameter(W));
-	int oid = StackedVariables::get_owner_id(apoc->stv_to_match);
-	int off = StackedVariables::get_offset(apoc->stv_to_match);
-	if (ap->ap_clauses == NULL) {
-		ap->ap_clauses = apoc;
-		apoc->next = NULL;
-	} else {
-		ap_clause *oapoc = ap->ap_clauses, *papoc = NULL;
-		while (oapoc) {
-			if (oapoc->stv_to_match) {
-				int ooff = StackedVariables::get_offset(oapoc->stv_to_match);
-				if (off < ooff) {
-					if (oapoc == ap->ap_clauses) {
-						apoc->next = ap->ap_clauses;
-						ap->ap_clauses = apoc;
-						papoc = NULL;
-					} else {
-						apoc->next = papoc->next;
-						papoc->next = apoc;
-						papoc = NULL;
-					}
-					break;
-				}
-			}
-			papoc = oapoc;
-			oapoc = oapoc->next;
-		}
-		if (papoc) {
-			apoc->next = NULL;
-			papoc->next = apoc;
-		}
-	}
-
+	parse_node *spec = ParseActionPatterns::verified_action_parameter(W);
+	int oid = StackedVariables::get_owner_id(stv);
+	int off = StackedVariables::get_offset(stv);
+	
+	int C = 1000*oid + off, ar = FALSE, byhand = FALSE;
 	if (oid == 20007 /* i.e., going */ ) {
 		switch (off) {
-			case 0: ap->from_spec = apoc->clause_spec;
-				APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT); break;
-			case 1: ap->to_spec = apoc->clause_spec;
-				APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT); break;
-			case 2: ap->through_spec = apoc->clause_spec; break;
-			case 3: ap->by_spec = apoc->clause_spec; break;
-			case 4: ap->pushing_spec = apoc->clause_spec; break;
+			case 0: C = GOING_FROM_AP_CLAUSE; ar = TRUE; byhand = TRUE; break;
+			case 1: C = GOING_TO_AP_CLAUSE; ar = TRUE; byhand = TRUE; break;
+			case 2: C = GOING_THROUGH_AP_CLAUSE; byhand = TRUE; break;
+			case 3: C = GOING_BY_AP_CLAUSE; byhand = TRUE; break;
+			case 4: C = PUSHING_AP_CLAUSE; byhand = TRUE; break;
 		}
 	}
-	ap->chief_action_owner_id = oid;
-}
 
-int APClauses::ap_count_optional_clauses(action_pattern *ap) {
-	int n = 0;
-	if (ap)
-		for (ap_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next)
-			if (apoc->stv_to_match)
-				if ((ap->chief_action_owner_id != 20007) ||
-					(StackedVariables::get_offset(apoc->stv_to_match) >= 5))
-					n++;
-	return n;
+	ap_clause *apoc = APClauses::ensure_clause(ap, C);
+	apoc->stv_to_match = stv;
+	apoc->clause_spec = spec;
+	if (ar) APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
+	if (byhand) APClauses::set_opt(apoc, TEST_BY_HAND_APCOPT);
 }
 
 int APClauses::has_stv_clauses(action_pattern *ap) {
@@ -228,7 +186,6 @@ int APClauses::compare_specificity_of_apoc_list(action_pattern *ap1, action_patt
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 	if (rct1 == 0) return 0;
-	if (ap1->chief_action_owner_id != ap2->chief_action_owner_id) return 0;
 
 	ap_clause *apoc1 = APClauses::nudge_to_stv_apoc(ap1->ap_clauses),
 		*apoc2 = APClauses::nudge_to_stv_apoc(ap2->ap_clauses);
@@ -247,8 +204,18 @@ int APClauses::compare_specificity_of_apoc_list(action_pattern *ap1, action_patt
 	return 0;
 }
 
+int APClauses::ap_count_optional_clauses(action_pattern *ap) {
+	int n = 0;
+	if (ap)
+		for (ap_clause *apoc = APClauses::nudge_to_stv_apoc(ap->ap_clauses); apoc;
+			apoc = APClauses::nudge_to_stv_apoc(apoc->next))
+			n++;
+	return n;
+}
+
 ap_clause *APClauses::nudge_to_stv_apoc(ap_clause *apoc) {
-	while ((apoc) && (apoc->stv_to_match == NULL)) apoc = apoc->next;
+	while ((apoc) && ((apoc->stv_to_match == NULL) ||
+		(APClauses::opt(apoc, TEST_BY_HAND_APCOPT) == FALSE))) apoc = apoc->next;
 	return apoc;
 }
 

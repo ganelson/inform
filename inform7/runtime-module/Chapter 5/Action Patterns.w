@@ -452,7 +452,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 
 		ap_clause *apoc = ap.ap_clauses;
 		while (apoc) {
-			if ((apoc->clause_ID == STV_AP_CLAUSE) && (apoc->clause_spec)) {
+			if ((apoc->stv_to_match) && (APClauses::opt(apoc, TEST_BY_HAND_APCOPT) == FALSE) && (apoc->clause_spec)) {
 				CPMC_NEEDED(OPTIONAL_CLAUSE_CPMC, apoc);
 			}
 			apoc = apoc->next;
@@ -465,9 +465,9 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 				CPMC_NEEDED(SOMEWHERE_CPMC, NULL);
 			}
 		} else {
-			if ((ap.to_spec == NULL) &&
-				((ap.from_spec != NULL)||(ap.by_spec != NULL)||
-				(ap.through_spec != NULL)||(ap.pushing_spec != NULL))) {
+			if ((APClauses::get_val(&ap, GOING_TO_AP_CLAUSE) == NULL) &&
+				((APClauses::get_val(&ap, GOING_FROM_AP_CLAUSE) != NULL)||(APClauses::get_val(&ap, GOING_BY_AP_CLAUSE) != NULL)||
+				(APClauses::get_val(&ap, GOING_THROUGH_AP_CLAUSE) != NULL)||(APClauses::get_val(&ap, PUSHING_AP_CLAUSE) != NULL))) {
 				CPMC_NEEDED(NOT_NOWHERE_CPMC, NULL);
 			}
 		}

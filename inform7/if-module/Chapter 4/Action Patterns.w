@@ -29,14 +29,8 @@ typedef struct action_pattern {
 	int applies_to_any_actor; /* treat player and other people equally */
 	int request; /* a request from the player for someone to do this? */
 
-	struct parse_node *from_spec; /* for the "going" action only */
-	struct parse_node *to_spec; /* ditto */
-	struct parse_node *by_spec; /* ditto */
-	struct parse_node *through_spec; /* ditto */
-	struct parse_node *pushing_spec; /* ditto */
 	int nowhere_flag; /* ditto: a flag for "going nowhere" */
 	struct ap_clause *ap_clauses;
-	int chief_action_owner_id; /* stacked variable ID number of main action */
 	struct time_period *duration; /* to hold "for the third time", etc. */
 
 	struct parse_node *parameter_spec; /* alternatively, just this */
@@ -79,17 +73,11 @@ action_pattern ActionPatterns::new(void) {
 	ap.parameter_spec = NULL;
 	ap.parameter_kind = K_object;
 	ap.valid = FALSE;
-	ap.from_spec = NULL;
-	ap.to_spec = NULL;
-	ap.by_spec = NULL;
-	ap.through_spec = NULL;
-	ap.pushing_spec = NULL;
 	ap.nowhere_flag = FALSE;
 	ap.request = FALSE;
 	ap.applies_to_any_actor = FALSE;
 	ap.duration = NULL;
 	ap.ap_clauses = NULL;
-	ap.chief_action_owner_id = 0;
 	return ap;
 }
 
@@ -103,11 +91,11 @@ void ActionPatterns::log(action_pattern *ap) {
 		else ActionNameLists::log_briefly(ap->action_list);
 		if (APClauses::get_noun(ap)) LOG("  Noun: $P", APClauses::get_noun(ap));
 		if (APClauses::get_second(ap)) LOG("  Second: $P", APClauses::get_second(ap));
-		if (ap->from_spec) LOG("  From: $P", ap->from_spec);
-		if (ap->to_spec) LOG("  To: $P", ap->to_spec);
-		if (ap->by_spec) LOG("  By: $P", ap->by_spec);
-		if (ap->through_spec) LOG("  Through: $P", ap->through_spec);
-		if (ap->pushing_spec) LOG("  Pushing: $P", ap->pushing_spec);
+		if (APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) LOG("  From: $P", APClauses::get_val(ap, GOING_FROM_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_TO_AP_CLAUSE)) LOG("  To: $P", APClauses::get_val(ap, GOING_TO_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) LOG("  By: $P", APClauses::get_val(ap, GOING_BY_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) LOG("  Through: $P", APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE));
+		if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) LOG("  Pushing: $P", APClauses::get_val(ap, PUSHING_AP_CLAUSE));
 		if (APClauses::get_room(ap)) LOG("  Room: $P", APClauses::get_room(ap));
 		if (ap->parameter_spec) LOG("  Parameter: $P", ap->parameter_spec);
 		if (APClauses::get_presence(ap)) LOG("  Presence: $P", APClauses::get_presence(ap));
@@ -127,11 +115,11 @@ void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 		else ActionNameLists::log_briefly(ap->action_list);
 		if (APClauses::get_noun(ap)) WRITE(" noun: %P", APClauses::get_noun(ap));
 		if (APClauses::get_second(ap)) WRITE(" second: %P", APClauses::get_second(ap));
-		if (ap->from_spec) WRITE(" from: %P", ap->from_spec);
-		if (ap->to_spec) WRITE(" to: %P", ap->to_spec);
-		if (ap->by_spec) WRITE(" by: %P", ap->by_spec);
-		if (ap->through_spec) WRITE(" through: %P", ap->through_spec);
-		if (ap->pushing_spec) WRITE(" pushing: %P", ap->pushing_spec);
+		if (APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) WRITE(" from: %P", APClauses::get_val(ap, GOING_FROM_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_TO_AP_CLAUSE)) WRITE(" to: %P", APClauses::get_val(ap, GOING_TO_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) WRITE(" by: %P", APClauses::get_val(ap, GOING_BY_AP_CLAUSE));
+		if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) WRITE(" through: %P", APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE));
+		if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) WRITE(" pushing: %P", APClauses::get_val(ap, PUSHING_AP_CLAUSE));
 		if (APClauses::get_room(ap)) WRITE(" room: %P", APClauses::get_room(ap));
 		if (ap->parameter_spec) WRITE(" parameter: %P", ap->parameter_spec);
 		if (APClauses::get_presence(ap)) WRITE(" presence: %P", APClauses::get_presence(ap));
@@ -300,29 +288,29 @@ used in sorting algorithms.
 int ActionPatterns::ap_count_rooms(action_pattern *ap) {
 	int c = 0;
 	if (APClauses::get_room(ap)) c += 2;
-	if (ap->from_spec) c += 2;
-	if (ap->to_spec) c += 2;
+	if (APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) c += 2;
+	if (APClauses::get_val(ap, GOING_TO_AP_CLAUSE)) c += 2;
 	return c;
 }
 
 int ActionPatterns::ap_count_going(action_pattern *ap) {
 	int c = 0;
-	if (ap->pushing_spec) c += 2;
-	if (ap->by_spec) c += 2;
-	if (ap->through_spec) c += 2;
+	if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) c += 2;
+	if (APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) c += 2;
+	if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) c += 2;
 	return c;
 }
 
 int ActionPatterns::count_aspects(action_pattern *ap) {
 	int c = 0;
 	if (ap == NULL) return 0;
-	if ((ap->pushing_spec) ||
-		(ap->by_spec) ||
-		(ap->through_spec))
+	if ((APClauses::get_val(ap, PUSHING_AP_CLAUSE)) ||
+		(APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) ||
+		(APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)))
 		c++;
 	if ((APClauses::get_room(ap)) ||
-		(ap->from_spec) ||
-		(ap->to_spec))
+		(APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) ||
+		(APClauses::get_val(ap, GOING_TO_AP_CLAUSE)))
 		c++;
 	if ((ap->nowhere_flag) ||
 		(APClauses::get_noun(ap)) ||
@@ -359,13 +347,13 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
-	rv = Specifications::compare_specificity(ap1->pushing_spec, ap2->pushing_spec, NULL);
+	rv = Specifications::compare_specificity(APClauses::get_val(ap1, PUSHING_AP_CLAUSE), APClauses::get_val(ap2, PUSHING_AP_CLAUSE), NULL);
 	if (rv != 0) return rv;
 
-	rv = Specifications::compare_specificity(ap1->by_spec, ap2->by_spec, NULL);
+	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_BY_AP_CLAUSE), APClauses::get_val(ap2, GOING_BY_AP_CLAUSE), NULL);
 	if (rv != 0) return rv;
 
-	rv = Specifications::compare_specificity(ap1->through_spec, ap2->through_spec, NULL);
+	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_THROUGH_AP_CLAUSE), APClauses::get_val(ap2, GOING_THROUGH_AP_CLAUSE), NULL);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
@@ -374,22 +362,22 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
-	if ((ap1->from_spec) && (APClauses::get_room(ap1) == NULL)
-		&& (APClauses::get_room(ap2)) && (ap2->from_spec == NULL)) {
-		rv = Specifications::compare_specificity(ap1->from_spec, APClauses::get_room(ap2), NULL);
+	if ((APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap1) == NULL)
+		&& (APClauses::get_room(ap2)) && (APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
+		rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE), APClauses::get_room(ap2), NULL);
 		if (rv != 0) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}
 
-	if ((ap2->from_spec) && (APClauses::get_room(ap2) == NULL)
-		&& (APClauses::get_room(ap1)) && (ap1->from_spec == NULL)) {
-		rv = Specifications::compare_specificity(APClauses::get_room(ap1), ap2->from_spec, NULL);
+	if ((APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap2) == NULL)
+		&& (APClauses::get_room(ap1)) && (APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
+		rv = Specifications::compare_specificity(APClauses::get_room(ap1), APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE), NULL);
 		if (rv != 0) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}
 
 	if (suspend_usual_from_and_room == FALSE) {
-		rv = Specifications::compare_specificity(ap1->from_spec, ap2->from_spec, NULL);
+		rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE), APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE), NULL);
 		if (rv != 0) return rv;
 	}
 
@@ -398,7 +386,7 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 		if (rv != 0) return rv;
 	}
 
-	rv = Specifications::compare_specificity(ap1->to_spec, ap2->to_spec, NULL);
+	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_TO_AP_CLAUSE), APClauses::get_val(ap2, GOING_TO_AP_CLAUSE), NULL);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
