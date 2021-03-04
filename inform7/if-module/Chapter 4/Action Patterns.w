@@ -2,8 +2,7 @@
 
 An action pattern is a description which may match many actions or
 none. The text "doing something" matches every action, while "throwing
-something at a door in a dark room" is seldom matched. Here we parse such
-text into a data structure called an |action_pattern|.
+something at a door in a dark room" is seldom matched.
 
 @ Action patterns are essentially a conjunction of specifications -- the
 action must be this, and the noun must be that, and... While
@@ -16,25 +15,18 @@ patterns, but also in a slightly generalised role, as the condition
 for a rule to be applied. Most rules are indeed predicated on actions
 -- "instead of eating the cake" -- but some are instead in
 "parametrised" rulebooks, which means they apply to a parameter
-object instead of an action -- "reaching inside the cabinet". These
-not-really-action APs are used in no other context, and employ the
-|parameter_spec| field below, ignoring the rest.
+object instead of an action -- "reaching inside the cabinet".
 
 =
 typedef struct action_pattern {
 	struct wording text_of_pattern; /* text giving rise to this AP */
 
-	struct action_name_list *action_list; /* what the behaviour is */
+	struct action_name_list *action_list; /* if this is action-based */
+	struct kind *parameter_kind; /* if this is parametric */
 
-	int applies_to_any_actor; /* treat player and other people equally */
-	int request; /* a request from the player for someone to do this? */
-
-	int nowhere_flag; /* ditto: a flag for "going nowhere" */
 	struct ap_clause *ap_clauses;
-	struct time_period *duration; /* to hold "for the third time", etc. */
 
-	struct parse_node *parameter_spec; /* alternatively, just this */
-	struct kind *parameter_kind; /* of this expected kind */
+	struct time_period *duration; /* to refer to repetitions in the past */
 
 	int valid; /* recording success or failure in parsing to an AP */
 } action_pattern;
@@ -68,16 +60,12 @@ STV clauses; (2) get this right:
 @ =
 action_pattern ActionPatterns::new(void) {
 	action_pattern ap;
+	ap.ap_clauses = NULL;
 	ap.text_of_pattern = EMPTY_WORDING;
 	ap.action_list = NULL;
-	ap.parameter_spec = NULL;
-	ap.parameter_kind = K_object;
+	ap.parameter_kind = NULL;
 	ap.valid = FALSE;
-	ap.nowhere_flag = FALSE;
-	ap.request = FALSE;
-	ap.applies_to_any_actor = FALSE;
 	ap.duration = NULL;
-	ap.ap_clauses = NULL;
 	return ap;
 }
 
@@ -97,9 +85,10 @@ void ActionPatterns::log(action_pattern *ap) {
 		if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) LOG("  Through: $P", APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE));
 		if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) LOG("  Pushing: $P", APClauses::get_val(ap, PUSHING_AP_CLAUSE));
 		if (APClauses::get_room(ap)) LOG("  Room: $P", APClauses::get_room(ap));
-		if (ap->parameter_spec) LOG("  Parameter: $P", ap->parameter_spec);
+		if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) LOG("  Parameter: $P", APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE));
 		if (APClauses::get_presence(ap)) LOG("  Presence: $P", APClauses::get_presence(ap));
-		if (ap->nowhere_flag) LOG("  Nowhere  ");
+		if (APClauses::going_nowhere(ap)) LOG("  Nowhere  ");
+		if (APClauses::going_somewhere(ap)) LOG("  Somewhere  ");
 		if (APClauses::get_val(ap, WHEN_AP_CLAUSE)) LOG("  When: $P  ", APClauses::get_val(ap, WHEN_AP_CLAUSE));
 		if (ap->duration) LOG("  Duration: $t  ", ap->duration);
 	}
@@ -121,9 +110,10 @@ void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 		if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) WRITE(" through: %P", APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE));
 		if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) WRITE(" pushing: %P", APClauses::get_val(ap, PUSHING_AP_CLAUSE));
 		if (APClauses::get_room(ap)) WRITE(" room: %P", APClauses::get_room(ap));
-		if (ap->parameter_spec) WRITE(" parameter: %P", ap->parameter_spec);
+		if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) WRITE(" parameter: %P", APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE));
 		if (APClauses::get_presence(ap)) WRITE(" presence: %P", APClauses::get_presence(ap));
-		if (ap->nowhere_flag) WRITE(" nowhere");
+		if (APClauses::going_nowhere(ap)) WRITE("  Nowhere  ");
+		if (APClauses::going_somewhere(ap)) WRITE("  Somewhere  ");
 		if (APClauses::get_val(ap, WHEN_AP_CLAUSE)) WRITE(" when: %P", APClauses::get_val(ap, WHEN_AP_CLAUSE));
 		if (ap->duration) { WRITE(" duration: "); Occurrence::log(OUT, ap->duration); }
 		WRITE(">");
@@ -147,11 +137,6 @@ int ActionPatterns::is_named(action_pattern *ap) {
 int ActionPatterns::is_valid(action_pattern *ap) {
 	if (ap == NULL) return FALSE;
 	return ap->valid;
-}
-
-int ActionPatterns::is_request(action_pattern *ap) {
-	if (ap == NULL) return FALSE;
-	return ap->request;
 }
 
 int ActionPatterns::within_action_context(action_pattern *ap, action_name *an) {
@@ -198,8 +183,9 @@ int ActionPatterns::is_overspecific(action_pattern *ap) {
 	if (APClauses::get_room(ap) != NULL) return TRUE;
 	if (APClauses::get_presence(ap) != NULL) return TRUE;
 	if (APClauses::has_stv_clauses(ap)) return TRUE;
-	if (ap->nowhere_flag) return TRUE;
-	if (ap->applies_to_any_actor) return TRUE;
+	if (APClauses::going_nowhere(ap)) return TRUE;
+	if (APClauses::going_somewhere(ap)) return TRUE;
+	if (APClauses::has_any_actor(ap)) return TRUE;
 	if (ap->duration) return TRUE;
 	return FALSE;
 }
@@ -243,6 +229,7 @@ parse_node *ActionPatterns::nullify_nonspecific_references(parse_node *spec) {
 int ActionPatterns::check_going(parse_node *spec, char *keyword,
 	kind *ka, kind *kb) {
 	if (spec == NULL) return TRUE;
+	if (Rvalues::is_nothing_object_constant(spec)) return TRUE;
 	if (Specifications::is_description_like(spec)) {
 		instance *oref = Specifications::object_exactly_described_if_any(spec);
 		if ((oref == NULL) || (ka == NULL) || (Instances::of_kind(oref, ka)) ||
@@ -312,14 +299,13 @@ int ActionPatterns::count_aspects(action_pattern *ap) {
 		(APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) ||
 		(APClauses::get_val(ap, GOING_TO_AP_CLAUSE)))
 		c++;
-	if ((ap->nowhere_flag) ||
-		(APClauses::get_noun(ap)) ||
+	if ((APClauses::get_noun(ap)) ||
 		(APClauses::get_second(ap)) ||
 		(APClauses::get_actor(ap)))
 		c++;
 	if (APClauses::get_presence(ap)) c++;
 	if ((ap->duration) || (APClauses::get_val(ap, WHEN_AP_CLAUSE))) c++;
-	if (ap->parameter_spec) c++;
+	if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) c++;
 	return c;
 }
 
@@ -338,7 +324,7 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 
 	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
 
-	rv = Specifications::compare_specificity(ap1->parameter_spec, ap2->parameter_spec, NULL);
+	rv = Specifications::compare_specificity(APClauses::get_val(ap1, PARAMETRIC_AP_CLAUSE), APClauses::get_val(ap2, PARAMETRIC_AP_CLAUSE), NULL);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.2.1 - Action/Where/Going In Exotic Ways";
@@ -409,9 +395,6 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 	rv = Specifications::compare_specificity(APClauses::get_noun(ap1), APClauses::get_noun(ap2), NULL);
 	if (rv != 0) return rv;
 
-	if ((ap1->nowhere_flag) && (ap2->nowhere_flag == FALSE)) return -1;
-	if ((ap1->nowhere_flag == FALSE) && (ap2->nowhere_flag)) return 1;
-
 	c_s_stage_law = I"III.3.3 - Action/What/Actor Performing Action";
 
 	rv = Specifications::compare_specificity(APClauses::get_actor(ap1), APClauses::get_actor(ap2), NULL);
@@ -445,7 +428,7 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 into action patterns in the noun or second noun position.
 
 =
-void ActionPatterns::put_action_object_into_ap(action_pattern *ap, int pos, wording W) {
+void ActionPatterns::put_action_object_into_ap(action_pattern *ap, int C, wording W) {
 	parse_node *spec = NULL;
 	int any_flag = FALSE;
 	if (<action-operand>(W)) {
@@ -456,21 +439,10 @@ void ActionPatterns::put_action_object_into_ap(action_pattern *ap, int pos, word
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_text)))
 		Node::set_kind_of_value(spec, K_understanding);
 	Node::set_text(spec, W);
-	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (position %d) %W = $P\n", pos, W, spec);
-	switch(pos) {
-		case 1: APClauses::set_val(ap, NOUN_AP_CLAUSE, spec);
-			if (any_flag) APClauses::set_opt(APClauses::clause(ap, NOUN_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			else APClauses::clear_opt(APClauses::clause(ap, NOUN_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			break;
-		case 2: APClauses::set_val(ap, SECOND_AP_CLAUSE, spec);
-				if (any_flag) APClauses::set_opt(APClauses::clause(ap, SECOND_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			else APClauses::clear_opt(APClauses::clause(ap, SECOND_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			break;
-		case 3: APClauses::set_val(ap, IN_AP_CLAUSE, spec);
-			if (any_flag) APClauses::set_opt(APClauses::clause(ap, IN_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			else APClauses::clear_opt(APClauses::clause(ap, IN_AP_CLAUSE), DO_NOT_VALIDATE_APCOPT);
-			break;
-	}
+	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (clause %d) %W = $P\n", C, W, spec);
+	APClauses::set_val(ap, C, spec);
+	if (any_flag) APClauses::set_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
+	else APClauses::clear_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
 }
 
 @ =
@@ -497,7 +469,7 @@ int ActionPatterns::makes_callings(action_pattern *ap) {
 	if (Descriptions::makes_callings(APClauses::get_second(ap))) return TRUE;
 	if (Descriptions::makes_callings(APClauses::get_actor(ap))) return TRUE;
 	if (Descriptions::makes_callings(APClauses::get_room(ap))) return TRUE;
-	if (Descriptions::makes_callings(ap->parameter_spec)) return TRUE;
+	if (Descriptions::makes_callings(APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE))) return TRUE;
 	if (Descriptions::makes_callings(APClauses::get_presence(ap))) return TRUE;
 	return FALSE;
 }

@@ -1000,7 +1000,7 @@ might have gone wrong.
 		}
 		action_pattern *ap = <<rp>>;
 		int form = <<r>>;
-		if (ActionPatterns::is_request(ap)) {
+		if (APClauses::is_request(ap)) {
 			Problems::issue_problem_segment(
 				"'%4' would make sense as an action on its own, but 'or' can't "
 				"be used in combination with 'asking... to try...' actions; ");

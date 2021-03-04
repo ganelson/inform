@@ -25,7 +25,7 @@ void RTActionPatterns::emit_try(action_pattern *ap, int store_instead) {
 	if (Kinds::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
 	if (flag_bits > 0) RTKinds::ensure_basic_heap_present();
 
-	if (ap->request) flag_bits += 1;
+	if (APClauses::is_request(ap)) flag_bits += 1;
 
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYACTION_HL));
 	Produce::down(Emit::tree());
@@ -277,7 +277,7 @@ void RTActionPatterns::as_stored_action(value_holster *VH, action_pattern *ap) {
 	action_name *an = ActionNameLists::get_the_one_true_action(ap->action_list);
 	Emit::array_action_entry(an);
 
-	int request_bits = ap->request;
+	int request_bits = APClauses::is_request(ap)?1:0;
 	if (APClauses::get_noun(ap)) {
 		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(APClauses::get_noun(ap), K_understanding))) {
 			request_bits = request_bits | 16;
@@ -366,7 +366,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		kind *kind_of_second = K_object;
 
 		if (naming_mode == FALSE) {
-			if (ap.applies_to_any_actor == FALSE) {
+			if (APClauses::has_any_actor(&ap) == FALSE) {
 				int impose = FALSE;
 				if (APClauses::get_actor(&ap) != NULL) {
 					impose = TRUE;
@@ -377,7 +377,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 				}
 				if (impose) {
 					CPMC_NEEDED(ACTOR_ISNT_PLAYER_CPMC, NULL);
-					if (ap.request) {
+					if (APClauses::is_request(&ap)) {
 						CPMC_NEEDED(REQUESTER_EXISTS_CPMC, NULL);
 					} else {
 						CPMC_NEEDED(REQUESTER_DOESNT_EXIST_CPMC, NULL);
@@ -389,7 +389,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 					CPMC_NEEDED(ACTOR_IS_PLAYER_CPMC, NULL);
 				}
 			} else {
-				if (ap.request) {
+				if (APClauses::is_request(&ap)) {
 					CPMC_NEEDED(REQUESTER_EXISTS_CPMC, NULL);
 				} else {
 					CPMC_NEEDED(REQUESTER_DOESNT_EXIST_CPMC, NULL);
@@ -437,7 +437,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		}
 
 		if (APClauses::get_room(&ap)) {
-			if ((ap.applies_to_any_actor == FALSE) && (naming_mode == FALSE) &&
+			if ((APClauses::has_any_actor(&ap) == FALSE) && (naming_mode == FALSE) &&
 				(APClauses::get_actor(&ap) == NULL)) {
 				CPMC_NEEDED(PLAYER_LOCATION_MATCHES_CPMC, NULL);
 			} else {
@@ -446,24 +446,22 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			}
 		}
 
-		if (ap.parameter_spec) {
+		if (APClauses::get_val(&ap, PARAMETRIC_AP_CLAUSE)) {
 			CPMC_NEEDED(PARAMETER_MATCHES_CPMC, NULL);
 		}
 
 		ap_clause *apoc = ap.ap_clauses;
 		while (apoc) {
-			if ((apoc->stv_to_match) && (APClauses::opt(apoc, TEST_BY_HAND_APCOPT) == FALSE) && (apoc->clause_spec)) {
+			if ((apoc->stv_to_match) && (apoc->clause_spec)) {
 				CPMC_NEEDED(OPTIONAL_CLAUSE_CPMC, apoc);
 			}
 			apoc = apoc->next;
 		}
 
-		if (ap.nowhere_flag) {
-			if (ap.nowhere_flag == 1) {
-				CPMC_NEEDED(NOWHERE_CPMC, NULL);
-			} else {
-				CPMC_NEEDED(SOMEWHERE_CPMC, NULL);
-			}
+		if (APClauses::going_nowhere(&ap)) {
+			CPMC_NEEDED(NOWHERE_CPMC, NULL);
+		} else if (APClauses::going_somewhere(&ap)) {
+			CPMC_NEEDED(SOMEWHERE_CPMC, NULL);
 		} else {
 			if ((APClauses::get_val(&ap, GOING_TO_AP_CLAUSE) == NULL) &&
 				((APClauses::get_val(&ap, GOING_FROM_AP_CLAUSE) != NULL)||(APClauses::get_val(&ap, GOING_BY_AP_CLAUSE) != NULL)||
@@ -707,7 +705,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			kind *saved_kind = NonlocalVariables::kind(parameter_object_VAR);
 			NonlocalVariables::set_kind(parameter_object_VAR, ap.parameter_kind);
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
-				parameter_object_VAR, ap.parameter_spec, ap.parameter_kind, FALSE);
+				parameter_object_VAR, APClauses::get_val(&ap, PARAMETRIC_AP_CLAUSE), ap.parameter_kind, FALSE);
 			NonlocalVariables::set_kind(parameter_object_VAR, saved_kind);
 			break;
 		}
@@ -865,7 +863,7 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	if (ActionPatterns::pta_acceptable(APClauses::get_second(ap)) == FALSE) bad_form = TRUE;
 	if (ActionPatterns::pta_acceptable(APClauses::get_actor(ap)) == FALSE) bad_form = TRUE;
 	if (APClauses::get_room(ap)) bad_form = TRUE;
-	if (ap->parameter_spec) bad_form = TRUE;
+	if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) bad_form = TRUE;
 	if (APClauses::get_presence(ap)) bad_form = TRUE;
 	if (APClauses::get_val(ap, WHEN_AP_CLAUSE)) bad_form = TRUE;
 	if (APClauses::has_stv_clauses(ap)) bad_form = TRUE;

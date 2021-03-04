@@ -4,7 +4,8 @@ Pattern-matches on individual nouns in an action are called clauses.
 
 @
 
-@e ACTOR_AP_CLAUSE from 1
+@e PARAMETRIC_AP_CLAUSE from 0
+@e ACTOR_AP_CLAUSE
 @e NOUN_AP_CLAUSE
 @e SECOND_AP_CLAUSE
 @e IN_AP_CLAUSE
@@ -32,16 +33,19 @@ clauses.
 
 @d ALLOW_REGION_AS_ROOM_APCOPT 1
 @d DO_NOT_VALIDATE_APCOPT 2
-@d TEST_BY_HAND_APCOPT 4
+@d ACTOR_IS_NOT_PLAYER_APCOPT 4
+@d REQUEST_APCOPT 8
 
 @ =
 int APClauses::opt(ap_clause *apoc, int opt) {
-	return (((apoc) && (apoc->clause_options)) & opt)?TRUE:FALSE;
+	if (apoc == NULL) return FALSE;
+	if ((apoc->clause_options & opt) != 0) return TRUE;
+	return FALSE;
 }
 
 void APClauses::set_opt(ap_clause *apoc, int opt) {
 	if (apoc == NULL) internal_error("no such apoc");
-	apoc->clause_options |= opt;
+	if ((apoc->clause_options & opt) == 0) apoc->clause_options += opt;
 }
 
 void APClauses::clear_opt(ap_clause *apoc, int opt) {
@@ -87,6 +91,53 @@ parse_node *APClauses::get_room(action_pattern *ap) {
 
 void APClauses::set_room(action_pattern *ap, parse_node *val) {
 	APClauses::set_val(ap, IN_AP_CLAUSE, val);
+}
+
+void APClauses::go_nowhere(action_pattern *ap) {
+	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Rvalues::new_nothing_object_constant());
+}
+
+void APClauses::go_somewhere(action_pattern *ap) {
+	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Descriptions::from_kind(K_room, FALSE));
+}
+
+int APClauses::going_nowhere(action_pattern *ap) {
+	if (Rvalues::is_nothing_object_constant(APClauses::get_val(ap, GOING_TO_AP_CLAUSE))) return TRUE;
+	return FALSE;
+}
+
+int APClauses::going_somewhere(action_pattern *ap) {
+	parse_node *val = APClauses::get_val(ap, GOING_TO_AP_CLAUSE);
+	if ((Descriptions::is_kind_like(val)) && (Kinds::eq(Descriptions::explicit_kind(val), K_room)))
+		return TRUE;
+	return FALSE;
+}
+
+void APClauses::any_actor(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::set_opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT);
+}
+
+int APClauses::has_any_actor(action_pattern *ap) {
+	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
+	if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) return TRUE;
+	return FALSE;
+}
+
+void APClauses::set_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::set_opt(apoc, REQUEST_APCOPT);
+}
+
+void APClauses::clear_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::clear_opt(apoc, REQUEST_APCOPT);
+}
+
+int APClauses::is_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
+	if (APClauses::opt(apoc, REQUEST_APCOPT)) return TRUE;
+	return FALSE;
 }
 
 parse_node *APClauses::get_val(action_pattern *ap, int C) {
@@ -156,14 +207,14 @@ void APClauses::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	
-	int C = 1000*oid + off, ar = FALSE, byhand = FALSE;
+	int C = 1000*oid + off, ar = FALSE;
 	if (oid == 20007 /* i.e., going */ ) {
 		switch (off) {
-			case 0: C = GOING_FROM_AP_CLAUSE; ar = TRUE; byhand = TRUE; break;
-			case 1: C = GOING_TO_AP_CLAUSE; ar = TRUE; byhand = TRUE; break;
-			case 2: C = GOING_THROUGH_AP_CLAUSE; byhand = TRUE; break;
-			case 3: C = GOING_BY_AP_CLAUSE; byhand = TRUE; break;
-			case 4: C = PUSHING_AP_CLAUSE; byhand = TRUE; break;
+			case 0: C = GOING_FROM_AP_CLAUSE; ar = TRUE; break;
+			case 1: C = GOING_TO_AP_CLAUSE; ar = TRUE; break;
+			case 2: C = GOING_THROUGH_AP_CLAUSE; break;
+			case 3: C = GOING_BY_AP_CLAUSE; break;
+			case 4: C = PUSHING_AP_CLAUSE; break;
 		}
 	}
 
@@ -171,7 +222,6 @@ void APClauses::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
 	if (ar) APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
-	if (byhand) APClauses::set_opt(apoc, TEST_BY_HAND_APCOPT);
 }
 
 int APClauses::has_stv_clauses(action_pattern *ap) {
@@ -214,8 +264,7 @@ int APClauses::ap_count_optional_clauses(action_pattern *ap) {
 }
 
 ap_clause *APClauses::nudge_to_stv_apoc(ap_clause *apoc) {
-	while ((apoc) && ((apoc->stv_to_match == NULL) ||
-		(APClauses::opt(apoc, TEST_BY_HAND_APCOPT) == FALSE))) apoc = apoc->next;
+	while ((apoc) && (apoc->stv_to_match == NULL)) apoc = apoc->next;
 	return apoc;
 }
 

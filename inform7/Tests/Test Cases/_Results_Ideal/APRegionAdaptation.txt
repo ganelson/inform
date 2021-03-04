@@ -1,7 +1,7 @@
    Lab
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
   
   Lab
   
@@ -18,9 +18,9 @@
   
   >[3] s
   [going south]
-  Going in Foo now.
-  
   Going from Foo now.
+  
+  Going in Foo now.
   
   Going to Corridor now.
   
@@ -29,9 +29,9 @@
   
   >[4] n
   [going north]
-  Going in Corridor now.
-  
   Going from Corridor now.
+  
+  Going in Corridor now.
   
   Going to Foo now.
   

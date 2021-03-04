@@ -3,7 +3,7 @@
 A plugin for actions, by which animate characters change the world model.
 
 @ Support for actions is contained in the "actions" plugin, which occupies this
-entire chapter.
+entire chapter. The test group |:actions| may be helpful in trouble-shooting here.
 
 =
 void ActionsPlugin::start(void) {
