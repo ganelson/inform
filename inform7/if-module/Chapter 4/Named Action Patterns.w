@@ -21,7 +21,32 @@ typedef struct named_action_pattern_entry {
 	CLASS_DEFINITION
 } named_action_pattern_entry;
 
-@ The following adds an action pattern to a NAP identified only by its name, |W|:
+@ We are allowed to give names to certain kinds of behaviour by "characterising"
+an action.
+
+=
+void NamedActionPatterns::characterise(action_pattern *ap, wording W) {
+	LOGIF(ACTION_PATTERN_PARSING, "Characterising the action:\n$A...as %W\n", ap, W);
+
+	if (<article>(W)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPIsArticle),
+			"there's only an article here",
+			"not a name, so I'm not sure what this action is supposed to be.");
+		return;
+	}
+
+	if (APClauses::get_actor(ap)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPWithActor),
+			"behaviour characterised by named action patterns can only specify the action",
+			"not the actor: as a result, it cannot include requests to other people to "
+			"do things.");
+		return;
+	}
+
+	NamedActionPatterns::add(ap, W);
+}
+
+@ So, then, the following adds an action pattern to a NAP identified only by its name, |W|:
 
 =
 void NamedActionPatterns::add(action_pattern *ap, wording W) {

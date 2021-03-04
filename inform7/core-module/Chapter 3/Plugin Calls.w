@@ -375,17 +375,6 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
-@h Influencing if.
-Called from //if: Action Patterns// to validate optional parameters on the
-"going" action. The mapping plugin uses this.
-
-@e CHECK_GOING_PLUG
-
-int PluginCalls::check_going(parse_node *from, parse_node *to,
-	parse_node *by, parse_node *through, parse_node *pushing) {
-	PLUGINS_CALL(CHECK_GOING_PLUG, from, to, by, through, pushing);
-}
-
 @h Influencing index.
 Called from //index: Index Physical World// to add something (if it wishes)
 to the index description of an instance in the spatial model. For example,

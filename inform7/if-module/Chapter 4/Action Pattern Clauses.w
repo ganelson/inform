@@ -87,26 +87,6 @@ void APClauses::set_room(action_pattern *ap, parse_node *val) {
 	APClauses::set_val(ap, IN_AP_CLAUSE, val);
 }
 
-void APClauses::go_nowhere(action_pattern *ap) {
-	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Rvalues::new_nothing_object_constant());
-}
-
-void APClauses::go_somewhere(action_pattern *ap) {
-	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Descriptions::from_kind(K_room, FALSE));
-}
-
-int APClauses::going_nowhere(action_pattern *ap) {
-	if (Rvalues::is_nothing_object_constant(APClauses::get_val(ap, GOING_TO_AP_CLAUSE))) return TRUE;
-	return FALSE;
-}
-
-int APClauses::going_somewhere(action_pattern *ap) {
-	parse_node *val = APClauses::get_val(ap, GOING_TO_AP_CLAUSE);
-	if ((Descriptions::is_kind_like(val)) && (Kinds::eq(Descriptions::explicit_kind(val), K_room)))
-		return TRUE;
-	return FALSE;
-}
-
 void APClauses::any_actor(action_pattern *ap) {
 	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
 	APClauses::set_opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT);
@@ -294,25 +274,52 @@ description than B, 0 if they seem equally specific, or $-1$ if B makes a
 more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 
+@e PARAMETRIC_APCA from 0
+@e PRIMARY_APCA
+@e IN_APCA
+@e PRESENCE_APCA
+@e WHEN_APCA
+@e MISC_APCA
+
 =
+int APClauses::aspect(ap_clause *apoc) {
+	switch (apoc->clause_ID) {
+		case PARAMETRIC_AP_CLAUSE:         return PARAMETRIC_APCA;
+		case ACTOR_AP_CLAUSE:              return PRIMARY_APCA;
+		case NOUN_AP_CLAUSE:               return PRIMARY_APCA;
+		case SECOND_AP_CLAUSE:             return PRIMARY_APCA;
+		case IN_AP_CLAUSE:                 return IN_APCA;
+		case IN_THE_PRESENCE_OF_AP_CLAUSE: return PRESENCE_APCA;
+		case WHEN_AP_CLAUSE:               return WHEN_APCA;
+	}
+	int rv = Going::aspect(apoc); if (rv >= 0) return rv;
+	return MISC_APCA;
+}
+
+int APClauses::number_with_aspect(action_pattern *ap, int A) {
+	int c = 0;
+	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
+		if (APClauses::aspect(apoc) == A)
+			c++;
+	return c;
+}
+
 int APClauses::count_aspects(action_pattern *ap) {
-	if (ap == NULL) return 0;
-	int c = Going::count_aspects(ap);
-	if ((APClauses::get_noun(ap)) ||
-		(APClauses::get_second(ap)) ||
-		(APClauses::get_actor(ap)))
-		c++;
-	if (APClauses::get_presence(ap)) c++;
-	if ((ap->duration) || (APClauses::get_val(ap, WHEN_AP_CLAUSE))) c++;
-	if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) c++;
+	int asps[NO_DEFINED_APCA_VALUES];
+	for (int a=0; a<NO_DEFINED_APCA_VALUES; a++) asps[a] = FALSE;
+	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
+		asps[APClauses::aspect(apoc)] = TRUE;
+	if ((ap) && (ap->duration)) asps[WHEN_APCA] = TRUE;
+	int c = 0;
+	for (int a=0; a<NO_DEFINED_APCA_VALUES; a++) if (asps[a]) c++;
 	return c;
 }
 
 int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
+	int rv;
+	
 	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
-
-	int rv = Specifications::compare_specificity(APClauses::get_val(ap1, PARAMETRIC_AP_CLAUSE), APClauses::get_val(ap2, PARAMETRIC_AP_CLAUSE), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(PARAMETRIC_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	int claim = FALSE;
 	rv = Going::compare_specificity(ap1, ap2, &claim);
@@ -320,32 +327,50 @@ int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 
 	if (claim == FALSE) {
 		c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
-		rv = Specifications::compare_specificity(APClauses::get_room(ap1), APClauses::get_room(ap2), NULL);
-		if (rv != 0) return rv;
+		rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 	}
 
 	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
 
-	rv = Specifications::compare_specificity(APClauses::get_presence(ap1), APClauses::get_presence(ap2), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(IN_THE_PRESENCE_OF_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	rv = APClauses::compare_specificity_of_apoc_list(ap1, ap2);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
-
-	rv = Specifications::compare_specificity(APClauses::get_second(ap1), APClauses::get_second(ap2), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(SECOND_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	c_s_stage_law = I"III.3.2 - Action/What/Thing Acted On";
-
-	rv = Specifications::compare_specificity(APClauses::get_noun(ap1), APClauses::get_noun(ap2), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(NOUN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	c_s_stage_law = I"III.3.3 - Action/What/Actor Performing Action";
-
-	rv = Specifications::compare_specificity(APClauses::get_actor(ap1), APClauses::get_actor(ap2), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(ACTOR_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	return 0;
+}
+
+int APClauses::cmp_clause(int C, action_pattern *ap1, action_pattern *ap2) {
+	return Specifications::compare_specificity(
+		APClauses::get_val(ap1, C), APClauses::get_val(ap2, C), NULL);
+}
+
+int APClauses::cmp_clauses(int C1, action_pattern *ap1, int C2, action_pattern *ap2) {
+	return Specifications::compare_specificity(
+		APClauses::get_val(ap1, C1), APClauses::get_val(ap2, C2), NULL);
+}
+
+int APClauses::viable_in_past_tense(action_pattern *ap) {
+	if (ActionPatterns::is_overspecific(ap)) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_noun(ap)) == FALSE) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_second(ap)) == FALSE) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_actor(ap)) == FALSE) return FALSE;
+	return TRUE;
+}
+
+int APClauses::pta_acceptable(parse_node *spec) {
+	if (spec == NULL) return TRUE;
+	if (Specifications::is_description(spec) == FALSE) return TRUE;
+	instance *I = Specifications::object_exactly_described_if_any(spec);
+	if (I) return TRUE;
+	return FALSE;
 }

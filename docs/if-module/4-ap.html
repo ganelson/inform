@@ -170,13 +170,11 @@ in the Inform world model. (Because they do not have properties: see <a href="4-
 for what they have instead.)
 </p>
 
-<p class="commentary">Two actions in particular are sacred: "going", because it has additional
-clauses in action patterns, and "waiting", because it is the default value for
-<span class="extract"><span class="extract-syntax">K_action_name</span></span> values: waiting it is the zero of actions.
+<p class="commentary">The "waiting" action is sacred, because it is the default value for
+<span class="extract"><span class="extract-syntax">K_action_name</span></span> values: waiting is the zero of actions.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">going_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">waiting_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>These are recognised by their English names when defined by the Standard Rules.
@@ -184,9 +182,8 @@ clauses in action patterns, and "waiting", because it is the default value for
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;notable-actions&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">waiting</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">going</span>
+<span class="Preform-function-syntax">&lt;waiting-action&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">waiting</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Because <a href="4-act.html#SP1" class="internal">action_name</a> values are not instances, we cannot recognise them
@@ -196,10 +193,10 @@ called by the function creating them:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ActionsPlugin::notice_new_action_name</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">ActionsPlugin::notice_new_action_name</span></span>:<br/>Action Name Names - <a href="4-ann.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">an</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-actions&gt;</span><span class="plain-syntax">(</span><a href="4-ann.html#SP5" class="function-link"><span class="function-syntax">ActionNameNames::tensed</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">IS_TENSE</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">going_action</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">going_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">an</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">waiting_action</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">waiting_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">an</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;waiting-action&gt;</span><span class="plain-syntax">(</span><a href="4-ann.html#SP5" class="function-link"><span class="function-syntax">ActionNameNames::tensed</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">IS_TENSE</span><span class="plain-syntax">))) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">waiting_action</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">waiting_action</span><span class="plain-syntax"> = </span><span class="identifier-syntax">an</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><a href="4-gng.html#SP2" class="function-link"><span class="function-syntax">Going::notice_new_action_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">an</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">action_name</span><span class="plain-syntax"> *</span><span class="function-syntax">ActionsPlugin::default_action_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

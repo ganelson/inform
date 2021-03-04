@@ -458,16 +458,12 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			apoc = apoc->next;
 		}
 
-		if (APClauses::going_nowhere(&ap)) {
+		if (Going::going_nowhere(&ap)) {
 			CPMC_NEEDED(NOWHERE_CPMC, NULL);
-		} else if (APClauses::going_somewhere(&ap)) {
+		} else if (Going::going_somewhere(&ap)) {
 			CPMC_NEEDED(SOMEWHERE_CPMC, NULL);
-		} else {
-			if ((APClauses::get_val(&ap, GOING_TO_AP_CLAUSE) == NULL) &&
-				((APClauses::get_val(&ap, GOING_FROM_AP_CLAUSE) != NULL)||(APClauses::get_val(&ap, GOING_BY_AP_CLAUSE) != NULL)||
-				(APClauses::get_val(&ap, GOING_THROUGH_AP_CLAUSE) != NULL)||(APClauses::get_val(&ap, PUSHING_AP_CLAUSE) != NULL))) {
-				CPMC_NEEDED(NOT_NOWHERE_CPMC, NULL);
-			}
+		} else if (Going::in_some_way(&ap)) {
+			CPMC_NEEDED(NOT_NOWHERE_CPMC, NULL);
 		}
 
 		if (APClauses::get_presence(&ap) != NULL) {
@@ -724,7 +720,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 20007);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) Going::id());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -734,7 +730,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		case SOMEWHERE_CPMC: {
 			parse_node *somewhere = Specifications::from_kind(K_room);
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
-				RTTemporaryVariables::from_nve(RTVariables::nve_from_mstack(20007, 1, TRUE),
+				RTTemporaryVariables::from_nve(RTVariables::nve_from_mstack(Going::id(), 1, TRUE),
 					K_object),
 					somewhere, K_object, FALSE);
 			break;
@@ -747,7 +743,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(MSTVON_HL));
 					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 20007);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (unsigned int) Going::id());
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -858,16 +854,7 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 		Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(item->action_listed));
 	}
 	Produce::up(Emit::tree());
-
-	if (ActionPatterns::pta_acceptable(APClauses::get_noun(ap)) == FALSE) bad_form = TRUE;
-	if (ActionPatterns::pta_acceptable(APClauses::get_second(ap)) == FALSE) bad_form = TRUE;
-	if (ActionPatterns::pta_acceptable(APClauses::get_actor(ap)) == FALSE) bad_form = TRUE;
-	if (APClauses::get_room(ap)) bad_form = TRUE;
-	if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) bad_form = TRUE;
-	if (APClauses::get_presence(ap)) bad_form = TRUE;
-	if (APClauses::get_val(ap, WHEN_AP_CLAUSE)) bad_form = TRUE;
-	if (APClauses::has_stv_clauses(ap)) bad_form = TRUE;
-
+	if (APClauses::viable_in_past_tense(ap) == FALSE) bad_form = TRUE;
 	if (bad_form)
 		@<Issue too complex PT problem@>;
 }

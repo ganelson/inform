@@ -1,13 +1,13 @@
 Total memory consumption was 257775K = 252 MB
 
-62.3% was used for 1339794 objects, in 278618 frames in 201 x 800K = 160800K = 157 MB:
+62.3% was used for 1339795 objects, in 278619 frames in 201 x 800K = 160800K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
      3.9%  parse_node                               129996 objects, 10399680 bytes
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
-     2.4%  linked_list                              11779 objects, 6596240 bytes
+     2.4%  linked_list                              11778 objects, 6595680 bytes
      2.3%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes
      1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
      1.2%  map_data                                 670 objects, 3178480 bytes
@@ -45,7 +45,7 @@ Total memory consumption was 257775K = 252 MB
      ----  binary_predicate                         321 objects, 156648 bytes
      ----  stacked_variable_owner_list_array        38 x 100 = 3800 objects, 153216 bytes
      ----  index_lexicon_entry                      395 objects, 142200 bytes
-     ----  nonterminal                              758 objects, 139472 bytes
+     ----  nonterminal                              759 objects, 139656 bytes
      ----  documentation_ref                        1275 objects, 112200 bytes
      ----  inference                                1703 objects, 108992 bytes
      ----  hierarchy_location                       730 objects, 105120 bytes
@@ -72,7 +72,7 @@ Total memory consumption was 257775K = 252 MB
      ----  inter_node_list                          750 objects, 42000 bytes
      ----  activity_list_array                      1 x 1000 objects, 40032 bytes
      ----  response_message                         407 objects, 35816 bytes
-     ----  production_list                          618 objects, 34608 bytes
+     ----  production_list                          619 objects, 34664 bytes
      ----  regions_data                             670 objects, 32160 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 30720 bytes
@@ -245,5 +245,5 @@ Total memory consumption was 257775K = 252 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.7% was overhead - 52181392 bytes = 50958K = 49 MB
+19.7% was overhead - 52181712 bytes = 50958K = 49 MB
 

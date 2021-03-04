@@ -90,21 +90,18 @@ which correspond to //action_name// objects, are not strictly speaking instances
 in the Inform world model. (Because they do not have properties: see //Action Variables//
 for what they have instead.)
 
-Two actions in particular are sacred: "going", because it has additional
-clauses in action patterns, and "waiting", because it is the default value for
-|K_action_name| values: waiting it is the zero of actions.
+The "waiting" action is sacred, because it is the default value for
+|K_action_name| values: waiting is the zero of actions.
 
 = (early code)
-action_name *going_action = NULL;
 action_name *waiting_action = NULL;
 
 @ These are recognised by their English names when defined by the Standard Rules.
 (So there is no need to translate this to other languages.)
 
 =
-<notable-actions> ::=
-	waiting |
-	going
+<waiting-action> ::=
+	waiting
 
 @ Because //action_name// values are not instances, we cannot recognise them
 when instances are created, and instead have to do it directly when this is
@@ -112,10 +109,10 @@ called by the function creating them:
 
 =
 void ActionsPlugin::notice_new_action_name(action_name *an) {
-	if (<notable-actions>(ActionNameNames::tensed(an, IS_TENSE))) {
-		if ((<<r>> == 1) && (going_action == NULL)) going_action = an;
-		if ((<<r>> == 0) && (waiting_action == NULL)) waiting_action = an;
+	if (<waiting-action>(ActionNameNames::tensed(an, IS_TENSE))) {
+		if (waiting_action == NULL) waiting_action = an;
 	}
+	Going::notice_new_action_name(an);
 }
 
 action_name *ActionsPlugin::default_action_name(void) {

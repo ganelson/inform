@@ -2,6 +2,32 @@
 
 Turning text into APs.
 
+@ When we parse action patterns, we record why they fail, in order to make
+it easier to produce helpful error messages. (We can't simply fire off
+errors at the time they occur, because text is often parsed in several
+contexts at once, so just because it fails this one does not mean it is
+wrong.) PAPF stands for "parse action pattern failure".
+
+@d MISC_PAPF 1
+@d NOPARTICIPLE_PAPF 2
+@d MIXEDNOUNS_PAPF 3
+@d WHEN_PAPF 4
+@d WHENOKAY_PAPF 5
+@d IMMISCIBLE_PAPF 6
+
+= (early code)
+int pap_failure_reason; /* one of the above */
+int permit_trying_omission = FALSE; /* allow the keyword 'trying' to be omitted */
+int permit_nonconstant_action_parameters = TRUE;
+
+@ NB: Next time this is rewritten - (1) handle in, in the presence of, with
+STV clauses; (2) get this right:
+
+	The Rocky Promontory by the Waterfall is a room.
+
+	Instead of going in the Rocky Promontory by the Waterfall:
+		say "Where did you want to go?"
+
 @ First a much easier, parametric form of parsing, used for the APs which
 form the usage conditions for rules in object-based rulebooks.
 
@@ -436,10 +462,6 @@ We treat words like "something" specially to avoid them being read as
 	something/anything else | 		==> { FALSE, - }
 	<action-parameter> 				==> { TRUE, RP[1] }
 
-<going-action-irregular-operand> ::=
-	nowhere |    ==> { FALSE, - }
-	somewhere						==> { TRUE, - }
-
 <understanding-action-irregular-operand> ::=
 	something/anything |    ==> { TRUE, - }
 	it								==> { FALSE, - }
@@ -492,13 +514,12 @@ action_pattern ParseActionPatterns::dash(wording W) {
 		ap.action_list = NULL;
 	ap.valid = TRUE;
 
-	APClauses::set_actor(&ap, ActionPatterns::nullify_nonspecific_references(APClauses::get_actor(&ap)));
-	APClauses::set_noun(&ap, ActionPatterns::nullify_nonspecific_references(APClauses::get_noun(&ap)));
-	APClauses::set_second(&ap, ActionPatterns::nullify_nonspecific_references(APClauses::get_second(&ap)));
+	APClauses::nullify_nonspecific(&ap, ACTOR_AP_CLAUSE);
+	APClauses::nullify_nonspecific(&ap, NOUN_AP_CLAUSE);
+	APClauses::nullify_nonspecific(&ap, SECOND_AP_CLAUSE);
 	APClauses::nullify_nonspecific(&ap, IN_AP_CLAUSE);
 
-	int ch = PluginCalls::check_going(APClauses::get_val(&ap, GOING_FROM_AP_CLAUSE), APClauses::get_val(&ap, GOING_TO_AP_CLAUSE), APClauses::get_val(&ap, GOING_BY_AP_CLAUSE), APClauses::get_val(&ap, GOING_THROUGH_AP_CLAUSE), APClauses::get_val(&ap, PUSHING_AP_CLAUSE));
-	if (ch == FALSE) ap.valid = FALSE;
+	if (Going::check(&ap) == FALSE) ap.valid = FALSE;
 
 	if (ap.valid == FALSE) goto Failed;
 	LOGIF(ACTION_PATTERN_PARSING, "Matched action pattern: $A\n", &ap);
@@ -588,8 +609,8 @@ crucial word position except for the one matched.
 			APClauses::set_noun(&ap, APClauses::get_noun(&trial_ap));
 			APClauses::set_second(&ap, APClauses::get_second(&trial_ap));
 			APClauses::set_room(&ap, APClauses::get_room(&trial_ap));
-			if (APClauses::going_nowhere(&trial_ap)) APClauses::go_nowhere(&ap);
-			if (APClauses::going_somewhere(&trial_ap)) APClauses::go_somewhere(&ap);
+			if (Going::going_nowhere(&trial_ap)) Going::go_nowhere(&ap);
+			if (Going::going_somewhere(&trial_ap)) Going::go_somewhere(&ap);
 			ap.valid = TRUE;
 		}
 		if (trial_ap.valid == FALSE) ActionNameLists::mark_for_deletion(entry);
@@ -656,10 +677,8 @@ description.
 @<Fill out the noun, second, room and nowhere fields of the AP as if this action were right@> =
 	trial_ap.ap_clauses = NULL;
 	if (Wordings::nonempty(ActionNameLists::par(entry, 0))) {
-		if ((ActionNameLists::action(entry) == going_action) && (<going-action-irregular-operand>(ActionNameLists::par(entry, 0)))) {
-			if (<<r>> == FALSE) APClauses::go_nowhere(&trial_ap);
-			else APClauses::go_somewhere(&trial_ap);
-		} else ActionPatterns::put_action_object_into_ap(&trial_ap, NOUN_AP_CLAUSE, ActionNameLists::par(entry, 0));
+		if (Going::claim_noun(ActionNameLists::action(entry), &trial_ap, ActionNameLists::par(entry, 0)) == FALSE)
+			ParseActionPatterns::put_action_object_into_ap(&trial_ap, NOUN_AP_CLAUSE, ActionNameLists::par(entry, 0));
 	}
 
 	if (Wordings::nonempty(ActionNameLists::par(entry, 1))) {
@@ -671,12 +690,12 @@ description.
 			Node::set_text(val, ActionNameLists::par(entry, 1));
 			APClauses::set_second(&trial_ap, val);
 		} else {
-			ActionPatterns::put_action_object_into_ap(&trial_ap, SECOND_AP_CLAUSE, ActionNameLists::par(entry, 1));
+			ParseActionPatterns::put_action_object_into_ap(&trial_ap, SECOND_AP_CLAUSE, ActionNameLists::par(entry, 1));
 		}
 	}
 
 	if (Wordings::nonempty(ActionNameLists::in_clause(entry)))
-		ActionPatterns::put_action_object_into_ap(&trial_ap, IN_AP_CLAUSE,
+		ParseActionPatterns::put_action_object_into_ap(&trial_ap, IN_AP_CLAUSE,
 			ActionNameLists::in_clause(entry));
 
 @<Check the validity of this speculative AP@> =
@@ -790,3 +809,25 @@ the case when the first action name in the list is |NULL|).
 		failure_this_call = IMMISCIBLE_PAPF;
 		goto Failed;
 	}
+
+@ And an anticlimactic little routine for putting objects
+into action patterns in the noun or second noun position.
+
+=
+void ParseActionPatterns::put_action_object_into_ap(action_pattern *ap, int C, wording W) {
+	parse_node *spec = NULL;
+	int any_flag = FALSE;
+	if (<action-operand>(W)) {
+		if (<<r>>) spec = <<rp>>;
+		else { any_flag = TRUE; spec = Specifications::from_kind(K_thing); }
+	}
+	if (spec == NULL) spec = Specifications::new_UNKNOWN(W);
+	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_text)))
+		Node::set_kind_of_value(spec, K_understanding);
+	Node::set_text(spec, W);
+	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (clause %d) %W = $P\n", C, W, spec);
+	APClauses::set_val(ap, C, spec);
+	if (any_flag) APClauses::set_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
+	else APClauses::clear_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
+}
+

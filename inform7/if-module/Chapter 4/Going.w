@@ -2,6 +2,18 @@
 
 Inform provides a little extra support for the "going" action.
 
+@
+
+=
+<going-action> ::=
+	going
+
+@ =
+action_name *going_action = NULL;
+void Going::notice_new_action_name(action_name *an) {
+	if (<going-action>(ActionNameNames::tensed(an, IS_TENSE))) going_action = an;
+}
+
 @ There are five clauses with non-standard effects:
 
 @e GOING_FROM_AP_CLAUSE
@@ -9,6 +21,20 @@ Inform provides a little extra support for the "going" action.
 @e GOING_THROUGH_AP_CLAUSE
 @e GOING_BY_AP_CLAUSE
 @e PUSHING_AP_CLAUSE
+
+@e GOING_APCA
+
+=
+int Going::aspect(ap_clause *apoc) {
+	switch (apoc->clause_ID) {
+		case GOING_FROM_AP_CLAUSE:    return IN_APCA;
+		case GOING_TO_AP_CLAUSE:      return IN_APCA;
+		case GOING_THROUGH_AP_CLAUSE: return GOING_APCA;
+		case GOING_BY_AP_CLAUSE:      return GOING_APCA;
+		case PUSHING_AP_CLAUSE:       return GOING_APCA;
+	}
+	return -1;
+}
 
 @
 
@@ -20,49 +46,41 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *cl
 
 	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
 
-	int rct1 = Going::count_other(ap1), rct2 = Going::count_other(ap2);
+	int rct1 = APClauses::number_with_aspect(ap1, GOING_APCA);
+	int rct2 = APClauses::number_with_aspect(ap2, GOING_APCA);
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
-	int rv = Specifications::compare_specificity(APClauses::get_val(ap1, PUSHING_AP_CLAUSE), APClauses::get_val(ap2, PUSHING_AP_CLAUSE), NULL);
-	if (rv != 0) return rv;
+	int rv = APClauses::cmp_clause(PUSHING_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
-	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_BY_AP_CLAUSE), APClauses::get_val(ap2, GOING_BY_AP_CLAUSE), NULL);
-	if (rv != 0) return rv;
-
-	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_THROUGH_AP_CLAUSE), APClauses::get_val(ap2, GOING_THROUGH_AP_CLAUSE), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(GOING_BY_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+	rv = APClauses::cmp_clause(GOING_THROUGH_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 	
 	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
 
-	rct1 = Going::count_rooms(ap1); rct2 = Going::count_rooms(ap2);
+	rct1 = APClauses::number_with_aspect(ap1, IN_APCA);
+	rct2 = APClauses::number_with_aspect(ap2, IN_APCA);
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
 	if ((APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap1) == NULL)
 		&& (APClauses::get_room(ap2)) && (APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
-		rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE), APClauses::get_room(ap2), NULL);
-		if (rv != 0) return rv;
+		rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2); if (rv) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}
 
 	if ((APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap2) == NULL)
 		&& (APClauses::get_room(ap1)) && (APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
-		rv = Specifications::compare_specificity(APClauses::get_room(ap1), APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE), NULL);
-		if (rv != 0) return rv;
+		rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2); if (rv) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}
 
 	if (suspend_usual_from_and_room == FALSE) {
-		rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE), APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE), NULL);
-		if (rv != 0) return rv;
-
-		rv = Specifications::compare_specificity(APClauses::get_room(ap1), APClauses::get_room(ap2), NULL);
-		if (rv != 0) return rv;
+		rv = APClauses::cmp_clause(GOING_FROM_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+		rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 	}
 
-	rv = Specifications::compare_specificity(APClauses::get_val(ap1, GOING_TO_AP_CLAUSE), APClauses::get_val(ap2, GOING_TO_AP_CLAUSE), NULL);
-	if (rv != 0) return rv;
+	rv = APClauses::cmp_clause(GOING_TO_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	return 0;
 }
@@ -77,10 +95,15 @@ void Going::write(OUTPUT_STREAM, int C) {
 	}
 }
 
+int Going::id(void) {
+	if (going_action == NULL) return 0;
+	return RTActions::action_variable_set_ID(going_action);
+}
+
 int Going::divert(action_pattern *ap, stacked_variable *stv) {
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
-	if (oid == 20007 /* i.e., going */ ) {
+	if ((going_action) && (oid == Going::id())) {
 		switch (off) {
 			case 0: return GOING_FROM_AP_CLAUSE;
 			case 1: return GOING_TO_AP_CLAUSE;
@@ -101,8 +124,21 @@ void Going::new_clause(action_pattern *ap, ap_clause *apoc) {
 @ 
 
 =
-int Going::check_going(parse_node *spec, char *keyword,
-	kind *ka, kind *kb) {
+int Going::check(action_pattern *ap) {
+	if (Going::check_clause(APClauses::get_val(ap, GOING_FROM_AP_CLAUSE), "from",
+		K_room, K_region) == FALSE) return FALSE;
+	if (Going::check_clause(APClauses::get_val(ap, GOING_TO_AP_CLAUSE), "to",
+		K_room, K_region) == FALSE) return FALSE;
+	if (Going::check_clause(APClauses::get_val(ap, GOING_BY_AP_CLAUSE), "by",
+		K_thing, NULL) == FALSE) return FALSE;
+	if (Going::check_clause(APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE), "through",
+		K_door, NULL) == FALSE) return FALSE;
+	if (Going::check_clause(APClauses::get_val(ap, PUSHING_AP_CLAUSE), "with",
+		K_thing, NULL) == FALSE) return FALSE;
+	return TRUE;
+}
+
+int Going::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
 	if (spec == NULL) return TRUE;
 	if (Rvalues::is_nothing_object_constant(spec)) return TRUE;
 	if (Specifications::is_description_like(spec)) {
@@ -139,32 +175,52 @@ int Going::check_going(parse_node *spec, char *keyword,
 	return FALSE;
 }
 
-int Going::count_rooms(action_pattern *ap) {
-	int c = 0;
-	if (APClauses::get_room(ap)) c += 2;
-	if (APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) c += 2;
-	if (APClauses::get_val(ap, GOING_TO_AP_CLAUSE)) c += 2;
-	return c;
+void Going::go_nowhere(action_pattern *ap) {
+	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Rvalues::new_nothing_object_constant());
 }
 
-int Going::count_other(action_pattern *ap) {
-	int c = 0;
-	if (APClauses::get_val(ap, PUSHING_AP_CLAUSE)) c += 2;
-	if (APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) c += 2;
-	if (APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)) c += 2;
-	return c;
+void Going::go_somewhere(action_pattern *ap) {
+	APClauses::set_val(ap, GOING_TO_AP_CLAUSE, Descriptions::from_kind(K_room, FALSE));
 }
 
-int Going::count_aspects(action_pattern *ap) {
-	int c = 0;
-	if (ap == NULL) return 0;
-	if ((APClauses::get_val(ap, PUSHING_AP_CLAUSE)) ||
-		(APClauses::get_val(ap, GOING_BY_AP_CLAUSE)) ||
-		(APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE)))
-		c++;
-	if ((APClauses::get_room(ap)) ||
-		(APClauses::get_val(ap, GOING_FROM_AP_CLAUSE)) ||
-		(APClauses::get_val(ap, GOING_TO_AP_CLAUSE)))
-		c++;
-	return c;
+int Going::going_nowhere(action_pattern *ap) {
+	if (Rvalues::is_nothing_object_constant(APClauses::get_val(ap, GOING_TO_AP_CLAUSE))) return TRUE;
+	return FALSE;
+}
+
+int Going::going_somewhere(action_pattern *ap) {
+	parse_node *val = APClauses::get_val(ap, GOING_TO_AP_CLAUSE);
+	if ((Descriptions::is_kind_like(val)) && (Kinds::eq(Descriptions::explicit_kind(val), K_room)))
+		return TRUE;
+	return FALSE;
+}
+
+@ Going from, by, through, or with all imply going somewhere rather than nowhere;
+if not "going to" destination is specified, we had better check the destination
+to make sure it actually exists. So this can be used to see if the need arises:
+
+=
+int Going::in_some_way(action_pattern *ap) {
+	if ((APClauses::get_val(ap, GOING_TO_AP_CLAUSE) == NULL) &&
+			((APClauses::get_val(ap, GOING_FROM_AP_CLAUSE) != NULL) ||
+			(APClauses::get_val(ap, GOING_BY_AP_CLAUSE) != NULL) ||
+			(APClauses::get_val(ap, GOING_THROUGH_AP_CLAUSE) != NULL) ||
+			(APClauses::get_val(ap, PUSHING_AP_CLAUSE) != NULL)))
+		return TRUE;
+	return FALSE;
+}
+
+@ =
+<going-action-irregular-operand> ::=
+	nowhere |    ==> { FALSE, - }
+	somewhere						==> { TRUE, - }
+
+@ =
+int Going::claim_noun(action_name *an, action_pattern *ap, wording W) {
+	if ((an == going_action) && (<going-action-irregular-operand>(W))) {
+		if (<<r>> == FALSE) Going::go_nowhere(ap);
+		else Going::go_somewhere(ap);
+		return TRUE;
+	}
+	return FALSE;
 }

@@ -1009,7 +1009,7 @@ properties) and for kinds (which do, but differently).
 			"two actions are rather oddly equated here",
 			"which would only make sense if the second were a named pattern of actions "
 			"like (say) 'unseemly behaviour'.");
-	} else ActionPatterns::categorise_as(apx, Node::get_text(py));
+	} else NamedActionPatterns::characterise(apx, Node::get_text(py));
 	#endif
 
 @h Case 28. Sentence (1) below is deservedly rejected, but (2) makes a

@@ -31,32 +31,6 @@ typedef struct action_pattern {
 	int valid; /* recording success or failure in parsing to an AP */
 } action_pattern;
 
-@ When we parse action patterns, we record why they fail, in order to make
-it easier to produce helpful error messages. (We can't simply fire off
-errors at the time they occur, because text is often parsed in several
-contexts at once, so just because it fails this one does not mean it is
-wrong.) PAPF stands for "parse action pattern failure".
-
-@d MISC_PAPF 1
-@d NOPARTICIPLE_PAPF 2
-@d MIXEDNOUNS_PAPF 3
-@d WHEN_PAPF 4
-@d WHENOKAY_PAPF 5
-@d IMMISCIBLE_PAPF 6
-
-= (early code)
-int pap_failure_reason; /* one of the above */
-int permit_trying_omission = FALSE; /* allow the keyword 'trying' to be omitted */
-int permit_nonconstant_action_parameters = TRUE;
-
-@ NB: Next time this is rewritten - (1) handle in, in the presence of, with
-STV clauses; (2) get this right:
-
-	The Rocky Promontory by the Waterfall is a room.
-
-	Instead of going in the Rocky Promontory by the Waterfall:
-		say "Where did you want to go?"
-
 @ =
 action_pattern ActionPatterns::new(void) {
 	action_pattern ap;
@@ -146,11 +120,8 @@ int ActionPatterns::ap_clause_is_unspecific(parse_node *spec) {
 
 int ActionPatterns::is_overspecific(action_pattern *ap) {
 	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
-		if ((apoc->clause_ID != NOUN_AP_CLAUSE) &&
-			(apoc->clause_ID != SECOND_AP_CLAUSE) &&
-			(apoc->clause_ID != ACTOR_AP_CLAUSE))
-			if (apoc->clause_spec)
-				return TRUE;
+		if ((APClauses::aspect(apoc) != PRIMARY_APCA) && (apoc->clause_spec))
+			return TRUE;
 	if (APClauses::has_any_actor(ap)) return TRUE;
 	if (ap->duration) return TRUE;
 	return FALSE;
@@ -161,56 +132,10 @@ void ActionPatterns::suppress_action_testing(action_pattern *ap) {
 		ActionNameLists::suppress_action_testing(ap->action_list);
 }
 
-@ We are allowed to give names to certain kinds of behaviour by "categorising"
-an action.
-
-=
-void ActionPatterns::categorise_as(action_pattern *ap, wording W) {
-	LOGIF(ACTION_PATTERN_PARSING, "Categorising the action:\n$A...as %W\n", ap, W);
-
-	if (<article>(W)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPIsArticle),
-			"there's only an article here",
-			"not a name, so I'm not sure what this action is supposed to be.");
-		return;
-	}
-
-	if (APClauses::get_actor(ap)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPWithActor),
-			"behaviour characterised by named action patterns can only specify the action",
-			"not the actor: as a result, it cannot include requests to other people to "
-			"do things.");
-		return;
-	}
-
-	NamedActionPatterns::add(ap, W);
-}
-
 parse_node *ActionPatterns::nullify_nonspecific_references(parse_node *spec) {
 	if (spec == NULL) return spec;
 	if (Node::is(spec, UNKNOWN_NT)) return NULL;
 	return spec;
-}
-
-@ And an anticlimactic little routine for putting objects
-into action patterns in the noun or second noun position.
-
-=
-void ActionPatterns::put_action_object_into_ap(action_pattern *ap, int C, wording W) {
-	parse_node *spec = NULL;
-	int any_flag = FALSE;
-	if (<action-operand>(W)) {
-		if (<<r>>) spec = <<rp>>;
-		else { any_flag = TRUE; spec = Specifications::from_kind(K_thing); }
-	}
-	if (spec == NULL) spec = Specifications::new_UNKNOWN(W);
-	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_text)))
-		Node::set_kind_of_value(spec, K_understanding);
-	Node::set_text(spec, W);
-	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (clause %d) %W = $P\n", C, W, spec);
-	APClauses::set_val(ap, C, spec);
-	if (any_flag) APClauses::set_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
-	else APClauses::clear_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
 }
 
 @ =
@@ -221,15 +146,6 @@ int ActionPatterns::refers_to_past(action_pattern *ap) {
 
 void ActionPatterns::convert_to_present_tense(action_pattern *ap) {
 	ap->duration = NULL;
-}
-
-int ActionPatterns::pta_acceptable(parse_node *spec) {
-	instance *I;
-	if (spec == NULL) return TRUE;
-	if (Specifications::is_description(spec) == FALSE) return TRUE;
-	I = Specifications::object_exactly_described_if_any(spec);
-	if (I) return TRUE;
-	return FALSE;
 }
 
 int ActionPatterns::makes_callings(action_pattern *ap) {

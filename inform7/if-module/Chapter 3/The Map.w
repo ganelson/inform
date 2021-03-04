@@ -21,7 +21,6 @@ void Map::start(void) {
 	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Map::set_kind_notify);
 	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Map::set_subkind_notify);
 	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Map::act_on_special_NPs);
-	PluginManager::plug(CHECK_GOING_PLUG, Map::check_going);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, Map::complete_model);
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Map::new_property_notify);
 	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
@@ -545,24 +544,6 @@ int Map::act_on_special_NPs(parse_node *p) {
 		}
 	}
 	return FALSE;
-}
-
-@ We also add some optional clauses to the "going" action:
-
-=
-int Map::check_going(parse_node *from, parse_node *to,
-	parse_node *by, parse_node *through, parse_node *pushing) {
-	if (Going::check_going(from, "from",
-		K_room, K_region) == FALSE) return FALSE;
-	if (Going::check_going(to, "to",
-		K_room, K_region) == FALSE) return FALSE;
-	if (Going::check_going(by, "by",
-		K_thing, NULL) == FALSE) return FALSE;
-	if (Going::check_going(through, "through",
-		K_door, NULL) == FALSE) return FALSE;
-	if (Going::check_going(pushing, "with",
-		K_thing, NULL) == FALSE) return FALSE;
-	return TRUE;
 }
 
 @ Consider the sentences:
