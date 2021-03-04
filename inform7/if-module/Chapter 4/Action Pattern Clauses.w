@@ -12,12 +12,6 @@ Pattern-matches on individual nouns in an action are called clauses.
 @e IN_THE_PRESENCE_OF_AP_CLAUSE
 @e WHEN_AP_CLAUSE
 
-@e GOING_FROM_AP_CLAUSE
-@e GOING_TO_AP_CLAUSE
-@e GOING_THROUGH_AP_CLAUSE
-@e GOING_BY_AP_CLAUSE
-@e PUSHING_AP_CLAUSE
-
 =
 typedef struct ap_clause {
 	int clause_ID;
@@ -207,21 +201,12 @@ void APClauses::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	
-	int C = 1000*oid + off, ar = FALSE;
-	if (oid == 20007 /* i.e., going */ ) {
-		switch (off) {
-			case 0: C = GOING_FROM_AP_CLAUSE; ar = TRUE; break;
-			case 1: C = GOING_TO_AP_CLAUSE; ar = TRUE; break;
-			case 2: C = GOING_THROUGH_AP_CLAUSE; break;
-			case 3: C = GOING_BY_AP_CLAUSE; break;
-			case 4: C = PUSHING_AP_CLAUSE; break;
-		}
-	}
-
+	int C = 1000*oid + off;
+	int D = Going::divert(ap, stv); if (D >= 0) C = D;
 	ap_clause *apoc = APClauses::ensure_clause(ap, C);
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
-	if (ar) APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
+	Going::new_clause(ap, apoc);
 }
 
 int APClauses::has_stv_clauses(action_pattern *ap) {
@@ -274,4 +259,93 @@ int APClauses::validate(ap_clause *apoc, kind *K) {
 		(Dash::validate_parameter(apoc->clause_spec, K) == FALSE))
 		return FALSE;
 	return TRUE;
+}
+
+void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
+	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next) {
+		switch (apoc->clause_ID) {
+			case PARAMETRIC_AP_CLAUSE:         WRITE("parameter"); break;
+			case ACTOR_AP_CLAUSE:              WRITE("actor"); break;
+			case NOUN_AP_CLAUSE:               WRITE("noun"); break;
+			case SECOND_AP_CLAUSE:             WRITE("second"); break;
+			case IN_AP_CLAUSE:                 WRITE("in"); break;
+			case IN_THE_PRESENCE_OF_AP_CLAUSE: WRITE("in-presence"); break;
+			case WHEN_AP_CLAUSE:               WRITE("when"); break;
+		}
+		Going::write(OUT, apoc->clause_ID);
+		if (apoc->stv_to_match) {
+			WRITE("{");
+			NonlocalVariables::write(OUT,
+				StackedVariables::get_variable(apoc->stv_to_match));
+			WRITE("}");
+		}
+		WRITE(": %P", apoc->clause_spec);
+		if (APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT)) WRITE("[allow-region]");
+		if (APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT)) WRITE("[no-validate]");
+		if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) WRITE("[not-player]");
+		if (APClauses::opt(apoc, REQUEST_APCOPT)) WRITE("[request]");
+	}
+}
+
+@h Action pattern specificity.
+The following is one of Inform's standardised comparison routines, which
+takes a pair of objects A, B and returns 1 if A makes a more specific
+description than B, 0 if they seem equally specific, or $-1$ if B makes a
+more specific description than A. This is transitive, and intended to be
+used in sorting algorithms.
+
+=
+int APClauses::count_aspects(action_pattern *ap) {
+	if (ap == NULL) return 0;
+	int c = Going::count_aspects(ap);
+	if ((APClauses::get_noun(ap)) ||
+		(APClauses::get_second(ap)) ||
+		(APClauses::get_actor(ap)))
+		c++;
+	if (APClauses::get_presence(ap)) c++;
+	if ((ap->duration) || (APClauses::get_val(ap, WHEN_AP_CLAUSE))) c++;
+	if (APClauses::get_val(ap, PARAMETRIC_AP_CLAUSE)) c++;
+	return c;
+}
+
+int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
+	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
+
+	int rv = Specifications::compare_specificity(APClauses::get_val(ap1, PARAMETRIC_AP_CLAUSE), APClauses::get_val(ap2, PARAMETRIC_AP_CLAUSE), NULL);
+	if (rv != 0) return rv;
+
+	int claim = FALSE;
+	rv = Going::compare_specificity(ap1, ap2, &claim);
+	if (rv != 0) return rv;
+
+	if (claim == FALSE) {
+		c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
+		rv = Specifications::compare_specificity(APClauses::get_room(ap1), APClauses::get_room(ap2), NULL);
+		if (rv != 0) return rv;
+	}
+
+	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
+
+	rv = Specifications::compare_specificity(APClauses::get_presence(ap1), APClauses::get_presence(ap2), NULL);
+	if (rv != 0) return rv;
+
+	rv = APClauses::compare_specificity_of_apoc_list(ap1, ap2);
+	if (rv != 0) return rv;
+
+	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
+
+	rv = Specifications::compare_specificity(APClauses::get_second(ap1), APClauses::get_second(ap2), NULL);
+	if (rv != 0) return rv;
+
+	c_s_stage_law = I"III.3.2 - Action/What/Thing Acted On";
+
+	rv = Specifications::compare_specificity(APClauses::get_noun(ap1), APClauses::get_noun(ap2), NULL);
+	if (rv != 0) return rv;
+
+	c_s_stage_law = I"III.3.3 - Action/What/Actor Performing Action";
+
+	rv = Specifications::compare_specificity(APClauses::get_actor(ap1), APClauses::get_actor(ap2), NULL);
+	if (rv != 0) return rv;
+
+	return 0;
 }

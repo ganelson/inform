@@ -46,6 +46,7 @@ Chapter 4: Actions
 	Action Name Lists
 	Action Patterns
 	Action Pattern Clauses
+	Going
 	Parse Action Patterns
 	Named Action Patterns
 

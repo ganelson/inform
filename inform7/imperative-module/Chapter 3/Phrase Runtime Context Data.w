@@ -215,8 +215,8 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 	c_s_stage_law = I"I - Number of aspects constrained";
 	int rct1 = 0, rct2 = 0;
 	#ifdef IF_MODULE
-	rct1 = ActionPatterns::count_aspects(ap1);
-	rct2 = ActionPatterns::count_aspects(ap2);
+	rct1 = APClauses::count_aspects(ap1);
+	rct2 = APClauses::count_aspects(ap2);
 	if (sc1) rct1++; if (sc2) rct2++;
 	#endif
 	if (Wordings::nonempty(AL1W)) rct1++; if (Wordings::nonempty(AL2W)) rct2++;
