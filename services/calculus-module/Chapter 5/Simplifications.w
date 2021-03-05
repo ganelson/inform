@@ -959,9 +959,9 @@ pcalc_prop *Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 	TRAVERSE_PROPOSITION(pl, prop)
 		if ((pl->element == PREDICATE_ATOM) && (pl->arity == 2))
 			for (int i=0; i<2; i++)
-				if (Conditions::is_TEST_ACTION(pl->terms[i].constant))
+				if (AConditions::is_action_TEST_VALUE(pl->terms[i].constant))
 					pl->terms[i].constant =
-						Conditions::action_tested(pl->terms[i].constant);
+						AConditions::action_tested(pl->terms[i].constant);
 	return prop;
 }
 #endif

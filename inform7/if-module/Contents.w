@@ -39,12 +39,15 @@ Chapter 4: Actions
 "Actions are impulses to do something within the simulated world."
 	Actions Plugin
 	Actions-Only Nodes and Annotations
+	Action Kinds
+	Action Conditions
 	Actions
 	Action Semantics
 	Action Variables
 	Action Name Names
 	Action Name Lists
 	Action Patterns
+	Explicit Actions
 	Action Pattern Clauses
 	Going
 	Parse Action Patterns

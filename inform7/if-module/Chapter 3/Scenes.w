@@ -16,6 +16,7 @@ void Scenes::start(void) {
 	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Scenes::new_property_notify);
 	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Scenes::new_named_instance_notify);
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
+	PluginManager::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
 }
 
@@ -58,6 +59,18 @@ kind *K_scene = NULL;
 int Scenes::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	if (Str::eq_wide_string(name, L"SCENE_TY")) {
 		K_scene = new_base; return TRUE;
+	}
+	return FALSE;
+}
+
+int Scenes::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
+	kind *K = Node::get_kind_of_value(spec1);
+	if (Kinds::eq(K, K_scene)) {
+		if (ARvalues::to_scene(spec1) == ARvalues::to_scene(spec2)) {
+			*rv = TRUE;
+		}
+		*rv = FALSE;
+		return TRUE;
 	}
 	return FALSE;
 }

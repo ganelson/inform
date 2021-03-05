@@ -344,7 +344,7 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 
 @<Parse the action in a try phrase@> =
 	if (<action-pattern>(XW))
-		as_parsed = Conditions::new_TEST_ACTION(<<rp>>, XW);
+		as_parsed = AConditions::new_action_TEST_VALUE(<<rp>>, XW);
 	else {
 		permit_trying_omission = FALSE;
 		@<Parse any other token@>;

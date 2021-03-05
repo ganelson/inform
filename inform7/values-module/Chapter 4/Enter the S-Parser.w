@@ -174,7 +174,7 @@ These are meaningful only for interactive fiction, and serve the "if" module:
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
 			==> { -, S };
 			return TRUE;
-		} else if (Conditions::is_TEST_ACTION(S)) {
+		} else if (AConditions::is_action_TEST_VALUE(S)) {
 			==> { -, S->down };
 			return TRUE;
 		} else {
@@ -199,7 +199,7 @@ These are meaningful only for interactive fiction, and serve the "if" module:
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
 			==> { -, S };
 			return TRUE;
-		} else if (Conditions::is_TEST_ACTION(S)) {
+		} else if (AConditions::is_action_TEST_VALUE(S)) {
 			==> { -, S->down };
 			return TRUE;
 		} else {

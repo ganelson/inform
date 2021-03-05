@@ -75,6 +75,29 @@ int PluginCalls::intervene_in_assertion(parse_node *px, parse_node *py) {
 	PLUGINS_CALL(INTERVENE_IN_ASSERTION_PLUG, px, py);
 }
 
+@ Called from //assertions: The Creator// when a copular sentence may be
+creating something. For example, the actions plugin needs this.
+
+@e CREATION_PLUG
+
+=
+int PluginCalls::creation(parse_node *px, parse_node *py) {
+	PLUGINS_CALL(CREATION_PLUG, px, py);
+}
+
+@ Called from //assertions: Assertions// when an unfamiliar node type appears
+where a property value might be expected. For example, the actions plugin
+uses this to deal with setting a property to an |ACTION_NT| node. To
+intervene, set the node specification using //assertions: Refine Parse Tree//
+and return |TRUE|; or return |FALSE| to let nature take its course.
+
+@e UNUSUAL_PROPERTY_VALUE_PLUG
+
+=
+int PluginCalls::unusual_property_value(parse_node *py) {
+	PLUGINS_CALL(UNUSUAL_PROPERTY_VALUE_PLUG, py);
+}
+
 @ Called from //assertions: The Creator// when an instance is being made in
 an assembly, and its name may involve a genitive. For example, if the
 assembly says "every person has a nose", then normally this would be called
@@ -174,7 +197,20 @@ int PluginCalls::variable_set_warning(nonlocal_variable *q, parse_node *val) {
 }
 
 @h Influencing values.
-Called from //values: Rvalues// to allow plugins to compile rvalues in
+Called from //values: Rvalues// to allow plugins to help decide whether values
+of the same kind would be equal if evaluated at runtime. For example, the
+"scenes" plugin uses this to determine if two |K_scene| constants are equal.
+To make a decision, set |rv| to either |TRUE| or |FALSE| and return |TRUE|.
+To make no decision, return |FALSE|.
+
+@e COMPARE_CONSTANT_PLUG
+
+=
+int PluginCalls::compare_constant(parse_node *c1, parse_node *c2, int *rv) {
+	PLUGINS_CALL(COMPARE_CONSTANT_PLUG, c1, c2, rv);
+}
+
+@ Called from //values: Rvalues// to allow plugins to compile rvalues in
 eccentric ways of their own: not in fact just for the whimsy of it, but to
 make it possible for plugins to support base kinds of their own. For example,
 the "actions" plugin needs this to deal with the "stored action" kind.

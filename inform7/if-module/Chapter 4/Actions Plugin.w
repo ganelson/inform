@@ -5,16 +5,41 @@ A plugin for actions, by which animate characters change the world model.
 @ Support for actions is contained in the "actions" plugin, which occupies this
 entire chapter. The test group |:actions| may be helpful in trouble-shooting here.
 
+It may be helpful to distinguish these ideas right from the outset:
+
+(*) An "action" (or "explicit action", for the sake of clarity) is a specific
+impulse by a person in the model world to effect some change within it: for
+example, "Henry taking the brick". Here Henry is the "actor", and the brick is
+"the noun". Actions can be "stored" so that they are values in their own
+right; thus, a variable could be set to the value "Henry taking the brick",
+and this would have kind |K_stored_action|. Inside the compiler they are
+represented by //explicit_action// objects.
+(*) An "action name" -- not an ideal thing to call it, but traditional -- is the
+type of action involved, taken in isolation: for example, "taking". These can
+also be values at run-time, they have kind |K_action_name|, and they are
+represented in the comoiler by //action_name// objections.
+(*) An "action pattern" is a textual description which matches some actions but
+not others, and can be vague or specific: for example, "wearing or examining
+something". Action patterns become values of the kind |K_description_of_action|.
+They can also be aggregated into "named action patterns", which characterise
+behaviour; see //action_pattern// and //named_action_pattern//.
+(*) A "past action pattern", which can never in any way be a value, is a
+description of an action which have happened in the past: for example, "dropped
+the hat". These are just a special case of action patterns.
+
 =
 void ActionsPlugin::start(void) {
 	ActionsNodes::nodes_and_annotations();
 
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ActionsPlugin::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ActionsPlugin::new_base_kind_notify);
+	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
+	PluginManager::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
 	PluginManager::plug(COMPILE_CONSTANT_PLUG, RTActions::actions_compile_constant);
+	PluginManager::plug(CREATION_PLUG, ActionsNodes::creation);
+	PluginManager::plug(UNUSUAL_PROPERTY_VALUE_PLUG, ActionsNodes::unusual_property_value_node);
 	PluginManager::plug(OFFERED_PROPERTY_PLUG, ActionVariables::actions_offered_property);
 	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, ActionsPlugin::actions_offered_specification);
-	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, ActionsPlugin::actions_typecheck_equality);
+	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, ARvalues::actions_typecheck_equality);
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ActionsPlugin::production_line);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
@@ -29,59 +54,6 @@ int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *se
 		BENCH(RTActions::ActionHappened);
 		BENCH(RTActions::compile_action_routines);
 	}
-	return FALSE;
-}
-
-@ It may be useful to distinguish three ideas right from the outset:
-
-(*) An "action" is a specific impulse by a person in the model world to effect
-some change within it: for example, "Henry taking the brick". Here Henry is the
-"actor", and the brick is "the noun". Actions can be "stored" so that they
-are values in their own right; thus, a variable could be set to the value
-"Henry taking the brick", and this would have kind |K_stored_action|.
-(*) An "action name" -- not an ideal thing to call it, but traditional -- is the
-type of action involved, taken in isolation: for example, "taking". These can
-also be values at run-time, and have kind |K_action_name|.
-(*) An "action pattern" is a textual description which matches some actions but
-not others, and can be vague or specific: for example, "wearing or examining
-something". Action patterns are in general not values, but names can be given
-to them so that they are -- see //Named Action Patterns// -- and then they
-have the kind |K_description_of_action|.
-(*) A "past action pattern", which can never in any way be a value, is a
-description of an action which have happened in the past: for example, "dropped
-the hat".
-
-= (early code)
-kind *K_action_name = NULL;
-kind *K_stored_action = NULL;
-kind *K_description_of_action = NULL;
-
-@ These are created by a Neptune file inside //WorldModelKit//, and are
-recognised by their Inter identifiers:
-
-@ =
-int ActionsPlugin::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
-	if (Str::eq_wide_string(name, L"ACTION_NAME_TY")) {
-		K_action_name = new_base; return TRUE;
-	}
-	if (Str::eq_wide_string(name, L"DESCRIPTION_OF_ACTION_TY")) {
-		K_description_of_action = new_base; return TRUE;
-	}
-	if (Str::eq_wide_string(name, L"STORED_ACTION_TY")) {
-		K_stored_action = new_base; return TRUE;
-	}
-	return FALSE;
-}
-
-@ A stored action can always be compared to a gerund: for instance,
-
->> if the current action is taking something...
-
-=
-int ActionsPlugin::actions_typecheck_equality(kind *K1, kind *K2) {
-	if ((Kinds::eq(K1, K_stored_action)) &&
-		(Kinds::eq(K2, K_description_of_action)))
-		return TRUE;
 	return FALSE;
 }
 
@@ -127,7 +99,7 @@ a "specification" text as one, and have to make their own arrangements:
 int ActionsPlugin::actions_offered_specification(parse_node *owner, wording W) {
 	if (Rvalues::is_CONSTANT_of_kind(owner, K_action_name)) {
 		IXActions::actions_set_specification_text(
-			Rvalues::to_action_name(owner), Wordings::first_wn(W));
+			ARvalues::to_action_name(owner), Wordings::first_wn(W));
 		return TRUE;
 	}
 	return FALSE;

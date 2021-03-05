@@ -29,29 +29,6 @@ pointers:
 	return spec;
 
 =
-#ifdef IF_MODULE
-parse_node *Rvalues::from_action_name(action_name *val) { 
-		CONV_FROM(action_name, K_action_name) }
-parse_node *Rvalues::from_action_pattern(action_pattern *val) {
-	int failure_code = 0;
-	explicit_action *ea = ActionPatterns::to_explicit_action(val, &failure_code);
-	if (ea) {
-		parse_node *spec = Node::new(CONSTANT_NT);
-		Node::set_kind_of_value(spec, K_stored_action);
-		Node::set_constant_action_pattern(spec, val);
-		Node::set_constant_explicit_action(spec, ea);
-		return spec;
-	} else {
-		CONV_FROM(action_pattern, K_description_of_action);
-	}
-}
-parse_node *Rvalues::from_grammar_verb(grammar_verb *val) { 
-		CONV_FROM(grammar_verb, K_understanding) }
-parse_node *Rvalues::from_named_action_pattern(named_action_pattern *val) { 
-		CONV_FROM(named_action_pattern, K_nil) }
-parse_node *Rvalues::from_scene(scene *val) { 
-		CONV_FROM(scene, K_scene) }
-#endif
 parse_node *Rvalues::from_activity(activity *val) { 
 		CONV_FROM(activity, Activities::to_kind(val)) }
 parse_node *Rvalues::from_binary_predicate(binary_predicate *val) { 
@@ -85,20 +62,6 @@ parse_node *Rvalues::from_verb_form(verb_form *val) {
 	return val;
 
 =
-#ifdef IF_MODULE
-action_name *Rvalues::to_action_name(parse_node *spec) { 
-		CONV_TO(action_name) }
-action_pattern *Rvalues::to_action_pattern(parse_node *spec) { 
-		CONV_TO(action_pattern) }
-explicit_action *Rvalues::to_explicit_action(parse_node *spec) { 
-		CONV_TO(explicit_action) }
-grammar_verb *Rvalues::to_grammar_verb(parse_node *spec) { 
-		CONV_TO(grammar_verb) }
-named_action_pattern *Rvalues::to_named_action_pattern(parse_node *spec) { 
-		CONV_TO(named_action_pattern) }
-scene *Rvalues::to_scene(parse_node *spec) { 
-		CONV_TO(scene) }
-#endif
 activity *Rvalues::to_activity(parse_node *spec) { 
 		CONV_TO(activity) }
 binary_predicate *Rvalues::to_binary_predicate(parse_node *spec) { 
@@ -471,11 +434,9 @@ int Rvalues::compare_CONSTANT(parse_node *spec1, parse_node *spec2) {
 			KCOMPARE_CONSTANTS(rulebook_outcome, named_rulebook_outcome)
 			KCOMPARE_CONSTANTS(table, table)
 			KCOMPARE_CONSTANTS(use_option, use_option)
-			#ifdef IF_MODULE
-			KCOMPARE_CONSTANTS(action_name, action_name)
-			KCOMPARE_CONSTANTS(scene, scene)
-			KCOMPARE_CONSTANTS(understanding, grammar_verb)
-			#endif
+			int rv = NOT_APPLICABLE;
+			PluginCalls::compare_constant(spec1, spec2, &rv);
+			if (rv != NOT_APPLICABLE) return rv;
 		}
 	}
 	return FALSE;

@@ -2,6 +2,31 @@
 
 Turning text into APs.
 
+@ Action patterns, such as "taking a container" or "opening a closed door",
+are wrapped up as values here:
+
+=
+<s-action-pattern-as-value> internal {
+	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
+	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) { ==> { fail nonterminal }; }
+	int pto = permit_trying_omission;
+	if (<definite-article>(Wordings::first_word(W)) == FALSE) permit_trying_omission = TRUE;
+	int r = <action-pattern>(W);
+	permit_trying_omission = pto;
+	if (r) {
+		action_pattern *ap = <<rp>>;
+		if ((APClauses::get_val(ap, ACTOR_AP_CLAUSE)) &&
+			(Dash::validate_parameter(APClauses::get_val(ap, ACTOR_AP_CLAUSE), K_person) == FALSE)) {
+			r = <action-pattern>(W);
+		}
+	}
+	if (r) {
+		==> { -, AConditions::new_action_TEST_VALUE(<<rp>>, W) };
+		return TRUE;
+	}
+	==> { fail nonterminal };
+}
+
 @ When we parse action patterns, we record why they fail, in order to make
 it easier to produce helpful error messages. (We can't simply fire off
 errors at the time they occur, because text is often parsed in several
@@ -686,7 +711,7 @@ description.
 			&& (K_understanding)
 			&& (Kinds::eq(ActionSemantics::kind_of_second(ActionNameLists::action(entry)), K_understanding))
 			&& (<understanding-action-irregular-operand>(ActionNameLists::par(entry, 1)))) {
-			parse_node *val = Rvalues::from_grammar_verb(NULL); /* Why no GV here? */
+			parse_node *val = ARvalues::from_grammar_verb(NULL); /* Why no GV here? */
 			Node::set_text(val, ActionNameLists::par(entry, 1));
 			APClauses::set_val(&trial_ap, SECOND_AP_CLAUSE, val);
 		} else {

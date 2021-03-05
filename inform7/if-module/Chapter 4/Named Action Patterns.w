@@ -60,7 +60,7 @@ void NamedActionPatterns::add(action_pattern *ap, wording W) {
 
 named_action_pattern *NamedActionPatterns::by_name(wording W) {
 	parse_node *p = Lexicon::retrieve(NAMED_AP_MC, W);
-	if (p) return Rvalues::to_named_action_pattern(p);
+	if (p) return ARvalues::to_named_action_pattern(p);
 	return NULL;
 }
 
@@ -70,7 +70,7 @@ named_action_pattern *NamedActionPatterns::new(wording W) {
 	nap->text_of_declaration = W;
 	nap->compilation_data = RTNamedActionPatterns::new(nap);
 	nap->as_noun = Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		NAMED_AP_MC, Rvalues::from_named_action_pattern(nap), Task::language_of_syntax());
+		NAMED_AP_MC, ARvalues::from_named_action_pattern(nap), Task::language_of_syntax());
 	return nap;
 }
 

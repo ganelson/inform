@@ -12,6 +12,7 @@ void ParsingPlugin::start(void) {
 
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ParsingPlugin::make_special_meanings);
+	PluginManager::plug(COMPARE_CONSTANT_PLUG, ParsingPlugin::compare_CONSTANT);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, ParsingPlugin::new_variable_notify);
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
 	PluginManager::plug(NEW_PERMISSION_NOTIFY_PLUG, Visibility::new_permission_notify);
@@ -53,6 +54,21 @@ int ParsingPlugin::make_special_meanings(void) {
 
 int ParsingPlugin::new_subject_notify(inference_subject *subj) {
 	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, Visibility::new_data(subj));
+	return FALSE;
+}
+
+@
+
+=
+int ParsingPlugin::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
+	kind *K = Node::get_kind_of_value(spec1);
+	if (Kinds::eq(K, K_understanding)) {
+		if (ARvalues::to_grammar_verb(spec1) == ARvalues::to_grammar_verb(spec2)) {
+			*rv = TRUE;
+		}
+		*rv = FALSE;
+		return TRUE;
+	}
 	return FALSE;
 }
 

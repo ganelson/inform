@@ -188,8 +188,9 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 
 	#ifdef IF_MODULE
 	action_pattern *ap = NULL;
-	if (Node::is(spec, TEST_VALUE_NT)) ap = Rvalues::to_action_pattern(spec->down);
+	if (AConditions::is_action_TEST_VALUE(spec)) ap = ActionPatterns::action_from_TEST(spec);
 	if ((ap) && (tense != IS_TENSE)) {
+LOG("Here we go! $A\n", ap);
 		if ((duration) && (Occurrence::units(duration) == TIMES_UNIT) && (Occurrence::length(duration) >= 2)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),
 				"a condition like 'we have X', where X is an action, has either "

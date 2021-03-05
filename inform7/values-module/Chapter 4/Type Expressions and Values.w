@@ -494,31 +494,3 @@ parse_node *SPType::arg(parse_node *val) {
 	if (val == NULL) return Specifications::new_UNKNOWN(EMPTY_WORDING);
 	return Node::duplicate(val);
 }
-
-@ Action patterns, such as "taking a container" or "opening a closed door",
-are parsed by code in the chapter on Actions; all we do here is to wrap the
-result.
-
-=
-<s-action-pattern-as-value> internal {
-	#ifdef IF_MODULE
-	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
-	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) { ==> { fail nonterminal }; }
-	int pto = permit_trying_omission;
-	if (<definite-article>(Wordings::first_word(W)) == FALSE) permit_trying_omission = TRUE;
-	int r = <action-pattern>(W);
-	permit_trying_omission = pto;
-	if (r) {
-		action_pattern *ap = <<rp>>;
-		if ((APClauses::get_val(ap, ACTOR_AP_CLAUSE)) &&
-			(Dash::validate_parameter(APClauses::get_val(ap, ACTOR_AP_CLAUSE), K_person) == FALSE)) {
-			r = <action-pattern>(W);
-		}
-	}
-	if (r) {
-		==> { -, Conditions::new_TEST_ACTION(<<rp>>, W) };
-		return TRUE;
-	}
-	#endif
-	==> { fail nonterminal };
-}

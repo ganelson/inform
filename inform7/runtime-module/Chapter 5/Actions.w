@@ -350,7 +350,7 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 	if (PluginManager::active(actions_plugin) == FALSE)
 		internal_error("actions plugin inactive");
 	if (Kinds::eq(K, K_action_name)) {
-		action_name *an = Rvalues::to_action_name(spec);
+		action_name *an = ARvalues::to_action_name(spec);
 		if (Holsters::data_acceptable(VH)) {
 			inter_name *N = RTActions::iname(an);
 			if (N) Emit::holster(VH, N);

@@ -34,7 +34,7 @@ void ActionNameNames::baptise(action_name *an, wording W) {
 		WordAssemblages::from_wording(W));
 	wording AW = WordAssemblages::to_wording(&wa);
 	an->naming_data.as_noun = Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_action_name(an), Task::language_of_syntax());
+		MISCELLANEOUS_MC, ARvalues::from_action_name(an), Task::language_of_syntax());
 	Vocabulary::set_flags(Lexer::word(Wordings::first_wn(W)), ACTION_PARTICIPLE_MC);
 	action_name *an2;
 	LOOP_OVER(an2, action_name)

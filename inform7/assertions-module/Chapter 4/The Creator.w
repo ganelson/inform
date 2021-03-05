@@ -71,40 +71,12 @@ about this kind of value sometimes comes from a particular node somewhere
 in |py|, which (if it exists) we'll call its "governing node".
 
 @<Perform creation duties on a copular sentence@> =
-	@<Take care of two ambiguities to do with actions@>;
+	PluginCalls::creation(px, py);
 	parse_node *govx = NULL, *govy = NULL;
 	kind *kindx = NULL, *kindy = NULL;
 	@<Work out the kinds of value expressed by each side, and find their governing nodes@>;
 	Assertions::Creator::noun_creator(px, kindy, govy);
 	Assertions::Creator::noun_creator(py, kindx, govx);
-
-@ The first case here is to take care of a sentence like:
-
->> Taking something is proactive behaviour.
-
-Here |Refiner::refine| will correctly report that "proactive behaviour" is
-a new term, and give it a |CREATED_NT| node. But we don't want it to become an
-object or a value -- it will become a named kind of action instead. So we
-amend the node to |ACTION_NT|.
-
-The second case occurs much less often -- for instance, the only time it comes
-up in the test suite is in the example "Chronic Hinting Syndrome":
-
->> Setting is a kind of value. The settings are bright and dull.
-
-Here the first sentence wants to create something called "setting", which
-ought to have a |CREATED_NT| node type, but doesn't because it has been read
-as an action instead. We correct the spurious |ACTION_NT| to a |CREATED_NT|.
-
-@<Take care of two ambiguities to do with actions@> =
-	if ((Assertions::Creator::actionlike(px)) && (Node::get_type(py) == CREATED_NT))
-		Node::set_type(py, ACTION_NT);
-	if ((Assertions::Creator::actionlike(px)) && (Assertions::Creator::actionlike(py))) {
-		Assertions::Creator::to_action_node(px);
-		Assertions::Creator::to_action_node(py);
-	}
-	if ((Node::get_type(px) == ACTION_NT) && (Node::get_type(py) == KIND_NT))
-		Node::set_type(px, CREATED_NT);
 
 @ There are two ways to know the kind being expressed. One is that the sentence
 makes unambiguous use of a relation which forces the kinds on each side. For
@@ -143,34 +115,6 @@ The other way to find the kinds is to look at what the two sides explicitly say:
 		kindx = Assertions::Creator::kind_of_subtree(px, &govx);
 		kindy = Assertions::Creator::kind_of_subtree(py, &govy);
 	}
-
-@ =
-int Assertions::Creator::actionlike(parse_node *p) {
-	#ifdef IF_MODULE
-	if (Node::get_type(p) == ACTION_NT) return TRUE;
-	if (Node::get_type(p) == PROPER_NOUN_NT) {
-		parse_node *spec = Node::get_evaluation(p);
-		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action))
-			return TRUE;
-	}
-	#endif
-	return FALSE;
-}
-
-void Assertions::Creator::to_action_node(parse_node *p) {
-	#ifdef IF_MODULE
-	if (Node::get_type(p) == ACTION_NT) return;
-	if (Node::get_type(p) == PROPER_NOUN_NT) {
-		parse_node *spec = Node::get_evaluation(p);
-		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action)) {
-			explicit_action *ea = Node::get_constant_explicit_action(spec);
-			ActionPatterns::make_ACTION_node(p, ea->as_described);
-			return;
-		}
-	}
-	#endif
-	internal_error("misapplied to_action_node");
-}
 
 @ So that just leaves the algorithms for finding the relation of a subtree:
 

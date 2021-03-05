@@ -356,9 +356,10 @@ void RTActionPatterns::emit_pattern_match(action_pattern ap, int naming_mode) {
 void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern ap, int naming_mode) {
 	int cpm_count = 0, needed[MAX_CPM_CLAUSES];
 	ap_clause *needed_apoc[MAX_CPM_CLAUSES];
-	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A", &ap);
+	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A\n", &ap);
 
 	if (ap.duration) {
+		LOGIF(ACTION_PATTERN_COMPILATION, "As past action\n");
 		Chronology::compile_past_action_pattern(VH, ap.duration, ap);
 	} else {
 		kind *kind_of_noun = K_object;

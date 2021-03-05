@@ -43,19 +43,7 @@ action_pattern ActionPatterns::new(void) {
 	return ap;
 }
 
-@
-
-=
-typedef struct explicit_action {
-	int request;
-	struct action_name *action;
-	struct parse_node *actor;
-	struct parse_node *first_noun;
-	struct parse_node *second_noun;
-	struct action_pattern *as_described;
-} explicit_action;
-
-
+@ =
 void ActionPatterns::log(action_pattern *ap) {
 	ActionPatterns::write(DL, ap);
 }
@@ -112,54 +100,6 @@ int ActionPatterns::object_based(action_pattern *ap) {
 	return FALSE;
 }
 
-explicit_action *ActionPatterns::to_explicit_action(action_pattern *ap, int *reason) {
-	if (ActionPatterns::is_unspecific(ap)) { *reason = 1; return NULL; }
-	if (ActionPatterns::is_overspecific(ap)) { *reason = 2; return NULL; }
-	*reason = 0;
-	explicit_action *ea = CREATE(explicit_action);
-	ea->action = ActionNameLists::get_the_one_true_action(ap->action_list);
-	ea->request = APClauses::is_request(ap);
-	ea->actor = APClauses::get_val(ap, ACTOR_AP_CLAUSE);
-	ea->first_noun = APClauses::get_val(ap, NOUN_AP_CLAUSE);
-	ea->second_noun = APClauses::get_val(ap, SECOND_AP_CLAUSE);
-	ea->as_described = ap;
-	return ea;
-}
-
-void ActionPatterns::make_ACTION_node(parse_node *p, action_pattern *ap) {
-	Node::set_type(p, ACTION_NT);
-	Node::set_action_meaning(p, ap);
-	p->down = NULL;
-}
-
-int ActionPatterns::is_unspecific(action_pattern *ap) {
-	action_name *an = ActionPatterns::required_action(ap);
-	if (an == NULL) return TRUE;
-	if ((ActionSemantics::must_have_noun(an)) && (APClauses::get_val(ap, NOUN_AP_CLAUSE) == NULL)) return TRUE;
-	if ((ActionSemantics::must_have_second(an)) && (APClauses::get_val(ap, SECOND_AP_CLAUSE) == NULL)) return TRUE;
-	if ((ActionSemantics::can_have_noun(an)) &&
-		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, NOUN_AP_CLAUSE)))) return TRUE;
-	if ((ActionSemantics::can_have_second(an)) &&
-		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, SECOND_AP_CLAUSE)))) return TRUE;
-	if (ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, ACTOR_AP_CLAUSE))) return TRUE;
-	return FALSE;
-}
-
-int ActionPatterns::ap_clause_is_unspecific(parse_node *spec) {
-	if (spec == NULL) return FALSE;
-	if (Specifications::is_description(spec) == FALSE) return FALSE;
-	return TRUE;
-}
-
-int ActionPatterns::is_overspecific(action_pattern *ap) {
-	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
-		if ((APClauses::aspect(apoc) != PRIMARY_APCA) && (apoc->clause_spec))
-			return TRUE;
-	if (APClauses::has_any_actor(ap)) return TRUE;
-	if (ap->duration) return TRUE;
-	return FALSE;
-}
-
 void ActionPatterns::suppress_action_testing(action_pattern *ap) {
 	if ((ap->duration == NULL) && (ap->action_list))
 		ActionNameLists::suppress_action_testing(ap->action_list);
@@ -186,6 +126,19 @@ int ActionPatterns::makes_callings(action_pattern *ap) {
 		if (Descriptions::makes_callings(apoc->clause_spec))
 			return TRUE;
 	return FALSE;
+}
+
+action_pattern *ActionPatterns::action_from_TEST(parse_node *spec) {
+	if (AConditions::is_action_TEST_VALUE(spec)) {
+		action_pattern *ap = ARvalues::to_action_pattern(
+			AConditions::action_tested(spec));
+		if (ap == NULL) {
+			explicit_action *ea = Node::get_constant_explicit_action(AConditions::action_tested(spec));
+			if (ea) ap = ea->as_described;
+		}
+		return ap;
+	}
+	return NULL;
 }
 
 int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {

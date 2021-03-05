@@ -320,7 +320,7 @@ int APClauses::cmp_clauses(int C1, action_pattern *ap1, int C2, action_pattern *
 }
 
 int APClauses::viable_in_past_tense(action_pattern *ap) {
-	if (ActionPatterns::is_overspecific(ap)) return FALSE;
+	if (ExplicitActions::ap_overspecific(ap)) return FALSE;
 	if (APClauses::pta_acceptable(APClauses::get_val(ap, ACTOR_AP_CLAUSE)) == FALSE) return FALSE;
 	if (APClauses::pta_acceptable(APClauses::get_val(ap, NOUN_AP_CLAUSE)) == FALSE) return FALSE;
 	if (APClauses::pta_acceptable(APClauses::get_val(ap, SECOND_AP_CLAUSE)) == FALSE) return FALSE;

@@ -595,19 +595,10 @@ further sub-cases later.
 		Problems::issue_problem_end();
 		return;
 	}
-	#ifdef IF_MODULE
-	if (Node::get_type(py) == ACTION_NT) {
-		action_pattern *ap = Node::get_action_meaning(py);
-		if (ap) {
-			parse_node *val = Rvalues::from_action_pattern(ap);
-			if (Rvalues::is_CONSTANT_of_kind(val, K_stored_action)) {
-				Refiner::give_spec_to_noun(py, val);
-				Assertions::make_coupling(px, py);
-				return;
-			}
-		}
+	if (PluginCalls::unusual_property_value(py)) {
+		Assertions::make_coupling(px, py);
+		return;
 	}
-	#endif
 	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_PeculiarProperty),
 		"that is a very peculiar property value",
 		"and ought to be something more definite and explicit.");

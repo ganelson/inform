@@ -52,8 +52,8 @@ following implements this as a hand-coded nonterminal instead.
 			parse_node *atomic_cnd = <<rp>>;
 			parse_node *spec = atomic_cnd;
 			if (Node::is(spec, CONSTANT_NT)) {
-				action_pattern *ap = Rvalues::to_action_pattern(spec);
-				spec = Conditions::new_TEST_ACTION(ap, W);
+				action_pattern *ap = ARvalues::to_action_pattern(spec);
+				spec = AConditions::new_action_TEST_VALUE(ap, W);
 			}
 			==> { -, Conditions::attach_historic_requirement(spec, tp) };
 			return TRUE;
@@ -165,10 +165,10 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 
 =
 <s-action-pattern-as-condition> ::=
-	<we-are-action-pattern>			==> { -, Conditions::new_TEST_ACTION(RP[1], W) }
+	<we-are-action-pattern>			==> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }
 
 <s-action-pattern-as-negated-condition> ::=
-	<action-pattern-negated>		==> { -, Conditions::new_TEST_ACTION(RP[1], W) }
+	<action-pattern-negated>		==> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }
 
 @ And similarly:
 
@@ -190,7 +190,7 @@ is handled. The following nonterminal exists to enter the AP to the meaning list
 			"too much information about past events.");
 		return FALSE;
 	}
-	parse_node *C = Conditions::new_TEST_ACTION(ap, W);
+	parse_node *C = AConditions::new_action_TEST_VALUE(ap, W);
 	C = Conditions::attach_tense(C, HASBEEN_TENSE);
 	==> { -, C };
 	#endif

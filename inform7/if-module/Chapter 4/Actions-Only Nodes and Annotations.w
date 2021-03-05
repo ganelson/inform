@@ -48,6 +48,80 @@ void ActionsNodes::nodes_and_annotations(void) {
 	Annotations::allow(CONSTANT_NT, constant_explicit_action_ANNOT);
 }
 
+@ ACTION nodes are converted from existing ones, not born:
+
+=
+void ActionsNodes::convert_to_ACTION_node(parse_node *p, action_pattern *ap) {
+	Node::set_type(p, ACTION_NT);
+	Node::set_action_meaning(p, ap);
+	p->down = NULL;
+}
+
+int ActionsNodes::is_actionlike(parse_node *p) {
+	if (Node::get_type(p) == ACTION_NT) return TRUE;
+	if ((K_stored_action) && (Node::get_type(p) == PROPER_NOUN_NT)) {
+		parse_node *spec = Node::get_evaluation(p);
+		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action)) return TRUE;
+	}
+	return FALSE;
+}
+
+void ActionsNodes::convert_stored_action_constant(parse_node *p) {
+	if (Node::get_type(p) == PROPER_NOUN_NT) {
+		parse_node *spec = Node::get_evaluation(p);
+		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action)) {
+			explicit_action *ea = Node::get_constant_explicit_action(spec);
+			ActionsNodes::convert_to_ACTION_node(p, ea->as_described);
+			return;
+		}
+	}
+}
+
+@ The first case here is to take care of a sentence like:
+
+>> Taking something is proactive behaviour.
+
+Here |Refiner::refine| will correctly report that "proactive behaviour" is
+a new term, and give it a |CREATED_NT| node. But we don't want it to become an
+object or a value -- it will become a named kind of action instead. So we
+amend the node to |ACTION_NT|.
+
+The second case occurs much less often -- for instance, the only time it comes
+up in the test suite is in the example "Chronic Hinting Syndrome":
+
+>> Setting is a kind of value. The settings are bright and dull.
+
+Here the first sentence wants to create something called "setting", which
+ought to have a |CREATED_NT| node type, but doesn't because it has been read
+as an action instead. We correct the spurious |ACTION_NT| to a |CREATED_NT|.
+
+=
+int ActionsNodes::creation(parse_node *px, parse_node *py) {
+	if ((ActionsNodes::is_actionlike(px)) && (Node::get_type(py) == CREATED_NT))
+		Node::set_type(py, ACTION_NT);
+	if ((ActionsNodes::is_actionlike(px)) && (ActionsNodes::is_actionlike(py))) {
+		ActionsNodes::convert_stored_action_constant(px);
+		ActionsNodes::convert_stored_action_constant(py);
+	}
+	if ((Node::get_type(px) == ACTION_NT) && (Node::get_type(py) == KIND_NT))
+		Node::set_type(px, CREATED_NT);
+	return FALSE;
+}
+
+int ActionsNodes::unusual_property_value_node(parse_node *py) {
+	if (Node::get_type(py) == ACTION_NT) {
+		action_pattern *ap = Node::get_action_meaning(py);
+		if (ap) {
+			parse_node *val = ARvalues::from_action_pattern(ap);
+			if (Rvalues::is_CONSTANT_of_kind(val, K_stored_action)) {
+				Refiner::give_spec_to_noun(py, val);
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}
+
 @ And for the debugging log:
 
 =

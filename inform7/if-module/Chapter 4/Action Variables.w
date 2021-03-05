@@ -9,7 +9,7 @@ into creations of action variables:
 =
 int ActionVariables::actions_offered_property(kind *K, parse_node *owner, parse_node *prop) {
 	if (Kinds::eq(K, K_action_name)) {
-		action_name *an = Rvalues::to_action_name(owner);
+		action_name *an = ARvalues::to_action_name(owner);
 		if (an == NULL) internal_error("failed to extract action-name structure");
 		if (global_pass_state.pass == 1) {
 			@<Require the variable to have an explicit name@>;

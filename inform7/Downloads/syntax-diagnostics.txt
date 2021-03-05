@@ -23401,7 +23401,7 @@ ROOT_NT
                                         }
                                             LOGICAL_AND_NT'looking and a marked for listing person is not in the locati'
                                                 TEST_VALUE_NT'looking'
-                                                    CONSTANT_NT'looking' {kind: action} {action pattern: <action: looking>} {explicit action: <action: looking>}
+                                                    CONSTANT_NT'looking' {kind: action} {explicit action: <action: looking>}
                                                 TEST_PROPOSITION_NT'a marked for listing person is not in the location' {proposition: << Exists x : kind=person(x) ^ marked for listing(x) ^ NOT< ('the location' == <ContainerOf(*1) : x>) NOT> >>} {term: x}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'clear marked people' {indent: 3}

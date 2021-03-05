@@ -316,7 +316,7 @@ is allowed to stand.
 			Wordings::last_wn(Node::get_text(p->down->next)));
 		if (Wordings::nonempty(W)) {
 			if (<action-pattern>(W)) {
-				ActionPatterns::make_ACTION_node(p, <<rp>>);
+				ActionsNodes::convert_to_ACTION_node(p, <<rp>>);
 				Node::set_text(p, W);
 			}
 		}
@@ -601,7 +601,7 @@ here, given that we know we are looking for a noun.
 	#ifdef IF_MODULE
 	if (Node::get_article(p) == NULL) {
 		if (<action-pattern>(Node::get_text(p))) {
-			ActionPatterns::make_ACTION_node(p, <<rp>>);
+			ActionsNodes::convert_to_ACTION_node(p, <<rp>>);
 			return;
 		}
 	}

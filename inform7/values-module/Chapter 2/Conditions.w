@@ -101,44 +101,6 @@ parse_node *Conditions::new_TEST_PHRASE_OPTION(int opt_num) {
 	return spec;
 }
 
-@ =
-#ifdef IF_MODULE
-parse_node *Conditions::new_TEST_ACTION(action_pattern *ap, wording W) {
-	if (ap == NULL) internal_error("null action pattern");
-	parse_node *spec = Node::new_with_words(TEST_VALUE_NT, W);
-	spec->down = Rvalues::from_action_pattern(ap);
-	Node::set_text(spec->down, W);
-	return spec;
-}
-#endif
-#ifndef IF_MODULE
-parse_node *Conditions::new_TEST_ACTION(void *ap, wording W) {
-	internal_error("can't make test action without IF module");
-	return NULL;
-}
-#endif
-
-int Conditions::is_TEST_ACTION(parse_node *spec) {
-	#ifdef IF_MODULE
-	if ((Node::is(spec, TEST_VALUE_NT)) &&
-		((Rvalues::to_action_pattern(spec->down)) ||
-		(Rvalues::to_explicit_action(spec->down)))) return TRUE;
-	#endif
-	return FALSE;
-}
-
-parse_node *Conditions::action_tested(parse_node *spec) {
-	#ifdef IF_MODULE
-	if (Conditions::is_TEST_ACTION(spec) == FALSE)
-		internal_error("action improperly extracted");
-	return spec->down;
-	#endif
-	#ifndef IF_MODULE
-	internal_error("can't perform action_tested without IF module");
-	return NULL;
-	#endif
-}
-
 @ Since, in principle, any condition might also have a time period attached
 to it, we need a follow-up routine to attach this as necessary to a newly
 created condition:
@@ -264,10 +226,15 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 		case LOGICAL_NOT_NT: @<Compile a logical negation@>; break;
 		case LOGICAL_AND_NT: case LOGICAL_OR_NT: @<Compile a logical operator@>; break;
 		case TEST_VALUE_NT: {
-			if (Conditions::is_TEST_ACTION(spec_found)) {
+			if (AConditions::is_action_TEST_VALUE(spec_found)) {
 				#ifdef IF_MODULE
-				action_pattern *ap = Rvalues::to_action_pattern(
-					Conditions::action_tested(spec_found));
+				action_pattern *ap = ARvalues::to_action_pattern(
+					AConditions::action_tested(spec_found));
+				if (ap == NULL) {
+					explicit_action *ea = Node::get_constant_explicit_action(AConditions::action_tested(spec_found));
+					if (ea) ap = ea->as_described;
+				}
+				if (ap == NULL) internal_error("no action pattern to test");
 				RTActionPatterns::compile_pattern_match(VH, *ap, FALSE);
 				#endif
 			} else if (Specifications::is_description(spec_found)) {

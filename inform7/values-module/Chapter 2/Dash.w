@@ -2916,17 +2916,15 @@ action value, which is a specific action.
 
 @<Step (5.d.1) Coerce TEST ACTION to constant action@> =
 	LOG_DASH("(5.d.1)");
-		LOGIF(MATCHING, "Kind expected %u; ista %d cond %d\n", kind_expected, Conditions::is_TEST_ACTION(p), condition_context);
-	if ((Conditions::is_TEST_ACTION(p)) && (kind_expected) &&
+	if ((AConditions::is_action_TEST_VALUE(p)) && (kind_expected) &&
 		(Kinds::compatible(K_stored_action, kind_expected))) {
-LOGIF(MATCHING, "Madeit\n");
 		explicit_action *ea = Node::get_constant_explicit_action(p->down);
 		if (ea == NULL) {
 			action_pattern *ap = Node::get_constant_action_pattern(p->down);
 			int failure_code = 0;
-			ea = ActionPatterns::to_explicit_action(ap, &failure_code);
+			ea = ExplicitActions::from_action_pattern(ap, &failure_code);
 		
-			if (failure_code == 1) {
+			if (failure_code == UNDERSPECIFIC_EA_FAILURE) {
 				THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, Node::get_text(p));
@@ -2939,7 +2937,7 @@ LOGIF(MATCHING, "Madeit\n");
 				Problems::issue_problem_end();
 				return NEVER_MATCH;
 			}
-			if (failure_code == 2) {
+			if (failure_code == OVERSPECIFIC_EA_FAILURE) {
 				THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, Node::get_text(p));

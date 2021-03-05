@@ -141,7 +141,7 @@ kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
 	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry) {
 		parse_node *spec = lle->llist_entry_value;
 		if (!Node::is(spec, UNKNOWN_NT)) {
-			if (Conditions::is_TEST_ACTION(spec))
+			if (AConditions::is_action_TEST_VALUE(spec))
 				Dash::check_value_silently(spec, K_stored_action);
 			else
 				Dash::check_value_silently(spec, NULL);
