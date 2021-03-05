@@ -33,10 +33,14 @@ pointers:
 parse_node *Rvalues::from_action_name(action_name *val) { 
 		CONV_FROM(action_name, K_action_name) }
 parse_node *Rvalues::from_action_pattern(action_pattern *val) {
-	if (((ActionPatterns::is_unspecific(val) == FALSE) &&
-		(ActionPatterns::is_overspecific(val) == FALSE)) ||
-		(preform_lookahead_mode)) {
-		CONV_FROM(action_pattern, K_stored_action);
+	int failure_code = 0;
+	explicit_action *ea = ActionPatterns::to_explicit_action(val, &failure_code);
+	if (ea) {
+		parse_node *spec = Node::new(CONSTANT_NT);
+		Node::set_kind_of_value(spec, K_stored_action);
+		Node::set_constant_action_pattern(spec, val);
+		Node::set_constant_explicit_action(spec, ea);
+		return spec;
 	} else {
 		CONV_FROM(action_pattern, K_description_of_action);
 	}
@@ -86,6 +90,8 @@ action_name *Rvalues::to_action_name(parse_node *spec) {
 		CONV_TO(action_name) }
 action_pattern *Rvalues::to_action_pattern(parse_node *spec) { 
 		CONV_TO(action_pattern) }
+explicit_action *Rvalues::to_explicit_action(parse_node *spec) { 
+		CONV_TO(explicit_action) }
 grammar_verb *Rvalues::to_grammar_verb(parse_node *spec) { 
 		CONV_TO(grammar_verb) }
 named_action_pattern *Rvalues::to_named_action_pattern(parse_node *spec) { 

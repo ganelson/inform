@@ -10,17 +10,20 @@ Additional syntax tree node and annotation types used by the actions plugin.
 @e constant_action_name_ANNOT /* |action_name|: for constant values */
 @e constant_action_pattern_ANNOT /* |action_pattern|: for constant values */
 @e constant_named_action_pattern_ANNOT /* |named_action_pattern|: for constant values */
+@e constant_explicit_action_ANNOT /* |explicit_action|: for constant values */
 
 = (early code)
 DECLARE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
 DECLARE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
 DECLARE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
+DECLARE_ANNOTATION_FUNCTIONS(constant_explicit_action, explicit_action)
 DECLARE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
 
 @ =
 MAKE_ANNOTATION_FUNCTIONS(action_meaning, action_pattern)
 MAKE_ANNOTATION_FUNCTIONS(constant_action_name, action_name)
 MAKE_ANNOTATION_FUNCTIONS(constant_action_pattern, action_pattern)
+MAKE_ANNOTATION_FUNCTIONS(constant_explicit_action, explicit_action)
 MAKE_ANNOTATION_FUNCTIONS(constant_named_action_pattern, named_action_pattern)
 
 void ActionsNodes::nodes_and_annotations(void) {
@@ -32,6 +35,8 @@ void ActionsNodes::nodes_and_annotations(void) {
 		ActionsNodes::write_constant_action_name_ANNOT);
 	Annotations::declare_type(constant_action_pattern_ANNOT,
 		ActionsNodes::write_constant_action_pattern_ANNOT);
+	Annotations::declare_type(constant_explicit_action_ANNOT,
+		ActionsNodes::write_constant_explicit_action_ANNOT);
 	Annotations::declare_type(constant_named_action_pattern_ANNOT,
 		ActionsNodes::write_constant_named_action_pattern_ANNOT);
 
@@ -40,6 +45,7 @@ void ActionsNodes::nodes_and_annotations(void) {
 	Annotations::allow(CONSTANT_NT, constant_action_name_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_action_pattern_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_named_action_pattern_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_explicit_action_ANNOT);
 }
 
 @ And for the debugging log:
@@ -60,6 +66,13 @@ void ActionsNodes::write_constant_action_pattern_ANNOT(text_stream *OUT, parse_n
 	if (Node::get_constant_action_pattern(p)) {
 		WRITE(" {action pattern: ");
 		ActionPatterns::write(OUT, Node::get_constant_action_pattern(p));
+		WRITE("}");
+	} 
+}
+void ActionsNodes::write_constant_explicit_action_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_explicit_action(p)) {
+		WRITE(" {explicit action: ");
+		ActionPatterns::write(OUT, Node::get_constant_explicit_action(p)->as_described);
 		WRITE("}");
 	} 
 }

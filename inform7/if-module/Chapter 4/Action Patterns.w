@@ -43,6 +43,19 @@ action_pattern ActionPatterns::new(void) {
 	return ap;
 }
 
+@
+
+=
+typedef struct explicit_action {
+	int request;
+	struct action_name *action;
+	struct parse_node *actor;
+	struct parse_node *first_noun;
+	struct parse_node *second_noun;
+	struct action_pattern *as_described;
+} explicit_action;
+
+
 void ActionPatterns::log(action_pattern *ap) {
 	ActionPatterns::write(DL, ap);
 }
@@ -99,16 +112,36 @@ int ActionPatterns::object_based(action_pattern *ap) {
 	return FALSE;
 }
 
+explicit_action *ActionPatterns::to_explicit_action(action_pattern *ap, int *reason) {
+	if (ActionPatterns::is_unspecific(ap)) { *reason = 1; return NULL; }
+	if (ActionPatterns::is_overspecific(ap)) { *reason = 2; return NULL; }
+	*reason = 0;
+	explicit_action *ea = CREATE(explicit_action);
+	ea->action = ActionNameLists::get_the_one_true_action(ap->action_list);
+	ea->request = APClauses::is_request(ap);
+	ea->actor = APClauses::get_val(ap, ACTOR_AP_CLAUSE);
+	ea->first_noun = APClauses::get_val(ap, NOUN_AP_CLAUSE);
+	ea->second_noun = APClauses::get_val(ap, SECOND_AP_CLAUSE);
+	ea->as_described = ap;
+	return ea;
+}
+
+void ActionPatterns::make_ACTION_node(parse_node *p, action_pattern *ap) {
+	Node::set_type(p, ACTION_NT);
+	Node::set_action_meaning(p, ap);
+	p->down = NULL;
+}
+
 int ActionPatterns::is_unspecific(action_pattern *ap) {
 	action_name *an = ActionPatterns::required_action(ap);
 	if (an == NULL) return TRUE;
-	if ((ActionSemantics::must_have_noun(an)) && (APClauses::get_noun(ap) == NULL)) return TRUE;
-	if ((ActionSemantics::must_have_second(an)) && (APClauses::get_second(ap) == NULL)) return TRUE;
+	if ((ActionSemantics::must_have_noun(an)) && (APClauses::get_val(ap, NOUN_AP_CLAUSE) == NULL)) return TRUE;
+	if ((ActionSemantics::must_have_second(an)) && (APClauses::get_val(ap, SECOND_AP_CLAUSE) == NULL)) return TRUE;
 	if ((ActionSemantics::can_have_noun(an)) &&
-		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_noun(ap)))) return TRUE;
+		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, NOUN_AP_CLAUSE)))) return TRUE;
 	if ((ActionSemantics::can_have_second(an)) &&
-		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_second(ap)))) return TRUE;
-	if (ActionPatterns::ap_clause_is_unspecific(APClauses::get_actor(ap))) return TRUE;
+		(ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, SECOND_AP_CLAUSE)))) return TRUE;
+	if (ActionPatterns::ap_clause_is_unspecific(APClauses::get_val(ap, ACTOR_AP_CLAUSE))) return TRUE;
 	return FALSE;
 }
 

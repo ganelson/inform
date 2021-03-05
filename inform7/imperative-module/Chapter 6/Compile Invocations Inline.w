@@ -777,8 +777,8 @@ the problem messages are phrased differently if something goes wrong.
 
 @<Inline annotation "try-action"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
-		action_pattern *ap = Node::get_constant_action_pattern(supplied);
-		RTActionPatterns::emit_try(ap, FALSE);
+		explicit_action *ea = Node::get_constant_explicit_action(supplied);
+		RTActionPatterns::emit_try(ea, FALSE);
 	} else {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 		Produce::down(Emit::tree());
@@ -790,7 +790,7 @@ the problem messages are phrased differently if something goes wrong.
 
 @<Inline annotation "try-action-silently"@> =
 	if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
-		action_pattern *ap = Node::get_constant_action_pattern(supplied);
+		explicit_action *ea = Node::get_constant_explicit_action(supplied);
 		Produce::inv_primitive(Emit::tree(), PUSH_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(KEEP_SILENT_HL));
@@ -812,7 +812,7 @@ the problem messages are phrased differently if something goes wrong.
 		Produce::down(Emit::tree());
 			Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 		Produce::up(Emit::tree());
-		RTActionPatterns::emit_try(ap, FALSE);
+		RTActionPatterns::emit_try(ea, FALSE);
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DIVIDEPARAGRAPHPOINT_HL));
 		Produce::inv_primitive(Emit::tree(), PULL_BIP);
 		Produce::down(Emit::tree());

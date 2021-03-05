@@ -5,10 +5,10 @@ Compiling APs.
 @h Compiling action tries.
 
 =
-void RTActionPatterns::emit_try(action_pattern *ap, int store_instead) {
-	parse_node *spec0 = APClauses::get_noun(ap); /* the noun */
-	parse_node *spec1 = APClauses::get_second(ap); /* the second noun */
-	parse_node *spec2 = APClauses::get_actor(ap); /* the actor */
+void RTActionPatterns::emit_try(explicit_action *ea, int store_instead) {
+	parse_node *spec0 = ea->first_noun; /* the noun */
+	parse_node *spec1 = ea->second_noun; /* the second noun */
+	parse_node *spec2 = ea->actor; /* the actor */
 
 	if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec0, K_understanding)) &&
 		(<subject-pronoun>(Node::get_text(spec0)) == FALSE))
@@ -17,15 +17,14 @@ void RTActionPatterns::emit_try(action_pattern *ap, int store_instead) {
 		(<subject-pronoun>(Node::get_text(spec1)) == FALSE))
 		spec1 = Rvalues::from_wording(Node::get_text(spec1));
 
-	action_name *an = ActionNameLists::get_the_one_true_action(ap->action_list);
-	LOGIF(EXPRESSIONS, "Compiling from action name list:\n$L\n", ap->action_list);
+	action_name *an = ea->action;
 
 	int flag_bits = 0;
 	if (Kinds::eq(Specifications::to_kind(spec0), K_text)) flag_bits += 16;
 	if (Kinds::eq(Specifications::to_kind(spec1), K_text)) flag_bits += 32;
 	if (flag_bits > 0) RTKinds::ensure_basic_heap_present();
 
-	if (APClauses::is_request(ap)) flag_bits += 1;
+	if (ea->request) flag_bits += 1;
 
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TRYACTION_HL));
 	Produce::down(Emit::tree());
@@ -269,37 +268,37 @@ int RTActionPatterns::compile_pattern_match_clause_inner(int f,
 }
 
 @ =
-void RTActionPatterns::as_stored_action(value_holster *VH, action_pattern *ap) {
+void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) {
 	inter_name *N = RTKinds::new_block_constant_iname();
 	packaging_state save = Emit::named_late_array_begin(N, K_value);
 
 	RTKinds::emit_block_value_header(K_stored_action, FALSE, 6);
-	action_name *an = ActionNameLists::get_the_one_true_action(ap->action_list);
+	action_name *an = ea->action;
 	Emit::array_action_entry(an);
 
-	int request_bits = APClauses::is_request(ap)?1:0;
-	if (APClauses::get_noun(ap)) {
-		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(APClauses::get_noun(ap), K_understanding))) {
+	int request_bits = (ea->request)?1:0;
+	if (ea->first_noun) {
+		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->first_noun, K_understanding))) {
 			request_bits = request_bits | 16;
 			TEMPORARY_TEXT(BC)
-			literal_text *lt = TextLiterals::compile_literal(NULL, FALSE, Node::get_text(APClauses::get_noun(ap)));
+			literal_text *lt = TextLiterals::compile_literal(NULL, FALSE, Node::get_text(ea->first_noun));
 			Emit::array_iname_entry(lt->lt_sba_iname);
 			DISCARD_TEXT(BC)
-		} else Specifications::Compiler::emit(APClauses::get_noun(ap));
+		} else Specifications::Compiler::emit(ea->first_noun);
 	} else {
 		Emit::array_numeric_entry(0);
 	}
-	if (APClauses::get_second(ap)) {
-		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(APClauses::get_second(ap), K_understanding))) {
+	if (ea->second_noun) {
+		if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(ea->second_noun, K_understanding))) {
 			request_bits = request_bits | 32;
-			literal_text *lt = TextLiterals::compile_literal(NULL, TRUE, Node::get_text(APClauses::get_second(ap)));
+			literal_text *lt = TextLiterals::compile_literal(NULL, TRUE, Node::get_text(ea->second_noun));
 			Emit::array_iname_entry(lt->lt_sba_iname);
-		} else Specifications::Compiler::emit(APClauses::get_second(ap));
+		} else Specifications::Compiler::emit(ea->second_noun);
 	} else {
 		Emit::array_numeric_entry(0);
 	}
-	if (APClauses::get_actor(ap)) {
-		Specifications::Compiler::emit(APClauses::get_actor(ap));
+	if (ea->actor) {
+		Specifications::Compiler::emit(ea->actor);
 	} else
 		Emit::array_iname_entry(RTInstances::iname(I_yourself));
 	Emit::array_numeric_entry((inter_ti) request_bits);
@@ -368,11 +367,11 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		if (naming_mode == FALSE) {
 			if (APClauses::has_any_actor(&ap) == FALSE) {
 				int impose = FALSE;
-				if (APClauses::get_actor(&ap) != NULL) {
+				if (APClauses::get_val(&ap, ACTOR_AP_CLAUSE) != NULL) {
 					impose = TRUE;
-					nonlocal_variable *var = Lvalues::get_nonlocal_variable_if_any(APClauses::get_actor(&ap));
+					nonlocal_variable *var = Lvalues::get_nonlocal_variable_if_any(APClauses::get_val(&ap, ACTOR_AP_CLAUSE));
 					if ((var) && (var == player_VAR)) impose = FALSE;
-					instance *I = Rvalues::to_object_instance(APClauses::get_actor(&ap));
+					instance *I = Rvalues::to_object_instance(APClauses::get_val(&ap, ACTOR_AP_CLAUSE));
 					if ((I) && (I == I_yourself)) impose = FALSE;
 				}
 				if (impose) {
@@ -382,7 +381,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 					} else {
 						CPMC_NEEDED(REQUESTER_DOESNT_EXIST_CPMC, NULL);
 					}
-					if (APClauses::get_actor(&ap)) {
+					if (APClauses::get_val(&ap, ACTOR_AP_CLAUSE)) {
 						CPMC_NEEDED(ACTOR_MATCHES_CPMC, NULL);
 					}
 				} else {
@@ -399,11 +398,11 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		if (ActionNameLists::testing(ap.action_list)) {
 			CPMC_NEEDED(ACTION_MATCHES_CPMC, NULL);
 		}
-		if ((ap.action_list == NULL) && (APClauses::get_noun(&ap))) {
+		if ((ap.action_list == NULL) && (APClauses::get_val(&ap, NOUN_AP_CLAUSE))) {
 			CPMC_NEEDED(NOUN_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(NOUN_IS_INP1_CPMC, NULL);
 		}
-		if ((ap.action_list == NULL) && (APClauses::get_second(&ap))) {
+		if ((ap.action_list == NULL) && (APClauses::get_val(&ap, SECOND_AP_CLAUSE))) {
 			CPMC_NEEDED(SECOND_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(SECOND_IS_INP1_CPMC, NULL);
 		}
@@ -414,11 +413,11 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 		}
 
 		if (Kinds::Behaviour::is_object(kind_of_noun)) {
-			if (APClauses::get_noun(&ap)) {
+			if (APClauses::get_val(&ap, NOUN_AP_CLAUSE)) {
 				CPMC_NEEDED(NOUN_MATCHES_AS_OBJECT_CPMC, NULL);
 			}
 		} else {
-			if (APClauses::get_noun(&ap)) {
+			if (APClauses::get_val(&ap, NOUN_AP_CLAUSE)) {
 				CPMC_NEEDED(NOUN_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
@@ -427,18 +426,18 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
 		if (Kinds::Behaviour::is_object(kind_of_second)) {
-			if (APClauses::get_second(&ap)) {
+			if (APClauses::get_val(&ap, SECOND_AP_CLAUSE)) {
 				CPMC_NEEDED(SECOND_MATCHES_AS_OBJECT_CPMC, NULL);
 			}
 		} else {
-			if (APClauses::get_second(&ap)) {
+			if (APClauses::get_val(&ap, SECOND_AP_CLAUSE)) {
 				CPMC_NEEDED(SECOND_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
 
-		if (APClauses::get_room(&ap)) {
+		if (APClauses::get_val(&ap, IN_AP_CLAUSE)) {
 			if ((APClauses::has_any_actor(&ap) == FALSE) && (naming_mode == FALSE) &&
-				(APClauses::get_actor(&ap) == NULL)) {
+				(APClauses::get_val(&ap, ACTOR_AP_CLAUSE) == NULL)) {
 				CPMC_NEEDED(PLAYER_LOCATION_MATCHES_CPMC, NULL);
 			} else {
 				CPMC_NEEDED(ACTOR_IN_RIGHT_PLACE_CPMC, NULL);
@@ -466,14 +465,14 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			CPMC_NEEDED(NOT_NOWHERE_CPMC, NULL);
 		}
 
-		if (APClauses::get_presence(&ap) != NULL) {
+		if (APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE) != NULL) {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_presence(&ap));
+				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			if (to_be_present) {
 				CPMC_NEEDED(PRESENCE_OF_MATCHES_CPMC, NULL);
 				CPMC_NEEDED(PRESENCE_OF_IN_SCOPE_CPMC, NULL);
 			} else {
-				wording PC = Descriptions::get_calling(APClauses::get_presence(&ap));
+				wording PC = Descriptions::get_calling(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 				if (Wordings::nonempty(PC)) {
 					CPMC_NEEDED(LOOP_OVER_SCOPE_WITH_CALLING_CPMC, NULL);
 				} else {
@@ -637,7 +636,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			Produce::up(Emit::tree());
 			break;
 		case ACTOR_MATCHES_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, APClauses::get_actor(&ap), K_object, FALSE);
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, APClauses::get_val(&ap, ACTOR_AP_CLAUSE), K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
 			RTActions::emit_anl(ap.action_list);
@@ -663,25 +662,25 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			Produce::up(Emit::tree());
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, APClauses::get_noun(&ap),
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, APClauses::get_val(&ap, NOUN_AP_CLAUSE),
 				kind_of_noun, FALSE);
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
-				APClauses::get_noun(&ap), kind_of_noun, FALSE);
+				APClauses::get_val(&ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_second_VAR, APClauses::get_second(&ap),
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_second_VAR, APClauses::get_val(&ap, SECOND_AP_CLAUSE),
 				kind_of_second, FALSE);
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
-				APClauses::get_second(&ap), kind_of_second, FALSE);
+				APClauses::get_val(&ap, SECOND_AP_CLAUSE), kind_of_second, FALSE);
 			break;
 		case PLAYER_LOCATION_MATCHES_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, real_location_VAR, APClauses::get_room(&ap), K_object, TRUE);
+			RTActionPatterns::compile_pattern_match_clause(f, VH, real_location_VAR, APClauses::get_val(&ap, IN_AP_CLAUSE), K_object, TRUE);
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -695,7 +694,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		case ACTOR_LOCATION_MATCHES_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f,
-				VH, actor_location_VAR, APClauses::get_room(&ap), K_object, TRUE);
+				VH, actor_location_VAR, APClauses::get_val(&ap, IN_AP_CLAUSE), K_object, TRUE);
 			break;
 		case PARAMETER_MATCHES_CPMC: {
 			kind *saved_kind = NonlocalVariables::kind(parameter_object_VAR);
@@ -752,15 +751,15 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		case PRESENCE_OF_MATCHES_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_presence(&ap));
+				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			RTActionPatterns::compile_pattern_match_clause(FALSE, VH,
 				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
-				APClauses::get_presence(&ap), K_object, FALSE);
+				APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE), K_object, FALSE);
 			break;
 		}
 		case PRESENCE_OF_IN_SCOPE_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_presence(&ap));
+				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSCOPE_HL));
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(to_be_present));
@@ -769,10 +768,10 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(APClauses::get_presence(&ap));
-			wording PC = Descriptions::get_calling(APClauses::get_presence(&ap));
+			loop_over_scope *los = LoopingOverScope::new(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+			wording PC = Descriptions::get_calling(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
-				Specifications::to_kind(APClauses::get_presence(&ap)));
+				Specifications::to_kind(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE)));
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
@@ -798,7 +797,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(APClauses::get_presence(&ap));
+			loop_over_scope *los = LoopingOverScope::new(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -839,10 +838,10 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIONBITMAP_HL));
 	Produce::down(Emit::tree());
-	if (APClauses::get_noun(ap) == NULL)
+	if (APClauses::get_val(ap, NOUN_AP_CLAUSE) == NULL)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
-		Specifications::Compiler::emit_as_val(K_value, APClauses::get_noun(ap));
+		Specifications::Compiler::emit_as_val(K_value, APClauses::get_val(ap, NOUN_AP_CLAUSE));
 	int L = ActionNameLists::length(ap->action_list);
 	if (L == 0)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);

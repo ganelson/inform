@@ -244,6 +244,7 @@ DECLARE_CLASS(rubric_holder)
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
 @e direction_inference_data_CLASS
+@e explicit_action_CLASS
 @e found_in_inference_data_CLASS
 @e grammar_line_CLASS
 @e grammar_verb_CLASS
@@ -303,6 +304,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_entry, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_pattern, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(action_name_list, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ap_clause, 400)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(explicit_action, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(scene_connector, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_item, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)

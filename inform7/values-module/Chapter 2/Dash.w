@@ -1056,6 +1056,7 @@ and those marked as "arithmetic operations".
 
 @<Step (4I.a) Take care of arithmetic phrases@> =
 	LOG_DASH("(4I.a)");
+LOGIF(MATCHING, "outcome = %d\n", outcome);
 	if (Phrases::TypeData::arithmetic_operation(ph) == TOTAL_OPERATION)
 		@<Step (4I.a.1) "Total P of O" has kind the kind of P@>
 	else if (Phrases::TypeData::is_arithmetic_phrase(ph)) @<Step (4I.a.2) Dimension-check arithmetic phrases@>;
@@ -1785,6 +1786,7 @@ to level 5.
 
 @<Step (4S) Verify anything else@> =
 	LOG_DASH("(4S.a)");
+LOGIF(MATCHING, "outcome = %d\n", outcome);
 	LOG_INDENT;
 
 	outcome = Dash::typecheck_single_node(p, kind_needed, condition_context);
@@ -1792,11 +1794,12 @@ to level 5.
 	@<Allow listed-in table references only where these are expected@>;
 
 	LOG_DASH("(4S.b)");
+LOGIF(MATCHING, "outcome was %d\n", outcome);
 	for (parse_node *arg = p->down; arg; arg = arg->next)
 		outcome =
 			Dash::worst_case(outcome,
 				Dash::typecheck_recursive(arg, p, TRUE));
-
+LOGIF(MATCHING, "outcome is %d\n", outcome);
 	if ((outcome != NEVER_MATCH) && (p->down)) {
 		if (Node::is(p, LIST_ENTRY_NT))
 			@<Step (4S.c) Check arguments of a list entry@>;
@@ -2913,42 +2916,53 @@ action value, which is a specific action.
 
 @<Step (5.d.1) Coerce TEST ACTION to constant action@> =
 	LOG_DASH("(5.d.1)");
+		LOGIF(MATCHING, "Kind expected %u; ista %d cond %d\n", kind_expected, Conditions::is_TEST_ACTION(p), condition_context);
 	if ((Conditions::is_TEST_ACTION(p)) && (kind_expected) &&
 		(Kinds::compatible(K_stored_action, kind_expected))) {
-		action_pattern *ap = Node::get_constant_action_pattern(p->down);
-		if (ActionPatterns::is_unspecific(ap)) {
-			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, Node::get_text(p));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionNotSpecific));
-			Problems::issue_problem_segment(
-				"You wrote %1, but '%2' is too vague to describe a specific action. "
-				"%PIt has to be an exact instruction about what is being done, and "
-				"to what. For instance, 'taking the box' is fine, but 'dropping or "
-				"taking something openable' is not.");
-			Problems::issue_problem_end();
-			return NEVER_MATCH;
-		}
-		if (ActionPatterns::is_overspecific(ap)) {
-			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, Node::get_text(p));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionTooSpecific));
-			Problems::issue_problem_segment(
-				"You wrote %1, but '%2' imposes too many restrictions on the "
-				"action to be carried out, by saying something about the "
-				"circumstances which you can't guarantee will be true. "
-				"%PSometimes this problem appears because I've misread text like "
-				"'in ...' as a clause saying that the action takes place in a "
-				"particular room, when in fact it was part of the name of one of "
-				"the items involved. If that's the problem, try using 'let' to "
-				"create a simpler name for it, and then rewrite the 'try' to use "
-				"that simpler name - the ambiguity should then vanish.");
-			Problems::issue_problem_end();
-			return NEVER_MATCH;
+LOGIF(MATCHING, "Madeit\n");
+		explicit_action *ea = Node::get_constant_explicit_action(p->down);
+		if (ea == NULL) {
+			action_pattern *ap = Node::get_constant_action_pattern(p->down);
+			int failure_code = 0;
+			ea = ActionPatterns::to_explicit_action(ap, &failure_code);
+		
+			if (failure_code == 1) {
+				THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, Node::get_text(p));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionNotSpecific));
+				Problems::issue_problem_segment(
+					"You wrote %1, but '%2' is too vague to describe a specific action. "
+					"%PIt has to be an exact instruction about what is being done, and "
+					"to what. For instance, 'taking the box' is fine, but 'dropping or "
+					"taking something openable' is not.");
+				Problems::issue_problem_end();
+				return NEVER_MATCH;
+			}
+			if (failure_code == 2) {
+				THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, Node::get_text(p));
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActionTooSpecific));
+				Problems::issue_problem_segment(
+					"You wrote %1, but '%2' imposes too many restrictions on the "
+					"action to be carried out, by saying something about the "
+					"circumstances which you can't guarantee will be true. "
+					"%PSometimes this problem appears because I've misread text like "
+					"'in ...' as a clause saying that the action takes place in a "
+					"particular room, when in fact it was part of the name of one of "
+					"the items involved. If that's the problem, try using 'let' to "
+					"create a simpler name for it, and then rewrite the 'try' to use "
+					"that simpler name - the ambiguity should then vanish.");
+				Problems::issue_problem_end();
+				return NEVER_MATCH;
+			}
 		}
 		Node::copy_in_place(p, p->down);
 		p->down = NULL;
+		Node::set_kind_of_value(p, K_stored_action);
+		Node::set_constant_explicit_action(p, ea);
+		Node::set_constant_action_pattern(p, NULL);
 		LOGIF(MATCHING, "Coerced to sa: $P\n", p);
 		return ALWAYS_MATCH;
 	}

@@ -63,14 +63,14 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *cl
 	if (rct1 > rct2) return 1;
 	if (rct1 < rct2) return -1;
 
-	if ((APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap1) == NULL)
-		&& (APClauses::get_room(ap2)) && (APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
+	if ((APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::get_val(ap1, IN_AP_CLAUSE) == NULL)
+		&& (APClauses::get_val(ap2, IN_AP_CLAUSE)) && (APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
 		rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2); if (rv) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}
 
-	if ((APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::get_room(ap2) == NULL)
-		&& (APClauses::get_room(ap1)) && (APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
+	if ((APClauses::get_val(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::get_val(ap2, IN_AP_CLAUSE) == NULL)
+		&& (APClauses::get_val(ap1, IN_AP_CLAUSE)) && (APClauses::get_val(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
 		rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2); if (rv) return rv;
 		suspend_usual_from_and_room = TRUE;
 	}

@@ -109,6 +109,7 @@ int VariableSubjects::typecheck_initial_value(nonlocal_variable *nlv, parse_node
 	kind *constant_kind = Specifications::to_kind(val);
 
 	int outcome = Kinds::compatible(constant_kind, kind_as_declared);
+
 	int throw_problem = FALSE;
 	if (outcome == NEVER_MATCH) throw_problem = TRUE;
 	if ((model_checking_stage) && (outcome == SOMETIMES_MATCH)) throw_problem = TRUE;

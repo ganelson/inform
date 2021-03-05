@@ -47,46 +47,6 @@ void APClauses::clear_opt(ap_clause *apoc, int opt) {
 	if (apoc->clause_options & opt) apoc->clause_options -= opt;
 }
 
-parse_node *APClauses::get_actor(action_pattern *ap) {
-	return APClauses::get_val(ap, ACTOR_AP_CLAUSE);
-}
-
-void APClauses::set_actor(action_pattern *ap, parse_node *val) {
-	APClauses::set_val(ap, ACTOR_AP_CLAUSE, val);
-}
-
-parse_node *APClauses::get_noun(action_pattern *ap) {
-	return APClauses::get_val(ap, NOUN_AP_CLAUSE);
-}
-
-void APClauses::set_noun(action_pattern *ap, parse_node *val) {
-	APClauses::set_val(ap, NOUN_AP_CLAUSE, val);
-}
-
-parse_node *APClauses::get_second(action_pattern *ap) {
-	return APClauses::get_val(ap, SECOND_AP_CLAUSE);
-}
-
-void APClauses::set_second(action_pattern *ap, parse_node *val) {
-	APClauses::set_val(ap, SECOND_AP_CLAUSE, val);
-}
-
-parse_node *APClauses::get_presence(action_pattern *ap) {
-	return APClauses::get_val(ap, IN_THE_PRESENCE_OF_AP_CLAUSE);
-}
-
-void APClauses::set_presence(action_pattern *ap, parse_node *val) {
-	APClauses::set_val(ap, IN_THE_PRESENCE_OF_AP_CLAUSE, val);
-}
-
-parse_node *APClauses::get_room(action_pattern *ap) {
-	return APClauses::get_val(ap, IN_AP_CLAUSE);
-}
-
-void APClauses::set_room(action_pattern *ap, parse_node *val) {
-	APClauses::set_val(ap, IN_AP_CLAUSE, val);
-}
-
 void APClauses::any_actor(action_pattern *ap) {
 	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
 	APClauses::set_opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT);
@@ -361,9 +321,9 @@ int APClauses::cmp_clauses(int C1, action_pattern *ap1, int C2, action_pattern *
 
 int APClauses::viable_in_past_tense(action_pattern *ap) {
 	if (ActionPatterns::is_overspecific(ap)) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_noun(ap)) == FALSE) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_second(ap)) == FALSE) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_actor(ap)) == FALSE) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_val(ap, ACTOR_AP_CLAUSE)) == FALSE) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_val(ap, NOUN_AP_CLAUSE)) == FALSE) return FALSE;
+	if (APClauses::pta_acceptable(APClauses::get_val(ap, SECOND_AP_CLAUSE)) == FALSE) return FALSE;
 	return TRUE;
 }
 

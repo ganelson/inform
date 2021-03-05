@@ -598,12 +598,13 @@ further sub-cases later.
 	#ifdef IF_MODULE
 	if (Node::get_type(py) == ACTION_NT) {
 		action_pattern *ap = Node::get_action_meaning(py);
-		if ((ap) && (ActionPatterns::is_unspecific(ap) == FALSE) &&
-			(ActionPatterns::is_overspecific(ap) == FALSE)) {
+		if (ap) {
 			parse_node *val = Rvalues::from_action_pattern(ap);
-			Refiner::give_spec_to_noun(py, val);
-			Assertions::make_coupling(px, py);
-			return;
+			if (Rvalues::is_CONSTANT_of_kind(val, K_stored_action)) {
+				Refiner::give_spec_to_noun(py, val);
+				Assertions::make_coupling(px, py);
+				return;
+			}
 		}
 	}
 	#endif

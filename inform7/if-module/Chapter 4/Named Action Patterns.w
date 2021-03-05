@@ -35,7 +35,7 @@ void NamedActionPatterns::characterise(action_pattern *ap, wording W) {
 		return;
 	}
 
-	if (APClauses::get_actor(ap)) {
+	if (APClauses::get_val(ap, ACTOR_AP_CLAUSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedAPWithActor),
 			"behaviour characterised by named action patterns can only specify the action",
 			"not the actor: as a result, it cannot include requests to other people to "

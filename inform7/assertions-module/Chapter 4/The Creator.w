@@ -163,9 +163,8 @@ void Assertions::Creator::to_action_node(parse_node *p) {
 	if (Node::get_type(p) == PROPER_NOUN_NT) {
 		parse_node *spec = Node::get_evaluation(p);
 		if (Rvalues::is_CONSTANT_of_kind(spec, K_stored_action)) {
-			action_pattern *ap = Node::get_constant_action_pattern(spec);
-			Node::set_type(p, ACTION_NT);
-			Node::set_action_meaning(p, ap);
+			explicit_action *ea = Node::get_constant_explicit_action(spec);
+			ActionPatterns::make_ACTION_node(p, ea->as_described);
 			return;
 		}
 	}

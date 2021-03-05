@@ -121,7 +121,8 @@ parse_node *Conditions::new_TEST_ACTION(void *ap, wording W) {
 int Conditions::is_TEST_ACTION(parse_node *spec) {
 	#ifdef IF_MODULE
 	if ((Node::is(spec, TEST_VALUE_NT)) &&
-		(Rvalues::to_action_pattern(spec->down))) return TRUE;
+		((Rvalues::to_action_pattern(spec->down)) ||
+		(Rvalues::to_explicit_action(spec->down)))) return TRUE;
 	#endif
 	return FALSE;
 }

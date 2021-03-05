@@ -7,6 +7,11 @@ C12RuleSorting2
 C12RuleSorting3
 C12RuleSorting4
 C12RuleSorting5
+StoredActionsWithValues
+RelDynamicPointer
+ConstantStoredActionsWithTopics
+InheritedStoredActions
+TableDefinedSAs
 PM_NamedAPIsArticle
 PM_NamedAPWithActor
 PM_GoingWrongKind
