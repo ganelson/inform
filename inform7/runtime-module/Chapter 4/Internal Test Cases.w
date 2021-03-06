@@ -444,11 +444,57 @@ void InternalTests::log_poset(int n) {
 
 @
 
+= (early code)
+int ap_test_register_initialised = FALSE;
+action_pattern *ap_test_register[10];
+
+@ =
+action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
+	named_action_pattern *nap = NamedActionPatterns::add(ap, W);
+	action_pattern *new_ap = ActionPatterns::perpetuate(ActionPatterns::new(W));
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	entry->item.nap_listed = nap;
+	new_ap->action_list = ActionNameLists::new_list(entry, ANL_POSITIVE);
+	return new_ap;
+}
+
+@
+
+=
+<perform-ap-test> ::=
+	<test-ap> |                   ==> @<Write textual AP test result@>
+	<test-ap> ~~ <test-ap> |       ==> @<Write comparison AP test result@>
+	...                           ==> @<Write failure@>
+
+<test-ap> ::=
+	<test-ap> is {...} |          ==> { -, InternalTests::ap_of_nap(RP[1], WR[1]) }
+	<test-register> = <test-ap> | ==> { -, (ap_test_register[R[1]] = RP[2]) }
+	<action-pattern> |            ==> { pass 1 }
+	<test-register>               ==> { -, ap_test_register[R[1]] }
+
+<test-register> ::=
+	r1 | r2 | r3 | r4 | r5
+
+@<Write textual AP test result@> =
+	LOG("%W: $A\n", W, RP[1]);
+
+@<Write comparison AP test result@> =
+	int rv = ActionPatterns::compare_specificity(RP[1], RP[2]);
+	int rv_converse = ActionPatterns::compare_specificity(RP[2], RP[1]);
+	LOG("%W: ", W);
+	if (rv > 0) LOG("left is more specific\n");
+	if (rv < 0) LOG("right is more specific\n");
+	if (rv == 0) LOG("equally specific\n");
+	if (rv_converse != -1*rv) LOG("*** Not antisymmetric ***\n");
+
+@<Write failure@> =
+	LOG("%W: failed to parse\n", W);
+
 @<Perform an internal test of the action pattern parser@> =
-	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
-	if (<action-pattern>(itc->text_supplying_the_case)) {
-		LOG("%W: $A\n", itc->text_supplying_the_case, <<rp>>);
-	} else {
-		LOG("%W: failed to parse\n", itc->text_supplying_the_case);
+	if (ap_test_register_initialised == FALSE) {
+		ap_test_register_initialised = TRUE;
+		for (int i=0; i<10; i++) ap_test_register[i] = NULL;
 	}
+	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
+	<perform-ap-test>(itc->text_supplying_the_case);
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;

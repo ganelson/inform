@@ -7,3 +7,12 @@ Test pattern (internal) with looking or waiting.
 Test pattern (internal) with looking or taking.
 Test pattern (internal) with taking the counter.
 Test pattern (internal) with looking the counter.
+Test pattern (internal) with examining the counter is nosy behaviour.
+Test pattern (internal) with looking is nosy behaviour.
+Test pattern (internal) with nosy behaviour.
+
+Test pattern (internal) with taking ~~ doing something.
+Test pattern (internal) with doing something ~~ doing something other than taking.
+Test pattern (internal) with taking ~~ taking a thing.
+Test pattern (internal) with taking the counter ~~ taking a thing.
+Test pattern (internal) with taking or dropping the counter ~~ taking the counter.

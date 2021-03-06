@@ -21,5 +21,29 @@
   5. looking the counter
   looking the counter: failed to parse
   
+  6. examining the counter is nosy behaviour
+  examining the counter is nosy behaviour: <action-based: nosy behaviour>
+  
+  7. looking is nosy behaviour
+  looking is nosy behaviour: <action-based: nosy behaviour>
+  
+  8. nosy behaviour
+  nosy behaviour: <action-based: nosy behaviour>
+  
+  9. taking ~~ doing something
+  taking ~~ doing something: left is more specific
+  
+  10. doing something ~~ doing something other than taking
+  doing something ~~ doing something other than taking: right is more specific
+  
+  11. taking ~~ taking a thing
+  taking ~~ taking a thing: right is more specific
+  
+  12. taking the counter ~~ taking a thing
+  taking the counter ~~ taking a thing: left is more specific
+  
+  13. taking or dropping the counter ~~ taking the counter
+  taking or dropping the counter ~~ taking the counter: right is more specific
+  
 > >   Radiation Laboratory
 > Are you sure you want to quit? 

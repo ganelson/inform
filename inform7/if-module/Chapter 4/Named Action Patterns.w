@@ -49,13 +49,14 @@ void NamedActionPatterns::characterise(action_pattern *ap, wording W) {
 @ So, then, the following adds an action pattern to a NAP identified only by its name, |W|:
 
 =
-void NamedActionPatterns::add(action_pattern *ap, wording W) {
+named_action_pattern *NamedActionPatterns::add(action_pattern *ap, wording W) {
 	named_action_pattern *nap = NamedActionPatterns::by_name(W);
 	if (nap == NULL) nap = NamedActionPatterns::new(W);
 	named_action_pattern_entry *nape = CREATE(named_action_pattern_entry);
 	nape->behaviour = ap;
 	nape->where_decided = current_sentence;
 	ADD_TO_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns);
+	return nap;
 }
 
 named_action_pattern *NamedActionPatterns::by_name(wording W) {
