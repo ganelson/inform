@@ -63,7 +63,7 @@ int ParsingPlugin::new_subject_notify(inference_subject *subj) {
 int ParsingPlugin::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	kind *K = Node::get_kind_of_value(spec1);
 	if (Kinds::eq(K, K_understanding)) {
-		if (ARvalues::to_grammar_verb(spec1) == ARvalues::to_grammar_verb(spec2)) {
+		if (ParsingPlugin::rvalue_to_grammar_verb(spec1) == ParsingPlugin::rvalue_to_grammar_verb(spec2)) {
 			*rv = TRUE;
 		}
 		*rv = FALSE;
@@ -71,6 +71,11 @@ int ParsingPlugin::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *r
 	}
 	return FALSE;
 }
+
+parse_node *ParsingPlugin::rvalue_from_grammar_verb(grammar_verb *val) { 
+		CONV_FROM(grammar_verb, K_understanding) }
+grammar_verb *ParsingPlugin::rvalue_to_grammar_verb(parse_node *spec) { 
+		CONV_TO(grammar_verb) }
 
 @ A number of global variables are given special treatment here, including
 a whole family with names like "the K understood", for different kinds K.

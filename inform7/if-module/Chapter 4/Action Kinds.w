@@ -88,15 +88,6 @@ parse_node *ARvalues::from_named_action_pattern(named_action_pattern *val) {
 named_action_pattern *ARvalues::to_named_action_pattern(parse_node *spec) { 
 		CONV_TO(named_action_pattern) }
 
-parse_node *ARvalues::from_grammar_verb(grammar_verb *val) { 
-		CONV_FROM(grammar_verb, K_understanding) }
-grammar_verb *ARvalues::to_grammar_verb(parse_node *spec) { 
-		CONV_TO(grammar_verb) }
-parse_node *ARvalues::from_scene(scene *val) { 
-		CONV_FROM(scene, K_scene) }
-scene *ARvalues::to_scene(parse_node *spec) { 
-		CONV_TO(scene) }
-
 @ It's not useful to be able to compare description of action constants for
 equality in this sense. There would be a case for doing so with stored actions,
 but in practice there seems little need, so for the moment we do not.

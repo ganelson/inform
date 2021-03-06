@@ -359,7 +359,7 @@ int RTActions::actions_compile_constant(value_holster *VH, kind *K, parse_node *
 	}
 	if (Kinds::eq(K, K_description_of_action)) {
 		action_pattern *ap = Node::get_constant_action_pattern(spec);
-		RTActionPatterns::compile_pattern_match(VH, *ap, FALSE);
+		RTActionPatterns::compile_pattern_match(VH, ap, FALSE);
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_stored_action)) {

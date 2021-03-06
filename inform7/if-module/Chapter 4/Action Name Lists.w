@@ -204,6 +204,18 @@ int ActionNameLists::nonempty(action_name_list *list) {
 	return FALSE;
 }
 
+@ If an action list is a wrapper for a single named action pattern, the
+following function returns that NAP. Anything more complicated, |NULL|.
+
+=
+named_action_pattern *ActionNameLists::is_single_NAP(action_name_list *list) {
+	if ((ActionNameLists::length(list) == 1) && (list->negation_state == ANL_POSITIVE)) {
+		anl_item *item = ActionNameLists::first_item(list);
+		return item->nap_listed;
+	}
+	return NULL;
+}
+
 @ The //anl_item// material is the actual content we are trying to get at.
 Like life, items are a mixture of naps and actions. At most one of these
 fields is non-|NULL|. If they are both |NULL|, this represents "doing

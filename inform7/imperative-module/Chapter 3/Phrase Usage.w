@@ -699,27 +699,26 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 		permit_trying_omission = TRUE;
 		Frames::set_stvol(
 			Frames::current_stack_frame(), all_action_processing_vars);
-		if (<action-pattern>(phud->rule_parameter)) phrcd.ap = *((action_pattern *) <<rp>>);
+		if (<action-pattern>(phud->rule_parameter)) phrcd.ap = <<rp>>;
 		Frames::remove_nonphrase_stack_frame();
 		permit_trying_omission = FALSE;
 
-		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE)
+		if (phrcd.ap == NULL)
 			@<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
 		phrcd.ap = ParseActionPatterns::parametric(phud->rule_parameter, pk);
-		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE) {
+		if (phrcd.ap == NULL) {
 			if (Wordings::nonempty(phud->whenwhile)) {
 				wording F = Wordings::up_to(phud->rule_parameter, Wordings::last_wn(phud->whenwhile));
 				phrcd.ap = ParseActionPatterns::parametric(F, pk);
-				if (ActionPatterns::is_valid(&(phrcd.ap)) == TRUE) {
+				if (phrcd.ap) {
 					phud->rule_parameter = F;
 					phud->whenwhile = EMPTY_WORDING;
 				}
 			}
 		}
-		if (ActionPatterns::is_valid(&(phrcd.ap)) == FALSE)
-			@<Issue a problem message for a bad parameter@>;
+		if (phrcd.ap == NULL) @<Issue a problem message for a bad parameter@>;
 	}
 	#endif
 	#ifndef IF_MODULE
@@ -738,7 +737,7 @@ parser, recording how it most recently failed.
 @<Issue a problem message for a bad action@> =
 	Phrases::Usage::log(phud);
 	LOG("Bad action pattern: %W = $A\nPAP failure reason: %d\n",
-		phud->rule_parameter, &(phrcd.ap), pap_failure_reason);
+		phud->rule_parameter, phrcd.ap, pap_failure_reason);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, phud->rule_parameter);
 	if (<action-problem-diagnosis>(phud->rule_parameter) == FALSE)

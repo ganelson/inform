@@ -961,7 +961,7 @@ pcalc_prop *Simplifications::convert_gerunds(pcalc_prop *prop, int *changed) {
 			for (int i=0; i<2; i++)
 				if (AConditions::is_action_TEST_VALUE(pl->terms[i].constant))
 					pl->terms[i].constant =
-						AConditions::action_tested(pl->terms[i].constant);
+						AConditions::gerund_from_TEST_VALUE(pl->terms[i].constant);
 	return prop;
 }
 #endif

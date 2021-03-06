@@ -2,7 +2,19 @@
 
 Pattern-matches on individual nouns in an action are called clauses.
 
-@
+@h Clause IDs.
+Clauses come in types, each with their own ID. Some are hard-wired into
+the compiler: |IN_THE_PRESENCE_OF_AP_CLAUSE|, for example. Others arise
+from Inform source text adding optional clauses to actions which are based
+on matching action variables: see //Action Variables//.
+
+The set of clauses in an //action_pattern// is stored as a linked list
+of //ap_clause// objects. Clauses must be listed in increasing ID order,
+and cannot contain two clauses with the same ID. The ID numbers will either
+be one of the |*_AP_CLAUSE| enumerated values, which are clauses where the
+Inform compiler has to do something special involving them, or else will
+be determined by //APClauses::clause_ID_for_action_variable// for matching
+action variable clauses.
 
 @e PARAMETRIC_AP_CLAUSE from 0
 @e ACTOR_AP_CLAUSE
@@ -13,99 +25,59 @@ Pattern-matches on individual nouns in an action are called clauses.
 @e WHEN_AP_CLAUSE
 
 =
-typedef struct ap_clause {
-	int clause_ID;
-	struct stacked_variable *stv_to_match;
-	struct parse_node *clause_spec;
-	int clause_options;
-	struct ap_clause *next;
-	CLASS_DEFINITION
-} ap_clause;
-
-@ The clause options are a bitmap. Some are meaningful only for one or two
-clauses.
-
-@d ALLOW_REGION_AS_ROOM_APCOPT 1
-@d DO_NOT_VALIDATE_APCOPT 2
-@d ACTOR_IS_NOT_PLAYER_APCOPT 4
-@d REQUEST_APCOPT 8
-
-@ =
-int APClauses::opt(ap_clause *apoc, int opt) {
-	if (apoc == NULL) return FALSE;
-	if ((apoc->clause_options & opt) != 0) return TRUE;
-	return FALSE;
+int APClauses::clause_ID_for_action_variable(action_pattern *ap, stacked_variable *stv) {
+	int D = Going::divert_clause_ID(ap, stv); if (D >= 0) return D;
+	int oid = StackedVariables::get_owner_id(stv);
+	int off = StackedVariables::get_offset(stv);
+	return 1000*oid + off;
 }
 
-void APClauses::set_opt(ap_clause *apoc, int opt) {
-	if (apoc == NULL) internal_error("no such apoc");
-	if ((apoc->clause_options & opt) == 0) apoc->clause_options += opt;
-}
-
-void APClauses::clear_opt(ap_clause *apoc, int opt) {
-	if (apoc == NULL) internal_error("no such apoc");
-	if (apoc->clause_options & opt) apoc->clause_options -= opt;
-}
-
-void APClauses::any_actor(action_pattern *ap) {
-	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
-	APClauses::set_opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT);
-}
-
-int APClauses::has_any_actor(action_pattern *ap) {
-	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
-	if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) return TRUE;
-	return FALSE;
-}
-
-void APClauses::set_request(action_pattern *ap) {
-	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
-	APClauses::set_opt(apoc, REQUEST_APCOPT);
-}
-
-void APClauses::clear_request(action_pattern *ap) {
-	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
-	APClauses::clear_opt(apoc, REQUEST_APCOPT);
-}
-
-int APClauses::is_request(action_pattern *ap) {
-	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
-	if (APClauses::opt(apoc, REQUEST_APCOPT)) return TRUE;
-	return FALSE;
-}
-
-parse_node *APClauses::get_val(action_pattern *ap, int C) {
-	ap_clause *apoc = APClauses::clause(ap, C);
-	return (apoc)?(apoc->clause_spec):NULL;
-}
-
-void APClauses::set_val(action_pattern *ap, int C, parse_node *val) {
-	if (val == NULL) {
-		ap_clause *apoc = APClauses::clause(ap, C);
-		if (apoc) apoc->clause_spec = val;
-	} else {
-		ap_clause *apoc = APClauses::ensure_clause(ap, C);
-		apoc->clause_spec = val;
+void APClauses::write_clause_ID(OUTPUT_STREAM, int C, stacked_variable *stv) {
+	switch (C) {
+		case PARAMETRIC_AP_CLAUSE:         WRITE("parameter"); break;
+		case ACTOR_AP_CLAUSE:              WRITE("actor"); break;
+		case NOUN_AP_CLAUSE:               WRITE("noun"); break;
+		case SECOND_AP_CLAUSE:             WRITE("second"); break;
+		case IN_AP_CLAUSE:                 WRITE("in"); break;
+		case IN_THE_PRESENCE_OF_AP_CLAUSE: WRITE("in-presence"); break;
+		case WHEN_AP_CLAUSE:               WRITE("when"); break;
+	}
+	Going::write_clause_ID(OUT, C);
+	if (stv) {
+		WRITE("{");
+		NonlocalVariables::write(OUT, StackedVariables::get_variable(stv));
+		WRITE("}");
 	}
 }
 
-void APClauses::nullify_nonspecific(action_pattern *ap, int C) {
-	ap_clause *apoc = APClauses::clause(ap, C);
-	if (apoc) apoc->clause_spec = ActionPatterns::nullify_nonspecific_references(apoc->clause_spec);
-}
+@h Clauses and their ordering.
+A single clause is an instance of:
 
-ap_clause *APClauses::clause(action_pattern *ap, int C) {
-	return APClauses::find_clause(ap, C, FALSE);
-}
+=
+typedef struct ap_clause {
+	int clause_ID;
+	struct stacked_variable *stv_to_match; /* can be |NULL| for some built-in clause IDs */
+	struct parse_node *clause_spec; /* what the pattern says about this value */
+	int clause_options; /* a bitmap of flags: see below */
+	struct ap_clause *next; /* in the linked list of clauses for an action pattern */
+	CLASS_DEFINITION
+} ap_clause;
 
-ap_clause *APClauses::ensure_clause(action_pattern *ap, int C) {
-	return APClauses::find_clause(ap, C, TRUE);
-}
+@ This loop conveniently runs through the clauses for |ap|:
 
+@d LOOP_OVER_AP_CLAUSES(var, ap)
+	for (ap_clause *var = (ap)?(ap->ap_clauses):NULL; var; var = var->next)
+
+@ The list is stored in increasing order of clause ID. The only way to add new
+clauses is with the following, which finds clause |C| if it exists, and if not
+either returns |NULL| or creates clause |C| (inserting at the correct list
+position), depending on whether |make| is set.
+
+=
 ap_clause *APClauses::find_clause(action_pattern *ap, int C, int make) {
 	if (ap) {
 		ap_clause *last = NULL;
-		for (ap_clause *apoc = ap->ap_clauses; apoc; apoc = apoc->next) {
+		LOOP_OVER_AP_CLAUSES(apoc, ap) {
 			if (apoc->clause_ID == C) return apoc;
 			if (apoc->clause_ID > C) {
 				if (make) @<Make a new clause@>
@@ -133,66 +105,41 @@ ap_clause *APClauses::find_clause(action_pattern *ap, int C, int make) {
 	new_apoc->next = apoc;
 	return new_apoc;
 
-@ =
-void APClauses::ap_add_optional_clause(action_pattern *ap, stacked_variable *stv,
-	wording W) {
-	if (stv == NULL) internal_error("no stacked variable for apoc");
-	parse_node *spec = ParseActionPatterns::verified_action_parameter(W);
-	int oid = StackedVariables::get_owner_id(stv);
-	int off = StackedVariables::get_offset(stv);
-	
-	int C = 1000*oid + off;
-	int D = Going::divert(ap, stv); if (D >= 0) C = D;
-	ap_clause *apoc = APClauses::ensure_clause(ap, C);
-	apoc->stv_to_match = stv;
-	apoc->clause_spec = spec;
-	Going::new_clause(ap, apoc);
+@ A more descriptive way to call this function:
+
+=
+ap_clause *APClauses::clause(action_pattern *ap, int C) {
+	return APClauses::find_clause(ap, C, FALSE);
 }
 
-int APClauses::has_stv_clauses(action_pattern *ap) {
-	if ((ap) && (APClauses::nudge_to_stv_apoc(ap->ap_clauses))) return TRUE;
-	return FALSE;
+ap_clause *APClauses::ensure_clause(action_pattern *ap, int C) {
+	return APClauses::find_clause(ap, C, TRUE);
 }
 
-int APClauses::compare_specificity_of_apoc_list(action_pattern *ap1, action_pattern *ap2) {
-	int rct1 = APClauses::ap_count_optional_clauses(ap1);
-	int rct2 = APClauses::ap_count_optional_clauses(ap2);
+@ Each clause contains a specification. Note that not providing a clause is
+almost the same thing as providing one with specification |NULL|. But only
+almost, because there could also be options set on it.
 
-	if (rct1 > rct2) return 1;
-	if (rct1 < rct2) return -1;
-	if (rct1 == 0) return 0;
+=
+parse_node *APClauses::spec(action_pattern *ap, int C) {
+	ap_clause *apoc = APClauses::clause(ap, C);
+	return (apoc)?(apoc->clause_spec):NULL;
+}
 
-	ap_clause *apoc1 = APClauses::nudge_to_stv_apoc(ap1->ap_clauses),
-		*apoc2 = APClauses::nudge_to_stv_apoc(ap2->ap_clauses);
-	while ((apoc1) && (apoc2)) {
-		int off1 = StackedVariables::get_offset(apoc1->stv_to_match);
-		int off2 = StackedVariables::get_offset(apoc2->stv_to_match);
-		if (off1 == off2) {
-			int rv = Specifications::compare_specificity(apoc1->clause_spec, apoc2->clause_spec, NULL);
-			if (rv != 0) return rv;
-			apoc1 = APClauses::nudge_to_stv_apoc(apoc1->next);
-			apoc2 = APClauses::nudge_to_stv_apoc(apoc2->next);
-		}
-		if (off1 < off2) apoc1 = APClauses::nudge_to_stv_apoc(apoc1->next);
-		if (off1 > off2) apoc2 = APClauses::nudge_to_stv_apoc(apoc2->next);
+void APClauses::set_spec(action_pattern *ap, int C, parse_node *val) {
+	if (val == NULL) {
+		ap_clause *apoc = APClauses::clause(ap, C);
+		if (apoc) apoc->clause_spec = val;
+	} else {
+		ap_clause *apoc = APClauses::ensure_clause(ap, C);
+		apoc->clause_spec = val;
 	}
-	return 0;
 }
 
-int APClauses::ap_count_optional_clauses(action_pattern *ap) {
-	int n = 0;
-	if (ap)
-		for (ap_clause *apoc = APClauses::nudge_to_stv_apoc(ap->ap_clauses); apoc;
-			apoc = APClauses::nudge_to_stv_apoc(apoc->next))
-			n++;
-	return n;
-}
+@ And this uses the //values: Dash// typechecker to validate that a specification
+makes sense in a given clause:
 
-ap_clause *APClauses::nudge_to_stv_apoc(ap_clause *apoc) {
-	while ((apoc) && (apoc->stv_to_match == NULL)) apoc = apoc->next;
-	return apoc;
-}
-
+=
 int APClauses::validate(ap_clause *apoc, kind *K) {
 	if ((apoc) &&
 		(APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT) == FALSE) &&
@@ -201,24 +148,38 @@ int APClauses::validate(ap_clause *apoc, kind *K) {
 	return TRUE;
 }
 
+@h Clause options.
+The clause options are a bitmap. Some are meaningful only for one or two
+clauses.
+
+@d ALLOW_REGION_AS_ROOM_APCOPT 1
+@d DO_NOT_VALIDATE_APCOPT 2
+@d ACTOR_IS_NOT_PLAYER_APCOPT 4
+@d REQUEST_APCOPT 8
+
+@ =
+int APClauses::opt(ap_clause *apoc, int opt) {
+	if (apoc == NULL) return FALSE;
+	if ((apoc->clause_options & opt) != 0) return TRUE;
+	return FALSE;
+}
+
+void APClauses::set_opt(ap_clause *apoc, int opt) {
+	if (apoc == NULL) internal_error("no such apoc");
+	if ((apoc->clause_options & opt) == 0) apoc->clause_options += opt;
+}
+
+void APClauses::clear_opt(ap_clause *apoc, int opt) {
+	if (apoc == NULL) internal_error("no such apoc");
+	if (apoc->clause_options & opt) apoc->clause_options -= opt;
+}
+
+@ We can now write:
+
+=
 void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
-	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next) {
-		switch (apoc->clause_ID) {
-			case PARAMETRIC_AP_CLAUSE:         WRITE("parameter"); break;
-			case ACTOR_AP_CLAUSE:              WRITE("actor"); break;
-			case NOUN_AP_CLAUSE:               WRITE("noun"); break;
-			case SECOND_AP_CLAUSE:             WRITE("second"); break;
-			case IN_AP_CLAUSE:                 WRITE("in"); break;
-			case IN_THE_PRESENCE_OF_AP_CLAUSE: WRITE("in-presence"); break;
-			case WHEN_AP_CLAUSE:               WRITE("when"); break;
-		}
-		Going::write(OUT, apoc->clause_ID);
-		if (apoc->stv_to_match) {
-			WRITE("{");
-			NonlocalVariables::write(OUT,
-				StackedVariables::get_variable(apoc->stv_to_match));
-			WRITE("}");
-		}
+	LOOP_OVER_AP_CLAUSES(apoc, ap) {
+		APClauses::write_clause_ID(OUT, apoc->clause_ID, apoc->stv_to_match);
 		WRITE(": %P", apoc->clause_spec);
 		if (APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT)) WRITE("[allow-region]");
 		if (APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT)) WRITE("[no-validate]");
@@ -227,12 +188,112 @@ void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
 	}
 }
 
-@h Action pattern specificity.
-The following is one of Inform's standardised comparison routines, which
-takes a pair of objects A, B and returns 1 if A makes a more specific
-description than B, 0 if they seem equally specific, or $-1$ if B makes a
-more specific description than A. This is transitive, and intended to be
-used in sorting algorithms.
+@h Actor options.
+Two options are used with the actor clause (only), reflecting the unusual ways
+it can be used. 
+
+First, the following is for action patterns like "an actor taking the medallion".
+Here the requirement on the actor is not ${\it person}(c_a)$ but instead forces
+$c_a$ not to be the player. The principled thing might be to set the |clause_spec|
+to the proposition ${\it person}(c_a)\land c_a\neq {\it player}$, but that would
+be annoying to test for. So we give it an option flag instead:
+
+=
+void APClauses::make_actor_anyone_except_player(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::set_opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT);
+}
+
+int APClauses::actor_is_anyone_except_player(action_pattern *ap) {
+	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
+	if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) return TRUE;
+	return FALSE;
+}
+
+@ Secondly, when the following is set, the action is a request. Thus "asking
+Matilda to try taking the medallion" would have this option set, but "Matilda
+taking the medallion" would not.
+
+=
+void APClauses::set_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::set_opt(apoc, REQUEST_APCOPT);
+}
+
+void APClauses::clear_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::ensure_clause(ap, ACTOR_AP_CLAUSE);
+	APClauses::clear_opt(apoc, REQUEST_APCOPT);
+}
+
+int APClauses::is_request(action_pattern *ap) {
+	ap_clause *apoc = APClauses::clause(ap, ACTOR_AP_CLAUSE);
+	if (APClauses::opt(apoc, REQUEST_APCOPT)) return TRUE;
+	return FALSE;
+}
+
+@h Action variable clauses.
+The following functions deal only with clauses which are attached to action
+variables:
+
+=
+void APClauses::set_action_variable_spec(action_pattern *ap, stacked_variable *stv,
+	parse_node *spec) {
+	if (stv == NULL) internal_error("no stacked variable for apoc");
+	int C = APClauses::clause_ID_for_action_variable(ap, stv);
+	ap_clause *apoc = APClauses::ensure_clause(ap, C);
+	apoc->stv_to_match = stv;
+	apoc->clause_spec = spec;
+	Going::new_clause(ap, apoc);
+}
+
+ap_clause *APClauses::advance_to_next_av_clause(ap_clause *apoc) {
+	while ((apoc) && (apoc->stv_to_match == NULL)) apoc = apoc->next;
+	return apoc;
+}
+
+int APClauses::has_action_variable_clauses(action_pattern *ap) {
+	if ((ap) && (APClauses::advance_to_next_av_clause(ap->ap_clauses))) return TRUE;
+	return FALSE;
+}
+
+int APClauses::count_action_variable_clauses(action_pattern *ap) {
+	int n = 0;
+	if (ap)
+		for (ap_clause *apoc = APClauses::advance_to_next_av_clause(ap->ap_clauses); apoc;
+			apoc = APClauses::advance_to_next_av_clause(apoc->next))
+			n++;
+	return n;
+}
+
+int APClauses::compare_specificity_of_av_clauses(action_pattern *ap1, action_pattern *ap2) {
+	int rct1 = APClauses::count_action_variable_clauses(ap1);
+	int rct2 = APClauses::count_action_variable_clauses(ap2);
+
+	if (rct1 > rct2) return 1;
+	if (rct1 < rct2) return -1;
+	if (rct1 == 0) return 0;
+
+	ap_clause *apoc1 = APClauses::advance_to_next_av_clause(ap1->ap_clauses),
+		*apoc2 = APClauses::advance_to_next_av_clause(ap2->ap_clauses);
+	while ((apoc1) && (apoc2)) {
+		int off1 = StackedVariables::get_offset(apoc1->stv_to_match);
+		int off2 = StackedVariables::get_offset(apoc2->stv_to_match);
+		if (off1 == off2) {
+			int rv = Specifications::compare_specificity(
+				apoc1->clause_spec, apoc2->clause_spec, NULL);
+			if (rv != 0) return rv;
+			apoc1 = APClauses::advance_to_next_av_clause(apoc1->next);
+			apoc2 = APClauses::advance_to_next_av_clause(apoc2->next);
+		}
+		if (off1 < off2) apoc1 = APClauses::advance_to_next_av_clause(apoc1->next);
+		if (off1 > off2) apoc2 = APClauses::advance_to_next_av_clause(apoc2->next);
+	}
+	return 0;
+}
+
+@h Aspects.
+Clauses are divided into groups called "aspects", each of which has an ID
+in the |*_APCA| enumeration.
 
 @e PARAMETRIC_APCA from 0
 @e PRIMARY_APCA
@@ -256,30 +317,60 @@ int APClauses::aspect(ap_clause *apoc) {
 	return MISC_APCA;
 }
 
+@ How many clauses with aspect |A| does the pattern have?
+
+=
 int APClauses::number_with_aspect(action_pattern *ap, int A) {
 	int c = 0;
-	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
+	LOOP_OVER_AP_CLAUSES(apoc, ap)
 		if (APClauses::aspect(apoc) == A)
 			c++;
 	return c;
 }
 
+@ How many different aspects can be found among the pattern's clauses?
+
+=
 int APClauses::count_aspects(action_pattern *ap) {
 	int asps[NO_DEFINED_APCA_VALUES];
 	for (int a=0; a<NO_DEFINED_APCA_VALUES; a++) asps[a] = FALSE;
-	for (ap_clause *apoc = (ap)?(ap->ap_clauses):NULL; apoc; apoc = apoc->next)
-		asps[APClauses::aspect(apoc)] = TRUE;
+	LOOP_OVER_AP_CLAUSES(apoc, ap) asps[APClauses::aspect(apoc)] = TRUE;
 	if ((ap) && (ap->duration)) asps[WHEN_APCA] = TRUE;
 	int c = 0;
 	for (int a=0; a<NO_DEFINED_APCA_VALUES; a++) if (asps[a]) c++;
 	return c;
 }
 
+@ There are major limitations on which action patterns can be tested in
+the past tense. They can only specify primary clauses, and then only with
+definite values or descriptions of specific objects.
+
+=
+int APClauses::viable_in_past_tense(action_pattern *ap) {
+	if (ExplicitActions::ap_overspecific(ap)) return FALSE;
+	LOOP_OVER_AP_CLAUSES(apoc, ap)
+		if (APClauses::aspect(apoc) == PRIMARY_APCA)
+			if (APClauses::pta_acceptable(apoc->clause_spec) == FALSE)
+				return FALSE;
+	return TRUE;
+}
+
+int APClauses::pta_acceptable(parse_node *spec) {
+	if (spec == NULL) return TRUE;
+	if (Specifications::is_description(spec) == FALSE) return TRUE;
+	if (Specifications::object_exactly_described_if_any(spec)) return TRUE;
+	return FALSE;
+}
+
+@h Specificity.
+See //ActionPatterns::compare_specificity//, which calls this to look at clauses.
+The code here looks innocent enough but has significant implications for rule
+sorting.
+
+=
 int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
-	int rv;
-	
 	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
-	rv = APClauses::cmp_clause(PARAMETRIC_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+	int rv = APClauses::cmp_clause(PARAMETRIC_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	int claim = FALSE;
 	rv = Going::compare_specificity(ap1, ap2, &claim);
@@ -294,7 +385,7 @@ int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 
 	rv = APClauses::cmp_clause(IN_THE_PRESENCE_OF_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
-	rv = APClauses::compare_specificity_of_apoc_list(ap1, ap2);
+	rv = APClauses::compare_specificity_of_av_clauses(ap1, ap2);
 	if (rv != 0) return rv;
 
 	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
@@ -310,27 +401,10 @@ int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 }
 
 int APClauses::cmp_clause(int C, action_pattern *ap1, action_pattern *ap2) {
-	return Specifications::compare_specificity(
-		APClauses::get_val(ap1, C), APClauses::get_val(ap2, C), NULL);
+	return APClauses::cmp_clauses(C, ap1, C, ap2);
 }
 
 int APClauses::cmp_clauses(int C1, action_pattern *ap1, int C2, action_pattern *ap2) {
 	return Specifications::compare_specificity(
-		APClauses::get_val(ap1, C1), APClauses::get_val(ap2, C2), NULL);
-}
-
-int APClauses::viable_in_past_tense(action_pattern *ap) {
-	if (ExplicitActions::ap_overspecific(ap)) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_val(ap, ACTOR_AP_CLAUSE)) == FALSE) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_val(ap, NOUN_AP_CLAUSE)) == FALSE) return FALSE;
-	if (APClauses::pta_acceptable(APClauses::get_val(ap, SECOND_AP_CLAUSE)) == FALSE) return FALSE;
-	return TRUE;
-}
-
-int APClauses::pta_acceptable(parse_node *spec) {
-	if (spec == NULL) return TRUE;
-	if (Specifications::is_description(spec) == FALSE) return TRUE;
-	instance *I = Specifications::object_exactly_described_if_any(spec);
-	if (I) return TRUE;
-	return FALSE;
+		APClauses::spec(ap1, C1), APClauses::spec(ap2, C2), NULL);
 }

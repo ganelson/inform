@@ -15,8 +15,8 @@ are wrapped up as values here:
 	permit_trying_omission = pto;
 	if (r) {
 		action_pattern *ap = <<rp>>;
-		if ((APClauses::get_val(ap, ACTOR_AP_CLAUSE)) &&
-			(Dash::validate_parameter(APClauses::get_val(ap, ACTOR_AP_CLAUSE), K_person) == FALSE)) {
+		if ((APClauses::spec(ap, ACTOR_AP_CLAUSE)) &&
+			(Dash::validate_parameter(APClauses::spec(ap, ACTOR_AP_CLAUSE), K_person) == FALSE)) {
 			r = <action-pattern>(W);
 		}
 	}
@@ -57,13 +57,13 @@ STV clauses; (2) get this right:
 form the usage conditions for rules in object-based rulebooks.
 
 =
-action_pattern ParseActionPatterns::parametric(wording W, kind *K) {
-	action_pattern ap = ActionPatterns::new();
-	ap.parameter_kind = K;
+action_pattern *ParseActionPatterns::parametric(wording W, kind *K) {
 	parse_node *spec = ParseActionPatterns::parameter(W);
-	APClauses::set_val(&ap, PARAMETRIC_AP_CLAUSE, spec);
-	ap.valid = Dash::validate_parameter(spec, K);
-	return ap;
+	if (Dash::validate_parameter(spec, K) == FALSE) return NULL;
+	action_pattern ap = ActionPatterns::new(W);
+	ap.parameter_kind = K;
+	APClauses::set_spec(&ap, PARAMETRIC_AP_CLAUSE, spec);
+	return ActionPatterns::perpetuate(ap);
 }
 
 @ A useful utility: parsing a parameter in an action pattern.
@@ -99,11 +99,10 @@ action_name_list *ParseActionPatterns::list_of_actions_only(wording W, int *anyo
 	int s2 = permit_trying_omission;
 	permit_trying_omission = TRUE;
 	if (<action-pattern>(W)) {
-		anl = ActionPatterns::list(<<rp>>);
-		if ((anl) && (anl->entries)) {
-			if (<<r>> == ACTOR_EXPLICITLY_UNIVERSAL)
-				*anyone = TRUE;
-		}
+		action_pattern *ap = (action_pattern *) <<rp>>;
+		anl = ap->action_list;
+		if ((ActionNameLists::nonempty(anl)) && (<<r>> == ACTOR_EXPLICITLY_UNIVERSAL))
+			*anyone = TRUE;
 	}
 	scanning_anl_only_mode = s;
 	permit_trying_omission = s2;
@@ -159,10 +158,10 @@ These are always present tense, and can't be negated.
 
 =
 <action-pattern> ::=
-	asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	<action-parameter> trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	an actor trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
-	an actor <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
+	asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<action-parameter> trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	an actor trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
+	an actor <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
 	trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	<action-pattern-core-actor>															==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
 
@@ -173,40 +172,40 @@ four combinations:
 
 =
 <we-are-action-pattern> ::=
-	we are asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	<action-parameter> trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	an actor trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
-	an actor <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
+	we are asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<action-parameter> trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	an actor trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
+	an actor <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
 	we are trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	we are <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	<action-pattern-core-actor>															==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
 
 <action-pattern-negated> ::=
-	we are not asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	not asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	<action-parameter> not trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	an actor not trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
-	an actor not <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
+	we are not asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	not asking <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<action-parameter> not trying <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	an actor not trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
+	an actor not <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
 	we are not trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	not trying <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	we are not <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	not <action-pattern-core-actor>														==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
 
 <action-pattern-past> ::=
-	we have asked <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	<action-parameter> has tried <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	an actor has tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
-	an actor has <action-pattern-past-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
+	we have asked <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<action-parameter> has tried <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	an actor has tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
+	an actor has <action-pattern-past-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
 	we have tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	we have <action-pattern-past-core>													==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 
 <action-pattern-past-negated> ::=
-	we have not asked <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	<action-parameter> has not tried <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
-	an actor has not tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
-	an actor has not <action-pattern-past-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::any_actor(ap);
+	we have not asked <action-parameter> to try <action-pattern-core> |    ==> { ACTOR_REQUESTED, RP[2] }; action_pattern *ap = *XP; APClauses::set_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<action-parameter> has not tried <action-pattern-core> |    ==> { ACTOR_NAMED, RP[2] }; ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
+	an actor has not tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
+	an actor has not <action-pattern-past-core> |    ==> { ACTOR_EXPLICITLY_UNIVERSAL, RP[1] }; ap = *XP; APClauses::make_actor_anyone_except_player(ap);
 	we have not tried <action-pattern-core> |    ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 	we have not <action-pattern-past-core>												==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
 
@@ -225,7 +224,7 @@ actorless possibility can always be written.
 =
 <action-pattern-core-actor> ::=
 	<action-pattern-core> |    ==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
-	<actor-description> <action-pattern-core> 				==> { ACTOR_NAMED, RP[2] }; action_pattern *ap = *XP; APClauses::clear_request(ap); APClauses::set_val(ap, ACTOR_AP_CLAUSE, RP[1]);
+	<actor-description> <action-pattern-core> 				==> { ACTOR_NAMED, RP[2] }; action_pattern *ap = *XP; APClauses::clear_request(ap); APClauses::set_spec(ap, ACTOR_AP_CLAUSE, RP[1]);
 
 @ And this voracious token matches the actor's name as an initial excerpt,
 which is much faster than exhaustive searching. It tries to break just before
@@ -383,7 +382,7 @@ a condition attached with "when":
 
 =
 <ap-common-core> ::=
-	<ap-common-core-inner> when/while <condition-in-ap> |  ==> { 0, RP[1] }; action_pattern *ap = *XP; APClauses::set_val(ap, WHEN_AP_CLAUSE, RP[2]); if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
+	<ap-common-core-inner> when/while <condition-in-ap> |  ==> { 0, RP[1] }; action_pattern *ap = *XP; APClauses::set_spec(ap, WHEN_AP_CLAUSE, RP[2]); if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
 	<ap-common-core-inner> |                               ==> { 0, RP[1] };
 	... when/while <condition-in-ap> |                     ==> { 0, NULL }; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
 	... when/while ...                                     ==> { 0, NULL }; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; /* used only to diagnose problems */
@@ -420,7 +419,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 
 =
 <ap-common-core-inner> ::=
-	<ap-common-core-inner-inner> in the presence of <action-parameter> |    ==> { 0, RP[1] }; APClauses::set_val(RP[1], IN_THE_PRESENCE_OF_AP_CLAUSE, RP[2]);
+	<ap-common-core-inner-inner> in the presence of <action-parameter> |    ==> { 0, RP[1] }; APClauses::set_spec(RP[1], IN_THE_PRESENCE_OF_AP_CLAUSE, RP[2]);
 	<ap-common-core-inner-inner>											==> { 0, RP[1] };
 
 @ Level 5 now. The initial "in" clause, e.g., "in the Pantry", requires
@@ -438,10 +437,9 @@ is valid as an AP, but this enables many natural-looking rules to be written
 	if (Dash::validate_parameter(RP[1], K_object) == FALSE) {
 		==> { fail production }; /* the "room" isn't even an object */
 	}
-	action_pattern ap = ActionPatterns::new();
-	ap.valid = TRUE; ap.text_of_pattern = W;
-	APClauses::set_val(&ap, IN_AP_CLAUSE, RP[1]);
-	==> { 0, ActionPatterns::ap_store(ap) };
+	action_pattern ap = ActionPatterns::new(W);
+	APClauses::set_spec(&ap, IN_AP_CLAUSE, RP[1]);
+	==> { 0, ActionPatterns::perpetuate(ap) };
 
 @ And that's as far down as we go: to level 6. Most of the complexity is gone
 now, but what's left can't very efficiently be written in Preform. Essentially
@@ -458,20 +456,16 @@ box" makes no sense since only one is transitive).
 	if (scanning_anl_only_mode) {
 		action_name_list *list = ActionNameLists::parse(W, prevailing_ap_tense, NULL);
 		if (list == NULL) { ==> { fail nonterminal }; }
-		action_pattern ap = ActionPatterns::new(); ap.valid = TRUE;
-		ap.text_of_pattern = W;
+		action_pattern ap = ActionPatterns::new(W);
 		ap.action_list = list;
-		==> { -, ActionPatterns::ap_store(ap) };
+		==> { -, ActionPatterns::perpetuate(ap) };
 		return TRUE;
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
 		LOG_INDENT;
-		action_pattern ap = ParseActionPatterns::dash(W);
+		action_pattern *ap = ParseActionPatterns::dash(W);
 		LOG_OUTDENT;
-		if (ActionPatterns::is_valid(&ap)) {
-			==> { -, ActionPatterns::ap_store(ap) };
-			return TRUE;
-		}
+		if (ap) { ==> { -, ap }; return TRUE; }
 	}
 	==> { fail nonterminal };
 }
@@ -509,25 +503,25 @@ here -- a constant, a description, a table entry, a variable, and so on.
 @ We can't put it off any longer. Here goes.
 
 =
-action_pattern ParseActionPatterns::dash(wording W) {
+action_pattern *ParseActionPatterns::dash(wording W) {
 	int failure_this_call = pap_failure_reason;
 	int i, j, k = 0;
 	action_name_list *list = NULL;
 	int tense = prevailing_ap_tense;
 
-	action_pattern ap = ActionPatterns::new(); ap.valid = FALSE;
-	ap.text_of_pattern = W;
+	action_pattern ap = ActionPatterns::new(W);
+	int ap_valid = FALSE;
 
 	@<PAR - (f) Parse Special Going Clauses@>;
 	@<PAR - (i) Parse Initial Action Name List@>;
 	@<PAR - (j) Parse Parameters@>;
 	@<PAR - (k) Verify Mixed Action@>;
 	@<With one small proviso, a valid action pattern has been parsed@>;
-	return ap;
+	return ActionPatterns::perpetuate(ap);
 
 	Failed: ;
 	@<No valid action pattern has been parsed@>;
-	return ap;
+	return NULL;
 }
 
 @<With one small proviso, a valid action pattern has been parsed@> =
@@ -537,21 +531,21 @@ action_pattern ParseActionPatterns::dash(wording W) {
 	anl_item *item = ActionNameLists::first_item(ap.action_list);
 	if ((item) && (item->nap_listed == NULL) && (item->action_listed == NULL))
 		ap.action_list = NULL;
-	ap.valid = TRUE;
+	ap_valid = TRUE;
 
-	APClauses::nullify_nonspecific(&ap, ACTOR_AP_CLAUSE);
-	APClauses::nullify_nonspecific(&ap, NOUN_AP_CLAUSE);
-	APClauses::nullify_nonspecific(&ap, SECOND_AP_CLAUSE);
-	APClauses::nullify_nonspecific(&ap, IN_AP_CLAUSE);
+	ParseActionPatterns::nullify_nonspecific(&ap, ACTOR_AP_CLAUSE);
+	ParseActionPatterns::nullify_nonspecific(&ap, NOUN_AP_CLAUSE);
+	ParseActionPatterns::nullify_nonspecific(&ap, SECOND_AP_CLAUSE);
+	ParseActionPatterns::nullify_nonspecific(&ap, IN_AP_CLAUSE);
 
-	if (Going::check(&ap) == FALSE) ap.valid = FALSE;
+	if (Going::check(&ap) == FALSE) ap_valid = FALSE;
 
-	if (ap.valid == FALSE) goto Failed;
+	if (ap_valid == FALSE) goto Failed;
 	LOGIF(ACTION_PATTERN_PARSING, "Matched action pattern: $A\n", &ap);
 
 @<No valid action pattern has been parsed@> =
 	pap_failure_reason = failure_this_call;
-	ap.valid = FALSE;
+	ap_valid = FALSE;
 	ap.ap_clauses = NULL;
 	LOGIF(ACTION_PATTERN_PARSING, "Parse action failed: %W\n", W);
 
@@ -577,14 +571,19 @@ away as they are recorded.
 				LOGIF(ACTION_PATTERN_PARSING,
 					"Special clauses found on <%W>\n", Wordings::from(W, i));
 				if (last_stv_specified == NULL) j = i-1;
-				else APClauses::ap_add_optional_clause(&ap, last_stv_specified, Wordings::new(k, i-1));
+				else {
+					parse_node *spec = ParseActionPatterns::verified_action_parameter(Wordings::new(k, i-1));
+					APClauses::set_action_variable_spec(&ap, last_stv_specified, spec);
+				}
 				k = i+1;
 				last_stv_specified = stv;
 			}
 			i++;
 		}
-		if (last_stv_specified != NULL)
-			APClauses::ap_add_optional_clause(&ap, last_stv_specified, Wordings::new(k, Wordings::last_wn(W)));
+		if (last_stv_specified != NULL) {
+			parse_node *spec = ParseActionPatterns::verified_action_parameter(Wordings::new(k, Wordings::last_wn(W)));
+			APClauses::set_action_variable_spec(&ap, last_stv_specified, spec);
+		}
 		if (j >= 0) W = Wordings::up_to(W, j);
 	}
 
@@ -625,20 +624,21 @@ crucial word position except for the one matched.
 	int first_position = ActionNameLists::first_position(list);
 	int one_was_valid = FALSE;
 	action_pattern trial_ap;
+	int trial_ap_valid = FALSE;
 	LOOP_THROUGH_ANL(entry, list) {
 		LOGIF(ACTION_PATTERN_PARSING, "Entry (%d):\n$8\n", ActionNameLists::parc(entry), entry);
 		@<Fill out the noun, second, room and nowhere fields of the AP as if this action were right@>;
 		@<Check the validity of this speculative AP@>;
-		if ((trial_ap.valid) && (one_was_valid == FALSE) && (ActionNameLists::word_position(entry) == first_position)) {
+		if ((trial_ap_valid) && (one_was_valid == FALSE) && (ActionNameLists::word_position(entry) == first_position)) {
 			one_was_valid = TRUE;
-			APClauses::set_val(&ap, NOUN_AP_CLAUSE, APClauses::get_val(&trial_ap, NOUN_AP_CLAUSE));
-			APClauses::set_val(&ap, SECOND_AP_CLAUSE, APClauses::get_val(&trial_ap, SECOND_AP_CLAUSE));
-			APClauses::set_val(&ap, IN_AP_CLAUSE, APClauses::get_val(&trial_ap, IN_AP_CLAUSE));
+			APClauses::set_spec(&ap, NOUN_AP_CLAUSE, APClauses::spec(&trial_ap, NOUN_AP_CLAUSE));
+			APClauses::set_spec(&ap, SECOND_AP_CLAUSE, APClauses::spec(&trial_ap, SECOND_AP_CLAUSE));
+			APClauses::set_spec(&ap, IN_AP_CLAUSE, APClauses::spec(&trial_ap, IN_AP_CLAUSE));
 			if (Going::going_nowhere(&trial_ap)) Going::go_nowhere(&ap);
 			if (Going::going_somewhere(&trial_ap)) Going::go_somewhere(&ap);
-			ap.valid = TRUE;
+			ap_valid = TRUE;
 		}
-		if (trial_ap.valid == FALSE) ActionNameLists::mark_for_deletion(entry);
+		if (trial_ap_valid == FALSE) ActionNameLists::mark_for_deletion(entry);
 	}
 	if (one_was_valid == FALSE) goto Failed;
 
@@ -702,7 +702,7 @@ description.
 @<Fill out the noun, second, room and nowhere fields of the AP as if this action were right@> =
 	trial_ap.ap_clauses = NULL;
 	if (Wordings::nonempty(ActionNameLists::par(entry, 0))) {
-		if (Going::claim_noun(ActionNameLists::action(entry), &trial_ap, ActionNameLists::par(entry, 0)) == FALSE)
+		if (Going::irregular_noun_phrase(ActionNameLists::action(entry), &trial_ap, ActionNameLists::par(entry, 0)) == FALSE)
 			ParseActionPatterns::put_action_object_into_ap(&trial_ap, NOUN_AP_CLAUSE, ActionNameLists::par(entry, 0));
 	}
 
@@ -711,9 +711,9 @@ description.
 			&& (K_understanding)
 			&& (Kinds::eq(ActionSemantics::kind_of_second(ActionNameLists::action(entry)), K_understanding))
 			&& (<understanding-action-irregular-operand>(ActionNameLists::par(entry, 1)))) {
-			parse_node *val = ARvalues::from_grammar_verb(NULL); /* Why no GV here? */
+			parse_node *val = ParsingPlugin::rvalue_from_grammar_verb(NULL); /* Why no GV here? */
 			Node::set_text(val, ActionNameLists::par(entry, 1));
-			APClauses::set_val(&trial_ap, SECOND_AP_CLAUSE, val);
+			APClauses::set_spec(&trial_ap, SECOND_AP_CLAUSE, val);
 		} else {
 			ParseActionPatterns::put_action_object_into_ap(&trial_ap, SECOND_AP_CLAUSE, ActionNameLists::par(entry, 1));
 		}
@@ -730,13 +730,13 @@ description.
 		check_n = ActionSemantics::kind_of_noun(ActionNameLists::action(entry));
 		check_s = ActionSemantics::kind_of_second(ActionNameLists::action(entry));
 	}
-	trial_ap.valid = TRUE;
+	trial_ap_valid = TRUE;
 	if (APClauses::validate(APClauses::clause(&trial_ap, NOUN_AP_CLAUSE), check_n) == FALSE)
-		trial_ap.valid = FALSE;
+		trial_ap_valid = FALSE;
 	if (APClauses::validate(APClauses::clause(&trial_ap, SECOND_AP_CLAUSE), check_s) == FALSE)
-		trial_ap.valid = FALSE;
+		trial_ap_valid = FALSE;
 	if (APClauses::validate(APClauses::clause(&trial_ap, IN_AP_CLAUSE), K_object) == FALSE)
-		trial_ap.valid = FALSE;
+		trial_ap_valid = FALSE;
 
 @<Adjudicate between topic and other actions@> =
 	kind *K[2];
@@ -851,8 +851,14 @@ void ParseActionPatterns::put_action_object_into_ap(action_pattern *ap, int C, w
 		Node::set_kind_of_value(spec, K_understanding);
 	Node::set_text(spec, W);
 	LOGIF(ACTION_PATTERN_PARSING, "PAOIA (clause %d) %W = $P\n", C, W, spec);
-	APClauses::set_val(ap, C, spec);
+	APClauses::set_spec(ap, C, spec);
 	if (any_flag) APClauses::set_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
 	else APClauses::clear_opt(APClauses::clause(ap, C), DO_NOT_VALIDATE_APCOPT);
+}
+
+void ParseActionPatterns::nullify_nonspecific(action_pattern *ap, int C) {
+	ap_clause *apoc = APClauses::clause(ap, C);
+	if ((apoc) && (Node::is(apoc->clause_spec, UNKNOWN_NT)))
+		apoc->clause_spec = NULL;
 }
 

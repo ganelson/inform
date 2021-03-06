@@ -35,6 +35,7 @@ void ActionsPlugin::start(void) {
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ARvalues::new_base_kind_notify);
 	PluginManager::plug(COMPARE_CONSTANT_PLUG, ARvalues::compare_CONSTANT);
 	PluginManager::plug(COMPILE_CONSTANT_PLUG, RTActions::actions_compile_constant);
+	PluginManager::plug(COMPILE_CONDITION_PLUG, AConditions::compile_condition);
 	PluginManager::plug(CREATION_PLUG, ActionsNodes::creation);
 	PluginManager::plug(UNUSUAL_PROPERTY_VALUE_PLUG, ActionsNodes::unusual_property_value_node);
 	PluginManager::plug(OFFERED_PROPERTY_PLUG, ActionVariables::actions_offered_property);

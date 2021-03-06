@@ -1,0 +1,9 @@
+Radiation Laboratory is a room.
+
+A Geiger counter is here.
+
+Test pattern (internal) with looking.
+Test pattern (internal) with looking or waiting.
+Test pattern (internal) with looking or taking.
+Test pattern (internal) with taking the counter.
+Test pattern (internal) with looking the counter.

@@ -36,7 +36,7 @@ int too_late_for_past_tenses = FALSE;
 #ifdef IF_MODULE
 void Chronology::ap_compile_forced_to_present(action_pattern ap) {
 	ActionPatterns::convert_to_present_tense(&ap); /* prevent recursion */
-	RTActionPatterns::emit_pattern_match(ap, FALSE);
+	RTActionPatterns::emit_pattern_match(&ap, FALSE);
 }
 #endif
 
@@ -188,9 +188,8 @@ void Chronology::compile_past_tense_condition(value_holster *VH, parse_node *spe
 
 	#ifdef IF_MODULE
 	action_pattern *ap = NULL;
-	if (AConditions::is_action_TEST_VALUE(spec)) ap = ActionPatterns::action_from_TEST(spec);
+	if (AConditions::is_action_TEST_VALUE(spec)) ap = AConditions::pattern_from_action_TEST_VALUE(spec);
 	if ((ap) && (tense != IS_TENSE)) {
-LOG("Here we go! $A\n", ap);
 		if ((duration) && (Occurrence::units(duration) == TIMES_UNIT) && (Occurrence::length(duration) >= 2)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoMoreRonNewcombMoment),
 				"a condition like 'we have X', where X is an action, has either "

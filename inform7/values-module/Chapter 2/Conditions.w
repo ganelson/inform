@@ -215,6 +215,7 @@ of brackets never does any harm; so we always compile one.
 
 =
 void Conditions::compile(value_holster *VH, parse_node *spec_found) {
+	if (PluginCalls::compile_condition(VH, spec_found)) return;
 	switch (Node::get_type(spec_found)) {
 		case TEST_PROPOSITION_NT:
 			Calculus::Deferrals::emit_test_of_proposition(NULL,
@@ -225,26 +226,14 @@ void Conditions::compile(value_holster *VH, parse_node *spec_found) {
 			break;
 		case LOGICAL_NOT_NT: @<Compile a logical negation@>; break;
 		case LOGICAL_AND_NT: case LOGICAL_OR_NT: @<Compile a logical operator@>; break;
-		case TEST_VALUE_NT: {
-			if (AConditions::is_action_TEST_VALUE(spec_found)) {
-				#ifdef IF_MODULE
-				action_pattern *ap = ARvalues::to_action_pattern(
-					AConditions::action_tested(spec_found));
-				if (ap == NULL) {
-					explicit_action *ea = Node::get_constant_explicit_action(AConditions::action_tested(spec_found));
-					if (ea) ap = ea->as_described;
-				}
-				if (ap == NULL) internal_error("no action pattern to test");
-				RTActionPatterns::compile_pattern_match(VH, *ap, FALSE);
-				#endif
-			} else if (Specifications::is_description(spec_found)) {
+		case TEST_VALUE_NT:
+			if (Specifications::is_description(spec_found)) {
 				/* purely for problem recovery: */
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1); 
 			} else {
 				Specifications::Compiler::emit_as_val(K_value, spec_found->down);
 			}
 			break;
-		}
 		case TEST_PHRASE_OPTION_NT: @<Compile a phrase option test@>; break;
 	}
 }

@@ -24,7 +24,7 @@ typedef struct ph_runtime_context_data {
 	struct activity_list *avl;
 	#ifdef IF_MODULE
 	struct parse_node *during_scene; /* ...happens only during a scene matching this? */
-	struct action_pattern ap; /* happens only if the action matches this pattern? */
+	struct action_pattern *ap; /* happens only if the action matches this pattern? */
 	int always_test_actor; /* ...even if no AP was given, test that actor is player? */
 	int never_test_actor; /* ...for instance, for a parametrised rather than action rulebook */
 	int marked_for_anyone; /* any actor is allowed to perform this action */
@@ -54,7 +54,7 @@ ph_runtime_context_data Phrases::Context::new(void) {
 	phrcd.avl = NULL;
 	#ifdef IF_MODULE
 	phrcd.during_scene = NULL;
-	phrcd.ap = ActionPatterns::new();
+	phrcd.ap = NULL;
 	phrcd.always_test_actor = FALSE;
 	phrcd.never_test_actor = FALSE;
 	phrcd.marked_for_anyone = FALSE;
@@ -108,21 +108,20 @@ int Phrases::Context::get_marked_for_anyone(ph_runtime_context_data *phrcd) {
 int Phrases::Context::within_action_context(ph_runtime_context_data *phrcd,
 	action_name *an) {
 	if (phrcd == NULL) return FALSE;
-	return ActionPatterns::within_action_context(&(phrcd->ap), an);
+	return ActionPatterns::covers_action(phrcd->ap, an);
 }
 #endif
 
 #ifdef IF_MODULE
 action_name *Phrases::Context::required_action(ph_runtime_context_data *phrcd) {
-	if (ActionPatterns::is_valid(&(phrcd->ap)))
-		return ActionPatterns::required_action(&(phrcd->ap));
+	if (phrcd->ap) return ActionPatterns::single_positive_action(phrcd->ap);
 	return NULL;
 }
 #endif
 
 void Phrases::Context::suppress_action_testing(ph_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
-	ActionPatterns::suppress_action_testing(&(phrcd->ap));
+	if (phrcd->ap) ActionPatterns::suppress_action_testing(phrcd->ap);
 	#endif
 }
 
@@ -185,7 +184,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 	if (rcd1) {
 		#ifdef IF_MODULE
 		sc1 = rcd1->during_scene;
-		ap1 = &(rcd1->ap);
+		ap1 = rcd1->ap;
 		#endif
 		AL1W = rcd1->activity_context;
 	} else {
@@ -198,7 +197,7 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 	if (rcd2) {
 		#ifdef IF_MODULE
 		sc2 = rcd2->during_scene;
-		ap2 = &(rcd2->ap);
+		ap2 = rcd2->ap;
 		#endif
 		AL2W = rcd2->activity_context;
 	} else {
@@ -326,7 +325,7 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 	#ifdef IF_MODULE
 	if (phrcd->during_scene) @<Compile a scene test head@>;
 
-	if (ActionPatterns::is_valid(&(phrcd->ap))) @<Compile an action test head@>
+	if (phrcd->ap) @<Compile an action test head@>
 	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test head@>;
 	#endif
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test head@>;
@@ -366,7 +365,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test tail@>;
 	#ifdef IF_MODULE
-	if (ActionPatterns::is_valid(&(phrcd->ap))) @<Compile an action test tail@>
+	if (phrcd->ap) @<Compile an action test tail@>
 	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test tail@>;
 	if (phrcd->during_scene) @<Compile a scene test tail@>;
 	#endif
@@ -400,7 +399,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *ac
 		Produce::down(Emit::tree());
 
 	tests++;
-	if (ActionPatterns::object_based(&(phrcd->ap))) {
+	if (ActionPatterns::involves_actions(phrcd->ap)) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));

@@ -307,7 +307,7 @@ void RTActionPatterns::as_stored_action(value_holster *VH, explicit_action *ea) 
 	if (N) Emit::holster(VH, N);
 }
 
-void RTActionPatterns::emit_pattern_match(action_pattern ap, int naming_mode) {
+void RTActionPatterns::emit_pattern_match(action_pattern *ap, int naming_mode) {
 	value_holster VH = Holsters::new(INTER_VAL_VHMODE);
 	RTActionPatterns::compile_pattern_match(&VH, ap, naming_mode);
 }
@@ -353,72 +353,74 @@ void RTActionPatterns::emit_pattern_match(action_pattern ap, int naming_mode) {
 }
 
 =
-void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern ap, int naming_mode) {
+void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *ap, int naming_mode) {
+	if (ap == NULL) return;
+
 	int cpm_count = 0, needed[MAX_CPM_CLAUSES];
 	ap_clause *needed_apoc[MAX_CPM_CLAUSES];
-	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A\n", &ap);
+	LOGIF(ACTION_PATTERN_COMPILATION, "Compiling action pattern:\n  $A\n", ap);
 
-	if (ap.duration) {
+	if (ap->duration) {
 		LOGIF(ACTION_PATTERN_COMPILATION, "As past action\n");
-		Chronology::compile_past_action_pattern(VH, ap.duration, ap);
+		Chronology::compile_past_action_pattern(VH, ap->duration, *ap);
 	} else {
 		kind *kind_of_noun = K_object;
 		kind *kind_of_second = K_object;
 
 		if (naming_mode == FALSE) {
-			if (APClauses::has_any_actor(&ap) == FALSE) {
+			if (APClauses::actor_is_anyone_except_player(ap) == FALSE) {
 				int impose = FALSE;
-				if (APClauses::get_val(&ap, ACTOR_AP_CLAUSE) != NULL) {
+				if (APClauses::spec(ap, ACTOR_AP_CLAUSE) != NULL) {
 					impose = TRUE;
-					nonlocal_variable *var = Lvalues::get_nonlocal_variable_if_any(APClauses::get_val(&ap, ACTOR_AP_CLAUSE));
+					nonlocal_variable *var = Lvalues::get_nonlocal_variable_if_any(APClauses::spec(ap, ACTOR_AP_CLAUSE));
 					if ((var) && (var == player_VAR)) impose = FALSE;
-					instance *I = Rvalues::to_object_instance(APClauses::get_val(&ap, ACTOR_AP_CLAUSE));
+					instance *I = Rvalues::to_object_instance(APClauses::spec(ap, ACTOR_AP_CLAUSE));
 					if ((I) && (I == I_yourself)) impose = FALSE;
 				}
 				if (impose) {
 					CPMC_NEEDED(ACTOR_ISNT_PLAYER_CPMC, NULL);
-					if (APClauses::is_request(&ap)) {
+					if (APClauses::is_request(ap)) {
 						CPMC_NEEDED(REQUESTER_EXISTS_CPMC, NULL);
 					} else {
 						CPMC_NEEDED(REQUESTER_DOESNT_EXIST_CPMC, NULL);
 					}
-					if (APClauses::get_val(&ap, ACTOR_AP_CLAUSE)) {
+					if (APClauses::spec(ap, ACTOR_AP_CLAUSE)) {
 						CPMC_NEEDED(ACTOR_MATCHES_CPMC, NULL);
 					}
 				} else {
 					CPMC_NEEDED(ACTOR_IS_PLAYER_CPMC, NULL);
 				}
 			} else {
-				if (APClauses::is_request(&ap)) {
+				if (APClauses::is_request(ap)) {
 					CPMC_NEEDED(REQUESTER_EXISTS_CPMC, NULL);
 				} else {
 					CPMC_NEEDED(REQUESTER_DOESNT_EXIST_CPMC, NULL);
 				}
 			}
 		}
-		if (ActionNameLists::testing(ap.action_list)) {
+		if (ActionNameLists::testing(ap->action_list)) {
 			CPMC_NEEDED(ACTION_MATCHES_CPMC, NULL);
 		}
-		if ((ap.action_list == NULL) && (APClauses::get_val(&ap, NOUN_AP_CLAUSE))) {
+		if ((ap->action_list == NULL) && (APClauses::spec(ap, NOUN_AP_CLAUSE))) {
 			CPMC_NEEDED(NOUN_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(NOUN_IS_INP1_CPMC, NULL);
 		}
-		if ((ap.action_list == NULL) && (APClauses::get_val(&ap, SECOND_AP_CLAUSE))) {
+		if ((ap->action_list == NULL) && (APClauses::spec(ap, SECOND_AP_CLAUSE))) {
 			CPMC_NEEDED(SECOND_EXISTS_CPMC, NULL);
 			CPMC_NEEDED(SECOND_IS_INP1_CPMC, NULL);
 		}
-		anl_item *item = ActionNameLists::first_item(ap.action_list);
+		anl_item *item = ActionNameLists::first_item(ap->action_list);
 		if ((item) && (item->action_listed)) {
 			kind_of_noun = ActionSemantics::kind_of_noun(item->action_listed);
 			if (kind_of_noun == NULL) kind_of_noun = K_object;
 		}
 
 		if (Kinds::Behaviour::is_object(kind_of_noun)) {
-			if (APClauses::get_val(&ap, NOUN_AP_CLAUSE)) {
+			if (APClauses::spec(ap, NOUN_AP_CLAUSE)) {
 				CPMC_NEEDED(NOUN_MATCHES_AS_OBJECT_CPMC, NULL);
 			}
 		} else {
-			if (APClauses::get_val(&ap, NOUN_AP_CLAUSE)) {
+			if (APClauses::spec(ap, NOUN_AP_CLAUSE)) {
 				CPMC_NEEDED(NOUN_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
@@ -427,18 +429,18 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			if (kind_of_second == NULL) kind_of_second = K_object;
 		}
 		if (Kinds::Behaviour::is_object(kind_of_second)) {
-			if (APClauses::get_val(&ap, SECOND_AP_CLAUSE)) {
+			if (APClauses::spec(ap, SECOND_AP_CLAUSE)) {
 				CPMC_NEEDED(SECOND_MATCHES_AS_OBJECT_CPMC, NULL);
 			}
 		} else {
-			if (APClauses::get_val(&ap, SECOND_AP_CLAUSE)) {
+			if (APClauses::spec(ap, SECOND_AP_CLAUSE)) {
 				CPMC_NEEDED(SECOND_MATCHES_AS_VALUE_CPMC, NULL);
 			}
 		}
 
-		if (APClauses::get_val(&ap, IN_AP_CLAUSE)) {
-			if ((APClauses::has_any_actor(&ap) == FALSE) && (naming_mode == FALSE) &&
-				(APClauses::get_val(&ap, ACTOR_AP_CLAUSE) == NULL)) {
+		if (APClauses::spec(ap, IN_AP_CLAUSE)) {
+			if ((APClauses::actor_is_anyone_except_player(ap) == FALSE) && (naming_mode == FALSE) &&
+				(APClauses::spec(ap, ACTOR_AP_CLAUSE) == NULL)) {
 				CPMC_NEEDED(PLAYER_LOCATION_MATCHES_CPMC, NULL);
 			} else {
 				CPMC_NEEDED(ACTOR_IN_RIGHT_PLACE_CPMC, NULL);
@@ -446,34 +448,31 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			}
 		}
 
-		if (APClauses::get_val(&ap, PARAMETRIC_AP_CLAUSE)) {
+		if (APClauses::spec(ap, PARAMETRIC_AP_CLAUSE)) {
 			CPMC_NEEDED(PARAMETER_MATCHES_CPMC, NULL);
 		}
 
-		ap_clause *apoc = ap.ap_clauses;
-		while (apoc) {
+		LOOP_OVER_AP_CLAUSES(apoc, ap)
 			if ((apoc->stv_to_match) && (apoc->clause_spec)) {
 				CPMC_NEEDED(OPTIONAL_CLAUSE_CPMC, apoc);
 			}
-			apoc = apoc->next;
-		}
 
-		if (Going::going_nowhere(&ap)) {
+		if (Going::going_nowhere(ap)) {
 			CPMC_NEEDED(NOWHERE_CPMC, NULL);
-		} else if (Going::going_somewhere(&ap)) {
+		} else if (Going::going_somewhere(ap)) {
 			CPMC_NEEDED(SOMEWHERE_CPMC, NULL);
-		} else if (Going::in_some_way(&ap)) {
+		} else if (Going::need_to_check_destination_exists(ap)) {
 			CPMC_NEEDED(NOT_NOWHERE_CPMC, NULL);
 		}
 
-		if (APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE) != NULL) {
+		if (APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE) != NULL) {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			if (to_be_present) {
 				CPMC_NEEDED(PRESENCE_OF_MATCHES_CPMC, NULL);
 				CPMC_NEEDED(PRESENCE_OF_IN_SCOPE_CPMC, NULL);
 			} else {
-				wording PC = Descriptions::get_calling(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+				wording PC = Descriptions::get_calling(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 				if (Wordings::nonempty(PC)) {
 					CPMC_NEEDED(LOOP_OVER_SCOPE_WITH_CALLING_CPMC, NULL);
 				} else {
@@ -481,7 +480,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 				}
 			}
 		}
-		if (APClauses::get_val(&ap, WHEN_AP_CLAUSE) != NULL) {
+		if (APClauses::spec(ap, WHEN_AP_CLAUSE) != NULL) {
 			CPMC_NEEDED(SET_SELF_TO_ACTOR_CPMC, NULL);
 			CPMC_NEEDED(WHEN_CONDITION_HOLDS_CPMC, NULL);
 		}
@@ -510,7 +509,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 	int range_to_compile = 0;
 	LocalVariables::begin_condition_emit();
 
-	if (ActionNameLists::listwise_negated(ap.action_list)) {
+	if (ActionNameLists::listwise_negated(ap->action_list)) {
 		if (ranges_count[0] > 0) {
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
 			Produce::down(Emit::tree());
@@ -581,7 +580,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 	}
 
 	if ((ranges_count[0] + ranges_count[1] + ranges_count[2] + ranges_count[3] == 0) &&
-		(ActionNameLists::listwise_negated(ap.action_list) == FALSE)) {
+		(ActionNameLists::listwise_negated(ap->action_list) == FALSE)) {
 		Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
 	}
 	LocalVariables::end_condition_emit();
@@ -637,10 +636,10 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			Produce::up(Emit::tree());
 			break;
 		case ACTOR_MATCHES_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, APClauses::get_val(&ap, ACTOR_AP_CLAUSE), K_object, FALSE);
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_actor_VAR, APClauses::spec(ap, ACTOR_AP_CLAUSE), K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
-			RTActions::emit_anl(ap.action_list);
+			RTActions::emit_anl(ap->action_list);
 			break;
 		case NOUN_EXISTS_CPMC:
 			Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
@@ -663,25 +662,25 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			Produce::up(Emit::tree());
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, APClauses::get_val(&ap, NOUN_AP_CLAUSE),
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_noun_VAR, APClauses::spec(ap, NOUN_AP_CLAUSE),
 				kind_of_noun, FALSE);
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_noun),
-				APClauses::get_val(&ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
+				APClauses::spec(ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_second_VAR, APClauses::get_val(&ap, SECOND_AP_CLAUSE),
+			RTActionPatterns::compile_pattern_match_clause(f, VH, I6_second_VAR, APClauses::spec(ap, SECOND_AP_CLAUSE),
 				kind_of_second, FALSE);
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
 				RTTemporaryVariables::from_iname(Hierarchy::find(PARSED_NUMBER_HL), kind_of_second),
-				APClauses::get_val(&ap, SECOND_AP_CLAUSE), kind_of_second, FALSE);
+				APClauses::spec(ap, SECOND_AP_CLAUSE), kind_of_second, FALSE);
 			break;
 		case PLAYER_LOCATION_MATCHES_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(f, VH, real_location_VAR, APClauses::get_val(&ap, IN_AP_CLAUSE), K_object, TRUE);
+			RTActionPatterns::compile_pattern_match_clause(f, VH, real_location_VAR, APClauses::spec(ap, IN_AP_CLAUSE), K_object, TRUE);
 			break;
 		case ACTOR_IN_RIGHT_PLACE_CPMC:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -695,13 +694,13 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		case ACTOR_LOCATION_MATCHES_CPMC:
 			RTActionPatterns::compile_pattern_match_clause(f,
-				VH, actor_location_VAR, APClauses::get_val(&ap, IN_AP_CLAUSE), K_object, TRUE);
+				VH, actor_location_VAR, APClauses::spec(ap, IN_AP_CLAUSE), K_object, TRUE);
 			break;
 		case PARAMETER_MATCHES_CPMC: {
 			kind *saved_kind = NonlocalVariables::kind(parameter_object_VAR);
-			NonlocalVariables::set_kind(parameter_object_VAR, ap.parameter_kind);
+			NonlocalVariables::set_kind(parameter_object_VAR, ap->parameter_kind);
 			RTActionPatterns::compile_pattern_match_clause(f, VH,
-				parameter_object_VAR, APClauses::get_val(&ap, PARAMETRIC_AP_CLAUSE), ap.parameter_kind, FALSE);
+				parameter_object_VAR, APClauses::spec(ap, PARAMETRIC_AP_CLAUSE), ap->parameter_kind, FALSE);
 			NonlocalVariables::set_kind(parameter_object_VAR, saved_kind);
 			break;
 		}
@@ -752,15 +751,15 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		case PRESENCE_OF_MATCHES_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			RTActionPatterns::compile_pattern_match_clause(FALSE, VH,
 				RTTemporaryVariables::from_iname(RTInstances::iname(to_be_present), K_object),
-				APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE), K_object, FALSE);
+				APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE), K_object, FALSE);
 			break;
 		}
 		case PRESENCE_OF_IN_SCOPE_CPMC: {
 			instance *to_be_present =
-				Specifications::object_exactly_described_if_any(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+				Specifications::object_exactly_described_if_any(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTSCOPE_HL));
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(to_be_present));
@@ -769,10 +768,10 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITH_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
-			wording PC = Descriptions::get_calling(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+			loop_over_scope *los = LoopingOverScope::new(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+			wording PC = Descriptions::get_calling(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			local_variable *lvar = LocalVariables::ensure_called_local(PC,
-				Specifications::to_kind(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE)));
+				Specifications::to_kind(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE)));
 			inter_symbol *lvar_s = LocalVariables::declare_this(lvar, FALSE, 8);
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
@@ -798,7 +797,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			break;
 		}
 		case LOOP_OVER_SCOPE_WITHOUT_CALLING_CPMC: {
-			loop_over_scope *los = LoopingOverScope::new(APClauses::get_val(&ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
+			loop_over_scope *los = LoopingOverScope::new(APClauses::spec(ap, IN_THE_PRESENCE_OF_AP_CLAUSE));
 			Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -830,7 +829,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern a
 			Produce::up(Emit::tree());
 			break;
 		case WHEN_CONDITION_HOLDS_CPMC:
-			Specifications::Compiler::emit_as_val(K_value, APClauses::get_val(&ap, WHEN_AP_CLAUSE));
+			Specifications::Compiler::emit_as_val(K_value, APClauses::spec(ap, WHEN_AP_CLAUSE));
 			break;
 	}
 
@@ -839,10 +838,10 @@ void RTActionPatterns::emit_past_tense(action_pattern *ap) {
 	int bad_form = FALSE;
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIONBITMAP_HL));
 	Produce::down(Emit::tree());
-	if (APClauses::get_val(ap, NOUN_AP_CLAUSE) == NULL)
+	if (APClauses::spec(ap, NOUN_AP_CLAUSE) == NULL)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	else
-		Specifications::Compiler::emit_as_val(K_value, APClauses::get_val(ap, NOUN_AP_CLAUSE));
+		Specifications::Compiler::emit_as_val(K_value, APClauses::spec(ap, NOUN_AP_CLAUSE));
 	int L = ActionNameLists::length(ap->action_list);
 	if (L == 0)
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) -1);

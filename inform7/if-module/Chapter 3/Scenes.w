@@ -63,10 +63,13 @@ int Scenes::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 	return FALSE;
 }
 
+parse_node *Scenes::rvalue_from_scene(scene *val) { CONV_FROM(scene, K_scene) }
+scene *Scenes::rvalue_to_scene(parse_node *spec) { CONV_TO(scene) }
+
 int Scenes::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	kind *K = Node::get_kind_of_value(spec1);
 	if (Kinds::eq(K, K_scene)) {
-		if (ARvalues::to_scene(spec1) == ARvalues::to_scene(spec2)) {
+		if (Scenes::rvalue_to_scene(spec1) == Scenes::rvalue_to_scene(spec2)) {
 			*rv = TRUE;
 		}
 		*rv = FALSE;

@@ -222,6 +222,17 @@ int PluginCalls::compile_constant(value_holster *VH, kind *K, parse_node *spec) 
 	PLUGINS_CALL(COMPILE_CONSTANT_PLUG, VH, K, spec);
 }
 
+@ Called from //values: Conditions// to allow plugins to compile conditions in
+their own way. For example, the "actions" plugin needs this to compile matches
+of the current action against an action pattern.
+
+@e COMPILE_CONDITION_PLUG
+
+=
+int PluginCalls::compile_condition(value_holster *VH, parse_node *spec) {
+	PLUGINS_CALL(COMPILE_CONDITION_PLUG, VH, spec);
+}
+
 @ Called from //values: Specifications// to ask if there is some reason why
 a rule about |I1| should be thought broader in scope than one about |I2|. This
 is used by the regions plugin when one is a sub-region of the other. This is

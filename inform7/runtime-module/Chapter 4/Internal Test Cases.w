@@ -19,6 +19,7 @@ Inform. The current roster is as follows:
 @e DASH_INTT
 @e DASHLOG_INTT
 @e REFINER_INTT
+@e PATTERN_INTT
 
 @ The following are the names of the internal test cases, which are in English
 only and may change at any time without notice.
@@ -38,7 +39,8 @@ only and may change at any time without notice.
 	map |          ==> { MAP_INTT, - }
 	dash |         ==> { DASH_INTT, - }
 	dashlog |      ==> { DASHLOG_INTT, - }
-	refinery       ==> { REFINER_INTT, - }
+	refinery |     ==> { REFINER_INTT, - }
+	pattern        ==> { PATTERN_INTT, - }
 
 @ Each request to run one of the above generates an //internal_test_case// object:
 
@@ -114,6 +116,9 @@ void InternalTests::InternalTestCases_routine(void) {
 				@<Perform an internal test of the sentence converter@>;
 				break;
 			}
+			case PATTERN_INTT:
+				@<Perform an internal test of the action pattern parser@>;
+				break;
 			case EVALUATION_INTT: {
 				parse_node *spec = NULL;
 				if (<s-value>(itc->text_supplying_the_case)) spec = <<rp>>;
@@ -437,3 +442,13 @@ void InternalTests::log_poset(int n) {
 	}
 	#endif
 
+@
+
+@<Perform an internal test of the action pattern parser@> =
+	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
+	if (<action-pattern>(itc->text_supplying_the_case)) {
+		LOG("%W: $A\n", itc->text_supplying_the_case, <<rp>>);
+	} else {
+		LOG("%W: failed to parse\n", itc->text_supplying_the_case);
+	}
+	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;

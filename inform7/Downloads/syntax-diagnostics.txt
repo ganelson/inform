@@ -6165,7 +6165,7 @@ ROOT_NT
                                         INVOCATION_NT'try looking' {phrase invoked: call}
                                             RVALUE_CONTEXT_NT'looking' {token check to do: <null-parse-node>
                                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                CONSTANT_NT'looking' {kind: action} {explicit action: <action: looking>}
+                                                CONSTANT_NT'looking' {kind: action} {explicit action: <action-based: looking>}
                             RULE_NT'a first turn sequence rule ( this is the every turn stage ru' {unit: 2}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'follow the every turn rules'
@@ -7096,7 +7096,7 @@ ROOT_NT
                                     INVOCATION_NT'try looking' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'looking' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'looking' {kind: action} {explicit action: <action: looking>}
+                                            CONSTANT_NT'looking' {kind: action} {explicit action: <action-based: looking>}
                         SENTENCE_NT'constructing the status line ( documented at act_csl ) is an' {unit: 2} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                             UNPARSED_NOUN_NT'constructing the status line ( documented at act_csl )'
@@ -9222,7 +9222,7 @@ ROOT_NT
                                                             INVOCATION_NT'silently try the actor trying inserting the transferred item' {phrase invoked: call}
                                                                 RVALUE_CONTEXT_NT'actor trying inserting the transferred item into the current' {token check to do: <null-parse-node>
                                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                                    CONSTANT_NT'actor trying inserting the transferred item into the current' {kind: action} {explicit action: <action: inserting it intoactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: LOCAL_VARIABLE_NT'the transferred item' {local: LV<unallocated> object}second: LOCAL_VARIABLE_NT'the current working sack' {local: LV"current working sack"-player's holdall player's holdall}>}
+                                                                    CONSTANT_NT'actor trying inserting the transferred item into the current' {kind: action} {explicit action: <action-based: inserting it into * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: LOCAL_VARIABLE_NT'the transferred item' {local: LV<unallocated> object}second: LOCAL_VARIABLE_NT'the current working sack' {local: LV"current working sack"-player's holdall player's holdall}>}
                                                         CODE_BLOCK_NT {control structure: IF}
                                                             INVOCATION_LIST_NT'if the transferred item is not in the current working sack' {colon_block_command} {indent: 4}
                                                                 INVOCATION_NT'if the transferred item is not in the current working sack' {phrase invoked: call}
@@ -9570,7 +9570,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -9921,7 +9921,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -10251,7 +10251,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -10429,7 +10429,7 @@ ROOT_NT
                                             INVOCATION_NT'try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -10692,7 +10692,7 @@ ROOT_NT
                                     INVOCATION_NT'silently try the actor exiting' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'actor exiting' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'actor exiting' {kind: action} {explicit action: <action: exitingactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}>}
+                                            CONSTANT_NT'actor exiting' {kind: action} {explicit action: <action-based: exiting * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}>}
                         RULE_NT'check an actor going ( this is the can't travel in what's no' {unit: 2}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'let nonvehicle be the holder of the actor' {indent: 1}
@@ -10817,7 +10817,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor opening the door gone through' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor opening the door gone through' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor opening the door gone through' {kind: action} {explicit action: <action: openingactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the door gone through' {nonlocal: 'door gone through'(var)object}>}
+                                                    CONSTANT_NT'actor opening the door gone through' {kind: action} {explicit action: <action-based: opening * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the door gone through' {nonlocal: 'door gone through'(var)object}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the door gone through is open' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the door gone through is open' {phrase invoked: call}
@@ -11391,7 +11391,7 @@ ROOT_NT
                                                     INVOCATION_NT'try looking' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'looking' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'looking' {kind: action} {explicit action: <action: looking>}
+                                                            CONSTANT_NT'looking' {kind: action} {explicit action: <action-based: looking>}
                                                 INVOCATION_LIST_NT'continue the action' {indent: 3}
                                                     INVOCATION_NT'continue the action' {phrase invoked: call}
                                         CODE_BLOCK_NT'say "."' {control structure: SAY}
@@ -11867,7 +11867,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying exiting' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying exiting' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying exiting' {kind: action} {explicit action: <action: exitingactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}>}
+                                                    CONSTANT_NT'actor trying exiting' {kind: action} {explicit action: <action-based: exiting * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the holder of the actor is the current home' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the holder of the actor is the current home' {phrase invoked: call}
@@ -11996,7 +11996,7 @@ ROOT_NT
                                                     INVOCATION_NT'silently try the actor trying entering the target' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'actor trying entering the target' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'actor trying entering the target' {kind: action} {explicit action: <action: enteringactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: LOCAL_VARIABLE_NT'the target' {local: LV"target"-object object}>}
+                                                            CONSTANT_NT'actor trying entering the target' {kind: action} {explicit action: <action-based: entering * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: LOCAL_VARIABLE_NT'the target' {local: LV"target"-object object}>}
                                                 CODE_BLOCK_NT {control structure: IF}
                                                     INVOCATION_LIST_NT'if the holder of the actor is not the target' {indent: 3} {colon_block_command}
                                                         INVOCATION_NT'if the holder of the actor is not the target' {phrase invoked: call}
@@ -14654,7 +14654,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -14907,7 +14907,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action: taking offactor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -15228,7 +15228,7 @@ ROOT_NT
                                             INVOCATION_NT'try taking inventory' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'taking inventory' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'taking inventory' {kind: action} {explicit action: <action: taking inventory>}
+                                                    CONSTANT_NT'taking inventory' {kind: action} {explicit action: <action-based: taking inventory>}
                                         CODE_BLOCK_NT {control structure: INS}
                         RULE_NT'check an actor asking something for ( this is the translate ' {unit: 2}
                             CODE_BLOCK_NT
@@ -18638,7 +18638,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current owner closing the escape' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current owner closing the escape' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current owner closing the escape' {kind: action} {explicit action: <action: closingactor: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}{meaning: {current owner = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the escape' {local: LV"escape"-door door}>}
+                                        CONSTANT_NT'current owner closing the escape' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}{meaning: {current owner = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the escape' {local: LV"escape"-door door}>}
                             CODE_BLOCK_NT {control structure: INS}
             RULE_NT'report someone closing a door when the person asked owns the' {unit: 4}
                 CODE_BLOCK_NT
@@ -18703,7 +18703,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current owner filing the target' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current owner filing the target' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current owner filing the target' {kind: action} {explicit action: <action: filingactor: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}{meaning: {current owner = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the target' {local: LV"target"-artwork artwork}>}
+                                        CONSTANT_NT'current owner filing the target' {kind: action} {explicit action: <action-based: filing * actor: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}{meaning: {current owner = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the target' {local: LV"target"-artwork artwork}>}
             SENTENCE_NT'filing is an action applying to one thing' {unit: 4} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
@@ -18714,7 +18714,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked taking the noun' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked taking the noun' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked taking the noun' {kind: action} {explicit action: <action: takingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                CONSTANT_NT'person asked taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'carry out someone filing' {unit: 4}
                 CODE_BLOCK_NT
@@ -18793,7 +18793,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current actor resolving the problem' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current actor resolving the problem' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current actor resolving the problem' {kind: action} {explicit action: <action: resolvingactor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the problem' {local: LV"problem"-thing thing}>}
+                                        CONSTANT_NT'current actor resolving the problem' {kind: action} {explicit action: <action-based: resolving * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the problem' {local: LV"problem"-thing thing}>}
                             CODE_BLOCK_NT {control structure: INS}
             RULE_NT'a shopper rule' {unit: 4}
                 CODE_BLOCK_NT
@@ -18811,7 +18811,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current actor approaching the pool hall' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current actor approaching the pool hall' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current actor approaching the pool hall' {kind: action} {explicit action: <action: approachingactor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: CONSTANT_NT'the pool hall' {kind: room} {instance: I88'alfred cralle pool hall'} {enumeration: 0}>}
+                                        CONSTANT_NT'current actor approaching the pool hall' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: CONSTANT_NT'the pool hall' {kind: room} {instance: I88'alfred cralle pool hall'} {enumeration: 0}>}
                         CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                             INVOCATION_LIST_NT'let way be a random direction' {indent: 2}
                                 INVOCATION_NT'let way be a random direction' {phrase invoked: call}
@@ -18830,7 +18830,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current actor going the way' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'current actor going the way' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'current actor going the way' {kind: action} {explicit action: <action: goingactor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the way' {local: LV<unallocated> direction}>}
+                                        CONSTANT_NT'current actor going the way' {kind: action} {explicit action: <action-based: going * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the way' {local: LV<unallocated> direction}>}
             RULE_NT'definition' {unit: 4}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -18922,7 +18922,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked approaching the public library' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked approaching the public library' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked approaching the public library' {kind: action} {explicit action: <action: approachingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the public library' {kind: room} {instance: I110'public library'} {enumeration: 0}>}
+                                CONSTANT_NT'person asked approaching the public library' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the public library' {kind: room} {instance: I110'public library'} {enumeration: 0}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'carry out someone resolving a book' {unit: 4}
                 CODE_BLOCK_NT
@@ -18985,7 +18985,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked approaching the post office' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked approaching the post office' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked approaching the post office' {kind: action} {explicit action: <action: approachingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the post office' {kind: room} {instance: I96'post office'} {enumeration: 0}>}
+                                CONSTANT_NT'person asked approaching the post office' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the post office' {kind: room} {instance: I96'post office'} {enumeration: 0}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'carry out someone resolving a stamped envelope' {unit: 4}
                 CODE_BLOCK_NT
@@ -19068,7 +19068,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked approaching the rental store' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked approaching the rental store' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked approaching the rental store' {kind: action} {explicit action: <action: approachingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the rental store' {kind: room} {instance: I104'movie rental store'} {enumeration: 0}>}
+                                CONSTANT_NT'person asked approaching the rental store' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'the rental store' {kind: room} {instance: I104'movie rental store'} {enumeration: 0}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'carry out someone resolving a dvd' {unit: 4}
                 CODE_BLOCK_NT
@@ -19194,7 +19194,7 @@ ROOT_NT
                                 INVOCATION_NT'try the person asked going the way' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'person asked going the way' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'person asked going the way' {kind: action} {explicit action: <action: goingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the way' {local: LV"way"-object object}>}
+                                        CONSTANT_NT'person asked going the way' {kind: action} {explicit action: <action-based: going * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the way' {local: LV"way"-object object}>}
                         CODE_BLOCK_NT'otherwise' {results_from_splitting} {control structure: O}
                             INVOCATION_LIST_NT'stop the action' {indent: 1}
                                 INVOCATION_NT'stop the action' {phrase invoked: call}
@@ -19209,7 +19209,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked giving the noun to vanessa' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked giving the noun to vanessa' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked giving the noun to vanessa' {kind: action} {explicit action: <action: giving it toactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'} {enumeration: 0}>}
+                                CONSTANT_NT'person asked giving the noun to vanessa' {kind: action} {explicit action: <action-based: giving it to * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'} {enumeration: 0}>}
             SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 4} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
@@ -19227,7 +19227,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked approaching cold comfort' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked approaching cold comfort' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked approaching cold comfort' {kind: action} {explicit action: <action: approachingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'cold comfort' {kind: room} {instance: I100'cold comfort ice cream'} {enumeration: 0}>}
+                                CONSTANT_NT'person asked approaching cold comfort' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: CONSTANT_NT'cold comfort' {kind: room} {instance: I100'cold comfort ice cream'} {enumeration: 0}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'after someone giving a coupon to vanessa' {unit: 4}
                 CODE_BLOCK_NT
@@ -19495,7 +19495,7 @@ ROOT_NT
                         INVOCATION_NT'try the person asked eating the noun' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked eating the noun' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked eating the noun' {kind: action} {explicit action: <action: eatingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                CONSTANT_NT'person asked eating the noun' {kind: action} {explicit action: <action-based: eating * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'instead of someone eating a fresh ice cream cone' {unit: 4}
                 CODE_BLOCK_NT
@@ -19633,7 +19633,7 @@ ROOT_NT
                                 INVOCATION_NT'try typhoid mary sneezing on the random bystander' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'typhoid mary sneezing on the random bystander' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'typhoid mary sneezing on the random bystander' {kind: action} {explicit action: <action: sneezing onactor: LOCAL_VARIABLE_NT'typhoid mary' {local: LV"typhoid mary"-person person}noun: LOCAL_VARIABLE_NT'the random bystander' {local: LV"random bystander"-person person}>}
+                                        CONSTANT_NT'typhoid mary sneezing on the random bystander' {kind: action} {explicit action: <action-based: sneezing on * actor: LOCAL_VARIABLE_NT'typhoid mary' {local: LV"typhoid mary"-person person}noun: LOCAL_VARIABLE_NT'the random bystander' {local: LV"random bystander"-person person}>}
             SENTENCE_NT'a person can be infected or clean' {unit: 4} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
@@ -19973,7 +19973,7 @@ ROOT_NT
                                             INVOCATION_NT'try opening the blocking door' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'opening the blocking door' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action: openingnoun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
+                                                    CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action-based: opening * noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         CODE_BLOCK_NT'say "(first opening [the blocking door])[command clarificati' {control structure: SAY}
                                             INVOCATION_LIST_SAY_NT'"(first opening [the blocking door])[command clarification b'
@@ -19985,7 +19985,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try opening the blocking door' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'opening the blocking door' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action: openingnoun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
+                                                    CONSTANT_NT'opening the blocking door' {kind: action} {explicit action: <action-based: opening * noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the blocking door is closed' {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the blocking door is closed' {phrase invoked: call}
@@ -20010,7 +20010,7 @@ ROOT_NT
                                             INVOCATION_NT'try closing the door ajar' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action: closingnoun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         CODE_BLOCK_NT'say "(first closing [the door ajar])[command clarification b' {control structure: SAY}
                                             INVOCATION_LIST_SAY_NT'"(first closing [the door ajar])[command clarification break'
@@ -20022,7 +20022,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try closing the door ajar' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action: closingnoun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the door ajar is open' {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: call}
@@ -20047,7 +20047,7 @@ ROOT_NT
                                             INVOCATION_NT'try closing the door ajar' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action: closingnoun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         CODE_BLOCK_NT'say "(first closing [the door ajar])[command clarification b' {control structure: SAY}
                                             INVOCATION_LIST_SAY_NT'"(first closing [the door ajar])[command clarification break'
@@ -20059,7 +20059,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try closing the door ajar' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'closing the door ajar' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action: closingnoun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                                    CONSTANT_NT'closing the door ajar' {kind: action} {explicit action: <action-based: closing * noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the door ajar is open' {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: call}
@@ -20084,7 +20084,7 @@ ROOT_NT
                                             INVOCATION_NT'try unlocking keylessly the sealed chest' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'unlocking keylessly the sealed chest' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action: unlocking keylesslynoun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
+                                                    CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         CODE_BLOCK_NT'say "(first unlocking [the sealed chest])[command clarificat' {control structure: SAY}
                                             INVOCATION_LIST_SAY_NT'"(first unlocking [the sealed chest])[command clarification '
@@ -20096,7 +20096,7 @@ ROOT_NT
                                             INVOCATION_NT'silently try unlocking keylessly the sealed chest' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'unlocking keylessly the sealed chest' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action: unlocking keylesslynoun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
+                                                    CONSTANT_NT'unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the sealed chest is locked' {indent: 1} {colon_block_command}
                                         INVOCATION_NT'if the sealed chest is locked' {phrase invoked: call}
@@ -20113,7 +20113,7 @@ ROOT_NT
                                     INVOCATION_NT'try the person asked trying opening the blocking door' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'person asked trying opening the blocking door' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'person asked trying opening the blocking door' {kind: action} {explicit action: <action: openingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
+                                            CONSTANT_NT'person asked trying opening the blocking door' {kind: action} {explicit action: <action-based: opening * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the blocking door' {local: LV"blocking door"-door door}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the blocking door is closed' {colon_block_command}
                                         INVOCATION_NT'if the blocking door is closed' {phrase invoked: call}
@@ -20130,7 +20130,7 @@ ROOT_NT
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'person asked trying closing the door ajar' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action: closingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                            CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the door ajar is open' {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: call}
@@ -20147,7 +20147,7 @@ ROOT_NT
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'person asked trying closing the door ajar' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action: closingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
+                                            CONSTANT_NT'person asked trying closing the door ajar' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the door ajar' {local: LV"door ajar"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the door ajar is open' {colon_block_command}
                                         INVOCATION_NT'if the door ajar is open' {phrase invoked: call}
@@ -20164,7 +20164,7 @@ ROOT_NT
                                     INVOCATION_NT'try the person asked trying unlocking keylessly the sealed c' {phrase invoked: call}
                                         RVALUE_CONTEXT_NT'person asked trying unlocking keylessly the sealed chest' {token check to do: <null-parse-node>
                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                            CONSTANT_NT'person asked trying unlocking keylessly the sealed chest' {kind: action} {explicit action: <action: unlocking keylesslyactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
+                                            CONSTANT_NT'person asked trying unlocking keylessly the sealed chest' {kind: action} {explicit action: <action-based: unlocking keylessly * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: LOCAL_VARIABLE_NT'the sealed chest' {local: LV"sealed chest"-thing thing}>}
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the sealed chest is locked' {colon_block_command}
                                         INVOCATION_NT'if the sealed chest is locked' {phrase invoked: call}
@@ -20421,7 +20421,7 @@ ROOT_NT
                                             INVOCATION_NT'try the person asked unlocking the noun with the key unlocke' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'person asked unlocking the noun with the key unlocked with' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'person asked unlocking the noun with the key unlocked with' {kind: action} {explicit action: <action: unlocking it withactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: NONLOCAL_VARIABLE_NT'the key unlocked with' {nonlocal: 'key unlocked with'(var)object}>}
+                                                    CONSTANT_NT'person asked unlocking the noun with the key unlocked with' {kind: action} {explicit action: <action-based: unlocking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: NONLOCAL_VARIABLE_NT'the key unlocked with' {nonlocal: 'key unlocked with'(var)object}>}
                         HEADING_NT'part 3 - locking' {heading 3} {under: H3'part 3 - locking'} {unit: 4}
                             HEADING_NT'section 1 - regular locking' {heading 5} {under: H5'section 1 - regular locking'} {unit: 4}
                                 SENTENCE_NT'understand the command lock as something new' {unit: 4} {classified}
@@ -20540,7 +20540,7 @@ ROOT_NT
                                             INVOCATION_NT'try the person asked locking the noun with the key locked wi' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'person asked locking the noun with the key locked with' {token check to do: <null-parse-node>
                                                 } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'person asked locking the noun with the key locked with' {kind: action} {explicit action: <action: locking it withactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: NONLOCAL_VARIABLE_NT'the key locked with' {nonlocal: 'key locked with'(var)object}>}
+                                                    CONSTANT_NT'person asked locking the noun with the key locked with' {kind: action} {explicit action: <action-based: locking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: NONLOCAL_VARIABLE_NT'the key locked with' {nonlocal: 'key locked with'(var)object}>}
                     HEADING_NT'volume 3 - the passkey kind , needed only if you want keys t' {heading 1} {under: H1'volume 3 - the passkey kind , needed only if you want keys to name themselves'} {unit: 4}
                         SENTENCE_NT'a passkey is a kind of thing' {unit: 4} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -20652,9 +20652,9 @@ ROOT_NT
                                             }
                                                 LOGICAL_OR_NT'locking or unlocking something with something which is on a '
                                                     TEST_VALUE_NT'locking'
-                                                        CONSTANT_NT'locking' {kind: described action} {action pattern: <action: locking it with>}
+                                                        CONSTANT_NT'locking' {kind: described action} {action pattern: <action-based: locking it with>}
                                                     TEST_VALUE_NT'unlocking something with something which is on a keychain wh'
-                                                        CONSTANT_NT'unlocking something with something which is on a keychain wh' {kind: described action} {action pattern: <action: unlocking it withnoun: TEST_VALUE_NT'something'second: TEST_VALUE_NT'something which is on a keychain which is carried by the act' {term: x} {converted SN}>}
+                                                        CONSTANT_NT'unlocking something with something which is on a keychain wh' {kind: described action} {action pattern: <action-based: unlocking it with * noun: TEST_VALUE_NT'something'second: TEST_VALUE_NT'something which is on a keychain which is carried by the act' {term: x} {converted SN}>}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'continue the action' {indent: 2}
                                             INVOCATION_NT'continue the action' {phrase invoked: call}
@@ -20701,13 +20701,13 @@ ROOT_NT
                                                     INVOCATION_NT'try taking the noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'taking the noun' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'taking the noun' {kind: action} {explicit action: <action: takingnoun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'taking the noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
                                                 INVOCATION_LIST_NT'try the person asked trying taking the noun' {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the noun' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'person asked trying taking the noun' {kind: action} {explicit action: <action: takingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'person asked trying taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun' {phrase invoked: call} {kind variable declarations: K=object}
@@ -20739,13 +20739,13 @@ ROOT_NT
                                                     INVOCATION_NT'try taking the second noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'taking the second noun' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'taking the second noun' {kind: action} {explicit action: <action: takingnoun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'taking the second noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
                                                 INVOCATION_LIST_NT'try the person asked trying taking the second noun' {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the second noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the second noun' {token check to do: <null-parse-node>
                                                         } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'person asked trying taking the second noun' {kind: action} {explicit action: <action: takingactor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'person asked trying taking the second noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}}noun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the second nou' {phrase invoked: call} {kind variable declarations: K=object}
@@ -21044,7 +21044,7 @@ ROOT_NT
                         INVOCATION_NT'try going heading' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'going heading' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'going heading' {kind: action} {explicit action: <action: goingnoun: LOCAL_VARIABLE_NT'heading' {local: LV"heading"-object object}>}
+                                CONSTANT_NT'going heading' {kind: action} {explicit action: <action-based: going * noun: LOCAL_VARIABLE_NT'heading' {local: LV"heading"-object object}>}
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the location is the destination of the player' {colon_block_command}
                             INVOCATION_NT'if the location is the destination of the player' {phrase invoked: call}
@@ -21072,7 +21072,7 @@ ROOT_NT
                                 INVOCATION_NT'try going toward destination of the player' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'going toward destination of the player' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'going toward destination of the player' {kind: action} {explicit action: <action: going towardnoun: PROPERTY_VALUE_NT'destination of the player'>}
+                                        CONSTANT_NT'going toward destination of the player' {kind: action} {explicit action: <action-based: going toward * noun: PROPERTY_VALUE_NT'destination of the player'>}
                             CODE_BLOCK_NT {control structure: IF}
                                 INVOCATION_LIST_NT'if the location is the destination of the player' {indent: 2} {colon_block_command}
                                     INVOCATION_NT'if the location is the destination of the player' {phrase invoked: call}
@@ -21849,7 +21849,7 @@ ROOT_NT
                                 INVOCATION_NT'try entering the nearest exit' {phrase invoked: call}
                                     RVALUE_CONTEXT_NT'entering the nearest exit' {token check to do: <null-parse-node>
                                     } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                        CONSTANT_NT'entering the nearest exit' {kind: action} {explicit action: <action: enteringnoun: LOCAL_VARIABLE_NT'the nearest exit' {local: LV"nearest exit"-door door}>}
+                                        CONSTANT_NT'entering the nearest exit' {kind: action} {explicit action: <action-based: entering * noun: LOCAL_VARIABLE_NT'the nearest exit' {local: LV"nearest exit"-door door}>}
                             CODE_BLOCK_NT {control structure: INS}
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat with way running through directions' {colon_block_command} {indent: 1}
@@ -21888,7 +21888,7 @@ ROOT_NT
                                         INVOCATION_NT'try going way' {phrase invoked: call}
                                             RVALUE_CONTEXT_NT'going way' {token check to do: <null-parse-node>
                                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                CONSTANT_NT'going way' {kind: action} {explicit action: <action: goingnoun: LOCAL_VARIABLE_NT'way' {local: LV<unallocated> direction}>}
+                                                CONSTANT_NT'going way' {kind: action} {explicit action: <action-based: going * noun: LOCAL_VARIABLE_NT'way' {local: LV<unallocated> direction}>}
                                     CODE_BLOCK_NT {control structure: INS}
             SENTENCE_NT'blank is a room' {unit: 4} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -22284,7 +22284,7 @@ ROOT_NT
                         INVOCATION_NT'try asking the noun about it' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'asking the noun about it' {token check to do: <null-parse-node>
                             } {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'asking the noun about it' {kind: action} {explicit action: <action: asking it aboutnoun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: CONSTANT_NT'it' {kind: topic}>}
+                                CONSTANT_NT'asking the noun about it' {kind: action} {explicit action: <action-based: asking it about * noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}second: CONSTANT_NT'it' {kind: topic}>}
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 4} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'
@@ -23401,7 +23401,7 @@ ROOT_NT
                                         }
                                             LOGICAL_AND_NT'looking and a marked for listing person is not in the locati'
                                                 TEST_VALUE_NT'looking'
-                                                    CONSTANT_NT'looking' {kind: action} {explicit action: <action: looking>}
+                                                    CONSTANT_NT'looking' {kind: action} {explicit action: <action-based: looking>}
                                                 TEST_PROPOSITION_NT'a marked for listing person is not in the location' {proposition: << Exists x : kind=person(x) ^ marked for listing(x) ^ NOT< ('the location' == <ContainerOf(*1) : x>) NOT> >>} {term: x}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'clear marked people' {indent: 3}

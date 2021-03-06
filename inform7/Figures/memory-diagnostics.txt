@@ -1,13 +1,13 @@
 Total memory consumption was 257775K = 252 MB
 
-62.3% was used for 1339899 objects, in 278624 frames in 201 x 800K = 160800K = 157 MB:
+62.3% was used for 1340002 objects, in 278628 frames in 201 x 800K = 160800K = 157 MB:
 
      9.8%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.5%  text_stream_array                        2595 x 100 = 259500 objects, 14615040 bytes
      3.9%  parse_node                               129996 objects, 10399680 bytes
      2.8%  verb_conjugation                         160 objects, 7425280 bytes
      2.6%  parse_node_annotation_array              431 x 500 = 215500 objects, 6909792 bytes
-     2.4%  linked_list                              11781 objects, 6597360 bytes
+     2.4%  linked_list                              11782 objects, 6597920 bytes
      2.3%  inter_symbol_array                       70 x 1024 = 71680 objects, 6310080 bytes
      1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
      1.2%  map_data                                 670 objects, 3178480 bytes
@@ -15,13 +15,13 @@ Total memory consumption was 257775K = 252 MB
      0.7%  inter_schema_token                       13492 objects, 1942848 bytes
      0.6%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes
      0.5%  match_trie_array                         10 x 1000 = 10000 objects, 1360320 bytes
-     0.3%  phrase                                   940 objects, 1052800 bytes
+     0.3%  phrase                                   940 objects, 1015200 bytes
      0.3%  inter_name_array                         21 x 1000 = 21000 objects, 1008672 bytes
      0.3%  adjective_meaning                        202 objects, 1000304 bytes
      0.3%  excerpt_meaning                          3098 objects, 966576 bytes
      0.3%  inter_package                            13227 objects, 952344 bytes
-     0.3%  production                               3877 objects, 899464 bytes
-     0.3%  ptoken                                   8380 objects, 871520 bytes
+     0.3%  production                               3878 objects, 899696 bytes
+     0.3%  ptoken                                   8381 objects, 871624 bytes
      0.3%  grammatical_usage                        3610 objects, 866400 bytes
      0.3%  individual_form                          2560 objects, 860160 bytes
      0.3%  inter_symbols_table                      13227 objects, 846528 bytes
@@ -77,9 +77,9 @@ Total memory consumption was 257775K = 252 MB
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 30720 bytes
      ----  verb_sense                               403 objects, 29016 bytes
-     ----  action_pattern_array                     6 x 100 = 600 objects, 28992 bytes
      ----  stacked_variable_owner_array             6 x 100 = 600 objects, 28992 bytes
      ----  heading                                  198 objects, 28512 bytes
+     ----  action_pattern_array                     7 x 100 = 700 objects, 28224 bytes
      ----  counting_data                            670 objects, 26800 bytes
      ----  parsing_data                             670 objects, 21440 bytes
      ----  bp_runtime_implementation                321 objects, 20544 bytes
@@ -230,7 +230,7 @@ Total memory consumption was 257775K = 252 MB
 
 37.6% was used for memory not allocated for objects:
 
-    16.0%  text stream storage                      42247848 bytes in 265814 claims
+    16.0%  text stream storage                      42247328 bytes in 265813 claims
      3.5%  dictionary storage                       9278976 bytes in 16372 claims
      ----  sorting                                  1056 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
@@ -246,5 +246,5 @@ Total memory consumption was 257775K = 252 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-19.7% was overhead - 52175168 bytes = 50952K = 49 MB
+19.7% was overhead - 52212640 bytes = 50988K = 49 MB
 

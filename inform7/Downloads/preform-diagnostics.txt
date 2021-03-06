@@ -8642,6 +8642,8 @@
           constraint CS = {10} extremes [1, 1]
         refinery 
           constraint CS = {10} extremes [1, 1]
+        pattern 
+          constraint CS = {10} extremes [1, 1]
 
 <notable-variables> hits 4/186 nti 6 constraint CS = {6} extremes [1, 2]
     English:

@@ -1,0 +1,25 @@
+   Radiation Laboratory
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  
+  Radiation Laboratory
+  You can see a Geiger counter here.
+  
+  1. looking
+  looking: <action-based: looking>
+  
+  2. looking or waiting
+  looking or waiting: <action-based: waiting / looking>
+  
+  3. looking or taking
+  looking or taking: <action-based: taking / looking>
+  
+  4. taking the counter
+  taking the counter: <action-based: taking * noun: CONSTANT_NT'the counter' {kind: thing} {instance: 'geiger counter'} {enumeration: 0}>
+  
+  5. looking the counter
+  looking the counter: failed to parse
+  
+> >   Radiation Laboratory
+> Are you sure you want to quit? 

@@ -387,7 +387,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 }
 
 @<Determine a named grammar token@> =
-	parse_node *val = ARvalues::from_grammar_verb(<<grammar_verb:named>>);
+	parse_node *val = ParsingPlugin::rvalue_from_grammar_verb(<<grammar_verb:named>>);
 	spec = PL::Parsing::Verbs::determine(<<grammar_verb:named>>, depth+1); /* this is where Phase II recurses */
 	Node::set_grammar_value(pn, val);
 
@@ -1245,7 +1245,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			} else {
 				if (Node::is(spec, CONSTANT_NT)) {
 					if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
-						gv = ARvalues::to_grammar_verb(spec);
+						gv = ParsingPlugin::rvalue_to_grammar_verb(spec);
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
 							Produce::down(Emit::tree());

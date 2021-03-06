@@ -994,8 +994,7 @@ properties) and for kinds (which do, but differently).
 	#ifdef IF_MODULE
 	action_pattern *apx = Node::get_action_meaning(px);
 	action_pattern *apy = Node::get_action_meaning(py);
-	if ((ActionPatterns::is_valid(apy)) &&
-		(ActionPatterns::is_named(apy) == FALSE)) {
+	if ((apy) && (ActionPatterns::is_named(apy) == FALSE)) {
 		LOG("Actions: $A and $A\n", apx, apy);
 		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionsEquated),
 			"two actions are rather oddly equated here",

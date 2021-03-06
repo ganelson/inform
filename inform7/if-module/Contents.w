@@ -45,12 +45,12 @@ Chapter 4: Actions
 	Action Semantics
 	Action Variables
 	Action Name Names
-	Action Name Lists
 	Action Patterns
-	Explicit Actions
+	Action Name Lists
 	Action Pattern Clauses
 	Going
 	Parse Action Patterns
+	Explicit Actions
 	Named Action Patterns
 
 Chapter 5: Command Grammar
