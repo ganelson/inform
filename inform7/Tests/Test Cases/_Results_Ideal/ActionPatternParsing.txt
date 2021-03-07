@@ -4,7 +4,7 @@
   Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
   
   Radiation Laboratory
-  You can see a Geiger counter here.
+  You can see a Geiger counter, a bench and Hans here.
   
   1. looking
   looking: <action-based: looking>
@@ -16,33 +16,66 @@
   looking or taking: <action-based: taking / looking>
   
   4. taking the counter
-  taking the counter: <action-based: taking * noun: CONSTANT_NT'the counter' {kind: thing} {instance: 'geiger counter'} {enumeration: 0}>
+  taking the counter: <action-based: taking * noun: 'geiger counter'>
   
-  5. looking the counter
-  looking the counter: failed to parse
+  5. putting the counter on the bench
+  putting the counter on the bench: <action-based: putting it on * noun: 'geiger counter' second: 'bench'>
   
-  6. examining the counter is nosy behaviour
+  6. putting the counter on something
+  putting the counter on something: <action-based: putting it on * noun: 'geiger counter' second: << thing(x) >>>
+  
+  7. putting a thing on something
+  putting a thing on something: <action-based: putting it on * noun: << thing(x) >> second: << thing(x) >>>
+  
+  8. putting a thing on a supporter
+  putting a thing on a supporter: <action-based: putting it on * noun: << thing(x) >> second: << supporter(x) >>>
+  
+  9. Hans taking the counter
+  hans taking the counter: <action-based: taking * actor: 'hans' noun: 'geiger counter'>
+  
+  10. Hans trying taking the counter
+  hans trying taking the counter: <action-based: taking * actor: 'hans' noun: 'geiger counter'>
+  
+  11. asking Hans to try taking the counter
+  asking hans to try taking the counter: <action-based: taking * actor: 'hans'[request] noun: 'geiger counter'>
+  
+  12. somebody taking the counter
+  somebody taking the counter: <action-based: taking * actor: << person(x) >> noun: 'geiger counter'>
+  
+  13. an actor taking the counter
+  an actor taking the counter: <action-based: taking * actor: <null-parse-node>[not-player] noun: 'geiger counter'>
+  
+  14. examining the counter is nosy behaviour
   examining the counter is nosy behaviour: <action-based: nosy behaviour>
   
-  7. looking is nosy behaviour
+  15. looking is nosy behaviour
   looking is nosy behaviour: <action-based: nosy behaviour>
   
-  8. nosy behaviour
+  16. nosy behaviour
   nosy behaviour: <action-based: nosy behaviour>
   
-  9. taking ~~ doing something
+  17. looking in the presence of Hans
+  looking in the presence of hans: <action-based: looking * in-presence: 'hans'>
+  
+  18. arfle barfle gloop
+  arfle barfle gloop: failed to parse
+  
+  19. looking the counter
+  looking the counter: failed to parse
+  
+  20. taking ~~ doing something
   taking ~~ doing something: left is more specific
   
-  10. doing something ~~ doing something other than taking
+  21. doing something ~~ doing something other than taking
   doing something ~~ doing something other than taking: right is more specific
   
-  11. taking ~~ taking a thing
+  22. taking ~~ taking a thing
   taking ~~ taking a thing: right is more specific
   
-  12. taking the counter ~~ taking a thing
+  23. taking the counter ~~ taking a thing
   taking the counter ~~ taking a thing: left is more specific
   
-  13. taking or dropping the counter ~~ taking the counter
+  24. taking or dropping the counter ~~ taking the counter
   taking or dropping the counter ~~ taking the counter: right is more specific
   
 > >   Radiation Laboratory

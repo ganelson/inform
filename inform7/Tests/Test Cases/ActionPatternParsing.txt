@@ -1,15 +1,36 @@
 Radiation Laboratory is a room.
 
-A Geiger counter is here.
+A Geiger counter is here. A bench is a supporter in the Laboratory.
+Hans is a man in the Laboratory.
+
+[Should parse]
 
 Test pattern (internal) with looking.
 Test pattern (internal) with looking or waiting.
 Test pattern (internal) with looking or taking.
 Test pattern (internal) with taking the counter.
-Test pattern (internal) with looking the counter.
+Test pattern (internal) with putting the counter on the bench.
+Test pattern (internal) with putting the counter on something.
+Test pattern (internal) with putting a thing on something.
+Test pattern (internal) with putting a thing on a supporter.
+
+Test pattern (internal) with Hans taking the counter.
+Test pattern (internal) with Hans trying taking the counter.
+Test pattern (internal) with asking Hans to try taking the counter.
+Test pattern (internal) with somebody taking the counter.
+Test pattern (internal) with an actor taking the counter.
+
 Test pattern (internal) with examining the counter is nosy behaviour.
 Test pattern (internal) with looking is nosy behaviour.
 Test pattern (internal) with nosy behaviour.
+Test pattern (internal) with looking in the presence of Hans.
+
+[Should fail]
+
+Test pattern (internal) with arfle barfle gloop.
+Test pattern (internal) with looking the counter.
+
+[Specificity]
 
 Test pattern (internal) with taking ~~ doing something.
 Test pattern (internal) with doing something ~~ doing something other than taking.

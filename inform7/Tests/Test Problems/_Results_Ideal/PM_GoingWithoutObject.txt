@@ -1,14 +1,10 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 10 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_GoingWithoutObject
   >--> In the sentence 'Before going to 10' (source text, line 3), '10' seems
     to be intended as something the player might be going to, but it doesn't
     make sense in that context.
-Problem__ PM_APUnknown
-  >--> You wrote 'Before going to 10' (source text, line 3), which seems to
-    introduce a rule taking effect only if the action is 'going to 10'. But
-    that did not make sense as a description of an action. I am unable to place
-    this rule into any rulebook.
-Inform 7 has finished: 19 centiseconds used.
+Inform 7 has finished.

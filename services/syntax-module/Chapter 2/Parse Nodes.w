@@ -328,13 +328,12 @@ so that this code won't be used again on the same horizontal list of possibiliti
 	}
 
 @ All of those routines make use of the following, which actually performs
-the log of a parse node. Note that this always produces exactly one line of
-text in the debugging log.
+the log of a parse node.
 
 =
 void Node::log_node(OUTPUT_STREAM, void *vpn) {
 	parse_node *pn = (parse_node *) vpn;
-	if (pn == NULL) { WRITE("<null-parse-node>\n"); return; }
+	if (pn == NULL) { WRITE("<null-parse-node>"); return; }
 	NodeType::log(OUT, (int) pn->node_type);
 	if (Wordings::nonempty(Node::get_text(pn))) {
 		TEMPORARY_TEXT(text)

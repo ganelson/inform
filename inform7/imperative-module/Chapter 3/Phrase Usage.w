@@ -696,22 +696,22 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 @<Parse what used to be the bud into the PHRCD@> =
 	#ifdef IF_MODULE
 	if (Rulebooks::focus(phud->owning_rulebook) == ACTION_FOCUS) {
-		permit_trying_omission = TRUE;
+		int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 		Frames::set_stvol(
 			Frames::current_stack_frame(), all_action_processing_vars);
 		if (<action-pattern>(phud->rule_parameter)) phrcd.ap = <<rp>>;
 		Frames::remove_nonphrase_stack_frame();
-		permit_trying_omission = FALSE;
+		ParseActionPatterns::restore_mode(saved);
 
 		if (phrcd.ap == NULL)
 			@<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
-		phrcd.ap = ParseActionPatterns::parametric(phud->rule_parameter, pk);
+		phrcd.ap = ActionPatterns::parse_parametric(phud->rule_parameter, pk);
 		if (phrcd.ap == NULL) {
 			if (Wordings::nonempty(phud->whenwhile)) {
 				wording F = Wordings::up_to(phud->rule_parameter, Wordings::last_wn(phud->whenwhile));
-				phrcd.ap = ParseActionPatterns::parametric(F, pk);
+				phrcd.ap = ActionPatterns::parse_parametric(F, pk);
 				if (phrcd.ap) {
 					phud->rule_parameter = F;
 					phud->whenwhile = EMPTY_WORDING;

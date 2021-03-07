@@ -71,7 +71,7 @@ If we do spot one of these five magic variables, we tie it to a clause with
 a special ID number of our choice.
 
 =
-int Going::divert_clause_ID(action_pattern *ap, stacked_variable *stv) {
+int Going::divert_clause_ID(stacked_variable *stv) {
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	if ((going_action) && (oid == Going::id())) {
@@ -146,18 +146,18 @@ int Going::irregular_noun_phrase(action_name *an, action_pattern *ap, wording W)
 @ Here we perform sanity checks on the clauses.
 
 =
-int Going::check(action_pattern *ap) {
-	if (Going::check_clause(APClauses::spec(ap, GOING_FROM_AP_CLAUSE), "from",
-		K_room, K_region) == FALSE) return FALSE;
-	if (Going::check_clause(APClauses::spec(ap, GOING_TO_AP_CLAUSE), "to",
-		K_room, K_region) == FALSE) return FALSE;
-	if (Going::check_clause(APClauses::spec(ap, GOING_BY_AP_CLAUSE), "by",
-		K_thing, NULL) == FALSE) return FALSE;
-	if (Going::check_clause(APClauses::spec(ap, GOING_THROUGH_AP_CLAUSE), "through",
-		K_door, NULL) == FALSE) return FALSE;
-	if (Going::check_clause(APClauses::spec(ap, PUSHING_AP_CLAUSE), "with",
-		K_thing, NULL) == FALSE) return FALSE;
-	return TRUE;
+int Going::validate(stacked_variable *stv, parse_node *spec) {
+	int C = Going::divert_clause_ID(stv);
+	char *keyword = NULL; kind *ka = NULL, *kb = NULL;
+	switch (C) {
+		case GOING_FROM_AP_CLAUSE: keyword = "from"; ka = K_room; kb = K_region; break;
+		case GOING_TO_AP_CLAUSE: keyword = "to"; ka = K_room; kb = K_region; break;
+		case GOING_BY_AP_CLAUSE: keyword = "by"; ka = K_thing; kb = NULL; break;
+		case GOING_THROUGH_AP_CLAUSE: keyword = "through"; ka = K_door; kb = NULL; break;
+		case PUSHING_AP_CLAUSE: keyword = "with"; ka = K_thing; kb = NULL; break;
+	}
+	if (keyword == NULL) return NOT_APPLICABLE;
+	return Going::check_clause(spec, keyword, ka, kb);
 }
 
 @ Each clause can be within one of up to two kinds, or else can be "nothing"

@@ -26,7 +26,7 @@ action variable clauses.
 
 =
 int APClauses::clause_ID_for_action_variable(action_pattern *ap, stacked_variable *stv) {
-	int D = Going::divert_clause_ID(ap, stv); if (D >= 0) return D;
+	int D = Going::divert_clause_ID(stv); if (D >= 0) return D;
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	return 1000*oid + off;
@@ -178,9 +178,20 @@ void APClauses::clear_opt(ap_clause *apoc, int opt) {
 
 =
 void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
+	int c = 0;
 	LOOP_OVER_AP_CLAUSES(apoc, ap) {
+		if (c++ > 0) WRITE(" ");
 		APClauses::write_clause_ID(OUT, apoc->clause_ID, apoc->stv_to_match);
-		WRITE(": %P", apoc->clause_spec);
+		WRITE(": ");
+		instance *I = Specifications::object_exactly_described_if_any(apoc->clause_spec);
+		if (I) {
+			Instances::write(OUT, I);
+		} else if (Specifications::is_description(apoc->clause_spec)) {
+			pcalc_prop *prop = Specifications::to_proposition(apoc->clause_spec);
+			Propositions::write(OUT, prop);
+		} else {
+			WRITE("%P", apoc->clause_spec);
+		}
 		if (APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT)) WRITE("[allow-region]");
 		if (APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT)) WRITE("[no-validate]");
 		if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) WRITE("[not-player]");

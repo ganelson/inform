@@ -323,18 +323,18 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 			parse_node *as_parsed = Invocations::get_token_as_parsed(inv, i);
 			wording XW = Node::get_text(as_parsed);
 			#ifdef IF_MODULE
-				int pto = permit_trying_omission;
+				int saved = ParseActionPatterns::enter_mode(0);
 				if ((Specifications::is_kind_like(to_match)) &&
 					(Kinds::eq(Specifications::to_kind(to_match), K_stored_action))) {
-					permit_trying_omission = TRUE;
+					ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 					@<Parse the action in a try phrase@>;
 				} else {
-					permit_trying_omission = FALSE;
+					ParseActionPatterns::exit_mode(PERMIT_TRYING_OMISSION);
 			#endif
 					@<Parse any other token@>;
 			#ifdef IF_MODULE
 				}
-				permit_trying_omission = pto;
+				ParseActionPatterns::restore_mode(saved);
 			#endif
 			Node::set_text(as_parsed, XW);
 			Invocations::set_token_as_parsed(inv, i, as_parsed);
@@ -346,7 +346,7 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 	if (<action-pattern>(XW))
 		as_parsed = AConditions::new_action_TEST_VALUE(<<rp>>, XW);
 	else {
-		permit_trying_omission = FALSE;
+		ParseActionPatterns::exit_mode(PERMIT_TRYING_OMISSION);
 		@<Parse any other token@>;
 	}
 

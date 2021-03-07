@@ -73,7 +73,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#4">Chapter 4: The S-Parser</a></li><li><b>Conditions and Phrases</b></li></ul></div>
 <p class="purpose">To parse the text of To... phrases, say phrases and conditions.</p>
 
-<ul class="toc"><li><a href="4-cap.html#SP1">&#167;1. Conditions</a></li><li><a href="4-cap.html#SP9">&#167;9. Command phrases</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="4-cap.html#SP1">&#167;1. Conditions</a></li><li><a href="4-cap.html#SP7">&#167;7. Command phrases</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Conditions. </b>In Inform syntax, a condition is an excerpt of text which measures the truth of
 something. We will call it "pure" if it is self-sufficient, rather than
@@ -232,7 +232,7 @@ testing the existence of something.
 <span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Lexicon::retrieve</span><span class="Preform-plain-syntax">(</span><span class="Preform-constant-syntax">COND_PHRASE_MC</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">) {</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Node::new_with_words</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
-<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP12" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
+<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP10" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">tval</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Node::new_with_words</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">TEST_VALUE_NT</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">tval</span><span class="Preform-plain-syntax">-&gt;</span><span class="Preform-identifier-syntax">down</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">        ==&gt; { -, </span><span class="Preform-identifier-syntax">tval</span><span class="Preform-plain-syntax"> };</span>
@@ -259,60 +259,7 @@ being compiled; all others are out of scope.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We have already seen action patterns used as nouns; here they are used as
-conditions, so this is where the condition in
-</p>
-
-<blockquote>
-    <p>if taking the box, ...</p>
-</blockquote>
-
-<p class="commentary">is handled. The following nonterminal exists to enter the AP to the meaning list.
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;s-action-pattern-as-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;we-are-action-pattern&gt;</span><span class="Preform-plain-syntax">         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }</span>
-
-<span class="Preform-function-syntax">&lt;s-action-pattern-as-negated-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-negated&gt;</span><span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }</span>
-</pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And similarly:
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;s-past-action-pattern-as-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-past&gt;</span><span class="Preform-plain-syntax">           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Convert stored past action pattern to condition node</span><span class="named-paragraph-number">8.1</span></a></span>
-
-<span class="Preform-function-syntax">&lt;s-past-action-pattern-as-negated-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;action-pattern-past-negated&gt;</span><span class="Preform-plain-syntax">   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Convert stored past action pattern to condition node</span><span class="named-paragraph-number">8.1</span></a></span>
-</pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Convert stored past action pattern to condition node</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RP</span><span class="plain-syntax">[1];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ActionPatterns::makes_callings</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PastActionCalled</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"a description of an action cannot both refer to past "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"history and also use '(called ...)'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"because that would require Inform in general to remember "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"too much information about past events."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AConditions::new_action_TEST_VALUE</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><a href="2-cnd.html#SP10" class="function-link"><span class="function-syntax">Conditions::attach_tense</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">HASBEEN_TENSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">C</span><span class="plain-syntax"> };</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF_MODULE</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP8">&#167;8</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Command phrases. </b>The final clutch of nonterminals in the S-grammar handles individual commands,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Command phrases. </b>The final clutch of nonterminals in the S-grammar handles individual commands,
 written in their semicolon-divided list in the body of a rule or "To..."
 definition. For instance, in the not very sensible rule:
 </p>
@@ -342,8 +289,8 @@ typechecking to choose between much later on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;adaptive-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, SPCond::say_verb(RP[1], R[1], NULL, W) }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;adaptive-adjective&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">adjective</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, SPCond::say_adjective(RP[1], W) }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;adaptive-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, SPCond::say_verb(RP[1], R[1], NULL, W) }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;modal-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;adaptive-verb-infinitive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Annotate the verb with a modal</span><span class="named-paragraph-number">9.3</span></a></span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;modal-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;adaptive-verb-infinitive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Annotate the verb with a modal</span><span class="named-paragraph-number">9.3</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;modal-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;adaptive-verb-infinitive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">verb</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Annotate the verb with a modal</span><span class="named-paragraph-number">7.3</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;modal-verb&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;adaptive-verb-infinitive&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Annotate the verb with a modal</span><span class="named-paragraph-number">7.3</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;adaptive-adjective&gt;</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, SPCond::say_adjective(RP[1], W) }</span>
 
 <span class="Preform-function-syntax">&lt;adaptive-adjective&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
@@ -362,7 +309,7 @@ typechecking to choose between much later on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>"To..." phrases are easy, or at least, easy to delegate:
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>"To..." phrases are easy, or at least, easy to delegate:
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
@@ -370,7 +317,7 @@ typechecking to choose between much later on.
 <span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Lexicon::retrieve</span><span class="Preform-plain-syntax">(</span><span class="Preform-constant-syntax">VOID_PHRASE_MC</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">) {</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Node::new_with_words</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
-<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP12" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
+<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP10" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">        ==&gt; { -, </span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax"> };</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    }</span>
@@ -378,14 +325,14 @@ typechecking to choose between much later on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b></p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-text-substitution&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Lexicon::retrieve</span><span class="Preform-plain-syntax">(</span><span class="Preform-constant-syntax">SAY_PHRASE_MC</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">) {</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">parse_node</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax"> = </span><span class="Preform-identifier-syntax">Node::new_with_words</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">);</span>
-<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP12" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
+<span class="Preform-plain-syntax">        </span><a href="4-cap.html#SP10" class="function-link"><span class="Preform-function-syntax">SPCond::add_ilist</span></a><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax">, </span><span class="Preform-identifier-syntax">p</span><span class="Preform-plain-syntax">);</span>
 <span class="Preform-plain-syntax">        ==&gt; { -, </span><span class="Preform-identifier-syntax">spec</span><span class="Preform-plain-syntax"> };</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    }</span>
@@ -393,21 +340,21 @@ typechecking to choose between much later on.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate the verb with a modal</span><span class="named-paragraph-number">9.3</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate the verb with a modal</span><span class="named-paragraph-number">7.3</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">neg</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1]) || (</span><span class="identifier-syntax">R</span><span class="plain-syntax">[2])) </span><span class="identifier-syntax">neg</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    ==&gt; { -, </span><a href="4-cap.html#SP11" class="function-link"><span class="function-syntax">SPCond::say_verb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">RP</span><span class="plain-syntax">[2], </span><span class="identifier-syntax">neg</span><span class="plain-syntax">, </span><span class="identifier-syntax">RP</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
+<span class="plain-syntax">    ==&gt; { -, </span><a href="4-cap.html#SP9" class="function-link"><span class="function-syntax">SPCond::say_verb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">RP</span><span class="plain-syntax">[2], </span><span class="identifier-syntax">neg</span><span class="plain-syntax">, </span><span class="identifier-syntax">RP</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">W</span><span class="plain-syntax">) };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP9">&#167;9</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Invocation nodes for adaptive-text adjectives hold references to their masculine
+<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP7">&#167;7</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Invocation nodes for adaptive-text adjectives hold references to their masculine
 singulars.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SPCond::say_adjective</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">SPCond::say_adjective</span></span>:<br/><a href="4-cap.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="identifier-syntax">aph</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SPCond::say_adjective</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">SPCond::say_adjective</span></span>:<br/><a href="4-cap.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">adjective</span><span class="plain-syntax"> *</span><span class="identifier-syntax">aph</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new_with_words</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Invocations::set_word_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
@@ -417,12 +364,12 @@ singulars.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Invocation nodes for adaptive-text verbs hold references to their first
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Invocation nodes for adaptive-text verbs hold references to their first
 person plurals.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SPCond::say_verb</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">SPCond::say_verb</span></span>:<br/><a href="4-cap.html#SP9">&#167;9</a>, <a href="4-cap.html#SP9_3">&#167;9.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">neg</span><span class="plain-syntax">, </span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mvc</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">SPCond::say_verb</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">SPCond::say_verb</span></span>:<br/><a href="4-cap.html#SP7">&#167;7</a>, <a href="4-cap.html#SP7_3">&#167;7.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">neg</span><span class="plain-syntax">, </span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mvc</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::new_with_words</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Invocations::set_word_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">inv</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
@@ -432,7 +379,7 @@ person plurals.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>There are three basic kinds of phrase: those used as commands
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>There are three basic kinds of phrase: those used as commands
 (i.e., void procedures in C terms), those used as values (returning values
 other than true/false) and those used as conditions (returning true or false).
 These are stored in a way making basically the same use of a specification's
@@ -447,21 +394,21 @@ possibilities will all be invoked.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SPCond::add_ilist</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">SPCond::add_ilist</span></span>:<br/><a href="4-cap.html#SP5">&#167;5</a>, <a href="4-cap.html#SP9_1">&#167;9.1</a>, <a href="4-cap.html#SP9_2">&#167;9.2</a><br/>Type Expressions and Values - <a href="4-teav.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP12_1" class="named-paragraph-link"><span class="named-paragraph">Build the invocation list</span><span class="named-paragraph-number">12.1</span></a></span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SPCond::add_ilist</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">SPCond::add_ilist</span></span>:<br/><a href="4-cap.html#SP5">&#167;5</a>, <a href="4-cap.html#SP7_1">&#167;7.1</a>, <a href="4-cap.html#SP7_2">&#167;7.2</a><br/>Type Expressions and Values - <a href="4-teav.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP10_1" class="named-paragraph-link"><span class="named-paragraph">Build the invocation list</span><span class="named-paragraph-number">10.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::length_of_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">len</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">MAX_INVOCATIONS_PER_PHRASE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP12_2" class="named-paragraph-link"><span class="named-paragraph">Issue overcomplicated phrase problem message</span><span class="named-paragraph-number">12.2</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-cap.html#SP10_2" class="named-paragraph-link"><span class="named-paragraph">Issue overcomplicated phrase problem message</span><span class="named-paragraph-number">10.2</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">len</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::sort_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b>There are multiple invocations, each produced from another node in the
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b>There are multiple invocations, each produced from another node in the
 S-tree as we run sideways through the alternative readings.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the invocation list</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Build the invocation list</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -480,8 +427,8 @@ S-tree as we run sideways through the alternative readings.
 <span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Invocations::add_to_list</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">inv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b>This problem used to be experienced for long say phrases in a situation
+<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP10">&#167;10</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b>This problem used to be experienced for long say phrases in a situation
 where many kinds of value have been created, so that "say V" for a value V
 was heavily ambiguous &mdash; pumping up the number of invocations generated. In
 2010, the introduction of generics into Inform made it possible to define
@@ -489,7 +436,7 @@ was heavily ambiguous &mdash; pumping up the number of invocations generated. In
 limit that we were unable to construct a test case for it.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue overcomplicated phrase problem message</span><span class="named-paragraph-number">12.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue overcomplicated phrase problem message</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -508,7 +455,7 @@ limit that we were unable to construct a test case for it.
 <span class="plain-syntax">        </span><span class="string-syntax">"original phrase."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP12">&#167;12</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-cap.html#SP10">&#167;10</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="4-varc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-vm.html">1</a></li><li class="progresschapter"><a href="2-spc.html">2</a></li><li class="progresschapter"><a href="3-pl.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-ets.html">ets</a></li><li class="progresssection"><a href="4-cad.html">cad</a></li><li class="progresssection"><a href="4-teav.html">teav</a></li><li class="progresssection"><a href="4-varc.html">varc</a></li><li class="progresscurrent">cap</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!--End of weave-->

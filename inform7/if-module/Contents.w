@@ -50,6 +50,7 @@ Chapter 4: Actions
 	Action Pattern Clauses
 	Going
 	Parse Action Patterns
+	Parse Clauses
 	Explicit Actions
 	Named Action Patterns
 

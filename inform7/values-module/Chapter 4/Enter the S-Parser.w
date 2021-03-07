@@ -70,11 +70,11 @@ as conditions, so for example "taking something" would not match.
 <s-non-action-condition> internal {
 	LocalVariables::make_necessary_callings(W);
 	#ifdef IF_MODULE
-	int old_state = ParseActionPatterns::suppress();
+	int old_state = ParseActionPatterns::enter_mode(SUPPRESS_AP_PARSING);
 	#endif
 	parse_node *spec = PreformCache::parse(W, 2, <s-condition-uncached>);
 	#ifdef IF_MODULE
-	ParseActionPatterns::resume(old_state);
+	ParseActionPatterns::restore_mode(old_state);
 	#endif
 	if (Node::is(spec, UNKNOWN_NT)) { ==> { fail nonterminal }; }
 	==> { -, spec };
@@ -166,10 +166,9 @@ These are meaningful only for interactive fiction, and serve the "if" module:
 <s-explicit-action> internal {
 	#ifdef IF_MODULE
 	parse_node *S = NULL;
-	int p = permit_trying_omission;
-	permit_trying_omission = TRUE;
+	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 	if (<s-condition-uncached>(W)) S = <<rp>>;
-	permit_trying_omission = p;
+	ParseActionPatterns::restore_mode(saved);
 	if (S) {
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
 			==> { -, S };
@@ -188,13 +187,10 @@ These are meaningful only for interactive fiction, and serve the "if" module:
 <s-constant-action> internal {
 	#ifdef IF_MODULE
 	parse_node *S = NULL;
-	int p = permit_trying_omission;
-	permit_trying_omission = TRUE;
-	int p2 = permit_nonconstant_action_parameters;
-	permit_nonconstant_action_parameters = FALSE;
+	int was = ParseActionPatterns::enter_mode(
+		FORBID_NONCONSTANT_ACTION_PARAMETERS + PERMIT_TRYING_OMISSION);
 	if (<s-condition-uncached>(W)) S = <<rp>>;
-	permit_trying_omission = p;
-	permit_nonconstant_action_parameters = p2;
+	ParseActionPatterns::restore_mode(was);
 	if (S) {
 		if (Rvalues::is_CONSTANT_of_kind(S, K_stored_action)) {
 			==> { -, S };

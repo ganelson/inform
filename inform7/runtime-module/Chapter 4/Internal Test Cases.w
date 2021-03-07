@@ -451,7 +451,7 @@ action_pattern *ap_test_register[10];
 @ =
 action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 	named_action_pattern *nap = NamedActionPatterns::add(ap, W);
-	action_pattern *new_ap = ActionPatterns::perpetuate(ActionPatterns::new(W));
+	action_pattern *new_ap = ActionPatterns::new(W);
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	entry->item.nap_listed = nap;
 	new_ap->action_list = ActionNameLists::new_list(entry, ANL_POSITIVE);
@@ -496,5 +496,7 @@ action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 		for (int i=0; i<10; i++) ap_test_register[i] = NULL;
 	}
 	@<Begin reporting on the internal test case@>; Streams::enable_I6_escapes(DL);
+	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 	<perform-ap-test>(itc->text_supplying_the_case);
+	ParseActionPatterns::restore_mode(saved);
 	Streams::disable_I6_escapes(DL); @<End reporting on the internal test case@>;

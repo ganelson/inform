@@ -26,6 +26,20 @@ parse_node *AConditions::new_action_TEST_VALUE(action_pattern *ap, wording W) {
 	return spec;
 }
 
+parse_node *AConditions::new_past_action_TEST_VALUE(action_pattern *ap, wording W) {
+	parse_node *spec = AConditions::new_action_TEST_VALUE(ap, W);
+	if (ActionPatterns::makes_callings(ap)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastActionCalled),
+			"a description of an action cannot both refer to past history and also "
+			"use '(called ...)'",
+			"because that would require Inform in general to remember too much "
+			"information about past events.");
+	} else {
+		spec = Conditions::attach_tense(spec, HASBEEN_TENSE);
+	}
+	return spec;
+}
+
 int AConditions::is_action_TEST_VALUE(parse_node *spec) {
 	if ((Node::is(spec, TEST_VALUE_NT)) &&
 		((ARvalues::to_action_pattern(spec->down)) ||

@@ -461,13 +461,6 @@ In the grammar for <s-description>, the noun is compulsory.
 	<s-qualifiable-proper-noun> |                             ==> { pass 1 }
 	<s-applicable-adjective-list> <s-qualifiable-proper-noun> ==> @<Glue on leading adjectives@>
 
-<if-can-omit-trying> internal 0 {
-	#ifdef IF_MODULE
-	if (permit_trying_omission) return TRUE;
-	#endif
-	==> { fail nonterminal };
-}
-
 <if-multiplicitous> internal 0 {
 	if (<s-value-uncached>->multiplicitous) return TRUE;
 	==> { fail nonterminal };

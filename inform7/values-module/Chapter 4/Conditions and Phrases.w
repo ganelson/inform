@@ -156,48 +156,6 @@ being compiled; all others are out of scope.
 	==> { fail nonterminal };
 }
 
-@ We have already seen action patterns used as nouns; here they are used as
-conditions, so this is where the condition in
-
->> if taking the box, ...
-
-is handled. The following nonterminal exists to enter the AP to the meaning list.
-
-=
-<s-action-pattern-as-condition> ::=
-	<we-are-action-pattern>			==> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }
-
-<s-action-pattern-as-negated-condition> ::=
-	<action-pattern-negated>		==> { -, AConditions::new_action_TEST_VALUE(RP[1], W) }
-
-@ And similarly:
-
-=
-<s-past-action-pattern-as-condition> ::=
-	<action-pattern-past>			==> @<Convert stored past action pattern to condition node@>
-
-<s-past-action-pattern-as-negated-condition> ::=
-	<action-pattern-past-negated>	==> @<Convert stored past action pattern to condition node@>
-
-@<Convert stored past action pattern to condition node@> =
-	#ifdef IF_MODULE
-	action_pattern *ap = RP[1];
-	if (ActionPatterns::makes_callings(ap)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PastActionCalled),
-			"a description of an action cannot both refer to past "
-			"history and also use '(called ...)'",
-			"because that would require Inform in general to remember "
-			"too much information about past events.");
-		return FALSE;
-	}
-	parse_node *C = AConditions::new_action_TEST_VALUE(ap, W);
-	C = Conditions::attach_tense(C, HASBEEN_TENSE);
-	==> { -, C };
-	#endif
-	#ifndef IF_MODULE
-	return FALSE;
-	#endif
-
 @h Command phrases.
 The final clutch of nonterminals in the S-grammar handles individual commands,
 written in their semicolon-divided list in the body of a rule or "To..."

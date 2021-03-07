@@ -68,7 +68,7 @@ directly returns a |struct|, rather than allocating a permanent object and
 returning only a pointer to it.
 
 =
-action_pattern ActionPatterns::new(wording W) {
+action_pattern ActionPatterns::temporary(wording W) {
 	action_pattern ap;
 	ap.ap_clauses = NULL;
 	ap.text_of_pattern = W;
@@ -85,6 +85,11 @@ action_pattern *ActionPatterns::perpetuate(action_pattern ap) {
 	action_pattern *sap = CREATE(action_pattern);
 	*sap = ap;
 	return sap;
+}
+
+action_pattern *ActionPatterns::new(wording W) {
+	action_pattern ap = ActionPatterns::temporary(W);
+	return ActionPatterns::perpetuate(ap);
 }
 
 @ =
@@ -106,6 +111,19 @@ void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 		if (ap->duration) { WRITE(" * duration: "); Occurrence::log(OUT, ap->duration); }
 		WRITE(">");
 	}
+}
+
+@ This simple parser converts text to a parametric AP of kind |K|. The parser
+for action-based APs is very much more complicated: see //Parse Action Patterns//.
+
+=
+action_pattern *ActionPatterns::parse_parametric(wording W, kind *K) {
+	parse_node *spec = ParseClauses::parse_spec(W);
+	if (Dash::validate_parameter(spec, K) == FALSE) return NULL;
+	action_pattern *ap = ActionPatterns::new(W);
+	ap->parameter_kind = K;
+	APClauses::set_spec(ap, PARAMETRIC_AP_CLAUSE, spec);
+	return ap;
 }
 
 @ Access to the actions mentioned:
