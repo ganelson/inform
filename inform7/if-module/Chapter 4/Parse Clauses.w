@@ -409,9 +409,9 @@ We treat words like "something" specially to avoid them being read as
 =
 action_pattern *ParseClauses::experiment(wording W) {
 	LOG("Experiment on: %W\n", W);
-	disable_anl_in = TRUE;
+	experimental_anl_system = TRUE;
 	action_name_list *anl = ActionNameLists::parse(W, IS_TENSE, NULL);
-	disable_anl_in = TRUE;
+	experimental_anl_system = FALSE;
 	LOG("$L\n", anl);
 	action_name *chief_an = ActionNameLists::get_best_action(anl);
 	if (chief_an == NULL) chief_an = ActionNameNames::longest_nounless(W, IS_TENSE, NULL);

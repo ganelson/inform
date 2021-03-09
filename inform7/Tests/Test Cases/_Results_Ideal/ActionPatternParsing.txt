@@ -85,16 +85,16 @@
   (3). +0 ANL entry : looking
   
   Chief action: looking
-  experimental looking or taking inventory in the laboratory in the presence of hans: <null-ap>
+  experimental looking or taking inventory in the laboratory in the presence of hans: <action-based: taking inventory / looking>
   
   26. experimental looking or taking inventory in the presence of Hans in the Laboratory
   Experiment on: looking or taking inventory in the presence of hans in the laboratory
-  (1). +2 ANL entry : taking [noun: inventory] [in: hans in the laboratory]
-  (2). +2 ANL entry : taking inventory [in: hans in the laboratory]
+  (1). +2 ANL entry : taking [noun: inventory] [in-presence: hans in the laboratory]
+  (2). +2 ANL entry : taking inventory [in-presence: hans in the laboratory]
   (3). +0 ANL entry : looking
   
   Chief action: looking
-  experimental looking or taking inventory in the presence of hans in the laboratory: <null-ap>
+  experimental looking or taking inventory in the presence of hans in the laboratory: <action-based: taking inventory / looking>
   
 > >   Radiation Laboratory
 > Are you sure you want to quit? 

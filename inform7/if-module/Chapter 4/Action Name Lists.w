@@ -349,12 +349,12 @@ wording ActionNameLists::get_clause_wording(anl_entry *entry, int C) {
 	return EMPTY_WORDING;
 }
 
-void ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording W) {
+anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording W) {
 	if (entry == NULL) internal_error("no entry");
 	anl_clause_text *prev = NULL;
 	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause) {
 		if (c->clause_ID == C) {
-			c->clause_text = W; return;
+			c->clause_text = W; return entry;
 		}
 		if (c->clause_ID > C) @<Insert clause here@>;
 		prev = c;
@@ -368,6 +368,7 @@ void ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording W) {
 	nc->clause_text = W;
 	if (prev) { nc->next_clause = prev->next_clause; prev->next_clause = nc; }
 	else { nc->next_clause = NULL; entry->parsing_data.anl_clauses = nc; }
+	return entry;
 
 @ =
 wording ActionNameLists::par(anl_entry *entry, int i) {
@@ -556,7 +557,7 @@ The test group |:anl| is helpful in catching errors here.
 
 @ =
 int anl_parsing_tense = IS_TENSE;
-int disable_anl_in = FALSE;
+int experimental_anl_system = FALSE;
 action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 	if (Wordings::mismatched_brackets(W)) return NULL;
 	int t = anl_parsing_tense;
@@ -622,19 +623,61 @@ for instance, we don't want to count the "in" from "fixed in place".
 <anl-operand> ::=
 	...                                  ==> { TRUE, ActionNameLists::entry_for_to_tail(W) };
 
-<text-of-in-clause> ::=
+<text-of-in-clause> internal {
+	if (experimental_anl_system == FALSE) {
+		int rv = <text-of-in-clause-old>(W);
+		==> { <<r>>, <<rp>> };
+		return rv;
+	}
+	int rv = <text-of-clause>(W);
+	==> { <<r>>, <<rp>> };
+	return rv;
+}
+
+<text-of-clause> ::=
+	in the presence of ... | ==> { IN_THE_PRESENCE_OF_AP_CLAUSE, - }
+	in ...                   ==> { IN_AP_CLAUSE, - }
+
+<text-of-in-clause-old> ::=
 	fixed in place *** |                 ==> { advance Wordings::delta(WR[1], W) }
 	is/are/was/were/been/listed in *** | ==> { advance Wordings::delta(WR[1], W) }
-	<if-gen-permitted> in the presence of ... | ==> { TRUE, - }
-	in ...                             ==> { TRUE, - }
+	in ...                               ==> { TRUE, - }
 	
 <if-gen-permitted> internal 0 {
-	if (disable_anl_in) return TRUE;
+	if (experimental_anl_system) return TRUE;
 	==> { fail nonterminal };
 }
 
 @<Augment ANL with in clause@> =
-	==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
+	if (experimental_anl_system == FALSE) {
+		==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
+	} else {
+		==> { TRUE, ActionNameLists::options(RP[1], R[2], GET_RW(<text-of-clause>, 1), FALSE) }	
+	}
+
+@
+
+=
+anl_entry *ActionNameLists::options(anl_entry *entry, int C, wording W, int compulsory) {
+	anl_entry *original = entry;
+	if (compulsory == FALSE) {
+		ActionNameLists::dup(entry);
+		entry = entry->next_entry;
+	}
+	ActionNameLists::set_clause_wording(entry, C, W);
+	LOG("So:  "); ActionNameLists::log_entry(original); LOG("\n");
+	if (original != entry) { LOG("And: "); ActionNameLists::log_entry(entry); LOG("\n"); }
+	return original;
+}
+
+void ActionNameLists::dup(anl_entry *entry) {
+	anl_entry *saved = entry->next_entry;
+	anl_entry *new_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
+	new_entry->parsing_data = entry->parsing_data;
+	new_entry->item = entry->item;
+	entry->next_entry = new_entry;
+	new_entry->next_entry = saved;
+}
 
 @ This matches a comma/or-separated list of items:
 
@@ -651,7 +694,7 @@ for instance, we don't want to count the "in" from "fixed in place".
 
 =
 <anl-entry> ::=
-	<named-action-pattern>	|                    ==> @<Make a NAP entry@>
+	<named-action-pattern> |                     ==> @<Make a NAP entry@>
 	<named-action-pattern> <text-of-in-clause> | ==> @<Make a NAP entry with an in clause@>
 	<anl-entry-with-action>					     ==> { pass 1 }
 
@@ -663,7 +706,10 @@ for instance, we don't want to count the "in" from "fixed in place".
 @<Make a NAP entry with an in clause@> =
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	entry->item.nap_listed = RP[1];
-	ActionNameLists::add_in_clause(entry, GET_RW(<text-of-in-clause>, 1));
+	if (experimental_anl_system)
+		ActionNameLists::options(entry, R[2], GET_RW(<text-of-clause>, 1), TRUE);
+	else
+		ActionNameLists::add_in_clause(entry, GET_RW(<text-of-in-clause>, 1));
 	==> { 0, entry };
 
 @ Which reduces us to an internal nonterminal for an entry in this list.
@@ -742,10 +788,14 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 	RW = Wordings::from(W, w_m);
 
 @<Consider the trial entry for inclusion in the results list@> =
+	int C = -1; wording CW = EMPTY_WORDING;
 	if (Wordings::empty(RW)) {
 		@<Include the trial entry@>;
 	} else if (<text-of-in-clause>(RW)) {
-		ActionNameLists::add_in_clause(trial_entry, GET_RW(<text-of-in-clause>, 1));
+		if (experimental_anl_system) {
+			C = <<r>>; CW = GET_RW(<text-of-clause>, 1);
+		} else
+			ActionNameLists::add_in_clause(trial_entry, GET_RW(<text-of-in-clause>, 1));
 		@<Include the trial entry@>;
 	} else if ((ActionSemantics::can_have_noun(an)) &&
 		(ActionNameLists::parse_to_tail(trial_entry, RW))) {
@@ -789,4 +839,6 @@ the trial entry for future trials.
 		if (prev) ActionNameLists::join_to(prev, trial_entry); else results = trial_entry;
 		ActionNameLists::join_to(trial_entry, pos);
 	}
+	if (C != -1)
+		ActionNameLists::options(trial_entry, C, CW, TRUE);
 	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
