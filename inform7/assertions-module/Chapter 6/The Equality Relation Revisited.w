@@ -172,7 +172,7 @@ int EqualityDetails::schema(bp_family *self, int task, binary_predicate *bp, ann
 					RTKinds::interpret_test_equality(st[0], st[1]));
 			else if (problem_count == 0) {
 				LOG("$0 and $0; %u and %u\n", &(asch->pt0), &(asch->pt1), st[0], st[1]);
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantCompareValues),
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 					"that would involve comparing things which don't mean "
 					"anything to me",
 					"so I'm lost.");

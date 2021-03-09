@@ -310,56 +310,88 @@ the text leading to a list:
 =
 typedef struct anl_parsing_data {
 	int word_position; /* and some values used temporarily during parsing */
-	int parc;
-	struct wording parameter[2];
-	struct wording in_clause;
 	int abbreviation_level; /* number of words missing */
+	struct anl_clause_text *anl_clauses; /* clauses in this reading */
 } anl_parsing_data;
+
+typedef struct anl_clause_text {
+	int clause_ID;
+	struct wording clause_text;
+	struct anl_clause_text *next_clause;
+} anl_clause_text;
 
 anl_parsing_data ActionNameLists::new_parsing_data(int at) {
 	anl_parsing_data parsing_data;
-	parsing_data.parc = 0;
-	parsing_data.word_position = at;
-	parsing_data.in_clause = EMPTY_WORDING;
+	parsing_data.anl_clauses = NULL;
 	parsing_data.abbreviation_level = 0;
 	return parsing_data;
 }
 
 void ActionNameLists::clear_parsing_data(anl_entry *entry, wording W) {
-	entry->parsing_data.parc = 0;
+	entry->parsing_data.anl_clauses = NULL;
 	int at = -1;
 	if (Wordings::nonempty(W)) at = Wordings::first_wn(W);
 	entry->parsing_data.word_position = at;
-	entry->parsing_data.in_clause = EMPTY_WORDING;
 	entry->parsing_data.abbreviation_level = 0;
 }
 
 int ActionNameLists::parc(anl_entry *entry) {
-	if (entry) return entry->parsing_data.parc;
-	return 0;
+	int p = 0;
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		if ((c->clause_ID == NOUN_AP_CLAUSE) || (c->clause_ID == SECOND_AP_CLAUSE))
+			p++;
+	return p;
 }
 
+wording ActionNameLists::get_clause_wording(anl_entry *entry, int C) {
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		if (c->clause_ID == C) return c->clause_text;
+	return EMPTY_WORDING;
+}
+
+void ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording W) {
+	if (entry == NULL) internal_error("no entry");
+	anl_clause_text *prev = NULL;
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause) {
+		if (c->clause_ID == C) {
+			c->clause_text = W; return;
+		}
+		if (c->clause_ID > C) @<Insert clause here@>;
+		prev = c;
+	}
+	@<Insert clause here@>;
+}
+
+@<Insert clause here@> =
+	anl_clause_text *nc = CREATE(anl_clause_text);
+	nc->clause_ID = C;
+	nc->clause_text = W;
+	if (prev) { nc->next_clause = prev->next_clause; prev->next_clause = nc; }
+	else { nc->next_clause = NULL; entry->parsing_data.anl_clauses = nc; }
+
+@ =
 wording ActionNameLists::par(anl_entry *entry, int i) {
-	if ((entry) && (entry->parsing_data.parc > i)) return entry->parsing_data.parameter[i];
+	if (i == 0) return ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
+	if (i == 1) return ActionNameLists::get_clause_wording(entry, SECOND_AP_CLAUSE);
 	return EMPTY_WORDING;
 }
 
 wording ActionNameLists::in_clause(anl_entry *entry) {
-	if (entry) return entry->parsing_data.in_clause;
-	return EMPTY_WORDING;
+	return ActionNameLists::get_clause_wording(entry, IN_AP_CLAUSE);
 }
 
 anl_entry *ActionNameLists::add_parameter(anl_entry *entry, wording W) {
-	if (entry == NULL) internal_error("no entry");
-	if (entry->parsing_data.parc >= 2) internal_error("too many ANL parameters");
-	entry->parsing_data.parameter[entry->parsing_data.parc] = W;
-	entry->parsing_data.parc++;
+	int p = ActionNameLists::parc(entry);
+	switch (p) {
+		case 0: ActionNameLists::set_clause_wording(entry, NOUN_AP_CLAUSE, W); break;
+		case 1: ActionNameLists::set_clause_wording(entry, SECOND_AP_CLAUSE, W); break;
+		default: internal_error("too many ANL parameters");
+	}
 	return entry;
 }
 
 anl_entry *ActionNameLists::add_in_clause(anl_entry *entry, wording W) {
-	if (entry == NULL) internal_error("no entry");
-	entry->parsing_data.in_clause = W;
+	ActionNameLists::set_clause_wording(entry, IN_AP_CLAUSE, W);
 	return entry;
 }
 
@@ -449,10 +481,15 @@ void ActionNameLists::log(action_name_list *list) {
 	} else {
 		if (ActionNameLists::listwise_negated(list)) LOG("L-NOT[ ");
 		if (ActionNameLists::itemwise_negated(list)) LOG("I-NOT[ ");
-		int c = 0;
+		int benchmark = 0;
+		LOOP_THROUGH_ANL(entry, list)
+			if ((entry->parsing_data.word_position < benchmark) || (benchmark == 0))
+				benchmark = entry->parsing_data.word_position;
+		int c = 1;
 		LOOP_THROUGH_ANL(entry, list) {
-			LOG("(%d). ", c);
+			LOG("(%d). +%d ", c, entry->parsing_data.word_position - benchmark);
 			ActionNameLists::log_entry(entry);
+			LOG("\n");
 			c++;
 		}
 		if (ActionNameLists::listwise_negated(list)) LOG(" ]");
@@ -479,18 +516,19 @@ void ActionNameLists::log_entry(anl_entry *entry) {
 	if (entry == NULL) {
 		LOG("<null-entry>");
 	} else {
-		LOG("ANL entry %s(@%d): ",
-			(entry->marked_for_deletion)?"(to be deleted) ":"",
-			entry->parsing_data.word_position);
+		LOG("ANL entry %s: ",
+			(entry->marked_for_deletion)?"(to be deleted) ":"");
 		if (entry->item.action_listed)
 			LOG("%W", ActionNameNames::tensed(entry->item.action_listed, IS_TENSE));
 		else if (entry->item.nap_listed)
 			LOG("%W", Nouns::nominative_singular(entry->item.nap_listed->as_noun));
 		else LOG("NULL");
-		for (int i=0; i<entry->parsing_data.parc; i++)
-			LOG(" [%d: %W]", i, entry->parsing_data.parameter[i]);
-		if (Wordings::nonempty(entry->parsing_data.in_clause))
-			LOG(" [in: %W]\n", entry->parsing_data.in_clause);
+		for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+			if (Wordings::nonempty(c->clause_text)) {
+			    LOG(" [");
+				APClauses::write_clause_ID(DL, c->clause_ID, NULL);
+			    LOG(": %W]", c->clause_text);
+			}
 	}
 }
 
@@ -518,6 +556,7 @@ The test group |:anl| is helpful in catching errors here.
 
 @ =
 int anl_parsing_tense = IS_TENSE;
+int disable_anl_in = FALSE;
 action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 	if (Wordings::mismatched_brackets(W)) return NULL;
 	int t = anl_parsing_tense;
@@ -586,7 +625,13 @@ for instance, we don't want to count the "in" from "fixed in place".
 <text-of-in-clause> ::=
 	fixed in place *** |                 ==> { advance Wordings::delta(WR[1], W) }
 	is/are/was/were/been/listed in *** | ==> { advance Wordings::delta(WR[1], W) }
-	in ...                               ==> { TRUE, - }
+	<if-gen-permitted> in the presence of ... | ==> { TRUE, - }
+	in ...                             ==> { TRUE, - }
+	
+<if-gen-permitted> internal 0 {
+	if (disable_anl_in) return TRUE;
+	==> { fail nonterminal };
+}
 
 @<Augment ANL with in clause@> =
 	==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }

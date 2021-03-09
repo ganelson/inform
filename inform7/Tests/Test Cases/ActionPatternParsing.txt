@@ -37,3 +37,6 @@ Test pattern (internal) with doing something ~~ doing something other than takin
 Test pattern (internal) with taking ~~ taking a thing.
 Test pattern (internal) with taking the counter ~~ taking a thing.
 Test pattern (internal) with taking or dropping the counter ~~ taking the counter.
+
+Test pattern (internal) with experimental looking or taking inventory in the Laboratory in the presence of Hans.
+Test pattern (internal) with experimental looking or taking inventory in the presence of Hans in the Laboratory.

@@ -375,7 +375,6 @@ parse_node *ParseClauses::parse_variable_spec(wording W, stacked_variable *stv) 
 	if (rv == FALSE) return NULL;
 	if (rv == NOT_APPLICABLE) {
 		if (Dash::validate_parameter(spec, StackedVariables::get_kind(stv)) == FALSE) {
-//	if (Node::is(spec, UNKNOWN_NT)) {		
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadOptionalAPClause));
@@ -404,3 +403,20 @@ We treat words like "something" specially to avoid them being read as
 <understanding-action-irregular-operand> ::=
 	something/anything |    ==> { TRUE, - }
 	it								==> { FALSE, - }
+
+@
+
+=
+action_pattern *ParseClauses::experiment(wording W) {
+	LOG("Experiment on: %W\n", W);
+	disable_anl_in = TRUE;
+	action_name_list *anl = ActionNameLists::parse(W, IS_TENSE, NULL);
+	disable_anl_in = TRUE;
+	LOG("$L\n", anl);
+	action_name *chief_an = ActionNameLists::get_best_action(anl);
+	if (chief_an == NULL) chief_an = ActionNameNames::longest_nounless(W, IS_TENSE, NULL);
+	LOG("Chief action: $l\n", chief_an);
+
+	action_pattern *ap = ParseClauses::parse(W);
+	return ap;
+}

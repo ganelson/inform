@@ -448,29 +448,11 @@ A quick one: the optional "in the presence of".
 	<ap-seven>                                       ==> { 0, RP[1] };
 
 @h Level Seven.
-The initial "in" clause, e.g., "in the Pantry", requires special handling to
-prevent it from clashing with other interpretations of "in" elsewhere in the
-grammar.
-
-=
-<ap-seven> ::=
-	in <s-ap-parameter> | ==> @<Make an actionless action pattern, specifying room only@>
-	<ap-eight>            ==> { 0, RP[1] };
-
-@<Make an actionless action pattern, specifying room only@> =
-	if (Dash::validate_parameter(RP[1], K_object) == FALSE) {
-		==> { fail production }; /* the "room" isn't even an object */
-	}
-	action_pattern *ap = ActionPatterns::new(W);
-	APClauses::set_spec(ap, IN_AP_CLAUSE, RP[1]);
-	==> { 0, ap };
-
-@h Level Eight.
 Much of the complexity is gone now, but much potential ambiguity remains, and
 so what's left can't very efficiently be written in Preform.
 
 =
-<ap-eight> internal {
+<ap-seven> internal {
 	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (parse_action_pattern_mode & SCANNING_ANL_ONLY) {
 		action_name_list *list = ActionNameLists::parse(W, prevailing_ap_tense, NULL);

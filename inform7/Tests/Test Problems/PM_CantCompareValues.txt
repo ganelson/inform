@@ -1,4 +1,0 @@
-Laboratory is a room. A glass tube and a glass beaker are in Laboratory.
-
-For asking which do you mean in the Laboratory while examining: say "Which particular piece of the 
-Laboratory trappings would you like to examine?"

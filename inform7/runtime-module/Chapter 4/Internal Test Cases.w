@@ -470,7 +470,8 @@ action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 	<test-ap> is {...} |          ==> { -, InternalTests::ap_of_nap(RP[1], WR[1]) }
 	<test-register> = <test-ap> | ==> { -, (ap_test_register[R[1]] = RP[2]) }
 	<action-pattern> |            ==> { pass 1 }
-	<test-register>               ==> { -, ap_test_register[R[1]] }
+	<test-register> |             ==> { -, ap_test_register[R[1]] }
+	experimental {...}            ==> { -, ParseClauses::experiment(WR[1]) }
 
 <test-register> ::=
 	r1 | r2 | r3 | r4 | r5

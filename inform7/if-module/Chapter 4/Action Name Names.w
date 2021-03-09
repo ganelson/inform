@@ -215,7 +215,7 @@ action_name *ActionNameNames::longest_nounless(wording W, int tense, int *posn) 
 		if (ActionSemantics::can_have_noun(an) == FALSE) {
 			wording AW = ActionNameNames::tensed(an, tense);
 			if (Wordings::starts_with(W, AW)) {
-				*posn = Wordings::first_wn(W) + Wordings::length(AW);
+				if (posn) *posn = Wordings::first_wn(W) + Wordings::length(AW);
 				return an;
 			}
 		}
