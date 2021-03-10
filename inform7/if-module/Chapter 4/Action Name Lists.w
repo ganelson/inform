@@ -652,7 +652,13 @@ for instance, we don't want to count the "in" from "fixed in place".
 	if (experimental_anl_system == FALSE) {
 		==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
 	} else {
-		==> { TRUE, ActionNameLists::options(RP[1], R[2], GET_RW(<text-of-clause>, 1), FALSE) }	
+		anl_entry *original = RP[1];
+		ActionNameLists::options(original, R[2], GET_RW(<text-of-clause>, 1), TRUE);
+		anl_entry *entry = ActionNameLists::entry_for_to_tail(W);
+		entry->next_entry = original;
+	LOG("So:  "); ActionNameLists::log_entry(entry); LOG("\n");
+	LOG("And: "); ActionNameLists::log_entry(original); LOG("\n");
+		==> { TRUE, entry }	
 	}
 
 @
@@ -665,8 +671,6 @@ anl_entry *ActionNameLists::options(anl_entry *entry, int C, wording W, int comp
 		entry = entry->next_entry;
 	}
 	ActionNameLists::set_clause_wording(entry, C, W);
-	LOG("So:  "); ActionNameLists::log_entry(original); LOG("\n");
-	if (original != entry) { LOG("And: "); ActionNameLists::log_entry(entry); LOG("\n"); }
 	return original;
 }
 
@@ -674,6 +678,9 @@ void ActionNameLists::dup(anl_entry *entry) {
 	anl_entry *saved = entry->next_entry;
 	anl_entry *new_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 	new_entry->parsing_data = entry->parsing_data;
+	new_entry->parsing_data.anl_clauses = NULL;
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		ActionNameLists::set_clause_wording(new_entry, c->clause_ID, c->clause_text);
 	new_entry->item = entry->item;
 	entry->next_entry = new_entry;
 	new_entry->next_entry = saved;
@@ -789,17 +796,29 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 
 @<Consider the trial entry for inclusion in the results list@> =
 	int C = -1; wording CW = EMPTY_WORDING;
+
 	if (Wordings::empty(RW)) {
 		@<Include the trial entry@>;
-	} else if (<text-of-in-clause>(RW)) {
+	} else {
 		if (experimental_anl_system) {
-			C = <<r>>; CW = GET_RW(<text-of-clause>, 1);
-		} else
-			ActionNameLists::add_in_clause(trial_entry, GET_RW(<text-of-in-clause>, 1));
-		@<Include the trial entry@>;
-	} else if ((ActionSemantics::can_have_noun(an)) &&
-		(ActionNameLists::parse_to_tail(trial_entry, RW))) {
-		@<Include the trial entry@>;
+			if (ActionSemantics::can_have_noun(an)) {
+				if (ActionNameLists::parse_to_tail(trial_entry, RW))
+					@<Include the trial entry@>;
+			} else {
+				if (<text-of-in-clause>(RW)) {
+					C = <<r>>; CW = GET_RW(<text-of-clause>, 1);
+					@<Include the trial entry@>;
+				}
+			}		
+		} else {
+			if (<text-of-in-clause>(RW)) {
+				ActionNameLists::add_in_clause(trial_entry, GET_RW(<text-of-in-clause>, 1));
+				@<Include the trial entry@>;
+			} else if ((ActionSemantics::can_have_noun(an)) &&
+				(ActionNameLists::parse_to_tail(trial_entry, RW))) {
+				@<Include the trial entry@>;
+			}
+		}
 	}
 
 @ As an aside, the following code runs a specially adapted form of <anl-to-tail>:
