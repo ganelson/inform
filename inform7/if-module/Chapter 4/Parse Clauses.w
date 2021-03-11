@@ -407,6 +407,17 @@ We treat words like "something" specially to avoid them being read as
 @
 
 =
+void ParseClauses::list(wording W) {
+	LOG("Action name list for: %W\n", W);
+	experimental_anl_system = TRUE;
+	action_name_list *anl = ActionNameLists::parse(W, IS_TENSE, NULL);
+	experimental_anl_system = FALSE;
+	LOG("$L\n", anl);
+}
+
+@
+
+=
 action_pattern *ParseClauses::experiment(wording W) {
 	LOG("Experiment on: %W\n", W);
 	experimental_anl_system = TRUE;

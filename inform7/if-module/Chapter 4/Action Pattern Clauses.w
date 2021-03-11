@@ -23,9 +23,10 @@ action variable clauses.
 @e IN_AP_CLAUSE
 @e IN_THE_PRESENCE_OF_AP_CLAUSE
 @e WHEN_AP_CLAUSE
+@e TAIL_AP_CLAUSE
 
 =
-int APClauses::clause_ID_for_action_variable(action_pattern *ap, stacked_variable *stv) {
+int APClauses::clause_ID_for_action_variable(stacked_variable *stv) {
 	int D = Going::divert_clause_ID(stv); if (D >= 0) return D;
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
@@ -41,6 +42,7 @@ void APClauses::write_clause_ID(OUTPUT_STREAM, int C, stacked_variable *stv) {
 		case IN_AP_CLAUSE:                 WRITE("in"); break;
 		case IN_THE_PRESENCE_OF_AP_CLAUSE: WRITE("in-presence"); break;
 		case WHEN_AP_CLAUSE:               WRITE("when"); break;
+		case TAIL_AP_CLAUSE:               WRITE("tail"); break;
 	}
 	Going::write_clause_ID(OUT, C);
 	if (stv) {
@@ -250,7 +252,7 @@ variables:
 void APClauses::set_action_variable_spec(action_pattern *ap, stacked_variable *stv,
 	parse_node *spec) {
 	if (stv == NULL) internal_error("no stacked variable for apoc");
-	int C = APClauses::clause_ID_for_action_variable(ap, stv);
+	int C = APClauses::clause_ID_for_action_variable(stv);
 	ap_clause *apoc = APClauses::ensure_clause(ap, C);
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
@@ -311,6 +313,7 @@ in the |*_APCA| enumeration.
 @e IN_APCA
 @e PRESENCE_APCA
 @e WHEN_APCA
+@e TAIL_APCA
 @e MISC_APCA
 
 =
@@ -323,6 +326,7 @@ int APClauses::aspect(ap_clause *apoc) {
 		case IN_AP_CLAUSE:                 return IN_APCA;
 		case IN_THE_PRESENCE_OF_AP_CLAUSE: return PRESENCE_APCA;
 		case WHEN_AP_CLAUSE:               return WHEN_APCA;
+		case TAIL_AP_CLAUSE:               return TAIL_APCA;
 	}
 	int rv = Going::aspect(apoc); if (rv >= 0) return rv;
 	return MISC_APCA;

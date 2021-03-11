@@ -3,6 +3,8 @@ Radiation Laboratory is a room.
 A Geiger counter is here. A bench is a supporter in the Laboratory.
 Hans is a man in the Laboratory.
 
+East of the Laboratory is the Castle.
+
 [Should parse]
 
 Test pattern (internal) with looking.
@@ -38,7 +40,11 @@ Test pattern (internal) with taking ~~ taking a thing.
 Test pattern (internal) with taking the counter ~~ taking a thing.
 Test pattern (internal) with taking or dropping the counter ~~ taking the counter.
 
-Test pattern (internal) with experimental looking in the Laboratory in the presence of Hans.
-[Test pattern (internal) with experimental dropping in the Laboratory in the presence of Hans.]
-[Test pattern (internal) with experimental looking or taking inventory in the Laboratory in the presence of Hans.
-Test pattern (internal) with experimental looking or taking inventory in the presence of Hans in the Laboratory.]
+Test pattern (internal) with list looking.
+Test pattern (internal) with list looking in the Laboratory.
+Test pattern (internal) with list looking in the Laboratory in the presence of Hans.
+Test pattern (internal) with list dropping in the Laboratory in the presence of Hans.
+Test pattern (internal) with list looking or taking inventory in the Laboratory in the presence of Hans.
+Test pattern (internal) with list looking or taking inventory in the presence of Hans in the Laboratory.
+Test pattern (internal) with list looking in in in in in in in in in in in in in in in in in in in in.
+Test pattern (internal) with list going from the Laboratory to the Castle.

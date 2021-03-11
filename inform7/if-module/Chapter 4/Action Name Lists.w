@@ -124,6 +124,7 @@ void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list)
 
 =
 void ActionNameLists::join_to(anl_entry *earlier, anl_entry *later) {
+	if (later == earlier) internal_error("loop");
 	if (ActionNameLists::precedes(later, earlier)) internal_error("misordering");
 	earlier->next_entry = later;
 }
@@ -317,6 +318,7 @@ typedef struct anl_parsing_data {
 typedef struct anl_clause_text {
 	int clause_ID;
 	struct wording clause_text;
+	int explosion_proof;
 	struct anl_clause_text *next_clause;
 } anl_clause_text;
 
@@ -343,6 +345,12 @@ int ActionNameLists::parc(anl_entry *entry) {
 	return p;
 }
 
+int ActionNameLists::has_clause(anl_entry *entry, int C) {
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		if (c->clause_ID == C) return TRUE;
+	return FALSE;
+}
+
 wording ActionNameLists::get_clause_wording(anl_entry *entry, int C) {
 	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
 		if (c->clause_ID == C) return c->clause_text;
@@ -359,6 +367,7 @@ anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording 
 		if (c->clause_ID > C) @<Insert clause here@>;
 		prev = c;
 	}
+	anl_clause_text *c = NULL;
 	@<Insert clause here@>;
 }
 
@@ -366,9 +375,41 @@ anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording 
 	anl_clause_text *nc = CREATE(anl_clause_text);
 	nc->clause_ID = C;
 	nc->clause_text = W;
-	if (prev) { nc->next_clause = prev->next_clause; prev->next_clause = nc; }
-	else { nc->next_clause = NULL; entry->parsing_data.anl_clauses = nc; }
+	nc->explosion_proof = FALSE;
+	if (prev) { nc->next_clause = c; prev->next_clause = nc; }
+	else { nc->next_clause = c; entry->parsing_data.anl_clauses = nc; }
 	return entry;
+
+@ =
+void ActionNameLists::truncate_clause(anl_entry *entry, int C, int wn) {
+	anl_clause_text *prev = NULL;
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause) {
+		if (c->clause_ID == C) {
+			c->clause_text = Wordings::up_to(c->clause_text, wn - 1);
+			if (Wordings::empty(c->clause_text)) {
+				if (prev) prev->next_clause = c->next_clause;
+				else entry->parsing_data.anl_clauses = c->next_clause;
+			}
+			return;
+		}
+		prev = c;
+	}
+}
+
+void ActionNameLists::make_explosion_proof(anl_entry *entry, int C) {
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		if (c->clause_ID == C) {
+			c->explosion_proof = TRUE;
+			return;
+		}
+}
+
+int ActionNameLists::is_explosion_proof(anl_entry *entry, int C) {
+	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+		if (c->clause_ID == C)
+			return c->explosion_proof;
+	return FALSE;
+}
 
 @ =
 wording ActionNameLists::par(anl_entry *entry, int i) {
@@ -482,11 +523,13 @@ void ActionNameLists::log(action_name_list *list) {
 	} else {
 		if (ActionNameLists::listwise_negated(list)) LOG("L-NOT[ ");
 		if (ActionNameLists::itemwise_negated(list)) LOG("I-NOT[ ");
-		int benchmark = 0;
-		LOOP_THROUGH_ANL(entry, list)
+		int benchmark = 0, c = 0;
+		LOOP_THROUGH_ANL(entry, list) {
+			if (c++ == 10000) internal_error("malformed ANL");
 			if ((entry->parsing_data.word_position < benchmark) || (benchmark == 0))
 				benchmark = entry->parsing_data.word_position;
-		int c = 1;
+		}
+		c = 1;
 		LOOP_THROUGH_ANL(entry, list) {
 			LOG("(%d). +%d ", c, entry->parsing_data.word_position - benchmark);
 			ActionNameLists::log_entry(entry);
@@ -517,8 +560,8 @@ void ActionNameLists::log_entry(anl_entry *entry) {
 	if (entry == NULL) {
 		LOG("<null-entry>");
 	} else {
-		LOG("ANL entry %s: ",
-			(entry->marked_for_deletion)?"(to be deleted) ":"");
+		LOG("%s: ",
+			(entry->marked_for_deletion)?" (to be deleted)":"");
 		if (entry->item.action_listed)
 			LOG("%W", ActionNameNames::tensed(entry->item.action_listed, IS_TENSE));
 		else if (entry->item.nap_listed)
@@ -629,9 +672,7 @@ for instance, we don't want to count the "in" from "fixed in place".
 		==> { <<r>>, <<rp>> };
 		return rv;
 	}
-	int rv = <text-of-clause>(W);
-	==> { <<r>>, <<rp>> };
-	return rv;
+	return FALSE;
 }
 
 <text-of-clause> ::=
@@ -649,41 +690,26 @@ for instance, we don't want to count the "in" from "fixed in place".
 }
 
 @<Augment ANL with in clause@> =
-	if (experimental_anl_system == FALSE) {
-		==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
-	} else {
-		anl_entry *original = RP[1];
-		ActionNameLists::options(original, R[2], GET_RW(<text-of-clause>, 1), TRUE);
-		anl_entry *entry = ActionNameLists::entry_for_to_tail(W);
-		entry->next_entry = original;
-	LOG("So:  "); ActionNameLists::log_entry(entry); LOG("\n");
-	LOG("And: "); ActionNameLists::log_entry(original); LOG("\n");
-		==> { TRUE, entry }	
-	}
+	==> { TRUE, ActionNameLists::add_in_clause(RP[1], GET_RW(<text-of-in-clause>, 1)) }
 
 @
 
 =
-anl_entry *ActionNameLists::options(anl_entry *entry, int C, wording W, int compulsory) {
+anl_entry *ActionNameLists::options(anl_entry *entry, int C, wording W) {
 	anl_entry *original = entry;
-	if (compulsory == FALSE) {
-		ActionNameLists::dup(entry);
-		entry = entry->next_entry;
-	}
 	ActionNameLists::set_clause_wording(entry, C, W);
 	return original;
 }
 
-void ActionNameLists::dup(anl_entry *entry) {
-	anl_entry *saved = entry->next_entry;
+anl_entry *ActionNameLists::dup(anl_entry *entry) {
 	anl_entry *new_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 	new_entry->parsing_data = entry->parsing_data;
 	new_entry->parsing_data.anl_clauses = NULL;
 	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
 		ActionNameLists::set_clause_wording(new_entry, c->clause_ID, c->clause_text);
 	new_entry->item = entry->item;
-	entry->next_entry = new_entry;
-	new_entry->next_entry = saved;
+	new_entry->next_entry = NULL;
+	return new_entry;
 }
 
 @ This matches a comma/or-separated list of items:
@@ -714,7 +740,7 @@ void ActionNameLists::dup(anl_entry *entry) {
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	entry->item.nap_listed = RP[1];
 	if (experimental_anl_system)
-		ActionNameLists::options(entry, R[2], GET_RW(<text-of-clause>, 1), TRUE);
+		ActionNameLists::options(entry, R[2], GET_RW(<text-of-clause>, 1));
 	else
 		ActionNameLists::add_in_clause(entry, GET_RW(<text-of-in-clause>, 1));
 	==> { 0, entry };
@@ -733,6 +759,7 @@ end, but it's syntactically valid.)
 <anl-entry-with-action> internal {
 	anl_entry *results = NULL;
 	@<Parse the wording into a list of results@>;
+	if (experimental_anl_system) @<Extend the list to provide for clauses@>;
 	if (results) {
 		==> { -, results }; return TRUE;
 	}
@@ -805,10 +832,8 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 				if (ActionNameLists::parse_to_tail(trial_entry, RW))
 					@<Include the trial entry@>;
 			} else {
-				if (<text-of-in-clause>(RW)) {
-					C = <<r>>; CW = GET_RW(<text-of-clause>, 1);
-					@<Include the trial entry@>;
-				}
+				ActionNameLists::set_clause_wording(trial_entry, TAIL_AP_CLAUSE, RW);
+				@<Include the trial entry@>;
 			}		
 		} else {
 			if (<text-of-in-clause>(RW)) {
@@ -821,12 +846,132 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 		}
 	}
 
+@ So this is the happy ending. We don't copy the trial entry; we insertion-sort
+the structure itself into the results list, and make a fresh structure to be
+the trial entry for future trials.
+
+@<Include the trial entry@> =
+	if (results == NULL) {
+		results = trial_entry;
+	} else {
+		anl_entry *pos = results, *prev = NULL;
+		while ((pos) && (ActionNameLists::precedes(pos, trial_entry)))
+			prev = pos, pos = pos->next_entry;
+		if (prev) ActionNameLists::join_to(prev, trial_entry); else results = trial_entry;
+		anl_entry *last = trial_entry; int n = 1;
+		while ((last) && (last->next_entry)) { n++; last = last->next_entry; }
+		ActionNameLists::join_to(last, pos);
+	}
+	if (C != -1)
+		ActionNameLists::options(trial_entry, C, CW);
+	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
+
+@<Extend the list to provide for clauses@> =
+	for (anl_entry *entry = results; entry; ) {
+		anl_entry *next = entry->next_entry;
+		ActionNameLists::explode(entry);
+		entry = next;
+	}
+	for (anl_entry *prev = NULL, *entry = results; entry; entry = entry->next_entry)
+		if (Wordings::nonempty(ActionNameLists::get_clause_wording(entry, TAIL_AP_CLAUSE))) {
+			if (prev) prev->next_entry = entry->next_entry;
+			else results = entry->next_entry;
+		} else {
+			prev = entry;
+		}
+
+@
+
+=
+void ActionNameLists::explode(anl_entry *entry) {
+	int tc = -1;
+	if (ActionNameLists::has_clause(entry, TAIL_AP_CLAUSE)) tc = TAIL_AP_CLAUSE;
+	else if (ActionNameLists::has_clause(entry, SECOND_AP_CLAUSE)) tc = SECOND_AP_CLAUSE;
+	else if (ActionNameLists::has_clause(entry, NOUN_AP_CLAUSE)) tc = NOUN_AP_CLAUSE;
+	else return;
+	wording TW = ActionNameLists::get_clause_wording(entry, tc);
+	ActionNameLists::explode_clause(entry, tc, Wordings::first_wn(TW));
+}
+
+anl_entry *currently_exploding_entry = NULL;
+int currently_exploding_clause = -1;
+int explosions_count = 0;
+void ActionNameLists::explode_clause(anl_entry *entry, int tc, int from_wn) {
+	anl_entry *saved = currently_exploding_entry;
+	int saved_C = currently_exploding_clause;
+	currently_exploding_entry = entry;
+	currently_exploding_clause = tc;
+	wording TW = ActionNameLists::get_clause_wording(entry, tc);
+	explosions_count++;
+	int start = explosions_count;
+	LOG_INDENT;
+	for (int w = from_wn; ((w < Wordings::last_wn(TW)) && (start == explosions_count)); w++)
+		<text-of-clause-exploding>(Wordings::from(TW, w));
+	LOG_OUTDENT;
+	currently_exploding_entry = saved;
+	currently_exploding_clause = saved_C;
+}
+	
+@ =
+<text-of-clause-exploding> ::=
+	_in _the _presence _of ... | ==> { IN_THE_PRESENCE_OF_AP_CLAUSE, - }; wording T = WR[1]; @<Explode clauses@>
+	_in ... |                    ==> { IN_AP_CLAUSE, - }; T = WR[1]; @<Explode clauses@>
+	<clause-opening> ...         ==> { fail production }
+
+<clause-opening> internal ? {
+	if (Word::unexpectedly_upper_case(Wordings::first_wn(W)) == FALSE) {
+		action_name *chief_an = currently_exploding_entry->item.action_listed;
+		if (chief_an) {
+			stacked_variable_owner *stvo = chief_an->action_variables;
+			if (stvo)
+				for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next)
+					if (Wordings::starts_with(W, stvl->the_stv->match_wording_text)) {
+						wording T = Wordings::from(W, Wordings::first_wn(W) + Wordings::length(stvl->the_stv->match_wording_text));
+						int potential_C = APClauses::clause_ID_for_action_variable(stvl->the_stv);
+						ActionNameLists::detonate(potential_C, T, W);
+					}
+		}
+	}
+	==> { fail nonterminal };
+}
+
+@<Explode clauses@> =
+	int potential_C = *X;
+	ActionNameLists::detonate(potential_C, T, W);
+	return FALSE;
+
+@ =
+void ActionNameLists::detonate(int potential_C, wording T, wording W) {
+	if ((ActionNameLists::has_clause(currently_exploding_entry, potential_C) == FALSE) &&
+		(ActionNameLists::is_explosion_proof(currently_exploding_entry, potential_C) == FALSE)) {
+//		LOG("Ex (%d) %d (%W) to %d (%W)\n", explosions_count, currently_exploding_clause,
+//			ActionNameLists::get_clause_wording(currently_exploding_entry, currently_exploding_clause),
+//			potential_C, T);
+//		LOG("CEE: "); ActionNameLists::log_entry(currently_exploding_entry); LOG("\n");
+		anl_entry *extra = ActionNameLists::dup(currently_exploding_entry);
+		ActionNameLists::set_clause_wording(extra, potential_C, T);
+		ActionNameLists::truncate_clause(extra, currently_exploding_clause, Wordings::first_wn(W));
+//		ActionNameLists::make_explosion_proof(extra, potential_C);
+		anl_entry *n = currently_exploding_entry->next_entry;
+		currently_exploding_entry->next_entry = extra;
+		extra->next_entry = n;
+//		LOG("before further explosions, have:\n"); ActionNameLists::log_entry(currently_exploding_entry); LOG("\n");
+//		ActionNameLists::log_entry(extra); LOG("\n");
+		ActionNameLists::explode_clause(currently_exploding_entry, currently_exploding_clause, Wordings::first_wn(W)+1);
+		ActionNameLists::explode_clause(extra, potential_C, Wordings::first_wn(T)+1);
+//		LOG("after explosions, have:\n"); ActionNameLists::log_entry(currently_exploding_entry); LOG("\n");
+//		ActionNameLists::log_entry(extra); LOG("\n\n");
+	}
+}
+
 @ As an aside, the following code runs a specially adapted form of <anl-to-tail>:
 not one which parses any differently, just one which uses the trial entry and not
 newly-created ones (which would be expensive on memory).
 
-=
+= (early code)
 anl_entry *to_tail_entry_being_parsed = NULL;
+
+@ =
 anl_entry *ActionNameLists::entry_for_to_tail(wording W) {
 	anl_entry *entry;
 	if ((!preform_lookahead_mode) && (to_tail_entry_being_parsed))
@@ -843,21 +988,3 @@ int ActionNameLists::parse_to_tail(anl_entry *entry, wording W) {
 	to_tail_entry_being_parsed = NULL;
 	return result;
 }
-
-@ So this is the happy ending. We don't copy the trial entry; we insertion-sort
-the structure itself into the results list, and make a fresh structure to be
-the trial entry for future trials.
-
-@<Include the trial entry@> =
-	if (results == NULL) {
-		results = trial_entry;
-	} else {
-		anl_entry *pos = results, *prev = NULL;
-		while ((pos) && (ActionNameLists::precedes(pos, trial_entry)))
-			prev = pos, pos = pos->next_entry;
-		if (prev) ActionNameLists::join_to(prev, trial_entry); else results = trial_entry;
-		ActionNameLists::join_to(trial_entry, pos);
-	}
-	if (C != -1)
-		ActionNameLists::options(trial_entry, C, CW, TRUE);
-	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);

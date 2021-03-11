@@ -463,7 +463,8 @@ action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 =
 <perform-ap-test> ::=
 	<test-ap> |                   ==> @<Write textual AP test result@>
-	<test-ap> ~~ <test-ap> |       ==> @<Write comparison AP test result@>
+	<test-ap> ~~ <test-ap> |      ==> @<Write comparison AP test result@>
+	list {...} |                  ==> { -, - }; ParseClauses::list(WR[1]);
 	...                           ==> @<Write failure@>
 
 <test-ap> ::=
