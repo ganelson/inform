@@ -80,84 +80,84 @@
   
   25. list looking
   Action name list for: looking
-  (1). +0 : looking
+  (1). +0 looking
   
   
   26. list looking in the Laboratory
   Action name list for: looking in the laboratory
-  (1). +0 : looking [in: the laboratory]
+  (1). +0 looking [in: the laboratory]
   
   
   27. list looking in the Laboratory in the presence of Hans
   Action name list for: looking in the laboratory in the presence of hans
-  (1). +0 : looking [in: the laboratory] [in-presence: hans]
-  (2). +0 : looking [in: the laboratory in the presence of hans]
+  (1). +0 looking [in: the laboratory] [in-presence: hans]
+  (2). +0 looking [in: the laboratory in the presence of hans]
   
   
   28. list dropping in the Laboratory in the presence of Hans
   Action name list for: dropping in the laboratory in the presence of hans
-  (1). +0 : dropping [in: the laboratory] [in-presence: hans]
-  (2). +0 : dropping [in: the laboratory in the presence of hans]
-  (3). +0 : dropping [noun: in the laboratory] [in: the presence of hans] [in-presence: hans]
-  (4). +0 : dropping [noun: in the laboratory] [in-presence: hans]
-  (5). +0 : dropping [noun: in the laboratory in the presence of hans]
+  (1). +0 dropping [in: the laboratory] [in-presence: hans]
+  (2). +0 dropping [in: the laboratory in the presence of hans]
+  (3). +0 dropping [noun: in the laboratory] [in: the presence of hans] [in-presence: hans]
+  (4). +0 dropping [noun: in the laboratory] [in-presence: hans]
+  (5). +0 dropping [noun: in the laboratory in the presence of hans]
   
   
   29. list looking or taking inventory in the Laboratory in the presence of Hans
   Action name list for: looking or taking inventory in the laboratory in the presence of hans
-  (1). +2 : taking [noun: inventory] [in: the laboratory] [in-presence: hans]
-  (2). +2 : taking [noun: inventory] [in: the laboratory in the presence of hans]
-  (3). +2 : taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
-  (4). +2 : taking [noun: inventory in the laboratory] [in-presence: hans]
-  (5). +2 : taking [noun: inventory in the laboratory in the presence of hans]
-  (6). +2 : taking inventory [in: the laboratory] [in-presence: hans]
-  (7). +2 : taking inventory [in: the laboratory in the presence of hans]
-  (8). +0 : looking
+  (1). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (2). +2 taking [noun: inventory] [in: the laboratory in the presence of hans]
+  (3). +2 taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
+  (4). +2 taking [noun: inventory in the laboratory] [in-presence: hans]
+  (5). +2 taking [noun: inventory in the laboratory in the presence of hans]
+  (6). +2 taking inventory [in: the laboratory] [in-presence: hans]
+  (7). +2 taking inventory [in: the laboratory in the presence of hans]
+  (8). +0 looking
   
   
   30. list looking or taking inventory in the presence of Hans in the Laboratory
   Action name list for: looking or taking inventory in the presence of hans in the laboratory
-  (1). +2 : taking [noun: inventory] [in: the laboratory] [in-presence: hans]
-  (2). +2 : taking [noun: inventory] [in-presence: hans in the laboratory]
-  (3). +2 : taking [noun: inventory in the presence of hans] [in: the laboratory]
-  (4). +2 : taking [noun: inventory in the presence of hans in the laboratory]
-  (5). +2 : taking inventory [in: the laboratory] [in-presence: hans]
-  (6). +2 : taking inventory [in-presence: hans in the laboratory]
-  (7). +0 : looking
+  (1). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (2). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+  (3). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+  (4). +2 taking [noun: inventory in the presence of hans in the laboratory]
+  (5). +2 taking inventory [in: the laboratory] [in-presence: hans]
+  (6). +2 taking inventory [in-presence: hans in the laboratory]
+  (7). +0 looking
   
   
   31. list looking in in in in in in in in in in in in in in in in in in in in
   Action name list for: looking in in in in in in in in in in in in in in in in in in in in
-  (1). +0 : looking [in: in in in in in in in in in in in in in in in in in in in]
+  (1). +0 looking [in: in in in in in in in in in in in in in in in in in in in]
   
   
   32. list going from the Laboratory to the Castle
   Action name list for: going from the laboratory to the castle
-  (1). +0 : going [going-from{'room gone from'(var)room}: the laboratory] [going-to{'room gone to'(var)object}: the castle]
-  (2). +0 : going [going-from{'room gone from'(var)room}: the laboratory to the castle]
-  (3). +0 : going [noun: from the laboratory] [going-to{'room gone to'(var)object}: the castle]
-  (4). +0 : going [noun: from the laboratory to the castle]
+  (1). +0 going [going-from{'room gone from'(var)room}: the laboratory] [going-to{'room gone to'(var)object}: the castle]
+  (2). +0 going [going-from{'room gone from'(var)room}: the laboratory to the castle]
+  (3). +0 going [noun: from the laboratory] [going-to{'room gone to'(var)object}: the castle]
+  (4). +0 going [noun: from the laboratory to the castle]
   
   
   33. list listening
   Action name list for: listening
-  (1). +0 : listening to
+  (1). +0 listening to
   
   
   34. list listening in the presence of Hans
   Action name list for: listening in the presence of hans
-  (1). +0 : listening to [in: the presence of hans] [in-presence: hans]
-  (2). +0 : listening to [in-presence: hans]
+  (1). +0 listening to [in: the presence of hans] [in-presence: hans]
+  (2). +0 listening to [in-presence: hans]
   
   
   35. list gluttony
   Action name list for: gluttony
-  (1). +0 : gluttony
+  (1). +0 gluttony
   
   
   36. list gluttony in the Laboratory
   Action name list for: gluttony in the laboratory
-  (1). +0 : gluttony [in: the laboratory]
+  (1). +0 gluttony [in: the laboratory]
   
   
   37. experimental looking

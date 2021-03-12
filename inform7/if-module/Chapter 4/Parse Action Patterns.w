@@ -441,14 +441,6 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 }
 
 @h Level Six.
-A quick one: the optional "in the presence of".
-
-=
-<ap-sixxxxx> ::=
-	<ap-seven> in the presence of <s-ap-parameter> | ==> { 0, RP[1] }; APClauses::set_spec(RP[1], IN_THE_PRESENCE_OF_AP_CLAUSE, RP[2]);
-	<ap-seven>                                       ==> { 0, RP[1] };
-
-@h Level Seven.
 Much of the complexity is gone now, but much potential ambiguity remains, and
 so what's left can't very efficiently be written in Preform.
 
@@ -465,21 +457,9 @@ so what's left can't very efficiently be written in Preform.
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
 		LOG_INDENT;
-//		action_pattern *ap1 = ParseClauses::parse(W);
-//		LOGIF(ACTION_PATTERN_PARSING, "Method 1 on %W gives $A\n", W, ap1);
-		action_pattern *ap2 = ParseClauses::experiment(W);
-		LOGIF(ACTION_PATTERN_PARSING, "Method 2 on %W gives $A\n", W, ap2);
-/*		if ((ap1) && (ap2 == NULL)) {
-			WRITE_TO(STDERR, "1 but not 2: %W\n", W);
-			internal_error("1 but not 2");
-		}
-		if ((ap1 == NULL) && (ap2)) {
-			WRITE_TO(STDERR, "2 but not 1: %W\n", W);
-			internal_error("2 but not 1");
-		}
-*/
+		action_pattern *ap = ParseClauses::ap_seven(W);
+		LOGIF(ACTION_PATTERN_PARSING, "Level Seven on %W gives $A\n", W, ap);
 		LOG_OUTDENT;
-		action_pattern *ap = ap2;
 		if (ap) { ==> { -, ap }; return TRUE; }
 	}
 	==> { fail nonterminal };

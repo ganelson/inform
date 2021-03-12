@@ -462,7 +462,7 @@ action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 
 =
 <perform-ap-test> ::=
-	list {...} |                  ==> { -, - }; ParseClauses::list(WR[1]);
+	list {...} |                  ==> { -, - }; ActionNameLists::test_list(WR[1]);
 	<test-ap> |                   ==> @<Write textual AP test result@>
 	<test-ap> ~~ <test-ap> |      ==> @<Write comparison AP test result@>
 	...                           ==> @<Write failure@>
@@ -472,7 +472,7 @@ action_pattern *InternalTests::ap_of_nap(action_pattern *ap, wording W) {
 	<test-register> = <test-ap> | ==> { -, (ap_test_register[R[1]] = RP[2]) }
 	<action-pattern> |            ==> { pass 1 }
 	<test-register> |             ==> { -, ap_test_register[R[1]] }
-	experimental {...}            ==> { -, ParseClauses::experiment(WR[1]) }
+	experimental {...}            ==> { -, ParseClauses::ap_seven(WR[1]) }
 
 <test-register> ::=
 	r1 | r2 | r3 | r4 | r5

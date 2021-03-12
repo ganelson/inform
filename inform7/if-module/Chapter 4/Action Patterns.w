@@ -118,7 +118,9 @@ for action-based APs is very much more complicated: see //Parse Action Patterns/
 
 =
 action_pattern *ActionPatterns::parse_parametric(wording W, kind *K) {
-	parse_node *spec = ParseClauses::parse_spec(W);
+	parse_node *spec = NULL;
+	if (<s-ap-parameter>(W)) spec = <<rp>>;
+	else spec = Specifications::new_UNKNOWN(W);
 	if (Dash::validate_parameter(spec, K) == FALSE) return NULL;
 	action_pattern *ap = ActionPatterns::new(W);
 	ap->parameter_kind = K;
