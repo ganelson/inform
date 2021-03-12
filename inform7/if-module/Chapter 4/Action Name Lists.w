@@ -622,6 +622,7 @@ The test group |:anl| is helpful in catching errors here.
 int anl_parsing_tense = IS_TENSE;
 int experimental_anl_system = FALSE;
 action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
+	experimental_anl_system = TRUE;
 	if (Wordings::mismatched_brackets(W)) return NULL;
 	int t = anl_parsing_tense;
 	anl_parsing_tense = tense;
@@ -640,9 +641,9 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 <action-list> ::=
 	doing something/anything other than <excluded-list> | ==> { FALSE, RP[1] }
 	doing something/anything except <excluded-list> |     ==> { FALSE, RP[1] }
-	doing something/anything to/with <anl-to-tail> |      ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) }
+	doing something/anything to/with <anl-to-tail> |      ==> @<Construct ANL for anything to@>
 	doing something/anything |                            ==> @<Construct ANL for anything@>
-	doing something/anything ... |                        ==> { fail }
+	doing something/anything {...} |                      ==> { -, - }; wording TW = WR[1]; @<Construct ANL for doing something with a tail@>
 	<anl>                                                 ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) }
 
 <excluded-list> ::=
@@ -654,9 +655,20 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 	... to/with ... |                                     ==> { fail }
 	...
 
+@<Construct ANL for anything to@> =
+	anl_entry *results = RP[1];
+	@<Extend the list to provide for clauses@>;
+	==> { TRUE, ActionNameLists::new_list(results, ANL_POSITIVE) }
+
 @<Construct ANL for anything@> =
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	==> { TRUE, ActionNameLists::new_list(entry, ANL_POSITIVE) };
+
+@<Construct ANL for doing something with a tail@> =
+	anl_entry *results = ActionNameLists::new_entry_at(W);
+	ActionNameLists::set_clause_wording(results, TAIL_AP_CLAUSE, TW);
+	@<Extend the list to provide for clauses@>;
+	==> { TRUE, ActionNameLists::new_list(results, ANL_POSITIVE) };
 
 @<Add to-clause to excluded ANL@> =
 	anl_entry *entry = RP[1];
@@ -665,7 +677,9 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 		==> { fail production };
 	}
 	ActionNameLists::add_parameter(entry, GET_RW(<excluded-list>, 1));
-	==> { FALSE, ActionNameLists::new_list(entry, ANL_NEGATED_ITEMWISE) };
+	anl_entry *results = entry;
+	@<Extend the list to provide for clauses@>;
+	==> { FALSE, ActionNameLists::new_list(results, ANL_NEGATED_ITEMWISE) };
 
 @ The trickiest form is:
 
@@ -814,6 +828,7 @@ end, but it's syntactically valid.)
 	LOOP_OVER(an, action_name) {
 		@<Ready the trial entry for another test@>;
 		wording RW = EMPTY_WORDING;
+		int abbreviated_to_tail = FALSE;
 		@<Make the trial entry fit this action, if possible, leaving remaining text in RW@>;
 		@<Consider the trial entry for inclusion in the results list@>;
 		NoMatch: ;
@@ -835,9 +850,15 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 	int it_optional = ActionNameNames::it_optional(an);
 	int abbreviable = ActionNameNames::abbreviable(an);
 	wording XW = ActionNameNames::tensed(an, anl_parsing_tense);
-	int w_m = Wordings::first_wn(W), x_m = Wordings::first_wn(XW);
+	int w_m = Wordings::first_wn(W), x_m = Wordings::first_wn(XW), n = 0;
 	while ((w_m <= Wordings::last_wn(W)) && (x_m <= Wordings::last_wn(XW))) {
-		if (Lexer::word(x_m++) != Lexer::word(w_m++)) goto NoMatch;
+		if (Lexer::word(x_m++) != Lexer::word(w_m++)) {
+			if ((abbreviable) && (it_optional) && (n >= 1)) {
+				x_ended = TRUE; abbreviated_to_tail = TRUE; x_m--; w_m--;
+			} else goto NoMatch;
+			break;
+		}
+		n++;
 		if (x_m > Wordings::last_wn(XW)) { x_ended = TRUE; break; }
 		if (<object-pronoun>(Wordings::one_word(x_m))) {
 			if (w_m > Wordings::last_wn(W)) x_ended = TRUE; else {
@@ -868,9 +889,10 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 		@<Include the trial entry@>;
 	} else {
 		if (experimental_anl_system) {
-			if (ActionSemantics::can_have_noun(an)) {
-				if (ActionNameLists::parse_to_tail(trial_entry, RW))
+			if ((ActionSemantics::can_have_noun(an)) && (abbreviated_to_tail == FALSE)) {
+				if (ActionNameLists::parse_to_tail(trial_entry, RW)) {
 					@<Include the trial entry@>;
+				}
 			} else {
 				ActionNameLists::set_clause_wording(trial_entry, TAIL_AP_CLAUSE, RW);
 				@<Include the trial entry@>;

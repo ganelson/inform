@@ -613,7 +613,7 @@ void PL::Parsing::understand_block(wording W, understanding_reference *ur, wordi
 				"text",
 				"such as \"eternity\" or \"peruvian skies\".");
 		else if (TEST_COMPILATION_MODE(SPECIFICATIONS_CMODE))
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NontextualUnderstandInAP),
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"the topic here should be in the form of a textual description",
 				"as in 'asking about \"[something]\"'.");
 		else

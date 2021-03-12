@@ -139,26 +139,37 @@
   (4). +0 : going [noun: from the laboratory to the castle]
   
   
-  33. list gluttony
+  33. list listening
+  Action name list for: listening
+  (1). +0 : listening to
+  
+  
+  34. list listening in the presence of Hans
+  Action name list for: listening in the presence of hans
+  (1). +0 : listening to [in: the presence of hans] [in-presence: hans]
+  (2). +0 : listening to [in-presence: hans]
+  
+  
+  35. list gluttony
   Action name list for: gluttony
   (1). +0 : gluttony
   
   
-  34. list gluttony in the Laboratory
+  36. list gluttony in the Laboratory
   Action name list for: gluttony in the laboratory
   (1). +0 : gluttony [in: the laboratory]
   
   
-  35. experimental looking
+  37. experimental looking
   experimental looking: <action-based: looking>
   
-  36. experimental taking inventory
+  38. experimental taking inventory
   experimental taking inventory: <action-based: taking inventory>
   
-  37. experimental looking in the Laboratory
+  39. experimental looking in the Laboratory
   experimental looking in the laboratory: <action-based: looking * in: 'radiation laboratory'>
   
-  38. experimental gluttony in the Laboratory
+  40. experimental gluttony in the Laboratory
   experimental gluttony in the laboratory: <action-based: gluttony * in: 'radiation laboratory'>
   
 > >   Radiation Laboratory

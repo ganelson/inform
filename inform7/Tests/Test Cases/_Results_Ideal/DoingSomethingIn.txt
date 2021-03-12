@@ -1,0 +1,24 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  
+  Sure...
+  
+  Place
+  You can see a radio and Hans here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] listen
+  Sure...
+  
+  Ugh.
+  
+  >[2] hans, take radio
+  Nope.
+  
+  Hans has better things to do.
+  
+> >

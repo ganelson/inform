@@ -50,6 +50,8 @@ Test pattern (internal) with list looking or taking inventory in the Laboratory 
 Test pattern (internal) with list looking or taking inventory in the presence of Hans in the Laboratory.
 Test pattern (internal) with list looking in in in in in in in in in in in in in in in in in in in in.
 Test pattern (internal) with list going from the Laboratory to the Castle.
+Test pattern (internal) with list listening.
+Test pattern (internal) with list listening in the presence of Hans.
 
 Test pattern (internal) with list gluttony.
 Test pattern (internal) with list gluttony in the Laboratory.

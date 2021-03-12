@@ -615,7 +615,7 @@ action_pattern *ParseClauses::experiment(wording W) {
 			LOGIF(ACTION_PATTERN_PARSING, "Writing clause %d '%W'\n", c->clause_ID, c->clause_text);
 			if (c->stv_to_match) APClauses::set_action_variable_spec(ap, c->stv_to_match, c->evaluation);
 			else APClauses::set_spec(ap, c->clause_ID, c->evaluation);
-			Going::new_clause(ap, APClauses::clause(ap, c->clause_ID));
+//			Going::new_clause(ap, APClauses::clause(ap, c->clause_ID));
 		}
 	return ap;
 }

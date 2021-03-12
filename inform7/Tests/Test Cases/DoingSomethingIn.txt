@@ -1,0 +1,16 @@
+Place is a room.
+
+The radio is here. The radio is a device.
+
+Hans is a man in the Place.
+
+Instead of listening in the presence of the radio: say "Ugh."
+
+Before doing something in the Place:
+	say "Sure...";
+	continue the action.
+
+Before asking someone to try doing something in the presence of a person:
+	say "Nope."
+
+Test me with "listen / hans, take radio".

@@ -1,9 +1,0 @@
-Inform 7 build 6M38 has started.
-I've now read your source text, which is 33 words long.
-I've also read Standard Rules by Graham Nelson, which is 42506 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
-Problem__ PM_NontextualUnderstandInAP
-  >--> You wrote 'Instead of asking Bob about the "ball" (this is the Bob
-    recognizes rule)' (source text, line 7): but the topic here should be in
-    the form of a textual description, as in 'asking about "[something]"'.
-Inform 7 has finished: 72 centiseconds used.

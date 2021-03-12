@@ -444,7 +444,7 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 A quick one: the optional "in the presence of".
 
 =
-<ap-six> ::=
+<ap-sixxxxx> ::=
 	<ap-seven> in the presence of <s-ap-parameter> | ==> { 0, RP[1] }; APClauses::set_spec(RP[1], IN_THE_PRESENCE_OF_AP_CLAUSE, RP[2]);
 	<ap-seven>                                       ==> { 0, RP[1] };
 
@@ -453,7 +453,7 @@ Much of the complexity is gone now, but much potential ambiguity remains, and
 so what's left can't very efficiently be written in Preform.
 
 =
-<ap-seven> internal {
+<ap-six> internal {
 	if (Wordings::mismatched_brackets(W)) { ==> { fail nonterminal }; }
 	if (parse_action_pattern_mode & SCANNING_ANL_ONLY) {
 		action_name_list *list = ActionNameLists::parse(W, prevailing_ap_tense, NULL);
@@ -465,8 +465,8 @@ so what's left can't very efficiently be written in Preform.
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
 		LOG_INDENT;
-		action_pattern *ap1 = ParseClauses::parse(W);
-		LOGIF(ACTION_PATTERN_PARSING, "Method 1 on %W gives $A\n", W, ap1);
+//		action_pattern *ap1 = ParseClauses::parse(W);
+//		LOGIF(ACTION_PATTERN_PARSING, "Method 1 on %W gives $A\n", W, ap1);
 		action_pattern *ap2 = ParseClauses::experiment(W);
 		LOGIF(ACTION_PATTERN_PARSING, "Method 2 on %W gives $A\n", W, ap2);
 /*		if ((ap1) && (ap2 == NULL)) {

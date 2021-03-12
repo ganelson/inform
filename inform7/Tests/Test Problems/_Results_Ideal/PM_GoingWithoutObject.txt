@@ -7,4 +7,9 @@ Problem__ PM_GoingWithoutObject
   >--> In the sentence 'Before going to 10' (source text, line 3), '10' seems
     to be intended as something the player might be going to, but it doesn't
     make sense in that context.
+Problem__ PM_APUnknown
+  >--> You wrote 'Before going to 10' (source text, line 3), which seems to
+    introduce a rule taking effect only if the action is 'going to 10'. But
+    that did not make sense as a description of an action. I am unable to place
+    this rule into any rulebook.
 Inform 7 has finished.

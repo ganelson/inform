@@ -1,8 +1,0 @@
-Place is a room.
-
-Bob is a man in Place.
-
-The player carries a ball.
-
-Instead of asking Bob about the "ball" (this is the Bob recognizes rule):
-	say "'Looks like a basketball.'"
