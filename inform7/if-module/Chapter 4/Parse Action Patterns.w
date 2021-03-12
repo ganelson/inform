@@ -364,6 +364,7 @@ name; so we needn't spend any further time.
 	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) return NULL;
 	unsigned int d = Vocabulary::disjunction_of_flags(W);
 	if (((ParseActionPatterns::current_tense() == IS_TENSE) && ((d & (ACTION_PARTICIPLE_MC+NAMED_AP_MC)) == 0))) {
+		LOGIF(ACTION_PATTERN_PARSING, "No participle found in: %W\n", W);
 		pap_failure_reason = NOPARTICIPLE_PAPF;
 		return NULL;
 	}
@@ -464,8 +465,21 @@ so what's left can't very efficiently be written in Preform.
 	} else {
 		LOGIF(ACTION_PATTERN_PARSING, "Parsing action pattern: %W\n", W);
 		LOG_INDENT;
-		action_pattern *ap = ParseClauses::parse(W);
+		action_pattern *ap1 = ParseClauses::parse(W);
+		LOGIF(ACTION_PATTERN_PARSING, "Method 1 on %W gives $A\n", W, ap1);
+		action_pattern *ap2 = ParseClauses::experiment(W);
+		LOGIF(ACTION_PATTERN_PARSING, "Method 2 on %W gives $A\n", W, ap2);
+/*		if ((ap1) && (ap2 == NULL)) {
+			WRITE_TO(STDERR, "1 but not 2: %W\n", W);
+			internal_error("1 but not 2");
+		}
+		if ((ap1 == NULL) && (ap2)) {
+			WRITE_TO(STDERR, "2 but not 1: %W\n", W);
+			internal_error("2 but not 1");
+		}
+*/
 		LOG_OUTDENT;
+		action_pattern *ap = ap2;
 		if (ap) { ==> { -, ap }; return TRUE; }
 	}
 	==> { fail nonterminal };

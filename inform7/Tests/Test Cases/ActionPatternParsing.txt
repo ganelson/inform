@@ -5,6 +5,8 @@ Hans is a man in the Laboratory.
 
 East of the Laboratory is the Castle.
 
+Eating something is gluttony.
+
 [Should parse]
 
 Test pattern (internal) with looking.
@@ -48,3 +50,11 @@ Test pattern (internal) with list looking or taking inventory in the Laboratory 
 Test pattern (internal) with list looking or taking inventory in the presence of Hans in the Laboratory.
 Test pattern (internal) with list looking in in in in in in in in in in in in in in in in in in in in.
 Test pattern (internal) with list going from the Laboratory to the Castle.
+
+Test pattern (internal) with list gluttony.
+Test pattern (internal) with list gluttony in the Laboratory.
+
+Test pattern (internal) with experimental looking.
+Test pattern (internal) with experimental taking inventory.
+Test pattern (internal) with experimental looking in the Laboratory.
+Test pattern (internal) with experimental gluttony in the Laboratory.

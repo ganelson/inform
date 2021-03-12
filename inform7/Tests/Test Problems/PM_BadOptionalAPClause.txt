@@ -1,7 +1,0 @@
-Xanadu is a room.
-
-Photographing is an action applying to one visible thing and requiring light.
-
-The photographing action has an object called the camera photographed with (matched as "using").
-
-Before photographing someone using chutzpah, say "No."

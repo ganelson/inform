@@ -78,23 +78,88 @@
   24. taking or dropping the counter ~~ taking the counter
   taking or dropping the counter ~~ taking the counter: right is more specific
   
-  25. experimental looking or taking inventory in the Laboratory in the presence of Hans
-  Experiment on: looking or taking inventory in the laboratory in the presence of hans
-  (1). +2 ANL entry : taking [noun: inventory] [in: the laboratory in the presence of hans]
-  (2). +2 ANL entry : taking inventory [in: the laboratory in the presence of hans]
-  (3). +0 ANL entry : looking
+  25. list looking
+  Action name list for: looking
+  (1). +0 : looking
   
-  Chief action: looking
-  experimental looking or taking inventory in the laboratory in the presence of hans: <action-based: taking inventory / looking>
   
-  26. experimental looking or taking inventory in the presence of Hans in the Laboratory
-  Experiment on: looking or taking inventory in the presence of hans in the laboratory
-  (1). +2 ANL entry : taking [noun: inventory] [in-presence: hans in the laboratory]
-  (2). +2 ANL entry : taking inventory [in-presence: hans in the laboratory]
-  (3). +0 ANL entry : looking
+  26. list looking in the Laboratory
+  Action name list for: looking in the laboratory
+  (1). +0 : looking [in: the laboratory]
   
-  Chief action: looking
-  experimental looking or taking inventory in the presence of hans in the laboratory: <action-based: taking inventory / looking>
+  
+  27. list looking in the Laboratory in the presence of Hans
+  Action name list for: looking in the laboratory in the presence of hans
+  (1). +0 : looking [in: the laboratory] [in-presence: hans]
+  (2). +0 : looking [in: the laboratory in the presence of hans]
+  
+  
+  28. list dropping in the Laboratory in the presence of Hans
+  Action name list for: dropping in the laboratory in the presence of hans
+  (1). +0 : dropping [in: the laboratory] [in-presence: hans]
+  (2). +0 : dropping [in: the laboratory in the presence of hans]
+  (3). +0 : dropping [noun: in the laboratory] [in: the presence of hans] [in-presence: hans]
+  (4). +0 : dropping [noun: in the laboratory] [in-presence: hans]
+  (5). +0 : dropping [noun: in the laboratory in the presence of hans]
+  
+  
+  29. list looking or taking inventory in the Laboratory in the presence of Hans
+  Action name list for: looking or taking inventory in the laboratory in the presence of hans
+  (1). +2 : taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (2). +2 : taking [noun: inventory] [in: the laboratory in the presence of hans]
+  (3). +2 : taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
+  (4). +2 : taking [noun: inventory in the laboratory] [in-presence: hans]
+  (5). +2 : taking [noun: inventory in the laboratory in the presence of hans]
+  (6). +2 : taking inventory [in: the laboratory] [in-presence: hans]
+  (7). +2 : taking inventory [in: the laboratory in the presence of hans]
+  (8). +0 : looking
+  
+  
+  30. list looking or taking inventory in the presence of Hans in the Laboratory
+  Action name list for: looking or taking inventory in the presence of hans in the laboratory
+  (1). +2 : taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (2). +2 : taking [noun: inventory] [in-presence: hans in the laboratory]
+  (3). +2 : taking [noun: inventory in the presence of hans] [in: the laboratory]
+  (4). +2 : taking [noun: inventory in the presence of hans in the laboratory]
+  (5). +2 : taking inventory [in: the laboratory] [in-presence: hans]
+  (6). +2 : taking inventory [in-presence: hans in the laboratory]
+  (7). +0 : looking
+  
+  
+  31. list looking in in in in in in in in in in in in in in in in in in in in
+  Action name list for: looking in in in in in in in in in in in in in in in in in in in in
+  (1). +0 : looking [in: in in in in in in in in in in in in in in in in in in in]
+  
+  
+  32. list going from the Laboratory to the Castle
+  Action name list for: going from the laboratory to the castle
+  (1). +0 : going [going-from{'room gone from'(var)room}: the laboratory] [going-to{'room gone to'(var)object}: the castle]
+  (2). +0 : going [going-from{'room gone from'(var)room}: the laboratory to the castle]
+  (3). +0 : going [noun: from the laboratory] [going-to{'room gone to'(var)object}: the castle]
+  (4). +0 : going [noun: from the laboratory to the castle]
+  
+  
+  33. list gluttony
+  Action name list for: gluttony
+  (1). +0 : gluttony
+  
+  
+  34. list gluttony in the Laboratory
+  Action name list for: gluttony in the laboratory
+  (1). +0 : gluttony [in: the laboratory]
+  
+  
+  35. experimental looking
+  experimental looking: <action-based: looking>
+  
+  36. experimental taking inventory
+  experimental taking inventory: <action-based: taking inventory>
+  
+  37. experimental looking in the Laboratory
+  experimental looking in the laboratory: <action-based: looking * in: 'radiation laboratory'>
+  
+  38. experimental gluttony in the Laboratory
+  experimental gluttony in the laboratory: <action-based: gluttony * in: 'radiation laboratory'>
   
 > >   Radiation Laboratory
 > Are you sure you want to quit? 

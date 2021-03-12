@@ -93,9 +93,12 @@ writing source text.)
 
 =
 void Going::new_clause(action_pattern *ap, ap_clause *apoc) {
+		LOGIF(ACTION_PATTERN_PARSING, "GNC %d...\n", apoc->clause_ID);
 	if ((apoc->clause_ID == GOING_FROM_AP_CLAUSE) ||
-		(apoc->clause_ID == GOING_TO_AP_CLAUSE))
+		(apoc->clause_ID == GOING_TO_AP_CLAUSE)) {
+		LOGIF(ACTION_PATTERN_PARSING, "GNC!!!!!!!\n");
 		APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
+	}
 }
 
 @ Going nowhere is a special syntax:
@@ -164,6 +167,8 @@ int Going::validate(stacked_variable *stv, parse_node *spec) {
 or unspecified:
 
 =
+parse_node *PM_GoingWrongKind_issued_at = NULL;
+parse_node *PM_GoingWithoutObject_issued_at = NULL;
 int Going::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
 	if (spec == NULL) return TRUE;
 	if (Rvalues::is_nothing_object_constant(spec)) return TRUE;
@@ -171,6 +176,8 @@ int Going::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
 		instance *oref = Specifications::object_exactly_described_if_any(spec);
 		if ((oref == NULL) || (ka == NULL) || (Instances::of_kind(oref, ka)) ||
 			((kb) && (Instances::of_kind(oref, kb)))) return TRUE;
+		if (PM_GoingWrongKind_issued_at == current_sentence) return TRUE;
+		PM_GoingWrongKind_issued_at = current_sentence;
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_object(2, oref);
 		Problems::quote_text(3, keyword);
@@ -190,6 +197,8 @@ int Going::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
 		Problems::issue_problem_end();
 		return TRUE;
 	}
+	if (PM_GoingWithoutObject_issued_at == current_sentence) return TRUE;
+	PM_GoingWithoutObject_issued_at = current_sentence;
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, Node::get_text(spec));
 	Problems::quote_text(3, keyword);

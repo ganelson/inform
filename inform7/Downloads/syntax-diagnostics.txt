@@ -8639,7 +8639,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'silently try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -8923,7 +8923,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'silently try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -9193,7 +9193,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'silently try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -9343,7 +9343,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -12846,7 +12846,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'silently try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -13061,7 +13061,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'silently try the actor trying taking off the noun' {indent: 2}
                                             INVOCATION_NT'silently try the actor trying taking off the noun' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'actor trying taking off the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                    CONSTANT_NT'actor trying taking off the noun' {kind: action} {explicit action: <action-based: taking off * actor: NONLOCAL_VARIABLE_NT'actor' {nonlocal: 'actor'(var)person} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the actor is wearing the noun' {indent: 2} {colon_block_command}
                                                 INVOCATION_NT'if the actor is wearing the noun' {phrase invoked: call}
@@ -16561,7 +16561,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'try the person asked taking the noun'
                         INVOCATION_NT'try the person asked taking the noun' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked taking the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                CONSTANT_NT'person asked taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'carry out someone filing' {unit: 4}
                 CODE_BLOCK_NT
@@ -16984,7 +16984,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'try the person asked giving the noun to vanessa'
                         INVOCATION_NT'try the person asked giving the noun to vanessa' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked giving the noun to vanessa' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked giving the noun to vanessa' {kind: action} {explicit action: <action-based: giving it to * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: I129'vanessa'>}
+                                CONSTANT_NT'person asked giving the noun to vanessa' {kind: action} {explicit action: <action-based: giving it to * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: I129'vanessa'>}
             SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 4} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
@@ -17237,7 +17237,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'try the person asked eating the noun'
                         INVOCATION_NT'try the person asked eating the noun' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'person asked eating the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'person asked eating the noun' {kind: action} {explicit action: <action-based: eating * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                CONSTANT_NT'person asked eating the noun' {kind: action} {explicit action: <action-based: eating * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
             RULE_NT'instead of someone eating a fresh ice cream cone' {unit: 4}
                 CODE_BLOCK_NT
@@ -18025,7 +18025,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'try the person asked unlocking the noun with the key unlocke' {indent: 1}
                                             INVOCATION_NT'try the person asked unlocking the noun with the key unlocke' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'person asked unlocking the noun with the key unlocked with' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'person asked unlocking the noun with the key unlocked with' {kind: action} {explicit action: <action-based: unlocking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key unlocked with' {nonlocal: 'key unlocked with'(var)object}>}
+                                                    CONSTANT_NT'person asked unlocking the noun with the key unlocked with' {kind: action} {explicit action: <action-based: unlocking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key unlocked with' {nonlocal: 'key unlocked with'(var)object}>}
                         HEADING_NT'part 3 - locking' {heading 3} {under: H3'part 3 - locking'} {unit: 4}
                             HEADING_NT'section 1 - regular locking' {heading 5} {under: H5'section 1 - regular locking'} {unit: 4}
                                 SENTENCE_NT'understand the command lock as something new' {unit: 4} {classified}
@@ -18133,7 +18133,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'try the person asked locking the noun with the key locked wi' {indent: 1}
                                             INVOCATION_NT'try the person asked locking the noun with the key locked wi' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'person asked locking the noun with the key locked with' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                    CONSTANT_NT'person asked locking the noun with the key locked with' {kind: action} {explicit action: <action-based: locking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key locked with' {nonlocal: 'key locked with'(var)object}>}
+                                                    CONSTANT_NT'person asked locking the noun with the key locked with' {kind: action} {explicit action: <action-based: locking it with * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: NONLOCAL_VARIABLE_NT'the key locked with' {nonlocal: 'key locked with'(var)object}>}
                     HEADING_NT'volume 3 - the passkey kind , needed only if you want keys t' {heading 1} {under: H1'volume 3 - the passkey kind , needed only if you want keys to name themselves'} {unit: 4}
                         SENTENCE_NT'a passkey is a kind of thing' {unit: 4} {classified}
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -18277,12 +18277,12 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'try taking the noun' {indent: 3}
                                                     INVOCATION_NT'try taking the noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'taking the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'taking the noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'taking the noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
                                                 INVOCATION_LIST_NT'try the person asked trying taking the noun' {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'person asked trying taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'person asked trying taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the noun' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the noun' {phrase invoked: call} {kind variable declarations: K=object}
@@ -18307,12 +18307,12 @@ ROOT_NT
                                                 INVOCATION_LIST_NT'try taking the second noun' {indent: 3}
                                                     INVOCATION_NT'try taking the second noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'taking the second noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'taking the second noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'taking the second noun' {kind: action} {explicit action: <action-based: taking * noun: NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                             CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 2} {control structure: O}
                                                 INVOCATION_LIST_NT'try the person asked trying taking the second noun' {indent: 3}
                                                     INVOCATION_NT'try the person asked trying taking the second noun' {phrase invoked: call}
                                                         RVALUE_CONTEXT_NT'person asked trying taking the second noun' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                                            CONSTANT_NT'person asked trying taking the second noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'the second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
+                                                            CONSTANT_NT'person asked trying taking the second noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}>}
                                     CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                         INVOCATION_LIST_NT'carry out the implicitly taking activity with the second nou' {indent: 2}
                                             INVOCATION_NT'carry out the implicitly taking activity with the second nou' {phrase invoked: call} {kind variable declarations: K=object}
@@ -19678,7 +19678,7 @@ ROOT_NT
                     INVOCATION_LIST_NT'try asking the noun about it'
                         INVOCATION_NT'try asking the noun about it' {phrase invoked: call}
                             RVALUE_CONTEXT_NT'asking the noun about it' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
-                                CONSTANT_NT'asking the noun about it' {kind: action} {explicit action: <action-based: asking it about * noun: NONLOCAL_VARIABLE_NT'the noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: CONSTANT_NT'it' {kind: topic}>}
+                                CONSTANT_NT'asking the noun about it' {kind: action} {explicit action: <action-based: asking it about * noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}} second: CONSTANT_NT'it' {kind: topic}>}
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 4} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'

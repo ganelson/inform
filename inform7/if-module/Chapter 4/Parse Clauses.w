@@ -418,16 +418,204 @@ void ParseClauses::list(wording W) {
 @
 
 =
-action_pattern *ParseClauses::experiment(wording W) {
-	LOG("Experiment on: %W\n", W);
-	experimental_anl_system = TRUE;
-	action_name_list *anl = ActionNameLists::parse(W, IS_TENSE, NULL);
-	experimental_anl_system = FALSE;
-	LOG("$L\n", anl);
-	action_name *chief_an = ActionNameLists::get_best_action(anl);
-	if (chief_an == NULL) chief_an = ActionNameNames::longest_nounless(W, IS_TENSE, NULL);
-	LOG("Chief action: $l\n", chief_an);
+kind *ParseClauses::kind(action_name *an, int C) {
+	kind *check = NULL;
+	switch (C) {
+		case NOUN_AP_CLAUSE:
+			check = K_object;
+			if (an) check = ActionSemantics::kind_of_noun(an);
+			break;
+		case SECOND_AP_CLAUSE:
+			check = K_object;
+			if (an) check = ActionSemantics::kind_of_second(an);
+			break;
+		case IN_AP_CLAUSE:
+			check = K_object;
+			break;
+		case IN_THE_PRESENCE_OF_AP_CLAUSE:
+			check = K_thing;
+			break;
+	}
+	if (check == NULL) {
+		stacked_variable *stv;
+		LOOP_OVER(stv, stacked_variable)
+			if (C == APClauses::clause_ID_for_action_variable(stv))
+				check = StackedVariables::get_kind(stv);
+	}
+	return check;
+}
 
-	action_pattern *ap = ParseClauses::parse(W);
+action_pattern *ParseClauses::experiment(wording W) {
+	LOGIF(ACTION_PATTERN_PARSING, "Experiment on: %W\n", W);
+	experimental_anl_system = TRUE;
+	int tense = ParseActionPatterns::current_tense();
+	action_name_list *list = ActionNameLists::parse(W, tense, NULL);
+	experimental_anl_system = FALSE;
+	LOGIF(ACTION_PATTERN_PARSING, "List for %W is:\n$L\n", W, list);
+	if (ActionNameLists::length(list) == 0) return NULL;
+
+	anl_entry *viable = NULL; int at = -1;
+	LOOP_THROUGH_ANL(entry, list) {
+		int fail = FALSE;
+		if (entry->parsing_data.word_position != at) {
+			if ((at >= 0) && (viable == NULL)) return NULL;
+			at = entry->parsing_data.word_position;
+			viable = NULL;
+		} else {
+			if (viable) {
+				ActionNameLists::mark_for_deletion(entry);
+				continue;
+			}
+		}
+		int saved_pap = pap_failure_reason;
+		action_name *an = ActionNameLists::action(entry);
+		for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause) {
+			if (Wordings::nonempty(c->clause_text)) {
+				if ((c->clause_ID == NOUN_AP_CLAUSE) && (an) && (an == going_action) && (<going-action-irregular-operand>(c->clause_text))) {
+					if (<<r>> == 0) { // nowhere
+						entry->item.options |= 1;
+					}
+					if (<<r>> == 1) { // somewhere
+						entry->item.options |= 2;
+					}
+				} else if ((c->clause_ID == SECOND_AP_CLAUSE) && (an) && (K_understanding) &&
+					(Kinds::eq(ActionSemantics::kind_of_second(an), K_understanding)) &&
+					(<understanding-action-irregular-operand>(c->clause_text))) {
+					parse_node *val = ParsingPlugin::rvalue_from_grammar_verb(NULL);
+					Node::set_text(val, c->clause_text);
+					c->evaluation = val;
+				} else if (<action-operand>(c->clause_text)) {
+					if (<<r>>) c->evaluation = <<rp>>;
+					else c->evaluation = Specifications::from_kind(K_thing);
+				} else {
+					fail = TRUE;
+				}
+				if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(c->evaluation, K_text)))
+					Node::set_kind_of_value(c->evaluation, K_understanding);
+			}
+		}
+		pap_failure_reason = saved_pap;
+		if (fail) { ActionNameLists::mark_for_deletion(entry); continue; }
+		if (entry->item.options != 0) {
+			wording W = ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
+			ActionNameLists::truncate_clause(entry, NOUN_AP_CLAUSE, 0);
+			if (entry->item.options & 1) {
+				if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) fail = TRUE;
+				else {
+					ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
+					anl_clause_text *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
+					c->evaluation = Rvalues::new_nothing_object_constant();
+				}
+			}
+			if (entry->item.options & 2) {
+				if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) fail = TRUE;
+				else {
+					ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
+					anl_clause_text *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
+					c->evaluation = Descriptions::from_kind(K_room, FALSE);
+				}
+			}
+		}
+		for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause) {
+			kind *check = NULL;
+			switch (c->clause_ID) {
+				case NOUN_AP_CLAUSE:
+					check = K_object;
+					if (an) check = ActionSemantics::kind_of_noun(an);
+					break;
+				case SECOND_AP_CLAUSE:
+					check = K_object;
+					if (an) check = ActionSemantics::kind_of_second(an);
+					break;
+				case IN_AP_CLAUSE:
+					check = K_object;
+					break;
+				case IN_THE_PRESENCE_OF_AP_CLAUSE:
+					check = K_object;
+					break;
+			}
+			if (c->stv_to_match) {
+				int rv = Going::validate(c->stv_to_match, c->evaluation);
+				if (rv == FALSE) return NULL;
+				if (rv == NOT_APPLICABLE) check = StackedVariables::get_kind(c->stv_to_match);
+			}
+			if (Node::is(c->evaluation, UNKNOWN_NT)) fail = TRUE;
+			else if ((check) && (Dash::validate_parameter(c->evaluation, check) == FALSE))
+				fail = TRUE;
+		}
+		if (fail) { ActionNameLists::mark_for_deletion(entry); continue; }
+		viable = entry;
+	}
+	if (viable == NULL) return NULL;
+	ActionNameLists::remove_entries_marked_for_deletion(list);
+
+	LOGIF(ACTION_PATTERN_PARSING, "Reduced to viability:\n$L\n", list);
+
+	int N = 0;
+	LOOP_THROUGH_ANL(entry, list)
+		if (entry->parsing_data.anl_clauses)
+			N++;
+	if (N > 1) {
+		pap_failure_reason = MIXEDNOUNS_PAPF;
+		return NULL;
+	}
+
+	int immiscible = FALSE, no_oow = 0, no_iw = 0, no_of_pars = 0;
+
+	kind *kinds_observed_in_list[2];
+	kinds_observed_in_list[0] = NULL;
+	kinds_observed_in_list[1] = NULL;
+	LOOP_THROUGH_ANL(entry, list)
+		if (ActionNameLists::nap(entry) == NULL) {
+			if (ActionNameLists::parc(entry) > 0) {
+				if (no_of_pars > 0) immiscible = TRUE;
+				no_of_pars = ActionNameLists::parc(entry);
+			}
+			action_name *this = ActionNameLists::action(entry);
+			if (this) {
+				if (ActionSemantics::is_out_of_world(this)) no_oow++; else no_iw++;
+
+				if (ActionNameLists::parc(entry) >= 1) {
+					kind *K = ActionSemantics::kind_of_noun(this);
+					kind *A = kinds_observed_in_list[0];
+					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
+						immiscible = TRUE;
+					kinds_observed_in_list[0] = K;
+				}
+				if (ActionNameLists::parc(entry) >= 2) {
+					kind *K = ActionSemantics::kind_of_second(this);
+					kind *A = kinds_observed_in_list[1];
+					if ((A) && (K) && (Kinds::eq(A, K) == FALSE))
+						immiscible = TRUE;
+					kinds_observed_in_list[1] = K;
+				}
+			}
+		}
+	if ((no_oow > 0) && (no_iw > 0)) immiscible = TRUE;
+
+	LOOP_THROUGH_ANL(entry, list)
+		if (ActionNameLists::action(entry)) {
+			if ((no_of_pars >= 1) && (ActionSemantics::can_have_noun(ActionNameLists::action(entry)) == FALSE))
+				immiscible = TRUE;
+			if ((no_of_pars >= 2) && (ActionSemantics::can_have_second(ActionNameLists::action(entry)) == FALSE))
+				immiscible = TRUE;
+		}
+
+	if (immiscible) {
+		pap_failure_reason = IMMISCIBLE_PAPF;
+		return NULL;
+	}
+
+	action_pattern *ap = ActionPatterns::new(W);
+	anl_item *first = ActionNameLists::first_item(list);
+	if ((first) && ((first->action_listed) || (first->nap_listed)))
+		ap->action_list = list;
+	LOOP_THROUGH_ANL(entry, list)
+		for (anl_clause_text *c = entry->parsing_data.anl_clauses; c; c = c->next_clause) {
+			LOGIF(ACTION_PATTERN_PARSING, "Writing clause %d '%W'\n", c->clause_ID, c->clause_text);
+			if (c->stv_to_match) APClauses::set_action_variable_spec(ap, c->stv_to_match, c->evaluation);
+			else APClauses::set_spec(ap, c->clause_ID, c->evaluation);
+			Going::new_clause(ap, APClauses::clause(ap, c->clause_ID));
+		}
 	return ap;
 }
