@@ -1,0 +1,19 @@
+   Place
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+  
+  Place
+  You can see an inventory here.
+  
+> >   Place
+  (Testing.)
+  
+  >[1] inv
+  INV!
+  
+  >[2] get all
+  (the inventory)
+  GET!
+  
+> >

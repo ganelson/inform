@@ -45,8 +45,6 @@ void ActionsNodes::nodes_and_annotations(void) {
 	Annotations::allow(CONSTANT_NT, constant_action_pattern_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_named_action_pattern_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_explicit_action_ANNOT);
-
-//	Annotations::allow(COMMON_NOUN_NT, action_meaning_ANNOT);
 }
 
 @ And for the debugging log:

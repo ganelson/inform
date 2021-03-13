@@ -20,6 +20,7 @@ void IFModule::start(void) {
 	IFModule::create_plugins();
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
+	@<Register this module's direct memory usage@>;
 	ReleaseInstructions::start();
 	WherePredicates::start();
 	SpatialRelations::start();
@@ -56,6 +57,13 @@ void IFModule::start(void) {
 	REGISTER_WRITER('8', ActionNameLists::log_entry);
 	REGISTER_WRITER('l', ActionNameNames::log);
 
+@
+
+@e ACTION_LISTS_MREASON
+
+@<Register this module's direct memory usage@> =
+	Memory::reason_name(ACTION_LISTS_MREASON, "action search arrays");
+
 @ =
 void IFModule::end(void) {
 }
@@ -66,7 +74,8 @@ of the following plugins. They all belong to an "if" plugin, but that does
 nothing except to be a parent to them; it has no activation function.
 
 = (early code)
-plugin *actions_plugin, *backdrops_plugin, *bibliographic_plugin, *chronology_plugin,
+plugin *actions_plugin, *going_plugin,
+	*backdrops_plugin, *bibliographic_plugin, *chronology_plugin,
 	*devices_plugin, *map_plugin, *parsing_plugin, *persons_plugin, *player_plugin,
 	*regions_plugin, *scenes_plugin, *scoring_plugin, *showme_plugin, *spatial_plugin,
 	*times_plugin;
@@ -91,6 +100,7 @@ void IFModule::create_plugins(void) {
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
 
 	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);
+	going_plugin = PluginManager::new(&Going::start, I"going", actions_plugin);
 
 	parsing_plugin = PluginManager::new(&ParsingPlugin::start, I"command", ifp);
 	showme_plugin = PluginManager::new(&RTShowmeCommand::start, I"showme", parsing_plugin);

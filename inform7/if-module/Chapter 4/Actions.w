@@ -58,7 +58,6 @@ action_name *PL::Actions::act_new(wording W) {
 		StackedVariables::new_owner(RTActions::action_variable_set_ID(an));
 
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
-
 	return an;
 }
 

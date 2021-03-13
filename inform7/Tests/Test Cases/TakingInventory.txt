@@ -1,0 +1,9 @@
+Place is a room.
+
+The inventory is here.
+
+Instead of taking inventory, say "INV!"
+
+Instead of taking the inventory, say "GET!"
+
+Test me with "inv / get all".

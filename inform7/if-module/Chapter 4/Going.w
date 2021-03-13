@@ -1,14 +1,25 @@
 [Going::] Going.
 
-Inform provides a little extra support for the "going" action.
+A plugin to provide a little extra support for the "going" action.
 
 @ The "going" action, allowing actors to move from room to room in the spatial
 map of the world model, is by far the most intricately implemented. Reflecting
-that, we provide quite a lot of hard-wired compiler support for it. This
-section is not a plugin as such, but arguably should be: it attempts to contain
-everything special to "going" in one place.
+that, we provide quite a lot of hard-wired compiler support for it, in the form
+of a plugin. If the actions plugin is not also active, none of the functions
+below will ever be called, whether or not going is active.
 
-Firstly, we have to recognise the action we will treat differently, which
+=
+void Going::start(void) {
+	PluginManager::plug(NEW_ACTION_NOTIFY_PLUG, Going::new_action_notify);
+	PluginManager::plug(WRITE_AP_CLAUSE_ID_PLUG, Going::write_clause_ID);
+	PluginManager::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, Going::aspect);
+	PluginManager::plug(DIVERT_AP_CLAUSE_PLUG, Going::divert_clause_ID);
+	PluginManager::plug(NEW_AP_CLAUSE_PLUG, Going::new_clause);
+	PluginManager::plug(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, Going::act_on_options);
+	PluginManager::plug(COMPARE_AP_SPECIFICITY_PLUG, Going::compare_specificity);
+}
+
+@ Firstly, we have to recognise the action we will treat differently, which
 we do by its (English) name in the Standard Rules:
 
 =
@@ -17,8 +28,9 @@ we do by its (English) name in the Standard Rules:
 
 @ =
 action_name *going_action = NULL;
-void Going::notice_new_action_name(action_name *an) {
+int Going::new_action_notify(action_name *an) {
 	if (<going-action>(ActionNameNames::tensed(an, IS_TENSE))) going_action = an;
+	return FALSE;
 }
 
 @ The going action variables are identified at runtime by this ID number:
@@ -41,25 +53,26 @@ aspect, and the other three share a new one.
 @e GOING_APCA
 
 =
-void Going::write_clause_ID(OUTPUT_STREAM, int C) {
+int Going::write_clause_ID(OUTPUT_STREAM, int C) {
 	switch (C) {
-		case GOING_FROM_AP_CLAUSE:    WRITE("going-from"); break;
-		case GOING_TO_AP_CLAUSE:      WRITE("going-to"); break;
-		case GOING_THROUGH_AP_CLAUSE: WRITE("going-through"); break;
-		case GOING_BY_AP_CLAUSE:      WRITE("going-by"); break;
-		case PUSHING_AP_CLAUSE:       WRITE("pushing"); break;
+		case GOING_FROM_AP_CLAUSE:    WRITE("going-from"); return TRUE;
+		case GOING_TO_AP_CLAUSE:      WRITE("going-to"); return TRUE;
+		case GOING_THROUGH_AP_CLAUSE: WRITE("going-through"); return TRUE;
+		case GOING_BY_AP_CLAUSE:      WRITE("going-by"); return TRUE;
+		case PUSHING_AP_CLAUSE:       WRITE("pushing"); return TRUE;
 	}
+	return FALSE;
 }
 
-int Going::aspect(ap_clause *apoc) {
-	switch (apoc->clause_ID) {
-		case GOING_FROM_AP_CLAUSE:    return IN_APCA;
-		case GOING_TO_AP_CLAUSE:      return IN_APCA;
-		case GOING_THROUGH_AP_CLAUSE: return GOING_APCA;
-		case GOING_BY_AP_CLAUSE:      return GOING_APCA;
-		case PUSHING_AP_CLAUSE:       return GOING_APCA;
+int Going::aspect(int C, int *A) {
+	switch (C) {
+		case GOING_FROM_AP_CLAUSE:    *A = IN_APCA; return TRUE;
+		case GOING_TO_AP_CLAUSE:      *A = IN_APCA; return TRUE;
+		case GOING_THROUGH_AP_CLAUSE: *A = GOING_APCA; return TRUE;
+		case GOING_BY_AP_CLAUSE:      *A = GOING_APCA; return TRUE;
+		case PUSHING_AP_CLAUSE:       *A = GOING_APCA; return TRUE;
 	}
-	return -1;
+	return FALSE;
 }
 
 @ The Standard Rules defines five action variables in sequence for the going
@@ -71,19 +84,19 @@ If we do spot one of these five magic variables, we tie it to a clause with
 a special ID number of our choice.
 
 =
-int Going::divert_clause_ID(stacked_variable *stv) {
+int Going::divert_clause_ID(stacked_variable *stv, int *id) {
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	if ((going_action) && (oid == Going::id())) {
 		switch (off) {
-			case 0: return GOING_FROM_AP_CLAUSE;
-			case 1: return GOING_TO_AP_CLAUSE;
-			case 2: return GOING_THROUGH_AP_CLAUSE;
-			case 3: return GOING_BY_AP_CLAUSE;
-			case 4: return PUSHING_AP_CLAUSE;
+			case 0: *id = GOING_FROM_AP_CLAUSE; return TRUE;
+			case 1: *id = GOING_TO_AP_CLAUSE; return TRUE;
+			case 2: *id = GOING_THROUGH_AP_CLAUSE; return TRUE;
+			case 3: *id = GOING_BY_AP_CLAUSE; return TRUE;
+			case 4: *id = PUSHING_AP_CLAUSE; return TRUE;
 		}
 	}
-	return -1;
+	return FALSE;
 }
 
 @ If we create a "going from" or "going to" clause, we set a flag to show that
@@ -92,13 +105,11 @@ protocol for this; it could have, but we don't need this to be visible to author
 writing source text.)
 
 =
-void Going::new_clause(action_pattern *ap, ap_clause *apoc) {
-		LOGIF(ACTION_PATTERN_PARSING, "GNC %d...\n", apoc->clause_ID);
+int Going::new_clause(action_pattern *ap, ap_clause *apoc) {
 	if ((apoc->clause_ID == GOING_FROM_AP_CLAUSE) ||
-		(apoc->clause_ID == GOING_TO_AP_CLAUSE)) {
-		LOGIF(ACTION_PATTERN_PARSING, "GNC!!!!!!!\n");
+		(apoc->clause_ID == GOING_TO_AP_CLAUSE))
 		APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
-	}
+	return FALSE;
 }
 
 @ Going nowhere is a special syntax:
@@ -130,18 +141,48 @@ int Going::going_somewhere(action_pattern *ap) {
 
 @ These are recognised by this Preform nonterminal:
 
+@d NOWHERE_AP_CLAUSE_OPTION   1
+@d SOMEWHERE_AP_CLAUSE_OPTION 2
+
 =
 <going-action-irregular-operand> ::=
-	nowhere |    ==> { FALSE, - }
-	somewhere    ==> { TRUE, - }
+	nowhere |    ==> { NOWHERE_AP_CLAUSE_OPTION, - }
+	somewhere    ==> { SOMEWHERE_AP_CLAUSE_OPTION, - }
 
-@ Which we intercept thus:
+@ Which we intercept thus, and thus avoid the noun being evaluated, but
+instead setting the appropriate entry options bit:
 
 =
-int Going::irregular_noun_phrase(action_name *an, action_pattern *ap, wording W) {
-	if ((an == going_action) && (<going-action-irregular-operand>(W))) {
-		if (<<r>> == FALSE) Going::go_nowhere(ap); else Going::go_somewhere(ap);
-		return TRUE;
+int Going::divert_clause_parsing(action_name *an, anl_clause *c) {
+	if ((c->clause_ID == NOUN_AP_CLAUSE) && (an) && (an == going_action) &&
+		(<going-action-irregular-operand>(c->clause_text))) return <<r>>;
+	return -1;
+}
+
+@ Options bits which we later pick up here, moving the irregular noun phrase
+into the |GOING_TO_AP_CLAUSE| instead, where we supply our own evaluation:
+
+=
+int Going::act_on_options(anl_entry *entry, int entry_options, int *fail) {
+	if (entry_options & NOWHERE_AP_CLAUSE_OPTION) {
+		wording W = ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
+		ActionNameLists::truncate_clause(entry, NOUN_AP_CLAUSE, 0);
+		if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) *fail = TRUE;
+		else {
+			ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
+			anl_clause *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
+			c->evaluation = Rvalues::new_nothing_object_constant();
+		}
+	}
+	if (entry_options & SOMEWHERE_AP_CLAUSE_OPTION) {
+		wording W = ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
+		ActionNameLists::truncate_clause(entry, NOUN_AP_CLAUSE, 0);
+		if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) *fail = TRUE;
+		else {
+			ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
+			anl_clause *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
+			c->evaluation = Descriptions::from_kind(K_room, FALSE);
+		}
 	}
 	return FALSE;
 }
@@ -150,7 +191,7 @@ int Going::irregular_noun_phrase(action_name *an, action_pattern *ap, wording W)
 
 =
 int Going::validate(stacked_variable *stv, parse_node *spec) {
-	int C = Going::divert_clause_ID(stv);
+	int C = -1; Going::divert_clause_ID(stv, &C);
 	char *keyword = NULL; kind *ka = NULL, *kb = NULL;
 	switch (C) {
 		case GOING_FROM_AP_CLAUSE: keyword = "from"; ka = K_room; kb = K_region; break;
@@ -231,8 +272,8 @@ giving neither clause priority over the other, which means some fiddly crossover
 code if |ap1| has one and |ap2| the other.
 
 =
-int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *claim) {
-	*claim = TRUE;
+int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv, int *ignore_in) {
+	*ignore_in = TRUE; *rv = 0;
 
 	int suspend_usual_from_and_room = FALSE;
 
@@ -240,39 +281,39 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *cl
 
 	int rct1 = APClauses::number_with_aspect(ap1, GOING_APCA);
 	int rct2 = APClauses::number_with_aspect(ap2, GOING_APCA);
-	if (rct1 > rct2) return 1;
-	if (rct1 < rct2) return -1;
+	if (rct1 > rct2) { *rv = 1; return TRUE; }
+	if (rct1 < rct2) { *rv = -1; return TRUE; }
 
-	int rv = APClauses::cmp_clause(PUSHING_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+	*rv = APClauses::cmp_clause(PUSHING_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 
-	rv = APClauses::cmp_clause(GOING_BY_AP_CLAUSE, ap1, ap2); if (rv) return rv;
-	rv = APClauses::cmp_clause(GOING_THROUGH_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+	*rv = APClauses::cmp_clause(GOING_BY_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
+	*rv = APClauses::cmp_clause(GOING_THROUGH_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	
 	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
 
 	rct1 = APClauses::number_with_aspect(ap1, IN_APCA);
 	rct2 = APClauses::number_with_aspect(ap2, IN_APCA);
-	if (rct1 > rct2) return 1;
-	if (rct1 < rct2) return -1;
+	if (rct1 > rct2) { *rv = 1; return TRUE; }
+	if (rct1 < rct2) { *rv = -1; return TRUE; }
 
 	if ((APClauses::spec(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::spec(ap1, IN_AP_CLAUSE) == NULL)
 		&& (APClauses::spec(ap2, IN_AP_CLAUSE)) && (APClauses::spec(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
-		rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2); if (rv) return rv;
+		*rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2); if (*rv) return TRUE;
 		suspend_usual_from_and_room = TRUE;
 	}
 
 	if ((APClauses::spec(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::spec(ap2, IN_AP_CLAUSE) == NULL)
 		&& (APClauses::spec(ap1, IN_AP_CLAUSE)) && (APClauses::spec(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
-		rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2); if (rv) return rv;
+		*rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2); if (*rv) return TRUE;
 		suspend_usual_from_and_room = TRUE;
 	}
 
 	if (suspend_usual_from_and_room == FALSE) {
-		rv = APClauses::cmp_clause(GOING_FROM_AP_CLAUSE, ap1, ap2); if (rv) return rv;
-		rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+		*rv = APClauses::cmp_clause(GOING_FROM_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
+		*rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	}
 
-	rv = APClauses::cmp_clause(GOING_TO_AP_CLAUSE, ap1, ap2); if (rv) return rv;
+	*rv = APClauses::cmp_clause(GOING_TO_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 
-	return 0;
+	return TRUE;
 }

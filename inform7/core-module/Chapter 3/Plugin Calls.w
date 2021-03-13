@@ -422,6 +422,84 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
+@h Influencing if.
+If the actions plugin is not active, then the following will never be called.
+It warn plugins that a new action name has been created.
+
+@e NEW_ACTION_NOTIFY_PLUG
+
+=
+int PluginCalls::new_action_notify(action_name *an) {
+	PLUGINS_CALL(NEW_ACTION_NOTIFY_PLUG, an);
+}
+
+@ If the actions plugin is not active, then the following will never be called.
+It invites plugins to change the action pattern clause ID associated with a
+given action variable.
+
+@e DIVERT_AP_CLAUSE_PLUG
+
+=
+int PluginCalls::divert_AP_clause_ID(stacked_variable *stv, int *id) {
+	*id = -1;
+	PLUGINS_CALL(DIVERT_AP_CLAUSE_PLUG, stv, id);
+}
+
+@ If the actions plugin is not active, then the following will never be called.
+It should print a helpful name for the debugging log for the clause ID |C|,
+if |C| is a new clause ID created by the plugin.
+
+@e WRITE_AP_CLAUSE_ID_PLUG
+
+=
+int PluginCalls::write_AP_clause_ID(OUTPUT_STREAM, int C) {
+	PLUGINS_CALL(WRITE_AP_CLAUSE_ID_PLUG, OUT, C);
+}
+
+@ If the actions plugin is not active, then the following will never be called.
+It should return a |*_APCA| aspect for the clause ID |C|, if |C| is a new
+clause ID created by the plugin.
+
+@e ASPECT_OF_AP_CLAUSE_ID_PLUG
+
+=
+int PluginCalls::aspect_of_AP_clause_ID(int C, int *A) {
+	PLUGINS_CALL(ASPECT_OF_AP_CLAUSE_ID_PLUG, C, A);
+}
+
+@ If the actions plugin is not active, then the following will never be called.
+If it recognises the patterns as ways to describe an action it knows about,
+then the plugin can choose to take the decision, storing either 1 or -1 in
+|rv|, and returning |TRUE|. If it instead stores 0 in |rv|, it can also
+choose to set |ignore_in|, which tells the usual machinery not to judge on the
+basis of the |[in: ...]| clause in the pattern.
+
+@e COMPARE_AP_SPECIFICITY_PLUG
+
+=
+int PluginCalls::compare_AP_specificity(action_pattern *ap1, action_pattern *ap2,
+	int *rv, int *ignore_in) {
+	PLUGINS_CALL(COMPARE_AP_SPECIFICITY_PLUG, ap1, ap2, rv, ignore_in);
+}
+
+@
+
+@e NEW_AP_CLAUSE_PLUG
+
+=
+int PluginCalls::new_AP_clause(action_pattern *ap, ap_clause *apoc) {
+	PLUGINS_CALL(NEW_AP_CLAUSE_PLUG, ap, apoc);
+}
+
+@
+
+@e ACT_ON_ANL_ENTRY_OPTIONS_PLUG
+
+=
+int PluginCalls::act_on_ANL_entry_options(anl_entry *entry, int entry_options, int *fail) {
+	PLUGINS_CALL(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, entry, entry_options, fail);
+}
+
 @h Influencing index.
 Called from //index: Index Physical World// to add something (if it wishes)
 to the index description of an instance in the spatial model. For example,

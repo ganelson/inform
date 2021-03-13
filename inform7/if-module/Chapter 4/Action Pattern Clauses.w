@@ -27,7 +27,8 @@ action variable clauses.
 
 =
 int APClauses::clause_ID_for_action_variable(stacked_variable *stv) {
-	int D = Going::divert_clause_ID(stv); if (D >= 0) return D;
+	int D = -1;
+	PluginCalls::divert_AP_clause_ID(stv, &D); if (D >= 0) return D;
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
 	return 1000*oid + off;
@@ -44,7 +45,7 @@ void APClauses::write_clause_ID(OUTPUT_STREAM, int C, stacked_variable *stv) {
 		case WHEN_AP_CLAUSE:               WRITE("when"); break;
 		case TAIL_AP_CLAUSE:               WRITE("tail"); break;
 	}
-	Going::write_clause_ID(OUT, C);
+	PluginCalls::write_AP_clause_ID(OUT, C);
 	if (stv) {
 		WRITE("{");
 		NonlocalVariables::write(OUT, StackedVariables::get_variable(stv));
@@ -143,9 +144,7 @@ makes sense in a given clause:
 
 =
 int APClauses::validate(ap_clause *apoc, kind *K) {
-	if ((apoc) &&
-		(APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT) == FALSE) &&
-		(Dash::validate_parameter(apoc->clause_spec, K) == FALSE))
+	if ((apoc) && (Dash::validate_parameter(apoc->clause_spec, K) == FALSE))
 		return FALSE;
 	return TRUE;
 }
@@ -155,9 +154,8 @@ The clause options are a bitmap. Some are meaningful only for one or two
 clauses.
 
 @d ALLOW_REGION_AS_ROOM_APCOPT 1
-@d DO_NOT_VALIDATE_APCOPT 2
-@d ACTOR_IS_NOT_PLAYER_APCOPT 4
-@d REQUEST_APCOPT 8
+@d ACTOR_IS_NOT_PLAYER_APCOPT  2
+@d REQUEST_APCOPT              4
 
 @ =
 int APClauses::opt(ap_clause *apoc, int opt) {
@@ -195,7 +193,6 @@ void APClauses::write(OUTPUT_STREAM, action_pattern *ap) {
 			WRITE("%P", apoc->clause_spec);
 		}
 		if (APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT)) WRITE("[allow-region]");
-		if (APClauses::opt(apoc, DO_NOT_VALIDATE_APCOPT)) WRITE("[no-validate]");
 		if (APClauses::opt(apoc, ACTOR_IS_NOT_PLAYER_APCOPT)) WRITE("[not-player]");
 		if (APClauses::opt(apoc, REQUEST_APCOPT)) WRITE("[request]");
 	}
@@ -256,7 +253,7 @@ void APClauses::set_action_variable_spec(action_pattern *ap, stacked_variable *s
 	ap_clause *apoc = APClauses::ensure_clause(ap, C);
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
-	Going::new_clause(ap, apoc);
+	PluginCalls::new_AP_clause(ap, apoc);
 }
 
 ap_clause *APClauses::advance_to_next_av_clause(ap_clause *apoc) {
@@ -328,7 +325,9 @@ int APClauses::aspect(ap_clause *apoc) {
 		case WHEN_AP_CLAUSE:               return WHEN_APCA;
 		case TAIL_AP_CLAUSE:               return TAIL_APCA;
 	}
-	int rv = Going::aspect(apoc); if (rv >= 0) return rv;
+	int rv = -1;
+	PluginCalls::aspect_of_AP_clause_ID(apoc->clause_ID, &rv);
+	if (rv >= 0) return rv;
 	return MISC_APCA;
 }
 
@@ -387,11 +386,11 @@ int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
 	int rv = APClauses::cmp_clause(PARAMETRIC_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
-	int claim = FALSE;
-	rv = Going::compare_specificity(ap1, ap2, &claim);
+	int ignore_in = FALSE;
+	rv = 0; PluginCalls::compare_AP_specificity(ap1, ap2, &rv, &ignore_in);
 	if (rv != 0) return rv;
 
-	if (claim == FALSE) {
+	if (ignore_in == FALSE) {
 		c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
 		rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 	}

@@ -105,24 +105,24 @@
   
   29. list looking or taking inventory in the Laboratory in the presence of Hans
   Action name list for: looking or taking inventory in the laboratory in the presence of hans
-  (1). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
-  (2). +2 taking [noun: inventory] [in: the laboratory in the presence of hans]
-  (3). +2 taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
-  (4). +2 taking [noun: inventory in the laboratory] [in-presence: hans]
-  (5). +2 taking [noun: inventory in the laboratory in the presence of hans]
-  (6). +2 taking inventory [in: the laboratory] [in-presence: hans]
-  (7). +2 taking inventory [in: the laboratory in the presence of hans]
+  (1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+  (2). +2 taking inventory [in: the laboratory in the presence of hans]
+  (3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (4). +2 taking [noun: inventory] [in: the laboratory in the presence of hans]
+  (5). +2 taking [noun: inventory in the laboratory] [in: the presence of hans] [in-presence: hans]
+  (6). +2 taking [noun: inventory in the laboratory] [in-presence: hans]
+  (7). +2 taking [noun: inventory in the laboratory in the presence of hans]
   (8). +0 looking
   
   
   30. list looking or taking inventory in the presence of Hans in the Laboratory
   Action name list for: looking or taking inventory in the presence of hans in the laboratory
-  (1). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
-  (2). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
-  (3). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
-  (4). +2 taking [noun: inventory in the presence of hans in the laboratory]
-  (5). +2 taking inventory [in: the laboratory] [in-presence: hans]
-  (6). +2 taking inventory [in-presence: hans in the laboratory]
+  (1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+  (2). +2 taking inventory [in-presence: hans in the laboratory]
+  (3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+  (4). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+  (5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+  (6). +2 taking [noun: inventory in the presence of hans in the laboratory]
   (7). +0 looking
   
   

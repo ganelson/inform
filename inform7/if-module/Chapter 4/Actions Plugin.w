@@ -85,7 +85,7 @@ void ActionsPlugin::notice_new_action_name(action_name *an) {
 	if (<waiting-action>(ActionNameNames::tensed(an, IS_TENSE))) {
 		if (waiting_action == NULL) waiting_action = an;
 	}
-	Going::notice_new_action_name(an);
+	PluginCalls::new_action_notify(an);
 }
 
 action_name *ActionsPlugin::default_action_name(void) {

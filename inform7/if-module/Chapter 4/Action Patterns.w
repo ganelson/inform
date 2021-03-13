@@ -62,34 +62,15 @@ typedef struct action_pattern {
 	struct time_period *duration; /* to refer to repetitions in the past */
 } action_pattern;
 
-@ Unlike most data structures in the compiler, APs can churn quickly into
-and out of existence on the stack during parsing, and so the following
-directly returns a |struct|, rather than allocating a permanent object and
-returning only a pointer to it.
-
-=
-action_pattern ActionPatterns::temporary(wording W) {
-	action_pattern ap;
-	ap.ap_clauses = NULL;
-	ap.text_of_pattern = W;
-	ap.action_list = NULL;
-	ap.parameter_kind = NULL;
-	ap.duration = NULL;
-	return ap;
-}
-
-@ Permanent copies can subsequently be made thus:
-
-=
-action_pattern *ActionPatterns::perpetuate(action_pattern ap) {
-	action_pattern *sap = CREATE(action_pattern);
-	*sap = ap;
-	return sap;
-}
-
+@ =
 action_pattern *ActionPatterns::new(wording W) {
-	action_pattern ap = ActionPatterns::temporary(W);
-	return ActionPatterns::perpetuate(ap);
+	action_pattern *ap = CREATE(action_pattern);
+	ap->ap_clauses = NULL;
+	ap->text_of_pattern = W;
+	ap->action_list = NULL;
+	ap->parameter_kind = NULL;
+	ap->duration = NULL;
+	return ap;
 }
 
 @ =

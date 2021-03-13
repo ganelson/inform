@@ -135,8 +135,11 @@ void ActionNameLists::join_to(anl_entry *earlier, anl_entry *later) {
 (*) NAPs come before actions, and if that doesn't decide it
 (*) Older NAPs come before younger ones, and if that doesn't decide it
 (*) Less abbreviated results come first, and if that doesn't decide it
+(*) Action names with longer non-it-length come before shorter, and if that doesn't decide it
 (*) Older action names come before younger, and if that doesn't decide it
-(*) Later-discovered results come before earlier ones.
+(*) Later-discovered results come before earlier ones -- which because of the
+way we parse them means that results with more fixed words in clauses come
+before those with fewer.
 
 Here, "older" and "younger" mean how long ago the relevant //named_action_pattern//
 or //action_name// objects were created, and since this happens in source text
@@ -166,6 +169,10 @@ int ActionNameLists::precedes(anl_entry *e1, anl_entry *e2) {
 		e2->parsing_data.abbreviation_level;
 	if (c < 0) return TRUE; if (c > 0) return FALSE;
 
+	c = ((e1->item.action_listed)?(ActionNameNames::non_it_length(e1->item.action_listed)):10000000) -
+		((e2->item.action_listed)?(ActionNameNames::non_it_length(e2->item.action_listed)):10000000);
+	if (c > 0) return TRUE; if (c < 0) return FALSE;
+
 	c = ((e1->item.action_listed)?(e1->item.action_listed->allocation_id):10000000) -
 		((e2->item.action_listed)?(e2->item.action_listed->allocation_id):10000000);
 	if (c > 0) return TRUE; if (c < 0) return FALSE;
@@ -182,16 +189,10 @@ anl_entry *ActionNameLists::join_entry(anl_entry *further, anl_entry *tail) {
 	return tail;
 }
 
-@ When not pruning the list, these macros are useful for working through it:
+@ When not pruning the list, this macro is useful for working through it:
 
 @d LOOP_THROUGH_ANL(var, list)
 	for (anl_entry *var = (list)?(list->entries):NULL; var; var = var->next_entry)
-
-@d LOOP_THROUGH_ANL_WITH_PREV(var, prev_var, next_var, list)
-	for (anl_entry *var = (list)?(list->entries):NULL,
-		*prev_var = NULL, *next_var = (var)?(var->next_entry):NULL;
-		var;
-		prev_var = var, var = next_var, next_var = (next_var)?(next_var->next_entry):NULL)
 
 =
 int ActionNameLists::length(action_name_list *list) {
@@ -312,16 +313,8 @@ the text leading to a list:
 typedef struct anl_parsing_data {
 	int word_position; /* and some values used temporarily during parsing */
 	int abbreviation_level; /* number of words missing */
-	struct anl_clause_text *anl_clauses; /* clauses in this reading */
+	struct anl_clause *anl_clauses; /* clauses in this reading */
 } anl_parsing_data;
-
-typedef struct anl_clause_text {
-	int clause_ID;
-	struct wording clause_text;
-	struct anl_clause_text *next_clause;
-	struct stacked_variable *stv_to_match;
-	struct parse_node *evaluation;
-} anl_clause_text;
 
 anl_parsing_data ActionNameLists::new_parsing_data(int at) {
 	anl_parsing_data parsing_data;
@@ -338,10 +331,26 @@ void ActionNameLists::clear_parsing_data(anl_entry *entry, wording W) {
 	entry->parsing_data.abbreviation_level = 0;
 }
 
-@
+@ Parsing data contains a linked list, sorted in ascending clause ID order, of the
+following structures, which are similar (but not identical) to //ap_clause//
+objects: and indeed, in the happy case where an entry in an action name list
+produces a successful parse in //Parse Clauses//, the //anl_clause//
+objects of that entry will be turned into a string of //ap_clause// objects
+in the final AP.
+
+=
+typedef struct anl_clause {
+	int clause_ID;
+	struct wording clause_text;
+	struct anl_clause *next_clause;
+	struct stacked_variable *stv_to_match;
+	struct parse_node *evaluation;
+} anl_clause;
+
+@ And this is convenient for looking through them:
 
 @d LOOP_THROUGH_ANL_CLAUSES(c, entry)
-	for (anl_clause_text *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
+	for (anl_clause *c = (entry)?(entry->parsing_data.anl_clauses):NULL; c; c = c->next_clause)
 
 =
 int ActionNameLists::noun_count(anl_entry *entry) {
@@ -358,7 +367,7 @@ int ActionNameLists::has_clause(anl_entry *entry, int C) {
 	return FALSE;
 }
 
-anl_clause_text *ActionNameLists::get_clause(anl_entry *entry, int C) {
+anl_clause *ActionNameLists::get_clause(anl_entry *entry, int C) {
 	LOOP_THROUGH_ANL_CLAUSES(c, entry)
 		if (c->clause_ID == C) return c;
 	return NULL;
@@ -370,9 +379,12 @@ wording ActionNameLists::get_clause_wording(anl_entry *entry, int C) {
 	return EMPTY_WORDING;
 }
 
+@ Note that it is legal to create an ANL clause with empty wording.
+
+=
 anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording W) {
 	if (entry == NULL) internal_error("no entry");
-	anl_clause_text *prev = NULL;
+	anl_clause *prev = NULL;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
 		if (c->clause_ID == C) {
 			c->clause_text = W; return entry;
@@ -380,12 +392,12 @@ anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording 
 		if (c->clause_ID > C) @<Insert clause here@>;
 		prev = c;
 	}
-	anl_clause_text *c = NULL;
+	anl_clause *c = NULL;
 	@<Insert clause here@>;
 }
 
 @<Insert clause here@> =
-	anl_clause_text *nc = CREATE(anl_clause_text);
+	anl_clause *nc = CREATE(anl_clause);
 	nc->clause_ID = C;
 	nc->clause_text = W;
 	nc->evaluation = NULL;
@@ -394,10 +406,13 @@ anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording 
 	else { nc->next_clause = c; entry->parsing_data.anl_clauses = nc; }
 	return entry;
 
-@ =
-anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C, wording W, stacked_variable *stv) {
+@ This is really the same function but setting variable as well as ID.
+
+=
+anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C,
+	wording W, stacked_variable *stv) {
 	if (entry == NULL) internal_error("no entry");
-	anl_clause_text *prev = NULL;
+	anl_clause *prev = NULL;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
 		if (c->clause_ID == C) {
 			c->clause_text = W; c->stv_to_match = stv; return entry;
@@ -405,12 +420,12 @@ anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C, 
 		if (c->clause_ID > C) @<Insert clause here with stv@>;
 		prev = c;
 	}
-	anl_clause_text *c = NULL;
+	anl_clause *c = NULL;
 	@<Insert clause here with stv@>;
 }
 
 @<Insert clause here with stv@> =
-	anl_clause_text *nc = CREATE(anl_clause_text);
+	anl_clause *nc = CREATE(anl_clause);
 	nc->clause_ID = C;
 	nc->clause_text = W;
 	nc->evaluation = NULL;
@@ -419,9 +434,15 @@ anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C, 
 	else { nc->next_clause = c; entry->parsing_data.anl_clauses = nc; }
 	return entry;
 
-@ =
+@ This truncates a clause so that it stops just before the given word number.
+For example, "croquet in the gardens" might be truncated to just "croquet".
+Here, if the text should become empty as a result then the clause is deleted
+from the list. This is important since it removes temporary |TAIL_AP_CLAUSE|
+clauses if they successfully convert into more permanent ones.
+
+=
 void ActionNameLists::truncate_clause(anl_entry *entry, int C, int wn) {
-	anl_clause_text *prev = NULL;
+	anl_clause *prev = NULL;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
 		if (c->clause_ID == C) {
 			c->clause_text = Wordings::up_to(c->clause_text, wn - 1);
@@ -435,37 +456,26 @@ void ActionNameLists::truncate_clause(anl_entry *entry, int C, int wn) {
 	}
 }
 
-@ =
-wording ActionNameLists::par(anl_entry *entry, int i) {
-	if (i == 0) return ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
-	if (i == 1) return ActionNameLists::get_clause_wording(entry, SECOND_AP_CLAUSE);
-	return EMPTY_WORDING;
-}
+@ Up to two "nouns" can be added to an entry; the first to be added is put
+into the |NOUN_AP_CLAUSE| clause, and the second to |SECOND_AP_CLAUSE|.
 
-anl_entry *ActionNameLists::add_parameter(anl_entry *entry, wording W) {
-	int p = ActionNameLists::noun_count(entry);
-	switch (p) {
+=
+anl_entry *ActionNameLists::add_noun(anl_entry *entry, wording W) {
+	switch (ActionNameLists::noun_count(entry)) {
 		case 0: ActionNameLists::set_clause_wording(entry, NOUN_AP_CLAUSE, W); break;
 		case 1: ActionNameLists::set_clause_wording(entry, SECOND_AP_CLAUSE, W); break;
-		default: internal_error("too many ANL parameters");
+		default: internal_error("too many nouns for ANL entry");
 	}
 	return entry;
 }
 
-int ActionNameLists::first_position(action_name_list *list) {
-	if (list) return ActionNameLists::word_position(list->entries);
-	return -1;
-}
+@ So much for clauses. Entries also record the word position at which the
+action (or named action pattern) text kicks in:
 
+=
 int ActionNameLists::word_position(anl_entry *entry) {
 	if (entry) return entry->parsing_data.word_position;
 	return -1;
-}
-
-int ActionNameLists::same_word_position(anl_entry *entry, anl_entry *Y) {
-	if ((entry) && (Y) && (entry->parsing_data.word_position == Y->parsing_data.word_position))
-		return TRUE;
-	return FALSE;
 }
 
 @h Single and best actions.
@@ -495,38 +505,43 @@ part of an action name: thus if there are actions "throwing away" and
 "throwing", then in the ANL arising from the text "throwing away the fish",
 the action "throwing away" is better than the action "throwing".
 
+This is easy to detect here, because the enforced ordering of the list ensures
+that earlier entries are (in this sense) better than later ones.
+
 If the list includes actions at two different word positions, so that they
 are not alternate readings from the same point, then by definition there
 is no best action. (For example, in "throwing or removing something".)
 
 =
 action_name *ActionNameLists::get_best_action(action_name_list *list) {
-	int posn = -1, best_score = -1;
-	action_name *best = NULL;
 	if (ActionNameLists::positive(list) == FALSE) return NULL;
-	LOOP_THROUGH_ANL(entry, list)
+	int posn = -1;
+	action_name *choice = NULL;
+	LOOP_THROUGH_ANL(entry, list) {
 		if (entry->item.action_listed) {
-			int score = ActionNameLists::entry_score(entry);
 			if (entry->parsing_data.word_position != posn) {
 				if (posn >= 0) return NULL;
 				posn = entry->parsing_data.word_position;
-				best = entry->item.action_listed;
-				best_score = score;
-			} else {
-				if (score > best_score) {
-					best_score = score;
-					best = entry->item.action_listed;
-				}
 			}
-		}
-	return best;
+			if (choice == NULL) choice = entry->item.action_listed;
+		} else return NULL;
+	}
+	return choice;
 }
 
-int ActionNameLists::entry_score(anl_entry *entry) {
-	if ((entry) && (entry->item.action_listed))
-		return ActionNameNames::non_it_length(entry->item.action_listed) -
-			entry->parsing_data.abbreviation_level;
-	return -1;
+@h Duplication.
+
+=
+anl_entry *ActionNameLists::duplicate_entry(anl_entry *entry) {
+	anl_entry *new_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
+	new_entry->parsing_data = entry->parsing_data;
+	new_entry->parsing_data.anl_clauses = NULL;
+	LOOP_THROUGH_ANL_CLAUSES(c, entry)
+		ActionNameLists::set_clause_wording_and_stv(new_entry,
+			c->clause_ID, c->clause_text, c->stv_to_match);
+	new_entry->item = entry->item;
+	new_entry->next_entry = NULL;
+	return new_entry;
 }
 
 @h Logging.
@@ -606,7 +621,7 @@ Note that it works in either |IS_TENSE| or |HASBEEN_TENSE|, and that |sense|
 is set to |FALSE| (if it is supplied) when the text had a negative sense --
 something other than something -- or |TRUE| for a positive one.
 
-The test group |:anl| is helpful in catching errors here.
+The test group |:actions| is helpful in catching errors here.
 
 @ =
 int anl_parsing_tense = IS_TENSE;
@@ -627,69 +642,58 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 
 =
 <action-list> ::=
-	doing something/anything other than <excluded-list> | ==> { FALSE, RP[1] }
-	doing something/anything except <excluded-list> |     ==> { FALSE, RP[1] }
-	doing something/anything to/with {...} |              ==> { -, - }; wording TW = WR[1]; @<Construct ANL for anything to@>
-	doing something/anything |                            ==> @<Construct ANL for anything@>
-	doing something/anything {...} |                      ==> { -, - }; TW = WR[1]; @<Construct ANL for doing something with a tail@>
-	<anl>                                                 ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) }
+	doing something/anything other than <excluded-list> | ==> { pass 1 }
+	doing something/anything except <excluded-list> |     ==> { pass 1 }
+	doing something/anything to/with {...} |    ==> { -, - }; wording TW = WR[1]; @<Something to@>
+	doing something/anything |                  ==> @<Something@>
+	doing something/anything {...} |            ==> { -, - }; TW = WR[1]; @<Something in@>
+	<anl>                                       ==> @<X@>
 
 <excluded-list> ::=
-	<anl> to/with {<minimal-common-to-text>} |            ==> @<Add to-clause to excluded ANL@>;
-	<anl>                                                 ==> { TRUE, ActionNameLists::new_list(RP[1], ANL_NEGATED_LISTWISE) }
+	<anl> to/with {<minimal-common-to-text>} |  ==> @<Something except X with@>
+	<anl>                                       ==> @<Something except X@>
 
 <minimal-common-to-text> ::=
-	_,/or ... |                                           ==> { fail }
-	... to/with ... |                                     ==> { fail }
+	_,/or ... |                                 ==> { fail }
+	... to/with ... |                           ==> { fail }
 	...
 
-@<Construct ANL for anything to@> =
-	anl_entry *results = ActionNameLists::new_entry_at(W);
-	ActionNameLists::add_parameter(results, TW);
-	@<Extend the list to provide for clauses@>;
-	==> { TRUE, ActionNameLists::new_list(results, ANL_POSITIVE) }
+@<Something to@> =
+	TW = GET_RW(<action-list>, 1);
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	ActionNameLists::add_noun(entry, TW);
+	==> { TRUE, ActionNameLists::new_list(ActionNameLists::ramify(entry), ANL_POSITIVE) }
 
-@<Construct ANL for anything@> =
+@<Something@> =
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	==> { TRUE, ActionNameLists::new_list(entry, ANL_POSITIVE) };
 
-@<Construct ANL for doing something with a tail@> =
-	anl_entry *results = ActionNameLists::new_entry_at(W);
-	ActionNameLists::set_clause_wording(results, TAIL_AP_CLAUSE, TW);
-	@<Extend the list to provide for clauses@>;
-	==> { TRUE, ActionNameLists::new_list(results, ANL_POSITIVE) };
+@<Something in@> =
+	TW = GET_RW(<action-list>, 1);
+	anl_entry *entry = ActionNameLists::new_entry_at(W);
+	ActionNameLists::set_clause_wording(entry, TAIL_AP_CLAUSE, TW);
+	==> { TRUE, ActionNameLists::new_list(ActionNameLists::ramify(entry), ANL_POSITIVE) };
 
-@<Add to-clause to excluded ANL@> =
+@<X@> =
+	==> { TRUE, ActionNameLists::new_list(RP[1], ANL_POSITIVE) };
+
+@<Something except X@> =
+	==> { FALSE, ActionNameLists::new_list(RP[1], ANL_NEGATED_LISTWISE) };
+
+@<Something except X with@> =
 	anl_entry *entry = RP[1];
 	if ((entry == NULL) ||
 		(ActionSemantics::can_have_noun(entry->item.action_listed) == FALSE)) {
 		==> { fail production };
 	}
-	ActionNameLists::add_parameter(entry, GET_RW(<excluded-list>, 1));
-	anl_entry *results = entry;
-	@<Extend the list to provide for clauses@>;
-	==> { FALSE, ActionNameLists::new_list(results, ANL_NEGATED_ITEMWISE) };
-
-@
-
-=
-anl_entry *ActionNameLists::dup(anl_entry *entry) {
-	anl_entry *new_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
-	new_entry->parsing_data = entry->parsing_data;
-	new_entry->parsing_data.anl_clauses = NULL;
-	LOOP_THROUGH_ANL_CLAUSES(c, entry)
-		ActionNameLists::set_clause_wording_and_stv(new_entry,
-			c->clause_ID, c->clause_text, c->stv_to_match);
-	new_entry->item = entry->item;
-	new_entry->next_entry = NULL;
-	return new_entry;
-}
+	ActionNameLists::add_noun(entry, GET_RW(<excluded-list>, 1));
+	==> { FALSE, ActionNameLists::new_list(ActionNameLists::ramify(entry), ANL_NEGATED_ITEMWISE) };
 
 @ This matches a comma/or-separated list of items:
 
 =
 <anl> ::=
-	<anl-entry> <anl-tail> |  ==> { 0, ActionNameLists::join_entry(RP[1], RP[2]) }
+	<anl-entry> <anl-tail> |  ==> { -, ActionNameLists::join_entry(RP[1], RP[2]) }
 	<anl-entry>               ==> { pass 1 }
 
 <anl-tail> ::=
@@ -700,63 +704,72 @@ anl_entry *ActionNameLists::dup(anl_entry *entry) {
 
 =
 <anl-entry> ::=
-	<named-action-pattern> |                     ==> { 0, ActionNameLists::nap_entry(RP[1], W, EMPTY_WORDING) }
-	<named-action-pattern-with-tail> |           ==> { pass 1 }
-	<anl-entry-with-action>					     ==> { pass 1 }
+	<named-action-pattern> |            ==> { -, ActionNameLists::nap_entry(RP[1], W, EMPTY_WORDING) }
+	<named-action-pattern-with-tail> |  ==> { pass 1 }
+	<anl-entry-with-action>				==> { pass 1 }
 
 <named-action-pattern-with-tail> internal {
 	for (int i=Wordings::first_wn(W); i<= Wordings::last_wn(W) - 1; i++) {
 		if (<named-action-pattern>(Wordings::up_to(W, i))) {
-			==> { 0, ActionNameLists::nap_entry(<<rp>>, W, Wordings::from(W, i+1)) };
+			==> { -, ActionNameLists::nap_entry(<<rp>>, W, Wordings::from(W, i+1)) };
 			return TRUE;
 		}
 	}
 	return FALSE;
 }
 
-@ =
+@ Here |TW| is the "tail wording", that is, any text left over after the name
+itself. So, for "irreverent behaviour in the presence of the Bishop", the
+|nap| may be the "irreverent behaviour", and |TW| the text "in the presence
+of the Bishop". We put that temporarily into the |TAIL_AP_CLAUSE|, and then
+ramify what had been a single-entry list so that it may now have multiple
+entries -- for example, "irreverent behaviour [in: the presence of the Bishop]"
+or "irreverent behaviour [in-presence: the Bishop]".
+
+=
 anl_entry *ActionNameLists::nap_entry(named_action_pattern *nap, wording W, wording TW) {
 	anl_entry *entry = ActionNameLists::new_entry_at(W);
 	entry->item.nap_listed = nap;
 	if (Wordings::nonempty(TW))
 		ActionNameLists::set_clause_wording(entry, TAIL_AP_CLAUSE, TW);
-	anl_entry *results = entry;
-	@<Extend the list to provide for clauses@>;
-	return results;
+	return ActionNameLists::ramify(entry);
 }
 
-@ Which reduces us to an internal nonterminal for an entry in this list.
-It actually produces multiple matches: for example,
-
->> taking inventory
-
-will result in a list of two possibilities -- "taking inventory", the
-action, with no operand; and "taking", the action, applied to the
-operand "inventory". (It's unlikely that the last will succeed in the
-end, but it's syntactically valid.)
+@ If we aren't going to name an action pattern, we're going to have to spell
+out an actual choice of action.
 
 =
 <anl-entry-with-action> internal {
 	anl_entry *results = NULL;
 	@<Parse the wording into a list of results@>;
-	@<Extend the list to provide for clauses@>;
+	results = ActionNameLists::ramify(results);
 	if (results) {
 		==> { -, results }; return TRUE;
 	}
 	==> { fail nonterminal };
 }
 
+@ The following makes a list of results before ramification.
+
+For example, for the text "looking or taking inventory in the presence of Hans
+in the Laboratory", we get the following set of |results|:
+= (text)
+(1). +2 taking inventory [tail: in the presence of hans in the laboratory]
+(2). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(3). +0 looking
+=
+
 @<Parse the wording into a list of results@> =
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W (tense %d)\n", W, anl_parsing_tense);
 	anl_entry *trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
-
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		@<Ready the trial entry for another test@>;
 		wording RW = EMPTY_WORDING;
 		int abbreviated_to_tail = FALSE;
 		@<Make the trial entry fit this action, if possible, leaving remaining text in RW@>;
-		@<Consider the trial entry for inclusion in the results list@>;
+		@<Transfer remaining words to a trailing clause@>;
+		@<Include the trial entry@>;
 		NoMatch: ;
 	}
 	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$8\n", W, results);
@@ -793,9 +806,9 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 					if (Lexer::word(k) == Lexer::word(x_m+1)) { j = k; break; }
 				if (j<0) goto NoMatch;
 				if (j-1 >= w_m)
-					ActionNameLists::add_parameter(trial_entry, Wordings::new(w_m, j-1));
+					ActionNameLists::add_noun(trial_entry, Wordings::new(w_m, j-1));
 				else
-					ActionNameLists::add_parameter(trial_entry, EMPTY_WORDING);
+					ActionNameLists::add_noun(trial_entry, EMPTY_WORDING);
 				w_m = j; x_m++;
 			}
 		}
@@ -808,15 +821,22 @@ inelegant, but there's no elegant way to break out of nested loops in C.
 		trial_entry->parsing_data.abbreviation_level = Wordings::last_wn(XW)-x_m+1;
 	RW = Wordings::from(W, w_m);
 
-@<Consider the trial entry for inclusion in the results list@> =
+@ For example, in "looking or taking inventory in the presence of Hans
+in the Laboratory", after finding "taking inventory" as a possible action,
+we are left with "in the presence of Hans in the Laboratory". These have to
+be stored into |TAIL_AP_CLAUSE|, since they cannot be part of any noun --
+because taking inventory doesn't have a noun. But when finding "taking",
+the remaining words "inventory in the presence of Hans in the Laboratory"
+have to go into |NOUN_AP_CLAUSE| -- the taking action does have a noun.
+
+@<Transfer remaining words to a trailing clause@> =
 	if (Wordings::nonempty(RW)) {
 		if ((ActionSemantics::can_have_noun(an)) && (abbreviated_to_tail == FALSE)) {
-			ActionNameLists::add_parameter(trial_entry, RW);
+			ActionNameLists::add_noun(trial_entry, RW);
 		} else {
 			ActionNameLists::set_clause_wording(trial_entry, TAIL_AP_CLAUSE, RW);
 		}		
 	}
-	@<Include the trial entry@>;
 
 @ So this is the happy ending. We don't copy the trial entry; we insertion-sort
 the structure itself into the results list, and make a fresh structure to be
@@ -836,7 +856,46 @@ the trial entry for future trials.
 	}
 	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 
-@<Extend the list to provide for clauses@> =
+@ And now we get to ramification. This is what happens last, when a set of
+raw results has been produced. We "ramify" this by expanding it into multiple
+readings according to how the trailing clause might in fact be made up of
+sub-clauses. For example, our unramified set of results
+= (text)
+(1). +2 taking inventory [tail: in the presence of hans in the laboratory]
+(2). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(3). +0 looking
+=
+becomes the ramified set
+= (text)
+(1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+(2). +2 taking inventory [in-presence: hans in the laboratory]
+(3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+(4). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+(5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+(6). +2 taking [noun: inventory in the presence of hans in the laboratory]
+(7). +0 looking
+=
+Note that the |TAIL_AP_CLAUSE| clauses, which were just temporary holders
+for leftover text, have gone entirely. Had it been impossible to break them
+into legal subclauses, they would have caused the result to be struct out
+altogether. For example, this:
+= (text)
+(1). +0 taking inventory [tail: book]
+(2). +0 taking [noun: inventory book]
+=
+ramifies to just
+= (text)
+(1). +0 taking [noun: inventory book]
+=
+because the tail wording "book" after "taking inventory" cannot be read as
+a sequence of subclauses.
+
+Ramification thus consists of a sudden increase in the number of possible
+readings, which we call an explosion, followed by a cull of anything which
+still has a |TAIL_AP_CLAUSE|.
+
+=
+anl_entry *ActionNameLists::ramify(anl_entry *results) {
 	for (anl_entry *entry = results; entry; ) {
 		anl_entry *next = entry->next_entry;
 		ActionNameLists::explode(entry);
@@ -849,8 +908,11 @@ the trial entry for future trials.
 		} else {
 			prev = entry;
 		}
+	return results;
+}
 
-@
+@ And here is the explosion part. |tc| here identifies what the trailing clause
+actually is:
 
 =
 void ActionNameLists::explode(anl_entry *entry) {
@@ -863,6 +925,15 @@ void ActionNameLists::explode(anl_entry *entry) {
 	ActionNameLists::explode_clause(entry, tc, Wordings::first_wn(TW));
 }
 
+@ The following is recursive and exhausts all possible readings of the trailing
+clause, exactly once each. We have to store what ought to be variables on the
+stack as globals because of the little dance via Preform nonterminals below,
+but the idea is simple enough. This function finds the first point at which
+the reading diverges: for example, if the text is "banjo in the Conservatoire",
+then "in" is the point of divergence. Maybe the text is all one clause, or
+maybe it's just "banjo" and there is then a second clause "in the Conservatoire".
+
+=
 anl_entry *currently_exploding_entry = NULL;
 int currently_exploding_clause = -1;
 int explosions_count = 0;
@@ -876,56 +947,102 @@ void ActionNameLists::explode_clause(anl_entry *entry, int tc, int from_wn) {
 	int start = explosions_count;
 	LOG_INDENT;
 	for (int w = from_wn; ((w < Wordings::last_wn(TW)) && (start == explosions_count)); w++) {
-		if (<text-precluding-clause>(Wordings::one_word(w))) { w++; continue; }
-		<text-of-clause-exploding>(Wordings::from(TW, w));
+		if (<text-precluding-divergence>(Wordings::one_word(w))) { w++; continue; }
+		<detonate-at-divergence-points>(Wordings::from(TW, w));
 	}
 	LOG_OUTDENT;
 	currently_exploding_entry = saved;
 	currently_exploding_clause = saved_C;
 }
 	
-@ "Instead of buying the cheapest spice which is in the market".
+@ Note that if we spot the <text-precluding-divergence> wording immediately before
+the point of divergence, we forbid divergence to occur. It must contain only
+single words.
+
+This actually matters surprisingly rarely, but enables us to handle quite
+difficult cases like "Instead of buying the cheapest spice which is in the market"
+without typechecking errors occurring on the unwanted case of reading this as
+"Instead of buying the cheapest spice which is" plus the clause "in the market" --
+the latter being, in fact, valid.
 
 =
-<text-precluding-clause> ::=
+<text-precluding-divergence> ::=
 	is |
 	not
 
-<text-of-clause-exploding> ::=
-	_in _the _presence _of ... | ==> { IN_THE_PRESENCE_OF_AP_CLAUSE, - }; wording T = WR[1]; @<Explode clauses@>
-	_in ... |                    ==> { IN_AP_CLAUSE, - }; T = WR[1]; @<Explode clauses@>
-	<clause-opening> ...         ==> { fail production }
+@ Divergence points, then, must not unexpectedly use upper case -- so "taking
+Puss In Boots" is never read as possibly having an "in: Boots" clause; and
+they either use the two standard wordings "in the presence of" or "in". or
+else wording provided by a matching variable in an action declaration.
 
+Note that this nonterminal never matches! It is parsed for its side-effect
+of calling //ActionNameLists::detonate// on every possibility.
+
+=
+<detonate-at-divergence-points> ::=
+	_in _the _presence _of ... |  ==> @<Explode in-presence@>
+	_in ... |                     ==> @<Explode in@>
+	<clause-opening> ...
+
+@<Explode in@> =
+	wording T = GET_RW(<detonate-at-divergence-points>, 1);
+	ActionNameLists::detonate(IN_AP_CLAUSE, NULL, T, W);
+	return FALSE;
+
+@<Explode in-presence@> =
+	wording T = GET_RW(<detonate-at-divergence-points>, 1);
+	ActionNameLists::detonate(IN_THE_PRESENCE_OF_AP_CLAUSE, NULL, T, W);
+	return FALSE;
+
+@ For example, in the text "going from the Park to the Town", "from" and "to"
+are divergence points:
+
+=
 <clause-opening> internal ? {
 	if (Word::unexpectedly_upper_case(Wordings::first_wn(W)) == FALSE) {
 		action_name *chief_an = currently_exploding_entry->item.action_listed;
 		if (chief_an) {
 			stacked_variable_owner *stvo = chief_an->action_variables;
 			if (stvo)
-				for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next)
-					if (Wordings::starts_with(W, stvl->the_stv->match_wording_text)) {
-						wording T = Wordings::from(W, Wordings::first_wn(W) + Wordings::length(stvl->the_stv->match_wording_text));
-						int potential_C = APClauses::clause_ID_for_action_variable(stvl->the_stv);
-						ActionNameLists::detonate(potential_C, stvl->the_stv, T, W);
+				for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
+					stacked_variable *stv = stvl->the_stv;
+					wording VW = stv->match_wording_text;
+					if (Wordings::starts_with(W, VW)) {
+						wording T = Wordings::from(W, Wordings::first_wn(W) + Wordings::length(VW));
+						int potential_C = APClauses::clause_ID_for_action_variable(stv);
+						ActionNameLists::detonate(potential_C, stv, T, W);
 					}
+				}
 		}
 	}
 	==> { fail nonterminal };
 }
 
-@<Explode clauses@> =
-	int potential_C = *X;
-	ActionNameLists::detonate(potential_C, NULL, T, W);
-	return FALSE;
+@ Finally the actual business of splitting our original entry into two, one
+(called |X| here) in which a new clause appears at the point of divergence,
+and one (called |Y|) where it does not.
 
-@ =
+The order is important here because this is why when there are multiple
+readings of clauses in the ramified list, the readings with more clauses
+come before the readings with fewer.
+
+Note that we only diverge if the new clause is one which does not already
+exist for this entry. This is because it makes no sense to have the same
+clause twice, and also means that pathological text like "in in in in in
+in in in in in in in in in in in in in in in in in in in in in in in in in"
+cannot cause a combinatorial nightmare; because each clause appears at
+most once in any entry, the number of entries produced by ramification is
+capped at $2^n$, where $n$ is the number of clauses whose matching words
+appear somewhere in the text.
+
+=
 void ActionNameLists::detonate(int potential_C, stacked_variable *stv, wording T, wording W) {
 	if (ActionNameLists::has_clause(currently_exploding_entry, potential_C) == FALSE) {
-		anl_entry *extra = ActionNameLists::dup(currently_exploding_entry);
+		anl_entry *extra = ActionNameLists::duplicate_entry(currently_exploding_entry);
 
 		anl_entry *Y = extra, *X = currently_exploding_entry;
 		ActionNameLists::set_clause_wording(X, potential_C, T);
-		anl_clause_text *extra_clause = ActionNameLists::get_clause(X, potential_C);
+		anl_clause *extra_clause = ActionNameLists::get_clause(X, potential_C);
 		extra_clause->stv_to_match = stv;
 		ActionNameLists::truncate_clause(X, currently_exploding_clause, Wordings::first_wn(W));
 
@@ -937,7 +1054,8 @@ void ActionNameLists::detonate(int potential_C, stacked_variable *stv, wording T
 	}
 }
 
-@
+@ Lastly, this little function is provided for unit testing the above, and
+is otherwise never called.
 
 =
 void ActionNameLists::test_list(wording W) {

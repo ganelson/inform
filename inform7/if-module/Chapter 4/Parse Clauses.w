@@ -2,7 +2,20 @@
 
 Parsing the clauses part of an AP from source text.
 
-@
+@ For nearly two decades the function below (and its allied code in
+//Action Name Lists//) was the most troublesome, and hardest to understand,
+code in the whole compiler, a simply awful place reminding me somehow of
+Douglas Adams's Frogstar.[1] The AP parser was almost as cranky as the
+type-checker, but that at least had the excuse of performing a complicated
+function. Periodic improvements clarified only that the action pattern parser
+was difficult to predict, and still did odd things in edge cases.
+
+A therapeutic rewrite was finally made in March 2021; the algorithm works
+entirely differently but appears to match a superset of cases that the old one
+did, and is much easier to specify.
+
+[1] Information about package holidays on the Frogstar can be found in the leaflet
+"Sun, Sand, and Suffering on the Most Totally Evil Place in the Galaxy".
 
 =
 action_pattern *ParseClauses::ap_seven(wording W) {
@@ -18,18 +31,7 @@ action_pattern *ParseClauses::ap_seven(wording W) {
 	@<Reject the resulting list if two or more entries contain clauses@>;
 	@<Reject the resulting list if, given the clauses, two actions are immiscible@>;
 
-	action_pattern *ap = ActionPatterns::new(W);
-	anl_item *first = ActionNameLists::first_item(list);
-	if ((first) && ((first->action_listed) || (first->nap_listed))) ap->action_list = list;
-	LOOP_THROUGH_ANL(entry, list)
-		LOOP_THROUGH_ANL_CLAUSES(c, entry) {
-			LOGIF(ACTION_PATTERN_PARSING, "Writing %d '%W'\n", c->clause_ID, c->clause_text);
-			if (c->stv_to_match)
-				APClauses::set_action_variable_spec(ap, c->stv_to_match, c->evaluation);
-			else
-				APClauses::set_spec(ap, c->clause_ID, c->evaluation);
-		}
-	return ap;
+	@<Produce and return an action pattern from what survives of the list@>;
 }
 
 @ A typical action list might look like the following, which came from the text
@@ -37,17 +39,19 @@ action_pattern *ParseClauses::ap_seven(wording W) {
 are six different options at word position 2 (i.e., the "taking" part) but only
 one at position 0 ("looking").
 = (text)
-(1). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
-(2). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
-(3). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
-(4). +2 taking [noun: inventory in the presence of hans in the laboratory]
-(5). +2 taking inventory [in: the laboratory] [in-presence: hans]
-(6). +2 taking inventory [in-presence: hans in the laboratory]
+(1). +2 taking inventory [in: the laboratory] [in-presence: hans]
+(2). +2 taking inventory [in-presence: hans in the laboratory]
+(3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
+(4). +2 taking [noun: inventory] [in-presence: hans in the laboratory]
+(5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
+(6). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (7). +0 looking
 =
-Note that it is ordered in such a way that the number of words inside the
-clauses increases as we go along, within each action: for (1) to (4), the
-"taking" options, this number is successively 4, 5, 8, 9.
+Note that it is ordered in such a way that actions with more fixed wording
+occur before actions with fewer (at the same word position); and also that
+the number of words inside the clauses increases as we go through possibilities
+for each action. For (3) to (7), the "taking" options, the clause wording
+runs to successively 4, 5, 8 and 9 words.
 
 We now need to reduce this to a list of just two entries:
 = (text)
@@ -62,9 +66,9 @@ crucial: options near the top of the list are preferred to those lower down.
 @<Reduce the list to the first viable entry at each word position@> =
 	anl_entry *viable = NULL; int at = -1;
 	LOOP_THROUGH_ANL(entry, list) {
-		if (entry->parsing_data.word_position != at) {
+		if (ActionNameLists::word_position(entry) != at) {
 			if ((at >= 0) && (viable == NULL)) return NULL;
-			at = entry->parsing_data.word_position;
+			at = ActionNameLists::word_position(entry);
 			viable = NULL;
 		} else {
 			if (viable) {
@@ -76,7 +80,7 @@ crucial: options near the top of the list are preferred to those lower down.
 		int fail = FALSE, entry_options = 0;
 		@<Parse the clauses@>;		
 		if (fail) { ActionNameLists::mark_for_deletion(entry); continue; }
-		@<Deal with any entry options@>;
+		PluginCalls::act_on_ANL_entry_options(entry, entry_options, &fail);
 		if (fail) { ActionNameLists::mark_for_deletion(entry); continue; }
 		@<Typecheck or otherwise validate the clauses@>;
 		if (fail) { ActionNameLists::mark_for_deletion(entry); continue; }
@@ -89,13 +93,9 @@ crucial: options near the top of the list are preferred to those lower down.
 	int saved_pap = pap_failure_reason;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
 		if (Wordings::nonempty(c->clause_text)) {
-			if ((c->clause_ID == NOUN_AP_CLAUSE) && (an) && (an == going_action) && (<going-action-irregular-operand>(c->clause_text))) {
-				if (<<r>> == 0) { // nowhere
-					entry_options |= 1;
-				}
-				if (<<r>> == 1) { // somewhere
-					entry_options |= 2;
-				}
+			int opts = Going::divert_clause_parsing(an, c);
+			if (opts >= 0) {
+				entry_options |= opts;
 			} else if ((c->clause_ID == SECOND_AP_CLAUSE) && (an) && (K_understanding) &&
 				(Kinds::eq(ActionSemantics::kind_of_second(an), K_understanding)) &&
 				(<understanding-action-irregular-operand>(c->clause_text))) {
@@ -113,28 +113,6 @@ crucial: options near the top of the list are preferred to those lower down.
 		}
 	}
 	pap_failure_reason = saved_pap;
-
-@<Deal with any entry options@> =
-	if (entry_options != 0) {
-		wording W = ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
-		ActionNameLists::truncate_clause(entry, NOUN_AP_CLAUSE, 0);
-		if (entry_options & 1) {
-			if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) fail = TRUE;
-			else {
-				ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
-				anl_clause_text *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
-				c->evaluation = Rvalues::new_nothing_object_constant();
-			}
-		}
-		if (entry_options & 2) {
-			if (ActionNameLists::has_clause(entry, GOING_TO_AP_CLAUSE)) fail = TRUE;
-			else {
-				ActionNameLists::set_clause_wording(entry, GOING_TO_AP_CLAUSE, W);
-				anl_clause_text *c = ActionNameLists::get_clause(entry, GOING_TO_AP_CLAUSE);
-				c->evaluation = Descriptions::from_kind(K_room, FALSE);
-			}
-		}
-	}
 
 @<Typecheck or otherwise validate the clauses@> =
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
@@ -224,6 +202,20 @@ crucial: options near the top of the list are preferred to those lower down.
 		pap_failure_reason = IMMISCIBLE_PAPF;
 		return NULL;
 	}
+
+@<Produce and return an action pattern from what survives of the list@> =
+	action_pattern *ap = ActionPatterns::new(W);
+	anl_item *first = ActionNameLists::first_item(list);
+	if ((first) && ((first->action_listed) || (first->nap_listed))) ap->action_list = list;
+	LOOP_THROUGH_ANL(entry, list)
+		LOOP_THROUGH_ANL_CLAUSES(c, entry) {
+			LOGIF(ACTION_PATTERN_PARSING, "Writing %d '%W'\n", c->clause_ID, c->clause_text);
+			if (c->stv_to_match)
+				APClauses::set_action_variable_spec(ap, c->stv_to_match, c->evaluation);
+			else
+				APClauses::set_spec(ap, c->clause_ID, c->evaluation);
+		}
+	return ap;
 
 @ The "operands" of an action pattern are the nouns to which it applies: for
 example, in "Kevin taking or dropping something", the operand is "something".
