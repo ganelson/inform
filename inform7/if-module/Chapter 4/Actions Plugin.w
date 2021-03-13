@@ -24,8 +24,8 @@ something". Action patterns become values of the kind |K_description_of_action|.
 They can also be aggregated into "named action patterns", which characterise
 behaviour; see //action_pattern// and //named_action_pattern//.
 (*) A "past action pattern", which can never in any way be a value, is a
-description of an action which have happened in the past: for example, "dropped
-the hat". These are just a special case of action patterns.
+description of an action which may have happened in the past: for example,
+"dropped the hat". These are just a special case of action patterns.
 
 =
 void ActionsPlugin::start(void) {
@@ -69,7 +69,7 @@ The "waiting" action is sacred, because it is the default value for
 = (early code)
 action_name *waiting_action = NULL;
 
-@ These are recognised by their English names when defined by the Standard Rules.
+@ This is recognised by its English name when defined by the Standard Rules.
 (So there is no need to translate this to other languages.)
 
 =

@@ -3,7 +3,7 @@
         (@1)<cardinal-number>=1 
           (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)<cardinal-number>=1 
-          (hits 0/1872) constraint DS = {12} extremes [2, 2]
+          (hits 0/1864) constraint DS = {12} extremes [2, 2]
         (@1)<quoted-text>=1 (@2)( (@3)<response-letter>=2 (@4)) 
           (hits 273/840) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {12} extremes [4, 4]
         (@1)<quoted-text>=1 
@@ -18,7 +18,7 @@
         <s-literal-list>=1 
           (hits 0/1468) constraint DS = {8} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 0/4232) constraint DS = {12} extremes [2, infinity)
+          (hits 0/4220) constraint DS = {12} extremes [2, infinity)
         <s-literal-time>=1 
           (hits 0/2190) constraint DW = {9, 10, 11} extremes [2, 5]
         <s-literal-unit-notation>=1 

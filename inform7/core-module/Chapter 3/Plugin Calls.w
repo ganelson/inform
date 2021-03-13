@@ -422,9 +422,12 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
-@h Influencing if.
-If the actions plugin is not active, then the following will never be called.
-It warn plugins that a new action name has been created.
+@h Influencing the actions plugin.
+We now have a whole run of functions called only by the actions plugin, and
+therefore only when it is active.
+
+Called from //if: Actions Plugin// to signal that a new action has been
+created. For example, the going plugin uses this to spot the arrival of "going".
 
 @e NEW_ACTION_NOTIFY_PLUG
 
@@ -433,9 +436,10 @@ int PluginCalls::new_action_notify(action_name *an) {
 	PLUGINS_CALL(NEW_ACTION_NOTIFY_PLUG, an);
 }
 
-@ If the actions plugin is not active, then the following will never be called.
-It invites plugins to change the action pattern clause ID associated with a
-given action variable.
+@ Called from //if: Action Pattern Clauses// to invite plugins to change the
+action pattern clause ID associated with a given action variable. This may be
+needed in order to cross-reference between multiple such clauses, as with
+the going action variables.
 
 @e DIVERT_AP_CLAUSE_PLUG
 
@@ -445,9 +449,8 @@ int PluginCalls::divert_AP_clause_ID(stacked_variable *stv, int *id) {
 	PLUGINS_CALL(DIVERT_AP_CLAUSE_PLUG, stv, id);
 }
 
-@ If the actions plugin is not active, then the following will never be called.
-It should print a helpful name for the debugging log for the clause ID |C|,
-if |C| is a new clause ID created by the plugin.
+@ Called from //if: Action Pattern Clauses// to ask plugins to print a helpful
+name for the debugging log for any new clause ID |C| which they have created.
 
 @e WRITE_AP_CLAUSE_ID_PLUG
 
@@ -456,9 +459,9 @@ int PluginCalls::write_AP_clause_ID(OUTPUT_STREAM, int C) {
 	PLUGINS_CALL(WRITE_AP_CLAUSE_ID_PLUG, OUT, C);
 }
 
-@ If the actions plugin is not active, then the following will never be called.
-It should return a |*_APCA| aspect for the clause ID |C|, if |C| is a new
-clause ID created by the plugin.
+@ Called from //if: Action Pattern Clauses// to ask for the |*_APCA| aspect
+for the clause ID |C|, where |C| is a new clause ID created by the plugin. If
+this is not given, then the aspect will be |MISC_APCA|.
 
 @e ASPECT_OF_AP_CLAUSE_ID_PLUG
 
@@ -467,12 +470,18 @@ int PluginCalls::aspect_of_AP_clause_ID(int C, int *A) {
 	PLUGINS_CALL(ASPECT_OF_AP_CLAUSE_ID_PLUG, C, A);
 }
 
-@ If the actions plugin is not active, then the following will never be called.
-If it recognises the patterns as ways to describe an action it knows about,
-then the plugin can choose to take the decision, storing either 1 or -1 in
+@ Called from //if: Action Pattern Clauses// to give plugins a chance to
+decide which AP is more specific, on the basis of the extra clauses defined
+in the plugin.
+
+If the plugin recognises the patterns as ways to describe an action it knows
+about, it can choose to take the decision, storing either 1 or -1 in
 |rv|, and returning |TRUE|. If it instead stores 0 in |rv|, it can also
 choose to set |ignore_in|, which tells the usual machinery not to judge on the
 basis of the |[in: ...]| clause in the pattern.
+
+If the plugin sees nothing relevant about the patterns, it should return |FALSE|
+to let the usual machinery take its course.
 
 @e COMPARE_AP_SPECIFICITY_PLUG
 
@@ -482,22 +491,79 @@ int PluginCalls::compare_AP_specificity(action_pattern *ap1, action_pattern *ap2
 	PLUGINS_CALL(COMPARE_AP_SPECIFICITY_PLUG, ap1, ap2, rv, ignore_in);
 }
 
-@
+@ Called from //if: Action Pattern Clauses// to notify plugins that a clause
+matching an action variable has just been added to an action pattern.
 
 @e NEW_AP_CLAUSE_PLUG
 
 =
-int PluginCalls::new_AP_clause(action_pattern *ap, ap_clause *apoc) {
+int PluginCalls::new_action_variable_clause(action_pattern *ap, ap_clause *apoc) {
 	PLUGINS_CALL(NEW_AP_CLAUSE_PLUG, ap, apoc);
 }
 
-@
+@ Called from //if: Parse Clauses// to give plugins a chance to intervene in
+the normal process of evaluating the meaning of text in an action pattern
+clause: for example, in parsing "going nowhere", the going plugin uses this
+to detect that the |NOUN_AP_CLAUSE|, with text "nowhere", should not be parsed
+normally. What it does it to set a bit in the bitmap |bits|, which it will pick
+up again and act upon when reacting to |ACT_ON_ANL_ENTRY_OPTIONS_PLUG|.
+
+If the plugin does not set a bit in |bits|, the normal machinery parses the
+text of the clause in the normal way.
+
+@e PARSE_AP_CLAUSE_PLUG
+
+int PluginCalls::parse_AP_clause(action_name *an, anl_clause *c, int *bits) {
+	PLUGINS_CALL(PARSE_AP_CLAUSE_PLUG, an, c, bits);
+}
+
+@ Called from //if: Parse Clauses// to give plugins a chance to intervene in
+the type-checking process for a clause. Ordinarily, this would just check that
+the contents have the right kind: if matching an action variable of kind |K|
+then it must be a value compatible with |K| or a description of such.
+
+By returning |TRUE|, a plugin can instead take responsibility for the decision
+itself, bypassing that. The |outcome| should then be set |TRUE| (it's valid)
+or |FALSE| (it isn't).
+
+@e VALIDATE_AP_CLAUSE_PLUG
+
+=
+int PluginCalls::validate_AP_clause(action_name *an, anl_clause *c, int *outcome) {
+	PLUGINS_CALL(VALIDATE_AP_CLAUSE_PLUG, an, c, outcome);
+}
+
+@ Called from //if: Parse Clauses// to deal with the options bitmap set
+previously by a |PARSE_AP_CLAUSE_PLUG| call: see above.
 
 @e ACT_ON_ANL_ENTRY_OPTIONS_PLUG
 
 =
 int PluginCalls::act_on_ANL_entry_options(anl_entry *entry, int entry_options, int *fail) {
 	PLUGINS_CALL(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, entry, entry_options, fail);
+}
+
+@ Called from //runtime: Action Patterns// when assembling the requirement
+clauses for compiling a mattern match; this gives plugins a chance to act
+extra stipulations, which are not explicit in clauses already in the pattern.
+
+@e SET_PATTERN_MATCH_REQUIREMENTS_PLUG
+
+=
+int PluginCalls::set_pattern_match_requirements(action_pattern *ap, int *cpm,
+	int needed[MAX_CPM_CLAUSES], ap_clause *needed_apoc[MAX_CPM_CLAUSES]) {
+	PLUGINS_CALL(SET_PATTERN_MATCH_REQUIREMENTS_PLUG, ap, cpm, needed, needed_apoc);
+}
+
+@ Called from //runtime: Action Patterns// when compiling any additional
+requirements set by |SET_PATTERN_MATCH_REQUIREMENTS_PLUG|.
+
+@e COMPILE_PATTERN_MATCH_CLAUSE_PLUG
+
+=
+int PluginCalls::compile_pattern_match_clause(value_holster *VH, action_pattern *ap,
+	int cpmc) {
+	PLUGINS_CALL(COMPILE_PATTERN_MATCH_CLAUSE_PLUG, VH, ap, cpmc);
 }
 
 @h Influencing index.

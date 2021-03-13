@@ -10,12 +10,12 @@ occur, because text is often parsed in several contexts at once, so just
 because it fails this one does not mean it is wrong.)  To improve our chances,
 the code below sets the following global variable on each failure.
 
-@d MISC_PAPF 1
-@d NOPARTICIPLE_PAPF 2
-@d MIXEDNOUNS_PAPF 3
-@d WHEN_PAPF 4
-@d WHENOKAY_PAPF 5
-@d IMMISCIBLE_PAPF 6
+@e MISC_PAPF from 1
+@e NOPARTICIPLE_PAPF
+@e MIXEDNOUNS_PAPF
+@e WHEN_PAPF
+@e WHENOKAY_PAPF
+@e IMMISCIBLE_PAPF
 
 = (early code)
 int pap_failure_reason; /* one of the above */
@@ -33,10 +33,10 @@ get as far as the action name list.
 (*) When we |SUPPRESS_AP_PARSING|, the nonterminal <action-pattern-core> is
 rigged always to fail.
 
-@d PERMIT_TRYING_OMISSION 1
-@d FORBID_NONCONSTANT_ACTION_PARAMETERS 2
-@d SCANNING_ANL_ONLY 4
-@d SUPPRESS_AP_PARSING 8
+@d PERMIT_TRYING_OMISSION                1
+@d FORBID_NONCONSTANT_ACTION_PARAMETERS  2
+@d SCANNING_ANL_ONLY                     4
+@d SUPPRESS_AP_PARSING                   8
 
 =
 int parse_action_pattern_mode = 0;
@@ -107,7 +107,7 @@ action_name_list *ParseActionPatterns::list_of_actions_only(wording W, int *anyo
 	if (<action-pattern>(W)) {
 		action_pattern *ap = (action_pattern *) <<rp>>;
 		anl = ap->action_list;
-		if ((ActionNameLists::nonempty(anl)) && (<<r>> == ACTOR_EXPLICITLY_UNIVERSAL))
+		if ((ActionNameLists::nonempty(anl)) && (<<r>> == ACTOR_EXP_UNIVERSAL))
 			*anyone = TRUE;
 	}
 	ParseActionPatterns::restore_mode(saved);
@@ -189,59 +189,59 @@ Our aim here is to determine who will perform the action.
 
 @d ACTOR_REQUESTED 0
 @d ACTOR_NAMED 1
-@d ACTOR_EXPLICITLY_UNIVERSAL 2
-@d ACTOR_EXPLICITLY_PLAYER 3
-@d ACTOR_IMPLICITLY_PLAYER 4
+@d ACTOR_EXP_UNIVERSAL 2
+@d ACTOR_EXP_PLAYER 3
+@d ACTOR_IMP_PLAYER 4
 
 =
 <action-pattern> ::=
 	asking <s-ap-parameter> to try <ap-three-present> |            ==> @<Someone requested@>
 	<s-ap-parameter> trying <ap-three-present> |                   ==> @<Someone specific@>
-	an actor trying <ap-three-present> |                         ==> @<Anyone except the player@>
-	an actor <ap-three-present> |                                ==> @<Anyone except the player@>
-	trying <ap-three-present> |                                  ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	<ap-three-present> |                                         ==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
-	<actor-description> <ap-three-present>                       ==> @<Someone specific@>
+	an actor trying <ap-three-present> |                           ==> @<Anyone except the player@>
+	an actor <ap-three-present> |                                  ==> @<Anyone except the player@>
+	trying <ap-three-present> |                                    ==> { ACTOR_EXP_PLAYER, RP[1] };
+	<ap-three-present> |                                           ==> { ACTOR_IMP_PLAYER, RP[1] };
+	<actor-description> <ap-three-present>                         ==> @<Someone specific@>
 
 <we-are-action-pattern> ::=
 	we are asking <s-ap-parameter> to try <ap-three-present> |     ==> @<Someone requested@>
 	asking <s-ap-parameter> to try <ap-three-present> |            ==> @<Someone requested@>
 	<s-ap-parameter> trying <ap-three-present> |                   ==> @<Someone specific@>
-	an actor trying <ap-three-present> |                         ==> @<Anyone except the player@>
-	an actor <ap-three-present> |                                ==> @<Anyone except the player@>
-	we are trying <ap-three-present> |                           ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	trying <ap-three-present> |                                  ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	we are <ap-three-present> |                                  ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	<ap-three-present> |                                         ==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
-	<actor-description> <ap-three-present>                       ==> @<Someone specific@>
+	an actor trying <ap-three-present> |                           ==> @<Anyone except the player@>
+	an actor <ap-three-present> |                                  ==> @<Anyone except the player@>
+	we are trying <ap-three-present> |                             ==> { ACTOR_EXP_PLAYER, RP[1] };
+	trying <ap-three-present> |                                    ==> { ACTOR_EXP_PLAYER, RP[1] };
+	we are <ap-three-present> |                                    ==> { ACTOR_EXP_PLAYER, RP[1] };
+	<ap-three-present> |                                           ==> { ACTOR_IMP_PLAYER, RP[1] };
+	<actor-description> <ap-three-present>                         ==> @<Someone specific@>
 
 <action-pattern-negated> ::=
 	we are not asking <s-ap-parameter> to try <ap-three-present> | ==> @<Someone requested@>
 	not asking <s-ap-parameter> to try <ap-three-present> |        ==> @<Someone requested@>
 	<s-ap-parameter> not trying <ap-three-present> |               ==> @<Someone specific@>
-	an actor not trying <ap-three-present> |                     ==> @<Anyone except the player@>
-	an actor not <ap-three-present> |                            ==> @<Anyone except the player@>
-	we are not trying <ap-three-present> |                       ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	not trying <ap-three-present> |                              ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	we are not <ap-three-present> |                              ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	not <ap-three-present> |                                     ==> { ACTOR_IMPLICITLY_PLAYER, RP[1] };
-	not <actor-description> <ap-three-present>                   ==> @<Someone specific@>
+	an actor not trying <ap-three-present> |                       ==> @<Anyone except the player@>
+	an actor not <ap-three-present> |                              ==> @<Anyone except the player@>
+	we are not trying <ap-three-present> |                         ==> { ACTOR_EXP_PLAYER, RP[1] };
+	not trying <ap-three-present> |                                ==> { ACTOR_EXP_PLAYER, RP[1] };
+	we are not <ap-three-present> |                                ==> { ACTOR_EXP_PLAYER, RP[1] };
+	not <ap-three-present> |                                       ==> { ACTOR_IMP_PLAYER, RP[1] };
+	not <actor-description> <ap-three-present>                     ==> @<Someone specific@>
 
 <action-pattern-past> ::=
 	we have asked <s-ap-parameter> to try <ap-three-present> |     ==> @<Someone requested@>
 	<s-ap-parameter> has tried <ap-three-present> |                ==> @<Someone specific@>
-	an actor has tried <ap-three-present> |                      ==> @<Anyone except the player@>
-	an actor has <ap-three-past> |                               ==> @<Anyone except the player@>
-	we have tried <ap-three-present> |                           ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	we have <ap-three-past>                                      ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
+	an actor has tried <ap-three-present> |                        ==> @<Anyone except the player@>
+	an actor has <ap-three-past> |                                 ==> @<Anyone except the player@>
+	we have tried <ap-three-present> |                             ==> { ACTOR_EXP_PLAYER, RP[1] };
+	we have <ap-three-past>                                        ==> { ACTOR_EXP_PLAYER, RP[1] };
 
 <action-pattern-past-negated> ::=
 	we have not asked <s-ap-parameter> to try <ap-three-present> | ==> @<Someone requested@>
 	<s-ap-parameter> has not tried <ap-three-present> |            ==> @<Someone specific@>
-	an actor has not tried <ap-three-present> |                  ==> @<Anyone except the player@>
-	an actor has not <ap-three-past> |                           ==> @<Anyone except the player@>
-	we have not tried <ap-three-present> |                       ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
-	we have not <ap-three-past>                                  ==> { ACTOR_EXPLICITLY_PLAYER, RP[1] };
+	an actor has not tried <ap-three-present> |                    ==> @<Anyone except the player@>
+	an actor has not <ap-three-past> |                             ==> @<Anyone except the player@>
+	we have not tried <ap-three-present> |                         ==> { ACTOR_EXP_PLAYER, RP[1] };
+	we have not <ap-three-past>                                    ==> { ACTOR_EXP_PLAYER, RP[1] };
 
 @<Someone requested@> =
 	action_pattern *ap = RP[2];
@@ -255,7 +255,7 @@ Our aim here is to determine who will perform the action.
 
 @<Anyone except the player@> =
 	action_pattern *ap = RP[1]; APClauses::make_actor_anyone_except_player(ap);
-	==> { ACTOR_EXPLICITLY_UNIVERSAL, ap };
+	==> { ACTOR_EXP_UNIVERSAL, ap };
 
 @ Note that the three present-tense cases all allow the abbreviated form
 "Raffles taking a jewel" rather than the less likely to be ambiguous "Raffles
@@ -363,8 +363,8 @@ name; so we needn't spend any further time.
 	if (Wordings::empty(W)) internal_error("PAP on illegal word range");
 	if (Lexer::word(Wordings::first_wn(W)) == OPENBRACE_V) return NULL;
 	unsigned int d = Vocabulary::disjunction_of_flags(W);
-	if (((ParseActionPatterns::current_tense() == IS_TENSE) && ((d & (ACTION_PARTICIPLE_MC+NAMED_AP_MC)) == 0))) {
-		LOGIF(ACTION_PATTERN_PARSING, "No participle found in: %W\n", W);
+	if (((ParseActionPatterns::current_tense() == IS_TENSE) &&
+		((d & (ACTION_PARTICIPLE_MC+NAMED_AP_MC)) == 0))) {
 		pap_failure_reason = NOPARTICIPLE_PAPF;
 		return NULL;
 	}
@@ -408,10 +408,23 @@ special clause of its own.
 
 =
 <ap-five> ::=
-	<ap-six> when/while <ap-five-condition> | ==> { 0, RP[1] }; action_pattern *ap = *XP; APClauses::set_spec(ap, WHEN_AP_CLAUSE, RP[2]); if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
-	<ap-six> |                                ==> { 0, RP[1] };
-	... when/while <ap-five-condition> |      ==> { 0, NULL }; pap_failure_reason = WHENOKAY_PAPF; return FALSE; /* used only to diagnose problems */
-	... when/while ...                        ==> { 0, NULL }; if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF; return FALSE; /* used only to diagnose problems */
+	<ap-six> when/while <ap-five-condition> | ==> @<Succeed with when okay@>;
+	<ap-six> |                                ==> { pass 1 };
+	... when/while <ap-five-condition> |      ==> @<Fail with when okay@>;
+	... when/while ...                        ==> @<Fail with when not okay@>;
+	
+@<Succeed with when okay@> =
+	action_pattern *ap = RP[1]; APClauses::set_spec(ap, WHEN_AP_CLAUSE, RP[2]);
+	if (pap_failure_reason == MISC_PAPF) pap_failure_reason = WHENOKAY_PAPF;
+	==> { -, ap };
+
+@<Fail with when okay@> =
+	pap_failure_reason = WHENOKAY_PAPF;
+	return FALSE;
+
+@<Fail with when not okay@> =
+	if (pap_failure_reason != WHENOKAY_PAPF) pap_failure_reason = WHEN_PAPF;
+	return FALSE;
 
 @ <ap-five-condition> is really just <s-condition> in disguise -- i.e.,
 it matches a standard Inform condition -- but it's implemented as an internal
@@ -425,16 +438,16 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 		Frames::get_stvol(),
 		all_nonempty_stacked_action_vars);
 	LOGIF(ACTION_PATTERN_PARSING, "A when clause <%W> is suspected.\n", W);
-	parse_node *wts = NULL;
+	parse_node *when_cond = NULL;
 	int s = pap_failure_reason;
 	int saved = ParseActionPatterns::exit_mode(PERMIT_TRYING_OMISSION);
-	if (<s-condition>(W)) wts = <<rp>>;
+	if (<s-condition>(W)) when_cond = <<rp>>;
 	pap_failure_reason = s;
 	ParseActionPatterns::restore_mode(saved);
 	if (phsf) Frames::remove_nonphrase_stack_frame();
-	if ((wts) && (Dash::validate_conditional_clause(wts))) {
-		LOGIF(ACTION_PATTERN_PARSING, "When clause validated: $P.\n", wts);
-		==> { -, wts };
+	if ((when_cond) && (Dash::validate_conditional_clause(when_cond))) {
+		LOGIF(ACTION_PATTERN_PARSING, "When clause validated: $P.\n", when_cond);
+		==> { -, when_cond };
 		return TRUE;
 	}
 	==> { fail nonterminal };

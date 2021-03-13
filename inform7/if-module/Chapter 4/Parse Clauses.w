@@ -22,11 +22,11 @@ action_pattern *ParseClauses::ap_seven(wording W) {
 	LOGIF(ACTION_PATTERN_PARSING, "Level Seven on: %W\n", W);
 	action_name_list *list =
 		ActionNameLists::parse(W, ParseActionPatterns::current_tense(), NULL);
-	LOGIF(ACTION_PATTERN_PARSING, "List for %W is:\n$L\n", W, list);
+	LOGIF(ACTION_PATTERN_PARSING, "Action name list for %W is:\n$L", W, list);
 	if (ActionNameLists::length(list) == 0) return NULL;
 
 	@<Reduce the list to the first viable entry at each word position@>;
-	LOGIF(ACTION_PATTERN_PARSING, "Reduced to viability:\n$L\n", list);
+	LOGIF(ACTION_PATTERN_PARSING, "Reduced to viability:\n$L", list);
 
 	@<Reject the resulting list if two or more entries contain clauses@>;
 	@<Reject the resulting list if, given the clauses, two actions are immiscible@>;
@@ -89,12 +89,25 @@ crucial: options near the top of the list are preferred to those lower down.
 	if (viable == NULL) return NULL;
 	ActionNameLists::remove_entries_marked_for_deletion(list);
 
+@ Now each clause's text must be evaluated: for example, on the clause
+|[in-presence: hans]| we will have to evaluate "Hans".
+
+Note the special case for actions whose second noun has the kind |K_understanding|,
+meaning that they hold topics of conversation ("ask Hans about cosmic rays").
+There is ordinarily no way in Inform to write a literal of this kind, but here
+we are allowed to write a text literal instead, and it is automatically converted.
+
 @<Parse the clauses@> =
 	int saved_pap = pap_failure_reason;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
+		if (fail) break;
+		LOG_INDENT;
+		if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+			LOG("parsing "); ActionNameLists::log_clause(c); LOG(" - ");
+		}
 		if (Wordings::nonempty(c->clause_text)) {
-			int opts = Going::divert_clause_parsing(an, c);
-			if (opts >= 0) {
+			int opts = 0; PluginCalls::parse_AP_clause(an, c, &opts);
+			if (opts != 0) {
 				entry_options |= opts;
 			} else if ((c->clause_ID == SECOND_AP_CLAUSE) && (an) && (K_understanding) &&
 				(Kinds::eq(ActionSemantics::kind_of_second(an), K_understanding)) &&
@@ -111,11 +124,41 @@ crucial: options near the top of the list are preferred to those lower down.
 			if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(c->evaluation, K_text)))
 				Node::set_kind_of_value(c->evaluation, K_understanding);
 		}
+		if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+			if (fail) LOG("fail\n");
+			else LOG("$P\n", c->evaluation);
+		}
+		LOG_OUTDENT;
 	}
 	pap_failure_reason = saved_pap;
 
+@ The "operands" of an action pattern are the nouns to which it applies: for
+example, in "Kevin taking or dropping something", the operand is "something".
+We treat words like "something" specially to avoid them being read as
+"some thing" and thus forcing the kind of the operand to be "thing".
+
+=
+<action-operand> ::=
+	something/anything |       ==> { FALSE, - }
+	something/anything else |  ==> { FALSE, - }
+	<s-ap-parameter>           ==> { TRUE, RP[1] }
+
+<understanding-action-irregular-operand> ::=
+	something/anything |       ==> { TRUE, - }
+	it                         ==> { FALSE, - }
+
+@ Supposing that we managed to find values for each clause, we might still
+have impossible ones: "putting 101 on false", say, where the noun seems to
+be the number 101 and the second noun the truth state "false". So we need
+to typecheck each clause.
+
 @<Typecheck or otherwise validate the clauses@> =
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
+		if (fail) break;
+		LOG_INDENT;
+		if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+			LOG("validating "); ActionNameLists::log_clause(c); LOG(" - ");
+		}
 		kind *check = NULL;
 		switch (c->clause_ID) {
 			case NOUN_AP_CLAUSE:
@@ -134,14 +177,37 @@ crucial: options near the top of the list are preferred to those lower down.
 				break;
 		}
 		if (c->stv_to_match) {
-			int rv = Going::validate(c->stv_to_match, c->evaluation);
-			if (rv == FALSE) return NULL;
-			if (rv == NOT_APPLICABLE) check = StackedVariables::get_kind(c->stv_to_match);
+			int rv = FALSE;
+			if (PluginCalls::validate_AP_clause(an, c, &rv)) {
+				if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA))
+					LOG("referred to plugin - ");
+				if (rv == FALSE) {
+					if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+						LOG("failed badly with problem\n");
+					}
+					LOG_OUTDENT;
+					return NULL;
+				}
+			} else {
+				check = StackedVariables::get_kind(c->stv_to_match);
+			}
 		}
 		if (Node::is(c->evaluation, UNKNOWN_NT)) fail = TRUE;
-		else if ((check) && (Dash::validate_parameter(c->evaluation, check) == FALSE))
-			fail = TRUE;
+		else {
+			if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA))
+				LOG("using Dash with kind %u - ", check);
+			if ((check) && (Dash::validate_parameter(c->evaluation, check) == FALSE))
+				fail = TRUE;
+		}
+		if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+			if (fail) LOG("fail\n"); else LOG("pass\n");
+		}
+		LOG_OUTDENT;
 	}
+
+@ This is where heterogenous patterns like "dropping a thing or taking a
+container" are thrown out: only the last-placed action is allowed to have
+clauses.
 
 @<Reject the resulting list if two or more entries contain clauses@> =
 	int N = 0;
@@ -150,8 +216,21 @@ crucial: options near the top of the list are preferred to those lower down.
 			N++;
 	if (N > 1) {
 		pap_failure_reason = MIXEDNOUNS_PAPF;
+		LOGIF(ACTION_PATTERN_PARSING, "Rejecting with mixed nouns\n");
 		return NULL;
 	}
+
+@ And this is where impossible mixtures of actions are thrown out: for
+example, if there is an action "setting" whose noun is a number, then
+"taking or setting 50" will be thrown out because the two actions here
+disagree about the meaning of the noun.
+
+Similarly, "looking or taking a vehicle" is thrown out because looking has
+no noun.
+
+This is done in the interests of having a type-safe way to compile the
+pattern check, but really it also avoids allowing action patterns which
+look like syllepses.
 
 @<Reject the resulting list if, given the clauses, two actions are immiscible@> =
 	int immiscible = FALSE, no_oow = 0, no_iw = 0, no_of_pars = 0;
@@ -200,8 +279,11 @@ crucial: options near the top of the list are preferred to those lower down.
 
 	if (immiscible) {
 		pap_failure_reason = IMMISCIBLE_PAPF;
+		LOGIF(ACTION_PATTERN_PARSING, "Rejecting with immiscible actions\n");
 		return NULL;
 	}
+
+@ Fanfares and trumpets voluntary:
 
 @<Produce and return an action pattern from what survives of the list@> =
 	action_pattern *ap = ActionPatterns::new(W);
@@ -209,25 +291,11 @@ crucial: options near the top of the list are preferred to those lower down.
 	if ((first) && ((first->action_listed) || (first->nap_listed))) ap->action_list = list;
 	LOOP_THROUGH_ANL(entry, list)
 		LOOP_THROUGH_ANL_CLAUSES(c, entry) {
-			LOGIF(ACTION_PATTERN_PARSING, "Writing %d '%W'\n", c->clause_ID, c->clause_text);
+			LOGIF(ACTION_PATTERN_PARSING,
+				"Succeeds with clause %d = '%W'\n", c->clause_ID, c->clause_text);
 			if (c->stv_to_match)
 				APClauses::set_action_variable_spec(ap, c->stv_to_match, c->evaluation);
 			else
 				APClauses::set_spec(ap, c->clause_ID, c->evaluation);
 		}
 	return ap;
-
-@ The "operands" of an action pattern are the nouns to which it applies: for
-example, in "Kevin taking or dropping something", the operand is "something".
-We treat words like "something" specially to avoid them being read as
-"some thing" and thus forcing the kind of the operand to be "thing".
-
-=
-<action-operand> ::=
-	something/anything |       ==> { FALSE, - }
-	something/anything else |  ==> { FALSE, - }
-	<s-ap-parameter>           ==> { TRUE, RP[1] }
-
-<understanding-action-irregular-operand> ::=
-	something/anything |       ==> { TRUE, - }
-	it                         ==> { FALSE, - }

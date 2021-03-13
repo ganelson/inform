@@ -48,11 +48,11 @@ Chapter 4: Actions
 	Action Patterns
 	Action Name Lists
 	Action Pattern Clauses
-	Going
 	Parse Action Patterns
 	Parse Clauses
 	Explicit Actions
 	Named Action Patterns
+	Going
 
 Chapter 5: Command Grammar
 "In which Understand sentences in the source text are converted into a

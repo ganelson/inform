@@ -100,7 +100,7 @@ void IFModule::create_plugins(void) {
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
 
 	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);
-	going_plugin = PluginManager::new(&Going::start, I"going", actions_plugin);
+	going_plugin = PluginManager::new(&GoingPlugin::start, I"going", actions_plugin);
 
 	parsing_plugin = PluginManager::new(&ParsingPlugin::start, I"command", ifp);
 	showme_plugin = PluginManager::new(&RTShowmeCommand::start, I"showme", parsing_plugin);

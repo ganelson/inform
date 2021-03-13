@@ -253,7 +253,7 @@ void APClauses::set_action_variable_spec(action_pattern *ap, stacked_variable *s
 	ap_clause *apoc = APClauses::ensure_clause(ap, C);
 	apoc->stv_to_match = stv;
 	apoc->clause_spec = spec;
-	PluginCalls::new_AP_clause(ap, apoc);
+	PluginCalls::new_action_variable_clause(ap, apoc);
 }
 
 ap_clause *APClauses::advance_to_next_av_clause(ap_clause *apoc) {

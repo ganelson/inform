@@ -1023,7 +1023,7 @@ might have gone wrong.
 			NAP_problem_explained = TRUE;
 			return TRUE;
 		}
-		if (form == ACTOR_EXPLICITLY_PLAYER) {
+		if (form == ACTOR_EXP_PLAYER) {
 			Problems::issue_problem_segment(
 				"'%4' would have been okay except for using the word 'trying', "
 				"which isn't allowed in a list like this; ");

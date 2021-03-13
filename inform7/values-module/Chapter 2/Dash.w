@@ -3342,7 +3342,6 @@ int Dash::test_flag(parse_node *p, int flag) {
 
 =
 int Dash::validate_conditional_clause(parse_node *spec) {
-	LOGIF(ACTION_PATTERN_PARSING, "Validating conditional clause: $P\n", spec);
 	if (spec == NULL) return TRUE;
 	if (Node::is(spec, UNKNOWN_NT)) return FALSE;
 	if (Dash::check_condition(spec) == NEVER_MATCH) return FALSE;
@@ -3384,7 +3383,6 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	parse_node *vts;
 	kind *kind_found = NULL;
 	if (spec == NULL) return TRUE;
-	LOGIF(ACTION_PATTERN_PARSING, "Validating parameter in action pattern: $P (%u)\n", spec, K);
 	if (Node::is(spec, UNKNOWN_NT)) goto DontValidate;
 
 	if (Specifications::is_description(spec)) {
@@ -3417,9 +3415,6 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 	return TRUE;
 
 	DontValidate:
-		LOGIF(ACTION_PATTERN_PARSING,
-			"Fails to validate for type-checking reasons: wanted %u, found %u\n",
-			K, kind_found);
 		last_spec_failing_to_validate = Node::duplicate(spec);
 		last_kind_failing_to_validate = K;
 		last_kind_found_failing_to_validate = kind_found;

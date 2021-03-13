@@ -578,11 +578,15 @@ void ActionNameLists::log_entry(anl_entry *entry) {
 		ActionNameLists::log_entry_briefly(entry);
 		LOOP_THROUGH_ANL_CLAUSES(c, entry)
 			if (Wordings::nonempty(c->clause_text)) {
-			    LOG(" [");
-				APClauses::write_clause_ID(DL, c->clause_ID, c->stv_to_match);
-			    LOG(": %W]", c->clause_text);
+			    LOG(" "); ActionNameLists::log_clause(c);
 			}
 	}
+}
+
+void ActionNameLists::log_clause(anl_clause *c) {
+	LOG("[");
+	APClauses::write_clause_ID(DL, c->clause_ID, c->stv_to_match);
+	LOG(": %W]", c->clause_text);
 }
 
 void ActionNameLists::log_briefly(action_name_list *list) {
@@ -704,11 +708,11 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 
 =
 <anl-entry> ::=
-	<named-action-pattern> |            ==> { -, ActionNameLists::nap_entry(RP[1], W, EMPTY_WORDING) }
-	<named-action-pattern-with-tail> |  ==> { pass 1 }
-	<anl-entry-with-action>				==> { pass 1 }
+	<named-action-pattern> |        ==> { -, ActionNameLists::nap_entry(RP[1], W, EMPTY_WORDING) }
+	<named-action-pattern-tailed> | ==> { pass 1 }
+	<anl-entry-with-action>         ==> { pass 1 }
 
-<named-action-pattern-with-tail> internal {
+<named-action-pattern-tailed> internal {
 	for (int i=Wordings::first_wn(W); i<= Wordings::last_wn(W) - 1; i++) {
 		if (<named-action-pattern>(Wordings::up_to(W, i))) {
 			==> { -, ActionNameLists::nap_entry(<<rp>>, W, Wordings::from(W, i+1)) };
@@ -760,7 +764,6 @@ in the Laboratory", we get the following set of |results|:
 =
 
 @<Parse the wording into a list of results@> =
-	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W (tense %d)\n", W, anl_parsing_tense);
 	anl_entry *trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 	action_name *an;
 	LOOP_OVER(an, action_name) {
@@ -772,7 +775,6 @@ in the Laboratory", we get the following set of |results|:
 		@<Include the trial entry@>;
 		NoMatch: ;
 	}
-	LOGIF(ACTION_PATTERN_PARSING, "Parsing ANL from %W resulted in:\n$8\n", W, results);
 
 @<Ready the trial entry for another test@> =
 	trial_entry->next_entry = NULL;
@@ -877,7 +879,7 @@ becomes the ramified set
 =
 Note that the |TAIL_AP_CLAUSE| clauses, which were just temporary holders
 for leftover text, have gone entirely. Had it been impossible to break them
-into legal subclauses, they would have caused the result to be struct out
+into legal subclauses, they would have caused the result to be struck out
 altogether. For example, this:
 = (text)
 (1). +0 taking inventory [tail: book]
@@ -1032,8 +1034,9 @@ clause twice, and also means that pathological text like "in in in in in
 in in in in in in in in in in in in in in in in in in in in in in in in in"
 cannot cause a combinatorial nightmare; because each clause appears at
 most once in any entry, the number of entries produced by ramification is
-capped at $2^n$, where $n$ is the number of clauses whose matching words
-appear somewhere in the text.
+capped at $2^n$, where $n$ is the number of different clauses whose matching
+words appear somewhere in the text. As Inform ships with only seven different
+clauses anyway, this will never be too bad.
 
 =
 void ActionNameLists::detonate(int potential_C, stacked_variable *stv, wording T, wording W) {

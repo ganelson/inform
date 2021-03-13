@@ -1,22 +1,31 @@
-[Going::] Going.
+[GoingPlugin::] Going.
 
 A plugin to provide a little extra support for the "going" action.
 
 @ The "going" action, allowing actors to move from room to room in the spatial
 map of the world model, is by far the most intricately implemented. Reflecting
 that, we provide quite a lot of hard-wired compiler support for it, in the form
-of a plugin. If the actions plugin is not also active, none of the functions
-below will ever be called, whether or not going is active.
+of this plugin.
+
+Note that if the actions plugin is not also active, none of the functions
+below will ever be called.
 
 =
-void Going::start(void) {
-	PluginManager::plug(NEW_ACTION_NOTIFY_PLUG, Going::new_action_notify);
-	PluginManager::plug(WRITE_AP_CLAUSE_ID_PLUG, Going::write_clause_ID);
-	PluginManager::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, Going::aspect);
-	PluginManager::plug(DIVERT_AP_CLAUSE_PLUG, Going::divert_clause_ID);
-	PluginManager::plug(NEW_AP_CLAUSE_PLUG, Going::new_clause);
-	PluginManager::plug(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, Going::act_on_options);
-	PluginManager::plug(COMPARE_AP_SPECIFICITY_PLUG, Going::compare_specificity);
+void GoingPlugin::start(void) {
+	PluginManager::plug(NEW_ACTION_NOTIFY_PLUG, GoingPlugin::new_action_notify);
+	PluginManager::plug(WRITE_AP_CLAUSE_ID_PLUG, GoingPlugin::write_clause_ID);
+	PluginManager::plug(ASPECT_OF_AP_CLAUSE_ID_PLUG, GoingPlugin::aspect);
+	PluginManager::plug(DIVERT_AP_CLAUSE_PLUG, GoingPlugin::divert_clause_ID);
+	PluginManager::plug(PARSE_AP_CLAUSE_PLUG, GoingPlugin::parse_clause);
+	PluginManager::plug(VALIDATE_AP_CLAUSE_PLUG, GoingPlugin::validate);
+	PluginManager::plug(NEW_AP_CLAUSE_PLUG, GoingPlugin::new_clause);
+	PluginManager::plug(ACT_ON_ANL_ENTRY_OPTIONS_PLUG, GoingPlugin::act_on_options);
+	PluginManager::plug(COMPARE_AP_SPECIFICITY_PLUG, GoingPlugin::compare_specificity);
+
+	PluginManager::plug(SET_PATTERN_MATCH_REQUIREMENTS_PLUG,
+		RTGoing::set_pattern_match_requirements);
+	PluginManager::plug(COMPILE_PATTERN_MATCH_CLAUSE_PLUG,
+		RTGoing::compile_pattern_match_clause);
 }
 
 @ Firstly, we have to recognise the action we will treat differently, which
@@ -28,7 +37,7 @@ we do by its (English) name in the Standard Rules:
 
 @ =
 action_name *going_action = NULL;
-int Going::new_action_notify(action_name *an) {
+int GoingPlugin::new_action_notify(action_name *an) {
 	if (<going-action>(ActionNameNames::tensed(an, IS_TENSE))) going_action = an;
 	return FALSE;
 }
@@ -36,7 +45,7 @@ int Going::new_action_notify(action_name *an) {
 @ The going action variables are identified at runtime by this ID number:
 
 =
-int Going::id(void) {
+int GoingPlugin::id(void) {
 	if (going_action == NULL) return 0;
 	return RTActions::action_variable_set_ID(going_action);
 }
@@ -53,7 +62,7 @@ aspect, and the other three share a new one.
 @e GOING_APCA
 
 =
-int Going::write_clause_ID(OUTPUT_STREAM, int C) {
+int GoingPlugin::write_clause_ID(OUTPUT_STREAM, int C) {
 	switch (C) {
 		case GOING_FROM_AP_CLAUSE:    WRITE("going-from"); return TRUE;
 		case GOING_TO_AP_CLAUSE:      WRITE("going-to"); return TRUE;
@@ -64,7 +73,7 @@ int Going::write_clause_ID(OUTPUT_STREAM, int C) {
 	return FALSE;
 }
 
-int Going::aspect(int C, int *A) {
+int GoingPlugin::aspect(int C, int *A) {
 	switch (C) {
 		case GOING_FROM_AP_CLAUSE:    *A = IN_APCA; return TRUE;
 		case GOING_TO_AP_CLAUSE:      *A = IN_APCA; return TRUE;
@@ -84,10 +93,10 @@ If we do spot one of these five magic variables, we tie it to a clause with
 a special ID number of our choice.
 
 =
-int Going::divert_clause_ID(stacked_variable *stv, int *id) {
+int GoingPlugin::divert_clause_ID(stacked_variable *stv, int *id) {
 	int oid = StackedVariables::get_owner_id(stv);
 	int off = StackedVariables::get_offset(stv);
-	if ((going_action) && (oid == Going::id())) {
+	if ((going_action) && (oid == GoingPlugin::id())) {
 		switch (off) {
 			case 0: *id = GOING_FROM_AP_CLAUSE; return TRUE;
 			case 1: *id = GOING_TO_AP_CLAUSE; return TRUE;
@@ -105,7 +114,7 @@ protocol for this; it could have, but we don't need this to be visible to author
 writing source text.)
 
 =
-int Going::new_clause(action_pattern *ap, ap_clause *apoc) {
+int GoingPlugin::new_clause(action_pattern *ap, ap_clause *apoc) {
 	if ((apoc->clause_ID == GOING_FROM_AP_CLAUSE) ||
 		(apoc->clause_ID == GOING_TO_AP_CLAUSE))
 		APClauses::set_opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT);
@@ -115,11 +124,11 @@ int Going::new_clause(action_pattern *ap, ap_clause *apoc) {
 @ Going nowhere is a special syntax:
 
 =
-void Going::go_nowhere(action_pattern *ap) {
+void GoingPlugin::go_nowhere(action_pattern *ap) {
 	APClauses::set_spec(ap, GOING_TO_AP_CLAUSE, Rvalues::new_nothing_object_constant());
 }
 
-int Going::going_nowhere(action_pattern *ap) {
+int GoingPlugin::going_nowhere(action_pattern *ap) {
 	if (Rvalues::is_nothing_object_constant(APClauses::spec(ap, GOING_TO_AP_CLAUSE)))
 		return TRUE;
 	return FALSE;
@@ -128,11 +137,11 @@ int Going::going_nowhere(action_pattern *ap) {
 @ And similarly going somewhere:
 
 =
-void Going::go_somewhere(action_pattern *ap) {
+void GoingPlugin::go_somewhere(action_pattern *ap) {
 	APClauses::set_spec(ap, GOING_TO_AP_CLAUSE, Descriptions::from_kind(K_room, FALSE));
 }
 
-int Going::going_somewhere(action_pattern *ap) {
+int GoingPlugin::going_somewhere(action_pattern *ap) {
 	parse_node *val = APClauses::spec(ap, GOING_TO_AP_CLAUSE);
 	if ((Descriptions::is_kind_like(val)) && (Kinds::eq(Descriptions::explicit_kind(val), K_room)))
 		return TRUE;
@@ -153,17 +162,17 @@ int Going::going_somewhere(action_pattern *ap) {
 instead setting the appropriate entry options bit:
 
 =
-int Going::divert_clause_parsing(action_name *an, anl_clause *c) {
+int GoingPlugin::parse_clause(action_name *an, anl_clause *c, int *bits) {
 	if ((c->clause_ID == NOUN_AP_CLAUSE) && (an) && (an == going_action) &&
-		(<going-action-irregular-operand>(c->clause_text))) return <<r>>;
-	return -1;
+		(<going-action-irregular-operand>(c->clause_text))) { *bits |= <<r>>; }
+	return FALSE;
 }
 
 @ Options bits which we later pick up here, moving the irregular noun phrase
 into the |GOING_TO_AP_CLAUSE| instead, where we supply our own evaluation:
 
 =
-int Going::act_on_options(anl_entry *entry, int entry_options, int *fail) {
+int GoingPlugin::act_on_options(anl_entry *entry, int entry_options, int *fail) {
 	if (entry_options & NOWHERE_AP_CLAUSE_OPTION) {
 		wording W = ActionNameLists::get_clause_wording(entry, NOUN_AP_CLAUSE);
 		ActionNameLists::truncate_clause(entry, NOUN_AP_CLAUSE, 0);
@@ -190,18 +199,18 @@ int Going::act_on_options(anl_entry *entry, int entry_options, int *fail) {
 @ Here we perform sanity checks on the clauses.
 
 =
-int Going::validate(stacked_variable *stv, parse_node *spec) {
-	int C = -1; Going::divert_clause_ID(stv, &C);
+int GoingPlugin::validate(action_name *an, anl_clause *c, int *outcome) {
 	char *keyword = NULL; kind *ka = NULL, *kb = NULL;
-	switch (C) {
+	switch (c->clause_ID) {
 		case GOING_FROM_AP_CLAUSE: keyword = "from"; ka = K_room; kb = K_region; break;
 		case GOING_TO_AP_CLAUSE: keyword = "to"; ka = K_room; kb = K_region; break;
 		case GOING_BY_AP_CLAUSE: keyword = "by"; ka = K_thing; kb = NULL; break;
 		case GOING_THROUGH_AP_CLAUSE: keyword = "through"; ka = K_door; kb = NULL; break;
 		case PUSHING_AP_CLAUSE: keyword = "with"; ka = K_thing; kb = NULL; break;
 	}
-	if (keyword == NULL) return NOT_APPLICABLE;
-	return Going::check_clause(spec, keyword, ka, kb);
+	if (keyword == NULL) return FALSE;
+	*outcome = GoingPlugin::check_clause(c->evaluation, keyword, ka, kb);
+	return TRUE;
 }
 
 @ Each clause can be within one of up to two kinds, or else can be "nothing"
@@ -210,7 +219,7 @@ or unspecified:
 =
 parse_node *PM_GoingWrongKind_issued_at = NULL;
 parse_node *PM_GoingWithoutObject_issued_at = NULL;
-int Going::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
+int GoingPlugin::check_clause(parse_node *spec, char *keyword, kind *ka, kind *kb) {
 	if (spec == NULL) return TRUE;
 	if (Rvalues::is_nothing_object_constant(spec)) return TRUE;
 	if (Specifications::is_description_like(spec)) {
@@ -256,7 +265,7 @@ if no "going to" destination is specified, we had better check the destination
 to make sure it actually exists. So this can be used to see if the need arises:
 
 =
-int Going::need_to_check_destination_exists(action_pattern *ap) {
+int GoingPlugin::need_to_check_destination_exists(action_pattern *ap) {
 	if ((APClauses::spec(ap, GOING_TO_AP_CLAUSE) == NULL) &&
 			((APClauses::spec(ap, GOING_FROM_AP_CLAUSE) != NULL) ||
 			(APClauses::spec(ap, GOING_BY_AP_CLAUSE) != NULL) ||
@@ -272,10 +281,9 @@ giving neither clause priority over the other, which means some fiddly crossover
 code if |ap1| has one and |ap2| the other.
 
 =
-int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv, int *ignore_in) {
-	*ignore_in = TRUE; *rv = 0;
-
-	int suspend_usual_from_and_room = FALSE;
+int GoingPlugin::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv,
+	int *ignore_in) {
+	*rv = 0;
 
 	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
 
@@ -284,8 +292,9 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv
 	if (rct1 > rct2) { *rv = 1; return TRUE; }
 	if (rct1 < rct2) { *rv = -1; return TRUE; }
 
-	*rv = APClauses::cmp_clause(PUSHING_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
+	*ignore_in = TRUE; 
 
+	*rv = APClauses::cmp_clause(PUSHING_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	*rv = APClauses::cmp_clause(GOING_BY_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	*rv = APClauses::cmp_clause(GOING_THROUGH_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	
@@ -296,15 +305,23 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv
 	if (rct1 > rct2) { *rv = 1; return TRUE; }
 	if (rct1 < rct2) { *rv = -1; return TRUE; }
 
-	if ((APClauses::spec(ap1, GOING_FROM_AP_CLAUSE)) && (APClauses::spec(ap1, IN_AP_CLAUSE) == NULL)
-		&& (APClauses::spec(ap2, IN_AP_CLAUSE)) && (APClauses::spec(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
-		*rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2); if (*rv) return TRUE;
+	int suspend_usual_from_and_room = FALSE;
+
+	if ((APClauses::spec(ap1, GOING_FROM_AP_CLAUSE)) &&
+		(APClauses::spec(ap1, IN_AP_CLAUSE) == NULL) &&
+		(APClauses::spec(ap2, IN_AP_CLAUSE)) &&
+		(APClauses::spec(ap2, GOING_FROM_AP_CLAUSE) == NULL)) {
+		*rv = APClauses::cmp_clauses(GOING_FROM_AP_CLAUSE, ap1, IN_AP_CLAUSE, ap2);
+		if (*rv) return TRUE;
 		suspend_usual_from_and_room = TRUE;
 	}
 
-	if ((APClauses::spec(ap2, GOING_FROM_AP_CLAUSE)) && (APClauses::spec(ap2, IN_AP_CLAUSE) == NULL)
-		&& (APClauses::spec(ap1, IN_AP_CLAUSE)) && (APClauses::spec(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
-		*rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2); if (*rv) return TRUE;
+	if ((APClauses::spec(ap2, GOING_FROM_AP_CLAUSE)) &&
+		(APClauses::spec(ap2, IN_AP_CLAUSE) == NULL) &&
+		(APClauses::spec(ap1, IN_AP_CLAUSE)) &&
+		(APClauses::spec(ap1, GOING_FROM_AP_CLAUSE) == NULL)) {
+		*rv = APClauses::cmp_clauses(IN_AP_CLAUSE, ap1, GOING_FROM_AP_CLAUSE, ap2);
+		if (*rv) return TRUE;
 		suspend_usual_from_and_room = TRUE;
 	}
 
@@ -315,5 +332,5 @@ int Going::compare_specificity(action_pattern *ap1, action_pattern *ap2, int *rv
 
 	*rv = APClauses::cmp_clause(GOING_TO_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 
-	return TRUE;
+	return FALSE;
 }

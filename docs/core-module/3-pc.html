@@ -72,7 +72,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">core</a></li><li><a href="index.html#3">Chapter 3: Plugins</a></li><li><b>Plugin Calls</b></li></ul></div>
 <p class="purpose">The interface between the main compiler and its plugins.</p>
 
-<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing core</a></li><li><a href="3-pc.html#SP3">&#167;3. Influencing assertions</a></li><li><a href="3-pc.html#SP16">&#167;16. Influencing values</a></li><li><a href="3-pc.html#SP21">&#167;21. Influencing knowledge</a></li><li><a href="3-pc.html#SP34">&#167;34. Influencing if</a></li><li><a href="3-pc.html#SP41">&#167;41. Influencing index</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-pc.html#SP2">&#167;2. Influencing core</a></li><li><a href="3-pc.html#SP3">&#167;3. Influencing assertions</a></li><li><a href="3-pc.html#SP16">&#167;16. Influencing values</a></li><li><a href="3-pc.html#SP21">&#167;21. Influencing knowledge</a></li><li><a href="3-pc.html#SP34">&#167;34. Influencing the actions plugin</a></li><li><a href="3-pc.html#SP45">&#167;45. Influencing index</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The following set of functions is an API for the main compiler to consult
 with the plugins; put another way, it is also an API for the plugins to
@@ -529,8 +529,12 @@ regions plugin does with the "region" kind.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_SUBKIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">sub</span><span class="plain-syntax">, </span><span class="identifier-syntax">super</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. Influencing if. </b>If the actions plugin is not active, then the following will never be called.
-It warn plugins that a new action name has been created.
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. Influencing the actions plugin. </b>We now have a whole run of functions called only by the actions plugin, and
+therefore only when it is active.
+</p>
+
+<p class="commentary">Called from <a href="../if-module/4-ap.html" class="internal">Actions Plugin (in if)</a> to signal that a new action has been
+created. For example, the going plugin uses this to spot the arrival of "going".
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NEW_ACTION_NOTIFY_PLUG</span>
@@ -540,9 +544,10 @@ It warn plugins that a new action name has been created.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_ACTION_NOTIFY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">an</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>If the actions plugin is not active, then the following will never be called.
-It invites plugins to change the action pattern clause ID associated with a
-given action variable.
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35.  </b>Called from <a href="../if-module/4-apc.html" class="internal">Action Pattern Clauses (in if)</a> to invite plugins to change the
+action pattern clause ID associated with a given action variable. This may be
+needed in order to cross-reference between multiple such clauses, as with
+the going action variables.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">DIVERT_AP_CLAUSE_PLUG</span>
@@ -553,9 +558,8 @@ given action variable.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">DIVERT_AP_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stv</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>If the actions plugin is not active, then the following will never be called.
-It should print a helpful name for the debugging log for the clause ID <span class="extract"><span class="extract-syntax">C</span></span>,
-if <span class="extract"><span class="extract-syntax">C</span></span> is a new clause ID created by the plugin.
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36.  </b>Called from <a href="../if-module/4-apc.html" class="internal">Action Pattern Clauses (in if)</a> to ask plugins to print a helpful
+name for the debugging log for any new clause ID <span class="extract"><span class="extract-syntax">C</span></span> which they have created.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">WRITE_AP_CLAUSE_ID_PLUG</span>
@@ -565,9 +569,9 @@ if <span class="extract"><span class="extract-syntax">C</span></span> is a new c
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">WRITE_AP_CLAUSE_ID_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37.  </b>If the actions plugin is not active, then the following will never be called.
-It should return a <span class="extract"><span class="extract-syntax">*_APCA</span></span> aspect for the clause ID <span class="extract"><span class="extract-syntax">C</span></span>, if <span class="extract"><span class="extract-syntax">C</span></span> is a new
-clause ID created by the plugin.
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37.  </b>Called from <a href="../if-module/4-apc.html" class="internal">Action Pattern Clauses (in if)</a> to ask for the <span class="extract"><span class="extract-syntax">*_APCA</span></span> aspect
+for the clause ID <span class="extract"><span class="extract-syntax">C</span></span>, where <span class="extract"><span class="extract-syntax">C</span></span> is a new clause ID created by the plugin. If
+this is not given, then the aspect will be <span class="extract"><span class="extract-syntax">MISC_APCA</span></span>.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASPECT_OF_AP_CLAUSE_ID_PLUG</span>
@@ -577,12 +581,20 @@ clause ID created by the plugin.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ASPECT_OF_AP_CLAUSE_ID_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>If the actions plugin is not active, then the following will never be called.
-If it recognises the patterns as ways to describe an action it knows about,
-then the plugin can choose to take the decision, storing either 1 or -1 in
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38.  </b>Called from <a href="../if-module/4-apc.html" class="internal">Action Pattern Clauses (in if)</a> to give plugins a chance to
+decide which AP is more specific, on the basis of the extra clauses defined
+in the plugin.
+</p>
+
+<p class="commentary">If the plugin recognises the patterns as ways to describe an action it knows
+about, it can choose to take the decision, storing either 1 or -1 in
 <span class="extract"><span class="extract-syntax">rv</span></span>, and returning <span class="extract"><span class="extract-syntax">TRUE</span></span>. If it instead stores 0 in <span class="extract"><span class="extract-syntax">rv</span></span>, it can also
 choose to set <span class="extract"><span class="extract-syntax">ignore_in</span></span>, which tells the usual machinery not to judge on the
 basis of the <span class="extract"><span class="extract-syntax">[in: ...]</span></span> clause in the pattern.
+</p>
+
+<p class="commentary">If the plugin sees nothing relevant about the patterns, it should return <span class="extract"><span class="extract-syntax">FALSE</span></span>
+to let the usual machinery take its course.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPARE_AP_SPECIFICITY_PLUG</span>
@@ -593,16 +605,57 @@ basis of the <span class="extract"><span class="extract-syntax">[in: ...]</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPARE_AP_SPECIFICITY_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap1</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap2</span><span class="plain-syntax">, </span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">ignore_in</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b></p>
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39.  </b>Called from <a href="../if-module/4-apc.html" class="internal">Action Pattern Clauses (in if)</a> to notify plugins that a clause
+matching an action variable has just been added to an action pattern.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NEW_AP_CLAUSE_PLUG</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::new_AP_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">apoc</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::new_action_variable_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">apoc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_AP_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">apoc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b></p>
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40.  </b>Called from <a href="../if-module/4-pc.html" class="internal">Parse Clauses (in if)</a> to give plugins a chance to intervene in
+the normal process of evaluating the meaning of text in an action pattern
+clause: for example, in parsing "going nowhere", the going plugin uses this
+to detect that the <span class="extract"><span class="extract-syntax">NOUN_AP_CLAUSE</span></span>, with text "nowhere", should not be parsed
+normally. What it does it to set a bit in the bitmap <span class="extract"><span class="extract-syntax">bits</span></span>, which it will pick
+up again and act upon when reacting to <span class="extract"><span class="extract-syntax">ACT_ON_ANL_ENTRY_OPTIONS_PLUG</span></span>.
+</p>
+
+<p class="commentary">If the plugin does not set a bit in <span class="extract"><span class="extract-syntax">bits</span></span>, the normal machinery parses the
+text of the clause in the normal way.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PARSE_AP_CLAUSE_PLUG</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::parse_AP_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">anl_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bits</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">PARSE_AP_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">bits</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41.  </b>Called from <a href="../if-module/4-pc.html" class="internal">Parse Clauses (in if)</a> to give plugins a chance to intervene in
+the type-checking process for a clause. Ordinarily, this would just check that
+the contents have the right kind: if matching an action variable of kind <span class="extract"><span class="extract-syntax">K</span></span>
+then it must be a value compatible with <span class="extract"><span class="extract-syntax">K</span></span> or a description of such.
+</p>
+
+<p class="commentary">By returning <span class="extract"><span class="extract-syntax">TRUE</span></span>, a plugin can instead take responsibility for the decision
+itself, bypassing that. The <span class="extract"><span class="extract-syntax">outcome</span></span> should then be set <span class="extract"><span class="extract-syntax">TRUE</span></span> (it's valid)
+or <span class="extract"><span class="extract-syntax">FALSE</span></span> (it isn't).
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">VALIDATE_AP_CLAUSE_PLUG</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::validate_AP_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">anl_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">VALIDATE_AP_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">an</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">outcome</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b>Called from <a href="../if-module/4-pc.html" class="internal">Parse Clauses (in if)</a> to deal with the options bitmap set
+previously by a <span class="extract"><span class="extract-syntax">PARSE_AP_CLAUSE_PLUG</span></span> call: see above.
+</p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ACT_ON_ANL_ENTRY_OPTIONS_PLUG</span>
 </pre>
@@ -611,7 +664,32 @@ basis of the <span class="extract"><span class="extract-syntax">[in: ...]</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ACT_ON_ANL_ENTRY_OPTIONS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry</span><span class="plain-syntax">, </span><span class="identifier-syntax">entry_options</span><span class="plain-syntax">, </span><span class="identifier-syntax">fail</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Influencing index. </b>Called from <a href="../index-module/2-ipw.html" class="internal">Index Physical World (in index)</a> to add something (if it wishes)
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43.  </b>Called from <a href="../runtime-module/5-ap.html" class="internal">Action Patterns (in runtime)</a> when assembling the requirement
+clauses for compiling a mattern match; this gives plugins a chance to act
+extra stipulations, which are not explicit in clauses already in the pattern.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::set_pattern_match_requirements</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cpm</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">needed</span><span class="plain-syntax">[</span><span class="identifier-syntax">MAX_CPM_CLAUSES</span><span class="plain-syntax">], </span><span class="identifier-syntax">ap_clause</span><span class="plain-syntax"> *</span><span class="identifier-syntax">needed_apoc</span><span class="plain-syntax">[</span><span class="identifier-syntax">MAX_CPM_CLAUSES</span><span class="plain-syntax">]) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpm</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed</span><span class="plain-syntax">, </span><span class="identifier-syntax">needed_apoc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44.  </b>Called from <a href="../runtime-module/5-ap.html" class="internal">Action Patterns (in runtime)</a> when compiling any additional
+requirements set by <span class="extract"><span class="extract-syntax">SET_PATTERN_MATCH_REQUIREMENTS_PLUG</span></span>.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_PATTERN_MATCH_CLAUSE_PLUG</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::compile_pattern_match_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_holster</span><span class="plain-syntax"> *</span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">action_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">COMPILE_PATTERN_MATCH_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">VH</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">cpmc</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. Influencing index. </b>Called from <a href="../index-module/2-ipw.html" class="internal">Index Physical World (in index)</a> to add something (if it wishes)
 to the index description of an instance in the spatial model. For example,
 the regions plugin uses this to put colour chips next to names of regions.
 </p>
@@ -623,7 +701,7 @@ the regions plugin uses this to put colour chips next to names of regions.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">ADD_TO_WORLD_INDEX_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">O</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42.  </b>Called from <a href="../index-module/2-ipw.html" class="internal">Index Physical World (in index)</a> to add something (if it wishes)
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46.  </b>Called from <a href="../index-module/2-ipw.html" class="internal">Index Physical World (in index)</a> to add something (if it wishes)
 to the textual description of an instance in the spatial model. For example,
 the mapping plugin uses this to say where a door leads.
 </p>

@@ -7,10 +7,10 @@ write "if taking or dropping something", for example, and this is implicitly
 a test of what the current action is.
 
 This is represented in the parse tree as the twig:
-
+= (text)
 	TEST_VALUE_NT
 		CONSTANT_NT
-
+=
 where the constant below is the action seen as a noun -- linguistically, a
 "gerund". It will always have the kind |K_stored_action| or |K_description_of_action|,
 depending on whether the test is against an explicit action or something vaguer.
