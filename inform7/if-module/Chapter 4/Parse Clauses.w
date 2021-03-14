@@ -112,7 +112,7 @@ we are allowed to write a text literal instead, and it is automatically converte
 			} else if ((c->clause_ID == SECOND_AP_CLAUSE) && (an) && (K_understanding) &&
 				(Kinds::eq(ActionSemantics::kind_of_second(an), K_understanding)) &&
 				(<understanding-action-irregular-operand>(c->clause_text))) {
-				parse_node *val = ParsingPlugin::rvalue_from_grammar_verb(NULL);
+				parse_node *val = ParsingPlugin::rvalue_from_command_grammar(NULL);
 				Node::set_text(val, c->clause_text);
 				c->evaluation = val;
 			} else if (<action-operand>(c->clause_text)) {

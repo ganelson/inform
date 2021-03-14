@@ -11,7 +11,7 @@ void ParsingPlugin::start(void) {
 	ParsingNodes::nodes_and_annotations();
 
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ParsingPlugin::make_special_meanings);
+	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Understand::make_special_meanings);
 	PluginManager::plug(COMPARE_CONSTANT_PLUG, ParsingPlugin::compare_CONSTANT);
 	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, ParsingPlugin::new_variable_notify);
 	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
@@ -19,51 +19,68 @@ void ParsingPlugin::start(void) {
 	PluginManager::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
 }
 
+@ This will also need extensive amounts of run-time code, and the sequence
+for generating that is a little delicate.
+
+=
 int ParsingPlugin::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
+	if (stage == TABLES_CSEQ) {
+		BENCH(Understand::traverse);
+	}
 	if (stage == INTER2_CSEQ) {
-		BENCH(PL::Parsing::Tokens::General::write_parse_name_routines);
-		BENCH(PL::Parsing::Lines::MistakeActionSub_routine);
-		BENCH(PL::Parsing::Verbs::prepare);
-		BENCH(PL::Parsing::Verbs::compile_conditions);
-		BENCH(PL::Parsing::Tokens::Values::number);
-		BENCH(PL::Parsing::Tokens::Values::truth_state);
-		BENCH(PL::Parsing::Tokens::Values::time);
-		BENCH(PL::Parsing::Tokens::Values::compile_type_gprs);
+		BENCH(UnderstandGeneralTokens::write_parse_name_routines);
+		BENCH(UnderstandLines::MistakeActionSub_routine);
+		BENCH(CommandGrammars::prepare);
+		BENCH(CommandGrammars::compile_conditions);
+		BENCH(UnderstandValueTokens::number);
+		BENCH(UnderstandValueTokens::truth_state);
+		BENCH(UnderstandValueTokens::time);
+		BENCH(UnderstandValueTokens::compile_type_gprs);
 		if (debugging) {
-			BENCH(PL::Parsing::TestScripts::write_text);
-			BENCH(PL::Parsing::TestScripts::TestScriptSub_routine);
+			BENCH(TestCommand::write_text);
+			BENCH(TestCommand::TestScriptSub_routine);
 		} else {
-			BENCH(PL::Parsing::TestScripts::TestScriptSub_stub_routine);
+			BENCH(TestCommand::TestScriptSub_stub_routine);
 		}
 	}
 	if (stage == INTER3_CSEQ) {
-		BENCH(PL::Parsing::Tokens::Filters::compile);
+		BENCH(UnderstandFilterTokens::compile);
 	}
 	if (stage == INTER4_CSEQ) {
-		BENCH(PL::Parsing::Verbs::compile_all);
-		BENCH(PL::Parsing::Tokens::Filters::compile);
+		BENCH(CommandGrammars::compile_all);
+		BENCH(UnderstandFilterTokens::compile);
 	}
 	return FALSE;
 }
 
-int ParsingPlugin::make_special_meanings(void) {
-	SpecialMeanings::declare(PL::Parsing::understand_as_SMF, I"understand-as", 1);
-	return FALSE;
-}
+@ This plugin attaches a //parsing_data// object to every inference subject,
+and in particular, to every object instance and every kind of object.
+
+@d PARSING_DATA(I) PLUGIN_DATA_ON_INSTANCE(parsing, I)
+@d PARSING_DATA_FOR_SUBJ(S) PLUGIN_DATA_ON_SUBJECT(parsing, S)
+
+=
+typedef struct parsing_data {
+	struct command_grammar *understand_as_this_object; /* grammar for parsing the name at run-time */
+	CLASS_DEFINITION
+} parsing_data;
 
 int ParsingPlugin::new_subject_notify(inference_subject *subj) {
 	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, Visibility::new_data(subj));
 	return FALSE;
 }
 
-@
+@ We make use of a new kind of rvalue in this plugin: |K_understanding|. This
+is created in //kinds: Familiar Kinds//, not here, but we do have to provide
+the following functions to handle its constant rvalues. These correspond to
+//command_grammar// objects, so comparing them, and producing rvalues, is easy:
 
 =
 int ParsingPlugin::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	kind *K = Node::get_kind_of_value(spec1);
 	if (Kinds::eq(K, K_understanding)) {
-		if (ParsingPlugin::rvalue_to_grammar_verb(spec1) == ParsingPlugin::rvalue_to_grammar_verb(spec2)) {
+		if (ParsingPlugin::rvalue_to_command_grammar(spec1) == ParsingPlugin::rvalue_to_command_grammar(spec2)) {
 			*rv = TRUE;
 		}
 		*rv = FALSE;
@@ -72,15 +89,17 @@ int ParsingPlugin::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *r
 	return FALSE;
 }
 
-parse_node *ParsingPlugin::rvalue_from_grammar_verb(grammar_verb *val) { 
-		CONV_FROM(grammar_verb, K_understanding) }
-grammar_verb *ParsingPlugin::rvalue_to_grammar_verb(parse_node *spec) { 
-		CONV_TO(grammar_verb) }
+parse_node *ParsingPlugin::rvalue_from_command_grammar(command_grammar *val) { 
+		CONV_FROM(command_grammar, K_understanding) }
+command_grammar *ParsingPlugin::rvalue_to_command_grammar(parse_node *spec) { 
+		CONV_TO(command_grammar) }
 
-@ A number of global variables are given special treatment here, including
-a whole family with names like "the K understood", for different kinds K.
-This is an awkward contrivance to bridge Inform 7, which is typed, with the
-original Inform 6 parser at runtime, whose data is typeless.
+@ A number of global variables are given special treatment by this plugin,
+including a whole family with names like "the K understood", for different
+kinds K.[1]
+
+[1] This is an awkward contrivance to bridge Inform 7, which is typed, with
+the Inter command parser at runtime, whose data is typeless.
 
 =
 <notable-parsing-variables> ::=
@@ -97,9 +116,9 @@ original Inform 6 parser at runtime, whose data is typeless.
 nonlocal_variable *real_location_VAR = NULL;
 nonlocal_variable *actor_location_VAR = NULL;
 
-nonlocal_variable *I6_noun_VAR = NULL;
-nonlocal_variable *I6_second_VAR = NULL;
-nonlocal_variable *I6_actor_VAR = NULL;
+nonlocal_variable *Inter_noun_VAR = NULL;
+nonlocal_variable *Inter_second_noun_VAR = NULL;
+nonlocal_variable *Inter_actor_VAR = NULL;
 
 @ =
 int ParsingPlugin::new_variable_notify(nonlocal_variable *var) {
@@ -111,41 +130,46 @@ int ParsingPlugin::new_variable_notify(nonlocal_variable *var) {
 					NonlocalVariables::allow_to_be_zero(var);
 				}
 				break;
-			case 1: I6_noun_VAR = var; break;
+			case 1: Inter_noun_VAR = var; break;
 			case 2: real_location_VAR = var; break;
 			case 3: actor_location_VAR = var; break;
-			case 4: I6_second_VAR = var; break;
-			case 5: I6_actor_VAR = var; break;
+			case 4: Inter_second_noun_VAR = var; break;
+			case 5: Inter_actor_VAR = var; break;
 		}
 	}
 	return FALSE;
 }
 
-@ Once the traverse is done, we can infer values for the two key Inter properties
-for parsing:
+@ The Inter-level property |name| provides words by which to recognise an
+object in the command parser. It doesn't correspond to any I7-level property,
+and is in that sense (okay, ironically) "nameless".
 
 =
 property *P_name = NULL;
 
 property *ParsingPlugin::name_property(void) {
-	if (P_name == NULL) internal_error("name property not available yet");
+	if (P_name == NULL) {
+		P_name = ValueProperties::new_nameless(I"name", K_text);
+		Hierarchy::make_available(Emit::tree(), RTParsing::name_iname());
+	}
 	return P_name;
 }
 
+@ At model completion time, we need to give every object instance the |name|
+property and also any |parse_name| routine it may need; and we similarly
+define |parse_name| routines for kinds of objects. Note that kinds never
+get the |name| property.
+
+=
 int ParsingPlugin::complete_model(int stage) {
 	if (stage == WORLD_STAGE_V) {
 		instance *I;
-		P_name = ValueProperties::new_nameless(I"name", K_text);
-		Hierarchy::make_available(Emit::tree(), RTParsing::name_iname());
 		P_parse_name = ValueProperties::new_nameless(I"parse_name", K_value);
-		P_action_bitmap = ValueProperties::new_nameless(I"action_bitmap", K_value);
-		Hierarchy::make_available(Emit::tree(), RTProperties::iname(P_action_bitmap));
 
 		LOOP_OVER_INSTANCES(I, K_object) {
 			inference_subject *subj = Instances::as_subject(I);
 			@<Assert the Inter name property@>;
 			@<Assert the Inter parse-name property@>;
-			@<Assert the Inter action-bitmap property@>;
 		}
 
 		kind *K;
@@ -154,12 +178,11 @@ int ParsingPlugin::complete_model(int stage) {
 				inference_subject *subj = KindSubjects::from_kind(K);
 				@<Assert the Inter parse-name property@>;
 			}
-
-		inference_subject *subj = KindSubjects::from_kind(K_thing);
-		@<Assert the Inter action-bitmap property@>;
 	}
 	return FALSE;
 }
+
+@ Values for the |name| property are actually small arrays of dictionary words.
 
 @<Assert the Inter name property@> =
 	if (Naming::object_is_privately_named(I) == FALSE) {
@@ -175,7 +198,7 @@ int ParsingPlugin::complete_model(int stage) {
 			PW = Kinds::Behaviour::get_name_in_play(K, TRUE,
 				Projects::get_language_of_play(Task::project()));
 		}
-		ValueProperties::assert(P_name, Instances::as_subject(I),
+		ValueProperties::assert(ParsingPlugin::name_property(), Instances::as_subject(I),
 			RTParsing::name_property_array(I, W, PW, from_kind), CERTAIN_CE);
 	}
 
@@ -183,24 +206,7 @@ int ParsingPlugin::complete_model(int stage) {
 where grammar has specified a need. (By default, this will not happen.)
 
 @<Assert the Inter parse-name property@> =
-	inter_name *S = PL::Parsing::Tokens::General::compile_parse_name_property(subj);
+	inter_name *S = UnderstandGeneralTokens::compile_parse_name_property(subj);
 	if (S)
 		ValueProperties::assert(P_parse_name, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);
-
-@ The action bitmap is an array of bits attached to each object, one
-for each action, which records whether that action has yet applied
-successfully to that object. This is used at run-time to handle past
-tense conditions such as "the jewels have been taken". Note that
-we give the bitmap in the class definition associated with "thing"
-to ensure that it will be inherited by all Inter objects of this class,
-i.e., all Inter objects corresponding to I7 things.
-
-@<Assert the Inter action-bitmap property@> =
-	if (PluginManager::active(actions_plugin))
-		if ((K_room == NULL) ||
-			(InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE)) {
-			instance *I = InstanceSubjects::to_instance(subj);
-			parse_node *S = RTActions::compile_action_bitmap_property(I);
-			ValueProperties::assert(P_action_bitmap, subj, S, CERTAIN_CE);
-		}

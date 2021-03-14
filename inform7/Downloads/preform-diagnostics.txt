@@ -9429,87 +9429,87 @@
         person asked 
           (hits 1/7) (matched: 'person asked') constraint CS = {13} extremes [2, 2]
 
-<understand-sentence-subject> hits 208/416 nti 17 constraint (none) extremes [1, infinity)
+<understand-sentence-sp> hits 208/416 nti 17 constraint (none) extremes [1, infinity)
     English:
         nothing 
           constraint CS = {17} extremes [1, 1]
-        <understand-property-list> 
+        <understand-prop-list> 
           (hits 1/208) (matched: 'the infection color property') constraint (none) extremes [1, infinity)
-        the command/commands <understand-regular-list> 
+        the command/commands <understand-reg-list> 
           (hits 40/67) (matched long text) constraint DS = {17} extremes [3, infinity)
         the verb/verbs {...} 
           (hits 0/27) constraint DS = {17} extremes [3, infinity)
-        <understand-regular-list> 
+        <understand-reg-list> 
           (hits 167/167) (matched long text) constraint (none) extremes [1, infinity)
 
-<understand-regular-list> hits 383/766 nti 20 constraint (none) extremes [1, infinity)
+<understand-reg-list> hits 383/766 nti 20 constraint (none) extremes [1, infinity)
     English:
         {...} 
           (hits 88/383) (matched long text) constraint (none) extremes [1, infinity)
-        <understand-regular-entry> <understand-regular-tail> 
+        <understand-reg-entry> <understand-reg-tail> 
           (hits 88/88) (matched long text) constraint DS = {16} extremes [3, infinity)
-        <understand-regular-entry> 
+        <understand-reg-entry> 
           (hits 207/207) (matched: '"n"') constraint (none) extremes [1, infinity)
 
-<understand-regular-tail> hits 176/352 nti 16 constraint DS = {16} extremes [2, infinity)
+<understand-reg-tail> hits 176/352 nti 16 constraint DS = {16} extremes [2, infinity)
     English:
-        , _and/or <understand-regular-list> 
+        , _and/or <understand-reg-list> 
           (hits 0/74) constraint DS = {16} extremes [3, infinity)
-        _,/and/or <understand-regular-list> 
+        _,/and/or <understand-reg-list> 
           (hits 176/176) (matched long text) constraint DS = {16} extremes [2, infinity)
 
-<understand-regular-entry> hits 383/766 nti 21 constraint (none) extremes [1, infinity)
+<understand-reg-entry> hits 383/766 nti 21 constraint (none) extremes [1, infinity)
     English:
         {...} 
           (hits 383/383) (matched: '"n"') constraint (none) extremes [1, infinity)
 
-<understand-property-list> hits 70/554 nti 22 constraint (none) extremes [1, infinity)
+<understand-prop-list> hits 70/554 nti 22 constraint (none) extremes [1, infinity)
     English:
         {...} 
           (hits 69/277) (matched long text) constraint (none) extremes [1, infinity)
-        <understand-property-entry> <understand-property-tail> 
+        <understand-prop-entry> <understand-prop-tail> 
           (hits 0/32) constraint DS = {14, 15} extremes [4, infinity)
-        <understand-property-entry> 
+        <understand-prop-entry> 
           (hits 1/68) (matched: 'the infection color property') constraint DS = {14} extremes [2, infinity)
 
-<understand-property-tail> hits 69/372 nti 15 constraint DS = {15} extremes [2, infinity)
+<understand-prop-tail> hits 69/372 nti 15 constraint DS = {15} extremes [2, infinity)
     English:
-        , _and/or <understand-property-list> 
+        , _and/or <understand-prop-list> 
           (hits 0/122) constraint DS = {15} extremes [3, infinity)
-        _,/and/or <understand-property-list> 
+        _,/and/or <understand-prop-list> 
           (hits 69/154) (matched long text) constraint DS = {15} extremes [2, infinity)
 
-<understand-property-entry> hits 1/274 nti 14 constraint DS = {14} extremes [2, infinity)
+<understand-prop-entry> hits 1/274 nti 14 constraint DS = {14} extremes [2, infinity)
     English:
         <property-name> property 
           (hits 1/129) (matched: 'the infection color property') constraint DS = {14} extremes [2, infinity)
         {...} property 
           (hits 0/128) constraint DS = {14} extremes [2, infinity)
 
-<understand-sentence-object> hits 167/334 nti 20 constraint (none) extremes [1, infinity)
+<understand-text-op> hits 167/334 nti 20 constraint (none) extremes [1, infinity)
     English:
-        <understand-sentence-object-uncond> when/while {...} 
+        <understand-text-op-uncond> when/while {...} 
           (hits 1/16) (matched: 'yourself when the player is not yourself') constraint DS = {20} extremes [3, infinity)
-        <understand-sentence-object-uncond> 
+        <understand-text-op-uncond> 
           (hits 166/166) (matched: 'giving it to ( with nouns reversed )') constraint (none) extremes [1, infinity)
 
-<understand-sentence-object-uncond> hits 167/334 nti 23 constraint (none) extremes [1, infinity)
+<understand-text-op-uncond> hits 167/334 nti 23 constraint (none) extremes [1, infinity)
     English:
         {...} 
           (hits 0/167) constraint (none) extremes [1, infinity)
-        <understand-sentence-entry> <understand-sentence-object-tail> 
+        <understand-text-entry> <understand-text-op-tail> 
           (hits 0/41) constraint DS = {19} extremes [3, infinity)
-        <understand-sentence-entry> 
+        <understand-text-entry> 
           (hits 167/167) (matched: 'giving it to ( with nouns reversed )') constraint (none) extremes [1, infinity)
 
-<understand-sentence-object-tail> hits 0/244 nti 19 constraint DS = {19} extremes [2, infinity)
+<understand-text-op-tail> hits 0/244 nti 19 constraint DS = {19} extremes [2, infinity)
     English:
-        , _and/or <understand-sentence-object-uncond> 
+        , _and/or <understand-text-op-uncond> 
           (hits 0/39) constraint DS = {19} extremes [3, infinity)
-        _,/and/or <understand-sentence-object-uncond> 
+        _,/and/or <understand-text-op-uncond> 
           (hits 0/77) constraint DS = {19} extremes [2, infinity)
 
-<understand-sentence-entry> hits 167/334 nti 24 constraint (none) extremes [1, infinity)
+<understand-text-entry> hits 167/334 nti 24 constraint (none) extremes [1, infinity)
     English:
         <understand-as-this> 
           (hits 167/167) (matched: 'giving it to ( with nouns reversed )') constraint (none) extremes [1, infinity)
@@ -9546,7 +9546,7 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<understand-command-sentence-object> hits 40/80 nti 21 constraint (none) extremes [1, infinity)
+<understand-command-op> hits 40/80 nti 21 constraint (none) extremes [1, infinity)
     English:
         {...} when/while {...} 
           constraint DS = {21} extremes [3, infinity)
@@ -9557,27 +9557,27 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<understand-property-sentence-object> hits 1/2 nti 23 constraint (none) extremes [1, infinity)
+<understand-prop-op> hits 1/2 nti 23 constraint (none) extremes [1, infinity)
     English:
-        <understand-property-sentence-object-unconditional> when/while {...} 
+        <understand-prop-op-uncond> when/while {...} 
           (hits 0/1) constraint DS = {23} extremes [3, infinity)
-        <understand-property-sentence-object-unconditional> 
+        <understand-prop-op-uncond> 
           (hits 1/1) (matched: 'referring to an ice cream cone') constraint (none) extremes [1, infinity)
 
-<understand-property-sentence-object-unconditional> hits 1/2 nti 22 constraint (none) extremes [1, infinity)
+<understand-prop-op-uncond> hits 1/2 nti 22 constraint (none) extremes [1, infinity)
     English:
-        referring to <understand-property-reference> 
+        referring to <understand-prop-ref> 
           (hits 1/1) (matched: 'referring to an ice cream cone') constraint DS = {22} extremes [3, infinity)
-        describing <understand-property-reference> 
+        describing <understand-prop-ref> 
           constraint DS = {22} extremes [2, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
 
-<understand-property-reference> hits 1/2 nti 26 constraint (none) extremes [1, infinity)
+<understand-prop-ref> hits 1/2 nti 26 constraint (none) extremes [1, infinity)
     English:
         <k-kind> 
           (hits 1/1) (matched: 'an ice cream cone') constraint (none) extremes [1, infinity)
-        <instance-of-object> 
+        <instance> 
           constraint (none) extremes [1, infinity)
         {...} 
           constraint (none) extremes [1, infinity)

@@ -8,20 +8,7 @@ A plugin for the I6 run-time properties needed to support parsing.
 
 = (early code)
 property *P_parse_name = NULL;
-property *P_action_bitmap = NULL;
 
-
-@ Every inference subject (in particular, every object and every kind of object)
-contains a pointer to its own unique copy of the following structure:
-
-@d PARSING_DATA(I) PLUGIN_DATA_ON_INSTANCE(parsing, I)
-@d PARSING_DATA_FOR_SUBJ(S) PLUGIN_DATA_ON_SUBJECT(parsing, S)
-
-=
-typedef struct parsing_data {
-	struct grammar_verb *understand_as_this_object; /* grammar for parsing the name at run-time */
-	CLASS_DEFINITION
-} parsing_data;
 
 @ And every property permission likewise:
 

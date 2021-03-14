@@ -12,6 +12,14 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -125,7 +133,7 @@ for the kinds we inherit from.
 <span class="plain-syntax">        }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PARSING_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="identifier-syntax">understand_as_this_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">PL::Parsing::Verbs::take_out_one_word_grammar</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CommandGrammars::take_out_one_word_grammar</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PARSING_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">)-&gt;</span><span class="identifier-syntax">understand_as_this_object</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">;</span>
@@ -133,7 +141,7 @@ for the kinds we inherit from.
 <span class="plain-syntax">        </span><span class="identifier-syntax">infs</span><span class="plain-syntax">; </span><span class="identifier-syntax">infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InferenceSubjects::narrowest_broader_subject</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PARSING_DATA_FOR_SUBJ</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PARSING_DATA_FOR_SUBJ</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">)-&gt;</span><span class="identifier-syntax">understand_as_this_object</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">PL::Parsing::Verbs::take_out_one_word_grammar</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">CommandGrammars::take_out_one_word_grammar</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">PARSING_DATA_FOR_SUBJ</span><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">)-&gt;</span><span class="identifier-syntax">understand_as_this_object</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
@@ -147,6 +155,38 @@ for the kinds we inherit from.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-prp.html#SP6" class="function-link"><span class="function-syntax">RTProperties::iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ParsingPlugin::name_property</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We cache grammar occurring in the source text in conditions, and so forth:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">cached_understanding</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">understanding_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> word range of the understanding text</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cu_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> the runtime name for this </span><span class="extract"><span class="extract-syntax">Consult_Grammar_N</span></span><span class="comment-syntax"> routine</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">cached_understanding</span><span class="plain-syntax">;</span>
+
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTParsing::compile_understanding</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RTParsing::compile_understanding</span></span>:<br/>Runtime Support for Tables - <a href="4-rsft.html#SP4_1_1_1_1_4">&#167;4.1.1.1.1.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val1</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val2</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">table_entry</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;subject-pronoun&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) { *</span><span class="identifier-syntax">val1</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">; *</span><span class="identifier-syntax">val2</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">cached_understanding</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cu</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">cu</span><span class="plain-syntax">, </span><span class="reserved-syntax">cached_understanding</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::match</span><span class="plain-syntax">(</span><span class="identifier-syntax">cu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                </span><a href="2-emt.html#SP4" class="function-link"><span class="function-syntax">Emit::to_ival</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val1</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">, </span><span class="identifier-syntax">cu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cu_iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Understand::consultation</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">table_entry</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">UnderstandGeneralTokens::print_consultation_gv_name</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">iname</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cu</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">cached_understanding</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cu_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">iname</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><a href="2-emt.html#SP4" class="function-link"><span class="function-syntax">Emit::to_ival</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">val1</span><span class="plain-syntax">, </span><span class="identifier-syntax">val2</span><span class="plain-syntax">, </span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>The structure cached_understanding is private to this section.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-nmn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-rm.html">1</a></li><li class="progresschapter"><a href="2-hrr.html">2</a></li><li class="progresschapter"><a href="3-ad.html">3</a></li><li class="progresschapter"><a href="4-fc.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-nmn.html">nmn</a></li><li class="progresscurrent">prs</li><li class="progresssection"><a href="5-fgr.html">fgr</a></li><li class="progresssection"><a href="5-se.html">se</a></li><li class="progresssection"><a href="5-ef.html">ef</a></li><li class="progresssection"><a href="5-bd.html">bd</a></li><li class="progresssection"><a href="5-spt.html">spt</a></li><li class="progresssection"><a href="5-tp.html">tp</a></li><li class="progresssection"><a href="5-bck.html">bck</a></li><li class="progresssection"><a href="5-rgn.html">rgn</a></li><li class="progresssection"><a href="5-tm.html">tm</a></li><li class="progresssection"><a href="5-sc.html">sc</a></li><li class="progresssection"><a href="5-ts.html">ts</a></li><li class="progresssection"><a href="5-scn.html">scn</a></li><li class="progresssection"><a href="5-act.html">act</a></li><li class="progresssection"><a href="5-los.html">los</a></li><li class="progresssection"><a href="5-nap.html">nap</a></li><li class="progresssection"><a href="5-ap.html">ap</a></li><li class="progresssection"><a href="5-gng.html">gng</a></li><li class="progressnext"><a href="5-fgr.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

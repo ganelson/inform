@@ -1,4 +1,4 @@
-[PL::Parsing::Tokens::Values::] Tokens Parsing Values.
+[UnderstandValueTokens::] Tokens Parsing Values.
 
 In the argot of Inform 6, GPR stands for General Parsing Routine,
 and I7 makes heavy use of GPR tokens to achieve its ends. This section is
@@ -35,7 +35,7 @@ typedef struct gpr_kit {
 	inter_symbol *x_s;
 } gpr_kit;
 
-gpr_kit PL::Parsing::Tokens::Values::new_kit(void) {
+gpr_kit UnderstandValueTokens::new_kit(void) {
 	gpr_kit gprk;
 	gprk.cur_addr_s = NULL;
 	gprk.cur_len_s = NULL;
@@ -67,27 +67,27 @@ gpr_kit PL::Parsing::Tokens::Values::new_kit(void) {
 	return gprk;
 }
 
-void PL::Parsing::Tokens::Values::add_instance_call(gpr_kit *gprk) {
+void UnderstandValueTokens::add_instance_call(gpr_kit *gprk) {
 	gprk->instance_s = LocalVariables::add_named_call_as_symbol(I"instance");
 }
 
-void PL::Parsing::Tokens::Values::add_range_calls(gpr_kit *gprk) {
+void UnderstandValueTokens::add_range_calls(gpr_kit *gprk) {
 	gprk->range_from_s = LocalVariables::add_internal_local_c_as_symbol(I"range_from", "call parameter: word number of snippet start");
 	gprk->range_words_s = LocalVariables::add_internal_local_c_as_symbol(I"range_words", "call parameter: snippet length");
 }
 
-void PL::Parsing::Tokens::Values::add_original(gpr_kit *gprk) {
+void UnderstandValueTokens::add_original(gpr_kit *gprk) {
 	gprk->original_wn_s = LocalVariables::add_internal_local_as_symbol(I"original_wn");
 }
 
-void PL::Parsing::Tokens::Values::add_standard_set(gpr_kit *gprk) {
+void UnderstandValueTokens::add_standard_set(gpr_kit *gprk) {
 	gprk->group_wn_s = LocalVariables::add_internal_local_as_symbol(I"group_wn");
 	gprk->v_s = LocalVariables::add_internal_local_as_symbol(I"v");
 	gprk->w_s = LocalVariables::add_internal_local_as_symbol(I"w");
 	gprk->rv_s = LocalVariables::add_internal_local_as_symbol_noting(I"rv", &(gprk->rv_lv));
 }
 
-void PL::Parsing::Tokens::Values::add_lp_vars(gpr_kit *gprk) {
+void UnderstandValueTokens::add_lp_vars(gpr_kit *gprk) {
 	gprk->wpos_s = LocalVariables::add_internal_local_as_symbol(I"wpos");
 	gprk->mid_word_s = LocalVariables::add_internal_local_as_symbol(I"mid_word");
 	gprk->matched_number_s = LocalVariables::add_internal_local_as_symbol(I"matched_number");
@@ -100,7 +100,7 @@ void PL::Parsing::Tokens::Values::add_lp_vars(gpr_kit *gprk) {
 	gprk->x_s = LocalVariables::add_internal_local_as_symbol(I"x");
 }
 
-void PL::Parsing::Tokens::Values::add_parse_name_vars(gpr_kit *gprk) {
+void UnderstandValueTokens::add_parse_name_vars(gpr_kit *gprk) {
 	gprk->original_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"original_wn", "first word of text parsed");
 	gprk->group_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"group_wn", "first word matched against A/B/C/... disjunction");
 	gprk->try_from_wn_s = LocalVariables::add_internal_local_c_as_symbol(I"try_from_wn", "position to try matching from");
@@ -116,13 +116,13 @@ void PL::Parsing::Tokens::Values::add_parse_name_vars(gpr_kit *gprk) {
 	gprk->pass2_n_s = LocalVariables::add_internal_local_c_as_symbol(I"pass2_n", "value of n recorded during pass 2");
 }
 
-void PL::Parsing::Tokens::Values::number(void) {
+void UnderstandValueTokens::number(void) {
 	inter_name *iname = Hierarchy::find(DECIMAL_TOKEN_INNER_HL);
 	packaging_state save = Routines::begin(iname);
-	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-	PL::Parsing::Tokens::Values::add_original(&gprk);
-	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_number);
-	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
+	gpr_kit gprk = UnderstandValueTokens::new_kit();
+	UnderstandValueTokens::add_original(&gprk);
+	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_number);
+	if (cg) CommandGrammars::compile_iv(&gprk, cg);
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -131,15 +131,15 @@ void PL::Parsing::Tokens::Values::number(void) {
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
-void PL::Parsing::Tokens::Values::time(void) {
+void UnderstandValueTokens::time(void) {
 	inter_name *iname = Hierarchy::find(TIME_TOKEN_INNER_HL);
 	packaging_state save = Routines::begin(iname);
-	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-	PL::Parsing::Tokens::Values::add_original(&gprk);
+	gpr_kit gprk = UnderstandValueTokens::new_kit();
+	UnderstandValueTokens::add_original(&gprk);
 	kind *K = TimesOfDay::kind();
 	if (K) {
-		grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K);
-		if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
+		command_grammar *cg = CommandGrammars::get_parsing_grammar(K);
+		if (cg) CommandGrammars::compile_iv(&gprk, cg);
 	}
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
@@ -149,13 +149,13 @@ void PL::Parsing::Tokens::Values::time(void) {
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
-void PL::Parsing::Tokens::Values::truth_state(void) {
+void UnderstandValueTokens::truth_state(void) {
 	inter_name *iname = Hierarchy::find(TRUTH_STATE_TOKEN_INNER_HL);
 	packaging_state save = Routines::begin(iname);
-	gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-	PL::Parsing::Tokens::Values::add_original(&gprk);
-	grammar_verb *gv = PL::Parsing::Verbs::get_parsing_grammar(K_truth_state);
-	if (gv) PL::Parsing::Verbs::compile_iv(&gprk, gv);
+	gpr_kit gprk = UnderstandValueTokens::new_kit();
+	UnderstandValueTokens::add_original(&gprk);
+	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_truth_state);
+	if (cg) CommandGrammars::compile_iv(&gprk, cg);
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -164,9 +164,9 @@ void PL::Parsing::Tokens::Values::truth_state(void) {
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
-void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
+void UnderstandValueTokens::compile_type_gprs(void) {
 	int next_label = 1, longest;
-	grammar_verb *gv;
+	command_grammar *cg;
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K) {
 		if ((Kinds::Behaviour::is_an_enumeration(K)) ||
@@ -180,20 +180,20 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 				need_lf_vars = TRUE;
 				break;
 			}
-			gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-			PL::Parsing::Tokens::Values::add_original(&gprk);
-			PL::Parsing::Tokens::Values::add_standard_set(&gprk);
-			if (need_lf_vars) PL::Parsing::Tokens::Values::add_lp_vars(&gprk);
+			gpr_kit gprk = UnderstandValueTokens::new_kit();
+			UnderstandValueTokens::add_original(&gprk);
+			UnderstandValueTokens::add_standard_set(&gprk);
+			if (need_lf_vars) UnderstandValueTokens::add_lp_vars(&gprk);
 			@<Compile body of kind GPR@>;
 			Routines::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
 				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
 				packaging_state save = Routines::begin(iname);
-				gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-				PL::Parsing::Tokens::Values::add_instance_call(&gprk);
-				PL::Parsing::Tokens::Values::add_original(&gprk);
-				PL::Parsing::Tokens::Values::add_standard_set(&gprk);
+				gpr_kit gprk = UnderstandValueTokens::new_kit();
+				UnderstandValueTokens::add_instance_call(&gprk);
+				UnderstandValueTokens::add_original(&gprk);
+				UnderstandValueTokens::add_standard_set(&gprk);
 				GV_IS_VALUE_instance_mode = TRUE;
 				@<Compile body of kind GPR@>;
 				GV_IS_VALUE_instance_mode = FALSE;
@@ -210,9 +210,9 @@ void PL::Parsing::Tokens::Values::compile_type_gprs(void) {
 		@<Reset word number@>;
 	}
 
-	gv = PL::Parsing::Verbs::get_parsing_grammar(K);
-	if (gv != NULL) {
-		PL::Parsing::Verbs::compile_iv(&gprk, gv);
+	cg = CommandGrammars::get_parsing_grammar(K);
+	if (cg != NULL) {
+		CommandGrammars::compile_iv(&gprk, cg);
 		@<Reset word number@>;
 	}
 	longest = 0;

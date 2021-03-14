@@ -224,7 +224,8 @@ used to define new kinds; in this case it doesn't matter what we write, but
 		#ifdef IF_MODULE
 		if (bits & TB_COLUMN_TOPIC) {
 			inter_ti v1 = 0, v2 = 0;
-			PL::Parsing::compile_understanding(&v1, &v2, Node::get_text(cell), TRUE);
+			wording W = Node::get_text(cell);
+			RTParsing::compile_understanding(&v1, &v2, W, TRUE);
 			Emit::array_generic_entry(v1, v2);
 		} else {
 		#endif

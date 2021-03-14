@@ -42,6 +42,7 @@ void ActionsPlugin::start(void) {
 	PluginManager::plug(OFFERED_SPECIFICATION_PLUG, ActionsPlugin::actions_offered_specification);
 	PluginManager::plug(TYPECHECK_EQUALITY_PLUG, ARvalues::actions_typecheck_equality);
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ActionsPlugin::production_line);
+	PluginManager::plug(COMPLETE_MODEL_PLUG, ActionsPlugin::complete_model);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
@@ -105,6 +106,38 @@ int ActionsPlugin::actions_offered_specification(parse_node *owner, wording W) {
 	}
 	return FALSE;
 }
+
+@ The action bitmap is an array of bits attached to each object, one
+for each action, which records whether that action has yet applied
+successfully to that object. This is used at run-time to handle past
+tense conditions such as "the jewels have been taken".
+
+=
+property *P_action_bitmap = NULL;
+
+int ActionsPlugin::complete_model(int stage) {
+	if (stage == WORLD_STAGE_V) {
+		P_action_bitmap = ValueProperties::new_nameless(I"action_bitmap", K_value);
+		Hierarchy::make_available(Emit::tree(), RTProperties::iname(P_action_bitmap));
+
+		instance *I;
+		LOOP_OVER_INSTANCES(I, K_object) {
+			inference_subject *subj = Instances::as_subject(I);
+			@<Assert the Inter action-bitmap property@>;
+		}
+		inference_subject *subj = KindSubjects::from_kind(K_thing);
+		@<Assert the Inter action-bitmap property@>;
+	}
+	return FALSE;
+}
+
+@<Assert the Inter action-bitmap property@> =
+	if ((K_room == NULL) ||
+		(InferenceSubjects::is_within(subj, KindSubjects::from_kind(K_room)) == FALSE)) {
+		instance *I = InstanceSubjects::to_instance(subj);
+		parse_node *S = RTActions::compile_action_bitmap_property(I);
+		ValueProperties::assert(P_action_bitmap, subj, S, CERTAIN_CE);
+	}
 
 @ The rest of this section is given over to the Preform grammar for dealing
 with the special meaning "X is an action...", which creates new action names.
@@ -186,7 +219,7 @@ to be created.
 =
 <action-sentence-subject> ::=
 	<action-name> |  ==> @<Issue PM_ActionAlreadyExists problem@>
-	...              ==> { 0, PL::Actions::act_new(W) }
+	...              ==> { 0, Actions::act_new(W) }
 
 @<Issue PM_ActionAlreadyExists problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),

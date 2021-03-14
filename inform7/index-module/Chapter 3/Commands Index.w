@@ -17,7 +17,7 @@ we divide these headwords into five "natures":
 typedef struct command_index_entry {
 	int nature; /* one of the above values */
 	struct text_stream *command_headword; /* text of command headword, such as "REMOVE" */
-	struct grammar_verb *gv_indexed; /* ...leading to... */
+	struct command_grammar *cg_indexed; /* ...leading to... */
 	struct command_index_entry *next_alphabetically; /* next in linked list */
 	CLASS_DEFINITION
 } command_index_entry;
@@ -31,7 +31,7 @@ void CommandsIndex::index_meta_verb(char *t) {
 	vie->command_headword = Str::new();
 	WRITE_TO(vie->command_headword, "%s", t);
 	vie->nature = OUT_OF_WORLD_COMMAND;
-	vie->gv_indexed = NULL;
+	vie->cg_indexed = NULL;
 	vie->next_alphabetically = NULL;
 }
 
@@ -40,7 +40,7 @@ void CommandsIndex::test_verb(text_stream *t) {
 	vie = CREATE(command_index_entry);
 	vie->command_headword = Str::duplicate(t);
 	vie->nature = TESTING_COMMAND;
-	vie->gv_indexed = NULL;
+	vie->cg_indexed = NULL;
 	vie->next_alphabetically = NULL;
 }
 
@@ -51,8 +51,8 @@ void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *true
 		if (Str::eq_wide_string(trueverb, L"0") == FALSE) {
 			WRITE("%S", trueverb);
 			if (Wordings::nonempty(W))
-				PL::Parsing::Verbs::index_command_aliases(OUT,
-					PL::Parsing::Verbs::find_command(W));
+				CommandGrammars::index_command_aliases(OUT,
+					CommandGrammars::find_command(W));
 			for (i=1; p[i+1]; i++) if (p[i] == ' ') break;
 			for (; p[i+1]; i++) if (p[i] != ' ') break;
 			if (p[i+1]) WRITE(" ");
@@ -67,29 +67,29 @@ void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *true
 	}
 }
 
-command_index_entry *CommandsIndex::vie_new_from(OUTPUT_STREAM, wchar_t *headword, grammar_verb *gv, int nature) {
+command_index_entry *CommandsIndex::vie_new_from(OUTPUT_STREAM, wchar_t *headword, command_grammar *cg, int nature) {
 	command_index_entry *vie;
 	vie = CREATE(command_index_entry);
 	vie->command_headword = Str::new();
 	WRITE_TO(vie->command_headword, "%w", headword);
 	vie->nature = nature;
-	vie->gv_indexed = gv;
+	vie->cg_indexed = cg;
 	vie->next_alphabetically = NULL;
 	return vie;
 }
 
 void CommandsIndex::commands(OUTPUT_STREAM) {
 	command_index_entry *vie, *vie2, *last_vie2, *list_start = NULL;
-	grammar_verb *gv;
+	command_grammar *cg;
 	int head_letter;
 
-	LOOP_OVER(gv, grammar_verb)
-		PL::Parsing::Verbs::make_command_index_entries(OUT, gv);
+	LOOP_OVER(cg, command_grammar)
+		CommandGrammars::make_command_index_entries(OUT, cg);
 
 	vie = CREATE(command_index_entry);
 	vie->command_headword = I"0";
 	vie->nature = BARE_DIRECTION_COMMAND;
-	vie->gv_indexed = NULL;
+	vie->cg_indexed = NULL;
 	vie->next_alphabetically = NULL;
 
 	LOOP_OVER(vie, command_index_entry) {
@@ -108,18 +108,18 @@ void CommandsIndex::commands(OUTPUT_STREAM) {
 	}
 
 	for (vie = list_start, head_letter = 0; vie; vie = vie->next_alphabetically) {
-		grammar_verb *gv;
+		command_grammar *cg;
 		if (Str::get_first_char(vie->command_headword) != head_letter) {
 			if (head_letter) HTML_TAG("br");
 			head_letter = Str::get_first_char(vie->command_headword);
 		}
-		gv = vie->gv_indexed;
+		cg = vie->cg_indexed;
 		switch (vie->nature) {
 			case NORMAL_COMMAND:
-				PL::Parsing::Verbs::index_normal(OUT, gv, vie->command_headword);
+				CommandGrammars::index_normal(OUT, cg, vie->command_headword);
 				break;
 			case ALIAS_COMMAND:
-				PL::Parsing::Verbs::index_alias(OUT, gv, vie->command_headword);
+				CommandGrammars::index_alias(OUT, cg, vie->command_headword);
 				break;
 			case OUT_OF_WORLD_COMMAND:
 				HTML::begin_colour(OUT, I"800000");
@@ -264,7 +264,7 @@ void CommandsIndex::tokens(OUTPUT_STREAM) {
 		"sight, but writing 'any' lifts this restriction. So \"[any person]\" allows "
 		"every name of a person, wherever they happen to be.");
 	HTML_CLOSE("p");
-	PL::Parsing::Verbs::index_tokens(OUT);
+	CommandGrammars::index_tokens(OUT);
 }
 
 void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {

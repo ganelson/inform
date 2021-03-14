@@ -414,8 +414,8 @@ int RTActions::is_an_action_variable(parse_node *spec) {
 	if (spec == NULL) return FALSE;
 	if (Lvalues::get_storage_form(spec) != NONLOCAL_VARIABLE_NT) return FALSE;
 	nlv = Node::get_constant_nonlocal_variable(spec);
-	if (nlv == I6_noun_VAR) return TRUE;
-	if (nlv == I6_second_VAR) return TRUE;
-	if (nlv == I6_actor_VAR) return TRUE;
+	if (nlv == Inter_noun_VAR) return TRUE;
+	if (nlv == Inter_second_noun_VAR) return TRUE;
+	if (nlv == Inter_actor_VAR) return TRUE;
 	return FALSE;
 }

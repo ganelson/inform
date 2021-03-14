@@ -18,6 +18,7 @@ We group the steps into departments, which are in order of when they work:
 @e MODEL_CSEQ
 @e MODEL_COMPLETE_CSEQ
 @e TABLES_CSEQ
+@e AUGMENT_CSEQ
 @e PHRASES_CSEQ
 @e INTER1_CSEQ
 @e INTER2_CSEQ
@@ -39,6 +40,7 @@ int Sequence::carry_out(int debugging) {
 	@<Pass three times through the major nodes@>;
 	@<Make the model world@>;
 	@<Tables and grammar@>;
+	@<Augment model world with low-level properties@>;
 	@<Phrases and rules@>;
 	@<Generate inter, part 1@>
 	@<Generate inter, part 2@>
@@ -152,10 +154,12 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(Measurements::validate_definitions)
 	BENCH(BinaryPredicateFamilies::second_stock)
-//	BENCH(RTPlayer::InitialSituation)
 	BENCH(Tables::check_tables_for_kind_clashes)
 	BENCH(RTTables::compile_print_table_names)
-	BENCH(PL::Parsing::traverse)
+
+@<Augment model world with low-level properties@> =
+	Task::advance_stage_to(AUGMENT_CSEQ, I"Augment model world",
+		-1, debugging, sequence_timer);
 	BENCH(World::stage_V)
 
 @<Phrases and rules@> =

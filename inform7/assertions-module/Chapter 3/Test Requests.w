@@ -76,7 +76,7 @@ it can generate a range of possibilities.
 
 @<Create a test scenario@> =
 	wording XW = GET_RW(<test-sentence-subject>, 1);
- 	ts_being_created = PL::Parsing::TestScripts::new_scenario(XW);
+ 	ts_being_created = TestCommand::new_scenario(XW);
     <test-sentence-object>(OP);
 
 @ The object NP for a scenario is usually just a quoted script, but it can be
@@ -105,13 +105,13 @@ more elaborate:
 @<Add script@> =
     Word::dequote(Wordings::first_wn(W));
     wchar_t *p = Lexer::word_text(Wordings::first_wn(W));
-	PL::Parsing::TestScripts::add_script_to_scenario(ts_being_created, p);
+	TestCommand::add_script_to_scenario(ts_being_created, p);
 
 @<Add in-test requirement@> =
-	PL::Parsing::TestScripts::add_location_to_scenario(ts_being_created, RP[1]);
+	TestCommand::add_location_to_scenario(ts_being_created, RP[1]);
 
 @<Add holding requirement@> =
-	PL::Parsing::TestScripts::add_possession_to_scenario(ts_being_created, RP[1]);
+	TestCommand::add_possession_to_scenario(ts_being_created, RP[1]);
 
 @<Issue PM_TestDoubleWith problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestDoubleWith),

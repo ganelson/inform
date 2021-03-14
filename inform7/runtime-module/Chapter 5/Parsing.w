@@ -61,7 +61,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 		}
 
 	if (PARSING_DATA(I)->understand_as_this_object)
-		PL::Parsing::Verbs::take_out_one_word_grammar(
+		CommandGrammars::take_out_one_word_grammar(
 			PARSING_DATA(I)->understand_as_this_object);
 
 	inference_subject *infs;
@@ -69,7 +69,7 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		if (PARSING_DATA_FOR_SUBJ(infs)) {
 			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object)
-				PL::Parsing::Verbs::take_out_one_word_grammar(
+				CommandGrammars::take_out_one_word_grammar(
 					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_object);
 		}
 	}
@@ -82,3 +82,34 @@ parse_node *RTParsing::name_property_array(instance *I, wording W, wording PW,
 inter_name *RTParsing::name_iname(void) {
 	return RTProperties::iname(ParsingPlugin::name_property());
 }
+
+@ We cache grammar occurring in the source text in conditions, and so forth:
+
+=
+typedef struct cached_understanding {
+	struct wording understanding_text; /* word range of the understanding text */
+	struct inter_name *cu_iname; /* the runtime name for this |Consult_Grammar_N| routine */
+	CLASS_DEFINITION
+} cached_understanding;
+
+
+void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W, int table_entry) {
+	if (<subject-pronoun>(W)) { *val1 = LITERAL_IVAL; *val2 = 0; }
+	else {
+		cached_understanding *cu;
+		LOOP_OVER(cu, cached_understanding)
+			if (Wordings::match(cu->understanding_text, W)) {
+				Emit::to_ival(val1, val2, cu->cu_iname);
+				return;
+			}
+		Understand::consultation(W, table_entry);
+		inter_name *iname = UnderstandGeneralTokens::print_consultation_gv_name();
+		if (iname) {
+			cu = CREATE(cached_understanding);
+			cu->understanding_text = W;
+			cu->cu_iname = iname;
+			Emit::to_ival(val1, val2, iname);
+		}
+	}
+}
+

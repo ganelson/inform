@@ -108,7 +108,7 @@ kind *K_unicode_character = NULL;
 kind *K_use_option = NULL;
 kind *K_verb = NULL;
 
-@ And here are two more standard kinds, but which most Inform uses don't
+@ And here are two more standard kinds, but which most Inform users don't
 realise are there, because they are omitted from the Kinds index:
 
 (a) |K_rulebook_outcome|. Rulebooks end in success, failure, no outcome, or
@@ -120,7 +120,7 @@ receiving the outcome back. So although there's no technical reason why this
 kind shouldn't be used for storage, it's hidden from the user.
 
 (b) |K_understanding| is used to hold the result of a grammar token. An actual
-constant value specification of this kind stores a |grammar_verb *| pointer.
+constant value specification of this kind stores a |command_grammar *| pointer.
 
 = (early code)
 kind *K_rulebook_outcome = NULL;

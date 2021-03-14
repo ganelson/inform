@@ -1,4 +1,4 @@
-[PL::Parsing::Tokens::Filters::] Noun Filter Tokens.
+[UnderstandFilterTokens::] Noun Filter Tokens.
 
 Filters are used to require nouns to have specific kinds or
 attributes, or to have specific scoping rules: they correspond to Inform 6's
@@ -23,7 +23,7 @@ typedef struct noun_filter_token {
 their names (used as I6 tokens), and compile their routines.
 
 =
-noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int global_scope, int any_things) {
+noun_filter_token *UnderstandFilterTokens::nft_new(parse_node *spec, int global_scope, int any_things) {
 	pcalc_prop *prop = Specifications::to_proposition(spec);
 	if ((prop) && (Binding::number_free(prop) != 1)) {
 		LOG("So $P and $D\n", spec, prop);
@@ -51,15 +51,15 @@ noun_filter_token *PL::Parsing::Tokens::Filters::nft_new(parse_node *spec, int g
 	return nft;
 }
 
-inter_name *PL::Parsing::Tokens::Filters::nft_compile_routine_iname(noun_filter_token *nft) {
+inter_name *UnderstandFilterTokens::nft_compile_routine_iname(noun_filter_token *nft) {
 	return nft->nft_iname;
 }
 
-void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
-	parse_node *noun_var = Lvalues::new_actual_NONLOCAL_VARIABLE(I6_noun_VAR);
+void UnderstandFilterTokens::nft_compile_routine(noun_filter_token *nft) {
+	parse_node *noun_var = Lvalues::new_actual_NONLOCAL_VARIABLE(Inter_noun_VAR);
 	kind *R = Specifications::to_kind(nft->the_filter);
-	kind *K = NonlocalVariables::kind(I6_noun_VAR);
-	NonlocalVariables::set_kind(I6_noun_VAR, R);
+	kind *K = NonlocalVariables::kind(Inter_noun_VAR);
+	NonlocalVariables::set_kind(Inter_noun_VAR, R);
 	if (Kinds::Behaviour::is_object(R) == FALSE) nft->parse_using_gpr = TRUE;
 
 	packaging_state save = Routines::begin(nft->nft_iname);
@@ -242,7 +242,7 @@ void PL::Parsing::Tokens::Filters::nft_compile_routine(noun_filter_token *nft) {
 		Produce::up(Emit::tree());
 	}
 	Routines::end(save);
-	NonlocalVariables::set_kind(I6_noun_VAR, K);
+	NonlocalVariables::set_kind(Inter_noun_VAR, K);
 }
 
 @h Access via ID.
@@ -253,7 +253,7 @@ that's why.)
 =
 int too_late_for_further_NFTs = FALSE;
 
-int PL::Parsing::Tokens::Filters::new_id(parse_node *spec, int global_scope, int any_things) {
+int UnderstandFilterTokens::new_id(parse_node *spec, int global_scope, int any_things) {
 	if (too_late_for_further_NFTs)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"complicated instructions on understanding the player's command "
@@ -266,10 +266,10 @@ int PL::Parsing::Tokens::Filters::new_id(parse_node *spec, int global_scope, int
 			"this is a kind of value I can't understand in command grammar",
 			"so the '[any ...]' part will have to go.");
 
-	return PL::Parsing::Tokens::Filters::nft_new(spec, global_scope, any_things)->allocation_id;
+	return UnderstandFilterTokens::nft_new(spec, global_scope, any_things)->allocation_id;
 }
 
-void PL::Parsing::Tokens::Filters::compile_id(int id) {
+void UnderstandFilterTokens::compile_id(int id) {
 	noun_filter_token *nft;
 	LOOP_OVER(nft, noun_filter_token)
 		if (nft->allocation_id == id) {
@@ -280,7 +280,7 @@ void PL::Parsing::Tokens::Filters::compile_id(int id) {
 		}
 }
 
-void PL::Parsing::Tokens::Filters::emit_id(int id) {
+void UnderstandFilterTokens::emit_id(int id) {
 	noun_filter_token *nft;
 	LOOP_OVER(nft, noun_filter_token)
 		if (nft->allocation_id == id) {
@@ -289,7 +289,7 @@ void PL::Parsing::Tokens::Filters::emit_id(int id) {
 				if (nft->global_scope_flag) annot = SCOPE_FILTER_IANN;
 				else annot = NOUN_FILTER_IANN;
 			}
-			inter_name *iname = PL::Parsing::Tokens::Filters::nft_compile_routine_iname(nft);
+			inter_name *iname = UnderstandFilterTokens::nft_compile_routine_iname(nft);
 			if (annot != 0)
 				if (Produce::read_annotation(iname, annot) != 1)
 					Produce::annotate_i(iname, annot, 1);
@@ -301,12 +301,12 @@ void PL::Parsing::Tokens::Filters::emit_id(int id) {
 Having referred to these filter routines, we need to compile them.
 
 =
-void PL::Parsing::Tokens::Filters::compile(void) {
+void UnderstandFilterTokens::compile(void) {
 	noun_filter_token *nft;
 	LOOP_OVER(nft, noun_filter_token)
 		if (nft->nft_compiled == FALSE) {
 			current_sentence = nft->nft_created_at;
-			PL::Parsing::Tokens::Filters::nft_compile_routine(nft);
+			UnderstandFilterTokens::nft_compile_routine(nft);
 			nft->nft_compiled = TRUE;
 		}
 	/* too_late_for_further_NFTs = TRUE; */

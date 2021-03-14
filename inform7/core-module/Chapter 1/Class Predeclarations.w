@@ -246,8 +246,8 @@ DECLARE_CLASS(rubric_holder)
 @e direction_inference_data_CLASS
 @e explicit_action_CLASS
 @e found_in_inference_data_CLASS
-@e grammar_line_CLASS
-@e grammar_verb_CLASS
+@e cg_line_CLASS
+@e command_grammar_CLASS
 @e loop_over_scope_CLASS
 @e map_data_CLASS
 @e named_action_pattern_CLASS
@@ -281,8 +281,8 @@ DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(direction_inference_data)
 DECLARE_CLASS(found_in_inference_data)
-DECLARE_CLASS(grammar_line)
-DECLARE_CLASS(grammar_verb)
+DECLARE_CLASS(cg_line)
+DECLARE_CLASS(command_grammar)
 DECLARE_CLASS(loop_over_scope)
 DECLARE_CLASS(map_data)
 DECLARE_CLASS(named_action_pattern)

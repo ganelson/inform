@@ -1,12 +1,12 @@
-[PL::Parsing::Lines::] Grammar Lines.
+[UnderstandLines::] Command Grammar Lines.
 
 A grammar line is a list of tokens to specify a textual pattern.
 For example, the Inform source for a grammar line might be "take [something]
 out", which is a sequence of three tokens.
 
 @ A grammar line is in turn a sequence of tokens. If it matches, it will
-result in 0, 1 or 2 parameters, though only if the grammar verb owning
-the line is a genuine |GV_IS_COMMAND| command grammar will the case of
+result in 0, 1 or 2 parameters, though only if the command grammar owning
+the line is a genuine |CG_IS_COMMAND| command grammar will the case of
 2 parameters be possible. (This is for text matching, say, "put X in Y":
 the objects X and Y are two parameters resulting.) And in that case (alone),
 there will also be a |resulting_action|.
@@ -19,15 +19,15 @@ In the following structure we cache the lexeme count since it is fiddly
 to calculate, and useful when sorting grammar lines into applicability order.
 
 The individual tokens are stored simply as parse tree nodes of type
-|TOKEN_NT|, and are the children of the node |gl->tokens|, which is why
+|TOKEN_NT|, and are the children of the node |cgl->tokens|, which is why
 (for now, anyway) there is no grammar token structure.
 
 @d UNCALCULATED_BONUS -1000000
 
 =
-typedef struct grammar_line {
-	struct grammar_line *next_line; /* linked list in creation order */
-	struct grammar_line *sorted_next_line; /* and in applicability order */
+typedef struct cg_line {
+	struct cg_line *next_line; /* linked list in creation order */
+	struct cg_line *sorted_next_line; /* and in applicability order */
 
 	struct parse_node *where_grammar_specified; /* where found in source */
 	int original_text; /* the word number of the double-quoted grammar text... */
@@ -36,18 +36,18 @@ typedef struct grammar_line {
 	struct wording understand_when_text; /* only when this condition holds */
 	struct pcalc_prop *understand_when_prop; /* and when this condition holds */
 
-	int pluralised; /* |GV_IS_OBJECT|: refers in the plural */
+	int pluralised; /* |CG_IS_OBJECT|: refers in the plural */
 
-	struct action_name *resulting_action; /* |GV_IS_COMMAND|: the action */
-	int reversed; /* |GV_IS_COMMAND|: the two arguments are in reverse order */
-	int mistaken; /* |GV_IS_COMMAND|: is this understood as a mistake? */
+	struct action_name *resulting_action; /* |CG_IS_COMMAND|: the action */
+	int reversed; /* |CG_IS_COMMAND|: the two arguments are in reverse order */
+	int mistaken; /* |CG_IS_COMMAND|: is this understood as a mistake? */
 	struct wording mistake_response_text; /* if so, reply thus */
 
-	struct grammar_type gl_type;
+	struct grammar_type cgl_type;
 
 	int suppress_compilation; /* has been compiled in a single I6 grammar token already? */
-	struct grammar_line *next_with_action; /* used when indexing actions */
-	struct grammar_verb *belongs_to_gv; /* similarly, used only in indexing */
+	struct cg_line *next_with_action; /* used when indexing actions */
+	struct command_grammar *belongs_to_gv; /* similarly, used only in indexing */
 
 	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
 	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
@@ -56,7 +56,7 @@ typedef struct grammar_line {
 	int understanding_sort_bonus;
 
 	CLASS_DEFINITION
-} grammar_line;
+} cg_line;
 
 @ =
 typedef struct slash_gpr {
@@ -67,71 +67,71 @@ typedef struct slash_gpr {
 } slash_gpr;
 
 @ =
-grammar_line *PL::Parsing::Lines::new(int wn, action_name *ac,
+cg_line *UnderstandLines::new(int wn, action_name *ac,
 	parse_node *token_list, int reversed, int pluralised) {
-	grammar_line *gl;
-	gl = CREATE(grammar_line);
-	gl->original_text = wn;
-	gl->resulting_action = ac;
-	gl->belongs_to_gv = NULL;
+	cg_line *cgl;
+	cgl = CREATE(cg_line);
+	cgl->original_text = wn;
+	cgl->resulting_action = ac;
+	cgl->belongs_to_gv = NULL;
 
-	if (ac != NULL) PL::Actions::add_gl(ac, gl);
+	if (ac != NULL) Actions::add_gl(ac, cgl);
 
-	gl->mistaken = FALSE;
-	gl->mistake_response_text = EMPTY_WORDING;
-	gl->next_with_action = NULL;
-	gl->next_line = NULL;
-	gl->tokens = token_list;
-	gl->where_grammar_specified = current_sentence;
-	gl->gl_type = PL::Parsing::Tokens::Types::new(TRUE);
-	gl->lexeme_count = -1; /* no count made as yet */
-	gl->reversed = reversed;
-	gl->pluralised = pluralised;
-	gl->understand_when_text = EMPTY_WORDING;
-	gl->understand_when_prop = NULL;
-	gl->suppress_compilation = FALSE;
-	gl->general_sort_bonus = UNCALCULATED_BONUS;
-	gl->understanding_sort_bonus = UNCALCULATED_BONUS;
+	cgl->mistaken = FALSE;
+	cgl->mistake_response_text = EMPTY_WORDING;
+	cgl->next_with_action = NULL;
+	cgl->next_line = NULL;
+	cgl->tokens = token_list;
+	cgl->where_grammar_specified = current_sentence;
+	cgl->cgl_type = UnderstandTokens::Types::new(TRUE);
+	cgl->lexeme_count = -1; /* no count made as yet */
+	cgl->reversed = reversed;
+	cgl->pluralised = pluralised;
+	cgl->understand_when_text = EMPTY_WORDING;
+	cgl->understand_when_prop = NULL;
+	cgl->suppress_compilation = FALSE;
+	cgl->general_sort_bonus = UNCALCULATED_BONUS;
+	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
 
-	gl->cond_token_iname = NULL;
-	gl->mistake_iname = NULL;
+	cgl->cond_token_iname = NULL;
+	cgl->mistake_iname = NULL;
 
-	return gl;
+	return cgl;
 }
 
-void PL::Parsing::Lines::log(grammar_line *gl) {
-	LOG("<GL%d:%W>", gl->allocation_id, Node::get_text(gl->tokens));
+void UnderstandLines::log(cg_line *cgl) {
+	LOG("<GL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
 }
 
-void PL::Parsing::Lines::set_single_type(grammar_line *gl, parse_node *gl_value) {
-	PL::Parsing::Tokens::Types::set_single_type(&(gl->gl_type), gl_value);
+void UnderstandLines::set_single_type(cg_line *cgl, parse_node *cgl_value) {
+	UnderstandTokens::Types::set_single_type(&(cgl->cgl_type), cgl_value);
 }
 
 @h GL lists.
 Grammar lines are themselves generally stored in linked lists (belonging,
-for instance, to a GV). Here we add a GL to the back of a list.
+for instance, to a CG). Here we add a GL to the back of a list.
 
 =
-int PL::Parsing::Lines::list_length(grammar_line *list_head) {
+int UnderstandLines::list_length(cg_line *list_head) {
 	int c = 0;
-	grammar_line *posn;
+	cg_line *posn;
 	for (posn = list_head; posn; posn = posn->next_line) c++;
 	return c;
 }
 
-grammar_line *PL::Parsing::Lines::list_add(grammar_line *list_head, grammar_line *new_gl) {
+cg_line *UnderstandLines::list_add(cg_line *list_head, cg_line *new_gl) {
 	new_gl->next_line = NULL;
 	if (list_head == NULL) list_head = new_gl;
 	else {
-		grammar_line *posn = list_head;
+		cg_line *posn = list_head;
 		while (posn->next_line) posn = posn->next_line;
 		posn->next_line = new_gl;
 	}
 	return list_head;
 }
 
-grammar_line *PL::Parsing::Lines::list_remove(grammar_line *list_head, action_name *find) {
-	grammar_line *prev = NULL, *posn = list_head;
+cg_line *UnderstandLines::list_remove(cg_line *list_head, action_name *find) {
+	cg_line *prev = NULL, *posn = list_head;
 	while (posn) {
 		if (posn->resulting_action == find) {
 			LOGIF(GRAMMAR_CONSTRUCTION, "Removing grammar line: $g\n", posn);
@@ -156,11 +156,11 @@ etc.) is compiled because of I6's requirement that all GPRs be defined
 as routines prior to the |Verb| directive using them.
 
 =
-void PL::Parsing::Lines::line_list_compile_condition_tokens(grammar_line *list_head) {
-	grammar_line *gl;
-	for (gl = list_head; gl; gl = gl->next_line) {
-		PL::Parsing::Lines::gl_compile_condition_token_as_needed(gl);
-		PL::Parsing::Lines::gl_compile_mistake_token_as_needed(gl);
+void UnderstandLines::line_list_compile_condition_tokens(cg_line *list_head) {
+	cg_line *cgl;
+	for (cgl = list_head; cgl; cgl = cgl->next_line) {
+		UnderstandLines::cgl_compile_condition_token_as_needed(cgl);
+		UnderstandLines::cgl_compile_mistake_token_as_needed(cgl);
 	}
 }
 
@@ -201,31 +201,31 @@ a command grammar, we might have:
 |* Cond_Token_26 'draw' noun -> Draw|
 
 =
-void PL::Parsing::Lines::set_understand_when(grammar_line *gl, wording W) {
-	gl->understand_when_text = W;
+void UnderstandLines::set_understand_when(cg_line *cgl, wording W) {
+	cgl->understand_when_text = W;
 }
-void PL::Parsing::Lines::set_understand_prop(grammar_line *gl, pcalc_prop *prop) {
-	gl->understand_when_prop = prop;
+void UnderstandLines::set_understand_prop(cg_line *cgl, pcalc_prop *prop) {
+	cgl->understand_when_prop = prop;
 }
-int PL::Parsing::Lines::conditional(grammar_line *gl) {
-	if ((Wordings::nonempty(gl->understand_when_text)) || (gl->understand_when_prop))
+int UnderstandLines::conditional(cg_line *cgl) {
+	if ((Wordings::nonempty(cgl->understand_when_text)) || (cgl->understand_when_prop))
 		return TRUE;
 	return FALSE;
 }
 
-void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) {
-	if (PL::Parsing::Lines::conditional(gl)) {
-		current_sentence = gl->where_grammar_specified;
+void UnderstandLines::cgl_compile_condition_token_as_needed(cg_line *cgl) {
+	if (UnderstandLines::conditional(cgl)) {
+		current_sentence = cgl->where_grammar_specified;
 
 		package_request *PR = Hierarchy::local_package(COND_TOKENS_HAP);
-		gl->cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
+		cgl->cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
 
-		packaging_state save = Routines::begin(gl->cond_token_iname);
+		packaging_state save = Routines::begin(cgl->cond_token_iname);
 
 		parse_node *spec = NULL;
-		if (Wordings::nonempty(gl->understand_when_text)) {
-			current_sentence = gl->where_grammar_specified;
-			if (<understand-condition>(gl->understand_when_text)) {
+		if (Wordings::nonempty(cgl->understand_when_text)) {
+			current_sentence = cgl->where_grammar_specified;
+			if (<understand-condition>(cgl->understand_when_text)) {
 				spec = <<parse_node:cond>>;
 				if (Dash::validate_conditional_clause(spec) == FALSE) {
 					@<Issue PM_BadWhen problem@>;
@@ -233,7 +233,7 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 				}
 			}
 		}
-		pcalc_prop *prop = gl->understand_when_prop;
+		pcalc_prop *prop = cgl->understand_when_prop;
 
 		if ((spec) || (prop)) {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -265,18 +265,18 @@ void PL::Parsing::Lines::gl_compile_condition_token_as_needed(grammar_line *gl) 
 	}
 }
 
-void PL::Parsing::Lines::gl_compile_extra_token_for_condition(gpr_kit *gprk, grammar_line *gl,
-	int gv_is, inter_symbol *current_label) {
-	if (PL::Parsing::Lines::conditional(gl)) {
-		if (gl->cond_token_iname == NULL) internal_error("GL cond token not ready");
-		if (gv_is == GV_IS_COMMAND) {
-			Emit::array_iname_entry(gl->cond_token_iname);
+void UnderstandLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk, cg_line *cgl,
+	int cg_is, inter_symbol *current_label) {
+	if (UnderstandLines::conditional(cgl)) {
+		if (cgl->cond_token_iname == NULL) internal_error("GL cond token not ready");
+		if (cg_is == CG_IS_COMMAND) {
+			Emit::array_iname_entry(cgl->cond_token_iname);
 		} else {
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), gl->cond_token_iname);
+					Produce::inv_call_iname(Emit::tree(), cgl->cond_token_iname);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 				Produce::up(Emit::tree());
 				Produce::code(Emit::tree());
@@ -313,18 +313,18 @@ I6 parsing is guaranteed to be the one set during the line causing
 the mistake.
 
 =
-void PL::Parsing::Lines::set_mistake(grammar_line *gl, int wn) {
-	gl->mistaken = TRUE;
-	gl->mistake_response_text = Wordings::one_word(wn);
-	if (gl->mistake_iname == NULL) {
+void UnderstandLines::set_mistake(cg_line *cgl, int wn) {
+	cgl->mistaken = TRUE;
+	cgl->mistake_response_text = Wordings::one_word(wn);
+	if (cgl->mistake_iname == NULL) {
 		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
-		gl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
+		cgl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
 	}
 }
 
-void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
-	if (gl->mistaken) {
-		packaging_state save = Routines::begin(gl->mistake_iname);
+void UnderstandLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
+	if (cgl->mistaken) {
+		packaging_state save = Routines::begin(cgl->mistake_iname);
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
@@ -345,7 +345,7 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100 + gl->allocation_id));
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100 + cgl->allocation_id));
 		Produce::up(Emit::tree());
 
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
@@ -357,10 +357,10 @@ void PL::Parsing::Lines::gl_compile_mistake_token_as_needed(grammar_line *gl) {
 	}
 }
 
-void PL::Parsing::Lines::gl_compile_extra_token_for_mistake(grammar_line *gl, int gv_is) {
-	if (gl->mistaken) {
-		if (gv_is == GV_IS_COMMAND) {
-			Emit::array_iname_entry(gl->mistake_iname);
+void UnderstandLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
+	if (cgl->mistaken) {
+		if (cg_is == CG_IS_COMMAND) {
+			Emit::array_iname_entry(cgl->mistake_iname);
 		} else
 			internal_error("GLs may only be mistaken in command grammar");
 	}
@@ -368,8 +368,8 @@ void PL::Parsing::Lines::gl_compile_extra_token_for_mistake(grammar_line *gl, in
 
 inter_name *MistakeAction_iname = NULL;
 
-int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line *gl) {
-	if (gl->mistaken) {
+int UnderstandLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line *cgl) {
+	if (cgl->mistaken) {
 		if (MistakeAction_iname == NULL) internal_error("no MistakeAction yet");
 		Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
 		Emit::array_iname_entry(MistakeAction_iname);
@@ -378,7 +378,7 @@ int PL::Parsing::Lines::gl_compile_result_of_mistake(gpr_kit *gprk, grammar_line
 	return FALSE;
 }
 
-void PL::Parsing::Lines::MistakeActionSub_routine(void) {
+void UnderstandLines::MistakeActionSub_routine(void) {
 	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
 	packaging_state save = Routines::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
 
@@ -387,18 +387,18 @@ void PL::Parsing::Lines::MistakeActionSub_routine(void) {
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			grammar_line *gl;
-			LOOP_OVER(gl, grammar_line)
-				if (gl->mistaken) {
-					if (Wordings::nonempty(gl->mistake_response_text)) {
-						current_sentence = gl->where_grammar_specified;
+			cg_line *cgl;
+			LOOP_OVER(cgl, cg_line)
+				if (cgl->mistaken) {
+					if (Wordings::nonempty(cgl->mistake_response_text)) {
+						current_sentence = cgl->where_grammar_specified;
 						parse_node *spec = NULL;
-						if (<s-value>(gl->mistake_response_text))
+						if (<s-value>(cgl->mistake_response_text))
 							spec = <<rp>>;
-						else spec = Specifications::new_UNKNOWN(gl->mistake_response_text);
+						else spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
 						Produce::inv_primitive(Emit::tree(), CASE_BIP);
 						Produce::down(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+gl->allocation_id));
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+cgl->allocation_id));
 							Produce::code(Emit::tree());
 							Produce::down(Emit::tree());
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
@@ -447,14 +447,14 @@ are grammar lines consisting of single unconditional words, as detected
 by the following routine:
 
 =
-int PL::Parsing::Lines::gl_contains_single_unconditional_word(grammar_line *gl) {
-	parse_node *pn = gl->tokens->down;
+int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
+	parse_node *pn = cgl->tokens->down;
 	if ((pn)
 		&& (pn->next == NULL)
 		&& (Annotations::read_int(pn, slash_class_ANNOT) == 0)
 		&& (Annotations::read_int(pn, grammar_token_literal_ANNOT))
-		&& (gl->pluralised == FALSE)
-		&& (PL::Parsing::Lines::conditional(gl) == FALSE))
+		&& (cgl->pluralised == FALSE)
+		&& (UnderstandLines::conditional(cgl) == FALSE))
 		return Wordings::first_wn(Node::get_text(pn));
 	return -1;
 }
@@ -469,17 +469,17 @@ the transfer into |name| and the exclusion from |parse_name| of
 affected GLs.
 
 =
-grammar_line *PL::Parsing::Lines::list_take_out_one_word_grammar(grammar_line *list_head) {
-	grammar_line *gl, *glp;
-	for (gl = list_head, glp = NULL; gl; gl = gl->next_line) {
-		int wn = PL::Parsing::Lines::gl_contains_single_unconditional_word(gl);
+cg_line *UnderstandLines::list_take_out_one_word_grammar(cg_line *list_head) {
+	cg_line *cgl, *glp;
+	for (cgl = list_head, glp = NULL; cgl; cgl = cgl->next_line) {
+		int wn = UnderstandLines::cgl_contains_single_unconditional_word(cgl);
 		if (wn >= 0) {
 			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", Lexer::word_text(wn));
 			Emit::array_dword_entry(content);
 			DISCARD_TEXT(content)
-			gl->suppress_compilation = TRUE;
-		} else glp = gl;
+			cgl->suppress_compilation = TRUE;
+		} else glp = cgl;
 	}
 	return list_head;
 }
@@ -489,10 +489,10 @@ Slashing is an activity carried out on a per-grammar-line basis, so to slash
 a list of GLs we simply slash each GL in turn.
 
 =
-void PL::Parsing::Lines::line_list_slash(grammar_line *gl_head) {
-	grammar_line *gl;
-	for (gl = gl_head; gl; gl = gl->next_line) {
-		PL::Parsing::Lines::slash_grammar_line(gl);
+void UnderstandLines::line_list_slash(cg_line *cgl_head) {
+	cg_line *cgl;
+	for (cgl = cgl_head; cgl; cgl = cgl->next_line) {
+		UnderstandLines::slash_cg_line(cgl);
 	}
 }
 
@@ -509,22 +509,22 @@ empty word, and is removed from the token list; but the first token of the
 lexeme is annotated accordingly.
 
 =
-void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
+void UnderstandLines::slash_cg_line(cg_line *cgl) {
 	parse_node *pn;
 	int alternatives_group = 0;
 
-	current_sentence = gl->where_grammar_specified; /* to report problems */
+	current_sentence = cgl->where_grammar_specified; /* to report problems */
 
-	if (gl->tokens == NULL)
+	if (cgl->tokens == NULL)
 		internal_error("Null tokens on grammar");
 
-	LOGIF(GRAMMAR_CONSTRUCTION, "Preparing grammar line:\n$T", gl->tokens);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Preparing grammar line:\n$T", cgl->tokens);
 
-	for (pn = gl->tokens->down; pn; pn = pn->next)
+	for (pn = cgl->tokens->down; pn; pn = pn->next)
 		Annotations::write_int(pn, slash_class_ANNOT, 0);
 
 	parse_node *class_start = NULL;
-	for (pn = gl->tokens->down; pn; pn = pn->next) {
+	for (pn = cgl->tokens->down; pn; pn = pn->next) {
 		if ((pn->next) &&
 			(Wordings::length(Node::get_text(pn->next)) == 1) &&
 			(Lexer::word(Wordings::first_wn(Node::get_text(pn->next))) == FORWARDSLASH_V)) { /* slash follows: */
@@ -548,9 +548,9 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 		}
 	}
 
-	LOGIF(GRAMMAR_CONSTRUCTION, "Regrouped as:\n$T", gl->tokens);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Regrouped as:\n$T", cgl->tokens);
 
-	for (pn = gl->tokens->down; pn; pn = pn->next)
+	for (pn = cgl->tokens->down; pn; pn = pn->next)
 		if ((Annotations::read_int(pn, slash_class_ANNOT) > 0) &&
 			(Annotations::read_int(pn, grammar_token_literal_ANNOT) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OverAmbitiousSlash),
@@ -560,17 +560,17 @@ void PL::Parsing::Lines::slash_grammar_line(grammar_line *gl) {
 			break;
 		}
 
-	gl->lexeme_count = 0;
+	cgl->lexeme_count = 0;
 
-	for (pn = gl->tokens->down; pn; pn = pn->next) {
+	for (pn = cgl->tokens->down; pn; pn = pn->next) {
 		int i = Annotations::read_int(pn, slash_class_ANNOT);
 		if (i > 0)
 			while ((pn->next) && (Annotations::read_int(pn->next, slash_class_ANNOT) == i))
 				pn = pn->next;
-		gl->lexeme_count++;
+		cgl->lexeme_count++;
 	}
 
-	LOGIF(GRAMMAR_CONSTRUCTION, "Slashed as:\n$T", gl->tokens);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Slashed as:\n$T", cgl->tokens);
 }
 
 @h Phase II: Determining Grammar.
@@ -586,16 +586,16 @@ as null for this purpose, since a grammar used for parsing the player's
 commands is not also used to determine a value.)
 
 =
-parse_node *PL::Parsing::Lines::line_list_determine(grammar_line *list_head,
-	int depth, int gv_is, grammar_verb *gv, int genuinely_verbal) {
-	grammar_line *gl;
+parse_node *UnderstandLines::line_list_determine(cg_line *list_head,
+	int depth, int cg_is, command_grammar *cg, int genuinely_verbal) {
+	cg_line *cgl;
 	int first_flag = TRUE;
 	parse_node *spec_union = NULL;
-	LOGIF(GRAMMAR_CONSTRUCTION, "Determining GL list for $G\n", gv);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Determining GL list for $G\n", cg);
 
-	for (gl = list_head; gl; gl = gl->next_line) {
+	for (cgl = list_head; cgl; cgl = cgl->next_line) {
 		parse_node *spec_of_line =
-			PL::Parsing::Lines::gl_determine(gl, depth, gv_is, gv, genuinely_verbal);
+			UnderstandLines::cgl_determine(cgl, depth, cg_is, cg, genuinely_verbal);
 
 		if (first_flag) { /* initially no expectations: |spec_union| is meaningless */
 			spec_union = spec_of_line; /* so we set it to the first result */
@@ -616,9 +616,9 @@ parse_node *PL::Parsing::Lines::line_list_determine(grammar_line *list_head,
 			}
 		}
 
-		if (PL::Parsing::Verbs::allow_mixed_lines(gv)) continue;
+		if (CommandGrammars::allow_mixed_lines(cg)) continue;
 
-		current_sentence = gl->where_grammar_specified;
+		current_sentence = cgl->where_grammar_specified;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
 			"grammar tokens must have the same outcome whatever the way they are "
 			"reached",
@@ -639,19 +639,19 @@ quantities used in sorting GLs: the "general sorting bonus" and the
 "understanding sorting bonus" (see below).
 
 =
-parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
-	int gv_is, grammar_verb *gv, int genuinely_verbal) {
+parse_node *UnderstandLines::cgl_determine(cg_line *cgl, int depth,
+	int cg_is, command_grammar *cg, int genuinely_verbal) {
 	parse_node *spec = NULL;
 	parse_node *pn, *pn2;
 	int nulls_count, i, nrv, line_length;
-	current_sentence = gl->where_grammar_specified;
+	current_sentence = cgl->where_grammar_specified;
 
-	gl->understanding_sort_bonus = 0;
-	gl->general_sort_bonus = 0;
+	cgl->understanding_sort_bonus = 0;
+	cgl->general_sort_bonus = 0;
 
 	nulls_count = 0; /* number of tokens with null results */
 
-	pn = gl->tokens->down; /* start from first token */
+	pn = cgl->tokens->down; /* start from first token */
 	if ((genuinely_verbal) && (pn)) pn = pn->next; /* unless it's a command verb */
 
 	for (pn2=pn, line_length=0; pn2; pn2 = pn2->next) line_length++;
@@ -662,7 +662,7 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 			internal_error("Bogus node types on grammar");
 
 		int score = 0;
-		spec = PL::Parsing::Tokens::determine(pn, depth, &score);
+		spec = UnderstandTokens::determine(pn, depth, &score);
 		LOGIF(GRAMMAR_CONSTRUCTION, "Result of token <%W> is $P\n", Node::get_text(pn), spec);
 
 		if (spec) {
@@ -672,14 +672,14 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 				int usb_contribution = i - 100;
 				if (usb_contribution >= 0) usb_contribution = -1;
 				usb_contribution = 100*usb_contribution + (line_length-1-i);
-				gl->understanding_sort_bonus += usb_contribution; /* reduces! */
+				cgl->understanding_sort_bonus += usb_contribution; /* reduces! */
 			}
-			gl->general_sort_bonus +=
-				PL::Parsing::Tokens::Types::add_type(&(gl->gl_type), spec,
-					PL::Parsing::Tokens::is_multiple(pn), score);
+			cgl->general_sort_bonus +=
+				UnderstandTokens::Types::add_type(&(cgl->cgl_type), spec,
+					UnderstandTokens::is_multiple(pn), score);
 		} else nulls_count++;
 
-		if (PL::Parsing::Tokens::is_multiple(pn)) multiples++;
+		if (UnderstandTokens::is_multiple(pn)) multiples++;
 	}
 
 	if (multiples > 1)
@@ -689,11 +689,11 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 			"so you'll have to remove one of the 'things' tokens and "
 			"make it a 'something' instead.");
 
-	nrv = PL::Parsing::Tokens::Types::get_no_resulting_values(&(gl->gl_type));
-	if (nrv == 0) gl->general_sort_bonus = 100*nulls_count;
-	if (gv_is == GV_IS_COMMAND) spec = NULL;
+	nrv = UnderstandTokens::Types::get_no_resulting_values(&(cgl->cgl_type));
+	if (nrv == 0) cgl->general_sort_bonus = 100*nulls_count;
+	if (cg_is == CG_IS_COMMAND) spec = NULL;
 	else {
-		if (nrv < 2) spec = PL::Parsing::Tokens::Types::get_single_type(&(gl->gl_type));
+		if (nrv < 2) spec = UnderstandTokens::Types::get_single_type(&(cgl->cgl_type));
 		else StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
 			"there can be at most one varying part in the definition of a "
 			"named token",
@@ -705,8 +705,8 @@ parse_node *PL::Parsing::Lines::gl_determine(grammar_line *gl, int depth,
 	LOGIF(GRAMMAR_CONSTRUCTION,
 		"Determined $g: lexeme count %d, sorting bonus %d, arguments %d, "
 		"fixed initials %d, type $P\n",
-		gl, gl->lexeme_count, gl->general_sort_bonus, nrv,
-		gl->understanding_sort_bonus, spec);
+		cgl, cgl->lexeme_count, cgl->general_sort_bonus, nrv,
+		cgl->understanding_sort_bonus, spec);
 
 	return spec;
 }
@@ -716,33 +716,33 @@ Insertion sort is used to take the linked list of GLs and construct a
 separate, sorted version. This is not the controversial part.
 
 =
-grammar_line *PL::Parsing::Lines::list_sort(grammar_line *list_head) {
-	grammar_line *gl, *gl2, *gl3, *sorted_head;
+cg_line *UnderstandLines::list_sort(cg_line *list_head) {
+	cg_line *cgl, *gl2, *gl3, *sorted_head;
 
 	if (list_head == NULL) return NULL;
 
 	sorted_head = list_head;
 	list_head->sorted_next_line = NULL;
 
-	gl = list_head;
-	while (gl->next_line) {
-		gl = gl->next_line;
+	cgl = list_head;
+	while (cgl->next_line) {
+		cgl = cgl->next_line;
 		gl2 = sorted_head;
-		if (PL::Parsing::Lines::grammar_line_must_precede(gl, gl2)) {
-			sorted_head = gl;
-			gl->sorted_next_line = gl2;
+		if (UnderstandLines::cg_line_must_precede(cgl, gl2)) {
+			sorted_head = cgl;
+			cgl->sorted_next_line = gl2;
 			continue;
 		}
 		while (gl2) {
 			gl3 = gl2;
 			gl2 = gl2->sorted_next_line;
 			if (gl2 == NULL) {
-				gl3->sorted_next_line = gl;
+				gl3->sorted_next_line = cgl;
 				break;
 			}
-			if (PL::Parsing::Lines::grammar_line_must_precede(gl, gl2)) {
-				gl3->sorted_next_line = gl;
-				gl->sorted_next_line = gl2;
+			if (UnderstandLines::cg_line_must_precede(cgl, gl2)) {
+				gl3->sorted_next_line = cgl;
+				cgl->sorted_next_line = gl2;
 				break;
 			}
 		}
@@ -909,7 +909,7 @@ BBC children's television programme "Vision On" -- so that the command
 TURN ON VISION ON would match both of the alternative GLs.
 
 =
-int PL::Parsing::Lines::grammar_line_must_precede(grammar_line *L1, grammar_line *L2) {
+int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 	int cs, a, b;
 
 	if ((L1 == NULL) || (L2 == NULL))
@@ -945,11 +945,11 @@ int PL::Parsing::Lines::grammar_line_must_precede(grammar_line *L1, grammar_line
 	if (L1->general_sort_bonus > L2->general_sort_bonus) return TRUE;
 	if (L1->general_sort_bonus < L2->general_sort_bonus) return FALSE;
 
-	cs = PL::Parsing::Tokens::Types::must_precede(&(L1->gl_type), &(L2->gl_type));
+	cs = UnderstandTokens::Types::must_precede(&(L1->cgl_type), &(L2->cgl_type));
 	if (cs != NOT_APPLICABLE) return cs;
 
-	if ((PL::Parsing::Lines::conditional(L1)) && (PL::Parsing::Lines::conditional(L2) == FALSE)) return TRUE;
-	if ((PL::Parsing::Lines::conditional(L1) == FALSE) && (PL::Parsing::Lines::conditional(L2))) return FALSE;
+	if ((UnderstandLines::conditional(L1)) && (UnderstandLines::conditional(L2) == FALSE)) return TRUE;
+	if ((UnderstandLines::conditional(L1) == FALSE) && (UnderstandLines::conditional(L2))) return FALSE;
 
 	return FALSE;
 }
@@ -969,16 +969,16 @@ of the |name| property accumulate from class to instance in I6, since
 |name| is additive, but grammar doesn't.
 
 =
-void PL::Parsing::Lines::sorted_line_list_compile(gpr_kit *gprk, grammar_line *list_head,
-	int gv_is, grammar_verb *gv, int genuinely_verbal) {
-	for (grammar_line *gl = list_head; gl; gl = gl->sorted_next_line)
-		if (gl->suppress_compilation == FALSE)
-			PL::Parsing::Lines::compile_grammar_line(gprk, gl, gv_is, gv, genuinely_verbal);
+void UnderstandLines::sorted_line_list_compile(gpr_kit *gprk, cg_line *list_head,
+	int cg_is, command_grammar *cg, int genuinely_verbal) {
+	for (cg_line *cgl = list_head; cgl; cgl = cgl->sorted_next_line)
+		if (cgl->suppress_compilation == FALSE)
+			UnderstandLines::compile_cg_line(gprk, cgl, cg_is, cg, genuinely_verbal);
 }
 
 @ The following apparently global variables are used to provide a persistent
 state for the routine below, but are not accessed elsewhere. The label
-counter is reset at the start of each GV's compilation, though this is a
+counter is reset at the start of each CG's compilation, though this is a
 purely cosmetic effect.
 
 =
@@ -986,7 +986,7 @@ int current_grammar_block = 0;
 int current_label = 1;
 int GV_IS_VALUE_instance_mode = FALSE;
 
-void PL::Parsing::Lines::reset_labels(void) {
+void UnderstandLines::reset_labels(void) {
 	current_label = 1;
 }
 
@@ -998,7 +998,7 @@ in |Verb| directives) and that GLs resulting in actions (i.e., GLs in
 command GVs) have not yet been type-checked, whereas all others have.
 
 =
-void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, int gv_is, grammar_verb *gv,
+void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, command_grammar *cg,
 	int genuinely_verbal) {
 	parse_node *pn;
 	int i;
@@ -1006,22 +1006,22 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	kind *token_value_kinds[2];
 	int code_mode, consult_mode;
 
-	LOGIF(GRAMMAR, "Compiling grammar line: $g\n", gl);
+	LOGIF(GRAMMAR, "Compiling grammar line: $g\n", cgl);
 
-	current_sentence = gl->where_grammar_specified;
+	current_sentence = cgl->where_grammar_specified;
 
-	if (gv_is == GV_IS_COMMAND) code_mode = FALSE; else code_mode = TRUE;
-	if (gv_is == GV_IS_CONSULT) consult_mode = TRUE; else consult_mode = FALSE;
+	if (cg_is == CG_IS_COMMAND) code_mode = FALSE; else code_mode = TRUE;
+	if (cg_is == CG_IS_CONSULT) consult_mode = TRUE; else consult_mode = FALSE;
 
-	switch (gv_is) {
-		case GV_IS_COMMAND:
-		case GV_IS_TOKEN:
-		case GV_IS_CONSULT:
-		case GV_IS_OBJECT:
-		case GV_IS_VALUE:
-		case GV_IS_PROPERTY_NAME:
+	switch (cg_is) {
+		case CG_IS_COMMAND:
+		case CG_IS_TOKEN:
+		case CG_IS_CONSULT:
+		case CG_IS_OBJECT:
+		case CG_IS_VALUE:
+		case CG_IS_PROPERTY_NAME:
 			break;
-		default: internal_error("tried to compile unknown GV type");
+		default: internal_error("tried to compile unknown CG type");
 	}
 
 	current_grammar_block++;
@@ -1039,10 +1039,10 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 		DISCARD_TEXT(L)
 	}
 
-	PL::Parsing::Lines::gl_compile_extra_token_for_condition(gprk, gl, gv_is, fail_label);
-	PL::Parsing::Lines::gl_compile_extra_token_for_mistake(gl, gv_is);
+	UnderstandLines::cgl_compile_extra_token_for_condition(gprk, cgl, cg_is, fail_label);
+	UnderstandLines::cgl_compile_extra_token_for_mistake(cgl, cg_is);
 
-	pn = gl->tokens->down;
+	pn = cgl->tokens->down;
 	if ((genuinely_verbal) && (pn)) {
 		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
@@ -1054,13 +1054,13 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 		pn = pn->next; /* skip command word: the |Verb| header contains it already */
 	}
 
-	if ((gv_is == GV_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
+	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, gprk->instance_s);
-				PL::Parsing::Tokens::Types::compile_to_string(&(gl->gl_type));
+				UnderstandTokens::Types::compile_to_string(&(cgl->cgl_type));
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
@@ -1069,15 +1069,15 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	parse_node *pn_from = pn, *pn_to = pn_from;
 	for (; pn; pn = pn->next) pn_to = pn;
 
-	PL::Parsing::Lines::compile_token_line(gprk, code_mode, pn_from, pn_to, gv_is, consult_mode, &token_values, token_value_kinds, NULL, fail_label);
+	UnderstandLines::compile_token_line(gprk, code_mode, pn_from, pn_to, cg_is, consult_mode, &token_values, token_value_kinds, NULL, fail_label);
 
-	switch (gv_is) {
-		case GV_IS_COMMAND:
-			if (PL::Parsing::Lines::gl_compile_result_of_mistake(gprk, gl)) break;
+	switch (cg_is) {
+		case CG_IS_COMMAND:
+			if (UnderstandLines::cgl_compile_result_of_mistake(gprk, cgl)) break;
 			Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
-			Emit::array_action_entry(gl->resulting_action);
+			Emit::array_action_entry(cgl->resulting_action);
 
-			if (gl->reversed) {
+			if (cgl->reversed) {
 				if (token_values < 2) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
 						"you can't use a 'reversed' action when you supply fewer "
@@ -1091,11 +1091,11 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Emit::array_iname_entry(VERB_DIRECTIVE_REVERSE_iname);
 			}
 
-			ActionSemantics::check_valid_application(gl->resulting_action, token_values,
+			ActionSemantics::check_valid_application(cgl->resulting_action, token_values,
 				token_value_kinds);
 			break;
-		case GV_IS_PROPERTY_NAME:
-		case GV_IS_TOKEN:
+		case CG_IS_PROPERTY_NAME:
+		case CG_IS_TOKEN:
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
@@ -1112,7 +1112,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 			Produce::up(Emit::tree());
 			break;
-		case GV_IS_CONSULT:
+		case CG_IS_CONSULT:
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), OR_BIP);
@@ -1153,14 +1153,14 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 			Produce::up(Emit::tree());
 			break;
-		case GV_IS_OBJECT:
-			PL::Parsing::Tokens::General::after_gl_failed(gprk, fail_label, gl->pluralised);
+		case CG_IS_OBJECT:
+			UnderstandGeneralTokens::after_gl_failed(gprk, fail_label, cgl->pluralised);
 			break;
-		case GV_IS_VALUE:
+		case CG_IS_VALUE:
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-				PL::Parsing::Tokens::Types::compile_to_string(&(gl->gl_type));
+				UnderstandTokens::Types::compile_to_string(&(cgl->cgl_type));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 			Produce::down(Emit::tree());
@@ -1175,7 +1175,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 			break;
 	}
 
-	if ((gv_is == GV_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
+	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
@@ -1183,7 +1183,7 @@ void PL::Parsing::Lines::compile_grammar_line(gpr_kit *gprk, grammar_line *gl, i
 	current_label++;
 }
 
-void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_node *pn, parse_node *pn_to, int gv_is, int consult_mode,
+void UnderstandLines::compile_token_line(gpr_kit *gprk, int code_mode, parse_node *pn, parse_node *pn_to, int cg_is, int consult_mode,
 	int *token_values, kind **token_value_kinds, inter_symbol *group_wn_s, inter_symbol *fail_label) {
 	int lexeme_equivalence_class = 0;
 	int alternative_number = 0;
@@ -1192,8 +1192,8 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 	inter_symbol *next_reserved_label = NULL;
 	inter_symbol *eog_reserved_label = NULL;
 	for (; pn; pn = pn->next) {
-		if ((PL::Parsing::Tokens::is_text(pn)) && (pn->next) &&
-			(PL::Parsing::Tokens::is_literal(pn->next) == FALSE)) {
+		if ((UnderstandTokens::is_text(pn)) && (pn->next) &&
+			(UnderstandTokens::is_literal(pn->next) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
 				"a '[text]' token must either match the end of some text, or "
 				"be followed by definitely known wording",
@@ -1201,7 +1201,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 				"make sense of things.");
 		}
 
-		if ((Node::get_grammar_token_relation(pn)) && (gv_is != GV_IS_OBJECT)) {
+		if ((Node::get_grammar_token_relation(pn)) && (cg_is != CG_IS_OBJECT)) {
 			if (problem_count == 0)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
 				"a grammar token in an 'Understand...' can only be based "
@@ -1275,7 +1275,7 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 			last_token_in_lexeme = TRUE;
 		} else {
 			kind *grammar_token_kind =
-				PL::Parsing::Tokens::compile(gprk, pn, code_mode, jump_on_fail, consult_mode);
+				UnderstandTokens::compile(gprk, pn, code_mode, jump_on_fail, consult_mode);
 			if (grammar_token_kind) {
 				if (token_values) {
 					if (*token_values == 2) {
@@ -1330,15 +1330,15 @@ void PL::Parsing::Lines::compile_token_line(gpr_kit *gprk, int code_mode, parse_
 	Produce::up(Emit::tree());
 
 @ =
-void PL::Parsing::Lines::compile_slash_gprs(void) {
+void UnderstandLines::compile_slash_gprs(void) {
 	slash_gpr *sgpr;
 	LOOP_OVER(sgpr, slash_gpr) {
 		packaging_state save = Routines::begin(sgpr->sgpr_iname);
-		gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
-		PL::Parsing::Tokens::Values::add_original(&gprk);
-		PL::Parsing::Tokens::Values::add_standard_set(&gprk);
+		gpr_kit gprk = UnderstandValueTokens::new_kit();
+		UnderstandValueTokens::add_original(&gprk);
+		UnderstandValueTokens::add_standard_set(&gprk);
 
-		PL::Parsing::Lines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, GV_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
+		UnderstandLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
@@ -1351,32 +1351,32 @@ void PL::Parsing::Lines::compile_slash_gprs(void) {
 This is the more obvious form of indexing: we show the grammar lines which
 make up an individual GL. (For instance, this is used in the Actions index
 to show the grammar for an individual command word, by calling the routine
-below for that command word's GV.) Such an index list is done in sorted
+below for that command word's CG.) Such an index list is done in sorted
 order, so that the order of appearance in the index corresponds to the
 order of parsing -- this is what the reader of the index is interested in.
 
 =
-void PL::Parsing::Lines::sorted_list_index_normal(OUTPUT_STREAM,
-	grammar_line *list_head, text_stream *headword) {
-	grammar_line *gl;
-	for (gl = list_head; gl; gl = gl->sorted_next_line)
-		PL::Parsing::Lines::gl_index_normal(OUT, gl, headword);
+void UnderstandLines::sorted_list_index_normal(OUTPUT_STREAM,
+	cg_line *list_head, text_stream *headword) {
+	cg_line *cgl;
+	for (cgl = list_head; cgl; cgl = cgl->sorted_next_line)
+		UnderstandLines::cgl_index_normal(OUT, cgl, headword);
 }
 
-void PL::Parsing::Lines::gl_index_normal(OUTPUT_STREAM, grammar_line *gl, text_stream *headword) {
-	action_name *an = gl->resulting_action;
+void UnderstandLines::cgl_index_normal(OUTPUT_STREAM, cg_line *cgl, text_stream *headword) {
+	action_name *an = cgl->resulting_action;
 	if (an == NULL) return;
 	Index::anchor(OUT, headword);
 	if (ActionSemantics::is_out_of_world(an))
 		HTML::begin_colour(OUT, I"800000");
 	WRITE("&quot;");
-	CommandsIndex::verb_definition(OUT, Lexer::word_text(gl->original_text),
+	CommandsIndex::verb_definition(OUT, Lexer::word_text(cgl->original_text),
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
-	Index::link(OUT, gl->original_text);
+	Index::link(OUT, cgl->original_text);
 	WRITE(" - <i>%+W", ActionNameNames::tensed(an, IS_TENSE));
 	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
-	if (gl->reversed) WRITE(" (reversed)");
+	if (cgl->reversed) WRITE(" (reversed)");
 	WRITE("</i>");
 	if (ActionSemantics::is_out_of_world(an))
 		HTML::end_colour(OUT);
@@ -1397,46 +1397,46 @@ in GLs: back up to the GVs that own them. The following routine does
 this for a whole list of GLs:
 
 =
-void PL::Parsing::Lines::list_assert_ownership(grammar_line *list_head, grammar_verb *gv) {
-	grammar_line *gl;
-	for (gl = list_head; gl; gl = gl->next_line)
-		gl->belongs_to_gv = gv;
+void UnderstandLines::list_assert_ownership(cg_line *list_head, command_grammar *cg) {
+	cg_line *cgl;
+	for (cgl = list_head; cgl; cgl = cgl->next_line)
+		cgl->belongs_to_gv = cg;
 }
 
 @ And this routine accumulates the per-action lists of GLs:
 
 =
-void PL::Parsing::Lines::list_with_action_add(grammar_line *list_head, grammar_line *gl) {
+void UnderstandLines::list_with_action_add(cg_line *list_head, cg_line *cgl) {
 	if (list_head == NULL) internal_error("tried to add to null action list");
 	while (list_head->next_with_action)
 		list_head = list_head->next_with_action;
-	list_head->next_with_action = gl;
+	list_head->next_with_action = cgl;
 }
 
 @ Finally, here we index an action list of GLs, each getting a line in
 the HTML index.
 
 =
-int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) {
+int UnderstandLines::index_list_with_action(OUTPUT_STREAM, cg_line *cgl) {
 	int said_something = FALSE;
-	while (gl != NULL) {
-		if (gl->belongs_to_gv) {
-			wording VW = PL::Parsing::Verbs::get_verb_text(gl->belongs_to_gv);
+	while (cgl != NULL) {
+		if (cgl->belongs_to_gv) {
+			wording VW = CommandGrammars::get_verb_text(cgl->belongs_to_gv);
 			TEMPORARY_TEXT(trueverb)
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("&quot;");
 			CommandsIndex::verb_definition(OUT,
-				Lexer::word_text(gl->original_text), trueverb, VW);
+				Lexer::word_text(cgl->original_text), trueverb, VW);
 			WRITE("&quot;");
-			Index::link(OUT, gl->original_text);
-			if (gl->reversed) WRITE(" <i>reversed</i>");
+			Index::link(OUT, cgl->original_text);
+			if (cgl->reversed) WRITE(" <i>reversed</i>");
 			HTML_CLOSE("p");
 			said_something = TRUE;
 			DISCARD_TEXT(trueverb)
 		}
-		gl = gl->next_with_action;
+		cgl = cgl->next_with_action;
 	}
 	return said_something;
 }
@@ -1444,11 +1444,11 @@ int PL::Parsing::Lines::index_list_with_action(OUTPUT_STREAM, grammar_line *gl) 
 @ And the same, but more simply:
 
 =
-void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
+void UnderstandLines::index_list_for_token(OUTPUT_STREAM, cg_line *cgl) {
 	int k = 0;
-	while (gl != NULL) {
-		if (gl->belongs_to_gv) {
-			wording VW = PL::Parsing::Verbs::get_verb_text(gl->belongs_to_gv);
+	while (cgl != NULL) {
+		if (cgl->belongs_to_gv) {
+			wording VW = CommandGrammars::get_verb_text(cgl->belongs_to_gv);
 			TEMPORARY_TEXT(trueverb)
 			if (Wordings::nonempty(VW))
 				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
@@ -1456,13 +1456,13 @@ void PL::Parsing::Lines::index_list_for_token(OUTPUT_STREAM, grammar_line *gl) {
 			if (k++ == 0) WRITE("="); else WRITE("or");
 			WRITE(" &quot;");
 			CommandsIndex::verb_definition(OUT,
-				Lexer::word_text(gl->original_text), trueverb, EMPTY_WORDING);
+				Lexer::word_text(cgl->original_text), trueverb, EMPTY_WORDING);
 			WRITE("&quot;");
-			Index::link(OUT, gl->original_text);
-			if (gl->reversed) WRITE(" <i>reversed</i>");
+			Index::link(OUT, cgl->original_text);
+			if (cgl->reversed) WRITE(" <i>reversed</i>");
 			HTML_CLOSE("p");
 			DISCARD_TEXT(trueverb)
 		}
-		gl = gl->sorted_next_line;
+		cgl = cgl->sorted_next_line;
 	}
 }

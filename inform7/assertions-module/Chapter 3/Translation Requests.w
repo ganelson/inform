@@ -311,10 +311,10 @@ will be required to pass |<extra-response>|.
 			break;
 		#ifdef IF_MODULE
 		case ACTION_I6TR:
-			if (global_pass_state.pass == 2) PL::Actions::translates(W, p2);
+			if (global_pass_state.pass == 2) Actions::translates(W, p2);
 			break;
 		case GRAMMAR_TOKEN_I6TR:
-			if (global_pass_state.pass == 2) PL::Parsing::Verbs::translates(W, p2);
+			if (global_pass_state.pass == 2) CommandGrammars::translates(W, p2);
 			break;
 		#endif
 	}

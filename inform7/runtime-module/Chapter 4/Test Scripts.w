@@ -1,4 +1,4 @@
-[PL::Parsing::TestScripts::] Test Scripts.
+[TestCommand::] Test Scripts.
 
 A rudimentary but useful testing system built in to IF produced
 by Inform, allowing short sequences of commands to be concisely noted in
@@ -25,7 +25,7 @@ typedef struct test_scenario {
 } test_scenario;
 
 @ =
-test_scenario *PL::Parsing::TestScripts::new_scenario(wording XW) {
+test_scenario *TestCommand::new_scenario(wording XW) {
 	test_scenario *test;
     LOOP_OVER(test, test_scenario) {
     	if (Wordings::match(XW, test->name)) {
@@ -52,7 +52,7 @@ test_scenario *PL::Parsing::TestScripts::new_scenario(wording XW) {
 	return test;
 }
 
-void PL::Parsing::TestScripts::add_script_to_scenario(test_scenario *test, wchar_t *p) {
+void TestCommand::add_script_to_scenario(test_scenario *test, wchar_t *p) {
     TEMPORARY_TEXT(individual_command)
     Str::clear(test->text_of_script);
     for (int i=0; p[i]; i++) {
@@ -65,7 +65,7 @@ void PL::Parsing::TestScripts::add_script_to_scenario(test_scenario *test, wchar
     	}
 
     	if (c == '/') {
-    		PL::Parsing::TestScripts::check_test_command(individual_command);
+    		TestCommand::check_test_command(individual_command);
     		Str::clear(individual_command);
 		} else {
 			PUT_TO(individual_command, c);
@@ -73,18 +73,18 @@ void PL::Parsing::TestScripts::add_script_to_scenario(test_scenario *test, wchar
     	PUT_TO(test->text_of_script, c);
     }
     if (Str::len(individual_command) > 0)
-		PL::Parsing::TestScripts::check_test_command(individual_command);
+		TestCommand::check_test_command(individual_command);
     int L = Str::len(test->text_of_script);
     if (Str::get_at(test->text_of_script, L-1) == '/')
     	Str::put_at(test->text_of_script, L-1, ' ');
     DISCARD_TEXT(individual_command)
 }
 
-void PL::Parsing::TestScripts::add_location_to_scenario(test_scenario *test, instance *I) {
+void TestCommand::add_location_to_scenario(test_scenario *test, instance *I) {
 	test->place = I;
 }
 
-void PL::Parsing::TestScripts::add_possession_to_scenario(test_scenario *test, instance *I) {
+void TestCommand::add_possession_to_scenario(test_scenario *test, instance *I) {
 	if (test->no_possessions >= MAX_POSSESSIONS_PER_SCENARIO)
 		@<Issue PM_TooManyRequirements problem@>
 	else
@@ -97,7 +97,7 @@ void PL::Parsing::TestScripts::add_possession_to_scenario(test_scenario *test, i
 		"so the player will have to hold a little less.");
 
 @ =
-void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
+void TestCommand::check_test_command(text_stream *p) {
 	if (Str::eq_wide_string(p, L"undo")) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TestContainsUndo),
 			"this test script contains an UNDO command",
@@ -117,7 +117,7 @@ void PL::Parsing::TestScripts::check_test_command(text_stream *p) {
 	}
 }
 
-void PL::Parsing::TestScripts::write_text(void) {
+void TestCommand::write_text(void) {
 	test_scenario *test;
 	LOOP_OVER(test, test_scenario) {
 		packaging_state save = Emit::named_byte_array_begin(test->text_iname, K_text);
@@ -141,7 +141,7 @@ void PL::Parsing::TestScripts::write_text(void) {
 	}
 }
 
-void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
+void TestCommand::TestScriptSub_stub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
 	packaging_state save = Routines::begin(iname);
@@ -149,7 +149,7 @@ void PL::Parsing::TestScripts::TestScriptSub_stub_routine(void) {
 	Routines::end(save);
 }
 
-void PL::Parsing::TestScripts::TestScriptSub_routine(void) {
+void TestCommand::TestScriptSub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
 	packaging_state save = Routines::begin(iname);

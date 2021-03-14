@@ -87,7 +87,7 @@
 				<li>
 					<p class="chapterentry"><a name="2"></a>
 						<span class="chaptertitle">Chapter 2: Bibliographic Data</span></p>
-					<p class="chapterpurpose">Our project is a kind of interactive book, with ISBN-like data and various cataloguing information, and which needs to be bound up in various ways.</p>
+					<p class="chapterpurpose">ISBN-like data and cataloguing information, and Release... sentences.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="2-bd.html">
@@ -114,7 +114,7 @@
 				<li>
 					<p class="chapterentry"><a name="3"></a>
 						<span class="chaptertitle">Chapter 3: Space and Time</span></p>
-					<p class="chapterpurpose">The default model domain for Inform is one which is adapted to interactive fiction, which provides for geography, spatial containment and scenes.</p>
+					<p class="chapterpurpose">A simulated world of geography, spatial containment and scenes.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="3-sm.html">
@@ -272,8 +272,8 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Command Grammar</span></p>
-					<p class="chapterpurpose">In which Understand sentences in the source text are converted into a grammar for a command parser at run-time.</p>
+						<span class="chaptertitle">Chapter 5: Command Parser</span></p>
+					<p class="chapterpurpose">Understand... sentences become a grammar for the command parser to use at run-time.</p>
 					<ul class="sectionlist">
 						<li>
 							<p class="sectionentry"><a href="5-pp.html">
@@ -286,14 +286,19 @@
 							<span class="sectionpurpose">Additional syntax tree node and annotation types used by the parsing plugin.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-itg.html">
-								<spon class="sectiontitle">Introduction to Grammar</span></a> -
-							<span class="sectionpurpose">An exposition of the data structures and basic method used to deal with the command-parsing grammar implied by Understand sentences in the source text.</span></p>
+							<p class="sectionentry"><a href="5-us.html">
+								<spon class="sectiontitle">Understand Sentences</span></a> -
+							<span class="sectionpurpose">Command parser grammar is laid out in special Understand... sentences.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-tfg.html">
-								<spon class="sectiontitle">Traverse for Grammar</span></a> -
-							<span class="sectionpurpose">To create and manipulate grammar, primarily by parsing and acting upon Understand... sentences in the source text.</span></p>
+							<p class="sectionentry"><a href="5-cgis.html">
+								<spon class="sectiontitle">Command Grammar in Source</span></a> -
+							<span class="sectionpurpose">Here we handle quoted command grammar arising in source text.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-cg.html">
+								<spon class="sectiontitle">Command Grammars</span></a> -
+							<span class="sectionpurpose"></span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-gp.html">
@@ -301,19 +306,14 @@
 							<span class="sectionpurpose">A plugin for the I6 run-time properties needed to support parsing.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-gv.html">
-								<spon class="sectiontitle">Grammar Verbs</span></a> -
-							<span class="sectionpurpose">A grammar verb is not literally a verb, as the name is a hangover from the way I6 defines grammar. It might be said to be a necklace onto which we thread the sea-shells of grammar lines. Each grammar verb has its own purpose: to match various possibilities (one for each grammar line) against text aimed at a particular result. For instance, all run time commands beginning with TAKE are parsed with a single grammar verb. If we create a new grammar token, "[polite remark]", for use in other grammar, then that too will have its own "grammar verb". If we define the word "eleventy-one" as meaning the number 111, it will be added to a grammar verb attached to the kind "number" which parses eccentric names for number values. And so on. Probably a better name for this structure would be simply "grammar", but that might be confusing in other ways, and anyway the ship has sailed.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="5-gl.html">
-								<spon class="sectiontitle">Grammar Lines</span></a> -
+							<p class="sectionentry"><a href="5-cgl.html">
+								<spon class="sectiontitle">Command Grammar Lines</span></a> -
 							<span class="sectionpurpose">A grammar line is a list of tokens to specify a textual pattern. For example, the Inform source for a grammar line might be "take [something] out", which is a sequence of three tokens.</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-gt.html">
 								<spon class="sectiontitle">Grammar Types</span></a> -
-							<span class="sectionpurpose">Some grammar text specifies one or more values, and we need to keep track of their kind(s). Here we manage the data structure doing this.</span></p>
+							<span class="sectionpurpose">Some command grammar specifies one or more values, and we need to keep track of their kind(s).</span></p>
 						</li>
 						<li>
 							<p class="sectionentry"><a href="5-gt2.html">

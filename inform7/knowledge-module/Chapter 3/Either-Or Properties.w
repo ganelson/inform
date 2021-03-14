@@ -30,7 +30,7 @@ typedef struct either_or_property_data {
 	struct property *negation; /* see above: the other, if it's one of a pair */
 	struct adjective *as_adjective; /* if it is adjectivally used */
 	#ifdef IF_MODULE
-	struct grammar_verb *eo_parsing_grammar; /* exotic forms used in parsing */
+	struct command_grammar *eo_parsing_grammar; /* exotic forms used in parsing */
 	#endif
 	CLASS_DEFINITION
 } either_or_property_data;
@@ -140,14 +140,14 @@ property *EitherOrProperties::get_negation(property *prn) {
 
 =
 #ifdef IF_MODULE
-grammar_verb *EitherOrProperties::get_parsing_grammar(property *prn) {
+command_grammar *EitherOrProperties::get_parsing_grammar(property *prn) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) return NULL;
 	return prn->either_or_data->eo_parsing_grammar;
 }
 
-void EitherOrProperties::set_parsing_grammar(property *prn, grammar_verb *gv) {
+void EitherOrProperties::set_parsing_grammar(property *prn, command_grammar *cg) {
 	if ((prn == NULL) || (prn->either_or_data == NULL)) internal_error("non-EO property");
-	prn->either_or_data->eo_parsing_grammar = gv;
+	prn->either_or_data->eo_parsing_grammar = cg;
 }
 #endif
 

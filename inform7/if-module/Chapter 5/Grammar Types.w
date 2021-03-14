@@ -1,10 +1,9 @@
-[PL::Parsing::Tokens::Types::] Grammar Types.
+[UnderstandTokens::Types::] Grammar Types.
 
-Some grammar text specifies one or more values, and we need to
-keep track of their kind(s). Here we manage the data structure doing
-this.
+Some command grammar specifies one or more values, and we need to keep track
+of their kind(s).
 
-@h Definitions.
+@ 
 
 =
 typedef struct grammar_type {
@@ -16,7 +15,7 @@ typedef struct grammar_type {
 } grammar_type;
 
 @ =
-grammar_type PL::Parsing::Tokens::Types::new(int supports_return_type) {
+grammar_type UnderstandTokens::Types::new(int supports_return_type) {
 	grammar_type gty;
 	gty.first_type = NULL;
 	gty.second_type = NULL;
@@ -34,7 +33,7 @@ tallying during GL sorting in "Grammar Lines". Do not amend it without
 changing that discussion.
 
 =
-int PL::Parsing::Tokens::Types::add_type(grammar_type *gty, parse_node *spec,
+int UnderstandTokens::Types::add_type(grammar_type *gty, parse_node *spec,
 	int multiple_flag, int score) {
 	switch((gty->no_resulting_values)++) {
 		case 0:
@@ -54,16 +53,16 @@ int PL::Parsing::Tokens::Types::add_type(grammar_type *gty, parse_node *spec,
 	return 0;
 }
 
-int PL::Parsing::Tokens::Types::has_return_type(grammar_type *gty) {
+int UnderstandTokens::Types::has_return_type(grammar_type *gty) {
 	if (gty->no_resulting_values == -1) return FALSE;
 	return TRUE;
 }
 
-int PL::Parsing::Tokens::Types::get_no_resulting_values(grammar_type *gty) {
+int UnderstandTokens::Types::get_no_resulting_values(grammar_type *gty) {
 	return gty->no_resulting_values;
 }
 
-parse_node *PL::Parsing::Tokens::Types::get_single_type(grammar_type *gty) {
+parse_node *UnderstandTokens::Types::get_single_type(grammar_type *gty) {
 	switch(gty->no_resulting_values) {
 		case 0: return NULL;
 		case 1: return gty->first_type;
@@ -72,19 +71,20 @@ parse_node *PL::Parsing::Tokens::Types::get_single_type(grammar_type *gty) {
 	return NULL;
 }
 
-void PL::Parsing::Tokens::Types::set_single_type(grammar_type *gty, parse_node *spec) {
+void UnderstandTokens::Types::set_single_type(grammar_type *gty, parse_node *spec) {
 	if (spec == NULL) gty->no_resulting_values = 0;
 	else {
 		gty->no_resulting_values = 1;
+		
 		gty->first_type = spec;
 	}
 }
 
-void PL::Parsing::Tokens::Types::compile_to_string(grammar_type *gty) {
+void UnderstandTokens::Types::compile_to_string(grammar_type *gty) {
 	Specifications::Compiler::emit_as_val(K_value, gty->first_type);
 }
 
-kind *PL::Parsing::Tokens::Types::get_data_type_as_token(grammar_type *gty) {
+kind *UnderstandTokens::Types::get_data_type_as_token(grammar_type *gty) {
 	if (gty->no_resulting_values > 0) {
 		if ((Node::is(gty->first_type, CONSTANT_NT)) ||
 			(Specifications::is_description(gty->first_type)))
@@ -98,7 +98,7 @@ of GL sorting in "Grammar Lines". Do not amend it without changing that
 discussion.
 
 =
-int PL::Parsing::Tokens::Types::must_precede(grammar_type *gty1, grammar_type *gty2) {
+int UnderstandTokens::Types::must_precede(grammar_type *gty1, grammar_type *gty2) {
 	int cs;
 	if ((gty1->no_resulting_values) < (gty2->no_resulting_values)) return TRUE;
 	if ((gty1->no_resulting_values) > (gty2->no_resulting_values)) return FALSE;

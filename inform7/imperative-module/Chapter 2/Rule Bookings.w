@@ -174,16 +174,16 @@ void Rules::Bookings::place(ph_usage_data *phud, booking *br) {
 				#ifdef IF_MODULE
 				if (original_owner == built_in_rulebooks[CHECK_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::fragment_rulebook(an, built_in_rulebooks[CHECK_RB]));
+						Actions::fragment_rulebook(an, built_in_rulebooks[CHECK_RB]));
 				} else if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::fragment_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]));
+						Actions::fragment_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]));
 				} else if (original_owner == built_in_rulebooks[REPORT_RB]) {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::fragment_rulebook(an, built_in_rulebooks[REPORT_RB]));
+						Actions::fragment_rulebook(an, built_in_rulebooks[REPORT_RB]));
 				} else {
 					Phrases::Usage::set_rulebook(phud,
-						PL::Actions::divert_to_another_actions_rulebook(an, original_owner));
+						Actions::divert_to_another_actions_rulebook(an, original_owner));
 				}
 				#endif
 				if (original_owner != Phrases::Usage::get_rulebook(phud))

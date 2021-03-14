@@ -192,13 +192,6 @@ instance to become knowledge about the initial value of "player" instead:
 =
 inference_subject *InferenceSubjects::divert(inference_subject *infs) {
 	if (World::current_building_stage() == 0)
-/*		if ((I_yourself) && (player_VAR) &&
-			(infs == Instances::as_subject(I_yourself))) {
-			parse_node *val = VariableSubjects::get_initial_value(player_VAR);
-			inference_subject *divert = InferenceSubjects::from_specification(val);
-			if (divert) return divert;
-		}
-*/
 		if ((infs) && (infs->alias_variable)) {
 			parse_node *val = VariableSubjects::get_initial_value(infs->alias_variable);
 			inference_subject *divert = InferenceSubjects::from_specification(val);

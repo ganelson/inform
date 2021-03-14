@@ -626,7 +626,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			Produce::up(Emit::tree());
 			break;
 		case ACTOR_MATCHES_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(VH, I6_actor_VAR, APClauses::spec(ap, ACTOR_AP_CLAUSE), K_object, FALSE);
+			RTActionPatterns::compile_pattern_match_clause(VH, Inter_actor_VAR, APClauses::spec(ap, ACTOR_AP_CLAUSE), K_object, FALSE);
 			break;
 		case ACTION_MATCHES_CPMC:
 			RTActions::emit_anl(ap->action_list);
@@ -652,7 +652,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			Produce::up(Emit::tree());
 			break;
 		case NOUN_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(VH, I6_noun_VAR, APClauses::spec(ap, NOUN_AP_CLAUSE),
+			RTActionPatterns::compile_pattern_match_clause(VH, Inter_noun_VAR, APClauses::spec(ap, NOUN_AP_CLAUSE),
 				kind_of_noun, FALSE);
 			break;
 		case NOUN_MATCHES_AS_VALUE_CPMC:
@@ -661,7 +661,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 				APClauses::spec(ap, NOUN_AP_CLAUSE), kind_of_noun, FALSE);
 			break;
 		case SECOND_MATCHES_AS_OBJECT_CPMC:
-			RTActionPatterns::compile_pattern_match_clause(VH, I6_second_VAR, APClauses::spec(ap, SECOND_AP_CLAUSE),
+			RTActionPatterns::compile_pattern_match_clause(VH, Inter_second_noun_VAR, APClauses::spec(ap, SECOND_AP_CLAUSE),
 				kind_of_second, FALSE);
 			break;
 		case SECOND_MATCHES_AS_VALUE_CPMC:

@@ -1,4 +1,4 @@
-[PL::Parsing::Tokens::General::] General Parsing Routines.
+[UnderstandGeneralTokens::] General Parsing Routines.
 
 To compile I6 general parsing routines (GPRs) and/or |parse_name|
 properties as required by the I7 grammar.
@@ -33,33 +33,33 @@ found in the CONSULT command) at run time, and they are not I6 grammar
 tokens, and do not appear in |Verb| declarations: otherwise, such
 routines are very similar to GPRs.
 
-First, we need to look after a pointer to the GV used to hold the grammar
+First, we need to look after a pointer to the CG used to hold the grammar
 being matched against the snippet of words.
 
 =
-grammar_verb *consultation_gv = NULL; /* used only in routines below */
+command_grammar *consultation_gv = NULL; /* used only in routines below */
 
-grammar_verb *PL::Parsing::Tokens::General::get_consultation_gv(void) {
-	if (consultation_gv == NULL) consultation_gv = PL::Parsing::Verbs::consultation_new();
+command_grammar *UnderstandGeneralTokens::get_consultation_gv(void) {
+	if (consultation_gv == NULL) consultation_gv = CommandGrammars::consultation_new();
 	return consultation_gv;
 }
 
-void PL::Parsing::Tokens::General::prepare_consultation_gv(void) {
+void UnderstandGeneralTokens::prepare_consultation_gv(void) {
 	consultation_gv = NULL;
 }
 
-inter_name *PL::Parsing::Tokens::General::print_consultation_gv_name(void) {
-	if (consultation_gv) return PL::Parsing::Tokens::General::consult_iname(consultation_gv);
+inter_name *UnderstandGeneralTokens::print_consultation_gv_name(void) {
+	if (consultation_gv) return UnderstandGeneralTokens::consult_iname(consultation_gv);
 	return NULL;
 }
 
-inter_name *PL::Parsing::Tokens::General::consult_iname(grammar_verb *gv) {
-	if (gv->gv_consult_iname == NULL) {
-		current_sentence = gv->where_gv_created;
+inter_name *UnderstandGeneralTokens::consult_iname(command_grammar *cg) {
+	if (cg->cg_consult_iname == NULL) {
+		current_sentence = cg->where_gv_created;
 		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
-		gv->gv_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
+		cg->cg_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
 	}
-	return gv->gv_consult_iname;
+	return cg->cg_consult_iname;
 }
 
 @ We also, at another time, need to compile the routine being named. There
@@ -83,20 +83,20 @@ still be needed, because of the distinguishability problem: if so then we
 will simply compile a |parse_name| routine inline, in the usual I6 way.
 
 =
-inter_name *PL::Parsing::Tokens::General::get_gv_parse_name(grammar_verb *gv) {
-	if (gv->gv_parse_name_iname == NULL) {
-		compilation_unit *C = CompilationUnits::find(gv->where_gv_created);
+inter_name *UnderstandGeneralTokens::get_gv_parse_name(command_grammar *cg) {
+	if (cg->cg_parse_name_iname == NULL) {
+		compilation_unit *C = CompilationUnits::find(cg->where_gv_created);
 		package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
-		gv->gv_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
+		cg->cg_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
 	}
-	return gv->gv_parse_name_iname;
+	return cg->cg_parse_name_iname;
 }
 
-inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_subject *subj) {
+inter_name *UnderstandGeneralTokens::compile_parse_name_property(inference_subject *subj) {
 	inter_name *symb = NULL;
-	grammar_verb *gv = PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
-	if (PL::Parsing::Verbs::is_empty(gv) == FALSE) {
-		symb = PL::Parsing::Tokens::General::get_gv_parse_name(gv);
+	command_grammar *cg = PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
+	if (CommandGrammars::is_empty(cg) == FALSE) {
+		symb = UnderstandGeneralTokens::get_gv_parse_name(cg);
 	} else {
 		if (Visibility::any_property_visible_to_subject(subj, FALSE)) {
 			parse_name_notice *notice = CREATE(parse_name_notice);
@@ -110,14 +110,14 @@ inter_name *PL::Parsing::Tokens::General::compile_parse_name_property(inference_
 	return symb;
 }
 
-void PL::Parsing::Tokens::General::write_parse_name_routines(void) {
+void UnderstandGeneralTokens::write_parse_name_routines(void) {
 	parse_name_notice *notice;
 	LOOP_OVER(notice, parse_name_notice) {
-		gpr_kit gprk = PL::Parsing::Tokens::Values::new_kit();
+		gpr_kit gprk = UnderstandValueTokens::new_kit();
 		packaging_state save = Emit::unused_packaging_state();
-		if (PL::Parsing::Tokens::General::compile_parse_name_head(&save, &gprk,
+		if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk,
 			notice->parse_subject, NULL, notice->pnn_iname)) {
-			PL::Parsing::Tokens::General::compile_parse_name_tail(&gprk);
+			UnderstandGeneralTokens::compile_parse_name_tail(&gprk);
 			Routines::end(save);
 		}
 	}
@@ -168,18 +168,18 @@ the absence of either I7-level grammar lines or visible properties, that
 will be the correct decision.
 
 =
-int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
+int UnderstandGeneralTokens::compile_parse_name_head(packaging_state *save,
 	gpr_kit *gprk, inference_subject *subj,
-	grammar_verb *gv, inter_name *rname) {
+	command_grammar *cg, inter_name *rname) {
 	int test_distinguishability = FALSE, sometimes_has_visible_properties = FALSE;
 	inter_name *N = NULL;
 
 	if (subj == NULL) internal_error("compiling parse_name head for null subj");
 
-	if (gv) {
+	if (cg) {
 		sometimes_has_visible_properties =
 			Visibility::any_property_visible_to_subject(subj, TRUE);
-		N = PL::Parsing::Tokens::General::get_gv_parse_name(gv);
+		N = UnderstandGeneralTokens::get_gv_parse_name(cg);
 	} else {
 		if (Visibility::any_property_visible_to_subject(subj, FALSE)
 			== FALSE) return FALSE;
@@ -193,9 +193,9 @@ int PL::Parsing::Tokens::General::compile_parse_name_head(packaging_state *save,
 
 	*save = Routines::begin(compile_to);
 
-	PL::Parsing::Tokens::Values::add_parse_name_vars(gprk);
+	UnderstandValueTokens::add_parse_name_vars(gprk);
 
-	PL::Parsing::Tokens::General::top_of_head(gprk, N, subj,
+	UnderstandGeneralTokens::top_of_head(gprk, N, subj,
 		test_distinguishability, sometimes_has_visible_properties, rname);
 	return TRUE;
 }
@@ -220,7 +220,7 @@ a pragmatic compromise (in that to check other cases would be slower and
 more complex). I suspect we will return to this.
 
 =
-void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_iname, inference_subject *subj,
+void UnderstandGeneralTokens::top_of_head(gpr_kit *gprk, inter_name *cg_iname, inference_subject *subj,
 	int test_distinguishability, int sometimes_has_visible_properties, inter_name *given_name) {
 
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
@@ -245,7 +245,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	if ((gv_iname) && (sometimes_has_visible_properties == FALSE)) {
+	if ((cg_iname) && (sometimes_has_visible_properties == FALSE)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -366,7 +366,7 @@ void PL::Parsing::Tokens::General::top_of_head(gpr_kit *gprk, inter_name *gv_ina
 						Produce::up(Emit::tree());
 						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
-						PL::Parsing::Tokens::General::consider_visible_properties(gprk, subj, test_distinguishability);
+						UnderstandGeneralTokens::consider_visible_properties(gprk, subj, test_distinguishability);
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 
@@ -437,7 +437,7 @@ following code is used to reset the grammar-line parser after each failure
 of a GL to parse.
 
 =
-void PL::Parsing::Tokens::General::after_gl_failed(gpr_kit *gprk, inter_symbol *label, int pluralised) {
+void UnderstandGeneralTokens::after_gl_failed(gpr_kit *gprk, inter_symbol *label, int pluralised) {
 	if (pluralised) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
@@ -472,7 +472,7 @@ would therefore need to be followed by a comma, or in free-standing I6 code,
 in which case it would need to be followed by a semi-colon.
 
 =
-void PL::Parsing::Tokens::General::compile_parse_name_tail(gpr_kit *gprk) {
+void UnderstandGeneralTokens::compile_parse_name_tail(gpr_kit *gprk) {
 					Produce::inv_primitive(Emit::tree(), BREAK_BIP);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -683,21 +683,21 @@ to a kind, sometimes we require that the permission be given to this
 specific object.
 
 =
-void PL::Parsing::Tokens::General::consider_visible_properties(gpr_kit *gprk, inference_subject *subj,
+void UnderstandGeneralTokens::consider_visible_properties(gpr_kit *gprk, inference_subject *subj,
 	int test_distinguishability) {
 	int phase = 2;
 	if (test_distinguishability) phase = 1;
 	for (; phase<=2; phase++) {
 		property *pr;
-		PL::Parsing::Tokens::General::start_considering_visible_properties(gprk, phase);
+		UnderstandGeneralTokens::start_considering_visible_properties(gprk, phase);
 		LOOP_OVER(pr, property) {
 			if ((Properties::is_either_or(pr)) && (RTProperties::stored_in_negation(pr))) continue;
 			property_permission *pp =
 				PropertyPermissions::find(subj, pr, TRUE);
 			if ((pp) && (Visibility::get_level(pp) > 0))
-				PL::Parsing::Tokens::General::consider_visible_property(gprk, subj, pr, pp, phase);
+				UnderstandGeneralTokens::consider_visible_property(gprk, subj, pr, pp, phase);
 		}
-		PL::Parsing::Tokens::General::finish_considering_visible_properties(gprk, phase);
+		UnderstandGeneralTokens::finish_considering_visible_properties(gprk, phase);
 	}
 }
 
@@ -711,11 +711,11 @@ level, and to compile nothing to the file.
 =
 int visible_properties_code_written = FALSE; /* persistent state used only here */
 
-void PL::Parsing::Tokens::General::start_considering_visible_properties(gpr_kit *gprk, int phase) {
+void UnderstandGeneralTokens::start_considering_visible_properties(gpr_kit *gprk, int phase) {
 	visible_properties_code_written = FALSE;
 }
 
-void PL::Parsing::Tokens::General::consider_visible_property(gpr_kit *gprk, inference_subject *subj,
+void UnderstandGeneralTokens::consider_visible_property(gpr_kit *gprk, inference_subject *subj,
 	property *pr, property_permission *pp, int phase) {
 	int conditional_vis = FALSE;
 	parse_node *spec;
@@ -723,9 +723,9 @@ void PL::Parsing::Tokens::General::consider_visible_property(gpr_kit *gprk, infe
 	if (visible_properties_code_written == FALSE) {
 		visible_properties_code_written = TRUE;
 		if (phase == 1)
-			PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gprk);
+			UnderstandGeneralTokens::begin_distinguishing_visible_properties(gprk);
 		else
-			PL::Parsing::Tokens::General::begin_parsing_visible_properties(gprk);
+			UnderstandGeneralTokens::begin_parsing_visible_properties(gprk);
 	}
 
 	spec = Visibility::get_condition(pp);
@@ -733,25 +733,25 @@ void PL::Parsing::Tokens::General::consider_visible_property(gpr_kit *gprk, infe
 	if (spec) {
 		conditional_vis = TRUE;
 		if (phase == 1)
-			PL::Parsing::Tokens::General::test_distinguish_visible_property(gprk, spec);
+			UnderstandGeneralTokens::test_distinguish_visible_property(gprk, spec);
 		else
-			PL::Parsing::Tokens::General::test_parse_visible_property(gprk, spec);
+			UnderstandGeneralTokens::test_parse_visible_property(gprk, spec);
 	}
 
 	if (phase == 1)
-		PL::Parsing::Tokens::General::distinguish_visible_property(gprk, pr);
+		UnderstandGeneralTokens::distinguish_visible_property(gprk, pr);
 	else
-		PL::Parsing::Tokens::General::parse_visible_property(gprk, subj, pr, Visibility::get_level(pp));
+		UnderstandGeneralTokens::parse_visible_property(gprk, subj, pr, Visibility::get_level(pp));
 
 	if (conditional_vis) { Produce::up(Emit::tree()); Produce::up(Emit::tree()); }
 }
 
-void PL::Parsing::Tokens::General::finish_considering_visible_properties(gpr_kit *gprk, int phase) {
+void UnderstandGeneralTokens::finish_considering_visible_properties(gpr_kit *gprk, int phase) {
 	if (visible_properties_code_written) {
 		if (phase == 1)
-			PL::Parsing::Tokens::General::finish_distinguishing_visible_properties(gprk);
+			UnderstandGeneralTokens::finish_distinguishing_visible_properties(gprk);
 		else
-			PL::Parsing::Tokens::General::finish_parsing_visible_properties(gprk);
+			UnderstandGeneralTokens::finish_parsing_visible_properties(gprk);
 	}
 }
 
@@ -765,7 +765,7 @@ or vice versa, then they are distinguishable; and otherwise we revert to
 the I6 parser's standard algorithm, which looks at the |name| property.
 
 =
-void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_kit *gprk) {
+void UnderstandGeneralTokens::begin_distinguishing_visible_properties(gpr_kit *gprk) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -819,7 +819,7 @@ void PL::Parsing::Tokens::General::begin_distinguishing_visible_properties(gpr_k
 			Produce::up(Emit::tree());
 }
 
-void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gprk, parse_node *spec) {
+void UnderstandGeneralTokens::test_distinguish_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
@@ -862,7 +862,7 @@ void PL::Parsing::Tokens::General::test_distinguish_visible_property(gpr_kit *gp
 		Produce::down(Emit::tree());
 }
 
-void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, property *prn) {
+void UnderstandGeneralTokens::distinguish_visible_property(gpr_kit *gprk, property *prn) {
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Distinguishing property %n", RTProperties::iname(prn));
 	Emit::code_comment(C);
@@ -949,7 +949,7 @@ void PL::Parsing::Tokens::General::distinguish_visible_property(gpr_kit *gprk, p
 	Produce::up(Emit::tree());
 
 @ =
-void PL::Parsing::Tokens::General::finish_distinguishing_visible_properties(gpr_kit *gprk) {
+void UnderstandGeneralTokens::finish_distinguishing_visible_properties(gpr_kit *gprk) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(SELF_HL));
@@ -969,7 +969,7 @@ Here, unlike in distinguishing visible properties, it is unambiguous that
 alter the value of |self| to make any visibility condition work correctly.
 
 =
-void PL::Parsing::Tokens::General::begin_parsing_visible_properties(gpr_kit *gprk) {
+void UnderstandGeneralTokens::begin_parsing_visible_properties(gpr_kit *gprk) {
 	Emit::code_comment(I"Match any number of visible property values");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
@@ -993,7 +993,7 @@ void PL::Parsing::Tokens::General::begin_parsing_visible_properties(gpr_kit *gpr
 			Produce::up(Emit::tree());
 }
 
-void PL::Parsing::Tokens::General::test_parse_visible_property(gpr_kit *gprk, parse_node *spec) {
+void UnderstandGeneralTokens::test_parse_visible_property(gpr_kit *gprk, parse_node *spec) {
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		Specifications::Compiler::emit_as_val(K_truth_state, spec);
@@ -1002,7 +1002,7 @@ void PL::Parsing::Tokens::General::test_parse_visible_property(gpr_kit *gprk, pa
 }
 
 int unique_pvp_counter = 0;
-void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
+void UnderstandGeneralTokens::parse_visible_property(gpr_kit *gprk,
 	inference_subject *subj, property *prn, int visibility_level) {
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Parsing property %n", RTProperties::iname(prn));
@@ -1015,11 +1015,11 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 		inter_symbol *pass_label = Produce::reserve_label(Emit::tree(), L);
 		DISCARD_TEXT(L)
 
-		PL::Parsing::Tokens::General::parse_visible_either_or(
+		UnderstandGeneralTokens::parse_visible_either_or(
 			gprk, prn, visibility_level, pass_label);
 		property *prnbar = EitherOrProperties::get_negation(prn);
 		if (prnbar)
-			PL::Parsing::Tokens::General::parse_visible_either_or(
+			UnderstandGeneralTokens::parse_visible_either_or(
 				gprk, prnbar, visibility_level, pass_label);
 
 		Produce::place_label(Emit::tree(), pass_label);
@@ -1146,10 +1146,10 @@ void PL::Parsing::Tokens::General::parse_visible_property(gpr_kit *gprk,
 	}
 }
 
-void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, property *prn, int visibility_level,
+void UnderstandGeneralTokens::parse_visible_either_or(gpr_kit *gprk, property *prn, int visibility_level,
 	inter_symbol *pass_l) {
-	grammar_verb *gv = EitherOrProperties::get_parsing_grammar(prn);
-	PL::Parsing::Tokens::General::pvp_test_begins_dash(gprk);
+	command_grammar *cg = EitherOrProperties::get_parsing_grammar(prn);
+	UnderstandGeneralTokens::pvp_test_begins_dash(gprk);
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		wording W = prn->name;
@@ -1174,12 +1174,12 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 		for (int a=0; a<ands; a++) Produce::up(Emit::tree());
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
-			PL::Parsing::Tokens::General::pvp_test_passes_dash(gprk, visibility_level, pass_l);
+			UnderstandGeneralTokens::pvp_test_passes_dash(gprk, visibility_level, pass_l);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	if (gv) {
-		if (gv->gv_prn_iname == NULL) internal_error("no PRN iname");
-		PL::Parsing::Tokens::General::pvp_test_begins_dash(gprk);
+	if (cg) {
+		if (cg->cg_prn_iname == NULL) internal_error("no PRN iname");
+		UnderstandGeneralTokens::pvp_test_begins_dash(gprk);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), AND_BIP);
@@ -1187,19 +1187,19 @@ void PL::Parsing::Tokens::General::parse_visible_either_or(gpr_kit *gprk, proper
 				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), gv->gv_prn_iname);
+					Produce::inv_call_iname(Emit::tree(), cg->cg_prn_iname);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
-				PL::Parsing::Tokens::General::pvp_test_passes_dash(gprk, visibility_level, pass_l);
+				UnderstandGeneralTokens::pvp_test_passes_dash(gprk, visibility_level, pass_l);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
 }
 
-void PL::Parsing::Tokens::General::pvp_test_begins_dash(gpr_kit *gprk) {
+void UnderstandGeneralTokens::pvp_test_begins_dash(gpr_kit *gprk) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
@@ -1207,7 +1207,7 @@ void PL::Parsing::Tokens::General::pvp_test_begins_dash(gpr_kit *gprk) {
 	Produce::up(Emit::tree());
 }
 
-void PL::Parsing::Tokens::General::pvp_test_passes_dash(gpr_kit *gprk, int visibility_level, inter_symbol *pass_l) {
+void UnderstandGeneralTokens::pvp_test_passes_dash(gpr_kit *gprk, int visibility_level, inter_symbol *pass_l) {
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_symbol(Emit::tree(), K_value, gprk->try_from_wn_s);
@@ -1233,7 +1233,7 @@ void PL::Parsing::Tokens::General::pvp_test_passes_dash(gpr_kit *gprk, int visib
 	}
 }
 
-void PL::Parsing::Tokens::General::finish_parsing_visible_properties(gpr_kit *gprk) {
+void UnderstandGeneralTokens::finish_parsing_visible_properties(gpr_kit *gprk) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Emit::code_comment(I"try_from_wn is now advanced past any visible property values");

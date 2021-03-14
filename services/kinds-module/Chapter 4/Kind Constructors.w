@@ -93,7 +93,7 @@ typedef struct kind_constructor {
 	#endif
 	struct text_stream *print_identifier; /* an Inter identifier used for compiling printing rules */
 	struct text_stream *ACTIONS_identifier; /* ditto but for ACTIONS testing command */
-	struct grammar_verb *understand_as_values; /* used when parsing such values */
+	struct command_grammar *understand_as_values; /* used when parsing such values */
 	int needs_GPR; /* a GPR is actually required to be compiled */
 	struct text_stream *explicit_GPR_identifier; /* routine name, when not compiled automatically */
 	struct text_stream *recognition_routine; /* for recognising an explicit value as preposition */

@@ -10,8 +10,8 @@ Setting up the use of this module.
 
 =
 COMPILE_WRITER(action_pattern *, ActionPatterns::log)
-COMPILE_WRITER(grammar_verb *, PL::Parsing::Verbs::log)
-COMPILE_WRITER(grammar_line *, PL::Parsing::Lines::log)
+COMPILE_WRITER(command_grammar *, CommandGrammars::log)
+COMPILE_WRITER(cg_line *, UnderstandLines::log)
 COMPILE_WRITER(action_name_list *, ActionNameLists::log)
 COMPILE_WRITER(anl_entry *, ActionNameLists::log_entry)
 COMPILE_WRITER(action_name *, ActionNameNames::log)
@@ -51,8 +51,8 @@ void IFModule::start(void) {
 
 @<Register this module's debugging log writers@> =
 	REGISTER_WRITER('A', ActionPatterns::log);
-	REGISTER_WRITER('G', PL::Parsing::Verbs::log);
-	REGISTER_WRITER('g', PL::Parsing::Lines::log);
+	REGISTER_WRITER('G', CommandGrammars::log);
+	REGISTER_WRITER('g', UnderstandLines::log);
 	REGISTER_WRITER('L', ActionNameLists::log);
 	REGISTER_WRITER('8', ActionNameLists::log_entry);
 	REGISTER_WRITER('l', ActionNameNames::log);

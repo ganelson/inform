@@ -1,4 +1,4 @@
-[PL::Parsing::Tokens::] Grammar Tokens.
+[UnderstandTokens::] Grammar Tokens.
 
 To handle grammar at the level of individual tokens. I7 grammar
 tokens correspond in a 1-to-1 way with I6 tokens: here we determine the I7
@@ -74,14 +74,14 @@ out", a sequence of five lexical words.
 @d GRAMMAR_PUNCTUATION_MARKS L".,:;?!(){}[]/" /* note the slash... */
 
 =
-void PL::Parsing::Tokens::break_into_tokens(parse_node *pn, wording W) {
+void UnderstandTokens::break_into_tokens(parse_node *pn, wording W) {
 	<grammar-token-breaking>(W);
 	switch (<<r>>) {
 		case NOT_APPLICABLE: {
 			wording LW = GET_RW(<grammar-token-breaking>, 1);
 			wording RW = GET_RW(<grammar-token-breaking>, 2);
-			PL::Parsing::Tokens::break_into_tokens(pn, LW);
-			PL::Parsing::Tokens::break_into_tokens(pn, RW);
+			UnderstandTokens::break_into_tokens(pn, LW);
+			UnderstandTokens::break_into_tokens(pn, RW);
 			break;
 		}
 		case TRUE:
@@ -105,7 +105,7 @@ void PL::Parsing::Tokens::break_into_tokens(parse_node *pn, wording W) {
 	}
 }
 
-int PL::Parsing::Tokens::is_literal(parse_node *pn) {
+int UnderstandTokens::is_literal(parse_node *pn) {
 	return Annotations::read_int(pn, grammar_token_literal_ANNOT);
 }
 
@@ -114,7 +114,7 @@ A multiple token is one which permits multiple matches in the I6 parser: for
 instance, permits the use of "all".
 
 =
-int PL::Parsing::Tokens::is_multiple(parse_node *pn) {
+int UnderstandTokens::is_multiple(parse_node *pn) {
 	switch (Annotations::read_int(pn, grammar_token_code_ANNOT)) {
 		case MULTI_TOKEN_GTC:
 		case MULTIINSIDE_TOKEN_GTC:
@@ -128,7 +128,7 @@ int PL::Parsing::Tokens::is_multiple(parse_node *pn) {
 @h Text.
 
 =
-int PL::Parsing::Tokens::is_text(parse_node *pn) {
+int UnderstandTokens::is_text(parse_node *pn) {
 	switch (Annotations::read_int(pn, grammar_token_code_ANNOT)) {
 		case TOPIC_TOKEN_GTC:
 			return TRUE;
@@ -141,7 +141,7 @@ Do not change any of these GTC numbers without first checking and updating
 the discussion of GL sorting in Grammar Lines:
 
 =
-int PL::Parsing::Tokens::gsb_for_special_token(int gtc) {
+int UnderstandTokens::gsb_for_special_token(int gtc) {
 	switch(gtc) {
         case NOUN_TOKEN_GTC: return 0;
         case MULTI_TOKEN_GTC: return 0;
@@ -159,7 +159,7 @@ int PL::Parsing::Tokens::gsb_for_special_token(int gtc) {
 @ These translate into I6 as follows:
 
 =
-char *PL::Parsing::Tokens::i6_token_for_special_token(int gtc) {
+char *UnderstandTokens::i6_token_for_special_token(int gtc) {
 	switch(gtc) {
 		case NOUN_TOKEN_GTC: return "noun";
 		case MULTI_TOKEN_GTC: return "multi";
@@ -174,7 +174,7 @@ char *PL::Parsing::Tokens::i6_token_for_special_token(int gtc) {
 	return ""; /* to prevent a gcc error: never reached */
 }
 
-inter_name *PL::Parsing::Tokens::iname_for_special_token(int gtc) {
+inter_name *UnderstandTokens::iname_for_special_token(int gtc) {
 	switch(gtc) {
 		case NOUN_TOKEN_GTC: return VERB_DIRECTIVE_NOUN_iname;
 		case MULTI_TOKEN_GTC: return VERB_DIRECTIVE_MULTI_iname;
@@ -189,7 +189,7 @@ inter_name *PL::Parsing::Tokens::iname_for_special_token(int gtc) {
 	return NULL; /* to prevent a gcc error: never reached */
 }
 
-char *PL::Parsing::Tokens::i6_constant_for_special_token(int gtc) {
+char *UnderstandTokens::i6_constant_for_special_token(int gtc) {
 	switch(gtc) {
 		case NOUN_TOKEN_GTC: return "NOUN_TOKEN";
 		case MULTI_TOKEN_GTC: return "MULTI_TOKEN";
@@ -208,7 +208,7 @@ char *PL::Parsing::Tokens::i6_constant_for_special_token(int gtc) {
 to be used in I7: these are defined by the following routine.
 
 =
-kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
+kind *UnderstandTokens::kind_for_special_token(int gtc) {
 	if ((K_understanding) && (gtc == TOPIC_TOKEN_GTC)) return K_understanding;
 	return K_object;
 }
@@ -217,7 +217,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 
 =
 <grammar-token> ::=
-	<named-grammar-token> |                          ==> { NAMED_TOKEN_GTC, -, <<grammar_verb:named>> = RP[1] }
+	<named-grammar-token> |                          ==> { NAMED_TOKEN_GTC, -, <<command_grammar:named>> = RP[1] }
 	any things |                                     ==> { ANY_THINGS_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_thing) }
 	any <s-description> |                            ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = RP[1] }
 	anything |                                       ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_thing) }
@@ -251,9 +251,9 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	things held                                      ==> @<Issue things held problem message@>
 
 <named-grammar-token> internal {
-	grammar_verb *gv = PL::Parsing::Verbs::named_token_by_name(W);
-	if (gv) {
-		==> { -, gv };
+	command_grammar *cg = CommandGrammars::named_token_by_name(W);
+	if (cg) {
+		==> { -, cg };
 		return TRUE;
 	}
 	==> { fail nonterminal };
@@ -300,12 +300,12 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 	==> { MULTI_TOKEN_GTC, NULL };
 
 @<Issue something held problem message@> =
-	PL::Parsing::Tokens::incompatible_change_problem(
+	UnderstandTokens::incompatible_change_problem(
 		"something held", "something", "something preferably held");
 	==> { HELD_TOKEN_GTC, NULL };
 
 @<Issue things held problem message@> =
-	PL::Parsing::Tokens::incompatible_change_problem(
+	UnderstandTokens::incompatible_change_problem(
 			"things held", "things", "things preferably held");
 	==> { MULTIHELD_TOKEN_GTC, NULL };
 
@@ -313,7 +313,7 @@ kind *PL::Parsing::Tokens::kind_for_special_token(int gtc) {
 that nobody complained about what might have been a controversial change.
 
 =
-void PL::Parsing::Tokens::incompatible_change_problem(char *token_tried, char *token_instead,
+void UnderstandTokens::incompatible_change_problem(char *token_tried, char *token_instead,
 	char *token_better) {
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_text(2, token_tried);
@@ -368,11 +368,11 @@ Slashing does not recurse down to individual tokens, so the first time we
 look seriously at tokens is in Phase II.
 
 =
-parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score) {
+parse_node *UnderstandTokens::determine(parse_node *pn, int depth, int *score) {
 	parse_node *spec = NULL;
 	if (Annotations::read_int(pn, grammar_token_literal_ANNOT)) return NULL;
 
-	<<grammar_verb:named>> = NULL;
+	<<command_grammar:named>> = NULL;
 	<grammar-token>(Node::get_text(pn));
 	switch (<<r>>) {
 		case NAMED_TOKEN_GTC: @<Determine a named grammar token@>; break;
@@ -387,8 +387,8 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 }
 
 @<Determine a named grammar token@> =
-	parse_node *val = ParsingPlugin::rvalue_from_grammar_verb(<<grammar_verb:named>>);
-	spec = PL::Parsing::Verbs::determine(<<grammar_verb:named>>, depth+1); /* this is where Phase II recurses */
+	parse_node *val = ParsingPlugin::rvalue_from_command_grammar(<<command_grammar:named>>);
+	spec = CommandGrammars::determine(<<command_grammar:named>>, depth+1); /* this is where Phase II recurses */
 	Node::set_grammar_value(pn, val);
 
 @<Determine an any grammar token@> =
@@ -397,7 +397,7 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 		int any_things = FALSE;
 		if (<<r>> == ANY_THINGS_GTC) any_things = TRUE;
 		Annotations::write_int(pn, grammar_token_code_ANNOT,
-			PL::Parsing::Tokens::Filters::new_id(spec, TRUE, any_things));
+			UnderstandFilterTokens::new_id(spec, TRUE, any_things));
 		Node::set_grammar_value(pn, spec);
 	}
 
@@ -411,15 +411,15 @@ parse_node *PL::Parsing::Tokens::determine(parse_node *pn, int depth, int *score
 	if (Specifications::is_description_like(spec)) {
 		*score = 5;
 		Annotations::write_int(pn, grammar_token_code_ANNOT,
-			PL::Parsing::Tokens::Filters::new_id(spec, FALSE, FALSE));
+			UnderstandFilterTokens::new_id(spec, FALSE, FALSE));
 	}
 
 @<Determine a special grammar token@> =
 	int p = <<r>>;
-	kind *K = PL::Parsing::Tokens::kind_for_special_token(p);
+	kind *K = UnderstandTokens::kind_for_special_token(p);
 	spec = Specifications::from_kind(K);
 	Node::set_text(spec, Node::get_text(pn));
-	*score = PL::Parsing::Tokens::gsb_for_special_token(p);
+	*score = UnderstandTokens::gsb_for_special_token(p);
 	Node::set_grammar_value(pn, spec);
 	Annotations::write_int(pn, grammar_token_code_ANNOT, p);
 
@@ -458,12 +458,12 @@ nothing else.
 
 =
 int ol_loop_counter = 0;
-kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
+kind *UnderstandTokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 	inter_symbol *failure_label, int consult_mode) {
 	int wn = Wordings::first_wn(Node::get_text(pn));
 	parse_node *spec;
 	binary_predicate *bp;
-	grammar_verb *gv;
+	command_grammar *cg;
 
 	if (Annotations::read_int(pn, grammar_token_literal_ANNOT)) {
 		if (code_mode) {
@@ -1040,7 +1040,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		}
 
 	spec = Node::get_grammar_value(pn);
-	if (spec == NULL) PL::Parsing::Tokens::determine(pn, 10, NULL);
+	if (spec == NULL) UnderstandTokens::determine(pn, 10, NULL);
 	spec = Node::get_grammar_value(pn);
 	if (spec == NULL) {
 		LOG("$T", pn);
@@ -1108,8 +1108,8 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 		kind *K = NULL;
 		int gtc = Annotations::read_int(pn, grammar_token_code_ANNOT);
 		if (gtc < 0) {
-			inter_name *i6_token_iname = PL::Parsing::Tokens::iname_for_special_token(gtc);
-			K = PL::Parsing::Tokens::kind_for_special_token(gtc);
+			inter_name *i6_token_iname = UnderstandTokens::iname_for_special_token(gtc);
+			K = UnderstandTokens::kind_for_special_token(gtc);
 			if (code_mode) {
 				if ((consult_mode) && (gtc == TOPIC_TOKEN_GTC)) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextTokenRestricted),
@@ -1156,7 +1156,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 							Produce::down(Emit::tree());
-								PL::Parsing::Tokens::Filters::compile_id(gtc);
+								UnderstandFilterTokens::compile_id(gtc);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1174,7 +1174,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 						Produce::up(Emit::tree());
 					} else {
-						PL::Parsing::Tokens::Filters::emit_id(gtc);
+						UnderstandFilterTokens::emit_id(gtc);
 					}
 				} else {
 					if (Kinds::Behaviour::offers_I6_GPR(K)) {
@@ -1219,7 +1219,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
-									PL::Parsing::Tokens::Filters::compile_id(gtc);
+									UnderstandFilterTokens::compile_id(gtc);
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1237,7 +1237,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::up(Emit::tree());
 						} else {
-							PL::Parsing::Tokens::Filters::emit_id(gtc);
+							UnderstandFilterTokens::emit_id(gtc);
 						}
 						K = K_object;
 					} else internal_error("no token for description");
@@ -1245,7 +1245,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 			} else {
 				if (Node::is(spec, CONSTANT_NT)) {
 					if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
-						gv = ParsingPlugin::rvalue_to_grammar_verb(spec);
+						cg = ParsingPlugin::rvalue_to_command_grammar(spec);
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
 							Produce::down(Emit::tree());
@@ -1253,7 +1253,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
-									Produce::val_iname(Emit::tree(), K_value, PL::Parsing::Verbs::i6_token_as_iname(gv));
+									Produce::val_iname(Emit::tree(), K_value, CommandGrammars::i6_token_as_iname(cg));
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1283,9 +1283,9 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 						} else {
-							Emit::array_iname_entry(PL::Parsing::Verbs::i6_token_as_iname(gv));
+							Emit::array_iname_entry(CommandGrammars::i6_token_as_iname(cg));
 						}
-						K = PL::Parsing::Verbs::get_data_type_as_token(gv);
+						K = CommandGrammars::get_data_type_as_token(cg);
 					}
 					if (Rvalues::is_object(spec)) {
 						if (code_mode) {
@@ -1294,7 +1294,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
-									PL::Parsing::Tokens::Filters::compile_id(gtc);
+									UnderstandFilterTokens::compile_id(gtc);
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1312,7 +1312,7 @@ kind *PL::Parsing::Tokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::up(Emit::tree());
 						} else {
-							PL::Parsing::Tokens::Filters::emit_id(gtc);
+							UnderstandFilterTokens::emit_id(gtc);
 						}
 						K = K_object;
 					}

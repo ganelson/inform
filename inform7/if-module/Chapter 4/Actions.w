@@ -1,4 +1,4 @@
-[PL::Actions::] Actions.
+[Actions::] Actions.
 
 Each different sort of impulse to do something is an "action name".
 
@@ -21,7 +21,7 @@ typedef struct action_name {
 	struct rulebook *report_rules;
 	struct stacked_variable_owner *action_variables;
 
-	struct grammar_line *command_parser_grammar_producing_this; /* if any */
+	struct cg_line *command_parser_grammar_producing_this; /* if any */
 
 	struct action_compilation_data compilation_data;
 	struct action_indexing_data indexing_data;
@@ -38,7 +38,7 @@ actions managed entirely by Inter code and without I7 rulebooks: something
 which had not actually been done since around 2008.
 
 =
-action_name *PL::Actions::act_new(wording W) {
+action_name *Actions::act_new(wording W) {
 	action_name *an = CREATE(action_name);
 	Kinds::Behaviour::new_enumerated_value(K_action_name);
 
@@ -51,9 +51,9 @@ action_name *PL::Actions::act_new(wording W) {
 	an->compilation_data = RTActions::new_data(W);
 	an->indexing_data = IXActions::new_data();
 	
-	an->check_rules =      PL::Actions::new_rulebook(an, CHECK_RB_HL);
-	an->carry_out_rules =  PL::Actions::new_rulebook(an, CARRY_OUT_RB_HL);
-	an->report_rules =     PL::Actions::new_rulebook(an, REPORT_RB_HL);
+	an->check_rules =      Actions::new_rulebook(an, CHECK_RB_HL);
+	an->carry_out_rules =  Actions::new_rulebook(an, CARRY_OUT_RB_HL);
+	an->report_rules =     Actions::new_rulebook(an, REPORT_RB_HL);
 	an->action_variables =
 		StackedVariables::new_owner(RTActions::action_variable_set_ID(an));
 
@@ -66,7 +66,7 @@ every rule for checking anything; and so they are "fragmented" into individual
 rulebooks per action, such as "check waiting" or "check dropping".
 
 =
-rulebook *PL::Actions::new_rulebook(action_name *an, int RB) {
+rulebook *Actions::new_rulebook(action_name *an, int RB) {
 	wording W = ActionNameNames::rulebook_name(an, RB);
 	int prefix_length = Wordings::length(W) -
 		Wordings::length(ActionNameNames::tensed(an, IS_TENSE));
@@ -80,14 +80,14 @@ rulebook *PL::Actions::new_rulebook(action_name *an, int RB) {
 a given action:
 
 =
-rulebook *PL::Actions::fragment_rulebook(action_name *an, rulebook *rb) {
+rulebook *Actions::fragment_rulebook(action_name *an, rulebook *rb) {
 	if (rb == built_in_rulebooks[CHECK_RB]) return an->check_rules;
 	if (rb == built_in_rulebooks[CARRY_OUT_RB]) return an->carry_out_rules;
 	if (rb == built_in_rulebooks[REPORT_RB]) return an->report_rules;
 	internal_error("asked for peculiar fragmented rulebook"); return NULL;
 }
 
-rulebook *PL::Actions::divert_to_another_actions_rulebook(action_name *new_an,
+rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 	rulebook *old_rulebook) {
 	if (new_an) {
 		action_name *old_an;
@@ -104,23 +104,25 @@ rulebook *PL::Actions::divert_to_another_actions_rulebook(action_name *new_an,
 our concern here:
 
 =
-void PL::Actions::add_gl(action_name *an, grammar_line *gl) {
+void Actions::add_gl(action_name *an, cg_line *cgl) {
 	if (an->command_parser_grammar_producing_this == NULL)
-		an->command_parser_grammar_producing_this = gl;
+		an->command_parser_grammar_producing_this = cgl;
 	else
-		PL::Parsing::Lines::list_with_action_add(
-			an->command_parser_grammar_producing_this, gl);
+		UnderstandLines::list_with_action_add(
+			an->command_parser_grammar_producing_this, cgl);
 }
 
-void PL::Actions::remove_gl(action_name *an) {
+void Actions::remove_all_command_grammar(action_name *an) {
 	an->command_parser_grammar_producing_this = NULL;
+	command_grammar *cg;
+	LOOP_OVER(cg, command_grammar) CommandGrammars::remove_action(cg, an);
 }
 
 @ Most actions are given automatically generated Inter identifiers, but a few
 have to correspond to names referenced in //WorldModelKit//, so:
 
 =
-void PL::Actions::translates(wording W, parse_node *p) {
+void Actions::translates(wording W, parse_node *p) {
 	if (<action-name>(W)) {
 		RTActions::translate(<<rp>>, Node::get_text(p));
 	} else {

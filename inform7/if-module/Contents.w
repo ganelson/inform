@@ -11,16 +11,14 @@ Chapter 1: Starting Up
 	IF Module
 
 Chapter 2: Bibliographic Data
-"Our project is a kind of interactive book, with ISBN-like data and various
-cataloguing information, and which needs to be bound up in various ways."
+"ISBN-like data and cataloguing information, and Release... sentences."
 	Bibliographic Data
 	Release Instructions
 	The iFiction Record
 	The Blurb File
 
 Chapter 3: Space and Time
-"The default model domain for Inform is one which is adapted to interactive
-fiction, which provides for geography, spatial containment and scenes."
+"A simulated world of geography, spatial containment and scenes."
 	Spatial Model
 	Everywhere, Nowhere and Here
 	Spatial Relations
@@ -54,16 +52,15 @@ Chapter 4: Actions
 	Named Action Patterns
 	Going
 
-Chapter 5: Command Grammar
-"In which Understand sentences in the source text are converted into a
-grammar for a command parser at run-time."
+Chapter 5: Command Parser
+"Understand... sentences become a grammar for the command parser to use at run-time."
 	Parsing Plugin
 	Parsing-Only Nodes and Annotations
-	Introduction to Grammar
-	Traverse for Grammar
+	Understand Sentences
+	Command Grammar in Source
+	Command Grammars
 	Grammar Properties
-	Grammar Verbs
-	Grammar Lines
+	Command Grammar Lines
 	Grammar Types
 	Grammar Tokens
 	Noun Filter Tokens
