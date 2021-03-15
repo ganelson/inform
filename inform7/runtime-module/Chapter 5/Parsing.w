@@ -93,7 +93,7 @@ typedef struct cached_understanding {
 } cached_understanding;
 
 
-void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W, int table_entry) {
+void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W) {
 	if (<subject-pronoun>(W)) { *val1 = LITERAL_IVAL; *val2 = 0; }
 	else {
 		cached_understanding *cu;
@@ -102,8 +102,8 @@ void RTParsing::compile_understanding(inter_ti *val1, inter_ti *val2, wording W,
 				Emit::to_ival(val1, val2, cu->cu_iname);
 				return;
 			}
-		Understand::consultation(W, table_entry);
-		inter_name *iname = UnderstandGeneralTokens::print_consultation_gv_name();
+		command_grammar *cg = Understand::consultation(W);
+		inter_name *iname = UnderstandGeneralTokens::consult_iname(cg);
 		if (iname) {
 			cu = CREATE(cached_understanding);
 			cu->understanding_text = W;

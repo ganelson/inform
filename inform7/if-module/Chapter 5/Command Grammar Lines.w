@@ -36,7 +36,7 @@ typedef struct cg_line {
 	struct wording understand_when_text; /* only when this condition holds */
 	struct pcalc_prop *understand_when_prop; /* and when this condition holds */
 
-	int pluralised; /* |CG_IS_OBJECT|: refers in the plural */
+	int pluralised; /* |CG_IS_SUBJECT|: refers in the plural */
 
 	struct action_name *resulting_action; /* |CG_IS_COMMAND|: the action */
 	int reversed; /* |CG_IS_COMMAND|: the two arguments are in reverse order */
@@ -67,8 +67,9 @@ typedef struct slash_gpr {
 } slash_gpr;
 
 @ =
-cg_line *UnderstandLines::new(int wn, action_name *ac,
+cg_line *UnderstandLines::new(wording W, action_name *ac,
 	parse_node *token_list, int reversed, int pluralised) {
+	int wn = Wordings::first_wn(W);
 	cg_line *cgl;
 	cgl = CREATE(cg_line);
 	cgl->original_text = wn;
@@ -313,9 +314,9 @@ I6 parsing is guaranteed to be the one set during the line causing
 the mistake.
 
 =
-void UnderstandLines::set_mistake(cg_line *cgl, int wn) {
+void UnderstandLines::set_mistake(cg_line *cgl, wording MW) {
 	cgl->mistaken = TRUE;
-	cgl->mistake_response_text = Wordings::one_word(wn);
+	cgl->mistake_response_text = MW;
 	if (cgl->mistake_iname == NULL) {
 		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
 		cgl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
@@ -390,24 +391,23 @@ void UnderstandLines::MistakeActionSub_routine(void) {
 			cg_line *cgl;
 			LOOP_OVER(cgl, cg_line)
 				if (cgl->mistaken) {
-					if (Wordings::nonempty(cgl->mistake_response_text)) {
-						current_sentence = cgl->where_grammar_specified;
-						parse_node *spec = NULL;
-						if (<s-value>(cgl->mistake_response_text))
-							spec = <<rp>>;
-						else spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
-						Produce::inv_primitive(Emit::tree(), CASE_BIP);
+					current_sentence = cgl->where_grammar_specified;
+					parse_node *spec = NULL;
+					if (Wordings::empty(cgl->mistake_response_text))
+						spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
+					else if (<s-value>(cgl->mistake_response_text)) spec = <<rp>>;
+					else spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
+					Produce::inv_primitive(Emit::tree(), CASE_BIP);
+					Produce::down(Emit::tree());
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+cgl->allocation_id));
+						Produce::code(Emit::tree());
 						Produce::down(Emit::tree());
-							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+cgl->allocation_id));
-							Produce::code(Emit::tree());
+							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
 							Produce::down(Emit::tree());
-								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
-								Produce::down(Emit::tree());
-									Specifications::Compiler::emit_constant_to_kind_as_val(spec, K_text);
-								Produce::up(Emit::tree());
+								Specifications::Compiler::emit_constant_to_kind_as_val(spec, K_text);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
-					}
+					Produce::up(Emit::tree());
 				}
 
 			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
@@ -1017,7 +1017,7 @@ void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, co
 		case CG_IS_COMMAND:
 		case CG_IS_TOKEN:
 		case CG_IS_CONSULT:
-		case CG_IS_OBJECT:
+		case CG_IS_SUBJECT:
 		case CG_IS_VALUE:
 		case CG_IS_PROPERTY_NAME:
 			break;
@@ -1153,7 +1153,7 @@ void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, co
 				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
 			Produce::up(Emit::tree());
 			break;
-		case CG_IS_OBJECT:
+		case CG_IS_SUBJECT:
 			UnderstandGeneralTokens::after_gl_failed(gprk, fail_label, cgl->pluralised);
 			break;
 		case CG_IS_VALUE:
@@ -1201,7 +1201,7 @@ void UnderstandLines::compile_token_line(gpr_kit *gprk, int code_mode, parse_nod
 				"make sense of things.");
 		}
 
-		if ((Node::get_grammar_token_relation(pn)) && (cg_is != CG_IS_OBJECT)) {
+		if ((Node::get_grammar_token_relation(pn)) && (cg_is != CG_IS_SUBJECT)) {
 			if (problem_count == 0)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
 				"a grammar token in an 'Understand...' can only be based "

@@ -49,7 +49,7 @@ an individual GL must belong to exactly one CG. There are five different
 types of CG, differentiated mostly by the purpose to which the CG is put:
 (-1) |CG_IS_COMMAND|. An imperative verbal command at run-time.
 (-2) |CG_IS_TOKEN|. A square-bracketed token in other grammar.
-(-3) |CG_IS_OBJECT|. A noun phrase at run time: a name for an object.
+(-3) |CG_IS_SUBJECT|. A noun phrase at run time: a name for an object.
 (-4) |CG_IS_VALUE|. A noun phrase at run time: a name for a value.
 (-5) |CG_IS_CONSULT|. A pattern to match in part of a command (such as "consult").
 (-6) |CG_IS_PROPERTY_NAME|. A noun phrase at run time: a name for one

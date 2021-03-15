@@ -6,7 +6,7 @@ of these is associated with a genuine typed-by-the-player command verb:
 
 @d CG_IS_COMMAND 1  /* an imperative verbal command at run-time */
 @d CG_IS_TOKEN   2  /* a square-bracketed token in other grammar */
-@d CG_IS_OBJECT  3  /* a noun phrase at run time: a name for an object */
+@d CG_IS_SUBJECT  3  /* a noun phrase at run time: a name for an object */
 @d CG_IS_VALUE   4  /* a noun phrase at run time: a name for a value */
 @d CG_IS_CONSULT 5  /* a pattern to match in part of a command (such as "consult") */
 @d CG_IS_PROPERTY_NAME 6  /* a noun phrase at run time: a name for an either/or pval */
@@ -32,7 +32,7 @@ typedef struct command_grammar {
 	struct wording name; /* |CG_IS_TOKEN|: name of this token */
 	struct inter_name *cg_line_iname;
 
-	struct inference_subject *subj_understood; /* |CG_IS_OBJECT|: what this provides names for */
+	struct inference_subject *subj_understood; /* |CG_IS_SUBJECT|: what this provides names for */
 
 	struct kind *kind_understood; /* |CG_IS_VALUE|: for which type it names an instance of */
 	struct inter_name *cg_parse_name_iname;
@@ -95,7 +95,7 @@ void CommandGrammars::log(command_grammar *cg) {
 			else LOG("command=%W", cg->command);
 			break;
 		case CG_IS_TOKEN: LOG("token=%W", cg->name); break;
-		case CG_IS_OBJECT: LOG("object"); break;
+		case CG_IS_SUBJECT: LOG("object"); break;
 		case CG_IS_VALUE: LOG("value=%u", cg->kind_understood); break;
 		case CG_IS_CONSULT: LOG("consult"); break;
 		case CG_IS_PROPERTY_NAME: LOG("property-name"); break;
@@ -465,20 +465,20 @@ command_grammar *CommandGrammars::for_subject(inference_subject *subj) {
 	command_grammar *cg;
 	if (PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object != NULL)
 		return PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object;
-	cg = CommandGrammars::cg_new(CG_IS_OBJECT);
+	cg = CommandGrammars::cg_new(CG_IS_SUBJECT);
 	PARSING_DATA_FOR_SUBJ(subj)->understand_as_this_object = cg;
 	cg->subj_understood = subj;
 	return cg;
 }
 
 void CommandGrammars::take_out_one_word_grammar(command_grammar *cg) {
-	if (cg->cg_is != CG_IS_OBJECT)
+	if (cg->cg_is != CG_IS_SUBJECT)
 		internal_error("One-word optimisation applies only to objects");
 	cg->first_line = UnderstandLines::list_take_out_one_word_grammar(cg->first_line);
 }
 
 int CommandGrammars::allow_mixed_lines(command_grammar *cg) {
-	if ((cg->cg_is == CG_IS_OBJECT) || (cg->cg_is == CG_IS_VALUE))
+	if ((cg->cg_is == CG_IS_SUBJECT) || (cg->cg_is == CG_IS_VALUE))
 		return TRUE;
 	return FALSE;
 }
@@ -707,7 +707,7 @@ void CommandGrammars::compile_all(void) {
 			CommandGrammars::compile(cg); /* makes |Verb| directives */
 
 	LOOP_OVER(cg, command_grammar)
-		if (cg->cg_is == CG_IS_OBJECT)
+		if (cg->cg_is == CG_IS_SUBJECT)
 			CommandGrammars::compile(cg); /* makes routines for use in |parse_name| */
 
 	LOOP_OVER(cg, command_grammar)
@@ -805,7 +805,7 @@ void CommandGrammars::compile(command_grammar *cg) {
 			Routines::end(save);
 			break;
 		}
-		case CG_IS_OBJECT: {
+		case CG_IS_SUBJECT: {
 			gpr_kit gprk = UnderstandValueTokens::new_kit();
 			packaging_state save = Emit::unused_packaging_state();
 			if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk, cg->subj_understood, cg, NULL)) {
@@ -854,7 +854,7 @@ void CommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
 	CommandGrammars::cg_compile_lines(gprk, cg);
 }
 
-@ The special thing about |CG_IS_OBJECT| grammars is that each is attached
+@ The special thing about |CG_IS_SUBJECT| grammars is that each is attached
 to an inference subject, and when we compile them we recurse up the subject
 hierarchy: thus if the red ball is of kind ball which is of kind thing,
 then the |parse_name| for the red ball consists of grammar lines specified

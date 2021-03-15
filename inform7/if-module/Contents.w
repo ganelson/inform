@@ -57,12 +57,11 @@ Chapter 5: Command Parser
 	Parsing Plugin
 	Parsing-Only Nodes and Annotations
 	Understand Sentences
-	Command Grammar in Source
 	Command Grammars
-	Grammar Properties
 	Command Grammar Lines
-	Grammar Types
 	Grammar Tokens
+	Grammar Types
+	Grammar Properties
 	Noun Filter Tokens
 	Tokens Parsing Values
 	General Parsing Routines

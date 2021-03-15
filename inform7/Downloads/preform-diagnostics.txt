@@ -16,7 +16,7 @@
 
 <any-integer> internal nti 27 constraint (none) extremes [1, 1]
 
-<quoted-text> internal hits 2894/22676 nti 28 constraint (none) extremes [1, 1]
+<quoted-text> internal hits 2898/22684 nti 28 constraint (none) extremes [1, 1]
 
 <quoted-text-with-subs> internal nti 29 constraint (none) extremes [1, 1]
 

@@ -741,7 +741,7 @@ kinds of value:
 		if (Wordings::empty(Node::get_text(spec_found)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_ti v1 = 0, v2 = 0;
-		RTParsing::compile_understanding(&v1, &v2, Node::get_text(spec_found), FALSE);
+		RTParsing::compile_understanding(&v1, &v2, Node::get_text(spec_found));
 		if (Holsters::data_acceptable(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 		}

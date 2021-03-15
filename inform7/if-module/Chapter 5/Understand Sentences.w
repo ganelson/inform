@@ -188,12 +188,15 @@ they are //understanding_reference// objects:
 typedef struct understanding_reference {
 	struct wording reference_text;
 	int cg_result;
-	int mword;
 	int mistaken;
+	struct wording mistake_text;
 	int pluralised_reference;
 	int reversed_reference;
-	action_name *an_reference;
-	parse_node *spec_reference;
+	struct action_name *an_reference;
+	struct parse_node *spec_reference;
+	struct property *property_reference;
+	struct wording token_text;
+	struct wording when_text;
 	struct understanding_reference *next;
 } understanding_reference;
 
@@ -212,16 +215,19 @@ call //Understand::preserve_ur// to obtain a permanent record of it.
 =
 understanding_reference ur_being_parsed;
 
-void Understand::initialise_ur_being_parsed(wording W) {
-	ur_being_parsed.reference_text = W;
-	ur_being_parsed.mword = -1;
-	ur_being_parsed.mistaken = FALSE;
-	ur_being_parsed.pluralised_reference = FALSE;
-	ur_being_parsed.reversed_reference = FALSE;
-	ur_being_parsed.an_reference = NULL;
-	ur_being_parsed.spec_reference = NULL;
-	ur_being_parsed.next = NULL;
-	ur_being_parsed.cg_result = CG_IS_OBJECT;
+void Understand::initialise_ur(understanding_reference *ur, wording W) {
+	ur->reference_text = W;
+	ur->cg_result = CG_IS_SUBJECT;
+	ur->mistaken = FALSE;
+	ur->mistake_text = EMPTY_WORDING;
+	ur->pluralised_reference = FALSE;
+	ur->reversed_reference = FALSE;
+	ur->an_reference = NULL;
+	ur->spec_reference = NULL;
+	ur->property_reference = NULL;
+	ur->token_text = EMPTY_WORDING;
+	ur->when_text = EMPTY_WORDING;
+	ur->next = NULL;
 }
 
 understanding_reference *Understand::preserve_ur(void) {
@@ -277,26 +283,31 @@ integer result is 0 if no problems were thrown, or -1 if they were.
 	...                                         ==> @<Issue PM_UnderstandVague problem@>
 
 @<Begin parsing an understand reference@> =
-	Understand::initialise_ur_being_parsed(W);
+	Understand::initialise_ur(&ur_being_parsed, W);
 	return FALSE; /* and thus continue with the nonterminal */
 
 @<Mistake@> =
 	ur_being_parsed.cg_result = CG_IS_COMMAND; ur_being_parsed.mistaken = TRUE;
+	ur_being_parsed.mistake_text = EMPTY_WORDING;
 
 @<Mistake with text@> =
 	ur_being_parsed.cg_result = CG_IS_COMMAND; ur_being_parsed.mistaken = TRUE;
-	ur_being_parsed.mword = R[1];
+	ur_being_parsed.mistake_text = Wordings::one_word(R[1]);
 
 @<Pluralise@> =
 	ur_being_parsed.pluralised_reference = TRUE;
 
 @<Make into a token@> =
 	ur_being_parsed.cg_result = CG_IS_TOKEN;
+	ur_being_parsed.token_text = Feeds::feed_C_string_full(
+		Lexer::word_text(Wordings::first_wn(ur_being_parsed.reference_text)),
+		TRUE, GRAMMAR_PUNCTUATION_MARKS);
 
 @<Reverse@> =
 	ur_being_parsed.reversed_reference = TRUE;
 
 @<Add action reference@> =
+	ur_being_parsed.cg_result = CG_IS_COMMAND;
 	ur_being_parsed.an_reference = RP[1];
 
 @<Add specification reference@> =
@@ -478,7 +489,8 @@ functions //Understand::command_block//, //Understand::property_block//,
 		for (understanding_item *ui = ui_list; ui; ui = ui->next) {
 			for (understanding_reference *ur = ur_list; ur; ur = ur->next) {
 				if (problem_count > base_problem_count) break;
-				Understand::text_block(ui->quoted_text, ur, UW);
+				ur->when_text = UW;
+				Understand::text_block(ui->quoted_text, ur);
 			}
 		}
 	}
@@ -600,7 +612,7 @@ Again, some semantic checks, but the real work is delegated to
 
 =
 void Understand::nothing_block(understanding_reference *ur, wording WHENW) {
-	if ((ur == NULL) || (ur->cg_result != CG_IS_OBJECT) || (ur->an_reference == NULL)) {
+	if ((ur == NULL) || (ur->an_reference == NULL)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_UnderstandNothingNonAction),
 			"'Understand nothing as ...' must be followed by an action",
@@ -628,33 +640,60 @@ The quoted text here becomes a constant of the kind |K_understanding|, and
 when it needs to be compiled, the following function is called.[1] As can be
 seen, it funnels directly into //Understand::text_block//.
 
+When table cells contain these topics, they are sometimes in the form of a
+list: say, "rockets" or "spaceships". We do not police the connectives here,
+we simply make any double-quoted text in |W| generate grammar.
+
 [1] The term "consultation" goes back to the origins of this feature in the
 CONSULT command, which in turn goes right back to a game called "Curses" (1993),
 in which players consulted a biographical dictionary of the Meldrew family.
 
 =
-void Understand::consultation(wording W, int table_entry) {
+command_grammar *Understand::consultation(wording W) {
 	base_problem_count = problem_count;
-	if (table_entry) {
-		LOOP_THROUGH_WORDING(k, W) {
-			if (<quoted-text>(Wordings::one_word(k))) {
-				Understand::text_block(Wordings::one_word(k), NULL, EMPTY_WORDING);
-			}
+	UnderstandGeneralTokens::prepare_consultation_grammar();
+	LOOP_THROUGH_WORDING(k, W) {
+		wording TW = Wordings::one_word(k);
+		if (<quoted-text>(TW)) {
+			understanding_reference ur;
+			Understand::initialise_ur(&ur, TW);
+			ur.cg_result = CG_IS_CONSULT;
+			Understand::text_block(TW, &ur);
 		}
-	} else {
-		Understand::text_block(W, NULL, EMPTY_WORDING);
 	}
+	return UnderstandGeneralTokens::consultation_grammar();
 }
 
 @h Text blocks.
-And finally, here we perform some checks and then delegate to
-//CommandGrammarSource::in//.
+And finally, here we perform a lengthy shopping list of checks for validity, but
+then in all cases we create a single new CG line with //UnderstandLines::new//
+and add it to a suitably chosen CG with //CommandGrammars::add_line//.
 
 =
-void Understand::text_block(wording W, understanding_reference *ur, wording WHENW) {
+void Understand::text_block(wording W, understanding_reference *ur) {
 	if (problem_count > base_problem_count) return;
+	@<The wording W must be a piece of quoted text using square brackets properly@>;
+	@<If token text is given, it must be well-formed@>;
+	@<Consult grammar cannot have conditions attached@>;
+
+	@<Reference cannot be to an object with a qualified description@>;
+	@<Reference cannot be imprecise@>;
+	@<Reference cannot be to a value of a kind not supporting parsing at run-time@>;
+	
+	@<Read a reference to a single positive adjective as a noun@>;
+
+	@<Only objects can be understood in the plural@>;
+
+	parse_node *tokens = NULL; cg_line *cgl = NULL; command_grammar *cg = NULL;
+	@<Tokenise the quoted text W into the raw tokens for a CG line@>;
+	@<Make the new CG line@>;
+	@<Decide which command grammar the new line should go to@>;
+	if (cg) CommandGrammars::add_line(cg, cgl);
+}
+
+@<The wording W must be a piece of quoted text using square brackets properly@> =
 	if (<quoted-text>(W) == FALSE) {
-		if (TEST_COMPILATION_MODE(SPECIFICATIONS_CMODE))
+		if (ur->cg_result == CG_IS_CONSULT)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 				"the topic here should be in the form of a textual description",
 				"as in 'asking about \"[something]\"'.");
@@ -671,5 +710,248 @@ void Understand::text_block(wording W, understanding_reference *ur, wording WHEN
 			"is fine, but 'understand \"take]\" as taking' is not.");
 		return;
 	}
-	CommandGrammarSource::in(W, ur, WHENW);
-}
+
+@<If token text is given, it must be well-formed@> =
+	if (Wordings::nonempty(ur->token_text)) {
+		int cc=0;
+		LOOP_THROUGH_WORDING(i, ur->token_text)
+			if (compare_word(i, COMMA_V)) cc++;
+		Word::dequote(Wordings::first_wn(ur->token_text));
+		if (*(Lexer::word_text(Wordings::first_wn(ur->token_text))) != 0) @<Token name invalid@>;
+		Word::dequote(Wordings::last_wn(ur->token_text));
+		if (*(Lexer::word_text(Wordings::last_wn(ur->token_text))) != 0) @<Token name invalid@>;
+		if (cc != 2) @<Token name invalid@>;
+	}
+
+@<Token name invalid@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnderstandAsCompoundText),
+		"if 'understand ... as ...' gives the meaning as text then it must describe "
+		"a single new token",
+		"so that 'Understand \"group four/five/six\" as \"[department]\"' is legal "
+		"(defining a new token \"[department]\", or adding to its definition if it "
+		"already existed) but 'Understand \"take [thing]\" as \"drop [thing]\"' is "
+		"not allowed, and would not make sense, because \"drop [thing]\" is a "
+		"combination of two existing tokens - not a single new one.");
+	return;
+
+@<Consult grammar cannot have conditions attached@> =
+	if ((Wordings::nonempty(ur->when_text)) && (ur->cg_result == CG_IS_CONSULT)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(BelievedImpossible), /* at present, I7 syntax prevents this anyway */
+			"'when' cannot be used with this kind of 'Understand'",
+			"for the time being at least.");
+		return;
+	}
+
+@<Reference cannot be to an object with a qualified description@> =
+	parse_node *spec = ur->spec_reference;
+	if (Specifications::object_exactly_described_if_any(spec)) {
+		if (Descriptions::is_qualified(spec)) {
+			LOG("Offending description: $T", spec);
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_UnderstandAsQualified),
+				"I cannot understand text as meaning an object qualified by relative "
+				"clauses or properties",
+				"only a specific thing, a specific value or a kind. (But the same effect "
+				"can usually be achieved with a 'when' clause. For instance, although "
+				"'Understand \"bad luck\" as the broken mirror' is not allowed, "
+				"'Understand \"bad luck\" as the mirror when the mirror is broken' "
+				"produces the desired effect.)");
+			return;
+		}
+	}
+
+@<Reference cannot be imprecise@> =
+	parse_node *spec = ur->spec_reference;
+	if ((Specifications::is_kind_like(spec)) &&
+		(Kinds::Behaviour::is_object(Specifications::to_kind(spec)) == FALSE)) @<Imprecise@>;
+	if (Specifications::is_phrasal(spec)) @<Imprecise@>;
+	if (Rvalues::is_nothing_object_constant(spec)) @<Imprecise@>;
+
+@<Imprecise@> =
+	Understand::issue_PM_UnderstandVague();
+	return;
+
+@<Reference cannot be to a value of a kind not supporting parsing at run-time@> =
+	parse_node *spec = ur->spec_reference;
+	if (Rvalues::is_rvalue(spec)) {
+		kind *K = Node::get_kind_of_value(spec);
+		if (Kinds::Behaviour::is_subkind_of_object(K) == FALSE) {
+			ur->cg_result = CG_IS_VALUE;
+			if (Kinds::get_construct(K) == CON_activity) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnderstandAsActivity),
+					"this 'understand ... as ...' gives text meaning an activity",
+					"rather than an action. Since activities happen when Inform decides "
+					"they need to happen, not in response to typed commands, this doesn't "
+					"make sense.");
+				return;
+			}
+			if (Kinds::Behaviour::request_I6_GPR(K) == FALSE) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnderstandAsBadValue),
+					"'understand ... as ...' gives text meaning a value whose kind "
+					"is not allowed",
+					"and should be a value such as 100.");
+				return;
+			}
+		}
+	}
+
+@<Read a reference to a single positive adjective as a noun@> =
+	parse_node *spec = ur->spec_reference;		
+	if (Specifications::is_description(spec)) {
+		if ((Descriptions::to_instance(spec) == NULL) &&
+			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE)
+			&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
+			&& (AdjectivalPredicates::parity(
+				Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
+			adjective *aph =
+				AdjectivalPredicates::to_adjective(
+					Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
+			instance *q = AdjectiveAmbiguity::has_enumerative_meaning(aph);
+			if (q) {
+				ur->cg_result = CG_IS_VALUE;
+				ur->spec_reference = Rvalues::from_instance(q);
+			} else {
+				property *prn = AdjectiveAmbiguity::has_either_or_property_meaning(aph, NULL);
+				if (prn) {
+					ur->cg_result = CG_IS_PROPERTY_NAME;
+					ur->property_reference = prn;
+					ur->spec_reference = NULL;
+				}
+			}
+		}
+	}
+
+@<Only objects can be understood in the plural@> =
+	if ((ur->pluralised_reference) && (ur->cg_result != CG_IS_SUBJECT)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_UnderstandPluralValue),
+			"'understand' as a plural can only apply to things, rooms or kinds "
+			"of things or rooms",
+			"so 'Understand \"paperwork\" as the plural of a document.' is fine "
+			"(assuming a document is a kind of thing), but 'Understand \"dozens\" "
+			"as the plural of 12' is not.");
+		return;
+	}
+
+@<Tokenise the quoted text W into the raw tokens for a CG line@> =
+	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
+	@<Reject this if it contains punctuation@>;
+	wording tokenised = Feeds::feed_C_string_full(as_wide_string, TRUE,
+		GRAMMAR_PUNCTUATION_MARKS);
+	@<Reject this if it contains two consecutive commas@>;
+
+	tokens = Diagrams::new_UNPARSED_NOUN(W);
+	UnderstandTokens::break_into_tokens(tokens, tokenised);
+	if (tokens->down == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_UnderstandEmptyText),
+			"'understand' should be followed by text which contains at least "
+			"one word or square-bracketed token",
+			"so for instance 'understand \"take [something]\" as taking' is fine, "
+			"but 'understand \"\" as the fog' is not. The same applies to the contents "
+			"of 'topic' columns in tables, since those are also instructions for "
+			"understanding.");
+		return;
+	}
+	LOGIF(GRAMMAR_CONSTRUCTION, "Tokenised: $T\n", tokens);
+
+@<Reject this if it contains punctuation@> =
+	int skip = FALSE, literal_punct = FALSE;
+	for (int i=0; as_wide_string[i]; i++) {
+		if (as_wide_string[i] == '[') skip = TRUE;
+		if (as_wide_string[i] == ']') skip = FALSE;
+		if (skip) continue;
+		if ((as_wide_string[i] == '.') || (as_wide_string[i] == ',') ||
+			(as_wide_string[i] == '!') || (as_wide_string[i] == '?') ||
+			(as_wide_string[i] == ':') || (as_wide_string[i] == ';'))
+			literal_punct = TRUE;
+	}
+	if (literal_punct) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralPunctuation),
+			"'understand' text cannot contain literal punctuation",
+			"or more specifically cannot contain any of these: . , ! ? : ; since they "
+			"are already used in various ways by the parser, and would not correctly "
+			"match here.");
+		return;
+	}
+
+@<Reject this if it contains two consecutive commas@> =
+	LOOP_THROUGH_WORDING(i, tokenised)
+		if (i < Wordings::last_wn(tokenised))
+			if ((compare_word(i, COMMA_V)) && (compare_word(i+1, COMMA_V))) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnderstandCommaCommand),
+					"'understand' as an action cannot involve a comma",
+					"since a command leading to an action never does. "
+					"(Although Inform understands commands like 'PETE, LOOK' "
+					"only the part after the comma is read as an action command: "
+					"the part before the comma is read as the name of someone, "
+					"according to the usual rules for parsing a name.) "
+					"Because of the way Inform processes text with square "
+					"brackets, this problem message is also sometimes seen "
+					"if empty square brackets are used, as in 'Understand "
+					"\"bless []\" as blessing.'");
+				return;
+			}
+
+@<Make the new CG line@> =
+	cgl = UnderstandLines::new(W, ur->an_reference, tokens,
+		ur->reversed_reference, ur->pluralised_reference);
+	if (ur->mistaken) UnderstandLines::set_mistake(cgl, ur->mistake_text);
+	if (Wordings::nonempty(ur->when_text))
+		UnderstandLines::set_understand_when(cgl, ur->when_text);
+	if (Descriptions::is_qualified(ur->spec_reference))
+		UnderstandLines::set_understand_prop(cgl,
+			Propositions::copy(Descriptions::to_proposition(ur->spec_reference)));
+	LOGIF(GRAMMAR_CONSTRUCTION, "Line: $g\n", cgl);
+
+@<Decide which command grammar the new line should go to@> =
+	switch(ur->cg_result) {
+		case CG_IS_TOKEN:
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of token %W: ", ur->token_text);
+			cg = CommandGrammars::named_token_new(
+				Wordings::trim_both_ends(Wordings::trim_both_ends(ur->token_text)));
+			break;
+		case CG_IS_COMMAND: {
+			wording command_W = EMPTY_WORDING; /* implies the no verb verb */
+			if (UnderstandTokens::is_literal(tokens->down))
+				command_W = Wordings::first_word(Node::get_text(tokens->down));
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of command '%W': ", command_W);
+			cg = CommandGrammars::find_or_create_command(command_W);
+			break;
+		}
+		case CG_IS_SUBJECT: {
+			inference_subject *cg_owner = NULL;
+			parse_node *spec = ur->spec_reference;
+			instance *target = Specifications::object_exactly_described_if_any(spec);
+			if (target) {
+				cg_owner = Instances::as_subject(target);
+			} else if (Specifications::is_description(spec)) {
+				kind *K = Specifications::to_kind(spec);
+				if (K) cg_owner = KindSubjects::from_kind(K);
+			}
+			if (cg_owner == NULL) internal_error("unowned");
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of subject $j: ", cg_owner);
+			cg = CommandGrammars::for_subject(cg_owner);
+			break;
+		}
+		case CG_IS_VALUE:
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of value $P: ",
+				ur->spec_reference);
+			UnderstandLines::set_single_type(cgl, ur->spec_reference);
+			cg = CommandGrammars::for_kind(Node::get_kind_of_value(ur->spec_reference));
+			break;
+		case CG_IS_PROPERTY_NAME:
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of property $Y: ",
+				ur->property_reference);
+			cg = CommandGrammars::for_prn(ur->property_reference);
+			break;
+		case CG_IS_CONSULT:
+			LOGIF(GRAMMAR_CONSTRUCTION, "Add to a consultation grammar: ");
+			cg = UnderstandGeneralTokens::get_consultation_cg();
+			break;
+	}
+	LOGIF(GRAMMAR_CONSTRUCTION, "$G\n", cg);

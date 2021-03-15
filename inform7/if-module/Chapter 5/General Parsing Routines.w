@@ -39,21 +39,21 @@ being matched against the snippet of words.
 =
 command_grammar *consultation_gv = NULL; /* used only in routines below */
 
-command_grammar *UnderstandGeneralTokens::get_consultation_gv(void) {
+command_grammar *UnderstandGeneralTokens::get_consultation_cg(void) {
 	if (consultation_gv == NULL) consultation_gv = CommandGrammars::consultation_new();
 	return consultation_gv;
 }
 
-void UnderstandGeneralTokens::prepare_consultation_gv(void) {
+void UnderstandGeneralTokens::prepare_consultation_grammar(void) {
 	consultation_gv = NULL;
 }
 
-inter_name *UnderstandGeneralTokens::print_consultation_gv_name(void) {
-	if (consultation_gv) return UnderstandGeneralTokens::consult_iname(consultation_gv);
-	return NULL;
+command_grammar *UnderstandGeneralTokens::consultation_grammar(void) {
+	return consultation_gv;
 }
 
 inter_name *UnderstandGeneralTokens::consult_iname(command_grammar *cg) {
+	if (cg == NULL) return NULL;
 	if (cg->cg_consult_iname == NULL) {
 		current_sentence = cg->where_gv_created;
 		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
