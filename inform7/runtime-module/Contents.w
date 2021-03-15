@@ -78,3 +78,4 @@ Chapter 5: Plugin Support
 	Named Action Patterns
 	Action Patterns
 	Going
+	Command Grammars

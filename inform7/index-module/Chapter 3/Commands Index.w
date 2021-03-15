@@ -84,7 +84,7 @@ void CommandsIndex::commands(OUTPUT_STREAM) {
 	int head_letter;
 
 	LOOP_OVER(cg, command_grammar)
-		CommandGrammars::make_command_index_entries(OUT, cg);
+		CommandsIndex::make_command_index_entries(OUT, cg);
 
 	vie = CREATE(command_index_entry);
 	vie->command_headword = I"0";
@@ -116,10 +116,10 @@ void CommandsIndex::commands(OUTPUT_STREAM) {
 		cg = vie->cg_indexed;
 		switch (vie->nature) {
 			case NORMAL_COMMAND:
-				CommandGrammars::index_normal(OUT, cg, vie->command_headword);
+				CommandsIndex::index_normal(OUT, cg, vie->command_headword);
 				break;
 			case ALIAS_COMMAND:
-				CommandGrammars::index_alias(OUT, cg, vie->command_headword);
+				CommandsIndex::index_alias(OUT, cg, vie->command_headword);
 				break;
 			case OUT_OF_WORLD_COMMAND:
 				HTML::begin_colour(OUT, I"800000");
@@ -264,7 +264,7 @@ void CommandsIndex::tokens(OUTPUT_STREAM) {
 		"sight, but writing 'any' lifts this restriction. So \"[any person]\" allows "
 		"every name of a person, wherever they happen to be.");
 	HTML_CLOSE("p");
-	CommandGrammars::index_tokens(OUT);
+	CommandsIndex::index_tokens(OUT);
 }
 
 void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_extension *E) {
@@ -276,3 +276,76 @@ void CommandsIndex::index_for_extension(OUTPUT_STREAM, source_file *sf, inform_e
 				ActionNameNames::tensed(an, IS_TENSE));
 	if (kc != 0) HTML_CLOSE("p");
 }
+
+@ The "Commands available to the player" portion of the Actions index page
+is, in effect, an alphabetised merge of the GLs found within the command CGs.
+GLs for the "no verb verb" appear under the special headword "0" (which
+is not displayed); otherwise GLs appear under the main command word, and
+aliases are shown with references like: "drag", same as "pull".
+
+One routine takes a CG and creates suitable entries for the Actions index
+to process; the other two routines act upon any such entries once they are
+needed.
+
+=
+void CommandsIndex::make_command_index_entries(OUTPUT_STREAM, command_grammar *cg) {
+	if ((cg->cg_is == CG_IS_COMMAND) && (cg->first_line)) {
+		if (Wordings::empty(cg->command))
+			CommandsIndex::vie_new_from(OUT, L"0", cg, NORMAL_COMMAND);
+		else
+			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(cg->command)), cg, NORMAL_COMMAND);
+		for (int i=0; i<cg->no_aliased_commands; i++)
+			CommandsIndex::vie_new_from(OUT, Lexer::word_text(Wordings::first_wn(cg->aliased_command[i])), cg, ALIAS_COMMAND);
+	}
+}
+
+void CommandsIndex::index_normal(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
+	UnderstandLines::sorted_list_index_normal(OUT, cg->sorted_first_line, headword);
+}
+
+void CommandsIndex::index_alias(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
+	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%N&quot;",
+		headword, Wordings::first_wn(cg->command));
+	TEMPORARY_TEXT(link)
+	WRITE_TO(link, "%N", Wordings::first_wn(cg->command));
+	Index::below_link(OUT, link);
+	DISCARD_TEXT(link)
+	HTML_TAG("br");
+}
+
+@ =
+void CommandsIndex::index_tokens(OUTPUT_STREAM) {
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anybody", NULL, NULL, I"someone_token", "same as \"[someone]\"");
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anyone", NULL, NULL, I"someone_token", "same as \"[someone]\"");
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "anything", NULL, NULL, I"things_token", "same as \"[thing]\"");
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "other things", NULL, NULL, I"things_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "somebody", NULL, NULL, I"someone_token", "same as \"[someone]\"");
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "someone", NULL, NULL, I"someone_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "something", NULL, NULL, I"things_token", "same as \"[thing]\"");
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "something preferably held", NULL, NULL, I"things_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "text", NULL, NULL, I"text_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things", NULL, NULL, I"things_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things inside", NULL, NULL, I"things_token", NULL);
+	CommandsIndex::index_tokens_for(OUT, EMPTY_WORDING, "things preferably held", NULL, NULL, I"things_token", NULL);
+	command_grammar *cg;
+	LOOP_OVER(cg, command_grammar)
+		if (cg->cg_is == CG_IS_TOKEN)
+			CommandsIndex::index_tokens_for(OUT, cg->name, NULL,
+				cg->where_cg_created, cg->sorted_first_line, NULL, NULL);
+}
+
+void CommandsIndex::index_tokens_for(OUTPUT_STREAM, wording W, char *special, parse_node *where,
+	cg_line *defns, text_stream *help, char *explanation) {
+	HTML::open_indented_p(OUT, 1, "tight");
+	WRITE("\"[");
+	if (special) WRITE("%s", special); else WRITE("%+W", W);
+	WRITE("]\"");
+	if (where) Index::link(OUT, Wordings::first_wn(Node::get_text(where)));
+	if (Str::len(help) > 0) Index::DocReferences::link(OUT, help);
+	if (explanation) WRITE(" - %s", explanation);
+	HTML_CLOSE("p");
+	if (defns) UnderstandLines::index_list_for_token(OUT, defns);
+}
+
+
+

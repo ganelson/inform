@@ -48,7 +48,7 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(UnderstandFilterTokens::compile);
 	}
 	if (stage == INTER4_CSEQ) {
-		BENCH(CommandGrammars::compile_all);
+		BENCH(RTCommandGrammars::compile_all);
 		BENCH(UnderstandFilterTokens::compile);
 	}
 	return FALSE;

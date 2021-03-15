@@ -64,5 +64,5 @@ to exactly one GL.
 example, |'take'| and |something| are tokens.
 
 The picture is not quite so hierarchical as it looks, though, because
-a CG naming a token can be used as a token inside other GVs. We need to
+a CG naming a token can be used as a token inside other CGs. We need to
 be careful that this does not lead to infinite regress: see below.

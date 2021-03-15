@@ -54,12 +54,12 @@ command_grammar *UnderstandGeneralTokens::consultation_grammar(void) {
 
 inter_name *UnderstandGeneralTokens::consult_iname(command_grammar *cg) {
 	if (cg == NULL) return NULL;
-	if (cg->cg_consult_iname == NULL) {
-		current_sentence = cg->where_gv_created;
+	if (cg->compilation_data.cg_consult_iname == NULL) {
+		current_sentence = cg->where_cg_created;
 		package_request *PR = Hierarchy::local_package(CONSULT_TOKENS_HAP);
-		cg->cg_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
+		cg->compilation_data.cg_consult_iname = Hierarchy::make_iname_in(CONSULT_FN_HL, PR);
 	}
-	return cg->cg_consult_iname;
+	return cg->compilation_data.cg_consult_iname;
 }
 
 @ We also, at another time, need to compile the routine being named. There
@@ -84,12 +84,12 @@ will simply compile a |parse_name| routine inline, in the usual I6 way.
 
 =
 inter_name *UnderstandGeneralTokens::get_gv_parse_name(command_grammar *cg) {
-	if (cg->cg_parse_name_iname == NULL) {
-		compilation_unit *C = CompilationUnits::find(cg->where_gv_created);
+	if (cg->compilation_data.cg_parse_name_iname == NULL) {
+		compilation_unit *C = CompilationUnits::find(cg->where_cg_created);
 		package_request *PR = Hierarchy::package(C, PARSE_NAMES_HAP);
-		cg->cg_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
+		cg->compilation_data.cg_parse_name_iname = Hierarchy::make_iname_in(PARSE_NAME_FN_HL, PR);
 	}
-	return cg->cg_parse_name_iname;
+	return cg->compilation_data.cg_parse_name_iname;
 }
 
 inter_name *UnderstandGeneralTokens::compile_parse_name_property(inference_subject *subj) {
@@ -212,7 +212,7 @@ The longer match is taken: but note that a match of visible property names
 alone is rejected unless at least one property has been declared sufficient
 to identify the object all by itself. Longer grammar means grammar lines
 containing 2 or more words, since all single-fixed-word grammar lines for
-GVs destined to be |parse_name|s is stripped out and converted into the
+CGs destined to be |parse_name|s is stripped out and converted into the
 |name| property.
 
 There are clearly other possibilities and the above system is something of
@@ -1178,7 +1178,7 @@ void UnderstandGeneralTokens::parse_visible_either_or(gpr_kit *gprk, property *p
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	if (cg) {
-		if (cg->cg_prn_iname == NULL) internal_error("no PRN iname");
+		if (cg->compilation_data.cg_prn_iname == NULL) internal_error("no PRN iname");
 		UnderstandGeneralTokens::pvp_test_begins_dash(gprk);
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
@@ -1187,7 +1187,7 @@ void UnderstandGeneralTokens::parse_visible_either_or(gpr_kit *gprk, property *p
 				RTPropertyValues::emit_iname_has_property(K_value, Hierarchy::find(SELF_HL), prn);
 				Produce::inv_primitive(Emit::tree(), EQ_BIP);
 				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), cg->cg_prn_iname);
+					Produce::inv_call_iname(Emit::tree(), cg->compilation_data.cg_prn_iname);
 					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());

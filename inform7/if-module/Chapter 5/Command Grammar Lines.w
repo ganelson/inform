@@ -293,7 +293,7 @@ void UnderstandLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk, cg_li
 }
 
 @h Mistakes.
-These are grammar lines used in command GVs for commands which are accepted
+These are grammar lines used in command CGs for commands which are accepted
 but only in order to print nicely worded rejections. A number of schemes
 were tried for this, for instance producing parser errors and setting |pe|
 to some high value, but the method now used is for a mistaken line to
@@ -991,11 +991,11 @@ void UnderstandLines::reset_labels(void) {
 }
 
 @ As fancy as the following routine may look, it contains very little.
-What complexity there is comes from the fact that command GVs are compiled
+What complexity there is comes from the fact that command CGs are compiled
 very differently to all others (most grammars are compiled in "code mode",
-generating procedural I6 statements, but command GVs are compiled to lines
+generating procedural I6 statements, but command CGs are compiled to lines
 in |Verb| directives) and that GLs resulting in actions (i.e., GLs in
-command GVs) have not yet been type-checked, whereas all others have.
+command CGs) have not yet been type-checked, whereas all others have.
 
 =
 void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, command_grammar *cg,
@@ -1389,11 +1389,11 @@ grammar lines belonging to a given action are tabulated. Special linked
 lists are kept for this purpose, and this is where we unravel them and
 print to the index. The question of sorted vs unsorted is meaningless
 here, since the GLs appearing in such a list will typically belong to
-several different GVs. (As it happens, they appear in order of creation,
+several different CGs. (As it happens, they appear in order of creation,
 i.e., in source text order.)
 
 Tiresomely, all of this means that we need to store "uphill" pointers
-in GLs: back up to the GVs that own them. The following routine does
+in GLs: back up to the CGs that own them. The following routine does
 this for a whole list of GLs:
 
 =

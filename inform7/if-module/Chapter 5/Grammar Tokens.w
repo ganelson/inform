@@ -1253,7 +1253,7 @@ kind *UnderstandTokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
 									Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
-									Produce::val_iname(Emit::tree(), K_value, CommandGrammars::i6_token_as_iname(cg));
+									Produce::val_iname(Emit::tree(), K_value, RTCommandGrammars::i6_token_as_iname(cg));
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1283,7 +1283,7 @@ kind *UnderstandTokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 						} else {
-							Emit::array_iname_entry(CommandGrammars::i6_token_as_iname(cg));
+							Emit::array_iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
 						}
 						K = CommandGrammars::get_data_type_as_token(cg);
 					}
