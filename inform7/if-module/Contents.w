@@ -60,7 +60,7 @@ Chapter 5: Command Parser
 	Command Grammars
 	Command Grammar Lines
 	Grammar Tokens
-	Grammar Types
+	Determination Types
 	Grammar Properties
 	Noun Filter Tokens
 	Tokens Parsing Values

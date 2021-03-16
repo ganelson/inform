@@ -1285,7 +1285,7 @@ kind *UnderstandTokens::compile(gpr_kit *gprk, parse_node *pn, int code_mode,
 						} else {
 							Emit::array_iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
 						}
-						K = CommandGrammars::get_data_type_as_token(cg);
+						K = CommandGrammars::get_kind_matched(cg);
 					}
 					if (Rvalues::is_object(spec)) {
 						if (code_mode) {

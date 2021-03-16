@@ -37,21 +37,6 @@ First, we need to look after a pointer to the CG used to hold the grammar
 being matched against the snippet of words.
 
 =
-command_grammar *consultation_gv = NULL; /* used only in routines below */
-
-command_grammar *UnderstandGeneralTokens::get_consultation_cg(void) {
-	if (consultation_gv == NULL) consultation_gv = CommandGrammars::consultation_new();
-	return consultation_gv;
-}
-
-void UnderstandGeneralTokens::prepare_consultation_grammar(void) {
-	consultation_gv = NULL;
-}
-
-command_grammar *UnderstandGeneralTokens::consultation_grammar(void) {
-	return consultation_gv;
-}
-
 inter_name *UnderstandGeneralTokens::consult_iname(command_grammar *cg) {
 	if (cg == NULL) return NULL;
 	if (cg->compilation_data.cg_consult_iname == NULL) {
@@ -61,11 +46,6 @@ inter_name *UnderstandGeneralTokens::consult_iname(command_grammar *cg) {
 	}
 	return cg->compilation_data.cg_consult_iname;
 }
-
-@ We also, at another time, need to compile the routine being named. There
-are no timing difficulties here: the routine's name is used in the context of
-an I6 constant rather than in a |Verb| declaration, so no predeclaration is
-needed.
 
 @h Parse name properties.
 One of the major services provided by I7, as compared with I6, is that it

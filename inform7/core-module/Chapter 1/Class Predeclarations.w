@@ -261,7 +261,6 @@ DECLARE_CLASS(rubric_holder)
 @e part_of_inference_data_CLASS
 @e regions_data_CLASS
 @e release_instructions_CLASS
-@e reserved_command_verb_CLASS
 @e scene_CLASS
 @e slash_gpr_CLASS
 @e spatial_data_CLASS
@@ -296,7 +295,6 @@ DECLARE_CLASS(parsing_pp_data)
 DECLARE_CLASS(part_of_inference_data)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
-DECLARE_CLASS(reserved_command_verb)
 DECLARE_CLASS(scene)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(spatial_data)

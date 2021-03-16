@@ -51,8 +51,8 @@ void CommandsIndex::verb_definition(OUTPUT_STREAM, wchar_t *p, text_stream *true
 		if (Str::eq_wide_string(trueverb, L"0") == FALSE) {
 			WRITE("%S", trueverb);
 			if (Wordings::nonempty(W))
-				CommandGrammars::index_command_aliases(OUT,
-					CommandGrammars::find_command(W));
+				CommandsIndex::index_command_aliases(OUT,
+					CommandGrammars::for_command_verb(W));
 			for (i=1; p[i+1]; i++) if (p[i] == ' ') break;
 			for (; p[i+1]; i++) if (p[i] != ' ') break;
 			if (p[i+1]) WRITE(" ");
@@ -330,7 +330,7 @@ void CommandsIndex::index_tokens(OUTPUT_STREAM) {
 	command_grammar *cg;
 	LOOP_OVER(cg, command_grammar)
 		if (cg->cg_is == CG_IS_TOKEN)
-			CommandsIndex::index_tokens_for(OUT, cg->name, NULL,
+			CommandsIndex::index_tokens_for(OUT, cg->token_name, NULL,
 				cg->where_cg_created, cg->sorted_first_line, NULL, NULL);
 }
 
@@ -347,5 +347,12 @@ void CommandsIndex::index_tokens_for(OUTPUT_STREAM, wording W, char *special, pa
 	if (defns) UnderstandLines::index_list_for_token(OUT, defns);
 }
 
+
+void CommandsIndex::index_command_aliases(OUTPUT_STREAM, command_grammar *cg) {
+	if (cg == NULL) return;
+	int i, n = cg->no_aliased_commands;
+	for (i=0; i<n; i++)
+		WRITE("/%N", Wordings::first_wn(cg->aliased_command[i]));
+}
 
 

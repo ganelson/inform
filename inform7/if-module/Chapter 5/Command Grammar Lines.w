@@ -43,7 +43,7 @@ typedef struct cg_line {
 	int mistaken; /* |CG_IS_COMMAND|: is this understood as a mistake? */
 	struct wording mistake_response_text; /* if so, reply thus */
 
-	struct grammar_type cgl_type;
+	struct determination_type cgl_type;
 
 	int suppress_compilation; /* has been compiled in a single I6 grammar token already? */
 	struct cg_line *next_with_action; /* used when indexing actions */
@@ -84,7 +84,7 @@ cg_line *UnderstandLines::new(wording W, action_name *ac,
 	cgl->next_line = NULL;
 	cgl->tokens = token_list;
 	cgl->where_grammar_specified = current_sentence;
-	cgl->cgl_type = UnderstandTokens::Types::new(TRUE);
+	cgl->cgl_type = DeterminationTypes::new();
 	cgl->lexeme_count = -1; /* no count made as yet */
 	cgl->reversed = reversed;
 	cgl->pluralised = pluralised;
@@ -105,7 +105,7 @@ void UnderstandLines::log(cg_line *cgl) {
 }
 
 void UnderstandLines::set_single_type(cg_line *cgl, parse_node *cgl_value) {
-	UnderstandTokens::Types::set_single_type(&(cgl->cgl_type), cgl_value);
+	DeterminationTypes::set_single_term(&(cgl->cgl_type), cgl_value);
 }
 
 @h GL lists.
@@ -616,7 +616,7 @@ parse_node *UnderstandLines::line_list_determine(cg_line *list_head,
 			}
 		}
 
-		if (CommandGrammars::allow_mixed_lines(cg)) continue;
+		if ((cg->cg_is == CG_IS_SUBJECT) || (cg->cg_is == CG_IS_VALUE)) continue;
 
 		current_sentence = cgl->where_grammar_specified;
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
@@ -674,9 +674,11 @@ parse_node *UnderstandLines::cgl_determine(cg_line *cgl, int depth,
 				usb_contribution = 100*usb_contribution + (line_length-1-i);
 				cgl->understanding_sort_bonus += usb_contribution; /* reduces! */
 			}
-			cgl->general_sort_bonus +=
-				UnderstandTokens::Types::add_type(&(cgl->cgl_type), spec,
-					UnderstandTokens::is_multiple(pn), score);
+			int score_multiplier = 1;
+			if (DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) == 0) score_multiplier = 10;
+			DeterminationTypes::add_term(&(cgl->cgl_type), spec,
+				UnderstandTokens::is_multiple(pn));
+			cgl->general_sort_bonus += score*score_multiplier;
 		} else nulls_count++;
 
 		if (UnderstandTokens::is_multiple(pn)) multiples++;
@@ -689,11 +691,11 @@ parse_node *UnderstandLines::cgl_determine(cg_line *cgl, int depth,
 			"so you'll have to remove one of the 'things' tokens and "
 			"make it a 'something' instead.");
 
-	nrv = UnderstandTokens::Types::get_no_resulting_values(&(cgl->cgl_type));
+	nrv = DeterminationTypes::get_no_values_described(&(cgl->cgl_type));
 	if (nrv == 0) cgl->general_sort_bonus = 100*nulls_count;
 	if (cg_is == CG_IS_COMMAND) spec = NULL;
 	else {
-		if (nrv < 2) spec = UnderstandTokens::Types::get_single_type(&(cgl->cgl_type));
+		if (nrv < 2) spec = DeterminationTypes::get_single_term(&(cgl->cgl_type));
 		else StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
 			"there can be at most one varying part in the definition of a "
 			"named token",
@@ -945,7 +947,7 @@ int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 	if (L1->general_sort_bonus > L2->general_sort_bonus) return TRUE;
 	if (L1->general_sort_bonus < L2->general_sort_bonus) return FALSE;
 
-	cs = UnderstandTokens::Types::must_precede(&(L1->cgl_type), &(L2->cgl_type));
+	cs = DeterminationTypes::must_precede(&(L1->cgl_type), &(L2->cgl_type));
 	if (cs != NOT_APPLICABLE) return cs;
 
 	if ((UnderstandLines::conditional(L1)) && (UnderstandLines::conditional(L2) == FALSE)) return TRUE;
@@ -1060,7 +1062,7 @@ void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, co
 			Produce::inv_primitive(Emit::tree(), EQ_BIP);
 			Produce::down(Emit::tree());
 				Produce::val_symbol(Emit::tree(), K_value, gprk->instance_s);
-				UnderstandTokens::Types::compile_to_string(&(cgl->cgl_type));
+				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
 			Produce::up(Emit::tree());
 			Produce::code(Emit::tree());
 			Produce::down(Emit::tree());
@@ -1160,7 +1162,7 @@ void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, co
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-				UnderstandTokens::Types::compile_to_string(&(cgl->cgl_type));
+				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
 			Produce::up(Emit::tree());
 			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 			Produce::down(Emit::tree());

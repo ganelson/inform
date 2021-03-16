@@ -44,6 +44,12 @@ void RTCommandGrammars::set_CG_IS_TOKEN_identifier(command_grammar *cg, wording 
 	WRITE_TO(cg->compilation_data.cg_I6_identifier, "%N", Wordings::first_wn(W));
 }
 
+void RTCommandGrammars::create_no_verb_verb(command_grammar *cg) {
+	inter_name *iname = Hierarchy::find(NO_VERB_VERB_DEFINED_HL);
+	Emit::named_numeric_constant(iname, (inter_ti) 1);
+	global_compilation_settings.no_verb_verb_exists = TRUE;
+}
+
 @h Phases III and IV: Sort and Compile Grammar.
 At this highest level phases III and IV are intermingled, in that Phase III
 always precedes Phase IV for any given list of grammar lines, but each CG
@@ -88,8 +94,7 @@ inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 
 void RTCommandGrammars::compile_all(void) {
 	command_grammar *cg;
-	CommandGrammars::cg_slash_all();
-	CommandGrammars::cg_determine_all();
+	CommandGrammars::prepare();
 
 	Log::new_stage(I"Sorting and compiling non-value grammar (G3, G4)");
 
@@ -131,6 +136,19 @@ void RTCommandGrammars::compile_all(void) {
 	UnderstandLines::compile_slash_gprs();
 }
 
+@ Some tokens require suitable I6 routines to have already been compiled,
+if they are to work nicely: the following routine goes through the tokens
+by exploring each CG in turn.
+
+=
+void RTCommandGrammars::compile_conditions(void) {
+	command_grammar *cg;
+	LOOP_OVER(cg, command_grammar)	{
+		current_sentence = cg->where_cg_created;
+		UnderstandLines::line_list_compile_condition_tokens(cg->first_line);
+	}
+}
+
 @ Command CGs are destined to be compiled into |Verb| directives, as follows.
 
 =
@@ -145,22 +163,6 @@ packaging_state RTCommandGrammars::cg_compile_Verb_directive_header(command_gram
 	if (Wordings::empty(cg->command))
 		Emit::array_dword_entry(I"no.verb");
 	else {
-		TEMPORARY_TEXT(vt)
-		WRITE_TO(vt, "%W", Wordings::one_word(Wordings::first_wn(cg->command)));
-		if (CommandGrammars::command_verb_reserved(vt)) {
-			current_sentence = cg->where_cg_created;
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, cg->command);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-			Problems::issue_problem_segment(
-				"You wrote %1, but %2 is a built-in Inform testing verb, which "
-				"means it is reserved for Inform's own use and can't be used "
-				"for ordinary play purposes. %PThe verbs which are reserved in "
-				"this way are all listed in the alphabetical catalogue on the "
-				"Actions Index page.");
-			Problems::issue_problem_end();
-		}
-		DISCARD_TEXT(vt)
 		TEMPORARY_TEXT(WD)
 		WRITE_TO(WD, "%N", Wordings::first_wn(cg->command));
 		Emit::array_dword_entry(WD);
@@ -346,3 +348,6 @@ void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
 	RTCommandGrammars::cg_compile_lines(gprk, cg);
 }
 
+void RTCommandGrammars::emit_determination_type(determination_type *gty) {
+	Specifications::Compiler::emit_as_val(K_value, gty->term[0].what);
+}

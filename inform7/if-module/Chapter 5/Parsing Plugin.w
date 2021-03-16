@@ -32,7 +32,7 @@ int ParsingPlugin::production_line(int stage, int debugging,
 		BENCH(UnderstandGeneralTokens::write_parse_name_routines);
 		BENCH(UnderstandLines::MistakeActionSub_routine);
 		BENCH(CommandGrammars::prepare);
-		BENCH(CommandGrammars::compile_conditions);
+		BENCH(RTCommandGrammars::compile_conditions);
 		BENCH(UnderstandValueTokens::number);
 		BENCH(UnderstandValueTokens::truth_state);
 		BENCH(UnderstandValueTokens::time);

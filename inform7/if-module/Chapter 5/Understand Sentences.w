@@ -499,7 +499,7 @@ functions //Understand::command_block//, //Understand::property_block//,
 We now define the four "block" functions in turn, beginning with command blocks.
 Our aim here is only to perform some semantic checks to see if the instruction
 makes sense (as well as being syntactically valid), and then delegate the work
-to another section: here //CommandGrammars::remove_command// or //CommandGrammars::add_command//.
+to another section: here //CommandGrammars::remove_command// or //CommandGrammars::add_alias//.
 
 =
 void Understand::command_block(wording W, wording ASW) {
@@ -532,7 +532,7 @@ command, for instance. So the following does nothing if |cg| comes back |NULL|, 
 does not issue a problem message in that case either.
 
 @<Revoke the command@> =
-	command_grammar *cg = CommandGrammars::find_command(W);
+	command_grammar *cg = CommandGrammars::for_command_verb(W);
 	if (cg) CommandGrammars::remove_command(cg, W);
 
 @ But you can only define a command which does exist already if that command has
@@ -540,7 +540,7 @@ no meanings at present -- as can happen if it has had every meaning stripped fro
 it, one at a time, by previous Understand sentences.
 
 @<Throw a problem if the command to be defined already means something@> =
-	command_grammar *cg = CommandGrammars::find_command(W);
+	command_grammar *cg = CommandGrammars::for_command_verb(W);
 	if (cg)	{
 		if (CommandGrammars::is_empty(cg)) {
 			DESTROY(cg, command_grammar);
@@ -557,11 +557,11 @@ it, one at a time, by previous Understand sentences.
 @<Define the command@> =
 	@<Throw a problem if the command to be defined already means something@>;
 	Word::dequote(Wordings::first_wn(ASW));
-	command_grammar *as_gv = CommandGrammars::find_command(ASW);
+	command_grammar *as_gv = CommandGrammars::for_command_verb(ASW);
 	if (as_gv == NULL) {
 		@<Actually issue PM_NotOldCommand problem@>;
 	} else {
-		CommandGrammars::add_command(as_gv, W);
+		CommandGrammars::add_alias(as_gv, W);
 	}
 
 @h Property blocks.
@@ -637,21 +637,17 @@ conversation topics to be matched, or in the condition:
 >> if the player's command matches "room [number]", ...
 
 The quoted text here becomes a constant of the kind |K_understanding|, and
-when it needs to be compiled, the following function is called.[1] As can be
+when it needs to be compiled, the following function is called. As can be
 seen, it funnels directly into //Understand::text_block//.
 
 When table cells contain these topics, they are sometimes in the form of a
 list: say, "rockets" or "spaceships". We do not police the connectives here,
 we simply make any double-quoted text in |W| generate grammar.
 
-[1] The term "consultation" goes back to the origins of this feature in the
-CONSULT command, which in turn goes right back to a game called "Curses" (1993),
-in which players consulted a biographical dictionary of the Meldrew family.
-
 =
 command_grammar *Understand::consultation(wording W) {
 	base_problem_count = problem_count;
-	UnderstandGeneralTokens::prepare_consultation_grammar();
+	CommandGrammars::prepare_consultation_cg();
 	LOOP_THROUGH_WORDING(k, W) {
 		wording TW = Wordings::one_word(k);
 		if (<quoted-text>(TW)) {
@@ -661,7 +657,7 @@ command_grammar *Understand::consultation(wording W) {
 			Understand::text_block(TW, &ur);
 		}
 	}
-	return UnderstandGeneralTokens::consultation_grammar();
+	return CommandGrammars::get_consultation_cg();
 }
 
 @h Text blocks.
@@ -912,7 +908,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 	switch(ur->cg_result) {
 		case CG_IS_TOKEN:
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of token %W: ", ur->token_text);
-			cg = CommandGrammars::named_token_new(
+			cg = CommandGrammars::new_named_token(
 				Wordings::trim_both_ends(Wordings::trim_both_ends(ur->token_text)));
 			break;
 		case CG_IS_COMMAND: {
@@ -920,7 +916,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			if (UnderstandTokens::is_literal(tokens->down))
 				command_W = Wordings::first_word(Node::get_text(tokens->down));
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of command '%W': ", command_W);
-			cg = CommandGrammars::find_or_create_command(command_W);
+			cg = CommandGrammars::for_command_verb_creating(command_W);
 			break;
 		}
 		case CG_IS_SUBJECT: {
@@ -951,7 +947,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			break;
 		case CG_IS_CONSULT:
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to a consultation grammar: ");
-			cg = UnderstandGeneralTokens::get_consultation_cg();
+			cg = CommandGrammars::get_consultation_cg();
 			break;
 	}
 	LOGIF(GRAMMAR_CONSTRUCTION, "$G\n", cg);
