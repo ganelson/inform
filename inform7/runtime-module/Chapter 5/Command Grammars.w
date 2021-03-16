@@ -133,7 +133,7 @@ void RTCommandGrammars::compile_all(void) {
 		if (cg->cg_is == CG_IS_PROPERTY_NAME)
 			RTCommandGrammars::compile(cg); /* makes routines for use in |parse_name| */
 
-	UnderstandLines::compile_slash_gprs();
+	RTCommandGrammarLines::compile_slash_gprs();
 }
 
 @ Some tokens require suitable I6 routines to have already been compiled,
@@ -209,9 +209,9 @@ void RTCommandGrammars::cg_compile_parse_name_lines(gpr_kit *gprk, command_gramm
 
 =
 void RTCommandGrammars::cg_compile_lines(gpr_kit *gprk, command_grammar *cg) {
-	UnderstandLines::list_assert_ownership(cg->first_line, cg); /* Mark for later indexing */
-	CommandGrammars::sort_command_grammar(cg); /* Phase III for the GLs in the CG happens here */
-	UnderstandLines::sorted_line_list_compile(gprk, cg->sorted_first_line,
+	CommandsIndex::list_assert_ownership(cg->first_line, cg); /* Mark for later indexing */
+	CommandGrammars::sort_command_grammar(cg); /* Phase III for the CGLs in the CG happens here */
+	RTCommandGrammarLines::sorted_line_list_compile(gprk, cg->sorted_first_line,
 		cg->cg_is, cg, CommandGrammars::cg_is_genuinely_verbal(cg)); /* And Phase IV here */
 }
 
@@ -235,7 +235,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 
 	current_sentence = cg->where_cg_created;
 
-	UnderstandLines::reset_labels();
+	RTCommandGrammarLines::reset_labels();
 	switch(cg->cg_is) {
 		case CG_IS_COMMAND: {
 			package_request *PR = Hierarchy::synoptic_package(COMMANDS_HAP);
@@ -343,7 +343,7 @@ void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
 	if (cg->first_line == NULL) return;
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 	current_sentence = cg->where_cg_created;
-	UnderstandLines::reset_labels();
+	RTCommandGrammarLines::reset_labels();
 	if (cg->cg_is != CG_IS_VALUE) internal_error("not iv");
 	RTCommandGrammars::cg_compile_lines(gprk, cg);
 }

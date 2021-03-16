@@ -30,7 +30,7 @@ int ParsingPlugin::production_line(int stage, int debugging,
 	}
 	if (stage == INTER2_CSEQ) {
 		BENCH(UnderstandGeneralTokens::write_parse_name_routines);
-		BENCH(UnderstandLines::MistakeActionSub_routine);
+		BENCH(RTCommandGrammarLines::MistakeActionSub_routine);
 		BENCH(CommandGrammars::prepare);
 		BENCH(RTCommandGrammars::compile_conditions);
 		BENCH(UnderstandValueTokens::number);

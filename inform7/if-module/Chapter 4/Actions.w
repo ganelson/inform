@@ -108,7 +108,7 @@ void Actions::add_gl(action_name *an, cg_line *cgl) {
 	if (an->command_parser_grammar_producing_this == NULL)
 		an->command_parser_grammar_producing_this = cgl;
 	else
-		UnderstandLines::list_with_action_add(
+		CommandsIndex::list_with_action_add(
 			an->command_parser_grammar_producing_this, cgl);
 }
 

@@ -89,7 +89,7 @@ void DeterminationTypes::set_single_term(determination_type *gty, parse_node *sp
 }
 
 @ The behaviour of this sorting function is documented in the discussion
-of GL sorting in //Command Grammar Lines//.
+of CGL sorting in //Command Grammar Lines//.
 
 =
 int DeterminationTypes::must_precede(determination_type *gty1, determination_type *gty2) {

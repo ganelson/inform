@@ -15,7 +15,7 @@ these arcane annotations of the parse tree.
 and set for square-bracketed tokens such as |"[something]"|.
 
 |index| stores the GSB scoring contribution made by the token to the
-GL sorting algorithm.
+CGL sorting algorithm.
 
 The |grammar_token_code_ANNOT| annotation is meaningful only for parse nodes
 with an evaluation of type |DESCRIPTION|. These are tokens which describe a
@@ -138,7 +138,7 @@ int UnderstandTokens::is_text(parse_node *pn) {
 
 @h The special tokens.
 Do not change any of these GTC numbers without first checking and updating
-the discussion of GL sorting in Grammar Lines:
+the discussion of CGL sorting in //Command Grammar Lines//:
 
 =
 int UnderstandTokens::gsb_for_special_token(int gtc) {

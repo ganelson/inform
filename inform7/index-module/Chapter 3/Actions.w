@@ -119,7 +119,7 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 		HTML_TAG("hr");
 		HTML_OPEN("p"); WRITE("<b>Typed commands leading to this action</b>\n"); HTML_CLOSE("p");
 		HTML_OPEN("p");
-		if (UnderstandLines::index_list_with_action(OUT, an->command_parser_grammar_producing_this) == FALSE)
+		if (CommandsIndex::index_list_with_action(OUT, an->command_parser_grammar_producing_this) == FALSE)
 			WRITE("<i>None</i>");
 		HTML_CLOSE("p");
 		if (StackedVariables::owner_empty(an->action_variables) == FALSE) {

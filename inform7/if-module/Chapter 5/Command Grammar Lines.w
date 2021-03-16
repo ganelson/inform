@@ -1,8 +1,7 @@
 [UnderstandLines::] Command Grammar Lines.
 
-A grammar line is a list of tokens to specify a textual pattern.
-For example, the Inform source for a grammar line might be "take [something]
-out", which is a sequence of three tokens.
+A CG line is a list of CG tokens to specify a textual pattern. For example,
+"take [something] out" is a CG line of three tokens.
 
 @ A grammar line is in turn a sequence of tokens. If it matches, it will
 result in 0, 1 or 2 parameters, though only if the command grammar owning
@@ -27,44 +26,33 @@ The individual tokens are stored simply as parse tree nodes of type
 =
 typedef struct cg_line {
 	struct cg_line *next_line; /* linked list in creation order */
+
 	struct cg_line *sorted_next_line; /* and in applicability order */
+	int general_sort_bonus; /* temporary values used in grammar line sorting */
+	int understanding_sort_bonus;
 
 	struct parse_node *where_grammar_specified; /* where found in source */
 	int original_text; /* the word number of the double-quoted grammar text... */
 	struct parse_node *tokens; /* ...which is parsed into this list of tokens */
 	int lexeme_count; /* number of lexemes, or |-1| if not yet counted */
+
+	struct determination_type cgl_type;
 	struct wording understand_when_text; /* only when this condition holds */
+	struct parse_node *understand_when_spec;
 	struct pcalc_prop *understand_when_prop; /* and when this condition holds */
 
 	int pluralised; /* |CG_IS_SUBJECT|: refers in the plural */
 
 	struct action_name *resulting_action; /* |CG_IS_COMMAND|: the action */
-	int reversed; /* |CG_IS_COMMAND|: the two arguments are in reverse order */
+	int reversed; /* |CG_IS_COMMAND|: the two values are in reverse order */
 	int mistaken; /* |CG_IS_COMMAND|: is this understood as a mistake? */
 	struct wording mistake_response_text; /* if so, reply thus */
 
-	struct determination_type cgl_type;
-
-	int suppress_compilation; /* has been compiled in a single I6 grammar token already? */
-	struct cg_line *next_with_action; /* used when indexing actions */
-	struct command_grammar *belongs_to_gv; /* similarly, used only in indexing */
-
-	struct inter_name *cond_token_iname; /* for its |Cond_Token_*| routine, if any */
-	struct inter_name *mistake_iname; /* for its |Mistake_Token_*| routine, if any */
-
-	int general_sort_bonus; /* temporary values used in grammar line sorting */
-	int understanding_sort_bonus;
+	struct cg_line_indexing_data indexing_data;
+	struct cg_line_compilation_data compilation_data;
 
 	CLASS_DEFINITION
 } cg_line;
-
-@ =
-typedef struct slash_gpr {
-	struct parse_node *first_choice;
-	struct parse_node *last_choice;
-	struct inter_name *sgpr_iname;
-	CLASS_DEFINITION
-} slash_gpr;
 
 @ =
 cg_line *UnderstandLines::new(wording W, action_name *ac,
@@ -74,13 +62,11 @@ cg_line *UnderstandLines::new(wording W, action_name *ac,
 	cgl = CREATE(cg_line);
 	cgl->original_text = wn;
 	cgl->resulting_action = ac;
-	cgl->belongs_to_gv = NULL;
 
 	if (ac != NULL) Actions::add_gl(ac, cgl);
 
 	cgl->mistaken = FALSE;
 	cgl->mistake_response_text = EMPTY_WORDING;
-	cgl->next_with_action = NULL;
 	cgl->next_line = NULL;
 	cgl->tokens = token_list;
 	cgl->where_grammar_specified = current_sentence;
@@ -90,27 +76,25 @@ cg_line *UnderstandLines::new(wording W, action_name *ac,
 	cgl->pluralised = pluralised;
 	cgl->understand_when_text = EMPTY_WORDING;
 	cgl->understand_when_prop = NULL;
-	cgl->suppress_compilation = FALSE;
 	cgl->general_sort_bonus = UNCALCULATED_BONUS;
 	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
 
-	cgl->cond_token_iname = NULL;
-	cgl->mistake_iname = NULL;
-
+	cgl->compilation_data = RTCommandGrammarLines::new_cd(cgl);
+	cgl->indexing_data = CommandsIndex::new_id(cgl);
 	return cgl;
 }
 
 void UnderstandLines::log(cg_line *cgl) {
-	LOG("<GL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
+	LOG("<CGL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
 }
 
 void UnderstandLines::set_single_type(cg_line *cgl, parse_node *cgl_value) {
 	DeterminationTypes::set_single_term(&(cgl->cgl_type), cgl_value);
 }
 
-@h GL lists.
+@h CGL lists.
 Grammar lines are themselves generally stored in linked lists (belonging,
-for instance, to a CG). Here we add a GL to the back of a list.
+for instance, to a CG). Here we add a CGL to the back of a list.
 
 =
 int UnderstandLines::list_length(cg_line *list_head) {
@@ -147,9 +131,9 @@ cg_line *UnderstandLines::list_remove(cg_line *list_head, action_name *find) {
 }
 
 @h Two special forms of grammar lines.
-GLs can have either or both of two orthogonal special forms: they can be
+CGLs can have either or both of two orthogonal special forms: they can be
 mistaken or conditional. (Mistakes only occur in command grammars, but
-conditional GLs can occur in any grammar.) GLs of this kind need special
+conditional CGLs can occur in any grammar.) CGLs of this kind need special
 support, in that I6 general parsing routines need to be compiled for them
 to use as tokens: here's where that support is provided. The following
 step needs to take place before the command grammar (I6 |Verb| directives,
@@ -160,8 +144,8 @@ as routines prior to the |Verb| directive using them.
 void UnderstandLines::line_list_compile_condition_tokens(cg_line *list_head) {
 	cg_line *cgl;
 	for (cgl = list_head; cgl; cgl = cgl->next_line) {
-		UnderstandLines::cgl_compile_condition_token_as_needed(cgl);
-		UnderstandLines::cgl_compile_mistake_token_as_needed(cgl);
+		RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cgl);
+		RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cgl);
 	}
 }
 
@@ -194,7 +178,7 @@ known what the action will be.
 		"although otherwise this worked - it is only the part after 'when' "
 		"which I can't follow.");
 
-@ Such GLs have an "understand when" set, as follows.
+@ Such CGLs have an "understand when" set, as follows.
 They compile preceded by a match-no-text token which matches correctly
 if the condition holds and incorrectly if it fails. For instance, for
 a command grammar, we might have:
@@ -205,6 +189,21 @@ a command grammar, we might have:
 void UnderstandLines::set_understand_when(cg_line *cgl, wording W) {
 	cgl->understand_when_text = W;
 }
+parse_node *UnderstandLines::get_understand_cond(cg_line *cgl) {
+	if (Wordings::nonempty(cgl->understand_when_text)) {
+		current_sentence = cgl->where_grammar_specified;
+		if (<understand-condition>(cgl->understand_when_text)) {
+			parse_node *spec = <<parse_node:cond>>;
+			if (Dash::validate_conditional_clause(spec) == FALSE) {
+				@<Issue PM_BadWhen problem@>;
+				spec = NULL;
+			}
+			return spec;
+		}
+	}
+	return NULL;
+}
+
 void UnderstandLines::set_understand_prop(cg_line *cgl, pcalc_prop *prop) {
 	cgl->understand_when_prop = prop;
 }
@@ -212,84 +211,6 @@ int UnderstandLines::conditional(cg_line *cgl) {
 	if ((Wordings::nonempty(cgl->understand_when_text)) || (cgl->understand_when_prop))
 		return TRUE;
 	return FALSE;
-}
-
-void UnderstandLines::cgl_compile_condition_token_as_needed(cg_line *cgl) {
-	if (UnderstandLines::conditional(cgl)) {
-		current_sentence = cgl->where_grammar_specified;
-
-		package_request *PR = Hierarchy::local_package(COND_TOKENS_HAP);
-		cgl->cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
-
-		packaging_state save = Routines::begin(cgl->cond_token_iname);
-
-		parse_node *spec = NULL;
-		if (Wordings::nonempty(cgl->understand_when_text)) {
-			current_sentence = cgl->where_grammar_specified;
-			if (<understand-condition>(cgl->understand_when_text)) {
-				spec = <<parse_node:cond>>;
-				if (Dash::validate_conditional_clause(spec) == FALSE) {
-					@<Issue PM_BadWhen problem@>;
-					spec = NULL;
-				}
-			}
-		}
-		pcalc_prop *prop = cgl->understand_when_prop;
-
-		if ((spec) || (prop)) {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
-				if ((spec) && (prop)) {
-					Produce::inv_primitive(Emit::tree(), AND_BIP);
-					Produce::down(Emit::tree());
-				}
-				if (spec) Specifications::Compiler::emit_as_val(K_truth_state, spec);
-				if (prop) Calculus::Deferrals::emit_test_of_proposition(Rvalues::new_self_object_constant(), prop);
-				if ((spec) && (prop)) {
-					Produce::up(Emit::tree());
-				}
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		}
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-		Produce::up(Emit::tree());
-
-		Routines::end(save);
-	}
-}
-
-void UnderstandLines::cgl_compile_extra_token_for_condition(gpr_kit *gprk, cg_line *cgl,
-	int cg_is, inter_symbol *current_label) {
-	if (UnderstandLines::conditional(cgl)) {
-		if (cgl->cond_token_iname == NULL) internal_error("GL cond token not ready");
-		if (cg_is == CG_IS_COMMAND) {
-			Emit::array_iname_entry(cgl->cond_token_iname);
-		} else {
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), EQ_BIP);
-				Produce::down(Emit::tree());
-					Produce::inv_call_iname(Emit::tree(), cgl->cond_token_iname);
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-				Produce::up(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-					Produce::down(Emit::tree());
-						Produce::lab(Emit::tree(), current_label);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		}
-	}
 }
 
 @h Mistakes.
@@ -317,125 +238,7 @@ the mistake.
 void UnderstandLines::set_mistake(cg_line *cgl, wording MW) {
 	cgl->mistaken = TRUE;
 	cgl->mistake_response_text = MW;
-	if (cgl->mistake_iname == NULL) {
-		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
-		cgl->mistake_iname = Hierarchy::make_iname_in(MISTAKE_FN_HL, PR);
-	}
-}
-
-void UnderstandLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
-	if (cgl->mistaken) {
-		packaging_state save = Routines::begin(cgl->mistake_iname);
-
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), NE_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(ACTOR_HL));
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(PLAYER_HL));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), STORE_BIP);
-		Produce::down(Emit::tree());
-			Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100 + cgl->allocation_id));
-		Produce::up(Emit::tree());
-
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		Produce::up(Emit::tree());
-
-		Routines::end(save);
-	}
-}
-
-void UnderstandLines::cgl_compile_extra_token_for_mistake(cg_line *cgl, int cg_is) {
-	if (cgl->mistaken) {
-		if (cg_is == CG_IS_COMMAND) {
-			Emit::array_iname_entry(cgl->mistake_iname);
-		} else
-			internal_error("GLs may only be mistaken in command grammar");
-	}
-}
-
-inter_name *MistakeAction_iname = NULL;
-
-int UnderstandLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line *cgl) {
-	if (cgl->mistaken) {
-		if (MistakeAction_iname == NULL) internal_error("no MistakeAction yet");
-		Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
-		Emit::array_iname_entry(MistakeAction_iname);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-void UnderstandLines::MistakeActionSub_routine(void) {
-	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
-	packaging_state save = Routines::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
-
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
-		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(UNDERSTAND_AS_MISTAKE_NUMBER_HL));
-		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
-			cg_line *cgl;
-			LOOP_OVER(cgl, cg_line)
-				if (cgl->mistaken) {
-					current_sentence = cgl->where_grammar_specified;
-					parse_node *spec = NULL;
-					if (Wordings::empty(cgl->mistake_response_text))
-						spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
-					else if (<s-value>(cgl->mistake_response_text)) spec = <<rp>>;
-					else spec = Specifications::new_UNKNOWN(cgl->mistake_response_text);
-					Produce::inv_primitive(Emit::tree(), CASE_BIP);
-					Produce::down(Emit::tree());
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) (100+cgl->allocation_id));
-						Produce::code(Emit::tree());
-						Produce::down(Emit::tree());
-							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSERERROR_HL));
-							Produce::down(Emit::tree());
-								Specifications::Compiler::emit_constant_to_kind_as_val(spec, K_text);
-							Produce::up(Emit::tree());
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				}
-
-			Produce::inv_primitive(Emit::tree(), DEFAULT_BIP);
-			Produce::down(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), PRINT_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_text(Emit::tree(), I"I didn't understand that sentence.\n");
-					Produce::up(Emit::tree());
-					Produce::rtrue(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
-
-	Produce::inv_primitive(Emit::tree(), STORE_BIP);
-	Produce::down(Emit::tree());
-		Produce::ref_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
-	Produce::up(Emit::tree());
-
-	Routines::end(save);
-	
-	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
-	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
-	Produce::annotate_i(MistakeAction_iname, ACTION_IANN, 1);
-	Hierarchy::make_available(Emit::tree(), MistakeAction_iname);
+	RTCommandGrammarLines::set_mistake(cgl, MW);
 }
 
 @h Single word optimisation.
@@ -459,14 +262,14 @@ int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
 	return -1;
 }
 
-@ This routine looks through a GL list and marks to suppress all those
-GLs consisting only of single unconditional words, which means they
+@ This routine looks through a CGL list and marks to suppress all those
+CGLs consisting only of single unconditional words, which means they
 will not be compiled into a |parse_name| routine (or anywhere else).
 If the |of| file handle is set, then the words in question are printed
 as I6-style dictionary words to it. In practice, this is done when
 compiling the |name| property, so that a single scan achieves both
 the transfer into |name| and the exclusion from |parse_name| of
-affected GLs.
+affected CGLs.
 
 =
 cg_line *UnderstandLines::list_take_out_one_word_grammar(cg_line *list_head) {
@@ -478,7 +281,7 @@ cg_line *UnderstandLines::list_take_out_one_word_grammar(cg_line *list_head) {
 			WRITE_TO(content, "%w", Lexer::word_text(wn));
 			Emit::array_dword_entry(content);
 			DISCARD_TEXT(content)
-			cgl->suppress_compilation = TRUE;
+			cgl->compilation_data.suppress_compilation = TRUE;
 		} else glp = cgl;
 	}
 	return list_head;
@@ -486,7 +289,7 @@ cg_line *UnderstandLines::list_take_out_one_word_grammar(cg_line *list_head) {
 
 @h Phase I: Slash Grammar.
 Slashing is an activity carried out on a per-grammar-line basis, so to slash
-a list of GLs we simply slash each GL in turn.
+a list of CGLs we simply slash each CGL in turn.
 
 =
 void UnderstandLines::line_list_slash(cg_line *cgl_head) {
@@ -577,10 +380,10 @@ void UnderstandLines::slash_cg_line(cg_line *cgl) {
 Here there is substantial work to do both at the line list level and on
 individual lines, and the latter does recurse down to token level too.
 
-The following routine calculates the type of the GL list as the union
-of the types of the GLs within it, where union means the narrowest type
-such that every GL in the list casts to it. We return null if there
-are no GLs in the list, or if the GLs all return null types, or if
+The following routine calculates the type of the CGL list as the union
+of the types of the CGLs within it, where union means the narrowest type
+such that every CGL in the list casts to it. We return null if there
+are no CGLs in the list, or if the CGLs all return null types, or if
 an error occurs. (Note that actions in command verb grammars are counted
 as null for this purpose, since a grammar used for parsing the player's
 commands is not also used to determine a value.)
@@ -591,7 +394,7 @@ parse_node *UnderstandLines::line_list_determine(cg_line *list_head,
 	cg_line *cgl;
 	int first_flag = TRUE;
 	parse_node *spec_union = NULL;
-	LOGIF(GRAMMAR_CONSTRUCTION, "Determining GL list for $G\n", cg);
+	LOGIF(GRAMMAR_CONSTRUCTION, "Determining CGL list for $G\n", cg);
 
 	for (cgl = list_head; cgl; cgl = cgl->next_line) {
 		parse_node *spec_of_line =
@@ -633,9 +436,9 @@ parse_node *UnderstandLines::line_list_determine(cg_line *list_head,
 	return spec_union;
 }
 
-@ There are three tasks here: to determine the type of the GL, to issue a
+@ There are three tasks here: to determine the type of the CGL, to issue a
 problem if this type is impossibly large, and to calculate two numerical
-quantities used in sorting GLs: the "general sorting bonus" and the
+quantities used in sorting CGLs: the "general sorting bonus" and the
 "understanding sorting bonus" (see below).
 
 =
@@ -714,7 +517,7 @@ parse_node *UnderstandLines::cgl_determine(cg_line *cgl, int depth,
 }
 
 @h Phase III: Sort Grammar.
-Insertion sort is used to take the linked list of GLs and construct a
+Insertion sort is used to take the linked list of CGLs and construct a
 separate, sorted version. This is not the controversial part.
 
 =
@@ -752,9 +555,9 @@ cg_line *UnderstandLines::list_sort(cg_line *list_head) {
 	return sorted_head;
 }
 
-@ This is the controversial part: the routine which decides whether one GL
+@ This is the controversial part: the routine which decides whether one CGL
 takes precedence (i.e., is parsed earlier than and thus in preference to)
-another GL. This algorithm has been hacked many times to try to reach a
+another CGL. This algorithm has been hacked many times to try to reach a
 position which pleases all designers: something of a lost cause. The
 basic motivation is that we need to sort because the various parsers of
 I7 grammar (|parse_name| routines, general parsing routines, the I6 command
@@ -767,15 +570,15 @@ motivation but is entirely distinct, though both use the same primitive
 methods for comparing types of single values, i.e., at stages 5b1 and 5c1
 below.)
 
-Recall that each GL has a numerical USB (understanding sort bonus) and
+Recall that each CGL has a numerical USB (understanding sort bonus) and
 GSB (general sort bonus). The following rules are applied in sequence:
 
 (1) Higher USBs beat lower USBs.
 
-(2a) For sorting GLs in player-command grammar, shorter lines beat longer
+(2a) For sorting CGLs in player-command grammar, shorter lines beat longer
 lines, where length is calculated as the lexeme count.
 
-(2b) For sorting all other GLs, longer lines beat shorter lines.
+(2b) For sorting all other CGLs, longer lines beat shorter lines.
 
 (3) Mistaken commands beat unmistaken commands.
 
@@ -851,7 +654,7 @@ will respond to the command LOOK by replying "What do you want to look
 behind?" -- and then saying that you are mistaken.
 
 Rule 4 is intended as a lexeme-based tiebreaker. We only get here if there
-are the same number of lexemes in the two GLs being compared. Each is
+are the same number of lexemes in the two CGLs being compared. Each is
 given a GSB score as follows: a literal lexeme, which produces no result,
 such as |"draw"| or |"in/inside/within"|, scores 100; all other lexemes
 score as follows:
@@ -883,8 +686,8 @@ things being referred to. Among possible object descriptions, the very
 general catch-all special cases above are given lower GSB scores than
 more specific ones, to enable the more specific cases to go first.
 
-Rule 5a is unlikely to have much effect: it is likely to be rare for GL
-lists to contain GLs mixing different numbers of results. But Rule 5b1
+Rule 5a is unlikely to have much effect: it is likely to be rare for CGL
+lists to contain CGLs mixing different numbers of results. But Rule 5b1
 is very significant: it causes |"draw [animal]"| to have precedence over
 |"draw [thing]"|, for instance. Rule 5b2 ensures that |"draw [thing]"|
 takes precedence over |"draw [things]"|, which may be useful to handle
@@ -908,26 +711,26 @@ by the Standard Rules include:
 Only the second of these pairs leads to ambiguity, and even then only if
 an object has a name like ON VISION ON -- perhaps a book about the antique
 BBC children's television programme "Vision On" -- so that the command
-TURN ON VISION ON would match both of the alternative GLs.
+TURN ON VISION ON would match both of the alternative CGLs.
 
 =
 int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 	int cs, a, b;
 
 	if ((L1 == NULL) || (L2 == NULL))
-		internal_error("tried to sort null GLs");
+		internal_error("tried to sort null CGLs");
 	if ((L1->lexeme_count == -1) || (L2->lexeme_count == -1))
-		internal_error("tried to sort unslashed GLs");
+		internal_error("tried to sort unslashed CGLs");
 	if ((L1->general_sort_bonus == UNCALCULATED_BONUS) ||
 		(L2->general_sort_bonus == UNCALCULATED_BONUS))
-		internal_error("tried to sort uncalculated GLs");
+		internal_error("tried to sort uncalculated CGLs");
 	if (L1 == L2) return FALSE;
 
 	a = FALSE; if ((L1->resulting_action) || (L1->mistaken)) a = TRUE;
 	b = FALSE; if ((L2->resulting_action) || (L2->mistaken)) b = TRUE;
 	if (a != b) {
 		LOG("L1 = $g\nL2 = $g\n", L1, L2);
-		internal_error("tried to sort on incomparable GLs");
+		internal_error("tried to sort on incomparable CGLs");
 	}
 
 	if (L1->understanding_sort_bonus > L2->understanding_sort_bonus) return TRUE;
@@ -954,517 +757,4 @@ int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 	if ((UnderstandLines::conditional(L1) == FALSE) && (UnderstandLines::conditional(L2))) return FALSE;
 
 	return FALSE;
-}
-
-@h Phase IV: Compile Grammar.
-At this level we compile the list of GLs in sorted order: this is what the
-sorting was all for. In certain cases, we skip any GLs marked as "one word":
-these are cases arising from, e.g., "Understand "frog" as the toad.",
-where we noticed that the GL was a single word and included it in the |name|
-property instead. This is faster and more flexible, besides writing tidier
-code.
-
-The need for this is not immediately obvious. After all, shouldn't we have
-simply deleted the GL in the first place, rather than leaving it in but
-marking it? The answer is no, because of the way inheritance works: values
-of the |name| property accumulate from class to instance in I6, since
-|name| is additive, but grammar doesn't.
-
-=
-void UnderstandLines::sorted_line_list_compile(gpr_kit *gprk, cg_line *list_head,
-	int cg_is, command_grammar *cg, int genuinely_verbal) {
-	for (cg_line *cgl = list_head; cgl; cgl = cgl->sorted_next_line)
-		if (cgl->suppress_compilation == FALSE)
-			UnderstandLines::compile_cg_line(gprk, cgl, cg_is, cg, genuinely_verbal);
-}
-
-@ The following apparently global variables are used to provide a persistent
-state for the routine below, but are not accessed elsewhere. The label
-counter is reset at the start of each CG's compilation, though this is a
-purely cosmetic effect.
-
-=
-int current_grammar_block = 0;
-int current_label = 1;
-int GV_IS_VALUE_instance_mode = FALSE;
-
-void UnderstandLines::reset_labels(void) {
-	current_label = 1;
-}
-
-@ As fancy as the following routine may look, it contains very little.
-What complexity there is comes from the fact that command CGs are compiled
-very differently to all others (most grammars are compiled in "code mode",
-generating procedural I6 statements, but command CGs are compiled to lines
-in |Verb| directives) and that GLs resulting in actions (i.e., GLs in
-command CGs) have not yet been type-checked, whereas all others have.
-
-=
-void UnderstandLines::compile_cg_line(gpr_kit *gprk, cg_line *cgl, int cg_is, command_grammar *cg,
-	int genuinely_verbal) {
-	parse_node *pn;
-	int i;
-	int token_values;
-	kind *token_value_kinds[2];
-	int code_mode, consult_mode;
-
-	LOGIF(GRAMMAR, "Compiling grammar line: $g\n", cgl);
-
-	current_sentence = cgl->where_grammar_specified;
-
-	if (cg_is == CG_IS_COMMAND) code_mode = FALSE; else code_mode = TRUE;
-	if (cg_is == CG_IS_CONSULT) consult_mode = TRUE; else consult_mode = FALSE;
-
-	switch (cg_is) {
-		case CG_IS_COMMAND:
-		case CG_IS_TOKEN:
-		case CG_IS_CONSULT:
-		case CG_IS_SUBJECT:
-		case CG_IS_VALUE:
-		case CG_IS_PROPERTY_NAME:
-			break;
-		default: internal_error("tried to compile unknown CG type");
-	}
-
-	current_grammar_block++;
-	token_values = 0;
-	for (i=0; i<2; i++) token_value_kinds[i] = NULL;
-
-	if (code_mode == FALSE) Emit::array_iname_entry(VERB_DIRECTIVE_DIVIDER_iname);
-
-	inter_symbol *fail_label = NULL;
-
-	if (gprk) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".Fail_%d", current_label);
-		fail_label = Produce::reserve_label(Emit::tree(), L);
-		DISCARD_TEXT(L)
-	}
-
-	UnderstandLines::cgl_compile_extra_token_for_condition(gprk, cgl, cg_is, fail_label);
-	UnderstandLines::cgl_compile_extra_token_for_mistake(cgl, cg_is);
-
-	pn = cgl->tokens->down;
-	if ((genuinely_verbal) && (pn)) {
-		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SlashedCommand),
-				"at present you're not allowed to use a / between command "
-				"words at the start of a line",
-				"so 'put/interpose/insert [something]' is out.");
-			return;
-		}
-		pn = pn->next; /* skip command word: the |Verb| header contains it already */
-	}
-
-	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
-		Produce::inv_primitive(Emit::tree(), IF_BIP);
-		Produce::down(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), EQ_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, gprk->instance_s);
-				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
-			Produce::up(Emit::tree());
-			Produce::code(Emit::tree());
-			Produce::down(Emit::tree());
-	}
-
-	parse_node *pn_from = pn, *pn_to = pn_from;
-	for (; pn; pn = pn->next) pn_to = pn;
-
-	UnderstandLines::compile_token_line(gprk, code_mode, pn_from, pn_to, cg_is, consult_mode, &token_values, token_value_kinds, NULL, fail_label);
-
-	switch (cg_is) {
-		case CG_IS_COMMAND:
-			if (UnderstandLines::cgl_compile_result_of_mistake(gprk, cgl)) break;
-			Emit::array_iname_entry(VERB_DIRECTIVE_RESULT_iname);
-			Emit::array_action_entry(cgl->resulting_action);
-
-			if (cgl->reversed) {
-				if (token_values < 2) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_CantReverseOne),
-						"you can't use a 'reversed' action when you supply fewer "
-						"than two values for it to apply to",
-						"since reversal is the process of exchanging them.");
-					return;
-				}
-				kind *swap = token_value_kinds[0];
-				token_value_kinds[0] = token_value_kinds[1];
-				token_value_kinds[1] = swap;
-				Emit::array_iname_entry(VERB_DIRECTIVE_REVERSE_iname);
-			}
-
-			ActionSemantics::check_valid_application(cgl->resulting_action, token_values,
-				token_value_kinds);
-			break;
-		case CG_IS_PROPERTY_NAME:
-		case CG_IS_TOKEN:
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-			Produce::up(Emit::tree());
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Produce::up(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Produce::up(Emit::tree());
-			break;
-		case CG_IS_CONSULT:
-			Produce::inv_primitive(Emit::tree(), IF_BIP);
-			Produce::down(Emit::tree());
-				Produce::inv_primitive(Emit::tree(), OR_BIP);
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, gprk->range_words_s);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-					Produce::up(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), EQ_BIP);
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), MINUS_BIP);
-						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->range_from_s);
-						Produce::up(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, gprk->range_words_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-				Produce::code(Emit::tree());
-				Produce::down(Emit::tree());
-					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-					Produce::down(Emit::tree());
-						Produce::val_symbol(Emit::tree(), K_value, gprk->rv_s);
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			Produce::up(Emit::tree());
-
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_symbol(Emit::tree(), K_value, gprk->rv_s);
-				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-			Produce::up(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Produce::up(Emit::tree());
-			break;
-		case CG_IS_SUBJECT:
-			UnderstandGeneralTokens::after_gl_failed(gprk, fail_label, cgl->pluralised);
-			break;
-		case CG_IS_VALUE:
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARSED_NUMBER_HL));
-				RTCommandGrammars::emit_determination_type(&(cgl->cgl_type));
-			Produce::up(Emit::tree());
-			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(GPR_NUMBER_HL));
-			Produce::up(Emit::tree());
-			Produce::place_label(Emit::tree(), fail_label);
-			Produce::inv_primitive(Emit::tree(), STORE_BIP);
-			Produce::down(Emit::tree());
-				Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-				Produce::val_symbol(Emit::tree(), K_value, gprk->original_wn_s);
-			Produce::up(Emit::tree());
-			break;
-	}
-
-	if ((cg_is == CG_IS_VALUE) && (GV_IS_VALUE_instance_mode)) {
-			Produce::up(Emit::tree());
-		Produce::up(Emit::tree());
-	}
-
-	current_label++;
-}
-
-void UnderstandLines::compile_token_line(gpr_kit *gprk, int code_mode, parse_node *pn, parse_node *pn_to, int cg_is, int consult_mode,
-	int *token_values, kind **token_value_kinds, inter_symbol *group_wn_s, inter_symbol *fail_label) {
-	int lexeme_equivalence_class = 0;
-	int alternative_number = 0;
-	int empty_text_allowed_in_lexeme = FALSE;
-
-	inter_symbol *next_reserved_label = NULL;
-	inter_symbol *eog_reserved_label = NULL;
-	for (; pn; pn = pn->next) {
-		if ((UnderstandTokens::is_text(pn)) && (pn->next) &&
-			(UnderstandTokens::is_literal(pn->next) == FALSE)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
-				"a '[text]' token must either match the end of some text, or "
-				"be followed by definitely known wording",
-				"since otherwise the run-time parser isn't good enough to "
-				"make sense of things.");
-		}
-
-		if ((Node::get_grammar_token_relation(pn)) && (cg_is != CG_IS_SUBJECT)) {
-			if (problem_count == 0)
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_GrammarObjectlessRelation),
-				"a grammar token in an 'Understand...' can only be based "
-				"on a relation if it is to understand the name of a room or thing",
-				"since otherwise there is nothing for the relation to be with.");
-			continue;
-		}
-
-		int first_token_in_lexeme = FALSE, last_token_in_lexeme = FALSE;
-
-		if (Annotations::read_int(pn, slash_class_ANNOT) != 0) { /* in a multi-token lexeme */
-			if ((pn->next == NULL) ||
-				(Annotations::read_int(pn->next, slash_class_ANNOT) !=
-					Annotations::read_int(pn, slash_class_ANNOT)))
-				last_token_in_lexeme = TRUE;
-			if (Annotations::read_int(pn, slash_class_ANNOT) != lexeme_equivalence_class) {
-				first_token_in_lexeme = TRUE;
-				empty_text_allowed_in_lexeme =
-					Annotations::read_int(pn, slash_dash_dash_ANNOT);
-			}
-			lexeme_equivalence_class = Annotations::read_int(pn, slash_class_ANNOT);
-			if (first_token_in_lexeme) alternative_number = 1;
-			else alternative_number++;
-		} else { /* in a single-token lexeme */
-			lexeme_equivalence_class = 0;
-			first_token_in_lexeme = TRUE;
-			last_token_in_lexeme = TRUE;
-			empty_text_allowed_in_lexeme = FALSE;
-			alternative_number = 1;
-		}
-
-		inter_symbol *jump_on_fail = fail_label;
-
-		if (lexeme_equivalence_class > 0) {
-			if (code_mode) {
-				if (first_token_in_lexeme) {
-					Produce::inv_primitive(Emit::tree(), STORE_BIP);
-					Produce::down(Emit::tree());
-						Produce::ref_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Produce::up(Emit::tree());
-				}
-				if (next_reserved_label) Produce::place_label(Emit::tree(), next_reserved_label);
-				TEMPORARY_TEXT(L)
-				WRITE_TO(L, ".group_%d_%d_%d", current_grammar_block, lexeme_equivalence_class, alternative_number+1);
-				next_reserved_label = Produce::reserve_label(Emit::tree(), L);
-				DISCARD_TEXT(L)
-
-				Produce::inv_primitive(Emit::tree(), STORE_BIP);
-				Produce::down(Emit::tree());
-					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-					Produce::val_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-				Produce::up(Emit::tree());
-
-				if ((last_token_in_lexeme == FALSE) || (empty_text_allowed_in_lexeme)) {
-					jump_on_fail = next_reserved_label;
-				}
-			}
-		}
-
-		if ((empty_text_allowed_in_lexeme) && (code_mode == FALSE)) {
-			slash_gpr *sgpr = CREATE(slash_gpr);
-			sgpr->first_choice = pn;
-			while ((pn->next) &&
-					(Annotations::read_int(pn->next, slash_class_ANNOT) ==
-					Annotations::read_int(pn, slash_class_ANNOT))) pn = pn->next;
-			sgpr->last_choice = pn;
-			package_request *PR = Hierarchy::local_package(SLASH_TOKENS_HAP);
-			sgpr->sgpr_iname = Hierarchy::make_iname_in(SLASH_FN_HL, PR);
-			Emit::array_iname_entry(sgpr->sgpr_iname);
-			last_token_in_lexeme = TRUE;
-		} else {
-			kind *grammar_token_kind =
-				UnderstandTokens::compile(gprk, pn, code_mode, jump_on_fail, consult_mode);
-			if (grammar_token_kind) {
-				if (token_values) {
-					if (*token_values == 2) {
-						internal_error(
-							"There can be at most two value-producing tokens and this "
-							"should have been detected earlier.");
-						return;
-					}
-					token_value_kinds[(*token_values)++] = grammar_token_kind;
-				}
-			}
-		}
-
-		if (lexeme_equivalence_class > 0) {
-			if (code_mode) {
-				if (last_token_in_lexeme) {
-					if (empty_text_allowed_in_lexeme) {
-						@<Jump to end of group@>;
-						if (next_reserved_label)
-							Produce::place_label(Emit::tree(), next_reserved_label);
-						next_reserved_label = NULL;
-						Produce::inv_primitive(Emit::tree(), STORE_BIP);
-						Produce::down(Emit::tree());
-							Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(WN_HL));
-							Produce::val_symbol(Emit::tree(), K_value, gprk->group_wn_s);
-						Produce::up(Emit::tree());
-					}
-					if (eog_reserved_label) Produce::place_label(Emit::tree(), eog_reserved_label);
-					eog_reserved_label = NULL;
-				} else {
-					@<Jump to end of group@>;
-				}
-			} else {
-				if (last_token_in_lexeme == FALSE) Emit::array_iname_entry(VERB_DIRECTIVE_SLASH_iname);
-			}
-		}
-
-		if (pn == pn_to) break;
-	}
-}
-
-@<Jump to end of group@> =
-	if (eog_reserved_label == NULL) {
-		TEMPORARY_TEXT(L)
-		WRITE_TO(L, ".group_%d_%d_end",
-			current_grammar_block, lexeme_equivalence_class);
-		eog_reserved_label = Produce::reserve_label(Emit::tree(), L);
-	}
-	Produce::inv_primitive(Emit::tree(), JUMP_BIP);
-	Produce::down(Emit::tree());
-		Produce::lab(Emit::tree(), eog_reserved_label);
-	Produce::up(Emit::tree());
-
-@ =
-void UnderstandLines::compile_slash_gprs(void) {
-	slash_gpr *sgpr;
-	LOOP_OVER(sgpr, slash_gpr) {
-		packaging_state save = Routines::begin(sgpr->sgpr_iname);
-		gpr_kit gprk = UnderstandValueTokens::new_kit();
-		UnderstandValueTokens::add_original(&gprk);
-		UnderstandValueTokens::add_standard_set(&gprk);
-
-		UnderstandLines::compile_token_line(&gprk, TRUE, sgpr->first_choice, sgpr->last_choice, CG_IS_TOKEN, FALSE, NULL, NULL, gprk.group_wn_s, NULL);
-		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-		Produce::down(Emit::tree());
-			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
-		Produce::up(Emit::tree());
-		Routines::end(save);
-	}
-}
-
-@h Indexing by grammar.
-This is the more obvious form of indexing: we show the grammar lines which
-make up an individual GL. (For instance, this is used in the Actions index
-to show the grammar for an individual command word, by calling the routine
-below for that command word's CG.) Such an index list is done in sorted
-order, so that the order of appearance in the index corresponds to the
-order of parsing -- this is what the reader of the index is interested in.
-
-=
-void UnderstandLines::sorted_list_index_normal(OUTPUT_STREAM,
-	cg_line *list_head, text_stream *headword) {
-	cg_line *cgl;
-	for (cgl = list_head; cgl; cgl = cgl->sorted_next_line)
-		UnderstandLines::cgl_index_normal(OUT, cgl, headword);
-}
-
-void UnderstandLines::cgl_index_normal(OUTPUT_STREAM, cg_line *cgl, text_stream *headword) {
-	action_name *an = cgl->resulting_action;
-	if (an == NULL) return;
-	Index::anchor(OUT, headword);
-	if (ActionSemantics::is_out_of_world(an))
-		HTML::begin_colour(OUT, I"800000");
-	WRITE("&quot;");
-	CommandsIndex::verb_definition(OUT, Lexer::word_text(cgl->original_text),
-		headword, EMPTY_WORDING);
-	WRITE("&quot;");
-	Index::link(OUT, cgl->original_text);
-	WRITE(" - <i>%+W", ActionNameNames::tensed(an, IS_TENSE));
-	Index::detail_link(OUT, "A", an->allocation_id, TRUE);
-	if (cgl->reversed) WRITE(" (reversed)");
-	WRITE("</i>");
-	if (ActionSemantics::is_out_of_world(an))
-		HTML::end_colour(OUT);
-	HTML_TAG("br");
-}
-
-@h Indexing by action.
-Grammar lines are typically indexed twice: the other time is when all
-grammar lines belonging to a given action are tabulated. Special linked
-lists are kept for this purpose, and this is where we unravel them and
-print to the index. The question of sorted vs unsorted is meaningless
-here, since the GLs appearing in such a list will typically belong to
-several different CGs. (As it happens, they appear in order of creation,
-i.e., in source text order.)
-
-Tiresomely, all of this means that we need to store "uphill" pointers
-in GLs: back up to the CGs that own them. The following routine does
-this for a whole list of GLs:
-
-=
-void UnderstandLines::list_assert_ownership(cg_line *list_head, command_grammar *cg) {
-	cg_line *cgl;
-	for (cgl = list_head; cgl; cgl = cgl->next_line)
-		cgl->belongs_to_gv = cg;
-}
-
-@ And this routine accumulates the per-action lists of GLs:
-
-=
-void UnderstandLines::list_with_action_add(cg_line *list_head, cg_line *cgl) {
-	if (list_head == NULL) internal_error("tried to add to null action list");
-	while (list_head->next_with_action)
-		list_head = list_head->next_with_action;
-	list_head->next_with_action = cgl;
-}
-
-@ Finally, here we index an action list of GLs, each getting a line in
-the HTML index.
-
-=
-int UnderstandLines::index_list_with_action(OUTPUT_STREAM, cg_line *cgl) {
-	int said_something = FALSE;
-	while (cgl != NULL) {
-		if (cgl->belongs_to_gv) {
-			wording VW = CommandGrammars::get_verb_text(cgl->belongs_to_gv);
-			TEMPORARY_TEXT(trueverb)
-			if (Wordings::nonempty(VW))
-				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
-			HTML::open_indented_p(OUT, 2, "hanging");
-			WRITE("&quot;");
-			CommandsIndex::verb_definition(OUT,
-				Lexer::word_text(cgl->original_text), trueverb, VW);
-			WRITE("&quot;");
-			Index::link(OUT, cgl->original_text);
-			if (cgl->reversed) WRITE(" <i>reversed</i>");
-			HTML_CLOSE("p");
-			said_something = TRUE;
-			DISCARD_TEXT(trueverb)
-		}
-		cgl = cgl->next_with_action;
-	}
-	return said_something;
-}
-
-@ And the same, but more simply:
-
-=
-void UnderstandLines::index_list_for_token(OUTPUT_STREAM, cg_line *cgl) {
-	int k = 0;
-	while (cgl != NULL) {
-		if (cgl->belongs_to_gv) {
-			wording VW = CommandGrammars::get_verb_text(cgl->belongs_to_gv);
-			TEMPORARY_TEXT(trueverb)
-			if (Wordings::nonempty(VW))
-				WRITE_TO(trueverb, "%W", Wordings::one_word(Wordings::first_wn(VW)));
-			HTML::open_indented_p(OUT, 2, "hanging");
-			if (k++ == 0) WRITE("="); else WRITE("or");
-			WRITE(" &quot;");
-			CommandsIndex::verb_definition(OUT,
-				Lexer::word_text(cgl->original_text), trueverb, EMPTY_WORDING);
-			WRITE("&quot;");
-			Index::link(OUT, cgl->original_text);
-			if (cgl->reversed) WRITE(" <i>reversed</i>");
-			HTML_CLOSE("p");
-			DISCARD_TEXT(trueverb)
-		}
-		cgl = cgl->sorted_next_line;
-	}
 }

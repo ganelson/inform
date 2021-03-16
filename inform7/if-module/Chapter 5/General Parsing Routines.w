@@ -414,7 +414,7 @@ void UnderstandGeneralTokens::top_of_head(gpr_kit *gprk, inter_name *cg_iname, i
 
 @ The head and tail routines can only be understood by knowing that the
 following code is used to reset the grammar-line parser after each failure
-of a GL to parse.
+of a CGL to parse.
 
 =
 void UnderstandGeneralTokens::after_gl_failed(gpr_kit *gprk, inter_symbol *label, int pluralised) {

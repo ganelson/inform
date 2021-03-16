@@ -79,3 +79,4 @@ Chapter 5: Plugin Support
 	Action Patterns
 	Going
 	Command Grammars
+	Command Grammar Lines

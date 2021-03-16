@@ -44,8 +44,8 @@ the reader interact with them do not need this, and can deactivate the plugin.
 
 (a) A command grammar (CG) is a small independent grammar of alternative
 formulations for some concept: for instance, the possible commands beginning
-TAKE, or the possible verbal forms of numbers. Each CG is a list of GLs, and
-an individual GL must belong to exactly one CG. There are five different
+TAKE, or the possible verbal forms of numbers. Each CG is a list of CGLs, and
+an individual CGL must belong to exactly one CG. There are five different
 types of CG, differentiated mostly by the purpose to which the CG is put:
 (-1) |CG_IS_COMMAND|. An imperative verbal command at run-time.
 (-2) |CG_IS_TOKEN|. A square-bracketed token in other grammar.
@@ -55,12 +55,12 @@ types of CG, differentiated mostly by the purpose to which the CG is put:
 (-6) |CG_IS_PROPERTY_NAME|. A noun phrase at run time: a name for one
 possibility for an either/or property, say "open" or "fixed in place".
 
-(b) A grammar line (GL) is a single possibility within a CG: for
+(b) A grammar line (CGL) is a single possibility within a CG: for
 example, the line matching |"take [something]"| in the CG for the TAKE
-command. Each GL is a list of tokens, and an individual token must belong
-to exactly one GL.
+command. Each CGL is a list of tokens, and an individual token must belong
+to exactly one CGL.
 
-(c) A grammar token (GTOK) is a single particle of a GL: for
+(c) A grammar token (GTOK) is a single particle of a CGL: for
 example, |'take'| and |something| are tokens.
 
 The picture is not quite so hierarchical as it looks, though, because

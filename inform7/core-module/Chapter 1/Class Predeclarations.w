@@ -194,6 +194,7 @@ DECLARE_CLASS(use_as_event)
 @e plugin_CLASS
 @e property_of_value_storage_CLASS
 @e runtime_kind_structure_CLASS
+@e slash_gpr_CLASS
 @e test_scenario_CLASS
 
 =
@@ -213,6 +214,7 @@ DECLARE_CLASS(nascent_array)
 DECLARE_CLASS(plugin)
 DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(runtime_kind_structure)
+DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(test_scenario)
 
 @ //index// --
@@ -262,7 +264,6 @@ DECLARE_CLASS(rubric_holder)
 @e regions_data_CLASS
 @e release_instructions_CLASS
 @e scene_CLASS
-@e slash_gpr_CLASS
 @e spatial_data_CLASS
 
 @e anl_clause_CLASS
@@ -296,7 +297,6 @@ DECLARE_CLASS(part_of_inference_data)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(scene)
-DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(spatial_data)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_clause, 1000)
