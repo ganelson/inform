@@ -236,7 +236,7 @@ dropping action":
 =
 void CommandGrammars::remove_action(command_grammar *cg, action_name *an) {
 	if (cg->cg_is == CG_IS_COMMAND)
-		cg->first_line = UnderstandLines::list_remove(cg->first_line, an);
+		UnderstandLines::list_remove(cg, an);
 }
 
 @h The CG_IS_TOKEN form.
@@ -318,7 +318,7 @@ at run-time, and is just a little faster for the command parser then.
 void CommandGrammars::take_out_one_word_grammar(command_grammar *cg) {
 	if (cg->cg_is != CG_IS_SUBJECT)
 		internal_error("One-word optimisation applies only to objects");
-	cg->first_line = UnderstandLines::list_take_out_one_word_grammar(cg->first_line);
+	RTCommandGrammarLines::list_take_out_one_word_grammar(cg);
 }
 
 @h The CG_IS_VALUE form.
@@ -415,7 +415,7 @@ int CommandGrammars::is_empty(command_grammar *cg) {
 void CommandGrammars::add_line(command_grammar *cg, cg_line *cgl) {
 	LOGIF(GRAMMAR, "$G + line: $g\n", cg, cgl);
 	if ((cg->cg_is == CG_IS_COMMAND) &&
-		(UnderstandLines::list_length(cg->first_line) >= MAX_LINES_PER_GRAMMAR)) {
+		(UnderstandLines::list_length(cg) >= MAX_LINES_PER_GRAMMAR)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyGrammarLines),
 			"this command verb now has too many Understand possibilities",
 			"that is, there are too many 'Understand \"whatever ...\" as ...' "
@@ -424,7 +424,7 @@ void CommandGrammars::add_line(command_grammar *cg, cg_line *cgl) {
 			"together, perhaps by using slashes to combine alternative "
 			"wordings, or by defining new grammar tokens [in square brackets].");
 	} else {
-		cg->first_line = UnderstandLines::list_add(cg->first_line, cgl);
+		UnderstandLines::list_add(cg, cgl);
 	}
 }
 
@@ -451,7 +451,7 @@ void CommandGrammars::prepare(void) {
 	LOOP_OVER(cg, command_grammar)
 		if ((cg->slashed == FALSE) && (cg->first_line)) {
 			LOGIF(GRAMMAR_CONSTRUCTION, "Slashing $G\n", cg);
-			UnderstandLines::line_list_slash(cg->first_line);
+			UnderstandLines::line_list_slash(cg);
 			cg->slashed = TRUE;
 		}
 	Log::new_stage(I"Determining command grammar");
@@ -477,7 +477,7 @@ parse_node *CommandGrammars::determine(command_grammar *cg, int depth) {
 	@<If recursion went impossibly deep, the CG grammar must be ill-founded@>;
 
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $G\n", cg);
-	parse_node *spec_union = UnderstandLines::line_list_determine(cg->first_line, depth,
+	parse_node *spec_union = UnderstandLines::line_list_determine(depth,
 		cg->cg_is, cg, CommandGrammars::cg_is_genuinely_verbal(cg));
 	LOGIF(GRAMMAR_CONSTRUCTION, "Result of verb $G is $P\n", cg, spec_union);
 

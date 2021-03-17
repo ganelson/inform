@@ -3,30 +3,37 @@
 A CG line is a list of CG tokens to specify a textual pattern. For example,
 "take [something] out" is a CG line of three tokens.
 
-@ A grammar line is in turn a sequence of tokens. If it matches, it will
-result in 0, 1 or 2 parameters, though only if the command grammar owning
-the line is a genuine |CG_IS_COMMAND| command grammar will the case of
-2 parameters be possible. (This is for text matching, say, "put X in Y":
-the objects X and Y are two parameters resulting.) And in that case (alone),
-there will also be a |resulting_action|.
+@ CG lines can be as simple as single words, to describe an object in the
+world model perhaps, or can be longer prototypes of commands to describe
+actions. There are many, many examples in //standard_rules: Command Grammar//,
+but for example in:
+>> Understand "remove [things inside] from [something]" as removing it from.
+the CG line "[things inside] from [something]" is added to the CG for the
+command verb REMOVE. This is a CG line with a //determination_type//
+expressing that it describes two |K_object| terms, the first perhaps being
+multiple and the second not; and with |resulting_action| set to the
+removing it from action. That's a feature only seen in lines for
+|CG_IS_COMMAND| grammars, in fact.
+
+CG lines are lists of CG tokens: "[things inside]", FROM, and "[something]"
+are all tokens. But Inform does not have a |cg_token| type because these are
+instead stored as |TOKEN_NT| nodes in the parse tree, and are the children
+of the |tokens| node belonging to the CG line.
 
 A small amount of disjunction is allowed in a grammar line: for instance,
 "look in/inside/into [something]" consists of five tokens, but only three
-lexemes, basic units to be matched. (The first is "look", the second
-is "one out of in, inside or into", and the third is an object in scope.)
-In the following structure we cache the lexeme count since it is fiddly
-to calculate, and useful when sorting grammar lines into applicability order.
+so-called lexemes, basic units to be matched. (The first is LOOK, the second
+can be any one of IN, INSIDE or INTO, and the third is an object in scope.)
+The |lexeme_count| field caches the count of these since it is fiddly to
+calculate, and useful when sorting grammar lines into applicability order.
 
 The individual tokens are stored simply as parse tree nodes of type
 |TOKEN_NT|, and are the children of the node |cgl->tokens|, which is why
 (for now, anyway) there is no grammar token structure.
 
-@d UNCALCULATED_BONUS -1000000
-
 =
 typedef struct cg_line {
 	struct cg_line *next_line; /* linked list in creation order */
-
 	struct cg_line *sorted_next_line; /* and in applicability order */
 	int general_sort_bonus; /* temporary values used in grammar line sorting */
 	int understanding_sort_bonus;
@@ -36,10 +43,9 @@ typedef struct cg_line {
 	struct parse_node *tokens; /* ...which is parsed into this list of tokens */
 	int lexeme_count; /* number of lexemes, or |-1| if not yet counted */
 
-	struct determination_type cgl_type;
-	struct wording understand_when_text; /* only when this condition holds */
-	struct parse_node *understand_when_spec;
-	struct pcalc_prop *understand_when_prop; /* and when this condition holds */
+	struct determination_type cgl_type; /* only correct after determination occurs */
+	struct wording understand_when_text; /* match me only when this condition holds */
+	struct pcalc_prop *understand_when_prop; /* match me only when this proposition applies */
 
 	int pluralised; /* |CG_IS_SUBJECT|: refers in the plural */
 
@@ -50,107 +56,119 @@ typedef struct cg_line {
 
 	struct cg_line_indexing_data indexing_data;
 	struct cg_line_compilation_data compilation_data;
-
 	CLASS_DEFINITION
 } cg_line;
 
 @ =
 cg_line *UnderstandLines::new(wording W, action_name *ac,
 	parse_node *token_list, int reversed, int pluralised) {
-	int wn = Wordings::first_wn(W);
 	cg_line *cgl;
 	cgl = CREATE(cg_line);
-	cgl->original_text = wn;
-	cgl->resulting_action = ac;
-
-	if (ac != NULL) Actions::add_gl(ac, cgl);
-
-	cgl->mistaken = FALSE;
-	cgl->mistake_response_text = EMPTY_WORDING;
-	cgl->next_line = NULL;
-	cgl->tokens = token_list;
+	@<Initialise listing data@>;
 	cgl->where_grammar_specified = current_sentence;
-	cgl->cgl_type = DeterminationTypes::new();
+	cgl->original_text = Wordings::first_wn(W);
+	cgl->tokens = token_list;
 	cgl->lexeme_count = -1; /* no count made as yet */
-	cgl->reversed = reversed;
-	cgl->pluralised = pluralised;
+
+	cgl->cgl_type = DeterminationTypes::new();
 	cgl->understand_when_text = EMPTY_WORDING;
 	cgl->understand_when_prop = NULL;
-	cgl->general_sort_bonus = UNCALCULATED_BONUS;
-	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
+
+	cgl->pluralised = pluralised;
+
+	cgl->resulting_action = ac;
+	cgl->reversed = reversed;
+	cgl->mistaken = FALSE;
+	cgl->mistake_response_text = EMPTY_WORDING;
 
 	cgl->compilation_data = RTCommandGrammarLines::new_cd(cgl);
 	cgl->indexing_data = CommandsIndex::new_id(cgl);
+
+	if (ac) Actions::add_gl(ac, cgl);
 	return cgl;
 }
 
-void UnderstandLines::log(cg_line *cgl) {
-	LOG("<CGL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
-}
+@ A command grammar has a list of CGLs. But in fact it has two lists, with the
+same contents, but in different orders. The unsorted list holds them in order
+of creation; the sorted one in order of matching priority at run-time. This
+sorting is a big issue: see //UnderstandLines::list_sort// below.
 
-void UnderstandLines::set_single_type(cg_line *cgl, parse_node *cgl_value) {
-	DeterminationTypes::set_single_term(&(cgl->cgl_type), cgl_value);
-}
+@d LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
+	for (cg_line *cgl = cg->first_line; cgl; cgl = cgl->next_line)
+@d LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
+	for (cg_line *cgl = cg->sorted_first_line; cgl; cgl = cgl->sorted_next_line)
 
-@h CGL lists.
-Grammar lines are themselves generally stored in linked lists (belonging,
-for instance, to a CG). Here we add a CGL to the back of a list.
+@d UNCALCULATED_BONUS -1000000
+
+@<Initialise listing data@> =
+	cgl->next_line = NULL;
+	cgl->sorted_next_line = NULL;
+	cgl->general_sort_bonus = UNCALCULATED_BONUS;
+	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
+
+@ To count how many lines a CG has so far, we use the unsorted list, since we
+don't know if the sorted one has been made yet:
 
 =
-int UnderstandLines::list_length(cg_line *list_head) {
+int UnderstandLines::list_length(command_grammar *cg) {
 	int c = 0;
-	cg_line *posn;
-	for (posn = list_head; posn; posn = posn->next_line) c++;
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) c++;
 	return c;
 }
 
-cg_line *UnderstandLines::list_add(cg_line *list_head, cg_line *new_gl) {
+@ CG lines are added to a CG by being put at the end of the unsorted list.
+(Once sorting has occurred, it is too late.)
+
+=
+void UnderstandLines::list_add(command_grammar *cg, cg_line *new_gl) {
+	if (cg->sorted_first_line) internal_error("too late to add lines to CG");
 	new_gl->next_line = NULL;
-	if (list_head == NULL) list_head = new_gl;
-	else {
-		cg_line *posn = list_head;
+	if (cg->first_line == NULL) {
+		cg->first_line = new_gl;
+	} else {
+		cg_line *posn = cg->first_line;
 		while (posn->next_line) posn = posn->next_line;
 		posn->next_line = new_gl;
 	}
-	return list_head;
 }
 
-cg_line *UnderstandLines::list_remove(cg_line *list_head, action_name *find) {
-	cg_line *prev = NULL, *posn = list_head;
+@ In rare cases CG lines are also removed, but again, before sorting occurs.
+
+=
+void UnderstandLines::list_remove(command_grammar *cg, action_name *find) {
+	if (cg->sorted_first_line) internal_error("too late to remove lines from CG");
+	cg_line *prev = NULL, *posn = cg->first_line;
 	while (posn) {
 		if (posn->resulting_action == find) {
 			LOGIF(GRAMMAR_CONSTRUCTION, "Removing grammar line: $g\n", posn);
 			if (prev) prev->next_line = posn->next_line;
-			else list_head = posn->next_line;
+			else cg->first_line = posn->next_line;
 		} else {
 			prev = posn;
 		}
 		posn = posn->next_line;
 	}
-	return list_head;
 }
 
-@h Two special forms of grammar lines.
-CGLs can have either or both of two orthogonal special forms: they can be
-mistaken or conditional. (Mistakes only occur in command grammars, but
-conditional CGLs can occur in any grammar.) CGLs of this kind need special
-support, in that I6 general parsing routines need to be compiled for them
-to use as tokens: here's where that support is provided. The following
-step needs to take place before the command grammar (I6 |Verb| directives,
-etc.) is compiled because of I6's requirement that all GPRs be defined
-as routines prior to the |Verb| directive using them.
+@ We make no attempt to pretty-print a complete breakdown of CG, and instead
+log just enough to identify which one it is:
 
 =
-void UnderstandLines::line_list_compile_condition_tokens(cg_line *list_head) {
-	cg_line *cgl;
-	for (cgl = list_head; cgl; cgl = cgl->next_line) {
-		RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cgl);
-		RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cgl);
-	}
+void UnderstandLines::log(cg_line *cgl) {
+	LOG("<CGL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
+}
+
+@h Relevant only for CG_IS_VALUE lines.
+In |CG_IS_VALUE| grammars, the lines are ways to refer to a specific value
+which is not an object, and we record which value the line refers to here.
+
+=
+void UnderstandLines::set_single_term(cg_line *cgl, parse_node *cgl_value) {
+	DeterminationTypes::set_single_term(&(cgl->cgl_type), cgl_value);
 }
 
 @h Conditional lines.
-Some grammar lines take effect only when some circumstance holds: most I7
+A few grammar lines take effect only when some circumstance holds: most I7
 conditions are valid to specify this, with the notation "Understand ... as
 ... when ...". However, we want to protect new authors from mistakes
 like this:
@@ -162,9 +180,9 @@ known what the action will be.
 
 =
 <understand-condition> ::=
-	<s-non-action-condition> |  ==> { 0, -, <<parse_node:cond>> = RP[1] }
-	<s-condition> |             ==> @<Issue PM_WhenAction problem@>
-	...                         ==> @<Issue PM_BadWhen problem@>;
+	<s-non-action-condition> |  ==> { pass 1 }
+	<s-condition> |             ==> @<Issue PM_WhenAction problem@>; ==> { -, NULL };
+	...                         ==> @<Issue PM_BadWhen problem@>; ==> { -, NULL };
 
 @<Issue PM_WhenAction problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenAction),
@@ -178,12 +196,9 @@ known what the action will be.
 		"although otherwise this worked - it is only the part after 'when' "
 		"which I can't follow.");
 
-@ Such CGLs have an "understand when" set, as follows.
-They compile preceded by a match-no-text token which matches correctly
-if the condition holds and incorrectly if it fails. For instance, for
-a command grammar, we might have:
-
-|* Cond_Token_26 'draw' noun -> Draw|
+@ Such CGLs have an "understand when" text. We have to keep this as text and
+typecheck it with Dash only when it will actually be used; this is where
+that happens.
 
 =
 void UnderstandLines::set_understand_when(cg_line *cgl, wording W) {
@@ -193,8 +208,8 @@ parse_node *UnderstandLines::get_understand_cond(cg_line *cgl) {
 	if (Wordings::nonempty(cgl->understand_when_text)) {
 		current_sentence = cgl->where_grammar_specified;
 		if (<understand-condition>(cgl->understand_when_text)) {
-			parse_node *spec = <<parse_node:cond>>;
-			if (Dash::validate_conditional_clause(spec) == FALSE) {
+			parse_node *spec = <<rp>>;
+			if ((spec) && (Dash::validate_conditional_clause(spec) == FALSE)) {
 				@<Issue PM_BadWhen problem@>;
 				spec = NULL;
 			}
@@ -204,9 +219,20 @@ parse_node *UnderstandLines::get_understand_cond(cg_line *cgl) {
 	return NULL;
 }
 
+@ More subtly, a CGL might be given as a way to describe, say, "an open door".
+This will go into the CG associated with the kind |K_door|, but the line will
+have the proposition ${\it open}(x)$ attached to it: the description then
+matches an object $x$ only when this proposition holds. (It must always be
+a proposition with a single free variable.)
+
+=
 void UnderstandLines::set_understand_prop(cg_line *cgl, pcalc_prop *prop) {
 	cgl->understand_when_prop = prop;
 }
+
+@ Use of either feature makes a CGL "conditional":
+
+=
 int UnderstandLines::conditional(cg_line *cgl) {
 	if ((Wordings::nonempty(cgl->understand_when_text)) || (cgl->understand_when_prop))
 		return TRUE;
@@ -215,24 +241,7 @@ int UnderstandLines::conditional(cg_line *cgl) {
 
 @h Mistakes.
 These are grammar lines used in command CGs for commands which are accepted
-but only in order to print nicely worded rejections. A number of schemes
-were tried for this, for instance producing parser errors and setting |pe|
-to some high value, but the method now used is for a mistaken line to
-produce a successful parse at the I6 level, resulting in the (I6 only)
-action |##MistakeAction|. The tricky part is to send information to the
-I6 action routine |MistakeActionSub| indicating what the mistake was,
-exactly: we do this by including, in the I6 grammar, a token which
-matches empty text and returns a "preposition", so that it has no
-direct result, but which also sets a special global variable as a
-side-effect. Thus a mistaken line "act [thing]" comes out as something
-like:
-
-|* Mistake_Token_12 'act' noun -> MistakeAction|
-
-Since the I6 parser accepts the first command which matches, and since
-none of this can be recursive, the value of this variable at the end of
-I6 parsing is guaranteed to be the one set during the line causing
-the mistake.
+but only in order to print nicely worded rejections.
 
 =
 void UnderstandLines::set_mistake(cg_line *cgl, wording MW) {
@@ -246,8 +255,8 @@ The grammars used to parse names of objects are normally compiled into
 |parse_name| routines. But the I6 parser also uses the |name| property,
 and it is advantageous to squeeze as much as possible into |name| and
 as little as possible into |parse_name|. The only possible candidates
-are grammar lines consisting of single unconditional words, as detected
-by the following routine:
+for that are grammar lines consisting of single unconditional words, as
+detected by the following function:
 
 =
 int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
@@ -262,41 +271,14 @@ int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
 	return -1;
 }
 
-@ This routine looks through a CGL list and marks to suppress all those
-CGLs consisting only of single unconditional words, which means they
-will not be compiled into a |parse_name| routine (or anywhere else).
-If the |of| file handle is set, then the words in question are printed
-as I6-style dictionary words to it. In practice, this is done when
-compiling the |name| property, so that a single scan achieves both
-the transfer into |name| and the exclusion from |parse_name| of
-affected CGLs.
-
-=
-cg_line *UnderstandLines::list_take_out_one_word_grammar(cg_line *list_head) {
-	cg_line *cgl, *glp;
-	for (cgl = list_head, glp = NULL; cgl; cgl = cgl->next_line) {
-		int wn = UnderstandLines::cgl_contains_single_unconditional_word(cgl);
-		if (wn >= 0) {
-			TEMPORARY_TEXT(content)
-			WRITE_TO(content, "%w", Lexer::word_text(wn));
-			Emit::array_dword_entry(content);
-			DISCARD_TEXT(content)
-			cgl->compilation_data.suppress_compilation = TRUE;
-		} else glp = cgl;
-	}
-	return list_head;
-}
-
 @h Phase I: Slash Grammar.
 Slashing is an activity carried out on a per-grammar-line basis, so to slash
 a list of CGLs we simply slash each CGL in turn.
 
 =
-void UnderstandLines::line_list_slash(cg_line *cgl_head) {
-	cg_line *cgl;
-	for (cgl = cgl_head; cgl; cgl = cgl->next_line) {
+void UnderstandLines::line_list_slash(command_grammar *cg) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
 		UnderstandLines::slash_cg_line(cgl);
-	}
 }
 
 @ Now the actual slashing process, which does not descend to tokens. We
@@ -389,14 +371,13 @@ as null for this purpose, since a grammar used for parsing the player's
 commands is not also used to determine a value.)
 
 =
-parse_node *UnderstandLines::line_list_determine(cg_line *list_head,
-	int depth, int cg_is, command_grammar *cg, int genuinely_verbal) {
-	cg_line *cgl;
+parse_node *UnderstandLines::line_list_determine(int depth, int cg_is,
+	command_grammar *cg, int genuinely_verbal) {
 	int first_flag = TRUE;
 	parse_node *spec_union = NULL;
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining CGL list for $G\n", cg);
 
-	for (cgl = list_head; cgl; cgl = cgl->next_line) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
 		parse_node *spec_of_line =
 			UnderstandLines::cgl_determine(cgl, depth, cg_is, cg, genuinely_verbal);
 

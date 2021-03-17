@@ -145,7 +145,10 @@ void RTCommandGrammars::compile_conditions(void) {
 	command_grammar *cg;
 	LOOP_OVER(cg, command_grammar)	{
 		current_sentence = cg->where_cg_created;
-		UnderstandLines::line_list_compile_condition_tokens(cg->first_line);
+		LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
+			RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cgl);
+			RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cgl);
+		}
 	}
 }
 
@@ -155,7 +158,7 @@ void RTCommandGrammars::compile_conditions(void) {
 packaging_state RTCommandGrammars::cg_compile_Verb_directive_header(command_grammar *cg, inter_name *array_iname) {
 	if (cg->cg_is != CG_IS_COMMAND)
 		internal_error("tried to compile Verb from non-command CG");
-	if (cg->first_line == NULL)
+	if (UnderstandLines::list_length(cg) == 0)
 		internal_error("compiling Verb for empty grammar");
 
 	packaging_state save = Emit::named_verb_array_begin(array_iname, K_value);
@@ -209,9 +212,9 @@ void RTCommandGrammars::cg_compile_parse_name_lines(gpr_kit *gprk, command_gramm
 
 =
 void RTCommandGrammars::cg_compile_lines(gpr_kit *gprk, command_grammar *cg) {
-	CommandsIndex::list_assert_ownership(cg->first_line, cg); /* Mark for later indexing */
+	CommandsIndex::list_assert_ownership(cg); /* Mark for later indexing */
 	CommandGrammars::sort_command_grammar(cg); /* Phase III for the CGLs in the CG happens here */
-	RTCommandGrammarLines::sorted_line_list_compile(gprk, cg->sorted_first_line,
+	RTCommandGrammarLines::sorted_line_list_compile(gprk,
 		cg->cg_is, cg, CommandGrammars::cg_is_genuinely_verbal(cg)); /* And Phase IV here */
 }
 
@@ -229,7 +232,7 @@ next priority, and so on up the hierarchy.
 
 =
 void RTCommandGrammars::compile(command_grammar *cg) {
-	if (cg->first_line == NULL) return;
+	if (UnderstandLines::list_length(cg) == 0) return;
 
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
@@ -340,12 +343,13 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 }
 
 void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
-	if (cg->first_line == NULL) return;
-	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
-	current_sentence = cg->where_cg_created;
-	RTCommandGrammarLines::reset_labels();
-	if (cg->cg_is != CG_IS_VALUE) internal_error("not iv");
-	RTCommandGrammars::cg_compile_lines(gprk, cg);
+	if (UnderstandLines::list_length(cg) > 0) {
+		LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
+		current_sentence = cg->where_cg_created;
+		RTCommandGrammarLines::reset_labels();
+		if (cg->cg_is != CG_IS_VALUE) internal_error("not iv");
+		RTCommandGrammars::cg_compile_lines(gprk, cg);
+	}
 }
 
 void RTCommandGrammars::emit_determination_type(determination_type *gty) {

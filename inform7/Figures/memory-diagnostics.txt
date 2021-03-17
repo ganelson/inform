@@ -66,12 +66,12 @@ Total memory consumption was 259376K = 253 MB
      ----  kind_constructor                         77 objects, 54824 bytes
      ----  property_inference_data                  1315 objects, 52600 bytes
      ----  ap_clause_array                          2 x 400 = 800 objects, 51264 bytes
-     ----  cg_line                                  230 objects, 49680 bytes
      ----  text_substitution                        436 objects, 48832 bytes
+     ----  cg_line                                  230 objects, 47840 bytes
      ----  table                                    7 objects, 45528 bytes
      ----  inter_node_list                          750 objects, 42000 bytes
-     ----  activity_list_array                      1 x 1000 objects, 40032 bytes
      ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
+     ----  activity_list_array                      1 x 1000 objects, 40032 bytes
      ----  response_message                         407 objects, 35816 bytes
      ----  production_list                          618 objects, 34608 bytes
      ----  regions_data                             670 objects, 32160 bytes
@@ -247,5 +247,5 @@ Total memory consumption was 259376K = 253 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.2% was overhead - 53878416 bytes = 52615K = 51 MB
+20.2% was overhead - 53880256 bytes = 52617K = 51 MB
 

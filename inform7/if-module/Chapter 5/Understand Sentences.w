@@ -937,7 +937,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 		case CG_IS_VALUE:
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of value $P: ",
 				ur->spec_reference);
-			UnderstandLines::set_single_type(cgl, ur->spec_reference);
+			UnderstandLines::set_single_term(cgl, ur->spec_reference);
 			cg = CommandGrammars::for_kind(Node::get_kind_of_value(ur->spec_reference));
 			break;
 		case CG_IS_PROPERTY_NAME:

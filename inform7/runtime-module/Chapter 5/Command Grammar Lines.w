@@ -19,6 +19,27 @@ cg_line_compilation_data RTCommandGrammarLines::new_cd(cg_line *cg) {
 	return cglcd;
 }
 
+@ These are grammar lines used in command CGs for commands which are accepted
+but only in order to print nicely worded rejections. A number of schemes
+were tried for this, for instance producing parser errors and setting |pe|
+to some high value, but the method now used is for a mistaken line to
+produce a successful parse at the I6 level, resulting in the (I6 only)
+action |##MistakeAction|. The tricky part is to send information to the
+I6 action routine |MistakeActionSub| indicating what the mistake was,
+exactly: we do this by including, in the I6 grammar, a token which
+matches empty text and returns a "preposition", so that it has no
+direct result, but which also sets a special global variable as a
+side-effect. Thus a mistaken line "act [thing]" comes out as something
+like:
+
+|* Mistake_Token_12 'act' noun -> MistakeAction|
+
+Since the I6 parser accepts the first command which matches, and since
+none of this can be recursive, the value of this variable at the end of
+I6 parsing is guaranteed to be the one set during the line causing
+the mistake.
+
+=
 void RTCommandGrammarLines::set_mistake(cg_line *cgl, wording MW) {
 	if (cgl->compilation_data.mistake_iname == NULL) {
 		package_request *PR = Hierarchy::local_package(MISTAKES_HAP);
@@ -224,9 +245,9 @@ of the |name| property accumulate from class to instance in I6, since
 |name| is additive, but grammar doesn't.
 
 =
-void RTCommandGrammarLines::sorted_line_list_compile(gpr_kit *gprk, cg_line *list_head,
+void RTCommandGrammarLines::sorted_line_list_compile(gpr_kit *gprk,
 	int cg_is, command_grammar *cg, int genuinely_verbal) {
-	for (cg_line *cgl = list_head; cgl; cgl = cgl->sorted_next_line)
+	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
 		if (cgl->compilation_data.suppress_compilation == FALSE)
 			RTCommandGrammarLines::compile_cg_line(gprk, cgl, cg_is, cg, genuinely_verbal);
 }
@@ -608,5 +629,28 @@ void RTCommandGrammarLines::compile_slash_gprs(void) {
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Produce::up(Emit::tree());
 		Routines::end(save);
+	}
+}
+
+@ This function looks through a CGL list and marks to suppress all those
+CGLs consisting only of single unconditional words, which means they
+will not be compiled into a |parse_name| routine (or anywhere else).
+If the |of| file handle is set, then the words in question are emitted as
+a stream of dictionary words. In practice, this is done when
+compiling the |name| property, so that a single scan achieves both
+the transfer into |name| and the exclusion from |parse_name| of
+affected CGLs.
+
+=
+void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
+		int wn = UnderstandLines::cgl_contains_single_unconditional_word(cgl);
+		if (wn >= 0) {
+			TEMPORARY_TEXT(content)
+			WRITE_TO(content, "%w", Lexer::word_text(wn));
+			Emit::array_dword_entry(content);
+			DISCARD_TEXT(content)
+			cgl->compilation_data.suppress_compilation = TRUE;
+		}
 	}
 }

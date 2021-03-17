@@ -299,10 +299,6 @@ void CommandsIndex::make_command_index_entries(OUTPUT_STREAM, command_grammar *c
 	}
 }
 
-void CommandsIndex::index_normal(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
-	CommandsIndex::sorted_list_index_normal(OUT, cg->sorted_first_line, headword);
-}
-
 void CommandsIndex::index_alias(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
 	WRITE("&quot;%S&quot;, <i>same as</i> &quot;%N&quot;",
 		headword, Wordings::first_wn(cg->command));
@@ -331,11 +327,11 @@ void CommandsIndex::index_tokens(OUTPUT_STREAM) {
 	LOOP_OVER(cg, command_grammar)
 		if (cg->cg_is == CG_IS_TOKEN)
 			CommandsIndex::index_tokens_for(OUT, cg->token_name, NULL,
-				cg->where_cg_created, cg->sorted_first_line, NULL, NULL);
+				cg->where_cg_created, cg, NULL, NULL);
 }
 
 void CommandsIndex::index_tokens_for(OUTPUT_STREAM, wording W, char *special, parse_node *where,
-	cg_line *defns, text_stream *help, char *explanation) {
+	command_grammar *defns, text_stream *help, char *explanation) {
 	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("\"[");
 	if (special) WRITE("%s", special); else WRITE("%+W", W);
@@ -377,10 +373,8 @@ order, so that the order of appearance in the index corresponds to the
 order of parsing -- this is what the reader of the index is interested in.
 
 =
-void CommandsIndex::sorted_list_index_normal(OUTPUT_STREAM,
-	cg_line *list_head, text_stream *headword) {
-	cg_line *cgl;
-	for (cgl = list_head; cgl; cgl = cgl->sorted_next_line)
+void CommandsIndex::index_normal(OUTPUT_STREAM, command_grammar *cg, text_stream *headword) {
+	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
 		CommandsIndex::cgl_index_normal(OUT, cgl, headword);
 }
 
@@ -418,9 +412,8 @@ in CGLs: back up to the CGs that own them. The following routine does
 this for a whole list of CGLs:
 
 =
-void CommandsIndex::list_assert_ownership(cg_line *list_head, command_grammar *cg) {
-	cg_line *cgl;
-	for (cgl = list_head; cgl; cgl = cgl->next_line)
+void CommandsIndex::list_assert_ownership(command_grammar *cg) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
 		cgl->indexing_data.belongs_to_cg = cg;
 }
 
@@ -465,9 +458,9 @@ int CommandsIndex::index_list_with_action(OUTPUT_STREAM, cg_line *cgl) {
 @ And the same, but more simply:
 
 =
-void CommandsIndex::index_list_for_token(OUTPUT_STREAM, cg_line *cgl) {
+void CommandsIndex::index_list_for_token(OUTPUT_STREAM, command_grammar *cg) {
 	int k = 0;
-	while (cgl != NULL) {
+	LOOP_THROUGH_SORTED_CG_LINES(cgl, cg)
 		if (cgl->indexing_data.belongs_to_cg) {
 			wording VW = CommandGrammars::get_verb_text(cgl->indexing_data.belongs_to_cg);
 			TEMPORARY_TEXT(trueverb)
@@ -483,8 +476,6 @@ void CommandsIndex::index_list_for_token(OUTPUT_STREAM, cg_line *cgl) {
 			if (cgl->reversed) WRITE(" <i>reversed</i>");
 			HTML_CLOSE("p");
 			DISCARD_TEXT(trueverb)
-		}
-		cgl = cgl->sorted_next_line;
-	}
+		}	
 }
 
