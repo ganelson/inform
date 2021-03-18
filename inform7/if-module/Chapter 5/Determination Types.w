@@ -31,6 +31,14 @@ int DeterminationTypes::get_no_values_described(determination_type *gty) {
 	return gty->no_values_described;
 }
 
+void DeterminationTypes::log(determination_type *dt) {
+	if (dt == NULL) LOG("<no-dt>");
+	else if (dt->no_values_described == 0) LOG("void");
+	else for (int t=0; t<dt->no_values_described; t++)
+		LOG("%s%d:$P%s", (t>0)?" ":"", t, dt->term[t].what,
+			(dt->term[t].multiplicity)?"(multiple)":"");
+}
+
 @ This function returns the equivalent of the |void| type in C: something
 which describes no values at all.
 

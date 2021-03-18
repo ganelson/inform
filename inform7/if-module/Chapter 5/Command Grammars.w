@@ -451,7 +451,7 @@ void CommandGrammars::prepare(void) {
 	LOOP_OVER(cg, command_grammar)
 		if ((cg->slashed == FALSE) && (cg->first_line)) {
 			LOGIF(GRAMMAR_CONSTRUCTION, "Slashing $G\n", cg);
-			UnderstandLines::line_list_slash(cg);
+			UnderstandLines::slash(cg);
 			cg->slashed = TRUE;
 		}
 	Log::new_stage(I"Determining command grammar");
@@ -477,9 +477,12 @@ parse_node *CommandGrammars::determine(command_grammar *cg, int depth) {
 	@<If recursion went impossibly deep, the CG grammar must be ill-founded@>;
 
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $G\n", cg);
-	parse_node *spec_union = UnderstandLines::line_list_determine(depth,
-		cg->cg_is, cg, CommandGrammars::cg_is_genuinely_verbal(cg));
-	LOGIF(GRAMMAR_CONSTRUCTION, "Result of verb $G is $P\n", cg, spec_union);
+	LOG_INDENT;
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
+		UnderstandLines::cgl_determine(cgl, cg, depth);
+	LOG_OUTDENT;
+	parse_node *spec_union = NULL;
+	@<Take the union of the single-term results of each line@>;
 
 	@<Cache the answer so that we need not determine it again@>;
 	return spec_union;
@@ -496,6 +499,63 @@ parse_node *CommandGrammars::determine(command_grammar *cg, int depth) {
 		return NULL;
 	}
 
+@ The "union" referred to below is the widest possible description which
+matches the single term of the determination type of each CGL in the list.
+
+@<Take the union of the single-term results of each line@> =
+	LOGIF(GRAMMAR_CONSTRUCTION, "Taking union on $G\n", cg);
+	LOG_INDENT;
+	int first_flag = TRUE;
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
+		parse_node *spec_of_line = DeterminationTypes::get_single_term(&(cgl->cgl_type));
+		LOG("CGL $g --> $P\n", cgl, spec_of_line);
+		if (first_flag) { /* initially no expectations: |spec_union| is meaningless */
+			spec_union = spec_of_line; /* so we set it to the first result */
+			first_flag = FALSE;
+		} else {
+			if ((spec_union == NULL) && (spec_of_line == NULL))
+				continue; /* we expected to find no result, and did: so no problem */
+
+			if ((spec_union) && (spec_of_line)) {
+				if (Dash::compatible_with_description(spec_union, spec_of_line) == ALWAYS_MATCH) {
+					spec_union = spec_of_line; /* here |spec_of_line| was a wider type */
+					continue;
+				}
+				if (Dash::compatible_with_description(spec_of_line, spec_union) == ALWAYS_MATCH) {
+					continue; /* here |spec_union| was already wide enough */
+				}
+			}
+			@<It is now evident that the lines have incompatible determination types@>;
+			break; /* to prevent the problem being repeated for the same grammar */
+		}
+	}
+	LOG_OUTDENT;
+	LOGIF(GRAMMAR_CONSTRUCTION, "Result is $P\n", spec_union);
+
+@ In some CGs, it doesn't matter if the lines do different things: for example,
+in the CG_IS_COMMAND for the command verb TAKE, "inventory" (void determination
+type) and "[things]" (single term determination type) can happily co-exist.
+
+CG_IS_VALUE and CG_IS_SUBJECT are also exceptions because they include grammars
+associated with kinds, in which different CGLs may describe different specific
+values of that kind. For example, the one for the kind |K_number| might have one
+CGL describing the number 17, and another describing 22. There's no good way to
+take the union of those numbers.
+
+@<It is now evident that the lines have incompatible determination types@> =
+	if ((cg->cg_is == CG_IS_CONSULT) ||
+		(cg->cg_is == CG_IS_SUBJECT) ||
+		(cg->cg_is == CG_IS_COMMAND) ||
+		(cg->cg_is == CG_IS_VALUE)) continue;
+	current_sentence = cgl->where_grammar_specified;
+	LOG("Offending CGL is $g in $G\n", cgl, cg);
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
+		"grammar tokens must have the same outcome whatever the way they are reached",
+		"so writing a line like 'Understand \"within\" or \"next to [something]\" "
+		"as \"[my token]\" must be wrong: one way it produces a thing, the other "
+		"way it doesn't.");
+	spec_union = NULL;
+
 @<Cache the answer so that we need not determine it again@> =
 	cg->determined = TRUE;
 	DeterminationTypes::set_single_term(&(cg->cg_type), spec_union);
@@ -511,5 +571,5 @@ sort once, so:
 =
 void CommandGrammars::sort_command_grammar(command_grammar *cg) {
 	if (cg->sorted_first_line == NULL)
-		cg->sorted_first_line = UnderstandLines::list_sort(cg->first_line);
+		cg->sorted_first_line = UnderstandLines::list_sort(cg);
 }

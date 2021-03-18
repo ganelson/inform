@@ -8,28 +8,12 @@ world model perhaps, or can be longer prototypes of commands to describe
 actions. There are many, many examples in //standard_rules: Command Grammar//,
 but for example in:
 >> Understand "remove [things inside] from [something]" as removing it from.
-the CG line "[things inside] from [something]" is added to the CG for the
+...the CG line "[things inside] from [something]" is added to the CG for the
 command verb REMOVE. This is a CG line with a //determination_type//
 expressing that it describes two |K_object| terms, the first perhaps being
 multiple and the second not; and with |resulting_action| set to the
 removing it from action. That's a feature only seen in lines for
 |CG_IS_COMMAND| grammars, in fact.
-
-CG lines are lists of CG tokens: "[things inside]", FROM, and "[something]"
-are all tokens. But Inform does not have a |cg_token| type because these are
-instead stored as |TOKEN_NT| nodes in the parse tree, and are the children
-of the |tokens| node belonging to the CG line.
-
-A small amount of disjunction is allowed in a grammar line: for instance,
-"look in/inside/into [something]" consists of five tokens, but only three
-so-called lexemes, basic units to be matched. (The first is LOOK, the second
-can be any one of IN, INSIDE or INTO, and the third is an object in scope.)
-The |lexeme_count| field caches the count of these since it is fiddly to
-calculate, and useful when sorting grammar lines into applicability order.
-
-The individual tokens are stored simply as parse tree nodes of type
-|TOKEN_NT|, and are the children of the node |cgl->tokens|, which is why
-(for now, anyway) there is no grammar token structure.
 
 =
 typedef struct cg_line {
@@ -62,6 +46,7 @@ typedef struct cg_line {
 @ =
 cg_line *UnderstandLines::new(wording W, action_name *ac,
 	parse_node *token_list, int reversed, int pluralised) {
+	if (token_list == NULL) internal_error("no token list for CGL");
 	cg_line *cgl;
 	cgl = CREATE(cg_line);
 	@<Initialise listing data@>;
@@ -105,6 +90,15 @@ sorting is a big issue: see //UnderstandLines::list_sort// below.
 	cgl->sorted_next_line = NULL;
 	cgl->general_sort_bonus = UNCALCULATED_BONUS;
 	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
+
+@ While we're talking loops... CG lines are lists of CG tokens: "[things inside]",
+FROM, and "[something]" are all tokens. But Inform does not have a |cg_token|
+type because these are instead stored as |TOKEN_NT| nodes in the parse tree,
+and are the children of the |tokens| node belonging to the CG line. The
+following runs through them:
+
+@d LOOP_THROUGH_CG_TOKENS(pn, cgl)
+	for (parse_node *pn = cgl->tokens->down; pn; pn = pn->next)
 
 @ To count how many lines a CG has so far, we use the unsorted list, since we
 don't know if the sorted one has been made yet:
@@ -271,60 +265,72 @@ int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
 	return -1;
 }
 
-@h Phase I: Slash Grammar.
-Slashing is an activity carried out on a per-grammar-line basis, so to slash
-a list of CGLs we simply slash each CGL in turn.
+@h Slashing the line.
+Slashing is the process of dealing with forward slash tokens in a CG line.
+It's done one line at a time, each line being independent of all others for
+this purpose, so:
 
 =
-void UnderstandLines::line_list_slash(command_grammar *cg) {
-	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
-		UnderstandLines::slash_cg_line(cgl);
+void UnderstandLines::slash(command_grammar *cg) {
+	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
+		current_sentence = cgl->where_grammar_specified;
+		@<Annotate the CG tokens with slash-class and slash-dash-dash@>;
+		@<Throw a problem if slash has been used with non-literal tokens@>;
+		@<Calculate the lexeme count@>;
+		LOGIF(GRAMMAR_CONSTRUCTION, "Slashed as:\n$T", cgl->tokens);
+	}
 }
 
-@ Now the actual slashing process, which does not descend to tokens. We
-remove any slashes, and fill in positive numbers in the |qualifier| field
-corresponding to non-singleton equivalence classes. Thus "take up/in all
-washing/laundry/linen" begins as 10 tokens, three of them forward slashes,
-and ends as 7 tokens, with |qualifier| values 0, 1, 1, 0, 2, 2, 2, for
-four equivalence classes in turn. Each equivalence class is one lexical
-unit, or "lexeme", so the lexeme count is then 4.
-
-In addition, if one of the slashed options is "--", then this means the
-empty word, and is removed from the token list; but the first token of the
-lexeme is annotated accordingly.
-
+@ The tokenised text of a CG line can contain "slashes":
+= (text)
+given in Inform source text   "take up/in all washing/laundry/linen"
+tokenised                     take up / in all washing / laundry / linen
 =
-void UnderstandLines::slash_cg_line(cg_line *cgl) {
-	parse_node *pn;
-	int alternatives_group = 0;
+This is a run of 10 CG tokens, three of them forward slashes which are actually
+markers to indicate disjunction: thus the three tokens "up / all" intend to
+match just one word of the player's command, which can be either UP or ALL.
 
-	current_sentence = cgl->where_grammar_specified; /* to report problems */
+Slashing consolidates this line to 7 CG tokens, giving each one a
+|slash_class_ANNOT| annotation to show which group it belongs to. 0 means
+that a token is not part of a slashed group; otherwise, the group number
+should be shared by all the tokens in the group, and should be different
+from that of other groups. Thus:
+= (text)
+                     take up in all washing laundry linen
+slash_class_ANNOT    0    1  1  0   2       2       2
+=
+In addition, Inform allows the syntax |--| to mean the empty word, or rather,
+to mean that it is permissible for the player's command to miss this word out.
+If one option in a group is |--| then this does not get a token of its own,
+but instead results in the |slash_dash_dash_ANNOT| annotation. For example,
+consider "near --/the/that tree/shrub":
+= (text)
+                       near  the  that  tree  shrub
+slash_class_ANNOT      0     1    1     2     2
+slash_dash_dash_ANNOT  FALSE TRUE FALSE FALSE FALSE
+=
+Note that |--| occurring on its own, outside of a run of slashes, has by
+definition no effect, and disappears without trace in this process.
 
-	if (cgl->tokens == NULL)
-		internal_error("Null tokens on grammar");
-
-	LOGIF(GRAMMAR_CONSTRUCTION, "Preparing grammar line:\n$T", cgl->tokens);
-
-	for (pn = cgl->tokens->down; pn; pn = pn->next)
+@<Annotate the CG tokens with slash-class and slash-dash-dash@> =
+	LOOP_THROUGH_CG_TOKENS(pn, cgl)
 		Annotations::write_int(pn, slash_class_ANNOT, 0);
 
+	int alternatives_group = 0;
 	parse_node *class_start = NULL;
-	for (pn = cgl->tokens->down; pn; pn = pn->next) {
-		if ((pn->next) &&
-			(Wordings::length(Node::get_text(pn->next)) == 1) &&
-			(Lexer::word(Wordings::first_wn(Node::get_text(pn->next))) == FORWARDSLASH_V)) { /* slash follows: */
+	LOOP_THROUGH_CG_TOKENS(pn, cgl) {
+		if ((pn->next) && (Wordings::length(Node::get_text(pn->next)) == 1) &&
+			(Lexer::word(Wordings::first_wn(Node::get_text(pn->next))) == FORWARDSLASH_V)) {
 			if (Annotations::read_int(pn, slash_class_ANNOT) == 0) {
 				class_start = pn; alternatives_group++; /* start new equiv class */
 				Annotations::write_int(class_start, slash_dash_dash_ANNOT, FALSE);
 			}
-
-			Annotations::write_int(pn, slash_class_ANNOT,
-				alternatives_group); /* make two sides of slash equiv */
+			Annotations::write_int(pn, slash_class_ANNOT, alternatives_group);
 			if (pn->next->next)
 				Annotations::write_int(pn->next->next, slash_class_ANNOT, alternatives_group);
 			if ((pn->next->next) &&
 				(Wordings::length(Node::get_text(pn->next->next)) == 1) &&
-				(Lexer::word(Wordings::first_wn(Node::get_text(pn->next->next))) == DOUBLEDASH_V)) { /* -- follows: */
+				(Lexer::word(Wordings::first_wn(Node::get_text(pn->next->next))) == DOUBLEDASH_V)) {
 				Annotations::write_int(class_start, slash_dash_dash_ANNOT, TRUE);
 				pn->next = pn->next->next->next; /* excise slash and dash-dash */
 			} else {
@@ -333,202 +339,187 @@ void UnderstandLines::slash_cg_line(cg_line *cgl) {
 		}
 	}
 
-	LOGIF(GRAMMAR_CONSTRUCTION, "Regrouped as:\n$T", cgl->tokens);
-
-	for (pn = cgl->tokens->down; pn; pn = pn->next)
+@<Throw a problem if slash has been used with non-literal tokens@> =
+	LOOP_THROUGH_CG_TOKENS(pn, cgl)
 		if ((Annotations::read_int(pn, slash_class_ANNOT) > 0) &&
 			(Annotations::read_int(pn, grammar_token_literal_ANNOT) == FALSE)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OverAmbitiousSlash),
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_OverAmbitiousSlash),
 				"the slash '/' can only be used between single literal words",
-				"so 'underneath/under/beneath' is allowed but "
-				"'beneath/[florid ways to say under]/under' isn't.");
+				"so 'underneath/under/beneath' is allowed but 'beneath/[florid "
+				"ways to say under]/under' isn't.");
 			break;
 		}
 
-	cgl->lexeme_count = 0;
+@ It is now easy to count the number of "lexemes", that's to say, the number
+of groups arising from the calculations just done. In this example there are 4:
+= (text)
+                     take   up in   all   washing laundry linen
+slash_class_ANNOT    0      1  1    0     2       2       2
+lexemes              +--+   +---+   +-+   +-------------------+
+=
+And in this one 3:
+= (text)
+                     near   the  that   tree  shrub
+slash_class_ANNOT    0      1    1      2     2
+lexemes              +--+   +-------+   +---------+
+=
 
-	for (pn = cgl->tokens->down; pn; pn = pn->next) {
+@<Calculate the lexeme count@> =
+	cgl->lexeme_count = 0;
+	LOOP_THROUGH_CG_TOKENS(pn, cgl) {
 		int i = Annotations::read_int(pn, slash_class_ANNOT);
 		if (i > 0)
-			while ((pn->next) && (Annotations::read_int(pn->next, slash_class_ANNOT) == i))
+			while ((pn->next) &&
+				(Annotations::read_int(pn->next, slash_class_ANNOT) == i))
 				pn = pn->next;
 		cgl->lexeme_count++;
 	}
 
-	LOGIF(GRAMMAR_CONSTRUCTION, "Slashed as:\n$T", cgl->tokens);
-}
+@h Determining the line.
+Here the aim is to find the //determination_type// of a CGL. Sneakily, though,
+we also take the opportunity to calculate its two "sorting bonuses", which
+affect how the list will be arranged when it is compiled.
 
-@h Phase II: Determining Grammar.
-Here there is substantial work to do both at the line list level and on
-individual lines, and the latter does recurse down to token level too.
-
-The following routine calculates the type of the CGL list as the union
-of the types of the CGLs within it, where union means the narrowest type
-such that every CGL in the list casts to it. We return null if there
-are no CGLs in the list, or if the CGLs all return null types, or if
-an error occurs. (Note that actions in command verb grammars are counted
-as null for this purpose, since a grammar used for parsing the player's
-commands is not also used to determine a value.)
+@d CGL_SCORE_TOKEN_RANGE 10
+@d CGL_SCORE_BUMP (CGL_SCORE_TOKEN_RANGE*CGL_SCORE_TOKEN_RANGE)
 
 =
-parse_node *UnderstandLines::line_list_determine(int depth, int cg_is,
-	command_grammar *cg, int genuinely_verbal) {
-	int first_flag = TRUE;
-	parse_node *spec_union = NULL;
-	LOGIF(GRAMMAR_CONSTRUCTION, "Determining CGL list for $G\n", cg);
-
-	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
-		parse_node *spec_of_line =
-			UnderstandLines::cgl_determine(cgl, depth, cg_is, cg, genuinely_verbal);
-
-		if (first_flag) { /* initially no expectations: |spec_union| is meaningless */
-			spec_union = spec_of_line; /* so we set it to the first result */
-			first_flag = FALSE;
-			continue;
-		}
-
-		if ((spec_union == NULL) && (spec_of_line == NULL))
-			continue; /* we expected to find no result, and did: so no problem */
-
-		if ((spec_union) && (spec_of_line)) {
-			if (Dash::compatible_with_description(spec_union, spec_of_line) == ALWAYS_MATCH) {
-				spec_union = spec_of_line; /* here |spec_of_line| was a wider type */
-				continue;
-			}
-			if (Dash::compatible_with_description(spec_of_line, spec_union) == ALWAYS_MATCH) {
-				continue; /* here |spec_union| was already wide enough */
-			}
-		}
-
-		if ((cg->cg_is == CG_IS_SUBJECT) || (cg->cg_is == CG_IS_VALUE)) continue;
-
-		current_sentence = cgl->where_grammar_specified;
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MixedOutcome),
-			"grammar tokens must have the same outcome whatever the way they are "
-			"reached",
-			"so writing a line like 'Understand \"within\" or \"next to "
-			"[something]\" as \"[my token]\" must be wrong: one way it produces "
-			"a thing, the other way it doesn't.");
-		spec_union = NULL;
-		break; /* to prevent the problem being repeated for the same grammar */
-	}
-
-	LOGIF(GRAMMAR_CONSTRUCTION, "Union: $P\n");
-	return spec_union;
-}
-
-@ There are three tasks here: to determine the type of the CGL, to issue a
-problem if this type is impossibly large, and to calculate two numerical
-quantities used in sorting CGLs: the "general sorting bonus" and the
-"understanding sorting bonus" (see below).
-
-=
-parse_node *UnderstandLines::cgl_determine(cg_line *cgl, int depth,
-	int cg_is, command_grammar *cg, int genuinely_verbal) {
-	parse_node *spec = NULL;
-	parse_node *pn, *pn2;
-	int nulls_count, i, nrv, line_length;
+void UnderstandLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
+	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $g\n", cgl);
+	LOG_INDENT;
 	current_sentence = cgl->where_grammar_specified;
-
 	cgl->understanding_sort_bonus = 0;
 	cgl->general_sort_bonus = 0;
 
-	nulls_count = 0; /* number of tokens with null results */
+	parse_node *first = cgl->tokens->down; /* start from first token... */
+	if ((CommandGrammars::cg_is_genuinely_verbal(cg)) && (first))
+		first = first->next; /* ...unless it's in a nonempty command verb grammar */
 
-	pn = cgl->tokens->down; /* start from first token */
-	if ((genuinely_verbal) && (pn)) pn = pn->next; /* unless it's a command verb */
-
-	for (pn2=pn, line_length=0; pn2; pn2 = pn2->next) line_length++;
+	int line_length = 0;
+	for (parse_node *cgt = first; cgt; cgt = cgt->next) line_length++;
 
 	int multiples = 0;
-	for (i=0; pn; pn = pn->next, i++) {
-		if (Node::get_type(pn) != TOKEN_NT)
-			internal_error("Bogus node types on grammar");
-
-		int score = 0;
-		spec = UnderstandTokens::determine(pn, depth, &score);
-		LOGIF(GRAMMAR_CONSTRUCTION, "Result of token <%W> is $P\n", Node::get_text(pn), spec);
-
-		if (spec) {
-			if ((Specifications::is_kind_like(spec)) &&
-				(K_understanding) &&
-				(Kinds::eq(Specifications::to_kind(spec), K_understanding))) { /* "[text]" token */
-				int usb_contribution = i - 100;
-				if (usb_contribution >= 0) usb_contribution = -1;
-				usb_contribution = 100*usb_contribution + (line_length-1-i);
-				cgl->understanding_sort_bonus += usb_contribution; /* reduces! */
-			}
-			int score_multiplier = 1;
-			if (DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) == 0) score_multiplier = 10;
-			DeterminationTypes::add_term(&(cgl->cgl_type), spec,
-				UnderstandTokens::is_multiple(pn));
-			cgl->general_sort_bonus += score*score_multiplier;
-		} else nulls_count++;
-
-		if (UnderstandTokens::is_multiple(pn)) multiples++;
-	}
+	@<Make the actual calculations@>;
 
 	if (multiples > 1)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultipleMultiples),
-			"there can be at most one token in any line which can match "
-			"multiple things",
-			"so you'll have to remove one of the 'things' tokens and "
-			"make it a 'something' instead.");
+			"there can be at most one token in any line which can match multiple things",
+			"so you'll have to remove one of the 'things' tokens and make it a 'something' "
+			"instead.");
 
-	nrv = DeterminationTypes::get_no_values_described(&(cgl->cgl_type));
-	if (nrv == 0) cgl->general_sort_bonus = 100*nulls_count;
-	if (cg_is == CG_IS_COMMAND) spec = NULL;
-	else {
-		if (nrv < 2) spec = DeterminationTypes::get_single_term(&(cgl->cgl_type));
-		else StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
-			"there can be at most one varying part in the definition of a "
-			"named token",
-			"so 'Understand \"button [a number]\" as \"[button indication]\"' "
-			"is allowed but 'Understand \"button [a number] on [something]\" "
-			"as \"[button indication]\"' is not.");
+	if ((cg->cg_is != CG_IS_COMMAND) &&
+		(DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) >= 2))
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TwoValuedToken),
+			"there can be at most one varying part in the definition of a named token",
+			"so 'Understand \"button [a number]\" as \"[button indication]\"' is allowed "
+			"but 'Understand \"button [a number] on [something]\" as \"[button "
+			"indication]\"' is not.");
+
+	LOG_OUTDENT;
+	if (Log::aspect_switched_on(GRAMMAR_CONSTRUCTION_DA)) {
+		LOG("dt = "); DeterminationTypes::log(&(cgl->cgl_type));
+		LOG(", lexeme count %d, sort bonus %d, understanding sort bonus %d\n",
+			cgl->lexeme_count, cgl->general_sort_bonus, cgl->understanding_sort_bonus);
 	}
-
-	LOGIF(GRAMMAR_CONSTRUCTION,
-		"Determined $g: lexeme count %d, sorting bonus %d, arguments %d, "
-		"fixed initials %d, type $P\n",
-		cgl, cgl->lexeme_count, cgl->general_sort_bonus, nrv,
-		cgl->understanding_sort_bonus, spec);
-
-	return spec;
 }
 
-@h Phase III: Sort Grammar.
-Insertion sort is used to take the linked list of CGLs and construct a
-separate, sorted version. This is not the controversial part.
+@ The general sort bonus is $Rs_0 + s_1$, where $R$ is the |CGL_SCORE_TOKEN_RANGE|
+and $s_0$, $s_1$ are the scores for the first and second tokens describing values;
+or if none of the $n$ tokens describes a value, it is $R^2n$, which is guaranteed
+to be larger.
+
+However, there is also an understanding sort bonus, which is really a penalty
+incurred by "[text]" tokens -- which are very free-form topics of conversation.
+A "[text]" at token position $i$, where $0\leq i<n$, scores $R^2(i-R^2) + (n - 1 - i)$.
+Given that $i$ is small and $R^2$ is big, this is basically a huge negative
+number, but is such that a "[text]" earlier in the line is penalised just a
+little bit more than a "[text]" later.
+
+For $R=10$, the following might thus happen. (For simplicity, I've assumed
+the individual tokens scores are 1.)
+= (text)
+                        n       s_0     s_1     gsb     usb
+inventory               1       --      --      100     0
+[thing]                 1       1       --      10      0
+[thing] from [thing]    3       1       1       11      0
+umbrage over [text]     3       1       --      10      -9800
+umbrage [text]          2       1       --      10      -9900
+umbrage [text] issue    3       1       --      10      -9899
+=
+It is roughly true that if we sort these lines in descending order of the
+sum of those scores, they come out in the order we need to try them when
+parsing the player's command at run-time. For the exact sorting rules, see below.
+
+@<Make the actual calculations@> =
+	int nulls_count = 0, pos = 0;
+	for (parse_node *cgt = first; cgt; cgt = cgt->next) {
+		int score = 0;
+		parse_node *spec = UnderstandTokens::determine(cgt, depth, &score);
+		LOGIF(GRAMMAR_CONSTRUCTION, "token %d/%d: <%W> --> $P (score %d)\n",
+			pos+1, line_length, Node::get_text(cgt), spec, score);
+		if (spec) {
+			@<Text tokens contribute also to the understanding sort bonus@>;
+			int score_multiplier = 1;
+			if (DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) == 0)
+				score_multiplier = CGL_SCORE_TOKEN_RANGE;
+			DeterminationTypes::add_term(&(cgl->cgl_type), spec,
+				UnderstandTokens::is_multiple(cgt));
+			cgl->general_sort_bonus += score*score_multiplier;
+		} else nulls_count++;
+
+		if (UnderstandTokens::is_multiple(cgt)) multiples++;
+		pos++;
+	}
+	if (nulls_count == line_length)
+		cgl->general_sort_bonus = CGL_SCORE_BUMP*nulls_count;
+
+@ This looks for a "[text]" token, which is the Inform syntax to mean one
+which parses to a |K_understanding| match.
+
+@<Text tokens contribute also to the understanding sort bonus@> =
+	if ((Specifications::is_kind_like(spec)) &&
+		(K_understanding) &&
+		(Kinds::eq(Specifications::to_kind(spec), K_understanding))) { /* "[text]" token */
+		int usb_contribution = pos - CGL_SCORE_BUMP;
+		if (usb_contribution >= 0) usb_contribution = -1; /* very unlikely to happen */
+		usb_contribution = CGL_SCORE_BUMP*usb_contribution + (line_length-1-pos);
+		cgl->understanding_sort_bonus += usb_contribution;
+	}
+
+
+@h Sorting the lines in a grammar.
+The CGLs in a grammar are insertion sorted into a sorted version. This is not
+the controversial part: //UnderstandLines::cg_line_must_precede// is the part
+people argued over for years.
 
 =
-cg_line *UnderstandLines::list_sort(cg_line *list_head) {
-	cg_line *cgl, *gl2, *gl3, *sorted_head;
+cg_line *UnderstandLines::list_sort(command_grammar *cg) {
+	cg_line *unsorted_head = cg->first_line;
+	if (unsorted_head == NULL) return NULL;
 
-	if (list_head == NULL) return NULL;
+	cg_line *sorted_head = unsorted_head;
+	sorted_head->sorted_next_line = NULL;
 
-	sorted_head = list_head;
-	list_head->sorted_next_line = NULL;
-
-	cgl = list_head;
+	cg_line *cgl = unsorted_head;
 	while (cgl->next_line) {
 		cgl = cgl->next_line;
-		gl2 = sorted_head;
-		if (UnderstandLines::cg_line_must_precede(cgl, gl2)) {
+		cg_line *cgl2 = sorted_head;
+		if (UnderstandLines::cg_line_must_precede(cg, cgl, cgl2)) {
 			sorted_head = cgl;
-			cgl->sorted_next_line = gl2;
+			cgl->sorted_next_line = cgl2;
 			continue;
 		}
-		while (gl2) {
-			gl3 = gl2;
-			gl2 = gl2->sorted_next_line;
-			if (gl2 == NULL) {
-				gl3->sorted_next_line = cgl;
+		while (cgl2) {
+			cg_line *cgl3 = cgl2;
+			cgl2 = cgl2->sorted_next_line;
+			if (cgl2 == NULL) {
+				cgl3->sorted_next_line = cgl;
 				break;
 			}
-			if (UnderstandLines::cg_line_must_precede(cgl, gl2)) {
-				gl3->sorted_next_line = cgl;
-				cgl->sorted_next_line = gl2;
+			if (UnderstandLines::cg_line_must_precede(cg, cgl, cgl2)) {
+				cgl3->sorted_next_line = cgl;
+				cgl->sorted_next_line = cgl2;
 				break;
 			}
 		}
@@ -536,168 +527,45 @@ cg_line *UnderstandLines::list_sort(cg_line *list_head) {
 	return sorted_head;
 }
 
-@ This is the controversial part: the routine which decides whether one CGL
-takes precedence (i.e., is parsed earlier than and thus in preference to)
-another CGL. This algorithm has been hacked many times to try to reach a
-position which pleases all designers: something of a lost cause. The
-basic motivation is that we need to sort because the various parsers of
-I7 grammar (|parse_name| routines, general parsing routines, the I6 command
-parser itself) all work by returning the first match achieved. This means
-that if grammar line L2 matches a superset of the texts which grammar line
-L1 matches, then L1 should be tried first: trying them in the order L2, L1
-would mean that L1 could never be matched, which is surely contrary to the
-designer's intention. (Compare the rule-sorting algorithm, which has similar
-motivation but is entirely distinct, though both use the same primitive
-methods for comparing types of single values, i.e., at stages 5b1 and 5c1
-below.)
+@ As noted, the following function was responsible for quite some debate in
+the early days of Inform 7. The issue here is that the command parser at
+run-time accepts the first match it can make, when given a list of options.[1]
+Because of that, it is essential to put these options in the right order, or
+some can never happen. For example,
+= (text)
+ask [someone] about [something]
+ask [someone] about [text]
+=
+have to be that way around, because any comnand which matches the first line
+here also matches the second. Putting these lines into order used to be part
+of the craft of the Inform 6 programmer, but it was always difficult to do,
+and Inform 7 aimed to liberate authors from the need to do this. A long
+period of aggrieved bug-reporting followed, when it turned out that Inform 7
+made different decisions than authors accustomed to Inform 6 would like.
+We ended up with the following algorithm, which has not changed since at
+least 2010, and will not change again.
 
-Recall that each CGL has a numerical USB (understanding sort bonus) and
-GSB (general sort bonus). The following rules are applied in sequence:
+[1] Well... roughly. See //CommandParserKit: Parser// for the gory details.
 
-(1) Higher USBs beat lower USBs.
-
-(2a) For sorting CGLs in player-command grammar, shorter lines beat longer
-lines, where length is calculated as the lexeme count.
-
-(2b) For sorting all other CGLs, longer lines beat shorter lines.
-
-(3) Mistaken commands beat unmistaken commands.
-
-(4) Higher GSBs beat lower GSBs.
-
-(5a) Fewer resulting values beat more resulting values.
-
-(5b1) A narrower first result type beats a wider first result type, if
-there is a first result.
-
-(5b2) A multiples-disallowed first result type beats a multiples-allowed
-first result type, if there is a first result.
-
-(5c1) A narrower second result type beats a wider second result type, if
-there is a second result.
-
-(5c2) A multiples-disallowed second result type beats a multiples-allowed
-second result type, if there is a second result.
-
-(6) Conditional lines (with a "when" proviso, that is) beat
-unconditional lines.
-
-(7) The grammar line defined earlier beats the one defined later.
-
-Rule 1 is intended to resolve awkward ambiguities involved with command
-grammar which includes "[text]" tokens. Each such token subtracts 10000 from
-the USB of a line but adds back 100 times the token position (which is at least
-0 and which we can safely suppose is less than 99: we truncate just in case
-so that every |"[text]"| certainly makes a negative contribution of at least
-$-100$) and then subtracts off the number of tokens left on the line.
-
-Because a high USB gets priority, and "[text]" tokens make a negative
-contribution, the effect is to relegate lines containing "[text]" tokens
-to the bottom of the list -- which is good because "[text]" voraciously
-eats up words, matching more or less anything, so that any remotely
-specific case ought to be tried first. The effect of the curious addition
-back in of the token position is that later-placed "[text]" tokens are
-tried before earlier-placed ones. Thus |"read chapter [text]"| has a USB
-of $-98$, and takes precedence over |"read [text]"| with a USB of $-99$,
-but both are beaten by just |"read [something]"| with a USB of 0.
-The effect of the subtraction back of the number of tokens remaining
-is to ensure that |"read [token] backwards"| takes priority over
-|"read [token]"|.
-
-The voracity of |"[text]"|, and its tendency to block out all other
-possibilities unless restrained, has to be addressed by this lexically
-based numerical calculation because it works in a lexical sort of way:
-playing with the types system to prefer |DESCRIPTION/UNDERSTANDING|
-over, say, |VALUE/OBJECT| would not be sufficient.
-
-The most surprising point here is the asymmetry in rule 2, which basically
-says that when parsing commands typed at the keyboard, shorter beats longer,
-whereas in all other settings longer beats shorter. This arises because the
-I6 parser, at run time, traditionally works that way: I6 command grammars
-are normally stored with short forms first and long forms afterward. The
-I6 parser can afford to do this because it is matching text of known length:
-if parsing TAKE FROG FROM AQUARIUM, it will try TAKE FROG first but is able
-to reject this as not matching the whole text. In other parsing settings,
-we are trying to make a maximum-length match against a potentially infinite
-stream of words, and it is therefore important to try to match WATERY
-CASCADE EFFECT before WATERY CASCADE when looking at text like WATERY
-CASCADE EFFECT IMPRESSES PEOPLE, given that the simplistic parsers we
-compile generally return the first match found.
-
-Rule 3, that mistakes beat non-mistakes, was in fact rule 1 during 2006: it
-seemed logical that since mistakes were exceptional cases, they would be
-better checked earlier before moving on to general cases. However, an
-example provided by Eric Eve showed that although this was logically correct,
-the I6 parser would try to auto-complete lengthy mistakes and thus fail to
-check subsequent commands. For this reason, |"look behind [something]"|
-as a mistake needs to be checked after |"look"|, or else the I6 parser
-will respond to the command LOOK by replying "What do you want to look
-behind?" -- and then saying that you are mistaken.
-
-Rule 4 is intended as a lexeme-based tiebreaker. We only get here if there
-are the same number of lexemes in the two CGLs being compared. Each is
-given a GSB score as follows: a literal lexeme, which produces no result,
-such as |"draw"| or |"in/inside/within"|, scores 100; all other lexemes
-score as follows:
-
--- |"[things inside]"| scores a GSB of 10 as the first parameter, 1 as the second;
-
--- |"[things preferably held]"| similarly scores a GSB of 20 or 2;
-
--- |"[other things]"| similarly scores a GSB of 20 or 2;
-
--- |"[something preferably held]"| similarly scores a GSB of 30 or 3;
-
--- any token giving a logical description of some class of objects, such as
-|"[open container]"|, similarly scores a GSB of 50 or 5;
-
--- and any remaining token (for instance, one matching a number or some other
-kind of value) scores a GSB of 0.
-
-Literals score highly because they are structural, and differentiate
-cases: under the superset rule, |"look up [thing]"| must be parsed before
-|"look [direction] [thing]"|, and it is only the number of literals which
-differentiates these cases. If two lines have an equal number of literals,
-we now look at the first resultant lexeme. Here we find that a lexeme which
-specifies an object (with a GSB of at least 10/1) beats a lexeme which only
-specifies a value. Thus the same text will be parsed against objects in
-preference to values, which is sensible since there are generally few
-objects available to the player and they are generally likely to be the
-things being referred to. Among possible object descriptions, the very
-general catch-all special cases above are given lower GSB scores than
-more specific ones, to enable the more specific cases to go first.
-
-Rule 5a is unlikely to have much effect: it is likely to be rare for CGL
-lists to contain CGLs mixing different numbers of results. But Rule 5b1
-is very significant: it causes |"draw [animal]"| to have precedence over
-|"draw [thing]"|, for instance. Rule 5b2 ensures that |"draw [thing]"|
-takes precedence over |"draw [things]"|, which may be useful to handle
-multiple and single objects differently.
-
-The motivation for rule 6 is similar to the case of "when" clauses for
-rules in rulebooks: it ensures that a match of |"draw [thing]"| when some
-condition holds beats a match of |"draw [thing]"| at any time, and this is
-necessary under the strict superset principle.
-
-To get to rule 7 looks difficult, given the number of things about the
-grammar lines which must match up -- same USB, GSB, number of lexemes,
-number of resulting types, equivalent resulting types, same conditional
-status -- but in fact it isn't all that uncommon. Equivalent pairs produced
-by the Standard Rules include:
-
-|"get off [something]"| and |"get in/into/on/onto [something]"|
-
-|"turn on [something]"| and |"turn [something] on"|
-
-Only the second of these pairs leads to ambiguity, and even then only if
-an object has a name like ON VISION ON -- perhaps a book about the antique
-BBC children's television programme "Vision On" -- so that the command
-TURN ON VISION ON would match both of the alternative CGLs.
+@ The code in //UnderstandLines::cgl_determine// looked as if we would decide
+if line |L1| precedes |L2| by adding up their score bonuses, and letting the
+higher scorer go first. That is in fact nearly equivalent to the following,
+but not quite.
 
 =
-int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
-	int cs, a, b;
+int UnderstandLines::cg_line_must_precede(command_grammar *cg, cg_line *L1, cg_line *L2) {
+	@<Perform some sanity checks@>;
+	@<Nothing precedes itself@>;
+	@<Lower understanding penalties precede higher ones@>;
+	@<Shorter precedes longer in command verbs, longer precedes shorter otherwise@>;
+	@<Mistakes precede correct readings@>;
+	@<Higher sort bonuses precede lower ones@>;
+	@<More specific determinations precede less specific ones@>;
+	@<Conditional readings precede unconditional readings@>;
+	@<Lines created earlier precede lines creater later in the source text@>;
+}
 
+@<Perform some sanity checks@> =
 	if ((L1 == NULL) || (L2 == NULL))
 		internal_error("tried to sort null CGLs");
 	if ((L1->lexeme_count == -1) || (L2->lexeme_count == -1))
@@ -705,19 +573,41 @@ int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 	if ((L1->general_sort_bonus == UNCALCULATED_BONUS) ||
 		(L2->general_sort_bonus == UNCALCULATED_BONUS))
 		internal_error("tried to sort uncalculated CGLs");
+
+@<Nothing precedes itself@> =
 	if (L1 == L2) return FALSE;
 
-	a = FALSE; if ((L1->resulting_action) || (L1->mistaken)) a = TRUE;
-	b = FALSE; if ((L2->resulting_action) || (L2->mistaken)) b = TRUE;
-	if (a != b) {
-		LOG("L1 = $g\nL2 = $g\n", L1, L2);
-		internal_error("tried to sort on incomparable CGLs");
-	}
+@ "[text]" tokens have such an extreme effect that they are the first thing
+to look at. The following guarantees that any line without "[text]" tokens
+always precedes any line with them: see the calculation of the USB above.
 
+Thus |"read chapter [text]"| precedes |"read [text]"| precedes |"read [something]"|.
+
+@<Lower understanding penalties precede higher ones@> =
 	if (L1->understanding_sort_bonus > L2->understanding_sort_bonus) return TRUE;
 	if (L1->understanding_sort_bonus < L2->understanding_sort_bonus) return FALSE;
 
-	if (a) { /* command grammar: shorter beats longer */
+@ It seems reasonable that the length of the CG line (in lexemes, not tokens)
+might be a sorting criterion, but what we do looks asymmetric. Why should
+CG_IS_COMMAND grammars have the opposite convention from all others?
+
+This arises because the command parser we use at run time works that way. The
+difference is that when the parser is working on an entire command -- thus,
+working through a |CG_IS_COMMAND| grammar -- it always knows how many words
+it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
+has to make sense of all of the words. It needs to consider the possibility
+"take [something]" before "take [something] from [something]" because there
+might be an object called "frog fram aquarium".
+
+On the other hand, if it is parsing a |CG_IS_TOKEN| grammar, it is trying to
+match as many words as possible from a stream of words that will probably then
+continue. It is therefore important to try to match WATERY CASCADE EFFECT
+before WATERY CASCADE when looking at text like WATERY CASCADE EFFECT
+IMPRESSES PEOPLE, so that we match three words not two. So in these
+situations, longer possibilities must be tried first.
+
+@<Shorter precedes longer in command verbs, longer precedes shorter otherwise@> =
+	if (cg->cg_is == CG_IS_COMMAND) { /* command grammar: shorter beats longer */
 		if (L1->lexeme_count < L2->lexeme_count) return TRUE;
 		if (L1->lexeme_count > L2->lexeme_count) return FALSE;
 	} else { /* all other grammars: longer beats shorter */
@@ -725,17 +615,73 @@ int UnderstandLines::cg_line_must_precede(cg_line *L1, cg_line *L2) {
 		if (L1->lexeme_count > L2->lexeme_count) return TRUE;
 	}
 
+@ Throughout 2006, the rule that mistakes beat non-mistakes was in fact the
+most important, taking priority over length or understanding sort bonus.
+This seemed logical that since mistakes were exceptional cases, they would be
+better checked earlier before moving on to general cases. However, an
+example provided by Eric Eve showed that although this was logically correct,
+the run-time command parser would try to auto-complete lengthy mistakes and
+thus fail to check subsequent commands.
+
+For this reason, |"look behind [something]"| as a mistake needs to be checked
+after |"look"|, or else the command parser will respond to LOOK by replying
+"What do you want to look behind?" -- and then saying that you are mistaken.
+
+@<Mistakes precede correct readings@> =
 	if ((L1->mistaken) && (L2->mistaken == FALSE)) return TRUE;
 	if ((L1->mistaken == FALSE) && (L2->mistaken)) return FALSE;
 
+@ This next rule is a lexeme-based tiebreaker. We only get here if there
+are the same number of lexemes in the two CGLs being compared. Lines in which
+all tokens are literal words, like "tossed egg salad", are scored so highly
+that they will always come first: see //UnderstandLines::cgl_determine//.
+But if one of the tokens is not literal, then we score it in such a way that
+the specificity of the tokens is what decides. The first token is more important
+than the second, and a more specific token comes before a lower one.
+
+See //UnderstandTokens::determine// for how the score of an individual token
+is worked out.
+
+@<Higher sort bonuses precede lower ones@> =
 	if (L1->general_sort_bonus > L2->general_sort_bonus) return TRUE;
 	if (L1->general_sort_bonus < L2->general_sort_bonus) return FALSE;
 
-	cs = DeterminationTypes::must_precede(&(L1->cgl_type), &(L2->cgl_type));
+@ By now the lines are extremely similar, but for example we might have
+"put [thing] in [container]" and "put [thing] in [thing]". The first must
+precede the second because |K_container| is a subkind of |K_thing|.
+
+@<More specific determinations precede less specific ones@> =
+	int cs = DeterminationTypes::must_precede(&(L1->cgl_type), &(L2->cgl_type));
 	if (cs != NOT_APPLICABLE) return cs;
 
-	if ((UnderstandLines::conditional(L1)) && (UnderstandLines::conditional(L2) == FALSE)) return TRUE;
-	if ((UnderstandLines::conditional(L1) == FALSE) && (UnderstandLines::conditional(L2))) return FALSE;
+@ The motivation for this one is similar to the case of "when" clauses for
+rules in rulebooks: it ensures that a match of |"draw [thing]"| when some
+condition holds beats a match of |"draw [thing]"| at any time, and this is
+necessary under the strict superset principle.
 
+@<Conditional readings precede unconditional readings@> =
+	if ((UnderstandLines::conditional(L1)) &&
+		(UnderstandLines::conditional(L2) == FALSE)) return TRUE;
+	if ((UnderstandLines::conditional(L1) == FALSE) &&
+		(UnderstandLines::conditional(L2))) return FALSE;
+
+@ Getting down to here looks difficult, given the number of things about |L1|
+and |L2| which have to match up -- same USB, GSB, number of lexemes,
+number of resulting types, equivalent resulting types, same mistake and
+conditional status -- but in fact it isn't all that uncommon. Equivalent pairs
+produced by the Standard Rules include:
+= (text)
+get off [something]
+get in/into/on/onto [something]
+
+turn on [something]
+turn [something] on
+=
+Only the second of these pairs leads to ambiguity, and even then only if
+an object has a name like ON VISION ON -- perhaps a book about the antique
+BBC children's television programme "Vision On" -- so that the command
+TURN ON VISION ON would match both of the alternative CGLs.
+
+@<Lines created earlier precede lines creater later in the source text@> =
+	if (L1->allocation_id < L2->allocation_id) return TRUE;
 	return FALSE;
-}

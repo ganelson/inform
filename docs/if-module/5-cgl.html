@@ -34,6 +34,11 @@ MathJax = {
 	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
 </script>
 
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -87,7 +92,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#5">Chapter 5: Command Parser</a></li><li><b>Command Grammar Lines</b></li></ul></div>
 <p class="purpose">A CG line is a list of CG tokens to specify a textual pattern. For example, "take [something] out" is a CG line of three tokens.</p>
 
-<ul class="toc"><li><a href="5-cgl.html#SP7">&#167;7. Relevant only for CG_IS_VALUE lines</a></li><li><a href="5-cgl.html#SP8">&#167;8. Conditional lines</a></li><li><a href="5-cgl.html#SP12">&#167;12. Mistakes</a></li><li><a href="5-cgl.html#SP13">&#167;13. Single word optimisation</a></li><li><a href="5-cgl.html#SP14">&#167;14. Phase I: Slash Grammar</a></li><li><a href="5-cgl.html#SP16">&#167;16. Phase II: Determining Grammar</a></li><li><a href="5-cgl.html#SP18">&#167;18. Phase III: Sort Grammar</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-cgl.html#SP8">&#167;8. Relevant only for CG_IS_VALUE lines</a></li><li><a href="5-cgl.html#SP9">&#167;9. Conditional lines</a></li><li><a href="5-cgl.html#SP13">&#167;13. Mistakes</a></li><li><a href="5-cgl.html#SP14">&#167;14. Single word optimisation</a></li><li><a href="5-cgl.html#SP15">&#167;15. Slashing the line</a></li><li><a href="5-cgl.html#SP16">&#167;16. Determining the line</a></li><li><a href="5-cgl.html#SP17">&#167;17. Sorting the lines in a grammar</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>CG lines can be as simple as single words, to describe an object in the
 world model perhaps, or can be longer prototypes of commands to describe
@@ -99,31 +104,12 @@ but for example in:
     <p>Understand "remove [things inside] from [something]" as removing it from.</p>
 </blockquote>
 
-<p class="commentary">the CG line "[things inside] from [something]" is added to the CG for the
+<p class="commentary">...the CG line "[things inside] from [something]" is added to the CG for the
 command verb REMOVE. This is a CG line with a <a href="5-dt.html#SP1" class="internal">determination_type</a>
 expressing that it describes two <span class="extract"><span class="extract-syntax">K_object</span></span> terms, the first perhaps being
 multiple and the second not; and with <span class="extract"><span class="extract-syntax">resulting_action</span></span> set to the
 removing it from action. That's a feature only seen in lines for
 <span class="extract"><span class="extract-syntax">CG_IS_COMMAND</span></span> grammars, in fact.
-</p>
-
-<p class="commentary">CG lines are lists of CG tokens: "[things inside]", FROM, and "[something]"
-are all tokens. But Inform does not have a <span class="extract"><span class="extract-syntax">cg_token</span></span> type because these are
-instead stored as <span class="extract"><span class="extract-syntax">TOKEN_NT</span></span> nodes in the parse tree, and are the children
-of the <span class="extract"><span class="extract-syntax">tokens</span></span> node belonging to the CG line.
-</p>
-
-<p class="commentary">A small amount of disjunction is allowed in a grammar line: for instance,
-"look in/inside/into [something]" consists of five tokens, but only three
-so-called lexemes, basic units to be matched. (The first is LOOK, the second
-can be any one of IN, INSIDE or INTO, and the third is an object in scope.)
-The <span class="extract"><span class="extract-syntax">lexeme_count</span></span> field caches the count of these since it is fiddly to
-calculate, and useful when sorting grammar lines into applicability order.
-</p>
-
-<p class="commentary">The individual tokens are stored simply as parse tree nodes of type
-<span class="extract"><span class="extract-syntax">TOKEN_NT</span></span>, and are the children of the node <span class="extract"><span class="extract-syntax">cgl-&gt;tokens</span></span>, which is why
-(for now, anyway) there is no grammar token structure.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -160,6 +146,7 @@ calculate, and useful when sorting grammar lines into applicability order.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="function-syntax">UnderstandLines::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::new</span></span>:<br/>Understand Sentences - <a href="5-us.html#SP19_10">&#167;19.10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">action_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ac</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">token_list</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reversed</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pluralised</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">token_list</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no token list for CGL"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Initialise listing data</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
@@ -189,7 +176,7 @@ calculate, and useful when sorting grammar lines into applicability order.
 <p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>A command grammar has a list of CGLs. But in fact it has two lists, with the
 same contents, but in different orders. The unsorted list holds them in order
 of creation; the sorted one in order of matching priority at run-time. This
-sorting is a big issue: see <a href="5-cgl.html#SP18" class="internal">UnderstandLines::list_sort</a> below.
+sorting is a big issue: see <a href="5-cgl.html#SP17" class="internal">UnderstandLines::list_sort</a> below.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">)</span>
@@ -208,7 +195,17 @@ sorting is a big issue: see <a href="5-cgl.html#SP18" class="internal">Understan
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> = </span><span class="constant-syntax">UNCALCULATED_BONUS</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>To count how many lines a CG has so far, we use the unsorted list, since we
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>While we're talking loops... CG lines are lists of CG tokens: "[things inside]",
+FROM, and "[something]" are all tokens. But Inform does not have a <span class="extract"><span class="extract-syntax">cg_token</span></span>
+type because these are instead stored as <span class="extract"><span class="extract-syntax">TOKEN_NT</span></span> nodes in the parse tree,
+and are the children of the <span class="extract"><span class="extract-syntax">tokens</span></span> node belonging to the CG line. The
+following runs through them:
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>To count how many lines a CG has so far, we use the unsorted list, since we
 don't know if the sorted one has been made yet:
 </p>
 
@@ -219,7 +216,7 @@ don't know if the sorted one has been made yet:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>CG lines are added to a CG by being put at the end of the unsorted list.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>CG lines are added to a CG by being put at the end of the unsorted list.
 (Once sorting has occurred, it is too late.)
 </p>
 
@@ -236,7 +233,7 @@ don't know if the sorted one has been made yet:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>In rare cases CG lines are also removed, but again, before sorting occurs.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>In rare cases CG lines are also removed, but again, before sorting occurs.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -255,7 +252,7 @@ don't know if the sorted one has been made yet:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>We make no attempt to pretty-print a complete breakdown of CG, and instead
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We make no attempt to pretty-print a complete breakdown of CG, and instead
 log just enough to identify which one it is:
 </p>
 
@@ -264,7 +261,7 @@ log just enough to identify which one it is:
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;CGL%d:%W&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Relevant only for CG_IS_VALUE lines. </b>In <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span> grammars, the lines are ways to refer to a specific value
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Relevant only for CG_IS_VALUE lines. </b>In <span class="extract"><span class="extract-syntax">CG_IS_VALUE</span></span> grammars, the lines are ways to refer to a specific value
 which is not an object, and we record which value the line refers to here.
 </p>
 
@@ -273,7 +270,7 @@ which is not an object, and we record which value the line refers to here.
 <span class="plain-syntax">    </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::set_single_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">), </span><span class="identifier-syntax">cgl_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Conditional lines. </b>A few grammar lines take effect only when some circumstance holds: most I7
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Conditional lines. </b>A few grammar lines take effect only when some circumstance holds: most I7
 conditions are valid to specify this, with the notation "Understand ... as
 ... when ...". However, we want to protect new authors from mistakes
 like this:
@@ -290,11 +287,11 @@ known what the action will be.
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;understand-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-non-action-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_WhenAction problem</span><span class="named-paragraph-number">8.1</span></a></span><span class="Preform-constant-syntax">;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, NULL };</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadWhen problem</span><span class="named-paragraph-number">8.2</span></a></span><span class="Preform-constant-syntax">;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, NULL };</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-condition&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_WhenAction problem</span><span class="named-paragraph-number">9.1</span></a></span><span class="Preform-constant-syntax">;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, NULL };</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadWhen problem</span><span class="named-paragraph-number">9.2</span></a></span><span class="Preform-constant-syntax">;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -, NULL };</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenAction problem</span><span class="named-paragraph-number">8.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_WhenAction problem</span><span class="named-paragraph-number">9.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -303,8 +300,8 @@ known what the action will be.
 <span class="plain-syntax">        </span><span class="string-syntax">"but this can never work, because when Inform is still trying to "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"understand a command, the current action isn't yet decided on."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadWhen problem</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_BadWhen problem</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -313,8 +310,8 @@ known what the action will be.
 <span class="plain-syntax">        </span><span class="string-syntax">"although otherwise this worked - it is only the part after 'when' "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which I can't follow."</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP8">&#167;8</a>, <a href="5-cgl.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Such CGLs have an "understand when" text. We have to keep this as text and
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP9">&#167;9</a>, <a href="5-cgl.html#SP10">&#167;10</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Such CGLs have an "understand when" text. We have to keep this as text and
 typecheck it with Dash only when it will actually be used; this is where
 that happens.
 </p>
@@ -329,7 +326,7 @@ that happens.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;understand-condition&gt;(cgl-&gt;</span><span class="element-syntax">understand_when_text</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Dash::validate_conditional_clause</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadWhen problem</span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_BadWhen problem</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
@@ -338,7 +335,7 @@ that happens.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>More subtly, a CGL might be given as a way to describe, say, "an open door".
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>More subtly, a CGL might be given as a way to describe, say, "an open door".
 This will go into the CG associated with the kind <span class="extract"><span class="extract-syntax">K_door</span></span>, but the line will
 have the proposition \({\it open}(x)\) attached to it: the description then
 matches an object \(x\) only when this proposition holds. (It must always be
@@ -350,17 +347,17 @@ a proposition with a single free variable.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understand_when_prop</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Use of either feature makes a CGL "conditional":
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Use of either feature makes a CGL "conditional":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::conditional</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::conditional</span></span>:<br/><a href="5-cgl.html#SP13">&#167;13</a>, <a href="5-cgl.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::conditional</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::conditional</span></span>:<br/><a href="5-cgl.html#SP14">&#167;14</a>, <a href="5-cgl.html#SP19_8">&#167;19.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wordings::nonempty</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">understand_when_text</span><span class="plain-syntax">)) || (</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understand_when_prop</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Mistakes. </b>These are grammar lines used in command CGs for commands which are accepted
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Mistakes. </b>These are grammar lines used in command CGs for commands which are accepted
 but only in order to print nicely worded rejections.
 </p>
 
@@ -371,7 +368,7 @@ but only in order to print nicely worded rejections.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RTCommandGrammarLines::set_mistake</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">MW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Single word optimisation. </b>The grammars used to parse names of objects are normally compiled into
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Single word optimisation. </b>The grammars used to parse names of objects are normally compiled into
 <span class="extract"><span class="extract-syntax">parse_name</span></span> routines. But the I6 parser also uses the <span class="extract"><span class="extract-syntax">name</span></span> property,
 and it is advantageous to squeeze as much as possible into <span class="extract"><span class="extract-syntax">name</span></span> and
 as little as possible into <span class="extract"><span class="extract-syntax">parse_name</span></span>. The only possible candidates
@@ -387,67 +384,88 @@ detected by the following function:
 <span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">grammar_token_literal_ANNOT</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        &amp;&amp; (</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pluralised</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        &amp;&amp; (</span><a href="5-cgl.html#SP11" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        &amp;&amp; (</span><a href="5-cgl.html#SP12" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Phase I: Slash Grammar. </b>Slashing is an activity carried out on a per-grammar-line basis, so to slash
-a list of CGLs we simply slash each CGL in turn.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Slashing the line. </b>Slashing is the process of dealing with forward slash tokens in a CG line.
+It's done one line at a time, each line being independent of all others for
+this purpose, so:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::line_list_slash</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::line_list_slash</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="5-cgl.html#SP15" class="function-link"><span class="function-syntax">UnderstandLines::slash_cg_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::slash</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::slash</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_grammar_specified</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Annotate the CG tokens with slash-class and slash-dash-dash</span><span class="named-paragraph-number">15.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph">Throw a problem if slash has been used with non-literal tokens</span><span class="named-paragraph-number">15.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_3" class="named-paragraph-link"><span class="named-paragraph">Calculate the lexeme count</span><span class="named-paragraph-number">15.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Slashed as:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Now the actual slashing process, which does not descend to tokens. We
-remove any slashes, and fill in positive numbers in the <span class="extract"><span class="extract-syntax">qualifier</span></span> field
-corresponding to non-singleton equivalence classes. Thus "take up/in all
-washing/laundry/linen" begins as 10 tokens, three of them forward slashes,
-and ends as 7 tokens, with <span class="extract"><span class="extract-syntax">qualifier</span></span> values 0, 1, 1, 0, 2, 2, 2, for
-four equivalence classes in turn. Each equivalence class is one lexical
-unit, or "lexeme", so the lexeme count is then 4.
-</p>
-
-<p class="commentary">In addition, if one of the slashed options is "--", then this means the
-empty word, and is removed from the token list; but the first token of the
-lexeme is annotated accordingly.
+<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>The tokenised text of a CG line can contain "slashes":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::slash_cg_line</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::slash_cg_line</span></span>:<br/><a href="5-cgl.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">given in Inform source text   "take up/in all washing/laundry/linen"</span>
+<span class="plain-syntax">tokenised                     take up / in all washing / laundry / linen</span>
+</pre>
+<p class="commentary">This is a run of 10 CG tokens, three of them forward slashes which are actually
+markers to indicate disjunction: thus the three tokens "up / all" intend to
+match just one word of the player's command, which can be either UP or ALL.
+</p>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_grammar_specified</span><span class="plain-syntax">; </span><span class="comment-syntax"> to report problems</span>
+<p class="commentary">Slashing consolidates this line to 7 CG tokens, giving each one a
+<span class="extract"><span class="extract-syntax">slash_class_ANNOT</span></span> annotation to show which group it belongs to. 0 means
+that a token is not part of a slashed group; otherwise, the group number
+should be shared by all the tokens in the group, and should be different
+from that of other groups. Thus:
+</p>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Null tokens on grammar"</span><span class="plain-syntax">);</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                     take up in all washing laundry linen</span>
+<span class="plain-syntax">slash_class_ANNOT    0    1  1  0   2       2       2</span>
+</pre>
+<p class="commentary">In addition, Inform allows the syntax <span class="extract"><span class="extract-syntax">--</span></span> to mean the empty word, or rather,
+to mean that it is permissible for the player's command to miss this word out.
+If one option in a group is <span class="extract"><span class="extract-syntax">--</span></span> then this does not get a token of its own,
+but instead results in the <span class="extract"><span class="extract-syntax">slash_dash_dash_ANNOT</span></span> annotation. For example,
+consider "near --/the/that tree/shrub":
+</p>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Preparing grammar line:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">);</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                       near  the  that  tree  shrub</span>
+<span class="plain-syntax">slash_class_ANNOT      0     1    1     2     2</span>
+<span class="plain-syntax">slash_dash_dash_ANNOT  FALSE TRUE FALSE FALSE FALSE</span>
+</pre>
+<p class="commentary">Note that <span class="extract"><span class="extract-syntax">--</span></span> occurring on its own, outside of a run of slashes, has by
+definition no effect, and disappears without trace in this process.
+</p>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Annotate the CG tokens with slash-class and slash-dash-dash</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">class_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">))) == </span><span class="identifier-syntax">FORWARDSLASH_V</span><span class="plain-syntax">)) { </span><span class="comment-syntax"> slash follows:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">))) == </span><span class="identifier-syntax">FORWARDSLASH_V</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">class_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax">++; </span><span class="comment-syntax"> start new equiv class</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">class_start</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_dash_dash_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
-
-<span class="plain-syntax">            </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax">); </span><span class="comment-syntax"> make two sides of slash equiv</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">alternatives_group</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">Wordings::length</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">                (</span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">))) == </span><span class="identifier-syntax">DOUBLEDASH_V</span><span class="plain-syntax">)) { </span><span class="comment-syntax"> &mdash; follows:</span>
+<span class="plain-syntax">                (</span><span class="identifier-syntax">Lexer::word</span><span class="plain-syntax">(</span><span class="identifier-syntax">Wordings::first_wn</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">))) == </span><span class="identifier-syntax">DOUBLEDASH_V</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">Annotations::write_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">class_start</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_dash_dash_ANNOT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> excise slash and dash-dash</span>
 <span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -455,205 +473,213 @@ lexeme is annotated accordingly.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP15">&#167;15</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Throw a problem if slash has been used with non-literal tokens</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
+</p>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Regrouped as:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">grammar_token_literal_ANNOT</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_OverAmbitiousSlash</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_OverAmbitiousSlash</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"the slash '/' can only be used between single literal words"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"so 'underneath/under/beneath' is allowed but "</span>
-<span class="plain-syntax">                </span><span class="string-syntax">"'beneath/[florid ways to say under]/under' isn't."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"so 'underneath/under/beneath' is allowed but 'beneath/[florid "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"ways to say under]/under' isn't."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP15">&#167;15</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP15_3" class="paragraph-anchor"></a><b>&#167;15.3.  </b>It is now easy to count the number of "lexemes", that's to say, the number
+of groups arising from the calculations just done. In this example there are 4:
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                     take   up in   all   washing laundry linen</span>
+<span class="plain-syntax">slash_class_ANNOT    0      1  1    0     2       2       2</span>
+<span class="plain-syntax">lexemes              +--+   +---+   +-+   +-------------------+</span>
+</pre>
+<p class="commentary">And in this one 3:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                     near   the  that   tree  shrub</span>
+<span class="plain-syntax">slash_class_ANNOT    0      1    1      2     2</span>
+<span class="plain-syntax">lexemes              +--+   +-------+   +---------+</span>
+</pre>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Calculate the lexeme count</span><span class="named-paragraph-number">15.3</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">) == </span><span class="identifier-syntax">i</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">                (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="constant-syntax">slash_class_ANNOT</span><span class="plain-syntax">) == </span><span class="identifier-syntax">i</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Slashed as:\n$T"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Phase II: Determining Grammar. </b>Here there is substantial work to do both at the line list level and on
-individual lines, and the latter does recurse down to token level too.
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP15">&#167;15</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Determining the line. </b>Here the aim is to find the <a href="5-dt.html#SP1" class="internal">determination_type</a> of a CGL. Sneakily, though,
+we also take the opportunity to calculate its two "sorting bonuses", which
+affect how the list will be arranged when it is compiled.
 </p>
 
-<p class="commentary">The following routine calculates the type of the CGL list as the union
-of the types of the CGLs within it, where union means the narrowest type
-such that every CGL in the list casts to it. We return null if there
-are no CGLs in the list, or if the CGLs all return null types, or if
-an error occurs. (Note that actions in command verb grammars are counted
-as null for this purpose, since a grammar used for parsing the player's
-commands is not also used to determine a value.)
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">UnderstandLines::line_list_determine</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::line_list_determine</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">genuinely_verbal</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Determining CGL list for $G\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax"> =</span>
-<span class="plain-syntax">            </span><a href="5-cgl.html#SP17" class="function-link"><span class="function-syntax">UnderstandLines::cgl_determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="identifier-syntax">genuinely_verbal</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_flag</span><span class="plain-syntax">) { </span><span class="comment-syntax"> initially no expectations: </span><span class="extract"><span class="extract-syntax">spec_union</span></span><span class="comment-syntax"> is meaningless</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">; </span><span class="comment-syntax"> so we set it to the first result</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">first_flag</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; </span><span class="comment-syntax"> we expected to find no result, and did: so no problem</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::compatible_with_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">; </span><span class="comment-syntax"> here </span><span class="extract"><span class="extract-syntax">spec_of_line</span></span><span class="comment-syntax"> was a wider type</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Dash::compatible_with_description</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec_of_line</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">) == </span><span class="identifier-syntax">ALWAYS_MATCH</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; </span><span class="comment-syntax"> here </span><span class="extract"><span class="extract-syntax">spec_union</span></span><span class="comment-syntax"> was already wide enough</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">        }</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> == </span><span class="constant-syntax">CG_IS_SUBJECT</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> == </span><span class="constant-syntax">CG_IS_VALUE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_grammar_specified</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_MixedOutcome</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"grammar tokens must have the same outcome whatever the way they are "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"reached"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"so writing a line like 'Understand \"within\" or \"next to "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"[something]\" as \"[my token]\" must be wrong: one way it produces "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"a thing, the other way it doesn't."</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">break</span><span class="plain-syntax">; </span><span class="comment-syntax"> to prevent the problem being repeated for the same grammar</span>
-<span class="plain-syntax">    }</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Union: $P\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec_union</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">CGL_SCORE_TOKEN_RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax"> (</span><span class="constant-syntax">CGL_SCORE_TOKEN_RANGE</span><span class="plain-syntax">*</span><span class="constant-syntax">CGL_SCORE_TOKEN_RANGE</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>There are three tasks here: to determine the type of the CGL, to issue a
-problem if this type is impossibly large, and to calculate two numerical
-quantities used in sorting CGLs: the "general sorting bonus" and the
-"understanding sorting bonus" (see below).
-</p>
-
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">UnderstandLines::cgl_determine</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::cgl_determine</span></span>:<br/><a href="5-cgl.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cg_is</span><span class="plain-syntax">, </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">genuinely_verbal</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, *</span><span class="identifier-syntax">pn2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">nrv</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::cgl_determine</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::cgl_determine</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP21">&#167;21</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Determining $g\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOG_INDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">where_grammar_specified</span><span class="plain-syntax">;</span>
-
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> number of tokens with null results</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="comment-syntax"> start from first token...</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-cg.html#SP5" class="function-link"><span class="function-syntax">CommandGrammars::cg_is_genuinely_verbal</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">first</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">first</span><span class="plain-syntax"> = </span><span class="identifier-syntax">first</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> ...unless it's in a nonempty command verb grammar</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tokens</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">; </span><span class="comment-syntax"> start from first token</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">genuinely_verbal</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pn</span><span class="plain-syntax">)) </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">; </span><span class="comment-syntax"> unless it's a command verb</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pn2</span><span class="plain-syntax">=</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">pn2</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_length</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">first</span><span class="plain-syntax">; </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">; </span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">++;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiples</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">pn</span><span class="plain-syntax">; </span><span class="identifier-syntax">pn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">) != </span><span class="constant-syntax">TOKEN_NT</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Bogus node types on grammar"</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><a href="5-gt.html#SP10" class="function-link"><span class="function-syntax">UnderstandTokens::determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">score</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"Result of token &lt;%W&gt; is $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Specifications::is_kind_like</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) &amp;&amp;</span>
-<span class="plain-syntax">                (</span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">) &amp;&amp;</span>
-<span class="plain-syntax">                (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">))) { </span><span class="comment-syntax"> "[text]" token</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax"> - </span><span class="constant-syntax">100</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax">*</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> + (</span><span class="identifier-syntax">line_length</span><span class="plain-syntax">-1-</span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> += </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax">; </span><span class="comment-syntax"> reduces!</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-dt.html#SP1" class="function-link"><span class="function-syntax">DeterminationTypes::get_no_values_described</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">)) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax"> = </span><span class="constant-syntax">10</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="5-dt.html#SP3" class="function-link"><span class="function-syntax">DeterminationTypes::add_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><a href="5-gt.html#SP4" class="function-link"><span class="function-syntax">UnderstandTokens::is_multiple</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> += </span><span class="identifier-syntax">score</span><span class="plain-syntax">*</span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax">++;</span>
-
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-gt.html#SP4" class="function-link"><span class="function-syntax">UnderstandTokens::is_multiple</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">)) </span><span class="identifier-syntax">multiples</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP16_1" class="named-paragraph-link"><span class="named-paragraph">Make the actual calculations</span><span class="named-paragraph-number">16.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">multiples</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_MultipleMultiples</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"there can be at most one token in any line which can match "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"multiple things"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"so you'll have to remove one of the 'things' tokens and "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"make it a 'something' instead."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"there can be at most one token in any line which can match multiple things"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"so you'll have to remove one of the 'things' tokens and make it a 'something' "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"instead."</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">nrv</span><span class="plain-syntax"> = </span><a href="5-dt.html#SP1" class="function-link"><span class="function-syntax">DeterminationTypes::get_no_values_described</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nrv</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> = </span><span class="constant-syntax">100</span><span class="plain-syntax">*</span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cg_is</span><span class="plain-syntax"> == </span><span class="constant-syntax">CG_IS_COMMAND</span><span class="plain-syntax">) </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nrv</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><a href="5-dt.html#SP4" class="function-link"><span class="function-syntax">DeterminationTypes::get_single_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TwoValuedToken</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"there can be at most one varying part in the definition of a "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"named token"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"so 'Understand \"button [a number]\" as \"[button indication]\"' "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"is allowed but 'Understand \"button [a number] on [something]\" "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"as \"[button indication]\"' is not."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> != </span><span class="constant-syntax">CG_IS_COMMAND</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><a href="5-dt.html#SP1" class="function-link"><span class="function-syntax">DeterminationTypes::get_no_values_described</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">)) &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TwoValuedToken</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"there can be at most one varying part in the definition of a named token"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"so 'Understand \"button [a number]\" as \"[button indication]\"' is allowed "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"but 'Understand \"button [a number] on [something]\" as \"[button "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"indication]\"' is not."</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOG_OUTDENT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">GRAMMAR_CONSTRUCTION_DA</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"dt = "</span><span class="plain-syntax">); </span><a href="5-dt.html#SP1" class="function-link"><span class="function-syntax">DeterminationTypes::log</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">", lexeme count %d, sort bonus %d, understanding sort bonus %d\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"Determined $g: lexeme count %d, sorting bonus %d, arguments %d, "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"fixed initials %d, type $P\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax">, </span><span class="identifier-syntax">nrv</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">spec</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Phase III: Sort Grammar. </b>Insertion sort is used to take the linked list of CGLs and construct a
-separate, sorted version. This is not the controversial part.
+<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1.  </b>The general sort bonus is \(Rs_0 + s_1\), where \(R\) is the <span class="extract"><span class="extract-syntax">CGL_SCORE_TOKEN_RANGE</span></span>
+and \(s_0\), \(s_1\) are the scores for the first and second tokens describing values;
+or if none of the \(n\) tokens describes a value, it is \(R^2n\), which is guaranteed
+to be larger.
+</p>
+
+<p class="commentary">However, there is also an understanding sort bonus, which is really a penalty
+incurred by "[text]" tokens &mdash; which are very free-form topics of conversation.
+A "[text]" at token position \(i\), where \(0\leq i&lt;n\), scores \(R^2(i-R^2) + (n - 1 - i)\).
+Given that \(i\) is small and \(R^2\) is big, this is basically a huge negative
+number, but is such that a "[text]" earlier in the line is penalised just a
+little bit more than a "[text]" later.
+</p>
+
+<p class="commentary">For \(R=10\), the following might thus happen. (For simplicity, I've assumed
+the individual tokens scores are 1.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="function-syntax">UnderstandLines::list_sort</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::list_sort</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP22">&#167;22</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_head</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, *</span><span class="identifier-syntax">gl2</span><span class="plain-syntax">, *</span><span class="identifier-syntax">gl3</span><span class="plain-syntax">, *</span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                        n       s_0     s_1     gsb     usb</span>
+<span class="plain-syntax">inventory               1       --      --      100     0</span>
+<span class="plain-syntax">[thing]                 1       1       --      10      0</span>
+<span class="plain-syntax">[thing] from [thing]    3       1       1       11      0</span>
+<span class="plain-syntax">umbrage over [text]     3       1       --      10      -9800</span>
+<span class="plain-syntax">umbrage [text]          2       1       --      10      -9900</span>
+<span class="plain-syntax">umbrage [text] issue    3       1       --      10      -9899</span>
+</pre>
+<p class="commentary">It is roughly true that if we sort these lines in descending order of the
+sum of those scores, they come out in the order we need to try them when
+parsing the player's command at run-time. For the exact sorting rules, see below.
+</p>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list_head</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the actual calculations</span><span class="named-paragraph-number">16.1</span></span><span class="comment-syntax"> =</span>
+</p>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">list_head</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">list_head</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">first</span><span class="plain-syntax">; </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">; </span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">score</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><a href="5-gt.html#SP10" class="function-link"><span class="function-syntax">UnderstandTokens::determine</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">depth</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">score</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">GRAMMAR_CONSTRUCTION</span><span class="plain-syntax">, </span><span class="string-syntax">"token %d/%d: &lt;%W&gt; --&gt; $P (score %d)\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">pos</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">score</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP16_1_1" class="named-paragraph-link"><span class="named-paragraph">Text tokens contribute also to the understanding sort bonus</span><span class="named-paragraph-number">16.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-dt.html#SP1" class="function-link"><span class="function-syntax">DeterminationTypes::get_no_values_described</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">)) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax"> = </span><span class="constant-syntax">CGL_SCORE_TOKEN_RANGE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><a href="5-dt.html#SP3" class="function-link"><span class="function-syntax">DeterminationTypes::add_term</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">), </span><span class="identifier-syntax">spec</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><a href="5-gt.html#SP4" class="function-link"><span class="function-syntax">UnderstandTokens::is_multiple</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> += </span><span class="identifier-syntax">score</span><span class="plain-syntax">*</span><span class="identifier-syntax">score_multiplier</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax">++;</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">cgl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">list_head</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-gt.html#SP4" class="function-link"><span class="function-syntax">UnderstandTokens::is_multiple</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">)) </span><span class="identifier-syntax">multiples</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">pos</span><span class="plain-syntax">++;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax"> == </span><span class="identifier-syntax">line_length</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> = </span><span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax">*</span><span class="identifier-syntax">nulls_count</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP16">&#167;16</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP16_1_1" class="paragraph-anchor"></a><b>&#167;16.1.1.  </b>This looks for a "[text]" token, which is the Inform syntax to mean one
+which parses to a <span class="extract"><span class="extract-syntax">K_understanding</span></span> match.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Text tokens contribute also to the understanding sort bonus</span><span class="named-paragraph-number">16.1.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Specifications::is_kind_like</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_understanding</span><span class="plain-syntax">))) { </span><span class="comment-syntax"> "[text]" token</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> - </span><span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = -1; </span><span class="comment-syntax"> very unlikely to happen</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> = </span><span class="constant-syntax">CGL_SCORE_BUMP</span><span class="plain-syntax">*</span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax"> + (</span><span class="identifier-syntax">line_length</span><span class="plain-syntax">-1-</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> += </span><span class="identifier-syntax">usb_contribution</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP16_1">&#167;16.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Sorting the lines in a grammar. </b>The CGLs in a grammar are insertion sorted into a sorted version. This is not
+the controversial part: <a href="5-cgl.html#SP19" class="internal">UnderstandLines::cg_line_must_precede</a> is the part
+people argued over for years.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="function-syntax">UnderstandLines::list_sort</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::list_sort</span></span>:<br/>Command Grammars - <a href="5-cg.html#SP22">&#167;22</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unsorted_head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_line</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unsorted_head</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">unsorted_head</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">unsorted_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">gl2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cgl.html#SP19" class="function-link"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cgl.html#SP19" class="function-link"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gl2</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">gl3</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">gl2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">gl2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">gl3</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cgl3</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cgl2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">cgl3</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cgl.html#SP19" class="function-link"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">gl3</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gl2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-cgl.html#SP19" class="function-link"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">cgl3</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sorted_next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgl2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -661,178 +687,52 @@ separate, sorted version. This is not the controversial part.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sorted_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>This is the controversial part: the routine which decides whether one CGL
-takes precedence (i.e., is parsed earlier than and thus in preference to)
-another CGL. This algorithm has been hacked many times to try to reach a
-position which pleases all designers: something of a lost cause. The
-basic motivation is that we need to sort because the various parsers of
-I7 grammar (<span class="extract"><span class="extract-syntax">parse_name</span></span> routines, general parsing routines, the I6 command
-parser itself) all work by returning the first match achieved. This means
-that if grammar line L2 matches a superset of the texts which grammar line
-L1 matches, then L1 should be tried first: trying them in the order L2, L1
-would mean that L1 could never be matched, which is surely contrary to the
-designer's intention. (Compare the rule-sorting algorithm, which has similar
-motivation but is entirely distinct, though both use the same primitive
-methods for comparing types of single values, i.e., at stages 5b1 and 5c1
-below.)
-</p>
-
-<p class="commentary">Recall that each CGL has a numerical USB (understanding sort bonus) and
-GSB (general sort bonus). The following rules are applied in sequence:
-</p>
-
-<ul class="items"><li>(1) Higher USBs beat lower USBs.
-</li><li>(2a) For sorting CGLs in player-command grammar, shorter lines beat longer
-lines, where length is calculated as the lexeme count.
-</li><li>(2b) For sorting all other CGLs, longer lines beat shorter lines.
-</li><li>(3) Mistaken commands beat unmistaken commands.
-</li><li>(4) Higher GSBs beat lower GSBs.
-</li><li>(5a) Fewer resulting values beat more resulting values.
-</li><li>(5b1) A narrower first result type beats a wider first result type, if
-there is a first result.
-</li><li>(5b2) A multiples-disallowed first result type beats a multiples-allowed
-first result type, if there is a first result.
-</li><li>(5c1) A narrower second result type beats a wider second result type, if
-there is a second result.
-</li><li>(5c2) A multiples-disallowed second result type beats a multiples-allowed
-second result type, if there is a second result.
-</li><li>(6) Conditional lines (with a "when" proviso, that is) beat
-unconditional lines.
-</li><li>(7) The grammar line defined earlier beats the one defined later.
-</li></ul>
-<p class="commentary">Rule 1 is intended to resolve awkward ambiguities involved with command
-grammar which includes "[text]" tokens. Each such token subtracts 10000 from
-the USB of a line but adds back 100 times the token position (which is at least
-0 and which we can safely suppose is less than 99: we truncate just in case
-so that every <span class="extract"><span class="extract-syntax">"[text]"</span></span> certainly makes a negative contribution of at least
-\(-100\)) and then subtracts off the number of tokens left on the line.
-</p>
-
-<p class="commentary">Because a high USB gets priority, and "[text]" tokens make a negative
-contribution, the effect is to relegate lines containing "[text]" tokens
-to the bottom of the list &mdash; which is good because "[text]" voraciously
-eats up words, matching more or less anything, so that any remotely
-specific case ought to be tried first. The effect of the curious addition
-back in of the token position is that later-placed "[text]" tokens are
-tried before earlier-placed ones. Thus <span class="extract"><span class="extract-syntax">"read chapter [text]"</span></span> has a USB
-of \(-98\), and takes precedence over <span class="extract"><span class="extract-syntax">"read [text]"</span></span> with a USB of \(-99\),
-but both are beaten by just <span class="extract"><span class="extract-syntax">"read [something]"</span></span> with a USB of 0.
-The effect of the subtraction back of the number of tokens remaining
-is to ensure that <span class="extract"><span class="extract-syntax">"read [token] backwards"</span></span> takes priority over
-<span class="extract"><span class="extract-syntax">"read [token]"</span></span>.
-</p>
-
-<p class="commentary">The voracity of <span class="extract"><span class="extract-syntax">"[text]"</span></span>, and its tendency to block out all other
-possibilities unless restrained, has to be addressed by this lexically
-based numerical calculation because it works in a lexical sort of way:
-playing with the types system to prefer <span class="extract"><span class="extract-syntax">DESCRIPTION/UNDERSTANDING</span></span>
-over, say, <span class="extract"><span class="extract-syntax">VALUE/OBJECT</span></span> would not be sufficient.
-</p>
-
-<p class="commentary">The most surprising point here is the asymmetry in rule 2, which basically
-says that when parsing commands typed at the keyboard, shorter beats longer,
-whereas in all other settings longer beats shorter. This arises because the
-I6 parser, at run time, traditionally works that way: I6 command grammars
-are normally stored with short forms first and long forms afterward. The
-I6 parser can afford to do this because it is matching text of known length:
-if parsing TAKE FROG FROM AQUARIUM, it will try TAKE FROG first but is able
-to reject this as not matching the whole text. In other parsing settings,
-we are trying to make a maximum-length match against a potentially infinite
-stream of words, and it is therefore important to try to match WATERY
-CASCADE EFFECT before WATERY CASCADE when looking at text like WATERY
-CASCADE EFFECT IMPRESSES PEOPLE, given that the simplistic parsers we
-compile generally return the first match found.
-</p>
-
-<p class="commentary">Rule 3, that mistakes beat non-mistakes, was in fact rule 1 during 2006: it
-seemed logical that since mistakes were exceptional cases, they would be
-better checked earlier before moving on to general cases. However, an
-example provided by Eric Eve showed that although this was logically correct,
-the I6 parser would try to auto-complete lengthy mistakes and thus fail to
-check subsequent commands. For this reason, <span class="extract"><span class="extract-syntax">"look behind [something]"</span></span>
-as a mistake needs to be checked after <span class="extract"><span class="extract-syntax">"look"</span></span>, or else the I6 parser
-will respond to the command LOOK by replying "What do you want to look
-behind?" &mdash; and then saying that you are mistaken.
-</p>
-
-<p class="commentary">Rule 4 is intended as a lexeme-based tiebreaker. We only get here if there
-are the same number of lexemes in the two CGLs being compared. Each is
-given a GSB score as follows: a literal lexeme, which produces no result,
-such as <span class="extract"><span class="extract-syntax">"draw"</span></span> or <span class="extract"><span class="extract-syntax">"in/inside/within"</span></span>, scores 100; all other lexemes
-score as follows:
-</p>
-
-<p class="commentary">&mdash; <span class="extract"><span class="extract-syntax">"[things inside]"</span></span> scores a GSB of 10 as the first parameter, 1 as the second;
-</p>
-
-<p class="commentary">&mdash; <span class="extract"><span class="extract-syntax">"[things preferably held]"</span></span> similarly scores a GSB of 20 or 2;
-</p>
-
-<p class="commentary">&mdash; <span class="extract"><span class="extract-syntax">"[other things]"</span></span> similarly scores a GSB of 20 or 2;
-</p>
-
-<p class="commentary">&mdash; <span class="extract"><span class="extract-syntax">"[something preferably held]"</span></span> similarly scores a GSB of 30 or 3;
-</p>
-
-<p class="commentary">&mdash; any token giving a logical description of some class of objects, such as
-<span class="extract"><span class="extract-syntax">"[open container]"</span></span>, similarly scores a GSB of 50 or 5;
-</p>
-
-<p class="commentary">&mdash; and any remaining token (for instance, one matching a number or some other
-kind of value) scores a GSB of 0.
-</p>
-
-<p class="commentary">Literals score highly because they are structural, and differentiate
-cases: under the superset rule, <span class="extract"><span class="extract-syntax">"look up [thing]"</span></span> must be parsed before
-<span class="extract"><span class="extract-syntax">"look [direction] [thing]"</span></span>, and it is only the number of literals which
-differentiates these cases. If two lines have an equal number of literals,
-we now look at the first resultant lexeme. Here we find that a lexeme which
-specifies an object (with a GSB of at least 10/1) beats a lexeme which only
-specifies a value. Thus the same text will be parsed against objects in
-preference to values, which is sensible since there are generally few
-objects available to the player and they are generally likely to be the
-things being referred to. Among possible object descriptions, the very
-general catch-all special cases above are given lower GSB scores than
-more specific ones, to enable the more specific cases to go first.
-</p>
-
-<p class="commentary">Rule 5a is unlikely to have much effect: it is likely to be rare for CGL
-lists to contain CGLs mixing different numbers of results. But Rule 5b1
-is very significant: it causes <span class="extract"><span class="extract-syntax">"draw [animal]"</span></span> to have precedence over
-<span class="extract"><span class="extract-syntax">"draw [thing]"</span></span>, for instance. Rule 5b2 ensures that <span class="extract"><span class="extract-syntax">"draw [thing]"</span></span>
-takes precedence over <span class="extract"><span class="extract-syntax">"draw [things]"</span></span>, which may be useful to handle
-multiple and single objects differently.
-</p>
-
-<p class="commentary">The motivation for rule 6 is similar to the case of "when" clauses for
-rules in rulebooks: it ensures that a match of <span class="extract"><span class="extract-syntax">"draw [thing]"</span></span> when some
-condition holds beats a match of <span class="extract"><span class="extract-syntax">"draw [thing]"</span></span> at any time, and this is
-necessary under the strict superset principle.
-</p>
-
-<p class="commentary">To get to rule 7 looks difficult, given the number of things about the
-grammar lines which must match up &mdash; same USB, GSB, number of lexemes,
-number of resulting types, equivalent resulting types, same conditional
-status &mdash; but in fact it isn't all that uncommon. Equivalent pairs produced
-by the Standard Rules include:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">"get off [something]"</span></span> and <span class="extract"><span class="extract-syntax">"get in/into/on/onto [something]"</span></span>
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">"turn on [something]"</span></span> and <span class="extract"><span class="extract-syntax">"turn [something] on"</span></span>
-</p>
-
-<p class="commentary">Only the second of these pairs leads to ambiguity, and even then only if
-an object has a name like ON VISION ON &mdash; perhaps a book about the antique
-BBC children's television programme "Vision On" &mdash; so that the command
-TURN ON VISION ON would match both of the alternative CGLs.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>As noted, the following function was responsible for quite some debate in
+the early days of Inform 7. The issue here is that the command parser at
+run-time accepts the first match it can make, when given a list of options.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+Because of that, it is essential to put these options in the right order, or
+some can never happen. For example,
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::cg_line_must_precede</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup16">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></span>:<br/><a href="5-cgl.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L1</span><span class="plain-syntax">, </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L2</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax">, </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">b</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">ask [someone] about [something]</span>
+<span class="plain-syntax">ask [someone] about [text]</span>
+</pre>
+<p class="commentary">have to be that way around, because any comnand which matches the first line
+here also matches the second. Putting these lines into order used to be part
+of the craft of the Inform 6 programmer, but it was always difficult to do,
+and Inform 7 aimed to liberate authors from the need to do this. A long
+period of aggrieved bug-reporting followed, when it turned out that Inform 7
+made different decisions than authors accustomed to Inform 6 would like.
+We ended up with the following algorithm, which has not changed since at
+least 2010, and will not change again.
+</p>
 
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Well... roughly. See <a href="../CommandParserKit/S-prs.html" class="internal">Parser (in CommandParserKit)</a> for the gory details.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The code in <a href="5-cgl.html#SP16" class="internal">UnderstandLines::cgl_determine</a> looked as if we would decide
+if line <span class="extract"><span class="extract-syntax">L1</span></span> precedes <span class="extract"><span class="extract-syntax">L2</span></span> by adding up their score bonuses, and letting the
+higher scorer go first. That is in fact nearly equivalent to the following,
+but not quite.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">UnderstandLines::cg_line_must_precede</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">UnderstandLines::cg_line_must_precede</span></span>:<br/><a href="5-cgl.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">, </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L1</span><span class="plain-syntax">, </span><span class="reserved-syntax">cg_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L2</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_1" class="named-paragraph-link"><span class="named-paragraph">Perform some sanity checks</span><span class="named-paragraph-number">19.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_2" class="named-paragraph-link"><span class="named-paragraph">Nothing precedes itself</span><span class="named-paragraph-number">19.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_3" class="named-paragraph-link"><span class="named-paragraph">Lower understanding penalties precede higher ones</span><span class="named-paragraph-number">19.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_4" class="named-paragraph-link"><span class="named-paragraph">Shorter precedes longer in command verbs, longer precedes shorter otherwise</span><span class="named-paragraph-number">19.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_5" class="named-paragraph-link"><span class="named-paragraph">Mistakes precede correct readings</span><span class="named-paragraph-number">19.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_6" class="named-paragraph-link"><span class="named-paragraph">Higher sort bonuses precede lower ones</span><span class="named-paragraph-number">19.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_7" class="named-paragraph-link"><span class="named-paragraph">More specific determinations precede less specific ones</span><span class="named-paragraph-number">19.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_8" class="named-paragraph-link"><span class="named-paragraph">Conditional readings precede unconditional readings</span><span class="named-paragraph-number">19.8</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_9" class="named-paragraph-link"><span class="named-paragraph">Lines created earlier precede lines creater later in the source text</span><span class="named-paragraph-number">19.9</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform some sanity checks</span><span class="named-paragraph-number">19.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">L2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to sort null CGLs"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> == -1) || (</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> == -1))</span>
@@ -840,41 +740,166 @@ TURN ON VISION ON would match both of the alternative CGLs.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> == </span><span class="constant-syntax">UNCALCULATED_BONUS</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> == </span><span class="constant-syntax">UNCALCULATED_BONUS</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to sort uncalculated CGLs"</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_2" class="paragraph-anchor"></a><b>&#167;19.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Nothing precedes itself</span><span class="named-paragraph-number">19.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">L2</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_3" class="paragraph-anchor"></a><b>&#167;19.3.  </b>"[text]" tokens have such an extreme effect that they are the first thing
+to look at. The following guarantees that any line without "[text]" tokens
+always precedes any line with them: see the calculation of the USB above.
+</p>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">resulting_action</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax">)) </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">resulting_action</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax">)) </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> != </span><span class="identifier-syntax">b</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"L1 = $g\nL2 = $g\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L1</span><span class="plain-syntax">, </span><span class="identifier-syntax">L2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to sort on incomparable CGLs"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
+<p class="commentary">Thus <span class="extract"><span class="extract-syntax">"read chapter [text]"</span></span> precedes <span class="extract"><span class="extract-syntax">"read [text]"</span></span> precedes <span class="extract"><span class="extract-syntax">"read [something]"</span></span>.
+</p>
 
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Lower understanding penalties precede higher ones</span><span class="named-paragraph-number">19.3</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">understanding_sort_bonus</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_4" class="paragraph-anchor"></a><b>&#167;19.4.  </b>It seems reasonable that the length of the CG line (in lexemes, not tokens)
+might be a sorting criterion, but what we do looks asymmetric. Why should
+CG_IS_COMMAND grammars have the opposite convention from all others?
+</p>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax">) { </span><span class="comment-syntax"> command grammar: shorter beats longer</span>
+<p class="commentary">This arises because the command parser we use at run time works that way. The
+difference is that when the parser is working on an entire command &mdash; thus,
+working through a <span class="extract"><span class="extract-syntax">CG_IS_COMMAND</span></span> grammar &mdash; it always knows how many words
+it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
+has to make sense of all of the words. It needs to consider the possibility
+"take [something]" before "take [something] from [something]" because there
+might be an object called "frog fram aquarium".
+</p>
+
+<p class="commentary">On the other hand, if it is parsing a <span class="extract"><span class="extract-syntax">CG_IS_TOKEN</span></span> grammar, it is trying to
+match as many words as possible from a stream of words that will probably then
+continue. It is therefore important to try to match WATERY CASCADE EFFECT
+before WATERY CASCADE when looking at text like WATERY CASCADE EFFECT
+IMPRESSES PEOPLE, so that we match three words not two. So in these
+situations, longer possibilities must be tried first.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Shorter precedes longer in command verbs, longer precedes shorter otherwise</span><span class="named-paragraph-number">19.4</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> == </span><span class="constant-syntax">CG_IS_COMMAND</span><span class="plain-syntax">) { </span><span class="comment-syntax"> command grammar: shorter beats longer</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="comment-syntax"> all other grammars: longer beats shorter</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_5" class="paragraph-anchor"></a><b>&#167;19.5.  </b>Throughout 2006, the rule that mistakes beat non-mistakes was in fact the
+most important, taking priority over length or understanding sort bonus.
+This seemed logical that since mistakes were exceptional cases, they would be
+better checked earlier before moving on to general cases. However, an
+example provided by Eric Eve showed that although this was logically correct,
+the run-time command parser would try to auto-complete lengthy mistakes and
+thus fail to check subsequent commands.
+</p>
 
+<p class="commentary">For this reason, <span class="extract"><span class="extract-syntax">"look behind [something]"</span></span> as a mistake needs to be checked
+after <span class="extract"><span class="extract-syntax">"look"</span></span>, or else the command parser will respond to LOOK by replying
+"What do you want to look behind?" &mdash; and then saying that you are mistaken.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mistakes precede correct readings</span><span class="named-paragraph-number">19.5</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mistaken</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_6" class="paragraph-anchor"></a><b>&#167;19.6.  </b>This next rule is a lexeme-based tiebreaker. We only get here if there
+are the same number of lexemes in the two CGLs being compared. Lines in which
+all tokens are literal words, like "tossed egg salad", are scored so highly
+that they will always come first: see <a href="5-cgl.html#SP16" class="internal">UnderstandLines::cgl_determine</a>.
+But if one of the tokens is not literal, then we score it in such a way that
+the specificity of the tokens is what decides. The first token is more important
+than the second, and a more specific token comes before a lower one.
+</p>
 
+<p class="commentary">See <a href="5-gt.html#SP10" class="internal">UnderstandTokens::determine</a> for how the score of an individual token
+is worked out.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Higher sort bonuses precede lower ones</span><span class="named-paragraph-number">19.6</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">general_sort_bonus</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="identifier-syntax">cs</span><span class="plain-syntax"> = </span><a href="5-dt.html#SP5" class="function-link"><span class="function-syntax">DeterminationTypes::must_precede</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">), &amp;(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cs</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-cgl.html#SP11" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="5-cgl.html#SP11" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-cgl.html#SP11" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><a href="5-cgl.html#SP11" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
 </pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_7" class="paragraph-anchor"></a><b>&#167;19.7.  </b>By now the lines are extremely similar, but for example we might have
+"put [thing] in [container]" and "put [thing] in [thing]". The first must
+precede the second because <span class="extract"><span class="extract-syntax">K_container</span></span> is a subkind of <span class="extract"><span class="extract-syntax">K_thing</span></span>.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">More specific determinations precede less specific ones</span><span class="named-paragraph-number">19.7</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax"> = </span><a href="5-dt.html#SP5" class="function-link"><span class="function-syntax">DeterminationTypes::must_precede</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">), &amp;(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cgl_type</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cs</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NOT_APPLICABLE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_8" class="paragraph-anchor"></a><b>&#167;19.8.  </b>The motivation for this one is similar to the case of "when" clauses for
+rules in rulebooks: it ensures that a match of <span class="extract"><span class="extract-syntax">"draw [thing]"</span></span> when some
+condition holds beats a match of <span class="extract"><span class="extract-syntax">"draw [thing]"</span></span> at any time, and this is
+necessary under the strict superset principle.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Conditional readings precede unconditional readings</span><span class="named-paragraph-number">19.8</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-cgl.html#SP12" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><a href="5-cgl.html#SP12" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-cgl.html#SP12" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L1</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><a href="5-cgl.html#SP12" class="function-link"><span class="function-syntax">UnderstandLines::conditional</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L2</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP19_9" class="paragraph-anchor"></a><b>&#167;19.9.  </b>Getting down to here looks difficult, given the number of things about <span class="extract"><span class="extract-syntax">L1</span></span>
+and <span class="extract"><span class="extract-syntax">L2</span></span> which have to match up &mdash; same USB, GSB, number of lexemes,
+number of resulting types, equivalent resulting types, same mistake and
+conditional status &mdash; but in fact it isn't all that uncommon. Equivalent pairs
+produced by the Standard Rules include:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">get off [something]</span>
+<span class="plain-syntax">get in/into/on/onto [something]</span>
+
+<span class="plain-syntax">turn on [something]</span>
+<span class="plain-syntax">turn [something] on</span>
+</pre>
+<p class="commentary">Only the second of these pairs leads to ambiguity, and even then only if
+an object has a name like ON VISION ON &mdash; perhaps a book about the antique
+BBC children's television programme "Vision On" &mdash; so that the command
+TURN ON VISION ON would match both of the alternative CGLs.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Lines created earlier precede lines creater later in the source text</span><span class="named-paragraph-number">19.9</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L1</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP19">&#167;19</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-cg.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-bd.html">2</a></li><li class="progresschapter"><a href="3-sm.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-pp.html">pp</a></li><li class="progresssection"><a href="5-pnaa.html">pnaa</a></li><li class="progresssection"><a href="5-us.html">us</a></li><li class="progresssection"><a href="5-cg.html">cg</a></li><li class="progresscurrent">cgl</li><li class="progresssection"><a href="5-gt.html">gt</a></li><li class="progresssection"><a href="5-dt.html">dt</a></li><li class="progresssection"><a href="5-gp.html">gp</a></li><li class="progresssection"><a href="5-nft.html">nft</a></li><li class="progresssection"><a href="5-tpv.html">tpv</a></li><li class="progresssection"><a href="5-gpr.html">gpr</a></li><li class="progressnext"><a href="5-gt.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
