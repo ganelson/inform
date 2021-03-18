@@ -249,6 +249,7 @@ DECLARE_CLASS(rubric_holder)
 @e explicit_action_CLASS
 @e found_in_inference_data_CLASS
 @e cg_line_CLASS
+@e cg_token_CLASS
 @e command_grammar_CLASS
 @e loop_over_scope_CLASS
 @e map_data_CLASS
@@ -282,6 +283,7 @@ DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(direction_inference_data)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(cg_line)
+DECLARE_CLASS(cg_token)
 DECLARE_CLASS(command_grammar)
 DECLARE_CLASS(loop_over_scope)
 DECLARE_CLASS(map_data)

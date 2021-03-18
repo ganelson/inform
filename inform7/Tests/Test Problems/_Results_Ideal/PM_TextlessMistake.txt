@@ -1,7 +1,8 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 27 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_TextlessMistake
   >--> You wrote 'Understand "look frog" as a mistake of sorts' (source text, line 3):
     but when 'understand' results in a mistake it can only be followed by a
@@ -11,4 +12,4 @@ Problem__ PM_TextlessMistake
   >--> You wrote 'Understand "look frog" as a mistake (statue)' (source text, line 5):
     again, when 'understand' results in a mistake it can only be followed by a
     textual message in brackets.
-Inform 7 has finished: 18 centiseconds used.
+Inform 7 has finished.

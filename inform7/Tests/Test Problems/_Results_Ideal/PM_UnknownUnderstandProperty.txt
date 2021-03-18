@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 19 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_UnknownUnderstandProperty
   >--> You wrote 'Understand the morbidity property as the statue' (source text, line 3):
     but I don't understand what property that refers to, but it doesn't seem to
     be a property I know. An example of correct usage is 'understand the
     transparent property as describing a container.'
-Inform 7 has finished: 18 centiseconds used.
+Inform 7 has finished.

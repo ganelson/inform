@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 17 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_OverAmbitiousSlash
   >--> You wrote 'Understand "bibble sculpture/[number]" as taking' (source
     text, line 3): but the slash '/' can only be used between single literal
     words, so 'underneath/under/beneath' is allowed but 'beneath/[florid ways
     to say under]/under' isn't.
-Inform 7 has finished: 44 centiseconds used.
+Inform 7 has finished.

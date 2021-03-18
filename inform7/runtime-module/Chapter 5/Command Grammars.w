@@ -158,7 +158,7 @@ void RTCommandGrammars::compile_conditions(void) {
 packaging_state RTCommandGrammars::cg_compile_Verb_directive_header(command_grammar *cg, inter_name *array_iname) {
 	if (cg->cg_is != CG_IS_COMMAND)
 		internal_error("tried to compile Verb from non-command CG");
-	if (UnderstandLines::list_length(cg) == 0)
+	if (CGLines::list_length(cg) == 0)
 		internal_error("compiling Verb for empty grammar");
 
 	packaging_state save = Emit::named_verb_array_begin(array_iname, K_value);
@@ -232,7 +232,7 @@ next priority, and so on up the hierarchy.
 
 =
 void RTCommandGrammars::compile(command_grammar *cg) {
-	if (UnderstandLines::list_length(cg) == 0) return;
+	if (CGLines::list_length(cg) == 0) return;
 
 	LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 
@@ -343,7 +343,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 }
 
 void RTCommandGrammars::compile_iv(gpr_kit *gprk, command_grammar *cg) {
-	if (UnderstandLines::list_length(cg) > 0) {
+	if (CGLines::list_length(cg) > 0) {
 		LOGIF(GRAMMAR, "Compiling command grammar $G\n", cg);
 		current_sentence = cg->where_cg_created;
 		RTCommandGrammarLines::reset_labels();

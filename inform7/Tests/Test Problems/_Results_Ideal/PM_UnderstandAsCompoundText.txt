@@ -1,7 +1,8 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 13 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_UnderstandAsCompoundText
   >--> You wrote 'Understand "burn [something]" as "burn [something preferably
     held]"' (source text, line 3): but if 'understand ... as ...' gives the
@@ -11,4 +12,4 @@ Problem__ PM_UnderstandAsCompoundText
     existed) but 'Understand "take [thing]" as "drop [thing]"' is not allowed,
     and would not make sense, because "drop [thing]" is a combination of two
     existing tokens - not a single new one.
-Inform 7 has finished: 18 centiseconds used.
+Inform 7 has finished.

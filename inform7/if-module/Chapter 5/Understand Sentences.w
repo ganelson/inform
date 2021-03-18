@@ -662,7 +662,7 @@ command_grammar *Understand::consultation(wording W) {
 
 @h Text blocks.
 And finally, here we perform a lengthy shopping list of checks for validity, but
-then in all cases we create a single new CG line with //UnderstandLines::new//
+then in all cases we create a single new CG line with //CGLines::new//
 and add it to a suitably chosen CG with //CommandGrammars::add_line//.
 
 =
@@ -680,7 +680,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 
 	@<Only objects can be understood in the plural@>;
 
-	parse_node *tokens = NULL; cg_line *cgl = NULL; command_grammar *cg = NULL;
+	cg_token *tokens = NULL; cg_line *cgl = NULL; command_grammar *cg = NULL;
 	@<Tokenise the quoted text W into the raw tokens for a CG line@>;
 	@<Make the new CG line@>;
 	@<Decide which command grammar the new line should go to@>;
@@ -839,9 +839,8 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 		GRAMMAR_PUNCTUATION_MARKS);
 	@<Reject this if it contains two consecutive commas@>;
 
-	tokens = Diagrams::new_UNPARSED_NOUN(W);
-	UnderstandTokens::break_into_tokens(tokens, tokenised);
-	if (tokens->down == NULL) {
+	tokens = CGTokens::break_into_tokens(NULL, tokenised);
+	if (tokens == NULL) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_UnderstandEmptyText),
 			"'understand' should be followed by text which contains at least "
@@ -852,7 +851,6 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			"understanding.");
 		return;
 	}
-	LOGIF(GRAMMAR_CONSTRUCTION, "Tokenised: $T\n", tokens);
 
 @<Reject this if it contains punctuation@> =
 	int skip = FALSE, literal_punct = FALSE;
@@ -894,13 +892,13 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			}
 
 @<Make the new CG line@> =
-	cgl = UnderstandLines::new(W, ur->an_reference, tokens,
+	cgl = CGLines::new(W, ur->an_reference, tokens,
 		ur->reversed_reference, ur->pluralised_reference);
-	if (ur->mistaken) UnderstandLines::set_mistake(cgl, ur->mistake_text);
+	if (ur->mistaken) CGLines::set_mistake(cgl, ur->mistake_text);
 	if (Wordings::nonempty(ur->when_text))
-		UnderstandLines::set_understand_when(cgl, ur->when_text);
+		CGLines::set_understand_when(cgl, ur->when_text);
 	if (Descriptions::is_qualified(ur->spec_reference))
-		UnderstandLines::set_understand_prop(cgl,
+		CGLines::set_understand_prop(cgl,
 			Propositions::copy(Descriptions::to_proposition(ur->spec_reference)));
 	LOGIF(GRAMMAR_CONSTRUCTION, "Line: $g\n", cgl);
 
@@ -913,8 +911,8 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			break;
 		case CG_IS_COMMAND: {
 			wording command_W = EMPTY_WORDING; /* implies the no verb verb */
-			if (UnderstandTokens::is_literal(tokens->down))
-				command_W = Wordings::first_word(Node::get_text(tokens->down));
+			if (CGTokens::is_literal(tokens))
+				command_W = Wordings::first_word(CGTokens::text(tokens));
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of command '%W': ", command_W);
 			cg = CommandGrammars::for_command_verb_creating(command_W);
 			break;
@@ -937,7 +935,7 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 		case CG_IS_VALUE:
 			LOGIF(GRAMMAR_CONSTRUCTION, "Add to command grammar of value $P: ",
 				ur->spec_reference);
-			UnderstandLines::set_single_term(cgl, ur->spec_reference);
+			CGLines::set_single_term(cgl, ur->spec_reference);
 			cg = CommandGrammars::for_kind(Node::get_kind_of_value(ur->spec_reference));
 			break;
 		case CG_IS_PROPERTY_NAME:

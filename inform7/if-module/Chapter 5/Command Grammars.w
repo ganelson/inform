@@ -236,7 +236,7 @@ dropping action":
 =
 void CommandGrammars::remove_action(command_grammar *cg, action_name *an) {
 	if (cg->cg_is == CG_IS_COMMAND)
-		UnderstandLines::list_remove(cg, an);
+		CGLines::list_remove(cg, an);
 }
 
 @h The CG_IS_TOKEN form.
@@ -415,7 +415,7 @@ int CommandGrammars::is_empty(command_grammar *cg) {
 void CommandGrammars::add_line(command_grammar *cg, cg_line *cgl) {
 	LOGIF(GRAMMAR, "$G + line: $g\n", cg, cgl);
 	if ((cg->cg_is == CG_IS_COMMAND) &&
-		(UnderstandLines::list_length(cg) >= MAX_LINES_PER_GRAMMAR)) {
+		(CGLines::list_length(cg) >= MAX_LINES_PER_GRAMMAR)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManyGrammarLines),
 			"this command verb now has too many Understand possibilities",
 			"that is, there are too many 'Understand \"whatever ...\" as ...' "
@@ -424,7 +424,7 @@ void CommandGrammars::add_line(command_grammar *cg, cg_line *cgl) {
 			"together, perhaps by using slashes to combine alternative "
 			"wordings, or by defining new grammar tokens [in square brackets].");
 	} else {
-		UnderstandLines::list_add(cg, cgl);
+		CGLines::list_add(cg, cgl);
 	}
 }
 
@@ -451,7 +451,7 @@ void CommandGrammars::prepare(void) {
 	LOOP_OVER(cg, command_grammar)
 		if ((cg->slashed == FALSE) && (cg->first_line)) {
 			LOGIF(GRAMMAR_CONSTRUCTION, "Slashing $G\n", cg);
-			UnderstandLines::slash(cg);
+			CGLines::slash(cg);
 			cg->slashed = TRUE;
 		}
 	Log::new_stage(I"Determining command grammar");
@@ -479,7 +479,7 @@ parse_node *CommandGrammars::determine(command_grammar *cg, int depth) {
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $G\n", cg);
 	LOG_INDENT;
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
-		UnderstandLines::cgl_determine(cgl, cg, depth);
+		CGLines::cgl_determine(cgl, cg, depth);
 	LOG_OUTDENT;
 	parse_node *spec_union = NULL;
 	@<Take the union of the single-term results of each line@>;
@@ -571,5 +571,5 @@ sort once, so:
 =
 void CommandGrammars::sort_command_grammar(command_grammar *cg) {
 	if (cg->sorted_first_line == NULL)
-		cg->sorted_first_line = UnderstandLines::list_sort(cg);
+		cg->sorted_first_line = CGLines::list_sort(cg);
 }

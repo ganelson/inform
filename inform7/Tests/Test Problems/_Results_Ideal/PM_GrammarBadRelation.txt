@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 21 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_GrammarBadRelation
   >--> The grammar token 'something related by grobble' in the sentence
     'Understand "box of [something related by grobble]" as a box' (source text, line 3)
     invites me to understand names of related things, but the relation is not
     one that I know.
-Inform 7 has finished: 43 centiseconds used.
+Inform 7 has finished.

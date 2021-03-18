@@ -1,9 +1,10 @@
-Inform 7 build 6M37 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 10 words long.
-I've also read Standard Rules by Graham Nelson, which is 42506 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_FilterQuantified
   >--> You wrote 'Understand "[any any thing]" as examining' (source text, line 2):
     but the [any ...] doesn't clearly give a description in the '...' part,
     where I was expecting something like '[any vehicle]'.
-Inform 7 has finished: 75 centiseconds used.
+Inform 7 has finished.

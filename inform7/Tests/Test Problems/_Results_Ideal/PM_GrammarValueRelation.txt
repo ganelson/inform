@@ -1,11 +1,12 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 39 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_GrammarValueRelation
   >--> The grammar you give in 'Understand "box of [something related by
     slyness]" as a box' (source text, line 7) contains a token which relates
-    things to values - 'something related by slyness' (source text, line 1). At
-    present, this is not allowed: only relations between kinds of object can be
-    used in 'Understand' tokens.
-Inform 7 has finished: 56 centiseconds used.
+    things to values - something related by slyness. At present, this is not
+    allowed: only relations between kinds of object can be used in 'Understand'
+    tokens.
+Inform 7 has finished.

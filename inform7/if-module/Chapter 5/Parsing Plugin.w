@@ -8,7 +8,7 @@ chapter.
 
 =
 void ParsingPlugin::start(void) {
-	ParsingNodes::nodes_and_annotations();
+	ParsingPlugin::nodes_and_annotations();
 
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Understand::make_special_meanings);
@@ -210,3 +210,26 @@ where grammar has specified a need. (By default, this will not happen.)
 	if (S)
 		ValueProperties::assert(P_parse_name, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);
+
+@ Finally, this plugin needs just one new annotation for the parse tree:
+
+@e constant_command_grammar_ANNOT /* |command_grammar|: for constant values */
+
+= (early code)
+DECLARE_ANNOTATION_FUNCTIONS(constant_command_grammar, command_grammar)
+
+@ =
+MAKE_ANNOTATION_FUNCTIONS(constant_command_grammar, command_grammar)
+
+void ParsingPlugin::nodes_and_annotations(void) {
+	Annotations::declare_type(constant_command_grammar_ANNOT,
+		ParsingPlugin::write_constant_grammar_verb_ANNOT);
+
+	Annotations::allow(CONSTANT_NT, constant_command_grammar_ANNOT);
+}
+
+void ParsingPlugin::write_constant_grammar_verb_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_constant_command_grammar(p))
+		WRITE(" {command grammar: CG%d}",
+			Node::get_constant_command_grammar(p)->allocation_id);
+}

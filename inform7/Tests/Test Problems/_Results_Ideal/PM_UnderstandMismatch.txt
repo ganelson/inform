@@ -1,10 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 18 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_UnderstandMismatch
   >--> You wrote 'Understand "look [frog" as the statue' (source text, line 3):
     but 'understand' should be followed by text in which brackets '[' and ']'
     match, so for instance 'understand "take [something]" as taking the noun'
     is fine, but 'understand "take]" as taking' is not.
-Inform 7 has finished: 17 centiseconds used.
+Inform 7 has finished.

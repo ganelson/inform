@@ -377,8 +377,6 @@ void CoreSyntax::grant_L2_permissions(void) {
 DECLARE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 DECLARE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 DECLARE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
-DECLARE_ANNOTATION_FUNCTIONS(grammar_token_relation, binary_predicate)
-DECLARE_ANNOTATION_FUNCTIONS(grammar_value, parse_node)
 DECLARE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(quant, quantifier)
@@ -388,8 +386,6 @@ DECLARE_ANNOTATION_FUNCTIONS(subject, inference_subject)
 MAKE_ANNOTATION_FUNCTIONS(creation_proposition, pcalc_prop)
 MAKE_ANNOTATION_FUNCTIONS(defn_language, inform_language)
 MAKE_ANNOTATION_FUNCTIONS(evaluation, parse_node)
-MAKE_ANNOTATION_FUNCTIONS(grammar_token_relation, binary_predicate)
-MAKE_ANNOTATION_FUNCTIONS(grammar_value, parse_node)
 MAKE_ANNOTATION_FUNCTIONS(new_relation_here, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(predicate, unary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(quant, quantifier)
@@ -832,7 +828,6 @@ void CoreSyntax::grant_code_permissions(void) {
 @e converted_SN_ANNOT /* |int|: marking descriptions */
 @e explicit_iname_ANNOT /* |inter_name|: is this value explicitly an iname? */
 @e explicit_literal_ANNOT /* |int|: my value is an explicit integer or text */
-@e grammar_token_code_ANNOT /* int: used to identify grammar tokens */
 @e is_phrase_option_ANNOT /* |int|: this unparsed text is a phrase option */
 @e kind_of_value_ANNOT /* |kind|: for specification nodes */
 @e nothing_object_ANNOT /* |int|: this represents |nothing| at run-time */
@@ -945,8 +940,6 @@ void CoreSyntax::declare_spec_annotations(void) {
 	Annotations::declare_type(
 		explicit_literal_ANNOT, CoreSyntax::write_explicit_literal_ANNOT);
 	Annotations::declare_type(
-		grammar_token_code_ANNOT, CoreSyntax::write_grammar_token_code_ANNOT);
-	Annotations::declare_type(
 		is_phrase_option_ANNOT, CoreSyntax::write_is_phrase_option_ANNOT);
 	Annotations::declare_type(
 		kind_of_value_ANNOT, CoreSyntax::write_kind_of_value_ANNOT);
@@ -976,7 +969,7 @@ void CoreSyntax::write_constant_activity_ANNOT(text_stream *OUT, parse_node *p) 
 	if (act) WRITE(" {activity: %W}", act->name);
 }
 void CoreSyntax::write_constant_binary_predicate_ANNOT(text_stream *OUT, parse_node *p) {
-	binary_predicate *bp = Node::get_grammar_token_relation(p);
+	binary_predicate *bp = Node::get_constant_binary_predicate(p);
 	if (bp) WRITE(" {binary_predicate: %S}", bp->debugging_log_name);
 }
 void CoreSyntax::write_constant_constant_phrase_ANNOT(text_stream *OUT, parse_node *p) {
@@ -1087,26 +1080,6 @@ void CoreSyntax::write_explicit_literal_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, explicit_literal_ANNOT))
 		WRITE(" {explicit literal}");
 }
-void CoreSyntax::write_grammar_token_code_ANNOT(text_stream *OUT, parse_node *p) {
-	int gtc = Annotations::read_int(p, grammar_token_code_ANNOT);
-	if (gtc != 0) {
-		WRITE(" {grammar_token_code: ");
-		if (gtc == NAMED_TOKEN_GTC) WRITE("named token");
-		if (gtc == RELATED_GTC) WRITE("related");
-		if (gtc == STUFF_GTC) WRITE("stuff");
-		if (gtc == ANY_STUFF_GTC) WRITE("any stuff");
-		if (gtc == ANY_THINGS_GTC) WRITE("any things");
-		if (gtc == NOUN_TOKEN_GTC) WRITE("noun");
-		if (gtc == MULTI_TOKEN_GTC) WRITE("multi");
-		if (gtc == MULTIINSIDE_TOKEN_GTC) WRITE("multiinside");
-		if (gtc == MULTIHELD_TOKEN_GTC) WRITE("multiheld");
-		if (gtc == HELD_TOKEN_GTC) WRITE("held");
-		if (gtc == CREATURE_TOKEN_GTC) WRITE("creature");
-		if (gtc == TOPIC_TOKEN_GTC) WRITE("topic");
-		if (gtc == MULTIEXCEPT_TOKEN_GTC) WRITE("multiexcept");
-		WRITE("}");
-	}
-}
 void CoreSyntax::write_is_phrase_option_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, is_phrase_option_ANNOT))
 		WRITE(" {is phrase option}");
@@ -1185,7 +1158,6 @@ void CoreSyntax::grant_spec_permissions(void) {
 	Annotations::allow(CONSTANT_NT, constant_use_option_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_verb_form_ANNOT);
 	Annotations::allow(CONSTANT_NT, explicit_literal_ANNOT);
-	Annotations::allow(CONSTANT_NT, grammar_token_code_ANNOT);
 	Annotations::allow(CONSTANT_NT, kind_of_value_ANNOT);
 	Annotations::allow(CONSTANT_NT, nothing_object_ANNOT);
 	Annotations::allow(CONSTANT_NT, property_name_used_as_noun_ANNOT);

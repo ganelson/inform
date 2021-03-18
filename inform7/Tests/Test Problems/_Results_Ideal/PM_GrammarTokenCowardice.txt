@@ -1,15 +1,16 @@
-Inform 7 build 6M36 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 19 words long.
-I've also read Standard Rules by Graham Nelson, which is 42506 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_GrammarTokenCowardice
   >--> The grammar you give in 'Understand "in [something related by reversed
     room-containment]" as a thing' (source text, line 2) contains a token which
-    uses a relation I'm unable to test - 'something related by reversed
-    room-containment' (source text, line 1).
+    uses a relation I'm unable to test - something related by reversed
+    room-containment.
 Problem__ PM_GrammarTokenCowardice
   >--> The grammar you give in 'Understand "in [something related by reversed
     room-containment]" as a thing' (source text, line 2) contains a token which
-    uses a relation I'm unable to test - 'something related by reversed
-    room-containment' (source text, line 1).
-Inform 7 has finished: 99 centiseconds used.
+    uses a relation I'm unable to test - something related by reversed
+    room-containment.
+Inform 7 has finished.

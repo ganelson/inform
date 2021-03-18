@@ -1,4 +1,4 @@
-[UnderstandLines::] Command Grammar Lines.
+[CGLines::] Command Grammar Lines.
 
 A CG line is a list of CG tokens to specify a textual pattern. For example,
 "take [something] out" is a CG line of three tokens.
@@ -24,7 +24,7 @@ typedef struct cg_line {
 
 	struct parse_node *where_grammar_specified; /* where found in source */
 	int original_text; /* the word number of the double-quoted grammar text... */
-	struct parse_node *tokens; /* ...which is parsed into this list of tokens */
+	struct cg_token *tokens; /* ...which is parsed into this list of tokens */
 	int lexeme_count; /* number of lexemes, or |-1| if not yet counted */
 
 	struct determination_type cgl_type; /* only correct after determination occurs */
@@ -44,8 +44,8 @@ typedef struct cg_line {
 } cg_line;
 
 @ =
-cg_line *UnderstandLines::new(wording W, action_name *ac,
-	parse_node *token_list, int reversed, int pluralised) {
+cg_line *CGLines::new(wording W, action_name *ac,
+	cg_token *token_list, int reversed, int pluralised) {
 	if (token_list == NULL) internal_error("no token list for CGL");
 	cg_line *cgl;
 	cgl = CREATE(cg_line);
@@ -76,7 +76,7 @@ cg_line *UnderstandLines::new(wording W, action_name *ac,
 @ A command grammar has a list of CGLs. But in fact it has two lists, with the
 same contents, but in different orders. The unsorted list holds them in order
 of creation; the sorted one in order of matching priority at run-time. This
-sorting is a big issue: see //UnderstandLines::list_sort// below.
+sorting is a big issue: see //CGLines::list_sort// below.
 
 @d LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg)
 	for (cg_line *cgl = cg->first_line; cgl; cgl = cgl->next_line)
@@ -91,20 +91,16 @@ sorting is a big issue: see //UnderstandLines::list_sort// below.
 	cgl->general_sort_bonus = UNCALCULATED_BONUS;
 	cgl->understanding_sort_bonus = UNCALCULATED_BONUS;
 
-@ While we're talking loops... CG lines are lists of CG tokens: "[things inside]",
-FROM, and "[something]" are all tokens. But Inform does not have a |cg_token|
-type because these are instead stored as |TOKEN_NT| nodes in the parse tree,
-and are the children of the |tokens| node belonging to the CG line. The
-following runs through them:
+@ While we're talking loops... CG lines are lists of CG tokens:
 
-@d LOOP_THROUGH_CG_TOKENS(pn, cgl)
-	for (parse_node *pn = cgl->tokens->down; pn; pn = pn->next)
+@d LOOP_THROUGH_CG_TOKENS(cgt, cgl)
+	for (cg_token *cgt = cgl?(cgl->tokens):NULL; cgt; cgt = cgt->next_token)
 
 @ To count how many lines a CG has so far, we use the unsorted list, since we
 don't know if the sorted one has been made yet:
 
 =
-int UnderstandLines::list_length(command_grammar *cg) {
+int CGLines::list_length(command_grammar *cg) {
 	int c = 0;
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) c++;
 	return c;
@@ -114,7 +110,7 @@ int UnderstandLines::list_length(command_grammar *cg) {
 (Once sorting has occurred, it is too late.)
 
 =
-void UnderstandLines::list_add(command_grammar *cg, cg_line *new_gl) {
+void CGLines::list_add(command_grammar *cg, cg_line *new_gl) {
 	if (cg->sorted_first_line) internal_error("too late to add lines to CG");
 	new_gl->next_line = NULL;
 	if (cg->first_line == NULL) {
@@ -129,7 +125,7 @@ void UnderstandLines::list_add(command_grammar *cg, cg_line *new_gl) {
 @ In rare cases CG lines are also removed, but again, before sorting occurs.
 
 =
-void UnderstandLines::list_remove(command_grammar *cg, action_name *find) {
+void CGLines::list_remove(command_grammar *cg, action_name *find) {
 	if (cg->sorted_first_line) internal_error("too late to remove lines from CG");
 	cg_line *prev = NULL, *posn = cg->first_line;
 	while (posn) {
@@ -148,8 +144,8 @@ void UnderstandLines::list_remove(command_grammar *cg, action_name *find) {
 log just enough to identify which one it is:
 
 =
-void UnderstandLines::log(cg_line *cgl) {
-	LOG("<CGL%d:%W>", cgl->allocation_id, Node::get_text(cgl->tokens));
+void CGLines::log(cg_line *cgl) {
+	LOG("<CGL%d:%W>", cgl->allocation_id, Wordings::one_word(cgl->original_text));
 }
 
 @h Relevant only for CG_IS_VALUE lines.
@@ -157,7 +153,7 @@ In |CG_IS_VALUE| grammars, the lines are ways to refer to a specific value
 which is not an object, and we record which value the line refers to here.
 
 =
-void UnderstandLines::set_single_term(cg_line *cgl, parse_node *cgl_value) {
+void CGLines::set_single_term(cg_line *cgl, parse_node *cgl_value) {
 	DeterminationTypes::set_single_term(&(cgl->cgl_type), cgl_value);
 }
 
@@ -195,10 +191,10 @@ typecheck it with Dash only when it will actually be used; this is where
 that happens.
 
 =
-void UnderstandLines::set_understand_when(cg_line *cgl, wording W) {
+void CGLines::set_understand_when(cg_line *cgl, wording W) {
 	cgl->understand_when_text = W;
 }
-parse_node *UnderstandLines::get_understand_cond(cg_line *cgl) {
+parse_node *CGLines::get_understand_cond(cg_line *cgl) {
 	if (Wordings::nonempty(cgl->understand_when_text)) {
 		current_sentence = cgl->where_grammar_specified;
 		if (<understand-condition>(cgl->understand_when_text)) {
@@ -220,14 +216,14 @@ matches an object $x$ only when this proposition holds. (It must always be
 a proposition with a single free variable.)
 
 =
-void UnderstandLines::set_understand_prop(cg_line *cgl, pcalc_prop *prop) {
+void CGLines::set_understand_prop(cg_line *cgl, pcalc_prop *prop) {
 	cgl->understand_when_prop = prop;
 }
 
 @ Use of either feature makes a CGL "conditional":
 
 =
-int UnderstandLines::conditional(cg_line *cgl) {
+int CGLines::conditional(cg_line *cgl) {
 	if ((Wordings::nonempty(cgl->understand_when_text)) || (cgl->understand_when_prop))
 		return TRUE;
 	return FALSE;
@@ -238,7 +234,7 @@ These are grammar lines used in command CGs for commands which are accepted
 but only in order to print nicely worded rejections.
 
 =
-void UnderstandLines::set_mistake(cg_line *cgl, wording MW) {
+void CGLines::set_mistake(cg_line *cgl, wording MW) {
 	cgl->mistaken = TRUE;
 	cgl->mistake_response_text = MW;
 	RTCommandGrammarLines::set_mistake(cgl, MW);
@@ -253,15 +249,14 @@ for that are grammar lines consisting of single unconditional words, as
 detected by the following function:
 
 =
-int UnderstandLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
-	parse_node *pn = cgl->tokens->down;
-	if ((pn)
-		&& (pn->next == NULL)
-		&& (Annotations::read_int(pn, slash_class_ANNOT) == 0)
-		&& (Annotations::read_int(pn, grammar_token_literal_ANNOT))
+int CGLines::cgl_contains_single_unconditional_word(cg_line *cgl) {
+	if ((cgl->tokens)
+		&& (cgl->tokens->next_token == NULL)
+		&& (cgl->tokens->slash_class == 0)
+		&& (CGTokens::is_literal(cgl->tokens))
 		&& (cgl->pluralised == FALSE)
-		&& (UnderstandLines::conditional(cgl) == FALSE))
-		return Wordings::first_wn(Node::get_text(pn));
+		&& (CGLines::conditional(cgl) == FALSE))
+		return Wordings::first_wn(CGTokens::text(cgl->tokens));
 	return -1;
 }
 
@@ -271,13 +266,12 @@ It's done one line at a time, each line being independent of all others for
 this purpose, so:
 
 =
-void UnderstandLines::slash(command_grammar *cg) {
+void CGLines::slash(command_grammar *cg) {
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
 		current_sentence = cgl->where_grammar_specified;
 		@<Annotate the CG tokens with slash-class and slash-dash-dash@>;
 		@<Throw a problem if slash has been used with non-literal tokens@>;
 		@<Calculate the lexeme count@>;
-		LOGIF(GRAMMAR_CONSTRUCTION, "Slashed as:\n$T", cgl->tokens);
 	}
 }
 
@@ -290,59 +284,57 @@ This is a run of 10 CG tokens, three of them forward slashes which are actually
 markers to indicate disjunction: thus the three tokens "up / all" intend to
 match just one word of the player's command, which can be either UP or ALL.
 
-Slashing consolidates this line to 7 CG tokens, giving each one a
-|slash_class_ANNOT| annotation to show which group it belongs to. 0 means
-that a token is not part of a slashed group; otherwise, the group number
-should be shared by all the tokens in the group, and should be different
-from that of other groups. Thus:
+Slashing consolidates this line to 7 CG tokens, giving each one a |slash_class|
+value to show which group it belongs to. 0 means that a token is not part of a
+slashed group; otherwise, the group number should be shared by all the tokens
+in the group, and should be different from that of other groups. Thus:
 = (text)
                      take up in all washing laundry linen
-slash_class_ANNOT    0    1  1  0   2       2       2
+slash_class          0    1  1  0   2       2       2
 =
 In addition, Inform allows the syntax |--| to mean the empty word, or rather,
 to mean that it is permissible for the player's command to miss this word out.
 If one option in a group is |--| then this does not get a token of its own,
-but instead results in the |slash_dash_dash_ANNOT| annotation. For example,
+but instead results in the |slash_dash_dash| field to be set. For example,
 consider "near --/the/that tree/shrub":
 = (text)
                        near  the  that  tree  shrub
-slash_class_ANNOT      0     1    1     2     2
-slash_dash_dash_ANNOT  FALSE TRUE FALSE FALSE FALSE
+slash_class            0     1    1     2     2
+slash_dash_dash        FALSE TRUE FALSE FALSE FALSE
 =
 Note that |--| occurring on its own, outside of a run of slashes, has by
 definition no effect, and disappears without trace in this process.
 
 @<Annotate the CG tokens with slash-class and slash-dash-dash@> =
-	LOOP_THROUGH_CG_TOKENS(pn, cgl)
-		Annotations::write_int(pn, slash_class_ANNOT, 0);
+	LOOP_THROUGH_CG_TOKENS(cgt, cgl) cgt->slash_class = 0;
 
 	int alternatives_group = 0;
-	parse_node *class_start = NULL;
-	LOOP_THROUGH_CG_TOKENS(pn, cgl) {
-		if ((pn->next) && (Wordings::length(Node::get_text(pn->next)) == 1) &&
-			(Lexer::word(Wordings::first_wn(Node::get_text(pn->next))) == FORWARDSLASH_V)) {
-			if (Annotations::read_int(pn, slash_class_ANNOT) == 0) {
-				class_start = pn; alternatives_group++; /* start new equiv class */
-				Annotations::write_int(class_start, slash_dash_dash_ANNOT, FALSE);
+	cg_token *class_start = NULL;
+	LOOP_THROUGH_CG_TOKENS(cgt, cgl) {
+		if ((cgt->next_token) && (Wordings::length(CGTokens::text(cgt->next_token)) == 1) &&
+			(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token))) == FORWARDSLASH_V)) {
+			if (cgt->slash_class == 0) {
+				class_start = cgt; alternatives_group++; /* start new equiv class */
+				class_start->slash_dash_dash = FALSE;
 			}
-			Annotations::write_int(pn, slash_class_ANNOT, alternatives_group);
-			if (pn->next->next)
-				Annotations::write_int(pn->next->next, slash_class_ANNOT, alternatives_group);
-			if ((pn->next->next) &&
-				(Wordings::length(Node::get_text(pn->next->next)) == 1) &&
-				(Lexer::word(Wordings::first_wn(Node::get_text(pn->next->next))) == DOUBLEDASH_V)) {
-				Annotations::write_int(class_start, slash_dash_dash_ANNOT, TRUE);
-				pn->next = pn->next->next->next; /* excise slash and dash-dash */
+			cgt->slash_class = alternatives_group;
+			if (cgt->next_token->next_token)
+				cgt->next_token->next_token->slash_class = alternatives_group;
+			if ((cgt->next_token->next_token) &&
+				(Wordings::length(CGTokens::text(cgt->next_token->next_token)) == 1) &&
+				(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token->next_token))) == DOUBLEDASH_V)) {
+				class_start->slash_dash_dash = TRUE;
+				cgt->next_token = cgt->next_token->next_token->next_token; /* excise slash and dash-dash */
 			} else {
-				pn->next = pn->next->next; /* excise the slash from the token list */
+				cgt->next_token = cgt->next_token->next_token; /* excise the slash from the token list */
 			}
 		}
 	}
 
 @<Throw a problem if slash has been used with non-literal tokens@> =
-	LOOP_THROUGH_CG_TOKENS(pn, cgl)
-		if ((Annotations::read_int(pn, slash_class_ANNOT) > 0) &&
-			(Annotations::read_int(pn, grammar_token_literal_ANNOT) == FALSE)) {
+	LOOP_THROUGH_CG_TOKENS(cgt, cgl)
+		if ((cgt->slash_class > 0) &&
+			(CGTokens::is_literal(cgt) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(),
 				_p_(PM_OverAmbitiousSlash),
 				"the slash '/' can only be used between single literal words",
@@ -355,24 +347,24 @@ definition no effect, and disappears without trace in this process.
 of groups arising from the calculations just done. In this example there are 4:
 = (text)
                      take   up in   all   washing laundry linen
-slash_class_ANNOT    0      1  1    0     2       2       2
+slash_class          0      1  1    0     2       2       2
 lexemes              +--+   +---+   +-+   +-------------------+
 =
 And in this one 3:
 = (text)
                      near   the  that   tree  shrub
-slash_class_ANNOT    0      1    1      2     2
+slash_class          0      1    1      2     2
 lexemes              +--+   +-------+   +---------+
 =
 
 @<Calculate the lexeme count@> =
 	cgl->lexeme_count = 0;
-	LOOP_THROUGH_CG_TOKENS(pn, cgl) {
-		int i = Annotations::read_int(pn, slash_class_ANNOT);
+	LOOP_THROUGH_CG_TOKENS(cgt, cgl) {
+		int i = cgt->slash_class;
 		if (i > 0)
-			while ((pn->next) &&
-				(Annotations::read_int(pn->next, slash_class_ANNOT) == i))
-				pn = pn->next;
+			while ((cgt->next_token) &&
+				(cgt->next_token->slash_class == i))
+				cgt = cgt->next_token;
 		cgl->lexeme_count++;
 	}
 
@@ -385,19 +377,19 @@ affect how the list will be arranged when it is compiled.
 @d CGL_SCORE_BUMP (CGL_SCORE_TOKEN_RANGE*CGL_SCORE_TOKEN_RANGE)
 
 =
-void UnderstandLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
+void CGLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
 	LOGIF(GRAMMAR_CONSTRUCTION, "Determining $g\n", cgl);
 	LOG_INDENT;
 	current_sentence = cgl->where_grammar_specified;
 	cgl->understanding_sort_bonus = 0;
 	cgl->general_sort_bonus = 0;
 
-	parse_node *first = cgl->tokens->down; /* start from first token... */
+	cg_token *first = cgl->tokens; /* start from first token... */
 	if ((CommandGrammars::cg_is_genuinely_verbal(cg)) && (first))
-		first = first->next; /* ...unless it's in a nonempty command verb grammar */
+		first = first->next_token; /* ...unless it's in a nonempty command verb grammar */
 
 	int line_length = 0;
-	for (parse_node *cgt = first; cgt; cgt = cgt->next) line_length++;
+	for (cg_token *cgt = first; cgt; cgt = cgt->next_token) line_length++;
 
 	int multiples = 0;
 	@<Make the actual calculations@>;
@@ -453,22 +445,22 @@ parsing the player's command at run-time. For the exact sorting rules, see below
 
 @<Make the actual calculations@> =
 	int nulls_count = 0, pos = 0;
-	for (parse_node *cgt = first; cgt; cgt = cgt->next) {
+	for (cg_token *cgtt = first; cgtt; cgtt = cgtt->next_token) {
 		int score = 0;
-		parse_node *spec = UnderstandTokens::determine(cgt, depth, &score);
+		parse_node *spec = CGTokens::determine(cgtt, depth, &score);
 		LOGIF(GRAMMAR_CONSTRUCTION, "token %d/%d: <%W> --> $P (score %d)\n",
-			pos+1, line_length, Node::get_text(cgt), spec, score);
+			pos+1, line_length, CGTokens::text(cgtt), spec, score);
 		if (spec) {
 			@<Text tokens contribute also to the understanding sort bonus@>;
 			int score_multiplier = 1;
 			if (DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) == 0)
 				score_multiplier = CGL_SCORE_TOKEN_RANGE;
 			DeterminationTypes::add_term(&(cgl->cgl_type), spec,
-				UnderstandTokens::is_multiple(cgt));
+				CGTokens::is_multiple(cgtt));
 			cgl->general_sort_bonus += score*score_multiplier;
 		} else nulls_count++;
 
-		if (UnderstandTokens::is_multiple(cgt)) multiples++;
+		if (CGTokens::is_multiple(cgtt)) multiples++;
 		pos++;
 	}
 	if (nulls_count == line_length)
@@ -490,11 +482,11 @@ which parses to a |K_understanding| match.
 
 @h Sorting the lines in a grammar.
 The CGLs in a grammar are insertion sorted into a sorted version. This is not
-the controversial part: //UnderstandLines::cg_line_must_precede// is the part
+the controversial part: //CGLines::cg_line_must_precede// is the part
 people argued over for years.
 
 =
-cg_line *UnderstandLines::list_sort(command_grammar *cg) {
+cg_line *CGLines::list_sort(command_grammar *cg) {
 	cg_line *unsorted_head = cg->first_line;
 	if (unsorted_head == NULL) return NULL;
 
@@ -505,7 +497,7 @@ cg_line *UnderstandLines::list_sort(command_grammar *cg) {
 	while (cgl->next_line) {
 		cgl = cgl->next_line;
 		cg_line *cgl2 = sorted_head;
-		if (UnderstandLines::cg_line_must_precede(cg, cgl, cgl2)) {
+		if (CGLines::cg_line_must_precede(cg, cgl, cgl2)) {
 			sorted_head = cgl;
 			cgl->sorted_next_line = cgl2;
 			continue;
@@ -517,7 +509,7 @@ cg_line *UnderstandLines::list_sort(command_grammar *cg) {
 				cgl3->sorted_next_line = cgl;
 				break;
 			}
-			if (UnderstandLines::cg_line_must_precede(cg, cgl, cgl2)) {
+			if (CGLines::cg_line_must_precede(cg, cgl, cgl2)) {
 				cgl3->sorted_next_line = cgl;
 				cgl->sorted_next_line = cgl2;
 				break;
@@ -547,13 +539,13 @@ least 2010, and will not change again.
 
 [1] Well... roughly. See //CommandParserKit: Parser// for the gory details.
 
-@ The code in //UnderstandLines::cgl_determine// looked as if we would decide
+@ The code in //CGLines::cgl_determine// looked as if we would decide
 if line |L1| precedes |L2| by adding up their score bonuses, and letting the
 higher scorer go first. That is in fact nearly equivalent to the following,
 but not quite.
 
 =
-int UnderstandLines::cg_line_must_precede(command_grammar *cg, cg_line *L1, cg_line *L2) {
+int CGLines::cg_line_must_precede(command_grammar *cg, cg_line *L1, cg_line *L2) {
 	@<Perform some sanity checks@>;
 	@<Nothing precedes itself@>;
 	@<Lower understanding penalties precede higher ones@>;
@@ -634,12 +626,12 @@ after |"look"|, or else the command parser will respond to LOOK by replying
 @ This next rule is a lexeme-based tiebreaker. We only get here if there
 are the same number of lexemes in the two CGLs being compared. Lines in which
 all tokens are literal words, like "tossed egg salad", are scored so highly
-that they will always come first: see //UnderstandLines::cgl_determine//.
+that they will always come first: see //CGLines::cgl_determine//.
 But if one of the tokens is not literal, then we score it in such a way that
 the specificity of the tokens is what decides. The first token is more important
 than the second, and a more specific token comes before a lower one.
 
-See //UnderstandTokens::determine// for how the score of an individual token
+See //CGTokens::determine// for how the score of an individual token
 is worked out.
 
 @<Higher sort bonuses precede lower ones@> =
@@ -660,10 +652,10 @@ condition holds beats a match of |"draw [thing]"| at any time, and this is
 necessary under the strict superset principle.
 
 @<Conditional readings precede unconditional readings@> =
-	if ((UnderstandLines::conditional(L1)) &&
-		(UnderstandLines::conditional(L2) == FALSE)) return TRUE;
-	if ((UnderstandLines::conditional(L1) == FALSE) &&
-		(UnderstandLines::conditional(L2))) return FALSE;
+	if ((CGLines::conditional(L1)) &&
+		(CGLines::conditional(L2) == FALSE)) return TRUE;
+	if ((CGLines::conditional(L1) == FALSE) &&
+		(CGLines::conditional(L2))) return FALSE;
 
 @ Getting down to here looks difficult, given the number of things about |L1|
 and |L2| which have to match up -- same USB, GSB, number of lexemes,

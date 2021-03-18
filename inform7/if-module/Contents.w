@@ -55,11 +55,10 @@ Chapter 4: Actions
 Chapter 5: Command Parser
 "Understand... sentences become a grammar for the command parser to use at run-time."
 	Parsing Plugin
-	Parsing-Only Nodes and Annotations
 	Understand Sentences
 	Command Grammars
 	Command Grammar Lines
-	Grammar Tokens
+	Command Grammar Tokens
 	Determination Types
 	Grammar Properties
 	Noun Filter Tokens

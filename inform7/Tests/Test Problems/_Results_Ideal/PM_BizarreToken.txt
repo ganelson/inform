@@ -1,9 +1,10 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 17 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_BizarreToken
   >--> The grammar token '101' in the sentence 'Understand "blob [101]" as
     examining' (source text, line 3) looked to me as if it might be a number,
     but this isn't something allowed in parsing grammar.
-Inform 7 has finished: 43 centiseconds used.
+Inform 7 has finished.
