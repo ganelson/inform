@@ -24,15 +24,6 @@ their names (used as I6 tokens), and compile their routines.
 
 =
 noun_filter_token *UnderstandFilterTokens::nft_new(parse_node *spec, int global_scope, int any_things) {
-	pcalc_prop *prop = Specifications::to_proposition(spec);
-	if ((prop) && (Binding::number_free(prop) != 1)) {
-		LOG("So $P and $D\n", spec, prop);
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilterQuantified),
-			"the [any ...] doesn't clearly give a description in the '...' part",
-			"where I was expecting something like '[any vehicle]'.");
-		spec = Specifications::from_kind(K_object);
-	}
-
 	noun_filter_token *nft = CREATE(noun_filter_token);
 	nft->the_filter = spec;
 	nft->global_scope_flag = global_scope;
@@ -251,50 +242,28 @@ the |parse_node| structure can't conveniently be annotated with pointers,
 that's why.)
 
 =
-int too_late_for_further_NFTs = FALSE;
-
-int UnderstandFilterTokens::new_id(parse_node *spec, int global_scope, int any_things) {
-	if (too_late_for_further_NFTs)
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"complicated instructions on understanding the player's command "
-			"are not allowed in the past tense",
-			"for instance by being applied to several previous turns in a row.");
-
-	kind *K = Specifications::to_kind(spec);
-	if ((Kinds::Behaviour::is_object(K) == FALSE) && (Kinds::Behaviour::request_I6_GPR(K) == FALSE) && (global_scope))
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"this is a kind of value I can't understand in command grammar",
-			"so the '[any ...]' part will have to go.");
-
-	return UnderstandFilterTokens::nft_new(spec, global_scope, any_things)->allocation_id;
+void UnderstandFilterTokens::compile_id(noun_filter_token *nft) {
+	if (nft) {
+		if (nft->parse_using_gpr) Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
+		else if (nft->global_scope_flag) Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCOPE_TT_HL));
+		else Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ROUTINEFILTER_TT_HL));
+		Produce::val_iname(Emit::tree(), K_value, nft->nft_iname);
+	}
 }
 
-void UnderstandFilterTokens::compile_id(int id) {
-	noun_filter_token *nft;
-	LOOP_OVER(nft, noun_filter_token)
-		if (nft->allocation_id == id) {
-			if (nft->parse_using_gpr) Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_TT_HL));
-			else if (nft->global_scope_flag) Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(SCOPE_TT_HL));
-			else Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ROUTINEFILTER_TT_HL));
-			Produce::val_iname(Emit::tree(), K_value, nft->nft_iname);
+void UnderstandFilterTokens::emit_id(noun_filter_token *nft) {
+	if (nft) {
+		inter_ti annot = 0;
+		if (nft->parse_using_gpr == FALSE) {
+			if (nft->global_scope_flag) annot = SCOPE_FILTER_IANN;
+			else annot = NOUN_FILTER_IANN;
 		}
-}
-
-void UnderstandFilterTokens::emit_id(int id) {
-	noun_filter_token *nft;
-	LOOP_OVER(nft, noun_filter_token)
-		if (nft->allocation_id == id) {
-			inter_ti annot = 0;
-			if (nft->parse_using_gpr == FALSE) {
-				if (nft->global_scope_flag) annot = SCOPE_FILTER_IANN;
-				else annot = NOUN_FILTER_IANN;
-			}
-			inter_name *iname = UnderstandFilterTokens::nft_compile_routine_iname(nft);
-			if (annot != 0)
-				if (Produce::read_annotation(iname, annot) != 1)
-					Produce::annotate_i(iname, annot, 1);
-			Emit::array_iname_entry(iname);
-		}
+		inter_name *iname = UnderstandFilterTokens::nft_compile_routine_iname(nft);
+		if (annot != 0)
+			if (Produce::read_annotation(iname, annot) != 1)
+				Produce::annotate_i(iname, annot, 1);
+		Emit::array_iname_entry(iname);
+	}
 }
 
 @h Compiling everything.
@@ -309,5 +278,4 @@ void UnderstandFilterTokens::compile(void) {
 			UnderstandFilterTokens::nft_compile_routine(nft);
 			nft->nft_compiled = TRUE;
 		}
-	/* too_late_for_further_NFTs = TRUE; */
 }

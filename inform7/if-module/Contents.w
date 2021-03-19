@@ -60,7 +60,4 @@ Chapter 5: Command Parser
 	Command Grammar Lines
 	Command Grammar Tokens
 	Determination Types
-	Grammar Properties
-	Noun Filter Tokens
-	Tokens Parsing Values
-	General Parsing Routines
+	Property Visibility

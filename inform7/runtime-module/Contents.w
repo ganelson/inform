@@ -80,3 +80,6 @@ Chapter 5: Plugin Support
 	Going
 	Command Grammars
 	Command Grammar Lines
+	Noun Filter Tokens
+	Tokens Parsing Values
+	General Parsing Routines

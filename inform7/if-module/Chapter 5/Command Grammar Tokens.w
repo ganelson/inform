@@ -2,41 +2,246 @@
 
 CGs are list of CG lines, which are lists of CG tokens.
 
-@
+@h Introduction.
+Until 2021, CG tokens were held as parse nodes in the syntax tree, with a
+special type |TOKEN_NT| and a set of annotations, but as cute as that was
+it was also obfuscatory, and now each CG token corresponds to a //cg_token//
+object as follows:
 
 =
 typedef struct cg_token {
 	struct wording text_of_token;
-	int is_literal;
-	int slash_class;
-	int slash_dash_dash;
 	int grammar_token_code;
-	struct parse_node *grammar_value; /* 0 or else one of the |*_GTC| values */
+	struct parse_node *what_token_describes; /* 0 or else one of the |*_GTC| values */
 	struct binary_predicate *token_relation;
-	struct cg_token *next_token;
+	struct noun_filter_token *noun_filter;
+	struct command_grammar *defined_by;
+	int slash_class; /* used in slashing: see //CGLines::slash// */
+	int slash_dash_dash; /* ditto */
+	struct cg_token *next_token; /* in the list for a CG line */
 	CLASS_DEFINITION
 } cg_token;
 
+cg_token *CGTokens::cgt_of(wording W, int lit) {
+	cg_token *cgt = CREATE(cg_token);
+	cgt->text_of_token = W;
+	cgt->slash_dash_dash = FALSE;
+	cgt->slash_class = 0;
+	cgt->what_token_describes = NULL;
+	cgt->grammar_token_code = lit?LITERAL_GTC:0;
+	cgt->token_relation = NULL;
+	cgt->noun_filter = NULL;
+	cgt->defined_by = NULL;
+	cgt->next_token = NULL;
+	return cgt;
+}
+
+@h Text to a CG token list.
+Tokens are created when text such as "drill [something] with [something]"
+is parsed, from an Understand sentence or elsewhere. What happens is much
+the same as when text with substitutions is read: the text is retokenised
+by the lexer to produce the following, in which the square brackets have
+become commas:
+= (text)
+"drill" , something , "with" , something
+=
+In fact we use a different punctuation set from the lexer's default, because
+we want forward slashes to break words, so that we need |/| to be a punctuation
+mark: thus "get away/off/out" becomes
+= (text)
+"get" "away" / "off" / "out"
+=
+
+@d GRAMMAR_PUNCTUATION_MARKS L".,:;?!(){}[]/" /* note the slash */
+
+=
+cg_token *CGTokens::tokenise(wording W) {
+	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
+	@<Reject this if it contains punctuation@>;
+	wording TW = Feeds::feed_C_string_full(as_wide_string, TRUE,
+		GRAMMAR_PUNCTUATION_MARKS);
+	@<Reject this if it contains two consecutive commas@>;
+
+	cg_token *tokens = CGTokens::break_into_tokens(TW);
+	if (tokens == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_UnderstandEmptyText),
+			"'understand' should be followed by text which contains at least "
+			"one word or square-bracketed token",
+			"so for instance 'understand \"take [something]\" as taking' is fine, "
+			"but 'understand \"\" as the fog' is not. The same applies to the contents "
+			"of 'topic' columns in tables, since those are also instructions for "
+			"understanding.");
+	}
+	return tokens;
+}
+
+@<Reject this if it contains punctuation@> =
+	int skip = FALSE, literal_punct = FALSE;
+	for (int i=0; as_wide_string[i]; i++) {
+		if (as_wide_string[i] == '[') skip = TRUE;
+		if (as_wide_string[i] == ']') skip = FALSE;
+		if (skip) continue;
+		if ((as_wide_string[i] == '.') || (as_wide_string[i] == ',') ||
+			(as_wide_string[i] == '!') || (as_wide_string[i] == '?') ||
+			(as_wide_string[i] == ':') || (as_wide_string[i] == ';'))
+			literal_punct = TRUE;
+	}
+	if (literal_punct) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralPunctuation),
+			"'understand' text cannot contain literal punctuation",
+			"or more specifically cannot contain any of these: . , ! ? : ; since they "
+			"are already used in various ways by the parser, and would not correctly "
+			"match here.");
+		return NULL;
+	}
+
+@<Reject this if it contains two consecutive commas@> =
+	LOOP_THROUGH_WORDING(i, TW)
+		if (i < Wordings::last_wn(TW))
+			if ((compare_word(i, COMMA_V)) && (compare_word(i+1, COMMA_V))) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnderstandCommaCommand),
+					"'understand' as an action cannot involve a comma",
+					"since a command leading to an action never does. "
+					"(Although Inform understands commands like 'PETE, LOOK' "
+					"only the part after the comma is read as an action command: "
+					"the part before the comma is read as the name of someone, "
+					"according to the usual rules for parsing a name.) "
+					"Because of the way Inform processes text with square "
+					"brackets, this problem message is also sometimes seen "
+					"if empty square brackets are used, as in 'Understand "
+					"\"bless []\" as blessing.'");
+				return NULL;
+			}
+
+@ The following tiny Preform grammar is then used to break up the resulting
+text at commas:
+=
+<grammar-token-breaking> ::=
+	... , ... |      ==> { NOT_APPLICABLE, - }
+	<quoted-text> |  ==> { TRUE, - }
+	...              ==> { FALSE, - }
+
+@ The following function takes a wording and turns it into a linked list of
+CG tokens, divided by commas:
+
+=
+cg_token *CGTokens::break_into_tokens(wording W) {
+	return CGTokens::break_into_tokens_r(NULL, W);
+}
+cg_token *CGTokens::break_into_tokens_r(cg_token *list, wording W) {
+	<grammar-token-breaking>(W);
+	switch (<<r>>) {
+		case NOT_APPLICABLE: {
+			wording LW = GET_RW(<grammar-token-breaking>, 1);
+			wording RW = GET_RW(<grammar-token-breaking>, 2);
+			list = CGTokens::break_into_tokens_r(list, LW);
+			list = CGTokens::break_into_tokens_r(list, RW);
+			break;
+		}
+		case TRUE:
+			Word::dequote(Wordings::first_wn(W));
+			if (*(Lexer::word_text(Wordings::first_wn(W))) == 0) return list;
+			W = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)),
+				FALSE, GRAMMAR_PUNCTUATION_MARKS);
+			LOOP_THROUGH_WORDING(i, W) {
+				cg_token *cgt = CGTokens::cgt_of(Wordings::one_word(i), TRUE);
+				list = CGTokens::add_to_list(cgt, list);
+			}
+			break;
+		case FALSE: {
+			cg_token *cgt = CGTokens::cgt_of(W, FALSE);
+			list = CGTokens::add_to_list(cgt, list);
+			break;
+		}
+	}
+	return list;
+}
+
+@ If |list| represents the head of the list (and is |NULL| for an empty list),
+this adds |cgt| at the end and returns the new head.
+
+=
+cg_token *CGTokens::add_to_list(cg_token *cgt, cg_token *list) {
+	if (list == NULL) return cgt;
+	if (cgt == NULL) return list;
+	cg_token *x = list;
+	while (x->next_token) x = x->next_token;
+	x->next_token = cgt;
+	return list;
+}
+
+@ As the above shows, the text of a token is not necessarily a single word,
+unless it's a literal.
+
+=
 wording CGTokens::text(cg_token *cgt) {
 	return cgt?(cgt->text_of_token):(EMPTY_WORDING);
 }
 
-@ Tokens with a nonzero |grammar_token_code| correspond closely to what are
-also called "tokens" in the runtime command parser.
+@h The GTC.
+The GTC, or grammar token code, is a sort of type indicator for tokens. As
+produced by the tokeniser above, tokens initially have GTC either |UNDETERMINED_GTC|
+or |LITERAL_GTC|. Differentiation of non-literal tokens into other types happens
+in //CGTokens::determine//.
 
-@d NAMED_TOKEN_GTC 1 /* these positive values are used only in parsing */
+Note that there are two sets of GTC values, one set positive, one negative. The
+negative ones correspond closely to command-parser grammar reserved tokens in
+the old I6 compiler, and this is indeed what they compile to if we are
+generating I6 code.
+
+@d NAMED_TOKEN_GTC 1
 @d RELATED_GTC 2
 @d STUFF_GTC 3
 @d ANY_STUFF_GTC 4
 @d ANY_THINGS_GTC 5
-@d NOUN_TOKEN_GTC -1        /* I6 |noun| */
-@d MULTI_TOKEN_GTC -2       /* I6 |multi| */
-@d MULTIINSIDE_TOKEN_GTC -3 /* I6 |multiinside| */
-@d MULTIHELD_TOKEN_GTC -4   /* I6 |multiheld| */
-@d HELD_TOKEN_GTC -5        /* I6 |held| */
-@d CREATURE_TOKEN_GTC -6    /* I6 |creature| */
-@d TOPIC_TOKEN_GTC -7       /* I6 |topic| */
-@d MULTIEXCEPT_TOKEN_GTC -8 /* I6 |multiexcept| */
+@d LITERAL_GTC 6
+
+@d UNDETERMINED_GTC 0
+
+@d NOUN_TOKEN_GTC -1        /* like I6 |noun| */
+@d MULTI_TOKEN_GTC -2       /* like I6 |multi| */
+@d MULTIINSIDE_TOKEN_GTC -3 /* like I6 |multiinside| */
+@d MULTIHELD_TOKEN_GTC -4   /* like I6 |multiheld| */
+@d HELD_TOKEN_GTC -5        /* like I6 |held| */
+@d CREATURE_TOKEN_GTC -6    /* like I6 |creature| */
+@d TOPIC_TOKEN_GTC -7       /* like I6 |topic| */
+@d MULTIEXCEPT_TOKEN_GTC -8 /* like I6 |multiexcept| */
+
+=
+int CGTokens::is_literal(cg_token *cgt) {
+	if ((cgt) && (cgt->grammar_token_code == LITERAL_GTC)) return TRUE;
+	return FALSE;
+}
+
+int CGTokens::is_I6_parser_token(cg_token *cgt) {
+	if ((cgt) && (cgt->grammar_token_code < 0)) return TRUE;
+	return FALSE;
+}
+
+int CGTokens::is_topic(cg_token *cgt) {
+	if ((cgt) && (cgt->grammar_token_code == TOPIC_TOKEN_GTC)) return TRUE;
+	return FALSE;
+}
+
+@ A multiple token is one which permits multiple matches in the run-time command
+parser: for instance, the player can type ALL where a |MULTI_TOKEN_GTC| is
+expected.
+
+=
+int CGTokens::is_multiple(cg_token *cgt) {
+	switch (cgt->grammar_token_code) {
+		case MULTI_TOKEN_GTC:
+		case MULTIINSIDE_TOKEN_GTC:
+		case MULTIHELD_TOKEN_GTC:
+		case MULTIEXCEPT_TOKEN_GTC:
+			return TRUE;
+	}
+	return FALSE;
+}
+
+@h Logging.
 
 =
 void CGTokens::log(cg_token *cgt) {
@@ -64,237 +269,49 @@ void CGTokens::log(cg_token *cgt) {
 	}
 }
 
-@ 
+@h Parsing nonliteral tokens.
+Unless a token is literal and in double-quotes, it will start out as having
+|UNDETERMINED_GTC| until we investigate what the words in it mean, which we
+will do with the following Preform grammar.
 
-|is_literal| is set for literal words such as |"into"|
-and clear for square-bracketed tokens such as |"[something]"|.
-
-The |grammar_token_code| annotation is meaningful only for parse nodes
-with an evaluation of type |DESCRIPTION|. These are tokens which describe a
-range of objects. Examples include "[open container]", which compiles to an
-I6 noun filter, "[any container]", which compiles to an I6 scope filter, or
-"[things]", one of a small number of special cases compiling to primitive I6
-parser tokens. The annotation holds the allocation ID for the noun/scope
-filter structure built for the occasion in the former cases, and one of the
-following constants in the latter case. (These must all have negative values
-in order not to clash with allocation IDs 0, 1, 2, ..., and clearly must all
-be different, but otherwise the values are not significant and there is no
-preferred order.)
-
-For tokens with any other evaluation, |general_purpose| is always 0, so
-that the special values below cannot arise.
-
-@ Tokens are created when text such as "drill [something] with [something]"
-is parsed, from an Understand sentence or elsewhere. What happens is much
-the same as when text with substitutions is read: that produces
-
->> "drill", something, "with", something
-
-and the following little grammar is used to divide this text up into its
-four constituent tokens.
-
-=
-<grammar-token-breaking> ::=
-	... , ... |    ==> { NOT_APPLICABLE, - }
-	<quoted-text> |    ==> { TRUE, - }
-	...						==> { FALSE, - }
-
-@ We use a different punctuation set, in which forward slashes break words,
-to handle such as:
-
->> Understand "get away/off/out" as exiting.
-
-Inform would ordinarily lex the text away/off/out as one single word -- so that
-something like "on/off switch" would be regarded as two words not four --
-but with slash treated as a punctuation mark, we instead read "away / off /
-out", a sequence of five lexical words.
-
-@d GRAMMAR_PUNCTUATION_MARKS L".,:;?!(){}[]/" /* note the slash... */
-
-=
-cg_token *CGTokens::break_into_tokens(cg_token *from, wording W) {
-	<grammar-token-breaking>(W);
-	switch (<<r>>) {
-		case NOT_APPLICABLE: {
-			wording LW = GET_RW(<grammar-token-breaking>, 1);
-			wording RW = GET_RW(<grammar-token-breaking>, 2);
-			from = CGTokens::break_into_tokens(from, LW);
-			from = CGTokens::break_into_tokens(from, RW);
-			break;
-		}
-		case TRUE:
-			Word::dequote(Wordings::first_wn(W));
-			if (*(Lexer::word_text(Wordings::first_wn(W))) == 0) return from;
-			W = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)), FALSE, GRAMMAR_PUNCTUATION_MARKS);
-			LOOP_THROUGH_WORDING(i, W) {
-				cg_token *cgt = CGTokens::cgt_of(Wordings::one_word(i), TRUE);
-				from = CGTokens::graft(cgt, from);
-			}
-			break;
-		case FALSE: {
-			cg_token *cgt = CGTokens::cgt_of(W, FALSE);
-			from = CGTokens::graft(cgt, from);
-			break;
-		}
-	}
-	return from;
-}
-
-cg_token *CGTokens::cgt_of(wording W, int lit) {
-	cg_token *cgt = CREATE(cg_token);
-	cgt->text_of_token = W;
-	cgt->is_literal = lit;
-	cgt->slash_dash_dash = FALSE;
-	cgt->slash_class = 0;
-	cgt->grammar_value = NULL;
-	cgt->grammar_token_code = 0;
-	cgt->token_relation = NULL;
-	cgt->next_token = NULL;
-	return cgt;
-}
-
-cg_token *CGTokens::graft(cg_token *cgt, cg_token *list) {
-	if (list == NULL) return cgt;
-	if (cgt == NULL) return list;
-	cg_token *x = list;
-	while (x->next_token) x = x->next_token;
-	x->next_token = cgt;
-	return list;
-}
-
-int CGTokens::is_literal(cg_token *cgt) {
-	return (cgt)?(cgt->is_literal):FALSE;
-}
-
-@h Multiple tokens.
-A multiple token is one which permits multiple matches in the I6 parser: for
-instance, permits the use of "all".
-
-=
-int CGTokens::is_multiple(cg_token *cgt) {
-	switch (cgt->grammar_token_code) {
-		case MULTI_TOKEN_GTC:
-		case MULTIINSIDE_TOKEN_GTC:
-		case MULTIHELD_TOKEN_GTC:
-		case MULTIEXCEPT_TOKEN_GTC:
-			return TRUE;
-	}
-	return FALSE;
-}
-
-@h The special tokens.
-Do not change any of these GTC numbers without first checking and updating
-the discussion of CGL sorting in //Command Grammar Lines//:
-
-=
-int CGTokens::gsb_for_special_token(int gtc) {
-	switch(gtc) {
-        case NOUN_TOKEN_GTC: return 0;
-        case MULTI_TOKEN_GTC: return 0;
-        case MULTIINSIDE_TOKEN_GTC: return 1;
-        case MULTIHELD_TOKEN_GTC: return 2;
-        case HELD_TOKEN_GTC: return 3;
-        case CREATURE_TOKEN_GTC: return 0;
-        case TOPIC_TOKEN_GTC: return -1;
-        case MULTIEXCEPT_TOKEN_GTC: return 2;
-		default: internal_error("tried to find GSB for invalid GTC");
-	}
-	return 0; /* to prevent a gcc error: never reached */
-}
-
-@ These translate into I6 as follows:
-
-=
-char *CGTokens::i6_token_for_special_token(int gtc) {
-	switch(gtc) {
-		case NOUN_TOKEN_GTC: return "noun";
-		case MULTI_TOKEN_GTC: return "multi";
-		case MULTIINSIDE_TOKEN_GTC: return "multiinside";
-		case MULTIHELD_TOKEN_GTC: return "multiheld";
-		case HELD_TOKEN_GTC: return "held";
-		case CREATURE_TOKEN_GTC: return "creature";
-		case TOPIC_TOKEN_GTC: return "topic";
-		case MULTIEXCEPT_TOKEN_GTC: return "multiexcept";
-		default: internal_error("tried to find I6 token for invalid GTC");
-	}
-	return ""; /* to prevent a gcc error: never reached */
-}
-
-inter_name *CGTokens::iname_for_special_token(int gtc) {
-	switch(gtc) {
-		case NOUN_TOKEN_GTC: return VERB_DIRECTIVE_NOUN_iname;
-		case MULTI_TOKEN_GTC: return VERB_DIRECTIVE_MULTI_iname;
-		case MULTIINSIDE_TOKEN_GTC: return VERB_DIRECTIVE_MULTIINSIDE_iname;
-		case MULTIHELD_TOKEN_GTC: return VERB_DIRECTIVE_MULTIHELD_iname;
-		case HELD_TOKEN_GTC: return VERB_DIRECTIVE_HELD_iname;
-		case CREATURE_TOKEN_GTC: return VERB_DIRECTIVE_CREATURE_iname;
-		case TOPIC_TOKEN_GTC: return VERB_DIRECTIVE_TOPIC_iname;
-		case MULTIEXCEPT_TOKEN_GTC: return VERB_DIRECTIVE_MULTIEXCEPT_iname;
-		default: internal_error("tried to find inter name for invalid GTC");
-	}
-	return NULL; /* to prevent a gcc error: never reached */
-}
-
-char *CGTokens::i6_constant_for_special_token(int gtc) {
-	switch(gtc) {
-		case NOUN_TOKEN_GTC: return "NOUN_TOKEN";
-		case MULTI_TOKEN_GTC: return "MULTI_TOKEN";
-		case MULTIINSIDE_TOKEN_GTC: return "MULTIINSIDE_TOKEN";
-		case MULTIHELD_TOKEN_GTC: return "MULTIHELD_TOKEN";
-		case HELD_TOKEN_GTC: return "HELD_TOKEN";
-		case CREATURE_TOKEN_GTC: return "CREATURE_TOKEN";
-		case TOPIC_TOKEN_GTC: return "TOPIC_TOKEN";
-		case MULTIEXCEPT_TOKEN_GTC: return "MULTIEXCEPT_TOKEN";
-		default: internal_error("tried to find I6 constant for invalid GTC");
-	}
-	return ""; /* to prevent a gcc error: never reached */
-}
-
-@ The special tokens all return a value in I6 which needs a kind
-to be used in I7: these are defined by the following routine.
-
-=
-kind *CGTokens::kind_for_special_token(int gtc) {
-	if ((K_understanding) && (gtc == TOPIC_TOKEN_GTC)) return K_understanding;
-	return K_object;
-}
-
-@ The tokens which aren't literal words in double-quotes are parsed as follows:
+Note that <grammar-token> always matches any text, even if it sometimes throws
+a problem message on the way. Its return integer is a valid GTC, and its
+return pointer is a (non-null) description of what the token matches.
 
 =
 <grammar-token> ::=
-	<named-grammar-token> |                          ==> { NAMED_TOKEN_GTC, -, <<command_grammar:named>> = RP[1] }
-	any things |                                     ==> { ANY_THINGS_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_thing) }
-	any <s-description> |                            ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = RP[1] }
-	anything |                                       ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_thing) }
-	anybody |                                        ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_person) }
-	anyone |                                         ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_person) }
-	anywhere |                                       ==> { ANY_STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(K_room) }
-	something related by reversed <relation-name> |  ==> { RELATED_GTC, BinaryPredicates::get_reversal(RP[1]) }
-	something related by <relation-name> |           ==> { RELATED_GTC, RP[1] }
-	something related by ... |                       ==> @<Issue PM_GrammarBadRelation problem@>
-	<standard-grammar-token> |                       ==> { R[1], NULL }
-	<definite-article> <k-kind> |                    ==> { STUFF_GTC, -, <<parse_node:s>> = Specifications::from_kind(RP[2]) }
-	<s-description> |                                ==> { STUFF_GTC, -, <<parse_node:s>> = RP[1] }
-	<s-type-expression>	|                            ==> @<Issue PM_BizarreToken problem@>
-	...                                              ==> @<Issue PM_UnknownToken problem@>
+	<named-grammar-token> |       ==> @<Apply the command grammar@>
+	any things |                  ==> { ANY_THINGS_GTC, Specifications::from_kind(K_thing) }
+	any <s-description> |         ==> { ANY_STUFF_GTC, RP[1] }
+	anything |                    ==> { ANY_STUFF_GTC, Specifications::from_kind(K_thing) }
+	anybody |                     ==> { ANY_STUFF_GTC, Specifications::from_kind(K_person) }
+	anyone |                      ==> { ANY_STUFF_GTC, Specifications::from_kind(K_person) }
+	anywhere |                    ==> { ANY_STUFF_GTC, Specifications::from_kind(K_room) }
+	something related by reversed <relation-name> |   ==> @<Apply the reversed relation@>
+	something related by <relation-name> |            ==> @<Apply the relation@>
+	something related by ... |    ==> @<Issue PM_GrammarBadRelation problem@>
+	<standard-grammar-token> |    ==> { pass 1 }
+	<definite-article> <k-kind> | ==> { STUFF_GTC, Specifications::from_kind(RP[2]) }
+	<s-description> |             ==> { STUFF_GTC, RP[1] }
+	<s-type-expression>	|         ==> @<Issue PM_BizarreToken problem@>
+	...                           ==> @<Issue PM_UnknownToken problem@>
 
 <standard-grammar-token> ::=
-	something |                                      ==> { NOUN_TOKEN_GTC, - }
-	things |                                         ==> { MULTI_TOKEN_GTC, - }
-	things inside |                                  ==> { MULTIINSIDE_TOKEN_GTC, - }
-	things preferably held |                         ==> { MULTIHELD_TOKEN_GTC, - }
-	something preferably held |                      ==> { HELD_TOKEN_GTC, - }
-	other things |                                   ==> { MULTIEXCEPT_TOKEN_GTC, - }
-	someone	|                                        ==> { CREATURE_TOKEN_GTC, - }
-	somebody |                                       ==> { CREATURE_TOKEN_GTC, - }
-	text |                                           ==> { TOPIC_TOKEN_GTC, - }
-	topic |                                          ==> @<Issue PM_UseTextNotTopic problem@>
-	a topic |                                        ==> @<Issue PM_UseTextNotTopic problem@>
-	object |                                         ==> @<Issue PM_UseThingNotObject problem@>
-	an object |                                      ==> @<Issue PM_UseThingNotObject problem@>
-	something held |                                 ==> @<Issue something held problem message@>
-	things held                                      ==> @<Issue things held problem message@>
+	something |                 ==> { NOUN_TOKEN_GTC, Specifications::from_kind(K_object) }
+	things |                    ==> { MULTI_TOKEN_GTC, Specifications::from_kind(K_object) }
+	things inside |             ==> { MULTIINSIDE_TOKEN_GTC, Specifications::from_kind(K_object) }
+	things preferably held |    ==> { MULTIHELD_TOKEN_GTC, Specifications::from_kind(K_object) }
+	something preferably held | ==> { HELD_TOKEN_GTC, Specifications::from_kind(K_object) }
+	other things |              ==> { MULTIEXCEPT_TOKEN_GTC, Specifications::from_kind(K_object) }
+	someone	|                   ==> { CREATURE_TOKEN_GTC, Specifications::from_kind(K_object) }
+	somebody |                  ==> { CREATURE_TOKEN_GTC, Specifications::from_kind(K_object) }
+	text |                      ==> { TOPIC_TOKEN_GTC, Specifications::from_kind(K_understanding) }
+	topic |                     ==> @<Issue PM_UseTextNotTopic problem@>
+	a topic |                   ==> @<Issue PM_UseTextNotTopic problem@>
+	object |                    ==> @<Issue PM_UseThingNotObject problem@>
+	an object |                 ==> @<Issue PM_UseThingNotObject problem@>
+	something held |            ==> @<Issue something held problem message@>
+	things held                 ==> @<Issue things held problem message@>
 
 <named-grammar-token> internal {
 	command_grammar *cg = CommandGrammars::named_token_by_name(W);
@@ -305,6 +322,15 @@ kind *CGTokens::kind_for_special_token(int gtc) {
 	==> { fail nonterminal };
 }
 
+@<Apply the command grammar@> =
+	==> { NAMED_TOKEN_GTC, ParsingPlugin::rvalue_from_command_grammar(RP[1]) }
+
+@<Apply the reversed relation@> =
+	==> { RELATED_GTC, Rvalues::from_binary_predicate(BinaryPredicates::get_reversal(RP[1])) }
+
+@<Apply the relation@> =
+	==> { RELATED_GTC, Rvalues::from_binary_predicate(RP[1]) }
+
 @<Issue PM_GrammarBadRelation problem@> =
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, W);
@@ -314,7 +340,7 @@ kind *CGTokens::kind_for_special_token(int gtc) {
 		"invites me to understand names of related things, "
 		"but the relation is not one that I know.");
 	Problems::issue_problem_end();
-	==> { RELATED_GTC, NULL };
+	==> { RELATED_GTC, Rvalues::from_binary_predicate(R_equality) }
 
 @<Issue PM_UseTextNotTopic problem@> =
 	Problems::quote_source(1, current_sentence);
@@ -331,7 +357,7 @@ kind *CGTokens::kind_for_special_token(int gtc) {
 		"or in descriptions of actions or in table columns; it's really "
 		"intended only for defining new commands.");
 	Problems::issue_problem_end();
-	==> { TOPIC_TOKEN_GTC, NULL };
+	==> { TOPIC_TOKEN_GTC, Specifications::from_kind(K_understanding) };
 
 @<Issue PM_UseThingNotObject problem@> =
 	Problems::quote_source(1, current_sentence);
@@ -343,17 +369,41 @@ kind *CGTokens::kind_for_special_token(int gtc) {
 		"all here', but Inform uses the special syntax '[thing]' "
 		"for that. (Or '[things]' if multiple objects are allowed.)");
 	Problems::issue_problem_end();
-	==> { MULTI_TOKEN_GTC, NULL };
+	==> { MULTI_TOKEN_GTC, Specifications::from_kind(K_object) }
 
 @<Issue something held problem message@> =
 	CGTokens::incompatible_change_problem(
 		"something held", "something", "something preferably held");
-	==> { HELD_TOKEN_GTC, NULL };
+	==> { HELD_TOKEN_GTC, Specifications::from_kind(K_object) }
 
 @<Issue things held problem message@> =
 	CGTokens::incompatible_change_problem(
 			"things held", "things", "things preferably held");
-	==> { MULTIHELD_TOKEN_GTC, NULL };
+	==> { MULTIHELD_TOKEN_GTC, Specifications::from_kind(K_object) }
+
+@<Issue PM_BizarreToken problem@> =
+	LOG("$T", current_sentence);
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, W);
+	Problems::quote_kind_of(3, RP[1]);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BizarreToken));
+	Problems::issue_problem_segment(
+		"The grammar token '%2' in the sentence %1 looked to me as "
+		"if it might be %3, but this isn't something allowed in "
+		"parsing grammar.");
+	Problems::issue_problem_end();
+	==> { STUFF_GTC, Specifications::from_kind(K_thing) }
+
+@<Issue PM_UnknownToken problem@> =
+	LOG("$T", current_sentence);
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, W);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownToken));
+	Problems::issue_problem_segment(
+		"I was unable to understand what you meant by the grammar token '%2' "
+		"in the sentence %1.");
+	Problems::issue_problem_end();
+	==> { STUFF_GTC, Specifications::from_kind(K_thing) }
 
 @ Something of an extended mea culpa: but it had the desired effect, in
 that nobody complained about what might have been a controversial change.
@@ -385,106 +435,114 @@ void CGTokens::incompatible_change_problem(char *token_tried, char *token_instea
 	Problems::issue_problem_end();
 }
 
-@<Issue PM_BizarreToken problem@> =
-	LOG("$T", current_sentence);
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, W);
-	Problems::quote_kind_of(3, RP[1]);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BizarreToken));
-	Problems::issue_problem_segment(
-		"The grammar token '%2' in the sentence %1 looked to me as "
-		"if it might be %3, but this isn't something allowed in "
-		"parsing grammar.");
-	Problems::issue_problem_end();
-	==> { STUFF_GTC, - };
-
-@<Issue PM_UnknownToken problem@> =
-	LOG("$T", current_sentence);
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, W);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnknownToken));
-	Problems::issue_problem_segment(
-		"I was unable to understand what you meant by the grammar token '%2' "
-		"in the sentence %1.");
-	Problems::issue_problem_end();
-	==> { STUFF_GTC, - };
-
 @h Determining.
+To calculate a description of what is being described by a token, then, we
+call the following function, which delegates to <grammar-token> above.
 
+In the two cases |NAMED_TOKEN_GTC| and |RELATED_GTC| the pointer result is
+a temporary one telling us which named token, and which relation, respectively:
+we then convert those into the result. In all other cases, the |parse_node|
+pointer returned by <grammar-token> is the result.
 
 =
-parse_node *CGTokens::determine(cg_token *cgt, int depth, int *score) {
+parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 	if (CGTokens::is_literal(cgt)) return NULL;
 
-	<<command_grammar:named>> = NULL;
-	parse_node *spec = NULL;
 	<grammar-token>(CGTokens::text(cgt));
-	switch (<<r>>) {
-		case NAMED_TOKEN_GTC: @<Determine a named grammar token@>; break;
-		case ANY_STUFF_GTC: @<Determine an any grammar token@>; break;
-		case ANY_THINGS_GTC: @<Determine an any grammar token@>; break;
-		case RELATED_GTC: @<Determine a related grammar token@>; break;
-		case STUFF_GTC: @<Determine a kind grammar token@>; break;
-		default: @<Determine a special grammar token@>; break;
+	cgt->grammar_token_code = <<r>>;
+	parse_node *result = <<rp>>;
+
+	switch (cgt->grammar_token_code) {
+		case NAMED_TOKEN_GTC:
+			cgt->defined_by = ParsingPlugin::rvalue_to_command_grammar(result);
+			result = CommandGrammars::determine(cgt->defined_by, depth+1);
+			break;
+		case ANY_STUFF_GTC:
+			@<Make sure the result is a description with one free variable@>;
+			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, TRUE, FALSE);
+			break;
+		case ANY_THINGS_GTC:
+			@<Make sure the result is a description with one free variable@>;
+			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, TRUE, TRUE);
+			break;
+		case RELATED_GTC:
+			cgt->token_relation = Rvalues::to_binary_predicate(result);
+			kind *K = BinaryPredicates::term_kind(cgt->token_relation, 0);
+			if (K == NULL) K = K_object;
+			result = Specifications::from_kind(K);
+			break;
+		case STUFF_GTC:
+			@<Make sure the result is a description with one free variable@>;
+			cgt->noun_filter = UnderstandFilterTokens::nft_new(result, FALSE, FALSE);
+			break;
+		default:
+			Node::set_text(result, CGTokens::text(cgt));
+			break;
 	}
-	if (spec) @<Vet the grammar token determination for parseability at run-time@>;
-	return spec;
+
+	if (result) @<Vet the grammar token determination for parsability at run-time@>;
+	cgt->what_token_describes = result;
+	return cgt->what_token_describes;
 }
 
-@<Determine a named grammar token@> =
-	parse_node *val = ParsingPlugin::rvalue_from_command_grammar(<<command_grammar:named>>);
-	spec = CommandGrammars::determine(<<command_grammar:named>>, depth+1);
-	cgt->grammar_value = val;
+@ If the token determines an actual constant value -- as it can when it is a
+named token which always refers to a specific thing, for example -- it is
+possible for |result| not to be a description. Otherwise, though, it has to
+be a description which is true or false for any given value, so:
 
-@<Determine an any grammar token@> =
-	spec = <<parse_node:s>>;
-	if (Specifications::is_description(spec)) {
-		int any_things = FALSE;
-		if (<<r>> == ANY_THINGS_GTC) any_things = TRUE;
-		cgt->grammar_token_code = UnderstandFilterTokens::new_id(spec, TRUE, any_things);
-		cgt->grammar_value = spec;
+@<Make sure the result is a description with one free variable@> =
+	pcalc_prop *prop = Specifications::to_proposition(result);
+	if ((prop) && (Binding::number_free(prop) != 1)) {
+		LOG("So $P and $D\n", result, prop);
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FilterQuantified),
+			"the [any ...] doesn't clearly give a description in the '...' part",
+			"where I was expecting something like '[any vehicle]'.");
+		result = Specifications::from_kind(K_object);
 	}
 
-@<Determine a related grammar token@> =
-	binary_predicate *bp = <<rp>>;
-	if (bp) cgt->token_relation = bp;
-
-@<Determine a kind grammar token@> =
-	spec = <<parse_node:s>>;
-	cgt->grammar_value = spec;
-	if (Specifications::is_description_like(spec)) {
-		*score = 5;
-		cgt->grammar_token_code = UnderstandFilterTokens::new_id(spec, FALSE, FALSE);
-	}
-
-@<Determine a special grammar token@> =
-	int p = <<r>>;
-	kind *K = CGTokens::kind_for_special_token(p);
-	spec = Specifications::from_kind(K);
-	Node::set_text(spec, CGTokens::text(cgt));
-	*score = CGTokens::gsb_for_special_token(p);
-	cgt->grammar_value = spec;
-	cgt->grammar_token_code = p;
-
-@<Vet the grammar token determination for parseability at run-time@> =
-	if (Specifications::is_description(spec)) {
-		kind *K = Specifications::to_kind(spec);
+@<Vet the grammar token determination for parsability at run-time@> =
+	if (Specifications::is_description(result)) {
+		kind *K = Specifications::to_kind(result);
 		if ((K_understanding) &&
 			(Kinds::Behaviour::is_object(K) == FALSE) &&
 			(Kinds::eq(K, K_understanding) == FALSE) &&
 			(Kinds::Behaviour::request_I6_GPR(K) == FALSE)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, CGTokens::text(cgt));
-			StandardProblems::handmade_problem(Task::syntax_tree(),
-				_p_(PM_UnparsableKind));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnparsableKind));
 			Problems::issue_problem_segment(
-				"The grammar token '%2' in the sentence %1 "
-				"invites me to understand values typed by the player during "
-				"play but for a kind of value which is beyond my ability. "
-				"Generally speaking, the allowable kinds of value are "
-				"number, time, text and any new kind of value you may "
-				"have created - but not, for instance, scene or rule.");
+				"The grammar token '%2' in the sentence %1 invites me to understand "
+				"values typed by the player during play but for a kind of value which "
+				"is beyond my ability. Generally speaking, the allowable kinds of value "
+				"are number, time, text and any new kind of value you may have created - "
+				"but not, for instance, scene or rule.");
 			Problems::issue_problem_end();
-			spec = NULL;
+			result = Specifications::from_kind(K_object);
 		}
 	}
+
+@h Scoring.
+This score is needed when sorting CG lines in order of applicability: see the
+discussion at //CGLines::cgl_determine//. The function must return a value
+which is at least 0 but strictly less than |CGL_SCORE_TOKEN_RANGE|. The
+general idea is that higher scores cause tokens to take precedence over lower
+ones.
+
+=
+int CGTokens::score_bonus(cg_token *cgt) {
+	if (cgt == NULL) internal_error("no cgt");
+	if (cgt->grammar_token_code == UNDETERMINED_GTC) internal_error("undetermined");
+	int gtc = cgt->grammar_token_code;
+	switch(gtc) {
+		case STUFF_GTC:             return 5;
+        case NOUN_TOKEN_GTC:        return 1;
+        case MULTI_TOKEN_GTC:       return 1;
+        case MULTIINSIDE_TOKEN_GTC: return 2;
+        case MULTIHELD_TOKEN_GTC:   return 3;
+        case HELD_TOKEN_GTC:        return 4;
+        case CREATURE_TOKEN_GTC:    return 1;
+        case TOPIC_TOKEN_GTC:       return 0;
+        case MULTIEXCEPT_TOKEN_GTC: return 3;
+	}
+	return 1;
+}

@@ -312,7 +312,8 @@ definition no effect, and disappears without trace in this process.
 	cg_token *class_start = NULL;
 	LOOP_THROUGH_CG_TOKENS(cgt, cgl) {
 		if ((cgt->next_token) && (Wordings::length(CGTokens::text(cgt->next_token)) == 1) &&
-			(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token))) == FORWARDSLASH_V)) {
+			(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token))) ==
+				FORWARDSLASH_V)) {
 			if (cgt->slash_class == 0) {
 				class_start = cgt; alternatives_group++; /* start new equiv class */
 				class_start->slash_dash_dash = FALSE;
@@ -322,11 +323,12 @@ definition no effect, and disappears without trace in this process.
 				cgt->next_token->next_token->slash_class = alternatives_group;
 			if ((cgt->next_token->next_token) &&
 				(Wordings::length(CGTokens::text(cgt->next_token->next_token)) == 1) &&
-				(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token->next_token))) == DOUBLEDASH_V)) {
+				(Lexer::word(Wordings::first_wn(CGTokens::text(cgt->next_token->next_token))) ==
+					DOUBLEDASH_V)) {
 				class_start->slash_dash_dash = TRUE;
-				cgt->next_token = cgt->next_token->next_token->next_token; /* excise slash and dash-dash */
+				cgt->next_token = cgt->next_token->next_token->next_token; /* excise both */
 			} else {
-				cgt->next_token = cgt->next_token->next_token; /* excise the slash from the token list */
+				cgt->next_token = cgt->next_token->next_token; /* excise slash */
 			}
 		}
 	}
@@ -417,9 +419,9 @@ void CGLines::cgl_determine(cg_line *cgl, command_grammar *cg, int depth) {
 }
 
 @ The general sort bonus is $Rs_0 + s_1$, where $R$ is the |CGL_SCORE_TOKEN_RANGE|
-and $s_0$, $s_1$ are the scores for the first and second tokens describing values;
-or if none of the $n$ tokens describes a value, it is $R^2n$, which is guaranteed
-to be larger.
+and $s_0$, $s_1$ are the scores for the first and second tokens describing values,
+which are such that $0\leq s_i<R$; or if none of the $n$ tokens describes a value,
+the GSB is $R^2n$, which is guaranteed to be much larger.
 
 However, there is also an understanding sort bonus, which is really a penalty
 incurred by "[text]" tokens -- which are very free-form topics of conversation.
@@ -428,8 +430,9 @@ Given that $i$ is small and $R^2$ is big, this is basically a huge negative
 number, but is such that a "[text]" earlier in the line is penalised just a
 little bit more than a "[text]" later.
 
-For $R=10$, the following might thus happen. (For simplicity, I've assumed
-the individual tokens scores are 1.)
+For $R=10$, the following might thus happen. (I've simplified this table by
+having the individual tokens all score 1, but in fact they can score a range
+of small numbers: see //CGTokens::score_bonus//.)
 = (text)
                         n       s_0     s_1     gsb     usb
 inventory               1       --      --      100     0
@@ -445,22 +448,24 @@ parsing the player's command at run-time. For the exact sorting rules, see below
 
 @<Make the actual calculations@> =
 	int nulls_count = 0, pos = 0;
-	for (cg_token *cgtt = first; cgtt; cgtt = cgtt->next_token) {
-		int score = 0;
-		parse_node *spec = CGTokens::determine(cgtt, depth, &score);
+	for (cg_token *cgt = first; cgt; cgt = cgt->next_token) {
+		parse_node *spec = CGTokens::determine(cgt, depth);
+		int score = CGTokens::score_bonus(cgt);
+		if ((score < 0) || (score >= CGL_SCORE_TOKEN_RANGE))
+			internal_error("token score out of range");
 		LOGIF(GRAMMAR_CONSTRUCTION, "token %d/%d: <%W> --> $P (score %d)\n",
-			pos+1, line_length, CGTokens::text(cgtt), spec, score);
+			pos+1, line_length, CGTokens::text(cgt), spec, score);
 		if (spec) {
 			@<Text tokens contribute also to the understanding sort bonus@>;
 			int score_multiplier = 1;
 			if (DeterminationTypes::get_no_values_described(&(cgl->cgl_type)) == 0)
 				score_multiplier = CGL_SCORE_TOKEN_RANGE;
 			DeterminationTypes::add_term(&(cgl->cgl_type), spec,
-				CGTokens::is_multiple(cgtt));
+				CGTokens::is_multiple(cgt));
 			cgl->general_sort_bonus += score*score_multiplier;
 		} else nulls_count++;
 
-		if (CGTokens::is_multiple(cgtt)) multiples++;
+		if (CGTokens::is_multiple(cgt)) multiples++;
 		pos++;
 	}
 	if (nulls_count == line_length)
@@ -478,7 +483,6 @@ which parses to a |K_understanding| match.
 		usb_contribution = CGL_SCORE_BUMP*usb_contribution + (line_length-1-pos);
 		cgl->understanding_sort_bonus += usb_contribution;
 	}
-
 
 @h Sorting the lines in a grammar.
 The CGLs in a grammar are insertion sorted into a sorted version. This is not

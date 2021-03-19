@@ -479,7 +479,7 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 	LOG_INDENT;
 	for (; cgt; cgt = cgt->next_token) {
 		LOGIF(GRAMMAR_CONSTRUCTION, "Compiling token $c\n", cgt);
-		if ((cgt->grammar_token_code == TOPIC_TOKEN_GTC) && (cgt->next_token) &&
+		if ((CGTokens::is_topic(cgt)) && (cgt->next_token) &&
 			(CGTokens::is_literal(cgt->next_token) == FALSE)) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextFollowedBy),
 				"a '[text]' token must either match the end of some text, or "
@@ -517,8 +517,6 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 			empty_text_allowed_in_lexeme = FALSE;
 			alternative_number = 1;
 		}
-
-if (empty_text_allowed_in_lexeme) LOG("empty_text_allowed_in_lexeme!\n");
 
 		inter_symbol *jump_on_fail = fail_label;
 
@@ -1248,10 +1246,8 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 			return NULL;
 		}
 
-	spec = cgt->grammar_value;
-	if (spec == NULL) CGTokens::determine(cgt, 10, NULL);
-	spec = cgt->grammar_value;
-	if (spec == NULL) internal_error("NULL result of non-preposition token");
+	spec = cgt->what_token_describes;
+	if (cgt->defined_by) spec = ParsingPlugin::rvalue_from_command_grammar(cgt->defined_by);
 
 	if (Specifications::is_kind_like(spec)) {
 		kind *K = Node::get_kind_of_value(spec);
@@ -1312,12 +1308,11 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 		return K_object;
 	} else {
 		kind *K = NULL;
-		int gtc = cgt->grammar_token_code;
-		if (gtc < 0) {
-			inter_name *i6_token_iname = CGTokens::iname_for_special_token(gtc);
-			K = CGTokens::kind_for_special_token(gtc);
+		if (CGTokens::is_I6_parser_token(cgt)) {
+			inter_name *i6_token_iname = RTCommandGrammars::iname_for_I6_parser_token(cgt);
+			K = Descriptions::explicit_kind(cgt->what_token_describes);
 			if (code_mode) {
-				if ((consult_mode) && (gtc == TOPIC_TOKEN_GTC)) {
+				if ((consult_mode) && (CGTokens::is_topic(cgt))) {
 					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TextTokenRestricted),
 						"the '[text]' token is not allowed with 'matches' "
 						"or in table columns",
@@ -1362,7 +1357,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 							Produce::down(Emit::tree());
-								UnderstandFilterTokens::compile_id(gtc);
+								UnderstandFilterTokens::compile_id(cgt->noun_filter);
 							Produce::up(Emit::tree());
 						Produce::up(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1380,7 +1375,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 						Produce::up(Emit::tree());
 					} else {
-						UnderstandFilterTokens::emit_id(gtc);
+						UnderstandFilterTokens::emit_id(cgt->noun_filter);
 					}
 				} else {
 					if (Kinds::Behaviour::offers_I6_GPR(K)) {
@@ -1425,7 +1420,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
-									UnderstandFilterTokens::compile_id(gtc);
+									UnderstandFilterTokens::compile_id(cgt->noun_filter);
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1443,15 +1438,14 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::up(Emit::tree());
 						} else {
-							UnderstandFilterTokens::emit_id(gtc);
+							UnderstandFilterTokens::emit_id(cgt->noun_filter);
 						}
 						K = K_object;
 					} else internal_error("no token for description");
 				}
 			} else {
-				if (Node::is(spec, CONSTANT_NT)) {
-					if ((K_understanding) && (Rvalues::is_CONSTANT_of_kind(spec, K_understanding))) {
-						cg = ParsingPlugin::rvalue_to_command_grammar(spec);
+					if (cgt->defined_by) {
+						cg = cgt->defined_by;
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
 							Produce::down(Emit::tree());
@@ -1492,7 +1486,8 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 							Emit::array_iname_entry(RTCommandGrammars::i6_token_as_iname(cg));
 						}
 						K = CommandGrammars::get_kind_matched(cg);
-					}
+					} else
+				if (Node::is(spec, CONSTANT_NT)) {
 					if (Rvalues::is_object(spec)) {
 						if (code_mode) {
 							Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -1500,7 +1495,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								Produce::ref_symbol(Emit::tree(), K_value, gprk->w_s);
 								Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARSETOKENSTOPPED_HL));
 								Produce::down(Emit::tree());
-									UnderstandFilterTokens::compile_id(gtc);
+									UnderstandFilterTokens::compile_id(cgt->noun_filter);
 								Produce::up(Emit::tree());
 							Produce::up(Emit::tree());
 							Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -1518,7 +1513,7 @@ kind *RTCommandGrammarLines::compile_token(gpr_kit *gprk, cg_token *cgt, int cod
 								Produce::val_symbol(Emit::tree(), K_value, gprk->w_s);
 							Produce::up(Emit::tree());
 						} else {
-							UnderstandFilterTokens::emit_id(gtc);
+							UnderstandFilterTokens::emit_id(cgt->noun_filter);
 						}
 						K = K_object;
 					}

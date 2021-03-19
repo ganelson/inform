@@ -404,8 +404,8 @@ Once again, the object can't be a list.
 	<understand-prop-op-uncond>                  ==> { R[1], RP[1] }
 
 <understand-prop-op-uncond> ::=
-	referring to <understand-prop-ref> | ==> { 1, RP[1] }
-	describing <understand-prop-ref> |   ==> { 2, RP[1] }
+	referring to <understand-prop-ref> | ==> { REFERRING_TO_VISIBILITY_LEVEL, RP[1] }
+	describing <understand-prop-ref> |   ==> { DESCRIBING_VISIBILITY_LEVEL, RP[1] }
 	...                                  ==> @<Issue PM_BadUnderstandProperty problem@>
 
 <understand-prop-ref> ::=
@@ -565,7 +565,7 @@ it, one at a time, by previous Understand sentences.
 	}
 
 @h Property blocks.
-Again, some semantic checks, but the real work is delegated to //Visibility::seek//.
+Again, some semantic checks, but the real work is delegated to //Visibility::set//.
 
 =
 void Understand::property_block(property *pr, int level, inference_subject *subj, wording WHENW) {
@@ -596,7 +596,7 @@ void Understand::property_block(property *pr, int level, inference_subject *subj
 			"of day, or units; but certain built-into-Inform kinds of value "
 			"(like snippet or rulebook, for instance) I can't use.");
 	}
-	if (Visibility::seek(pr, subj, level, WHENW) == FALSE) {
+	if (Visibility::set(pr, subj, level, WHENW) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_UnknownUnpermittedProperty),
 			"that property is not allowed for the thing or kind in question",
@@ -801,10 +801,12 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 			(Kinds::Behaviour::is_subkind_of_object(Specifications::to_kind(spec)) == FALSE)
 			&& (Descriptions::number_of_adjectives_applied_to(spec) == 1)
 			&& (AdjectivalPredicates::parity(
-				Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL)))) {
+				Propositions::first_unary_predicate(
+					Specifications::to_proposition(spec), NULL)))) {
 			adjective *aph =
 				AdjectivalPredicates::to_adjective(
-					Propositions::first_unary_predicate(Specifications::to_proposition(spec), NULL));
+					Propositions::first_unary_predicate(
+						Specifications::to_proposition(spec), NULL));
 			instance *q = AdjectiveAmbiguity::has_enumerative_meaning(aph);
 			if (q) {
 				ur->cg_result = CG_IS_VALUE;
@@ -833,63 +835,9 @@ void Understand::text_block(wording W, understanding_reference *ur) {
 	}
 
 @<Tokenise the quoted text W into the raw tokens for a CG line@> =
-	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
-	@<Reject this if it contains punctuation@>;
-	wording tokenised = Feeds::feed_C_string_full(as_wide_string, TRUE,
-		GRAMMAR_PUNCTUATION_MARKS);
-	@<Reject this if it contains two consecutive commas@>;
-
-	tokens = CGTokens::break_into_tokens(NULL, tokenised);
-	if (tokens == NULL) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_UnderstandEmptyText),
-			"'understand' should be followed by text which contains at least "
-			"one word or square-bracketed token",
-			"so for instance 'understand \"take [something]\" as taking' is fine, "
-			"but 'understand \"\" as the fog' is not. The same applies to the contents "
-			"of 'topic' columns in tables, since those are also instructions for "
-			"understanding.");
-		return;
-	}
-
-@<Reject this if it contains punctuation@> =
-	int skip = FALSE, literal_punct = FALSE;
-	for (int i=0; as_wide_string[i]; i++) {
-		if (as_wide_string[i] == '[') skip = TRUE;
-		if (as_wide_string[i] == ']') skip = FALSE;
-		if (skip) continue;
-		if ((as_wide_string[i] == '.') || (as_wide_string[i] == ',') ||
-			(as_wide_string[i] == '!') || (as_wide_string[i] == '?') ||
-			(as_wide_string[i] == ':') || (as_wide_string[i] == ';'))
-			literal_punct = TRUE;
-	}
-	if (literal_punct) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LiteralPunctuation),
-			"'understand' text cannot contain literal punctuation",
-			"or more specifically cannot contain any of these: . , ! ? : ; since they "
-			"are already used in various ways by the parser, and would not correctly "
-			"match here.");
-		return;
-	}
-
-@<Reject this if it contains two consecutive commas@> =
-	LOOP_THROUGH_WORDING(i, tokenised)
-		if (i < Wordings::last_wn(tokenised))
-			if ((compare_word(i, COMMA_V)) && (compare_word(i+1, COMMA_V))) {
-				StandardProblems::sentence_problem(Task::syntax_tree(),
-					_p_(PM_UnderstandCommaCommand),
-					"'understand' as an action cannot involve a comma",
-					"since a command leading to an action never does. "
-					"(Although Inform understands commands like 'PETE, LOOK' "
-					"only the part after the comma is read as an action command: "
-					"the part before the comma is read as the name of someone, "
-					"according to the usual rules for parsing a name.) "
-					"Because of the way Inform processes text with square "
-					"brackets, this problem message is also sometimes seen "
-					"if empty square brackets are used, as in 'Understand "
-					"\"bless []\" as blessing.'");
-				return;
-			}
+	int np = problem_count;
+	tokens = CGTokens::tokenise(W);
+	if (problem_count > np) return;
 
 @<Make the new CG line@> =
 	cgl = CGLines::new(W, ur->an_reference, tokens,

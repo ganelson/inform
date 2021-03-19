@@ -85,6 +85,22 @@ inter_name *VERB_DIRECTIVE_CREATURE_iname = NULL;
 inter_name *VERB_DIRECTIVE_TOPIC_iname = NULL;
 inter_name *VERB_DIRECTIVE_MULTIEXCEPT_iname = NULL;
 
+inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
+	switch (cgt->grammar_token_code) {
+		case NOUN_TOKEN_GTC: return VERB_DIRECTIVE_NOUN_iname;
+		case MULTI_TOKEN_GTC: return VERB_DIRECTIVE_MULTI_iname;
+		case MULTIINSIDE_TOKEN_GTC: return VERB_DIRECTIVE_MULTIINSIDE_iname;
+		case MULTIHELD_TOKEN_GTC: return VERB_DIRECTIVE_MULTIHELD_iname;
+		case HELD_TOKEN_GTC: return VERB_DIRECTIVE_HELD_iname;
+		case CREATURE_TOKEN_GTC: return VERB_DIRECTIVE_CREATURE_iname;
+		case TOPIC_TOKEN_GTC: return VERB_DIRECTIVE_TOPIC_iname;
+		case MULTIEXCEPT_TOKEN_GTC: return VERB_DIRECTIVE_MULTIEXCEPT_iname;
+		default: internal_error("tried to find inter name for invalid GTC");
+	}
+	return NULL; /* to prevent a gcc error: never reached */
+}
+
+
 inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
 	Emit::named_numeric_constant(iname, 1);

@@ -66,8 +66,14 @@ typedef struct parsing_data {
 	CLASS_DEFINITION
 } parsing_data;
 
+parsing_data *ParsingPlugin::new_data(inference_subject *subj) {
+	parsing_data *pd = CREATE(parsing_data);
+	pd->understand_as_this_object = NULL;
+	return pd;
+}
+
 int ParsingPlugin::new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, Visibility::new_data(subj));
+	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, ParsingPlugin::new_data(subj));
 	return FALSE;
 }
 
@@ -164,7 +170,7 @@ get the |name| property.
 int ParsingPlugin::complete_model(int stage) {
 	if (stage == WORLD_STAGE_V) {
 		instance *I;
-		P_parse_name = ValueProperties::new_nameless(I"parse_name", K_value);
+		property *P_parse_name = ValueProperties::new_nameless(I"parse_name", K_value);
 
 		LOOP_OVER_INSTANCES(I, K_object) {
 			inference_subject *subj = Instances::as_subject(I);
