@@ -25,7 +25,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 =
 void Routines::Compile::routine(phrase *ph,
 	stacked_variable_owner_list *legible, to_phrase_request *req,
-	applicability_condition *acl) {
+	rule *R) {
 
 	if ((ph->declaration_node == NULL) ||
 		(Node::get_type(ph->declaration_node) != RULE_NT) ||
@@ -75,14 +75,14 @@ void Routines::Compile::routine(phrase *ph,
 
 @<Compile the body of the routine@> =
 	current_sentence = ph->declaration_node;
-	if (Phrases::Context::compile_test_head(ph, acl) == FALSE) {
+	if (Phrases::Context::compile_test_head(ph, R) == FALSE) {
 		if (ph->declaration_node) {
 			VerifyTree::verify_structure_from(ph->declaration_node);
 			Routines::Compile::code_block_outer(1, ph->declaration_node->down);
 			VerifyTree::verify_structure_from(ph->declaration_node);
 		}
 		current_sentence = ph->declaration_node;
-		Phrases::Context::compile_test_tail(ph, acl);
+		Phrases::Context::compile_test_tail(ph, R);
 
 		@<Compile a terminal return statement@>;
 	}

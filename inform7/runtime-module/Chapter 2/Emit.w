@@ -65,7 +65,7 @@ void Emit::begin(void) {
 inter_symbol *Emit::response(inter_name *iname, rule *R, int marker, inter_name *val_iname) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symb = InterNames::to_symbol(iname);
-	inter_symbol *rsymb = InterNames::to_symbol(Rules::iname(R));
+	inter_symbol *rsymb = InterNames::to_symbol(RTRules::iname(R));
 	inter_symbol *vsymb = InterNames::to_symbol(val_iname);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(Packaging::at(Emit::tree())), Inter::Bookmarks::package(Packaging::at(Emit::tree())), vsymb, &val1, &val2);

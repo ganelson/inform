@@ -65,11 +65,11 @@ response_message *Strings::response_cue(value_holster *VH, rule *owner, int mark
 	resp->original_stack_frame = Frames::boxed_frame(phsf);
 	resp->responding_rule = owner;
 	resp->response_marker = marker;
-	resp->original_text = Strings::TextSubstitutions::new_text_substitution(W, phsf, owner, marker, Rules::package(owner));
+	resp->original_text = Strings::TextSubstitutions::new_text_substitution(W, phsf, owner, marker, RTRules::package(owner));
 	resp->launcher_compiled = FALSE;
 	resp->via_I6 = via_I6;
 	resp->via_I6_routine_compiled = FALSE;
-	resp->resp_package = Hierarchy::package_within(RESPONSES_HAP, Rules::package(resp->responding_rule));
+	resp->resp_package = Hierarchy::package_within(RESPONSES_HAP, RTRules::package(resp->responding_rule));
 	resp->resp_iname = Hierarchy::make_iname_in(AS_BLOCK_CONSTANT_HL, resp->resp_package);
 	resp->constant_iname = Hierarchy::make_iname_in(AS_CONSTANT_HL, resp->resp_package);
 	if (VH) {
@@ -142,7 +142,7 @@ to return the current text of (A) without printing it. Speed is not of the
 essence here.
 
 @<If the response is via I6, compile the necessary routine for this rule@> =
-	inter_name *responder_iname = Rules::get_handler_definition(resp->responding_rule);
+	inter_name *responder_iname = RTRules::get_handler_definition(resp->responding_rule);
 	packaging_state save = Routines::begin(responder_iname);
 	inter_symbol *code_s = LocalVariables::add_named_call_as_symbol(I"code");
 	inter_symbol *val_s = LocalVariables::add_named_call_as_symbol(I"val");
@@ -314,7 +314,7 @@ text for the response than the one we first created.
 				if (Wordings::nonempty(W)) { /* i.e., if the rule gives us a better text */
 					current_sentence = Rules::get_response_sentence(R, marker);
 					ts = Strings::TextSubstitutions::new_text_substitution(W,
-						NULL, R, marker, Rules::package(R));
+						NULL, R, marker, RTRules::package(R));
 					resp->original_text->dont_need_after_all = TRUE;
 				}
 				inter_name *ts_iname = Strings::TextSubstitutions::text_substitution_iname(ts);
@@ -347,7 +347,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			Produce::down(Emit::tree());
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEPRINTINGRULE_HL));
 				Produce::down(Emit::tree());
-					Produce::val_iname(Emit::tree(), K_value, Rules::iname(resp->responding_rule));
+					Produce::val_iname(Emit::tree(), K_value, RTRules::iname(resp->responding_rule));
 				Produce::up(Emit::tree());
 				Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 				Produce::down(Emit::tree());

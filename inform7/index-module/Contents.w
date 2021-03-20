@@ -21,6 +21,7 @@ Chapter 2: Indexing
 	Variables
 	Properties
 	Inferences
+	Rules
 
 Chapter 3: Indexing for Plugins
 	Figures

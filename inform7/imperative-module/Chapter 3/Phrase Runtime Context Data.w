@@ -286,7 +286,7 @@ void Phrases::Context::ensure_avl(rule *R) {
 			ph_stack_frame *phsf = &(ph->stack_frame);
 			Frames::make_current(phsf);
 
-			Frames::set_stvol(phsf, R->listed_stv_owners);
+			Frames::set_stvol(phsf, R->variables_visible_in_definition);
 			rcd->avl = Activities::parse_list(rcd->activity_context);
 			current_sentence = save_cs;
 		}
@@ -314,11 +314,11 @@ In general the test is more elaborate than a single "if", though not very
 much.
 
 =
-int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl) {
+int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 	inter_name *identifier = Phrases::iname(ph);
 	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
 
-	if (Rules::compile_constraint(acl) == TRUE) return TRUE;
+	if (RTRules::compile_constraint(R) == TRUE) return TRUE;
 
 	int tests = 0;
 
@@ -353,7 +353,7 @@ int Phrases::Context::compile_test_head(phrase *ph, applicability_condition *acl
 with the default outcome return (see above).
 
 =
-void Phrases::Context::compile_test_tail(phrase *ph, applicability_condition *acl) {
+void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 
 	inter_name *identifier = Phrases::iname(ph);
 	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);

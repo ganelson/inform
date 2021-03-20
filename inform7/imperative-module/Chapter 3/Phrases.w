@@ -50,7 +50,7 @@ typedef struct phrase {
 	struct wording ph_documentation_symbol; /* cross-reference with documentation */
 	struct compilation_unit *owning_module;
 	struct package_request *requests_package;
-	struct package_request *rule_package;
+//	struct package_request *rule_package;
 
 	struct ph_type_data type_data;
 	struct ph_usage_data usage_data;
@@ -373,16 +373,16 @@ void Phrases::import(phrase *ph) {
 }
 
 void Phrases::compile(phrase *ph, int *i, int max_i,
-	stacked_variable_owner_list *legible, to_phrase_request *req, applicability_condition *acl) {
+	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
 	if (ph->imported) return;
 	int effect = Phrases::Usage::get_effect(&(ph->usage_data));
 	if (effect == RULE_NOT_IN_RULEBOOK_EFF) effect = RULE_IN_RULEBOOK_EFF;
 	if (effect == TO_PHRASE_EFF) {
-		Routines::Compile::routine(ph, legible, req, acl);
+		Routines::Compile::routine(ph, legible, req, R);
 		@<Move along the progress bar if it's this phrase's first compilation@>;
 	} else {
 		if (ph->at_least_one_compiled_form_needed) {
-			Routines::Compile::routine(ph, legible, NULL, acl);
+			Routines::Compile::routine(ph, legible, NULL, R);
 			@<Move along the progress bar if it's this phrase's first compilation@>;
 		}
 	}

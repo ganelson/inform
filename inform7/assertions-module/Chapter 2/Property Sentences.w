@@ -80,9 +80,6 @@ a noun, we write it in the formal way "taking action".
 <activity-name-formal> ::=
 	... activity
 
-<rule-name-formal> ::=
-	... rule
-
 <rulebook-name-formal> ::=
 	... rulebook
 

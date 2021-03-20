@@ -106,7 +106,7 @@ void Rules::Bookings::make_automatic_placements(void) {
 	booking *br;
 	LOOP_OVER(br, booking)
 		if (br->automatic_placement) {
-			phrase *ph = Rules::get_I7_definition(br->rule_being_booked);
+			phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
 			if (ph) {
 				current_sentence = ph->declaration_node;
 				Rules::Bookings::place(&(ph->usage_data), br);
@@ -485,7 +485,7 @@ int Rules::Bookings::no_rules_in_list(booking *list_head) {
 int Rules::Bookings::list_is_empty(booking *list_head, rule_context rc) {
 	if (list_head == NULL) return TRUE;
 	for (booking *br = list_head->next_rule; br; br = br->next_rule) {
-		phrase *ph = Rules::get_I7_definition(br->rule_being_booked);
+		phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
 		if (Rulebooks::phrase_fits_rule_context(ph, rc)) return FALSE;
 	}
 	return TRUE;
@@ -494,7 +494,7 @@ int Rules::Bookings::list_is_empty(booking *list_head, rule_context rc) {
 int Rules::Bookings::list_is_empty_of_i7_rules(booking *list_head) {
 	if (list_head == NULL) return TRUE;
 	for (booking *br = list_head->next_rule; br; br = br->next_rule)
-		if (Rules::get_I7_definition(br->rule_being_booked))
+		if (Rules::get_defn_as_phrase(br->rule_being_booked))
 			return FALSE;
 	return TRUE;
 }
@@ -510,7 +510,7 @@ int Rules::Bookings::list_contains(booking *list_head, rule *to_find) {
 int Rules::Bookings::list_contains_ph(booking *list_head, phrase *ph_to_find) {
 	if (list_head == NULL) return FALSE;
 	for (booking *br = list_head->next_rule; br; br = br->next_rule)
-		if (Rules::get_I7_definition(br->rule_being_booked) == ph_to_find)
+		if (Rules::get_defn_as_phrase(br->rule_being_booked) == ph_to_find)
 			return TRUE;
 	return FALSE;
 }
@@ -528,7 +528,7 @@ int Rules::Bookings::list_index(OUTPUT_STREAM, booking *list_head, rule_context 
 	for (br = list_head->next_rule, prev = NULL; br; prev = br, br = br->next_rule) {
 		rule *R = br->rule_being_booked;
 		#ifdef IF_MODULE
-		phrase *ph = Rules::get_I7_definition(R);
+		phrase *ph = Rules::get_defn_as_phrase(R);
 		if (ph) {
 			ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
 			scene *during_scene = Phrases::Context::get_scene(phrcd);
@@ -540,7 +540,7 @@ int Rules::Bookings::list_index(OUTPUT_STREAM, booking *list_head, rule_context 
 		#endif
 		count++;
 		Rules::Bookings::br_start_index_line(OUT, prev, billing);
-		*resp_count += Rules::index(OUT, R, owner, rc);
+		*resp_count += IXRules::index(OUT, R, owner, rc);
 	}
 	return count;
 }
@@ -686,7 +686,7 @@ void Rules::Bookings::list_compile_rule_phrases(booking *list_head,
 	int t = Rules::Bookings::no_rules_in_list(list_head);
 	booking *br; int s;
 	for (br = list_head->next_rule, s = 1; br; br = br->next_rule, s++) {
-		Rules::compile_comment(br->rule_being_booked, s, t);
+		RTRules::compile_comment(br->rule_being_booked, s, t);
 		if (br->next_rule) {
 			TEMPORARY_TEXT(C)
 			if (br->placement != br->next_rule->placement) {
@@ -995,7 +995,7 @@ its rule requires:
 =
 #ifdef IF_MODULE
 action_name *Rules::Bookings::br_required_action(booking *br) {
-	phrase *ph = Rules::get_I7_definition(br->rule_being_booked);
+	phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
 	if (ph) return Phrases::Context::required_action(&(ph->runtime_context_data));
 	return NULL;
 }

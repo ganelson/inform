@@ -870,7 +870,7 @@ rule), and also makes a note for indexing purposes.
 @<Inline annotation "mark-event-used"@> =
 	if (Rvalues::is_CONSTANT_construction(supplied, CON_rule)) {
 		rule *R = Rvalues::to_rule(supplied);
-		phrase *ph = Rules::get_I7_definition(R);
+		phrase *ph = Rules::get_defn_as_phrase(R);
 		if (ph) Phrases::Timed::note_usage(ph, current_sentence);
 	} else {
 		Problems::quote_source(1, current_sentence);

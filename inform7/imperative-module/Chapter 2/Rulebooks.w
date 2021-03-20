@@ -790,7 +790,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 	if ((rb == built_in_rulebooks[BEFORE_RB]) ||
 		(rb == built_in_rulebooks[AFTER_RB]) ||
 		(rb == built_in_rulebooks[INSTEAD_RB])) {
-		phrase *ph = Rules::get_I7_definition(Rules::Bookings::get_rule(the_new_rule));
+		phrase *ph = Rules::get_defn_as_phrase(Rules::Bookings::get_rule(the_new_rule));
 		if (ph) {
 			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
 			if ((an) && (ActionSemantics::is_out_of_world(an)))
@@ -816,15 +816,15 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 		Rules::copy_actor_test_flags(Rules::Bookings::get_rule(the_new_rule), ref_rule);
 		LOGIF(RULE_ATTACHMENTS,
 			"Copying former rulebook's variable permissions to displaced rule\n");
-		Rules::acquire_stvol(ref_rule, rb->accessible_from_rb);
+		Rules::put_variables_in_scope(ref_rule, rb->accessible_from_rb);
 		if (Rulebooks::focus(rb) == ACTION_FOCUS)
-			Rules::acquire_action_variables(ref_rule);
+			Rules::put_action_variables_in_scope(ref_rule);
 	}
 	#endif
 
-	Rules::acquire_stvol(Rules::Bookings::get_rule(the_new_rule), rb->accessible_from_rb);
+	Rules::put_variables_in_scope(Rules::Bookings::get_rule(the_new_rule), rb->accessible_from_rb);
 	if (Rulebooks::focus(rb) == ACTION_FOCUS)
-		Rules::acquire_action_variables(Rules::Bookings::get_rule(the_new_rule));
+		Rules::put_action_variables_in_scope(Rules::Bookings::get_rule(the_new_rule));
 	if (rb->fragmentation_stem_length > 0)
 		Rules::suppress_action_testing(Rules::Bookings::get_rule(the_new_rule));
 

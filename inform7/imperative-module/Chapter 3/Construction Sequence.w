@@ -266,7 +266,7 @@ void Phrases::Manager::compile_first_block(void) {
 @<Compile definitions of rules left out of rulebooks@> =
 	rule *R;
 	LOOP_OVER(R, rule)
-		Rules::compile_definition(R,
+		RTRules::compile_definition(R,
 			&total_phrases_compiled, total_phrases_to_compile);
 
 @ This doesn't compile all adjective definitions, only the ones which supply
@@ -402,7 +402,7 @@ printing out "fire alarm rule".
 =
 void Phrases::Manager::RulePrintingRule_routine(void) {
 	Phrases::Manager::advance_phrase_time_to(LATE_AFTERNOON_PHT);
-	Rules::RulePrintingRule_routine();
+	RTRules::RulePrintingRule_routine();
 }
 
 @h Evening.
@@ -443,7 +443,7 @@ void Phrases::Manager::compile_as_needed(void) {
 	Phrases::Manager::advance_phrase_time_to(EVENING_PHT);
 	rule *R;
 	LOOP_OVER(R, rule)
-		Rules::compile_definition(R,
+		RTRules::compile_definition(R,
 			&total_phrases_compiled, total_phrases_to_compile);
 	int repeat = TRUE;
 	while (repeat) {

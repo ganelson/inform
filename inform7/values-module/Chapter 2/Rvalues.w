@@ -706,7 +706,7 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rule) {
 		rule *R = Rvalues::to_rule(spec_found);
-		Emit::holster(VH, Rules::iname(R));
+		Emit::holster(VH, RTRules::iname(R));
 		return;
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_rulebook) {

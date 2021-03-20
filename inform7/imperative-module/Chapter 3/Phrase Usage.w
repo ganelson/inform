@@ -48,7 +48,7 @@ just before noon.)
 void Phrases::Usage::predeclare_name_in(parse_node *p) {
 	ph_usage_data phud = Phrases::Usage::new(Node::get_text(p), TRUE);
 	if (Wordings::nonempty(phud.explicit_name))
-		Rules::new(phud.explicit_name, TRUE);
+		Rules::obtain(phud.explicit_name, TRUE);
 }
 
 @h The late-morning creations.
@@ -57,7 +57,7 @@ If the rule is an anonymous one, such as:
 
 >> Instead of jumping: say "Don't."
 
-then we need to call |Rules::new| to create a nameless |rule| structure
+then we need to call |Rules::obtain| to create a nameless |rule| structure
 to be connected to it. But if the phrase has an explicit name:
 
 >> Instead of swimming (this is the avoid water rule): say "Don't."
@@ -74,12 +74,11 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	rule *R = NULL;
 	if (Wordings::nonempty(W)) R = Rules::by_name(W);
 	if (R) @<Check that this isn't duplicating the name of a rule already made@>
-	else R = Rules::new(W, explicitly);
+	else R = Rules::obtain(W, explicitly);
 	if (Wordings::empty(W))
-		Hierarchy::markup_wording(R->rule_package, RULE_NAME_HMD, Node::get_text(ph->declaration_node));
-
-	Rules::set_I7_definition(R, ph);
-	package_request *P = Rules::package(R);
+		Hierarchy::markup_wording(R->compilation_data.rule_package, RULE_NAME_HMD, Node::get_text(ph->declaration_node));
+	Rules::set_defn_as_phrase(R, ph);
+	package_request *P = RTRules::package(R);
 	ph->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, ph->owning_module);
 
 	@<Do some tedious business for indexing the rule later on@>;
@@ -96,7 +95,7 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	}
 
 @<Check that this isn't duplicating the name of a rule already made@> =
-	phrase *ph_found = Rules::get_I7_definition(R);
+	phrase *ph_found = Rules::get_defn_as_phrase(R);
 	if ((ph_found) && (ph_found != ph)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
@@ -118,7 +117,7 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 			IX = phud->whenwhile;
 		}
 	}
-	Rules::set_italicised_index_text(R, IX);
+	IXRules::set_italicised_index_text(R, IX);
 
 @h Parsing.
 For our purposes here, phrase definitions and rules are the same thing. Inform
