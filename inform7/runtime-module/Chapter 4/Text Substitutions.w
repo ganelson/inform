@@ -264,7 +264,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 	packaging_state save = Routines::begin(ts->ts_routine_iname);
 	ph_stack_frame *phsf = ts->parked_stack_frame;
 	if ((ts->responding_to_rule) && (ts->responding_to_marker >= 0)) {
-		response_message *resp = Rules::rule_defines_response(
+		response_message *resp = Rules::get_response(
 			ts->responding_to_rule, ts->responding_to_marker);
 		if (resp) phsf = Strings::frame_for_response(resp);
 	}

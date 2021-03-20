@@ -7856,9 +7856,7 @@
         {...} rule 
           (hits 1191/1191) (matched long text) constraint DS = {27} extremes [2, infinity)
 
-<rulebook-name> internal hits 82/164 nti 12 constraint (none) extremes [1, infinity)
-
-<rule-name> internal hits 123/246 nti 13 constraint (none) extremes [1, infinity)
+<rule-name> internal hits 123/246 nti 12 constraint (none) extremes [1, infinity)
 
 <new-rulebook-name> hits 431/862 nti 28 constraint (none) extremes [1, infinity)
     English:
@@ -7882,16 +7880,16 @@
         {...} rulebook 
           constraint DS = {29} extremes [2, infinity)
 
-<rulebook-variable-name> hits 7/14 nti 14 constraint (none) extremes [1, infinity)
+<rulebook-variable-name> hits 7/14 nti 13 constraint (none) extremes [1, infinity)
     English:
         <unfortunate-name> 
           (hits 0/7) constraint (none) extremes [1, infinity)
         {...} 
           (hits 7/7) (matched: 'specific carry out rulebook') constraint (none) extremes [1, infinity)
 
-<rulebook-stem> internal hits 371/790 nti 15 constraint (none) extremes [1, infinity)
+<rulebook-stem> internal hits 371/790 nti 14 constraint (none) extremes [1, infinity)
 
-<rulebook-stem-inner> hits 395/790 nti 16 constraint (none) extremes [1, infinity)
+<rulebook-stem-inner> hits 395/790 nti 15 constraint (none) extremes [1, infinity)
     English:
         <indefinite-article> <rulebook-stem-inner-unarticled> 
           (hits 19/395) (matched: 'a first turn sequence rule') constraint (none) extremes [2, infinity)
@@ -7934,6 +7932,8 @@
           constraint DS = {9} extremes [2, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
+
+<rulebook-name> internal hits 82/164 nti 16 constraint (none) extremes [1, infinity)
 
 <rulebook-default-outcome> nti 17 constraint (none) extremes [1, infinity)
     English:

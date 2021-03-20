@@ -875,7 +875,9 @@ void Rulebooks::compile_rulebooks(void) {
 			rb->primary_name, rb->rb_iname);
 		Rules::Bookings::list_compile(rb->rule_list, rb->rb_iname, act, par);
 	}
-	Rules::check_placement_safety();
+	rule *R;
+	LOOP_OVER(R, rule)
+		Rules::check_constraints_are_typesafe(R);
 }
 
 void Rulebooks::RulebookNames_array(void) {
@@ -1263,3 +1265,18 @@ void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_strea
 	if (rb) wn = Wordings::first_wn(rb->primary_name);
 	else if (av) wn = Wordings::first_wn(av->name);
 	if (wn >= 0) Index::link(OUT, wn);
+
+@ In order to parse sentences about how rules are placed in rulebooks, we
+need to be able to parse the relevant names. (The definite article can
+optionally be used.)
+
+=
+<rulebook-name> internal {
+	W = Articles::remove_the(W);
+	parse_node *p = Lexicon::retrieve(RULEBOOK_MC, W);
+	if (Rvalues::is_CONSTANT_construction(p, CON_rulebook)) {
+		==> { -, Rvalues::to_rulebook(p) };
+		return TRUE;
+	}
+	==> { fail nonterminal };
+}

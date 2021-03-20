@@ -34,7 +34,7 @@ its name in the output code:
 
 =
 inter_name *Strings::response_constant_iname(rule *R, int marker) {
-	response_message *RM = Rules::rule_defines_response(R, marker);
+	response_message *RM = Rules::get_response(R, marker);
 	if (RM == NULL) return NULL;
 	if (RM->constant_iname == NULL) internal_error("no response value");
 	return RM->constant_iname;
@@ -307,10 +307,10 @@ text for the response than the one we first created.
 	LOOP_OVER(R, rule) {
 		int marker;
 		for (marker = 0; marker < 26; marker++) {
-			response_message *resp = Rules::rule_defines_response(R, marker);
+			response_message *resp = Rules::get_response(R, marker);
 			if (resp) {
 				text_substitution *ts = resp->original_text;
-				wording W = Rules::get_response_value(R, marker);
+				wording W = Rules::get_response_content(R, marker);
 				if (Wordings::nonempty(W)) { /* i.e., if the rule gives us a better text */
 					current_sentence = Rules::get_response_sentence(R, marker);
 					ts = Strings::TextSubstitutions::new_text_substitution(W,
@@ -388,7 +388,7 @@ divided up by the extensions containing the rules which produce them.
 	int tally = 0, contiguous_match = FALSE, no_cms = 0;
 	LOOP_OVER(R, rule)
 		for (int marker = 0; marker < 26; marker++)
-			if (Rules::rule_defines_response(R, marker)) {
+			if (Rules::get_response(R, marker)) {
 				tally++;
 				inform_extension *E = Extensions::corresponding_to(
 					Lexer::file_of_origin(Wordings::first_wn(R->name)));
@@ -515,13 +515,13 @@ so the penultimate word, if it's there, is the letter.
 @<This is a response@> =
 	int code = <<r>>;
 	if ((rule_being_compiled == NULL) ||
-		(Rules::rule_is_named(rule_being_compiled) == FALSE)) {
+		(Rules::rule_allows_responses(rule_being_compiled) == FALSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseContextWrong),
 			"lettered responses can only be used in named rules",
 			"not in any of the other contexts in which quoted text can appear.");
 		return;
 	}
-	if (Rules::rule_defines_response(rule_being_compiled, code)) {
+	if (Rules::get_response(rule_being_compiled, code)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ResponseDuplicated),
 			"this duplicates a response letter",
 			"which is not allowed: if a bracketed letter like (A) is used to mark "
@@ -534,7 +534,7 @@ so the penultimate word, if it's there, is the letter.
 		response_message *resp =
 			Strings::response_cue(VH, rule_being_compiled, code, SW,
 				Frames::boxed_frame(phsf), FALSE);
-		Rules::now_rule_defines_response(rule_being_compiled, code, resp);
+		Rules::set_response(rule_being_compiled, code, resp);
 		while (downs > 0) { Produce::up(Emit::tree()); downs--; }
 	}
 

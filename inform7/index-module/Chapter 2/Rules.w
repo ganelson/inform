@@ -116,8 +116,8 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	HTML_CLOSE("span");
 
 @<Index any applicability conditions@> =
-	applicability_condition *acl;
-	LOOP_OVER_LINKED_LIST(acl, applicability_condition, R->applicability_conditions) {
+	applicability_constraint *acl;
+	LOOP_OVER_LINKED_LIST(acl, applicability_constraint, R->applicability_constraints) {
 		HTML_TAG("br");
 		Index::link(OUT, Wordings::first_wn(Node::get_text(acl->where_imposed)));
 		WRITE("&nbsp;%+W", Node::get_text(acl->where_imposed));

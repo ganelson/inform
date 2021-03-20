@@ -2,6 +2,13 @@
 
 To compile run-time support for rules.
 
+@
+
+= (early code)
+rule *rule_being_compiled = NULL; /* rule whose phrase's definition is being compiled */
+rule *adopted_rule_for_compilation = NULL; /* when a new response is being compiled */
+int adopted_marker_for_compilation = -1; /* when a new response is being compiled */
+
 @ In Inter code, a rule is compiled to the name of the routine implementing it.
 
 =
@@ -9,7 +16,6 @@ typedef struct rule_compilation_data {
 	struct package_request *rule_package;
 	struct inter_name *shell_routine_iname;
 	struct inter_name *rule_extern_iname; /* if externally defined, this is the I6 routine */
-	struct text_stream *rule_extern_iname_as_text; /* and this is it in plain text */
 	struct inter_name *xiname;
 	struct inter_name *rule_extern_response_handler_iname; /* and this produces any response texts it has */
 	int defn_compiled; /* has the definition of this rule, if needed, been compiled yet? */
@@ -18,7 +24,6 @@ typedef struct rule_compilation_data {
 rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	rule_compilation_data rcd;
 	rcd.rule_extern_iname = NULL;
-	rcd.rule_extern_iname_as_text = NULL;
 	rcd.xiname = NULL;
 	rcd.rule_extern_response_handler_iname = NULL;
 	rcd.shell_routine_iname = NULL;
@@ -47,7 +52,7 @@ inter_name *RTRules::shell_iname(rule *R) {
 inter_name *RTRules::iname(rule *R) {
 	if (R->defn_as_phrase) return Phrases::iname(R->defn_as_phrase);
 	else if (R->compilation_data.rule_extern_iname) {
-		if (LinkedLists::len(R->applicability_conditions) > 0) {
+		if (LinkedLists::len(R->applicability_constraints) > 0) {
 			return RTRules::shell_iname(R);
 		} else {
 			return R->compilation_data.rule_extern_iname;
@@ -56,17 +61,13 @@ inter_name *RTRules::iname(rule *R) {
 	return NULL;
 }
 
-void RTRules::set_Inter_identifier(rule *R, wchar_t *identifier) {
-	TEMPORARY_TEXT(XT)
-	WRITE_TO(XT, "%w", identifier);
+void RTRules::define_by_Inter_function(rule *R) {
 	R->compilation_data.rule_extern_iname = Hierarchy::make_iname_in(EXTERIOR_RULE_HL, R->compilation_data.rule_package);
 
-	inter_name *xiname = Produce::find_by_name(Emit::tree(), XT);
+	inter_name *xiname = Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
 	Emit::named_generic_constant_xiname(R->compilation_data.rule_package, R->compilation_data.rule_extern_iname, xiname);
 
 	R->compilation_data.xiname = xiname;
-	R->compilation_data.rule_extern_iname_as_text = Str::duplicate(XT);
-	DISCARD_TEXT(XT)
 }
 
 inter_name *RTRules::get_handler_definition(rule *R) {
@@ -91,7 +92,7 @@ void RTRules::compile_definition(rule *R, int *i, int max_i) {
 			Phrases::compile(R->defn_as_phrase, i, max_i,
 				R->variables_visible_in_definition, NULL, R);
 		if ((R->compilation_data.rule_extern_iname) &&
-			(LinkedLists::len(R->applicability_conditions) > 0))
+			(LinkedLists::len(R->applicability_constraints) > 0))
 			@<Compile a shell routine to apply conditions to an I6 rule@>;
 		rule_being_compiled = NULL;
 	}
@@ -123,8 +124,8 @@ conditions have not been met.
 =
 int RTRules::compile_constraint(rule *R) {
 	if (R) {
-		applicability_condition *acl;
-		LOOP_OVER_LINKED_LIST(acl, applicability_condition, R->applicability_conditions) {
+		applicability_constraint *acl;
+		LOOP_OVER_LINKED_LIST(acl, applicability_constraint, R->applicability_constraints) {
 			current_sentence = acl->where_imposed;
 			if (Wordings::nonempty(acl->text_of_condition)) {
 				Produce::inv_primitive(Emit::tree(), IF_BIP);
