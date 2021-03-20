@@ -660,11 +660,11 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 	}
 
 	if (Str::eq_wide_string(elt, L"St")) {
-		Rulebooks::index_page(OUT, 1);
+		IXRules::Rules_page(OUT, 1);
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Xt")) {
-		Rulebooks::index_page(OUT, 2);
+		IXRules::Rules_page(OUT, 2);
 		return;
 	}
 

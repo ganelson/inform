@@ -260,7 +260,7 @@ void Phrases::Manager::compile_first_block(void) {
 @<Compile definitions of rules in rulebooks@> =
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
-		Rulebooks::compile_rule_phrases(rb,
+		RTRules::compile_rule_phrases(rb,
 			&total_phrases_compiled, total_phrases_to_compile);
 
 @<Compile definitions of rules left out of rulebooks@> =
@@ -381,17 +381,17 @@ void Phrases::Manager::TimedEventTimesTable(void) {
 =
 void Phrases::Manager::rulebooks_array(void) {
 	Phrases::Manager::advance_phrase_time_to(LATE_AFTERNOON_PHT);
-	Rulebooks::rulebooks_array_array();
+	RTRules::rulebooks_array_array();
 }
 
 void Phrases::Manager::compile_rulebooks(void) {
 	Phrases::Manager::advance_phrase_time_to(LATE_AFTERNOON_PHT);
-	Rulebooks::compile_rulebooks();
+	RTRules::compile_rulebooks();
 }
 
 void Phrases::Manager::RulebookNames_array(void) {
 	Phrases::Manager::advance_phrase_time_to(LATE_AFTERNOON_PHT);
-	Rulebooks::RulebookNames_array();
+	RTRules::RulebookNames_array();
 }
 
 @ And finally, just as the sun slips below the horizon, we compile the code

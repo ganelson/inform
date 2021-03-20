@@ -206,7 +206,7 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Manager::compile_first_block)
 	BENCH(Phrases::Manager::compile_rulebooks)
 	BENCH(Phrases::Manager::rulebooks_array)
-	BENCH(Rulebooks::rulebook_var_creators)
+	BENCH(RTRules::rulebook_var_creators)
 	BENCH(Activities::activity_var_creators)
 	BENCH(RTRelations::IterateRelations)
 	BENCH(Phrases::Manager::RulebookNames_array)

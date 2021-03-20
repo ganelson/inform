@@ -1,6 +1,7 @@
 [BookingLists::] Booking Lists.
 
-Booking lists are linked lists of rule bookings.
+Booking lists are linked lists of rule bookings. The content of a rulebook
+is a booking list.
 
 @h Introduction.
 Bookings are intended to be bound together in linked lists, each of which

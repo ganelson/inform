@@ -24,7 +24,7 @@ void IXScenes::index(OUTPUT_STREAM) {
 }
 
 void IXScenes::index_rules(OUTPUT_STREAM) {
-	Rulebooks::index_scene(OUT); /* rules in generic scene-ending rulebooks */
+	IXRules::index_scene(OUT); /* rules in generic scene-ending rulebooks */
 	@<Show the generic scene-change rules@>;
 }
 
@@ -86,9 +86,9 @@ about and created but never made use of.)
 	Index::anchor(OUT, I"SRULES");
 	WRITE("<b>General rules applying to scene changes</b>");
 	HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "When a scene begins", EMPTY_WORDING, NULL,
+	IXRules::index_rules_box(OUT, "When a scene begins", EMPTY_WORDING, NULL,
 		built_in_rulebooks[WHEN_SCENE_BEGINS_RB], NULL, NULL, 1, FALSE);
-	Rulebooks::index_rules_box(OUT, "When a scene ends", EMPTY_WORDING, NULL,
+	IXRules::index_rules_box(OUT, "When a scene ends", EMPTY_WORDING, NULL,
 		built_in_rulebooks[WHEN_SCENE_ENDS_RB], NULL, NULL, 1, FALSE);
 
 @<Give details of each scene in turn@> =
@@ -146,7 +146,7 @@ fact, end.
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>%+W</i>", rb->primary_name); HTML_CLOSE("p");
 			int ignore_me = 0;
-			Rulebooks::index(OUT, rb, "", Rulebooks::scene_context(sc), &ignore_me);
+			IXRules::index_rulebook(OUT, rb, "", Rulebooks::scene_context(sc), &ignore_me);
 		}
 	}
 
@@ -201,7 +201,7 @@ fact, end.
 		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
 		int ignore_me = 0;
-		Rulebooks::index(OUT, sc->ends[end].end_rulebook, "", Rulebooks::no_rule_context(), &ignore_me);
+		IXRules::index_rulebook(OUT, sc->ends[end].end_rulebook, "", Rulebooks::no_rule_context(), &ignore_me);
 	}
 
 @h Table of Scenes.

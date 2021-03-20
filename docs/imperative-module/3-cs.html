@@ -360,7 +360,7 @@ adjective definitions.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="reserved-syntax">rulebook</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::compile_rule_phrases</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">RTRules::compile_rule_phrases</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            &amp;</span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cs.html#SP11">&#167;11</a>.</li></ul>
@@ -507,17 +507,17 @@ noted down:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::rulebooks_array</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::rulebooks_array_array</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RTRules::rulebooks_array_array</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::compile_rulebooks</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::compile_rulebooks</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RTRules::compile_rulebooks</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Phrases::Manager::RulebookNames_array</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cs.html#SP1" class="function-link"><span class="function-syntax">Phrases::Manager::advance_phrase_time_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">LATE_AFTERNOON_PHT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-rlb.html#SP19" class="function-link"><span class="function-syntax">Rulebooks::RulebookNames_array</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RTRules::RulebookNames_array</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>And finally, just as the sun slips below the horizon, we compile the code

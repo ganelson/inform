@@ -132,17 +132,17 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 		WRITE("\n");
 		int resp_count = 0;
 		if (ActionSemantics::is_out_of_world(an) == FALSE) {
-			Rulebooks::index_action_rules(OUT, an, NULL, PERSUASION_RB, "persuasion", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, UNSUCCESSFUL_ATTEMPT_BY_RB, "unsuccessful attempt", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, SETTING_ACTION_VARIABLES_RB, "set action variables for", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, BEFORE_RB, "before", &resp_count);
-			Rulebooks::index_action_rules(OUT, an, NULL, INSTEAD_RB, "instead of", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, PERSUASION_RB, "persuasion", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, UNSUCCESSFUL_ATTEMPT_BY_RB, "unsuccessful attempt", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, SETTING_ACTION_VARIABLES_RB, "set action variables for", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, BEFORE_RB, "before", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, INSTEAD_RB, "instead of", &resp_count);
 		}
-		Rulebooks::index_action_rules(OUT, an, an->check_rules, CHECK_RB, "check", &resp_count);
-		Rulebooks::index_action_rules(OUT, an, an->carry_out_rules, CARRY_OUT_RB, "carry out", &resp_count);
+		IXRules::index_action_rules(OUT, an, an->check_rules, CHECK_RB, "check", &resp_count);
+		IXRules::index_action_rules(OUT, an, an->carry_out_rules, CARRY_OUT_RB, "carry out", &resp_count);
 		if (ActionSemantics::is_out_of_world(an) == FALSE)
-			Rulebooks::index_action_rules(OUT, an, NULL, AFTER_RB, "after", &resp_count);
-		Rulebooks::index_action_rules(OUT, an, an->report_rules, REPORT_RB, "report", &resp_count);
+			IXRules::index_action_rules(OUT, an, NULL, AFTER_RB, "after", &resp_count);
+		IXRules::index_action_rules(OUT, an, an->report_rules, REPORT_RB, "report", &resp_count);
 		if (resp_count > 1) {
 			WRITE("Click on the speech-bubble icons to see the responses, "
 				"or here to see all of them:");

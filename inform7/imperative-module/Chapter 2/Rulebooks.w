@@ -1,8 +1,7 @@
 [Rulebooks::] Rulebooks.
 
-To create, manage, compile and index rulebooks, the content of which
-is a linked list of booked rules together with some general conventions as to
-how they are to be used.
+Rulebooks collate rules and provide an organised way for them to collaborate
+on a larger task.
 
 @ A rulebook consists of some general properties together with a linked list
 of booked rules, which constitute its entries. Some rulebooks are created
@@ -49,16 +48,13 @@ typedef struct rulebook {
 	int runs_during_activities; /* allow "while..." clauses to name these */
 	int used_by_future_action_activity; /* like "deciding the scope of something..." */
 
-	struct booking_list *rule_list; /* linked list of booked rules */
-
-	struct placement_affecting *placement_list; /* linked list of explicit placements */
+	struct booking_list *contents; /* linked list of booked rules */
 
 	struct stacked_variable_owner *owned_by_rb; /* rulebook variables owned here */
 	struct stacked_variable_owner_list *accessible_from_rb; /* and which can be named here */
-	struct inter_name *stv_creator_iname;
 
-	struct package_request *rb_package;
-	struct inter_name *rb_iname; /* run-time storage/routine holding contents */
+	struct rulebook_compilation_data compilation_data;
+	struct rulebook_indexing_data indexing_data;
 	CLASS_DEFINITION
 } rulebook;
 
@@ -212,10 +208,8 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	rb->primary_name = W;
 	rb->alternative_name = EMPTY_WORDING;
-	rb->rb_package = R;
-	rb->rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, rb->rb_package);
 
-	rb->rule_list = BookingLists::new();
+	rb->contents = BookingLists::new();
 
 	rb->automatically_generated = FALSE;
 	rb->used_by_future_action_activity = FALSE;
@@ -235,11 +229,11 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	if (rb->allocation_id == UNSUCCESSFUL_ATTEMPT_BY_RB) def = SUCCESS_OUTCOME;
 	Rulebooks::Outcomes::initialise_outcomes(&(rb->my_outcomes), producing_kind, def);
 
-	rb->placement_list = NULL;
-
 	rb->owned_by_rb = StackedVariables::new_owner(rb->allocation_id);
 	rb->accessible_from_rb = StackedVariables::add_owner_to_list(NULL, rb->owned_by_rb);
-	rb->stv_creator_iname = NULL;
+
+	rb->compilation_data =  RTRules::new_rulebook_compilation_data(rb, R);
+	rb->indexing_data =  IXRules::new_rulebook_indexing_data(rb);
 
 	if (rb->allocation_id < MAX_BUILT_IN_RULEBOOKS)
 		built_in_rulebooks[rb->allocation_id] = rb;
@@ -310,37 +304,6 @@ int Rulebooks::requires_specific_action(rulebook *rb) {
 	return FALSE;
 }
 
-@h Affected by placements.
-Needed to make a useful index.
-
-=
-void Rulebooks::affected_by_placement(rulebook *rb, parse_node *where) {
-	placement_affecting *npl = CREATE(placement_affecting);
-	npl->placement_sentence = where;
-	npl->next = rb->placement_list;
-	rb->placement_list = npl;
-}
-
-int Rulebooks::rb_no_placements(rulebook *rb) {
-	int t = 0;
-	placement_affecting *npl = rb->placement_list;
-	while (npl) { t++; npl = npl->next; }
-	return t;
-}
-
-void Rulebooks::rb_index_placements(OUTPUT_STREAM, rulebook *rb) {
-	placement_affecting *npl = rb->placement_list;
-	while (npl) {
-		WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		HTML_OPEN_WITH("span", "class=\"smaller\"");
-		WRITE("<i>NB:</i> %W", Node::get_text(npl->placement_sentence));
-		Index::link(OUT, Wordings::first_wn(Node::get_text(npl->placement_sentence)));
-		HTML_CLOSE("span");
-		HTML_TAG("br");
-		npl = npl->next;
-	}
-}
-
 @h Reading properties of rulebooks.
 Those readable from outside the current section.
 
@@ -359,22 +322,22 @@ int Rulebooks::used_by_future_actions(rulebook *rb) {
 
 int Rulebooks::is_empty(rulebook *rb, rule_context rc) {
 	if (rb == NULL) return TRUE;
-	return BookingLists::is_contextually_empty(rb->rule_list, rc);
+	return BookingLists::is_contextually_empty(rb->contents, rc);
 }
 
 int Rulebooks::no_rules(rulebook *rb) {
 	if (rb == NULL) return 0;
-	return BookingLists::length(rb->rule_list);
+	return BookingLists::length(rb->contents);
 }
 
 int Rulebooks::rule_in_rulebook(rule *R, rulebook *rb) {
 	if (rb == NULL) return FALSE;
-	return BookingLists::contains(rb->rule_list, R);
+	return BookingLists::contains(rb->contents, R);
 }
 
 booking *Rulebooks::first_booking(rulebook *rb) {
 	if (rb == NULL) return NULL;
-	return BookingLists::first(rb->rule_list);
+	return BookingLists::first(rb->contents);
 }
 
 int Rulebooks::runs_during_activities(rulebook *rb) {
@@ -487,69 +450,6 @@ void Rulebooks::make_stvs_accessible(rulebook *rb, stacked_variable_owner *stvo)
 	rb->accessible_from_rb = StackedVariables::add_owner_to_list(rb->accessible_from_rb, stvo);
 }
 
-inter_name *Rulebooks::get_stv_creator_iname(rulebook *rb) {
-	if (rb->stv_creator_iname == NULL)
-		rb->stv_creator_iname =
-			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, rb->rb_package);
-	return rb->stv_creator_iname;
-}
-
-void Rulebooks::rulebook_var_creators(void) {
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook)
-		if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE)
-			StackedVariables::compile_frame_creator(rb->owned_by_rb,
-				Rulebooks::get_stv_creator_iname(rb));
-
-	if (global_compilation_settings.memory_economy_in_force == FALSE) {
-		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
-		packaging_state save = Emit::named_array_begin(iname, K_value);
-		LOOP_OVER(rb, rulebook) {
-			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->owned_by_rb));
-		}
-		Emit::array_numeric_entry(0);
-		Emit::array_end(save);
-		Hierarchy::make_available(Emit::tree(), iname);
-	} else @<Make slow lookup routine@>;
-}
-
-@<Make slow lookup routine@> =
-	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
-	packaging_state save = Routines::begin(iname);
-	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
-
-	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
-	Produce::down(Emit::tree());
-		Produce::val_symbol(Emit::tree(), K_value, rb_s);
-		Produce::code(Emit::tree());
-		Produce::down(Emit::tree());
-
-		rulebook *rb;
-		LOOP_OVER(rb, rulebook)
-			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
-				Produce::inv_primitive(Emit::tree(), CASE_BIP);
-				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (rb->allocation_id));
-					Produce::code(Emit::tree());
-					Produce::down(Emit::tree());
-						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, Rulebooks::get_stv_creator_iname(rb));
-						Produce::up(Emit::tree());
-					Produce::up(Emit::tree());
-				Produce::up(Emit::tree());
-			}
-
-		Produce::up(Emit::tree());
-	Produce::up(Emit::tree());
-	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
-	Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-	Produce::up(Emit::tree());
-
-	Routines::end(save);
-
 @h Indexing and logging rulebooks.
 
 =
@@ -560,7 +460,7 @@ void Rulebooks::log_name_only(rulebook *rb) {
 void Rulebooks::log(rulebook *rb) {
 	Rulebooks::log_name_only(rb);
 	LOG(": ");
-	BookingLists::log(rb->rule_list);
+	BookingLists::log(rb->contents);
 }
 
 rule_context Rulebooks::no_rule_context(void) {
@@ -599,35 +499,6 @@ rule_context Rulebooks::scene_context(scene *s) {
 	rc.action_context = NULL;
 	rc.scene_context = s;
 	return rc;
-}
-#endif
-
-int Rulebooks::index(OUTPUT_STREAM, rulebook *rb, char *billing, rule_context rc, int *resp_count) {
-	int suppress_outcome = FALSE, t;
-	if (rb == NULL) return 0;
-	if (billing == NULL) internal_error("No billing for rb index");
-	if (billing[0] != 0) {
-		#ifdef IF_MODULE
-		if (rc.action_context) suppress_outcome = TRUE;
-		#endif
-		if (BookingLists::is_contextually_empty(rb->rule_list, rc)) suppress_outcome = TRUE;
-	}
-	t = IXRules::index_booking_list(OUT, rb->rule_list, rc, billing, rb, resp_count);
-	Rulebooks::Outcomes::index_outcomes(OUT, &(rb->my_outcomes), suppress_outcome);
-	Rulebooks::rb_index_placements(OUT, rb);
-	return t;
-}
-
-#ifdef IF_MODULE
-void Rulebooks::index_action_rules(OUTPUT_STREAM, action_name *an, rulebook *rb,
-	int code, char *desc, int *resp_count) {
-	int t = 0;
-	IXRules::list_suppress_indexed_links();
-	if (code >= 0) t += Rulebooks::index(OUT, built_in_rulebooks[code], desc,
-		Rulebooks::action_context(an), resp_count);
-	if (rb) t += Rulebooks::index(OUT, rb, desc, Rulebooks::no_rule_context(), resp_count);
-	IXRules::list_resume_indexed_links();
-	if (t > 0) HTML_TAG("br");
 }
 #endif
 
@@ -830,73 +701,12 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 
 	Phrases::Context::ensure_avl(RuleBookings::get_rule(the_new_rule));
 
-	BookingLists::add(rb->rule_list, the_new_rule, placing, side, ref_rule);
+	BookingLists::add(rb->contents, the_new_rule, placing, side, ref_rule);
 	LOGIF(RULE_ATTACHMENTS, "Rulebook after attachment: $K", rb);
 }
 
 void Rulebooks::detach_rule(rulebook *rb, rule *the_new_rule) {
-	BookingLists::remove(rb->rule_list, the_new_rule);
-}
-
-@h Compilation.
-We do not actually compile the I6 routines for a rulebook here, but simply
-act as a proxy. The I6 arrays making the rulebooks available to run-time
-code are the real outcome of the code in this section.
-
-=
-void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
-	RuleBookings::list_judge_ordering(rb->rule_list);
-	if (BookingLists::is_empty_of_i7_rules(rb->rule_list)) return;
-
-	BookingLists::compile(rb->rule_list, i, max_i);
-}
-
-void Rulebooks::rulebooks_array_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook)
-		Emit::array_iname_entry(rb->rb_iname);
-	Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void Rulebooks::compile_rulebooks(void) {
-	RTRules::start_list_compilation();
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
-		int act = FALSE;
-		if (Rulebooks::focus(rb) == ACTION_FOCUS) act = TRUE;
-		if (rb->automatically_generated) act = FALSE;
-		int par = FALSE;
-		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
-		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
-			rb->primary_name, rb->rb_iname);
-		RTRules::list_compile(rb->rule_list, rb->rb_iname, act, par);
-	}
-	rule *R;
-	LOOP_OVER(R, rule)
-		Rules::check_constraints_are_typesafe(R);
-}
-
-void Rulebooks::RulebookNames_array(void) {
-	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	if (global_compilation_settings.memory_economy_in_force) {
-		Emit::array_numeric_entry(0);
-		Emit::array_numeric_entry(0);
-	} else {
-		rulebook *rb;
-		LOOP_OVER(rb, rulebook) {
-			TEMPORARY_TEXT(rbt)
-			WRITE_TO(rbt, "%~W rulebook", rb->primary_name);
-			Emit::array_text_entry(rbt);
-			DISCARD_TEXT(rbt)
-		}
-	}
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
+	BookingLists::remove(rb->contents, the_new_rule);
 }
 
 @h Parsing rulebook properties.
@@ -934,337 +744,10 @@ kind *Rulebooks::kind_from_context(void) {
 	rulebook *rb;
 	if (ph == NULL) return NULL;
 	LOOP_OVER(rb, rulebook)
-		if (BookingLists::contains_ph(rb->rule_list, ph))
+		if (BookingLists::contains_ph(rb->contents, ph))
 			return Rulebooks::Outcomes::get_outcome_kind(&(rb->my_outcomes));
 	return NULL;
 }
-
-@h Rules index.
-The Rules page of the index is essentially a trawl through the more
-popular rulebooks, showing their contents in logical order.
-
-=
-void Rulebooks::index_page(OUTPUT_STREAM, int n) {
-	if (n == 1) {
-		@<Index the segment for the main action rulebooks@>;
-		@<Index the segment for the sequence of play rulebooks@>;
-		@<Index the segment for the Understanding rulebooks@>;
-		@<Index the segment for the description rulebooks@>;
-		@<Index the segment for the accessibility rulebooks@>;
-		@<Index the segment for the light and darkness rulebooks@>;
-		@<Index the segment for the top-level rulebooks@>;
-		@<Index the segment for the action processing rulebooks@>;
-		@<Index the segment for the responses@>;
-	} else {
-		if (Rulebooks::noteworthy_rulebooks(NULL) > 0)
-			@<Index the segment for new rulebooks and activities@>;
-		inform_extension *E;
-		LOOP_OVER(E, inform_extension)
-			if (Extensions::is_standard(E) == FALSE)
-				if (Rulebooks::noteworthy_rulebooks(E) > 0)
-					@<Index the segment for the rulebooks in this extension@>;
-	}
-}
-
-@<Index the segment for the top-level rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>The top level</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("An Inform story file spends its whole time working through "
-		"these three master rulebooks. They can be altered, just as all "
-		"rulebooks can, but it's generally better to leave them alone.");
-	HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Startup rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[STARTUP_RB], NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, STARTING_VIRTUAL_MACHINE_ACT, 2);
-	Activities::index_by_number(OUT, PRINTING_BANNER_TEXT_ACT, 2);
-	Rulebooks::index_rules_box(OUT, "Turn sequence rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[TURN_SEQUENCE_RB], NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, CONSTRUCTING_STATUS_LINE_ACT, 2);
-	Rulebooks::index_rules_box(OUT, "Shutdown rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SHUTDOWN_RB], NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, AMUSING_A_VICTORIOUS_PLAYER_ACT, 2);
-	Activities::index_by_number(OUT, PRINTING_PLAYERS_OBITUARY_ACT, 2);
-	Activities::index_by_number(OUT, DEALING_WITH_FINAL_QUESTION_ACT, 2);
-
-
-@<Index the segment for the sequence of play rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Rules added to the sequence of play</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These rulebooks are the best places to put rules timed to happen "
-		"at the start, at the end, or once each turn. (Each is run through at "
-		"a carefully chosen moment in the relevant top-level rulebook.) It is "
-		"also possible to have rules take effect at specific times of day "
-		"or when certain events happen. Those are listed in the Scenes index, "
-		"alongside rules taking place when scenes begin or end."); HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "When play begins", EMPTY_WORDING, I"rules_wpb",
-		built_in_rulebooks[WHEN_PLAY_BEGINS_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Every turn", EMPTY_WORDING, I"rules_et",
-		built_in_rulebooks[EVERY_TURN_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "When play ends", EMPTY_WORDING, I"rules_wpe",
-		built_in_rulebooks[WHEN_PLAY_ENDS_RB], NULL, NULL, 1, TRUE);
-
-@<Index the segment for the Understanding rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How commands are understood</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("'Understanding' here means turning a typed command, like GET FISH, "
-		"into one or more actions, like taking the red herring. This is all handled "
-		"by a single large rule (the parse command rule), but that rule makes use "
-		"of the following activities and rulebooks in its work."); HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Does the player mean", EMPTY_WORDING, I"rules_dtpm",
-		built_in_rulebooks[DOES_THE_PLAYER_MEAN_RB], NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, READING_A_COMMAND_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_SCOPE_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_CONCEALED_POSSESS_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_WHETHER_ALL_INC_ACT, 1);
-	Activities::index_by_number(OUT, CLARIFYING_PARSERS_CHOICE_ACT, 1);
-	Activities::index_by_number(OUT, ASKING_WHICH_DO_YOU_MEAN_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_A_PARSER_ERROR_ACT, 1);
-	Activities::index_by_number(OUT, SUPPLYING_A_MISSING_NOUN_ACT, 1);
-	Activities::index_by_number(OUT, SUPPLYING_A_MISSING_SECOND_ACT, 1);
-	Activities::index_by_number(OUT, IMPLICITLY_TAKING_ACT, 1);
-
-@<Index the segment for the main action rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Rules governing actions</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p");
-	WRITE("These rules are the ones which tell Inform how actions work, "
-		"and which affect how they happen in particular cases.");
-	HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Persuasion", EMPTY_WORDING, I"rules_per",
-		built_in_rulebooks[PERSUASION_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Unsuccessful attempt by", EMPTY_WORDING, I"rules_fail",
-		built_in_rulebooks[UNSUCCESSFUL_ATTEMPT_BY_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Before", EMPTY_WORDING, I"rules_before",
-		built_in_rulebooks[BEFORE_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Instead", EMPTY_WORDING, I"rules_instead",
-		built_in_rulebooks[INSTEAD_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Check", EMPTY_WORDING, NULL, NULL, NULL,
-		"Check rules are tied to specific actions, and there are too many "
-		"to index here. For instance, the check taking rules can only ever "
-		"affect the taking action, so they are indexed on the detailed index "
-		"page for taking.", 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Carry out", EMPTY_WORDING, NULL, NULL, NULL,
-		"Carry out rules are tied to specific actions, and there are too many "
-		"to index here.", 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "After", EMPTY_WORDING, I"rules_after",
-		built_in_rulebooks[AFTER_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Report", EMPTY_WORDING, NULL, NULL, NULL,
-		"Report rules are tied to specific actions, and there are too many "
-		"to index here.", 1, TRUE);
-
-@<Index the segment for the action processing rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How actions are processed</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These form the technical machinery for dealing with actions, and are "
-		"called on at least once every turn. They seldom need to be changed."); HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Action-processing rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[ACTION_PROCESSING_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Specific action-processing rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SPECIFIC_ACTION_PROCESSING_RB], NULL, NULL, 2, TRUE);
-	Rulebooks::index_rules_box(OUT, "Player's action awareness rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[PLAYERS_ACTION_AWARENESS_RB], NULL, NULL, 3, TRUE);
-
-@<Index the segment for the responses@> =
-	HTML_OPEN("p"); WRITE("<b>How responses are printed</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("The Standard Rules, and some extensions, reply to the player's "
-		"commands with messages which are able to be modified."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_RESPONSE_ACT, 1);
-
-@<Index the segment for the accessibility rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How accessibility is judged</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These rulebooks are used when deciding who can reach what, and "
-		"who can see what."); HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Reaching inside", EMPTY_WORDING, I"rules_ri",
-		built_in_rulebooks[REACHING_INSIDE_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Reaching outside", EMPTY_WORDING, I"rules_ri",
-		built_in_rulebooks[REACHING_OUTSIDE_RB], NULL, NULL, 1, TRUE);
-	Rulebooks::index_rules_box(OUT, "Visibility", EMPTY_WORDING, I"visibility",
-		built_in_rulebooks[VISIBILITY_RB], NULL, NULL, 1, TRUE);
-
-@<Index the segment for the light and darkness rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>Light and darkness</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These activities control how we describe darkness."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_NAME_OF_DARK_ROOM_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_DESC_OF_DARK_ROOM_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_NEWS_OF_DARKNESS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_NEWS_OF_LIGHT_ACT, 1);
-	Activities::index_by_number(OUT, REFUSAL_TO_ACT_IN_DARK_ACT, 1);
-
-@<Index the segment for the description rulebooks@> =
-	HTML_OPEN("p"); WRITE("<b>How things are described</b>"); HTML_CLOSE("p");
-	HTML_OPEN("p"); WRITE("These activities control what is printed when naming rooms or "
-		"things, and their descriptions."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_THE_NAME_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_THE_PLURAL_NAME_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_A_NUMBER_OF_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_ROOM_DESC_DETAILS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_INVENTORY_DETAILS_ACT, 1);
-	Activities::index_by_number(OUT, LISTING_CONTENTS_ACT, 1);
-	Activities::index_by_number(OUT, GROUPING_TOGETHER_ACT, 1);
-	Activities::index_by_number(OUT, WRITING_A_PARAGRAPH_ABOUT_ACT, 1);
-	Activities::index_by_number(OUT, LISTING_NONDESCRIPT_ITEMS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_LOCALE_DESCRIPTION_ACT, 1);
-	Activities::index_by_number(OUT, CHOOSING_NOTABLE_LOCALE_OBJ_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_LOCALE_PARAGRAPH_ACT, 1);
-
-@<Index the segment for new rulebooks and activities@> =
-	HTML_OPEN("p"); WRITE("<b>From the source text</b>"); HTML_CLOSE("p");
-	inform_extension *E = NULL; /* that is, not in an extension at all */
-	@<Index rulebooks occurring in this part of the source text@>;
-
-@<Index the segment for the rulebooks in this extension@> =
-	HTML_OPEN("p"); WRITE("<b>From the extension ");
-	Works::write_to_HTML_file(OUT, E->as_copy->edition->work, FALSE);
-	WRITE("</b>"); HTML_CLOSE("p");
-	@<Index rulebooks occurring in this part of the source text@>;
-
-@<Index rulebooks occurring in this part of the source text@> =
-	activity *av;
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
-		if (rb->automatically_generated) continue;
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E))
-			Rulebooks::index_rules_box(OUT, NULL, rb->primary_name, NULL, rb, NULL, NULL, 1, TRUE);
-	}
-	LOOP_OVER(av, activity) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E))
-			Activities::index(OUT, av, 1);
-	}
-
-@ =
-int Rulebooks::noteworthy_rulebooks(inform_extension *E) {
-	int nb = 0;
-	activity *av;
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(rb->primary_name));
-		if (rb->automatically_generated) continue;
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E)) nb++;
-	}
-	LOOP_OVER(av, activity) {
-		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
-		if (((E == NULL) && (sf == NULL)) ||
-			(Extensions::corresponding_to(sf) == E)) nb++;
-	}
-	return nb;
-}
-
-void Rulebooks::index_scene(OUTPUT_STREAM) {
-	HTML_OPEN("p"); WRITE("<b>The scene-changing machinery</b>"); HTML_CLOSE("p");
-	Rulebooks::index_rules_box(OUT, "Scene changing", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SCENE_CHANGING_RB], NULL, NULL, 1, FALSE);
-}
-
-int unique_xtra_no = 0;
-void Rulebooks::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream *doc_link,
-	rulebook *rb, activity *av, char *text, int indent, int hide_behind_plus) {
-	int xtra_no = 0;
-	if (rb) xtra_no = rb->allocation_id;
-	else if (av) xtra_no = NUMBER_CREATED(rulebook) + av->allocation_id;
-	else xtra_no = NUMBER_CREATED(rulebook) + NUMBER_CREATED(activity) + unique_xtra_no++;
-
-	char *col = "e0e0e0";
-	if (av) col = "e8e0c0";
-
-	int n = 0;
-	if (rb) n = Rulebooks::no_rules(rb);
-	if (av) n = Activities::no_rules(av);
-
-	TEMPORARY_TEXT(textual_name)
-	if (name) WRITE_TO(textual_name, "%s", name);
-	else if (Wordings::nonempty(W)) WRITE_TO(textual_name, "%+W", W);
-	else WRITE_TO(textual_name, "nameless");
-	string_position start = Str::start(textual_name);
-	Str::put(start, Characters::tolower(Str::get(start)));
-
-	if (hide_behind_plus) {
-		HTML::open_indented_p(OUT, indent+1, "tight");
-		Index::extra_link(OUT, xtra_no);
-		if (n == 0) HTML::begin_colour(OUT, I"808080");
-		WRITE("%S", textual_name);
-		@<Write the titling line of an index rules box@>;
-		WRITE(" (%d rule%s)", n, (n==1)?"":"s");
-		if (n == 0) HTML::end_colour(OUT);
-		HTML_CLOSE("p");
-
-		Index::extra_div_open(OUT, xtra_no, indent+1, col);
-	} else {
-		HTML::open_indented_p(OUT, indent, "");
-		HTML::open_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
-	}
-
-	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
-	HTML::first_html_column(OUT, 0);
-
-
-	HTML::open_indented_p(OUT, 1, "tight");
-	WRITE("<b>%S</b>", textual_name);
-	@<Write the titling line of an index rules box@>;
-	HTML_CLOSE("p");
-
-	HTML::next_html_column_right_justified(OUT, 0);
-
-	HTML::open_indented_p(OUT, 1, "tight");
-	if (av) {
-		TEMPORARY_TEXT(skeleton)
-		WRITE_TO(skeleton, "Before %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>b</i> ");
-		Str::clear(skeleton);
-		WRITE_TO(skeleton, "Rule for %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>f</i> ");
-		Str::clear(skeleton);
-		WRITE_TO(skeleton, "After %S:", textual_name);
-		PasteButtons::paste_text(OUT, skeleton);
-		WRITE("&nbsp;<i>a</i>");
-		DISCARD_TEXT(skeleton)
-	} else {
-		PasteButtons::paste_text(OUT, textual_name);
-		WRITE("&nbsp;<i>name</i>");
-	}
-	HTML_CLOSE("p");
-	DISCARD_TEXT(textual_name)
-
-	HTML::end_html_row(OUT);
-	HTML::end_html_table(OUT);
-
-	if ((rb) && (Rulebooks::is_empty(rb, Rulebooks::no_rule_context())))
-		text = "There are no rules in this rulebook.";
-	if (text) {
-		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%s", text); HTML_CLOSE("p");
-	} else {
-		if (rb) {
-			int ignore_me = 0;
-			Rulebooks::index(OUT, rb, "", Rulebooks::no_rule_context(), &ignore_me);
-		}
-		if (av) Activities::index_details(OUT, av);
-	}
-	if (hide_behind_plus) {
-		Index::extra_div_close(OUT, col);
-	} else {
-		HTML::close_coloured_box(OUT, col, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
-		HTML_CLOSE("p");
-	}
-}
-
-@<Write the titling line of an index rules box@> =
-	if (Str::len(doc_link) > 0) Index::DocReferences::link(OUT, doc_link);
-	WRITE(" ... ");
-	if (av) WRITE(" activity"); else {
-		if ((rb) && (Rulebooks::get_parameter_kind(rb)) &&
-			(Kinds::eq(Rulebooks::get_parameter_kind(rb), K_action_name) == FALSE)) {
-			WRITE(" ");
-			Kinds::Textual::write_articled(OUT, Rulebooks::get_parameter_kind(rb));
-			WRITE(" based");
-		}
-		WRITE(" rulebook");
-	}
-	int wn = -1;
-	if (rb) wn = Wordings::first_wn(rb->primary_name);
-	else if (av) wn = Wordings::first_wn(av->name);
-	if (wn >= 0) Index::link(OUT, wn);
 
 @ In order to parse sentences about how rules are placed in rulebooks, we
 need to be able to parse the relevant names. (The definite article can

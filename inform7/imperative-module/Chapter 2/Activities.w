@@ -368,7 +368,7 @@ void Activities::index(OUTPUT_STREAM, activity *av, int indent) {
 	if (Wordings::nonempty(av->av_documentation_symbol))
 		WRITE_TO(doc_link, "%+W", Wordings::one_word(Wordings::first_wn(av->av_documentation_symbol)));
 	if (empty) text = "There are no rules before, for or after this activity.";
-	Rulebooks::index_rules_box(OUT, NULL, av->name, doc_link,
+	IXRules::index_rules_box(OUT, NULL, av->name, doc_link,
 		NULL, av, text, indent, TRUE);
 	DISCARD_TEXT(doc_link)
 }
@@ -383,9 +383,9 @@ int Activities::no_rules(activity *av) {
 
 void Activities::index_details(OUTPUT_STREAM, activity *av) {
 	int ignore_me = 0;
-	Rulebooks::index(OUT, av->before_rules, "before", Rulebooks::no_rule_context(), &ignore_me);
-	Rulebooks::index(OUT, av->for_rules, "for", Rulebooks::no_rule_context(), &ignore_me);
-	Rulebooks::index(OUT, av->after_rules, "after", Rulebooks::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->before_rules, "before", Rulebooks::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->for_rules, "for", Rulebooks::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->after_rules, "after", Rulebooks::no_rule_context(), &ignore_me);
 	Activities::index_cross_references(OUT, av);
 }
 

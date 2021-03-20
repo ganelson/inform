@@ -617,4 +617,144 @@ action_name *RTRules::br_required_action(booking *br) {
 }
 #endif
 
+@
 
+=
+typedef struct rulebook_compilation_data {
+	struct inter_name *stv_creator_iname;
+	struct package_request *rb_package;
+	struct inter_name *rb_iname; /* run-time storage/routine holding contents */
+} rulebook_compilation_data;
+
+rulebook_compilation_data RTRules::new_rulebook_compilation_data(rulebook *rb,
+	package_request *R) {
+	rulebook_compilation_data rcd;
+	rcd.stv_creator_iname = NULL;
+	rcd.rb_package = R;
+	rcd.rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, R);
+	return rcd;
+}
+
+@ We do not actually compile the I6 routines for a rulebook here, but simply
+act as a proxy. The I6 arrays making the rulebooks available to run-time
+code are the real outcome of the code in this section.
+
+=
+void RTRules::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
+	RuleBookings::list_judge_ordering(rb->contents);
+	if (BookingLists::is_empty_of_i7_rules(rb->contents)) return;
+
+	BookingLists::compile(rb->contents, i, max_i);
+}
+
+void RTRules::rulebooks_array_array(void) {
+	inter_name *iname = Hierarchy::find(RULEBOOKS_ARRAY_HL);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
+	rulebook *rb;
+	LOOP_OVER(rb, rulebook)
+		Emit::array_iname_entry(rb->compilation_data.rb_iname);
+	Emit::array_numeric_entry(0);
+	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
+}
+
+void RTRules::compile_rulebooks(void) {
+	RTRules::start_list_compilation();
+	rulebook *rb;
+	LOOP_OVER(rb, rulebook) {
+		int act = FALSE;
+		if (Rulebooks::focus(rb) == ACTION_FOCUS) act = TRUE;
+		if (rb->automatically_generated) act = FALSE;
+		int par = FALSE;
+		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
+		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
+			rb->primary_name, rb->compilation_data.rb_iname);
+		RTRules::list_compile(rb->contents, rb->compilation_data.rb_iname, act, par);
+	}
+	rule *R;
+	LOOP_OVER(R, rule)
+		Rules::check_constraints_are_typesafe(R);
+}
+
+void RTRules::RulebookNames_array(void) {
+	inter_name *iname = Hierarchy::find(RULEBOOKNAMES_HL);
+	packaging_state save = Emit::named_array_begin(iname, K_value);
+	if (global_compilation_settings.memory_economy_in_force) {
+		Emit::array_numeric_entry(0);
+		Emit::array_numeric_entry(0);
+	} else {
+		rulebook *rb;
+		LOOP_OVER(rb, rulebook) {
+			TEMPORARY_TEXT(rbt)
+			WRITE_TO(rbt, "%~W rulebook", rb->primary_name);
+			Emit::array_text_entry(rbt);
+			DISCARD_TEXT(rbt)
+		}
+	}
+	Emit::array_end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
+}
+
+
+inter_name *RTRules::get_stv_creator_iname(rulebook *rb) {
+	if (rb->compilation_data.stv_creator_iname == NULL)
+		rb->compilation_data.stv_creator_iname =
+			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, rb->compilation_data.rb_package);
+	return rb->compilation_data.stv_creator_iname;
+}
+
+void RTRules::rulebook_var_creators(void) {
+	rulebook *rb;
+	LOOP_OVER(rb, rulebook)
+		if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE)
+			StackedVariables::compile_frame_creator(rb->owned_by_rb,
+				RTRules::get_stv_creator_iname(rb));
+
+	if (global_compilation_settings.memory_economy_in_force == FALSE) {
+		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
+		packaging_state save = Emit::named_array_begin(iname, K_value);
+		LOOP_OVER(rb, rulebook) {
+			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
+			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->owned_by_rb));
+		}
+		Emit::array_numeric_entry(0);
+		Emit::array_end(save);
+		Hierarchy::make_available(Emit::tree(), iname);
+	} else @<Make slow lookup routine@>;
+}
+
+@<Make slow lookup routine@> =
+	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
+	packaging_state save = Routines::begin(iname);
+	inter_symbol *rb_s = LocalVariables::add_named_call_as_symbol(I"rb");
+
+	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
+	Produce::down(Emit::tree());
+		Produce::val_symbol(Emit::tree(), K_value, rb_s);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+
+		rulebook *rb;
+		LOOP_OVER(rb, rulebook)
+			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
+				Produce::inv_primitive(Emit::tree(), CASE_BIP);
+				Produce::down(Emit::tree());
+					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (rb->allocation_id));
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+						Produce::down(Emit::tree());
+							Produce::val_iname(Emit::tree(), K_value, RTRules::get_stv_creator_iname(rb));
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			}
+
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+	Produce::up(Emit::tree());
+
+	Routines::end(save);
