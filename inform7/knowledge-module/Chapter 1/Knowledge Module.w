@@ -11,7 +11,7 @@ which use this module:
 @ Like all modules, this one must define a |start| and |end| function:
 
 =
-COMPILE_WRITER(booking *, Rules::Bookings::log)
+COMPILE_WRITER(booking *, RuleBookings::log)
 COMPILE_WRITER(inference *, Inferences::log)
 COMPILE_WRITER(inference_subject *, InferenceSubjects::log)
 COMPILE_WRITER(property *, Properties::log)
@@ -43,7 +43,7 @@ void KnowledgeModule::start(void) {
 	SettingPropertyRelations::start();
 	ComparativeRelations::start();
 	ProvisionRelation::start();
-	REGISTER_WRITER('b', Rules::Bookings::log);
+	REGISTER_WRITER('b', RuleBookings::log);
 	REGISTER_WRITER('I', Inferences::log);
 	REGISTER_WRITER('j', InferenceSubjects::log);
 	REGISTER_WRITER('K', Rulebooks::log);

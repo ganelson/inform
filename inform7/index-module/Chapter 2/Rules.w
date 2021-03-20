@@ -122,3 +122,80 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 		Index::link(OUT, Wordings::first_wn(Node::get_text(acl->where_imposed)));
 		WRITE("&nbsp;%+W", Node::get_text(acl->where_imposed));
 	}
+
+@h Indexing of lists.
+There's a division of labour: here we arrange the index of the rules and
+show the linkage between them, while the actual content for each rule is
+handled in the "Rules" section.
+
+=
+int IXRules::index_booking_list(OUTPUT_STREAM, booking_list *L, rule_context rc,
+	char *billing, rulebook *owner, int *resp_count) {
+	booking *prev = NULL;
+	int count = 0;
+	LOOP_OVER_BOOKINGS(br, L) {
+		rule *R = RuleBookings::get_rule(br);
+		int skip = FALSE;
+		#ifdef IF_MODULE
+		phrase *ph = Rules::get_defn_as_phrase(R);
+		if (ph) {
+			ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+			scene *during_scene = Phrases::Context::get_scene(phrcd);
+			if ((rc.scene_context) && (during_scene != rc.scene_context)) skip = TRUE;
+			if ((rc.action_context) &&
+				(Phrases::Context::within_action_context(phrcd, rc.action_context) == FALSE))
+				skip = TRUE;
+		}
+		#endif
+		if (skip == FALSE) {
+			count++;
+			IXRules::br_start_index_line(OUT, prev, billing);
+			*resp_count += IXRules::index(OUT, R, owner, rc);
+		}
+		prev = br;
+	}
+	return count;
+}
+
+@ The "index links" are not hypertextual: they're the little icons showing
+the order of precedence of rules in the list. On some index pages we don't
+want this, so:
+
+=
+int show_index_links = TRUE;
+
+void IXRules::list_suppress_indexed_links(void) {
+	show_index_links = FALSE;
+}
+
+void IXRules::list_resume_indexed_links(void) {
+	show_index_links = TRUE;
+}
+
+void IXRules::br_start_index_line(OUTPUT_STREAM, booking *prev, char *billing) {
+	HTML::open_indented_p(OUT, 2, "hanging");
+	if ((billing[0]) && (show_index_links)) IXRules::br_show_linkage_icon(OUT, prev);
+	WRITE("%s", billing);
+	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+	if ((billing[0] == 0) && (show_index_links)) IXRules::br_show_linkage_icon(OUT, prev);
+}
+
+@ And here's how the index links (if wanted) are chosen and plotted:
+
+=
+void IXRules::br_show_linkage_icon(OUTPUT_STREAM, booking *prev) {
+	text_stream *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
+	if ((prev == NULL) || (prev->commentary.tooltip_text == NULL)) {
+		HTML::icon_with_tooltip(OUT, I"inform:/doc_images/rulenone.png",
+			I"start of rulebook", NULL);
+		return;
+	}
+	switch (prev->commentary.next_rule_specificity) {
+		case -1: icon_name = I"inform:/doc_images/ruleless.png"; break;
+		case 0: icon_name = I"inform:/doc_images/ruleequal.png"; break;
+		case 1: icon_name = I"inform:/doc_images/rulemore.png"; break;
+		default: internal_error("unknown rule specificity");
+	}
+	HTML::icon_with_tooltip(OUT, icon_name,
+		prev->commentary.tooltip_text, prev->commentary.law_applied);
+}

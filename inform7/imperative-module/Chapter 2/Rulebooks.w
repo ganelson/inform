@@ -49,7 +49,7 @@ typedef struct rulebook {
 	int runs_during_activities; /* allow "while..." clauses to name these */
 	int used_by_future_action_activity; /* like "deciding the scope of something..." */
 
-	struct booking *rule_list; /* linked list of booked rules */
+	struct booking_list *rule_list; /* linked list of booked rules */
 
 	struct placement_affecting *placement_list; /* linked list of explicit placements */
 
@@ -215,7 +215,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	rb->rb_package = R;
 	rb->rb_iname = Hierarchy::make_iname_in(RUN_FN_HL, rb->rb_package);
 
-	rb->rule_list = Rules::Bookings::list_new();
+	rb->rule_list = BookingLists::new();
 
 	rb->automatically_generated = FALSE;
 	rb->used_by_future_action_activity = FALSE;
@@ -359,22 +359,22 @@ int Rulebooks::used_by_future_actions(rulebook *rb) {
 
 int Rulebooks::is_empty(rulebook *rb, rule_context rc) {
 	if (rb == NULL) return TRUE;
-	return Rules::Bookings::list_is_empty(rb->rule_list, rc);
+	return BookingLists::is_contextually_empty(rb->rule_list, rc);
 }
 
 int Rulebooks::no_rules(rulebook *rb) {
 	if (rb == NULL) return 0;
-	return Rules::Bookings::no_rules_in_list(rb->rule_list);
+	return BookingLists::length(rb->rule_list);
 }
 
 int Rulebooks::rule_in_rulebook(rule *R, rulebook *rb) {
 	if (rb == NULL) return FALSE;
-	return Rules::Bookings::list_contains(rb->rule_list, R);
+	return BookingLists::contains(rb->rule_list, R);
 }
 
 booking *Rulebooks::first_booking(rulebook *rb) {
 	if (rb == NULL) return NULL;
-	return rb->rule_list;
+	return BookingLists::first(rb->rule_list);
 }
 
 int Rulebooks::runs_during_activities(rulebook *rb) {
@@ -560,7 +560,7 @@ void Rulebooks::log_name_only(rulebook *rb) {
 void Rulebooks::log(rulebook *rb) {
 	Rulebooks::log_name_only(rb);
 	LOG(": ");
-	Rules::Bookings::list_log(rb->rule_list);
+	BookingLists::log(rb->rule_list);
 }
 
 rule_context Rulebooks::no_rule_context(void) {
@@ -610,9 +610,9 @@ int Rulebooks::index(OUTPUT_STREAM, rulebook *rb, char *billing, rule_context rc
 		#ifdef IF_MODULE
 		if (rc.action_context) suppress_outcome = TRUE;
 		#endif
-		if (Rules::Bookings::list_is_empty(rb->rule_list, rc)) suppress_outcome = TRUE;
+		if (BookingLists::is_contextually_empty(rb->rule_list, rc)) suppress_outcome = TRUE;
 	}
-	t = Rules::Bookings::list_index(OUT, rb->rule_list, rc, billing, rb, resp_count);
+	t = IXRules::index_booking_list(OUT, rb->rule_list, rc, billing, rb, resp_count);
 	Rulebooks::Outcomes::index_outcomes(OUT, &(rb->my_outcomes), suppress_outcome);
 	Rulebooks::rb_index_placements(OUT, rb);
 	return t;
@@ -622,11 +622,11 @@ int Rulebooks::index(OUTPUT_STREAM, rulebook *rb, char *billing, rule_context rc
 void Rulebooks::index_action_rules(OUTPUT_STREAM, action_name *an, rulebook *rb,
 	int code, char *desc, int *resp_count) {
 	int t = 0;
-	Rules::Bookings::list_suppress_indexed_links();
+	IXRules::list_suppress_indexed_links();
 	if (code >= 0) t += Rulebooks::index(OUT, built_in_rulebooks[code], desc,
 		Rulebooks::action_context(an), resp_count);
 	if (rb) t += Rulebooks::index(OUT, rb, desc, Rulebooks::no_rule_context(), resp_count);
-	Rules::Bookings::list_resume_indexed_links();
+	IXRules::list_resume_indexed_links();
 	if (t > 0) HTML_TAG("br");
 }
 #endif
@@ -778,7 +778,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 		the_new_rule, current_sentence);
 	LOGIF(RULE_ATTACHMENTS, "Rulebook before attachment: $K", rb);
 
-	if (Rules::Bookings::get_rule(the_new_rule) == ref_rule) {
+	if (RuleBookings::get_rule(the_new_rule) == ref_rule) {
 		if (side != INSTEAD_SIDE)
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BeforeOrAfterSelf),
 				"a rule can't be before or after itself",
@@ -790,7 +790,7 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 	if ((rb == built_in_rulebooks[BEFORE_RB]) ||
 		(rb == built_in_rulebooks[AFTER_RB]) ||
 		(rb == built_in_rulebooks[INSTEAD_RB])) {
-		phrase *ph = Rules::get_defn_as_phrase(Rules::Bookings::get_rule(the_new_rule));
+		phrase *ph = Rules::get_defn_as_phrase(RuleBookings::get_rule(the_new_rule));
 		if (ph) {
 			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
 			if ((an) && (ActionSemantics::is_out_of_world(an)))
@@ -804,16 +804,16 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 
 
 	if (rb == built_in_rulebooks[SETTING_ACTION_VARIABLES_RB]) {
-		Rules::set_never_test_actor(Rules::Bookings::get_rule(the_new_rule));
+		Rules::set_never_test_actor(RuleBookings::get_rule(the_new_rule));
 	} else {
 		Rulebooks::Outcomes::modify_rule_to_suit_focus(&(rb->my_focus),
-			Rules::Bookings::get_rule(the_new_rule));
+			RuleBookings::get_rule(the_new_rule));
 	}
 
 	if (side == INSTEAD_SIDE) {
 		LOGIF(RULE_ATTACHMENTS,
 			"Copying actor test flags from rule being replaced\n");
-		Rules::copy_actor_test_flags(Rules::Bookings::get_rule(the_new_rule), ref_rule);
+		Rules::copy_actor_test_flags(RuleBookings::get_rule(the_new_rule), ref_rule);
 		LOGIF(RULE_ATTACHMENTS,
 			"Copying former rulebook's variable permissions to displaced rule\n");
 		Rules::put_variables_in_scope(ref_rule, rb->accessible_from_rb);
@@ -822,20 +822,20 @@ void Rulebooks::attach_rule(rulebook *rb, booking *the_new_rule,
 	}
 	#endif
 
-	Rules::put_variables_in_scope(Rules::Bookings::get_rule(the_new_rule), rb->accessible_from_rb);
+	Rules::put_variables_in_scope(RuleBookings::get_rule(the_new_rule), rb->accessible_from_rb);
 	if (Rulebooks::focus(rb) == ACTION_FOCUS)
-		Rules::put_action_variables_in_scope(Rules::Bookings::get_rule(the_new_rule));
+		Rules::put_action_variables_in_scope(RuleBookings::get_rule(the_new_rule));
 	if (rb->fragmentation_stem_length > 0)
-		Rules::suppress_action_testing(Rules::Bookings::get_rule(the_new_rule));
+		Rules::suppress_action_testing(RuleBookings::get_rule(the_new_rule));
 
-	Phrases::Context::ensure_avl(Rules::Bookings::get_rule(the_new_rule));
+	Phrases::Context::ensure_avl(RuleBookings::get_rule(the_new_rule));
 
-	Rules::Bookings::list_add(rb->rule_list, the_new_rule, placing, side, ref_rule);
+	BookingLists::add(rb->rule_list, the_new_rule, placing, side, ref_rule);
 	LOGIF(RULE_ATTACHMENTS, "Rulebook after attachment: $K", rb);
 }
 
 void Rulebooks::detach_rule(rulebook *rb, rule *the_new_rule) {
-	Rules::Bookings::list_remove(rb->rule_list, the_new_rule);
+	BookingLists::remove(rb->rule_list, the_new_rule);
 }
 
 @h Compilation.
@@ -845,10 +845,10 @@ code are the real outcome of the code in this section.
 
 =
 void Rulebooks::compile_rule_phrases(rulebook *rb, int *i, int max_i) {
-	Rules::Bookings::list_judge_ordering(rb->rule_list);
-	if (Rules::Bookings::list_is_empty_of_i7_rules(rb->rule_list)) return;
+	RuleBookings::list_judge_ordering(rb->rule_list);
+	if (BookingLists::is_empty_of_i7_rules(rb->rule_list)) return;
 
-	Rules::Bookings::list_compile_rule_phrases(rb->rule_list, i, max_i);
+	BookingLists::compile(rb->rule_list, i, max_i);
 }
 
 void Rulebooks::rulebooks_array_array(void) {
@@ -863,7 +863,7 @@ void Rulebooks::rulebooks_array_array(void) {
 }
 
 void Rulebooks::compile_rulebooks(void) {
-	Rules::Bookings::start_list_compilation();
+	RTRules::start_list_compilation();
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook) {
 		int act = FALSE;
@@ -873,7 +873,7 @@ void Rulebooks::compile_rulebooks(void) {
 		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
 		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
 			rb->primary_name, rb->rb_iname);
-		Rules::Bookings::list_compile(rb->rule_list, rb->rb_iname, act, par);
+		RTRules::list_compile(rb->rule_list, rb->rb_iname, act, par);
 	}
 	rule *R;
 	LOOP_OVER(R, rule)
@@ -934,7 +934,7 @@ kind *Rulebooks::kind_from_context(void) {
 	rulebook *rb;
 	if (ph == NULL) return NULL;
 	LOOP_OVER(rb, rulebook)
-		if (Rules::Bookings::list_contains_ph(rb->rule_list, ph))
+		if (BookingLists::contains_ph(rb->rule_list, ph))
 			return Rulebooks::Outcomes::get_outcome_kind(&(rb->my_outcomes));
 	return NULL;
 }

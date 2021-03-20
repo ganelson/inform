@@ -89,6 +89,7 @@ DECLARE_CLASS(text_substitution)
 @e activity_list_CLASS
 @e applicability_constraint_CLASS
 @e booking_CLASS
+@e booking_list_CLASS
 @e comparative_bp_data_CLASS
 @e condition_of_subject_CLASS
 @e counting_data_CLASS
@@ -121,6 +122,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
 DECLARE_CLASS(applicability_constraint)
 DECLARE_CLASS(booking)
+DECLARE_CLASS(booking_list)
 DECLARE_CLASS(comparative_bp_data)
 DECLARE_CLASS(condition_of_subject)
 DECLARE_CLASS(counting_data)

@@ -312,7 +312,7 @@ and returns 1 if |R1| is more specific than |R2|, -1 if |R2| is more specific
 than |R1|, or 0 if they are equally good.
 
 =
-int Rules::compare_specificity(rule *R1, rule *R2, int log_this) {
+int Rules::cmp(rule *R1, rule *R2, int log_this) {
 	phrase *ph1 = R1->defn_as_phrase, *ph2 = R2->defn_as_phrase;
 	ph_runtime_context_data *phrcd1 = NULL, *phrcd2 = NULL;
 	if (ph1) phrcd1 = &(ph1->runtime_context_data);
@@ -424,8 +424,8 @@ of another.
 =
 void Rules::request_automatic_placement(rule *R) {
 	if (R->automatic_booking == NULL)
-		R->automatic_booking = Rules::Bookings::new(R);
-	Rules::Bookings::request_automatic_placement(R->automatic_booking);
+		R->automatic_booking = RuleBookings::new(R);
+	RuleBookings::request_automatic_placement(R->automatic_booking);
 }
 
 @h Actor testing.

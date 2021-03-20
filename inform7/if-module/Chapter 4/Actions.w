@@ -81,9 +81,9 @@ a given action:
 
 =
 rulebook *Actions::fragment_rulebook(action_name *an, rulebook *rb) {
-	if (rb == built_in_rulebooks[CHECK_RB]) return an->check_rules;
+	if (rb == built_in_rulebooks[CHECK_RB])     return an->check_rules;
 	if (rb == built_in_rulebooks[CARRY_OUT_RB]) return an->carry_out_rules;
-	if (rb == built_in_rulebooks[REPORT_RB]) return an->report_rules;
+	if (rb == built_in_rulebooks[REPORT_RB])    return an->report_rules;
 	internal_error("asked for peculiar fragmented rulebook"); return NULL;
 }
 
@@ -92,13 +92,74 @@ rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 	if (new_an) {
 		action_name *old_an;
 		LOOP_OVER(old_an, action_name) {
-			if (old_rulebook == old_an->check_rules) return new_an->check_rules;
+			if (old_rulebook == old_an->check_rules)     return new_an->check_rules;
 			if (old_rulebook == old_an->carry_out_rules) return new_an->carry_out_rules;
-			if (old_rulebook == old_an->report_rules) return new_an->report_rules;
+			if (old_rulebook == old_an->report_rules)    return new_an->report_rules;
 		}
 	}
 	return old_rulebook;
 }
+
+@ And this is where the actions plugin moves rules from their normal rulebooks:
+
+=
+int Actions::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
+	phrase *ph = Rules::get_defn_as_phrase(R); if (ph == NULL) return FALSE;
+	if (Rulebooks::requires_specific_action(original_owner)) {
+		int waiver = FALSE;
+		action_name *an = NULL;
+		wording PW = Phrases::Usage::get_prewhile_text(&(ph->usage_data));
+		if (Wordings::nonempty(PW)) {
+			LOOP_THROUGH_WORDING(i, PW)
+				if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
+					@<Issue PM_MultipleCCR@>;
+			int anyone = FALSE;
+			action_name_list *list = ParseActionPatterns::list_of_actions_only(PW, &anyone);
+			LOGIF(RULE_ATTACHMENTS, "Looking at '%W' (anyone flag %d):\n$L\n",
+				PW, anyone, list);
+			an = ActionNameLists::get_best_action(list);
+			LOGIF(RULE_ATTACHMENTS, "Best action is $l\n", an);
+			Rules::set_marked_for_anyone(R, anyone);
+		} else {
+			waiver = TRUE;
+			if (original_owner == built_in_rulebooks[CHECK_RB])     waiver = FALSE;
+			if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) waiver = FALSE;
+			if (original_owner == built_in_rulebooks[REPORT_RB])    waiver = FALSE;
+		}
+		if ((an == NULL) && (waiver == FALSE))
+			an = ActionNameNames::longest_nounless(PW, IS_TENSE, NULL);
+		if ((an == NULL) && (waiver == FALSE)) @<Issue PM_MultipleCCR@>;
+		if (original_owner == built_in_rulebooks[CHECK_RB]) {
+			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[CHECK_RB]);
+			return TRUE;
+		} else if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) {
+			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]);
+			return TRUE;
+		} else if (original_owner == built_in_rulebooks[REPORT_RB]) {
+			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[REPORT_RB]);
+			return TRUE;
+		} else {
+			*new_owner = Actions::divert_to_another_actions_rulebook(an, original_owner);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+@<Issue PM_MultipleCCR@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, PW);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MultipleCCR));
+	Problems::issue_problem_segment(
+		"You wrote %1, but the situation this refers to ('%2') is not a single "
+		"action. Rules in the form of 'check', 'carry out' and 'report' are "
+		"tied to specific actions, and must give a single explicit action name - "
+		"even if they then go on to very complicated conditions about any nouns "
+		"also involved. So 'Check taking something: ...' is fine, but not 'Check "
+		"taking or dropping something: ...' or 'Check doing something: ...' - "
+		"the former names two actions, the latter none.");
+	Problems::issue_problem_end();
+	return FALSE;
 
 @ The //Parsing Plugin// attaches command grammar to an action, but that's not
 our concern here:

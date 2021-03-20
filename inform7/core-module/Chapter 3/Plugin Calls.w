@@ -422,6 +422,22 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
+@h Influencing the imperative plugin.
+Called from //imperative: Rule Bookings// to give plugins a chance to move
+automatically placed rules from one rulebook to another. The actions plugin
+uses this to break up what would otherwise be unwieldy before and after
+rulebooks into smaller ones for each action.
+
+If making a diversion, the plugin should write the new rulebook into |new_owner|
+and return |TRUE|; and otherwise |FALSE|.
+
+@e DIVERT_RULE_PLUG
+
+=
+int PluginCalls::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
+	PLUGINS_CALL(DIVERT_RULE_PLUG, R, original_owner, new_owner);
+}
+
 @h Influencing the actions plugin.
 We now have a whole run of functions called only by the actions plugin, and
 therefore only when it is active.

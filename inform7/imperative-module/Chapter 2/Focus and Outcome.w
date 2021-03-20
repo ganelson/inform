@@ -314,7 +314,7 @@ rulebook_outcome *Rulebooks::Outcomes::rbo_from_context(named_rulebook_outcome *
 		rulebook_outcome *ro;
 		for (ro = outs->named_outcomes; ro; ro = ro->next) {
 			if (ro->outcome_name == rbno) {
-				if (Rules::Bookings::list_contains_ph(Rulebooks::first_booking(rb), ph))
+				if (BookingLists::contains_ph(rb->rule_list, ph))
 					return ro;
 			}
 		}
@@ -329,7 +329,7 @@ rulebook *Rulebooks::Outcomes::allow_outcome(named_rulebook_outcome *rbno) {
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook) {
 		outcomes *outs = Rulebooks::get_outcomes(rb);
-		if (Rules::Bookings::list_contains_ph(Rulebooks::first_booking(rb), ph)) {
+		if (BookingLists::contains_ph(rb->rule_list, ph)) {
 			int okay = FALSE;
 			rulebook_outcome *ro;
 			for (ro = outs->named_outcomes; ro; ro = ro->next)

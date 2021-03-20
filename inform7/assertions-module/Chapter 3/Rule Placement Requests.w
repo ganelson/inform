@@ -329,7 +329,7 @@ void RulePlacement::place_in_rulebook(parse_node *p1, parse_node *p2, int sense)
 	if (any) @<Detach from all rulebooks@>;
 	if (sense == FALSE) @<Detach only from this rulebook@>;
 
-	booking *new_rule_booking = Rules::Bookings::new(given_rule);
+	booking *new_rule_booking = RuleBookings::new(given_rule);
 	Rules::set_kind_from(given_rule, given_rulebook);
 	if (relative_rule) {
 		LOGIF(RULE_ATTACHMENTS, "Relative to which = %W\n", relative_rule->name);

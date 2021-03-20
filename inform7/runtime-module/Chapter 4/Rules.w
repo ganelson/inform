@@ -330,3 +330,291 @@ void RTRules::compile_comment(rule *R, int index, int from) {
 	}
 }
 
+@h Compilation of I6-format rulebook.
+The following can generate both old-style array rulebooks and routine rulebooks,
+which were introduced in December 2010.
+
+=
+void RTRules::start_list_compilation(void) {
+	inter_name *iname = Hierarchy::find(EMPTY_RULEBOOK_INAME_HL);
+	packaging_state save = Routines::begin(iname);
+	LocalVariables::add_named_call(I"forbid_breaks");
+	Produce::rfalse(Emit::tree());
+	Routines::end(save);
+	Hierarchy::make_available(Emit::tree(), iname);
+}
+
+@
+
+@d ARRAY_RBF 1 /* format as an array simply listing the rules */
+@d GROUPED_ARRAY_RBF 2 /* format as a grouped array, for quicker action testing */
+@d ROUTINE_RBF 3 /* format as a routine which runs the rulebook */
+@d RULE_OPTIMISATION_THRESHOLD 20 /* group arrays when larger than this number of rules */
+
+=
+inter_name *RTRules::list_compile(booking_list *L,
+	inter_name *identifier, int action_based, int parameter_based) {
+	if (L == NULL) return NULL;
+	inter_name *rb_symb = NULL;
+
+	int countup = BookingLists::length(L);
+	if (countup == 0) {
+		rb_symb = Emit::named_iname_constant(identifier, K_value,
+			Hierarchy::find(EMPTY_RULEBOOK_INAME_HL));
+	} else {
+		int format = ROUTINE_RBF;
+
+		@<Compile the rulebook in the given format@>;
+	}
+	return rb_symb;
+}
+
+@ Grouping is the practice of gathering together rules which all rely on
+the same action going on; it's then efficient to test the action once rather
+than once for each rule.
+
+@<Compile the rulebook in the given format@> =
+	int grouping = FALSE, group_cap = 0;
+	switch (format) {
+		case GROUPED_ARRAY_RBF: grouping = TRUE; group_cap = 31; break;
+		case ROUTINE_RBF: grouping = TRUE; group_cap = 2000000000; break;
+	}
+	if (action_based == FALSE) grouping = FALSE;
+
+	inter_symbol *forbid_breaks_s = NULL, *rv_s = NULL, *original_deadflag_s = NULL, *p_s = NULL;
+	packaging_state save_array = Emit::unused_packaging_state();
+
+	@<Open the rulebook compilation@>;
+	int group_size = 0, group_started = FALSE, entry_count = 0, action_group_open = FALSE;
+	LOOP_OVER_BOOKINGS(br, L) {
+		parse_node *spec = Rvalues::from_rule(RuleBookings::get_rule(br));
+		if (grouping) {
+			if (group_size == 0) {
+				if (group_started) @<End an action group in the rulebook@>;
+				#ifdef IF_MODULE
+				action_name *an = RTRules::br_required_action(br);
+				booking *brg = br;
+				while ((brg) && (an == RTRules::br_required_action(brg))) {
+					group_size++;
+					brg = brg->next_booking;
+				}
+				#endif
+				#ifndef IF_MODULE
+				booking *brg = br;
+				while (brg) {
+					group_size++;
+					brg = brg->next_booking;
+				}
+				#endif
+				if (group_size > group_cap) group_size = group_cap;
+				group_started = TRUE;
+				@<Begin an action group in the rulebook@>;
+			}
+			group_size--;
+		}
+		@<Compile an entry in the rulebook@>;
+		entry_count++;
+	}
+	if (group_started) @<End an action group in the rulebook@>;
+	@<Close the rulebook compilation@>;
+
+@<Open the rulebook compilation@> =
+	rb_symb = identifier;
+	switch (format) {
+		case ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); break;
+		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_ti) -2); break;
+		case ROUTINE_RBF: {
+			save_array = Routines::begin(identifier);
+			forbid_breaks_s = LocalVariables::add_named_call_as_symbol(I"forbid_breaks");
+			rv_s = LocalVariables::add_internal_local_c_as_symbol(I"rv", "return value");
+			if (countup > 1)
+				original_deadflag_s = LocalVariables::add_internal_local_c_as_symbol(I"original_deadflag", "saved state");
+			if (parameter_based)
+				p_s = LocalVariables::add_internal_local_c_as_symbol(I"p", "rulebook parameter");
+
+			if (countup > 1) {
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_symbol(Emit::tree(), K_value, original_deadflag_s);
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
+				Produce::up(Emit::tree());
+			}
+			if (parameter_based) {
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_symbol(Emit::tree(), K_value, p_s);
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
+				Produce::up(Emit::tree());
+			}
+			break;
+		}
+	}
+
+@<Begin an action group in the rulebook@> =
+	switch (format) {
+		case GROUPED_ARRAY_RBF:
+			#ifdef IF_MODULE
+			if (an) Emit::array_action_entry(an); else
+			#endif
+				Emit::array_numeric_entry((inter_ti) -2);
+			if (group_size > 1) Emit::array_numeric_entry((inter_ti) group_size);
+			action_group_open = TRUE;
+			break;
+		case ROUTINE_RBF:
+			#ifdef IF_MODULE
+			if (an) {
+				Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), EQ_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(ACTION_HL));
+						Produce::val_iname(Emit::tree(), K_value, RTActions::double_sharp(an));
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+
+				action_group_open = TRUE;
+			}
+			#endif
+			break;
+	}
+
+@<Compile an entry in the rulebook@> =
+	switch (format) {
+		case ARRAY_RBF:
+		case GROUPED_ARRAY_RBF:
+			Specifications::Compiler::emit(spec);
+			break;
+		case ROUTINE_RBF:
+			if (entry_count > 0) {
+				Produce::inv_primitive(Emit::tree(), IF_BIP);
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), NE_BIP);
+					Produce::down(Emit::tree());
+						Produce::val_symbol(Emit::tree(), K_value, original_deadflag_s);
+						Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(DEADFLAG_HL));
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+						Produce::down(Emit::tree());
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			}
+			@<Compile an optional mid-rulebook paragraph break@>;
+			if (parameter_based) {
+				Produce::inv_primitive(Emit::tree(), STORE_BIP);
+				Produce::down(Emit::tree());
+					Produce::ref_iname(Emit::tree(), K_value, Hierarchy::find(PARAMETER_VALUE_HL));
+					Produce::val_symbol(Emit::tree(), K_value, p_s);
+				Produce::up(Emit::tree());
+			}
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_symbol(Emit::tree(), K_value, rv_s);
+				Produce::inv_primitive(Emit::tree(), INDIRECT0_BIP);
+				Produce::down(Emit::tree());
+					Specifications::Compiler::emit_as_val(K_value, spec);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+
+			Produce::inv_primitive(Emit::tree(), IF_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_symbol(Emit::tree(), K_value, rv_s);
+				Produce::code(Emit::tree());
+				Produce::down(Emit::tree());
+					Produce::inv_primitive(Emit::tree(), IF_BIP);
+					Produce::down(Emit::tree());
+						Produce::inv_primitive(Emit::tree(), EQ_BIP);
+						Produce::down(Emit::tree());
+							Produce::val_symbol(Emit::tree(), K_value, rv_s);
+							Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 2);
+						Produce::up(Emit::tree());
+						Produce::code(Emit::tree());
+						Produce::down(Emit::tree());
+							Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+							Produce::down(Emit::tree());
+								Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
+							Produce::up(Emit::tree());
+						Produce::up(Emit::tree());
+					Produce::up(Emit::tree());
+
+					Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+					Produce::down(Emit::tree());
+						Specifications::Compiler::emit_as_val(K_value, spec);
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(LATEST_RULE_RESULT_HL));
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::up(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
+			break;
+	}
+
+@<End an action group in the rulebook@> =
+	if (action_group_open) {
+		switch (format) {
+			case ROUTINE_RBF:
+					Produce::up(Emit::tree());
+					Produce::code(Emit::tree());
+					Produce::down(Emit::tree());
+						@<Compile an optional mid-rulebook paragraph break@>;
+					Produce::up(Emit::tree());
+				Produce::up(Emit::tree());
+				break;
+		}
+		action_group_open = FALSE;
+	}
+
+@<Close the rulebook compilation@> =
+	switch (format) {
+		case ARRAY_RBF:
+		case GROUPED_ARRAY_RBF:
+			Emit::array_null_entry();
+			Emit::array_end(save_array);
+			break;
+		case ROUTINE_RBF:
+			Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+			Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+			Produce::up(Emit::tree());
+			Routines::end(save_array);
+			break;
+	}
+
+@<Compile an optional mid-rulebook paragraph break@> =
+	if (entry_count > 0) {
+		Produce::inv_primitive(Emit::tree(), IF_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(SAY__P_HL));
+			Produce::code(Emit::tree());
+			Produce::down(Emit::tree());
+				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RULEBOOKPARBREAK_HL));
+				Produce::down(Emit::tree());
+					Produce::val_symbol(Emit::tree(), K_value, forbid_breaks_s);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+	}
+
+@
+
+=
+#ifdef IF_MODULE
+action_name *RTRules::br_required_action(booking *br) {
+	phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
+	if (ph) return Phrases::Context::required_action(&(ph->runtime_context_data));
+	return NULL;
+}
+#endif
+
+
