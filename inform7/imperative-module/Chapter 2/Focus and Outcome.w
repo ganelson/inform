@@ -89,6 +89,33 @@ kind *Rulebooks::Outcomes::get_outcome_kind(outcomes *outs) {
 	return outs->value_outcome_kind;
 }
 
+@ Rulebooks do not have properties as such, and the syntax which would create
+these creates rulebook variables instead. However, we do allow this:
+
+>> Visibility rules have outcomes there is sufficient light (failure) and there is insufficient light (success).
+
+where Inform sees that the subject ("visibility rules") is a rulebook, and parses
+the object noun phrase with the following:
+
+=
+outcomes *outcomes_being_parsed = NULL;
+
+void Rulebooks::Outcomes::parse_properties(rulebook *rb, wording W) {
+	outcomes_being_parsed = &(rb->my_outcomes);
+	<rulebook-property>(W);
+}
+
+<rulebook-property> ::=
+	outcome/outcomes <rulebook-outcome-list> |    ==> { TRUE, - }
+	default <rulebook-default-outcome>	|    ==> { FALSE, - }
+	...										==> @<Issue PM_NonOutcomeProperty problem@>
+
+@<Issue PM_NonOutcomeProperty problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NonOutcomeProperty),
+		"the only properties of a rulebook are its outcomes",
+		"for the time being at least.");
+	==> { NOT_APPLICABLE, - };
+
 @ There are only three nameless outcomes: a rulebook can end in success, in
 failure, or with no outcome. Any of these can be the default outcome, that is,
 can be what rulebook does if it none of its rules cause an outcome.

@@ -706,16 +706,16 @@ inter_name *RTRules::get_stv_creator_iname(rulebook *rb) {
 void RTRules::rulebook_var_creators(void) {
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook)
-		if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE)
-			StackedVariables::compile_frame_creator(rb->owned_by_rb,
+		if (StackedVariables::owner_empty(rb->my_variables) == FALSE)
+			StackedVariables::compile_frame_creator(rb->my_variables,
 				RTRules::get_stv_creator_iname(rb));
 
 	if (global_compilation_settings.memory_economy_in_force == FALSE) {
 		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(rb, rulebook) {
-			if (StackedVariables::owner_empty(rb->owned_by_rb)) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->owned_by_rb));
+			if (StackedVariables::owner_empty(rb->my_variables)) Emit::array_numeric_entry(0);
+			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->my_variables));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
@@ -736,7 +736,7 @@ void RTRules::rulebook_var_creators(void) {
 
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook)
-			if (StackedVariables::owner_empty(rb->owned_by_rb) == FALSE) {
+			if (StackedVariables::owner_empty(rb->my_variables) == FALSE) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (rb->allocation_id));

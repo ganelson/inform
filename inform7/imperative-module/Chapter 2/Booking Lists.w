@@ -272,7 +272,7 @@ int BookingLists::length(booking_list *L) {
 int BookingLists::is_contextually_empty(booking_list *L, rule_context rc) {
 	LOOP_OVER_BOOKINGS(br, L) {
 		phrase *ph = Rules::get_defn_as_phrase(RuleBookings::get_rule(br));
-		if (Rulebooks::phrase_fits_rule_context(ph, rc)) return FALSE;
+		if (Phrases::Context::phrase_fits_rule_context(ph, rc)) return FALSE;
 	}
 	return TRUE;
 }

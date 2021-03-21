@@ -71,8 +71,7 @@ rulebook *Actions::new_rulebook(action_name *an, int RB) {
 	int prefix_length = Wordings::length(W) -
 		Wordings::length(ActionNameNames::tensed(an, IS_TENSE));
 	rulebook *R = Rulebooks::new_automatic(W, K_action_name, NO_OUTCOME,
-		TRUE, FALSE, FALSE, RTActions::rulebook_package(an, RB));
-	Rulebooks::fragment_by_actions(R, prefix_length);
+		TRUE, FALSE, FALSE, prefix_length, RTActions::rulebook_package(an, RB));
 	return R;
 }
 
@@ -81,9 +80,9 @@ a given action:
 
 =
 rulebook *Actions::fragment_rulebook(action_name *an, rulebook *rb) {
-	if (rb == built_in_rulebooks[CHECK_RB])     return an->check_rules;
-	if (rb == built_in_rulebooks[CARRY_OUT_RB]) return an->carry_out_rules;
-	if (rb == built_in_rulebooks[REPORT_RB])    return an->report_rules;
+	if (rb == Rulebooks::std(CHECK_RB))     return an->check_rules;
+	if (rb == Rulebooks::std(CARRY_OUT_RB)) return an->carry_out_rules;
+	if (rb == Rulebooks::std(REPORT_RB))    return an->report_rules;
 	internal_error("asked for peculiar fragmented rulebook"); return NULL;
 }
 
@@ -103,7 +102,7 @@ rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 @ And this is where the actions plugin moves rules from their normal rulebooks:
 
 =
-int Actions::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
+int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
 	phrase *ph = Rules::get_defn_as_phrase(R); if (ph == NULL) return FALSE;
 	if (Rulebooks::requires_specific_action(original_owner)) {
 		int waiver = FALSE;
@@ -122,21 +121,21 @@ int Actions::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner
 			Rules::set_marked_for_anyone(R, anyone);
 		} else {
 			waiver = TRUE;
-			if (original_owner == built_in_rulebooks[CHECK_RB])     waiver = FALSE;
-			if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) waiver = FALSE;
-			if (original_owner == built_in_rulebooks[REPORT_RB])    waiver = FALSE;
+			if (original_owner == Rulebooks::std(CHECK_RB))     waiver = FALSE;
+			if (original_owner == Rulebooks::std(CARRY_OUT_RB)) waiver = FALSE;
+			if (original_owner == Rulebooks::std(REPORT_RB))    waiver = FALSE;
 		}
 		if ((an == NULL) && (waiver == FALSE))
 			an = ActionNameNames::longest_nounless(PW, IS_TENSE, NULL);
 		if ((an == NULL) && (waiver == FALSE)) @<Issue PM_MultipleCCR@>;
-		if (original_owner == built_in_rulebooks[CHECK_RB]) {
-			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[CHECK_RB]);
+		if (original_owner == Rulebooks::std(CHECK_RB)) {
+			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(CHECK_RB));
 			return TRUE;
-		} else if (original_owner == built_in_rulebooks[CARRY_OUT_RB]) {
-			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[CARRY_OUT_RB]);
+		} else if (original_owner == Rulebooks::std(CARRY_OUT_RB)) {
+			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(CARRY_OUT_RB));
 			return TRUE;
-		} else if (original_owner == built_in_rulebooks[REPORT_RB]) {
-			*new_owner = Actions::fragment_rulebook(an, built_in_rulebooks[REPORT_RB]);
+		} else if (original_owner == Rulebooks::std(REPORT_RB)) {
+			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(REPORT_RB));
 			return TRUE;
 		} else {
 			*new_owner = Actions::divert_to_another_actions_rulebook(an, original_owner);
@@ -160,6 +159,44 @@ int Actions::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner
 		"the former names two actions, the latter none.");
 	Problems::issue_problem_end();
 	return FALSE;
+
+@ And this is where the actions plugin reacts to any placement of a rule in a
+rulebook, automatic or not:
+
+=
+int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rule) {
+	if ((B == Rulebooks::std(BEFORE_RB)) ||
+		(B == Rulebooks::std(AFTER_RB)) ||
+		(B == Rulebooks::std(INSTEAD_RB))) {
+		phrase *ph = Rules::get_defn_as_phrase(R);
+		if (ph) {
+			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
+			if ((an) && (ActionSemantics::is_out_of_world(an)))
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),
+					"this rulebook has no effect on actions which happen out of world",
+					"so I'm not going to let you file this rule in it. ('Check', "
+					"'Carry out' and 'Report' work fine for out of world actions: "
+					"but 'Before', 'Instead' and 'After' have no effect on them.)");
+		}
+	}
+	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) {
+		Rules::set_never_test_actor(R);
+	} else {
+		Rulebooks::Outcomes::modify_rule_to_suit_focus(&(B->my_focus), R);
+	}
+
+	if (side == INSTEAD_SIDE) {
+		LOGIF(RULE_ATTACHMENTS, "Copying actor test flags from rule being replaced\n");
+		Rules::copy_actor_test_flags(R, ref_rule);
+		if (Rulebooks::focus(B) == ACTION_FOCUS)
+			Rules::put_action_variables_in_scope(ref_rule);
+	}
+	if (Rulebooks::focus(B) == ACTION_FOCUS)
+		Rules::put_action_variables_in_scope(R);
+	if (B->action_stem_length > 0)
+		Rules::suppress_action_testing(R);
+	return FALSE;
+}
 
 @ The //Parsing Plugin// attaches command grammar to an action, but that's not
 our concern here:

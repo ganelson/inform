@@ -686,7 +686,7 @@ which syntactically resembles a property list, though in fact is not.
 	if (global_pass_state.pass == 1) return;
 	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
 		(Rvalues::is_CONSTANT_construction(Node::get_evaluation(px), CON_rulebook))) {
-		Rulebooks::parse_properties(Rvalues::to_rulebook(Node::get_evaluation(px)),
+		Rulebooks::Outcomes::parse_properties(Rvalues::to_rulebook(Node::get_evaluation(px)),
 			Wordings::new(Node::left_edge_of(py), Node::right_edge_of(py)));
 		return;
 	}

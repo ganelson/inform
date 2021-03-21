@@ -190,7 +190,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	package_request *BR = Hierarchy::make_package_in(BEFORE_RB_HL, av->av_package);
 	av->before_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, BR);
+			NO_OUTCOME, FALSE, future_action_flag, TRUE, 0, BR);
 	id = Feeds::begin();
 	Feeds::feed_C_string_expanding_strings(L"for");
 	Feeds::feed_wording(av->name);
@@ -198,7 +198,7 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	package_request *FR = Hierarchy::make_package_in(FOR_RB_HL, av->av_package);
 	av->for_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, FR);
+			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, 0, FR);
 	id = Feeds::begin();
 	Feeds::feed_C_string_expanding_strings(L"after");
 	Feeds::feed_wording(av->name);
@@ -206,12 +206,12 @@ activity *Activities::new(kind *creation_kind, wording W) {
 	package_request *AR = Hierarchy::make_package_in(AFTER_RB_HL, av->av_package);
 	av->after_rules =
 		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, AR);
+			NO_OUTCOME, FALSE, future_action_flag, TRUE, 0, AR);
 
 	av->owned_by_av = StackedVariables::new_owner(10000+av->allocation_id);
-	Rulebooks::make_stvs_accessible(av->before_rules, av->owned_by_av);
-	Rulebooks::make_stvs_accessible(av->for_rules, av->owned_by_av);
-	Rulebooks::make_stvs_accessible(av->after_rules, av->owned_by_av);
+	Rulebooks::grant_access_to_variables(av->before_rules, av->owned_by_av);
+	Rulebooks::grant_access_to_variables(av->for_rules, av->owned_by_av);
+	Rulebooks::grant_access_to_variables(av->after_rules, av->owned_by_av);
 
 	av->activity_indexed = FALSE;
 	av->cross_references = NULL;
@@ -360,9 +360,9 @@ void Activities::index(OUTPUT_STREAM, activity *av, int indent) {
 	char *text = NULL;
 	if (av->activity_indexed) return;
 	av->activity_indexed = TRUE;
-	if (Rulebooks::is_empty(av->before_rules, Rulebooks::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->for_rules, Rulebooks::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->after_rules, Rulebooks::no_rule_context()) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->before_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->for_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->after_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
 	if (av->cross_references) empty = FALSE;
 	TEMPORARY_TEXT(doc_link)
 	if (Wordings::nonempty(av->av_documentation_symbol))
@@ -383,9 +383,9 @@ int Activities::no_rules(activity *av) {
 
 void Activities::index_details(OUTPUT_STREAM, activity *av) {
 	int ignore_me = 0;
-	IXRules::index_rulebook(OUT, av->before_rules, "before", Rulebooks::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->for_rules, "for", Rulebooks::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->after_rules, "after", Rulebooks::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->before_rules, "before", Phrases::Context::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->for_rules, "for", Phrases::Context::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->after_rules, "after", Phrases::Context::no_rule_context(), &ignore_me);
 	Activities::index_cross_references(OUT, av);
 }
 

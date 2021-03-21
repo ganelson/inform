@@ -245,9 +245,20 @@ void Rules::put_variables_in_scope(rule *R, stacked_variable_owner_list *stvol) 
 void Rules::put_action_variables_in_scope(rule *R) {
 	#ifdef IF_MODULE
 	Rules::put_variables_in_scope(R, all_nonempty_stacked_action_vars);
-	if (all_action_processing_vars == NULL) internal_error("APROC not ready");
-	Rules::put_variables_in_scope(R, all_action_processing_vars);
+	if (Rules::all_action_processing_variables())
+		Rules::put_variables_in_scope(R, Rules::all_action_processing_variables());
 	#endif
+}
+
+struct stacked_variable_owner_list *all_action_processing_vars = NULL;
+
+stacked_variable_owner_list *Rules::all_action_processing_variables(void) {
+	if (all_action_processing_vars == NULL) {
+		rulebook *B = Rulebooks::std(ACTION_PROCESSING_RB);
+		if (B) all_action_processing_vars =
+			StackedVariables::add_owner_to_list(NULL, B->my_variables);
+	}
+	return all_action_processing_vars;
 }
 
 @h Defining rules with Inter functions.

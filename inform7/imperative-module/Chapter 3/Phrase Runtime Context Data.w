@@ -43,6 +43,45 @@ typedef struct rule_context {
 	#endif
 } rule_context;
 
+rule_context Phrases::Context::no_rule_context(void) {
+	rule_context rc;
+	#ifdef IF_MODULE
+	rc.action_context = NULL;
+	rc.scene_context = NULL;
+	#endif
+	#ifndef IF_MODULE
+	rc.not_used = NULL;
+	#endif
+	return rc;
+}
+
+int Phrases::Context::phrase_fits_rule_context(phrase *ph, rule_context rc) {
+	#ifdef IF_MODULE
+	if (rc.scene_context == NULL) return TRUE;
+	if (ph == NULL) return FALSE;
+	if (Phrases::Context::get_scene(&(ph->runtime_context_data)) != rc.scene_context) return FALSE;
+	return TRUE;
+	#endif
+	#ifndef IF_MODULE
+	return TRUE;
+	#endif
+}
+
+#ifdef IF_MODULE
+rule_context Phrases::Context::action_context(action_name *an) {
+	rule_context rc;
+	rc.action_context = an;
+	rc.scene_context = NULL;
+	return rc;
+}
+rule_context Phrases::Context::scene_context(scene *s) {
+	rule_context rc;
+	rc.action_context = NULL;
+	rc.scene_context = s;
+	return rc;
+}
+#endif
+
 @ As we've seen, PHRCDs are really made by translating them from PHUDs, and
 the following only blanks out a PHRCD structure ready for that to happen.
 
@@ -322,13 +361,11 @@ int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 
 	int tests = 0;
 
-	#ifdef IF_MODULE
-	if (phrcd->during_scene) @<Compile a scene test head@>;
-
-	if (phrcd->ap) @<Compile an action test head@>
-	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test head@>;
-	#endif
-	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test head@>;
+	if (PluginCalls::compile_test_head(ph, R, &tests) == FALSE) {
+		if (phrcd->ap) @<Compile an action test head@>;
+	}
+	if (Wordings::nonempty(phrcd->activity_context))
+		@<Compile an activity or explicit condition test head@>;
 
 	if ((tests > 0) || (ph->compile_with_run_time_debugging)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -345,8 +382,28 @@ int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
-
 	return FALSE;
+}
+
+int Phrases::Context::actions_compile_test_head(phrase *ph, rule *R, int *tests) {
+	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+	#ifdef IF_MODULE
+	if (phrcd->during_scene) @<Compile a scene test head@>;
+	if (phrcd->ap) @<Compile possibly testing actor action test head@>
+	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test head@>;
+	#endif
+	return TRUE;
+}
+
+int Phrases::Context::actions_compile_test_tail(phrase *ph, rule *R) {
+	inter_name *identifier = Phrases::iname(ph);
+	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+	#ifdef IF_MODULE
+	if (phrcd->ap) @<Compile an action test tail@>
+	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test tail@>;
+	if (phrcd->during_scene) @<Compile a scene test tail@>;
+	#endif
+	return TRUE;
 }
 
 @ This is almost the up-down reflection of the head, but note that it begins
@@ -354,7 +411,6 @@ with the default outcome return (see above).
 
 =
 void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
-
 	inter_name *identifier = Phrases::iname(ph);
 	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
 
@@ -364,11 +420,9 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 	}
 
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test tail@>;
-	#ifdef IF_MODULE
-	if (phrcd->ap) @<Compile an action test tail@>
-	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test tail@>;
-	if (phrcd->during_scene) @<Compile a scene test tail@>;
-	#endif
+	if (PluginCalls::compile_test_tail(ph, R) == FALSE) {
+		if (phrcd->ap) @<Compile an action test tail@>;
+	}
 }
 
 @h Scene test.
@@ -380,7 +434,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-	tests++;
+	(*tests)++;
 
 @<Compile a scene test tail@> =
 	inter_ti failure_code = 1;
@@ -391,6 +445,22 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 @<Compile an action test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
+		RTActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+
+	tests++;
+	if (ActionPatterns::involves_actions(phrcd->ap)) {
+			Produce::inv_primitive(Emit::tree(), STORE_BIP);
+			Produce::down(Emit::tree());
+				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));
+				Produce::val_iname(Emit::tree(), K_object, Hierarchy::find(NOUN_HL));
+			Produce::up(Emit::tree());
+	}
+
+@<Compile possibly testing actor action test head@> =
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
 		if (phrcd->never_test_actor)
 			RTActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
 		else
@@ -398,7 +468,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-	tests++;
+	(*tests)++;
 	if (ActionPatterns::involves_actions(phrcd->ap)) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
@@ -424,7 +494,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-	tests++;
+	(*tests)++;
 
 @<Compile an actor-is-player test tail@> =
 	inter_ti failure_code = 3;

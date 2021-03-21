@@ -234,14 +234,14 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"rulebooks can, but it's generally better to leave them alone.");
 	HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Startup rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[STARTUP_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(STARTUP_RB), NULL, NULL, 1, TRUE);
 	Activities::index_by_number(OUT, STARTING_VIRTUAL_MACHINE_ACT, 2);
 	Activities::index_by_number(OUT, PRINTING_BANNER_TEXT_ACT, 2);
 	IXRules::index_rules_box(OUT, "Turn sequence rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[TURN_SEQUENCE_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(TURN_SEQUENCE_RB), NULL, NULL, 1, TRUE);
 	Activities::index_by_number(OUT, CONSTRUCTING_STATUS_LINE_ACT, 2);
 	IXRules::index_rules_box(OUT, "Shutdown rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SHUTDOWN_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(SHUTDOWN_RB), NULL, NULL, 1, TRUE);
 	Activities::index_by_number(OUT, AMUSING_A_VICTORIOUS_PLAYER_ACT, 2);
 	Activities::index_by_number(OUT, PRINTING_PLAYERS_OBITUARY_ACT, 2);
 	Activities::index_by_number(OUT, DEALING_WITH_FINAL_QUESTION_ACT, 2);
@@ -256,11 +256,11 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"or when certain events happen. Those are listed in the Scenes index, "
 		"alongside rules taking place when scenes begin or end."); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "When play begins", EMPTY_WORDING, I"rules_wpb",
-		built_in_rulebooks[WHEN_PLAY_BEGINS_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(WHEN_PLAY_BEGINS_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Every turn", EMPTY_WORDING, I"rules_et",
-		built_in_rulebooks[EVERY_TURN_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(EVERY_TURN_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "When play ends", EMPTY_WORDING, I"rules_wpe",
-		built_in_rulebooks[WHEN_PLAY_ENDS_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(WHEN_PLAY_ENDS_RB), NULL, NULL, 1, TRUE);
 
 @<Index the segment for the Understanding rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>How commands are understood</b>"); HTML_CLOSE("p");
@@ -269,7 +269,7 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"by a single large rule (the parse command rule), but that rule makes use "
 		"of the following activities and rulebooks in its work."); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Does the player mean", EMPTY_WORDING, I"rules_dtpm",
-		built_in_rulebooks[DOES_THE_PLAYER_MEAN_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(DOES_THE_PLAYER_MEAN_RB), NULL, NULL, 1, TRUE);
 	Activities::index_by_number(OUT, READING_A_COMMAND_ACT, 1);
 	Activities::index_by_number(OUT, DECIDING_SCOPE_ACT, 1);
 	Activities::index_by_number(OUT, DECIDING_CONCEALED_POSSESS_ACT, 1);
@@ -288,13 +288,13 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"and which affect how they happen in particular cases.");
 	HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Persuasion", EMPTY_WORDING, I"rules_per",
-		built_in_rulebooks[PERSUASION_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(PERSUASION_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Unsuccessful attempt by", EMPTY_WORDING, I"rules_fail",
-		built_in_rulebooks[UNSUCCESSFUL_ATTEMPT_BY_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Before", EMPTY_WORDING, I"rules_before",
-		built_in_rulebooks[BEFORE_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(BEFORE_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Instead", EMPTY_WORDING, I"rules_instead",
-		built_in_rulebooks[INSTEAD_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(INSTEAD_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Check", EMPTY_WORDING, NULL, NULL, NULL,
 		"Check rules are tied to specific actions, and there are too many "
 		"to index here. For instance, the check taking rules can only ever "
@@ -304,7 +304,7 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"Carry out rules are tied to specific actions, and there are too many "
 		"to index here.", 1, TRUE);
 	IXRules::index_rules_box(OUT, "After", EMPTY_WORDING, I"rules_after",
-		built_in_rulebooks[AFTER_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(AFTER_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Report", EMPTY_WORDING, NULL, NULL, NULL,
 		"Report rules are tied to specific actions, and there are too many "
 		"to index here.", 1, TRUE);
@@ -314,11 +314,11 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 	HTML_OPEN("p"); WRITE("These form the technical machinery for dealing with actions, and are "
 		"called on at least once every turn. They seldom need to be changed."); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Action-processing rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[ACTION_PROCESSING_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(ACTION_PROCESSING_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Specific action-processing rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SPECIFIC_ACTION_PROCESSING_RB], NULL, NULL, 2, TRUE);
+		Rulebooks::std(SPECIFIC_ACTION_PROCESSING_RB), NULL, NULL, 2, TRUE);
 	IXRules::index_rules_box(OUT, "Player's action awareness rules", EMPTY_WORDING, NULL,
-		built_in_rulebooks[PLAYERS_ACTION_AWARENESS_RB], NULL, NULL, 3, TRUE);
+		Rulebooks::std(PLAYERS_ACTION_AWARENESS_RB), NULL, NULL, 3, TRUE);
 
 @<Index the segment for the responses@> =
 	HTML_OPEN("p"); WRITE("<b>How responses are printed</b>"); HTML_CLOSE("p");
@@ -331,11 +331,11 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 	HTML_OPEN("p"); WRITE("These rulebooks are used when deciding who can reach what, and "
 		"who can see what."); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Reaching inside", EMPTY_WORDING, I"rules_ri",
-		built_in_rulebooks[REACHING_INSIDE_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(REACHING_INSIDE_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Reaching outside", EMPTY_WORDING, I"rules_ri",
-		built_in_rulebooks[REACHING_OUTSIDE_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(REACHING_OUTSIDE_RB), NULL, NULL, 1, TRUE);
 	IXRules::index_rules_box(OUT, "Visibility", EMPTY_WORDING, I"visibility",
-		built_in_rulebooks[VISIBILITY_RB], NULL, NULL, 1, TRUE);
+		Rulebooks::std(VISIBILITY_RB), NULL, NULL, 1, TRUE);
 
 @<Index the segment for the light and darkness rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>Light and darkness</b>"); HTML_CLOSE("p");
@@ -413,7 +413,7 @@ int IXRules::noteworthy_rulebooks(inform_extension *E) {
 void IXRules::index_scene(OUTPUT_STREAM) {
 	HTML_OPEN("p"); WRITE("<b>The scene-changing machinery</b>"); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Scene changing", EMPTY_WORDING, NULL,
-		built_in_rulebooks[SCENE_CHANGING_RB], NULL, NULL, 1, FALSE);
+		Rulebooks::std(SCENE_CHANGING_RB), NULL, NULL, 1, FALSE);
 }
 
 int unique_xtra_no = 0;
@@ -490,7 +490,7 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	if ((rb) && (Rulebooks::is_empty(rb, Rulebooks::no_rule_context())))
+	if ((rb) && (Rulebooks::is_empty(rb, Phrases::Context::no_rule_context())))
 		text = "There are no rules in this rulebook.";
 	if (text) {
 		HTML::open_indented_p(OUT, 2, "tight");
@@ -498,7 +498,7 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 	} else {
 		if (rb) {
 			int ignore_me = 0;
-			IXRules::index_rulebook(OUT, rb, "", Rulebooks::no_rule_context(), &ignore_me);
+			IXRules::index_rulebook(OUT, rb, "", Phrases::Context::no_rule_context(), &ignore_me);
 		}
 		if (av) Activities::index_details(OUT, av);
 	}
@@ -514,10 +514,10 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 	if (Str::len(doc_link) > 0) Index::DocReferences::link(OUT, doc_link);
 	WRITE(" ... ");
 	if (av) WRITE(" activity"); else {
-		if ((rb) && (Rulebooks::get_parameter_kind(rb)) &&
-			(Kinds::eq(Rulebooks::get_parameter_kind(rb), K_action_name) == FALSE)) {
+		if ((rb) && (Rulebooks::get_focus_kind(rb)) &&
+			(Kinds::eq(Rulebooks::get_focus_kind(rb), K_action_name) == FALSE)) {
 			WRITE(" ");
-			Kinds::Textual::write_articled(OUT, Rulebooks::get_parameter_kind(rb));
+			Kinds::Textual::write_articled(OUT, Rulebooks::get_focus_kind(rb));
 			WRITE(" based");
 		}
 		WRITE(" rulebook");
@@ -549,21 +549,30 @@ void IXRules::index_action_rules(OUTPUT_STREAM, action_name *an, rulebook *rb,
 	int code, char *desc, int *resp_count) {
 	int t = 0;
 	IXRules::list_suppress_indexed_links();
-	if (code >= 0) t += IXRules::index_rulebook(OUT, built_in_rulebooks[code], desc,
-		Rulebooks::action_context(an), resp_count);
-	if (rb) t += IXRules::index_rulebook(OUT, rb, desc, Rulebooks::no_rule_context(), resp_count);
+	if (code >= 0) t += IXRules::index_rulebook(OUT, Rulebooks::std(code), desc,
+		Phrases::Context::action_context(an), resp_count);
+	if (rb) t += IXRules::index_rulebook(OUT, rb, desc, Phrases::Context::no_rule_context(), resp_count);
 	IXRules::list_resume_indexed_links();
 	if (t > 0) HTML_TAG("br");
 }
 #endif
 
 @h Affected by placements.
-Needed to make a useful index.
+The contents of rulebooks can be unexpected if sentences are used which
+explicitly list, or unlist, rules. To make the index more useful in these
+cases, we keep a linked list, for each rulebook, of all sentences which
+have affected it in this way:
 
 =
 typedef struct rulebook_indexing_data {
 	struct placement_affecting *placement_list; /* linked list of explicit placements */
 } rulebook_indexing_data;
+
+typedef struct placement_affecting {
+	struct parse_node *placement_sentence;
+	struct placement_affecting *next;
+	CLASS_DEFINITION
+} placement_affecting;
 
 rulebook_indexing_data IXRules::new_rulebook_indexing_data(rulebook *RB) {
 	rulebook_indexing_data rid;

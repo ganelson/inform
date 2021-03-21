@@ -431,11 +431,39 @@ rulebooks into smaller ones for each action.
 If making a diversion, the plugin should write the new rulebook into |new_owner|
 and return |TRUE|; and otherwise |FALSE|.
 
-@e DIVERT_RULE_PLUG
+@e PLACE_RULE_PLUG
 
 =
-int PluginCalls::divert_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
-	PLUGINS_CALL(DIVERT_RULE_PLUG, R, original_owner, new_owner);
+int PluginCalls::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
+	PLUGINS_CALL(PLACE_RULE_PLUG, R, original_owner, new_owner);
+}
+
+@ Called from //imperative: Rulebooks//. This is very similar, but runs in all cases,
+and not only for automatic placement.
+
+@e RULE_PLACEMENT_NOTIFY_PLUG
+
+=
+int PluginCalls::rule_placement_notify(rule *R, rulebook *original_owner, int side, rule *ref_rule) {
+	PLUGINS_CALL(RULE_PLACEMENT_NOTIFY_PLUG, R, original_owner, side, ref_rule);
+}
+
+@
+
+@e COMPILE_TEST_HEAD_PLUG
+
+=
+int PluginCalls::compile_test_head(phrase *ph, rule *R, int *tests) {
+	PLUGINS_CALL(COMPILE_TEST_HEAD_PLUG, ph, R, tests);
+}
+
+@
+
+@e COMPILE_TEST_TAIL_PLUG
+
+=
+int PluginCalls::compile_test_tail(phrase *ph, rule *R) {
+	PLUGINS_CALL(COMPILE_TEST_TAIL_PLUG, ph, R);
 }
 
 @h Influencing the actions plugin.

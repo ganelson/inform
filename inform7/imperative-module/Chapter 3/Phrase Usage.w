@@ -696,8 +696,9 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 	#ifdef IF_MODULE
 	if (Rulebooks::focus(phud->owning_rulebook) == ACTION_FOCUS) {
 		int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
-		Frames::set_stvol(
-			Frames::current_stack_frame(), all_action_processing_vars);
+		if (Rules::all_action_processing_variables())
+			Frames::set_stvol(
+				Frames::current_stack_frame(), Rules::all_action_processing_variables());
 		if (<action-pattern>(phud->rule_parameter)) phrcd.ap = <<rp>>;
 		Frames::remove_nonphrase_stack_frame();
 		ParseActionPatterns::restore_mode(saved);
@@ -705,7 +706,7 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 		if (phrcd.ap == NULL)
 			@<Issue a problem message for a bad action@>;
 	} else {
-		kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
+		kind *pk = Rulebooks::get_focus_kind(phud->owning_rulebook);
 		phrcd.ap = ActionPatterns::parse_parametric(phud->rule_parameter, pk);
 		if (phrcd.ap == NULL) {
 			if (Wordings::nonempty(phud->whenwhile)) {
@@ -721,7 +722,7 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 	}
 	#endif
 	#ifndef IF_MODULE
-	kind *pk = Rulebooks::get_parameter_kind(phud->owning_rulebook);
+	kind *pk = Rulebooks::get_focus_kind(phud->owning_rulebook);
 	@<Issue a problem message for a bad parameter@>;
 	#endif
 

@@ -97,7 +97,7 @@ void RuleBookings::make_automatic_placements(void) {
 				rulebook *original_owner = Phrases::Usage::get_rulebook(&(ph->usage_data));
 				int placement = Phrases::Usage::get_rulebook_placement(&(ph->usage_data));
 				rulebook *owner = original_owner;
-				PluginCalls::divert_rule(br->rule_being_booked, original_owner, &owner);
+				PluginCalls::place_rule(br->rule_being_booked, original_owner, &owner);
 				if (owner != original_owner) {
 					Phrases::Usage::set_rulebook(&(ph->usage_data), owner);
 					LOGIF(RULE_ATTACHMENTS, "Rerouting $b: $K --> $K\n",

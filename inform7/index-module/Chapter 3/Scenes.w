@@ -87,9 +87,9 @@ about and created but never made use of.)
 	WRITE("<b>General rules applying to scene changes</b>");
 	HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "When a scene begins", EMPTY_WORDING, NULL,
-		built_in_rulebooks[WHEN_SCENE_BEGINS_RB], NULL, NULL, 1, FALSE);
+		Rulebooks::std(WHEN_SCENE_BEGINS_RB), NULL, NULL, 1, FALSE);
 	IXRules::index_rules_box(OUT, "When a scene ends", EMPTY_WORDING, NULL,
-		built_in_rulebooks[WHEN_SCENE_ENDS_RB], NULL, NULL, 1, FALSE);
+		Rulebooks::std(WHEN_SCENE_ENDS_RB), NULL, NULL, 1, FALSE);
 
 @<Give details of each scene in turn@> =
 	Index::anchor(OUT, I"SDETAILS");
@@ -137,7 +137,7 @@ fact, end.
 	int rbc = 0;
 	rulebook *rb;
 	LOOP_OVER(rb, rulebook) {
-		if (Rulebooks::is_empty(rb, Rulebooks::scene_context(sc)) == FALSE) {
+		if (Rulebooks::is_empty(rb, Phrases::Context::scene_context(sc)) == FALSE) {
 			if (rbc++ == 0) {
 				HTML::open_indented_p(OUT, 1, "hanging");
 				WRITE("<i>During this scene:</i>");
@@ -146,7 +146,7 @@ fact, end.
 			HTML::open_indented_p(OUT, 2, "hanging");
 			WRITE("<i>%+W</i>", rb->primary_name); HTML_CLOSE("p");
 			int ignore_me = 0;
-			IXRules::index_rulebook(OUT, rb, "", Rulebooks::scene_context(sc), &ignore_me);
+			IXRules::index_rulebook(OUT, rb, "", Phrases::Context::scene_context(sc), &ignore_me);
 		}
 	}
 
@@ -197,11 +197,11 @@ fact, end.
 	}
 
 @<Index the rules which apply when this scene end occurs@> =
-	if (Rulebooks::is_empty(sc->ends[end].end_rulebook, Rulebooks::no_rule_context()) == FALSE) {
+	if (Rulebooks::is_empty(sc->ends[end].end_rulebook, Phrases::Context::no_rule_context()) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
 		WRITE("<i>What happens:</i>"); HTML_CLOSE("p");
 		int ignore_me = 0;
-		IXRules::index_rulebook(OUT, sc->ends[end].end_rulebook, "", Rulebooks::no_rule_context(), &ignore_me);
+		IXRules::index_rulebook(OUT, sc->ends[end].end_rulebook, "", Phrases::Context::no_rule_context(), &ignore_me);
 	}
 
 @h Table of Scenes.
