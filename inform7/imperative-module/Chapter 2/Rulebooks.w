@@ -469,138 +469,159 @@ void Rulebooks::detach_rule(rulebook *B, rule *R) {
 	BookingLists::remove(B->contents, R);
 }
 
-@h Name parsing of rulebooks.
-The following internal finds the "stem" of a rule, that is, the part
-which identifies which rulebook it will go into. For example, in
+@h Rule stems.
+The voracious nonterminal <rulebook-stem> finds the "stem" of a rule, that is,
+the part which identifies which rulebook it will go into. For example, in;
 
 >> Before printing the name of the peach: ...
 >> Instead of eating: ...
 
-the stems are "before printing the name" and "instead". It makes use
-of <rulebook-stem-inner> below, and then does some direct parsing.
+the stems are "before printing the name" and "instead".
+
+The results are, however, too complicated to return from <rulebook-stem>; since
+it is not used recursively, we store the results in |parsed_rm| on success.
 
 =
 typedef struct rulebook_match {
 	struct rulebook *matched_rulebook;
-	int match_from;
-	int match_length;
-	int advance_words;
-	int tail_words;
-	struct article *article_used;
-	int placement_requested;
+	int match_from; /* first word of matched text */
+	int match_length; /* number of words in matched text */
+	int advance_words; /* how far the nonterminal should advance */
+	int tail_words; /* for rulebook names split by scene start or end */
+	struct article *article_used; /* or |NULL| if none was */
+	int placement_requested; /* one of the |*_PLACEMENT| values */
 } rulebook_match;
+
+rulebook_match parsed_rm;
+int parsed_scene_stem_len = 0;
+rulebook *parsed_scene_stem_B = NULL;
 
 @ =
 <rulebook-stem> internal ? {
-	rulebook_match rm = Rulebooks::rb_match_from_description(W);
-	if (rm.matched_rulebook == NULL) { ==> { fail nonterminal }; }
-	parsed_rm = rm;
-	return Wordings::first_wn(W) + rm.advance_words - 1;
+	int initial_w1 = Wordings::first_wn(W);
+	parsed_scene_stem_len = 0;
+	parsed_scene_stem_B = NULL;
+	if (<rulebook-stem-inner>(W)) {
+		W = GET_RW(<rulebook-stem-name>, 1);
+		int modifier_words = Wordings::first_wn(W) - initial_w1;
+		article_usage *au = (article_usage *) <<rp>>;
+		int pl = <<r>>;
+		rulebook_match rm;
+		rm.match_length = 0;
+		rm.advance_words = 0;
+		rm.tail_words = 0;
+		rm.matched_rulebook = NULL;
+		if (Rulebooks::rb_match_from_description(W, parsed_scene_stem_B,
+			parsed_scene_stem_len, &rm)) {
+			parsed_rm = rm;
+			parsed_rm.match_length += modifier_words;
+			parsed_rm.advance_words += modifier_words;
+			parsed_rm.match_from = initial_w1;
+			parsed_rm.article_used = (au)?(au->article_used):NULL;
+			parsed_rm.placement_requested = pl;
+			return initial_w1 + parsed_rm.advance_words - 1;
+		}
+	}
+	==> { fail nonterminal };
 }
 
 @ Suppose this is our rule:
 
 >> The first rule for printing the name of something: ...
 
-the following grammar peels away the easier-to-read indications at the
-front. It notes the use of "The", and the placement "first"; it throws
-away other verbiage so that <rulebook-stem-name> matches
-
->> printing the name of something
-
-<rulebook-stem> then takes over again and searches for the longest possible
-rulebook name at the start of the stem. So if there were a rulebook called
-"printing", it wouldn't match here, because "printing the name" is longer.
-(<rulebook-stem> doesn't match the "of".)
-
-Productions (a) and (b) of <rulebook-stem-name> are slightly hacky exceptions
-to allow for the "when S begins" rulebooks, where S can be any description
-of a scene rather than just a scene's name. In effect, the stem here consists
-of the two outer words and is discontiguous.
+the following grammar peels away the easier-to-read indications at the front. It
+notes the use of "The", and the placement "first"; it throws away other verbiage so
+that <rulebook-stem-name> matches "printing the name of something".
 
 =
 <rulebook-stem-inner> ::=
-	<indefinite-article> <rulebook-stem-inner-unarticled> |  ==> { R[2], RP[1] }
-	<definite-article> <rulebook-stem-inner-unarticled> |    ==> { R[2], RP[1] }
-	<rulebook-stem-inner-unarticled>                         ==> { R[1], NULL }
+	<indefinite-article> <rulebook-stem-inner-unarticled> | ==> { R[2], RP[1] }
+	<definite-article> <rulebook-stem-inner-unarticled> |   ==> { R[2], RP[1] }
+	<rulebook-stem-inner-unarticled>                        ==> { R[1], NULL }
 
 <rulebook-stem-inner-unarticled> ::=
-	rule for/about/on <rulebook-stem-name> |  ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
-	rule <rulebook-stem-name> |               ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
-	first rule <rulebook-stem-name> |         ==> { FIRST_PLACEMENT, -, <<len>> = R[1] }
-	first <rulebook-stem-name> |              ==> { FIRST_PLACEMENT, -, <<len>> = R[1] }
-	last rule <rulebook-stem-name> |          ==> { LAST_PLACEMENT, -, <<len>> = R[1] }
-	last <rulebook-stem-name> |               ==> { LAST_PLACEMENT, -, <<len>> = R[1] }
-	<rulebook-stem-name>                      ==> { MIDDLE_PLACEMENT, -, <<len>> = R[1] }
+	rule for/about/on <rulebook-stem-name> | ==> { MIDDLE_PLACEMENT, - }
+	rule <rulebook-stem-name> |              ==> { MIDDLE_PLACEMENT, - }
+	first rule <rulebook-stem-name> |        ==> { FIRST_PLACEMENT, - }
+	first <rulebook-stem-name> |             ==> { FIRST_PLACEMENT, - }
+	last rule <rulebook-stem-name> |         ==> { LAST_PLACEMENT, - }
+	last <rulebook-stem-name> |              ==> { LAST_PLACEMENT, - }
+	<rulebook-stem-name>                     ==> { MIDDLE_PLACEMENT, - }
 
 <rulebook-stem-name> ::=
-	{when ... begins} |  ==> { 2, -, <<rulebook:m>> = Rulebooks::std(WHEN_SCENE_BEGINS_RB) }
-	{when ... ends} |    ==> { 2, -, <<rulebook:m>> = Rulebooks::std(WHEN_SCENE_ENDS_RB) }
-	...                  ==> { 0, -, <<rulebook:m>> = NULL }
+	{when ... begins} |                      ==> @<Match the when scene begins exception@>
+	{when ... ends} |                        ==> @<Match the when scene ends exception@>
+	...                                      ==> { -, - }
 
-@ =
-rulebook_match Rulebooks::rb_match_from_description(wording W) {
-	int initial_w1 = Wordings::first_wn(W), modifier_words;
-	int pl = MIDDLE_PLACEMENT;
-	rulebook *rb;
-	rulebook_match rm;
+@<Match the when scene begins exception@> =
+	parsed_scene_stem_B = Rulebooks::std(WHEN_SCENE_BEGINS_RB);
+	parsed_scene_stem_len = 2;
+	==> { -, - };
 
-	<rulebook-stem-inner>(W);
-	W = GET_RW(<rulebook-stem-name>, 1);
-	article_usage *au = (article_usage *) <<rp>>; pl = <<r>>;
+@<Match the when scene ends exception@> =
+	parsed_scene_stem_B = Rulebooks::std(WHEN_SCENE_ENDS_RB);
+	parsed_scene_stem_len = 2;
+	==> { -, - };
 
-	modifier_words = Wordings::first_wn(W) - initial_w1;
+@ In this function, |SB| will be set for the hacky exceptional case where it's
+known that the remaining text matches "when ... begins/ends", one of the scenes
+rulebooks. This is all a bit inelegant, but we manage.
 
-	rm.match_length = 0;
-	rm.advance_words = 0;
-	rm.match_from = initial_w1;
-	rm.tail_words = 0;
-	rm.matched_rulebook = NULL;
-	rm.article_used = (au)?(au->article_used):NULL;
-	rm.placement_requested = pl;
+=
+int Rulebooks::rb_match_from_description(wording W, rulebook *SB, int len, rulebook_match *rm) {
+	@<Find the longest-named rulebook whose name appears at the front of W@>;
+	if (rm->matched_rulebook == NULL) return FALSE;
 
-	LOOP_OVER(rb, rulebook) {
+	rm->advance_words = rm->match_length;
+	if (rm->matched_rulebook == SB) {
+		rm->tail_words = 1;
+		rm->match_length = 1;
+	}
 
-		if (rb == <<rulebook:m>>) {
-			if (rm.match_length < <<len>>) {
-				rm.match_length = <<len>>;
-				rm.matched_rulebook = rb;
+	@<If the matched rulebook was derived from an action, match less text@>;
+	return TRUE;
+}
+
+@<Find the longest-named rulebook whose name appears at the front of W@> =
+	rulebook *B;
+	LOOP_OVER(B, rulebook) {
+		if (B == SB) { /* matches one of the scene begins/ends exceptions */
+			if (rm->match_length < len) {
+				rm->match_length = len;
+				rm->matched_rulebook = B;
 			}
-		} else {
-			if (Wordings::starts_with(W, rb->primary_name)) {
-				if (rm.match_length < Wordings::length(rb->primary_name)) {
-					rm.match_length = Wordings::length(rb->primary_name);
-					rm.matched_rulebook = rb;
+		} else { /* any other rulebook */
+			if (Wordings::starts_with(W, B->primary_name)) {
+				if (rm->match_length < Wordings::length(B->primary_name)) {
+					rm->match_length = Wordings::length(B->primary_name);
+					rm->matched_rulebook = B;
 				}
-			} else if (Wordings::starts_with(W, rb->alternative_name)) {
-				if (rm.match_length < Wordings::length(rb->alternative_name)) {
-					rm.match_length = Wordings::length(rb->alternative_name);
-					rm.matched_rulebook = rb;
+			} else if (Wordings::starts_with(W, B->alternative_name)) {
+				if (rm->match_length < Wordings::length(B->alternative_name)) {
+					rm->match_length = Wordings::length(B->alternative_name);
+					rm->matched_rulebook = B;
 				}
 			}
 		}
-
 	}
 
-	if (rm.match_length == 0) return rm;
+@ |action_stem_length| is zero except for rulebooks derived from actions, such
+as "check taking". It is by definition the difference in length between the
+rulebook name and the action name -- here, therefore, it's 2 - 1 = 1.
 
-	rm.advance_words = rm.match_length;
+If the entire text |W| is the rulebook name -- in this case, "check taking" --
+we match that as normal. But if there is more text -- say, "check taking an
+open container" -- then we retreat slightly and match only the prefix "check".
+This ensures that something like "check taking or dropping something" is
+initially, at least, put into the general check rulebook and not the specific
+one for taking, where the "or dropping" part would never have effect.
 
-	if (rm.matched_rulebook == <<rulebook:m>>) {
-		rm.tail_words = 1;
-		rm.match_length = 1;
-	}
-
-	if (rm.matched_rulebook->action_stem_length) {
-		int w1a = Wordings::first_wn(W) + rm.match_length - 1;
+@<If the matched rulebook was derived from an action, match less text@> =
+	if (rm->matched_rulebook->action_stem_length > 0) {
+		int w1a = Wordings::first_wn(W) + rm->match_length - 1;
 		if (w1a != Wordings::last_wn(W))
-			rm.match_length = rm.matched_rulebook->action_stem_length;
+			rm->match_length = rm->matched_rulebook->action_stem_length;
 	}
-
-	rm.match_length += modifier_words;
-	rm.advance_words += modifier_words;
-	return rm;
-}
 
 @h Standard rulebooks.
 A few rulebooks are special to Inform, in that they have built-in support either

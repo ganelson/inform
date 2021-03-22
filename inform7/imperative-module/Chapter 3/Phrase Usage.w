@@ -33,11 +33,6 @@ typedef struct ph_usage_data {
 	int owning_rulebook_placement; /* ...and with this placement value: see Rulebooks */
 } ph_usage_data;
 
-@ We will need to store values temporarily here while parsing:
-
-= (early code)
-rulebook_match parsed_rm;
-
 @h The mid-morning predeclarations.
 Recall that early in Inform's run, we make a coarse parsing of the preamble
 of each rule to look for a name: if we find it, we declare it as a rule;
