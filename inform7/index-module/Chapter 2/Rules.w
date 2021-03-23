@@ -235,16 +235,16 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 	HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Startup rules", EMPTY_WORDING, NULL,
 		Rulebooks::std(STARTUP_RB), NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, STARTING_VIRTUAL_MACHINE_ACT, 2);
-	Activities::index_by_number(OUT, PRINTING_BANNER_TEXT_ACT, 2);
+	IXActivities::index_by_number(OUT, STARTING_VIRTUAL_MACHINE_ACT, 2);
+	IXActivities::index_by_number(OUT, PRINTING_BANNER_TEXT_ACT, 2);
 	IXRules::index_rules_box(OUT, "Turn sequence rules", EMPTY_WORDING, NULL,
 		Rulebooks::std(TURN_SEQUENCE_RB), NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, CONSTRUCTING_STATUS_LINE_ACT, 2);
+	IXActivities::index_by_number(OUT, CONSTRUCTING_STATUS_LINE_ACT, 2);
 	IXRules::index_rules_box(OUT, "Shutdown rules", EMPTY_WORDING, NULL,
 		Rulebooks::std(SHUTDOWN_RB), NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, AMUSING_A_VICTORIOUS_PLAYER_ACT, 2);
-	Activities::index_by_number(OUT, PRINTING_PLAYERS_OBITUARY_ACT, 2);
-	Activities::index_by_number(OUT, DEALING_WITH_FINAL_QUESTION_ACT, 2);
+	IXActivities::index_by_number(OUT, AMUSING_A_VICTORIOUS_PLAYER_ACT, 2);
+	IXActivities::index_by_number(OUT, PRINTING_PLAYERS_OBITUARY_ACT, 2);
+	IXActivities::index_by_number(OUT, DEALING_WITH_FINAL_QUESTION_ACT, 2);
 
 
 @<Index the segment for the sequence of play rulebooks@> =
@@ -270,16 +270,16 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		"of the following activities and rulebooks in its work."); HTML_CLOSE("p");
 	IXRules::index_rules_box(OUT, "Does the player mean", EMPTY_WORDING, I"rules_dtpm",
 		Rulebooks::std(DOES_THE_PLAYER_MEAN_RB), NULL, NULL, 1, TRUE);
-	Activities::index_by_number(OUT, READING_A_COMMAND_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_SCOPE_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_CONCEALED_POSSESS_ACT, 1);
-	Activities::index_by_number(OUT, DECIDING_WHETHER_ALL_INC_ACT, 1);
-	Activities::index_by_number(OUT, CLARIFYING_PARSERS_CHOICE_ACT, 1);
-	Activities::index_by_number(OUT, ASKING_WHICH_DO_YOU_MEAN_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_A_PARSER_ERROR_ACT, 1);
-	Activities::index_by_number(OUT, SUPPLYING_A_MISSING_NOUN_ACT, 1);
-	Activities::index_by_number(OUT, SUPPLYING_A_MISSING_SECOND_ACT, 1);
-	Activities::index_by_number(OUT, IMPLICITLY_TAKING_ACT, 1);
+	IXActivities::index_by_number(OUT, READING_A_COMMAND_ACT, 1);
+	IXActivities::index_by_number(OUT, DECIDING_SCOPE_ACT, 1);
+	IXActivities::index_by_number(OUT, DECIDING_CONCEALED_POSSESS_ACT, 1);
+	IXActivities::index_by_number(OUT, DECIDING_WHETHER_ALL_INC_ACT, 1);
+	IXActivities::index_by_number(OUT, CLARIFYING_PARSERS_CHOICE_ACT, 1);
+	IXActivities::index_by_number(OUT, ASKING_WHICH_DO_YOU_MEAN_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_A_PARSER_ERROR_ACT, 1);
+	IXActivities::index_by_number(OUT, SUPPLYING_A_MISSING_NOUN_ACT, 1);
+	IXActivities::index_by_number(OUT, SUPPLYING_A_MISSING_SECOND_ACT, 1);
+	IXActivities::index_by_number(OUT, IMPLICITLY_TAKING_ACT, 1);
 
 @<Index the segment for the main action rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>Rules governing actions</b>"); HTML_CLOSE("p");
@@ -324,7 +324,7 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 	HTML_OPEN("p"); WRITE("<b>How responses are printed</b>"); HTML_CLOSE("p");
 	HTML_OPEN("p"); WRITE("The Standard Rules, and some extensions, reply to the player's "
 		"commands with messages which are able to be modified."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_RESPONSE_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_RESPONSE_ACT, 1);
 
 @<Index the segment for the accessibility rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>How accessibility is judged</b>"); HTML_CLOSE("p");
@@ -340,28 +340,28 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 @<Index the segment for the light and darkness rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>Light and darkness</b>"); HTML_CLOSE("p");
 	HTML_OPEN("p"); WRITE("These activities control how we describe darkness."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_NAME_OF_DARK_ROOM_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_DESC_OF_DARK_ROOM_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_NEWS_OF_DARKNESS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_NEWS_OF_LIGHT_ACT, 1);
-	Activities::index_by_number(OUT, REFUSAL_TO_ACT_IN_DARK_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_NAME_OF_DARK_ROOM_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_DESC_OF_DARK_ROOM_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_NEWS_OF_DARKNESS_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_NEWS_OF_LIGHT_ACT, 1);
+	IXActivities::index_by_number(OUT, REFUSAL_TO_ACT_IN_DARK_ACT, 1);
 
 @<Index the segment for the description rulebooks@> =
 	HTML_OPEN("p"); WRITE("<b>How things are described</b>"); HTML_CLOSE("p");
 	HTML_OPEN("p"); WRITE("These activities control what is printed when naming rooms or "
 		"things, and their descriptions."); HTML_CLOSE("p");
-	Activities::index_by_number(OUT, PRINTING_THE_NAME_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_THE_PLURAL_NAME_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_A_NUMBER_OF_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_ROOM_DESC_DETAILS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_INVENTORY_DETAILS_ACT, 1);
-	Activities::index_by_number(OUT, LISTING_CONTENTS_ACT, 1);
-	Activities::index_by_number(OUT, GROUPING_TOGETHER_ACT, 1);
-	Activities::index_by_number(OUT, WRITING_A_PARAGRAPH_ABOUT_ACT, 1);
-	Activities::index_by_number(OUT, LISTING_NONDESCRIPT_ITEMS_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_LOCALE_DESCRIPTION_ACT, 1);
-	Activities::index_by_number(OUT, CHOOSING_NOTABLE_LOCALE_OBJ_ACT, 1);
-	Activities::index_by_number(OUT, PRINTING_LOCALE_PARAGRAPH_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_THE_NAME_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_THE_PLURAL_NAME_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_A_NUMBER_OF_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_ROOM_DESC_DETAILS_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_INVENTORY_DETAILS_ACT, 1);
+	IXActivities::index_by_number(OUT, LISTING_CONTENTS_ACT, 1);
+	IXActivities::index_by_number(OUT, GROUPING_TOGETHER_ACT, 1);
+	IXActivities::index_by_number(OUT, WRITING_A_PARAGRAPH_ABOUT_ACT, 1);
+	IXActivities::index_by_number(OUT, LISTING_NONDESCRIPT_ITEMS_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_LOCALE_DESCRIPTION_ACT, 1);
+	IXActivities::index_by_number(OUT, CHOOSING_NOTABLE_LOCALE_OBJ_ACT, 1);
+	IXActivities::index_by_number(OUT, PRINTING_LOCALE_PARAGRAPH_ACT, 1);
 
 @<Index the segment for new rulebooks and activities@> =
 	HTML_OPEN("p"); WRITE("<b>From the source text</b>"); HTML_CLOSE("p");
@@ -388,7 +388,7 @@ void IXRules::Rules_page(OUTPUT_STREAM, int n) {
 		source_file *sf = Lexer::file_of_origin(Wordings::first_wn(av->name));
 		if (((E == NULL) && (sf == NULL)) ||
 			(Extensions::corresponding_to(sf) == E))
-			Activities::index(OUT, av, 1);
+			IXActivities::index(OUT, av, 1);
 	}
 
 @ =
@@ -429,7 +429,7 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 
 	int n = 0;
 	if (rb) n = Rulebooks::no_rules(rb);
-	if (av) n = Activities::no_rules(av);
+	if (av) n = IXActivities::no_rules(av);
 
 	TEMPORARY_TEXT(textual_name)
 	if (name) WRITE_TO(textual_name, "%s", name);
@@ -500,7 +500,7 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 			int ignore_me = 0;
 			IXRules::index_rulebook(OUT, rb, "", Phrases::Context::no_rule_context(), &ignore_me);
 		}
-		if (av) Activities::index_details(OUT, av);
+		if (av) IXActivities::index_details(OUT, av);
 	}
 	if (hide_behind_plus) {
 		Index::extra_div_close(OUT, col);

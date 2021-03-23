@@ -22,6 +22,7 @@ Chapter 2: Indexing
 	Properties
 	Inferences
 	Rules
+	Activities
 
 Chapter 3: Indexing for Plugins
 	Figures

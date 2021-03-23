@@ -10,7 +10,7 @@ Preliminaries
 Chapter 1: Configuration and Control
 	Imperative Module
 
-Chapter 2: Rules and Rulebooks
+Chapter 2: Rules, Rulebooks and Activities
 "Rules are named phrases which are invoked in a particular way, and rulebooks
 a way to organise lists of them."
 	Rules
@@ -18,7 +18,6 @@ a way to organise lists of them."
 	Booking Lists
 	Rulebooks
 	Focus and Outcome
-	Stacked Variables
 	Activities
 
 Chapter 3: Phrases
@@ -43,6 +42,7 @@ being compiled as a great mass of Inform 6 routines and arrays."
 Chapter 4: Compilation Context
 "Preparing a context at run-time in which code can be executed."
 	Local Variables
+	Stacked Variables
 	Phrase Blocks
 	Stack Frames
 	Chronology

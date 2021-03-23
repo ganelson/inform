@@ -1,11 +1,10 @@
 [Activities::] Activities.
 
-To create and manage activities, which are action-like bundles of
-rules controlling how the I6 runtime code carries out tasks such as "printing
-the name of something". Each has its own page in the I7 documentation. An
-activity list is a disjunction of actitivies.
+To create and manage activities, which are bundles of rules for carrying out tasks.
 
-@h Definitions.
+@h Introduction.
+An activity is just a triple of rulebooks with related names, a common focus
+and a shared set of variables, so this will not be a long section of code.
 
 =
 typedef struct activity {
@@ -14,103 +13,42 @@ typedef struct activity {
 	struct rulebook *for_rules;
 	struct rulebook *after_rules;
 	struct kind *activity_on_what_kind; /* or null */
-	struct stacked_variable_owner *owned_by_av; /* activity variables owned here */
-	struct package_request *av_package;
-	struct inter_name *av_iname; /* an identifier for a constant identifying this */
-	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
-	int activity_indexed; /* has this been indexed yet? */
-	struct activity_crossref *cross_references;
+	struct stacked_variable_owner *activity_variables; /* activity variables owned here */
+	struct activity_indexing_data indexing_data;
+	struct activity_compilation_data compilation_data;
 	CLASS_DEFINITION
 } activity;
 
-typedef struct activity_list {
-	struct activity *activity; /* what activity */
-	struct parse_node *acting_on; /* the parameter */
-	struct parse_node *only_when; /* condition for when this applies */
-	int ACL_parity; /* |+1| if meant positively, |-1| if negatively */
-	struct activity_list *next; /* next in activity list */
-} activity_list;
+@ Whereas rulebooks can turn values into other values, activities are more like
+void functions: they work on a value, but produce nothing.
 
-typedef struct activity_crossref {
-	struct phrase *rule_dependent;
-	struct activity_crossref *next;
-} activity_crossref;
-
-@
-
-@d STARTING_VIRTUAL_MACHINE_ACT 0
-@d PRINTING_THE_NAME_ACT 1
-@d PRINTING_THE_PLURAL_NAME_ACT 2
-
-@d PRINTING_RESPONSE_ACT 3
-
-@d PRINTING_A_NUMBER_OF_ACT 4
-@d PRINTING_ROOM_DESC_DETAILS_ACT 5
-@d PRINTING_INVENTORY_DETAILS_ACT 6
-@d LISTING_CONTENTS_ACT 7
-@d GROUPING_TOGETHER_ACT 8
-@d WRITING_A_PARAGRAPH_ABOUT_ACT 9
-@d LISTING_NONDESCRIPT_ITEMS_ACT 10
-
-@d PRINTING_NAME_OF_DARK_ROOM_ACT 11
-@d PRINTING_DESC_OF_DARK_ROOM_ACT 12
-@d PRINTING_NEWS_OF_DARKNESS_ACT 13
-@d PRINTING_NEWS_OF_LIGHT_ACT 14
-@d REFUSAL_TO_ACT_IN_DARK_ACT 15
-
-@d CONSTRUCTING_STATUS_LINE_ACT 16
-@d PRINTING_BANNER_TEXT_ACT 17
-
-@d READING_A_COMMAND_ACT 18
-@d DECIDING_SCOPE_ACT 19
-@d DECIDING_CONCEALED_POSSESS_ACT 20
-@d DECIDING_WHETHER_ALL_INC_ACT 21
-@d CLARIFYING_PARSERS_CHOICE_ACT 22
-@d ASKING_WHICH_DO_YOU_MEAN_ACT 23
-@d PRINTING_A_PARSER_ERROR_ACT 24
-@d SUPPLYING_A_MISSING_NOUN_ACT 25
-@d SUPPLYING_A_MISSING_SECOND_ACT 26
-@d IMPLICITLY_TAKING_ACT 27
-
-@d AMUSING_A_VICTORIOUS_PLAYER_ACT 28
-@d PRINTING_PLAYERS_OBITUARY_ACT 29
-@d DEALING_WITH_FINAL_QUESTION_ACT 30
-
-@d PRINTING_LOCALE_DESCRIPTION_ACT 31
-@d CHOOSING_NOTABLE_LOCALE_OBJ_ACT 32
-@d PRINTING_LOCALE_PARAGRAPH_ACT 33
+=
+kind *Activities::to_kind(activity *av) {
+	return Kinds::unary_con(CON_activity, av->activity_on_what_kind);
+}
 
 @ Activities are much simpler to create than actions. For example,
 
 >> Announcing something is an activity on numbers.
 
-The object phrase (here "an activity on numbers") is required to match
-<k-kind> and, moreover, to be an activity kind, but we don't parse it
-here. What we do instead is to work on the subject phrase (here "announcing
-something"):
+The object phrase (here "an activity on numbers") matches <k-kind> and needs no
+special Preform of its own; here is the subject phrase:
 
 =
 <activity-sentence-subject> ::=
-	<activity-noted> ( <documentation-symbol> ) |    ==> { R[1], -, <<ds>> = R[2] }
-	<activity-noted> -- <documentation-symbol> -- |  ==> { R[1], -, <<ds>> = R[2] }
-	<activity-noted>                                 ==> { R[1], -, <<ds>> = -1 }
+	<activity-noted> ( <documentation-symbol> ) |   ==> { R[1], -, <<ds>> = R[2] }
+	<activity-noted> -- <documentation-symbol> -- | ==> { R[1], -, <<ds>> = R[2] }
+	<activity-noted>                                ==> { R[1], -, <<ds>> = -1 }
 
 <activity-noted> ::=
-	<activity-new-name> ( future action ) |          ==> { TRUE, -, <<future>> = TRUE }
-	<activity-new-name> ( ... )	|                    ==> @<Issue PM_ActivityNoteUnknown problem@>
-	<activity-new-name>                              ==> { TRUE, -, <<future>> = FALSE }
+	<activity-new-name> ( future action ) |         ==> { TRUE, -, <<future>> = TRUE }
+	<activity-new-name> ( ... )	|                   ==> @<Issue PM_ActivityNoteUnknown problem@>
+	<activity-new-name>                             ==> { TRUE, -, <<future>> = FALSE }
 
 <activity-new-name> ::=
-	... of/for something/anything |                  ==> { 0, -, <<any>> = TRUE }
-	... something/anything |                         ==> { 0, -, <<any>> = TRUE }
-	...                                              ==> { 0, -, <<any>> = FALSE }
-
-@ Once a new activity has been created, the following is used to make a
-noun for it; for example, the "announcing activity".
-
-=
-<activity-name-construction> ::=
-	... activity
+	... of/for something/anything |                 ==> { 0, -, <<any>> = TRUE }
+	... something/anything |                        ==> { 0, -, <<any>> = TRUE }
+	...                                             ==> { 0, -, <<any>> = FALSE }
 
 @<Issue PM_ActivityNoteUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityNoteUnknown),
@@ -118,390 +56,120 @@ noun for it; for example, the "announcing activity".
 		"and should be either 'documented at SYMBOL' or 'future action'.");
 	==> { FALSE, - };
 
-@ =
-activity *Activities::new(kind *creation_kind, wording W) {
-	activity *av = CREATE(activity);
-	int future_action_flag = FALSE;
-	parse_node *spec;
-	creation_kind = Kinds::unary_construction_material(creation_kind);
+@
 
-	if ((Kinds::Behaviour::definite(creation_kind) == FALSE) &&
-		(Kinds::eq(creation_kind, K_nil) == FALSE)) {
-		LOG("I'm reading the kind as: %u\n", creation_kind);
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityIndefinite),
-			"this is an activity on a kind which isn't definite",
-			"and doesn't tell me enough about what sort of value the activity "
-			"should work on. For example, 'Divining is an activity on numbers' "
-			"is fine because 'numbers' is definite, but 'Divining is an "
-			"activity on values' is not allowed.");
-		creation_kind = K_object;
+=
+activity *Activities::new(kind *K, wording W) {
+	kind *on_kind = Kinds::unary_construction_material(K);
+	int kind_given = TRUE;
+	if (Kinds::eq(on_kind, K_nil)) {
+		kind_given = FALSE; on_kind = K_object;
 	}
 
 	<activity-sentence-subject>(W);
 	W = GET_RW(<activity-new-name>, 1);
-	av->av_documentation_symbol = Wordings::one_word(<<ds>>);
-	future_action_flag = <<future>>;
+	wording doc_symbol = Wordings::one_word(<<ds>>);
+	int future_action_flag = <<future>>;
 
-	if (<<any>>) {
-		if (Kinds::eq(creation_kind, K_nil)) creation_kind = K_object;
-	} else {
-		if (Kinds::eq(creation_kind, K_nil) == FALSE) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_ActivityMisnamed),
-				"the name of this activity implies that it acts on nothing",
-				"which doesn't fit with what you say about it. For example, "
-				"'Painting is an activity on brushes' isn't allowed because "
-				"the activity's name doesn't end with 'something': it should "
-				"be 'Painting something is an activity on brushes'.");
-		}
-	}
+	@<The name can't have been used before@>;
+	@<The kind the activity is performed on, if there is one, must be definite@>;
+	@<If it is not of or for something, then it cannot have a kind@>;
 
+	activity *av = CREATE(activity);
 	av->name = W;
-	av->av_package = Hierarchy::local_package(ACTIVITIES_HAP);
-	Hierarchy::markup_wording(av->av_package, ACTIVITY_NAME_HMD, av->name);
-	av->av_iname = Hierarchy::make_iname_with_memo(ACTIVITY_HL, av->av_package, av->name);
-	Emit::named_numeric_constant(av->av_iname, (inter_ti) av->allocation_id);
+	av->compilation_data = RTActivities::new_compilation_data(av);
+	av->activity_on_what_kind = on_kind;
 
-	LOGIF(ACTIVITY_CREATIONS, "Created activity: %n = %W\n", av->av_iname, av->name);
+	LOGIF(ACTIVITY_CREATIONS, "Created activity '%W'\n", av->name);
 
-	av->activity_on_what_kind = creation_kind;
+	@<Make proper nouns for the activity name@>;
 
-	if (<s-value>(av->name)) spec = <<rp>>;
-	else spec = Specifications::new_UNKNOWN(av->name);
-	if (!(Node::is(spec, UNKNOWN_NT)) && (!(Node::is(spec, PROPERTY_VALUE_NT)))) {
-		LOG("%W means $P\n", av->name, spec);
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadActivityName),
-			"this already has a meaning",
-			"and so cannot be the name of a newly created activity.");
-	} else {
-		Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			ACTIVITY_MC, Rvalues::from_activity(av), Task::language_of_syntax());
-		word_assemblage wa =
-			PreformUtilities::merge(<activity-name-construction>, 0,
-				WordAssemblages::from_wording(av->name));
-		wording AW = WordAssemblages::to_wording(&wa);
-		Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-			ACTIVITY_MC, Rvalues::from_activity(av), Task::language_of_syntax());
-	}
+	av->activity_variables = StackedVariables::new_owner(10000+av->allocation_id);
 
-	feed_t id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"before");
-	Feeds::feed_wording(av->name);
-	wording SW = Feeds::end(id);
-	package_request *BR = Hierarchy::make_package_in(BEFORE_RB_HL, av->av_package);
-	av->before_rules =
-		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, 0, BR);
-	id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"for");
-	Feeds::feed_wording(av->name);
-	SW = Feeds::end(id);
-	package_request *FR = Hierarchy::make_package_in(FOR_RB_HL, av->av_package);
-	av->for_rules =
-		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			SUCCESS_OUTCOME, FALSE, future_action_flag, TRUE, 0, FR);
-	id = Feeds::begin();
-	Feeds::feed_C_string_expanding_strings(L"after");
-	Feeds::feed_wording(av->name);
-	SW = Feeds::end(id);
-	package_request *AR = Hierarchy::make_package_in(AFTER_RB_HL, av->av_package);
-	av->after_rules =
-		Rulebooks::new_automatic(SW, av->activity_on_what_kind,
-			NO_OUTCOME, FALSE, future_action_flag, TRUE, 0, AR);
+	av->before_rules = Activities::make_rulebook(av, 0, future_action_flag);
+	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);
+	av->after_rules = Activities::make_rulebook(av, 2, future_action_flag);
 
-	av->owned_by_av = StackedVariables::new_owner(10000+av->allocation_id);
-	Rulebooks::grant_access_to_variables(av->before_rules, av->owned_by_av);
-	Rulebooks::grant_access_to_variables(av->for_rules, av->owned_by_av);
-	Rulebooks::grant_access_to_variables(av->after_rules, av->owned_by_av);
-
-	av->activity_indexed = FALSE;
-	av->cross_references = NULL;
+	av->indexing_data = IXActivities::new_indexing_data(av, doc_symbol);
+	Activities::set_std(av);
 	return av;
 }
 
-kind *Activities::to_kind(activity *av) {
-	return Kinds::unary_con(CON_activity,
-		av->activity_on_what_kind);
-}
+@<The name can't have been used before@> =
+	if (<s-value>(W)) {
+		parse_node *spec = <<rp>>;
+		if (!(Node::is(spec, UNKNOWN_NT)) && (!(Node::is(spec, PROPERTY_VALUE_NT)))) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_BadActivityName),
+				"this already has a meaning",
+				"and so cannot be the name of a newly created activity.");
+			return NULL;
+		}
+	}
 
-@h Activity variables.
-Any new activity variable name is vetted by being run through this:
+@<The kind the activity is performed on, if there is one, must be definite@> =
+	if (Kinds::Behaviour::definite(on_kind) == FALSE) {
+		LOG("I'm reading the kind as: %u\n", on_kind);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_ActivityIndefinite),
+			"this is an activity on a kind which isn't definite",
+			"and doesn't tell me enough about what sort of value the activity should work "
+			"on. For example, 'Divining is an activity on numbers' is fine because "
+			"'numbers' is definite, but 'Divining is an activity on values' is not "
+			"allowed.");
+		return NULL;
+	}
+
+@<If it is not of or for something, then it cannot have a kind@> =
+	if ((<<any>> == FALSE) && (kind_given)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_ActivityMisnamed),
+			"the name of this activity implies that it acts on nothing",
+			"which doesn't fit with what you say about it. For example, 'Painting is an "
+			"activity on brushes' isn't allowed because the activity's name doesn't end "
+			"with 'something': it should be 'Painting something is an activity on brushes'.");
+		return NULL;
+	}
+
+@ Once a new activity has been created, the following is used to make a noun for
+it; actually two -- for example, both "announcing" and "announcing activity".
 
 =
-<activity-variable-name> ::=
-	<unfortunate-name> |    ==> @<Issue PM_ActivityVarAnd problem@>
-	...										==> { TRUE, - }
+<activity-name-construction> ::=
+	... activity
 
-@<Issue PM_ActivityVarAnd problem@> =
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, W);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarAnd));
-	Problems::issue_problem_segment(
-		"You wrote %1, which I am reading as a request to make "
-		"a new named variable for an activity - a value associated "
-		"with a activity and which has a name. The request seems to "
-		"say that the name in question is '%2', but I'd prefer to "
-		"avoid 'and', 'or', 'with', or 'having' in such names, please.");
-	Problems::issue_problem_end();
-	==> { NOT_APPLICABLE, - };
+@<Make proper nouns for the activity name@> =
+	Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		ACTIVITY_MC, Rvalues::from_activity(av), Task::language_of_syntax());
+	word_assemblage wa =
+		PreformUtilities::merge(<activity-name-construction>, 0,
+			WordAssemblages::from_wording(av->name));
+	wording AW = WordAssemblages::to_wording(&wa);
+	Nouns::new_proper_noun(AW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		ACTIVITY_MC, Rvalues::from_activity(av), Task::language_of_syntax());
+
+@ And its rulebooks are named with these constructions:
+
+=
+<activity-rulebook-construction> ::=
+	before ... |
+	for ... |
+	after ...
 
 @ =
-void Activities::add_variable(activity *av, parse_node *cnode) {
-	parse_node *spec;
-	if ((Node::get_type(cnode) != PROPERTYCALLED_NT) &&
-		(Node::get_type(cnode) != UNPARSED_NOUN_NT)) {
-		LOG("Tree: $T\n", cnode);
-		internal_error("ac_add_variable on a node of unknown type");
-	}
-
-	if (Node::get_type(cnode) == UNPARSED_NOUN_NT) {
-		Problems::quote_source(1, current_sentence);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVariableNameless));
-		Problems::issue_problem_segment(
-			"You wrote %1, which I am reading as a request to make "
-			"a new named variable for an activity - a value associated "
-			"with a activity and which has a name. Here, though, there "
-			"seems to be no name for the variable as such, only an indication "
-			"of its kind. Try something like 'The printing the banner text "
-			"activity has a number called the accumulated vanity'.");
-		Problems::issue_problem_end();
-		return;
-	}
-
-	spec = NULL;
-	if (<s-type-expression>(Node::get_text(cnode->down))) spec = <<rp>>;
-
-	if (<activity-variable-name>(Node::get_text(cnode->down->next))) {
-		if (<<r>> == NOT_APPLICABLE) return;
-	}
-
-	if (Specifications::is_description(spec)) {
-		if ((Specifications::to_kind(spec)) &&
-			(Descriptions::number_of_adjectives_applied_to(spec) == 0)) {
-
-		} else {
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, Node::get_text(cnode->down));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarOverspecific));
-			Problems::issue_problem_segment(
-				"You wrote %1, which I am reading as a request to make "
-				"a new named variable for an activity - a value associated "
-				"with a activity and which has a name. The request seems to "
-				"say that the value in question is '%2', but this is too "
-				"specific a description. (Instead, a kind of value "
-				"(such as 'number') or a kind of object (such as 'room' "
-				"or 'thing') should be given. To get a property whose "
-				"contents can be any kind of object, use 'object'.)");
-			Problems::issue_problem_end();
-			return;
-		}
-	}
-	if (!(Specifications::is_kind_like(spec))) {
-		LOG("Offending SP: $T", spec);
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Node::get_text(cnode->down));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarUnknownKOV));
-		Problems::issue_problem_segment(
-			"You wrote %1, but '%2' is not the name of a kind of "
-			"value which I know (such as 'number' or 'text').");
-		Problems::issue_problem_end();
-		return;
-	}
-	if (Kinds::eq(Specifications::to_kind(spec), K_value)) {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Node::get_text(cnode->down));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ActivityVarValue));
-		Problems::issue_problem_segment(
-			"You wrote %1, but saying that a variable is a 'value' "
-			"does not give me a clear enough idea what it will hold. "
-			"You need to say what kind of value: for instance, 'A door "
-			"has a number called street address.' is allowed because "
-			"'number' is specific about the kind of value.");
-		Problems::issue_problem_end();
-		return;
-	}
-	StackedVariables::add_empty(av->owned_by_av, Node::get_text(cnode->down->next),
-		Specifications::to_kind(spec));
+rulebook *Activities::make_rulebook(activity *av, int N, int future_action_flag) {
+	int def = NO_OUTCOME;
+	if (N == 1) def = SUCCESS_OUTCOME;
+	word_assemblage wa = PreformUtilities::merge(<activity-rulebook-construction>, N,
+		WordAssemblages::from_wording(av->name));
+	wording RW = WordAssemblages::to_wording(&wa);
+	rulebook *R = Rulebooks::new_automatic(RW, av->activity_on_what_kind,
+		def, FALSE, future_action_flag, TRUE, 0, RTActivities::rulebook_package(av, N));
+	Rulebooks::grant_access_to_variables(R, av->activity_variables);
+	return R;
 }
 
-void Activities::activity_var_creators(void) {
-	activity *av;
-	LOOP_OVER(av, activity) {
-		if (StackedVariables::owner_empty(av->owned_by_av) == FALSE) {
-			inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_STV_CREATOR_FN_HL, av->av_package);
-			StackedVariables::compile_frame_creator(av->owned_by_av, iname);
-		}
-	}
-
-	inter_name *iname = Hierarchy::find(ACTIVITY_VAR_CREATORS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_value);
-	int c = 0;
-	LOOP_OVER(av, activity) {
-		if (StackedVariables::owner_empty(av->owned_by_av)) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(StackedVariables::frame_creator(av->owned_by_av));
-		c++;
-	}
-	Emit::array_numeric_entry(0);
-	if (c == 0) Emit::array_numeric_entry(0);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-@h Activity indexing.
-
-=
-void Activities::index_by_number(OUTPUT_STREAM, int id, int indent) {
-	activity *av;
-	LOOP_OVER(av, activity)
-		if (av->allocation_id == id) Activities::index(OUT, av, indent);
-}
-
-void Activities::index(OUTPUT_STREAM, activity *av, int indent) {
-	int empty = TRUE;
-	char *text = NULL;
-	if (av->activity_indexed) return;
-	av->activity_indexed = TRUE;
-	if (Rulebooks::is_empty(av->before_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->for_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->after_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
-	if (av->cross_references) empty = FALSE;
-	TEMPORARY_TEXT(doc_link)
-	if (Wordings::nonempty(av->av_documentation_symbol))
-		WRITE_TO(doc_link, "%+W", Wordings::one_word(Wordings::first_wn(av->av_documentation_symbol)));
-	if (empty) text = "There are no rules before, for or after this activity.";
-	IXRules::index_rules_box(OUT, NULL, av->name, doc_link,
-		NULL, av, text, indent, TRUE);
-	DISCARD_TEXT(doc_link)
-}
-
-int Activities::no_rules(activity *av) {
-	int t = 0;
-	t += Rulebooks::no_rules(av->before_rules);
-	t += Rulebooks::no_rules(av->for_rules);
-	t += Rulebooks::no_rules(av->after_rules);
-	return t;
-}
-
-void Activities::index_details(OUTPUT_STREAM, activity *av) {
-	int ignore_me = 0;
-	IXRules::index_rulebook(OUT, av->before_rules, "before", Phrases::Context::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->for_rules, "for", Phrases::Context::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->after_rules, "after", Phrases::Context::no_rule_context(), &ignore_me);
-	Activities::index_cross_references(OUT, av);
-}
-
-inter_name *Activities::iname(activity *av) {
-	return av->av_iname;
-}
-
-int Activities::count_list(activity_list *avl) {
-	int n = 0;
-	while (avl) {
-		n += 10;
-		if (avl->only_when) n += Conditions::count(avl->only_when);
-		avl = avl->next;
-	}
-	return n;
-}
-
-@ Run-time contexts are seen in the "while" clauses at the end of rules.
-For example:
-
->> Rule for printing the name of the lemon sherbet while listing contents: ...
-
-Here "listing contents" is the context. These are like action patterns, but
-much simpler to parse -- an or-divided list of activities can be given, with or
-without operands; "not" can be used to negate the list; and ordinary
-conditions are also allowed, as here:
-
->> Rule for printing the name of the sack while the sack is not carried: ...
-
-where "the sack is not carried" is also a <run-time-context> even though
-it mentions no activities.
-
-=
-<run-time-context> ::=
-	not <activity-list-unnegated> |          ==> { 0, RP[1] }; @<Flip the activity list parities@>;
-	<activity-list-unnegated>                ==> { 0, RP[1] }
-
-<activity-list-unnegated> ::=
-	... |                                    ==> { lookahead }
-	<activity-list-entry> <activity-tail> |  ==> @<Join the activity lists@>;
-	<activity-list-entry>                    ==> { 0, RP[1] }
-
-<activity-tail> ::=
-	, _or <run-time-context> |               ==> { 0, RP[1] }
-	_,/or <run-time-context>                 ==> { 0, RP[1] }
-
-<activity-list-entry> ::=
-	<activity-name> |                            ==> @<Make one-entry AL without operand@>
-	<activity-name> of/for <activity-operand> |  ==> @<Make one-entry AL with operand@>
-	<activity-name> <activity-operand> |         ==> @<Make one-entry AL with operand@>
-	^<if-parsing-al-conditions> ... |            ==> @<Make one-entry AL with unparsed text@>
-	<if-parsing-al-conditions> <s-condition>     ==> @<Make one-entry AL with condition@>
-
-@ The optional operand handles "something" itself in productions (a) and (b)
-in order to prevent it from being read as a description at production (c). This
-prevents "something" from being read as "some thing", that is, it prevents
-Inform from thinking that the operand value must have kind "thing".
-
-If we do reach (c), the expression is required to be a value, or description of
-values, of the kind to which the activity applies.
-
-=
-<activity-operand> ::=
-	something/anything |          ==> { FALSE, Specifications::new_UNKNOWN(W) }
-	something/anything else |     ==> { FALSE, Specifications::new_UNKNOWN(W) }
-	<s-type-expression-or-value>  ==> { TRUE, RP[1] }
-
-@<Flip the activity list parities@> =
-	activity_list *al = *XP;
-	for (; al; al=al->next) {
-		al->ACL_parity = (al->ACL_parity)?FALSE:TRUE;
-	}
-
-@<Join the activity lists@> =
-	activity_list *al1 = RP[1], *al2 = RP[2];
-	al1->next = al2;
-	==> { -, al1 };
-
-@<Make one-entry AL without operand@> =
-	activity_list *al;
-	@<Make one-entry AL@>;
-	al->activity = RP[1];
-
-@<Make one-entry AL with operand@> =
-	activity *an = RP[1];
-	if (an->activity_on_what_kind == NULL) return FALSE;
-	if ((R[2]) && (Dash::validate_parameter(RP[2], an->activity_on_what_kind) == FALSE))
-		return FALSE;
-	activity_list *al;
-	@<Make one-entry AL@>;
-	al->activity = an;
-	al->acting_on = RP[2];
-
-@<Make one-entry AL with unparsed text@> =
-	parse_node *cond = Specifications::new_UNKNOWN(EMPTY_WORDING);
-	activity_list *al;
-	@<Make one-entry AL@>;
-	al->only_when = cond;
-
-@<Make one-entry AL with condition@> =
-	parse_node *cond = RP[2];
-	if (Dash::validate_conditional_clause(cond) == FALSE) return FALSE;
-	activity_list *al;
-	@<Make one-entry AL@>;
-	al->only_when = cond;
-
-@<Make one-entry AL@> =
-	al = CREATE(activity_list);
-	al->acting_on = NULL;
-	al->only_when = NULL;
-	al->next = NULL;
-	al->ACL_parity = TRUE;
-	al->activity = NULL;
-	==> { -, al };
-
-@ And this parses individual activity names.
+@ And this nonterminal parses individual activity names.
 
 =
 <activity-name> internal {
@@ -513,146 +181,170 @@ values, of the kind to which the activity applies.
 	==> { fail nonterminal }
 }
 
-@ =
-int parsing_al_conditions = TRUE;
-
-activity_list *Activities::parse_list(wording W) {
-	return Activities::parse_list_inner(W, TRUE);
-}
-
-@ It's convenient not to look too closely at the condition sometimes.
+@h Activity variables.
+Any new activity variable name is vetted by being run through this:
 
 =
-<if-parsing-al-conditions> internal 0 {
-	if (parsing_al_conditions) return TRUE;
-	==> { fail nonterminal };
+void Activities::add_variable(activity *av, parse_node *cnode) {
+	if (Node::get_type(cnode) == UNPARSED_NOUN_NT) {
+		Problems::quote_source(1, current_sentence);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ActivityVariableNameless));
+		Problems::issue_problem_segment(
+			"You wrote %1, which I am reading as a request to make a new named variable "
+			"for an activity - a value associated with a activity and which has a name. "
+			"Here, though, there seems to be no name for the variable as such, only an "
+			"indication of its kind. Try something like 'The printing the banner text "
+			"activity has a number called the accumulated vanity'.");
+		Problems::issue_problem_end();
+		return;
+	}
+
+	wording SW = Node::get_text(cnode->down);
+	wording VW = Node::get_text(cnode->down->next);
+
+	parse_node *spec = NULL; if (<s-type-expression>(SW)) spec = <<rp>>;
+
+	@<The name of the variable must be fortunate@>;
+	@<The specification must not be qualified@>;
+	@<The specification must be just a kind@>;
+	@<That kind must be definite@>;
+
+	StackedVariables::add_empty(av->activity_variables, VW, Specifications::to_kind(spec));
 }
 
-@ All of which sets up the context for:
+@<The name of the variable must be fortunate@> =
+	if (<unfortunate-name>(VW)) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, VW);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ActivityVarAnd));
+		Problems::issue_problem_segment(
+			"You wrote %1, which I am reading as a request to make a new named variable "
+			"for an activity - a value associated with a activity and which has a name. "
+			"The request seems to say that the name in question is '%2', but I'd prefer "
+			"to avoid 'and', 'or', 'with', or 'having' in such names, please.");
+		Problems::issue_problem_end();
+		return;
+	}
+
+@<The specification must not be qualified@> =
+	if ((Specifications::is_kind_like(spec) == FALSE) &&
+		(Specifications::is_description(spec))) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, SW);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ActivityVarOverspecific));
+		Problems::issue_problem_segment(
+			"You wrote %1, which I am reading as a request to make a new named variable "
+			"for an activity - a value associated with a activity and which has a name. "
+			"The request seems to say that the value in question is '%2', but this is too "
+			"specific a description. (Instead, a kind of value (such as 'number') or a "
+			"kind of object (such as 'room' or 'thing') should be given. To get a property "
+			"whose contents can be any kind of object, use 'object'.)");
+		Problems::issue_problem_end();
+		return;
+	}
+
+@<The specification must be just a kind@> =
+	if (Specifications::is_kind_like(spec) == FALSE) {
+		LOG("Offending SP: $T", spec);
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, SW);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ActivityVarUnknownKOV));
+		Problems::issue_problem_segment(
+			"You wrote %1, but '%2' is not the name of a kind of value which I know "
+			"(such as 'number' or 'text').");
+		Problems::issue_problem_end();
+		return;
+	}
+
+@<That kind must be definite@> =
+	if (Kinds::Behaviour::definite(Specifications::to_kind(spec)) == FALSE) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, SW);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ActivityVarValue));
+		Problems::issue_problem_segment(
+			"You wrote %1, but this does not give me a clear enough idea what it will hold. "
+			"You need to say what kind of value: for instance, 'A door has a number called "
+			"street address.' is allowed because 'number' is specific about the kind of "
+			"value.");
+		Problems::issue_problem_end();
+		return;
+	}
+
+@h Standard activities.
+As with rulebooks -- see the similar discussion at //Rulebooks::std// -- a few
+activities are special to the compiler, though in fact purely for indexing purposes.
+
+These are recognised by the order in which they are declared, which makes it
+crucial not to change that order in //basic_inform: Miscellaneous Definitions//
+and //standard_rules: Physical World Model// without making matching changes
+both here and in //BasicInformKit// and //WorldModelKit//. So: don't casually
+change the following numbers.
+
+Note that in the world of Basic Inform only, none of these will exist except
+for the first five.
+
+@d STARTING_VIRTUAL_MACHINE_ACT    0
+@d PRINTING_THE_NAME_ACT           1
+@d PRINTING_THE_PLURAL_NAME_ACT    2
+@d PRINTING_RESPONSE_ACT           3
+@d PRINTING_A_NUMBER_OF_ACT        4
+@d PRINTING_ROOM_DESC_DETAILS_ACT  5
+@d PRINTING_INVENTORY_DETAILS_ACT  6
+@d LISTING_CONTENTS_ACT            7
+@d GROUPING_TOGETHER_ACT           8
+@d WRITING_A_PARAGRAPH_ABOUT_ACT   9
+@d LISTING_NONDESCRIPT_ITEMS_ACT   10
+@d PRINTING_NAME_OF_DARK_ROOM_ACT  11
+@d PRINTING_DESC_OF_DARK_ROOM_ACT  12
+@d PRINTING_NEWS_OF_DARKNESS_ACT   13
+@d PRINTING_NEWS_OF_LIGHT_ACT      14
+@d REFUSAL_TO_ACT_IN_DARK_ACT      15
+@d CONSTRUCTING_STATUS_LINE_ACT    16
+@d PRINTING_BANNER_TEXT_ACT        17
+@d READING_A_COMMAND_ACT           18
+@d DECIDING_SCOPE_ACT              19
+@d DECIDING_CONCEALED_POSSESS_ACT  20
+@d DECIDING_WHETHER_ALL_INC_ACT    21
+@d CLARIFYING_PARSERS_CHOICE_ACT   22
+@d ASKING_WHICH_DO_YOU_MEAN_ACT    23
+@d PRINTING_A_PARSER_ERROR_ACT     24
+@d SUPPLYING_A_MISSING_NOUN_ACT    25
+@d SUPPLYING_A_MISSING_SECOND_ACT  26
+@d IMPLICITLY_TAKING_ACT           27
+@d AMUSING_A_VICTORIOUS_PLAYER_ACT 28
+@d PRINTING_PLAYERS_OBITUARY_ACT   29
+@d DEALING_WITH_FINAL_QUESTION_ACT 30
+@d PRINTING_LOCALE_DESCRIPTION_ACT 31
+@d CHOOSING_NOTABLE_LOCALE_OBJ_ACT 32
+@d PRINTING_LOCALE_PARAGRAPH_ACT   33
+
+@ The rest of the compiler should call |Activities::std(N)| to obtain activity |N|.
+
+@d MAX_BUILT_IN_ACTIVITIES 64
 
 =
-activity_list *Activities::parse_list_inner(wording W, int state) {
-	int save_pac = parsing_al_conditions;
-	parsing_al_conditions = state;
-	int rv = <run-time-context>(W);
-	parsing_al_conditions = save_pac;
-	if (rv) return <<rp>>;
-	return NULL;
-}
+int built_in_activities_initialised = FALSE;
+activity *built_in_activities[MAX_BUILT_IN_ACTIVITIES];
 
-void Activities::emit_activity_list(activity_list *al) {
-	int negate_me = FALSE, downs = 0;
-	if (al->ACL_parity == FALSE) negate_me = TRUE;
-	if (negate_me) { Produce::inv_primitive(Emit::tree(), NOT_BIP); Produce::down(Emit::tree()); downs++; }
-
-	int cl = 0;
-	for (activity_list *k = al; k; k = k->next) cl++;
-
-	int ncl = 0;
-	while (al != NULL) {
-		if (++ncl < cl) { Produce::inv_primitive(Emit::tree(), OR_BIP); Produce::down(Emit::tree()); downs++; }
-		if (al->activity != NULL) {
-			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TESTACTIVITY_HL));
-			Produce::down(Emit::tree());
-				Produce::val_iname(Emit::tree(), K_value, al->activity->av_iname);
-				if (al->acting_on) {
-					if (Specifications::is_description(al->acting_on)) {
-						Produce::val_iname(Emit::tree(), K_value, Calculus::Deferrals::compile_deferred_description_test(al->acting_on));
-					} else {
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
-						Specifications::Compiler::emit_as_val(K_value, al->acting_on);
-					}
-				}
-			Produce::up(Emit::tree());
-		}
-		else {
-			Specifications::Compiler::emit_as_val(K_value, al->only_when);
-		}
-		al = al->next;
+activity *Activities::std(int N) {
+	if ((N < 0) || (N >= MAX_BUILT_IN_ACTIVITIES)) internal_error("N out of range");
+	if (built_in_activities_initialised == FALSE) {
+		built_in_activities_initialised = TRUE;
+		for (int i=0; i<MAX_BUILT_IN_ACTIVITIES; i++) built_in_activities[i] = NULL;
 	}
-
-	while (downs > 0) { Produce::up(Emit::tree()); downs--; }
+	return built_in_activities[N];
 }
 
-void Activities::compile_activity_constants(void) {
-}
-
-void Activities::Activity_before_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_BEFORE_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->before_rules->allocation_id);
-		i++;
+void Activities::set_std(activity *Av) {
+	if (built_in_activities_initialised == FALSE) {
+		built_in_activities_initialised = TRUE;
+		for (int i=0; i<MAX_BUILT_IN_ACTIVITIES; i++) built_in_activities[i] = NULL;
 	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void Activities::Activity_for_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_FOR_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->for_rules->allocation_id);
-		i++;
-	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void Activities::Activity_after_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_AFTER_RULEBOOKS_HL);
-	packaging_state save = Emit::named_array_begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) av->after_rules->allocation_id);
-		i++;
-	}
-	if (i==0) Emit::array_null_entry();
-	Emit::array_null_entry();
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void Activities::Activity_atb_rulebooks_array(void) {
-	inter_name *iname = Hierarchy::find(ACTIVITY_ATB_RULEBOOKS_HL);
-	packaging_state save = Emit::named_byte_array_begin(iname, K_number);
-	activity *av; int i = 0;
-	LOOP_OVER(av, activity) {
-		Emit::array_numeric_entry((inter_ti) Rulebooks::used_by_future_actions(av->before_rules));
-		i++;
-	}
-	if (i==0) Emit::array_numeric_entry(255);
-	Emit::array_numeric_entry(255);
-	Emit::array_end(save);
-	Hierarchy::make_available(Emit::tree(), iname);
-}
-
-void Activities::annotate_list_for_cross_references(activity_list *avl, phrase *ph) {
-	for (; avl; avl = avl->next)
-		if (avl->activity) {
-			activity *av = avl->activity;
-			activity_crossref *acr = CREATE(activity_crossref);
-			acr->next = av->cross_references;
-			av->cross_references = acr;
-			acr->rule_dependent = ph;
-		}
-}
-
-void Activities::index_cross_references(OUTPUT_STREAM, activity *av) {
-	activity_crossref *acr;
-	for (acr = av->cross_references; acr; acr = acr->next) {
-		phrase *ph = acr->rule_dependent;
-		if ((ph->declaration_node) && (Wordings::nonempty(Node::get_text(ph->declaration_node)))) {
-			HTML::open_indented_p(OUT, 2, "tight");
-			WRITE("NB: %W", Node::get_text(ph->declaration_node));
-			Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
-			HTML_CLOSE("p");
-		}
-	}
+	if (Av->allocation_id < MAX_BUILT_IN_ACTIVITIES)
+		built_in_activities[Av->allocation_id] = Av;
 }

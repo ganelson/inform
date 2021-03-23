@@ -659,7 +659,7 @@ them by asserting propositions to be true; we act directly.
 
 @<Create a new activity@> =
 	activity *av = Activities::new(create_as, W);
-	val = Rvalues::from_activity(av);
+	if (av) val = Rvalues::from_activity(av);
 	Annotations::write_int(current_sentence, clears_pronouns_ANNOT, TRUE);
 
 @ And to wind up, sundry problem messages.

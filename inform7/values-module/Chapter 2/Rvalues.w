@@ -633,7 +633,7 @@ kinds of value:
 		return;
 	if (Kinds::get_construct(kind_of_constant) == CON_activity) {
 		activity *act = Rvalues::to_activity(spec_found);
-		inter_name *N = Activities::iname(act);
+		inter_name *N = RTActivities::iname(act);
 		if (N) Emit::holster(VH, N);
 		return;
 	}

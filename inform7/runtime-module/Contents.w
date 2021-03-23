@@ -38,6 +38,7 @@ Chapter 4: Compilation Utilities
 	Constant Lists
 	Routines
 	Rules
+	Activities
 	Equations Support
 	I6 Template Interpreter
 	Test Scripts

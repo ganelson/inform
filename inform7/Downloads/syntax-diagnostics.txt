@@ -5796,7 +5796,7 @@ ROOT_NT
                                     INVOCATION_LIST_NT'carry out the printing the player's obituary activity'
                                         INVOCATION_NT'carry out the printing the player's obituary activity' {phrase invoked: call}
                                             RVALUE_CONTEXT_NT'printing the player's obituary' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity on nothing'} {required: activity}
-                                                CONSTANT_NT'printing the player's obituary' {kind: activity} {activity: printing the player's obituary}{meaning: {printing the player's obituary = ACTIVITY_MC}}
+                                                CONSTANT_NT'printing the player's obituary' {kind: activity on objects} {activity: printing the player's obituary}{meaning: {printing the player's obituary = ACTIVITY_MC}}
                             SENTENCE_NT'the resurrect player if asked rule translates into inter as ' {unit: 2} {classified}
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: into} {prep2: as} {special meaning: translates-into-i6} {category: 2}
                                 UNPARSED_NOUN_NT'resurrect player if asked rule' {definite 'the' n/m/f s/p nom/acc}
@@ -11090,7 +11090,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'begin the printing the name of a dark room activity' {indent: 2}
                                             INVOCATION_NT'begin the printing the name of a dark room activity' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'printing the name of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity on nothing'} {required: activity}
-                                                    CONSTANT_NT'printing the name of a dark room' {kind: activity} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
+                                                    CONSTANT_NT'printing the name of a dark room' {kind: activity on objects} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if handling the printing the name of a dark room activity' {colon_block_command} {indent: 2}
                                                 INVOCATION_NT'if handling the printing the name of a dark room activity' {phrase invoked: call}
@@ -11100,7 +11100,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'handling the printing the name of a dark room activity'
                                                                     INVOCATION_NT'handling the printing the name of a dark room activity' {phrase invoked: call} {resulting: truth state}
                                                                         RVALUE_CONTEXT_NT'printing the name of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity'} {required: activity}
-                                                                            CONSTANT_NT'printing the name of a dark room' {kind: activity} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
+                                                                            CONSTANT_NT'printing the name of a dark room' {kind: activity on objects} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
                                             CODE_BLOCK_NT
                                                 CODE_BLOCK_NT'say "Darkness" ( a )' {control structure: SAY}
                                                     INVOCATION_LIST_SAY_NT'"Darkness" ( a )'
@@ -11110,7 +11110,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'end the printing the name of a dark room activity' {indent: 2}
                                             INVOCATION_NT'end the printing the name of a dark room activity' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'printing the name of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity on nothing'} {required: activity}
-                                                    CONSTANT_NT'printing the name of a dark room' {kind: activity} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
+                                                    CONSTANT_NT'printing the name of a dark room' {kind: activity on objects} {activity: printing the name of a dark room}{meaning: {printing the name of a dark room = ACTIVITY_MC}}
                                     CODE_BLOCK_NT'otherwise' {control structure: O}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the visibility ceiling is the location' {colon_block_command} {indent: 1}
@@ -11224,7 +11224,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'begin the printing the description of a dark room activity' {indent: 2}
                                             INVOCATION_NT'begin the printing the description of a dark room activity' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'printing the description of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity on nothing'} {required: activity}
-                                                    CONSTANT_NT'printing the description of a dark room' {kind: activity} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
+                                                    CONSTANT_NT'printing the description of a dark room' {kind: activity on objects} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if handling the printing the description of a dark room acti' {colon_block_command} {indent: 2}
                                                 INVOCATION_NT'if handling the printing the description of a dark room acti' {phrase invoked: call}
@@ -11234,7 +11234,7 @@ ROOT_NT
                                                                 INVOCATION_LIST_NT'handling the printing the description of a dark room activit'
                                                                     INVOCATION_NT'handling the printing the description of a dark room activit' {phrase invoked: call} {resulting: truth state}
                                                                         RVALUE_CONTEXT_NT'printing the description of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity'} {required: activity}
-                                                                            CONSTANT_NT'printing the description of a dark room' {kind: activity} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
+                                                                            CONSTANT_NT'printing the description of a dark room' {kind: activity on objects} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
                                             CODE_BLOCK_NT
                                                 INVOCATION_LIST_NT'now the prior named object is nothing' {indent: 3} {control structure: NOW}
                                                     CONDITION_CONTEXT_NT'the prior named object is nothing'
@@ -11246,7 +11246,7 @@ ROOT_NT
                                         INVOCATION_LIST_NT'end the printing the description of a dark room activity' {indent: 2}
                                             INVOCATION_NT'end the printing the description of a dark room activity' {phrase invoked: call}
                                                 RVALUE_CONTEXT_NT'printing the description of a dark room' {token check to do: <null-parse-node>} {token to be parsed against: TEST_VALUE_NT'activity on nothing'} {required: activity}
-                                                    CONSTANT_NT'printing the description of a dark room' {kind: activity} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
+                                                    CONSTANT_NT'printing the description of a dark room' {kind: activity on objects} {activity: printing the description of a dark room}{meaning: {printing the description of a dark room = ACTIVITY_MC}}
                                     CODE_BLOCK_NT'otherwise' {control structure: O}
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the visibility ceiling is the location' {colon_block_command} {indent: 1}

@@ -279,8 +279,8 @@ int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
 	if ((Wordings::nonempty(AL1W)) && (Wordings::empty(AL2W))) return 1;
 	if ((Wordings::empty(AL1W)) && (Wordings::nonempty(AL2W))) return -1;
 	if (Wordings::nonempty(AL1W)) {
-		int n1 = Activities::count_list(rcd1->avl);
-		int n2 = Activities::count_list(rcd2->avl);
+		int n1 = Phrases::Context::count_avl(rcd1->avl);
+		int n2 = Phrases::Context::count_avl(rcd2->avl);
 		if (n1 > n2) return 1;
 		if (n2 > n1) return -1;
 	}
@@ -326,7 +326,7 @@ void Phrases::Context::ensure_avl(rule *R) {
 			Frames::make_current(phsf);
 
 			Frames::set_stvol(phsf, R->variables_visible_in_definition);
-			rcd->avl = Activities::parse_list(rcd->activity_context);
+			rcd->avl = Phrases::Context::parse_avl(rcd->activity_context);
 			current_sentence = save_cs;
 		}
 	}
@@ -507,7 +507,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 	Produce::down(Emit::tree());
 		activity_list *avl = phrcd->avl;
 		if (avl) {
-			Activities::emit_activity_list(avl);
+			RTActivities::emit_activity_list(avl);
 		} else {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadWhenWhile),
 				"I don't understand the 'when/while' clause",
@@ -517,7 +517,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-		Activities::annotate_list_for_cross_references(avl, ph);
+		IXActivities::annotate_list_for_cross_references(avl, ph);
 		tests++;
 
 @<Compile an activity or explicit condition test tail@> =
@@ -547,3 +547,145 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
+
+@ 
+
+=
+typedef struct activity_list {
+	struct activity *activity; /* what activity */
+	struct parse_node *acting_on; /* the parameter */
+	struct parse_node *only_when; /* condition for when this applies */
+	int ACL_parity; /* |+1| if meant positively, |-1| if negatively */
+	struct activity_list *next; /* next in activity list */
+} activity_list;
+
+int Phrases::Context::count_avl(activity_list *avl) {
+	int n = 0;
+	while (avl) {
+		n += 10;
+		if (avl->only_when) n += Conditions::count(avl->only_when);
+		avl = avl->next;
+	}
+	return n;
+}
+
+@ Run-time contexts are seen in the "while" clauses at the end of rules.
+For example:
+
+>> Rule for printing the name of the lemon sherbet while listing contents: ...
+
+Here "listing contents" is the context. These are like action patterns, but
+much simpler to parse -- an or-divided list of activities can be given, with or
+without operands; "not" can be used to negate the list; and ordinary
+conditions are also allowed, as here:
+
+>> Rule for printing the name of the sack while the sack is not carried: ...
+
+where "the sack is not carried" is also a <run-time-context> even though
+it mentions no activities.
+
+=
+<run-time-context> ::=
+	not <activity-list-unnegated> |          ==> { 0, RP[1] }; @<Flip the activity list parities@>;
+	<activity-list-unnegated>                ==> { 0, RP[1] }
+
+<activity-list-unnegated> ::=
+	... |                                    ==> { lookahead }
+	<activity-list-entry> <activity-tail> |  ==> @<Join the activity lists@>;
+	<activity-list-entry>                    ==> { 0, RP[1] }
+
+<activity-tail> ::=
+	, _or <run-time-context> |               ==> { 0, RP[1] }
+	_,/or <run-time-context>                 ==> { 0, RP[1] }
+
+<activity-list-entry> ::=
+	<activity-name> |                            ==> @<Make one-entry AL without operand@>
+	<activity-name> of/for <activity-operand> |  ==> @<Make one-entry AL with operand@>
+	<activity-name> <activity-operand> |         ==> @<Make one-entry AL with operand@>
+	^<if-parsing-al-conditions> ... |            ==> @<Make one-entry AL with unparsed text@>
+	<if-parsing-al-conditions> <s-condition>     ==> @<Make one-entry AL with condition@>
+
+@ The optional operand handles "something" itself in productions (a) and (b)
+in order to prevent it from being read as a description at production (c). This
+prevents "something" from being read as "some thing", that is, it prevents
+Inform from thinking that the operand value must have kind "thing".
+
+If we do reach (c), the expression is required to be a value, or description of
+values, of the kind to which the activity applies.
+
+=
+<activity-operand> ::=
+	something/anything |          ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	something/anything else |     ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	<s-type-expression-or-value>  ==> { TRUE, RP[1] }
+
+@<Flip the activity list parities@> =
+	activity_list *al = *XP;
+	for (; al; al=al->next) {
+		al->ACL_parity = (al->ACL_parity)?FALSE:TRUE;
+	}
+
+@<Join the activity lists@> =
+	activity_list *al1 = RP[1], *al2 = RP[2];
+	al1->next = al2;
+	==> { -, al1 };
+
+@<Make one-entry AL without operand@> =
+	activity_list *al;
+	@<Make one-entry AL@>;
+	al->activity = RP[1];
+
+@<Make one-entry AL with operand@> =
+	activity *an = RP[1];
+	if (an->activity_on_what_kind == NULL) return FALSE;
+	if ((R[2]) && (Dash::validate_parameter(RP[2], an->activity_on_what_kind) == FALSE))
+		return FALSE;
+	activity_list *al;
+	@<Make one-entry AL@>;
+	al->activity = an;
+	al->acting_on = RP[2];
+
+@<Make one-entry AL with unparsed text@> =
+	parse_node *cond = Specifications::new_UNKNOWN(EMPTY_WORDING);
+	activity_list *al;
+	@<Make one-entry AL@>;
+	al->only_when = cond;
+
+@<Make one-entry AL with condition@> =
+	parse_node *cond = RP[2];
+	if (Dash::validate_conditional_clause(cond) == FALSE) return FALSE;
+	activity_list *al;
+	@<Make one-entry AL@>;
+	al->only_when = cond;
+
+@<Make one-entry AL@> =
+	al = CREATE(activity_list);
+	al->acting_on = NULL;
+	al->only_when = NULL;
+	al->next = NULL;
+	al->ACL_parity = TRUE;
+	al->activity = NULL;
+	==> { -, al };
+
+@ =
+int parsing_al_conditions = TRUE;
+
+@ It's convenient not to look too closely at the condition sometimes.
+
+=
+<if-parsing-al-conditions> internal 0 {
+	if (parsing_al_conditions) return TRUE;
+	==> { fail nonterminal };
+}
+
+@ All of which sets up the context for:
+
+=
+activity_list *Phrases::Context::parse_avl(wording W) {
+	int save_pac = parsing_al_conditions;
+	parsing_al_conditions = TRUE;
+	int rv = <run-time-context>(W);
+	parsing_al_conditions = save_pac;
+	if (rv) return <<rp>>;
+	return NULL;
+}
