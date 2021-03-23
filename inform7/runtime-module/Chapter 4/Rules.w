@@ -660,16 +660,16 @@ void RTRules::rulebooks_array_array(void) {
 
 void RTRules::compile_rulebooks(void) {
 	RTRules::start_list_compilation();
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook) {
+	rulebook *B;
+	LOOP_OVER(B, rulebook) {
 		int act = FALSE;
-		if (Rulebooks::focus(rb) == ACTION_FOCUS) act = TRUE;
-		if (rb->automatically_generated) act = FALSE;
+		if (Rulebooks::action_focus(B)) act = TRUE;
+		if (B->automatically_generated) act = FALSE;
 		int par = FALSE;
-		if (Rulebooks::focus(rb) == PARAMETER_FOCUS) par = TRUE;
+		if (Rulebooks::action_focus(B) == FALSE) par = TRUE;
 		LOGIF(RULEBOOK_COMPILATION, "Compiling rulebook: %W = %n\n",
-			rb->primary_name, rb->compilation_data.rb_iname);
-		RTRules::list_compile(rb->contents, rb->compilation_data.rb_iname, act, par);
+			B->primary_name, B->compilation_data.rb_iname);
+		RTRules::list_compile(B->contents, B->compilation_data.rb_iname, act, par);
 	}
 	rule *R;
 	LOOP_OVER(R, rule)
@@ -683,10 +683,10 @@ void RTRules::RulebookNames_array(void) {
 		Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry(0);
 	} else {
-		rulebook *rb;
-		LOOP_OVER(rb, rulebook) {
+		rulebook *B;
+		LOOP_OVER(B, rulebook) {
 			TEMPORARY_TEXT(rbt)
-			WRITE_TO(rbt, "%~W rulebook", rb->primary_name);
+			WRITE_TO(rbt, "%~W rulebook", B->primary_name);
 			Emit::array_text_entry(rbt);
 			DISCARD_TEXT(rbt)
 		}
@@ -696,26 +696,26 @@ void RTRules::RulebookNames_array(void) {
 }
 
 
-inter_name *RTRules::get_stv_creator_iname(rulebook *rb) {
-	if (rb->compilation_data.stv_creator_iname == NULL)
-		rb->compilation_data.stv_creator_iname =
-			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, rb->compilation_data.rb_package);
-	return rb->compilation_data.stv_creator_iname;
+inter_name *RTRules::get_stv_creator_iname(rulebook *B) {
+	if (B->compilation_data.stv_creator_iname == NULL)
+		B->compilation_data.stv_creator_iname =
+			Hierarchy::make_iname_in(RULEBOOK_STV_CREATOR_FN_HL, B->compilation_data.rb_package);
+	return B->compilation_data.stv_creator_iname;
 }
 
 void RTRules::rulebook_var_creators(void) {
-	rulebook *rb;
-	LOOP_OVER(rb, rulebook)
-		if (StackedVariables::owner_empty(rb->my_variables) == FALSE)
-			StackedVariables::compile_frame_creator(rb->my_variables,
-				RTRules::get_stv_creator_iname(rb));
+	rulebook *B;
+	LOOP_OVER(B, rulebook)
+		if (StackedVariables::owner_empty(B->my_variables) == FALSE)
+			StackedVariables::compile_frame_creator(B->my_variables,
+				RTRules::get_stv_creator_iname(B));
 
 	if (global_compilation_settings.memory_economy_in_force == FALSE) {
 		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
-		LOOP_OVER(rb, rulebook) {
-			if (StackedVariables::owner_empty(rb->my_variables)) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(StackedVariables::frame_creator(rb->my_variables));
+		LOOP_OVER(B, rulebook) {
+			if (StackedVariables::owner_empty(B->my_variables)) Emit::array_numeric_entry(0);
+			else Emit::array_iname_entry(StackedVariables::frame_creator(B->my_variables));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
@@ -734,17 +734,17 @@ void RTRules::rulebook_var_creators(void) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-		rulebook *rb;
-		LOOP_OVER(rb, rulebook)
-			if (StackedVariables::owner_empty(rb->my_variables) == FALSE) {
+		rulebook *B;
+		LOOP_OVER(B, rulebook)
+			if (StackedVariables::owner_empty(B->my_variables) == FALSE) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
-					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (rb->allocation_id));
+					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (B->allocation_id));
 					Produce::code(Emit::tree());
 					Produce::down(Emit::tree());
 						Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 						Produce::down(Emit::tree());
-							Produce::val_iname(Emit::tree(), K_value, RTRules::get_stv_creator_iname(rb));
+							Produce::val_iname(Emit::tree(), K_value, RTRules::get_stv_creator_iname(B));
 						Produce::up(Emit::tree());
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());
@@ -758,3 +758,182 @@ void RTRules::rulebook_var_creators(void) {
 	Produce::up(Emit::tree());
 
 	Routines::end(save);
+
+@
+
+=
+<notable-rulebook-outcomes> ::=
+	it is very likely |
+	it is likely |
+	it is possible |
+	it is unlikely |
+	it is very unlikely
+
+@ =
+void RTRules::new_outcome(named_rulebook_outcome *rbno, wording W) {
+	package_request *R = Hierarchy::local_package(OUTCOMES_HAP);
+	Hierarchy::markup_wording(R, OUTCOME_NAME_HMD, W);
+	rbno->nro_iname = Hierarchy::make_iname_with_memo(OUTCOME_HL, R, W);
+	if (<notable-rulebook-outcomes>(W)) {
+		int i = -1;
+		switch (<<r>>) {
+			case 0: i = RBNO4_INAME_HL; break;
+			case 1: i = RBNO3_INAME_HL; break;
+			case 2: i = RBNO2_INAME_HL; break;
+			case 3: i = RBNO1_INAME_HL; break;
+			case 4: i = RBNO0_INAME_HL; break;
+		}
+		if (i >= 0) {
+			inter_name *iname = Hierarchy::find(i);
+			Hierarchy::make_available(Emit::tree(), iname);
+			Emit::named_iname_constant(iname, K_value, rbno->nro_iname);
+		}
+	}
+}
+
+inter_name *RTRules::outcome_identifier(named_rulebook_outcome *rbno) {
+	return rbno->nro_iname;
+}
+
+inter_name *RTRules::default_outcome_identifier(void) {
+	named_rulebook_outcome *rbno;
+	LOOP_OVER(rbno, named_rulebook_outcome)
+		return rbno->nro_iname;
+	return NULL;
+}
+
+void RTRules::compile_default_outcome(outcomes *outs) {
+	int rtrue = FALSE;
+	rulebook_outcome *rbo = outs->default_named_outcome;
+	if (rbo) {
+		switch(rbo->kind_of_outcome) {
+			case SUCCESS_OUTCOME: {
+				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
+				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
+				Produce::up(Emit::tree());
+				rtrue = TRUE;
+				break;
+			}
+			case FAILURE_OUTCOME: {
+				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
+				RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+				Produce::val_iname(Emit::tree(), K_value, rbo->outcome_name->nro_iname);
+				Produce::up(Emit::tree());
+				rtrue = TRUE;
+				break;
+			}
+		}
+	} else {
+		switch(outs->default_rule_outcome) {
+			case SUCCESS_OUTCOME: {
+				inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::up(Emit::tree());
+				rtrue = TRUE;
+				break;
+			}
+			case FAILURE_OUTCOME: {
+				inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
+				Produce::inv_call_iname(Emit::tree(), iname);
+				Produce::down(Emit::tree());
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+				Produce::up(Emit::tree());
+				rtrue = TRUE;
+				break;
+			}
+		}
+	}
+
+	if (rtrue) Produce::rtrue(Emit::tree());
+}
+
+void RTRules::compile_outcome(named_rulebook_outcome *rbno) {
+	rulebook_outcome *rbo = FocusAndOutcome::rbo_from_context(rbno, phrase_being_compiled);
+	if (rbo == NULL) {
+		rulebook *rb;
+		LOOP_OVER(rb, rulebook) {
+			outcomes *outs = Rulebooks::get_outcomes(rb);
+			rulebook_outcome *ro;
+			LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)
+				if (ro->outcome_name == rbno) {
+					rbo = ro;
+					break;
+				}
+		}
+		if (rbo == NULL) internal_error("rbno with no rb context");
+	}
+	switch(rbo->kind_of_outcome) {
+		case SUCCESS_OUTCOME: {
+			inter_name *iname = Hierarchy::find(RULEBOOKSUCCEEDS_HL);
+			Produce::inv_call_iname(Emit::tree(), iname);
+			Produce::down(Emit::tree());
+			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
+			Produce::up(Emit::tree());
+			Produce::rtrue(Emit::tree());
+			break;
+		}
+		case FAILURE_OUTCOME: {
+			inter_name *iname = Hierarchy::find(RULEBOOKFAILS_HL);
+			Produce::inv_call_iname(Emit::tree(), iname);
+			Produce::down(Emit::tree());
+			RTKinds::emit_weak_id_as_val(K_rulebook_outcome);
+			Produce::val_iname(Emit::tree(), K_value, rbno->nro_iname);
+			Produce::up(Emit::tree());
+			Produce::rtrue(Emit::tree());
+			break;
+		}
+		case NO_OUTCOME:
+			Produce::rfalse(Emit::tree());
+			break;
+		default:
+			internal_error("bad RBO outcome kind");
+	}
+}
+
+void RTRules::RulebookOutcomePrintingRule(void) {
+	named_rulebook_outcome *rbno;
+	LOOP_OVER(rbno, named_rulebook_outcome) {
+		TEMPORARY_TEXT(RV)
+		WRITE_TO(RV, "%+W", Nouns::nominative_singular(rbno->name));
+		Emit::named_string_constant(rbno->nro_iname, RV);
+		DISCARD_TEXT(RV)
+	}
+
+	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
+	packaging_state save = Routines::begin(printing_rule_name);
+	inter_symbol *rbnov_s = LocalVariables::add_named_call_as_symbol(I"rbno");
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), EQ_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_symbol(Emit::tree(), K_value, rbnov_s);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), PRINT_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_text(Emit::tree(), I"(no outcome)");
+			Produce::up(Emit::tree());
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), PRINTSTRING_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_symbol(Emit::tree(), K_value, rbnov_s);
+			Produce::up(Emit::tree());
+			Produce::rfalse(Emit::tree());
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+	Routines::end(save);
+}

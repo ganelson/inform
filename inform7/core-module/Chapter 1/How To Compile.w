@@ -174,7 +174,7 @@ so on. Those absolute basics are made here.
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTProperties::annotate_attributes)
-	BENCH(Rulebooks::Outcomes::RulebookOutcomePrintingRule)
+	BENCH(RTRules::RulebookOutcomePrintingRule)
 	BENCH(RTKinds::compile_instance_counts)
 
 @ This proceeds in stages.

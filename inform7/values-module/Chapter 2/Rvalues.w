@@ -718,7 +718,7 @@ kinds of value:
 	if (Kinds::eq(kind_of_constant, K_rulebook_outcome)) {
 		named_rulebook_outcome *rbno =
 			Rvalues::to_named_rulebook_outcome(spec_found);
-		Emit::holster(VH, rbno->nro_iname);
+		Emit::holster(VH, RTRules::outcome_identifier(rbno));
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_table)) {

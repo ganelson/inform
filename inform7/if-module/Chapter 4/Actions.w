@@ -182,16 +182,16 @@ int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rul
 	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) {
 		Rules::set_never_test_actor(R);
 	} else {
-		Rulebooks::Outcomes::modify_rule_to_suit_focus(&(B->my_focus), R);
+		Rulebooks::modify_rule_to_suit_focus(B, R);
 	}
 
 	if (side == INSTEAD_SIDE) {
 		LOGIF(RULE_ATTACHMENTS, "Copying actor test flags from rule being replaced\n");
 		Rules::copy_actor_test_flags(R, ref_rule);
-		if (Rulebooks::focus(B) == ACTION_FOCUS)
+		if (Rulebooks::action_focus(B))
 			Rules::put_action_variables_in_scope(ref_rule);
 	}
-	if (Rulebooks::focus(B) == ACTION_FOCUS)
+	if (Rulebooks::action_focus(B))
 		Rules::put_action_variables_in_scope(R);
 	if (B->action_stem_length > 0)
 		Rules::suppress_action_testing(R);

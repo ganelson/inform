@@ -26,6 +26,7 @@ typedef struct rulebook {
 	struct focus my_focus; /* what does the rulebook work on? */
 	struct outcomes my_outcomes; /* how can it end? */
 
+	int rules_always_test_actor; /* for action-tied check, carry out, report */
 	int automatically_generated; /* rather than by explicit Inform 7 source text */
 	int runs_during_activities; /* allow "while..." clauses to name these */
 	int used_by_future_action_activity; /* like "deciding the scope of something..." */
@@ -54,6 +55,7 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	B->contents = BookingLists::new();
 
+	B->rules_always_test_actor = FALSE;
 	B->automatically_generated = FALSE;
 	B->used_by_future_action_activity = FALSE;
 	B->runs_during_activities = FALSE;
@@ -110,28 +112,39 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 	kind *producing_kind = NULL;
 	Kinds::binary_construction_material(create_as, &parameter_kind, &producing_kind);
 
-	Rulebooks::Outcomes::initialise_focus(&(B->my_focus), parameter_kind);
+	if (Kinds::Behaviour::definite(parameter_kind) == FALSE) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RulebookIndefinite),
+			"this is a rulebook for values of a kind which isn't definite",
+			"and doesn't tell me enough about what sort of value the rulebook should "
+			"work on. For example, 'The mystery rules are a number based rulebook' is "
+			"fine because 'number' is definite, but 'The mystery rules are a value based "
+			"rulebook' is too vague.");
+		parameter_kind = K_object;
+	}
+
+	FocusAndOutcome::initialise_focus(&(B->my_focus), parameter_kind);
 
 	int def = NO_OUTCOME;
 	if (B == Rulebooks::std(INSTEAD_RB)) def = FAILURE_OUTCOME;
 	if (B == Rulebooks::std(AFTER_RB)) def = SUCCESS_OUTCOME;
 	if (B == Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB)) def = SUCCESS_OUTCOME;
-	Rulebooks::Outcomes::initialise_outcomes(&(B->my_outcomes), producing_kind, def);
+	FocusAndOutcome::initialise_outcomes(&(B->my_outcomes), producing_kind, def);
 
 @ Focus and outcome are roughly the $X$ and $Y$ if we think of a rulebook as
 being analogous to a function $X\to Y$. 
 
 =
-int Rulebooks::focus(rulebook *B) {
-	return Rulebooks::Outcomes::get_focus(&(B->my_focus));
+int Rulebooks::action_focus(rulebook *B) {
+	if (B) return FocusAndOutcome::action_focus(&(B->my_focus));
+	return FALSE;
 }
 
 kind *Rulebooks::get_focus_kind(rulebook *B) {
-	return Rulebooks::Outcomes::get_focus_parameter_kind(&(B->my_focus));
+	return FocusAndOutcome::get_focus_parameter_kind(&(B->my_focus));
 }
 
 kind *Rulebooks::get_outcome_kind(rulebook *B) {
-	return Rulebooks::Outcomes::get_outcome_kind(&(B->my_outcomes));
+	return FocusAndOutcome::get_outcome_kind(&(B->my_outcomes));
 }
 
 outcomes *Rulebooks::get_outcomes(rulebook *B) {
@@ -231,8 +244,8 @@ rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 	int default_outcome, int always_test_actor, int ubfaa, int for_activities,
 	int stem_length, package_request *R) {
 	rulebook *B = Rulebooks::new(Kinds::binary_con(CON_rulebook, basis, K_void), W, R);
-	Rulebooks::Outcomes::set_default_outcome(&(B->my_outcomes), default_outcome);
-	Rulebooks::Outcomes::set_focus_ata(&(B->my_focus), always_test_actor);
+	FocusAndOutcome::set_default_outcome(&(B->my_outcomes), default_outcome);
+	B->rules_always_test_actor = always_test_actor;
 	B->automatically_generated = TRUE;
 	B->used_by_future_action_activity = ubfaa;
 	B->runs_during_activities = for_activities;
@@ -277,6 +290,24 @@ booking *Rulebooks::first_booking(rulebook *B) {
 
 int Rulebooks::runs_during_activities(rulebook *B) {
 	return B->runs_during_activities;
+}
+
+@ |rules_always_test_actor| is set (and meaningful) only for action focuses.
+It marks a rulebook as definitely needing to check the actor.
+
+=
+void Rulebooks::modify_rule_to_suit_focus(rulebook *B, rule *R) {
+	if (Rulebooks::action_focus(B)) {
+		if (B->rules_always_test_actor) {
+			LOGIF(RULE_ATTACHMENTS,
+				"Setting always test actor for destination rulebook\n");
+			Rules::set_always_test_actor(R);
+		}
+	} else {
+		LOGIF(RULE_ATTACHMENTS,
+			"Setting never test actor for destination rulebook\n");
+		Rules::set_never_test_actor(R);
+	}
 }
 
 @h Logging.

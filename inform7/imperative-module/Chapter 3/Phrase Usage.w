@@ -429,7 +429,7 @@ of the stem, so we have to be very careful:
 
 	if ((phud.owning_rulebook) &&
 		(Rulebooks::runs_during_activities(phud.owning_rulebook) == FALSE) &&
-		(Rulebooks::focus(phud.owning_rulebook) == ACTION_FOCUS) &&
+		(Rulebooks::action_focus(phud.owning_rulebook)) &&
 		(Wordings::nonempty(phud.rule_parameter)) &&
 		(Wordings::nonempty(phud.whenwhile))) {
 		phud.rule_parameter =
@@ -689,7 +689,7 @@ ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *p
 
 @<Parse what used to be the bud into the PHRCD@> =
 	#ifdef IF_MODULE
-	if (Rulebooks::focus(phud->owning_rulebook) == ACTION_FOCUS) {
+	if (Rulebooks::action_focus(phud->owning_rulebook)) {
 		int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 		if (Rules::all_action_processing_variables())
 			Frames::set_stvol(

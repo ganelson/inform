@@ -416,7 +416,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 
 	if (phrcd->compile_for_rulebook) {
 		rulebook *rb = *(phrcd->compile_for_rulebook);
-		if (rb) Rulebooks::Outcomes::compile_default_outcome(Rulebooks::get_outcomes(rb));
+		if (rb) RTRules::compile_default_outcome(Rulebooks::get_outcomes(rb));
 	}
 
 	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test tail@>;

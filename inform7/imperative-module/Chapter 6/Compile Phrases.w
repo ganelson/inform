@@ -308,7 +308,9 @@ henceforth to be true, so we simply compile empty code in that case.
 			Problems::issue_problem_end();
 		}
 	}
-	rulebook *rb = Rulebooks::Outcomes::allow_outcome(nrbo);
+	rulebook *rb = NULL;
+	if (Phrases::Context::outcome_restrictions_waived() == FALSE)
+		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, phrase_being_compiled);
 	if (rb) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(to_compile));
@@ -320,7 +322,7 @@ henceforth to be true, so we simply compile empty code in that case.
 			"has to be listed in the '%3' rulebook, where '%2' doesn't have a meaning.");
 		Problems::issue_problem_end();
 	}
-	Rulebooks::Outcomes::compile_outcome(nrbo);
+	RTRules::compile_outcome(nrbo);
 
 @<Compile an if midriff@> =
 	if (p->down->next->next) Produce::inv_primitive(Emit::tree(), IFELSE_BIP);

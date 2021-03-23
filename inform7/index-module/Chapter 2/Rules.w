@@ -539,7 +539,7 @@ int IXRules::index_rulebook(OUTPUT_STREAM, rulebook *rb, char *billing, rule_con
 		if (BookingLists::is_contextually_empty(rb->contents, rc)) suppress_outcome = TRUE;
 	}
 	t = IXRules::index_booking_list(OUT, rb->contents, rc, billing, rb, resp_count);
-	Rulebooks::Outcomes::index_outcomes(OUT, &(rb->my_outcomes), suppress_outcome);
+	IXRules::index_outcomes(OUT, &(rb->my_outcomes), suppress_outcome);
 	IXRules::rb_index_placements(OUT, rb);
 	return t;
 }
@@ -604,5 +604,38 @@ void IXRules::rb_index_placements(OUTPUT_STREAM, rulebook *rb) {
 		HTML_CLOSE("span");
 		HTML_TAG("br");
 		npl = npl->next;
+	}
+}
+
+void IXRules::index_outcomes(OUTPUT_STREAM, outcomes *outs, int suppress_outcome) {
+	if (suppress_outcome == FALSE) {
+		rulebook_outcome *ro;
+		LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes) {
+			named_rulebook_outcome *rbno = ro->outcome_name;
+			HTML::open_indented_p(OUT, 2, "hanging");
+			WRITE("<i>outcome</i>&nbsp;&nbsp;");
+			if (outs->default_named_outcome == ro) WRITE("<b>");
+			WRITE("%+W", Nouns::nominative_singular(rbno->name));
+			if (outs->default_named_outcome == ro) WRITE("</b> (default)");
+			WRITE(" - <i>");
+			switch(ro->kind_of_outcome) {
+				case SUCCESS_OUTCOME: WRITE("a success"); break;
+				case FAILURE_OUTCOME: WRITE("a failure"); break;
+				case NO_OUTCOME: WRITE("no outcome"); break;
+			}
+			WRITE("</i>");
+			HTML_CLOSE("p");
+		}
+	}
+	if ((outs->default_named_outcome == NULL) &&
+		(outs->default_rule_outcome != NO_OUTCOME) &&
+		(suppress_outcome == FALSE)) {
+		HTML::open_indented_p(OUT, 2, "hanging");
+		WRITE("<i>default outcome is</i> ");
+		switch(outs->default_rule_outcome) {
+			case SUCCESS_OUTCOME: WRITE("success"); break;
+			case FAILURE_OUTCOME: WRITE("failure"); break;
+		}
+		HTML_CLOSE("p");
 	}
 }
