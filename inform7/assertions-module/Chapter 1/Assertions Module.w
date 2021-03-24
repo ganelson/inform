@@ -29,6 +29,7 @@ void AssertionsModule::start(void) {
 	Relations::Explicit::start();
 	EqualityDetails::start();
 	KindPredicatesRevisited::start();
+	ImperativeDefinitions::create_families();
 	Log::declare_aspect(ASSEMBLIES_DA, L"assemblies", FALSE, FALSE);
 	Log::declare_aspect(ASSERTIONS_DA, L"assertions", FALSE, TRUE);
 	Log::declare_aspect(IMPLICATIONS_DA, L"implications", FALSE, TRUE);

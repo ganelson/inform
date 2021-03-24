@@ -26,7 +26,7 @@ with specific changes in the world) have their preambles parsed and their
 premisses worked out, and are then collected together into rulebooks, before
 being compiled as a great mass of Inform 6 routines and arrays."
 	Introduction to Phrases
-	Construction Sequence
+	Imperative Definitions
 	Phrases
 	Phrase Usage
 	Phrase Runtime Context Data

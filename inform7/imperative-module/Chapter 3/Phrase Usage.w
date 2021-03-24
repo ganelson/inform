@@ -4,18 +4,13 @@ To parse the preamble of a phrase declaration to a phrase usage
 (PHUD) structure containing a mostly textual representation of the
 conditions for its usage.
 
-@ As we've seen, phrases can be categorised according to their "effect".
-We need one more code:
-
-@d AS_YET_UNKNOWN_EFF 0 /* used only temporarily during header parsing */
-
 @ And here is the usage data.
 
 =
 typedef struct ph_usage_data {
+	struct imperative_defn *from;
 	struct wording full_preamble; /* e.g. to identify nameless rules in the log */
 	struct constant_phrase *constant_phrase_holder; /* for named To... phrases */
-	int phrase_effect; /* see below: basically, how the phrase is invoked */
 	int to_begin; /* used in Basic mode only: this is to be the main phrase */
 	int timing_of_event; /* one of two values defined below; or a specific time */
 	struct use_as_event *uses_as_event;
@@ -41,7 +36,7 @@ just before noon.)
 
 =
 void Phrases::Usage::predeclare_name_in(parse_node *p) {
-	ph_usage_data phud = Phrases::Usage::new(Node::get_text(p), TRUE);
+	ph_usage_data phud = Phrases::Usage::new(Node::get_text(p), TRUE, NULL);
 	if (Wordings::nonempty(phud.explicit_name))
 		Rules::obtain(phud.explicit_name, TRUE);
 }
@@ -61,7 +56,7 @@ then we have a predeclared rule called "avoid water rule" already, so we
 connect this existing one to the phrase.
 
 =
-rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
+rule *Phrases::Usage::to_rule(ph_usage_data *phud, imperative_defn *id) {
 	wording W = EMPTY_WORDING;
 	int explicitly = FALSE;
 	@<Find the name of the phrase, and whether or not it's explicitly given@>;
@@ -71,8 +66,9 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	if (R) @<Check that this isn't duplicating the name of a rule already made@>
 	else R = Rules::obtain(W, explicitly);
 	if (Wordings::empty(W))
-		Hierarchy::markup_wording(R->compilation_data.rule_package, RULE_NAME_HMD, Node::get_text(ph->declaration_node));
-	Rules::set_defn_as_phrase(R, ph);
+		Hierarchy::markup_wording(R->compilation_data.rule_package, RULE_NAME_HMD, Node::get_text(id->at));
+	Rules::set_imperative_definition(R, id);
+	phrase *ph = id->defines;
 	package_request *P = RTRules::package(R);
 	ph->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, ph->owning_module);
 
@@ -90,8 +86,8 @@ rule *Phrases::Usage::to_rule(ph_usage_data *phud, phrase *ph) {
 	}
 
 @<Check that this isn't duplicating the name of a rule already made@> =
-	phrase *ph_found = Rules::get_defn_as_phrase(R);
-	if ((ph_found) && (ph_found != ph)) {
+	imperative_defn *existing_id = Rules::get_imperative_definition(R);
+	if ((existing_id) && (existing_id != id)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DuplicateRuleName));
@@ -124,29 +120,30 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 
 =
 <rule-preamble> ::=
-	definition |                                              ==> { DEFINITIONAL_PHRASE_EFF, - }
-	this is the {... rule} |                                  ==> { RULE_NOT_IN_RULEBOOK_EFF, -, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
+	definition |                                              ==> { -, DEFINITIONAL_PHRASE_EFF_family }
+	this is the {... rule} |                                  ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
 	this is the rule |                                        ==> @<Issue PM_NamelessRule problem@>
 	this is ... rule |                                        ==> @<Issue PM_UnarticledRule problem@>
 	this is ... rules |                                       ==> @<Issue PM_PluralisedRule problem@>
-	<event-rule-preamble> |                                   ==> { RULE_NOT_IN_RULEBOOK_EFF, -, <<event-time>> = R[1] }
+	<event-rule-preamble> |                                   ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = R[1] }
 	to |                                                      ==> @<Issue PM_BareTo problem@>
 	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
-	{to ...} ( this is the {### function} inverse to ### ) |  ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
-	{to ...} ( this is the {### function} ) |                 ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
-	{to ...} ( this is ... ) |                                ==> { TO_PHRASE_EFF, -, <<named>> = TRUE, <<written>> = FALSE }
-	to ... |                                                  ==> { TO_PHRASE_EFF, -, <<named>> = FALSE }
-	... ( this is the {... rule} ) |                          ==> { RULE_IN_RULEBOOK_EFF, -, <<named>> = TRUE, <<written>> = FALSE }
+	{to ...} ( this is the {### function} inverse to ### ) |  ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
+	{to ...} ( this is the {### function} ) |                 ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
+	{to ...} ( this is ... ) |                                ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
+	to ... |                                                  ==> { -, TO_PHRASE_EFF_family, <<named>> = FALSE }
+	... ( this is the {... rule} ) |                          ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
 	... ( this is the rule ) |                                ==> @<Issue PM_NamelessRule problem@>
 	... ( this is ... rule ) |                                ==> @<Issue PM_UnarticledRule problem@>
 	... ( this is ... rules ) |                               ==> @<Issue PM_PluralisedRule problem@>
-	...                                                       ==> { RULE_IN_RULEBOOK_EFF, -, <<named>> = FALSE }
+	...                                                       ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = FALSE }
 
 @<Issue PM_NamelessRule problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
 		"there are many rules in Inform",
 		"so you need to give a name: 'this is the abolish dancing rule', say, "
 		"not just 'this is the rule'.");
+	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @<Issue PM_UnarticledRule problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnarticledRule),
@@ -154,23 +151,27 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 		"which begins with 'the', just to emphasise that it is the only one "
 		"with this name: 'this is the promote dancing rule', say, not just "
 		"'this is promote dancing rule'.");
+	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @<Issue PM_PluralisedRule problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PluralisedRule),
 		"a rule must be given a definite name ending in 'rule' not 'rules'",
 		"since the plural is only used for rulebooks, which can of course "
 		"contain many rules at once.");
+	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @<Issue PM_BareTo problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BareTo),
 		"'to' what? No name is given",
 		"which means that this would not define a new phrase.");
+	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @<Issue PM_DontCallPhrasesWithCalled problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DontCallPhrasesWithCalled),
 		"phrases aren't named using 'called'",
 		"and instead use 'this is...'. For example, 'To salute (called saluting)' "
 		"isn't allowed, but 'To salute (this is saluting)' is.");
+	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @ As a safety measure, to avoid ambiguities, Inform only allows one phrase
 definition to begin with "now". It recognises such phrases as those whose
@@ -222,7 +223,7 @@ given phrase when in "fine mode".
 Coarse mode uses only punctuation and some fixed keywords, so it works at
 any time in the "morning" -- that is, when most of the names don't yet
 exist. The down side is that it doesn't provide detailed usage information
-for |RULE_IN_RULEBOOK_EFF| rules, but it does get everything else right.
+for |RULE_IN_RULEBOOK_EFF_family| rules, but it does get everything else right.
 (This is only possible because an ambiguity was removed in December 2006,
 removing the possibility of "when" introducing rules of two different
 effects -- see below.)
@@ -230,25 +231,15 @@ effects -- see below.)
 =
 int no_now_phrases = 0;
 
-ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
+ph_usage_data Phrases::Usage::new(wording W, int coarse_mode, imperative_defn *id) {
 	ph_usage_data phud;
 	@<Empty the PHUD@>;
 
 	if (<rule-preamble>(W)) {
-		phud.phrase_effect = <<r>>;
-		switch (<<r>>) {
-			case TO_PHRASE_EFF:
-				@<The preamble parses to a To phrase@>;
-				break;
-			case DEFINITIONAL_PHRASE_EFF:
-				break;
-			case RULE_IN_RULEBOOK_EFF:
-				@<The preamble parses to a rule with a specified rulebook@>;
-				break;
-			case RULE_NOT_IN_RULEBOOK_EFF:
-				@<The preamble parses to a rule with no specified rulebook@>;
-				break;
-		}
+		imperative_defn_family *family = <<rp>>;
+		if (family == TO_PHRASE_EFF_family) @<The preamble parses to a To phrase@>;
+		if (family == RULE_IN_RULEBOOK_EFF_family) @<The preamble parses to a rule with a specified rulebook@>;
+		if (family == RULE_NOT_IN_RULEBOOK_EFF_family) @<The preamble parses to a rule with no specified rulebook@>;
 	}
 
 	return phud;
@@ -257,7 +248,7 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode) {
 @<Empty the PHUD@> =
 	phud.full_preamble = W;
 	phud.constant_phrase_holder = NULL;
-	phud.phrase_effect = AS_YET_UNKNOWN_EFF;
+	phud.from = id;
 	phud.explicit_name = EMPTY_WORDING;
 	phud.explicit_name_used_in_maths = FALSE;
 	phud.rule_preamble = EMPTY_WORDING;
@@ -492,7 +483,7 @@ A couple of routines to read but not really parse the stem and the bud.
 
 =
 wording Phrases::Usage::get_preamble_text(ph_usage_data *phud) {
-	if (phud->phrase_effect == TO_PHRASE_EFF) return phud->rule_preamble;
+	if (phud->from->family == TO_PHRASE_EFF_family) return phud->rule_preamble;
 	return phud->full_preamble;
 }
 
@@ -520,10 +511,6 @@ wording Phrases::Usage::get_prewhile_text(ph_usage_data *phud) {
 Some access routines.
 
 =
-int Phrases::Usage::get_effect(ph_usage_data *phud) {
-	return phud->phrase_effect;
-}
-
 int Phrases::Usage::get_rulebook_placement(ph_usage_data *phud) {
 	return phud->owning_rulebook_placement;
 }
@@ -573,15 +560,7 @@ it was to debug the preamble-parsing code:
 
 =
 void Phrases::Usage::log(ph_usage_data *phud) {
-	char *ram = "<UNKNOWN_NT>";
-	switch(phud->phrase_effect) {
-		case AS_YET_UNKNOWN_EFF: 		ram = "AS_YET_UNKNOWN_EFF"; break;
-		case DEFINITIONAL_PHRASE_EFF: 	ram = "DEFINITIONAL_PHRASE_EFF"; break;
-		case RULE_NOT_IN_RULEBOOK_EFF:	ram = "RULE_NOT_IN_RULEBOOK_EFF"; break;
-		case TO_PHRASE_EFF: 			ram = "TO_PHRASE_EFF"; break;
-		case RULE_IN_RULEBOOK_EFF: 		ram = "RULE_IN_RULEBOOK_EFF"; break;
-	}
-	LOG("PHUD: <%W>: rule attachment mode %s\n", phud->full_preamble, ram);
+	LOG("PHUD: <%W>: rule attachment mode %S\n", phud->full_preamble, phud->from->family->family_name);
 	if (phud->constant_phrase_holder)
 		LOG("  Constant name: <%W>\n", Nouns::nominative_singular(phud->constant_phrase_holder->name));
 	if (Wordings::nonempty(phud->explicit_name))
@@ -657,10 +636,10 @@ int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
 ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *phud) {
 	ph_runtime_context_data phrcd = Phrases::Context::new();
 
-	if (phud->phrase_effect == RULE_NOT_IN_RULEBOOK_EFF)
+	if (phud->from->family == RULE_NOT_IN_RULEBOOK_EFF_family)
 		phrcd.permit_all_outcomes = TRUE;
 
-	if (phud->phrase_effect == RULE_IN_RULEBOOK_EFF)
+	if (phud->from->family == RULE_IN_RULEBOOK_EFF_family)
 		@<Finish work parsing the conditions for the rule to fire@>;
 
 	return phrcd;

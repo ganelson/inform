@@ -8,19 +8,7 @@ created for each "To..." definition and each rule in the source text. It is
 divided internally into five substructures, the PHTD, PHUD, PHRCD, PHSF
 and PHOD.
 
-Two more abbreviations appear in this section. The first is the EFF, or
-the "effect" of a phrase, which categorises all phrases into four:
-"To..." phrases, phrases used to define adjective, rules explicitly naming
-a rulebook they belong to, and rules not doing so. (This is called the "effect"
-because it decides under what circumstances the phrase will be executed
-at run-time.)
-
-@d TO_PHRASE_EFF 1 				/* "To award (some - number) points: ..." */
-@d RULE_IN_RULEBOOK_EFF 2 		/* "Before taking a container, ..." */
-@d RULE_NOT_IN_RULEBOOK_EFF 3 	/* "At 9 PM: ...", "This is the zap rule: ..." */
-@d DEFINITIONAL_PHRASE_EFF 4 	/* "Definition: a container is roomy if: ..." */
-
-@ The second new abbreviation is MOR, the "manner of return", which is only
+@ A new abbreviation is MOR, the "manner of return", which is only
 of interest for "To..." phrases. Some of these decide a value, some decide a
 condition, some decide nothing (but exist in order to do something); the
 exceptional case is the last, |DECIDES_NOTHING_AND_RETURNS_MOR|, which marks
@@ -41,7 +29,8 @@ code below.
 
 =
 typedef struct phrase {
-	struct parse_node *declaration_node; /* |IMPERATIVE_NT| node where declared */
+	struct imperative_defn *from;
+
 	int inline_wn; /* word number of inline I6 definition, or |-1| if not inline */
 	struct inter_schema *inter_head_defn; /* inline definition translated to inter, if possible */
 	struct inter_schema *inter_tail_defn; /* inline definition translated to inter, if possible */
@@ -81,7 +70,8 @@ A phrase is inline if and only if its definition consists of a single
 invocation which is given as verbatim I6.
 
 =
-void Phrases::create_from_preamble(parse_node *p) {
+void Phrases::create_from_preamble(imperative_defn *id) {
+	parse_node *p = id->at;
 	if ((p == NULL) || (Node::get_type(p) != IMPERATIVE_NT))
 		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
 	int inline_wn = -1; 		/* the word number of an inline I6 definition if any */
@@ -99,10 +89,9 @@ void Phrases::create_from_preamble(parse_node *p) {
 
 	@<Parse for the PHUD in fine mode@>;
 
-	int effect = Phrases::Usage::get_effect(&phud);
-	if ((inline_wn >= 0) && (effect != TO_PHRASE_EFF)) @<Inline is for To... phrases only@>;
+	if ((inline_wn >= 0) && (id->family != TO_PHRASE_EFF_family)) @<Inline is for To... phrases only@>;
 
-	if ((effect != DEFINITIONAL_PHRASE_EFF) && (p->down == NULL))
+	if ((id->family != DEFINITIONAL_PHRASE_EFF_family) && (p->down == NULL))
 		@<There seems to be no definition@>;
 
 	@<Construct the PHTD, find the phrase options, find the documentation reference@>;
@@ -112,6 +101,7 @@ void Phrases::create_from_preamble(parse_node *p) {
 
 	phrase *new_ph;
 	@<Create the phrase structure@>;
+	id->defines = new_ph;
 	@<Tell other parts of Inform about this new phrase@>;
 }
 
@@ -126,23 +116,19 @@ void Phrases::create_from_preamble(parse_node *p) {
 	}
 
 @<Parse for the PHUD in fine mode@> =
-	phud = Phrases::Usage::new(Node::get_text(p), FALSE);
+	phud = Phrases::Usage::new(Node::get_text(p), FALSE, id);
 
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
 	wording XW = Phrases::Usage::get_preamble_text(&phud);
 	phtd = Phrases::TypeData::new();
 	if (inline_wn >= 0) Phrases::TypeData::make_inline(&phtd);
-	switch (effect) {
-		case TO_PHRASE_EFF:
-			documentation_W = Index::DocReferences::position_of_symbol(&XW);
-			Phrases::TypeData::Textual::parse(&phtd, XW, &OW);
-			break;
-		case DEFINITIONAL_PHRASE_EFF:
-			Phrases::TypeData::set_mor(&phtd, DECIDES_CONDITION_MOR, NULL);
-			break;
-		default:
-			Phrases::TypeData::set_mor(&phtd, DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
-			break;
+	if (id->family == TO_PHRASE_EFF_family) {
+		documentation_W = Index::DocReferences::position_of_symbol(&XW);
+		Phrases::TypeData::Textual::parse(&phtd, XW, &OW);
+	} else if (id->family == DEFINITIONAL_PHRASE_EFF_family) {
+		Phrases::TypeData::set_mor(&phtd, DECIDES_CONDITION_MOR, NULL);
+	} else {
+		Phrases::TypeData::set_mor(&phtd, DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
 	}
 
 @<Construct the PHOD@> =
@@ -168,23 +154,21 @@ inline definitions.
 	phrcd = Phrases::Context::new();
 
 @<Tell other parts of Inform about this new phrase@> =
-	switch (effect) {
-		case TO_PHRASE_EFF:
-			if (phud.to_begin) new_ph->to_begin = TRUE;
-			Routines::ToPhrases::new(new_ph);
-			break;
-		case DEFINITIONAL_PHRASE_EFF:
-			@<Give this phrase a local variable for the subject of the definition@>;
-			break;
-		case RULE_IN_RULEBOOK_EFF:
-			Rules::request_automatic_placement(
-				Phrases::Usage::to_rule(&(new_ph->usage_data), new_ph));
-			new_ph->compile_with_run_time_debugging = TRUE;
-			break;
-		case RULE_NOT_IN_RULEBOOK_EFF:
-			Phrases::Usage::to_rule(&(new_ph->usage_data), new_ph);
-			new_ph->compile_with_run_time_debugging = TRUE;
-			break;
+	if (id->family == TO_PHRASE_EFF_family) {
+		if (phud.to_begin) new_ph->to_begin = TRUE;
+		Routines::ToPhrases::new(new_ph);
+	}
+	if (id->family == DEFINITIONAL_PHRASE_EFF_family) {
+		@<Give this phrase a local variable for the subject of the definition@>;
+	}
+	if (id->family == RULE_IN_RULEBOOK_EFF_family) {
+		Rules::request_automatic_placement(
+			Phrases::Usage::to_rule(&(new_ph->usage_data), id));
+		new_ph->compile_with_run_time_debugging = TRUE;
+	}
+	if (id->family == RULE_NOT_IN_RULEBOOK_EFF_family) {
+		Phrases::Usage::to_rule(&(new_ph->usage_data), id);
+		new_ph->compile_with_run_time_debugging = TRUE;
 	}
 
 @ If a phrase defines an adjective, like so:
@@ -210,7 +194,7 @@ of it:
 	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n$U", XW, &phud);
 
 	new_ph = CREATE(phrase);
-	new_ph->declaration_node = p;
+	new_ph->from = id;
 
 	new_ph->options_data = phod;
 	new_ph->runtime_context_data = phrcd;
@@ -357,7 +341,7 @@ inter_name *Phrases::iname(phrase *ph) {
 }
 
 parse_node *Phrases::declaration_node(phrase *ph) {
-	return ph->declaration_node;
+	return ph->from->at;
 }
 
 @h Compilation.
@@ -374,16 +358,12 @@ void Phrases::import(phrase *ph) {
 void Phrases::compile(phrase *ph, int *i, int max_i,
 	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
 	if (ph->imported) return;
-	int effect = Phrases::Usage::get_effect(&(ph->usage_data));
-	if (effect == RULE_NOT_IN_RULEBOOK_EFF) effect = RULE_IN_RULEBOOK_EFF;
-	if (effect == TO_PHRASE_EFF) {
+	if (ph->from->family == TO_PHRASE_EFF_family) {
 		Routines::Compile::routine(ph, legible, req, R);
 		@<Move along the progress bar if it's this phrase's first compilation@>;
-	} else {
-		if (ph->at_least_one_compiled_form_needed) {
-			Routines::Compile::routine(ph, legible, NULL, R);
-			@<Move along the progress bar if it's this phrase's first compilation@>;
-		}
+	} else if (ph->at_least_one_compiled_form_needed) {
+		Routines::Compile::routine(ph, legible, NULL, R);
+		@<Move along the progress bar if it's this phrase's first compilation@>;
 	}
 }
 

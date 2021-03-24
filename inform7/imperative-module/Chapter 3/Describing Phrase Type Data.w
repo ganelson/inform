@@ -212,7 +212,7 @@ void Phrases::TypeData::Textual::inv_write_HTML_representation(OUTPUT_STREAM, pa
 			Index::DocReferences::link_to(OUT, pds, -1);
 			DISCARD_TEXT(pds)
 		} else
-			Index::link_to(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)), FALSE);
+			Index::link_to(OUT, Wordings::first_wn(Node::get_text(ph->from->at)), FALSE);
 		WRITE(" ");
 		Phrases::TypeData::Textual::write_HTML_representation(OUT, phtd, INDEX_PHRASE_FORMAT, inv);
 		WRITE(" ");

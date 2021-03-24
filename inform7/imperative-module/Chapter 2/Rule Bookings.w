@@ -91,9 +91,10 @@ void RuleBookings::make_automatic_placements(void) {
 	booking *br;
 	LOOP_OVER(br, booking)
 		if (br->place_automatically) {
-			phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
-			if (ph) {
-				current_sentence = ph->declaration_node;
+			imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
+			if (id) {
+				current_sentence = id->at;
+				phrase *ph = id->defines;
 				rulebook *original_owner = Phrases::Usage::get_rulebook(&(ph->usage_data));
 				int placement = Phrases::Usage::get_rulebook_placement(&(ph->usage_data));
 				rulebook *owner = original_owner;

@@ -7109,16 +7109,16 @@
 
 <continental-clock-time> internal nti 8 constraint (none) extremes [1, 1]
 
-<event-rule-preamble> hits 0/3296 nti 19 constraint DS = {19} extremes [2, infinity)
+<event-rule-preamble> hits 0/4944 nti 19 constraint DS = {19} extremes [2, infinity)
     English:
         at <clock-time> 
-          (hits 0/74) constraint DS = {10, 19} extremes [3, 3]
+          (hits 0/111) constraint DS = {10, 19} extremes [3, 3]
         at the time when {...} 
-          (hits 0/1554) constraint DS = {19} extremes [5, infinity)
+          (hits 0/2331) constraint DS = {19} extremes [5, infinity)
         at the time that {...} 
-          (hits 0/1554) constraint DS = {19} extremes [5, infinity)
+          (hits 0/2331) constraint DS = {19} extremes [5, infinity)
         at {...} 
-          (hits 0/1648) constraint DS = {19} extremes [2, infinity)
+          (hits 0/2472) constraint DS = {19} extremes [2, infinity)
 
 <s-unicode-character> nti 9 constraint (none) extremes [1, infinity)
     English:
@@ -8051,42 +8051,42 @@
         (- {###} {...} 
           (hits 0/66) constraint DS = {17} extremes [3, infinity)
 
-<rule-preamble> hits 1880/3760 nti 18 constraint (none) extremes [1, infinity)
+<rule-preamble> hits 2820/5640 nti 18 constraint (none) extremes [1, infinity)
     English:
         definition 
-          (hits 88/88) (matched: 'definition') constraint CS = {18} extremes [1, 1]
+          (hits 132/132) (matched: 'definition') constraint CS = {18} extremes [1, 1]
         this is the {... rule} 
-          (hits 58/1642) (matched long text) constraint DS = {18} extremes [5, infinity)
+          (hits 87/2463) (matched long text) constraint DS = {18} extremes [5, infinity)
         this is the rule 
           constraint CS = {18} extremes [4, 4]
         this is {...} rule 
-          (hits 0/1612) constraint DS = {18} extremes [4, infinity)
+          (hits 0/2418) constraint DS = {18} extremes [4, infinity)
         this is {...} rules 
-          (hits 0/1612) constraint DS = {18} extremes [4, infinity)
+          (hits 0/2418) constraint DS = {18} extremes [4, infinity)
         <event-rule-preamble> 
-          (hits 0/1648) constraint DS = {19} extremes [2, infinity)
+          (hits 0/2472) constraint DS = {19} extremes [2, infinity)
         to 
           constraint CS = {18} extremes [1, 1]
         to {...} ( called {...} ) 
-          (hits 0/1548) constraint DS = {18} extremes [6, infinity)
+          (hits 0/2322) constraint DS = {18} extremes [6, infinity)
         {to ...} ( this is the {### function} inverse to {###} ) 
-          (hits 32/1346) (matched long text) constraint DS = {18} extremes [12, infinity)
+          (hits 48/2019) (matched long text) constraint DS = {18} extremes [12, infinity)
         {to ...} ( this is the {### function} ) 
-          (hits 8/1418) (matched long text) constraint DS = {18} extremes [9, infinity)
+          (hits 12/2127) (matched long text) constraint DS = {18} extremes [9, infinity)
         {to ...} ( this is {...} ) 
-          (hits 0/1478) constraint DS = {18} extremes [7, infinity)
+          (hits 0/2217) constraint DS = {18} extremes [7, infinity)
         to {...} 
-          (hits 952/1658) (matched long text) constraint DS = {18} extremes [2, infinity)
+          (hits 1428/2487) (matched long text) constraint DS = {18} extremes [2, infinity)
         {...} ( this is the {... rule} ) 
-          (hits 562/606) (matched long text) constraint DS = {18} extremes [8, infinity)
+          (hits 843/909) (matched long text) constraint DS = {18} extremes [8, infinity)
         {...} ( this is the rule ) 
-          (hits 0/62) constraint DS = {18} extremes [7, infinity)
+          (hits 0/93) constraint DS = {18} extremes [7, infinity)
         {...} ( this is {...} rule ) 
-          (hits 0/62) constraint DS = {18} extremes [7, infinity)
+          (hits 0/93) constraint DS = {18} extremes [7, infinity)
         {...} ( this is {...} rules ) 
-          (hits 0/62) constraint DS = {18} extremes [7, infinity)
+          (hits 0/93) constraint DS = {18} extremes [7, infinity)
         {...} 
-          (hits 180/180) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 270/270) (matched long text) constraint (none) extremes [1, infinity)
 
 <now-phrase-preamble> hits 2/1984 nti 19 constraint DS = {19} extremes [3, infinity)
     English:

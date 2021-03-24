@@ -78,10 +78,10 @@ void IXActivities::index_cross_references(OUTPUT_STREAM, activity *av) {
 	activity_crossref *acr;
 	for (acr = av->indexing_data.cross_references; acr; acr = acr->next) {
 		phrase *ph = acr->rule_dependent;
-		if ((ph->declaration_node) && (Wordings::nonempty(Node::get_text(ph->declaration_node)))) {
+		if ((ph->from->at) && (Wordings::nonempty(Node::get_text(ph->from->at)))) {
 			HTML::open_indented_p(OUT, 2, "tight");
-			WRITE("NB: %W", Node::get_text(ph->declaration_node));
-			Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
+			WRITE("NB: %W", Node::get_text(ph->from->at));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
 			HTML_CLOSE("p");
 		}
 	}

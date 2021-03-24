@@ -103,7 +103,9 @@ rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 
 =
 int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
-	phrase *ph = Rules::get_defn_as_phrase(R); if (ph == NULL) return FALSE;
+	imperative_defn *id = Rules::get_imperative_definition(R);
+	if (id == NULL) return FALSE;
+	phrase *ph = id->defines;
 	if (Rulebooks::requires_specific_action(original_owner)) {
 		int waiver = FALSE;
 		action_name *an = NULL;
@@ -168,8 +170,9 @@ int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rul
 	if ((B == Rulebooks::std(BEFORE_RB)) ||
 		(B == Rulebooks::std(AFTER_RB)) ||
 		(B == Rulebooks::std(INSTEAD_RB))) {
-		phrase *ph = Rules::get_defn_as_phrase(R);
-		if (ph) {
+		imperative_defn *id = Rules::get_imperative_definition(R);
+		if (id) {
+			phrase *ph = id->defines;
 			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
 			if ((an) && (ActionSemantics::is_out_of_world(an)))
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),

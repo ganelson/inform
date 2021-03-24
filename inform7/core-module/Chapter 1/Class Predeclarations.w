@@ -26,6 +26,8 @@ DECLARE_CLASS(compile_task_data)
 @e explicit_bp_data_CLASS
 @e generalisation_CLASS
 @e i6_memory_setting_CLASS
+@e imperative_defn_CLASS
+@e imperative_defn_family_CLASS
 @e implication_CLASS
 @e relation_guard_CLASS
 @e table_CLASS
@@ -42,6 +44,8 @@ DECLARE_CLASS(by_routine_bp_data)
 DECLARE_CLASS(equivalence_bp_data)
 DECLARE_CLASS(explicit_bp_data)
 DECLARE_CLASS(i6_memory_setting)
+DECLARE_CLASS(imperative_defn)
+DECLARE_CLASS(imperative_defn_family)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(relation_guard)
 DECLARE_CLASS(table)

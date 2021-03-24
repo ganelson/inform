@@ -35,8 +35,8 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 }
 
 ph_stack_frame *RTRules::stack_frame(rule *R) {
-	if ((R == NULL) || (R->defn_as_phrase == NULL)) return NULL;
-	return &(R->defn_as_phrase->stack_frame);
+	if ((R == NULL) || (R->defn_as_I7_source == NULL)) return NULL;
+	return &(R->defn_as_I7_source->defines->stack_frame);
 }
 
 package_request *RTRules::package(rule *R) {
@@ -50,7 +50,7 @@ inter_name *RTRules::shell_iname(rule *R) {
 }
 
 inter_name *RTRules::iname(rule *R) {
-	if (R->defn_as_phrase) return Phrases::iname(R->defn_as_phrase);
+	if (R->defn_as_I7_source) return Phrases::iname(R->defn_as_I7_source->defines);
 	else if (R->compilation_data.rule_extern_iname) {
 		if (LinkedLists::len(R->applicability_constraints) > 0) {
 			return RTRules::shell_iname(R);
@@ -88,8 +88,8 @@ void RTRules::compile_definition(rule *R, int *i, int max_i) {
 	if (R->compilation_data.defn_compiled == FALSE) {
 		R->compilation_data.defn_compiled = TRUE;
 		rule_being_compiled = R;
-		if (R->defn_as_phrase)
-			Phrases::compile(R->defn_as_phrase, i, max_i,
+		if (R->defn_as_I7_source)
+			Phrases::compile(R->defn_as_I7_source->defines, i, max_i,
 				R->variables_visible_in_definition, NULL, R);
 		if ((R->compilation_data.rule_extern_iname) &&
 			(LinkedLists::len(R->applicability_constraints) > 0))
@@ -269,9 +269,9 @@ void RTRules::RulePrintingRule_routine(void) {
 		rule *R;
 		LOOP_OVER(R, rule) {
 			if ((Wordings::nonempty(R->name) == FALSE) &&
-				((R->defn_as_phrase == NULL) ||
-					(R->defn_as_phrase->declaration_node == NULL) ||
-					(R->defn_as_phrase->declaration_node->down == NULL)))
+				((R->defn_as_I7_source == NULL) ||
+					(R->defn_as_I7_source->at == NULL) ||
+					(R->defn_as_I7_source->at->down == NULL)))
 					continue;
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
@@ -310,23 +310,23 @@ void RTRules::RulePrintingRule_routine(void) {
 @<Print a textual name for this rule@> =
 	if (Wordings::nonempty(R->name)) {
 		CompiledText::from_text(OUT, R->name);
-	} else if (R->defn_as_phrase->declaration_node) {
+	} else if (R->defn_as_I7_source->at) {
 		CompiledText::from_text(OUT,
 			Articles::remove_the(
-				Node::get_text(R->defn_as_phrase->declaration_node)));
+				Node::get_text(R->defn_as_I7_source->at)));
 	} else WRITE("%n", RTRules::iname(R));
 
 @ =
 void RTRules::compile_comment(rule *R, int index, int from) {
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "Rule %d/%d", index, from);
-	if (R->defn_as_phrase == NULL) {
+	if (R->defn_as_I7_source == NULL) {
 		WRITE_TO(C, ": %n", R->compilation_data.rule_extern_iname);
 	}
 	Produce::comment(Emit::tree(), C);
 	DISCARD_TEXT(C)
-	if (R->defn_as_phrase) {
-		Phrases::Usage::write_I6_comment_describing(&(R->defn_as_phrase->usage_data));
+	if (R->defn_as_I7_source) {
+		Phrases::Usage::write_I6_comment_describing(&(R->defn_as_I7_source->defines->usage_data));
 	}
 }
 
@@ -611,8 +611,8 @@ than once for each rule.
 =
 #ifdef IF_MODULE
 action_name *RTRules::br_required_action(booking *br) {
-	phrase *ph = Rules::get_defn_as_phrase(br->rule_being_booked);
-	if (ph) return Phrases::Context::required_action(&(ph->runtime_context_data));
+	imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
+	if (id) return Phrases::Context::required_action(&(id->defines->runtime_context_data));
 	return NULL;
 }
 #endif

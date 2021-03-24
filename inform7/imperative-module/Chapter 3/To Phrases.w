@@ -116,7 +116,7 @@ void Routines::ToPhrases::register_all(void) {
 	phrase *ph;
 	int c = 0;
 	for (ph = first_in_logical_order; ph; ph = ph->next_in_logical_order) {
-		current_sentence = ph->declaration_node;
+		current_sentence = ph->from->at;
 		Phrases::Parser::register_excerpt(ph);
 		ph->sequence_count = c++;
 	}
@@ -167,7 +167,7 @@ to_phrase_request *Routines::ToPhrases::make_request(phrase *ph, kind *K,
 	req->requested_exact_kind = K;
 	req->requested_phrase = ph;
 	compilation_unit *cm = CompilationUnits::current();
-	if (ph->declaration_node) cm = CompilationUnits::find(ph->declaration_node);
+	if (ph->from->at) cm = CompilationUnits::find(ph->from->at);
 
 	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->requests_package);
 	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);

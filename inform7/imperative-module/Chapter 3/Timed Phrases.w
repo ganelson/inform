@@ -92,7 +92,7 @@ void Phrases::Timed::check_for_unused(void) {
 	LOOP_OVER(ph, phrase)
 		if (Phrases::Usage::get_timing_of_event(&(ph->usage_data)) == NO_FIXED_TIME) {
 			if (ph->usage_data.uses_as_event == NULL) {
-				current_sentence = ph->declaration_node;
+				current_sentence = ph->from->at;
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnusedTimedEvent),
 					"this sets up a timed event which is never used",
 					"since you never use any of the phrases which could cause it. "
@@ -127,9 +127,9 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			when_count++;
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
 			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
-			if ((ph->declaration_node) &&
-				(Wordings::nonempty(Node::get_text(ph->declaration_node))))
-				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
+			if ((ph->from->at) &&
+				(Wordings::nonempty(Node::get_text(ph->from->at))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
 			WRITE(" (where triggered: ");
 			use_as_event *uae;
 			for (uae = ph->usage_data.uses_as_event; uae; uae=uae->next)
@@ -152,9 +152,9 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			tt_count++;
 			HTML_OPEN_WITH("p", "class=\"in2\"");
 			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
-			if ((ph->declaration_node) &&
-				(Wordings::nonempty(Node::get_text(ph->declaration_node))))
-				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
+			if ((ph->from->at) &&
+				(Wordings::nonempty(Node::get_text(ph->from->at))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
 			HTML_CLOSE("p");
 		}
 	}

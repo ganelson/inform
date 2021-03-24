@@ -25,30 +25,31 @@ void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 			heading *last_heading_named = NULL;
 			int no_subdivision_yet = TRUE;
 			wording CLW = EMPTY_WORDING;
-			phrase *ph, *run_begin = NULL;
-			LOOP_OVER(ph, phrase) {
-				/* include only if this is a To... phrase */
-				if (Phrases::Usage::get_effect(&(ph->usage_data)) != TO_PHRASE_EFF)
-					continue;
-				/* and only if it is under an indexed heading */
-				heading *this_heading =
-					Headings::of_wording(Node::get_text(Phrases::declaration_node(ph)));
-				if (Headings::indexed(this_heading) == FALSE) continue;
-				/* and only if that heading lies in the piece of source for this division */
-				inform_extension *this_extension =
-					Headings::get_extension_containing(this_heading);
-				if (division == N) { /* skip phrase unless it's in the source text */
-					if (this_extension != NULL) continue;
-				} else { /* skip phrase unless it's defined in the extension for this division */
-					if ((this_extension == NULL) || (this_extension->allocation_id != division)) continue;
+			imperative_defn *id;
+			phrase *run_begin = NULL;
+			LOOP_OVER(id, imperative_defn) {
+				if (id->family == TO_PHRASE_EFF_family) {
+					phrase *ph = id->defines;
+					/* include only if it is under an indexed heading */
+					heading *this_heading =
+						Headings::of_wording(Node::get_text(Phrases::declaration_node(ph)));
+					if (Headings::indexed(this_heading) == FALSE) continue;
+					/* and only if that heading lies in the piece of source for this division */
+					inform_extension *this_extension =
+						Headings::get_extension_containing(this_heading);
+					if (division == N) { /* skip phrase unless it's in the source text */
+						if (this_extension != NULL) continue;
+					} else { /* skip phrase unless it's defined in the extension for this division */
+						if ((this_extension == NULL) || (this_extension->allocation_id != division)) continue;
+					}
+
+					if (last_extension_named != this_extension) @<Mark a division in the Phrasebook@>;
+					if (this_heading != last_heading_named) @<Mark a subdivision in the Phrasebook@>;
+					last_heading_named = this_heading;
+					last_extension_named = this_extension;
+
+					if (pass == 2) @<Actually index the phrase@>;
 				}
-
-				if (last_extension_named != this_extension) @<Mark a division in the Phrasebook@>;
-				if (this_heading != last_heading_named) @<Mark a subdivision in the Phrasebook@>;
-				last_heading_named = this_heading;
-				last_extension_named = this_extension;
-
-				if (pass == 2) @<Actually index the phrase@>;
 			}
 		}
 	}
@@ -170,7 +171,7 @@ code for the box.
 	Phrases::TypeData::Textual::write_index_representation(OUT, &(ph->type_data), ph);
 	if (Phrases::TypeData::deprecated(&(ph->type_data)))
 		Index::deprecation_icon(OUT, run_begin->allocation_id);
-	Index::link(OUT, Wordings::first_wn(Node::get_text(ph->declaration_node)));
+	Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
 	HTML_CLOSE("p");
 
 	if (run_end == ph) {

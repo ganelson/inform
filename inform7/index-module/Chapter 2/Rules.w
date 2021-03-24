@@ -28,7 +28,7 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	if (Wordings::nonempty(R->indexing_data.italicised_text)) @<Index the italicised text to do with the rule@>;
 	if (Wordings::nonempty(R->name)) @<Index the rule name along with Javascript buttons@>;
 	if ((Wordings::nonempty(R->indexing_data.italicised_text) == FALSE) &&
-		(Wordings::nonempty(R->name) == FALSE) && (R->defn_as_phrase))
+		(Wordings::nonempty(R->name) == FALSE) && (R->defn_as_I7_source))
 		@<Index some text extracted from the first line of the otherwise anonymous rule@>;
 	@<Index a link to the first line of the rule's definition@>;
 	if (global_compilation_settings.number_rules_in_index) @<Index the small type rule numbering@>;
@@ -94,7 +94,7 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	no_responses_indexed = c;
 
 @<Index some text extracted from the first line of the otherwise anonymous rule@> =
-	parse_node *pn = R->defn_as_phrase->declaration_node->down;
+	parse_node *pn = R->defn_as_I7_source->at->down;
 	if ((pn) && (Wordings::nonempty(Node::get_text(pn)))) {
 		WRITE("(%+W", Node::get_text(pn));
 		if (pn->next) WRITE("; ...");
@@ -102,8 +102,8 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 	}
 
 @<Index a link to the first line of the rule's definition@> =
-	if (R->defn_as_phrase) {
-		parse_node *pn = R->defn_as_phrase->declaration_node;
+	if (R->defn_as_I7_source) {
+		parse_node *pn = R->defn_as_I7_source->at;
 		if ((pn) && (Wordings::nonempty(Node::get_text(pn))))
 			Index::link(OUT, Wordings::first_wn(Node::get_text(pn)));
 	}
@@ -111,7 +111,7 @@ int IXRules::index(OUTPUT_STREAM, rule *R, rulebook *owner, rule_context rc) {
 @<Index the small type rule numbering@> =
 	WRITE(" ");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
-	if (R->defn_as_phrase) WRITE("%d", R->defn_as_phrase->allocation_id);
+	if (R->defn_as_I7_source) WRITE("%d", R->defn_as_I7_source->allocation_id);
 	else WRITE("primitive");
 	HTML_CLOSE("span");
 
@@ -137,8 +137,9 @@ int IXRules::index_booking_list(OUTPUT_STREAM, booking_list *L, rule_context rc,
 		rule *R = RuleBookings::get_rule(br);
 		int skip = FALSE;
 		#ifdef IF_MODULE
-		phrase *ph = Rules::get_defn_as_phrase(R);
-		if (ph) {
+		imperative_defn *id = Rules::get_imperative_definition(R);
+		if (id) {
+			phrase *ph = id->defines;
 			ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
 			scene *during_scene = Phrases::Context::get_scene(phrcd);
 			if ((rc.scene_context) && (during_scene != rc.scene_context)) skip = TRUE;

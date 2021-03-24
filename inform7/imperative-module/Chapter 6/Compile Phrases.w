@@ -27,13 +27,13 @@ void Routines::Compile::routine(phrase *ph,
 	stacked_variable_owner_list *legible, to_phrase_request *req,
 	rule *R) {
 
-	if ((ph->declaration_node == NULL) ||
-		(Node::get_type(ph->declaration_node) != IMPERATIVE_NT) ||
-		(Wordings::empty(Node::get_text(ph->declaration_node))))
+	if ((ph->from->at == NULL) ||
+		(Node::get_type(ph->from->at) != IMPERATIVE_NT) ||
+		(Wordings::empty(Node::get_text(ph->from->at))))
 		internal_error("tried to compile phrase with bad ROUTINE node");
-	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->declaration_node);
+	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->from->at);
 
-	CompilationUnits::set_current(ph->declaration_node);
+	CompilationUnits::set_current(ph->from->at);
 	phrase_being_compiled = ph;
 	@<Set up the stack frame for this compilation request@>;
 
@@ -74,14 +74,14 @@ void Routines::Compile::routine(phrase *ph,
 	PreformCache::warn_of_changes(); /* that local variables may have changed */
 
 @<Compile the body of the routine@> =
-	current_sentence = ph->declaration_node;
+	current_sentence = ph->from->at;
 	if (Phrases::Context::compile_test_head(ph, R) == FALSE) {
-		if (ph->declaration_node) {
-			VerifyTree::verify_structure_from(ph->declaration_node);
-			Routines::Compile::code_block_outer(1, ph->declaration_node->down);
-			VerifyTree::verify_structure_from(ph->declaration_node);
+		if (ph->from->at) {
+			VerifyTree::verify_structure_from(ph->from->at);
+			Routines::Compile::code_block_outer(1, ph->from->at->down);
+			VerifyTree::verify_structure_from(ph->from->at);
 		}
-		current_sentence = ph->declaration_node;
+		current_sentence = ph->from->at;
 		Phrases::Context::compile_test_tail(ph, R);
 
 		@<Compile a terminal return statement@>;
@@ -295,9 +295,8 @@ henceforth to be true, so we simply compile empty code in that case.
 	current_sentence = to_compile;
 	named_rulebook_outcome *nrbo = <<rp>>;
 	if (phrase_being_compiled) {
-		int ram = Phrases::Usage::get_effect(&(phrase_being_compiled->usage_data));
-		if ((ram != RULE_IN_RULEBOOK_EFF) &&
-			(ram != RULE_NOT_IN_RULEBOOK_EFF)) {
+		if ((phrase_being_compiled->from->family != RULE_IN_RULEBOOK_EFF_family) &&
+			(phrase_being_compiled->from->family != RULE_NOT_IN_RULEBOOK_EFF_family)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));

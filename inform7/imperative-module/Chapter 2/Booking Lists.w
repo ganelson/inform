@@ -271,8 +271,9 @@ int BookingLists::length(booking_list *L) {
 
 int BookingLists::is_contextually_empty(booking_list *L, rule_context rc) {
 	LOOP_OVER_BOOKINGS(br, L) {
-		phrase *ph = Rules::get_defn_as_phrase(RuleBookings::get_rule(br));
-		if (Phrases::Context::phrase_fits_rule_context(ph, rc)) return FALSE;
+		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
+		if ((id) && (Phrases::Context::phrase_fits_rule_context(id->defines, rc)))
+			return FALSE;
 	}
 	return TRUE;
 }
@@ -284,7 +285,7 @@ booking *BookingLists::first(booking_list *L) {
 
 int BookingLists::is_empty_of_i7_rules(booking_list *L) {
 	LOOP_OVER_BOOKINGS(br, L)
-		if (Rules::get_defn_as_phrase(RuleBookings::get_rule(br)))
+		if (Rules::get_imperative_definition(RuleBookings::get_rule(br)))
 			return FALSE;
 	return TRUE;
 }
@@ -297,9 +298,11 @@ int BookingLists::contains(booking_list *L, rule *to_find) {
 }
 
 int BookingLists::contains_ph(booking_list *L, phrase *ph_to_find) {
-	LOOP_OVER_BOOKINGS(br, L)
-		if (Rules::get_defn_as_phrase(RuleBookings::get_rule(br)) == ph_to_find)
+	LOOP_OVER_BOOKINGS(br, L) {
+		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
+		if ((id) && (id->defines == ph_to_find))
 			return TRUE;
+	}
 	return FALSE;
 }
 

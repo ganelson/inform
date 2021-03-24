@@ -1,10 +1,45 @@
-[ImperativeDefinitions::] Construction Sequence.
+[ImperativeDefinitions::] Imperative Definitions.
 
-Managing the timing of dealing with defined phrases and rules.
+Each IMPERATIVE node in the syntax tree makes a definition of a phrase or rule.
 
-@
+@ When this function starts, the tree contains a number of top-level |IMPERATIVE_NT|
+nodes with |INVOCATION_LIST_NT| nodes hanging from them, but we haven't looked at
+any of the text in the |IMPERATIVE_NT| head nodes and therefore we have no idea what
+they define. Some will be rules, some will define To... phrases, and so on.
 
 =
+typedef struct imperative_defn {
+	struct imperative_defn_family *family;
+	struct parse_node *at;
+	struct phrase *defines;
+	CLASS_DEFINITION
+} imperative_defn;
+
+typedef struct imperative_defn_family {
+	struct text_stream *family_name;
+	CLASS_DEFINITION
+} imperative_defn_family;
+
+imperative_defn_family *AS_YET_UNKNOWN_EFF_family = NULL; /* used only temporarily */
+imperative_defn_family *DEFINITIONAL_PHRASE_EFF_family = NULL; /* "Definition: a container is roomy if: ..." */
+imperative_defn_family *RULE_NOT_IN_RULEBOOK_EFF_family = NULL; /* "At 9 PM: ...", "This is the zap rule: ..." */
+imperative_defn_family *TO_PHRASE_EFF_family = NULL; /* "To award (some - number) points: ..." */
+imperative_defn_family *RULE_IN_RULEBOOK_EFF_family = NULL; /* "Before taking a container, ..." */
+
+imperative_defn_family *ImperativeDefinitions::new_family(text_stream *name) {
+	imperative_defn_family *family = CREATE(imperative_defn_family);
+	family->family_name = Str::duplicate(name);
+	return family;
+}
+
+void ImperativeDefinitions::create_families(void) {
+	AS_YET_UNKNOWN_EFF_family       = ImperativeDefinitions::new_family(I"AS_YET_UNKNOWN_EFF");
+	DEFINITIONAL_PHRASE_EFF_family  = ImperativeDefinitions::new_family(I"DEFINITIONAL_PHRASE_EFF");
+	RULE_NOT_IN_RULEBOOK_EFF_family = ImperativeDefinitions::new_family(I"RULE_NOT_IN_RULEBOOK_EFF");
+	TO_PHRASE_EFF_family            = ImperativeDefinitions::new_family(I"TO_PHRASE_EFF");
+	RULE_IN_RULEBOOK_EFF_family     = ImperativeDefinitions::new_family(I"RULE_IN_RULEBOOK_EFF");
+}
+
 void ImperativeDefinitions::find_phrases_and_rules(void) {
 	int initial_problem_count = problem_count;
 	int progress_target = 0, progress_made = 0;
@@ -19,7 +54,7 @@ void ImperativeDefinitions::find_phrases_and_rules(void) {
 
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		current_sentence = ph->declaration_node;
+		current_sentence = ph->from->at;
 		Frames::make_current(&(ph->stack_frame));
 		ph->runtime_context_data =
 			Phrases::Usage::to_runtime_context_data(&(ph->usage_data));
@@ -44,7 +79,12 @@ void ImperativeDefinitions::visit_to_create(parse_node *p, int *progress_target,
 			((float) (*progress_made))/((float) (*progress_target)));
 
 	if (Node::get_type(p) == IMPERATIVE_NT) {
-		Phrases::create_from_preamble(p);
+		imperative_defn *id = CREATE(imperative_defn);
+		id->at = p;
+		id->defines = NULL;
+		id->family = AS_YET_UNKNOWN_EFF_family;
+		if (<rule-preamble>(Node::get_text(id->at))) id->family = <<rp>>;
+		Phrases::create_from_preamble(id);
 	}
 }
 
@@ -104,11 +144,10 @@ a whole multi-step phrase to define them -- a relatively little-used feature
 of Inform.
 
 @<Compile phrases which define adjectives@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase)
-		if (Phrases::Usage::get_effect(&(ph->usage_data)) ==
-			DEFINITIONAL_PHRASE_EFF)
-			Phrases::compile(ph, &total_phrases_compiled,
+	imperative_defn *id;
+	LOOP_OVER(id, imperative_defn)
+		if (id->family == DEFINITIONAL_PHRASE_EFF_family)
+			Phrases::compile(id->defines, &total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL, NULL);
 	RTAdjectives::compile_support_code();
 

@@ -16,7 +16,7 @@ Before eating:                              To extinguish (C - a candle):
 Despite the similarities, rules are not the same thing as phrases. Some rules,
 such as the one in this example, give a definition which looks like the body
 of a phrase, and indeed inside the compiler it is stored as such, in the 
-|defn_as_phrase| field of a //rule//. But other rules are written quite
+|defn_as_I7_source| field of a //rule//. But other rules are written quite
 differently:
 = (text as Inform 7)
 The can't reach inside rooms rule translates into Inter as |"CANT_REACH_INSIDE_ROOMS_R"|.
@@ -32,7 +32,7 @@ typedef struct rule {
 	struct kind *kind_of_rule; /* determined from its rulebook(s) */
 	struct rulebook *kind_of_rule_set_from;
 
-	struct phrase *defn_as_phrase; /* if defined by an I7 phrase */
+	struct imperative_defn *defn_as_I7_source; /* if defined by an I7 phrase */
 	struct stacked_variable_owner_list *variables_visible_in_definition; /* if so */
 	struct text_stream *defn_as_Inter_function; /* if not */
 
@@ -75,7 +75,7 @@ rule *Rules::obtain(wording W, int allow_responses) {
 	R->kind_of_rule = NULL;
 	R->kind_of_rule_set_from = NULL;
 
-	R->defn_as_phrase = NULL;
+	R->defn_as_I7_source = NULL;
 	R->variables_visible_in_definition = NULL;
 	R->defn_as_Inter_function = NULL;
 
@@ -223,13 +223,13 @@ Once a rule has been created, it can be given a definition body in the form
 of a //phrase// as follows:
 
 =
-void Rules::set_defn_as_phrase(rule *R, phrase *ph) {
-	R->defn_as_phrase = ph;
+void Rules::set_imperative_definition(rule *R, imperative_defn *id) {
+	R->defn_as_I7_source = id;
 }
 
-phrase *Rules::get_defn_as_phrase(rule *R) {
+imperative_defn *Rules::get_imperative_definition(rule *R) {
 	if (R == NULL) return NULL;
-	return R->defn_as_phrase;
+	return R->defn_as_I7_source;
 }
 
 @ Inside such a definition, certain stacked variables may be in scope. For
@@ -264,7 +264,7 @@ stacked_variable_owner_list *Rules::all_action_processing_variables(void) {
 @h Defining rules with Inter functions.
 When a rule is really just a wrapper for an Inter-level function, as here:
 >> The can't reach inside rooms rule translates into Inter as |"CANT_REACH_INSIDE_ROOMS_R"|.
-...it has no |defn_as_phrase| and instead has the name of the Inter function
+...it has no |defn_as_I7_source| and instead has the name of the Inter function
 stored in |defn_as_Inter_function|.
 
 Here |W| is the rule's name, say "can't reach inside rooms rule", and |FW|
@@ -284,8 +284,8 @@ void Rules::declare_I6_written_rule(wording W, wording FW) {
 void Rules::log(rule *R) {
 	if (R == NULL) { LOG("<null-rule>"); return; }
 	if (Wordings::nonempty(R->name)) LOG("['%W':", R->name); else LOG("[");
-	if (R->defn_as_phrase)
-		LOG("$R]", R->defn_as_phrase);
+	if (R->defn_as_I7_source)
+		LOG("$R]", R->defn_as_I7_source->defines);
 	else if (Str::len(R->defn_as_Inter_function) > 0)
 		LOG("%S]", R->defn_as_Inter_function);
 	else
@@ -304,7 +304,7 @@ And so we have the following:
 =
 int Rules::eq(rule *R1, rule *R2) {
 	if ((Rules::defined(R1)) || (Rules::defined(R2))) {
-		if (R2->defn_as_phrase != R1->defn_as_phrase) return FALSE;
+		if (R2->defn_as_I7_source != R1->defn_as_I7_source) return FALSE;
 		if (Str::ne(R1->defn_as_Inter_function, R2->defn_as_Inter_function)) return FALSE;
 		return TRUE;
 	} else {
@@ -314,7 +314,7 @@ int Rules::eq(rule *R1, rule *R2) {
 }
 
 int Rules::defined(rule *R) {
-	if ((R->defn_as_phrase) || (Str::len(R->defn_as_Inter_function) > 0)) return TRUE;
+	if ((R->defn_as_I7_source) || (Str::len(R->defn_as_Inter_function) > 0)) return TRUE;
 	return FALSE;
 }
 
@@ -324,10 +324,10 @@ than |R1|, or 0 if they are equally good.
 
 =
 int Rules::cmp(rule *R1, rule *R2, int log_this) {
-	phrase *ph1 = R1->defn_as_phrase, *ph2 = R2->defn_as_phrase;
+	imperative_defn *id1 = R1->defn_as_I7_source, *id2 = R2->defn_as_I7_source;
 	ph_runtime_context_data *phrcd1 = NULL, *phrcd2 = NULL;
-	if (ph1) phrcd1 = &(ph1->runtime_context_data);
-	if (ph2) phrcd2 = &(ph2->runtime_context_data);
+	if (id1) phrcd1 = &(id1->defines->runtime_context_data);
+	if (id2) phrcd2 = &(id2->defines->runtime_context_data);
 	int rv = Phrases::Context::compare_specificity(phrcd1, phrcd2);
 	if (log_this) {
 		if (rv != 0) LOG("Decided by Law %S that ", c_s_stage_law);
@@ -445,29 +445,29 @@ it's possible to change the way that applicability testing is done.
 
 =
 void Rules::set_always_test_actor(rule *R) {
-	if (R->defn_as_phrase) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_phrase->runtime_context_data);
+	if (R->defn_as_I7_source) {
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
 		Phrases::Context::set_always_test_actor(phrcd);
 	}
 }
 
 void Rules::set_never_test_actor(rule *R) {
-	if (R->defn_as_phrase) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_phrase->runtime_context_data);
+	if (R->defn_as_I7_source) {
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
 		Phrases::Context::set_never_test_actor(phrcd);
 	}
 }
 
 void Rules::set_marked_for_anyone(rule *R, int to) {
-	if (R->defn_as_phrase) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_phrase->runtime_context_data);
+	if (R->defn_as_I7_source) {
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
 		Phrases::Context::set_marked_for_anyone(phrcd, to);
 	}
 }
 
 void Rules::suppress_action_testing(rule *R) {
-	if (R->defn_as_phrase) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_phrase->runtime_context_data);
+	if (R->defn_as_I7_source) {
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
 		Phrases::Context::suppress_action_testing(phrcd);
 	}
 }
@@ -476,9 +476,11 @@ void Rules::copy_actor_test_flags(rule *R_to, rule *R_from) {
 	if ((R_from == NULL) || (R_to == NULL)) internal_error("improper catf");
 
 	ph_runtime_context_data *phrcd_from = NULL;
-	if (R_from->defn_as_phrase) phrcd_from = &(R_from->defn_as_phrase->runtime_context_data);
+	if (R_from->defn_as_I7_source)
+		phrcd_from = &(R_from->defn_as_I7_source->defines->runtime_context_data);
 	ph_runtime_context_data *phrcd_to = NULL;
-	if (R_to->defn_as_phrase) phrcd_to = &(R_to->defn_as_phrase->runtime_context_data);
+	if (R_to->defn_as_I7_source)
+		phrcd_to = &(R_to->defn_as_I7_source->defines->runtime_context_data);
 
 	if (phrcd_to) {
 		if ((phrcd_from == NULL) ||
