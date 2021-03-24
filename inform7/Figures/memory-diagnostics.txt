@@ -1,12 +1,12 @@
 Total memory consumption was 259996K = 254 MB
 
-62.7% was used for 1336660 objects, in 279893 frames in 204 x 800K = 163200K = 159 MB:
+62.7% was used for 1336652 objects, in 279885 frames in 204 x 800K = 163200K = 159 MB:
 
      9.7%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.4%  text_stream_array                        2583 x 100 = 258300 objects, 14547456 bytes
      3.8%  parse_node                               129371 objects, 10349680 bytes
      2.7%  verb_conjugation                         160 objects, 7425280 bytes
-     2.6%  linked_list                              12669 objects, 7094640 bytes
+     2.6%  linked_list                              12665 objects, 7092400 bytes
      2.5%  parse_node_annotation_array              429 x 500 = 214500 objects, 6877728 bytes
      2.3%  inter_symbol_array                       69 x 1024 = 70656 objects, 6219936 bytes
      1.2%  pcalc_prop_array                         24 x 1000 = 24000 objects, 3264768 bytes
@@ -101,7 +101,7 @@ Total memory consumption was 259996K = 254 MB
      ----  booking_list                             407 objects, 13024 bytes
      ----  literal_text                             147 objects, 12936 bytes
      ----  adjective_iname_holder                   320 objects, 12800 bytes
-     ----  stopwatch_timer                          145 objects, 11600 bytes
+     ----  stopwatch_timer                          141 objects, 11280 bytes
      ----  pathname                                 262 objects, 10480 bytes
      ----  filename                                 208 objects, 8320 bytes
      ----  equation_node                            68 objects, 7616 bytes
@@ -233,9 +233,9 @@ Total memory consumption was 259996K = 254 MB
 
 37.2% was used for memory not allocated for objects:
 
-    15.7%  text stream storage                      42064528 bytes in 264521 claims
+    15.7%  text stream storage                      42063780 bytes in 264517 claims
      3.4%  dictionary storage                       9278976 bytes in 16372 claims
-     ----  sorting                                  1024 bytes in 3 claims
+     ----  sorting                                  992 bytes in 3 claims
      2.7%  source text                              7200000 bytes in 3 claims
      4.0%  source text details                      10800000 bytes in 2 claims
      ----  linguistic stock array                   81920 bytes in 2 claims
@@ -249,5 +249,5 @@ Total memory consumption was 259996K = 254 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.4% was overhead - 54480472 bytes = 53203K = 51 MB
+20.4% was overhead - 54483032 bytes = 53206K = 51 MB
 

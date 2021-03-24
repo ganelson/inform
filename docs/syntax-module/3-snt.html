@@ -636,7 +636,7 @@ work, have node type <span class="extract"><span class="extract-syntax">SENTENCE
 Anything we cannot place into categories (b) or (c) below will go here.
 </li><li>(b) "Sentences making up rules". These are sequences of sentences in which
 a preamble (ending with a colon, or in certain cases a comma) of node type
-<span class="extract"><span class="extract-syntax">RULE_NT</span></span> is followed by a sequence of phrases (ending with semicolons until
+<span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span> is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
 <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span>. For instance, the following produces three nodes:
 </li></ul>
@@ -745,7 +745,7 @@ which divides rule from preamble:
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-snt.html#SP6_9">&#167;6.9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_9_2_1" class="paragraph-anchor"></a><b>&#167;6.9.2.1.  </b>In such sentences a comma is read as if it were a colon. (The text up to the
-comma will then be given a <span class="extract"><span class="extract-syntax">RULE_NT</span></span> node and the text beyond the comma
+comma will then be given a <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span> node and the text beyond the comma
 will make a <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> node.)
 </p>
 
@@ -801,7 +801,7 @@ its terminating colon. For instance:
 </blockquote>
 
 <p class="commentary">(which arrives at this routine as three separate "sentences") will produce
-nodes with type <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
+nodes with type <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
 </p>
 
 <p class="commentary">This paragraph of code might look as if it should only be used in assertion
@@ -814,7 +814,7 @@ officially sanctioned way to make a definition with a complex phrase:
     <p>Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.</p>
 </blockquote>
 
-<p class="commentary">This produces four nodes: <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">RULE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and
+<p class="commentary">This produces four nodes: <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span>, <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span>, <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> and
 <span class="extract"><span class="extract-syntax">INVOCATION_LIST_NT</span></span> respectively.
 </p>
 

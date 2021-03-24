@@ -116,7 +116,7 @@ organisation, and are not directly functional in themselves.
 		case ENDHERE_NT:   Anaphora::new_discussion();
 			               global_pass_state.near_start_of_extension = 0; break;
 
-		case RULE_NT: @<Pass through a RULE node@>; break;
+		case IMPERATIVE_NT: @<Pass through an IMPERATIVE node@>; break;
 		case SENTENCE_NT: @<Pass through a SENTENCE node@>; break;
 		case TRACE_NT: @<Pass through a TRACE node@>; break;
 
@@ -141,15 +141,15 @@ organisation, and are not directly functional in themselves.
 			internal_error("passed through major node of unexpected type");
 	}
 
-@ This is a little convoluted. The //linguistics// module turns sentences in
-rule form into a |RULE_NT| node followed by subsequent |INVOCATION_NT| nodes,
-and the first call here makes them into a neat subtree. After that, we look
-out for adjectives defined by phrases, and for phrases with names, since
-both will affect how we read sentences in passes 1 and 2.
+@ This is a little convoluted: see //Imperative Subtrees// for how
+"acceptance" tidies up the nodes in the syntax tree corresponding to a block
+of imperative code. After that, we look out for adjectives defined by phrases,
+and for phrases with names, since both will affect how we read sentences in
+passes 1 and 2.
 
-@<Pass through a RULE node@> =
+@<Pass through an IMPERATIVE node@> =
 	if (global_pass_state.pass == 0) {
-		SyntaxTree::traverse_run(p, RuleSubtrees::demote_command_nodes, RULE_NT);
+		SyntaxTree::traverse_run(p, ImperativeSubtrees::accept, IMPERATIVE_NT);
 		Phrases::Adjectives::look_for_headers(p);
 		Phrases::Usage::predeclare_name_in(p);
 	}

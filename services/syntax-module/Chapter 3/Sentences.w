@@ -459,7 +459,7 @@ Anything we cannot place into categories (b) or (c) below will go here.
 
 (b) "Sentences making up rules". These are sequences of sentences in which
 a preamble (ending with a colon, or in certain cases a comma) of node type
-|RULE_NT| is followed by a sequence of phrases (ending with semicolons until
+|IMPERATIVE_NT| is followed by a sequence of phrases (ending with semicolons until
 the last, which ends with a full stop or paragraph break), each of node type
 |INVOCATION_LIST_NT|. For instance, the following produces three nodes:
 
@@ -549,7 +549,7 @@ The following is used to detect "or" in such lists.
 		@<Look for a comma and split the sentence at it, unless in serial list@>;
 
 @ In such sentences a comma is read as if it were a colon. (The text up to the
-comma will then be given a |RULE_NT| node and the text beyond the comma
+comma will then be given a |IMPERATIVE_NT| node and the text beyond the comma
 will make a |INVOCATION_LIST_NT| node.)
 
 @<Look for a comma and split the sentence at it, unless in serial list@> =
@@ -588,7 +588,7 @@ its terminating colon. For instance:
 >> To look upwards: say "Look out!"; something else.
 
 (which arrives at this routine as three separate "sentences") will produce
-nodes with type |RULE_NT|, |INVOCATION_LIST_NT| and |INVOCATION_LIST_NT| respectively.
+nodes with type |IMPERATIVE_NT|, |INVOCATION_LIST_NT| and |INVOCATION_LIST_NT| respectively.
 
 This paragraph of code might look as if it should only be used in assertion
 mode, not in rule mode, because how can a rule preamble legally occur in
@@ -597,7 +597,7 @@ officially sanctioned way to make a definition with a complex phrase:
 
 >> Definition: a supporter is wobbly: if the player is on it, decide yes; decide no.
 
-This produces four nodes: |RULE_NT|, |RULE_NT|, |INVOCATION_LIST_NT| and
+This produces four nodes: |IMPERATIVE_NT|, |IMPERATIVE_NT|, |INVOCATION_LIST_NT| and
 |INVOCATION_LIST_NT| respectively.
 
 The other arises somewhat less officially when people treat phrases as

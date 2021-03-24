@@ -16,7 +16,7 @@ declarations and assertion sentences.
 //linguistics: Diagrams// and below. These are clauses in sentences.
 (*) Code nodes, category |CODE_NCAT|, are defined only below. They occur only
 inside imperative code (i.e. rules and phrase definitions), in subtrees headed
-by a level-2 |RULE_NT| node, and they organise what is to be compiled.
+by a level-2 |IMPERATIVE_NT| node, and they organise what is to be compiled.
 (*) Specification nodes represent values or descriptions of values, and are
 defined only below. These occur frequently in the parse tree as children of
 code nodes, but can also be used in detached form as a way to represent, say,
@@ -154,7 +154,7 @@ also makes it easier for us to manipulate the results.
 	NodeType::new(TEST_PHRASE_OPTION_NT, I"TEST_PHRASE_OPTION_NT", 			0, 0, 		COND_NCAT, 0);
 	NodeType::new(TEST_VALUE_NT, I"TEST_VALUE_NT", 							1, 1,		COND_NCAT, 0);
 
-@ Level 4 structural nodes can only be children of |RULE_NT| nodes (level 2)
+@ Level 4 structural nodes can only be children of |IMPERATIVE_NT| nodes (level 2)
 or of each other, and their children are otherwise specifications.
 
 Specification nodes can only have each other as children.
@@ -344,7 +344,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
-	Annotations::allow(RULE_NT, indentation_level_ANNOT);
+	Annotations::allow(IMPERATIVE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
 	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);

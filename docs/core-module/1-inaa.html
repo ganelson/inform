@@ -104,7 +104,7 @@ declarations and assertion sentences.
 </li></ul>
 <li>&#9679; Code nodes, category <span class="extract"><span class="extract-syntax">CODE_NCAT</span></span>, are defined only below. They occur only
 inside imperative code (i.e. rules and phrase definitions), in subtrees headed
-by a level-2 <span class="extract"><span class="extract-syntax">RULE_NT</span></span> node, and they organise what is to be compiled.
+by a level-2 <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span> node, and they organise what is to be compiled.
 </li><li>&#9679; Specification nodes represent values or descriptions of values, and are
 defined only below. These occur frequently in the parse tree as children of
 code nodes, but can also be used in detached form as a way to represent, say,
@@ -268,7 +268,7 @@ also makes it easier for us to manipulate the results.
 <span class="plain-syntax">    </span><span class="identifier-syntax">NodeType::new</span><span class="plain-syntax">(</span><span class="constant-syntax">TEST_VALUE_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"TEST_VALUE_NT"</span><span class="plain-syntax">,                          </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,       </span><span class="constant-syntax">COND_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-inaa.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Level 4 structural nodes can only be children of <span class="extract"><span class="extract-syntax">RULE_NT</span></span> nodes (level 2)
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Level 4 structural nodes can only be children of <span class="extract"><span class="extract-syntax">IMPERATIVE_NT</span></span> nodes (level 2)
 or of each other, and their children are otherwise specifications.
 </p>
 
@@ -469,7 +469,7 @@ are made in <a href="../building-module/1-bm.html" class="internal">Building Mod
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="identifier-syntax">L2_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">clears_pronouns_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="identifier-syntax">L2_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">interpretation_of_subject_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow_for_category</span><span class="plain-syntax">(</span><span class="identifier-syntax">L2_NCAT</span><span class="plain-syntax">, </span><span class="constant-syntax">verb_problem_issued_ANNOT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">RULE_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">indentation_level_ANNOT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">IMPERATIVE_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">indentation_level_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">SENTENCE_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">implicit_in_creation_of_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">SENTENCE_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">implicitness_count_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">SENTENCE_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">you_can_ignore_ANNOT</span><span class="plain-syntax">);</span>

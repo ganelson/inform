@@ -138,7 +138,7 @@ can't normally be unravelled at compile time.
 		Grading::make_superlative(mdef->headword, Task::language_of_syntax());
 	@<Feed the preamble for the superlative phrase into the lexer@>;
 	@<Feed the body of the superlative phrase into the lexer@>;
-	RuleSubtrees::register_recently_lexed_phrases();
+	ImperativeSubtrees::accept_all();
 
 @<Feed the preamble for the superlative phrase into the lexer@> =
 	TEMPORARY_TEXT(TEMP)

@@ -1280,7 +1280,7 @@ void LiteralPatterns::define_named_phrases(void) {
 					@<Compile the printing phrase for this and perhaps subsequent LPs@>;
 		}
 	}
-	RuleSubtrees::register_recently_lexed_phrases();
+	ImperativeSubtrees::accept_all();
 }
 
 @ These text substitutions correspond exactly neither to the LPs nor to the
@@ -1333,7 +1333,7 @@ void LiteralPatterns::define_packing_phrases(literal_pattern *lp, kind *K) {
 	Kinds::Textual::write(TEMP, K);
 	@<Define phrases to convert from a packed value to individual parts@>;
 	@<Define a phrase to convert from numerical parts to a packed value@>;
-	RuleSubtrees::register_recently_lexed_phrases();
+	ImperativeSubtrees::accept_all();
 	DISCARD_TEXT(TEMP)
 }
 

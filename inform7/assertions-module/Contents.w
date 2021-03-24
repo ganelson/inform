@@ -17,6 +17,7 @@ Chapter 2: Declarations
 	Anaphoric References
 	Classifying Sentences
 	Property Sentences
+	Imperative Subtrees
 
 Chapter 3: Requests
 "Sentences, often imperative, which have special meanings."

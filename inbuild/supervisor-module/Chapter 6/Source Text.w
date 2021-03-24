@@ -160,19 +160,19 @@ Inform users: it increases output to the debugging log.)
 @d NODE_METADATA_SETUP_SYNTAX_CALLBACK SourceText::node_metadata
 
 @e BIBLIOGRAPHIC_NT    /* For the initial title sentence */
-@e RULE_NT          /* "Instead of taking something, ..." */
+@e IMPERATIVE_NT       /* "Instead of taking something, ..." */
 @e INFORM6CODE_NT      /* "Include (- ... -) */
 @e TABLE_NT            /* "Table 1 - Counties of England" */
 @e EQUATION_NT         /* "Equation 2 - Newton's Second Law" */
 @e TRACE_NT            /* A sentence consisting of an asterisk and optional quoted text */
 
-@d list_node_type RULE_NT
+@d list_node_type IMPERATIVE_NT
 @d list_entry_node_type UNKNOWN_NT
 
 =
 void SourceText::node_metadata(void) {
 	NodeType::new(BIBLIOGRAPHIC_NT, I"BIBLIOGRAPHIC_NT",     0, 0,     L2_NCAT, 0);
-	NodeType::new(RULE_NT, I"RULE_NT",                       0, INFTY, L2_NCAT, 0);
+	NodeType::new(IMPERATIVE_NT, I"IMPERATIVE_NT",           0, INFTY, L2_NCAT, 0);
 	NodeType::new(INFORM6CODE_NT, I"INFORM6CODE_NT",         0, 0,     L2_NCAT, 0);
 	NodeType::new(TABLE_NT, I"TABLE_NT",                     0, 0,     L2_NCAT, TABBED_NFLAG);
 	NodeType::new(EQUATION_NT, I"EQUATION_NT",               0, 0,     L2_NCAT, 0);

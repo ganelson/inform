@@ -311,7 +311,7 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 		sc->allocation_id, end);
 	Feeds::feed_text_expanding_strings(i6_code);
 	Sentences::make_node(Task::syntax_tree(), Feeds::end(id), '.');
-	RuleSubtrees::register_recently_lexed_phrases();
+	ImperativeSubtrees::accept_all();
 	DISCARD_TEXT(i6_code)
 
 @h Anchors.

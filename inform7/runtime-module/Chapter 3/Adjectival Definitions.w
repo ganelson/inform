@@ -96,7 +96,7 @@ the doubled use of colons is unfortunate.)
 
 =
 void Phrases::Adjectives::look_for_headers(parse_node *p) {
-	if (Node::get_type(p) == RULE_NT)
+	if (Node::get_type(p) == IMPERATIVE_NT)
 		if (<definition-header>(Node::get_text(p))) {
 			compilation_unit *cm = CompilationUnits::current();
 			CompilationUnits::set_current(p);
@@ -125,7 +125,7 @@ is defined by routine or not.
 
 @<Futz with the parse tree, trying right not down@> =
 	if ((p->next == NULL) ||
-		(Node::get_type(p->next) != RULE_NT)) {
+		(Node::get_type(p->next) != IMPERATIVE_NT)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"don't leave me in suspense",
 			"write a definition after 'Definition:'!");

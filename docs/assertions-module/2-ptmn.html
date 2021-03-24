@@ -208,7 +208,7 @@ organisation, and are not directly functional in themselves.
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDHERE_NT:</span><span class="plain-syntax">   </span><a href="2-ar.html#SP2" class="function-link"><span class="function-syntax">Anaphora::new_discussion</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">                           </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">near_start_of_extension</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">RULE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph">Pass through a RULE node</span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMPERATIVE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph">Pass through an IMPERATIVE node</span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SENTENCE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_2" class="named-paragraph-link"><span class="named-paragraph">Pass through a SENTENCE node</span><span class="named-paragraph-number">3.1.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRACE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_5" class="named-paragraph-link"><span class="named-paragraph">Pass through a TRACE node</span><span class="named-paragraph-number">3.1.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
@@ -234,19 +234,19 @@ organisation, and are not directly functional in themselves.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ptmn.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b>This is a little convoluted. The <a href="../linguistics-module/index.html" class="internal">linguistics</a> module turns sentences in
-rule form into a <span class="extract"><span class="extract-syntax">RULE_NT</span></span> node followed by subsequent <span class="extract"><span class="extract-syntax">INVOCATION_NT</span></span> nodes,
-and the first call here makes them into a neat subtree. After that, we look
-out for adjectives defined by phrases, and for phrases with names, since
-both will affect how we read sentences in passes 1 and 2.
+<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b>This is a little convoluted: see <a href="2-is.html" class="internal">Imperative Subtrees</a> for how
+"acceptance" tidies up the nodes in the syntax tree corresponding to a block
+of imperative code. After that, we look out for adjectives defined by phrases,
+and for phrases with names, since both will affect how we read sentences in
+passes 1 and 2.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Pass through a RULE node</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Pass through an IMPERATIVE node</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">SyntaxTree::traverse_run</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">RuleSubtrees::demote_command_nodes</span><span class="plain-syntax">, </span><span class="identifier-syntax">RULE_NT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">SyntaxTree::traverse_run</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><a href="2-is.html#SP1" class="function-link"><span class="function-syntax">ImperativeSubtrees::accept</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">IMPERATIVE_NT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Phrases::Adjectives::look_for_headers</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Phrases::Usage::predeclare_name_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
@@ -390,7 +390,7 @@ followed by double-quoted text is a note for the telemetry file.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-bv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-bv.html">bv</a></li><li class="progresscurrent">ptmn</li><li class="progresssection"><a href="2-ar.html">ar</a></li><li class="progresssection"><a href="2-cs.html">cs</a></li><li class="progresssection"><a href="2-ps.html">ps</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-tc.html">5</a></li><li class="progresschapter"><a href="6-kpr.html">6</a></li><li class="progressnext"><a href="2-ar.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-bv.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-bv.html">bv</a></li><li class="progresscurrent">ptmn</li><li class="progresssection"><a href="2-ar.html">ar</a></li><li class="progresssection"><a href="2-cs.html">cs</a></li><li class="progresssection"><a href="2-ps.html">ps</a></li><li class="progresssection"><a href="2-is.html">is</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-tc.html">5</a></li><li class="progresschapter"><a href="6-kpr.html">6</a></li><li class="progressnext"><a href="2-ar.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

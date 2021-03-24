@@ -41,7 +41,7 @@ code below.
 
 =
 typedef struct phrase {
-	struct parse_node *declaration_node; /* |RULE_NT| node where declared */
+	struct parse_node *declaration_node; /* |IMPERATIVE_NT| node where declared */
 	int inline_wn; /* word number of inline I6 definition, or |-1| if not inline */
 	struct inter_schema *inter_head_defn; /* inline definition translated to inter, if possible */
 	struct inter_schema *inter_tail_defn; /* inline definition translated to inter, if possible */
@@ -50,7 +50,6 @@ typedef struct phrase {
 	struct wording ph_documentation_symbol; /* cross-reference with documentation */
 	struct compilation_unit *owning_module;
 	struct package_request *requests_package;
-//	struct package_request *rule_package;
 
 	struct ph_type_data type_data;
 	struct ph_usage_data usage_data;
@@ -83,8 +82,8 @@ invocation which is given as verbatim I6.
 
 =
 void Phrases::create_from_preamble(parse_node *p) {
-	if ((p == NULL) || (Node::get_type(p) != RULE_NT))
-		internal_error("a phrase preamble should be at a RULE_NT node");
+	if ((p == NULL) || (Node::get_type(p) != IMPERATIVE_NT))
+		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
 	int inline_wn = -1; 		/* the word number of an inline I6 definition if any */
 	int mor = DONT_KNOW_MOR;	/* and its manner of return */
 	wording OW = EMPTY_WORDING;	/* the text of the phrase options, if any */

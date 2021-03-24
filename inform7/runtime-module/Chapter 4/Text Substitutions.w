@@ -326,14 +326,14 @@ a request for a new text substitution to be compiled later...
 		Produce::up(Emit::tree());
 	}
 
-	parse_node *ts_code_block = Node::new(RULE_NT);
+	parse_node *ts_code_block = Node::new(IMPERATIVE_NT);
 	Node::set_unit(ts_code_block, ts->belongs_to_module);
 	compilation_unit *cm = CompilationUnits::current();
 	CompilationUnits::set_current_to(ts->belongs_to_module);
-	ts_code_block->down = Node::new(INVOCATION_LIST_NT);
-	Node::set_text(ts_code_block->down, ts->unsubstituted_text);
-	Annotations::write_int(ts_code_block->down, from_text_substitution_ANNOT, TRUE);
-	RuleSubtrees::parse_routine_structure(ts_code_block);
+	ts_code_block->next = Node::new(UNKNOWN_NT);
+	Node::set_text(ts_code_block->next, ts->unsubstituted_text);
+	Annotations::write_int(ts_code_block->next, from_text_substitution_ANNOT, TRUE);
+	ImperativeSubtrees::accept(ts_code_block);
 
 	Routines::Compile::code_block_outer(0, ts_code_block->down);
 

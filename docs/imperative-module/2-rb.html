@@ -167,7 +167,7 @@ the rulebook; instead, the booking is marked for automatic placement later on.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuleBookings::make_automatic_placements</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">RuleBookings::make_automatic_placements</span></span>:<br/>Construction Sequence - <a href="3-cs.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RuleBookings::make_automatic_placements</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">RuleBookings::make_automatic_placements</span></span>:<br/>Construction Sequence - <a href="3-cs.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">booking</span><span class="plain-syntax"> *</span><span class="identifier-syntax">br</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">br</span><span class="plain-syntax">, </span><span class="reserved-syntax">booking</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">br</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">place_automatically</span><span class="plain-syntax">) {</span>
@@ -189,6 +189,7 @@ the rulebook; instead, the booking is marked for automatic placement later on.
 <span class="plain-syntax">                </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Inter-defined rules cannot be automatically placed"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">RTRules::compile_NUMBER_RULEBOOKS_CREATED</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Specificity of bookings. </b>This <span class="extract"><span class="extract-syntax">strcmp</span></span>-like function is intended to be used in sorting algorithms,

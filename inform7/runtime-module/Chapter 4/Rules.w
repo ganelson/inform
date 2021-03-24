@@ -620,6 +620,15 @@ action_name *RTRules::br_required_action(booking *br) {
 @
 
 =
+void RTRules::compile_NUMBER_RULEBOOKS_CREATED(void) {
+	inter_name *iname = Hierarchy::find(NUMBER_RULEBOOKS_CREATED_HL);
+	Emit::named_numeric_constant(iname, (inter_ti) NUMBER_CREATED(rulebook));
+	Hierarchy::make_available(Emit::tree(), iname);
+}
+
+@
+
+=
 typedef struct rulebook_compilation_data {
 	struct inter_name *stv_creator_iname;
 	struct package_request *rb_package;
