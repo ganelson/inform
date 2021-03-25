@@ -116,7 +116,7 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 	}
 
 @<Parse for the PHUD in fine mode@> =
-	phud = Phrases::Usage::new(Node::get_text(p), FALSE, id);
+	phud = Phrases::Usage::new(Node::get_text(p), id);
 
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
 	wording XW = Phrases::Usage::get_preamble_text(&phud);
@@ -154,40 +154,7 @@ inline definitions.
 	phrcd = Phrases::Context::new();
 
 @<Tell other parts of Inform about this new phrase@> =
-	if (id->family == TO_PHRASE_EFF_family) {
-		if (phud.to_begin) new_ph->to_begin = TRUE;
-		Routines::ToPhrases::new(new_ph);
-	}
-	if (id->family == DEFINITIONAL_PHRASE_EFF_family) {
-		@<Give this phrase a local variable for the subject of the definition@>;
-	}
-	if (id->family == RULE_IN_RULEBOOK_EFF_family) {
-		Rules::request_automatic_placement(
-			Phrases::Usage::to_rule(&(new_ph->usage_data), id));
-		new_ph->compile_with_run_time_debugging = TRUE;
-	}
-	if (id->family == RULE_NOT_IN_RULEBOOK_EFF_family) {
-		Phrases::Usage::to_rule(&(new_ph->usage_data), id);
-		new_ph->compile_with_run_time_debugging = TRUE;
-	}
-
-@ If a phrase defines an adjective, like so:
-
->> Definition: A container is capacious if: ...
-
-we need to make the pronoun "it" a local variable of kind "container" in the
-stack frame used to compile the "..." part. If it uses a calling, like so:
-
->> Definition: A container (called the sack) is capacious if: ...
-
-then we also want the name "sack" to refer to this. Here's where we take care
-of it:
-
-@<Give this phrase a local variable for the subject of the definition@> =
-	wording CW = EMPTY_WORDING;
-	kind *K = NULL;
-	Phrases::Phrasal::define_adjective_by_phrase(p, new_ph, &CW, &K);
-	LocalVariables::add_pronoun(&(new_ph->stack_frame), CW, K);
+	ImperativeDefinitions::new_phrase(id, new_ph);
 
 @<Create the phrase structure@> =
 	wording XW = Phrases::Usage::get_preamble_text(&phud);

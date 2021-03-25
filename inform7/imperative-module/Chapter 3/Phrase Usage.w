@@ -107,38 +107,23 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 
 =
 <rule-preamble> ::=
-	definition |                                              ==> { -, DEFINITIONAL_PHRASE_EFF_family }
-	this is the {... rule} |                                  ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
+	definition |                                              ==> { -, - }
+	this is the {... rule} |                                  ==> { -, -, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
 	this is the rule |                                        ==> { fail production }
 	this is ... rule |                                        ==> { fail production }
 	this is ... rules |                                       ==> { fail production }
-	<event-rule-preamble> |                                   ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = R[1] }
+	<event-rule-preamble> |                                   ==> { -, -, <<event-time>> = R[1] }
 	to |                                                      ==> { fail production }
 	to ... ( called ... ) |                                   ==> { fail production }
-	{to ...} ( this is the {### function} inverse to ### ) |  ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
-	{to ...} ( this is the {### function} ) |                 ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
-	{to ...} ( this is ... ) |                                ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
-	to ... |                                                  ==> { -, TO_PHRASE_EFF_family, <<named>> = FALSE }
-	... ( this is the {... rule} ) |                          ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
+	{to ...} ( this is the {### function} inverse to ### ) |  ==> { -, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
+	{to ...} ( this is the {### function} ) |                 ==> { -, -, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
+	{to ...} ( this is ... ) |                                ==> { -, -, <<named>> = TRUE, <<written>> = FALSE }
+	to ... |                                                  ==> { -, -, <<named>> = FALSE }
+	... ( this is the {... rule} ) |                          ==> { -, -, <<named>> = TRUE, <<written>> = FALSE }
 	... ( this is the rule ) |                                ==> { fail production }
 	... ( this is ... rule ) |                                ==> { fail production }
 	... ( this is ... rules ) |                               ==> { fail production }
-	...                                                       ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = FALSE }
-
-@ As a safety measure, to avoid ambiguities, Inform only allows one phrase
-definition to begin with "now". It recognises such phrases as those whose
-preambles match:
-
-=
-<now-phrase-preamble> ::=
-	to now ...
-
-@ In basic mode (only), the To phrase "to begin" acts as something like
-|main| in a C-like language, so we need to take note of where it's defined:
-
-=
-<begin-phrase-preamble> ::=
-	to begin
+	...                                                       ==> { -, -, <<named>> = FALSE }
 
 @ Much later on, Inform returns to the definition. If the preamble matches
 either of the final two productions of <rule-preamble>, then we definitely
@@ -181,17 +166,17 @@ removing the possibility of "when" introducing rules of two different
 effects -- see below.)
 
 =
-int no_now_phrases = 0;
-
-ph_usage_data Phrases::Usage::new(wording W, int coarse_mode, imperative_defn *id) {
+ph_usage_data Phrases::Usage::new(wording W, imperative_defn *id) {
 	ph_usage_data phud;
 	@<Empty the PHUD@>;
 
+	if (id->family == TO_PHRASE_EFF_family) { ToPhraseFamily::phud(id, &phud); return phud; }
+
 	if (<rule-preamble>(W)) {
-		imperative_defn_family *family = <<rp>>;
-		if (family == TO_PHRASE_EFF_family) @<The preamble parses to a To phrase@>;
-		if (family == RULE_IN_RULEBOOK_EFF_family) @<The preamble parses to a rule with a specified rulebook@>;
-		if (family == RULE_NOT_IN_RULEBOOK_EFF_family) @<The preamble parses to a rule with no specified rulebook@>;
+		if (RuleFamily::is(id)) {
+			if (RuleFamily::not_in_rulebook(id)) @<The preamble parses to a rule with no specified rulebook@>
+			else @<The preamble parses to a rule with a specified rulebook@>;
+		}
 	}
 
 	return phud;
@@ -217,77 +202,13 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode, imperative_defn *i
 	phud.owning_rulebook_placement = MIDDLE_PLACEMENT;
 	phud.explicit_name_for_inverse = EMPTY_WORDING;
 
-@<The preamble parses to a To phrase@> =
-	phud.rule_preamble = W;
-
-	if (<<named>>) @<The preamble parses to a named To phrase@>;
-	if (<now-phrase-preamble>(W)) {
-		if (no_now_phrases++ == 1) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RedefinedNow),
-				"creating new variants on 'now' is not allowed",
-				"because 'now' plays a special role in the language. "
-				"It has a wide-ranging ability to make a condition "
-				"become immediately true. (To give it wider abilities, "
-				"the idea is to create new relations.)");
-		}
-	}
-	if (<begin-phrase-preamble>(W)) {
-		phud.to_begin = TRUE;
-	}
-
-@ When we parse a named phrase in coarse mode, we need to make sure that
-name is registered as a constant value; when we parse it again in fine
-mode, we can get that value back again if we look it up by name.
-
-@<The preamble parses to a named To phrase@> =
-	wording RW = GET_RW(<rule-preamble>, 1);
-	wording NW = GET_RW(<rule-preamble>, 2);
-
-	if (coarse_mode) {
-		if (<s-type-expression>(NW)) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseNameDuplicated),
-				"that name for this new phrase is not allowed",
-				"because it already has a meaning.");
-		}
-		phud.constant_phrase_holder = Phrases::Constants::parse(NW);
-		if (phud.constant_phrase_holder == NULL)
-			phud.constant_phrase_holder =
-				Phrases::Constants::create(NW, RW);
-	} else {
-		constant_phrase *cphr = Phrases::Constants::parse(NW);
-		if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
-			phrase *ph = Phrases::Constants::as_phrase(cphr);
-			if (ph) current_sentence = Phrases::declaration_node(ph);
-			Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
-			Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
-			Problems::issue_problem_segment(
-				"I can't allow %1, because the phrase it gives a name to "
-				"is generic, that is, it has a kind which is too vague. "
-				"That means there isn't any single phrase which '%2' "
-				"could refer to - there would have to be different versions "
-				"for every setting where it might be needed, and we can't "
-				"predict in advance which one '%2' might need to be.");
-			Problems::issue_problem_end();
-			LOG("CPHR failed at %d, %u\n", cphr->allocation_id, cphr->cphr_kind);
-		}
-		if (<<written>>) {
-			phud.explicit_name_used_in_maths = TRUE;
-			if (<<inverted>>) {
-				wording IW = GET_RW(<rule-preamble>, 3);
-				phud.explicit_name_for_inverse = Wordings::first_word(IW);
-			}
-		}
-		phud.constant_phrase_holder = cphr;
-	}
-	phud.rule_preamble = RW;
 
 @<The preamble parses to a rule with a specified rulebook@> =
 	if (<<named>>) {
 		W = GET_RW(<rule-preamble>, 1);
 		phud.explicit_name = GET_RW(<rule-preamble>, 2);
 	}
-	if (coarse_mode == FALSE) @<Parse the rulebook stem in fine mode@>;
+	@<Parse the rulebook stem in fine mode@>;
 
 @<The preamble parses to a rule with no specified rulebook@> =
 	if (<<event-time>> == NOT_AN_EVENT) {
@@ -588,12 +509,12 @@ int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
 ph_runtime_context_data Phrases::Usage::to_runtime_context_data(ph_usage_data *phud) {
 	ph_runtime_context_data phrcd = Phrases::Context::new();
 
-	if (phud->from->family == RULE_NOT_IN_RULEBOOK_EFF_family)
-		phrcd.permit_all_outcomes = TRUE;
-
-	if (phud->from->family == RULE_IN_RULEBOOK_EFF_family)
-		@<Finish work parsing the conditions for the rule to fire@>;
-
+	if (RuleFamily::is(phud->from)) {
+		if (RuleFamily::not_in_rulebook(phud->from))
+			phrcd.permit_all_outcomes = TRUE;
+		else
+			@<Finish work parsing the conditions for the rule to fire@>;
+	}
 	return phrcd;
 }
 

@@ -561,7 +561,10 @@ wording Phrases::TypeData::Textual::phtd_parse_return_data(ph_type_data *phtd, w
 			case TO_RANN:  mor = DECIDES_NOTHING_MOR; break;
 		}
 		if (mor >= 0) Phrases::TypeData::set_mor(phtd, mor, K);
-	} else internal_error("to phrase without to");
+	} else {
+		WRITE_TO(STDERR, "XW = %W\n", XW);
+		internal_error("to phrase without to");
+	}
 	if (Kinds::eq(phtd->return_kind, K_truth_state)) {
 		if (no_truth_state_returns++ > 0)
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TruthStateToDecide),

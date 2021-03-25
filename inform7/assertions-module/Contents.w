@@ -48,13 +48,20 @@ Chapter 4: Assertions
 	Assemblies
 	Implications
 
-Chapter 5: Other Gadgets
+Chapter 5: Imperative Code
+"What happens to preambles, colons, and blocks of imperative code."
+	Imperative Definitions
+	Adjectival Definition Family
+	To Phrase Family
+	Rule Family
+
+Chapter 6: Other Gadgets
 "Tables and equations do not look like sentences, but are also top-level."
 	Table Columns
 	Tables
 	Equations
 
-Chapter 6: Predicates
+Chapter 7: Predicates
 "Unary and then binary predicates for the calculus module to conjure with."
 	Kind Predicates Revisited
 	The Adjectival Predicates

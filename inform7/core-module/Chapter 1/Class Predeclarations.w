@@ -30,9 +30,11 @@ DECLARE_CLASS(compile_task_data)
 @e imperative_defn_family_CLASS
 @e implication_CLASS
 @e relation_guard_CLASS
+@e rule_family_data_CLASS
 @e table_CLASS
 @e table_column_CLASS
 @e table_contribution_CLASS
+@e to_family_data_CLASS
 @e use_option_CLASS
 
 =
@@ -48,9 +50,11 @@ DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(imperative_defn_family)
 DECLARE_CLASS(implication)
 DECLARE_CLASS(relation_guard)
+DECLARE_CLASS(rule_family_data)
 DECLARE_CLASS(table)
 DECLARE_CLASS(table_column)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
+DECLARE_CLASS(to_family_data)
 DECLARE_CLASS(use_option)
 
 @ //values// --
