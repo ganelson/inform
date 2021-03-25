@@ -17,6 +17,7 @@ typedef struct imperative_defn {
 
 typedef struct imperative_defn_family {
 	struct text_stream *family_name;
+	struct method_set *methods;
 	CLASS_DEFINITION
 } imperative_defn_family;
 
@@ -29,24 +30,201 @@ imperative_defn_family *RULE_IN_RULEBOOK_EFF_family = NULL; /* "Before taking a 
 imperative_defn_family *ImperativeDefinitions::new_family(text_stream *name) {
 	imperative_defn_family *family = CREATE(imperative_defn_family);
 	family->family_name = Str::duplicate(name);
+	family->methods = Methods::new_set();
 	return family;
 }
 
-void ImperativeDefinitions::create_families(void) {
-	AS_YET_UNKNOWN_EFF_family       = ImperativeDefinitions::new_family(I"AS_YET_UNKNOWN_EFF");
-	DEFINITIONAL_PHRASE_EFF_family  = ImperativeDefinitions::new_family(I"DEFINITIONAL_PHRASE_EFF");
-	RULE_NOT_IN_RULEBOOK_EFF_family = ImperativeDefinitions::new_family(I"RULE_NOT_IN_RULEBOOK_EFF");
-	TO_PHRASE_EFF_family            = ImperativeDefinitions::new_family(I"TO_PHRASE_EFF");
-	RULE_IN_RULEBOOK_EFF_family     = ImperativeDefinitions::new_family(I"RULE_IN_RULEBOOK_EFF");
+@ |CLAIM_IMP_DEFN_MTID| is for deciding from the syntax of a preamble whether
+this definition should belong to the family or not.
+
+@e CLAIM_IMP_DEFN_MTID
+
+=
+VOID_METHOD_TYPE(CLAIM_IMP_DEFN_MTID, imperative_defn_family *f, imperative_defn *id)
+
+void ImperativeDefinitions::identify(imperative_defn *id) {
+	imperative_defn_family *f;
+	LOOP_OVER(f, imperative_defn_family)
+		if (id->family == AS_YET_UNKNOWN_EFF_family)
+			VOID_METHOD_CALL(f, CLAIM_IMP_DEFN_MTID, id);
 }
 
+@
+
+=
+void ImperativeDefinitions::create_families(void) {
+	AS_YET_UNKNOWN_EFF_family       = ImperativeDefinitions::new_family(I"AS_YET_UNKNOWN_EFF");
+
+	DEFINITIONAL_PHRASE_EFF_family  = ImperativeDefinitions::new_family(I"DEFINITIONAL_PHRASE_EFF");
+	METHOD_ADD(DEFINITIONAL_PHRASE_EFF_family, CLAIM_IMP_DEFN_MTID, ImperativeDefinitions::Defn_claim);
+
+	RULE_NOT_IN_RULEBOOK_EFF_family = ImperativeDefinitions::new_family(I"RULE_NOT_IN_RULEBOOK_EFF");
+	METHOD_ADD(RULE_NOT_IN_RULEBOOK_EFF_family, CLAIM_IMP_DEFN_MTID, ImperativeDefinitions::RNIR_claim);
+
+	TO_PHRASE_EFF_family            = ImperativeDefinitions::new_family(I"TO_PHRASE_EFF");
+	METHOD_ADD(TO_PHRASE_EFF_family, CLAIM_IMP_DEFN_MTID, ImperativeDefinitions::To_claim);
+
+	RULE_IN_RULEBOOK_EFF_family     = ImperativeDefinitions::new_family(I"RULE_IN_RULEBOOK_EFF");
+	METHOD_ADD(RULE_IN_RULEBOOK_EFF_family, CLAIM_IMP_DEFN_MTID, ImperativeDefinitions::RIR_claim);
+}
+
+@ =
+<definition-preamble> ::=
+	definition                                                ==> { -, DEFINITIONAL_PHRASE_EFF_family }
+
+@ =
+void ImperativeDefinitions::Defn_claim(imperative_defn_family *self, imperative_defn *id) {
+	wording W = Node::get_text(id->at);
+	if (<definition-preamble>(W)) {
+		id->family = DEFINITIONAL_PHRASE_EFF_family;
+		if ((id->at->next) && (id->at->down == NULL) &&
+			(Node::get_type(id->at->next) == IMPERATIVE_NT)) {
+			ImperativeSubtrees::accept_body(id->at->next);
+			Node::set_type(id->at->next, DEFN_CONT_NT);
+		}
+		Phrases::Adjectives::look_for_headers(id->at);
+	}
+}
+
+@ =
+<rnir-preamble> ::=
+	this is the {... rule} |                                  ==> { TRUE, - }
+	this is the rule |                                        ==> @<Issue PM_NamelessRule problem@>
+	this is ... rule |                                        ==> @<Issue PM_UnarticledRule problem@>
+	this is ... rules |                                       ==> @<Issue PM_PluralisedRule problem@>
+	<event-rule-preamble>                                     ==> { FALSE, - }
+
+=
+void ImperativeDefinitions::RNIR_claim(imperative_defn_family *self, imperative_defn *id) {
+	wording W = Node::get_text(id->at);
+	if (<rnir-preamble>(W)) {
+		id->family = RULE_NOT_IN_RULEBOOK_EFF_family;
+		if (<<r>>) {
+			wording RW = GET_RW(<rnir-preamble>, 1);
+			if (Rules::vet_name(RW)) Rules::obtain(RW, TRUE);
+		}
+	}
+}
+
+@ =
+<to-phrase-preamble> ::=
+	to |                                                      ==> @<Issue PM_BareTo problem@>
+	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
+	{to ...} ( this is the {### function} inverse to ### ) |  ==> { TRUE, -, <<written>> = TRUE, <<inverted>> = TRUE }
+	{to ...} ( this is the {### function} ) |                 ==> { TRUE, -, <<written>> = TRUE, <<inverted>> = FALSE }
+	{to ...} ( this is ... ) |                                ==> { TRUE, -, <<written>> = FALSE }
+	to ...                                                    ==> { FALSE, - }
+
+@<Issue PM_BareTo problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BareTo),
+		"'to' what? No name is given",
+		"which means that this would not define a new phrase.");
+	==> { FALSE, - };
+
+@<Issue PM_DontCallPhrasesWithCalled problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DontCallPhrasesWithCalled),
+		"phrases aren't named using 'called'",
+		"and instead use 'this is...'. For example, 'To salute (called saluting)' "
+		"isn't allowed, but 'To salute (this is saluting)' is.");
+	==> { FALSE, - };
+
+@ =
+void ImperativeDefinitions::To_claim(imperative_defn_family *self, imperative_defn *id) {
+	wording W = Node::get_text(id->at);
+	if (<to-phrase-preamble>(W)) {
+		id->family = TO_PHRASE_EFF_family;
+		if (<<r>>) {
+			wording RW = GET_RW(<to-phrase-preamble>, 2);
+			if (<s-type-expression>(RW))
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseNameDuplicated),
+					"that name for this new phrase is not allowed",
+					"because it already has a meaning.");
+			if (Phrases::Constants::parse(RW) == NULL)
+				Phrases::Constants::create(RW, GET_RW(<to-phrase-preamble>, 1));
+		}
+	}
+}
+
+@ =
+<rir-preamble> ::=
+	... ( this is the {... rule} ) |                          ==> { TRUE, - }
+	... ( this is the rule ) |                                ==> @<Issue PM_NamelessRule problem@>
+	... ( this is ... rule ) |                                ==> @<Issue PM_UnarticledRule problem@>
+	... ( this is ... rules ) |                               ==> @<Issue PM_PluralisedRule problem@>
+	...                                                       ==> { FALSE, - }
+
+@<Issue PM_NamelessRule problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
+		"there are many rules in Inform",
+		"so you need to give a name: 'this is the abolish dancing rule', say, "
+		"not just 'this is the rule'.");
+	==> { FALSE, - }
+
+@<Issue PM_UnarticledRule problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnarticledRule),
+		"a rule must be given a definite name",
+		"which begins with 'the', just to emphasise that it is the only one "
+		"with this name: 'this is the promote dancing rule', say, not just "
+		"'this is promote dancing rule'.");
+	==> { FALSE, - }
+
+@<Issue PM_PluralisedRule problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PluralisedRule),
+		"a rule must be given a definite name ending in 'rule' not 'rules'",
+		"since the plural is only used for rulebooks, which can of course "
+		"contain many rules at once.");
+	==> { FALSE, - }
+
+@ =
+void ImperativeDefinitions::RIR_claim(imperative_defn_family *self, imperative_defn *id) {
+	wording W = Node::get_text(id->at);
+	if (<rir-preamble>(W)) {
+		id->family = RULE_IN_RULEBOOK_EFF_family;
+		if (<<r>>) {
+			wording RW = GET_RW(<rir-preamble>, 2);
+			if (Rules::vet_name(RW)) Rules::obtain(RW, TRUE);
+		}
+	}
+}
+
+@
+
+=
+imperative_defn *ImperativeDefinitions::make_imperative_definition(parse_node *p) {
+	imperative_defn *id = CREATE(imperative_defn);
+	id->at = p;
+	id->defines = NULL;
+	id->family = AS_YET_UNKNOWN_EFF_family;
+	current_sentence = p;
+	ImperativeDefinitions::identify(id);
+	return id;
+}
+
+@ Here we look at the preamble for a rule name: if we find it, we declare this
+as a rule.
+
+=
+<rule-preamble-name> ::=
+	{to ...} ( this is the {### function} inverse to ### ) |  ==> { 2, - }
+	{to ...} ( this is the {### function} ) |                 ==> { 2, - }
+	{to ...} ( this is ... ) |                                ==> { 2, - }
+	this is the {... rule} |        ==> { -1, - }
+	... ( this is the {... rule} )  ==> { -2, - }
+
+@ =
 void ImperativeDefinitions::find_phrases_and_rules(void) {
 	int initial_problem_count = problem_count;
-	int progress_target = 0, progress_made = 0;
-	SyntaxTree::traverse_intp(Task::syntax_tree(), ImperativeDefinitions::visit_to_count,
-		&progress_target);
-	SyntaxTree::traverse_intp_intp(Task::syntax_tree(), ImperativeDefinitions::visit_to_create,
-		&progress_target, &progress_made);
+
+	int total = NUMBER_CREATED(imperative_defn), created = 0;
+	imperative_defn *id;
+	LOOP_OVER(id, imperative_defn) {
+		created++;
+		if ((created % 10) == 0)
+			ProgressBar::update(3,
+				((float) (created))/((float) (total)));
+		current_sentence = id->at;			
+		Phrases::create_from_preamble(id);
+	}
 	if (initial_problem_count < problem_count) return;
 
 	Routines::ToPhrases::register_all();
@@ -66,26 +244,6 @@ void ImperativeDefinitions::find_phrases_and_rules(void) {
 	if (initial_problem_count < problem_count) return;
 
 	SyntaxTree::traverse(Task::syntax_tree(), ImperativeDefinitions::visit_to_parse_placements);
-}
-
-void ImperativeDefinitions::visit_to_count(parse_node *p, int *progress_target) {
-	(*progress_target)++;
-}
-
-void ImperativeDefinitions::visit_to_create(parse_node *p, int *progress_target, int *progress_made) {
-	(*progress_made)++;
-	if ((*progress_made) % 10 == 0)
-		ProgressBar::update(3,
-			((float) (*progress_made))/((float) (*progress_target)));
-
-	if (Node::get_type(p) == IMPERATIVE_NT) {
-		imperative_defn *id = CREATE(imperative_defn);
-		id->at = p;
-		id->defines = NULL;
-		id->family = AS_YET_UNKNOWN_EFF_family;
-		if (<rule-preamble>(Node::get_text(id->at))) id->family = <<rp>>;
-		Phrases::create_from_preamble(id);
-	}
 }
 
 @

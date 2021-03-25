@@ -1,15 +1,16 @@
-Inform 7 build 6M33 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 110 words long.
-I've also read Standard Rules by Graham Nelson, which is 42506 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_BadImplicationDomain
-  >--> You wrote 'Definition' (source text, line 3): but that's an implication
-    where the condition to qualify is not one that I can determine in advance
-    of the start of play, since it involves more than simple either/or
-    properties plus a kind. (For example, adjectives like 'adjacent' or
-    'visible' here are too difficult to determine.)
+  >--> You wrote 'A thing is uncolored if it is not colored' (source text, line 3):
+    but that's an implication where the condition to qualify is not one that I
+    can determine in advance of the start of play, since it involves more than
+    simple either/or properties plus a kind. (For example, adjectives like
+    'adjacent' or 'visible' here are too difficult to determine.)
 Problem__ PM_BadImplicationDomain
-  >--> You wrote 'Definition' (source text, line 2): again, that's an
-    implication where the condition to qualify is not one that I can determine
-    in advance of the start of play.
-Inform 7 has finished: 20 centiseconds used.
+  >--> You wrote 'A thing is colored if it provides the property color' (source
+    text, line 2): again, that's an implication where the condition to qualify
+    is not one that I can determine in advance of the start of play.
+Inform 7 has finished.

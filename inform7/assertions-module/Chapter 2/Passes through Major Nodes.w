@@ -117,6 +117,8 @@ organisation, and are not directly functional in themselves.
 			               global_pass_state.near_start_of_extension = 0; break;
 
 		case IMPERATIVE_NT: @<Pass through an IMPERATIVE node@>; break;
+		case DEFN_CONT_NT: break;
+
 		case SENTENCE_NT: @<Pass through a SENTENCE node@>; break;
 		case TRACE_NT: @<Pass through a TRACE node@>; break;
 
@@ -143,16 +145,11 @@ organisation, and are not directly functional in themselves.
 
 @ This is a little convoluted: see //Imperative Subtrees// for how
 "acceptance" tidies up the nodes in the syntax tree corresponding to a block
-of imperative code. After that, we look out for adjectives defined by phrases,
-and for phrases with names, since both will affect how we read sentences in
-passes 1 and 2.
+of imperative code.
 
 @<Pass through an IMPERATIVE node@> =
-	if (global_pass_state.pass == 0) {
+	if (global_pass_state.pass == 0)
 		SyntaxTree::traverse_run(p, ImperativeSubtrees::accept, IMPERATIVE_NT);
-		Phrases::Adjectives::look_for_headers(p);
-		Phrases::Usage::predeclare_name_in(p);
-	}
 
 @ |SENTENCE_NT| nodes are by far the most varied and difficult. In the pre-pass,
 we call //Classifying::sentence// to have them diagrammed, which determines

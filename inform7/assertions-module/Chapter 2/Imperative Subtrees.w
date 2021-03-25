@@ -24,18 +24,32 @@ void ImperativeSubtrees::accept_all(void) {
 }
 
 void ImperativeSubtrees::accept(parse_node *p) {
+	ImperativeSubtrees::accept_inner(p, TRUE);
+}
+void ImperativeSubtrees::accept_body(parse_node *p) {
+	ImperativeSubtrees::accept_inner(p, FALSE);
+}
+
+void ImperativeSubtrees::accept_inner(parse_node *p, int accept_header) {
 	if ((Node::get_type(p) == IMPERATIVE_NT) && (p->down == NULL)) {
+		if (Node::get_impdef(p)) return;
+		parse_node *header = p;
 		parse_node *end_def = p;
 		while ((end_def->next) && (Node::get_type(end_def->next) == UNKNOWN_NT))
 			end_def = end_def->next;
-		if (p == end_def) return; /* |IMPERATIVE_NT| not followed by any |UNKNOWN_NT|s */
-		/* splice so that |p->next| to |end_def| become the children of |p|: */
-		p->down = p->next;
-		p->next = end_def->next;
-		end_def->next = NULL;
-		for (parse_node *inv_p = p->down; inv_p; inv_p = inv_p->next)
-			Node::set_type(inv_p, INVOCATION_LIST_NT);
-		@<Parse the structure of the code block@>;
+		if (header != end_def) {
+			/* splice so that |p->next| to |end_def| become the children of |p|: */
+			p->down = p->next;
+			p->next = end_def->next;
+			end_def->next = NULL;
+			for (parse_node *inv_p = p->down; inv_p; inv_p = inv_p->next)
+				Node::set_type(inv_p, INVOCATION_LIST_NT);
+			@<Parse the structure of the code block@>;
+		}
+		/* worry about the preamble in the node p */
+		if (accept_header)
+			Node::set_impdef(header,
+				ImperativeDefinitions::make_imperative_definition(header));
 	}
 }
 

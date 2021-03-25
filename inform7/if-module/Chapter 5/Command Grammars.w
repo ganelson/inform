@@ -508,7 +508,6 @@ matches the single term of the determination type of each CGL in the list.
 	int first_flag = TRUE;
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
 		parse_node *spec_of_line = DeterminationTypes::get_single_term(&(cgl->cgl_type));
-		LOG("CGL $g --> $P\n", cgl, spec_of_line);
 		if (first_flag) { /* initially no expectations: |spec_union| is meaningless */
 			spec_union = spec_of_line; /* so we set it to the first result */
 			first_flag = FALSE;

@@ -209,6 +209,8 @@ organisation, and are not directly functional in themselves.
 <span class="plain-syntax">                           </span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">near_start_of_extension</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMPERATIVE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph">Pass through an IMPERATIVE node</span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEFN_CONT_NT:</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SENTENCE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_2" class="named-paragraph-link"><span class="named-paragraph">Pass through a SENTENCE node</span><span class="named-paragraph-number">3.1.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRACE_NT:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-ptmn.html#SP3_1_5" class="named-paragraph-link"><span class="named-paragraph">Pass through a TRACE node</span><span class="named-paragraph-number">3.1.5</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 
@@ -236,20 +238,15 @@ organisation, and are not directly functional in themselves.
 <ul class="endnotetexts"><li>This code is used in <a href="2-ptmn.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1.  </b>This is a little convoluted: see <a href="2-is.html" class="internal">Imperative Subtrees</a> for how
 "acceptance" tidies up the nodes in the syntax tree corresponding to a block
-of imperative code. After that, we look out for adjectives defined by phrases,
-and for phrases with names, since both will affect how we read sentences in
-passes 1 and 2.
+of imperative code.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Pass through an IMPERATIVE node</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">global_pass_state</span><span class="plain-syntax">.</span><span class="element-syntax">pass</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">SyntaxTree::traverse_run</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><a href="2-is.html#SP1" class="function-link"><span class="function-syntax">ImperativeSubtrees::accept</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">IMPERATIVE_NT</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Phrases::Adjectives::look_for_headers</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Phrases::Usage::predeclare_name_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ptmn.html#SP3_1">&#167;3.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_1_2" class="paragraph-anchor"></a><b>&#167;3.1.2.  </b><span class="extract"><span class="extract-syntax">SENTENCE_NT</span></span> nodes are by far the most varied and difficult. In the pre-pass,

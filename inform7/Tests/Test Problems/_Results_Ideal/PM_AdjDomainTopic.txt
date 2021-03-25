@@ -1,16 +1,19 @@
-Inform 7 build 6M45 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 98 words long.
-I've also read Standard Rules by Graham Nelson, which is 42468 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7687 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32067 words long.
 Problem__ PM_AdjDomainTopic
-  >--> In 'Definition' (source text, line 14) you defined an adjective by 'a
+  >--> In 'a topic is legendary rather than mundane if it is a topic listed in
+    the Table of Legend' (source text, line 14) you defined an adjective by 'a
     topic is legendary rather than mundane if it is a topic listed in the Table
     of Legend' intending that it would apply to 'a topic': but this isn't
     allowed as the domain of a definition, because 'topic' doesn't behave the
     way other kinds of value do when it comes to making comparisons.
 Problem__ PM_AdjDomainTopic
-  >--> In 'Definition' (source text, line 14) you defined an adjective by 'a
+  >--> In 'a topic is legendary rather than mundane if it is a topic listed in
+    the Table of Legend' (source text, line 14) you defined an adjective by 'a
     topic is legendary rather than mundane if it is a topic listed in the Table
     of Legend' intending that it would apply to 'a topic': again, this isn't
     allowed as the domain of a definition.
-Inform 7 has finished: 76 centiseconds used.
+Inform 7 has finished.

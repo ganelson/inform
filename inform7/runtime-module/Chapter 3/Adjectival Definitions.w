@@ -100,8 +100,9 @@ void Phrases::Adjectives::look_for_headers(parse_node *p) {
 		if (<definition-header>(Node::get_text(p))) {
 			compilation_unit *cm = CompilationUnits::current();
 			CompilationUnits::set_current(p);
-			parse_node *q = (p->down)?(p->down->down):NULL;
-			if (q == NULL) @<Futz with the parse tree, trying right not down@>;
+			parse_node *q = NULL;
+			if (Node::get_type(p->next) == DEFN_CONT_NT) q = p->next;
+			else q = (p->down)?(p->down->down):NULL;
 
 			wording DNW = EMPTY_WORDING; /* domain name */
 			wording CALLW = EMPTY_WORDING; /* calling */
@@ -119,19 +120,6 @@ void Phrases::Adjectives::look_for_headers(parse_node *p) {
 			CompilationUnits::set_current_to(cm);
 		}
 }
-
-@ The tree structure is slightly different according to whether the adjective
-is defined by routine or not.
-
-@<Futz with the parse tree, trying right not down@> =
-	if ((p->next == NULL) ||
-		(Node::get_type(p->next) != IMPERATIVE_NT)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(BelievedImpossible),
-			"don't leave me in suspense",
-			"write a definition after 'Definition:'!");
-		return;
-	}
-	q = p->next; p->next = q->next; p->down = q->down; q->next = NULL;
 
 @<Parse the Q-node as an adjective definition@> =
 	if (<adjective-definition>(Node::get_text(q))) {
@@ -168,10 +156,11 @@ is defined by routine or not.
 offer the new adjective around and see if anybody claims it.
 
 @<Register the resulting adjective@> =
+	current_sentence = q;
 	adjective_meaning *am = AdjectiveMeanings::claim_definition(q, the_format, AW, DNW, CONW, CALLW);
 	if (am == NULL) internal_error("unclaimed adjective definition");
-
 	if (Wordings::nonempty(NW)) {
+		current_sentence = q;
 		adjective *adj = Adjectives::declare(NW, NULL);
 		adjective_meaning *neg = AdjectiveMeanings::negate(am);
 		AdjectiveAmbiguity::add_meaning_to_adjective(neg, adj);

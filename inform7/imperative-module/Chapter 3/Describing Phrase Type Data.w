@@ -380,7 +380,7 @@ void Phrases::TypeData::Textual::parse(ph_type_data *phtd, wording XW, wording *
 		}
 	}
 	phtd->registration_text = XW;
-	Phrases::TypeData::Textual::phtd_parse_word_sequence(phtd, XW);
+	Phrases::TypeData::Textual::phtd_parse_word_sequence(phtd);
 }
 
 @<Find the first comma outside of parentheses, if any exists@> =
@@ -762,10 +762,11 @@ behaviour have been stripped away, and what's left is the text which will
 form the word and token sequences:
 
 =
-void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wording W) {
+void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd) {
 	phtd->no_tokens = 0;
 	phtd->no_words = 0;
 
+	wording W = phtd->registration_text;
 	int i = Wordings::first_wn(W);
 	while (i <= Wordings::last_wn(W)) {
 		int word_to_add = 0; /* redundant assignment to keep |gcc| happy */
@@ -779,6 +780,7 @@ void Phrases::TypeData::Textual::phtd_parse_word_sequence(ph_type_data *phtd, wo
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseTooLong),
 				"this phrase has too many words",
 				"and needs to be simplified.");
+			phtd->registration_text = Wordings::up_to(W, i-1);
 			return;
 		}
 		phtd->word_sequence[phtd->no_words++] = word_to_add;

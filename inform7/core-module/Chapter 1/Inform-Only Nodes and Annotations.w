@@ -47,6 +47,8 @@ void CoreSyntax::create_node_types(void) {
 
 @
 
+@e DEFN_CONT_NT
+
 @e ALLOWED_NT                   /* "an animal is allowed to have a description" */
 @e EVERY_NT                     /* "every container" */
 @e ADJECTIVE_NT                 /* "open" */
@@ -54,11 +56,13 @@ void CoreSyntax::create_node_types(void) {
 @e CREATED_NT                   /* "a vehicle called Sarah Jane's car" */
 
 @<Create additional level 3 structural nodes@> =
+	NodeType::new(DEFN_CONT_NT, I"DEFN_CONT_NT",           0, INFTY, L2_NCAT, ASSERT_NFLAG);
+
 	NodeType::new(ALLOWED_NT, I"ALLOWED_NT",               1, 1,     L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(EVERY_NT, I"EVERY_NT",                   0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(ADJECTIVE_NT, I"ADJECTIVE_NT",           0, INFTY, L3_NCAT, ASSERT_NFLAG);
 	NodeType::new(PROPERTYCALLED_NT, I"PROPERTYCALLED_NT", 2, 2,     L3_NCAT, 0);
-	NodeType::new(CREATED_NT, I"CREATED_NT",               0, 0,     L3_NCAT, ASSERT_NFLAG);
+	NodeType::new(CREATED_NT, I"CREATED_NT",               0, 0,     L3_NCAT, 0);
 
 @
 
@@ -280,6 +284,7 @@ void CoreSyntax::grant_unit_permissions(void) {
 
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
+@e impdef_ANNOT /* |imperative_defn|: for blocks of imperative code */
 @e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
 @e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
 @e interpretation_of_subject_ANNOT /* |inference_subject|: subject, during passes */
@@ -287,10 +292,12 @@ void CoreSyntax::grant_unit_permissions(void) {
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
+DECLARE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 DECLARE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 DECLARE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
 @ =
+MAKE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 MAKE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
@@ -300,6 +307,8 @@ void CoreSyntax::declare_L2_annotations(void) {
 		classified_ANNOT, CoreSyntax::write_classified_ANNOT);
 	Annotations::declare_type(
 		clears_pronouns_ANNOT, CoreSyntax::write_clears_pronouns_ANNOT);
+	Annotations::declare_type(
+		impdef_ANNOT, CoreSyntax::write_impdef_ANNOT);
 	Annotations::declare_type(
 		implicit_in_creation_of_ANNOT, CoreSyntax::write_implicit_in_creation_of_ANNOT);
 	Annotations::declare_type(
@@ -318,6 +327,10 @@ void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 void CoreSyntax::write_clears_pronouns_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, clears_pronouns_ANNOT))
 		WRITE(" {clears pronouns}");
+}
+void CoreSyntax::write_impdef_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_impdef(p))
+		WRITE(" {imperative definition: %d}", Node::get_impdef(p)->allocation_id);
 }
 void CoreSyntax::write_implicit_in_creation_of_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_implicit_in_creation_of(p))
@@ -344,6 +357,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow(IMPERATIVE_NT, impdef_ANNOT);
 	Annotations::allow(IMPERATIVE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);

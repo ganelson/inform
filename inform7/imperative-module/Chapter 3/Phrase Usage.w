@@ -28,19 +28,6 @@ typedef struct ph_usage_data {
 	int owning_rulebook_placement; /* ...and with this placement value: see Rulebooks */
 } ph_usage_data;
 
-@h The mid-morning predeclarations.
-Recall that early in Inform's run, we make a coarse parsing of the preamble
-of each rule to look for a name: if we find it, we declare it as a rule;
-and in any event we throw away the PHUD produced. (We will make a better one
-just before noon.)
-
-=
-void Phrases::Usage::predeclare_name_in(parse_node *p) {
-	ph_usage_data phud = Phrases::Usage::new(Node::get_text(p), TRUE, NULL);
-	if (Wordings::nonempty(phud.explicit_name))
-		Rules::obtain(phud.explicit_name, TRUE);
-}
-
 @h The late-morning creations.
 A little later on, we've made a rule phrase, and it now has a proper PHUD.
 If the rule is an anonymous one, such as:
@@ -122,56 +109,21 @@ just enough from the wording to tell what sort of rule/phrase is to follow.
 <rule-preamble> ::=
 	definition |                                              ==> { -, DEFINITIONAL_PHRASE_EFF_family }
 	this is the {... rule} |                                  ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = NOT_AN_EVENT, <<written>> = FALSE }
-	this is the rule |                                        ==> @<Issue PM_NamelessRule problem@>
-	this is ... rule |                                        ==> @<Issue PM_UnarticledRule problem@>
-	this is ... rules |                                       ==> @<Issue PM_PluralisedRule problem@>
+	this is the rule |                                        ==> { fail production }
+	this is ... rule |                                        ==> { fail production }
+	this is ... rules |                                       ==> { fail production }
 	<event-rule-preamble> |                                   ==> { -, RULE_NOT_IN_RULEBOOK_EFF_family, <<event-time>> = R[1] }
-	to |                                                      ==> @<Issue PM_BareTo problem@>
-	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
+	to |                                                      ==> { fail production }
+	to ... ( called ... ) |                                   ==> { fail production }
 	{to ...} ( this is the {### function} inverse to ### ) |  ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = TRUE }
 	{to ...} ( this is the {### function} ) |                 ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = TRUE, <<inverted>> = FALSE }
 	{to ...} ( this is ... ) |                                ==> { -, TO_PHRASE_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
 	to ... |                                                  ==> { -, TO_PHRASE_EFF_family, <<named>> = FALSE }
 	... ( this is the {... rule} ) |                          ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = TRUE, <<written>> = FALSE }
-	... ( this is the rule ) |                                ==> @<Issue PM_NamelessRule problem@>
-	... ( this is ... rule ) |                                ==> @<Issue PM_UnarticledRule problem@>
-	... ( this is ... rules ) |                               ==> @<Issue PM_PluralisedRule problem@>
+	... ( this is the rule ) |                                ==> { fail production }
+	... ( this is ... rule ) |                                ==> { fail production }
+	... ( this is ... rules ) |                               ==> { fail production }
 	...                                                       ==> { -, RULE_IN_RULEBOOK_EFF_family, <<named>> = FALSE }
-
-@<Issue PM_NamelessRule problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
-		"there are many rules in Inform",
-		"so you need to give a name: 'this is the abolish dancing rule', say, "
-		"not just 'this is the rule'.");
-	==> { -, AS_YET_UNKNOWN_EFF_family };
-
-@<Issue PM_UnarticledRule problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnarticledRule),
-		"a rule must be given a definite name",
-		"which begins with 'the', just to emphasise that it is the only one "
-		"with this name: 'this is the promote dancing rule', say, not just "
-		"'this is promote dancing rule'.");
-	==> { -, AS_YET_UNKNOWN_EFF_family };
-
-@<Issue PM_PluralisedRule problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PluralisedRule),
-		"a rule must be given a definite name ending in 'rule' not 'rules'",
-		"since the plural is only used for rulebooks, which can of course "
-		"contain many rules at once.");
-	==> { -, AS_YET_UNKNOWN_EFF_family };
-
-@<Issue PM_BareTo problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BareTo),
-		"'to' what? No name is given",
-		"which means that this would not define a new phrase.");
-	==> { -, AS_YET_UNKNOWN_EFF_family };
-
-@<Issue PM_DontCallPhrasesWithCalled problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DontCallPhrasesWithCalled),
-		"phrases aren't named using 'called'",
-		"and instead use 'this is...'. For example, 'To salute (called saluting)' "
-		"isn't allowed, but 'To salute (this is saluting)' is.");
-	==> { -, AS_YET_UNKNOWN_EFF_family };
 
 @ As a safety measure, to avoid ambiguities, Inform only allows one phrase
 definition to begin with "now". It recognises such phrases as those whose
@@ -270,7 +222,7 @@ ph_usage_data Phrases::Usage::new(wording W, int coarse_mode, imperative_defn *i
 
 	if (<<named>>) @<The preamble parses to a named To phrase@>;
 	if (<now-phrase-preamble>(W)) {
-		if ((coarse_mode) && (no_now_phrases++ == 1)) {
+		if (no_now_phrases++ == 1) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RedefinedNow),
 				"creating new variants on 'now' is not allowed",
 				"because 'now' plays a special role in the language. "

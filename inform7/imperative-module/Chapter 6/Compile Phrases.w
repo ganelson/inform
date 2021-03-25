@@ -26,14 +26,11 @@ should always be supplied for "To..." phrases, but left null for rules.
 void Routines::Compile::routine(phrase *ph,
 	stacked_variable_owner_list *legible, to_phrase_request *req,
 	rule *R) {
+	parse_node *code_at = ph->from->at;
+	if (Node::is(code_at->next, DEFN_CONT_NT)) code_at = code_at->next;
+	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", code_at);
 
-	if ((ph->from->at == NULL) ||
-		(Node::get_type(ph->from->at) != IMPERATIVE_NT) ||
-		(Wordings::empty(Node::get_text(ph->from->at))))
-		internal_error("tried to compile phrase with bad ROUTINE node");
-	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", ph->from->at);
-
-	CompilationUnits::set_current(ph->from->at);
+	CompilationUnits::set_current(code_at);
 	phrase_being_compiled = ph;
 	@<Set up the stack frame for this compilation request@>;
 
@@ -74,14 +71,14 @@ void Routines::Compile::routine(phrase *ph,
 	PreformCache::warn_of_changes(); /* that local variables may have changed */
 
 @<Compile the body of the routine@> =
-	current_sentence = ph->from->at;
+	current_sentence = code_at;
 	if (Phrases::Context::compile_test_head(ph, R) == FALSE) {
-		if (ph->from->at) {
-			VerifyTree::verify_structure_from(ph->from->at);
-			Routines::Compile::code_block_outer(1, ph->from->at->down);
-			VerifyTree::verify_structure_from(ph->from->at);
+		if (code_at) {
+			VerifyTree::verify_structure_from(code_at);
+			Routines::Compile::code_block_outer(1, code_at->down);
+			VerifyTree::verify_structure_from(code_at);
 		}
-		current_sentence = ph->from->at;
+		current_sentence = code_at;
 		Phrases::Context::compile_test_tail(ph, R);
 
 		@<Compile a terminal return statement@>;
