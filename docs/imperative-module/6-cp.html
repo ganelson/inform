@@ -128,7 +128,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="3-tph.html#SP9" class="function-link"><span class="function-syntax">Routines::ToPhrases::comment_on_request</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="3-pu.html#SP9" class="function-link"><span class="function-syntax">Phrases::Usage::write_I6_comment_describing</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">usage_data</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ImperativeDefinitions::write_comment_describing</span><span class="plain-syntax">(</span><span class="identifier-syntax">ph</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cp.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set up the stack frame for this compilation request</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>

@@ -571,7 +571,7 @@ void Equations::eqn_declare_standard_symbols(void) {
 	}
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		wording W = Phrases::Usage::get_equation_form(&(ph->usage_data));
+		wording W = ToPhraseFamily::get_equation_form(ph->from);
 		if (Wordings::nonempty(W)) {
 			equation_symbol *ev = Equations::eqn_add_symbol(NULL, W, K_real_number, NULL);
 			ev->function_notated = ph;
@@ -1767,7 +1767,7 @@ must become
 		internal_error("not a function being applied");
 	}
 	phrase *f = fnode->leaf_symbol->function_notated;
-	phrase *finv = Phrases::Usage::get_equation_inverse(&(f->usage_data));
+	phrase *finv = ToPhraseFamily::inverse(f->from);
 	if (finv == NULL) return FALSE; /* no known inverse for this function */
 
 	equation_symbol *ev, *ev_inverse = NULL;

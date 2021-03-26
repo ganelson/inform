@@ -41,7 +41,6 @@ typedef struct phrase {
 	struct package_request *requests_package;
 
 	struct ph_type_data type_data;
-	struct ph_usage_data usage_data;
 	struct ph_runtime_context_data runtime_context_data;
 	struct ph_stack_frame stack_frame;
 	struct ph_options_data options_data;
@@ -83,7 +82,6 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 
 	ph_options_data phod;
 	ph_type_data phtd;
-	ph_usage_data phud;
 	ph_stack_frame phsf;
 	ph_runtime_context_data phrcd;
 
@@ -116,10 +114,10 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 	}
 
 @<Parse for the PHUD in fine mode@> =
-	phud = Phrases::Usage::new(Node::get_text(p), id);
+	;
 
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
-	wording XW = Phrases::Usage::get_preamble_text(&phud);
+	wording XW = ToPhraseFamily::get_prototype_text(id);
 	phtd = Phrases::TypeData::new();
 	if (inline_wn >= 0) Phrases::TypeData::make_inline(&phtd);
 	if (id->family == TO_PHRASE_EFF_family) {
@@ -157,8 +155,7 @@ inline definitions.
 	ImperativeDefinitions::new_phrase(id, new_ph);
 
 @<Create the phrase structure@> =
-	wording XW = Phrases::Usage::get_preamble_text(&phud);
-	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n$U", XW, &phud);
+	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n", id->log_text);
 
 	new_ph = CREATE(phrase);
 	new_ph->from = id;
@@ -167,7 +164,6 @@ inline definitions.
 	new_ph->runtime_context_data = phrcd;
 	new_ph->stack_frame = phsf;
 	new_ph->type_data = phtd;
-	new_ph->usage_data = phud;
 
 	new_ph->inline_wn = inline_wn;
 	new_ph->inter_head_defn = NULL;
@@ -251,7 +247,6 @@ That completes the process of creation. Here's how we log them:
 void Phrases::log(phrase *ph) {
 	if (ph == NULL) { LOG("RULE:NULL"); return; }
 	LOG("%n", Phrases::iname(ph));
-	Phrases::Usage::log_rule_name(&(ph->usage_data));
 }
 
 void Phrases::log_briefly(phrase *ph) {

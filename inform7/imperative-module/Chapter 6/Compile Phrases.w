@@ -49,7 +49,7 @@ void Routines::Compile::routine(phrase *ph,
 
 @<Compile some commentary about the routine to follow@> =
 	Routines::ToPhrases::comment_on_request(req);
-	Phrases::Usage::write_I6_comment_describing(&(ph->usage_data));
+	ImperativeDefinitions::write_comment_describing(ph->from);
 
 @<Set up the stack frame for this compilation request@> =
 	ph_stack_frame *phsf = &(ph->stack_frame);

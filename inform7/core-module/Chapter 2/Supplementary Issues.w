@@ -124,7 +124,7 @@ void StandardProblems::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_stream(2, definition);
-	wording XW = Phrases::Usage::get_preamble_text(&(ph->usage_data));
+	wording XW = ToPhraseFamily::get_prototype_text(ph->from);
 	Problems::quote_wording_as_source(3, XW);
 	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(

@@ -13,6 +13,7 @@ typedef struct imperative_defn {
 	struct general_pointer family_specific_data;
 	struct parse_node *at;
 	struct phrase *defines;
+	struct wording log_text;
 	CLASS_DEFINITION
 } imperative_defn;
 
@@ -46,8 +47,18 @@ void ImperativeDefinitions::identify(imperative_defn *id) {
 			VOID_METHOD_CALL(f, CLAIM_IMP_DEFN_MTID, id);
 }
 
-@ |NEW_PHRASE_IMP_DEFN_MTID| is for deciding from the syntax of a preamble whether
-this definition should belong to the family or not.
+@ |ASSESS_IMP_DEFN_MTID| is for parsing it in more detail, later on.
+
+@e ASSESS_IMP_DEFN_MTID
+
+=
+VOID_METHOD_TYPE(ASSESS_IMP_DEFN_MTID, imperative_defn_family *f, imperative_defn *id)
+
+void ImperativeDefinitions::assess(imperative_defn *id) {
+	VOID_METHOD_CALL(id->family, ASSESS_IMP_DEFN_MTID, id);
+}
+
+@ |NEW_PHRASE_IMP_DEFN_MTID| is for ...
 
 @e NEW_PHRASE_IMP_DEFN_MTID
 
@@ -56,6 +67,18 @@ VOID_METHOD_TYPE(NEW_PHRASE_IMP_DEFN_MTID, imperative_defn_family *f, imperative
 
 void ImperativeDefinitions::new_phrase(imperative_defn *id, phrase *new_ph) {
 	VOID_METHOD_CALL(id->family, NEW_PHRASE_IMP_DEFN_MTID, id, new_ph);
+}
+
+@ |TO_RCD_IMP_DEFN_MTID| is for deciding from the syntax of a preamble whether
+this definition should belong to the family or not.
+
+@e TO_RCD_IMP_DEFN_MTID
+
+=
+VOID_METHOD_TYPE(TO_RCD_IMP_DEFN_MTID, imperative_defn_family *f, imperative_defn *id, ph_runtime_context_data *rcd)
+
+void ImperativeDefinitions::to_rcd(imperative_defn *id, ph_runtime_context_data *rcd) {
+	VOID_METHOD_CALL(id->family, TO_RCD_IMP_DEFN_MTID, id, rcd);
 }
 
 @
@@ -88,6 +111,7 @@ imperative_defn *ImperativeDefinitions::make_imperative_definition(parse_node *p
 	id->defines = NULL;
 	id->family = AS_YET_UNKNOWN_EFF_family;
 	id->family_specific_data = NULL_GENERAL_POINTER;
+	id->log_text = Node::get_text(p);
 	current_sentence = p;
 	ImperativeDefinitions::identify(id);
 	return id;
@@ -105,6 +129,7 @@ void ImperativeDefinitions::find_phrases_and_rules(void) {
 			ProgressBar::update(3,
 				((float) (created))/((float) (total)));
 		current_sentence = id->at;			
+		ImperativeDefinitions::assess(id);
 		Phrases::create_from_preamble(id);
 	}
 	if (initial_problem_count < problem_count) return;
@@ -117,7 +142,7 @@ void ImperativeDefinitions::find_phrases_and_rules(void) {
 		current_sentence = ph->from->at;
 		Frames::make_current(&(ph->stack_frame));
 		ph->runtime_context_data =
-			Phrases::Usage::to_runtime_context_data(&(ph->usage_data));
+			ImperativeDefinitions::to_runtime_context_data(ph->from);
 		Frames::remove_current();
 	}
 	if (initial_problem_count < problem_count) return;
@@ -253,7 +278,7 @@ points", say). This is where we do it:
 	phrase *ph;
 	LOOP_OVER(ph, phrase)
 		if ((Phrases::TypeData::invoked_inline(ph)) &&
-			(Phrases::Usage::has_name_as_constant(&(ph->usage_data)))) {
+			(ToPhraseFamily::has_name_as_constant(ph->from))) {
 			current_sentence = Phrases::declaration_node(ph);
 			Problems::quote_source(1, current_sentence);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
@@ -320,4 +345,39 @@ void ImperativeDefinitions::compile_as_needed(void) {
 		if (Propositions::Deferred::compilation_coroutine() > 0)
 			repeat = TRUE;
 	}
+}
+
+@ In our compiled code, it's useful to label routines with I6 comments:
+
+=
+void ImperativeDefinitions::write_comment_describing(imperative_defn *id) {
+	TEMPORARY_TEXT(C)
+	WRITE_TO(C, "%~W:", id->log_text);
+	Produce::comment(Emit::tree(), C);
+	DISCARD_TEXT(C)
+}
+
+@ And similarly:
+
+=
+void ImperativeDefinitions::index_preamble(OUTPUT_STREAM, imperative_defn *id) {
+	WRITE("%+W", id->log_text);
+}
+
+@h How the PHUD translates into a PHRCD.
+Recall that in the early afternoon, the PHUD for a rule phrase is translated
+into a PHRCD, that is, a set of instructions about the circumstances for
+the rule to fire.
+
+As will be seen, about six-sevenths of the code is given over to choosing good
+problem messages when the PHUD is malformed -- these are some of the most
+seen problems in Inform. A couple of variables are needed just for that:
+
+=
+
+@ =
+ph_runtime_context_data ImperativeDefinitions::to_runtime_context_data(imperative_defn *id) {
+	ph_runtime_context_data phrcd = Phrases::Context::new();
+	ImperativeDefinitions::to_rcd(id, &phrcd);
+	return phrcd;
 }

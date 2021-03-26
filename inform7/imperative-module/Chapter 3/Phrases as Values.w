@@ -73,10 +73,10 @@ kind *Phrases::Constants::kind(constant_phrase *cphr) {
 phrase *Phrases::Constants::as_phrase(constant_phrase *cphr) {
 	if (cphr == NULL) internal_error("null cphr");
 	if (cphr->phrase_meant == NULL) {
-		phrase *ph;
-		LOOP_OVER(ph, phrase) {
-			if (ph->usage_data.constant_phrase_holder == cphr) {
-				cphr->phrase_meant = ph;
+		imperative_defn *id;
+		LOOP_OVER(id, imperative_defn) {
+			if (ToPhraseFamily::constant_phrase(id) == cphr) {
+				cphr->phrase_meant = id->defines;
 				break;
 			}
 		}

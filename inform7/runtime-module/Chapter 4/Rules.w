@@ -326,7 +326,7 @@ void RTRules::compile_comment(rule *R, int index, int from) {
 	Produce::comment(Emit::tree(), C);
 	DISCARD_TEXT(C)
 	if (R->defn_as_I7_source) {
-		Phrases::Usage::write_I6_comment_describing(&(R->defn_as_I7_source->defines->usage_data));
+		ImperativeDefinitions::write_comment_describing(R->defn_as_I7_source);
 	}
 }
 

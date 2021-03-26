@@ -27,7 +27,6 @@ premisses worked out, and are then collected together into rulebooks, before
 being compiled as a great mass of Inform 6 routines and arrays."
 	Introduction to Phrases
 	Phrases
-	Phrase Usage
 	Phrase Runtime Context Data
 	Phrase Type Data
 	Describing Phrase Type Data

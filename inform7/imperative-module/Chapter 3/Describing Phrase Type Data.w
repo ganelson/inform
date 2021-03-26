@@ -239,7 +239,7 @@ void Phrases::TypeData::Textual::write_index_representation(OUTPUT_STREAM, ph_ty
 		if (Kinds::Behaviour::definite(phtd->return_kind) == FALSE) WRITE("value");
 		else Kinds::Textual::write(OUT, phtd->return_kind);
 		WRITE("</i>");
-		wording W = Phrases::Usage::get_equation_form(&(ph->usage_data));
+		wording W = ToPhraseFamily::get_equation_form(ph->from);
 		if (Wordings::nonempty(W)) {
 			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>y</i>&nbsp;=&nbsp;<b>%+W</b>(<i>x</i>)", W);
 		}
@@ -286,7 +286,7 @@ of course.
 	}
 
 @<Present the equation form of the phrase, if it has one@> =
-	wording W = Phrases::Usage::get_equation_form(&(ph->usage_data));
+	wording W = ToPhraseFamily::get_equation_form(ph->from);
 	if (Wordings::nonempty(W)) {
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
@@ -296,13 +296,13 @@ of course.
 	}
 
 @<Present the name of the phrase regarded as a value, if it has one@> =
-	if (ph->usage_data.constant_phrase_holder) {
-		wording W = Nouns::nominative_singular(ph->usage_data.constant_phrase_holder->name);
+	wording CW = ToPhraseFamily::constant_name(ph->from);
+	if (Wordings::nonempty(CW)) {
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		WRITE("<b>Name:</b> ");
-		PasteButtons::paste_W(OUT, W);
-		WRITE("&nbsp;%+W", W);
+		PasteButtons::paste_W(OUT, CW);
+		WRITE("&nbsp;%+W", CW);
 	}
 
 @ "Say" phrases are never used functionally and don't have interesting kinds,

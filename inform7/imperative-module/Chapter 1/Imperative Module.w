@@ -25,7 +25,6 @@ COMPILE_WRITER(parse_node *, Invocations::log)
 COMPILE_WRITER(ph_type_data *, Phrases::TypeData::Textual::log)
 COMPILE_WRITER(local_variable *, LocalVariables::log)
 COMPILE_WRITER(phrase *, Phrases::log)
-COMPILE_WRITER(ph_usage_data *, Phrases::Usage::log)
 
 void ImperativeModule::start(void) {
 	Writers::register_writer('L', &LocalVariables::writer);
@@ -34,7 +33,6 @@ void ImperativeModule::start(void) {
 	REGISTER_WRITER('h', Phrases::TypeData::Textual::log);
 	REGISTER_WRITER('k', LocalVariables::log);
 	REGISTER_WRITER('R', Phrases::log);
-	REGISTER_WRITER('U', Phrases::Usage::log);
 	Memory::reason_name(INV_LIST_MREASON, "lists for type-checking invocations");
 	Log::declare_aspect(DESCRIPTION_COMPILATION_DA, L"description compilation", FALSE, FALSE);
 	Log::declare_aspect(EXPRESSIONS_DA, L"expressions", FALSE, FALSE);

@@ -31,7 +31,7 @@ void Phrases::Timed::TimedEventsTable(void) {
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
+		int t = RuleFamily::get_timing_of_event(ph->from);
 		if (t == NOT_A_TIMED_EVENT) continue;
 		if (t == NO_FIXED_TIME) when_count++;
 		else Emit::array_iname_entry(Phrases::iname(ph));
@@ -51,7 +51,7 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 	int when_count = 0;
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
+		int t = RuleFamily::get_timing_of_event(ph->from);
 		if (t == NOT_A_TIMED_EVENT) continue;
 		if (t == NO_FIXED_TIME) when_count++;
 		else Emit::array_numeric_entry((inter_ti) t);
@@ -69,17 +69,13 @@ void Phrases::Timed::TimedEventTimesTable(void) {
 
 =
 void Phrases::Timed::note_usage(phrase *ph, parse_node *at) {
-	int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
+	int t = RuleFamily::get_timing_of_event(ph->from);
 	if (t == NO_FIXED_TIME) {
 		use_as_event *uae = CREATE(use_as_event);
 		uae->where_triggered = at;
 		uae->next = NULL;
-		use_as_event *prev = ph->usage_data.uses_as_event;
-		if (prev == NULL) ph->usage_data.uses_as_event = uae;
-		else {
-			while ((prev) && (prev->next)) prev = prev->next;
-			prev->next = uae;
-		}
+		linked_list *L = RuleFamily::get_uses_as_event(ph->from);
+		if (L) ADD_TO_LINKED_LIST(uae, use_as_event, L);
 	}
 }
 
@@ -90,8 +86,9 @@ arguably shouldn't block compilation. Then again...
 void Phrases::Timed::check_for_unused(void) {
 	phrase *ph;
 	LOOP_OVER(ph, phrase)
-		if (Phrases::Usage::get_timing_of_event(&(ph->usage_data)) == NO_FIXED_TIME) {
-			if (ph->usage_data.uses_as_event == NULL) {
+		if (RuleFamily::get_timing_of_event(ph->from) == NO_FIXED_TIME) {
+			linked_list *L = RuleFamily::get_uses_as_event(ph->from);
+			if (LinkedLists::len(L) == 0) {
 				current_sentence = ph->from->at;
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnusedTimedEvent),
 					"this sets up a timed event which is never used",
@@ -117,7 +114,7 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 @<Index events with no specific time@> =
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
+		int t = RuleFamily::get_timing_of_event(ph->from);
 		if (t == NO_FIXED_TIME) {
 			if (when_count == 0) {
 				HTML_OPEN("p");
@@ -126,13 +123,14 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			}
 			when_count++;
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
-			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
+			ImperativeDefinitions::index_preamble(OUT, ph->from);
 			if ((ph->from->at) &&
 				(Wordings::nonempty(Node::get_text(ph->from->at))))
 				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
 			WRITE(" (where triggered: ");
+			linked_list *L = RuleFamily::get_uses_as_event(ph->from);
 			use_as_event *uae;
-			for (uae = ph->usage_data.uses_as_event; uae; uae=uae->next)
+			LOOP_OVER_LINKED_LIST(uae, use_as_event, L)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(uae->where_triggered)));
 			WRITE(")");
 			HTML_CLOSE("p");
@@ -142,7 +140,7 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 @<Index timetabled events@> =
 	phrase *ph;
 	LOOP_OVER(ph, phrase) {
-		int t = Phrases::Usage::get_timing_of_event(&(ph->usage_data));
+		int t = RuleFamily::get_timing_of_event(ph->from);
 		if (t >= 0) { /* i.e., an actual time of day in minutes since midnight */
 			if (tt_count == 0) {
 				HTML_OPEN("p");
@@ -151,7 +149,7 @@ void Phrases::Timed::index(OUTPUT_STREAM) {
 			}
 			tt_count++;
 			HTML_OPEN_WITH("p", "class=\"in2\"");
-			Phrases::Usage::index_preamble(OUT, &(ph->usage_data));
+			ImperativeDefinitions::index_preamble(OUT, ph->from);
 			if ((ph->from->at) &&
 				(Wordings::nonempty(Node::get_text(ph->from->at))))
 				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));

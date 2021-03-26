@@ -109,7 +109,7 @@ int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner)
 	if (Rulebooks::requires_specific_action(original_owner)) {
 		int waiver = FALSE;
 		action_name *an = NULL;
-		wording PW = Phrases::Usage::get_prewhile_text(&(ph->usage_data));
+		wording PW = RuleFamily::get_prewhile_text(ph->from);
 		if (Wordings::nonempty(PW)) {
 			LOOP_THROUGH_WORDING(i, PW)
 				if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
