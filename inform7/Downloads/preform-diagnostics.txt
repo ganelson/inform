@@ -7680,7 +7680,7 @@
 <s-variable-as-value> hits 173/1130 nti 10 constraint (none) extremes [1, infinity)
     English:
         <s-variable> 
-          (hits 173/565) (matched: 'the second noun') constraint (none) extremes [1, infinity)
+          (hits 173/565) (matched: 'the person asked') constraint (none) extremes [1, infinity)
 
 <s-local-variable> internal hits 1137/27360 nti 11 constraint (none) extremes [1, infinity)
 
@@ -7775,7 +7775,7 @@
 <s-noun-phrase-nounless> hits 797/2188 nti 24 constraint (none) extremes [1, infinity)
     English:
         <if-forced-physical> <s-variable-as-value> 
-          (hits 143/1094) (matched: 'the second noun') constraint (none) extremes [1, infinity)
+          (hits 143/1094) (matched: 'the person asked') constraint (none) extremes [1, infinity)
         <if-forced-physical> <s-desc-nounless> 
           (hits 102/951) (matched: 'the dark') constraint (none) extremes [1, infinity)
         ^<if-forced-physical> <s-value-uncached> 
@@ -9771,7 +9771,7 @@
         <external-file-sentence-subject> 
           (hits 0/330) constraint (none) extremes [2, infinity)
 
-<documentation-symbol-tail> hits 447/2552 nti 14 constraint DS = {14, 29} extremes [6, infinity)
+<documentation-symbol-tail> hits 447/3440 nti 14 constraint DS = {14, 29} extremes [6, infinity)
     English:
         {...} ( <documentation-symbol> ) 
           (hits 424/892) (matched long text) constraint DS = {14, 29} extremes [6, infinity)

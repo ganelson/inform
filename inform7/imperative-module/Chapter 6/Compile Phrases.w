@@ -292,7 +292,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	current_sentence = to_compile;
 	named_rulebook_outcome *nrbo = <<rp>>;
 	if (phrase_being_compiled) {
-		if (ImperativeDefinitions::goes_in_rulebooks(phrase_being_compiled->from) == FALSE) {
+		if (ImperativeDefinitionFamilies::goes_in_rulebooks(phrase_being_compiled->from) == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));

@@ -1,6 +1,6 @@
-Total memory consumption was 260797K = 255 MB
+Total memory consumption was 260800K = 255 MB
 
-62.8% was used for 1340344 objects, in 282579 frames in 205 x 800K = 164000K = 160 MB:
+62.8% was used for 1340857 objects, in 282597 frames in 205 x 800K = 164000K = 160 MB:
 
      9.7%  inter_tree_node_array                    36 x 8192 = 294912 objects, 25953408 bytes
      5.4%  text_stream_array                        2583 x 100 = 258300 objects, 14547456 bytes
@@ -27,7 +27,7 @@ Total memory consumption was 260797K = 255 MB
      0.3%  inter_symbols_table                      13227 objects, 846528 bytes
      0.3%  inter_schema_node                        8692 objects, 834432 bytes
      0.2%  dictionary                               16372 objects, 785856 bytes
-     0.2%  dict_entry_array                         232 x 100 = 23200 objects, 749824 bytes
+     0.2%  dict_entry_array                         237 x 100 = 23700 objects, 765984 bytes
      0.2%  package_request                          7954 objects, 699952 bytes
      0.2%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes
      0.2%  inter_name_generator_array               16 x 1000 = 16000 objects, 640512 bytes
@@ -94,11 +94,11 @@ Total memory consumption was 260797K = 255 MB
      ----  property                                 146 objects, 18688 bytes
      ----  action_name                              90 objects, 18000 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
+     ----  method                                   345 objects, 16560 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes
      ----  linked_list_item_array                   1 x 1000 objects, 16032 bytes
      ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
-     ----  method                                   332 objects, 15936 bytes
      ----  to_phrase_request                        59 objects, 15576 bytes
      ----  adjective                                137 objects, 14248 bytes
      ----  booking_list                             407 objects, 13024 bytes
@@ -139,8 +139,8 @@ Total memory consumption was 260797K = 255 MB
      ----  either_or_property_data                  62 objects, 2976 bytes
      ----  submodule_request                        72 objects, 2880 bytes
      ----  inter_construct                          32 objects, 2560 bytes
-     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  parentage_inference_data                 79 objects, 2528 bytes
+     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 260797K = 255 MB
 
 37.1% was used for memory not allocated for objects:
 
-    15.7%  text stream storage                      42065596 bytes in 264531 claims
+    15.7%  text stream storage                      42068372 bytes in 264531 claims
      3.4%  dictionary storage                       9278976 bytes in 16372 claims
      ----  sorting                                  992 bytes in 3 claims
      2.6%  source text                              7200000 bytes in 3 claims
@@ -253,5 +253,5 @@ Total memory consumption was 260797K = 255 MB
      ----  emitter array storage                    12320 bytes in 8 claims
      ----  code generation workspace for objects    9200 bytes in 9 claims
 
-20.5% was overhead - 54981688 bytes = 53693K = 52 MB
+20.5% was overhead - 54964904 bytes = 53676K = 52 MB
 

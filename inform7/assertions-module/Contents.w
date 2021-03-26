@@ -51,6 +51,7 @@ Chapter 4: Assertions
 Chapter 5: Imperative Code
 "What happens to preambles, colons, and blocks of imperative code."
 	Imperative Definitions
+	Imperative Definition Families
 	Adjectival Definition Family
 	To Phrase Family
 	Rule Family

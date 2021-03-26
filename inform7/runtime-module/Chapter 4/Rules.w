@@ -36,7 +36,7 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 
 ph_stack_frame *RTRules::stack_frame(rule *R) {
 	if ((R == NULL) || (R->defn_as_I7_source == NULL)) return NULL;
-	return &(R->defn_as_I7_source->defines->stack_frame);
+	return &(R->defn_as_I7_source->body_of_defn->stack_frame);
 }
 
 package_request *RTRules::package(rule *R) {
@@ -50,7 +50,7 @@ inter_name *RTRules::shell_iname(rule *R) {
 }
 
 inter_name *RTRules::iname(rule *R) {
-	if (R->defn_as_I7_source) return Phrases::iname(R->defn_as_I7_source->defines);
+	if (R->defn_as_I7_source) return Phrases::iname(R->defn_as_I7_source->body_of_defn);
 	else if (R->compilation_data.rule_extern_iname) {
 		if (LinkedLists::len(R->applicability_constraints) > 0) {
 			return RTRules::shell_iname(R);
@@ -89,7 +89,7 @@ void RTRules::compile_definition(rule *R, int *i, int max_i) {
 		R->compilation_data.defn_compiled = TRUE;
 		rule_being_compiled = R;
 		if (R->defn_as_I7_source)
-			Phrases::compile(R->defn_as_I7_source->defines, i, max_i,
+			Phrases::compile(R->defn_as_I7_source->body_of_defn, i, max_i,
 				R->variables_visible_in_definition, NULL, R);
 		if ((R->compilation_data.rule_extern_iname) &&
 			(LinkedLists::len(R->applicability_constraints) > 0))
@@ -612,7 +612,7 @@ than once for each rule.
 #ifdef IF_MODULE
 action_name *RTRules::br_required_action(booking *br) {
 	imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
-	if (id) return Phrases::Context::required_action(&(id->defines->runtime_context_data));
+	if (id) return Phrases::Context::required_action(&(id->body_of_defn->runtime_context_data));
 	return NULL;
 }
 #endif

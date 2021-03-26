@@ -139,7 +139,7 @@ int IXRules::index_booking_list(OUTPUT_STREAM, booking_list *L, rule_context rc,
 		#ifdef IF_MODULE
 		imperative_defn *id = Rules::get_imperative_definition(R);
 		if (id) {
-			phrase *ph = id->defines;
+			phrase *ph = id->body_of_defn;
 			ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
 			scene *during_scene = Phrases::Context::get_scene(phrcd);
 			if ((rc.scene_context) && (during_scene != rc.scene_context)) skip = TRUE;

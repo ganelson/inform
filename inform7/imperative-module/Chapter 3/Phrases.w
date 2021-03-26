@@ -69,7 +69,7 @@ A phrase is inline if and only if its definition consists of a single
 invocation which is given as verbatim I6.
 
 =
-void Phrases::create_from_preamble(imperative_defn *id) {
+phrase *Phrases::create_from_preamble(imperative_defn *id) {
 	parse_node *p = id->at;
 	if ((p == NULL) || (Node::get_type(p) != IMPERATIVE_NT))
 		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
@@ -85,12 +85,8 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 	ph_stack_frame phsf;
 	ph_runtime_context_data phrcd;
 
-	@<Parse for the PHUD in fine mode@>;
-
-	if ((inline_wn >= 0) && (id->family != TO_PHRASE_EFF_family)) @<Inline is for To... phrases only@>;
-
-	if ((id->family != DEFINITIONAL_PHRASE_EFF_family) && (p->down == NULL))
-		@<There seems to be no definition@>;
+	if ((inline_wn >= 0) && (ImperativeDefinitionFamilies::allows_inline(id) == FALSE))
+		@<Inline is for To... phrases only@>;
 
 	@<Construct the PHTD, find the phrase options, find the documentation reference@>;
 	@<Construct the PHOD@>;
@@ -99,8 +95,7 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 
 	phrase *new_ph;
 	@<Create the phrase structure@>;
-	id->defines = new_ph;
-	@<Tell other parts of Inform about this new phrase@>;
+	return new_ph;
 }
 
 @<Look for an inline definition@> =
@@ -113,21 +108,12 @@ void Phrases::create_from_preamble(imperative_defn *id) {
 			@<Forbid overly long inline definitions@>;
 	}
 
-@<Parse for the PHUD in fine mode@> =
-	;
-
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
 	wording XW = ToPhraseFamily::get_prototype_text(id);
+	documentation_W = Index::DocReferences::position_of_symbol(&XW);
 	phtd = Phrases::TypeData::new();
 	if (inline_wn >= 0) Phrases::TypeData::make_inline(&phtd);
-	if (id->family == TO_PHRASE_EFF_family) {
-		documentation_W = Index::DocReferences::position_of_symbol(&XW);
-		Phrases::TypeData::Textual::parse(&phtd, XW, &OW);
-	} else if (id->family == DEFINITIONAL_PHRASE_EFF_family) {
-		Phrases::TypeData::set_mor(&phtd, DECIDES_CONDITION_MOR, NULL);
-	} else {
-		Phrases::TypeData::set_mor(&phtd, DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
-	}
+	ImperativeDefinitionFamilies::to_phtd(id, &phtd, XW, &OW);
 
 @<Construct the PHOD@> =
 	phod = Phrases::Options::parse_declared_options(OW);
@@ -150,9 +136,6 @@ inline definitions.
 
 @<Construct the PHRCD@> =
 	phrcd = Phrases::Context::new();
-
-@<Tell other parts of Inform about this new phrase@> =
-	ImperativeDefinitions::new_phrase(id, new_ph);
 
 @<Create the phrase structure@> =
 	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n", id->log_text);
@@ -186,11 +169,6 @@ inline definitions.
 	new_ph->sequence_count = -1;
 
 	new_ph->ph_documentation_symbol = documentation_W;
-
-@<There seems to be no definition@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_Undefined),
-		"there doesn't seem to be any definition here",
-		"so I can't see what this rule or phrase would do.");
 
 @ That just leaves two problem messages about inline definitions:
 
@@ -320,11 +298,8 @@ void Phrases::import(phrase *ph) {
 void Phrases::compile(phrase *ph, int *i, int max_i,
 	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
 	if (ph->imported) return;
-	if (ph->from->family == TO_PHRASE_EFF_family) {
+	if ((req) || (ph->at_least_one_compiled_form_needed)) {
 		Routines::Compile::routine(ph, legible, req, R);
-		@<Move along the progress bar if it's this phrase's first compilation@>;
-	} else if (ph->at_least_one_compiled_form_needed) {
-		Routines::Compile::routine(ph, legible, NULL, R);
 		@<Move along the progress bar if it's this phrase's first compilation@>;
 	}
 }

@@ -49,7 +49,7 @@ void ImperativeSubtrees::accept_inner(parse_node *p, int accept_header) {
 		/* worry about the preamble in the node p */
 		if (accept_header)
 			Node::set_impdef(header,
-				ImperativeDefinitions::make_imperative_definition(header));
+				ImperativeDefinitions::new(header));
 	}
 }
 

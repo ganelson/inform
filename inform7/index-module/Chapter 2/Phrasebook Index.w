@@ -28,8 +28,8 @@ void Phrases::Index::index_page_Phrasebook(OUTPUT_STREAM) {
 			imperative_defn *id;
 			phrase *run_begin = NULL;
 			LOOP_OVER(id, imperative_defn) {
-				if (id->family == TO_PHRASE_EFF_family) {
-					phrase *ph = id->defines;
+				if (ImperativeDefinitionFamilies::include_in_Phrasebook_index(id)) {
+					phrase *ph = id->body_of_defn;
 					/* include only if it is under an indexed heading */
 					heading *this_heading =
 						Headings::of_wording(Node::get_text(Phrases::declaration_node(ph)));

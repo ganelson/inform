@@ -871,7 +871,7 @@ rule), and also makes a note for indexing purposes.
 	if (Rvalues::is_CONSTANT_construction(supplied, CON_rule)) {
 		rule *R = Rvalues::to_rule(supplied);
 		imperative_defn *id = Rules::get_imperative_definition(R);
-		if (id) Phrases::Timed::note_usage(id->defines, current_sentence);
+		if (id) Phrases::Timed::note_usage(id->body_of_defn, current_sentence);
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(supplied));

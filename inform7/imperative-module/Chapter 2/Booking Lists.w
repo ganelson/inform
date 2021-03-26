@@ -272,7 +272,7 @@ int BookingLists::length(booking_list *L) {
 int BookingLists::is_contextually_empty(booking_list *L, rule_context rc) {
 	LOOP_OVER_BOOKINGS(br, L) {
 		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
-		if ((id) && (Phrases::Context::phrase_fits_rule_context(id->defines, rc)))
+		if ((id) && (Phrases::Context::phrase_fits_rule_context(id->body_of_defn, rc)))
 			return FALSE;
 	}
 	return TRUE;
@@ -300,7 +300,7 @@ int BookingLists::contains(booking_list *L, rule *to_find) {
 int BookingLists::contains_ph(booking_list *L, phrase *ph_to_find) {
 	LOOP_OVER_BOOKINGS(br, L) {
 		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
-		if ((id) && (id->defines == ph_to_find))
+		if ((id) && (id->body_of_defn == ph_to_find))
 			return TRUE;
 	}
 	return FALSE;

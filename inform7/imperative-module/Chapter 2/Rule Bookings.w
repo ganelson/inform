@@ -94,7 +94,7 @@ void RuleBookings::make_automatic_placements(void) {
 			imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
 			if (id) {
 				current_sentence = id->at;
-				phrase *ph = id->defines;
+				phrase *ph = id->body_of_defn;
 				rulebook *original_owner = RuleFamily::get_rulebook(ph->from);
 				int placement = RuleFamily::get_rulebook_placement(ph->from);
 				rulebook *owner = original_owner;

@@ -317,7 +317,7 @@ process.
 void Phrases::Context::ensure_avl(rule *R) {
 	imperative_defn *id = Rules::get_imperative_definition(R);
 	if (id) {
-		phrase *ph = id->defines;
+		phrase *ph = id->body_of_defn;
 		ph_runtime_context_data *rcd = &(ph->runtime_context_data);
 		if (Wordings::nonempty(rcd->activity_context)) {
 			parse_node *save_cs = current_sentence;

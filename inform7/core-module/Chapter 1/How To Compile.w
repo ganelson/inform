@@ -166,7 +166,7 @@ so on. Those absolute basics are made here.
 	Task::advance_stage_to(PHRASES_CSEQ, I"Phrases and rules",
 		3, debugging, sequence_timer);
 	BENCH(LiteralPatterns::define_named_phrases)
-	BENCH(ImperativeDefinitions::find_phrases_and_rules)
+	BENCH(ImperativeDefinitions::assess_all)
 	BENCH(Equations::traverse_to_stock)
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTProperties::annotate_attributes)

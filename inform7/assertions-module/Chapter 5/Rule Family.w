@@ -29,11 +29,15 @@ typedef struct rule_family_data {
 
 =
 void RuleFamily::create_family(void) {
-	RULE_EFF_family = ImperativeDefinitions::new_family(I"RULE_EFF");
+	RULE_EFF_family = ImperativeDefinitionFamilies::new(I"RULE_EFF", FALSE);
 	METHOD_ADD(RULE_EFF_family, CLAIM_IMP_DEFN_MTID, RuleFamily::claim);
 	METHOD_ADD(RULE_EFF_family, ASSESS_IMP_DEFN_MTID, RuleFamily::assess);
+	METHOD_ADD(RULE_EFF_family, ASSESSMENT_COMPLETE_IMP_DEFN_MTID, RuleFamily::assessment_complete);
+	METHOD_ADD(RULE_EFF_family, ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID, RuleFamily::allows_rule_only_phrases);
 	METHOD_ADD(RULE_EFF_family, NEW_PHRASE_IMP_DEFN_MTID, RuleFamily::new_phrase);
 	METHOD_ADD(RULE_EFF_family, TO_RCD_IMP_DEFN_MTID, RuleFamily::to_rcd);
+	METHOD_ADD(RULE_EFF_family, TO_PHTD_IMP_DEFN_MTID, RuleFamily::to_phtd);
+	METHOD_ADD(RULE_EFF_family, COMPILE_IMP_DEFN_MTID, RuleFamily::compile);
 }
 
 @ =
@@ -147,15 +151,35 @@ void RuleFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 }
 
 @ =
-int RuleFamily::is(imperative_defn *id) {
-	if (id->family == RULE_EFF_family) return TRUE;
-	return FALSE;
-}
-
 void RuleFamily::assess(imperative_defn_family *self, imperative_defn *id) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
 	if (rfd->not_in_rulebook == FALSE)
 		@<Parse the rulebook stem in fine mode@>;
+}
+
+void RuleFamily::assessment_complete(imperative_defn_family *self, int initial_problem_count) {
+	RuleBookings::make_automatic_placements();
+	if (initial_problem_count < problem_count) return;
+
+	SyntaxTree::traverse(Task::syntax_tree(), RuleFamily::visit_to_parse_placements);
+}
+
+@
+
+@e TRAVERSE_FOR_RULE_FILING_SMFT
+
+=
+void RuleFamily::visit_to_parse_placements(parse_node *p) {
+	if ((Node::get_type(p) == SENTENCE_NT) &&
+		(p->down) &&
+		(Node::get_type(p->down) == VERB_NT)) {
+		prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
+		MajorNodes::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
+	}
+}
+
+int RuleFamily::allows_rule_only_phrases(imperative_defn_family *self, imperative_defn *id) {
+	return TRUE;
 }
 
 @ Much later on, Inform returns to the definition to look at it in fine detail:
@@ -357,7 +381,7 @@ rule *RuleFamily::to_rule(imperative_defn *id) {
 	if (Wordings::empty(W))
 		Hierarchy::markup_wording(R->compilation_data.rule_package, RULE_NAME_HMD, Node::get_text(id->at));
 	Rules::set_imperative_definition(R, id);
-	phrase *ph = id->defines;
+	phrase *ph = id->body_of_defn;
 	package_request *P = RTRules::package(R);
 	ph->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, ph->owning_module);
 
@@ -828,3 +852,22 @@ might have gone wrong.
 		Problems::issue_problem_segment("'%4' was okay; ");
 	}
 	==> { 1, - };
+
+@
+
+=
+void RuleFamily::to_phtd(imperative_defn_family *self, imperative_defn *id, ph_type_data *phtd, wording XW, wording *OW) {
+	Phrases::TypeData::set_mor(phtd, DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
+}
+
+void RuleFamily::compile(imperative_defn_family *self,
+	int *total_phrases_compiled, int total_phrases_to_compile) {
+	rulebook *rb;
+	LOOP_OVER(rb, rulebook)
+		RTRules::compile_rule_phrases(rb,
+			total_phrases_compiled, total_phrases_to_compile);
+	rule *R;
+	LOOP_OVER(R, rule)
+		RTRules::compile_definition(R,
+			total_phrases_compiled, total_phrases_to_compile);
+}

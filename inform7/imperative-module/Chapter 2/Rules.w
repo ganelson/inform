@@ -285,7 +285,7 @@ void Rules::log(rule *R) {
 	if (R == NULL) { LOG("<null-rule>"); return; }
 	if (Wordings::nonempty(R->name)) LOG("['%W':", R->name); else LOG("[");
 	if (R->defn_as_I7_source)
-		LOG("$R]", R->defn_as_I7_source->defines);
+		LOG("$R]", R->defn_as_I7_source->body_of_defn);
 	else if (Str::len(R->defn_as_Inter_function) > 0)
 		LOG("%S]", R->defn_as_Inter_function);
 	else
@@ -326,8 +326,8 @@ than |R1|, or 0 if they are equally good.
 int Rules::cmp(rule *R1, rule *R2, int log_this) {
 	imperative_defn *id1 = R1->defn_as_I7_source, *id2 = R2->defn_as_I7_source;
 	ph_runtime_context_data *phrcd1 = NULL, *phrcd2 = NULL;
-	if (id1) phrcd1 = &(id1->defines->runtime_context_data);
-	if (id2) phrcd2 = &(id2->defines->runtime_context_data);
+	if (id1) phrcd1 = &(id1->body_of_defn->runtime_context_data);
+	if (id2) phrcd2 = &(id2->body_of_defn->runtime_context_data);
 	int rv = Phrases::Context::compare_specificity(phrcd1, phrcd2);
 	if (log_this) {
 		if (rv != 0) LOG("Decided by Law %S that ", c_s_stage_law);
@@ -446,28 +446,28 @@ it's possible to change the way that applicability testing is done.
 =
 void Rules::set_always_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_always_test_actor(phrcd);
 	}
 }
 
 void Rules::set_never_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_never_test_actor(phrcd);
 	}
 }
 
 void Rules::set_marked_for_anyone(rule *R, int to) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_marked_for_anyone(phrcd, to);
 	}
 }
 
 void Rules::suppress_action_testing(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->defines->runtime_context_data);
+		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::suppress_action_testing(phrcd);
 	}
 }
@@ -477,10 +477,10 @@ void Rules::copy_actor_test_flags(rule *R_to, rule *R_from) {
 
 	ph_runtime_context_data *phrcd_from = NULL;
 	if (R_from->defn_as_I7_source)
-		phrcd_from = &(R_from->defn_as_I7_source->defines->runtime_context_data);
+		phrcd_from = &(R_from->defn_as_I7_source->body_of_defn->runtime_context_data);
 	ph_runtime_context_data *phrcd_to = NULL;
 	if (R_to->defn_as_I7_source)
-		phrcd_to = &(R_to->defn_as_I7_source->defines->runtime_context_data);
+		phrcd_to = &(R_to->defn_as_I7_source->body_of_defn->runtime_context_data);
 
 	if (phrcd_to) {
 		if ((phrcd_from == NULL) ||

@@ -76,7 +76,7 @@ phrase *Phrases::Constants::as_phrase(constant_phrase *cphr) {
 		imperative_defn *id;
 		LOOP_OVER(id, imperative_defn) {
 			if (ToPhraseFamily::constant_phrase(id) == cphr) {
-				cphr->phrase_meant = id->defines;
+				cphr->phrase_meant = id->body_of_defn;
 				break;
 			}
 		}
