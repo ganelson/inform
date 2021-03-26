@@ -148,30 +148,3 @@ standard English grammar doesn't use this, but translators might want to.)
 	==> { time_minutes + time_hours*60, - };
 	return TRUE;
 }
-
-@h Parsing event rules.
-The following is used to parse the preamble to rules which take place at
-a specific time of day, or when a named event occurs.
-
-=
-<event-rule-preamble> ::=
-	at <clock-time> |         ==> { pass 1 }
-	at the time when ... |    ==> { NO_FIXED_TIME, - }
-	at the time that ... |    ==> @<Issue PM_AtTimeThat problem@>
-	at ...					  ==> @<Issue PM_AtWithoutTime problem@>
-
-@<Issue PM_AtTimeThat problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AtTimeThat),
-		"this seems to use 'that' where it should use 'when'",
-		"assuming it's trying to apply a rule to an event. (The convention is "
-		"that any rule beginning 'At' is a timed one. The time can either be a "
-		"fixed time, as in 'At 11:10 AM: ...', or the time when some named "
-		"event takes place, as in 'At the time when the clock chimes: ...'.)");
-
-@<Issue PM_AtWithoutTime problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AtWithoutTime),
-		"'at' what time? No description of a time is given",
-		"which means that this rule can never have effect. (The convention is "
-		"that any rule beginning 'At' is a timed one. The time can either be a "
-		"fixed time, as in 'At 11:10 AM: ...', or the time when some named "
-		"event takes place, as in 'At the time when the clock chimes: ...'.)");

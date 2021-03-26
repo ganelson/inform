@@ -78,7 +78,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#3">Chapter 3: Literals</a></li><li><b>Times of Day</b></li></ul></div>
 <p class="purpose">To make a built-in kind of value for times of day, such as "11:22 AM".</p>
 
-<ul class="toc"><li><a href="3-tod.html#SP4">&#167;4. Parsing</a></li><li><a href="3-tod.html#SP7">&#167;7. Parsing event rules</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-tod.html#SP4">&#167;4. Parsing</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>"Men can do nothing without the make-believe of a beginning. Even Science,
 the strict measurer, is obliged to start with a make-believe unit, and must fix
@@ -242,42 +242,6 @@ standard English grammar doesn't use this, but translators might want to.)
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Parsing event rules. </b>The following is used to parse the preamble to rules which take place at
-a specific time of day, or when a named event occurs.
-</p>
-
-<pre class="Preform-displayed-code all-displayed-code code-font">
-<span class="Preform-function-syntax">&lt;event-rule-preamble&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;clock-time&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">time</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">when</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { NO_FIXED_TIME, - }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">time</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">that</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-tod.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_AtTimeThat problem</span><span class="named-paragraph-number">7.1</span></a></span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-tod.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_AtWithoutTime problem</span><span class="named-paragraph-number">7.2</span></a></span>
-</pre>
-<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtTimeThat problem</span><span class="named-paragraph-number">7.1</span></span><span class="Preform-comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_AtTimeThat</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"this seems to use 'that' where it should use 'when'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"assuming it's trying to apply a rule to an event. (The convention is "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"that any rule beginning 'At' is a timed one. The time can either be a "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"fixed time, as in 'At 11:10 AM: ...', or the time when some named "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"event takes place, as in 'At the time when the clock chimes: ...'.)"</span><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-tod.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_AtWithoutTime problem</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_AtWithoutTime</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"'at' what time? No description of a time is given"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"which means that this rule can never have effect. (The convention is "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"that any rule beginning 'At' is a timed one. The time can either be a "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"fixed time, as in 'At 11:10 AM: ...', or the time when some named "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"event takes place, as in 'At the time when the clock chimes: ...'.)"</span><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-tod.html#SP7">&#167;7</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-lrn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-vm.html">1</a></li><li class="progresschapter"><a href="2-spc.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-pl.html">pl</a></li><li class="progresssection"><a href="3-lp.html">lp</a></li><li class="progresssection"><a href="3-lrn.html">lrn</a></li><li class="progresscurrent">tod</li><li class="progresssection"><a href="3-ul.html">ul</a></li><li class="progresssection"><a href="3-ll.html">ll</a></li><li class="progresschapter"><a href="4-ets.html">4</a></li><li class="progressnext"><a href="3-ul.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -524,6 +524,11 @@ typedef struct rulebook_match {
 } rulebook_match;
 
 rulebook_match parsed_rm;
+
+rulebook_match *Rulebooks::match(void) {
+	return &parsed_rm;
+}
+
 int parsed_scene_stem_len = 0;
 rulebook *parsed_scene_stem_B = NULL;
 
