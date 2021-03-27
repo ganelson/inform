@@ -206,9 +206,9 @@ void Phrases::TypeData::Textual::inv_write_HTML_representation(OUTPUT_STREAM, pa
 	phrase *ph = Node::get_phrase_invoked(inv);
 	if (ph) {
 		ph_type_data *phtd = &(ph->type_data);
-		if (Wordings::nonempty(ph->ph_documentation_symbol)) {
+		if (Wordings::nonempty(ToPhraseFamily::doc_ref(ph->from))) {
 			TEMPORARY_TEXT(pds)
-			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ph->ph_documentation_symbol)));
+			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ToPhraseFamily::doc_ref(ph->from))));
 			Index::DocReferences::link_to(OUT, pds, -1);
 			DISCARD_TEXT(pds)
 		} else
@@ -275,10 +275,10 @@ void Phrases::TypeData::Textual::write_reveal_box(OUTPUT_STREAM, ph_type_data *p
 of course.
 
 @<Quote from and reference to the documentation, where possible@> =
-	if (Wordings::nonempty(ph->ph_documentation_symbol)) {
+	if (Wordings::nonempty(ToPhraseFamily::doc_ref(ph->from))) {
 		HTML_CLOSE("p");
 		TEMPORARY_TEXT(pds)
-		WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ph->ph_documentation_symbol)));
+		WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(ToPhraseFamily::doc_ref(ph->from))));
 		Index::DocReferences::doc_fragment(OUT, pds);
 		HTML_OPEN("p"); WRITE("<b>See</b> ");
 		Index::DocReferences::fully_link(OUT, pds);

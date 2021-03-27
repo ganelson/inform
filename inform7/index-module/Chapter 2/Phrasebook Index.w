@@ -187,10 +187,10 @@ a single shared reveal-box:
 =
 int Phrases::Index::ph_same_doc(phrase *p1, phrase *p2) {
 	if ((p1 == NULL) || (p2 == NULL) ||
-		(Wordings::empty(p1->ph_documentation_symbol)) ||
-			(Wordings::empty(p2->ph_documentation_symbol)))
+		(Wordings::empty(ToPhraseFamily::doc_ref(p1->from))) ||
+			(Wordings::empty(ToPhraseFamily::doc_ref(p2->from))))
 		return FALSE;
-	if (Wordings::match(p1->ph_documentation_symbol, p2->ph_documentation_symbol))
+	if (Wordings::match(ToPhraseFamily::doc_ref(p1->from), ToPhraseFamily::doc_ref(p2->from)))
 		return TRUE;
 	return FALSE;
 }

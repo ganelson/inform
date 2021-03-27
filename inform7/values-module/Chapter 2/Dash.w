@@ -1770,7 +1770,7 @@ extensions).
 		Invocations::mark_unproven(inv);
 	}
 	if (ph) {
-		wording NW = ph->ph_documentation_symbol;
+		wording NW = ToPhraseFamily::doc_ref(ph->from);
 		if (Wordings::nonempty(NW)) {
 			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(NW)));

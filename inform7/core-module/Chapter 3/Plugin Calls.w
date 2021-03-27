@@ -196,6 +196,16 @@ int PluginCalls::variable_set_warning(nonlocal_variable *q, parse_node *val) {
 	PLUGINS_CALL(VARIABLE_VALUE_NOTIFY_PLUG, q, val);
 }
 
+@ Called from //assertions: Rule Family// to warn plugins that a new rule
+definition has been found in the source text.
+
+@e NEW_RULE_DEFN_NOTIFY_PLUG
+
+=
+int PluginCalls::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd) {
+	PLUGINS_CALL(NEW_RULE_DEFN_NOTIFY_PLUG, id, rfd);
+}
+
 @h Influencing values.
 Called from //values: Rvalues// to allow plugins to help decide whether values
 of the same kind would be equal if evaluated at runtime. For example, the
@@ -464,6 +474,17 @@ int PluginCalls::compile_test_head(phrase *ph, rule *R, int *tests) {
 =
 int PluginCalls::compile_test_tail(phrase *ph, rule *R) {
 	PLUGINS_CALL(COMPILE_TEST_TAIL_PLUG, ph, R);
+}
+
+@ Called from //imperative: Compile Invocations Inline//, but only when an
+annotation arises which the regular machinery doesn't know how to handle.
+This is currently only used by //if: Timed Rules//.
+
+@e INLINE_ANNOTATION_PLUG
+
+=
+int PluginCalls::nonstandard_inline_annotation(int annot, parse_node *supplied) {
+	PLUGINS_CALL(INLINE_ANNOTATION_PLUG, annot, supplied);
 }
 
 @h Influencing the actions plugin.

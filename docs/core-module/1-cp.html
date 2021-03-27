@@ -87,6 +87,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_family_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">application_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">by_routine_bp_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">constant_phrase_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">equivalence_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">explicit_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">generalisation_CLASS</span>
@@ -106,6 +107,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning_family</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">application</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_phrase</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">generalisation</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">by_routine_bp_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">equivalence_bp_data</span><span class="plain-syntax">)</span>
@@ -227,8 +229,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><a href="../imperative-module/index.html" class="internal">imperative</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">constant_phrase_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">invocation_options_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">local_variable_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_action_record_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_condition_record_CLASS</span>
@@ -238,10 +239,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_option_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pointer_allocation_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">to_phrase_request_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">use_as_event_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_phrase</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">invocation_options</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">local_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">past_tense_action_record</span><span class="plain-syntax">)</span>
@@ -252,7 +251,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">phrase_option</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pointer_allocation</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">to_phrase_request</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">use_as_event</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><a href="../runtime-module/index.html" class="internal">runtime</a> &mdash;
 </p>
@@ -347,6 +345,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">release_instructions_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">scene_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">spatial_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">timed_rules_rfd_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">anl_clause_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">anl_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">action_pattern_CLASS</span>
@@ -380,6 +379,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">release_instructions</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scene</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">timed_rules_rfd_data</span><span class="plain-syntax">)</span>
 
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">anl_clause</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">anl_entry</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>

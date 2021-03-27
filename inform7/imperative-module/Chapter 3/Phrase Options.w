@@ -91,14 +91,13 @@ void Phrases::Options::index(OUTPUT_STREAM, ph_options_data *phod) {
 ph_options_data *phod_being_parsed = NULL;
 phrase *ph_being_parsed = NULL;
 
-ph_options_data Phrases::Options::parse_declared_options(wording W) {
-	ph_options_data phod = Phrases::Options::new(W);
+void Phrases::Options::parse_declared_options(ph_options_data *phod, wording W) {
 	if (Wordings::nonempty(W)) {
-		phod_being_parsed = &phod;
+		phod->options_declaration = W;
+		phod_being_parsed = phod;
 		<phrase-option-declaration-list>(W);
-		if (<<r>>) phod.multiple_options_permitted = TRUE;
+		if (<<r>>) phod->multiple_options_permitted = TRUE;
 	}
-	return phod;
 }
 
 @ I have to say that I regret the syntax for phrase options, which makes

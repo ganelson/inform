@@ -36,7 +36,6 @@ typedef struct phrase {
 	struct inter_schema *inter_tail_defn; /* inline definition translated to inter, if possible */
 	int inter_defn_converted; /* has this been tried yet? */
 	int inline_mor; /* manner of return for inline I6 definition, or |UNKNOWN_NT| */
-	struct wording ph_documentation_symbol; /* cross-reference with documentation */
 	struct compilation_unit *owning_module;
 	struct package_request *requests_package;
 
@@ -75,8 +74,6 @@ phrase *Phrases::create_from_preamble(imperative_defn *id) {
 		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
 	int inline_wn = -1; 		/* the word number of an inline I6 definition if any */
 	int mor = DONT_KNOW_MOR;	/* and its manner of return */
-	wording OW = EMPTY_WORDING;	/* the text of the phrase options, if any */
-	wording documentation_W = EMPTY_WORDING; /* the documentation reference, if any */
 
 	@<Look for an inline definition@>;
 
@@ -88,8 +85,8 @@ phrase *Phrases::create_from_preamble(imperative_defn *id) {
 	if ((inline_wn >= 0) && (ImperativeDefinitionFamilies::allows_inline(id) == FALSE))
 		@<Inline is for To... phrases only@>;
 
-	@<Construct the PHTD, find the phrase options, find the documentation reference@>;
 	@<Construct the PHOD@>;
+	@<Construct the PHTD, find the phrase options, find the documentation reference@>;
 	@<Construct the PHSF, using the PHTD and PHOD@>;
 	@<Construct the PHRCD@>;
 
@@ -108,15 +105,12 @@ phrase *Phrases::create_from_preamble(imperative_defn *id) {
 			@<Forbid overly long inline definitions@>;
 	}
 
+@<Construct the PHOD@> =
+	phod = Phrases::Options::new(EMPTY_WORDING);
+
 @<Construct the PHTD, find the phrase options, find the documentation reference@> =
-	wording XW = ToPhraseFamily::get_prototype_text(id);
-	documentation_W = Index::DocReferences::position_of_symbol(&XW);
 	phtd = Phrases::TypeData::new();
 	if (inline_wn >= 0) Phrases::TypeData::make_inline(&phtd);
-	ImperativeDefinitionFamilies::to_phtd(id, &phtd, XW, &OW);
-
-@<Construct the PHOD@> =
-	phod = Phrases::Options::parse_declared_options(OW);
 
 @ The stack frame needs to know the kind of this phrase -- something like
 = (text as Inform 6)
@@ -129,10 +123,6 @@ inline definitions.
 
 @<Construct the PHSF, using the PHTD and PHOD@> =
 	phsf = Frames::new();
-	Phrases::TypeData::into_stack_frame(&phsf, &phtd,
-		Phrases::TypeData::kind(&phtd), TRUE);
-	if (Phrases::Options::allows_options(&phod))
-		LocalVariables::options_parameter_is_needed(&phsf);
 
 @<Construct the PHRCD@> =
 	phrcd = Phrases::Context::new();
@@ -167,8 +157,6 @@ inline definitions.
 
 	new_ph->next_in_logical_order = NULL;
 	new_ph->sequence_count = -1;
-
-	new_ph->ph_documentation_symbol = documentation_W;
 
 @ That just leaves two problem messages about inline definitions:
 
@@ -216,6 +204,16 @@ void Phrases::parse_possible_inline_defn(wording W, int *wn, int *mor) {
 	LOGIF(MATCHING, "form of inline: %W\n", W);
 	*wn = -1;
 	if (<inline-phrase-definition>(W)) { *wn = <<inlinecode>>; *mor = <<r>>; }
+}
+
+@
+
+=
+void Phrases::prepare_stack_frame(phrase *body) {
+	Phrases::TypeData::into_stack_frame(&(body->stack_frame), &(body->type_data),
+		Phrases::TypeData::kind(&(body->type_data)), TRUE);
+	if (Phrases::Options::allows_options(&(body->options_data)))
+		LocalVariables::options_parameter_is_needed(&(body->stack_frame));
 }
 
 @h Miscellaneous.

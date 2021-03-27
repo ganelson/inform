@@ -225,6 +225,7 @@ of a //phrase// as follows:
 =
 void Rules::set_imperative_definition(rule *R, imperative_defn *id) {
 	R->defn_as_I7_source = id;
+	RTRules::prepare_rule(id, R);
 }
 
 imperative_defn *Rules::get_imperative_definition(rule *R) {

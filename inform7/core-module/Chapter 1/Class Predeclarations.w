@@ -22,6 +22,7 @@ DECLARE_CLASS(compile_task_data)
 @e adjective_meaning_family_CLASS
 @e application_CLASS
 @e by_routine_bp_data_CLASS
+@e constant_phrase_CLASS
 @e equivalence_bp_data_CLASS
 @e explicit_bp_data_CLASS
 @e generalisation_CLASS
@@ -41,6 +42,7 @@ DECLARE_CLASS(compile_task_data)
 DECLARE_CLASS(adjective_meaning)
 DECLARE_CLASS(adjective_meaning_family)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
+DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS(generalisation)
 DECLARE_CLASS(by_routine_bp_data)
 DECLARE_CLASS(equivalence_bp_data)
@@ -159,7 +161,6 @@ DECLARE_CLASS(value_property_data)
 
 @ //imperative// --
 
-@e constant_phrase_CLASS
 @e invocation_options_CLASS
 @e local_variable_CLASS
 @e past_tense_action_record_CLASS
@@ -170,10 +171,8 @@ DECLARE_CLASS(value_property_data)
 @e phrase_option_CLASS
 @e pointer_allocation_CLASS
 @e to_phrase_request_CLASS
-@e use_as_event_CLASS
 
 =
-DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
 DECLARE_CLASS(past_tense_action_record)
@@ -184,7 +183,6 @@ DECLARE_CLASS(phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(pointer_allocation)
 DECLARE_CLASS(to_phrase_request)
-DECLARE_CLASS(use_as_event)
 
 @ //runtime// --
 
@@ -276,6 +274,7 @@ DECLARE_CLASS(rubric_holder)
 @e release_instructions_CLASS
 @e scene_CLASS
 @e spatial_data_CLASS
+@e timed_rules_rfd_data_CLASS
 
 @e anl_clause_CLASS
 @e anl_entry_CLASS
@@ -310,6 +309,7 @@ DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(scene)
 DECLARE_CLASS(spatial_data)
+DECLARE_CLASS(timed_rules_rfd_data)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_clause, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(anl_entry, 1000)

@@ -20,7 +20,6 @@ rulebooks reach them.
 =
 typedef struct ph_runtime_context_data {
 	struct wording activity_context; /* happens only while any activities go on? */
-	struct parse_node *activity_where; /* and who says? */
 	struct activity_list *avl;
 	#ifdef IF_MODULE
 	struct parse_node *during_scene; /* ...happens only during a scene matching this? */
@@ -29,7 +28,6 @@ typedef struct ph_runtime_context_data {
 	int never_test_actor; /* ...for instance, for a parametrised rather than action rulebook */
 	int marked_for_anyone; /* any actor is allowed to perform this action */
 	#endif
-	struct rulebook **compile_for_rulebook; /* ...used for the default outcome */
 	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 } ph_runtime_context_data;
 
@@ -89,7 +87,6 @@ the following only blanks out a PHRCD structure ready for that to happen.
 ph_runtime_context_data Phrases::Context::new(void) {
 	ph_runtime_context_data phrcd;
 	phrcd.activity_context = EMPTY_WORDING;
-	phrcd.activity_where = NULL;
 	phrcd.avl = NULL;
 	#ifdef IF_MODULE
 	phrcd.during_scene = NULL;
@@ -99,7 +96,6 @@ ph_runtime_context_data Phrases::Context::new(void) {
 	phrcd.marked_for_anyone = FALSE;
 	#endif
 	phrcd.permit_all_outcomes = FALSE;
-	phrcd.compile_for_rulebook = NULL;
 	return phrcd;
 }
 
@@ -321,7 +317,7 @@ void Phrases::Context::ensure_avl(rule *R) {
 		ph_runtime_context_data *rcd = &(ph->runtime_context_data);
 		if (Wordings::nonempty(rcd->activity_context)) {
 			parse_node *save_cs = current_sentence;
-			current_sentence = rcd->activity_where;
+			current_sentence = id->at;
 
 			ph_stack_frame *phsf = &(ph->stack_frame);
 			Frames::make_current(phsf);
@@ -414,13 +410,10 @@ with the default outcome return (see above).
 void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 	inter_name *identifier = Phrases::iname(ph);
 	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
-
-	if (phrcd->compile_for_rulebook) {
-		rulebook *rb = *(phrcd->compile_for_rulebook);
-		if (rb) RTRules::compile_default_outcome(Rulebooks::get_outcomes(rb));
-	}
-
-	if (Wordings::nonempty(phrcd->activity_context)) @<Compile an activity or explicit condition test tail@>;
+	rulebook *rb = RuleFamily::get_rulebook(ph->from);
+	if (rb) RTRules::compile_default_outcome(Rulebooks::get_outcomes(rb));
+	if (Wordings::nonempty(phrcd->activity_context))
+		@<Compile an activity or explicit condition test tail@>;
 	if (PluginCalls::compile_test_tail(ph, R) == FALSE) {
 		if (phrcd->ap) @<Compile an action test tail@>;
 	}

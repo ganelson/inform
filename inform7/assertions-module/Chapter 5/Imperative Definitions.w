@@ -103,7 +103,8 @@ void ImperativeDefinitions::assess_all(void) {
 		} else {
 			phrase *body = Phrases::create_from_preamble(id);
 			id->body_of_defn = body;
-			ImperativeDefinitionFamilies::given_body(id, body);
+			ImperativeDefinitionFamilies::given_body(id);
+			Phrases::prepare_stack_frame(body);
 		}
 	}
 	if (initial_problem_count < problem_count) return;
@@ -111,7 +112,7 @@ void ImperativeDefinitions::assess_all(void) {
 @<Step 2 - Register@> =
 	imperative_defn_family *idf;
 	LOOP_OVER(idf, imperative_defn_family) {
-		ImperativeDefinitionFamilies::register(idf, initial_problem_count);
+		ImperativeDefinitionFamilies::register(idf);
 		if (initial_problem_count < problem_count) return;
 	}
 
@@ -125,7 +126,7 @@ void ImperativeDefinitions::assess_all(void) {
 @<Step 4 - Complete@> =
 	imperative_defn_family *idf;
 	LOOP_OVER(idf, imperative_defn_family) {
-		ImperativeDefinitionFamilies::assessment_complete(idf, initial_problem_count);
+		ImperativeDefinitionFamilies::assessment_complete(idf);
 		if (initial_problem_count < problem_count) return;
 	}
 

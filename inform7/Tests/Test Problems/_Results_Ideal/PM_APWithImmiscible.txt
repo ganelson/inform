@@ -8,9 +8,9 @@ Problem__ PM_APWithDisjunction
     box' (source text, line 5), which seems to introduce a rule, but the
     circumstances ('dropping the CD or inserting the CD into the jewel box')
     seem to be too general for me to understand in a single rule. I can
-    understand a choice of of actions, in a list such as 'taking or dropping
-    the ball', but there can only be one set of noun(s) supplied. So 'taking
-    the ball or taking the bat' is disallowed. You can get around this by using
+    understand a choice of actions, in a list such as 'taking or dropping the
+    ball', but there can only be one set of noun(s) supplied. So 'taking the
+    ball or taking the bat' is disallowed. You can get around this by using
     named actions ('Taking the ball is being mischievous. Taking the bat is
     being mischievous. Instead of being mischievous...'), or it may be less
     bother just to write more than one rule.
@@ -19,9 +19,9 @@ Problem__ PM_APWithDisjunction
     the CD' (source text, line 8), which seems to introduce a rule, but the
     circumstances ('inserting the CD into the jewel box or dropping the CD')
     seem to be too general for me to understand in a single rule. I can
-    understand a choice of of actions, in a list such as 'taking or dropping
-    the ball', but there can only be one set of noun(s) supplied. So 'taking
-    the ball or taking the bat' is disallowed. You can get around this by using
+    understand a choice of actions, in a list such as 'taking or dropping the
+    ball', but there can only be one set of noun(s) supplied. So 'taking the
+    ball or taking the bat' is disallowed. You can get around this by using
     named actions ('Taking the ball is being mischievous. Taking the bat is
     being mischievous. Instead of being mischievous...'), or it may be less
     bother just to write more than one rule.

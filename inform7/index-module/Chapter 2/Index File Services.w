@@ -649,7 +649,7 @@ void Index::index_actual_element(OUTPUT_STREAM, text_stream *elt) {
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"Ev")) {
-		Phrases::Timed::index(OUT); /* rules which happen at set times of day */
+		IXRules::index_timed_rules(OUT); /* rules which happen at set times of day */
 		return;
 	}
 	if (Str::eq_wide_string(elt, L"RS")) {

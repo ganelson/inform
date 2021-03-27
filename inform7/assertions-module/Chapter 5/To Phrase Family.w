@@ -14,6 +14,7 @@ typedef struct to_family_data {
 	struct wording pattern;
 	struct wording prototype_text;
 	struct wording constant_name;
+	struct wording ph_documentation_symbol; /* the documentation reference, if any */
 	struct constant_phrase *constant_phrase_holder;
 	int explicit_name_used_in_maths; /* if so, this flag means it's like |log()| or |sin()| */
 	struct wording explicit_name_for_inverse; /* e.g. |exp| for |log| */
@@ -26,12 +27,11 @@ typedef struct to_family_data {
 =
 void ToPhraseFamily::create_family(void) {
 	TO_PHRASE_EFF_family            = ImperativeDefinitionFamilies::new(I"TO_PHRASE_EFF", TRUE);
-	METHOD_ADD(TO_PHRASE_EFF_family, CLAIM_IMP_DEFN_MTID, ToPhraseFamily::claim);
+	METHOD_ADD(TO_PHRASE_EFF_family, IDENTIFY_IMP_DEFN_MTID, ToPhraseFamily::claim);
 	METHOD_ADD(TO_PHRASE_EFF_family, ASSESS_IMP_DEFN_MTID, ToPhraseFamily::assess);
 	METHOD_ADD(TO_PHRASE_EFF_family, REGISTER_IMP_DEFN_MTID, ToPhraseFamily::register);
-	METHOD_ADD(TO_PHRASE_EFF_family, NEW_PHRASE_IMP_DEFN_MTID, ToPhraseFamily::new_phrase);
+	METHOD_ADD(TO_PHRASE_EFF_family, GIVEN_BODY_IMP_DEFN_MTID, ToPhraseFamily::given_body);
 	METHOD_ADD(TO_PHRASE_EFF_family, ALLOWS_INLINE_IMP_DEFN_MTID, ToPhraseFamily::allows_inline);
-	METHOD_ADD(TO_PHRASE_EFF_family, TO_PHTD_IMP_DEFN_MTID, ToPhraseFamily::to_phtd);
 	METHOD_ADD(TO_PHRASE_EFF_family, COMPILE_IMP_DEFN_MTID, ToPhraseFamily::compile);
 	METHOD_ADD(TO_PHRASE_EFF_family, COMPILE_AS_NEEDED_IMP_DEFN_MTID, ToPhraseFamily::compile_as_needed);
 	METHOD_ADD(TO_PHRASE_EFF_family, PHRASEBOOK_INDEX_IMP_DEFN_MTID, ToPhraseFamily::include_in_Phrasebook_index);
@@ -83,13 +83,15 @@ void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 					"because it already has a meaning.");
 			} else {
 				tfd->constant_name = RW;
-				if (Phrases::Constants::parse(RW) == NULL)
-					Phrases::Constants::create(RW, GET_RW(<to-phrase-preamble>, 1));
+				if (ToPhraseFamily::parse_constant(RW) == NULL)
+					ToPhraseFamily::create_constant(RW, GET_RW(<to-phrase-preamble>, 1));
 			}
 			if ((form == 1) || (form == 2)) tfd->explicit_name_used_in_maths = TRUE;
 			if (form == 1) tfd->explicit_name_for_inverse = Wordings::first_word(GET_RW(<to-phrase-preamble>, 3));
 		}
-		tfd->prototype_text = GET_RW(<to-phrase-preamble>, 1);
+		wording PW = GET_RW(<to-phrase-preamble>, 1);
+		tfd->ph_documentation_symbol = Index::DocReferences::position_of_symbol(&PW);
+		tfd->prototype_text = PW;
 	}
 }
 
@@ -136,9 +138,9 @@ mode, we can get that value back again if we look it up by name.
 @<The preamble parses to a named To phrase@> =
 	wording NW = tfd->constant_name;
 
-	constant_phrase *cphr = Phrases::Constants::parse(NW);
+	constant_phrase *cphr = ToPhraseFamily::parse_constant(NW);
 	if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
-		phrase *ph = Phrases::Constants::as_phrase(cphr);
+		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
 		if (ph) current_sentence = Phrases::declaration_node(ph);
 		Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
 		Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
@@ -158,22 +160,24 @@ mode, we can get that value back again if we look it up by name.
 @
 
 =
-void ToPhraseFamily::register(imperative_defn_family *self, int initial_problem_count) {
+void ToPhraseFamily::register(imperative_defn_family *self) {
 	Routines::ToPhrases::register_all();
 }
 
-void ToPhraseFamily::new_phrase(imperative_defn_family *self, imperative_defn *id, phrase *new_ph) {
+void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	if (tfd->to_begin) new_ph->to_begin = TRUE;
-	Routines::ToPhrases::new(new_ph);
+	if (tfd->to_begin) id->body_of_defn->to_begin = TRUE;
+
+	wording XW = ToPhraseFamily::get_prototype_text(id);
+	wording OW = EMPTY_WORDING;
+	Phrases::TypeData::Textual::parse(&(id->body_of_defn->type_data), XW, &OW);
+	Phrases::Options::parse_declared_options(&(id->body_of_defn->options_data), OW);
+
+	Routines::ToPhrases::new(id->body_of_defn);
 }
 
 int ToPhraseFamily::allows_inline(imperative_defn_family *self, imperative_defn *id) {
 	return TRUE;
-}
-
-void ToPhraseFamily::to_phtd(imperative_defn_family *self, imperative_defn *id, ph_type_data *phtd, wording XW, wording *OW) {
-	Phrases::TypeData::Textual::parse(phtd, XW, OW);
 }
 
 int ToPhraseFamily::include_in_Phrasebook_index(imperative_defn_family *self, imperative_defn *id) {
@@ -222,6 +226,12 @@ wording ToPhraseFamily::get_equation_form(imperative_defn *id) {
 	if (tfd->explicit_name_used_in_maths)
 		return Wordings::first_word(Nouns::nominative_singular(tfd->constant_phrase_holder->name));
 	return EMPTY_WORDING;
+}
+
+wording ToPhraseFamily::doc_ref(imperative_defn *id) {
+	if (id->family != TO_PHRASE_EFF_family) return EMPTY_WORDING;
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+	return tfd->ph_documentation_symbol;
 }
 
 @h Extracting the stem.
@@ -368,4 +378,86 @@ void ToPhraseFamily::compile_as_needed(imperative_defn_family *self,
 		if (Propositions::Deferred::compilation_coroutine() > 0)
 			repeat = TRUE;
 	}
+}
+
+@ A few "To..." phrases have names, and can therefore be used as values in their
+own right, a functional-programming sort of device. For example:
+
+>> To decide what number is double (N - a number) (this is doubling):
+
+has the name "doubling". Such a name is recorded here:
+
+=
+typedef struct constant_phrase {
+	struct noun *name;
+	struct phrase *phrase_meant; /* if known at this point */
+	struct kind *cphr_kind; /* ditto */
+	struct inter_name *cphr_iname;
+	struct wording associated_preamble_text;
+	CLASS_DEFINITION
+} constant_phrase;
+
+@ Here we create a new named phrase ("doubling", say):
+
+=
+constant_phrase *ToPhraseFamily::create_constant(wording NW, wording RW) {
+	constant_phrase *cphr = CREATE(constant_phrase);
+	cphr->phrase_meant = NULL; /* we won't know until later */
+	cphr->cphr_kind = NULL; /* nor this */
+	cphr->associated_preamble_text = RW;
+	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr), Task::language_of_syntax());
+	cphr->cphr_iname = NULL;
+	return cphr;
+}
+
+@ ...and parse for an existing one:
+
+=
+constant_phrase *ToPhraseFamily::parse_constant(wording NW) {
+	if (<s-value>(NW)) {
+		parse_node *spec = <<rp>>;
+		if (Rvalues::is_CONSTANT_construction(spec, CON_phrase)) {
+			constant_phrase *cphr = Rvalues::to_constant_phrase(spec);
+			ToPhraseFamily::kind(cphr);
+			return cphr;
+		}
+	}
+	return NULL;
+}
+
+@ As often happens with Inform constants, the kind of a constant phrase can't
+be known when its name first comes up, and must be filled in later. (In
+particular, before the second traverse many kinds do not yet exist.) So
+the following takes a patch-it-later approach.
+
+=
+kind *ToPhraseFamily::kind(constant_phrase *cphr) {
+	if (cphr == NULL) return NULL;
+	if (global_pass_state.pass < 2) return Kinds::binary_con(CON_phrase, K_value, K_value);
+	if (cphr->cphr_kind == NULL) {
+		wording OW = EMPTY_WORDING;
+		ph_type_data phtd = Phrases::TypeData::new();
+		Phrases::TypeData::Textual::parse(&phtd,
+			cphr->associated_preamble_text, &OW);
+		cphr->cphr_kind = Phrases::TypeData::kind(&phtd);
+	}
+	return cphr->cphr_kind;
+}
+
+@ And similarly for the |phrase| structure this name corresponds to.
+
+=
+phrase *ToPhraseFamily::body_of_constant(constant_phrase *cphr) {
+	if (cphr == NULL) internal_error("null cphr");
+	if (cphr->phrase_meant == NULL) {
+		imperative_defn *id;
+		LOOP_OVER(id, imperative_defn) {
+			if (ToPhraseFamily::constant_phrase(id) == cphr) {
+				cphr->phrase_meant = id->body_of_defn;
+				break;
+			}
+		}
+	}
+	return cphr->phrase_meant;
 }

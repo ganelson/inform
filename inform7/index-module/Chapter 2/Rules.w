@@ -640,3 +640,61 @@ void IXRules::index_outcomes(OUTPUT_STREAM, outcomes *outs, int suppress_outcome
 		HTML_CLOSE("p");
 	}
 }
+
+@
+
+=
+void IXRules::index_timed_rules(OUTPUT_STREAM) {
+	int when_count = 0, tt_count = 0;
+	@<Index events with no specific time@>;
+	@<Index timetabled events@>;
+	if ((when_count == 0) && (tt_count == 0)) {
+		HTML_OPEN("p"); WRITE("<i>None.</i>"); HTML_CLOSE("p");
+	}
+}
+
+@<Index events with no specific time@> =
+	phrase *ph;
+	LOOP_OVER(ph, phrase) {
+		int t = TimedRules::get_timing_of_event(ph->from);
+		if (t == NO_FIXED_TIME) {
+			if (when_count == 0) {
+				HTML_OPEN("p");
+				WRITE("<i>Events with no specific time</i>");
+				HTML_CLOSE("p");
+			}
+			when_count++;
+			HTML_OPEN_WITH("p", "class=\"tightin2\"");
+			ImperativeDefinitions::index_preamble(OUT, ph->from);
+			if ((ph->from->at) &&
+				(Wordings::nonempty(Node::get_text(ph->from->at))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
+			WRITE(" (where triggered: ");
+			linked_list *L = TimedRules::get_uses_as_event(ph->from);
+			parse_node *p;
+			LOOP_OVER_LINKED_LIST(p, parse_node, L)
+				Index::link(OUT, Wordings::first_wn(Node::get_text(p)));
+			WRITE(")");
+			HTML_CLOSE("p");
+		}
+	}
+
+@<Index timetabled events@> =
+	phrase *ph;
+	LOOP_OVER(ph, phrase) {
+		int t = TimedRules::get_timing_of_event(ph->from);
+		if (t >= 0) { /* i.e., an actual time of day in minutes since midnight */
+			if (tt_count == 0) {
+				HTML_OPEN("p");
+				WRITE("<i>Timetable</i>");
+				HTML_CLOSE("p");
+			}
+			tt_count++;
+			HTML_OPEN_WITH("p", "class=\"in2\"");
+			ImperativeDefinitions::index_preamble(OUT, ph->from);
+			if ((ph->from->at) &&
+				(Wordings::nonempty(Node::get_text(ph->from->at))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
+			HTML_CLOSE("p");
+		}
+	}

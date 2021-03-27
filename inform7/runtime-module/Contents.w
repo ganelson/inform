@@ -59,6 +59,7 @@ Chapter 4: Compilation Utilities
 	Relations at Run Time
 	Literal Patterns at Run Time
 	Runtime Support for Tables
+	Closures
 
 Chapter 5: Plugin Support
 	Naming
@@ -74,6 +75,7 @@ Chapter 5: Plugin Support
 	The Map
 	Showme Command
 	The Score
+	Timed Rules
 	Scenes
 	Actions
 	Looping Over Scope

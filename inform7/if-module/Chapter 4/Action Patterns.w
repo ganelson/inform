@@ -94,10 +94,21 @@ void ActionPatterns::write(OUTPUT_STREAM, action_pattern *ap) {
 	}
 }
 
-@ This simple parser converts text to a parametric AP of kind |K|. The parser
-for action-based APs is very much more complicated: see //Parse Action Patterns//.
+@ These functions are used when parsing rule applicability:
 
 =
+action_pattern *ActionPatterns::parse_action_based(wording W) {
+	action_pattern *ap = NULL;
+	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
+	if (Rules::all_action_processing_variables())
+		Frames::set_stvol(
+			Frames::current_stack_frame(), Rules::all_action_processing_variables());
+	if (<action-pattern>(W)) ap = <<rp>>;
+	Frames::remove_nonphrase_stack_frame();
+	ParseActionPatterns::restore_mode(saved);
+	return ap;
+}
+
 action_pattern *ActionPatterns::parse_parametric(wording W, kind *K) {
 	parse_node *spec = NULL;
 	if (<s-ap-parameter>(W)) spec = <<rp>>;

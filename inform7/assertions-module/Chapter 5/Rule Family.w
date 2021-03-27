@@ -2,55 +2,107 @@
 
 Imperative definitions of rules.
 
-@
+@h Introduction.
+This family handles definitions of rules which give explicit Inform 7
+source text to show what they do. (It's also possible to create rules which
+are implemented by Inter-level functions only, and those do not fall under
+this section, because they have no //imperative_defn//.) For example:
+= (text as Inform 7)
+Every turn:
+	say "The grandfather clock ticks reprovingly."
+=
+Some rules have names, some do not; some indicate explicitly what rulebook
+they belong to, and others are placed in rulebooks with separate sentences.
+So there's quite a lot to do.
 
 =
-imperative_defn_family *RULE_EFF_family = NULL; /* "Before taking a container, ..." */
+imperative_defn_family *rule_idf = NULL; /* "Before taking a container, ..." */
+void RuleFamily::create_family(void) {
+	rule_idf = ImperativeDefinitionFamilies::new(I"rule-idf", FALSE);
+	METHOD_ADD(rule_idf, IDENTIFY_IMP_DEFN_MTID, RuleFamily::identify);
+	METHOD_ADD(rule_idf, ASSESS_IMP_DEFN_MTID, RuleFamily::assess);
+	METHOD_ADD(rule_idf, ASSESSMENT_COMPLETE_IMP_DEFN_MTID, RuleFamily::assessment_complete);
+	METHOD_ADD(rule_idf, ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID, RuleFamily::allows_rule_only);
+	METHOD_ADD(rule_idf, GIVEN_BODY_IMP_DEFN_MTID, RuleFamily::given_body);
+	METHOD_ADD(rule_idf, TO_RCD_IMP_DEFN_MTID, RuleFamily::to_rcd);
+	METHOD_ADD(rule_idf, COMPILE_IMP_DEFN_MTID, RuleFamily::compile);
+}
 
+@ Each family member gets one of the following. In splitting up preambles,
+the "usage preamble" is the part indicating when the rule should happen, and
+this is divided up into smaller excerpts of text, as in the following examples:
+= (text)
+rule instead    of          taking or dropping when Miss Bianca is in the Embassy:
+<---------------------------- usage_preamble ----------------------------------->
+     <- stem ---->          <------------------ applicability ------------------>
+     <- ps ->   <- bud ->   <--- prewhile --->      <-------- whenwhile -------->
+
+after examining    an open door during the Hurricane (this is the exit hunting rule):
+<----------------- usage preamble ----------------->              <- const name -->
+<---- stem ----->  <-- appl -->        <- during -->
+<- pruned stem ->  <-- pw ---->
+=
+
+=
 typedef struct rule_family_data {
-	struct wording reduced_stem;
+	struct wording usage_preamble;
+	struct wording pruned_stem;
 	struct wording constant_name;
-	struct wording pattern;
+	struct wording prewhile_applicability;
+	struct wording applicability;
+	struct wording whenwhile;
+	struct parse_node *during_spec; /* what scene is currently under way */
+
 	int not_in_rulebook;
-	int event_time;
-	struct wording event_name;
-	struct linked_list *uses_as_event; /* of |use_as_event| */
-	struct wording rule_parameter; /* text of object or action parameter */
-	struct wording whenwhile; /* when/while for action/activity rulebooks */
-	#ifdef IF_MODULE
-	struct parse_node *during_scene_spec; /* what scene is currently under way */
-	#endif
+	struct rule *defines;
 	struct rulebook *owning_rulebook; /* the primary booking for the phrase will be here */
 	int owning_rulebook_placement; /* ...and with this placement value: see Rulebooks */
+
+	void *plugin_rfd[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
 	CLASS_DEFINITION
 } rule_family_data;
 
-@
-
-=
-void RuleFamily::create_family(void) {
-	RULE_EFF_family = ImperativeDefinitionFamilies::new(I"RULE_EFF", FALSE);
-	METHOD_ADD(RULE_EFF_family, CLAIM_IMP_DEFN_MTID, RuleFamily::claim);
-	METHOD_ADD(RULE_EFF_family, ASSESS_IMP_DEFN_MTID, RuleFamily::assess);
-	METHOD_ADD(RULE_EFF_family, ASSESSMENT_COMPLETE_IMP_DEFN_MTID, RuleFamily::assessment_complete);
-	METHOD_ADD(RULE_EFF_family, ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID, RuleFamily::allows_rule_only_phrases);
-	METHOD_ADD(RULE_EFF_family, NEW_PHRASE_IMP_DEFN_MTID, RuleFamily::new_phrase);
-	METHOD_ADD(RULE_EFF_family, TO_RCD_IMP_DEFN_MTID, RuleFamily::to_rcd);
-	METHOD_ADD(RULE_EFF_family, TO_PHTD_IMP_DEFN_MTID, RuleFamily::to_phtd);
-	METHOD_ADD(RULE_EFF_family, COMPILE_IMP_DEFN_MTID, RuleFamily::compile);
+rule_family_data *RuleFamily::new_data(void) {
+	rule_family_data *rfd = CREATE(rule_family_data);
+	rfd->pruned_stem = EMPTY_WORDING;
+	rfd->constant_name = EMPTY_WORDING;
+	rfd->usage_preamble = EMPTY_WORDING;
+	rfd->applicability = EMPTY_WORDING;
+	rfd->prewhile_applicability = EMPTY_WORDING;
+	rfd->whenwhile = EMPTY_WORDING;
+	rfd->during_spec = NULL;
+	rfd->not_in_rulebook = FALSE;
+	rfd->defines = NULL;
+	rfd->owning_rulebook = NULL;
+	rfd->owning_rulebook_placement = MIDDLE_PLACEMENT;
+	for (int i=0; i<MAX_PLUGINS; i++) rfd->plugin_rfd[i] = NULL;
+	return rfd;
 }
 
-@ =
+@ These two macros provide access to plugin-specific rule family data:
+
+@d RFD_PLUGIN_DATA(id, rfd)
+	((id##_rfd_data *) rfd->plugin_rfd[id##_plugin->allocation_id])
+
+@d CREATE_PLUGIN_RFD_DATA(id, rfd, creator)
+	(rfd)->plugin_rfd[id##_plugin->allocation_id] = (void *) (creator(rfd));
+
+@h Identification.
+We are going to claim as our own any definition whose name matches the
+following nonterminal -- and because of the last production, this will always
+happen. (That's why it is important that we are the last family to claim.)
+
+=
 <rule-preamble> ::=
-	this is the {... rule} |                                  ==> { 1, - }
-	this is the rule |                                        ==> @<Issue PM_NamelessRule problem@>
-	this is ... rule |                                        ==> @<Issue PM_UnarticledRule problem@>
-	this is ... rules |                                       ==> @<Issue PM_PluralisedRule problem@>
-	... ( this is the {... rule} ) |                          ==> { 2, - }
-	... ( this is the rule ) |                                ==> @<Issue PM_NamelessRule problem@>
-	... ( this is ... rule ) |                                ==> @<Issue PM_UnarticledRule problem@>
-	... ( this is ... rules ) |                               ==> @<Issue PM_PluralisedRule problem@>
-	...                                                       ==> { 3, - }
+	this is the {... rule} |            ==> { 1, - }
+	this is the rule |                  ==> @<Issue PM_NamelessRule problem@>
+	this is ... rule |                  ==> @<Issue PM_UnarticledRule problem@>
+	this is ... rules |                 ==> @<Issue PM_PluralisedRule problem@>
+	... ( this is the {... rule} ) |    ==> { 2, - }
+	... ( this is the rule ) |          ==> @<Issue PM_NamelessRule problem@>
+	... ( this is ... rule ) |          ==> @<Issue PM_UnarticledRule problem@>
+	... ( this is ... rules ) |         ==> @<Issue PM_PluralisedRule problem@>
+	...                                 ==> { 3, - }
 
 @<Issue PM_NamelessRule problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamelessRule),
@@ -74,52 +126,15 @@ void RuleFamily::create_family(void) {
 		"contain many rules at once.");
 	==> { FALSE, - }
 
-@ =
-<event-rule-preamble> ::=
-	at <clock-time> |         ==> { pass 1 }
-	at the time when ... |    ==> { NO_FIXED_TIME, - }
-	at the time that ... |    ==> @<Issue PM_AtTimeThat problem@>
-	at ...					  ==> @<Issue PM_AtWithoutTime problem@>
-
-@<Issue PM_AtTimeThat problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AtTimeThat),
-		"this seems to use 'that' where it should use 'when'",
-		"assuming it's trying to apply a rule to an event. (The convention is "
-		"that any rule beginning 'At' is a timed one. The time can either be a "
-		"fixed time, as in 'At 11:10 AM: ...', or the time when some named "
-		"event takes place, as in 'At the time when the clock chimes: ...'.)");
-
-@<Issue PM_AtWithoutTime problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AtWithoutTime),
-		"'at' what time? No description of a time is given",
-		"which means that this rule can never have effect. (The convention is "
-		"that any rule beginning 'At' is a timed one. The time can either be a "
-		"fixed time, as in 'At 11:10 AM: ...', or the time when some named "
-		"event takes place, as in 'At the time when the clock chimes: ...'.)");
-
-@
+@ Forms 1 and 2 give a rule name; forms 2 and 3 say which rulebook it goes into.
 
 =
-void RuleFamily::claim(imperative_defn_family *self, imperative_defn *id) {
+void RuleFamily::identify(imperative_defn_family *self, imperative_defn *id) {
 	wording W = Node::get_text(id->at);
 	if (<rule-preamble>(W)) {
 		int form = <<r>>;
-		id->family = RULE_EFF_family;
-		rule_family_data *rfd = CREATE(rule_family_data);
-		rfd->not_in_rulebook = FALSE;
-		rfd->constant_name = EMPTY_WORDING;
-		rfd->pattern = EMPTY_WORDING;
-		rfd->event_time = NOT_A_TIMED_EVENT;
-		rfd->event_name = EMPTY_WORDING;
-		rfd->uses_as_event = NEW_LINKED_LIST(use_as_event);
-		rfd->rule_parameter = EMPTY_WORDING;
-		rfd->whenwhile = EMPTY_WORDING;
-		rfd->reduced_stem = EMPTY_WORDING;
-		#ifdef IF_MODULE
-		rfd->during_scene_spec = NULL;
-		#endif
-		rfd->owning_rulebook = NULL;
-		rfd->owning_rulebook_placement = MIDDLE_PLACEMENT;
+		id->family = rule_idf;
+		rule_family_data *rfd = RuleFamily::new_data();
 
 		if (form == 1) rfd->not_in_rulebook = TRUE;
 		id->family_specific_data = STORE_POINTER_rule_family_data(rfd);
@@ -137,52 +152,14 @@ void RuleFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 				Rules::obtain(RW, TRUE);
 			}
 		}
-		if ((form == 2) || (form == 3)) rfd->pattern = GET_RW(<rule-preamble>, 1);
-		if (form == 3) {
-			if (<event-rule-preamble>(W)) {
-				rfd->pattern = EMPTY_WORDING;
-				rfd->not_in_rulebook = TRUE;
-				rfd->event_time = <<r>>;
-				if (rfd->event_time == NO_FIXED_TIME)
-					rfd->event_name = GET_RW(<event-rule-preamble>, 1);
-			}
-		}
+		if ((form == 2) || (form == 3)) rfd->usage_preamble = GET_RW(<rule-preamble>, 1);
+
+		PluginCalls::new_rule_defn_notify(id, rfd);
 	}
 }
 
-@ =
-void RuleFamily::assess(imperative_defn_family *self, imperative_defn *id) {
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (rfd->not_in_rulebook == FALSE)
-		@<Parse the rulebook stem in fine mode@>;
-}
-
-void RuleFamily::assessment_complete(imperative_defn_family *self, int initial_problem_count) {
-	RuleBookings::make_automatic_placements();
-	if (initial_problem_count < problem_count) return;
-
-	SyntaxTree::traverse(Task::syntax_tree(), RuleFamily::visit_to_parse_placements);
-}
-
-@
-
-@e TRAVERSE_FOR_RULE_FILING_SMFT
-
-=
-void RuleFamily::visit_to_parse_placements(parse_node *p) {
-	if ((Node::get_type(p) == SENTENCE_NT) &&
-		(p->down) &&
-		(Node::get_type(p->down) == VERB_NT)) {
-		prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
-		MajorNodes::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
-	}
-}
-
-int RuleFamily::allows_rule_only_phrases(imperative_defn_family *self, imperative_defn *id) {
-	return TRUE;
-}
-
-@ Much later on, Inform returns to the definition to look at it in fine detail:
+@h Assessment.
+Now we take a closer look at the rule preamble.
 
 =
 <rule-preamble-fine> ::=
@@ -206,156 +183,155 @@ int RuleFamily::allows_rule_only_phrases(imperative_defn_family *self, imperativ
 	rule about/for/on ... |                               ==> { TRUE, - }
 	rule                                                  ==> { FALSE, - }
 
-@ That's it for coarse mode. The rest is what happens in fine mode, which
-affects rules giving a rulebook and some circumstances:
-
->> Instead of taking a container: ...
-
-Here "Instead of" is the stem and "taking a container" the bud.
-
-@<Parse the rulebook stem in fine mode@> =
-	wording W = rfd->pattern;
-	<rule-preamble-fine>(W);
-	parse_node *during_spec = <<rp>>;
-	int form = <<r>>;
-	rulebook_match *parsed_rm = Rulebooks::match();
-	W = GET_RW(<rule-preamble-finer>, 1);
-	if (form == NOT_APPLICABLE) {
-		<unrecognised-rule-stem-diagnosis>(W);
-	} else {
-		if (form) rfd->whenwhile = GET_RW(<rule-preamble-finer>, 2);
-		#ifdef IF_MODULE
-		rfd->during_scene_spec = during_spec;
-		#endif
-		rfd->owning_rulebook = parsed_rm->matched_rulebook;
-		if (rfd->owning_rulebook == NULL) internal_error("rulebook stem misparsed");
-		rfd->owning_rulebook_placement = parsed_rm->placement_requested;
-		@<Disallow the definite article for anonymous rules@>;
-		@<Cut off the bud from the stem@>;
-	}
-	rfd->reduced_stem = W;
-
-@ The bud is not always present at all, and need not always be at the end
-of the stem, so we have to be very careful:
-
-@<Cut off the bud from the stem@> =
-	wording BUD = GET_RW(<rulebook-stem-embellished>, 1);
-	int b1 = Wordings::first_wn(BUD), b2 = Wordings::last_wn(BUD);
-	if ((b1 == -1) || (b1 > b2)) {
-		b1 = parsed_rm->match_from + parsed_rm->advance_words;
-		b2 = parsed_rm->match_from + parsed_rm->advance_words - 1;
-	}
-	b2 -= parsed_rm->tail_words;
-	wording BW = Wordings::new(b1, b2);
-	wording CW = EMPTY_WORDING;
-
-	if (parsed_rm->advance_words != parsed_rm->match_length) {
-		if (!((<rulebook-bud>(BW)) && (<<r>> == FALSE))) {
-			BW = Wordings::from(BW, parsed_rm->match_from + parsed_rm->match_length);
-			if (<rulebook-bud>(BW)) {
-				if (<<r>>) CW = GET_RW(<rulebook-bud>, 1);
-			} else {
-				CW = BW;
-			}
-		}
-	} else {
-		if (<rulebook-bud>(BW)) {
-			if (<<r>>) CW = GET_RW(<rulebook-bud>, 1);
-		} else {
-			CW = BW;
-		}
-	}
-
-	if (<rulebook-bud>(BW)) {
-		if (<<r>>) CW = GET_RW(<rulebook-bud>, 1);
-	} else if (parsed_rm->advance_words != parsed_rm->match_length) {
-		BW = Wordings::from(BW, parsed_rm->match_from + parsed_rm->match_length);
-		if (<rulebook-bud>(BW)) {
-			if (<<r>>) CW = GET_RW(<rulebook-bud>, 1);
-		} else {
-			CW = BW;
-		}
-	} else {
-		CW = BW;
-	}
-
-	if (Wordings::nonempty(CW)) rfd->rule_parameter = CW;
-
-	if ((rfd->owning_rulebook) &&
-		(Rulebooks::runs_during_activities(rfd->owning_rulebook) == FALSE) &&
-		(Rulebooks::action_focus(rfd->owning_rulebook)) &&
-		(Wordings::nonempty(rfd->rule_parameter)) &&
-		(Wordings::nonempty(rfd->whenwhile))) {
-		rfd->rule_parameter =
-			Wordings::new(Wordings::first_wn(rfd->rule_parameter),
-				Wordings::last_wn(rfd->whenwhile));
-		rfd->whenwhile = EMPTY_WORDING;
-	}
-
-@ If we can't find a stem, the following chooses which problem to issue:
-
-=
 <unrecognised-rule-stem-diagnosis> ::=
-	when *** |    ==> @<Issue PM_BadRulePreambleWhen problem@>
-	...							==> @<Issue PM_BadRulePreamble problem@>
+	when *** |                            ==> @<Issue PM_BadRulePreambleWhen problem@>
+	...                                   ==> @<Issue PM_BadRulePreamble problem@>
 
 @<Issue PM_BadRulePreambleWhen problem@> =
 	Problems::quote_source(1, current_sentence);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleWhen));
 	Problems::issue_problem_segment(
-		"The punctuation makes me think %1 should be a definition "
-		"of a phrase or a rule, but it doesn't begin as it should, "
-		"with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:', "
-		"a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
-		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when "
-		"the clock chimes:') or the name of a rulebook. %P"
-		"As your rule begins with 'When', it may be worth noting that in "
-		"December 2006 the syntax used by Inform for timed events changed: "
-		"the old syntax 'When the sky falls in:' to create a named "
-		"event, the sky falls in, became 'At the time when the sky "
-		"falls in:'. This was changed to avoid confusion with rules "
-		"relating to when scenes begin or end. %P"
-		"Or perhaps you meant to say that something would only happen "
-		"when some condition held. Inform often allows this, but the "
-		"'when...' part tends to be at the end, not up front - for "
-		"instance, 'Understand \"blue\" as the deep crevasse when the "
-		"location is the South Pole.'");
+		"The punctuation makes me think %1 should be a definition of a phrase or a rule, "
+		"but it doesn't begin as it should, with either 'To' (e.g. 'To flood the riverplain:'), "
+		"'Definition:', a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
+		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or "
+		"the name of a rulebook. %P"
+		"Perhaps you meant to say that something would only happen when some condition held. "
+		"Inform often allows this, but the 'when...' part tends to be at the end, not up "
+		"front - for instance, 'Understand \"blue\" as the deep crevasse when the location "
+		"is the South Pole.'");
 	Problems::issue_problem_end();
 
 @<Issue PM_BadRulePreamble problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRulePreamble),
-		"the punctuation here ':' makes me think this should be a definition "
-		"of a phrase and it doesn't begin as it should",
-		"with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:', "
-		"a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
-		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when "
-		"the clock chimes') or the name of a rulebook, possibly followed "
-		"by some description of the action or value to apply to (e.g. "
+		"the punctuation here ':' makes me think this should be a definition of a phrase "
+		"and it doesn't begin as it should",
+		"with either 'To' (e.g. 'To flood the riverplain:'), 'Definition:', a name for a "
+		"rule (e.g. 'This is the devilishly cunning rule:'), 'At' plus a time (e.g. 'At "
+		"11:12 PM:' or 'At the time when the clock chimes') or the name of a rulebook, "
+		"possibly followed by some description of the action or value to apply to (e.g. "
 		"'Instead of taking something:' or 'Every turn:').");
 
-@<Disallow the definite article for anonymous rules@> =
-	if ((parsed_rm->article_used == definite_article) &&
-		(parsed_rm->placement_requested == MIDDLE_PLACEMENT))
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RuleWithDefiniteArticle),
-			"a rulebook can contain any number of rules",
-			"so (e.g.) 'the before rule: ...' is disallowed; you should "
-			"write 'a before rule: ...' instead.");
-
-@
+@ The crucial nonterminal in the above grammar is <rulebook-stem>, which tries
+to make the longest match it can of a rulebook name; if it matches successfully,
+then calling |Rulebooks::match| produces a detailed rundown of its findings,
+which are too elaborate to pass back in a simple pointer.
 
 =
-void RuleFamily::new_phrase(imperative_defn_family *self, imperative_defn *id, phrase *new_ph) {
+void RuleFamily::assess(imperative_defn_family *self, imperative_defn *id) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (rfd->not_in_rulebook)
-		RuleFamily::to_rule(id);
-	else
-		Rules::request_automatic_placement(RuleFamily::to_rule(id));
-	new_ph->compile_with_run_time_debugging = TRUE;
+	if (rfd->not_in_rulebook == FALSE) {
+		wording W = rfd->usage_preamble;
+		<rule-preamble-fine>(W);
+		parse_node *during_spec = <<rp>>;
+		int has_when = <<r>>;
+		rulebook_match *parsed_rm = Rulebooks::match();
+		W = GET_RW(<rule-preamble-finer>, 1);
+		if (has_when == NOT_APPLICABLE) {
+			<unrecognised-rule-stem-diagnosis>(W);
+		} else {
+			if (has_when) rfd->whenwhile = GET_RW(<rule-preamble-finer>, 2);
+			rfd->during_spec = during_spec;
+			rfd->owning_rulebook = parsed_rm->matched_rulebook;
+			rfd->owning_rulebook_placement = parsed_rm->placement_requested;
+			@<Disallow the definite article for middling rules@>;
+			@<Cut off the bud from the stem@>;
+			@<Merge the when/while text back into applicability, for actions@>;
+		}
+		rfd->pruned_stem = W;
+	}
 }
 
-@h The late-morning creations.
-A little later on, we've made a rule phrase, and it now has a proper PHUD.
-If the rule is an anonymous one, such as:
+@ This is a super-pedantic problem message, and might cause problems in languages
+other than English.
+
+@<Disallow the definite article for middling rules@> =
+	if ((parsed_rm->article_used == definite_article) &&
+		(parsed_rm->placement_requested == MIDDLE_PLACEMENT))
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_RuleWithDefiniteArticle),
+			"a rulebook can contain any number of rules",
+			"so (e.g.) 'the before rule: ...' is disallowed; you should write 'a before "
+			"rule: ...' instead.");
+
+@ The bud is not always present at all, and need not always be at the end of the stem,
+so we have to be very careful:
+
+@<Cut off the bud from the stem@> =
+	wording BUDW = GET_RW(<rulebook-stem-embellished>, 1);
+	int b1 = Wordings::first_wn(BUDW), b2 = Wordings::last_wn(BUDW);
+	if ((b1 == -1) || (b1 > b2)) {
+		b1 = parsed_rm->match_from + parsed_rm->advance_words;
+		b2 = parsed_rm->match_from + parsed_rm->advance_words - 1;
+	}
+	b2 -= parsed_rm->tail_words;
+	BUDW = Wordings::new(b1, b2);
+
+	wording APPW = EMPTY_WORDING;
+
+	if (parsed_rm->advance_words != parsed_rm->match_length) {
+		if (!((<rulebook-bud>(BUDW)) && (<<r>> == FALSE))) {
+			BUDW = Wordings::from(BUDW, parsed_rm->match_from + parsed_rm->match_length);
+			if (<rulebook-bud>(BUDW)) {
+				if (<<r>>) APPW = GET_RW(<rulebook-bud>, 1);
+			} else {
+				APPW = BUDW;
+			}
+		}
+	} else {
+		if (<rulebook-bud>(BUDW)) {
+			if (<<r>>) APPW = GET_RW(<rulebook-bud>, 1);
+		} else {
+			APPW = BUDW;
+		}
+	}
+
+	if (<rulebook-bud>(BUDW)) {
+		if (<<r>>) APPW = GET_RW(<rulebook-bud>, 1);
+	} else if (parsed_rm->advance_words != parsed_rm->match_length) {
+		BUDW = Wordings::from(BUDW, parsed_rm->match_from + parsed_rm->match_length);
+		if (<rulebook-bud>(BUDW)) {
+			if (<<r>>) APPW = GET_RW(<rulebook-bud>, 1);
+		} else {
+			APPW = BUDW;
+		}
+	} else {
+		APPW = BUDW;
+	}
+
+	if (Wordings::nonempty(APPW)) {
+		rfd->applicability = APPW;
+		rfd->prewhile_applicability = APPW;
+	}
+
+@ This unobvious manoeuvre puts the when/while text back again, so that:
+= (text)
+rule instead of taking or dropping when Miss Bianca is in the Embassy:
+                <----- appl -----> <---------- whenwhile ----------->
+ ||
+\||/ 
+rule instead of taking or dropping when Miss Bianca is in the Embassy:
+                <----- appl ---------------------------------------->
+=
+This is done only where we now know that the stem specified a rulebook based
+on actions, and the reason it's done is that action applicabilities are parsed
+with a grammar much more sensitive to ambiguities, and in which "when..."
+clauses are therefore better recognised.
+
+@<Merge the when/while text back into applicability, for actions@> =
+	if ((rfd->owning_rulebook) &&
+		(Rulebooks::runs_during_activities(rfd->owning_rulebook) == FALSE) &&
+		(Rulebooks::action_focus(rfd->owning_rulebook)) &&
+		(Wordings::nonempty(rfd->applicability)) &&
+		(Wordings::nonempty(rfd->whenwhile))) {
+		rfd->applicability =
+			Wordings::new(Wordings::first_wn(rfd->applicability),
+				Wordings::last_wn(rfd->whenwhile));
+		rfd->whenwhile = EMPTY_WORDING;
+	}
+
+@ Every rule corresponds to a |rule| structure. If the rule is an anonymous
+one, such as:
 
 >> Instead of jumping: say "Don't."
 
@@ -368,35 +344,31 @@ then we have a predeclared rule called "avoid water rule" already, so we
 connect this existing one to the phrase.
 
 =
-rule *RuleFamily::to_rule(imperative_defn *id) {
+void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	rule *R = NULL;
+	@<Set R to a corresponding rule structure@>;
+	rfd->defines = R;
+//	if (rfd->not_in_rulebook == FALSE) Rules::request_automatic_placement(R);
+
+	id->body_of_defn->compile_with_run_time_debugging = TRUE;
+	Phrases::TypeData::set_mor(&(id->body_of_defn->type_data),
+		DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
+}
+
+@<Set R to a corresponding rule structure@> =
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
 	wording W = EMPTY_WORDING;
 	int explicitly = FALSE;
-	@<Find the name of the phrase, and whether or not it's explicitly given@>;
-
-	rule *R = NULL;
-	if (Wordings::nonempty(W)) R = Rules::by_name(W);
-	if (R) @<Check that this isn't duplicating the name of a rule already made@>
-	else R = Rules::obtain(W, explicitly);
-	if (Wordings::empty(W))
-		Hierarchy::markup_wording(R->compilation_data.rule_package, RULE_NAME_HMD, Node::get_text(id->at));
-	Rules::set_imperative_definition(R, id);
-	phrase *ph = id->body_of_defn;
-	package_request *P = RTRules::package(R);
-	ph->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, ph->owning_module);
-
-	@<Do some tedious business for indexing the rule later on@>;
-
-	return R;
-}
-
-@<Find the name of the phrase, and whether or not it's explicitly given@> =
-	if (Wordings::nonempty(rfd->event_name)) {
-		W = Articles::remove_the(rfd->event_name);
-	} else if (Wordings::nonempty(rfd->constant_name)) {
+	if (Wordings::nonempty(rfd->constant_name)) {
 		W = Articles::remove_the(rfd->constant_name);
 		explicitly = TRUE;
 	}
+	if (Wordings::nonempty(W)) R = Rules::by_name(W);
+	if (R) @<Check that this isn't duplicating the name of a rule already made@>
+	else R = Rules::obtain(W, explicitly);
+	Rules::set_imperative_definition(R, id);
+	@<Merge the applicability and when/while text for indexing purposes@>;
 
 @<Check that this isn't duplicating the name of a rule already made@> =
 	imperative_defn *existing_id = Rules::get_imperative_definition(R);
@@ -410,157 +382,109 @@ rule *RuleFamily::to_rule(imperative_defn *id) {
 		Problems::issue_problem_end();
 	}
 
-@ This is simply to make the rule's entry in the Index more helpful.
-
-@<Do some tedious business for indexing the rule later on@> =
-	wording IX = rfd->rule_parameter;
+@<Merge the applicability and when/while text for indexing purposes@> =
+	wording IX = rfd->applicability;
 	if (Wordings::nonempty(rfd->whenwhile)) {
-		if (Wordings::first_wn(rfd->whenwhile) == Wordings::last_wn(rfd->rule_parameter) + 1) {
-			IX = Wordings::new(Wordings::first_wn(rfd->rule_parameter), Wordings::last_wn(rfd->whenwhile));
+		if (Wordings::first_wn(rfd->whenwhile) == Wordings::last_wn(rfd->applicability) + 1) {
+			IX = Wordings::new(Wordings::first_wn(rfd->applicability),
+				Wordings::last_wn(rfd->whenwhile));
 		} else {
 			IX = rfd->whenwhile;
 		}
 	}
 	IXRules::set_italicised_index_text(R, IX);
 
-@ =
-int RuleFamily::get_timing_of_event(imperative_defn *id) {
-	if (id->family != RULE_EFF_family) return NOT_A_TIMED_EVENT;
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return rfd->event_time;
-}
+@ At the end of the assessment process, we can finally put the rules into their
+rulebooks. We make "automatic placements" first -- i.e., those where the usage
+preamble specified which rulebook the rule belonged to; and then we make manual
+placements, which may move or remove rules already place. See //Rule Placement Requests//
+for how sentences specifying this are parsed.
 
-@ For example, for the rule
-
->> Instead of taking the box while the skylight is open: ...
-
-this returns "taking the box".
+@e TRAVERSE_FOR_RULE_FILING_SMFT
 
 =
-wording RuleFamily::get_prewhile_text(imperative_defn *id) {
-	if (id->family != RULE_EFF_family) return EMPTY_WORDING;
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (Wordings::nonempty(rfd->rule_parameter)) {
-		wording E = rfd->rule_parameter;
-		if (<when-while-clause>(E)) E = GET_RW(<when-while-clause>, 1);
-		return E;
+void RuleFamily::assessment_complete(imperative_defn_family *self) {
+	imperative_defn *id;
+	LOOP_OVER(id, imperative_defn)
+		if (id->family == rule_idf) {
+			rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+			if (rfd->not_in_rulebook == FALSE) Rules::request_automatic_placement(rfd->defines);
+		}
+
+	int initial_problem_count = problem_count;
+	RuleBookings::make_automatic_placements();
+	if (initial_problem_count < problem_count) return;
+
+	SyntaxTree::traverse(Task::syntax_tree(), RuleFamily::visit_to_parse_placements);
+}
+
+void RuleFamily::visit_to_parse_placements(parse_node *p) {
+	if ((Node::get_type(p) == SENTENCE_NT) &&
+		(p->down) &&
+		(Node::get_type(p->down) == VERB_NT)) {
+		prevailing_mood = Annotations::read_int(p->down, verbal_certainty_ANNOT);
+		MajorNodes::try_special_meaning(TRAVERSE_FOR_RULE_FILING_SMFT, p->down);
 	}
-	return EMPTY_WORDING;
 }
 
-@ =
-<when-while-clause> ::=
-	... when/while ...
-
-@h Miscellaneous.
-Some access routines.
+@h Runtime context data.
 
 =
-int RuleFamily::get_rulebook_placement(imperative_defn *id) {
-	if (id->family != RULE_EFF_family) return MIDDLE_PLACEMENT;
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return rfd->owning_rulebook_placement;
-}
-
-rulebook *RuleFamily::get_rulebook(imperative_defn *id) {
-	if (id->family != RULE_EFF_family) return NULL;
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return rfd->owning_rulebook;
-}
-
-void RuleFamily::set_rulebook(imperative_defn *id, rulebook *rb) {
-	if (id->family != RULE_EFF_family) internal_error("cannot set rulebook: not a rule");
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	rfd->owning_rulebook = rb;
-}
-
-linked_list *RuleFamily::get_uses_as_event(imperative_defn *id) {
-	if (id->family != RULE_EFF_family) return NULL;
-	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	return rfd->uses_as_event;
-}
-
 int NAP_problem_explained = FALSE; /* pertains to Named Action Patterns */
 int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
 
-void RuleFamily::to_rcd(imperative_defn_family *self, imperative_defn *id, ph_runtime_context_data *rcd) {
+void RuleFamily::to_rcd(imperative_defn_family *self, imperative_defn *id,
+	ph_runtime_context_data *rcd) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (rfd->not_in_rulebook)
+	if (rfd->not_in_rulebook) {
 		rcd->permit_all_outcomes = TRUE;
-	else
-		@<Finish work parsing the conditions for the rule to fire@>;
+	} else {
+		if (Wordings::nonempty(rfd->applicability))
+			@<Parse the applicability text into the PHRCD@>;
+		if (Wordings::nonempty(rfd->whenwhile))
+			rcd->activity_context =
+				Wordings::from(rfd->whenwhile, Wordings::first_wn(rfd->whenwhile) + 1);
+		if (rfd->during_spec) rcd->during_scene = rfd->during_spec;
+	}
 }
 
-@ All of this is just dumb copying...
+@ Here we try the text first without its when clause, then with, and accept
+whichever way works.
 
-@<Finish work parsing the conditions for the rule to fire@> =
-	
-	rcd->compile_for_rulebook = &(rfd->owning_rulebook);
-
-	if (Wordings::nonempty(rfd->rule_parameter)) @<Parse what used to be the bud into the PHRCD@>;
-
-	if (Wordings::nonempty(rfd->whenwhile)) {
-		rcd->activity_context =
-			Wordings::new(
-				Wordings::first_wn(rfd->whenwhile) + 1,
-				Wordings::last_wn(rfd->whenwhile));
-		rcd->activity_where = current_sentence;
-	}
-
-	#ifdef IF_MODULE
-	if (rfd->during_scene_spec) rcd->during_scene = rfd->during_scene_spec;
-	#endif
-
-@ ...except for this:
-
-@<Parse what used to be the bud into the PHRCD@> =
-	#ifdef IF_MODULE
+@<Parse the applicability text into the PHRCD@> =
 	if (Rulebooks::action_focus(rfd->owning_rulebook)) {
-		int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
-		if (Rules::all_action_processing_variables())
-			Frames::set_stvol(
-				Frames::current_stack_frame(), Rules::all_action_processing_variables());
-		if (<action-pattern>(rfd->rule_parameter)) rcd->ap = <<rp>>;
-		Frames::remove_nonphrase_stack_frame();
-		ParseActionPatterns::restore_mode(saved);
-
-		if (rcd->ap == NULL)
-			@<Issue a problem message for a bad action@>;
+		rcd->ap = ActionPatterns::parse_action_based(rfd->applicability);
+		if (rcd->ap == NULL) @<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_focus_kind(rfd->owning_rulebook);
-		rcd->ap = ActionPatterns::parse_parametric(rfd->rule_parameter, pk);
+		rcd->ap = ActionPatterns::parse_parametric(rfd->applicability, pk);
 		if (rcd->ap == NULL) {
 			if (Wordings::nonempty(rfd->whenwhile)) {
-				wording F = Wordings::up_to(rfd->rule_parameter, Wordings::last_wn(rfd->whenwhile));
+				wording F = Wordings::up_to(rfd->applicability, Wordings::last_wn(rfd->whenwhile));
 				rcd->ap = ActionPatterns::parse_parametric(F, pk);
 				if (rcd->ap) {
-					rfd->rule_parameter = F;
+					rfd->applicability = F;
 					rfd->whenwhile = EMPTY_WORDING;
 				}
 			}
 		}
 		if (rcd->ap == NULL) @<Issue a problem message for a bad parameter@>;
 	}
-	#endif
-	#ifndef IF_MODULE
-	kind *pk = Rulebooks::get_focus_kind(rfd->owning_rulebook);
-	@<Issue a problem message for a bad parameter@>;
-	#endif
 
-@ All that's left is to issue a "good" problem message, but this is quite
-a large undertaking, because the situation as we currently know it is just
-that something's wrong with the rule preamble -- which covers an enormous
-range of different faults.
+@ All that's left is to issue a "good" problem message, but this is quite a
+large undertaking, because the situation as we currently know it is just that
+something's wrong with the rule preamble -- which covers an enormous range of
+different faults.
 
-The "PAP failure reason" is a sort of error code set by the action pattern
+The |pap_failure_reason| is a sort of error code set by the action pattern
 parser, recording how it most recently failed.
 
 @<Issue a problem message for a bad action@> =
 	LOG("Bad action pattern: %W = $A\nPAP failure reason: %d\n",
-		rfd->rule_parameter, rcd->ap, pap_failure_reason);
+		rfd->applicability, rcd->ap, pap_failure_reason);
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, rfd->rule_parameter);
-	if (<action-problem-diagnosis>(rfd->rule_parameter) == FALSE)
+	Problems::quote_wording(2, rfd->applicability);
+	if (<action-problem-diagnosis>(rfd->applicability) == FALSE)
 		switch(pap_failure_reason) {
 			case MIXEDNOUNS_PAPF: @<Issue PM_APWithDisjunction problem@>; break;
 			case NOPARTICIPLE_PAPF: @<Issue PM_APWithNoParticiple problem@>; break;
@@ -572,47 +496,42 @@ parser, recording how it most recently failed.
 @<Issue PM_APWithDisjunction problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_APWithDisjunction));
 	Problems::issue_problem_segment(
-		"You wrote %1, which seems to introduce a rule, but the "
-		"circumstances ('%2') seem to be too general for me to "
-		"understand in a single rule. I can understand a choice of "
-		"of actions, in a list such as 'taking or dropping the ball', "
-		"but there can only be one set of noun(s) supplied. So 'taking "
-		"the ball or taking the bat' is disallowed. You can get around "
-		"this by using named actions ('Taking the ball is being "
-		"mischievous. Taking the bat is being mischievous. Instead of "
-		"being mischievous...'), or it may be less bother just to "
-		"write more than one rule.");
+		"You wrote %1, which seems to introduce a rule, but the circumstances ('%2') seem "
+		"to be too general for me to understand in a single rule. I can understand a "
+		"choice of actions, in a list such as 'taking or dropping the ball', but there "
+		"can only be one set of noun(s) supplied. So 'taking the ball or taking the bat' "
+		"is disallowed. You can get around this by using named actions ('Taking the ball "
+		"is being mischievous. Taking the bat is being mischievous. Instead of being "
+		"mischievous...'), or it may be less bother just to write more than one rule.");
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithNoParticiple problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_APWithNoParticiple));
 	Problems::issue_problem_segment(
-		"You wrote %1, which seems to introduce a rule taking effect "
-		"only '%2'. But this does not look like an action, since "
-		"there is no sign of a participle ending '-ing' (as in "
-		"'taking the brick', say) - which makes me think I have "
-		"badly misunderstood what you intended.");
+		"You wrote %1, which seems to introduce a rule taking effect only '%2'. But this "
+		"does not look like an action, since there is no sign of a participle ending '-ing' "
+		"(as in 'taking the brick', say) - which makes me think I have badly misunderstood "
+		"what you intended.");
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithImmiscible problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_APWithImmiscible));
 	Problems::issue_problem_segment(
-		"You wrote %1, which seems to introduce a rule taking effect "
-		"only '%2'. But this is a combination of actions which cannot "
-		"be mixed. The only alternatives where 'or' is allowed are "
-		"cases where a choice of actions is given but applying to "
-		"the same objects in each case. (So 'taking or dropping the "
-		"CD' is allowed, but 'dropping the CD or inserting the CD "
-		"into the jewel box' is not, because the alternatives there "
-		"would make different use of objects from each other.)");
+		"You wrote %1, which seems to introduce a rule taking effect only '%2'. But this "
+		"is a combination of actions which cannot be mixed. The only alternatives where "
+		"'or' is allowed are cases where a choice of actions is given but applying to "
+		"the same objects in each case. (So 'taking or dropping the CD' is allowed, but "
+		"'dropping the CD or inserting the CD into the jewel box' is not, because the "
+		"alternatives there would make different use of objects from each other.)");
 	Problems::issue_problem_end();
 
 @<Issue PM_APWithBadWhen problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_APWithBadWhen));
-	wording Q = rfd->rule_parameter;
+	wording Q = rfd->applicability;
 	int diagnosis = 0;
 	if (<action-when-diagnosis>(Q)) {
-		Q = Wordings::new(<<cw1>>, <<cw2>>);
+		if (<<r>> == 1) Q = GET_RW(<action-when-diagnosis>, 3);
+		else Q = GET_RW(<action-when-diagnosis>, 2);
 		diagnosis = <<r>>;
 	}
 	Problems::quote_wording(2, Q);
@@ -628,30 +547,30 @@ parser, recording how it most recently failed.
 			"(Whereas 'no room' is usually allowed.)");
 	}
 	Problems::issue_problem_segment(
-		"You wrote %1, which seems to introduce a rule taking effect "
-		"only '%2'. But this condition did not make sense, %3");
+		"You wrote %1, which seems to introduce a rule taking effect only '%2'. But this "
+		"condition did not make sense, %3");
 	if (diagnosis == 1)
 		Problems::issue_problem_segment(
 			"%PIt might be worth mentioning that a 'when' condition tacked on to "
 			"an action like this is not allowed to mention or use 'called' values.");
 	if (diagnosis == 4)
 		Problems::issue_problem_segment(
-			"%PThe problem might be that 'and' has been followed by 'when' or "
-			"'while'. For example, to make a rule with two conditions, this is "
-			"okay: 'Instead of jumping when Peter is happy and Peter is in the "
-			"location'; but the same thing with '...and when Peter is...' is not allowed.");
+			"%PThe problem might be that 'and' has been followed by 'when' or 'while'. "
+			"For example, to make a rule with two conditions, this is okay: 'Instead of "
+			"jumping when Peter is happy and Peter is in the location'; but the same thing "
+			"with '...and when Peter is...' is not allowed.");
 	Problems::issue_problem_end();
 
 @<Issue PM_APUnknown problem@> =
-	Problems::quote_wording(2, rfd->rule_parameter);
+	Problems::quote_wording(2, rfd->applicability);
 	if (pap_failure_reason == WHENOKAY_PAPF)
 		Problems::quote_text(3,
 			"The part after 'when' (or 'while') was fine, but the earlier words");
 	else Problems::quote_text(3, "But that");
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_APUnknown));
 	Problems::issue_problem_segment(
-		"You wrote %1, which seems to introduce a rule taking effect only if the "
-		"action is '%2'. %3 did not make sense as a description of an action.");
+		"You wrote %1, which seems to introduce a rule taking effect only if the action "
+		"is '%2'. %3 did not make sense as a description of an action.");
 	@<See if it starts with a valid action name, at least@>;
 	@<See if this might be a when-for confusion@>;
 	@<Break down the action list and say which are okay@>;
@@ -662,44 +581,42 @@ parser, recording how it most recently failed.
 @<See if it starts with a valid action name, at least@> =
 	action_name *an;
 	LOOP_OVER(an, action_name)
-		if ((Wordings::length(rfd->rule_parameter) < Wordings::length(ActionNameNames::tensed(an, IS_TENSE))) &&
-			(Wordings::match(rfd->rule_parameter,
-				Wordings::truncate(ActionNameNames::tensed(an, IS_TENSE), Wordings::length(rfd->rule_parameter))))) {
+		if ((Wordings::length(rfd->applicability) <
+				Wordings::length(ActionNameNames::tensed(an, IS_TENSE))) &&
+			(Wordings::match(rfd->applicability,
+				Wordings::truncate(ActionNameNames::tensed(an, IS_TENSE),
+					Wordings::length(rfd->applicability))))) {
 			Problems::quote_wording(3, ActionNameNames::tensed(an, IS_TENSE));
 			Problems::issue_problem_segment(
-				" I notice that there's an action called '%3', though: perhaps "
-				"this is what you meant?");
+				" I notice that there's an action called '%3', though: perhaps this is "
+				"what you meant?");
 			break;
 		}
 
 @<See if this might be a when-for confusion@> =
 	if (pap_failure_reason == WHENOKAY_PAPF) {
-		time_period *duration = Occurrence::parse(rfd->reduced_stem);
+		time_period *duration = Occurrence::parse(rfd->pruned_stem);
 		if (duration) {
 			Problems::quote_wording(3, Occurrence::used_wording(duration));
 			Problems::issue_problem_segment(
-				" (I wonder if this might be because '%3', which looks like a "
-				"condition on the timing, is the wrong side of the 'when...' "
-				"clause?)");
+				" (I wonder if this might be because '%3', which looks like a condition "
+				"on the timing, is the wrong side of the 'when...' clause?)");
 		}
 	}
 
-@ If the action pattern contains what looks like a list of action names, as
-for example
-
->> Instead of taking or dropping the magnet: ...
-
-then the anl-diagnosis grammar will parse this and return N equal to 2, the
-apparent number of action names. We then run the grammar again, but this time
-allowing it to print comments on each apparent action name it sees.
+@ If the action pattern contains what looks like a list of action names, as for example
+"Instead of taking or dropping the magnet: ..." then the <anl-diagnosis> grammar will
+ parse this and return N equal to 2, the apparent number of action names. We then
+ run the grammar again, but this time allowing it to print comments on each apparent
+ action name it sees.
 
 @<Break down the action list and say which are okay@> =
 	issuing_ANL_problem = FALSE; NAP_problem_explained = FALSE;
-	<anl-diagnosis>(rfd->rule_parameter);
+	<anl-diagnosis>(rfd->applicability);
 	int N = <<r>>;
 	if (N > 1) {
 		int positive = TRUE;
-		ActionNameLists::parse(rfd->rule_parameter, IS_TENSE, &positive);
+		ActionNameLists::parse(rfd->applicability, IS_TENSE, &positive);
 		if (positive == FALSE)
 			Problems::issue_problem_segment(
 				" This looks like a list of actions to avoid: ");
@@ -707,7 +624,7 @@ allowing it to print comments on each apparent action name it sees.
 			Problems::issue_problem_segment(
 				" Looking at this as a list of alternative actions: ");
 		issuing_ANL_problem = TRUE; NAP_problem_explained = FALSE;
-		<anl-diagnosis>(rfd->rule_parameter);
+		<anl-diagnosis>(rfd->applicability);
 		Problems::issue_problem_segment(" so");
 	}
 
@@ -716,9 +633,9 @@ the only possible problem is that the value was wrong.
 
 @<Issue a problem message for a bad parameter@> =
 	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, rfd->rule_parameter);
+	Problems::quote_wording(2, rfd->applicability);
 	Problems::quote_kind(3, pk);
-	<parametric-problem-diagnosis>(rfd->reduced_stem);
+	<parametric-problem-diagnosis>(rfd->pruned_stem);
 
 @ And that is the end of the code as such, but we still have to define the
 three diagnosis grammars we needed.
@@ -729,21 +646,20 @@ is used to choose a problem message if the value makes no sense.
 =
 <parametric-problem-diagnosis> ::=
 	when the play begins/ends |    ==> @<Issue PM_WhenThePlay problem@>
-	...									==> @<Issue PM_BadParameter problem@>
+	...                            ==> @<Issue PM_BadParameter problem@>
 
 @<Issue PM_WhenThePlay problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenThePlay),
 		"there's no scene called 'the play'",
-		"so I think you need to remove 'the' - Inform has two "
-		"special rulebooks, 'When play begins' and 'When play ends', "
-		"and I think you probably mean to refer to one of those.");
+		"so I think you need to remove 'the' - Inform has two special rulebooks, 'When "
+		"play begins' and 'When play ends', and I think you probably mean to refer to "
+		"one of those.");
 
 @<Issue PM_BadParameter problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadParameter));
 	Problems::issue_problem_segment(
-		"You wrote %1, but the description of the thing(s) to which the rule "
-		"applies ('%2') did not make sense. This is %3 based rulebook, so "
-		"that should have described %3.");
+		"You wrote %1, but the description of the thing(s) to which the rule applies ('%2') "
+		"did not make sense. This is %3 based rulebook, so that should have described %3.");
 	Problems::issue_problem_end();
 
 @ And here we choose a problem message if a rule applying to an action is used,
@@ -752,30 +668,26 @@ but the action isn't one we recognise.
 =
 <action-problem-diagnosis> ::=
 	in the presence of ... |    ==> @<Issue PM_NonActionInPresenceOf problem@>
-	in ...							==> @<Issue PM_NonActionIn problem@>
+	in ...                      ==> @<Issue PM_NonActionIn problem@>
 
 
 @<Issue PM_NonActionInPresenceOf problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonActionInPresenceOf));
 	Problems::issue_problem_segment(
-		"You wrote %1, but 'in the presence of...' is a clause which can "
-		"only be used to talk about an action: so, for instance, 'waiting "
-		"in the presence of...' is needed. "
-		"This problem arises especially with 'every turn' rules, where "
-		"'every turn in the presence of...' looks plausible but doesn't "
-		"work. This could be fixed by writing 'Every turn doing something "
-		"in the presence of...', but a neater solution talks about the "
-		"current situation instead: 'Every turn when the player can "
-		"see...'.");
+		"You wrote %1, but 'in the presence of...' is a clause which can only be used to "
+		"talk about an action: so, for instance, 'waiting in the presence of...' is needed. "
+		"This problem arises especially with 'every turn' rules, where 'every turn in the "
+		"presence of...' looks plausible but doesn't work. This could be fixed by writing "
+		"'Every turn doing something in the presence of...', but a neater solution talks "
+		"about the current situation instead: 'Every turn when the player can see...'.");
 	Problems::issue_problem_end();
 
 @<Issue PM_NonActionIn problem@> =
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonActionIn));
 	Problems::issue_problem_segment(
-		"You wrote %1, but 'in...' used in this way should really belong "
-		"to an action: for instance, 'Before waiting in the Library'. "
-		"Rules like 'Every turn in the Library' don't work, because "
-		"'every turn' is not an action; what's wanted is 'Every turn "
+		"You wrote %1, but 'in...' used in this way should really belong to an action: for "
+		"instance, 'Before waiting in the Library'. Rules like 'Every turn in the Library' "
+		"don't work, because 'every turn' is not an action; what's wanted is 'Every turn "
 		"when in the Library'.");
 	Problems::issue_problem_end();
 
@@ -786,13 +698,12 @@ might have gone wrong.
 
 =
 <action-when-diagnosis> ::=
-	... called ... {when/while ...} |   ==> { 1, -, <<cw1>> = Wordings::first_wn(WR[3]), <<cw2>> = Wordings::last_wn(WR[3]) }
-	... {when/while *** nothing ***} |  ==> { 2, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
-	... {when/while *** nowhere ***} |  ==> { 3, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
-	... and {when/while ...} |          ==> { 4, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
-	... {when/while ...}                ==> { 5, -, <<cw1>> = Wordings::first_wn(WR[2]), <<cw2>> = Wordings::last_wn(WR[2]) }
+	... called ... {when/while ...} |             ==> { 1, - }
+	... {when/while *** nothing ***} |            ==> { 2, - }
+	... {when/while *** nowhere ***} |            ==> { 3, - }
+	... and {when/while ...} |                    ==> { 4, - }
+	... {when/while ...}                          ==> { 5, - }
 
-@ =
 <anl-diagnosis> ::=
 	<anl-inner-diagnosis> when/while ... |        ==> { pass 1 }
 	<anl-inner-diagnosis>						  ==> { pass 1 }
@@ -806,12 +717,11 @@ might have gone wrong.
 	_,/or <anl-inner-diagnosis>                   ==> { pass 1 }
 
 <anl-entry-diagnosis> ::=
-	......											==> @<Diagnose problem with this ANL entry@>
+	......                                        ==> @<Diagnose problem with this ANL entry@>
 
 @<Diagnose problem with this ANL entry@> =
 	if ((issuing_ANL_problem) && (!preform_lookahead_mode)) {
 		Problems::quote_wording(4, W);
-		#ifdef IF_MODULE
 		if (<action-pattern>(W) == FALSE) {
 			Problems::issue_problem_segment("'%4' did not make sense; ");
 			return TRUE;
@@ -848,18 +758,16 @@ might have gone wrong.
 				"which isn't allowed in a list like this; ");
 			return TRUE;
 		}
-		#endif
 		Problems::issue_problem_segment("'%4' was okay; ");
 	}
 	==> { 1, - };
 
-@
+@h Compilation.
+We compile these in rulebook order first, and then pick up any rules not in
+rulebooks. This is really just to make the Inter output tidily arranged;
+any order would have done just as well.
 
 =
-void RuleFamily::to_phtd(imperative_defn_family *self, imperative_defn *id, ph_type_data *phtd, wording XW, wording *OW) {
-	Phrases::TypeData::set_mor(phtd, DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
-}
-
 void RuleFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	rulebook *rb;
@@ -870,4 +778,35 @@ void RuleFamily::compile(imperative_defn_family *self,
 	LOOP_OVER(R, rule)
 		RTRules::compile_definition(R,
 			total_phrases_compiled, total_phrases_to_compile);
+}
+
+@h Miscellaneous access functions.
+
+=
+wording RuleFamily::get_prewhile_text(imperative_defn *id) {
+	if (id->family != rule_idf) return EMPTY_WORDING;
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	return rfd->prewhile_applicability;
+}
+
+int RuleFamily::get_rulebook_placement(imperative_defn *id) {
+	if (id->family != rule_idf) return MIDDLE_PLACEMENT;
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	return rfd->owning_rulebook_placement;
+}
+
+rulebook *RuleFamily::get_rulebook(imperative_defn *id) {
+	if (id->family != rule_idf) return NULL;
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	return rfd->owning_rulebook;
+}
+
+void RuleFamily::set_rulebook(imperative_defn *id, rulebook *rb) {
+	if (id->family != rule_idf) internal_error("cannot set rulebook: not a rule");
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	rfd->owning_rulebook = rb;
+}
+
+int RuleFamily::allows_rule_only(imperative_defn_family *self, imperative_defn *id) {
+	return TRUE;
 }

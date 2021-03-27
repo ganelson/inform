@@ -72,8 +72,18 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">assertions</a></li><li><a href="index.html#5">Chapter 5: Imperative Code</a></li><li><b>Imperative Definition Families</b></li></ul></div>
 <p class="purpose">Different categories of imperative definition.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>There are very few of these, and an Inform source text cannot create more.
-The following is called at startup, and then that's the lot:
+<ul class="toc"><li><a href="5-idf.html#SP1">&#167;1. Creation</a></li><li><a href="5-idf.html#SP3">&#167;3. Identification</a></li><li><a href="5-idf.html#SP4">&#167;4. Assessment</a></li><li><a href="5-idf.html#SP9">&#167;9. What is allowed in the body</a></li><li><a href="5-idf.html#SP12">&#167;12. Compilation and indexing</a></li></ul><hr class="tocbar">
+
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>See <a href="5-id.html" class="internal">Imperative Definitions</a> for what these families are.
+</p>
+
+<p class="commentary">There are very few of them, and an Inform source text cannot create more.
+The following is called at startup, and then that's the lot.
+</p>
+
+<p class="commentary">The order of creation is important here, or at least, it's important that
+the rule family comes last, because this affects the order of the loop in
+<a href="5-idf.html#SP3" class="internal">ImperativeDefinitionFamilies::identify</a> below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -81,9 +91,9 @@ The following is called at startup, and then that's the lot:
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::create</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::create</span></span>:<br/>Assertions Module - <a href="1-am.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">unknown_idf</span><span class="plain-syntax"> = </span><a href="5-idf.html#SP2" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"unknown-idf"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="5-adf.html#SP2" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::create_family</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="5-adf.html#SP1" class="function-link"><span class="function-syntax">AdjectivalDefinitionFamily::create_family</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="5-tpf.html#SP3" class="function-link"><span class="function-syntax">ToPhraseFamily::create_family</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="5-rf.html#SP2" class="function-link"><span class="function-syntax">RuleFamily::create_family</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="5-rf.html#SP1" class="function-link"><span class="function-syntax">RuleFamily::create_family</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Such a family is little more than a set of methods:
@@ -97,7 +107,7 @@ The following is called at startup, and then that's the lot:
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="function-syntax">ImperativeDefinitionFamilies::new</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></span>:<br/><a href="5-idf.html#SP1">&#167;1</a><br/>Adjectival Definition Family - <a href="5-adf.html#SP2">&#167;2</a><br/>To Phrase Family - <a href="5-tpf.html#SP3">&#167;3</a><br/>Rule Family - <a href="5-rf.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="function-syntax">ImperativeDefinitionFamilies::new</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::new</span></span>:<br/><a href="5-idf.html#SP1">&#167;1</a><br/>Adjectival Definition Family - <a href="5-adf.html#SP1">&#167;1</a><br/>To Phrase Family - <a href="5-tpf.html#SP3">&#167;3</a><br/>Rule Family - <a href="5-rf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">last</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">family</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">family</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">methods</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
@@ -106,28 +116,31 @@ The following is called at startup, and then that's the lot:
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure imperative_defn_family is accessed in 5/id, 7/am and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>So, then, the rest of this section provides an API, in effect, for different
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Identification. </b>So, then, the rest of this section provides an API, in effect, for different
 users of imperative definitions to get their work done.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">CLAIM_IMP_DEFN_MTID</span></span> is for deciding from the syntax of a preamble whether
-this definition should belong to the family or not.
+<p class="commentary"><span class="extract"><span class="extract-syntax">IDENTIFY_IMP_DEFN_MTID</span></span> is for deciding from the syntax of a preamble whether
+this definition should belong to the family or not. The recipient should set
+<span class="extract"><span class="extract-syntax">id-&gt;family</span></span> to itself if it wants the definition.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CLAIM_IMP_DEFN_MTID</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">CLAIM_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">)</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::identify</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::identify</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">unknown_idf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax"> == </span><span class="identifier-syntax">unknown_idf</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">CLAIM_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">IDENTIFY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b><span class="extract"><span class="extract-syntax">ASSESS_IMP_DEFN_MTID</span></span> is for parsing it in more detail, later on.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Assessment. </b><span class="extract"><span class="extract-syntax">ASSESS_IMP_DEFN_MTID</span></span> is for parsing the preamble in more detail, later on.
+At the start of assessment, this is called on each of the IDs belonging to the
+family in turn.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSESS_IMP_DEFN_MTID</span>
@@ -139,53 +152,43 @@ this definition should belong to the family or not.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESS_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">REGISTER_IMP_DEFN_MTID</span></span> is called on the family when everything has
-been assessed.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">GIVEN_BODY_IMP_DEFN_MTID</span></span> is called on an ID just after <span class="extract"><span class="extract-syntax">id-&gt;body_of_defn</span></span>
+has finally been created.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">GIVEN_BODY_IMP_DEFN_MTID</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">GIVEN_BODY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">)</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::given_body</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::given_body</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">GIVEN_BODY_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Next, <span class="extract"><span class="extract-syntax">REGISTER_IMP_DEFN_MTID</span></span> is then called on the family when all of the
+<span class="extract"><span class="extract-syntax">ASSESS_IMP_DEFN_MTID</span></span> calls have been made, and all the bodies created.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">REGISTER_IMP_DEFN_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">REGISTER_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">REGISTER_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">)</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::register</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::register</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">REGISTER_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::register</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::register</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL_WITHOUT_ARGUMENTS</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">REGISTER_IMP_DEFN_MTID</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><span class="extract"><span class="extract-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span></span> is called on the family when everything has
-been assessed.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">)</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::assessment_complete</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::assessment_complete</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_4">&#167;5.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">initial_problem_count</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b><span class="extract"><span class="extract-syntax">NEW_PHRASE_IMP_DEFN_MTID</span></span> is for ...
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NEW_PHRASE_IMP_DEFN_MTID</span>
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">NEW_PHRASE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_ph</span><span class="plain-syntax">)</span>
-
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::given_body</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::given_body</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">phrase</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_ph</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">NEW_PHRASE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">new_ph</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b><span class="extract"><span class="extract-syntax">TO_RCD_IMP_DEFN_MTID</span></span> is for...
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A call to <span class="extract"><span class="extract-syntax">TO_RCD_IMP_DEFN_MTID</span></span> is then made for each ID in turn, asking the
+family to give the body its runtime context data.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TO_RCD_IMP_DEFN_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">TO_RCD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">TO_RCD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ph_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rcd</span><span class="plain-syntax">)</span>
 
-<span class="identifier-syntax">ph_runtime_context_data</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::to_phrcd</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::to_phrcd</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_3">&#167;5.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">ph_runtime_context_data</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::to_phrcd</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::to_phrcd</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_3">&#167;5.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Frames::make_current</span><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">body_of_defn</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">stack_frame</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ph_runtime_context_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">phrcd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Phrases::Context::new</span><span class="plain-syntax">();</span>
@@ -194,25 +197,32 @@ been assessed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phrcd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">TO_PHTD_IMP_DEFN_MTID</span></span> is for...
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Finally, <span class="extract"><span class="extract-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span></span> is called on the family when
+everything has been assessed.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TO_PHTD_IMP_DEFN_MTID</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">TO_PHTD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_type_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OW</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">)</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::to_phtd</span><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">ph_type_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">XW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OW</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">family</span><span class="plain-syntax">, </span><span class="constant-syntax">TO_PHTD_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">phtd</span><span class="plain-syntax">, </span><span class="identifier-syntax">XW</span><span class="plain-syntax">, </span><span class="identifier-syntax">OW</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::assessment_complete</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">ImperativeDefinitionFamilies::assessment_complete</span></span>:<br/>Imperative Definitions - <a href="5-id.html#SP5_4">&#167;5.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL_WITHOUT_ARGUMENTS</span><span class="plain-syntax">(</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSESSMENT_COMPLETE_IMP_DEFN_MTID</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Whether phrases which end the current rulebook are allowed in the definition body.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. What is allowed in the body. </b>The body of the definition can for the most part be any Inform 7 code, but
+there are a few restrictions which depend on what the definition family is.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span></span> should reply <span class="extract"><span class="extract-syntax">TRUE</span></span> if phrases
+intended to end rules or rulebooks can be used in the body; by default, not.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">ALLOWS_RULE_ONLY_PHRASES_IMP_DEFN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">imperative_defn_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">)</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImperativeDefinitionFamilies::goes_in_rulebooks</span><span class="plain-syntax">(</span><span class="reserved-syntax">imperative_defn</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -220,8 +230,9 @@ been assessed.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Whether the definition body can be empty (as when a definition of an adjective
-does not go on to contain code).
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b><span class="extract"><span class="extract-syntax">ALLOWS_EMPTY_IMP_DEFN_MTID</span></span> should reply <span class="extract"><span class="extract-syntax">TRUE</span></span> if the body is allowed to
+be empty, that is, for there to be no code at all. This happens for some
+adjective definitions which wrap up in a single line. The default is no.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ALLOWS_EMPTY_IMP_DEFN_MTID</span>
@@ -235,7 +246,8 @@ does not go on to contain code).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Whether the definition body can be given as <span class="extract"><span class="extract-syntax">(-</span></span> inline <span class="extract"><span class="extract-syntax">-)</span></span> material.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b><span class="extract"><span class="extract-syntax">ALLOWS_INLINE_IMP_DEFN_MTID</span></span> should reply <span class="extract"><span class="extract-syntax">TRUE</span></span> if the definition body can
+be given as <span class="extract"><span class="extract-syntax">(-</span></span> inline <span class="extract"><span class="extract-syntax">-)</span></span> material. The default is no.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">ALLOWS_INLINE_IMP_DEFN_MTID</span>
@@ -249,7 +261,9 @@ does not go on to contain code).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b><span class="extract"><span class="extract-syntax">COMPILE_IMP_DEFN_MTID</span></span> is for .
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Compilation and indexing. </b><span class="extract"><span class="extract-syntax">COMPILE_IMP_DEFN_MTID</span></span> is called to ask the family to perform its main round
+of compilation for any resources it will need &mdash; most obviously, of course,
+it may want to turn its definition bodies into Inter functions.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_IMP_DEFN_MTID</span>
@@ -264,7 +278,9 @@ does not go on to contain code).
 <span class="plain-syntax">        </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">COMPILE_IMP_DEFN_MTID</span></span> is for .
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b><span class="extract"><span class="extract-syntax">COMPILE_AS_NEEDED_IMP_DEFN_MTID</span></span> is then called as an opportunity to
+compile any remaining resources, and should pick up anything needed since the
+last time it was called: note that it can be called multiple times.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">COMPILE_AS_NEEDED_IMP_DEFN_MTID</span>
@@ -279,7 +295,8 @@ does not go on to contain code).
 <span class="plain-syntax">        </span><span class="identifier-syntax">total_phrases_compiled</span><span class="plain-syntax">, </span><span class="identifier-syntax">total_phrases_to_compile</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b><span class="extract"><span class="extract-syntax">PHRASEBOOK_INDEX_IMP_DEFN_MTID</span></span> is for .
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">PHRASEBOOK_INDEX_IMP_DEFN_MTID</span></span> should reply <span class="extract"><span class="extract-syntax">TRUE</span></span> if the definition should
+go into the Phrasebook page of the index.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PHRASEBOOK_INDEX_IMP_DEFN_MTID</span>

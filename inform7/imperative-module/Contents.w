@@ -31,9 +31,7 @@ being compiled as a great mass of Inform 6 routines and arrays."
 	Phrase Type Data
 	Describing Phrase Type Data
 	Phrase Options
-	Phrases as Values
 	To Phrases
-	Timed Phrases
 
 Chapter 4: Compilation Context
 "Preparing a context at run-time in which code can be executed."

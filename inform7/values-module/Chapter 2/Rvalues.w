@@ -530,7 +530,7 @@ kind *Rvalues::to_kind(parse_node *spec) {
 assertion traverse:
 
 @<Work out the kind for a constant phrase@> =
-	return Phrases::Constants::kind(Rvalues::to_constant_phrase(spec));
+	return ToPhraseFamily::kind(Rvalues::to_constant_phrase(spec));
 
 @ This too is tricky. Some phrases to decide values are unambiguous. If
 they say they are "To decide a rule: ...", then clearly the return value

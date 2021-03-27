@@ -243,9 +243,6 @@ so on. Those absolute basics are made here.
 	BENCH(Phrases::Constants::compile_closures)
 	BENCH(RTKinds::compile_structures)
 	BENCH(Rules::check_response_usages)
-	BENCH(Phrases::Timed::check_for_unused)
-	BENCH(Phrases::Timed::TimedEventsTable)
-	BENCH(Phrases::Timed::TimedEventTimesTable)
 	BENCH(RTUseOptions::configure_template)
 	BENCH(RTBibliographicData::IFID_text);
 

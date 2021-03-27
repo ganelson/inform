@@ -855,34 +855,10 @@ token, because that would be "property name". Instead:
 	}
 	return;
 
-@ This little annotation is used for the phrases about timed rule firing:
-
->> To (R - rule) in (t - number) turn/turns from now: ...
-
-has the inline definition:
-= (text)
-	SetTimedEvent({-mark-event-used:R}, {t}+1, 0);
-=
-The annotation makes no difference to how R is compiled, except that it
-sneaks in a sanity check (R must be explicitly named and must be an event
-rule), and also makes a note for indexing purposes.
+@ This little annotation is used in //if: Timed Rules//.
 
 @<Inline annotation "mark-event-used"@> =
-	if (Rvalues::is_CONSTANT_construction(supplied, CON_rule)) {
-		rule *R = Rvalues::to_rule(supplied);
-		imperative_defn *id = Rules::get_imperative_definition(R);
-		if (id) Phrases::Timed::note_usage(id->body_of_defn, current_sentence);
-	} else {
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, Node::get_text(supplied));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonconstantEvent));
-		Problems::issue_problem_segment(
-			"You wrote %1, but '%2' isn't the name of any timed event that "
-			"I know of. (These need to be set up in a special way, like so - "
-			"'At the time when stuff happens: ...' creates a timed event "
-			"called 'stuff happens'.)");
-		Problems::issue_problem_end();
-	}
+	PluginCalls::nonstandard_inline_annotation(sche->inline_command, supplied);
 	valid_annotation = TRUE;
 
 @<Throw a problem message for an invalid inline annotation@> =

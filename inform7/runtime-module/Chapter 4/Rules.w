@@ -39,6 +39,14 @@ ph_stack_frame *RTRules::stack_frame(rule *R) {
 	return &(R->defn_as_I7_source->body_of_defn->stack_frame);
 }
 
+void RTRules::prepare_rule(imperative_defn *id, rule *R) {
+	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
+	package_request *P = RTRules::package(R);
+	if (Wordings::empty(rfd->constant_name))
+		Hierarchy::markup_wording(P, RULE_NAME_HMD, Node::get_text(id->at));
+	id->body_of_defn->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, id->body_of_defn->owning_module);
+}
+
 package_request *RTRules::package(rule *R) {
 	return R->compilation_data.rule_package;
 }

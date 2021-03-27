@@ -79,7 +79,7 @@ plugin *actions_plugin, *going_plugin,
 	*backdrops_plugin, *bibliographic_plugin, *chronology_plugin,
 	*devices_plugin, *map_plugin, *parsing_plugin, *persons_plugin, *player_plugin,
 	*regions_plugin, *scenes_plugin, *scoring_plugin, *showme_plugin, *spatial_plugin,
-	*times_plugin;
+	*timed_rules_plugin, *times_plugin;
 
 @ =
 void IFModule::create_plugins(void) {
@@ -98,6 +98,7 @@ void IFModule::create_plugins(void) {
 	regions_plugin = PluginManager::new(&Regions::start, I"regions", ifp);
 	scenes_plugin = PluginManager::new(&Scenes::start, I"scenes", ifp);
 	scoring_plugin = PluginManager::new(&TheScore::start, I"scoring", ifp);
+	timed_rules_plugin = PluginManager::new(TimedRules::start, I"timed rules", ifp);
 	times_plugin = PluginManager::new(TimesOfDay::start, I"times of day", ifp);
 
 	actions_plugin = PluginManager::new(&ActionsPlugin::start, I"actions", ifp);
