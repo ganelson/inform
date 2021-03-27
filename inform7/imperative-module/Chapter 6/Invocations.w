@@ -155,7 +155,7 @@ void Invocations::log(parse_node *inv) {
 	char *verdict = Dash::verdict_to_text(inv);
 
 	LOG("[%04d%s] %8s ",
-		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv)),
+		ToPhraseFamily::sequence_count(Node::get_phrase_invoked(inv)),
 		(Invocations::is_marked_to_save_self(inv))?"-save-self":"",
 		verdict);
 	if (Node::get_say_verb(inv)) {
@@ -518,8 +518,8 @@ int Invocations::comparison(const void *i1, const void *i2) {
 
 	/* (a) sort by logical priority */
 	int delta =
-		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv1->inv_data)) -
-		Routines::ToPhrases::sequence_count(Node::get_phrase_invoked(inv2->inv_data));
+		ToPhraseFamily::sequence_count(Node::get_phrase_invoked(inv1->inv_data)) -
+		ToPhraseFamily::sequence_count(Node::get_phrase_invoked(inv2->inv_data));
 	if (delta != 0) return delta;
 
 	/* (b) sort by creation sequence */

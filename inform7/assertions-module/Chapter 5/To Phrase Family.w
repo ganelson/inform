@@ -2,12 +2,32 @@
 
 Imperative definitions of "To..." phrases.
 
-@
+@h Introduction.
+This family handles definitions of "To..." phrases: Inform's equivalent of
+function definitions. For example:
+= (text as Inform 7)
+To chime (N - a number) times:
+	repeat with C running from 1 to N:
+		say "The grandfather clock chimes [C in words]."
+=
+The preamble here is |To chime (N - a number) times|, and this is recognised
+by its opening word "To".
 
 =
-imperative_defn_family *TO_PHRASE_EFF_family = NULL; /* "To award (some - number) points: ..." */
+imperative_defn_family *to_phrase_idf = NULL; /* "To award (some - number) points: ..." */
+void ToPhraseFamily::create_family(void) {
+	to_phrase_idf = ImperativeDefinitionFamilies::new(I"TO_PHRASE_EFF", TRUE);
+	METHOD_ADD(to_phrase_idf, IDENTIFY_IMP_DEFN_MTID, ToPhraseFamily::claim);
+	METHOD_ADD(to_phrase_idf, ASSESS_IMP_DEFN_MTID, ToPhraseFamily::assess);
+	METHOD_ADD(to_phrase_idf, REGISTER_IMP_DEFN_MTID, ToPhraseFamily::register);
+	METHOD_ADD(to_phrase_idf, GIVEN_BODY_IMP_DEFN_MTID, ToPhraseFamily::given_body);
+	METHOD_ADD(to_phrase_idf, ALLOWS_INLINE_IMP_DEFN_MTID, ToPhraseFamily::allows_inline);
+	METHOD_ADD(to_phrase_idf, COMPILE_IMP_DEFN_MTID, ToPhraseFamily::compile);
+	METHOD_ADD(to_phrase_idf, COMPILE_AS_NEEDED_IMP_DEFN_MTID, ToPhraseFamily::compile_as_needed);
+	METHOD_ADD(to_phrase_idf, PHRASEBOOK_INDEX_IMP_DEFN_MTID, ToPhraseFamily::include_in_Phrasebook_index);
+}
 
-@
+@ Each To... phrase is given one of these:
 
 =
 typedef struct to_family_data {
@@ -15,29 +35,35 @@ typedef struct to_family_data {
 	struct wording prototype_text;
 	struct wording constant_name;
 	struct wording ph_documentation_symbol; /* the documentation reference, if any */
-	struct constant_phrase *constant_phrase_holder;
+	struct constant_phrase *as_constant;
 	int explicit_name_used_in_maths; /* if so, this flag means it's like |log()| or |sin()| */
 	struct wording explicit_name_for_inverse; /* e.g. |exp| for |log| */
 	int to_begin; /* used in Basic mode only: this is to be the main phrase */
+	struct imperative_defn *next_in_logical_order;
+	int sequence_count; /* within the logical order list, from 0 */
 	CLASS_DEFINITION
 } to_family_data;
 
-@
-
-=
-void ToPhraseFamily::create_family(void) {
-	TO_PHRASE_EFF_family            = ImperativeDefinitionFamilies::new(I"TO_PHRASE_EFF", TRUE);
-	METHOD_ADD(TO_PHRASE_EFF_family, IDENTIFY_IMP_DEFN_MTID, ToPhraseFamily::claim);
-	METHOD_ADD(TO_PHRASE_EFF_family, ASSESS_IMP_DEFN_MTID, ToPhraseFamily::assess);
-	METHOD_ADD(TO_PHRASE_EFF_family, REGISTER_IMP_DEFN_MTID, ToPhraseFamily::register);
-	METHOD_ADD(TO_PHRASE_EFF_family, GIVEN_BODY_IMP_DEFN_MTID, ToPhraseFamily::given_body);
-	METHOD_ADD(TO_PHRASE_EFF_family, ALLOWS_INLINE_IMP_DEFN_MTID, ToPhraseFamily::allows_inline);
-	METHOD_ADD(TO_PHRASE_EFF_family, COMPILE_IMP_DEFN_MTID, ToPhraseFamily::compile);
-	METHOD_ADD(TO_PHRASE_EFF_family, COMPILE_AS_NEEDED_IMP_DEFN_MTID, ToPhraseFamily::compile_as_needed);
-	METHOD_ADD(TO_PHRASE_EFF_family, PHRASEBOOK_INDEX_IMP_DEFN_MTID, ToPhraseFamily::include_in_Phrasebook_index);
+to_family_data *ToPhraseFamily::new_data(void) {
+	to_family_data *tfd = CREATE(to_family_data);
+	tfd->pattern = EMPTY_WORDING;
+	tfd->prototype_text = EMPTY_WORDING;
+	tfd->constant_name = EMPTY_WORDING;
+	tfd->ph_documentation_symbol = EMPTY_WORDING;
+	tfd->as_constant = NULL;
+	tfd->explicit_name_used_in_maths = FALSE;
+	tfd->explicit_name_for_inverse = EMPTY_WORDING;
+	tfd->to_begin = FALSE;
+	tfd->sequence_count = -1; /* meaning "not yet determined" */
+	tfd->next_in_logical_order = NULL;
+	return tfd;
 }
 
-@ =
+@h Identification.
+To... phrases are recognised by matching this grammar: i.e., their preambles
+must begin with "to" and contain at least one other word.
+
+=
 <to-phrase-preamble> ::=
 	{to} |                                                    ==> @<Issue PM_BareTo problem@>
 	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
@@ -59,26 +85,19 @@ void ToPhraseFamily::create_family(void) {
 		"isn't allowed, but 'To salute (this is saluting)' is.");
 	==> { 4, - };
 
-@ 
-
-=
-int no_now_phrases = 0;
-
+@ =
 void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 	wording W = Node::get_text(id->at);
 	if (<to-phrase-preamble>(W)) {
-		id->family = TO_PHRASE_EFF_family;
-		to_family_data *tfd = CREATE(to_family_data);
-		tfd->constant_name = EMPTY_WORDING;
-		tfd->explicit_name_used_in_maths = FALSE;
-		tfd->explicit_name_for_inverse = EMPTY_WORDING;
-		tfd->constant_phrase_holder = NULL;
+		id->family = to_phrase_idf;
+		to_family_data *tfd = ToPhraseFamily::new_data();
 		id->family_specific_data = STORE_POINTER_to_family_data(tfd);
 		int form = <<r>>;
 		if (form != 4) {
 			wording RW = GET_RW(<to-phrase-preamble>, 2);
 			if (<s-type-expression>(RW)) {
-				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PhraseNameDuplicated),
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_PhraseNameDuplicated),
 					"that name for this new phrase is not allowed",
 					"because it already has a meaning.");
 			} else {
@@ -87,7 +106,8 @@ void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 					ToPhraseFamily::create_constant(RW, GET_RW(<to-phrase-preamble>, 1));
 			}
 			if ((form == 1) || (form == 2)) tfd->explicit_name_used_in_maths = TRUE;
-			if (form == 1) tfd->explicit_name_for_inverse = Wordings::first_word(GET_RW(<to-phrase-preamble>, 3));
+			if (form == 1) tfd->explicit_name_for_inverse =
+				Wordings::first_word(GET_RW(<to-phrase-preamble>, 3));
 		}
 		wording PW = GET_RW(<to-phrase-preamble>, 1);
 		tfd->ph_documentation_symbol = Index::DocReferences::position_of_symbol(&PW);
@@ -95,54 +115,52 @@ void ToPhraseFamily::claim(imperative_defn_family *self, imperative_defn *id) {
 	}
 }
 
-@ As a safety measure, to avoid ambiguities, Inform only allows one phrase
-definition to begin with "now". It recognises such phrases as those whose
-preambles match:
+@h Assessment.
+Now we take a closer look at the wording, and react to these two in particular:
 
 =
 <now-phrase-preamble> ::=
 	to now ...
 
-@ In basic mode (only), the To phrase "to begin" acts as something like
-|main| in a C-like language, so we need to take note of where it's defined:
-
-=
 <begin-phrase-preamble> ::=
 	to begin
 
 @ =
+int no_now_phrases = 0;
 void ToPhraseFamily::assess(imperative_defn_family *self, imperative_defn *id) {
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	wording W = tfd->prototype_text;
 
 	if (Wordings::nonempty(tfd->constant_name)) @<The preamble parses to a named To phrase@>;
-	if (<now-phrase-preamble>(W)) {
-		if (no_now_phrases++ == 1) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RedefinedNow),
-				"creating new variants on 'now' is not allowed",
-				"because 'now' plays a special role in the language. "
-				"It has a wide-ranging ability to make a condition "
-				"become immediately true. (To give it wider abilities, "
-				"the idea is to create new relations.)");
-		}
+
+	wording W = tfd->prototype_text;
+	if ((<now-phrase-preamble>(W)) && (no_now_phrases++ == 1)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_RedefinedNow),
+			"creating new variants on 'now' is not allowed",
+			"because 'now' plays a special role in the language. It has a wide-ranging "
+			"ability to make a condition become immediately true. (To give it wider "
+			"abilities, the idea is to create new relations.)");
 	}
-	if (<begin-phrase-preamble>(W)) {
-		tfd->to_begin = TRUE;
-	}
+	if (<begin-phrase-preamble>(W)) tfd->to_begin = TRUE;
 }
 
-@ When we parse a named phrase in coarse mode, we need to make sure that
-name is registered as a constant value; when we parse it again in fine
-mode, we can get that value back again if we look it up by name.
+@ Phrases are allowed to have indefinite kinds provided they are used only as
+prototypes, but not if they are referred to as individual values in their own
+right:
+= (text as Inform 7)
+To say (N - number) twice: say "[N]. [N], I say!"                               OK
+To say (V - value) twice: say "[V]. [V], I say!"                                OK
+To say (N - number) twice (this is double-counting): say "[N]. [N], I say!"     OK
+To say (V - value) twice (this is double-saying): say "[V]. [V], I say!"        PROBLEM
+=
 
 @<The preamble parses to a named To phrase@> =
 	wording NW = tfd->constant_name;
-
 	constant_phrase *cphr = ToPhraseFamily::parse_constant(NW);
 	if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
 		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
 		if (ph) current_sentence = Phrases::declaration_node(ph);
-		Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
+		Problems::quote_source(1,
+			Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
 		Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
 		Problems::issue_problem_segment(
@@ -153,27 +171,143 @@ mode, we can get that value back again if we look it up by name.
 			"for every setting where it might be needed, and we can't "
 			"predict in advance which one '%2' might need to be.");
 		Problems::issue_problem_end();
-		LOG("CPHR failed at %d, %u\n", cphr->allocation_id, cphr->cphr_kind);
 	}
-	tfd->constant_phrase_holder = cphr;
+	tfd->as_constant = cphr;
 
-@
+@ The following routine takes a phrase and makes it officially a To
+phrase, which in particular means adding it to the list of To phrases in
+logical order. This essentially means that two lexically
+indistinguishable phrases (e.g., "admire (OC - an open container)" and
+"admire (C - a container)") are placed such that the more specific, in
+type-checking terms, comes first (the open container case being the more
+specific). The purpose of this list is to ensure that excerpt meanings
+for phrase definitions are registered in logical priority order, because
+the excerpt parser prefers earlier registrations to later ones in case
+of ambiguity.
+
+Note that the following sort algorithm affects only "to..." phrases,
+and therefore has no effect on rule ordering within rulebooks.
 
 =
-void ToPhraseFamily::register(imperative_defn_family *self) {
-	Routines::ToPhrases::register_all();
-}
+imperative_defn *first_in_logical_order = NULL;
 
 void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
-	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	if (tfd->to_begin) id->body_of_defn->to_begin = TRUE;
+	phrase *body = id->body_of_defn;
+	Routines::prepare_for_requests(body);
 
 	wording XW = ToPhraseFamily::get_prototype_text(id);
 	wording OW = EMPTY_WORDING;
 	Phrases::TypeData::Textual::parse(&(id->body_of_defn->type_data), XW, &OW);
 	Phrases::Options::parse_declared_options(&(id->body_of_defn->options_data), OW);
 
-	Routines::ToPhrases::new(id->body_of_defn);
+	imperative_defn *previous_id = NULL;
+	imperative_defn *current_id = first_in_logical_order;
+
+	if (first_in_logical_order == NULL) {
+		first_in_logical_order = id;
+	} else {
+		while ((current_id != NULL) &&
+				(ToPhraseFamily::cmp(body, current_id->body_of_defn) >= 0)) {
+			previous_id = current_id;
+			current_id = ToPhraseFamily::get_next(current_id);
+		}
+		if (previous_id == NULL) {
+			ToPhraseFamily::set_next(id, first_in_logical_order);
+			first_in_logical_order = id;
+		} else {
+			ToPhraseFamily::set_next(previous_id, id);
+			ToPhraseFamily::set_next(id, current_id);
+		}
+	}
+}
+
+imperative_defn *ToPhraseFamily::get_next(imperative_defn *id) {
+	if (id->family != to_phrase_idf) internal_error("not a To");
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+	return tfd->next_in_logical_order;
+}
+
+void ToPhraseFamily::set_next(imperative_defn *id, imperative_defn *next) {
+	if (id->family != to_phrase_idf) internal_error("not a To");
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+	tfd->next_in_logical_order = next;
+}
+
+@ Here is the system for deciding which of two phrases is logically prior, if
+either is:
+
+@d BEFORE_PH -3
+@d SUBSCHEMA_PH -1
+@d EQUAL_PH 0
+@d SUPERSCHEMA_PH 1
+@d INCOMPARABLE_PH 2
+@d AFTER_PH 3
+@d CONFLICTED_PH 4
+
+=
+int ToPhraseFamily::cmp(phrase *ph1, phrase *ph2) {
+	int r = Phrases::TypeData::comparison(&(ph1->type_data), &(ph2->type_data));
+
+	if ((Log::aspect_switched_on(PHRASE_COMPARISONS_DA)) || (r == CONFLICTED_PH)) {
+		LOG("Phrase comparison (");
+		Phrases::write_HTML_representation(DL, ph1, PASTE_PHRASE_FORMAT);
+		LOG(") ");
+		switch(r) {
+			case INCOMPARABLE_PH: LOG("~~"); break;
+			case SUBSCHEMA_PH: LOG("<="); break;
+			case SUPERSCHEMA_PH: LOG(">="); break;
+			case EQUAL_PH: LOG("=="); break;
+			case BEFORE_PH: LOG("<"); break;
+			case AFTER_PH: LOG(">"); break;
+			case CONFLICTED_PH: LOG("!!"); break;
+		}
+		LOG(" (");
+		Phrases::write_HTML_representation(DL, ph2, PASTE_PHRASE_FORMAT);
+		LOG(")\n");
+	}
+
+	if (r == CONFLICTED_PH) {
+		Problems::quote_source(1, Phrases::declaration_node(ph1));
+		Problems::quote_source(2, Phrases::declaration_node(ph2));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ConflictedReturnKinds));
+		Problems::issue_problem_segment(
+			"The two phrase definitions %1 and %2 make the same wording "
+			"produce two different kinds of value, which is not allowed.");
+		Problems::issue_problem_end();
+	}
+
+	return r;
+}
+
+@ At this point, all of the To... phrases have been sorted into the logical
+precedence list. We now both enter them into the excerpt parser, and also
+number them sequentially from 0:
+
+=
+void ToPhraseFamily::register(imperative_defn_family *self) {
+	int c = 0;
+	for (imperative_defn *id = first_in_logical_order; id; id = ToPhraseFamily::get_next(id)) {
+		current_sentence = id->at;
+		Phrases::Parser::register_excerpt(id->body_of_defn);
+		to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+		tfd->sequence_count = c++;
+	}
+}
+
+phrase *ToPhraseFamily::meaning_as_phrase(excerpt_meaning *em) {
+	if (em == NULL) return NULL;
+	return RETRIEVE_POINTER_phrase(em->data);
+}
+
+int ToPhraseFamily::sequence_count(phrase *ph) {
+	if (ph == NULL) return 0;
+	if (ph->from->family != to_phrase_idf) internal_error("sequence count on what is not a To");
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(ph->from->family_specific_data);
+	if (tfd->sequence_count == -1) {
+		Phrases::log(ph);
+		internal_error("Sequence count not ready");
+	}
+	return tfd->sequence_count;
 }
 
 int ToPhraseFamily::allows_inline(imperative_defn_family *self, imperative_defn *id) {
@@ -185,7 +319,7 @@ int ToPhraseFamily::include_in_Phrasebook_index(imperative_defn_family *self, im
 }
 
 phrase *ToPhraseFamily::inverse(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return NULL;
+	if (id->family != to_phrase_idf) return NULL;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	if (Wordings::nonempty(tfd->explicit_name_for_inverse)) {
 		phrase *ph;
@@ -200,50 +334,49 @@ phrase *ToPhraseFamily::inverse(imperative_defn *id) {
 }
 
 constant_phrase *ToPhraseFamily::constant_phrase(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return NULL;
+	if (id->family != to_phrase_idf) return NULL;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	return tfd->constant_phrase_holder;
+	return tfd->as_constant;
+}
+
+wording ToPhraseFamily::get_prototype_text(imperative_defn *id) {
+	if (id->family != to_phrase_idf) return EMPTY_WORDING;
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+	return tfd->prototype_text;
 }
 
 wording ToPhraseFamily::constant_name(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return EMPTY_WORDING;
+	if (id->family != to_phrase_idf) return EMPTY_WORDING;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	return tfd->constant_name;
 }
 
 int ToPhraseFamily::has_name_as_constant(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return FALSE;
+	if (id->family != to_phrase_idf) return FALSE;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	if ((tfd->constant_phrase_holder) &&
+	if ((tfd->as_constant) &&
 		(tfd->explicit_name_used_in_maths == FALSE) &&
-		(Wordings::nonempty(Nouns::nominative_singular(tfd->constant_phrase_holder->name)))) return TRUE;
+		(Wordings::nonempty(Nouns::nominative_singular(tfd->as_constant->name)))) return TRUE;
 	return FALSE;
 }
 
 wording ToPhraseFamily::get_equation_form(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return EMPTY_WORDING;
+	if (id->family != to_phrase_idf) return EMPTY_WORDING;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	if (tfd->explicit_name_used_in_maths)
-		return Wordings::first_word(Nouns::nominative_singular(tfd->constant_phrase_holder->name));
+		return Wordings::first_word(Nouns::nominative_singular(tfd->as_constant->name));
 	return EMPTY_WORDING;
 }
 
 wording ToPhraseFamily::doc_ref(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return EMPTY_WORDING;
+	if (id->family != to_phrase_idf) return EMPTY_WORDING;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	return tfd->ph_documentation_symbol;
 }
 
-@h Extracting the stem.
-A couple of routines to read but not really parse the stem and the bud.
+@h Compilation.
 
 =
-wording ToPhraseFamily::get_prototype_text(imperative_defn *id) {
-	if (id->family != TO_PHRASE_EFF_family) return EMPTY_WORDING;
-	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
-	return tfd->prototype_text;
-}
-
 void ToPhraseFamily::compile(imperative_defn_family *self,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	@<Mark To... phrases which have definite kinds for future compilation@>;
@@ -269,7 +402,7 @@ points", say). This is where we do it:
 		kind *K = Phrases::TypeData::kind(&(ph->type_data));
 		if (Kinds::Behaviour::definite(K)) {
 			if (ph->at_least_one_compiled_form_needed)
-				Routines::ToPhrases::make_request(ph, K, NULL, EMPTY_WORDING);
+				PhraseRequests::make_request(ph, K, NULL, EMPTY_WORDING);
 		}
 	}
 
@@ -364,7 +497,7 @@ void ToPhraseFamily::compile_as_needed(imperative_defn_family *self,
 	int repeat = TRUE;
 	while (repeat) {
 		repeat = FALSE;
-		if (Routines::ToPhrases::compilation_coroutine(
+		if (PhraseRequests::compilation_coroutine(
 			total_phrases_compiled, total_phrases_to_compile) > 0)
 			repeat = TRUE;
 		if (ListTogether::compilation_coroutine() > 0)
@@ -460,4 +593,52 @@ phrase *ToPhraseFamily::body_of_constant(constant_phrase *cphr) {
 		}
 	}
 	return cphr->phrase_meant;
+}
+
+@h To begin.
+Basic Inform has a special "to begin" phrase.
+
+=
+imperative_defn *ToPhraseFamily::to_begin(void) {
+	imperative_defn *beginner = NULL;
+	imperative_defn *id;
+	LOOP_OVER(id, imperative_defn)
+		if (id->family == to_phrase_idf) {
+			to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
+			if (tfd->to_begin) {
+				if (beginner) {
+					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+						"there seem to be multiple 'to begin' phrases",
+						"and in Basic mode, Inform expects to see exactly one of "
+						"these, specifying where execution should begin.");
+				} else {
+					if (Phrases::compiled_inline(id->body_of_defn)) {
+						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+							"the 'to begin' phrase seems to be defined inline",
+							"which in Basic mode is not allowed.");
+					} else {
+						beginner = id;
+					}
+				}
+			}
+		}
+	if (beginner == NULL)
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
+			"there seems not to be a 'to begin' phrase",
+			"and in Basic mode, Inform expects to see exactly one of "
+			"these, specifying where execution should begin.");
+	return beginner;
+}
+
+@h Phrase option parsing.
+These indirections are provided so that the implementation of phrase options
+is confined to the current Chapter.
+
+=
+int ToPhraseFamily::allows_options(phrase *ph) {
+	return Phrases::Options::allows_options(&(ph->options_data));
+}
+
+int ToPhraseFamily::parse_phrase_option_used(phrase *ph, wording W) {
+	return Phrases::Options::parse(&(ph->options_data), W);
 }

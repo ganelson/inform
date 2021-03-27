@@ -11,7 +11,7 @@ void Invocations::AsCalls::csi_by_call(value_holster *VH, parse_node *inv,
 	phrase *ph = Node::get_phrase_invoked(inv);
 
 	inter_name *IS = Routines::Compile::iname(ph,
-		Routines::ToPhrases::make_request(ph, tokens->as_requested,
+		PhraseRequests::make_request(ph, tokens->as_requested,
 			Node::get_kind_variable_declarations(inv), Node::get_text(inv)));
 	LOGIF(MATCHING, "Calling routine %n with kind %u from $e\n", IS,
 		tokens->as_requested, inv);

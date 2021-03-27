@@ -147,7 +147,7 @@ being compiled; all others are out of scope.
 =
 <s-phrase-option-in-use> internal {
 	if (phrase_being_compiled) {
-		int i = Routines::ToPhrases::parse_phrase_option_used(phrase_being_compiled, W);
+		int i = ToPhraseFamily::parse_phrase_option_used(phrase_being_compiled, W);
 		if (i >= 0) {
 			==> { -, Conditions::new_TEST_PHRASE_OPTION(i) };
 			return TRUE;

@@ -11,7 +11,7 @@ inter_name *Phrases::Constants::compile(constant_phrase *cphr) {
 	phrase *ph = ToPhraseFamily::body_of_constant(cphr);
 	if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
 	if (Phrases::compiled_inline(ph) == FALSE)
-		Routines::ToPhrases::make_request(ph,
+		PhraseRequests::make_request(ph,
 			ToPhraseFamily::kind(cphr), NULL, EMPTY_WORDING);
 	return Phrases::Constants::iname(cphr);
 }
@@ -51,7 +51,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 	RTKinds::emit_strong_id(cphr->cphr_kind);
 
-	inter_name *RS = Routines::ToPhrases::make_iname(ph,
+	inter_name *RS = PhraseRequests::make_iname(ph,
 		ToPhraseFamily::kind(cphr));
 	Emit::array_iname_entry(RS);
 

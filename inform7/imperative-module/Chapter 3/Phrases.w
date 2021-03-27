@@ -47,19 +47,10 @@ typedef struct phrase {
 	int at_least_one_compiled_form_needed; /* do we still need to compile this? */
 	int compile_with_run_time_debugging; /* in the RULES command */
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
-	int to_begin; /* for Basic mode only: this is the main routine */
-	int imported;
-
-	struct phrase *next_in_logical_order; /* for "to..." phrases only */
-	int sequence_count; /* within the logical order list, from 0 */
 
 	CLASS_DEFINITION
 } phrase;
 
-@ "To..." phrases, though no others, are listed in logical precedence order:
-
-=
-struct phrase *first_in_logical_order = NULL;
 
 @ The life of a |phrase| structure begins when we look at the parse-tree
 representation of its declaration in the source text.
@@ -144,8 +135,6 @@ inline definitions.
 	new_ph->inter_defn_converted = FALSE;
 	new_ph->inline_mor = mor;
 	new_ph->ph_iname = NULL;
-	new_ph->to_begin = FALSE;
-	new_ph->imported = FALSE;
 	new_ph->owning_module = CompilationUnits::find(current_sentence);
 	new_ph->requests_package = NULL;
 	if (inline_wn >= 0) {
@@ -154,9 +143,6 @@ inline definitions.
 		new_ph->at_least_one_compiled_form_needed = TRUE;
 	}
 	new_ph->compile_with_run_time_debugging = FALSE;
-
-	new_ph->next_in_logical_order = NULL;
-	new_ph->sequence_count = -1;
 
 @ That just leaves two problem messages about inline definitions:
 
@@ -289,13 +275,8 @@ compiled multiple times, for different kinds of tokens, and are compiled in
 response to "requests". All other phrases are compiled just once.
 
 =
-void Phrases::import(phrase *ph) {
-	ph->imported = TRUE;
-}
-
 void Phrases::compile(phrase *ph, int *i, int max_i,
 	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
-	if (ph->imported) return;
 	if ((req) || (ph->at_least_one_compiled_form_needed)) {
 		Routines::Compile::routine(ph, legible, req, R);
 		@<Move along the progress bar if it's this phrase's first compilation@>;
@@ -313,40 +294,16 @@ void Phrases::compile(phrase *ph, int *i, int max_i,
 
 =
 void Phrases::invoke_to_begin(void) {
-	if (Task::begin_execution_at_to_begin()) {
+	if (Task::begin_execution_af_to_begin()) {
 		inter_name *iname = Hierarchy::find(SUBMAIN_HL);
 		packaging_state save = Routines::begin(iname);
-		int n = 0;
-		phrase *ph;
-		LOOP_OVER(ph, phrase)
-			if (ph->to_begin) {
-				n++;
-				if (n > 1) {
-					StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
-						"there seem to be multiple 'to begin' phrases",
-						"and in Basic mode, Inform expects to see exactly one of "
-						"these, specifying where execution should begin.");
-				} else {
-					if (Phrases::compiled_inline(ph)) {
-						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
-							"the 'to begin' phrase seems to be defined inline",
-							"which in Basic mode is not allowed.");
-					} else {
-						kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
-						inter_name *IS = Routines::Compile::iname(ph,
-							Routines::ToPhrases::make_request(ph,
-								void_kind,
-								NULL,
-								EMPTY_WORDING));
-						Produce::inv_call_iname(Emit::tree(), IS);
-					}
-				}
-			}
-		if (n == 0) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
-				"there seems not to be a 'to begin' phrase",
-				"and in Basic mode, Inform expects to see exactly one of "
-				"these, specifying where execution should begin.");
+		imperative_defn *beginner = ToPhraseFamily::to_begin();
+		if (beginner) {
+			kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
+			inter_name *IS = Routines::Compile::iname(beginner->body_of_defn,
+				PhraseRequests::make_request(beginner->body_of_defn,
+					void_kind, NULL, EMPTY_WORDING));
+			Produce::inv_call_iname(Emit::tree(), IS);
 		}
 		Routines::end(save);
 		Hierarchy::make_available(Emit::tree(), iname);

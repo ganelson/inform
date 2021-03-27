@@ -1,26 +1,27 @@
 100.0% in inform7 run
-     67.0% in compilation to Inter
-         25.8% in //ImperativeDefinitions::compile_first_block//
-          8.6% in //ImperativeDefinitions::compile_as_needed//
-          6.9% in //Strings::compile_responses//
-          6.0% in //InferenceSubjects::emit_all//
-          4.3% in //MajorNodes::pre_pass//
+     67.4% in compilation to Inter
+         26.0% in //ImperativeDefinitions::compile_first_block//
+          8.5% in //ImperativeDefinitions::compile_as_needed//
+          6.8% in //Strings::compile_responses//
+          6.1% in //InferenceSubjects::emit_all//
+          4.4% in //MajorNodes::pre_pass//
           3.3% in //MajorNodes::pass_1//
           2.0% in //RTRules::RulePrintingRule_routine//
           1.8% in //RTRules::rulebooks_array_array//
           1.6% in //ImperativeDefinitions::assess_all//
-          0.9% in //RTVerbs::ConjugateVerb//
+          1.1% in //RTVerbs::ConjugateVerb//
           0.3% in //MajorNodes::pass_2//
           0.3% in //RTRelations::compile_defined_relations//
           0.3% in //RTRules::compile_rulebooks//
           0.3% in //World::stage_V//
+          0.1% in //Emit::begin//
           0.1% in //RTKinds::compile_data_type_support_routines//
           0.1% in //Task::make_built_in_kind_constructors//
-          3.4% not specifically accounted for
-     30.5% in running Inter pipeline
-          9.9% in inter step 2/12: link
-          9.9% in step preparation
-          6.9% in inter step 12/12: generate inform6 -> auto.inf
+          3.3% not specifically accounted for
+     30.1% in running Inter pipeline
+         10.0% in step preparation
+          9.8% in inter step 2/12: link
+          7.0% in inter step 12/12: generate inform6 -> auto.inf
           0.3% in inter step 9/12: make-identifiers-unique
           0.1% in inter step 10/12: reconcile-verbs
           0.1% in inter step 11/12: eliminate-redundant-labels
@@ -28,6 +29,6 @@
           0.1% in inter step 6/12: assimilate
           0.1% in inter step 7/12: resolve-external-symbols
           0.1% in inter step 8/12: inspect-plugs
-          2.1% not specifically accounted for
+          1.7% not specifically accounted for
       2.0% in supervisor
       0.4% not specifically accounted for

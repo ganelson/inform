@@ -220,7 +220,7 @@ void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok
 					Produce::up(Emit::tree());
 			}
 			else if (tok->leaf_symbol->function_notated) {
-				inter_name *RS = Routines::ToPhrases::make_iname(
+				inter_name *RS = PhraseRequests::make_iname(
 					tok->leaf_symbol->function_notated,
 					Phrases::TypeData::kind(
 						&(tok->leaf_symbol->function_notated->type_data)));

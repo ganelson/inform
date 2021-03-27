@@ -316,8 +316,8 @@ though it can be any type of phrase.
 
 @<Look through to see if there are phrase options at the end@> =
 	#ifdef CORE_MODULE
-	phrase *ph = Routines::ToPhrases::meaning_as_phrase(Node::get_meaning(p));
-	if (Routines::ToPhrases::allows_options(ph)) {
+	phrase *ph = ToPhraseFamily::meaning_as_phrase(Node::get_meaning(p));
+	if (ToPhraseFamily::allows_options(ph)) {
 		LOGIF(EXCERPT_PARSING, "Looking for phrase options\n");
 		for (bl=0, scan_pos=Wordings::first_wn(W)+1;
 			scan_pos<Wordings::last_wn(W); scan_pos++) {

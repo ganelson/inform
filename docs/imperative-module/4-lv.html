@@ -148,7 +148,7 @@ marks it as deallocated.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">local_variable</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure local_variable is accessed in 2/rlb, 2/act, 3/phr, 3/prcd, 3/tph, 4/sv, 4/sf, 5/dtd, 5/cdp, 6/inv, 6/pi, 6/cii, 6/cp, 6/cste and here.</li></ul>
+<ul class="endnotetexts"><li>The structure local_variable is accessed in 2/rlb, 2/act, 3/phr, 3/prcd, 4/sv, 4/sf, 5/dtd, 5/cdp, 6/inv, 6/pi, 6/cii, 6/cp, 6/cste and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>A local variable needs to be stored somewhere at run-time. The obvious
 correspondence is to put these into I6 local variables, which are, in effect,
 CPU registers. We won't need to do much in the way of register-allocation,
@@ -456,7 +456,7 @@ passed to its I6 routine, and this occupies a pseudo-call-parameter:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LocalVariables::options_parameter_is_needed</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">LocalVariables::options_parameter_is_needed</span></span>:<br/>Phrases - <a href="3-phr.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LocalVariables::options_parameter_is_needed</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">LocalVariables::options_parameter_is_needed</span></span>:<br/>Phrases - <a href="3-phr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ph_stack_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="4-lv.html#SP10" class="function-link"><span class="function-syntax">LocalVariables::add_internal</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">phsf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">local_value_variables</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">I</span><span class="string-syntax">"phrase_options"</span><span class="plain-syntax">, </span><span class="constant-syntax">OTHER_CALL_PARAMETER_LV</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -1368,7 +1368,7 @@ need in the compilation of any given routine:
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-tph.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-rls.html">2</a></li><li class="progresschapter"><a href="3-itp.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">lv</li><li class="progresssection"><a href="4-sv.html">sv</a></li><li class="progresssection"><a href="4-pb.html">pb</a></li><li class="progresssection"><a href="4-sf.html">sf</a></li><li class="progresssection"><a href="4-chr.html">chr</a></li><li class="progresschapter"><a href="5-cfs.html">5</a></li><li class="progresschapter"><a href="6-inv.html">6</a></li><li class="progressnext"><a href="4-sv.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-po.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-rls.html">2</a></li><li class="progresschapter"><a href="3-itp.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">lv</li><li class="progresssection"><a href="4-sv.html">sv</a></li><li class="progresssection"><a href="4-pb.html">pb</a></li><li class="progresssection"><a href="4-sf.html">sf</a></li><li class="progresssection"><a href="4-chr.html">chr</a></li><li class="progresschapter"><a href="5-cfs.html">5</a></li><li class="progresschapter"><a href="6-inv.html">6</a></li><li class="progressnext"><a href="4-sv.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

@@ -48,7 +48,7 @@ void Routines::Compile::routine(phrase *ph,
 }
 
 @<Compile some commentary about the routine to follow@> =
-	Routines::ToPhrases::comment_on_request(req);
+	PhraseRequests::comment_on_request(req);
 	ImperativeDefinitions::write_comment_describing(ph->from);
 
 @<Set up the stack frame for this compilation request@> =
@@ -57,12 +57,12 @@ void Routines::Compile::routine(phrase *ph,
 	Frames::make_current(phsf);
 
 	kind *version_kind = NULL;
-	if (req) version_kind = Routines::ToPhrases::kind_of_request(req);
+	if (req) version_kind = PhraseRequests::kind_of_request(req);
 	else version_kind = Phrases::TypeData::kind(phtd);
 	Phrases::TypeData::into_stack_frame(phsf, phtd, version_kind, FALSE);
 
 	if (req) Frames::set_kind_variables(phsf,
-		Routines::ToPhrases::kind_variables_for_request(req));
+		PhraseRequests::kind_variables_for_request(req));
 	else Frames::set_kind_variables(phsf, NULL);
 
 	Frames::set_stvol(phsf, legible);

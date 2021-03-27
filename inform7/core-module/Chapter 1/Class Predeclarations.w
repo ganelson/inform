@@ -170,7 +170,6 @@ DECLARE_CLASS(value_property_data)
 @e phrase_CLASS
 @e phrase_option_CLASS
 @e pointer_allocation_CLASS
-@e to_phrase_request_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
@@ -182,7 +181,6 @@ DECLARE_CLASS(ph_stack_frame_box)
 DECLARE_CLASS(phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(pointer_allocation)
-DECLARE_CLASS(to_phrase_request)
 
 @ //runtime// --
 
@@ -204,6 +202,7 @@ DECLARE_CLASS(to_phrase_request)
 @e runtime_kind_structure_CLASS
 @e slash_gpr_CLASS
 @e test_scenario_CLASS
+@e to_phrase_request_CLASS
 
 =
 DECLARE_CLASS(adjective_iname_holder)
@@ -224,6 +223,7 @@ DECLARE_CLASS(property_of_value_storage)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(test_scenario)
+DECLARE_CLASS(to_phrase_request)
 
 @ //index// --
 
