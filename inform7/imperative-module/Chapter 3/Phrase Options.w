@@ -17,12 +17,12 @@ The packet of these associated with a phrase is stored in the PHOD structure.
 @d MAX_OPTIONS_PER_PHRASE 16 /* because held in a 16-bit Z-machine bitmap */
 
 =
-typedef struct ph_options_data {
+typedef struct id_options_data {
 	struct phrase_option *options_permitted[MAX_OPTIONS_PER_PHRASE]; /* see below */
 	int no_options_permitted;
 	struct wording options_declaration; /* the text declaring the whole set of options */
 	int multiple_options_permitted; /* can be combined, or mutually exclusive? */
-} ph_options_data;
+} id_options_data;
 
 @ There's nothing to a phrase option, really:
 
@@ -35,15 +35,15 @@ typedef struct phrase_option {
 By default, a phrase has no options.
 
 =
-ph_options_data Phrases::Options::new(wording W) {
-	ph_options_data phod;
+id_options_data Phrases::Options::new(wording W) {
+	id_options_data phod;
 	phod.no_options_permitted = 0;
 	phod.multiple_options_permitted = FALSE;
 	phod.options_declaration = W;
 	return phod;
 }
 
-int Phrases::Options::allows_options(ph_options_data *phod) {
+int Phrases::Options::allows_options(id_options_data *phod) {
 	if (phod->no_options_permitted > 0) return TRUE;
 	return FALSE;
 }
@@ -54,44 +54,20 @@ are parsed only in a condition context, not in a value context, and
 these are relatively rare in Inform source text.
 
 =
-int Phrases::Options::parse(ph_options_data *phod, wording W) {
+int Phrases::Options::parse(id_options_data *phod, wording W) {
 	for (int i = 0; i < phod->no_options_permitted; i++)
 		if (Wordings::match(W, phod->options_permitted[i]->name))
 			return (1 << i);
 	return -1;
 }
 
-@h Indexing.
-
-=
-void Phrases::Options::index(OUTPUT_STREAM, ph_options_data *phod) {
-	for (int i=0; i<phod->no_options_permitted; i++) {
-		phrase_option *po = phod->options_permitted[i];
-		WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-		if (i==0) {
-			HTML_TAG("br");
-			WRITE("<i>optionally</i> ");
-		} else if (i == phod->no_options_permitted-1) {
-			if (phod->multiple_options_permitted) WRITE("<i>and/or</i> ");
-			else WRITE("<i>or</i> ");
-		}
-		PasteButtons::paste_W(OUT, po->name);
-		WRITE("&nbsp;%+W", po->name);
-		if (i < phod->no_options_permitted-1) {
-			WRITE(",");
-			HTML_TAG("br");
-		}
-		WRITE("\n");
-	}
-}
-
 @h Parsing phrase options in a declaration.
 
 =
-ph_options_data *phod_being_parsed = NULL;
-phrase *ph_being_parsed = NULL;
+id_options_data *phod_being_parsed = NULL;
+id_body *idb_being_parsed = NULL;
 
-void Phrases::Options::parse_declared_options(ph_options_data *phod, wording W) {
+void Phrases::Options::parse_declared_options(id_options_data *phod, wording W) {
 	if (Wordings::nonempty(W)) {
 		phod->options_declaration = W;
 		phod_being_parsed = phod;
@@ -145,7 +121,7 @@ and creates two options with <phrase-option-declaration-setting-entry>.
 
 @ =
 int too_many_POs_error = FALSE;
-void Phrases::Options::phod_add_phrase_option(ph_options_data *phod, wording W) {
+void Phrases::Options::phod_add_phrase_option(id_options_data *phod, wording W) {
 	LOGIF(PHRASE_CREATIONS, "Adding phrase option <%W>\n", W);
 	if (phod->no_options_permitted >= MAX_OPTIONS_PER_PHRASE) {
 		if (too_many_POs_error == FALSE)
@@ -186,11 +162,11 @@ produce.
 int phod_being_parsed_silently = FALSE; /* context for the grammar below */
 
 int Phrases::Options::parse_invoked_options(parse_node *inv, int silently) {
-	phrase *ph = Node::get_phrase_invoked(inv);
+	id_body *idb = Node::get_phrase_invoked(inv);
 	wording W = Invocations::get_phrase_options(inv);
 
-	ph_being_parsed = ph;
-	phod_being_parsed = &(ph_being_parsed->options_data);
+	idb_being_parsed = idb;
+	phod_being_parsed = &(idb_being_parsed->options_data);
 
 	int bitmap = 0;
 	int pc = problem_count;
@@ -225,7 +201,7 @@ this residue is zero.
 		if (silently == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, W);
-			Problems::quote_phrase(3, ph);
+			Problems::quote_phrase(3, idb);
 			Problems::quote_wording(4, phod_being_parsed->options_declaration);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseOptionsExclusive));
 			Problems::issue_problem_segment(
@@ -257,7 +233,7 @@ by "and":
 	if ((!preform_lookahead_mode) && (!phod_being_parsed_silently)) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, W);
-		Problems::quote_phrase(3, ph_being_parsed);
+		Problems::quote_phrase(3, idb_being_parsed);
 		Problems::quote_wording(4, phod_being_parsed->options_declaration);
 		if (phod_being_parsed->no_options_permitted > 1) {
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotAPhraseOption));

@@ -75,7 +75,7 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	ts->dont_need_after_all = FALSE;
 	ts->tr_done_already = FALSE;
 	ts->ts_sb_needed = FALSE;
-	if ((phrase_being_compiled) &&
+	if ((id_body_being_compiled) &&
 		(LocalVariables::count(Frames::current_stack_frame()) > 0))
 		ts->local_names_existed_at_usage_time = TRUE;
 	package_request *PR = Hierarchy::package_within(LITERALS_HAP, P);

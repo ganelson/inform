@@ -42,7 +42,7 @@ typedef struct to_family_data {
 	struct constant_phrase *as_constant;
 	int explicit_name_used_in_maths; /* if so, this flag means it's like |log()| or |sin()| */
 	struct wording explicit_name_for_inverse; /* e.g. |exp| for |log| */
-	int to_begin; /* used in Basic mode only: this is to be the main phrase */
+	int to_begin; /* used in Basic mode only: this is to be the main id_body */
 	struct imperative_defn *next_in_logical_order;
 	int sequence_count; /* within the logical order list, from 0 */
 	CLASS_DEFINITION
@@ -160,8 +160,8 @@ To say (V - value) twice (this is double-saying): say "[V]. [V], I say!"        
 	wording NW = tfd->constant_name;
 	constant_phrase *cphr = ToPhraseFamily::parse_constant(NW);
 	if (Kinds::Behaviour::definite(cphr->cphr_kind) == FALSE) {
-		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
-		if (ph) current_sentence = Phrases::declaration_node(ph);
+		id_body *idb = ToPhraseFamily::body_of_constant(cphr);
+		if (idb) current_sentence = ImperativeDefinitions::body_at(idb);
 		Problems::quote_source(1,
 			Diagrams::new_UNPARSED_NOUN(Nouns::nominative_singular(cphr->name)));
 		Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
@@ -190,12 +190,12 @@ within rulebooks. That's a similar issue, but addressed differently elsewhere.
 imperative_defn *first_in_logical_order = NULL;
 
 void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
-	phrase *body = id->body_of_defn;
+	id_body *body = id->body_of_defn;
 	Routines::prepare_for_requests(body);
 
 	wording XW = ToPhraseFamily::get_prototype_text(id);
 	wording OW = EMPTY_WORDING;
-	Phrases::TypeData::Textual::parse(&(id->body_of_defn->type_data), XW, &OW);
+	ParsingIDTypeData::parse(&(id->body_of_defn->type_data), XW, &OW);
 	Phrases::Options::parse_declared_options(&(id->body_of_defn->options_data), OW);
 
 	imperative_defn *previous_id = NULL;
@@ -243,12 +243,12 @@ either is:
 @d CONFLICTED_PH 4
 
 =
-int ToPhraseFamily::cmp(phrase *ph1, phrase *ph2) {
-	int r = Phrases::TypeData::comparison(&(ph1->type_data), &(ph2->type_data));
+int ToPhraseFamily::cmp(id_body *idb1, id_body *idb2) {
+	int r = IDTypeData::comparison(&(idb1->type_data), &(idb2->type_data));
 
 	if ((Log::aspect_switched_on(PHRASE_COMPARISONS_DA)) || (r == CONFLICTED_PH)) {
 		LOG("Phrase comparison (");
-		Phrases::write_HTML_representation(DL, ph1, PASTE_PHRASE_FORMAT);
+		ImperativeDefinitions::write_HTML_representation(DL, idb1, PASTE_PHRASE_FORMAT);
 		LOG(") ");
 		switch(r) {
 			case INCOMPARABLE_PH: LOG("~~"); break;
@@ -260,13 +260,13 @@ int ToPhraseFamily::cmp(phrase *ph1, phrase *ph2) {
 			case CONFLICTED_PH: LOG("!!"); break;
 		}
 		LOG(" (");
-		Phrases::write_HTML_representation(DL, ph2, PASTE_PHRASE_FORMAT);
+		ImperativeDefinitions::write_HTML_representation(DL, idb2, PASTE_PHRASE_FORMAT);
 		LOG(")\n");
 	}
 
 	if (r == CONFLICTED_PH) {
-		Problems::quote_source(1, Phrases::declaration_node(ph1));
-		Problems::quote_source(2, Phrases::declaration_node(ph2));
+		Problems::quote_source(1, ImperativeDefinitions::body_at(idb1));
+		Problems::quote_source(2, ImperativeDefinitions::body_at(idb2));
 		StandardProblems::handmade_problem(Task::syntax_tree(),
 			_p_(PM_ConflictedReturnKinds));
 		Problems::issue_problem_segment(
@@ -305,21 +305,21 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 }
 
 @<Mark To... phrases which have definite kinds for future compilation@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		kind *K = Phrases::TypeData::kind(&(ph->type_data));
+	id_body *idb;
+	LOOP_OVER(idb, id_body) {
+		kind *K = IDTypeData::kind(&(idb->type_data));
 		if (Kinds::Behaviour::definite(K))
-			if (ph->compilation_data.at_least_one_compiled_form_needed)
-				PhraseRequests::make_request(ph, K, NULL, EMPTY_WORDING);
+			if (idb->compilation_data.at_least_one_compiled_form_needed)
+				PhraseRequests::make_request(idb, K, NULL, EMPTY_WORDING);
 	}
 
 @<Throw problems for phrases with return kinds too vaguely defined@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		kind *KR = Phrases::TypeData::get_return_kind(&(ph->type_data));
+	id_body *idb;
+	LOOP_OVER(idb, id_body) {
+		kind *KR = IDTypeData::get_return_kind(&(idb->type_data));
 		if ((Kinds::Behaviour::semidefinite(KR) == FALSE) &&
-			(Phrases::TypeData::arithmetic_operation(ph) == -1)) {
-			current_sentence = Phrases::declaration_node(ph);
+			(IDTypeData::arithmetic_operation(idb) == -1)) {
+			current_sentence = ImperativeDefinitions::body_at(idb);
 			Problems::quote_source(1, current_sentence);
 			StandardProblems::handmade_problem(Task::syntax_tree(),
 				_p_(PM_ReturnKindVague));
@@ -332,8 +332,8 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 		}
 		for (int k=1; k<=26; k++)
 			if ((Kinds::Behaviour::involves_var(KR, k)) &&
-				(Phrases::TypeData::tokens_contain_variable(&(ph->type_data), k) == FALSE)) {
-				current_sentence = Phrases::declaration_node(ph);
+				(IDTypeData::token_contains_variable(&(idb->type_data), k) == FALSE)) {
+				current_sentence = ImperativeDefinitions::body_at(idb);
 				TEMPORARY_TEXT(var_letter)
 				PUT_TO(var_letter, 'A'+k-1);
 				Problems::quote_source(1, current_sentence);
@@ -350,11 +350,11 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 	}
 
 @<Throw problems for inline phrases named as constants@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase)
-		if ((Phrases::TypeData::invoked_inline(ph)) &&
-			(ToPhraseFamily::has_name_as_constant(ph->from))) {
-			current_sentence = Phrases::declaration_node(ph);
+	id_body *idb;
+	LOOP_OVER(idb, id_body)
+		if ((IDTypeData::invoked_inline(idb)) &&
+			(ToPhraseFamily::has_name_as_constant(idb->head_of_defn))) {
+			current_sentence = ImperativeDefinitions::body_at(idb);
 			Problems::quote_source(1, current_sentence);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
 			Problems::issue_problem_segment(
@@ -368,17 +368,17 @@ void ToPhraseFamily::compile(imperative_defn_family *self,
 @h Access functions.
 
 =
-phrase *ToPhraseFamily::meaning_as_phrase(excerpt_meaning *em) {
+id_body *ToPhraseFamily::meaning_as_phrase(excerpt_meaning *em) {
 	if (em == NULL) return NULL;
-	return RETRIEVE_POINTER_phrase(em->data);
+	return RETRIEVE_POINTER_id_body(em->data);
 }
 
-int ToPhraseFamily::sequence_count(phrase *ph) {
-	if (ph == NULL) return 0;
-	if (ph->from->family != to_phrase_idf) internal_error("sequence count on what is not a To");
-	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(ph->from->family_specific_data);
+int ToPhraseFamily::sequence_count(id_body *idb) {
+	if (idb == NULL) return 0;
+	if (idb->head_of_defn->family != to_phrase_idf) internal_error("sequence count on what is not a To");
+	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(idb->head_of_defn->family_specific_data);
 	if (tfd->sequence_count == -1) {
-		Phrases::log(ph);
+		ImperativeDefinitions::log_body(idb);
 		internal_error("Sequence count not ready");
 	}
 	return tfd->sequence_count;
@@ -392,16 +392,16 @@ int ToPhraseFamily::include_in_Phrasebook_index(imperative_defn_family *self, im
 	return TRUE;
 }
 
-phrase *ToPhraseFamily::inverse(imperative_defn *id) {
+id_body *ToPhraseFamily::inverse(imperative_defn *id) {
 	if (id->family != to_phrase_idf) return NULL;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	if (Wordings::nonempty(tfd->explicit_name_for_inverse)) {
-		phrase *ph;
-		LOOP_OVER(ph, phrase) {
-			wording W = ToPhraseFamily::get_equation_form(ph->from);
+		id_body *idb;
+		LOOP_OVER(idb, id_body) {
+			wording W = ToPhraseFamily::get_equation_form(idb->head_of_defn);
 			if (Wordings::nonempty(W))
 				if (Wordings::match(W, tfd->explicit_name_for_inverse))
-					return ph;
+					return idb;
 		}
 	}
 	return NULL;
@@ -458,7 +458,7 @@ has the name "doubling". Such a name is recorded here:
 =
 typedef struct constant_phrase {
 	struct noun *name;
-	struct phrase *phrase_meant; /* if known at this point */
+	struct imperative_defn *defn_meant; /* if known at this point */
 	struct kind *cphr_kind; /* ditto */
 	struct inter_name *cphr_iname;
 	struct wording associated_preamble_text;
@@ -470,7 +470,7 @@ typedef struct constant_phrase {
 =
 constant_phrase *ToPhraseFamily::create_constant(wording NW, wording RW) {
 	constant_phrase *cphr = CREATE(constant_phrase);
-	cphr->phrase_meant = NULL; /* we won't know until later */
+	cphr->defn_meant = NULL; /* we won't know until later */
 	cphr->cphr_kind = NULL; /* nor this */
 	cphr->associated_preamble_text = RW;
 	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
@@ -505,10 +505,9 @@ kind *ToPhraseFamily::kind(constant_phrase *cphr) {
 	if (global_pass_state.pass < 2) return Kinds::binary_con(CON_phrase, K_value, K_value);
 	if (cphr->cphr_kind == NULL) {
 		wording OW = EMPTY_WORDING;
-		ph_type_data phtd = Phrases::TypeData::new();
-		Phrases::TypeData::Textual::parse(&phtd,
-			cphr->associated_preamble_text, &OW);
-		cphr->cphr_kind = Phrases::TypeData::kind(&phtd);
+		id_type_data idtd = IDTypeData::new();
+		ParsingIDTypeData::parse(&idtd, cphr->associated_preamble_text, &OW);
+		cphr->cphr_kind = IDTypeData::kind(&idtd);
 	}
 	return cphr->cphr_kind;
 }
@@ -516,18 +515,19 @@ kind *ToPhraseFamily::kind(constant_phrase *cphr) {
 @ And similarly for the |phrase| structure this name corresponds to.
 
 =
-phrase *ToPhraseFamily::body_of_constant(constant_phrase *cphr) {
+id_body *ToPhraseFamily::body_of_constant(constant_phrase *cphr) {
 	if (cphr == NULL) internal_error("null cphr");
-	if (cphr->phrase_meant == NULL) {
+	if (cphr->defn_meant == NULL) {
 		imperative_defn *id;
 		LOOP_OVER(id, imperative_defn) {
 			if (ToPhraseFamily::constant_phrase(id) == cphr) {
-				cphr->phrase_meant = id->body_of_defn;
+				cphr->defn_meant = id;
 				break;
 			}
 		}
 	}
-	return cphr->phrase_meant;
+	if (cphr->defn_meant == NULL) return NULL;
+	return cphr->defn_meant->body_of_defn;
 }
 
 @h To begin.
@@ -547,7 +547,7 @@ imperative_defn *ToPhraseFamily::to_begin(void) {
 						"and in Basic mode, Inform expects to see exactly one of "
 						"these, specifying where execution should begin.");
 				} else {
-					if (Phrases::compiled_inline(id->body_of_defn)) {
+					if (IDCompilation::compiled_inline(id->body_of_defn)) {
 						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(...),
 							"the 'to begin' phrase seems to be defined inline",
 							"which in Basic mode is not allowed.");
@@ -570,10 +570,10 @@ These indirections are provided so that the implementation of phrase options
 is confined to the current Chapter.
 
 =
-int ToPhraseFamily::allows_options(phrase *ph) {
-	return Phrases::Options::allows_options(&(ph->options_data));
+int ToPhraseFamily::allows_options(id_body *idb) {
+	return Phrases::Options::allows_options(&(idb->options_data));
 }
 
-int ToPhraseFamily::parse_phrase_option_used(phrase *ph, wording W) {
-	return Phrases::Options::parse(&(ph->options_data), W);
+int ToPhraseFamily::parse_phrase_option_used(id_body *idb, wording W) {
+	return Phrases::Options::parse(&(idb->options_data), W);
 }

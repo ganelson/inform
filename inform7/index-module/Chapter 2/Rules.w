@@ -139,8 +139,8 @@ int IXRules::index_booking_list(OUTPUT_STREAM, booking_list *L, rule_context rc,
 		#ifdef IF_MODULE
 		imperative_defn *id = Rules::get_imperative_definition(R);
 		if (id) {
-			phrase *ph = id->body_of_defn;
-			ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+			id_body *idb = id->body_of_defn;
+			id_runtime_context_data *phrcd = &(idb->runtime_context_data);
 			scene *during_scene = Phrases::Context::get_scene(phrcd);
 			if ((rc.scene_context) && (during_scene != rc.scene_context)) skip = TRUE;
 			if ((rc.action_context) &&
@@ -654,9 +654,9 @@ void IXRules::index_timed_rules(OUTPUT_STREAM) {
 }
 
 @<Index events with no specific time@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		int t = TimedRules::get_timing_of_event(ph->from);
+	id_body *idb;
+	LOOP_OVER(idb, id_body) {
+		int t = TimedRules::get_timing_of_event(idb->head_of_defn);
 		if (t == NO_FIXED_TIME) {
 			if (when_count == 0) {
 				HTML_OPEN("p");
@@ -665,12 +665,12 @@ void IXRules::index_timed_rules(OUTPUT_STREAM) {
 			}
 			when_count++;
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
-			ImperativeDefinitions::index_preamble(OUT, ph->from);
-			if ((ph->from->at) &&
-				(Wordings::nonempty(Node::get_text(ph->from->at))))
-				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
+			ImperativeDefinitions::index_preamble(OUT, idb->head_of_defn);
+			if ((ImperativeDefinitions::body_at(idb)) &&
+				(Wordings::nonempty(Node::get_text(ImperativeDefinitions::body_at(idb)))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))));
 			WRITE(" (where triggered: ");
-			linked_list *L = TimedRules::get_uses_as_event(ph->from);
+			linked_list *L = TimedRules::get_uses_as_event(idb->head_of_defn);
 			parse_node *p;
 			LOOP_OVER_LINKED_LIST(p, parse_node, L)
 				Index::link(OUT, Wordings::first_wn(Node::get_text(p)));
@@ -680,9 +680,9 @@ void IXRules::index_timed_rules(OUTPUT_STREAM) {
 	}
 
 @<Index timetabled events@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		int t = TimedRules::get_timing_of_event(ph->from);
+	id_body *idb;
+	LOOP_OVER(idb, id_body) {
+		int t = TimedRules::get_timing_of_event(idb->head_of_defn);
 		if (t >= 0) { /* i.e., an actual time of day in minutes since midnight */
 			if (tt_count == 0) {
 				HTML_OPEN("p");
@@ -691,10 +691,10 @@ void IXRules::index_timed_rules(OUTPUT_STREAM) {
 			}
 			tt_count++;
 			HTML_OPEN_WITH("p", "class=\"in2\"");
-			ImperativeDefinitions::index_preamble(OUT, ph->from);
-			if ((ph->from->at) &&
-				(Wordings::nonempty(Node::get_text(ph->from->at))))
-				Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
+			ImperativeDefinitions::index_preamble(OUT, idb->head_of_defn);
+			if ((ImperativeDefinitions::body_at(idb)) &&
+				(Wordings::nonempty(Node::get_text(ImperativeDefinitions::body_at(idb)))))
+				Index::link(OUT, Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))));
 			HTML_CLOSE("p");
 		}
 	}

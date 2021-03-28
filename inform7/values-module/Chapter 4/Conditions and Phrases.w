@@ -146,8 +146,8 @@ being compiled; all others are out of scope.
 
 =
 <s-phrase-option-in-use> internal {
-	if (phrase_being_compiled) {
-		int i = ToPhraseFamily::parse_phrase_option_used(phrase_being_compiled, W);
+	if (id_body_being_compiled) {
+		int i = ToPhraseFamily::parse_phrase_option_used(id_body_being_compiled, W);
 		if (i >= 0) {
 			==> { -, Conditions::new_TEST_PHRASE_OPTION(i) };
 			return TRUE;
@@ -289,10 +289,10 @@ S-tree as we run sideways through the alternative readings.
 
 @<Build the invocation list@> =
 	for (; p; p = p->next_alternative) {
-		phrase *ph = RETRIEVE_POINTER_phrase(
+		id_body *idb = RETRIEVE_POINTER_id_body(
 			Lexicon::get_data(Node::get_meaning(p)));
-		parse_node *inv = Phrases::Parser::parse_against(ph, p);
-		if ((Phrases::TypeData::is_the_primordial_say(&(ph->type_data)) == FALSE) &&
+		parse_node *inv = Phrases::Parser::parse_against(idb, p);
+		if ((IDTypeData::is_the_primordial_say(&(idb->type_data)) == FALSE) &&
 			(Rvalues::is_CONSTANT_of_kind(
 				Invocations::get_token_as_parsed(inv, 0), K_text)))
 			continue;

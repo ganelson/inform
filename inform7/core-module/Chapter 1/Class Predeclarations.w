@@ -27,6 +27,7 @@ DECLARE_CLASS(compile_task_data)
 @e explicit_bp_data_CLASS
 @e generalisation_CLASS
 @e i6_memory_setting_CLASS
+@e id_body_CLASS
 @e imperative_defn_CLASS
 @e imperative_defn_family_CLASS
 @e implication_CLASS
@@ -48,6 +49,7 @@ DECLARE_CLASS(by_routine_bp_data)
 DECLARE_CLASS(equivalence_bp_data)
 DECLARE_CLASS(explicit_bp_data)
 DECLARE_CLASS(i6_memory_setting)
+DECLARE_CLASS(id_body)
 DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(imperative_defn_family)
 DECLARE_CLASS(implication)
@@ -167,7 +169,6 @@ DECLARE_CLASS(value_property_data)
 @e past_tense_condition_record_CLASS
 @e pcalc_prop_deferral_CLASS
 @e ph_stack_frame_box_CLASS
-@e phrase_CLASS
 @e phrase_option_CLASS
 @e pointer_allocation_CLASS
 
@@ -178,7 +179,6 @@ DECLARE_CLASS(past_tense_action_record)
 DECLARE_CLASS(past_tense_condition_record)
 DECLARE_CLASS(pcalc_prop_deferral)
 DECLARE_CLASS(ph_stack_frame_box)
-DECLARE_CLASS(phrase)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(pointer_allocation)
 

@@ -8,19 +8,19 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
 
 =
 inter_name *Phrases::Constants::compile(constant_phrase *cphr) {
-	phrase *ph = ToPhraseFamily::body_of_constant(cphr);
-	if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
-	if (Phrases::compiled_inline(ph) == FALSE)
-		PhraseRequests::make_request(ph,
+	id_body *idb = ToPhraseFamily::body_of_constant(cphr);
+	if (idb == NULL) internal_error("cannot reconstruct phrase from cphr");
+	if (IDCompilation::compiled_inline(idb) == FALSE)
+		PhraseRequests::make_request(idb,
 			ToPhraseFamily::kind(cphr), NULL, EMPTY_WORDING);
 	return Phrases::Constants::iname(cphr);
 }
 
 inter_name *Phrases::Constants::iname(constant_phrase *cphr) {
 	if (cphr->cphr_iname == NULL) {
-		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
-		if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
-		package_request *P = Hierarchy::package_within(CLOSURES_HAP, ph->compilation_data.requests_package);
+		id_body *idb = ToPhraseFamily::body_of_constant(cphr);
+		if (idb == NULL) internal_error("cannot reconstruct phrase from cphr");
+		package_request *P = Hierarchy::package_within(CLOSURES_HAP, idb->compilation_data.requests_package);
 		cphr->cphr_iname = Hierarchy::make_iname_in(CLOSURE_DATA_HL, P);
 	}
 	return cphr->cphr_iname;
@@ -32,8 +32,8 @@ inter_name *Phrases::Constants::iname(constant_phrase *cphr) {
 void Phrases::Constants::compile_closures(void) {
 	constant_phrase *cphr;
 	LOOP_OVER(cphr, constant_phrase) {
-		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
-		if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
+		id_body *idb = ToPhraseFamily::body_of_constant(cphr);
+		if (idb == NULL) internal_error("cannot reconstruct phrase from cphr");
 		ToPhraseFamily::kind(cphr);
 		@<Compile the closure array for this constant phrase@>;
 	}
@@ -51,7 +51,7 @@ case the phrase occurs as a constant but is never explicitly invoked.
 
 	RTKinds::emit_strong_id(cphr->cphr_kind);
 
-	inter_name *RS = PhraseRequests::make_iname(ph,
+	inter_name *RS = PhraseRequests::make_iname(idb,
 		ToPhraseFamily::kind(cphr));
 	Emit::array_iname_entry(RS);
 

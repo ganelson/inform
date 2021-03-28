@@ -28,7 +28,7 @@ typedef struct imperative_defn {
 	struct imperative_defn_family *family; /* what manner of thing is defined */
 	struct general_pointer family_specific_data;
 	struct parse_node *at; /* where this occurs in the syntax tree */
-	struct phrase *body_of_defn;
+	struct id_body *body_of_defn;
 	struct wording log_text;
 	CLASS_DEFINITION
 } imperative_defn;
@@ -50,6 +50,7 @@ imperative_defn *ImperativeDefinitions::new(parse_node *p) {
 	id->family = NULL;
 	id->family_specific_data = NULL_GENERAL_POINTER;
 	id->log_text = Node::get_text(p);
+	LOGIF(PHRASE_CREATIONS, "Creating imperative definition: <%W>\n", id->log_text);
 	current_sentence = p;
 	ImperativeDefinitionFamilies::identify(id);
 	return id;
@@ -105,7 +106,7 @@ void ImperativeDefinitions::assess_all(void) {
 			id->body_of_defn = ImperativeDefinitions::new_body(id);
 			ImperativeDefinitions::detect_inline(id);
 			ImperativeDefinitionFamilies::given_body(id);
-			Phrases::prepare_stack_frame(id->body_of_defn);
+			IDCompilation::prepare_stack_frame(id->body_of_defn);
 		}
 	}
 	if (initial_problem_count < problem_count) return;
@@ -152,51 +153,82 @@ void ImperativeDefinitions::compile_first_block(void) {
 
 @<Count up the scale of the task@> =
 	total_phrases_compiled = 0;
-	phrase *ph;
-	LOOP_OVER(ph, phrase)
-		if (ph->compilation_data.at_least_one_compiled_form_needed)
+	id_body *idb;
+	LOOP_OVER(idb, id_body)
+		if (idb->compilation_data.at_least_one_compiled_form_needed)
 			total_phrases_to_compile++;
 
 @h The body.
+During assessment, then, each //imperative_defn// is given a body, which
+is one of these. It reoresents the body of the definition -- that is, the
+Inform 7 source text written underneath the heading.
 
 =
-typedef struct phrase {
-	struct imperative_defn *from;
-	struct ph_type_data type_data;
-	struct ph_options_data options_data;
-	struct ph_runtime_context_data runtime_context_data;
-	struct ph_compilation_data compilation_data;
+typedef struct id_body {
+	struct imperative_defn *head_of_defn;
+	struct id_type_data type_data;
+	struct id_options_data options_data;
+	struct id_runtime_context_data runtime_context_data;
+	struct id_compilation_data compilation_data;
 	CLASS_DEFINITION
-} phrase;
+} id_body;
 
-@ The life of a |phrase| structure begins when we look at the parse-tree
-representation of its declaration in the source text.
-
-A phrase is inline if and only if its definition consists of a single
-invocation which is given as verbatim I6.
-
-=
-phrase *ImperativeDefinitions::new_body(imperative_defn *id) {
-	parse_node *p = id->at;
-	if ((p == NULL) || (Node::get_type(p) != IMPERATIVE_NT))
-		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
-	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n", id->log_text);
-	phrase *body = CREATE(phrase);
-	body->from = id;
+id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
+	LOGIF(PHRASE_CREATIONS, "Creating body: <%W>\n", id->log_text);
+	id_body *body = CREATE(id_body);
+	body->head_of_defn = id;
 	body->options_data = Phrases::Options::new(EMPTY_WORDING);
 	body->runtime_context_data = Phrases::Context::new();
-	body->type_data = Phrases::TypeData::new();
-	body->compilation_data = Phrases::new_compilation_data(id->at);
+	body->type_data = IDTypeData::new();
+	body->compilation_data = IDCompilation::new_data(id->at);
 	return body;
 }
 
-@ Inline definitions open with a raw Inform 6 inclusion. The lexer processes
-those as two words: first |(-|, which serves as a marker, and then the raw
-text of the inclusion treated as a single "word".
+@ Definition bodies can be written in two different ways. In one way, the
+body is a list of instructions to follow. For example:
+= (text as Inform 7)
+To decide which real number is the hyperbolic arccosine of (R - a real number):
+	let x be given by x = log(R + root(R^2 - 1)) where x is a real number;
+	decide on x.
+=
+Here there are two instructions. Each is an "invocation" of a "To..." phrase;
+and the whole definition will ultimately be compiled to an Inter function.[1]
+Invoking this phrase with source text like "hyperbolic arccosine of pi" then
+compiles to a call to that function.
 
-Some inline definitions also mark themselves to be included only in To phrases
-of the right sort: it makes no sense to respond "yes" to a phrase "To decide
-what number is...", for instance.
+In the other way, the body has just one entry, written in |(-| and |-)|
+markers, showing directly what Inter code the definition would create if
+it were invoked. For example:
+= (text as Inform 7)
+To decide which real number is the hyperbolic sine of (R - a real number):
+	(- REAL_NUMBER_TY_Sinh({R}) -).
+=
+Here the definition itself compiles nothing: there is no Inter function at
+run-time to perform "hyperbolic sine". Instead, an invocation such as
+"hyperbolic sine of pi" results in Inter code being compiled which follows
+the pattern in the |(-| and |-)| markers. See //imperative// for how this is done.
+
+The second sort of definition is called "inline", because an invocation of it
+results in code being compiled inline -- i.e., within the current function,
+rather than calling out to an another function. Inline definitions can do
+things which regular definitions can't. For example:
+= (text as Inform 7)
+To decide yes
+	(- rtrue; -) - in to decide if only.
+=
+Invoking this compiles to a single instruction, returning |true| from the
+current Inter function. But it would make no sense to do that if the function
+were required to return, say, an object. So this particular inline definition
+is marked "in to decide if only", meaning that it can only be used in the
+bodies of "To decide if..." phrases. This is the |DECIDES_CONDITION_MOR|
+("manner of return").
+
+[1] Or perhaps to more than one, if the kinds are given indefinitely, so
+that the definition is a prototype rather than a specific function.
+
+@ The following Preform detects an inline body. Note that the lexer takes
+text like |(- rtrue; -)| and converts it into just two words, the marker
+|(-| and then the inline matter all as a single word: here, |rtrue; |.
 
 =
 <inline-phrase-definition> ::=
@@ -227,20 +259,47 @@ void ImperativeDefinitions::detect_inline(imperative_defn *id) {
 			@<Forbid overly long inline definitions@>;
 		if (ImperativeDefinitionFamilies::allows_inline(id) == FALSE)
 			@<Inline is for To... phrases only@>;
-		phrase *ph = id->body_of_defn;
-		Phrases::TypeData::make_inline(&(ph->type_data));
-		Phrases::make_inline(ph, inline_wn, mor);
+		id_body *idb = id->body_of_defn;
+		IDTypeData::make_inline(&(idb->type_data));
+		IDCompilation::make_inline(idb, inline_wn, mor);
 	}
 }
-
-@<Forbid overly long inline definitions@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InlineTooLong),
-		"the inline definition of this 'to...' phrase is too long",
-		"using a quantity of Inform 6 code which exceeds the fairly small limit "
-		"allowed. You will need either to write the phrase definition in Inform 7, "
-		"or to call an I6 routine which you define elsewhere with an 'Include ...'.");
 
 @<Inline is for To... phrases only@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InlineRule),
 		"only 'to...' phrases can be given inline Inform 6 definitions",
 		"and in particular rules and adjective definitions can't.");
+
+@ It is not clear that this restriction is needed any longer -- the compiler
+works fine if it is removed -- but it keeps us on the side of sanity. Long
+inline definitions would be very inefficient -- those should use code in an
+Inter kit instead.
+
+@d MAX_INLINE_DEFN_LENGTH 1024
+
+@<Forbid overly long inline definitions@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InlineTooLong),
+		"the inline definition of this 'to...' phrase is too long",
+		"using a quantity of Inform 6 code which exceeds the fairly small limit allowed. You "
+		"will need either to write the phrase definition in Inform 7, or to call an I6 routine "
+		"which you define elsewhere with an 'Include ...'.");
+
+@ That completes the process of creation. Here's how we log them:
+
+=
+void ImperativeDefinitions::log_body(id_body *idb) {
+	if (idb == NULL) { LOG("RULE:NULL"); return; }
+	LOG("%n", IDCompilation::iname(idb));
+}
+
+void ImperativeDefinitions::log_body_fuller(id_body *idb) {
+	IDTypeData::log_briefly(&(idb->type_data));
+}
+
+void ImperativeDefinitions::write_HTML_representation(OUTPUT_STREAM, id_body *idb, int format) {
+	IDTypeData::write_HTML_representation(OUT, &(idb->type_data), format, NULL);
+}
+
+parse_node *ImperativeDefinitions::body_at(id_body *idb) {
+	return idb->head_of_defn->at;
+}

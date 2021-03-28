@@ -119,12 +119,12 @@ void StandardProblems::equation_symbol_problem(SIGIL_ARGUMENTS, equation *eqn, w
 @h Inline definition problems.
 
 =
-void StandardProblems::inline_problem(SIGIL_ARGUMENTS, phrase *ph, text_stream *definition,
+void StandardProblems::inline_problem(SIGIL_ARGUMENTS, id_body *idb, text_stream *definition,
 	char *message) {
 	ACT_ON_SIGIL
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_stream(2, definition);
-	wording XW = ToPhraseFamily::get_prototype_text(ph->from);
+	wording XW = ToPhraseFamily::get_prototype_text(idb->head_of_defn);
 	Problems::quote_wording_as_source(3, XW);
 	Problems::issue_problem_begin(Task::syntax_tree(), "");
 	Problems::issue_problem_segment(

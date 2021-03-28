@@ -164,7 +164,7 @@ void Invocations::log(parse_node *inv) {
 	} else if (Node::get_say_adjective(inv)) {
 		LOG("adj:%d", Node::get_say_adjective(inv)->allocation_id);
 	} else {
-		Phrases::log_briefly(Node::get_phrase_invoked(inv));
+		ImperativeDefinitions::log_body_fuller(Node::get_phrase_invoked(inv));
 		for (i=0; i<Invocations::get_no_tokens(inv); i++) {
 			LOG(" ($P", Invocations::get_token_as_parsed(inv, i));
 			if (Invocations::get_token_check_to_do(inv, i))
@@ -358,7 +358,7 @@ variable-argument phrases like C's |printf|.
 int Invocations::get_no_tokens_needed(parse_node *inv) {
 	if (inv == NULL) internal_error("tried to read NTI of null inv");
 	if (Node::get_phrase_invoked(inv))
-		return Phrases::TypeData::get_no_tokens(
+		return IDTypeData::get_no_tokens(
 			&(Node::get_phrase_invoked(inv)->type_data));
 	return 0;
 }
@@ -412,7 +412,7 @@ This is applied only when the invocation passes the following stringent test:
 
 =
 int Invocations::implies_newline(parse_node *inv) {
-	if (!(Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv)))) return FALSE;
+	if (!(IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv)))) return FALSE;
 	if (!(TEST_COMPILATION_MODE(IMPLY_NEWLINES_IN_SAY_CMODE))) return FALSE;
 	return TRUE;
 }

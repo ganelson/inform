@@ -7,7 +7,7 @@ for by an invocation list.
 
 =
 typedef struct tokens_packet {
-	int tokens_count; /* number of arguments to phrase */
+	int tokens_count; /* number of arguments to id_body */
 	struct parse_node *args[32]; /* what they are */
 	struct kind *kind_required[32]; /* what pointer kinds of value, if they are */
 	struct kind *as_requested; /* kind for the function call */
@@ -77,14 +77,14 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	}
 
 @<Otherwise, use the standard way to compile an invoked phrase@> =
-	phrase *ph = Node::get_phrase_invoked(inv);
+	id_body *idb = Node::get_phrase_invoked(inv);
 	tokens_packet tokens;
 	@<First construct an arguments packet@>;
 	value_holster VH2 = Holsters::new(VH->vhmode_wanted);
 	int returned_in_manner =
 		Invocations::Compiler::compile_single_invocation(&VH2, inv, &sl, &tokens);
 
-	if ((phrase_being_compiled) && (returned_in_manner != DONT_KNOW_MOR))
+	if ((id_body_being_compiled) && (returned_in_manner != DONT_KNOW_MOR))
 		@<If the invocation compiled to a return from a function, check this is allowed@>;
 
 @<First construct an arguments packet@> =
@@ -92,19 +92,19 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 	for (int i=0; i<tokens.tokens_count; i++) {
 		parse_node *val = Invocations::get_token_as_parsed(inv, i);
 		kind *K = Specifications::to_kind(
-			ph->type_data.token_sequence[i].to_match);
-		if ((Phrases::TypeData::invoked_inline(ph) == FALSE) &&
+			idb->type_data.token_sequence[i].to_match);
+		if ((IDTypeData::invoked_inline(idb) == FALSE) &&
 			(Kinds::Behaviour::definite(K) == FALSE))
 			tokens.kind_required[i] = Specifications::to_kind(val);
 		else
 			tokens.kind_required[i] = K;
-		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
+		if (idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC)
 			tokens.args[i] = Rvalues::new_nothing_object_constant();
 		else
 			tokens.args[i] = val;
 	}
 	kind *return_kind = Node::get_kind_resulting(Invocations::first_in_list(invl));
-	if ((return_kind == NULL) && (ph)) return_kind = ph->type_data.return_kind;
+	if ((return_kind == NULL) && (idb)) return_kind = idb->type_data.return_kind;
 	tokens.as_requested =
 		Kinds::function_kind(tokens.tokens_count, tokens.kind_required, return_kind);
 
@@ -115,18 +115,18 @@ void Invocations::Compiler::compile_invocation_list(value_holster *VH, parse_nod
 since it isn't a phrase to decide anything. This is where that's checked:
 
 @<If the invocation compiled to a return from a function, check this is allowed@> =
-	int manner_expected = phrase_being_compiled->type_data.manner_of_return;
+	int manner_expected = id_body_being_compiled->type_data.manner_of_return;
 	if ((returned_in_manner != manner_expected) &&
 		(manner_expected != DECIDES_NOTHING_AND_RETURNS_MOR)) {
 		LOG("C%d: $e: returned in manner %d\n", pos, inv, returned_in_manner);
 		LOG("vs Phrase being compiled: %d\n", manner_expected);
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_text(2,
-			Phrases::TypeData::describe_manner_of_return(returned_in_manner, NULL, NULL));
+			IDTypeData::describe_manner_of_return(returned_in_manner, NULL, NULL));
 		kind *K = NULL;
 		Problems::quote_text(3,
-			Phrases::TypeData::describe_manner_of_return(manner_expected,
-				&(phrase_being_compiled->type_data), &K));
+			IDTypeData::describe_manner_of_return(manner_expected,
+				&(id_body_being_compiled->type_data), &K));
 		if (K) Problems::quote_kind(4, K);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_WrongEndToPhrase));
 		if (K)
@@ -152,13 +152,13 @@ be Inform 6 statements in a void context, and "value mode", where the phrases
 will be expressions being evaluated.
 
 @<Compile using run-time resolution to choose between invocations@> =
-	phrase *ph = Node::get_phrase_invoked(Invocations::first_in_list(invl));
+	id_body *idb = Node::get_phrase_invoked(Invocations::first_in_list(invl));
 
 	int N = Invocations::get_no_tokens(Invocations::first_in_list(invl));
 	Frames::need_at_least_this_many_formals(N);
 
 	int void_mode = FALSE;
-	if (ph->type_data.manner_of_return == DECIDES_NOTHING_MOR) void_mode = TRUE;
+	if (idb->type_data.manner_of_return == DECIDES_NOTHING_MOR) void_mode = TRUE;
 
 	@<Compile the resolution@>;
 
@@ -286,7 +286,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
 		Produce::ref_iname(Emit::tree(), K_value, RTTemporaryVariables::iname_of_formal_parameter(i));
-		if (ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT)
+		if (idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC)
 			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 		else {
 			BEGIN_COMPILATION_MODE;
@@ -294,7 +294,7 @@ at run-time; we assign 0 to it for the sake of tidiness.
 			parse_node *value =
 				Invocations::get_token_as_parsed(Invocations::first_in_list(invl), i);
 			kind *to_be_used_as = Specifications::to_kind(
-				ph->type_data.token_sequence[i].to_match);
+				idb->type_data.token_sequence[i].to_match);
 			Specifications::Compiler::emit_to_kind(value, to_be_used_as);
 			END_COMPILATION_MODE;
 		}
@@ -392,7 +392,7 @@ no subsequent lines are looked at.
 	else if (Node::get_say_adjective(inv))
 		RTAdjectives::emit(Node::get_say_adjective(inv));
 	else {
-		phrase *ph = Node::get_phrase_invoked(inv);
+		id_body *idb = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;
 		@<First construct an arguments packet@>;
 		@<Substitute the formal parameter variables into the tokens@>;
@@ -409,7 +409,7 @@ no subsequent lines are looked at.
 	else if (Node::get_say_adjective(inv))
 		RTAdjectives::emit(Node::get_say_adjective(inv));
 	else {
-		phrase *ph = Node::get_phrase_invoked(inv);
+		id_body *idb = Node::get_phrase_invoked(inv);
 		tokens_packet tokens;
 		@<First construct an arguments packet@>;
 		@<Substitute the formal parameter variables into the tokens@>;
@@ -578,7 +578,7 @@ int Invocations::Compiler::compile_single_invocation(value_holster *VH, parse_no
 	LOGIF(MATCHING, "Compiling single invocation: $e\n", inv);
 	BEGIN_COMPILATION_MODE;
 
-	phrase *ph = Node::get_phrase_invoked(inv);
+	id_body *idb = Node::get_phrase_invoked(inv);
 	int manner_of_return = DONT_KNOW_MOR;
 
 	@<The art of invocation is delegation@>;
@@ -599,7 +599,7 @@ to be followed by blocks of other phrases -- that is, are allowed to define
 control structures.
 
 @<The art of invocation is delegation@> =
-	if (Phrases::TypeData::invoked_inline(ph))
+	if (IDTypeData::invoked_inline(idb))
 		manner_of_return =
 			Invocations::Inline::csi_inline_outer(VH, inv, where_from, tokens);
 	else

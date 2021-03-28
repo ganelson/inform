@@ -18,18 +18,18 @@ int Phrases::Phrasal::is_defined_by_phrase(adjective_meaning *am) {
 	return FALSE;
 }
 
-void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, phrase *ph, wording *CW,
+void Phrases::Phrasal::define_adjective_by_phrase(parse_node *p, id_body *idb, wording *CW,
 	kind **K) {
 	definition *def;
 	*CW = EMPTY_WORDING; *K = K_object;
-	if (ph == NULL) return;
+	if (idb == NULL) return;
 
 	if (Node::is(p->next, DEFN_CONT_NT)) p = p->next;
 
 	LOOP_OVER(def, definition)
 		if ((def->node == p) && (Phrases::Phrasal::is_defined_by_phrase(def->am_of_def))) {
 			i6_schema *sch = AdjectiveMeanings::make_schema(def->am_of_def, TEST_ATOM_TASK);
-			Calculus::Schemas::modify(sch, "(%n(*1))", Phrases::iname(ph));
+			Calculus::Schemas::modify(sch, "(%n(*1))", IDCompilation::iname(idb));
 			*CW = def->domain_calling;
 			AdjectiveMeaningDomains::determine_if_possible(def->am_of_def);
 			*K = AdjectiveMeaningDomains::get_kind(def->am_of_def);

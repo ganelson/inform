@@ -10,7 +10,7 @@ rule. So we keep track of this. Note that one phrase definition cannot
 contain another, so there is never any need to recursively compile phrases.
 
 = (early code)
-phrase *phrase_being_compiled = NULL; /* phrase whose definition is being compiled */
+id_body *id_body_being_compiled = NULL; /* phrase whose definition is being compiled */
 
 @ This routine sits at the summit of a mountain of code: it compiles a
 non-line phrase definition into a routine. Note once again that a single
@@ -23,43 +23,43 @@ it was a number. The form needed is included in the request |req|, which
 should always be supplied for "To..." phrases, but left null for rules.
 
 =
-void Routines::Compile::routine(phrase *ph,
+void Routines::Compile::routine(id_body *idb,
 	stacked_variable_owner_list *legible, to_phrase_request *req,
 	rule *R) {
-	parse_node *code_at = ph->from->at;
+	parse_node *code_at = ImperativeDefinitions::body_at(idb);
 	if (Node::is(code_at->next, DEFN_CONT_NT)) code_at = code_at->next;
 	LOGIF(PHRASE_COMPILATION, "Compiling phrase:\n$T", code_at);
 
 	CompilationUnits::set_current(code_at);
-	phrase_being_compiled = ph;
+	id_body_being_compiled = idb;
 	@<Set up the stack frame for this compilation request@>;
 
 	@<Compile some commentary about the routine to follow@>;
 
-	packaging_state save = Routines::begin_framed(Routines::Compile::iname(ph, req), &(ph->compilation_data.stack_frame));
+	packaging_state save = Routines::begin_framed(Routines::Compile::iname(idb, req), &(idb->compilation_data.stack_frame));
 
 	@<Compile the body of the routine@>;
 
 	Routines::end(save);
 
-	phrase_being_compiled = NULL;
+	id_body_being_compiled = NULL;
 	current_sentence = NULL;
 	CompilationUnits::set_current(NULL);
 }
 
 @<Compile some commentary about the routine to follow@> =
 	PhraseRequests::comment_on_request(req);
-	ImperativeDefinitions::write_comment_describing(ph->from);
+	ImperativeDefinitions::write_comment_describing(idb->head_of_defn);
 
 @<Set up the stack frame for this compilation request@> =
-	ph_stack_frame *phsf = &(ph->compilation_data.stack_frame);
-	ph_type_data *phtd = &(ph->type_data);
+	ph_stack_frame *phsf = &(idb->compilation_data.stack_frame);
+	id_type_data *idtd = &(idb->type_data);
 	Frames::make_current(phsf);
 
 	kind *version_kind = NULL;
 	if (req) version_kind = PhraseRequests::kind_of_request(req);
-	else version_kind = Phrases::TypeData::kind(phtd);
-	Phrases::TypeData::into_stack_frame(phsf, phtd, version_kind, FALSE);
+	else version_kind = IDTypeData::kind(idtd);
+	IDCompilation::initialise_stack_frame_from_type_data(phsf, idtd, version_kind, FALSE);
 
 	if (req) Frames::set_kind_variables(phsf,
 		PhraseRequests::kind_variables_for_request(req));
@@ -72,14 +72,14 @@ void Routines::Compile::routine(phrase *ph,
 
 @<Compile the body of the routine@> =
 	current_sentence = code_at;
-	if (Phrases::Context::compile_test_head(ph, R) == FALSE) {
+	if (Phrases::Context::compile_test_head(idb, R) == FALSE) {
 		if (code_at) {
 			VerifyTree::verify_structure_from(code_at);
 			Routines::Compile::code_block_outer(1, code_at->down);
 			VerifyTree::verify_structure_from(code_at);
 		}
 		current_sentence = code_at;
-		Phrases::Context::compile_test_tail(ph, R);
+		Phrases::Context::compile_test_tail(idb, R);
 
 		@<Compile a terminal return statement@>;
 	}
@@ -111,9 +111,9 @@ request made for its compilation -- this enables the text version of a
 phrase to be different from the number version, and so on.
 
 =
-inter_name *Routines::Compile::iname(phrase *ph, to_phrase_request *req) {
+inter_name *Routines::Compile::iname(id_body *idb, to_phrase_request *req) {
 	if (req) return req->req_iname;
-	return Phrases::iname(ph);
+	return IDCompilation::iname(idb);
 }
 
 @ =
@@ -182,7 +182,7 @@ int Routines::Compile::code_line(int statement_count, parse_node *p) {
 			if (prev_sn) {
 				if ((Node::get_say_verb(inv)) ||
 					(Node::get_say_adjective(inv)) ||
-					((Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
+					((IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
 						(Node::get_phrase_invoked(inv)->type_data.as_say.say_phrase_running_on)))
 					Annotations::write_int(prev_sn, suppress_newlines_ANNOT, TRUE);
 			}
@@ -291,8 +291,8 @@ henceforth to be true, so we simply compile empty code in that case.
 @<Compile a named rulebook outline midriff@> =
 	current_sentence = to_compile;
 	named_rulebook_outcome *nrbo = <<rp>>;
-	if (phrase_being_compiled) {
-		if (ImperativeDefinitionFamilies::goes_in_rulebooks(phrase_being_compiled->from) == FALSE) {
+	if (id_body_being_compiled) {
+		if (ImperativeDefinitionFamilies::goes_in_rulebooks(id_body_being_compiled->head_of_defn) == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(to_compile));
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_MisplacedRulebookOutcome2));
@@ -305,7 +305,7 @@ henceforth to be true, so we simply compile empty code in that case.
 	}
 	rulebook *rb = NULL;
 	if (Phrases::Context::outcome_restrictions_waived() == FALSE)
-		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, phrase_being_compiled);
+		rb = FocusAndOutcome::rulebook_not_supporting(nrbo, id_body_being_compiled);
 	if (rb) {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, Node::get_text(to_compile));
@@ -570,7 +570,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 		parse_node *inv = Invocations::first_in_list(p->down);
 		if ((inv) &&
 			(Node::get_phrase_invoked(inv)) &&
-			(Phrases::TypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
+			(IDTypeData::is_a_say_phrase(Node::get_phrase_invoked(inv))) &&
 			(Node::get_phrase_invoked(inv)->type_data.as_say.say_control_structure == NO_SAY_CS)) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(PARACONTENT_HL));
 		}
@@ -601,7 +601,7 @@ void Routines::Compile::line(parse_node *p, int already_parsed, int vhm) {
 
 =
 parse_node *Routines::Compile::line_being_compiled(void) {
-	if (phrase_being_compiled) return current_sentence;
+	if (id_body_being_compiled) return current_sentence;
 	return NULL;
 }
 
@@ -667,11 +667,11 @@ It doesn't quite do nothing, though, because it also counts the say phrases foun
 		if (invl) {
 			parse_node *inv;
 			LOOP_THROUGH_INVOCATION_LIST(inv, invl) {
-				phrase *ph = Node::get_phrase_invoked(inv);
+				id_body *idb = Node::get_phrase_invoked(inv);
 				if ((Node::get_phrase_invoked(inv)) &&
-					(Phrases::TypeData::is_a_say_phrase(ph))) {
+					(IDTypeData::is_a_say_phrase(idb))) {
 					int say_cs, ssp_tok, ssp_ctok, ssp_pos;
-					Phrases::TypeData::get_say_data(&(ph->type_data.as_say),
+					IDTypeData::get_say_data(&(idb->type_data.as_say),
 						&say_cs, &ssp_tok, &ssp_ctok, &ssp_pos);
 
 					if (ssp_pos == SSP_START) @<This starts a complex SSP@>;
@@ -894,10 +894,10 @@ void Routines::Compile::add_say_construction_to_error(int ssp_tok) {
 }
 
 void Routines::Compile::add_scte_list(int ssp_tok, int list_pos) {
-	phrase *ph; int ct = 0;
-	LOOP_OVER(ph, phrase) {
+	id_body *idb; int ct = 0;
+	LOOP_OVER(idb, id_body) {
 		wording W;
-		if (Phrases::TypeData::ssp_matches(&(ph->type_data), ssp_tok, list_pos, &W)) {
+		if (IDTypeData::ssp_matches(&(idb->type_data), ssp_tok, list_pos, &W)) {
 			Problems::quote_wording(3, W);
 			if (ct++ == 0) Problems::issue_problem_segment("[%3]");
 			else Problems::issue_problem_segment("/[%3]");

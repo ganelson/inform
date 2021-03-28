@@ -559,16 +559,16 @@ some problem message.
 @<Work out the kind returned by a phrase@> =
 	parse_node *deciding_inv = spec->down->down;
 	if (deciding_inv) {
-		phrase *ph = Node::get_phrase_invoked(deciding_inv);
-		if ((ph) && (Phrases::TypeData::get_mor(&(ph->type_data)) == DECIDES_VALUE_MOR)) {
-			if (Phrases::TypeData::return_decided_dimensionally(&(ph->type_data))) {
+		id_body *idb = Node::get_phrase_invoked(deciding_inv);
+		if ((idb) && (IDTypeData::get_mor(&(idb->type_data)) == DECIDES_VALUE_MOR)) {
+			if (IDTypeData::return_decided_dimensionally(&(idb->type_data))) {
 				if (Node::get_kind_resulting(deciding_inv))
 					return Node::get_kind_resulting(deciding_inv);
 				return K_value;
 			} else {
 				if (Node::get_kind_resulting(deciding_inv))
 					return Node::get_kind_resulting(deciding_inv);
-				kind *K = Phrases::TypeData::get_return_kind(&(ph->type_data));
+				kind *K = IDTypeData::get_return_kind(&(idb->type_data));
 				if (Kinds::Behaviour::definite(K) == FALSE) return K_value;
 				return K;
 			}

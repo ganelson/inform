@@ -32,7 +32,7 @@ typedef struct rule {
 	struct kind *kind_of_rule; /* determined from its rulebook(s) */
 	struct rulebook *kind_of_rule_set_from;
 
-	struct imperative_defn *defn_as_I7_source; /* if defined by an I7 phrase */
+	struct imperative_defn *defn_as_I7_source; /* if defined by an I7 id_body */
 	struct stacked_variable_owner_list *variables_visible_in_definition; /* if so */
 	struct text_stream *defn_as_Inter_function; /* if not */
 
@@ -324,7 +324,7 @@ than |R1|, or 0 if they are equally good.
 =
 int Rules::cmp(rule *R1, rule *R2, int log_this) {
 	imperative_defn *id1 = R1->defn_as_I7_source, *id2 = R2->defn_as_I7_source;
-	ph_runtime_context_data *phrcd1 = NULL, *phrcd2 = NULL;
+	id_runtime_context_data *phrcd1 = NULL, *phrcd2 = NULL;
 	if (id1) phrcd1 = &(id1->body_of_defn->runtime_context_data);
 	if (id2) phrcd2 = &(id2->body_of_defn->runtime_context_data);
 	int rv = Phrases::Context::compare_specificity(phrcd1, phrcd2);
@@ -445,28 +445,28 @@ it's possible to change the way that applicability testing is done.
 =
 void Rules::set_always_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
+		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_always_test_actor(phrcd);
 	}
 }
 
 void Rules::set_never_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
+		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_never_test_actor(phrcd);
 	}
 }
 
 void Rules::set_marked_for_anyone(rule *R, int to) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
+		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::set_marked_for_anyone(phrcd, to);
 	}
 }
 
 void Rules::suppress_action_testing(rule *R) {
 	if (R->defn_as_I7_source) {
-		ph_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
+		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
 		Phrases::Context::suppress_action_testing(phrcd);
 	}
 }
@@ -474,10 +474,10 @@ void Rules::suppress_action_testing(rule *R) {
 void Rules::copy_actor_test_flags(rule *R_to, rule *R_from) {
 	if ((R_from == NULL) || (R_to == NULL)) internal_error("improper catf");
 
-	ph_runtime_context_data *phrcd_from = NULL;
+	id_runtime_context_data *phrcd_from = NULL;
 	if (R_from->defn_as_I7_source)
 		phrcd_from = &(R_from->defn_as_I7_source->body_of_defn->runtime_context_data);
-	ph_runtime_context_data *phrcd_to = NULL;
+	id_runtime_context_data *phrcd_to = NULL;
 	if (R_to->defn_as_I7_source)
 		phrcd_to = &(R_to->defn_as_I7_source->body_of_defn->runtime_context_data);
 

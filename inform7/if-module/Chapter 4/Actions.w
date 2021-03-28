@@ -105,11 +105,11 @@ rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
 	imperative_defn *id = Rules::get_imperative_definition(R);
 	if (id == NULL) return FALSE;
-	phrase *ph = id->body_of_defn;
+	id_body *idb = id->body_of_defn;
 	if (Rulebooks::requires_specific_action(original_owner)) {
 		int waiver = FALSE;
 		action_name *an = NULL;
-		wording PW = RuleFamily::get_prewhile_text(ph->from);
+		wording PW = RuleFamily::get_prewhile_text(idb->head_of_defn);
 		if (Wordings::nonempty(PW)) {
 			LOOP_THROUGH_WORDING(i, PW)
 				if (NamedActionPatterns::by_name(Wordings::from(PW, i)))
@@ -172,8 +172,8 @@ int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rul
 		(B == Rulebooks::std(INSTEAD_RB))) {
 		imperative_defn *id = Rules::get_imperative_definition(R);
 		if (id) {
-			phrase *ph = id->body_of_defn;
-			action_name *an = Phrases::Context::required_action(&(ph->runtime_context_data));
+			id_body *idb = id->body_of_defn;
+			action_name *an = Phrases::Context::required_action(&(idb->runtime_context_data));
 			if ((an) && (ActionSemantics::is_out_of_world(an)))
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),
 					"this rulebook has no effect on actions which happen out of world",

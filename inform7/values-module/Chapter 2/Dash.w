@@ -289,8 +289,8 @@ from a text substitution.)
 
 	int to_show = 0;
 	LOOP_THROUGH_ALTERNATIVES(inv, p->down) {
-		phrase *ph = Node::get_phrase_invoked(inv);
-		if (Phrases::TypeData::is_a_spare_say_X_phrase(&(ph->type_data))) continue;
+		id_body *idb = Node::get_phrase_invoked(inv);
+		if (IDTypeData::is_a_spare_say_X_phrase(&(idb->type_data))) continue;
 		to_show++;
 	}
 
@@ -317,8 +317,8 @@ from a text substitution.)
 @<Produce the list of possibilities@> =
 	int shown = 0;
 	LOOP_THROUGH_ALTERNATIVES(inv, p->down) {
-		phrase *ph = Node::get_phrase_invoked(inv);
-		if (Phrases::TypeData::is_a_spare_say_X_phrase(&(ph->type_data))) continue;
+		id_body *idb = Node::get_phrase_invoked(inv);
+		if (IDTypeData::is_a_spare_say_X_phrase(&(idb->type_data))) continue;
 		shown++;
 		Problems::quote_number(1, &shown);
 		Problems::quote_invocation(2, inv);
@@ -818,11 +818,11 @@ later rules can override earlier ones but still make use of them.
 	parse_node *alt;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
 		if ((Node::is(alt, INVOCATION_NT)) &&
-			(Node::get_phrase_invoked(alt) != phrase_being_compiled))
+			(Node::get_phrase_invoked(alt) != id_body_being_compiled))
 			@<Add this reading to the list of test cases@>;
 	LOOP_THROUGH_ALTERNATIVES(alt, p)
 		if (!((Node::is(alt, INVOCATION_NT)) &&
-			(Node::get_phrase_invoked(alt) != phrase_being_compiled)))
+			(Node::get_phrase_invoked(alt) != id_body_being_compiled)))
 			@<Add this reading to the list of test cases@>;
 	LOGIF(MATCHING, "Resolving %d possible readings:\n", no_of_possible_readings);
 	for (int i=0; i<no_of_possible_readings; i++)
@@ -1012,9 +1012,9 @@ the problem.
 	parse_node *inv = p;
 	Phrases::Parser::parse_within_inv(inv);
 	Dash::set_flag(inv, TESTED_DASHFLAG);
-	phrase *ph = Node::get_phrase_invoked(inv);
-	if (ph) {
-		Node::set_kind_resulting(inv, Phrases::TypeData::get_return_kind(&(ph->type_data)));
+	id_body *idb = Node::get_phrase_invoked(inv);
+	if (idb) {
+		Node::set_kind_resulting(inv, IDTypeData::get_return_kind(&(idb->type_data)));
 
 		/* are the arguments of the right kind? */
 		if (outcome != NEVER_MATCH) @<Step (4I.a) Take care of arithmetic phrases@>;
@@ -1057,9 +1057,9 @@ and those marked as "arithmetic operations".
 @<Step (4I.a) Take care of arithmetic phrases@> =
 	LOG_DASH("(4I.a)");
 LOGIF(MATCHING, "outcome = %d\n", outcome);
-	if (Phrases::TypeData::arithmetic_operation(ph) == TOTAL_OPERATION)
+	if (IDTypeData::arithmetic_operation(idb) == TOTAL_OPERATION)
 		@<Step (4I.a.1) "Total P of O" has kind the kind of P@>
-	else if (Phrases::TypeData::is_arithmetic_phrase(ph)) @<Step (4I.a.2) Dimension-check arithmetic phrases@>;
+	else if (IDTypeData::is_arithmetic_phrase(idb)) @<Step (4I.a.2) Dimension-check arithmetic phrases@>;
 
 @ For instance, the kind of "total carrying capacity of people in the Dining
 Room" is a number, because the kind of the property "carrying capacity" is
@@ -1101,7 +1101,7 @@ with it.)
 
 @<Step (4I.a.2) Dimension-check arithmetic phrases@> =
 	LOG_DASH("(4I.a.2)");
-	int op_number = Phrases::TypeData::arithmetic_operation(ph);
+	int op_number = IDTypeData::arithmetic_operation(idb);
 	LOGIF(MATCHING, "Arithmetic operation <op-%d>\n", op_number);
 
 	parse_node *L, *R;
@@ -1173,7 +1173,7 @@ instance, if |inv| is an invocation of this phrase:
 ...then token 0 must match "list of values", and token 1 must match "number".
 
 @<Step (4I.b) Take care of non-arithmetic phrases@> =
-	if (Phrases::TypeData::is_arithmetic_phrase(ph) == FALSE) {
+	if (IDTypeData::is_arithmetic_phrase(idb) == FALSE) {
 		LOG_DASH("(4I.b)");
 		int i, exit_at_once = FALSE;
 		for (i=0; i<Invocations::get_no_tokens(inv); i++) {
@@ -1188,8 +1188,8 @@ instance, if |inv| is an invocation of this phrase:
 	}
 
 @<Type-check a single token from the list@> =
-	parse_node *ith_spec = ph->type_data.token_sequence[i].to_match;
-	if ((ph->type_data.token_sequence[i].construct == KIND_NAME_PT_CONSTRUCT) && (outcome != NEVER_MATCH))
+	parse_node *ith_spec = idb->type_data.token_sequence[i].to_match;
+	if ((idb->type_data.token_sequence[i].construct == KIND_NAME_IDTC) && (outcome != NEVER_MATCH))
 		@<Cautiously reparse this as a name of a kind of value@>
 	else {
 		int save_kcm = kind_checker_mode;
@@ -1214,7 +1214,7 @@ instance, if |inv| is an invocation of this phrase:
 		}
 		kind_checker_mode = save_kcm;
 		if (create) {
-			if ((Routines::Compile::disallow_let()) && (Phrases::TypeData::is_a_let_assignment(ph))) {
+			if ((Routines::Compile::disallow_let()) && (IDTypeData::is_a_let_assignment(idb))) {
 				THIS_IS_AN_INTERESTING_PROBLEM {
 					Problems::quote_source(1, current_sentence);
 					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LetCreatedInIf));
@@ -1271,7 +1271,7 @@ in |ith_token|, an invocation of "the list of K", whereas (5) won't.
 		(Specifications::is_description(ith_token)) ||
 		(Rvalues::is_CONSTANT_construction(ith_token, CON_property)) ||
 		(Specifications::is_kind_like(ith_token)) ||
-		((Phrases::TypeData::is_a_let_assignment(ph) == FALSE) &&
+		((IDTypeData::is_a_let_assignment(idb) == FALSE) &&
 			(Node::is(ith_token, PHRASE_TO_DECIDE_VALUE_NT)))) {
 		wording W = Node::get_text(ith_token);
 
@@ -1352,7 +1352,7 @@ against a definition like:
 
 	kind_variable_declaration *kvd_marker = LAST_OBJECT(kind_variable_declaration);
 
-	if (Phrases::TypeData::contains_variables(&(ph->type_data))) {
+	if (IDTypeData::contains_variables(&(idb->type_data))) {
 		kind_variable_declaration *save_most_recent_interpretation = most_recent_interpretation;
 		int pass, save_kcm = kind_checker_mode;
 		for (pass = 1; pass <= 2; pass++) {
@@ -1362,13 +1362,14 @@ against a definition like:
 			else kind_checker_mode = MATCH_KIND_VARIABLES_AS_VALUES;
 			int i;
 			for (i=0; i<Invocations::get_no_tokens(inv); i++) {
-				if ((ph->type_data.token_sequence[i].token_kind) &&
-					(ph->type_data.token_sequence[i].construct != NEW_LOCAL_PT_CONSTRUCT)) {
+				kind *Kt = IDTypeData::token_kind(&(idb->type_data), i);
+				if ((Kt) &&
+					(idb->type_data.token_sequence[i].construct != NEW_LOCAL_IDTC)) {
 					parse_node *token_spec = Invocations::get_token_as_parsed(inv, i);
 					kind *kind_read = Specifications::to_kind(token_spec);
 					LOGIF(MATCHING, "Token %d: $P: kind %u: template %u\n", i,
-						token_spec, kind_read, ph->type_data.token_sequence[i].token_kind);
-					switch(Kinds::compatible(kind_read, ph->type_data.token_sequence[i].token_kind)) {
+						token_spec, kind_read, Kt);
+					switch(Kinds::compatible(kind_read, Kt)) {
 						case NEVER_MATCH:
 							LOGIF(MATCHING, "(4I.c) failed at token %d\n", i);
 							outcome = NEVER_MATCH;
@@ -1453,12 +1454,12 @@ mistake having been made.
 
 @<Step (4I.d) Match kinds in assignment phrases@> =
 	LOG_DASH("(4I.d)");
-	if (Phrases::TypeData::is_assignment_phrase(ph)) {
+	if (IDTypeData::is_assignment_phrase(idb)) {
 		parse_node *target = Invocations::get_token_as_parsed(inv, 0);
 		parse_node *new_value = Invocations::get_token_as_parsed(inv, 1);
 
-		parse_node *target_spec = ph->type_data.token_sequence[0].to_match;
-		parse_node *new_value_spec = ph->type_data.token_sequence[1].to_match;
+		parse_node *target_spec = idb->type_data.token_sequence[0].to_match;
+		parse_node *new_value_spec = idb->type_data.token_sequence[1].to_match;
 
 		local_variable *lvar = Lvalues::get_local_variable_if_any(target);
 		if ((lvar) && (LocalVariables::protected(lvar)))
@@ -1467,7 +1468,7 @@ mistake having been made.
 			if (Kinds::Behaviour::is_object(Specifications::to_kind(target_spec)))
 				@<Step (4I.d.1) Police an assignment to an object@>;
 
-			if (ph->type_data.token_sequence[0].construct != NEW_LOCAL_PT_CONSTRUCT)
+			if (idb->type_data.token_sequence[0].construct != NEW_LOCAL_IDTC)
 				@<Step (4I.d.2) Police an assignment to a storage item@>;
 		}
 	}
@@ -1684,7 +1685,7 @@ of (1), we have to change |self| temporarily and restore it afterwards.
 
 @<Step (4I.g) Worry about self in say property of@> =
 	LOG_DASH("(4I.g)");
-	if ((Phrases::TypeData::is_a_say_phrase(ph)) &&
+	if ((IDTypeData::is_a_say_phrase(idb)) &&
 		(Invocations::get_no_tokens(inv) == 1) &&
 		(Lvalues::get_storage_form(Invocations::get_token_as_parsed(inv, 0)) == PROPERTY_VALUE_NT)) {
 		Annotations::write_int(Invocations::get_token_as_parsed(inv, 0), record_as_self_ANNOT, TRUE);
@@ -1700,8 +1701,8 @@ And here is where we check that "break" is indeed used only in a loop.
 
 @<Step (4I.h) Worry about using a phrase outside of the control structure it belongs to@> =
 	LOG_DASH("(4I.h)");
-	if (ph) {
-		wchar_t *required = Phrases::TypeData::only_in(ph);
+	if (idb) {
+		wchar_t *required = IDTypeData::only_in(idb);
 		if (required) {
 			if (Wide::cmp(required, L"loop") == 0) {
 				LOGIF(MATCHING, "Required to be inside loop body\n");
@@ -1735,7 +1736,7 @@ And here is where we check that "break" is indeed used only in a loop.
 @<Step (4I.i) Disallow any phrases which are now deprecated@> =
 	if (global_compilation_settings.no_deprecated_features) {
 		LOG_DASH("(4I.i)");
-		if ((ph) && (ph->type_data.now_deprecated)) {
+		if ((idb) && (idb->type_data.now_deprecated)) {
 			THIS_IS_AN_INTERESTING_PROBLEM {
 				Problems::quote_source(1, current_sentence);
 				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible)); /* too moving a target to test */
@@ -1769,8 +1770,8 @@ extensions).
 		Dash::set_flag(inv, UNPROVEN_DASHFLAG);
 		Invocations::mark_unproven(inv);
 	}
-	if (ph) {
-		wording NW = ToPhraseFamily::doc_ref(ph->from);
+	if (idb) {
+		wording NW = ToPhraseFamily::doc_ref(idb->head_of_defn);
 		if (Wordings::nonempty(NW)) {
 			TEMPORARY_TEXT(pds)
 			WRITE_TO(pds, "%+W", Wordings::one_word(Wordings::first_wn(NW)));
@@ -2083,7 +2084,7 @@ int Dash::set_up_any_local_required(parse_node *inv) {
 		kind *K = Invocations::get_token_variable_kind(inv, i);
 		if (K) {
 			if ((i == 0) && (N >= 2) && (Kinds::eq(K, K_value)) &&
-				(Phrases::TypeData::is_a_let_assignment(Node::get_phrase_invoked(inv))))
+				(IDTypeData::is_a_let_assignment(Node::get_phrase_invoked(inv))))
 				@<Infer the kind of the new variable@>;
 
 			int changed = FALSE;
@@ -2257,12 +2258,12 @@ int Dash::failed(parse_node **list_of_possible_readings, int no_of_possible_read
 		if ((Dash::test_flag(inv, INTERESTINGLY_FAILED_DASHFLAG)) &&
 			(first_failing_interestingly == NULL)) first_failing_interestingly = inv;
 		if (first_inv_in_group == NULL) first_inv_in_group = inv;
-		phrase *ph = Node::get_phrase_invoked(inv);
-		if (ph) {
-			if (Phrases::TypeData::is_a_let_assignment(ph)) list_includes_lets = TRUE;
+		id_body *idb = Node::get_phrase_invoked(inv);
+		if (idb) {
+			if (IDTypeData::is_a_let_assignment(idb)) list_includes_lets = TRUE;
 			if (Dash::test_flag(inv, GROSSLY_FAILED_DASHFLAG) == FALSE) {
 				first_not_failing_grossly = inv;
-				if (Phrases::TypeData::is_a_say_X_phrase(&(ph->type_data))) SW = Node::get_text(inv);
+				if (IDTypeData::is_a_say_X_phrase(&(idb->type_data))) SW = Node::get_text(inv);
 				nongross_count++;
 			}
 		}

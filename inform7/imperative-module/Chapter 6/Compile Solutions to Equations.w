@@ -222,7 +222,7 @@ void EquationSolver::enode_compile_by_emission(equation *eqn, equation_node *tok
 			else if (tok->leaf_symbol->function_notated) {
 				inter_name *RS = PhraseRequests::make_iname(
 					tok->leaf_symbol->function_notated,
-					Phrases::TypeData::kind(
+					IDTypeData::kind(
 						&(tok->leaf_symbol->function_notated->type_data)));
 				Produce::val_iname(Emit::tree(), K_value, RS);
 			} else internal_error("uncompilable equation node");

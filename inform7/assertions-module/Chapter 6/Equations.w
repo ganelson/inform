@@ -36,7 +36,7 @@ instance has its own |equation_symbol| structure.
 typedef struct equation_symbol {
 	struct wording name; /* always just one word, in fact */
 	struct kind *var_kind; /* if a variable -- must be quasinumerical */
-	struct phrase *function_notated; /* if a phrase QN to QN */
+	struct id_body *function_notated; /* if a phrase QN to QN */
 	struct parse_node *var_const; /* if a symbol for a constant value */
 	int temp_constant; /* is this constant a substitution for one usage only? */
 	struct equation_symbol *next; /* in the list belonging to the equation */
@@ -569,12 +569,12 @@ void Equations::eqn_declare_standard_symbols(void) {
 			Equations::eqn_add_symbol(NULL, V, K_real_number, spec);
 		}
 	}
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		wording W = ToPhraseFamily::get_equation_form(ph->from);
+	id_body *idb;
+	LOOP_OVER(idb, id_body) {
+		wording W = ToPhraseFamily::get_equation_form(idb->head_of_defn);
 		if (Wordings::nonempty(W)) {
 			equation_symbol *ev = Equations::eqn_add_symbol(NULL, W, K_real_number, NULL);
-			ev->function_notated = ph;
+			ev->function_notated = idb;
 		}
 	}
 }
@@ -1344,9 +1344,9 @@ we're unable to see what equations $h^n$ can appear in.
 @<Typecheck a function application node@> =
 	equation_node *fn = tok->enode_operands[0];
 	if ((fn->eqn_type == SYMBOL_EQN) && (fn->leaf_symbol->function_notated)) {
-		phrase *ph = fn->leaf_symbol->function_notated;
+		id_body *idb = fn->leaf_symbol->function_notated;
 		kind *RK;
-		if (Phrases::TypeData::arithmetic_operation(ph) == REALROOT_OPERATION) {
+		if (IDTypeData::arithmetic_operation(idb) == REALROOT_OPERATION) {
 			kind *OPK = Kinds::FloatingPoint::underlying(tok->enode_operands[1]->gK_after);
 			RK = Kinds::Dimensions::arithmetic_on_kinds(OPK, NULL, REALROOT_OPERATION);
 			if (RK == NULL) {
@@ -1358,7 +1358,7 @@ we're unable to see what equations $h^n$ can appear in.
 				return FALSE;
 			}
 		} else {
-			RK = Phrases::TypeData::get_return_kind(&(ph->type_data));
+			RK = IDTypeData::get_return_kind(&(idb->type_data));
 		}
 		tok->gK_before = Kinds::FloatingPoint::to_real(Kinds::FloatingPoint::new_gk(RK));
 	}
@@ -1766,8 +1766,8 @@ must become
 		Equations::log_equation_node(fnode);
 		internal_error("not a function being applied");
 	}
-	phrase *f = fnode->leaf_symbol->function_notated;
-	phrase *finv = ToPhraseFamily::inverse(f->from);
+	id_body *f = fnode->leaf_symbol->function_notated;
+	id_body *finv = ToPhraseFamily::inverse(f->head_of_defn);
 	if (finv == NULL) return FALSE; /* no known inverse for this function */
 
 	equation_symbol *ev, *ev_inverse = NULL;

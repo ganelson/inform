@@ -8,7 +8,7 @@ we use the following chits to keep track of what's outstanding:
 
 =
 typedef struct to_phrase_request {
-	struct phrase *requested_phrase;
+	struct id_body *requested_phrase;
 	struct kind *requested_exact_kind;
 	struct kind *kind_variables_interpretation[27];
 	struct inter_name *req_iname;
@@ -35,14 +35,14 @@ If the kind involves variables, the caller must also supply the current
 values in force, so that there is no possible ambiguity in how we read K.
 
 =
-to_phrase_request *PhraseRequests::make_request(phrase *ph, kind *K,
+to_phrase_request *PhraseRequests::make_request(id_body *idb, kind *K,
 	kind_variable_declaration *kvd, wording W) {
-	if ((ph == NULL) || (K == NULL)) internal_error("bad request");
+	if ((idb == NULL) || (K == NULL)) internal_error("bad request");
 
 	int nr = 0;
 	to_phrase_request *req;
 	LOOP_OVER(req, to_phrase_request)
-		if (ph == req->requested_phrase) {
+		if (idb == req->requested_phrase) {
 			nr++;
 			if (Kinds::eq(K, req->requested_exact_kind)) return req;
 		}
@@ -51,11 +51,12 @@ to_phrase_request *PhraseRequests::make_request(phrase *ph, kind *K,
 
 	req = CREATE(to_phrase_request);
 	req->requested_exact_kind = K;
-	req->requested_phrase = ph;
+	req->requested_phrase = idb;
 	compilation_unit *cm = CompilationUnits::current();
-	if (ph->from->at) cm = CompilationUnits::find(ph->from->at);
+	if (ImperativeDefinitions::body_at(idb))
+		cm = CompilationUnits::find(ImperativeDefinitions::body_at(idb));
 
-	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->compilation_data.requests_package);
+	package_request *P = Hierarchy::package_within(REQUESTS_HAP, idb->compilation_data.requests_package);
 	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);
 
 	for (int i=0; i<27; i++) req->kind_variables_interpretation[i] = NULL;
@@ -71,7 +72,7 @@ then K would have be just "value", since Inform doesn't know what the empty
 list is a list of. The result would be:
 
 @<Issue a problem message for undetermined kinds@> =
-	Problems::quote_source(1, Phrases::declaration_node(ph));
+	Problems::quote_source(1, ImperativeDefinitions::body_at(idb));
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UndeterminedKind));
 	if (Wordings::empty(W)) {
 		Problems::issue_problem_segment(
@@ -91,10 +92,10 @@ the case of an inline definition which happens to consist of a call to an
 I6 routine.
 
 =
-inter_name *PhraseRequests::make_iname(phrase *ph, kind *req_kind) {
-	if (Phrases::TypeData::invoked_inline(ph)) {
+inter_name *PhraseRequests::make_iname(id_body *idb, kind *req_kind) {
+	if (IDTypeData::invoked_inline(idb)) {
 		TEMPORARY_TEXT(identifier)
-		wchar_t *p = Phrases::get_inline_definition(ph);
+		wchar_t *p = IDCompilation::get_inline_definition(idb);
 		int found = FALSE;
 		for (int i=0; p[i]; i++)
 			if (Characters::isalpha(p[i])) {
@@ -105,9 +106,9 @@ inter_name *PhraseRequests::make_iname(phrase *ph, kind *req_kind) {
 				break;
 			}
 		if (found == FALSE) {
-			current_sentence = Phrases::declaration_node(ph);
+			current_sentence = ImperativeDefinitions::body_at(idb);
 			Problems::quote_source(1, current_sentence);
-			Problems::quote_phrase(2, ph);
+			Problems::quote_phrase(2, idb);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseNamedI6Failed));
 			Problems::issue_problem_segment(
 				"You wrote %1, defining the phrase '%2' with a piece of Inform 6 "
@@ -123,11 +124,11 @@ inter_name *PhraseRequests::make_iname(phrase *ph, kind *req_kind) {
 		return symb;
 	}
 	to_phrase_request *req = PhraseRequests::make_request(
-		ph, req_kind, NULL, EMPTY_WORDING);
-	return Routines::Compile::iname(ph, req);
+		idb, req_kind, NULL, EMPTY_WORDING);
+	return Routines::Compile::iname(idb, req);
 }
 
-@ In the course of doing this, |Phrases::compile| calls us back to ask us
+@ In the course of doing this, |IDCompilation::compile| calls us back to ask us
 to write a comment about this:
 
 =
@@ -221,7 +222,7 @@ int PhraseRequests::compilation_coroutine(int *i, int max_i) {
 		if (req == NULL) break;
 
 		latest_request_granted = req;
-		Phrases::compile(latest_request_granted->requested_phrase,
+		IDCompilation::compile(latest_request_granted->requested_phrase,
 			i, max_i, NULL, latest_request_granted, NULL);
 		N++;
 	}

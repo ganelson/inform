@@ -26,12 +26,10 @@ speculation ever since the early days of the I7 Public Beta: but the exotic
 features it contains were never meant to be used anywhere except by the
 Standard Rules. They may change without warning.
 
-@d MAX_INLINE_DEFN_LENGTH 1024
-
 =
 typedef struct csi_state {
 	struct source_location *where_from;
-	struct phrase *ph;
+	struct id_body *idb;
 	struct parse_node *inv;
 	struct tokens_packet *tokens;
 	struct local_variable **my_vars;
@@ -40,7 +38,7 @@ typedef struct csi_state {
 int Invocations::Inline::csi_inline_outer(value_holster *VH,
 	parse_node *inv, source_location *where_from, tokens_packet *tokens) {
 
-	phrase *ph = Node::get_phrase_invoked(inv);
+	id_body *idb = Node::get_phrase_invoked(inv);
 
 	local_variable *my_vars[10]; /* the "my" variables 0 to 9 */
 	@<Start with all of the implicit my-variables unused@>;
@@ -48,7 +46,7 @@ int Invocations::Inline::csi_inline_outer(value_holster *VH,
 
 	csi_state CSIS;
 	CSIS.where_from = where_from;
-	CSIS.ph = ph;
+	CSIS.idb = idb;
 	CSIS.inv = inv;
 	CSIS.tokens = tokens;
 	CSIS.my_vars = my_vars;
@@ -57,10 +55,10 @@ int Invocations::Inline::csi_inline_outer(value_holster *VH,
 
 	@<Expand those into streams@>;
 
-	if (Phrases::TypeData::block_follows(ph)) @<Open a code block@>
+	if (IDTypeData::block_follows(idb)) @<Open a code block@>
 	else @<Release any variables created inline@>;
 
-	return ph->compilation_data.inline_mor;
+	return idb->compilation_data.inline_mor;
 }
 
 @ Inline invocations, unlike invocations by function call, are allowed to
@@ -88,7 +86,7 @@ checker has already done all of the work to decide what kind it has.)
 
 @<Create a local at this token@> =
 	local_variable *lvar = LocalVariables::new(Node::get_text(val), K);
-	if (Phrases::TypeData::block_follows(ph) == LOOP_BODY_BLOCK_FOLLOWS)
+	if (IDTypeData::block_follows(idb) == LOOP_BODY_BLOCK_FOLLOWS)
 		Frames::Blocks::set_scope_to_block_about_to_open(lvar);
 	else
 		Frames::Blocks::set_variable_scope(lvar);
@@ -108,8 +106,8 @@ if we have to. All phrases have heads, but no opening is needed, since the
 head goes to |OUT|.
 
 @<Expand those into streams@> =
-	Invocations::Inline::csi_inline_inner(VH, Phrases::get_inter_head(ph), &CSIS);
-	if (Phrases::get_inter_tail(ph)) tail_schema = Phrases::get_inter_tail(ph);
+	Invocations::Inline::csi_inline_inner(VH, IDCompilation::get_inter_front(idb), &CSIS);
+	if (IDCompilation::get_inter_back(idb)) tail_schema = IDCompilation::get_inter_back(idb);
 
 @ Suppose there's a phrase with both head and tail. Then the tail won't appear
 until much later on, when the new code block finishes. We won't live to see it;
@@ -154,7 +152,7 @@ void Invocations::Inline::csi_inline_inner_inner(value_holster *VH,
 	inter_schema_token *sche, void *CSIS_s, int prim_cat) {
 
 	csi_state *CSIS = (csi_state *) CSIS_s;
-	phrase *ph = CSIS->ph;
+	id_body *idb = CSIS->idb;
 	parse_node *inv = CSIS->inv;
 	tokens_packet *tokens = CSIS->tokens;
 	local_variable **my_vars = CSIS->my_vars;
@@ -203,7 +201,7 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <name-local-to-inline-stack-frame> internal {
-	local_variable *lvar = LocalVariables::parse(&(ph_being_parsed->compilation_data.stack_frame), W);
+	local_variable *lvar = LocalVariables::parse(&(idb_being_parsed->compilation_data.stack_frame), W);
 	if (lvar) {
 		==> { -, lvar };
 		return TRUE;
@@ -233,8 +231,8 @@ charlatans" and what they "deserve". I'm a better person now.
 @ Acting on that:
 
 @<Expand a bracing containing natural language text@> =
-	phod_being_parsed = &(ph->options_data);
-	ph_being_parsed = ph;
+	phod_being_parsed = &(idb->options_data);
+	idb_being_parsed = idb;
 	<inline-substitution>(BRW);
 	int current_opts = Invocations::get_phrase_options_bitmap(inv);
 	switch (<<r>>) {
@@ -271,7 +269,7 @@ the presence of annotations can change what we do.
 	kind **saved = Frames::temporarily_set_kvs(kind_vars_inline);
 	int changed = FALSE;
 	kind *kind_required =
-		Kinds::substitute(ph->type_data.token_sequence[tok].token_kind,
+		Kinds::substitute(IDTypeData::token_kind(&(idb->type_data), tok),
 			kind_vars_inline, &changed, FALSE);
 	@<If the token has to be an lvalue, reject it if it isn't@>;
 	@<Compile the token value@>;
@@ -441,7 +439,7 @@ proposition.
 	return;
 
 @<Issue an inline no-such-kind problem@> =
-	StandardProblems::inline_problem(_p_(PM_InlineNew), ph, sche->owner->parent_schema->converted_from,
+	StandardProblems::inline_problem(_p_(PM_InlineNew), idb, sche->owner->parent_schema->converted_from,
 		"I don't know any kind called '%4'.");
 
 @h Typographic commands.
@@ -717,7 +715,7 @@ the problem messages are phrased differently if something goes wrong.
 	else kind_needed = Frames::get_kind_returned();
 	kind *kind_supplied = Specifications::to_kind(supplied);
 
-	int mor = Phrases::TypeData::get_mor(&(phrase_being_compiled->type_data));
+	int mor = IDTypeData::get_mor(&(id_body_being_compiled->type_data));
 
 	int allow_me = ALWAYS_MATCH;
 	if ((kind_needed) && (Kinds::eq(kind_needed, K_nil) == FALSE) &&
@@ -930,7 +928,7 @@ that code block.
 		my_vars[n] = LocalVariables::new(EMPTY_WORDING, K_number);
 		lvar = my_vars[n];
 		@<Set the kind of the my-variable@>;
-		if (Phrases::TypeData::block_follows(ph))
+		if (IDTypeData::block_follows(idb))
 			Frames::Blocks::set_scope_to_block_about_to_open(lvar);
 	}
 
@@ -1000,7 +998,7 @@ lifts the protection on the variable named:
 
 @<Inline command "unprotect"@> =
 	parse_node *v =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	local_variable *lvar = Lvalues::get_local_variable_if_any(v);
 
 	if (lvar) LocalVariables::unprotect(lvar);
@@ -1024,7 +1022,7 @@ but the point is that locals of that kind are automatically set to their
 default values when created, so they are always typesafe anyway.
 
 @<Inline command "initialise"@> =
-	parse_node *V = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+	parse_node *V = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	local_variable *lvar = Lvalues::get_local_variable_if_any(V);
 	kind *K = NULL;
 	if (Str::len(sche->operand2) > 0)
@@ -1135,14 +1133,14 @@ of the variable {-my:1} to S.
 	if ((Str::len(from_p) == 0) && (copy_form != 0))
 		from = Rvalues::from_int(1, EMPTY_WORDING);
 	else if (Str::len(from_p) > 0)
-		from = Invocations::Inline::parse_bracing_operand_as_identifier(from_p, ph, tokens, my_vars);
+		from = Invocations::Inline::parse_bracing_operand_as_identifier(from_p, idb, tokens, my_vars);
 
-	to = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+	to = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 
 	if ((to == NULL) || (from == NULL)) {
 		Problems::quote_stream(4, sche->operand);
 		Problems::quote_stream(5, sche->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineCopy), ph, sche->owner->parent_schema->converted_from,
+		StandardProblems::inline_problem(_p_(PM_InlineCopy), idb, sche->owner->parent_schema->converted_from,
 			"The command to {-copy:...}, which asks to copy '%5' into '%4', has "
 			"gone wrong: I couldn't work those out.");
 		return;
@@ -1199,13 +1197,13 @@ variable.)
 
 @<Inline command "matches-description"@> =
 	parse_node *to_match =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
 	parse_node *to_test =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	if ((to_test == NULL) || (to_match == NULL)) {
 		Problems::quote_stream(4, sche->operand);
 		Problems::quote_stream(5, sche->operand2);
-		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), ph, sche->owner->parent_schema->converted_from,
+		StandardProblems::inline_problem(_p_(PM_InlineMatchesDescription), idb, sche->owner->parent_schema->converted_from,
 			"The command {-matches-description:...}, which asks to test whether "
 			"'%5' is a valid description for '%4', has gone wrong: I couldn't "
 			"work those out.");
@@ -1219,14 +1217,14 @@ variable matches the given description.
 
 @<Inline command "now-matches-description"@> =
 	parse_node *to_test =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	parse_node *to_match =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
 	if ((to_test == NULL) || (to_match == NULL)) {
 		Problems::quote_stream(4, sche->operand);
 		Problems::quote_stream(5, sche->operand2);
 		StandardProblems::inline_problem(_p_(PM_InlineNowMatchesDescription),
-			ph, sche->owner->parent_schema->converted_from,
+			idb, sche->owner->parent_schema->converted_from,
 			"The command {-now-matches-description:...}, which asks to change "
 			"'%4' so that '%5' becomes a valid description of it, has gone "
 			"wrong: I couldn't work those out.");
@@ -1236,7 +1234,7 @@ variable matches the given description.
 	return;
 
 @<Inline command "arithmetic-operation"@> =
-	int op = Phrases::TypeData::arithmetic_operation(ph);
+	int op = IDTypeData::arithmetic_operation(idb);
 	int binary = TRUE;
 	if (Kinds::Dimensions::arithmetic_op_is_unary(op)) binary = FALSE;
 	parse_node *X = NULL, *Y = NULL;
@@ -1246,10 +1244,10 @@ variable matches the given description.
 	return;
 
 @<Read the operands and their kinds@> =
-	X = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+	X = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	KX = Specifications::to_kind(X);
 	if (binary) {
-		Y = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, ph, tokens, my_vars);
+		Y = Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand2, idb, tokens, my_vars);
 		KY = Specifications::to_kind(Y);
 	}
 
@@ -1261,7 +1259,7 @@ result would be the same without the optimisation.
 
 @<Inline command "say"@> =
 	parse_node *to_say =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	if (to_say == NULL) {
 		@<Issue a no-such-local problem message@>;
 		return;
@@ -1351,7 +1349,7 @@ phrase applied to the named variable.
 
 @<Inline command "show-me"@> =
 	parse_node *to_show =
-		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, ph, tokens, my_vars);
+		Invocations::Inline::parse_bracing_operand_as_identifier(sche->operand, idb, tokens, my_vars);
 	if (to_show == NULL) {
 		@<Issue a no-such-local problem message@>;
 		return;
@@ -1408,7 +1406,7 @@ the "group... together" phrases.
 		inter_name *iname = ListTogether::new(TRUE);
 		Produce::val_iname(Emit::tree(), K_value, iname);
 	} else StandardProblems::inline_problem(_p_(PM_InlineListTogether),
-		ph, sche->owner->parent_schema->converted_from,
+		idb, sche->owner->parent_schema->converted_from,
 		"The only legal forms here are {-list-together:articled} and "
 		"{-list-together:unarticled}.");
 	return;
@@ -1467,7 +1465,7 @@ has the inline definition:
 				sche->extremal_property, sche->extremal_property_sign);
 		} else
 			StandardProblems::inline_problem(_p_(PM_InlineExtremal),
-				ph, sche->owner->parent_schema->converted_from,
+				idb, sche->owner->parent_schema->converted_from,
 				"In the '{-primitive-definition:extremal...}' command, there "
 				"should be a '<' or '>' sign then the name of a property.");
 	}
@@ -1495,7 +1493,7 @@ has the inline definition:
 	}
 	else {
 		Problems::quote_stream(4, sche->operand);
-		StandardProblems::inline_problem(_p_(PM_InlinePrimitive), ph, sche->owner->parent_schema->converted_from,
+		StandardProblems::inline_problem(_p_(PM_InlinePrimitive), idb, sche->owner->parent_schema->converted_from,
 			"I don't know any primitive definition called '%4'.");
 	}
 	return;
@@ -1507,7 +1505,7 @@ has the inline definition:
 	if (Kinds::get_construct(fn_kind) != CON_phrase) {
 		Problems::quote_spec(4, fn);
 		StandardProblems::inline_problem(_p_(PM_InlineFunctionApplication),
-			ph, sche->owner->parent_schema->converted_from,
+			idb, sche->owner->parent_schema->converted_from,
 			"A function application only makes sense if the first token, "
 			"'%4', is a phrase: here it isn't.");
 		return;
@@ -1547,7 +1545,7 @@ has the inline definition:
 
 @<Issue a no-such-local problem message@> =
 	Problems::quote_stream(4, sche->operand);
-	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), ph, sche->owner->parent_schema->converted_from,
+	StandardProblems::inline_problem(_p_(PM_InlineNoSuch), idb, sche->owner->parent_schema->converted_from,
 		"I don't know any local variable called '%4'.");
 
 @h Parsing the invocation operands.
@@ -1562,14 +1560,14 @@ then the operand refers to its value in the current invocation;
 (c) and failing that we have the name of a local I6 variable.
 
 =
-parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream *operand, phrase *ph,
+parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream *operand, id_body *idb,
 	tokens_packet *tokens, local_variable **my_vars) {
 	local_variable *lvar = NULL;
 	if ((Str::get_at(operand, 1) == 0) && (Str::get_at(operand, 0) >= '0') && (Str::get_at(operand, 0) <= '9'))
 		lvar = my_vars[Str::get_at(operand, 0) - '0'];
 	else {
 		wording LW = Feeds::feed_text(operand);
-		lvar = LocalVariables::parse(&(ph->compilation_data.stack_frame), LW);
+		lvar = LocalVariables::parse(&(idb->compilation_data.stack_frame), LW);
 		if (lvar) {
 			int tok = LocalVariables::get_parameter_number(lvar);
 			if (tok >= 0) return tokens->args[tok];

@@ -54,6 +54,8 @@ Chapter 5: Imperative Code
 	Imperative Definition Families
 	Adjectival Definition Family
 	To Phrase Family
+	Phrase Type Data
+	Parsing Type Data
 	Rule Family
 
 Chapter 6: Other Gadgets

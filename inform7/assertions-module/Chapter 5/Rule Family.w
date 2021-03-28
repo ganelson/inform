@@ -349,10 +349,8 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	rule *R = NULL;
 	@<Set R to a corresponding rule structure@>;
 	rfd->defines = R;
-//	if (rfd->not_in_rulebook == FALSE) Rules::request_automatic_placement(R);
-
 	id->body_of_defn->compilation_data.compile_with_run_time_debugging = TRUE;
-	Phrases::TypeData::set_mor(&(id->body_of_defn->type_data),
+	IDTypeData::set_mor(&(id->body_of_defn->type_data),
 		DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
 }
 
@@ -434,7 +432,7 @@ int NAP_problem_explained = FALSE; /* pertains to Named Action Patterns */
 int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
 
 void RuleFamily::to_rcd(imperative_defn_family *self, imperative_defn *id,
-	ph_runtime_context_data *rcd) {
+	id_runtime_context_data *rcd) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
 	if (rfd->not_in_rulebook) {
 		rcd->permit_all_outcomes = TRUE;

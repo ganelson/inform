@@ -20,11 +20,11 @@ void Problems::quote_relation(int t, binary_predicate *p) {
 void Problems::expand_relation(OUTPUT_STREAM, void *p) {
 	BinaryPredicateFamilies::describe_for_problems(OUT, (binary_predicate *) p);
 }
-void Problems::quote_phrase(int t, phrase *p) {
+void Problems::quote_phrase(int t, id_body *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_phrase);
 }
 void Problems::expand_phrase(OUTPUT_STREAM, void *p) {
-	Phrases::write_HTML_representation(OUT, (phrase *) p, INDEX_PHRASE_FORMAT);
+	ImperativeDefinitions::write_HTML_representation(OUT, (id_body *) p, INDEX_PHRASE_FORMAT);
 }
 void Problems::quote_extension(int t, inform_extension *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_extension);
@@ -89,7 +89,7 @@ void Problems::quote_invocation(int t, parse_node *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_invocation);
 }
 void Problems::expand_invocation(OUTPUT_STREAM, void *p) {
-	Phrases::TypeData::Textual::inv_write_HTML_representation(OUT, (parse_node *) p);
+	IDTypeData::inv_write_HTML_representation(OUT, (parse_node *) p);
 }
 void Problems::quote_extension_id(int t, inbuild_work *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_extension_id);

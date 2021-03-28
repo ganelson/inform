@@ -18,7 +18,7 @@ the PHRCD remains empty, because they are guaranteed to fire whenever their
 rulebooks reach them.
 
 =
-typedef struct ph_runtime_context_data {
+typedef struct id_runtime_context_data {
 	struct wording activity_context; /* happens only while any activities go on? */
 	struct activity_list *avl;
 	#ifdef IF_MODULE
@@ -29,7 +29,7 @@ typedef struct ph_runtime_context_data {
 	int marked_for_anyone; /* any actor is allowed to perform this action */
 	#endif
 	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
-} ph_runtime_context_data;
+} id_runtime_context_data;
 
 typedef struct rule_context {
 	#ifdef IF_MODULE
@@ -53,11 +53,11 @@ rule_context Phrases::Context::no_rule_context(void) {
 	return rc;
 }
 
-int Phrases::Context::phrase_fits_rule_context(phrase *ph, rule_context rc) {
+int Phrases::Context::phrase_fits_rule_context(id_body *idb, rule_context rc) {
 	#ifdef IF_MODULE
 	if (rc.scene_context == NULL) return TRUE;
-	if (ph == NULL) return FALSE;
-	if (Phrases::Context::get_scene(&(ph->runtime_context_data)) != rc.scene_context) return FALSE;
+	if (idb == NULL) return FALSE;
+	if (Phrases::Context::get_scene(&(idb->runtime_context_data)) != rc.scene_context) return FALSE;
 	return TRUE;
 	#endif
 	#ifndef IF_MODULE
@@ -84,8 +84,8 @@ rule_context Phrases::Context::scene_context(scene *s) {
 the following only blanks out a PHRCD structure ready for that to happen.
 
 =
-ph_runtime_context_data Phrases::Context::new(void) {
-	ph_runtime_context_data phrcd;
+id_runtime_context_data Phrases::Context::new(void) {
+	id_runtime_context_data phrcd;
 	phrcd.activity_context = EMPTY_WORDING;
 	phrcd.avl = NULL;
 	#ifdef IF_MODULE
@@ -103,31 +103,31 @@ ph_runtime_context_data Phrases::Context::new(void) {
 Some access routines: first, for actor testing.
 
 =
-void Phrases::Context::set_always_test_actor(ph_runtime_context_data *phrcd) {
+void Phrases::Context::set_always_test_actor(id_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
 	phrcd->always_test_actor = TRUE;
 	#endif
 }
 
-void Phrases::Context::clear_always_test_actor(ph_runtime_context_data *phrcd) {
+void Phrases::Context::clear_always_test_actor(id_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
 	phrcd->always_test_actor = FALSE;
 	#endif
 }
 
-void Phrases::Context::set_never_test_actor(ph_runtime_context_data *phrcd) {
+void Phrases::Context::set_never_test_actor(id_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
 	phrcd->never_test_actor = TRUE;
 	#endif
 }
 
-void Phrases::Context::set_marked_for_anyone(ph_runtime_context_data *phrcd, int to) {
+void Phrases::Context::set_marked_for_anyone(id_runtime_context_data *phrcd, int to) {
 	#ifdef IF_MODULE
 	phrcd->marked_for_anyone = to;
 	#endif
 }
 
-int Phrases::Context::get_marked_for_anyone(ph_runtime_context_data *phrcd) {
+int Phrases::Context::get_marked_for_anyone(id_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
 	return phrcd->marked_for_anyone;
 	#endif
@@ -140,7 +140,7 @@ int Phrases::Context::get_marked_for_anyone(ph_runtime_context_data *phrcd) {
 
 =
 #ifdef IF_MODULE
-int Phrases::Context::within_action_context(ph_runtime_context_data *phrcd,
+int Phrases::Context::within_action_context(id_runtime_context_data *phrcd,
 	action_name *an) {
 	if (phrcd == NULL) return FALSE;
 	return ActionPatterns::covers_action(phrcd->ap, an);
@@ -148,13 +148,13 @@ int Phrases::Context::within_action_context(ph_runtime_context_data *phrcd,
 #endif
 
 #ifdef IF_MODULE
-action_name *Phrases::Context::required_action(ph_runtime_context_data *phrcd) {
+action_name *Phrases::Context::required_action(id_runtime_context_data *phrcd) {
 	if (phrcd->ap) return ActionPatterns::single_positive_action(phrcd->ap);
 	return NULL;
 }
 #endif
 
-void Phrases::Context::suppress_action_testing(ph_runtime_context_data *phrcd) {
+void Phrases::Context::suppress_action_testing(id_runtime_context_data *phrcd) {
 	#ifdef IF_MODULE
 	if (phrcd->ap) ActionPatterns::suppress_action_testing(phrcd->ap);
 	#endif
@@ -167,7 +167,7 @@ extracts a single specified scene if there is one:
 
 =
 #ifdef IF_MODULE
-scene *Phrases::Context::get_scene(ph_runtime_context_data *phrcd) {
+scene *Phrases::Context::get_scene(id_runtime_context_data *phrcd) {
 	if (phrcd == NULL) return NULL;
 	if (Rvalues::is_rvalue(phrcd->during_scene)) {
 		instance *q = Rvalues::to_instance(phrcd->during_scene);
@@ -182,8 +182,8 @@ normally limited to the use of rules in particular rulebooks.
 
 =
 int Phrases::Context::outcome_restrictions_waived(void) {
-	if ((phrase_being_compiled) &&
-		(phrase_being_compiled->runtime_context_data.permit_all_outcomes))
+	if ((id_body_being_compiled) &&
+		(id_body_being_compiled->runtime_context_data.permit_all_outcomes))
 		return TRUE;
 	return FALSE;
 }
@@ -199,8 +199,8 @@ In this case, laws I to V are applied in turn until one is decisive. If
 all of them fail to decide, we return 0.
 
 =
-int Phrases::Context::compare_specificity(ph_runtime_context_data *rcd1,
-	ph_runtime_context_data *rcd2) {
+int Phrases::Context::compare_specificity(id_runtime_context_data *rcd1,
+	id_runtime_context_data *rcd2) {
 	#ifdef IF_MODULE
 	action_pattern *ap1, *ap2;
 	parse_node *sc1, *sc2;
@@ -313,13 +313,13 @@ process.
 void Phrases::Context::ensure_avl(rule *R) {
 	imperative_defn *id = Rules::get_imperative_definition(R);
 	if (id) {
-		phrase *ph = id->body_of_defn;
-		ph_runtime_context_data *rcd = &(ph->runtime_context_data);
+		id_body *idb = id->body_of_defn;
+		id_runtime_context_data *rcd = &(idb->runtime_context_data);
 		if (Wordings::nonempty(rcd->activity_context)) {
 			parse_node *save_cs = current_sentence;
 			current_sentence = id->at;
 
-			ph_stack_frame *phsf = &(ph->compilation_data.stack_frame);
+			ph_stack_frame *phsf = &(idb->compilation_data.stack_frame);
 			Frames::make_current(phsf);
 
 			Frames::set_stvol(phsf, R->variables_visible_in_definition);
@@ -350,21 +350,21 @@ In general the test is more elaborate than a single "if", though not very
 much.
 
 =
-int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
-	inter_name *identifier = Phrases::iname(ph);
-	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+int Phrases::Context::compile_test_head(id_body *idb, rule *R) {
+	inter_name *identifier = IDCompilation::iname(idb);
+	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
 
 	if (RTRules::compile_constraint(R) == TRUE) return TRUE;
 
 	int tests = 0;
 
-	if (PluginCalls::compile_test_head(ph, R, &tests) == FALSE) {
+	if (PluginCalls::compile_test_head(idb, R, &tests) == FALSE) {
 		if (phrcd->ap) @<Compile an action test head@>;
 	}
 	if (Wordings::nonempty(phrcd->activity_context))
 		@<Compile an activity or explicit condition test head@>;
 
-	if ((tests > 0) || (ph->compilation_data.compile_with_run_time_debugging)) {
+	if ((tests > 0) || (idb->compilation_data.compile_with_run_time_debugging)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));
@@ -373,7 +373,7 @@ int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
 				Produce::down(Emit::tree());
 					Produce::val_iname(Emit::tree(), K_value, identifier);
-					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ph->allocation_id);
+					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) idb->allocation_id);
 					Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
@@ -382,8 +382,8 @@ int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 	return FALSE;
 }
 
-int Phrases::Context::actions_compile_test_head(phrase *ph, rule *R, int *tests) {
-	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+int Phrases::Context::actions_compile_test_head(id_body *idb, rule *R, int *tests) {
+	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
 	#ifdef IF_MODULE
 	if (phrcd->during_scene) @<Compile a scene test head@>;
 	if (phrcd->ap) @<Compile possibly testing actor action test head@>
@@ -392,9 +392,9 @@ int Phrases::Context::actions_compile_test_head(phrase *ph, rule *R, int *tests)
 	return TRUE;
 }
 
-int Phrases::Context::actions_compile_test_tail(phrase *ph, rule *R) {
-	inter_name *identifier = Phrases::iname(ph);
-	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
+int Phrases::Context::actions_compile_test_tail(id_body *idb, rule *R) {
+	inter_name *identifier = IDCompilation::iname(idb);
+	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
 	#ifdef IF_MODULE
 	if (phrcd->ap) @<Compile an action test tail@>
 	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test tail@>;
@@ -407,14 +407,14 @@ int Phrases::Context::actions_compile_test_tail(phrase *ph, rule *R) {
 with the default outcome return (see above).
 
 =
-void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
-	inter_name *identifier = Phrases::iname(ph);
-	ph_runtime_context_data *phrcd = &(ph->runtime_context_data);
-	rulebook *rb = RuleFamily::get_rulebook(ph->from);
+void Phrases::Context::compile_test_tail(id_body *idb, rule *R) {
+	inter_name *identifier = IDCompilation::iname(idb);
+	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
+	rulebook *rb = RuleFamily::get_rulebook(idb->head_of_defn);
 	if (rb) RTRules::compile_default_outcome(Rulebooks::get_outcomes(rb));
 	if (Wordings::nonempty(phrcd->activity_context))
 		@<Compile an activity or explicit condition test tail@>;
-	if (PluginCalls::compile_test_tail(ph, R) == FALSE) {
+	if (PluginCalls::compile_test_tail(idb, R) == FALSE) {
 		if (phrcd->ap) @<Compile an action test tail@>;
 	}
 }
@@ -511,7 +511,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
-		IXActivities::annotate_list_for_cross_references(avl, ph);
+		IXActivities::annotate_list_for_cross_references(avl, idb);
 		tests++;
 
 @<Compile an activity or explicit condition test tail@> =
@@ -534,7 +534,7 @@ void Phrases::Context::compile_test_tail(phrase *ph, rule *R) {
 					Produce::inv_call_iname(Emit::tree(), Hierarchy::find(DB_RULE_HL));
 					Produce::down(Emit::tree());
 						Produce::val_iname(Emit::tree(), K_value, identifier);
-						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) ph->allocation_id);
+						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) idb->allocation_id);
 						Produce::val(Emit::tree(), K_number, LITERAL_IVAL, failure_code);
 					Produce::up(Emit::tree());
 				Produce::up(Emit::tree());

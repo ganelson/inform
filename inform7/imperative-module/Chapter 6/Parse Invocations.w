@@ -28,22 +28,22 @@ To even make that possible, though, we must first register each "To..."
 phrase definition with the excerpt parser:
 
 =
-void Phrases::Parser::register_excerpt(phrase *ph) {
-	ph_type_data *phtd = &(ph->type_data);
-	if (Wordings::empty(phtd->registration_text)) return;
-	LOGIF(PHRASE_REGISTRATION, "Register phrase <%W> with type:\n$h", phtd->registration_text, phtd);
-	wording W = phtd->registration_text;
-	switch(phtd->manner_of_return) {
+void Phrases::Parser::register_excerpt(id_body *idb) {
+	id_type_data *idtd = &(idb->type_data);
+	if (Wordings::empty(idtd->registration_text)) return;
+	LOGIF(PHRASE_REGISTRATION, "Register phrase <%W> with type:\n$h", idtd->registration_text, idtd);
+	wording W = idtd->registration_text;
+	switch(idtd->manner_of_return) {
 		case DECIDES_NOTHING_MOR:
-			if (Phrases::TypeData::is_a_say_phrase(ph))
-				Phrases::Parser::register_phrasal(SAY_PHRASE_MC, ph, Wordings::trim_first_word(W));
-			else if (phtd->as_inline.block_follows != NO_BLOCK_FOLLOWS)
-				Phrases::Parser::register_phrasal(VOID_PHRASE_MC, ph, Wordings::trim_last_word(W));
+			if (IDTypeData::is_a_say_phrase(idb))
+				Phrases::Parser::register_phrasal(SAY_PHRASE_MC, idb, Wordings::trim_first_word(W));
+			else if (idtd->as_inline.block_follows != NO_BLOCK_FOLLOWS)
+				Phrases::Parser::register_phrasal(VOID_PHRASE_MC, idb, Wordings::trim_last_word(W));
 			else
-				Phrases::Parser::register_phrasal(VOID_PHRASE_MC, ph, W);
+				Phrases::Parser::register_phrasal(VOID_PHRASE_MC, idb, W);
 			break;
-		case DECIDES_CONDITION_MOR: Phrases::Parser::register_phrasal(COND_PHRASE_MC, ph, W); break;
-		case DECIDES_VALUE_MOR: Phrases::Parser::register_phrasal(VALUE_PHRASE_MC, ph, W); break;
+		case DECIDES_CONDITION_MOR: Phrases::Parser::register_phrasal(COND_PHRASE_MC, idb, W); break;
+		case DECIDES_VALUE_MOR: Phrases::Parser::register_phrasal(VALUE_PHRASE_MC, idb, W); break;
 	}
 }
 
@@ -51,15 +51,15 @@ void Phrases::Parser::register_excerpt(phrase *ph) {
 the phrase under, and must make the actual registration.
 
 =
-phrase *last_phrase_where_rp_problemed = NULL;
-void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wording W) {
+id_body *last_phrase_where_rp_problemed = NULL;
+void Phrases::Parser::register_phrasal(unsigned int phrase_mc, id_body *idb, wording W) {
 	LOGIF(PHRASE_REGISTRATION, "Register phrasal on <%W>: %u\n", W,
-		Phrases::TypeData::kind(&(ph->type_data)));
+		IDTypeData::kind(&(idb->type_data)));
 
 	@<Vet phrase text for suitability@>;
 	@<Look for slash-divided alternative phrasings and recurse to register all variations@>;
 
-	Lexicon::register(phrase_mc, W, STORE_POINTER_phrase(ph));
+	Lexicon::register(phrase_mc, W, STORE_POINTER_id_body(idb));
 }
 
 @ Some sanity checks first:
@@ -81,16 +81,16 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 	if (fixed_words == 0) @<Issue problem for phrase consisting only of tokens@>;
 
 @<Issue problem for quoted text in phrase wording@> =
-	if (ph != last_phrase_where_rp_problemed) {
+	if (idb != last_phrase_where_rp_problemed) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_QuotedInPhrase),
 			"phrases can't be defined with quoted text as part of the fixed wording",
 			"so something like 'To go \"voluntarily\" to jail: ...' is not allowed.");
-		last_phrase_where_rp_problemed = ph;
+		last_phrase_where_rp_problemed = idb;
 	}
 	return;
 
 @<Issue problem for brackets jammed up against each other@> =
-	if (ph != last_phrase_where_rp_problemed) {
+	if (idb != last_phrase_where_rp_problemed) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_AdjacentTokens),
 			"phrases can't be defined so that they have two bracketed varying elements "
 			"immediately next to each other",
@@ -98,17 +98,17 @@ void Phrases::Parser::register_phrasal(unsigned int phrase_mc, phrase *ph, wordi
 			"(X - a number) (Y - a number)' is not allowed, but 'To combine (X - a "
 			"number) with (Y - a number)' works because of the 'with' dividing the "
 			"bracketed terms X and Y.");
-		last_phrase_where_rp_problemed = ph;
+		last_phrase_where_rp_problemed = idb;
 	}
 	return;
 
 @<Issue problem for phrase consisting only of tokens@> =
-	if (ph != last_phrase_where_rp_problemed) {
+	if (idb != last_phrase_where_rp_problemed) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MustBeOneWord),
 			"a 'To...' phrase must contain at least one fixed word",
 			"that is, one word other than the bracketed variables. So a declaration "
 			"like 'To (N - number): ...' is not allowed.");
-		last_phrase_where_rp_problemed = ph;
+		last_phrase_where_rp_problemed = idb;
 	}
 	return;
 
@@ -159,8 +159,8 @@ make the result too slow.
 
 	wording AW = EMPTY_WORDING, BW = EMPTY_WORDING;
 	@<Splice up the A and B forms of the whole phrase wording@>;
-	if (Wordings::nonempty(AW)) Phrases::Parser::register_phrasal(phrase_mc, ph, AW);
-	if (Wordings::nonempty(BW)) Phrases::Parser::register_phrasal(phrase_mc, ph, BW);
+	if (Wordings::nonempty(AW)) Phrases::Parser::register_phrasal(phrase_mc, idb, AW);
+	if (Wordings::nonempty(BW)) Phrases::Parser::register_phrasal(phrase_mc, idb, BW);
 	DISCARD_TEXT(a_form)
 	DISCARD_TEXT(b_form)
 	return;
@@ -183,12 +183,12 @@ word, though.)
 @<Make sure the A form isn't the S-word@> =
 	if ((Str::eq_wide_string(a_form, L"say")) &&
 		(i == Wordings::first_wn(W)) && (phrase_mc != SAY_PHRASE_MC))
-		if (ph != last_phrase_where_rp_problemed) {
+		if (idb != last_phrase_where_rp_problemed) {
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SaySlashed),
 				"'say' is not allowed as the first word of a phrase",
 				"even when presented as one of a number of slashed alternatives. "
 				"(This is because 'say' is reserved for creating text substitutions.)");
-			last_phrase_where_rp_problemed = ph;
+			last_phrase_where_rp_problemed = idb;
 		}
 
 @<Splice up the A and B forms of the whole phrase wording@> =
@@ -234,7 +234,7 @@ yet vetted it, unless it's a fixed wording with nothing to check:
 because then our purely textual match is sufficient.
 
 =
-parse_node *Phrases::Parser::parse_against(phrase *ph, parse_node *p) {
+parse_node *Phrases::Parser::parse_against(id_body *idb, parse_node *p) {
 	if (p == NULL) internal_error("parse against null subtree");
 	wording WW = EMPTY_WORDING;
 	wording OW = EMPTY_WORDING;
@@ -243,10 +243,10 @@ parse_node *Phrases::Parser::parse_against(phrase *ph, parse_node *p) {
 
 	parse_node *inv = Invocations::new();
 	Invocations::set_word_range(inv, WW);
-	Node::set_phrase_invoked(inv, ph);
+	Node::set_phrase_invoked(inv, idb);
 
 	Dash::suspend_validation(FALSE);
-	ph_type_data *phtd = &(ph->type_data);
+	id_type_data *idtd = &(idb->type_data);
 	int i;
 	for (i=0; i<no_tokens; i++) @<Parse the ith token into the invocation@>;
 	if (Wordings::nonempty(OW)) Invocations::set_phrase_options(inv, OW);
@@ -280,24 +280,24 @@ that is, depends on what we're expecting to find. (This is why the excerpt
 parser needs our help in the first place.)
 
 @<Parse the ith token into the invocation@> =
-	parse_node *to_match = phtd->token_sequence[i].to_match;
+	parse_node *to_match = idtd->token_sequence[i].to_match;
 	wording X = Articles::remove_the(token_text[i]);
 
-	if (phtd->token_sequence[i].construct == NEW_LOCAL_PT_CONSTRUCT) {
+	if (idtd->token_sequence[i].construct == NEW_LOCAL_IDTC) {
 		to_match = Specifications::from_kind(K_value);
-		Invocations::make_token(inv, i, NEW_LOCAL_CONTEXT_NT, X, phtd->token_sequence[i].token_kind);
+		Invocations::make_token(inv, i, NEW_LOCAL_CONTEXT_NT, X, IDTypeData::token_kind(idtd, i));
 	}
-	else if (phtd->token_sequence[i].construct == EXISTING_LOCAL_PT_CONSTRUCT) {
+	else if (idtd->token_sequence[i].construct == OLD_LOCAL_IDTC) {
 		to_match = Specifications::from_kind(K_value);
-		Invocations::make_token(inv, i, LVALUE_LOCAL_CONTEXT_NT, X, phtd->token_sequence[i].token_kind);
+		Invocations::make_token(inv, i, LVALUE_LOCAL_CONTEXT_NT, X, IDTypeData::token_kind(idtd, i));
 	}
-	else if (phtd->token_sequence[i].construct == STORAGE_PT_CONSTRUCT)
+	else if (idtd->token_sequence[i].construct == STORAGE_IDTC)
 		Invocations::make_token(inv, i, LVALUE_CONTEXT_NT, X, Node::get_kind_of_value(to_match));
-	else if (phtd->token_sequence[i].construct == TABLE_REFERENCE_PT_CONSTRUCT)
+	else if (idtd->token_sequence[i].construct == TABLE_REF_IDTC)
 		Invocations::make_token(inv, i, LVALUE_TR_CONTEXT_NT, X, Node::get_kind_of_value(to_match));
-	else if (phtd->token_sequence[i].construct == CONDITION_PT_CONSTRUCT)
+	else if (idtd->token_sequence[i].construct == CONDITION_IDTC)
 		Invocations::make_token(inv, i, CONDITION_CONTEXT_NT, X, NULL);
-	else if (phtd->token_sequence[i].construct == VOID_PT_CONSTRUCT)
+	else if (idtd->token_sequence[i].construct == VOID_IDTC)
 		Invocations::make_token(inv, i, VOID_CONTEXT_NT, X, NULL);
 	else if (Specifications::is_kind_like(to_match))
 		Invocations::make_token(inv, i, RVALUE_CONTEXT_NT, X, Specifications::to_kind(to_match));
@@ -317,9 +317,9 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 	for (int i = 0; i < N; i++) {
 		parse_node *to_match = Invocations::get_token_to_be_parsed_against(inv, i);
 		int cons = -1;
-		phrase *ph = Node::get_phrase_invoked(inv);
-		if (ph) cons = ph->type_data.token_sequence[i].construct;
-		if ((to_match) || (cons == CONDITION_PT_CONSTRUCT) || (cons == VOID_PT_CONSTRUCT)) {
+		id_body *idb = Node::get_phrase_invoked(inv);
+		if (idb) cons = idb->type_data.token_sequence[i].construct;
+		if ((to_match) || (cons == CONDITION_IDTC) || (cons == VOID_IDTC)) {
 			parse_node *as_parsed = Invocations::get_token_as_parsed(inv, i);
 			wording XW = Node::get_text(as_parsed);
 			#ifdef IF_MODULE
@@ -359,14 +359,14 @@ void Phrases::Parser::parse_within_inv(parse_node *inv) {
 		probable_noun_phrase_context =
 			Specifications::to_kind(to_match);
 
-	let_equation_mode = Phrases::TypeData::is_a_let_equation(ph);
+	let_equation_mode = IDTypeData::is_a_let_equation(idb);
 
 	int t = FALSE; /* redundant assignment to keep |gcc| happy */
 	if (Specifications::is_description(to_match))
 		t = <s-value>(XW);
-	else if (cons == CONDITION_PT_CONSTRUCT)
+	else if (cons == CONDITION_IDTC)
 		t = <s-condition>(XW);
-	else if (cons == VOID_PT_CONSTRUCT)
+	else if (cons == VOID_IDTC)
 		t = <s-command>(XW);
 	else
 		t = <s-value>(XW);

@@ -103,12 +103,12 @@ The answer is that go with B1, supposing that one to be the earliest created
 rulebook.
 
 =
-rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno, phrase *ph) {
-	if (ph) {
+rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno, id_body *idb) {
+	if (idb) {
 		rulebook *B;
 		LOOP_OVER(B, rulebook) {
 			outcomes *outs = Rulebooks::get_outcomes(B);
-			if (BookingLists::contains_ph(B->contents, ph)) {
+			if (BookingLists::contains_ph(B->contents, idb)) {
 				rulebook_outcome *ro;
 				LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)
 					if (ro->outcome_name == rbno)
@@ -120,19 +120,19 @@ rulebook_outcome *FocusAndOutcome::rbo_from_context(named_rulebook_outcome *rbno
 }
 
 @ And this tests whether there is any obstacle to using |rbno| in the body of
-phrase |ph|'s code. If a rule ends "splendidly", then that needs to be a valid
+phrase |idb|'s code. If a rule ends "splendidly", then that needs to be a valid
 ending for all of the rulebooks holding it.
 
 This very similar function returns |NULL| if there's no problem, or the rulebook
 causing the difficulty if so.
 
 =
-rulebook *FocusAndOutcome::rulebook_not_supporting(named_rulebook_outcome *rbno, phrase *ph) {
-	if (ph) {
+rulebook *FocusAndOutcome::rulebook_not_supporting(named_rulebook_outcome *rbno, id_body *idb) {
+	if (idb) {
 		rulebook *B;
 		LOOP_OVER(B, rulebook) {
 			outcomes *outs = Rulebooks::get_outcomes(B);
-			if (BookingLists::contains_ph(B->contents, ph)) {
+			if (BookingLists::contains_ph(B->contents, idb)) {
 				int okay = FALSE;
 				rulebook_outcome *ro;
 				LOOP_OVER_LINKED_LIST(ro, rulebook_outcome, outs->named_outcomes)

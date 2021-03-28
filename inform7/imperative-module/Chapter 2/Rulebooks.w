@@ -158,9 +158,9 @@ the need for this.
 =
 kind *Rulebooks::kind_from_context(void) {
 	rulebook *B;
-	if (phrase_being_compiled)
+	if (id_body_being_compiled)
 		LOOP_OVER(B, rulebook)
-			if (BookingLists::contains_ph(B->contents, phrase_being_compiled))
+			if (BookingLists::contains_ph(B->contents, id_body_being_compiled))
 				return Rulebooks::get_outcome_kind(B);
 	return NULL;
 }

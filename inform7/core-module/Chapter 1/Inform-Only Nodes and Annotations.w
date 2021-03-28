@@ -67,10 +67,10 @@ void CoreSyntax::create_node_types(void) {
 @
 
 @e CODE_NCAT
-@e INVOCATION_LIST_NT           /* Single invocation of a (possibly compound) phrase */
+@e INVOCATION_LIST_NT           /* Single invocation of a (possibly compound) id_body */
 @e CODE_BLOCK_NT                /* Holds a block of source material */
 @e INVOCATION_LIST_SAY_NT       /* Single thing to be said */
-@e INVOCATION_NT                /* Usage of a phrase */
+@e INVOCATION_NT                /* Usage of a id_body */
 @e VOID_CONTEXT_NT              /* When a void phrase is required */
 @e RVALUE_CONTEXT_NT            /* Arguments, in effect */
 @e LVALUE_CONTEXT_NT            /* Named storage location */
@@ -593,7 +593,7 @@ DECLARE_ANNOTATION_FUNCTIONS(kind_required_by_context, kind)
 DECLARE_ANNOTATION_FUNCTIONS(kind_resulting, kind)
 DECLARE_ANNOTATION_FUNCTIONS(kind_variable_declarations, kind_variable_declaration)
 DECLARE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
-DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
+DECLARE_ANNOTATION_FUNCTIONS(phrase_invoked, id_body)
 DECLARE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 DECLARE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 DECLARE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
@@ -609,7 +609,7 @@ MAKE_ANNOTATION_FUNCTIONS(kind_required_by_context, kind)
 MAKE_ANNOTATION_FUNCTIONS(kind_resulting, kind)
 MAKE_ANNOTATION_FUNCTIONS(kind_variable_declarations, kind_variable_declaration)
 MAKE_ANNOTATION_FUNCTIONS(modal_verb, verb_conjugation)
-MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, phrase)
+MAKE_ANNOTATION_FUNCTIONS(phrase_invoked, id_body)
 MAKE_ANNOTATION_FUNCTIONS(phrase_options_invoked, invocation_options)
 MAKE_ANNOTATION_FUNCTIONS(say_adjective, adjective)
 MAKE_ANNOTATION_FUNCTIONS(say_verb, verb_conjugation)
@@ -732,8 +732,8 @@ void CoreSyntax::write_modal_verb_ANNOT(text_stream *OUT, parse_node *p) {
 	if (vc) WRITE(" {modal verb: %A}", vc->infinitive);
 }
 void CoreSyntax::write_phrase_invoked_ANNOT(text_stream *OUT, parse_node *p) {
-	phrase *ph = Node::get_phrase_invoked(p);
-	if (ph) WRITE(" {phrase invoked: %n}", Phrases::iname(ph));
+	id_body *idb = Node::get_phrase_invoked(p);
+	if (idb) WRITE(" {phrase invoked: %n}", IDCompilation::iname(idb));
 }
 void CoreSyntax::write_phrase_options_invoked_ANNOT(text_stream *OUT, parse_node *p) {
 	invocation_options *io = Node::get_phrase_options_invoked(p);

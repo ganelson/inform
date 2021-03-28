@@ -463,8 +463,8 @@ int PluginCalls::rule_placement_notify(rule *R, rulebook *original_owner, int si
 @e COMPILE_TEST_HEAD_PLUG
 
 =
-int PluginCalls::compile_test_head(phrase *ph, rule *R, int *tests) {
-	PLUGINS_CALL(COMPILE_TEST_HEAD_PLUG, ph, R, tests);
+int PluginCalls::compile_test_head(id_body *idb, rule *R, int *tests) {
+	PLUGINS_CALL(COMPILE_TEST_HEAD_PLUG, idb, R, tests);
 }
 
 @
@@ -472,8 +472,8 @@ int PluginCalls::compile_test_head(phrase *ph, rule *R, int *tests) {
 @e COMPILE_TEST_TAIL_PLUG
 
 =
-int PluginCalls::compile_test_tail(phrase *ph, rule *R) {
-	PLUGINS_CALL(COMPILE_TEST_TAIL_PLUG, ph, R);
+int PluginCalls::compile_test_tail(id_body *idb, rule *R) {
+	PLUGINS_CALL(COMPILE_TEST_TAIL_PLUG, idb, R);
 }
 
 @ Called from //imperative: Compile Invocations Inline//, but only when an

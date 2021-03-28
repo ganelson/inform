@@ -12,7 +12,7 @@ typedef struct activity_indexing_data {
 } activity_indexing_data;
 
 typedef struct activity_crossref {
-	struct phrase *rule_dependent;
+	struct id_body *rule_dependent;
 	struct activity_crossref *next;
 } activity_crossref;
 
@@ -63,25 +63,25 @@ void IXActivities::index_details(OUTPUT_STREAM, activity *av) {
 	IXActivities::index_cross_references(OUT, av);
 }
 
-void IXActivities::annotate_list_for_cross_references(activity_list *avl, phrase *ph) {
+void IXActivities::annotate_list_for_cross_references(activity_list *avl, id_body *idb) {
 	for (; avl; avl = avl->next)
 		if (avl->activity) {
 			activity *av = avl->activity;
 			activity_crossref *acr = CREATE(activity_crossref);
 			acr->next = av->indexing_data.cross_references;
 			av->indexing_data.cross_references = acr;
-			acr->rule_dependent = ph;
+			acr->rule_dependent = idb;
 		}
 }
 
 void IXActivities::index_cross_references(OUTPUT_STREAM, activity *av) {
 	activity_crossref *acr;
 	for (acr = av->indexing_data.cross_references; acr; acr = acr->next) {
-		phrase *ph = acr->rule_dependent;
-		if ((ph->from->at) && (Wordings::nonempty(Node::get_text(ph->from->at)))) {
+		id_body *idb = acr->rule_dependent;
+		if ((ImperativeDefinitions::body_at(idb)) && (Wordings::nonempty(Node::get_text(ImperativeDefinitions::body_at(idb))))) {
 			HTML::open_indented_p(OUT, 2, "tight");
-			WRITE("NB: %W", Node::get_text(ph->from->at));
-			Index::link(OUT, Wordings::first_wn(Node::get_text(ph->from->at)));
+			WRITE("NB: %W", Node::get_text(ImperativeDefinitions::body_at(idb)));
+			Index::link(OUT, Wordings::first_wn(Node::get_text(ImperativeDefinitions::body_at(idb))));
 			HTML_CLOSE("p");
 		}
 	}

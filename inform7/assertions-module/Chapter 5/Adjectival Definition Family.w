@@ -74,9 +74,9 @@ container (called the sack) is capacious if...".
 
 =
 void AdjectivalDefinitionFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
-	phrase *body = id->body_of_defn;
+	id_body *body = id->body_of_defn;
 
-	Phrases::TypeData::set_mor(&(body->type_data), DECIDES_CONDITION_MOR, NULL);
+	IDTypeData::set_mor(&(body->type_data), DECIDES_CONDITION_MOR, NULL);
 
 	wording CALLW = EMPTY_WORDING;
 	kind *K = NULL;
@@ -93,7 +93,7 @@ void AdjectivalDefinitionFamily::compile(imperative_defn_family *self,
 	imperative_defn *id;
 	LOOP_OVER(id, imperative_defn)
 		if (id->family == adjectival_idf)
-			Phrases::compile(id->body_of_defn, total_phrases_compiled,
+			IDCompilation::compile(id->body_of_defn, total_phrases_compiled,
 				total_phrases_to_compile, NULL, NULL, NULL);
 	RTAdjectives::compile_support_code();
 }

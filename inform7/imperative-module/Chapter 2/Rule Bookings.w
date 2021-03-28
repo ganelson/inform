@@ -94,13 +94,13 @@ void RuleBookings::make_automatic_placements(void) {
 			imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
 			if (id) {
 				current_sentence = id->at;
-				phrase *ph = id->body_of_defn;
-				rulebook *original_owner = RuleFamily::get_rulebook(ph->from);
-				int placement = RuleFamily::get_rulebook_placement(ph->from);
+				id_body *idb = id->body_of_defn;
+				rulebook *original_owner = RuleFamily::get_rulebook(idb->head_of_defn);
+				int placement = RuleFamily::get_rulebook_placement(idb->head_of_defn);
 				rulebook *owner = original_owner;
 				PluginCalls::place_rule(br->rule_being_booked, original_owner, &owner);
 				if (owner != original_owner) {
-					RuleFamily::set_rulebook(ph->from, owner);
+					RuleFamily::set_rulebook(idb->head_of_defn, owner);
 					LOGIF(RULE_ATTACHMENTS, "Rerouting $b: $K --> $K\n",
 						br, original_owner, owner);
 				}

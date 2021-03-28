@@ -106,12 +106,12 @@ family to give the body its runtime context data.
 
 =
 VOID_METHOD_TYPE(TO_RCD_IMP_DEFN_MTID, imperative_defn_family *f, imperative_defn *id,
-	ph_runtime_context_data *rcd)
+	id_runtime_context_data *rcd)
 
-ph_runtime_context_data ImperativeDefinitionFamilies::to_phrcd(imperative_defn *id) {
+id_runtime_context_data ImperativeDefinitionFamilies::to_phrcd(imperative_defn *id) {
 	current_sentence = id->at;
 	Frames::make_current(&(id->body_of_defn->compilation_data.stack_frame));
-	ph_runtime_context_data phrcd = Phrases::Context::new();
+	id_runtime_context_data phrcd = Phrases::Context::new();
 	VOID_METHOD_CALL(id->family, TO_RCD_IMP_DEFN_MTID, id, &phrcd);
 	Frames::remove_current();
 	return phrcd;

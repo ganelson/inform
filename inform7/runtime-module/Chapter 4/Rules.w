@@ -59,7 +59,7 @@ inter_name *RTRules::shell_iname(rule *R) {
 }
 
 inter_name *RTRules::iname(rule *R) {
-	if (R->defn_as_I7_source) return Phrases::iname(R->defn_as_I7_source->body_of_defn);
+	if (R->defn_as_I7_source) return IDCompilation::iname(R->defn_as_I7_source->body_of_defn);
 	else if (R->compilation_data.rule_extern_iname) {
 		if (LinkedLists::len(R->applicability_constraints) > 0) {
 			return RTRules::shell_iname(R);
@@ -98,7 +98,7 @@ void RTRules::compile_definition(rule *R, int *i, int max_i) {
 		R->compilation_data.defn_compiled = TRUE;
 		rule_being_compiled = R;
 		if (R->defn_as_I7_source)
-			Phrases::compile(R->defn_as_I7_source->body_of_defn, i, max_i,
+			IDCompilation::compile(R->defn_as_I7_source->body_of_defn, i, max_i,
 				R->variables_visible_in_definition, NULL, R);
 		if ((R->compilation_data.rule_extern_iname) &&
 			(LinkedLists::len(R->applicability_constraints) > 0))
@@ -875,7 +875,7 @@ void RTRules::compile_default_outcome(outcomes *outs) {
 }
 
 void RTRules::compile_outcome(named_rulebook_outcome *rbno) {
-	rulebook_outcome *rbo = FocusAndOutcome::rbo_from_context(rbno, phrase_being_compiled);
+	rulebook_outcome *rbo = FocusAndOutcome::rbo_from_context(rbno, id_body_being_compiled);
 	if (rbo == NULL) {
 		rulebook *rb;
 		LOOP_OVER(rb, rulebook) {

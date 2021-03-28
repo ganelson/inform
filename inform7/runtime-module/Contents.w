@@ -59,6 +59,7 @@ Chapter 4: Compilation Utilities
 	Relations at Run Time
 	Literal Patterns at Run Time
 	Runtime Support for Tables
+	Imperative Compilation Data
 	Phrase Requests
 	Closures
 

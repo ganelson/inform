@@ -297,10 +297,10 @@ int BookingLists::contains(booking_list *L, rule *to_find) {
 	return FALSE;
 }
 
-int BookingLists::contains_ph(booking_list *L, phrase *ph_to_find) {
+int BookingLists::contains_ph(booking_list *L, id_body *idb_to_find) {
 	LOOP_OVER_BOOKINGS(br, L) {
 		imperative_defn *id = Rules::get_imperative_definition(RuleBookings::get_rule(br));
-		if ((id) && (id->body_of_defn == ph_to_find))
+		if ((id) && (id->body_of_defn == idb_to_find))
 			return TRUE;
 	}
 	return FALSE;
