@@ -110,7 +110,7 @@ VOID_METHOD_TYPE(TO_RCD_IMP_DEFN_MTID, imperative_defn_family *f, imperative_def
 
 ph_runtime_context_data ImperativeDefinitionFamilies::to_phrcd(imperative_defn *id) {
 	current_sentence = id->at;
-	Frames::make_current(&(id->body_of_defn->stack_frame));
+	Frames::make_current(&(id->body_of_defn->compilation_data.stack_frame));
 	ph_runtime_context_data phrcd = Phrases::Context::new();
 	VOID_METHOD_CALL(id->family, TO_RCD_IMP_DEFN_MTID, id, &phrcd);
 	Frames::remove_current();
@@ -191,22 +191,6 @@ VOID_METHOD_TYPE(COMPILE_IMP_DEFN_MTID, imperative_defn_family *f,
 void ImperativeDefinitionFamilies::compile(imperative_defn_family *f,
 	int *total_phrases_compiled, int total_phrases_to_compile) {
 	VOID_METHOD_CALL(f, COMPILE_IMP_DEFN_MTID,
-		total_phrases_compiled, total_phrases_to_compile);
-}
-
-@ |COMPILE_AS_NEEDED_IMP_DEFN_MTID| is then called as an opportunity to
-compile any remaining resources, and should pick up anything needed since the
-last time it was called: note that it can be called multiple times.
-
-@e COMPILE_AS_NEEDED_IMP_DEFN_MTID
-
-=
-VOID_METHOD_TYPE(COMPILE_AS_NEEDED_IMP_DEFN_MTID, imperative_defn_family *f,
-	int *total_phrases_compiled, int total_phrases_to_compile)
-
-void ImperativeDefinitionFamilies::compile_as_needed(imperative_defn_family *f,
-	int *total_phrases_compiled, int total_phrases_to_compile) {
-	VOID_METHOD_CALL(f, COMPILE_AS_NEEDED_IMP_DEFN_MTID,
 		total_phrases_compiled, total_phrases_to_compile);
 }
 

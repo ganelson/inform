@@ -23,15 +23,19 @@ void ToPhraseFamily::create_family(void) {
 	METHOD_ADD(to_phrase_idf, GIVEN_BODY_IMP_DEFN_MTID, ToPhraseFamily::given_body);
 	METHOD_ADD(to_phrase_idf, ALLOWS_INLINE_IMP_DEFN_MTID, ToPhraseFamily::allows_inline);
 	METHOD_ADD(to_phrase_idf, COMPILE_IMP_DEFN_MTID, ToPhraseFamily::compile);
-	METHOD_ADD(to_phrase_idf, COMPILE_AS_NEEDED_IMP_DEFN_MTID, ToPhraseFamily::compile_as_needed);
 	METHOD_ADD(to_phrase_idf, PHRASEBOOK_INDEX_IMP_DEFN_MTID, ToPhraseFamily::include_in_Phrasebook_index);
 }
 
-@ Each To... phrase is given one of these:
+@ Each To... preamble is parsed and given a //to_family_data// object. The
+following slightly contrived example shows the resulting wordings; in practice
+only the prototype is compulsory, and the other two are often empty.
+= (text as Inform 7)
+To double (N - a number) (documented at PHDOUBLE  ) (this is doubling          ):
+<---- prototype ------->                <- doc ->            <- const name ->
+=
 
 =
 typedef struct to_family_data {
-	struct wording pattern;
 	struct wording prototype_text;
 	struct wording constant_name;
 	struct wording ph_documentation_symbol; /* the documentation reference, if any */
@@ -46,7 +50,6 @@ typedef struct to_family_data {
 
 to_family_data *ToPhraseFamily::new_data(void) {
 	to_family_data *tfd = CREATE(to_family_data);
-	tfd->pattern = EMPTY_WORDING;
 	tfd->prototype_text = EMPTY_WORDING;
 	tfd->constant_name = EMPTY_WORDING;
 	tfd->ph_documentation_symbol = EMPTY_WORDING;
@@ -164,29 +167,24 @@ To say (V - value) twice (this is double-saying): say "[V]. [V], I say!"        
 		Problems::quote_wording(2, Nouns::nominative_singular(cphr->name));
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedGeneric));
 		Problems::issue_problem_segment(
-			"I can't allow %1, because the phrase it gives a name to "
-			"is generic, that is, it has a kind which is too vague. "
-			"That means there isn't any single phrase which '%2' "
-			"could refer to - there would have to be different versions "
-			"for every setting where it might be needed, and we can't "
-			"predict in advance which one '%2' might need to be.");
+			"I can't allow %1, because the phrase it gives a name to is generic, that is, "
+			"it has a kind which is too vague. That means there isn't any single phrase "
+			"which '%2' could refer to - there would have to be different versions "
+			"for every setting where it might be needed, and we can't predict in advance "
+			"which one '%2' might need to be.");
 		Problems::issue_problem_end();
 	}
 	tfd->as_constant = cphr;
 
-@ The following routine takes a phrase and makes it officially a To
-phrase, which in particular means adding it to the list of To phrases in
-logical order. This essentially means that two lexically
-indistinguishable phrases (e.g., "admire (OC - an open container)" and
-"admire (C - a container)") are placed such that the more specific, in
-type-checking terms, comes first (the open container case being the more
-specific). The purpose of this list is to ensure that excerpt meanings
-for phrase definitions are registered in logical priority order, because
-the excerpt parser prefers earlier registrations to later ones in case
-of ambiguity.
+@ The following routine takes a phrase and makes it officially a To phrase,
+which in particular means adding it to the list of To phrases in logical
+order. This essentially means that two lexically indistinguishable phrases
+(e.g., "admire (OC - an open container)" and "admire (C - a container)") are
+placed such that the more specific, in type-checking terms, comes first (the
+open container case being the more specific).
 
-Note that the following sort algorithm affects only "to..." phrases,
-and therefore has no effect on rule ordering within rulebooks.
+This code affects only "To..." phrases, so it has no effect on rule ordering
+within rulebooks. That's a similar issue, but addressed differently elsewhere.
 
 =
 imperative_defn *first_in_logical_order = NULL;
@@ -269,10 +267,11 @@ int ToPhraseFamily::cmp(phrase *ph1, phrase *ph2) {
 	if (r == CONFLICTED_PH) {
 		Problems::quote_source(1, Phrases::declaration_node(ph1));
 		Problems::quote_source(2, Phrases::declaration_node(ph2));
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ConflictedReturnKinds));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ConflictedReturnKinds));
 		Problems::issue_problem_segment(
-			"The two phrase definitions %1 and %2 make the same wording "
-			"produce two different kinds of value, which is not allowed.");
+			"The two phrase definitions %1 and %2 make the same wording produce two "
+			"different kinds of value, which is not allowed.");
 		Problems::issue_problem_end();
 	}
 
@@ -294,6 +293,81 @@ void ToPhraseFamily::register(imperative_defn_family *self) {
 	}
 }
 
+@h Compilation.
+We actually don't compile anything here: we just make "requests" to do so.
+
+=
+void ToPhraseFamily::compile(imperative_defn_family *self,
+	int *total_phrases_compiled, int total_phrases_to_compile) {
+	@<Mark To... phrases which have definite kinds for future compilation@>;
+	@<Throw problems for phrases with return kinds too vaguely defined@>;
+	@<Throw problems for inline phrases named as constants@>;
+}
+
+@<Mark To... phrases which have definite kinds for future compilation@> =
+	phrase *ph;
+	LOOP_OVER(ph, phrase) {
+		kind *K = Phrases::TypeData::kind(&(ph->type_data));
+		if (Kinds::Behaviour::definite(K))
+			if (ph->compilation_data.at_least_one_compiled_form_needed)
+				PhraseRequests::make_request(ph, K, NULL, EMPTY_WORDING);
+	}
+
+@<Throw problems for phrases with return kinds too vaguely defined@> =
+	phrase *ph;
+	LOOP_OVER(ph, phrase) {
+		kind *KR = Phrases::TypeData::get_return_kind(&(ph->type_data));
+		if ((Kinds::Behaviour::semidefinite(KR) == FALSE) &&
+			(Phrases::TypeData::arithmetic_operation(ph) == -1)) {
+			current_sentence = Phrases::declaration_node(ph);
+			Problems::quote_source(1, current_sentence);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_ReturnKindVague));
+			Problems::issue_problem_segment(
+				"The declaration %1 tries to set up a phrase which decides a value which is "
+				"too vaguely described. For example, 'To decide which number is the target: "
+				"...' is fine, because 'number' is clear about what kind of value should "
+				"emerge; but 'To decide which value is the target: ...' is not clear enough.");
+			Problems::issue_problem_end();
+		}
+		for (int k=1; k<=26; k++)
+			if ((Kinds::Behaviour::involves_var(KR, k)) &&
+				(Phrases::TypeData::tokens_contain_variable(&(ph->type_data), k) == FALSE)) {
+				current_sentence = Phrases::declaration_node(ph);
+				TEMPORARY_TEXT(var_letter)
+				PUT_TO(var_letter, 'A'+k-1);
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_stream(2, var_letter);
+				StandardProblems::handmade_problem(Task::syntax_tree(),
+					_p_(PM_ReturnKindUndetermined));
+				Problems::issue_problem_segment(
+					"The declaration %1 tries to set up a phrase which decides a value which "
+					"is too vaguely described, because it involves a kind variable (%2) which "
+					"it can't determine through usage.");
+				Problems::issue_problem_end();
+				DISCARD_TEXT(var_letter)
+		}
+	}
+
+@<Throw problems for inline phrases named as constants@> =
+	phrase *ph;
+	LOOP_OVER(ph, phrase)
+		if ((Phrases::TypeData::invoked_inline(ph)) &&
+			(ToPhraseFamily::has_name_as_constant(ph->from))) {
+			current_sentence = Phrases::declaration_node(ph);
+			Problems::quote_source(1, current_sentence);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
+			Problems::issue_problem_segment(
+				"The declaration %1 tries to give a name to a phrase which is defined using "
+				"inline Inform 6 code in (- markers -). Such phrases can't be named and used "
+				"as constants because they have no independent existence, being instead made "
+				"fresh each time they are used.");
+			Problems::issue_problem_end();
+		}
+
+@h Access functions.
+
+=
 phrase *ToPhraseFamily::meaning_as_phrase(excerpt_meaning *em) {
 	if (em == NULL) return NULL;
 	return RETRIEVE_POINTER_phrase(em->data);
@@ -372,145 +446,6 @@ wording ToPhraseFamily::doc_ref(imperative_defn *id) {
 	if (id->family != to_phrase_idf) return EMPTY_WORDING;
 	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(id->family_specific_data);
 	return tfd->ph_documentation_symbol;
-}
-
-@h Compilation.
-
-=
-void ToPhraseFamily::compile(imperative_defn_family *self,
-	int *total_phrases_compiled, int total_phrases_to_compile) {
-	@<Mark To... phrases which have definite kinds for future compilation@>;
-	@<Throw problems for phrases with return kinds too vaguely defined@>;
-	@<Throw problems for inline phrases named as constants@>;
-}
-
-@ As we'll see, it's legal in Inform to define "To..." phrases with vague
-kinds: "To expose (X - a value)", for example. This can't be compiled as
-vaguely as the definition implies, since there would be no way to know how
-to store X. Instead, for each different kind of X which is actually needed,
-a fresh version of the phrase is compiled -- one where X is a number, one
-where it's a text, and so on. This is handled by making a "request" for the
-phrase, indicating that a compiled version of it will be needed.
-
-Since "To..." phrases are only compiled on request, we must remember to
-request the boring ones with straightforward kinds ("To award (N - a number)
-points", say). This is where we do it:
-
-@<Mark To... phrases which have definite kinds for future compilation@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		kind *K = Phrases::TypeData::kind(&(ph->type_data));
-		if (Kinds::Behaviour::definite(K)) {
-			if (ph->at_least_one_compiled_form_needed)
-				PhraseRequests::make_request(ph, K, NULL, EMPTY_WORDING);
-		}
-	}
-
-@<Throw problems for phrases with return kinds too vaguely defined@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase) {
-		kind *KR = Phrases::TypeData::get_return_kind(&(ph->type_data));
-		if ((Kinds::Behaviour::semidefinite(KR) == FALSE) &&
-			(Phrases::TypeData::arithmetic_operation(ph) == -1)) {
-			current_sentence = Phrases::declaration_node(ph);
-			Problems::quote_source(1, current_sentence);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindVague));
-			Problems::issue_problem_segment(
-				"The declaration %1 tries to set up a phrase which decides a "
-				"value which is too vaguely described. For example, 'To decide "
-				"which number is the target: ...' is fine, because 'number' "
-				"is clear about what kind of value should emerge; but 'To "
-				"decide which value is the target: ...' is not clear enough.");
-			Problems::issue_problem_end();
-		}
-		for (int k=1; k<=26; k++)
-			if ((Kinds::Behaviour::involves_var(KR, k)) &&
-				(Phrases::TypeData::tokens_contain_variable(&(ph->type_data), k) == FALSE)) {
-				current_sentence = Phrases::declaration_node(ph);
-				TEMPORARY_TEXT(var_letter)
-				PUT_TO(var_letter, 'A'+k-1);
-				Problems::quote_source(1, current_sentence);
-				Problems::quote_stream(2, var_letter);
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ReturnKindUndetermined));
-				Problems::issue_problem_segment(
-					"The declaration %1 tries to set up a phrase which decides a "
-					"value which is too vaguely described, because it involves "
-					"a kind variable (%2) which it can't determine through "
-					"usage.");
-				Problems::issue_problem_end();
-				DISCARD_TEXT(var_letter)
-		}
-	}
-
-@<Throw problems for inline phrases named as constants@> =
-	phrase *ph;
-	LOOP_OVER(ph, phrase)
-		if ((Phrases::TypeData::invoked_inline(ph)) &&
-			(ToPhraseFamily::has_name_as_constant(ph->from))) {
-			current_sentence = Phrases::declaration_node(ph);
-			Problems::quote_source(1, current_sentence);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NamedInline));
-			Problems::issue_problem_segment(
-				"The declaration %1 tries to give a name to a phrase which is "
-				"defined using inline Inform 6 code in (- markers -). Such "
-				"phrases can't be named and used as constants because they "
-				"have no independent existence, being instead made fresh "
-				"each time they are used.");
-			Problems::issue_problem_end();
-		}
-
-@ The twilight gathers, but our work is far from done. Recall that we have
-accumulated compilation requests for "To..." phrases, but haven't actually
-acted on them yet.
-
-We have to do this in quite an open-ended way, because compiling one phrase
-can easily generate fresh requests for others. For instance, suppose we have
-the definition "To expose (X - a value)" in play, and suppose that when
-compiling the phrase "To advertise", Inform runs into the line "expose the
-hoarding text". This causes it to issue a compilation request for "To expose
-(X - a text)". Perhaps we've compiled such a form already, but perhaps we
-haven't. Compilation therefore goes on until all requests have been dealt
-with.
-
-Compiling phrases also produces the need for other pieces of code to be
-generated -- for example, suppose our phrase being compiled, "To advertise",
-includes the text:
-
->> let Z be "Two for the price of one! Just [expose price]!";
-
-We are going to need to compile "Two for the price of one! Just [expose price]!"
-later on, in its own text substitution routine; but notice that it contains
-the need for "To expose (X - a number)", and that will generate a further
-phrase request.
-
-Because of this and similar problems, it's impossible to compile all the
-phrases alone: we must compile phrases, then things arising from them, then
-phrases arising from those, then things arising from the phrases arising
-from those, and so on, until we're done. The process is therefore structured
-as a set of "coroutines" which each carry out as much as they can and then
-hand over to the others to generate more work.
-
-
-=
-void ToPhraseFamily::compile_as_needed(imperative_defn_family *self,
-	int *total_phrases_compiled, int total_phrases_to_compile) {
-	int repeat = TRUE;
-	while (repeat) {
-		repeat = FALSE;
-		if (PhraseRequests::compilation_coroutine(
-			total_phrases_compiled, total_phrases_to_compile) > 0)
-			repeat = TRUE;
-		if (ListTogether::compilation_coroutine() > 0)
-			repeat = TRUE;
-		#ifdef IF_MODULE
-		if (LoopingOverScope::compilation_coroutine() > 0)
-			repeat = TRUE;
-		#endif
-		if (Strings::TextSubstitutions::compilation_coroutine(FALSE) > 0)
-			repeat = TRUE;
-		if (Propositions::Deferred::compilation_coroutine() > 0)
-			repeat = TRUE;
-	}
 }
 
 @ A few "To..." phrases have names, and can therefore be used as values in their

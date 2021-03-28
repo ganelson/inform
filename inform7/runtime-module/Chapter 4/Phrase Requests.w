@@ -55,7 +55,7 @@ to_phrase_request *PhraseRequests::make_request(phrase *ph, kind *K,
 	compilation_unit *cm = CompilationUnits::current();
 	if (ph->from->at) cm = CompilationUnits::find(ph->from->at);
 
-	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->requests_package);
+	package_request *P = Hierarchy::package_within(REQUESTS_HAP, ph->compilation_data.requests_package);
 	req->req_iname = Hierarchy::make_localised_iname_in(PHRASE_FN_HL, P, cm);
 
 	for (int i=0; i<27; i++) req->kind_variables_interpretation[i] = NULL;
@@ -127,27 +127,6 @@ inter_name *PhraseRequests::make_iname(phrase *ph, kind *req_kind) {
 	return Routines::Compile::iname(ph, req);
 }
 
-@ The following coroutine compiles any pending requests for phrase compilation
-since the last time it was called.
-
-=
-to_phrase_request *latest_request_granted = NULL;
-int PhraseRequests::compilation_coroutine(int *i, int max_i) {
-	int N = 0;
-	while (TRUE) {
-		to_phrase_request *req;
-		if (latest_request_granted == NULL) req = FIRST_OBJECT(to_phrase_request);
-		else req = NEXT_OBJECT(latest_request_granted, to_phrase_request);
-		if (req == NULL) break;
-
-		latest_request_granted = req;
-		Phrases::compile(latest_request_granted->requested_phrase,
-			i, max_i, NULL, latest_request_granted, NULL);
-		N++;
-	}
-	return N;
-}
-
 @ In the course of doing this, |Phrases::compile| calls us back to ask us
 to write a comment about this:
 
@@ -174,4 +153,97 @@ kind *PhraseRequests::kind_of_request(to_phrase_request *req) {
 kind **PhraseRequests::kind_variables_for_request(to_phrase_request *req) {
 	if (req == NULL) internal_error("null request");
 	return req->kind_variables_interpretation;
+}
+
+@ The twilight gathers, but our work is far from done. Recall that we have
+accumulated compilation requests for "To..." phrases, but haven't actually
+acted on them yet.
+
+We have to do this in quite an open-ended way, because compiling one phrase
+can easily generate fresh requests for others. For instance, suppose we have
+the definition "To expose (X - a value)" in play, and suppose that when
+compiling the phrase "To advertise", Inform runs into the line "expose the
+hoarding text". This causes it to issue a compilation request for "To expose
+(X - a text)". Perhaps we've compiled such a form already, but perhaps we
+haven't. Compilation therefore goes on until all requests have been dealt
+with.
+
+Compiling phrases also produces the need for other pieces of code to be
+generated -- for example, suppose our phrase being compiled, "To advertise",
+includes the text:
+
+>> let Z be "Two for the price of one! Just [expose price]!";
+
+We are going to need to compile "Two for the price of one! Just [expose price]!"
+later on, in its own text substitution routine; but notice that it contains
+the need for "To expose (X - a number)", and that will generate a further
+phrase request.
+
+Because of this and similar problems, it's impossible to compile all the
+phrases alone: we must compile phrases, then things arising from them, then
+phrases arising from those, then things arising from the phrases arising
+from those, and so on, until we're done. The process is therefore structured
+as a set of "coroutines" which each carry out as much as they can and then
+hand over to the others to generate more work.
+
+=
+void PhraseRequests::compile_as_needed(void) {
+	int repeat = TRUE;
+	while (repeat) {
+		repeat = FALSE;
+		if (PhraseRequests::compilation_coroutine(
+			&total_phrases_compiled, total_phrases_to_compile) > 0)
+			repeat = TRUE;
+		if (ListTogether::compilation_coroutine() > 0)
+			repeat = TRUE;
+		#ifdef IF_MODULE
+		if (LoopingOverScope::compilation_coroutine() > 0)
+			repeat = TRUE;
+		#endif
+		if (Strings::TextSubstitutions::compilation_coroutine(FALSE) > 0)
+			repeat = TRUE;
+		if (Propositions::Deferred::compilation_coroutine() > 0)
+			repeat = TRUE;
+	}
+}
+
+@ The following coroutine compiles any pending requests for phrase compilation
+since the last time it was called.
+
+=
+to_phrase_request *latest_request_granted = NULL;
+int PhraseRequests::compilation_coroutine(int *i, int max_i) {
+	int N = 0;
+	while (TRUE) {
+		to_phrase_request *req;
+		if (latest_request_granted == NULL) req = FIRST_OBJECT(to_phrase_request);
+		else req = NEXT_OBJECT(latest_request_granted, to_phrase_request);
+		if (req == NULL) break;
+
+		latest_request_granted = req;
+		Phrases::compile(latest_request_granted->requested_phrase,
+			i, max_i, NULL, latest_request_granted, NULL);
+		N++;
+	}
+	return N;
+}
+
+@h Basic mode main.
+
+=
+void PhraseRequests::invoke_to_begin(void) {
+	if (Task::begin_execution_af_to_begin()) {
+		inter_name *iname = Hierarchy::find(SUBMAIN_HL);
+		packaging_state save = Routines::begin(iname);
+		imperative_defn *beginner = ToPhraseFamily::to_begin();
+		if (beginner) {
+			kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
+			inter_name *IS = Routines::Compile::iname(beginner->body_of_defn,
+				PhraseRequests::make_request(beginner->body_of_defn,
+					void_kind, NULL, EMPTY_WORDING));
+			Produce::inv_call_iname(Emit::tree(), IS);
+		}
+		Routines::end(save);
+		Hierarchy::make_available(Emit::tree(), iname);
+	}
 }

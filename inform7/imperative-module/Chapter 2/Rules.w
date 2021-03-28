@@ -219,8 +219,6 @@ kind *Rules::to_kind(rule *R) {
 }
 
 @h Defining rules with imperative I7 code.
-Once a rule has been created, it can be given a definition body in the form
-of a //phrase// as follows:
 
 =
 void Rules::set_imperative_definition(rule *R, imperative_defn *id) {

@@ -36,7 +36,7 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 
 ph_stack_frame *RTRules::stack_frame(rule *R) {
 	if ((R == NULL) || (R->defn_as_I7_source == NULL)) return NULL;
-	return &(R->defn_as_I7_source->body_of_defn->stack_frame);
+	return &(R->defn_as_I7_source->body_of_defn->compilation_data.stack_frame);
 }
 
 void RTRules::prepare_rule(imperative_defn *id, rule *R) {
@@ -44,7 +44,8 @@ void RTRules::prepare_rule(imperative_defn *id, rule *R) {
 	package_request *P = RTRules::package(R);
 	if (Wordings::empty(rfd->constant_name))
 		Hierarchy::markup_wording(P, RULE_NAME_HMD, Node::get_text(id->at));
-	id->body_of_defn->ph_iname = Hierarchy::make_localised_iname_in(RULE_FN_HL, P, id->body_of_defn->owning_module);
+	id->body_of_defn->compilation_data.ph_iname =
+		Hierarchy::make_localised_iname_in(RULE_FN_HL, P, id->body_of_defn->compilation_data.owning_module);
 }
 
 package_request *RTRules::package(rule *R) {

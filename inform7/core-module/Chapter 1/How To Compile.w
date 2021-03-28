@@ -214,13 +214,13 @@ so on. Those absolute basics are made here.
 		-1, debugging, sequence_timer);
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
-	BENCH(Phrases::invoke_to_begin)
-	BENCH(ImperativeDefinitions::compile_as_needed)
+	BENCH(PhraseRequests::invoke_to_begin)
+	BENCH(PhraseRequests::compile_as_needed)
 	BENCH(Strings::compile_responses)
 	BENCH(Lists::check)
 	BENCH(ConstantLists::compile)
 	BENCH(RTRelations::compile_defined_relations)
-	BENCH(ImperativeDefinitions::compile_as_needed)
+	BENCH(PhraseRequests::compile_as_needed)
 	BENCH(Strings::TextSubstitutions::allow_no_further_text_subs)
 
 @<Generate inter, part 4@> =

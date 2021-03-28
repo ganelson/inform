@@ -20,7 +20,7 @@ inter_name *Phrases::Constants::iname(constant_phrase *cphr) {
 	if (cphr->cphr_iname == NULL) {
 		phrase *ph = ToPhraseFamily::body_of_constant(cphr);
 		if (ph == NULL) internal_error("cannot reconstruct phrase from cphr");
-		package_request *P = Hierarchy::package_within(CLOSURES_HAP, ph->requests_package);
+		package_request *P = Hierarchy::package_within(CLOSURES_HAP, ph->compilation_data.requests_package);
 		cphr->cphr_iname = Hierarchy::make_iname_in(CLOSURE_DATA_HL, P);
 	}
 	return cphr->cphr_iname;

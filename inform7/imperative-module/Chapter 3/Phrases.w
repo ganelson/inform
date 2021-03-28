@@ -28,178 +28,53 @@ the sub-structures, and aren't visible here; but they're relevant to the
 code below.
 
 =
-typedef struct phrase {
-	struct imperative_defn *from;
-
+typedef struct ph_compilation_data {
+	int inline_mor; /* one of the |*_MOR| values above */
 	int inline_wn; /* word number of inline I6 definition, or |-1| if not inline */
-	struct inter_schema *inter_head_defn; /* inline definition translated to inter, if possible */
-	struct inter_schema *inter_tail_defn; /* inline definition translated to inter, if possible */
-	int inter_defn_converted; /* has this been tried yet? */
-	int inline_mor; /* manner of return for inline I6 definition, or |UNKNOWN_NT| */
-	struct compilation_unit *owning_module;
-	struct package_request *requests_package;
-
-	struct ph_type_data type_data;
-	struct ph_runtime_context_data runtime_context_data;
-	struct ph_stack_frame stack_frame;
-	struct ph_options_data options_data;
-
-	int at_least_one_compiled_form_needed; /* do we still need to compile this? */
 	int compile_with_run_time_debugging; /* in the RULES command */
+	int at_least_one_compiled_form_needed; /* do we still need to compile this? */
+	struct compilation_unit *owning_module;
+	struct inter_schema *inter_front; /* inline definition translated to inter, if possible */
+	struct inter_schema *inter_back; /* inline definition translated to inter, if possible */
+	int inter_defn_converted; /* has this been tried yet? */
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
+	struct package_request *requests_package;
+	struct ph_stack_frame stack_frame;
+} ph_compilation_data;
 
-	CLASS_DEFINITION
-} phrase;
-
-
-@ The life of a |phrase| structure begins when we look at the parse-tree
-representation of its declaration in the source text.
-
-A phrase is inline if and only if its definition consists of a single
-invocation which is given as verbatim I6.
+@
 
 =
-phrase *Phrases::create_from_preamble(imperative_defn *id) {
-	parse_node *p = id->at;
-	if ((p == NULL) || (Node::get_type(p) != IMPERATIVE_NT))
-		internal_error("a phrase preamble should be at a IMPERATIVE_NT node");
-	int inline_wn = -1; 		/* the word number of an inline I6 definition if any */
-	int mor = DONT_KNOW_MOR;	/* and its manner of return */
-
-	@<Look for an inline definition@>;
-
-	ph_options_data phod;
-	ph_type_data phtd;
-	ph_stack_frame phsf;
-	ph_runtime_context_data phrcd;
-
-	if ((inline_wn >= 0) && (ImperativeDefinitionFamilies::allows_inline(id) == FALSE))
-		@<Inline is for To... phrases only@>;
-
-	@<Construct the PHOD@>;
-	@<Construct the PHTD, find the phrase options, find the documentation reference@>;
-	@<Construct the PHSF, using the PHTD and PHOD@>;
-	@<Construct the PHRCD@>;
-
-	phrase *new_ph;
-	@<Create the phrase structure@>;
-	return new_ph;
+ph_compilation_data Phrases::new_compilation_data(parse_node *p) {
+	ph_compilation_data phcd;
+	phcd.inline_wn = -1;
+	phcd.inter_front = NULL;
+	phcd.inter_back = NULL;
+	phcd.inter_defn_converted = FALSE;
+	phcd.inline_mor = DONT_KNOW_MOR;
+	phcd.ph_iname = NULL;
+	phcd.owning_module = CompilationUnits::find(p);
+	phcd.requests_package = NULL;
+	phcd.at_least_one_compiled_form_needed = TRUE;
+	phcd.compile_with_run_time_debugging = FALSE;
+	phcd.stack_frame = Frames::new();
+	return phcd;
 }
 
-@<Look for an inline definition@> =
-	if ((p->down) && (p->down->down) && (p->down->down->next == NULL))
-		Phrases::parse_possible_inline_defn(
-			Node::get_text(p->down->down), &inline_wn, &mor);
-	if (inline_wn >= 0) {
-		wchar_t *inline_defn = Lexer::word_text(inline_wn);
-		if (Wide::len(inline_defn) >= MAX_INLINE_DEFN_LENGTH)
-			@<Forbid overly long inline definitions@>;
-	}
-
-@<Construct the PHOD@> =
-	phod = Phrases::Options::new(EMPTY_WORDING);
-
-@<Construct the PHTD, find the phrase options, find the documentation reference@> =
-	phtd = Phrases::TypeData::new();
-	if (inline_wn >= 0) Phrases::TypeData::make_inline(&phtd);
-
-@ The stack frame needs to know the kind of this phrase -- something like
-= (text as Inform 6)
-	phrase number -> text
-=
--- in order to work out what happens when values are decided by it later on.
-We also tell the stack frame if there are phrase options, because then a
-special parameter called |{phrase options}| is available when expanding
-inline definitions.
-
-@<Construct the PHSF, using the PHTD and PHOD@> =
-	phsf = Frames::new();
-
-@<Construct the PHRCD@> =
-	phrcd = Phrases::Context::new();
-
-@<Create the phrase structure@> =
-	LOGIF(PHRASE_CREATIONS, "Creating phrase: <%W>\n", id->log_text);
-
-	new_ph = CREATE(phrase);
-	new_ph->from = id;
-
-	new_ph->options_data = phod;
-	new_ph->runtime_context_data = phrcd;
-	new_ph->stack_frame = phsf;
-	new_ph->type_data = phtd;
-
-	new_ph->inline_wn = inline_wn;
-	new_ph->inter_head_defn = NULL;
-	new_ph->inter_tail_defn = NULL;
-	new_ph->inter_defn_converted = FALSE;
-	new_ph->inline_mor = mor;
-	new_ph->ph_iname = NULL;
-	new_ph->owning_module = CompilationUnits::find(current_sentence);
-	new_ph->requests_package = NULL;
-	if (inline_wn >= 0) {
-		new_ph->at_least_one_compiled_form_needed = FALSE;
-	} else {
-		new_ph->at_least_one_compiled_form_needed = TRUE;
-	}
-	new_ph->compile_with_run_time_debugging = FALSE;
-
-@ That just leaves two problem messages about inline definitions:
-
-@<Forbid overly long inline definitions@> =
-	LOG("Inline definition: <%s>\n", inline_defn);
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InlineTooLong),
-		"the inline definition of this 'to...' phrase is too long",
-		"using a quantity of Inform 6 code which exceeds the fairly small limit "
-		"allowed. You will need either to write the phrase definition in Inform 7, "
-		"or to call an I6 routine which you define elsewhere with an 'Include ...'.");
-	inline_defn[MAX_INLINE_DEFN_LENGTH-1] = 0;
-
-@<Inline is for To... phrases only@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_InlineRule),
-		"only 'to...' phrases can be given inline Inform 6 definitions",
-		"and in particular rules and adjective definitions can't.");
-
-@ Inline definitions open with a raw Inform 6 inclusion. The lexer processes
-those as two words: first |(-|, which serves as a marker, and then the raw
-text of the inclusion treated as a single "word".
-
-Some inline definitions also mark themselves to be included only in To phrases
-of the right sort: it makes no sense to respond "yes" to a phrase "To decide
-what number is...", for instance.
-
-=
-<inline-phrase-definition> ::=
-	(- ### - in to only | 			 ==> { DECIDES_NOTHING_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
-	(- ### - in to decide if only |  ==> { DECIDES_CONDITION_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
-	(- ### - in to decide only |     ==> { DECIDES_VALUE_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
-	(- ### |                         ==> { DONT_KNOW_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }
-	(- ### ...                       ==> { DONT_KNOW_MOR, -, <<inlinecode>> = Wordings::first_wn(WR[1]) }; @<Issue PM_TailAfterInline problem@>
-
-@<Issue PM_TailAfterInline problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TailAfterInline),
-		"some unexpected text appears after the tail of an inline definition",
-		"placed within '(-' and '-)' markers to indicate that it is written in "
-		"Inform 6. Here, there seems to be something extra after the '-)'.");
-	==> { DONT_KNOW_MOR, - };
-
-@ And this is used when the preamble is first looked at:
-
-=
-void Phrases::parse_possible_inline_defn(wording W, int *wn, int *mor) {
-	LOGIF(MATCHING, "form of inline: %W\n", W);
-	*wn = -1;
-	if (<inline-phrase-definition>(W)) { *wn = <<inlinecode>>; *mor = <<r>>; }
+void Phrases::make_inline(phrase *ph, int inline_wn, int mor) {
+	ph->compilation_data.inline_wn = inline_wn;
+	ph->compilation_data.inline_mor = mor;
+	ph->compilation_data.at_least_one_compiled_form_needed = FALSE;
 }
 
 @
 
 =
 void Phrases::prepare_stack_frame(phrase *body) {
-	Phrases::TypeData::into_stack_frame(&(body->stack_frame), &(body->type_data),
+	Phrases::TypeData::into_stack_frame(&(body->compilation_data.stack_frame), &(body->type_data),
 		Phrases::TypeData::kind(&(body->type_data)), TRUE);
 	if (Phrases::Options::allows_options(&(body->options_data)))
-		LocalVariables::options_parameter_is_needed(&(body->stack_frame));
+		LocalVariables::options_parameter_is_needed(&(body->compilation_data.stack_frame));
 }
 
 @h Miscellaneous.
@@ -226,42 +101,42 @@ void Phrases::write_HTML_representation(OUTPUT_STREAM, phrase *ph, int format) {
 
 =
 int Phrases::compiled_inline(phrase *ph) {
-	if (ph->inline_wn < 0) return FALSE;
+	if (ph->compilation_data.inline_wn < 0) return FALSE;
 	return TRUE;
 }
 
 wchar_t *Phrases::get_inline_definition(phrase *ph) {
-	if (ph->inline_wn < 0)
+	if (ph->compilation_data.inline_wn < 0)
 		internal_error("tried to access inline definition of non-inline phrase");
-	return Lexer::word_text(ph->inline_wn);
+	return Lexer::word_text(ph->compilation_data.inline_wn);
 }
 
 inter_schema *Phrases::get_inter_head(phrase *ph) {
-	if (ph->inter_defn_converted == FALSE) {
-		if (ph->inline_wn >= 0) {
-			InterSchemas::from_inline_phrase_definition(Phrases::get_inline_definition(ph), &(ph->inter_head_defn), &(ph->inter_tail_defn));
+	if (ph->compilation_data.inter_defn_converted == FALSE) {
+		if (ph->compilation_data.inline_wn >= 0) {
+			InterSchemas::from_inline_phrase_definition(Phrases::get_inline_definition(ph), &(ph->compilation_data.inter_front), &(ph->compilation_data.inter_back));
 		}
-		ph->inter_defn_converted = TRUE;
+		ph->compilation_data.inter_defn_converted = TRUE;
 	}
-	return ph->inter_head_defn;
+	return ph->compilation_data.inter_front;
 }
 
 inter_schema *Phrases::get_inter_tail(phrase *ph) {
-	if (ph->inter_defn_converted == FALSE) {
-		if (ph->inline_wn >= 0) {
-			InterSchemas::from_inline_phrase_definition(Phrases::get_inline_definition(ph), &(ph->inter_head_defn), &(ph->inter_tail_defn));
+	if (ph->compilation_data.inter_defn_converted == FALSE) {
+		if (ph->compilation_data.inline_wn >= 0) {
+			InterSchemas::from_inline_phrase_definition(Phrases::get_inline_definition(ph), &(ph->compilation_data.inter_front), &(ph->compilation_data.inter_back));
 		}
-		ph->inter_defn_converted = TRUE;
+		ph->compilation_data.inter_defn_converted = TRUE;
 	}
-	return ph->inter_tail_defn;
+	return ph->compilation_data.inter_back;
 }
 
 inter_name *Phrases::iname(phrase *ph) {
-	if (ph->ph_iname == NULL) {
-		package_request *PR = Hierarchy::package(ph->owning_module, ADJECTIVE_PHRASES_HAP);
-		ph->ph_iname = Hierarchy::make_iname_in(DEFINITION_FN_HL, PR);
+	if (ph->compilation_data.ph_iname == NULL) {
+		package_request *PR = Hierarchy::package(ph->compilation_data.owning_module, ADJECTIVE_PHRASES_HAP);
+		ph->compilation_data.ph_iname = Hierarchy::make_iname_in(DEFINITION_FN_HL, PR);
 	}
-	return ph->ph_iname;
+	return ph->compilation_data.ph_iname;
 }
 
 parse_node *Phrases::declaration_node(phrase *ph) {
@@ -277,35 +152,12 @@ response to "requests". All other phrases are compiled just once.
 =
 void Phrases::compile(phrase *ph, int *i, int max_i,
 	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
-	if ((req) || (ph->at_least_one_compiled_form_needed)) {
+	if ((req) || (ph->compilation_data.at_least_one_compiled_form_needed)) {
 		Routines::Compile::routine(ph, legible, req, R);
-		@<Move along the progress bar if it's this phrase's first compilation@>;
-	}
-}
-
-@<Move along the progress bar if it's this phrase's first compilation@> =
-	if (ph->at_least_one_compiled_form_needed) {
-		ph->at_least_one_compiled_form_needed = FALSE;
-		(*i)++;
-		ProgressBar::update(4, ((float) (*i))/((float) max_i));
-	}
-
-@h Basic mode main.
-
-=
-void Phrases::invoke_to_begin(void) {
-	if (Task::begin_execution_af_to_begin()) {
-		inter_name *iname = Hierarchy::find(SUBMAIN_HL);
-		packaging_state save = Routines::begin(iname);
-		imperative_defn *beginner = ToPhraseFamily::to_begin();
-		if (beginner) {
-			kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
-			inter_name *IS = Routines::Compile::iname(beginner->body_of_defn,
-				PhraseRequests::make_request(beginner->body_of_defn,
-					void_kind, NULL, EMPTY_WORDING));
-			Produce::inv_call_iname(Emit::tree(), IS);
+		if (ph->compilation_data.at_least_one_compiled_form_needed) {
+			ph->compilation_data.at_least_one_compiled_form_needed = FALSE;
+			(*i)++;
+			ProgressBar::update(4, ((float) (*i))/((float) max_i));
 		}
-		Routines::end(save);
-		Hierarchy::make_available(Emit::tree(), iname);
 	}
 }

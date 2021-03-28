@@ -6,7 +6,7 @@ To compile the bones of functions, and their local variable declarations.
 
 =
 void Routines::prepare_for_requests(phrase *ph) {
-	ph->requests_package = Hierarchy::package(ph->owning_module, PHRASES_HAP);
+	ph->compilation_data.requests_package = Hierarchy::package(ph->compilation_data.owning_module, PHRASES_HAP);
 }
 
 @ The code following is used throughout Inform, whenever we want to compile

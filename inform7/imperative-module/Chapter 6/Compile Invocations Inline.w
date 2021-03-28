@@ -60,7 +60,7 @@ int Invocations::Inline::csi_inline_outer(value_holster *VH,
 	if (Phrases::TypeData::block_follows(ph)) @<Open a code block@>
 	else @<Release any variables created inline@>;
 
-	return ph->inline_mor;
+	return ph->compilation_data.inline_mor;
 }
 
 @ Inline invocations, unlike invocations by function call, are allowed to
@@ -203,7 +203,7 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <name-local-to-inline-stack-frame> internal {
-	local_variable *lvar = LocalVariables::parse(&(ph_being_parsed->stack_frame), W);
+	local_variable *lvar = LocalVariables::parse(&(ph_being_parsed->compilation_data.stack_frame), W);
 	if (lvar) {
 		==> { -, lvar };
 		return TRUE;
@@ -1569,7 +1569,7 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 		lvar = my_vars[Str::get_at(operand, 0) - '0'];
 	else {
 		wording LW = Feeds::feed_text(operand);
-		lvar = LocalVariables::parse(&(ph->stack_frame), LW);
+		lvar = LocalVariables::parse(&(ph->compilation_data.stack_frame), LW);
 		if (lvar) {
 			int tok = LocalVariables::get_parameter_number(lvar);
 			if (tok >= 0) return tokens->args[tok];

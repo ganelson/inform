@@ -319,7 +319,7 @@ void Phrases::Context::ensure_avl(rule *R) {
 			parse_node *save_cs = current_sentence;
 			current_sentence = id->at;
 
-			ph_stack_frame *phsf = &(ph->stack_frame);
+			ph_stack_frame *phsf = &(ph->compilation_data.stack_frame);
 			Frames::make_current(phsf);
 
 			Frames::set_stvol(phsf, R->variables_visible_in_definition);
@@ -364,7 +364,7 @@ int Phrases::Context::compile_test_head(phrase *ph, rule *R) {
 	if (Wordings::nonempty(phrcd->activity_context))
 		@<Compile an activity or explicit condition test head@>;
 
-	if ((tests > 0) || (ph->compile_with_run_time_debugging)) {
+	if ((tests > 0) || (ph->compilation_data.compile_with_run_time_debugging)) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_number, Hierarchy::find(DEBUG_RULES_HL));

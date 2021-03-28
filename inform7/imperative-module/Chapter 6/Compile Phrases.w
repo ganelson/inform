@@ -36,7 +36,7 @@ void Routines::Compile::routine(phrase *ph,
 
 	@<Compile some commentary about the routine to follow@>;
 
-	packaging_state save = Routines::begin_framed(Routines::Compile::iname(ph, req), &(ph->stack_frame));
+	packaging_state save = Routines::begin_framed(Routines::Compile::iname(ph, req), &(ph->compilation_data.stack_frame));
 
 	@<Compile the body of the routine@>;
 
@@ -52,7 +52,7 @@ void Routines::Compile::routine(phrase *ph,
 	ImperativeDefinitions::write_comment_describing(ph->from);
 
 @<Set up the stack frame for this compilation request@> =
-	ph_stack_frame *phsf = &(ph->stack_frame);
+	ph_stack_frame *phsf = &(ph->compilation_data.stack_frame);
 	ph_type_data *phtd = &(ph->type_data);
 	Frames::make_current(phsf);
 

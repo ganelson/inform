@@ -351,7 +351,7 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	rfd->defines = R;
 //	if (rfd->not_in_rulebook == FALSE) Rules::request_automatic_placement(R);
 
-	id->body_of_defn->compile_with_run_time_debugging = TRUE;
+	id->body_of_defn->compilation_data.compile_with_run_time_debugging = TRUE;
 	Phrases::TypeData::set_mor(&(id->body_of_defn->type_data),
 		DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
 }
