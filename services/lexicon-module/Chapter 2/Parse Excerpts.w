@@ -317,7 +317,7 @@ though it can be any type of phrase.
 @<Look through to see if there are phrase options at the end@> =
 	#ifdef CORE_MODULE
 	id_body *idb = ToPhraseFamily::meaning_as_phrase(Node::get_meaning(p));
-	if (ToPhraseFamily::allows_options(idb)) {
+	if (PhraseOptions::allows_options(idb)) {
 		LOGIF(EXCERPT_PARSING, "Looking for phrase options\n");
 		for (bl=0, scan_pos=Wordings::first_wn(W)+1;
 			scan_pos<Wordings::last_wn(W); scan_pos++) {

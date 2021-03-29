@@ -42,6 +42,8 @@ typedef struct id_type_data {
 	int manner_of_return; /* one of the |*_MOR| values */
 	struct kind *return_kind; /* |NULL| except in the |DECIDES_VALUE_MOR| case */
 
+	struct id_options_data options_data;
+
 	struct say_details as_say; /* used only for "say" phrases, that is, text substitutions */
 	struct inline_details as_inline; /* side effects for phrases like C keywords */
 
@@ -59,6 +61,7 @@ id_type_data IDTypeData::new(void) {
 	idtd.as_say = IDTypeData::new_say_details();
 	idtd.as_inline = IDTypeData::new_inline_details();
 	idtd.now_deprecated = FALSE;
+	idtd.options_data = PhraseOptions::new(EMPTY_WORDING);
 	return idtd;
 }
 

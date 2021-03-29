@@ -72,14 +72,14 @@ void Routines::Compile::routine(id_body *idb,
 
 @<Compile the body of the routine@> =
 	current_sentence = code_at;
-	if (Phrases::Context::compile_test_head(idb, R) == FALSE) {
+	if (RTRules::compile_test_head(idb, R) == FALSE) {
 		if (code_at) {
 			VerifyTree::verify_structure_from(code_at);
 			Routines::Compile::code_block_outer(1, code_at->down);
 			VerifyTree::verify_structure_from(code_at);
 		}
 		current_sentence = code_at;
-		Phrases::Context::compile_test_tail(idb, R);
+		RTRules::compile_test_tail(idb, R);
 
 		@<Compile a terminal return statement@>;
 	}

@@ -19,7 +19,7 @@ back. The IDTD we write to is factory-fresh except that it has already been
 adjusted for an inline definition (if that's the kind of definition this is).
 
 =
-void ParsingIDTypeData::parse(id_type_data *idtd, wording XW, wording *OW) {
+void ParsingIDTypeData::parse(id_type_data *idtd, wording XW) {
 	int say_flag = FALSE; /* is this going to be a "say" phrase? */
 
 	if (Wordings::nonempty(XW))
@@ -29,6 +29,7 @@ void ParsingIDTypeData::parse(id_type_data *idtd, wording XW, wording *OW) {
 	if (Wordings::nonempty(XW))
 		XW = ParsingIDTypeData::phtd_parse_doodads(idtd, XW, &say_flag); /* and doodads from the back */
 
+	wording OW = EMPTY_WORDING; /* the options wording */
 	int cw = -1; /* word number of first comma */
 	@<Find the first comma outside of parentheses, if any exists@>;
 	if (cw >= 0) {
@@ -36,12 +37,13 @@ void ParsingIDTypeData::parse(id_type_data *idtd, wording XW, wording *OW) {
 		@<Does this comma presage phrase options?@>;
 		if (comma_presages_options) {
 			if (say_flag) @<Issue a problem: say phrases aren't allowed options@>;
-			*OW = Wordings::from(XW, cw + 1);
+			OW = Wordings::from(XW, cw + 1);
 			XW = Wordings::up_to(XW, cw - 1); /* trim the preamble range to to the text before the comma */
 		}
 	}
 	idtd->registration_text = XW;
 	ParsingIDTypeData::phtd_main_prototype(idtd);
+	PhraseOptions::parse_declared_options(&(idtd->options_data), OW);
 }
 
 @<Find the first comma outside of parentheses, if any exists@> =

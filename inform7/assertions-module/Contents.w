@@ -56,6 +56,7 @@ Chapter 5: Imperative Code
 	To Phrase Family
 	Phrase Type Data
 	Parsing Type Data
+	Phrase Options
 	Rule Family
 
 Chapter 6: Other Gadgets

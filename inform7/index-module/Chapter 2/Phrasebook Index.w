@@ -250,7 +250,7 @@ void Phrases::Index::write_reveal_box(OUTPUT_STREAM, id_type_data *idtd, id_body
 	HTML_OPEN("p");
 	@<Present a paste button containing the text of the phrase@>;
 	Phrases::Index::index_type_data(OUT, idtd, idb);
-	Phrases::Index::index_phrase_options(OUT, &(idb->options_data));
+	Phrases::Index::index_phrase_options(OUT, &(idb->type_data.options_data));
 	@<Quote from and reference to the documentation, where possible@>;
 	@<Present the equation form of the phrase, if it has one@>;
 	@<Present the name of the phrase regarded as a value, if it has one@>;

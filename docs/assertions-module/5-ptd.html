@@ -121,13 +121,15 @@ parts in brackets.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">manner_of_return</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">*_MOR</span></span><span class="comment-syntax"> values</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">return_kind</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">NULL</span></span><span class="comment-syntax"> except in the </span><span class="extract"><span class="extract-syntax">DECIDES_VALUE_MOR</span></span><span class="comment-syntax"> case</span>
 
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">id_options_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">options_data</span><span class="plain-syntax">;</span>
+
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">say_details</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_say</span><span class="plain-syntax">; </span><span class="comment-syntax"> used only for "say" phrases, that is, text substitutions</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inline_details</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_inline</span><span class="plain-syntax">; </span><span class="comment-syntax"> side effects for phrases like C keywords</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">now_deprecated</span><span class="plain-syntax">; </span><span class="comment-syntax"> is this a phrase likely to be withdrawn in future?</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">id_type_data</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure id_type_data is accessed in 5/ptd2 and here.</li></ul>
+<ul class="endnotetexts"><li>The structure id_type_data is accessed in 5/ptd2, 5/po and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -141,6 +143,7 @@ parts in brackets.
 <span class="plain-syntax">    </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">.</span><span class="element-syntax">as_say</span><span class="plain-syntax"> = </span><a href="5-ptd.html#SP19" class="function-link"><span class="function-syntax">IDTypeData::new_say_details</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">.</span><span class="element-syntax">as_inline</span><span class="plain-syntax"> = </span><a href="5-ptd.html#SP20" class="function-link"><span class="function-syntax">IDTypeData::new_inline_details</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">.</span><span class="element-syntax">now_deprecated</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">.</span><span class="element-syntax">options_data</span><span class="plain-syntax"> = </span><a href="5-po.html#SP2" class="function-link"><span class="function-syntax">PhraseOptions::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">idtd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -1102,7 +1105,7 @@ match is shown.
 
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="5-tpf.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-id.html">id</a></li><li class="progresssection"><a href="5-idf.html">idf</a></li><li class="progresssection"><a href="5-adf.html">adf</a></li><li class="progresssection"><a href="5-tpf.html">tpf</a></li><li class="progresscurrent">ptd</li><li class="progresssection"><a href="5-ptd2.html">ptd2</a></li><li class="progresssection"><a href="5-rf.html">rf</a></li><li class="progresschapter"><a href="6-tc.html">6</a></li><li class="progresschapter"><a href="7-kpr.html">7</a></li><li class="progressnext"><a href="5-ptd2.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="5-tpf.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-id.html">id</a></li><li class="progresssection"><a href="5-idf.html">idf</a></li><li class="progresssection"><a href="5-adf.html">adf</a></li><li class="progresssection"><a href="5-tpf.html">tpf</a></li><li class="progresscurrent">ptd</li><li class="progresssection"><a href="5-ptd2.html">ptd2</a></li><li class="progresssection"><a href="5-po.html">po</a></li><li class="progresssection"><a href="5-rf.html">rf</a></li><li class="progresschapter"><a href="6-tc.html">6</a></li><li class="progresschapter"><a href="7-kpr.html">7</a></li><li class="progressnext"><a href="5-ptd2.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

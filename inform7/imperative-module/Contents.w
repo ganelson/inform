@@ -27,7 +27,6 @@ premisses worked out, and are then collected together into rulebooks, before
 being compiled as a great mass of Inform 6 routines and arrays."
 	Introduction to Phrases
 	Phrase Runtime Context Data
-	Phrase Options
 
 Chapter 4: Compilation Context
 "Preparing a context at run-time in which code can be executed."

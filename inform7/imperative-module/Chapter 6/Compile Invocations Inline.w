@@ -231,7 +231,7 @@ charlatans" and what they "deserve". I'm a better person now.
 @ Acting on that:
 
 @<Expand a bracing containing natural language text@> =
-	phod_being_parsed = &(idb->options_data);
+	phod_being_parsed = &(idb->type_data.options_data);
 	idb_being_parsed = idb;
 	<inline-substitution>(BRW);
 	int current_opts = Invocations::get_phrase_options_bitmap(inv);

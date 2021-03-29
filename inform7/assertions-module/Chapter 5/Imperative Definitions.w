@@ -167,7 +167,6 @@ Inform 7 source text written underneath the heading.
 typedef struct id_body {
 	struct imperative_defn *head_of_defn;
 	struct id_type_data type_data;
-	struct id_options_data options_data;
 	struct id_runtime_context_data runtime_context_data;
 	struct id_compilation_data compilation_data;
 	CLASS_DEFINITION
@@ -177,7 +176,6 @@ id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
 	LOGIF(PHRASE_CREATIONS, "Creating body: <%W>\n", id->log_text);
 	id_body *body = CREATE(id_body);
 	body->head_of_defn = id;
-	body->options_data = Phrases::Options::new(EMPTY_WORDING);
 	body->runtime_context_data = Phrases::Context::new();
 	body->type_data = IDTypeData::new();
 	body->compilation_data = IDCompilation::new_data(id->at);

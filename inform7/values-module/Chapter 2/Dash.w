@@ -1663,7 +1663,7 @@ options are properly used.
 @<Step (4I.f) Check any phrase options@> =
 	LOG_DASH("(4I.f)");
 	if ((outcome != NEVER_MATCH) && (Node::get_phrase_options_invoked(inv))) {
-		int cso = Phrases::Options::parse_invoked_options(
+		int cso = PhraseOptions::parse_invoked_options(
 			inv, (TEST_DASH_MODE(ISSUE_PROBLEMS_DMODE))?FALSE:TRUE);
 		if (cso == FALSE) outcome = NEVER_MATCH;
 	}

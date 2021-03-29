@@ -57,9 +57,10 @@ void IDCompilation::make_inline(id_body *idb, int inline_wn, int mor) {
 
 =
 void IDCompilation::prepare_stack_frame(id_body *body) {
-	IDCompilation::initialise_stack_frame_from_type_data(&(body->compilation_data.stack_frame), &(body->type_data),
+	IDCompilation::initialise_stack_frame_from_type_data(
+		&(body->compilation_data.stack_frame), &(body->type_data),
 		IDTypeData::kind(&(body->type_data)), TRUE);
-	if (Phrases::Options::allows_options(&(body->options_data)))
+	if (PhraseOptions::allows_options(body))
 		LocalVariables::options_parameter_is_needed(&(body->compilation_data.stack_frame));
 }
 

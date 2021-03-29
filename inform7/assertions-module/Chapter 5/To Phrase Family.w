@@ -193,10 +193,8 @@ void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *i
 	id_body *body = id->body_of_defn;
 	Routines::prepare_for_requests(body);
 
-	wording XW = ToPhraseFamily::get_prototype_text(id);
-	wording OW = EMPTY_WORDING;
-	ParsingIDTypeData::parse(&(id->body_of_defn->type_data), XW, &OW);
-	Phrases::Options::parse_declared_options(&(id->body_of_defn->options_data), OW);
+	ParsingIDTypeData::parse(&(id->body_of_defn->type_data),
+		ToPhraseFamily::get_prototype_text(id));
 
 	imperative_defn *previous_id = NULL;
 	imperative_defn *current_id = first_in_logical_order;
@@ -504,9 +502,8 @@ kind *ToPhraseFamily::kind(constant_phrase *cphr) {
 	if (cphr == NULL) return NULL;
 	if (global_pass_state.pass < 2) return Kinds::binary_con(CON_phrase, K_value, K_value);
 	if (cphr->cphr_kind == NULL) {
-		wording OW = EMPTY_WORDING;
 		id_type_data idtd = IDTypeData::new();
-		ParsingIDTypeData::parse(&idtd, cphr->associated_preamble_text, &OW);
+		ParsingIDTypeData::parse(&idtd, cphr->associated_preamble_text);
 		cphr->cphr_kind = IDTypeData::kind(&idtd);
 	}
 	return cphr->cphr_kind;
@@ -563,17 +560,4 @@ imperative_defn *ToPhraseFamily::to_begin(void) {
 			"and in Basic mode, Inform expects to see exactly one of "
 			"these, specifying where execution should begin.");
 	return beginner;
-}
-
-@h Phrase option parsing.
-These indirections are provided so that the implementation of phrase options
-is confined to the current Chapter.
-
-=
-int ToPhraseFamily::allows_options(id_body *idb) {
-	return Phrases::Options::allows_options(&(idb->options_data));
-}
-
-int ToPhraseFamily::parse_phrase_option_used(id_body *idb, wording W) {
-	return Phrases::Options::parse(&(idb->options_data), W);
 }

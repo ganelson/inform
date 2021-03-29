@@ -45,8 +45,8 @@ void ActionsPlugin::start(void) {
 	PluginManager::plug(RULE_PLACEMENT_NOTIFY_PLUG, Actions::rule_placement_notify);
 	PluginManager::plug(PRODUCTION_LINE_PLUG, ActionsPlugin::production_line);
 	PluginManager::plug(COMPLETE_MODEL_PLUG, ActionsPlugin::complete_model);
-	PluginManager::plug(COMPILE_TEST_HEAD_PLUG, Phrases::Context::actions_compile_test_head);
-	PluginManager::plug(COMPILE_TEST_TAIL_PLUG, Phrases::Context::actions_compile_test_tail);
+	PluginManager::plug(COMPILE_TEST_HEAD_PLUG, RTRules::actions_compile_test_head);
+	PluginManager::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);
