@@ -180,25 +180,37 @@ void Specifications::write_out_in_English(OUTPUT_STREAM, parse_node *spec) {
 }
 
 @h Sorting.
-Some specifications are used to describe the applicability of rules and phrases,
-and since those must be sorted in order of how specific they are, we will need
-a way of telling when one specification is more specific than another. For
-instance, "Will Parker in the vineyard" beats "Will Parker" beats
+Some specifications are used to describe the applicability of rules and
+phrases, and since those must be sorted in order of how specific they are, we
+will need a way of telling when one specification is more specific than
+another. For instance, "Will Parker in the vineyard" beats "Will Parker" beats
 "a man" beats "a person" beats "an object" beats "a value".
 
-The following is one of Inform's standardised comparison routines, which
+A sequence of "laws" is used to decide this -- or at least, that's how we
+describe the outcome to the Index of a project. We simply remember the most
+recent law applied, because then when a decision finishes, it must have been
+the decisive one:
+
+=
+int cco = 0; /* comparison count: used to make the debugging log vaguely searchable */
+text_stream *c_s_stage_law = NULL; /* name of the law being applied, which caused this to be called */
+void Specifications::law(text_stream *L) {
+	c_s_stage_law = L;
+}
+text_stream *Specifications::law_applied(void) {
+	return c_s_stage_law;
+}
+
+@ The following is one of Inform's standardised comparison routines, which
 takes a pair of objects A, B and returns 1 if A makes a more specific
 description than B, 0 if they seem equally specific, or $-1$ if B makes a
 more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 
 =
-int cco = 0; /* comparison count: used to make the debugging log vaguely searchable */
-text_stream *c_s_stage_law = NULL; /* name of the law being applied, which caused this to be called */
-
 int Specifications::compare_specificity(parse_node *spec1, parse_node *spec2, int *wont_mix) {
 	LOGIF(SPECIFICITIES, "Law %S (test %d): comparing $P with $P\n",
-		c_s_stage_law, cco++, spec1, spec2);
+		Specifications::law_applied(), cco++, spec1, spec2);
 
 	@<Existence is itself something specific@>;
 

@@ -83,9 +83,14 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b><a href="../assertions-module/index.html" class="internal">assertions</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">activity_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_list_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">adjective_meaning_family_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">applicability_constraint_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">application_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_list_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">by_routine_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">constant_phrase_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">equivalence_bp_data_CLASS</span>
@@ -96,8 +101,14 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">imperative_defn_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">imperative_defn_family_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">implication_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">named_rulebook_outcome_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_option_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">placement_affecting_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">relation_guard_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rule_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">rule_family_data_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_outcome_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">table_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">table_column_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">table_contribution_CLASS</span>
@@ -105,23 +116,34 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">use_option_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity_list</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning_family</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">adjective_meaning</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">applicability_constraint</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">application</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_phrase</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">generalisation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">booking_list</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">booking</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">by_routine_bp_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_phrase</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">equivalence_bp_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_bp_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">generalisation</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6_memory_setting</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">id_body</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">imperative_defn</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">imperative_defn_family</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">imperative_defn</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">implication</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">named_rulebook_outcome</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">phrase_option</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">placement_affecting</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relation_guard</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule_family_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">table</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook_outcome</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">table_column</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">table</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">table_contribution</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">to_family_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">use_option</span><span class="plain-syntax">)</span>
@@ -163,13 +185,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b><a href="../knowledge-module/index.html" class="internal">knowledge</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">activity_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_crossref_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">activity_list_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">applicability_constraint_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">booking_list_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">comparative_bp_data_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">comparative_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">condition_of_subject_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">counting_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">either_or_property_data_CLASS</span>
@@ -178,16 +194,11 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inference_subject_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inference_subject_family_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">measurement_definition_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">named_rulebook_outcome_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">placement_affecting_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_inference_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_permission_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">property_setting_bp_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">relation_inference_data_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rule_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">rulebook_outcome_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">short_name_notice_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_list_CLASS</span>
@@ -196,12 +207,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">value_property_data_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity_crossref</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity_list</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">applicability_constraint</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">booking</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">booking_list</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">comparative_bp_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">condition_of_subject</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">counting_data</span><span class="plain-syntax">)</span>
@@ -211,16 +216,11 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject_family</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">measurement_definition</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">named_rulebook_outcome</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">placement_affecting</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_permission</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_inference_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">property_setting_bp_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relation_inference_data</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook_outcome</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">short_name_notice</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
@@ -237,7 +237,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">past_tense_condition_record_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pcalc_prop_deferral_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ph_stack_frame_box_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">phrase_option_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pointer_allocation_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -247,7 +246,6 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">past_tense_condition_record</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pcalc_prop_deferral</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">ph_stack_frame_box</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">phrase_option</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">pointer_allocation</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><a href="../runtime-module/index.html" class="internal">runtime</a> &mdash;
@@ -297,7 +295,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b><a href="../index-module/index.html" class="internal">index</a> &mdash;
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">command_index_entry_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">activity_crossref_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">command_index_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">connected_submap_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">contents_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">documentation_ref_CLASS</span>
@@ -308,6 +307,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">rubric_holder_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">activity_crossref</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">command_index_entry</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">connected_submap</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">contents_entry</span><span class="plain-syntax">)</span>
@@ -322,6 +322,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">action_name_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">actions_rcd_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">auxiliary_file_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">cached_understanding_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">direction_inference_data_CLASS</span>
@@ -344,6 +345,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">regions_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">release_instructions_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">scene_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">scenes_rcd_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">spatial_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">timed_rules_rfd_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">anl_clause_CLASS</span>
@@ -357,6 +359,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">action_name</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">actions_rcd_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">auxiliary_file</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">cached_understanding</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">direction_inference_data</span><span class="plain-syntax">)</span>
@@ -378,6 +381,7 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">regions_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">release_instructions</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scene</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">scenes_rcd_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">timed_rules_rfd_data</span><span class="plain-syntax">)</span>
 

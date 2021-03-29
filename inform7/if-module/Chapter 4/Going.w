@@ -285,7 +285,7 @@ int GoingPlugin::compare_specificity(action_pattern *ap1, action_pattern *ap2, i
 	int *ignore_in) {
 	*rv = 0;
 
-	c_s_stage_law = I"III.2.4 - Action/Where/Other Optional Clauses";
+	Specifications::law(I"III.2.4 - Action/Where/Other Optional Clauses");
 
 	int rct1 = APClauses::number_with_aspect(ap1, GOING_APCA);
 	int rct2 = APClauses::number_with_aspect(ap2, GOING_APCA);
@@ -298,7 +298,7 @@ int GoingPlugin::compare_specificity(action_pattern *ap1, action_pattern *ap2, i
 	*rv = APClauses::cmp_clause(GOING_BY_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	*rv = APClauses::cmp_clause(GOING_THROUGH_AP_CLAUSE, ap1, ap2); if (*rv) return TRUE;
 	
-	c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
+	Specifications::law(I"III.2.2 - Action/Where/Room Where Action Takes Place");
 
 	rct1 = APClauses::number_with_aspect(ap1, IN_APCA);
 	rct2 = APClauses::number_with_aspect(ap2, IN_APCA);

@@ -18,9 +18,14 @@ DECLARE_CLASS(compile_task_data)
 
 @ //assertions// --
 
+@e activity_CLASS
+@e activity_list_CLASS
 @e adjective_meaning_CLASS
 @e adjective_meaning_family_CLASS
+@e applicability_constraint_CLASS
 @e application_CLASS
+@e booking_CLASS
+@e booking_list_CLASS
 @e by_routine_bp_data_CLASS
 @e constant_phrase_CLASS
 @e equivalence_bp_data_CLASS
@@ -31,8 +36,14 @@ DECLARE_CLASS(compile_task_data)
 @e imperative_defn_CLASS
 @e imperative_defn_family_CLASS
 @e implication_CLASS
+@e named_rulebook_outcome_CLASS
+@e phrase_option_CLASS
+@e placement_affecting_CLASS
 @e relation_guard_CLASS
+@e rule_CLASS
 @e rule_family_data_CLASS
+@e rulebook_CLASS
+@e rulebook_outcome_CLASS
 @e table_CLASS
 @e table_column_CLASS
 @e table_contribution_CLASS
@@ -40,23 +51,34 @@ DECLARE_CLASS(compile_task_data)
 @e use_option_CLASS
 
 =
-DECLARE_CLASS(adjective_meaning)
+DECLARE_CLASS(activity)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
 DECLARE_CLASS(adjective_meaning_family)
+DECLARE_CLASS(adjective_meaning)
+DECLARE_CLASS(applicability_constraint)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(application, 100)
-DECLARE_CLASS(constant_phrase)
-DECLARE_CLASS(generalisation)
+DECLARE_CLASS(booking_list)
+DECLARE_CLASS(booking)
 DECLARE_CLASS(by_routine_bp_data)
+DECLARE_CLASS(constant_phrase)
 DECLARE_CLASS(equivalence_bp_data)
 DECLARE_CLASS(explicit_bp_data)
+DECLARE_CLASS(generalisation)
 DECLARE_CLASS(i6_memory_setting)
 DECLARE_CLASS(id_body)
-DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(imperative_defn_family)
+DECLARE_CLASS(imperative_defn)
 DECLARE_CLASS(implication)
+DECLARE_CLASS(named_rulebook_outcome)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS(relation_guard)
 DECLARE_CLASS(rule_family_data)
-DECLARE_CLASS(table)
+DECLARE_CLASS(rule)
+DECLARE_CLASS(rulebook_outcome)
+DECLARE_CLASS(rulebook)
 DECLARE_CLASS(table_column)
+DECLARE_CLASS(table)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(table_contribution, 100)
 DECLARE_CLASS(to_family_data)
 DECLARE_CLASS(use_option)
@@ -96,12 +118,7 @@ DECLARE_CLASS(text_substitution)
 
 @ //knowledge// --
 
-@e activity_CLASS
-@e activity_crossref_CLASS
-@e activity_list_CLASS
-@e applicability_constraint_CLASS
-@e booking_CLASS
-@e booking_list_CLASS
+
 @e comparative_bp_data_CLASS
 @e condition_of_subject_CLASS
 @e counting_data_CLASS
@@ -111,16 +128,11 @@ DECLARE_CLASS(text_substitution)
 @e inference_subject_CLASS
 @e inference_subject_family_CLASS
 @e measurement_definition_CLASS
-@e named_rulebook_outcome_CLASS
-@e placement_affecting_CLASS
 @e property_CLASS
 @e property_inference_data_CLASS
 @e property_permission_CLASS
 @e property_setting_bp_data_CLASS
 @e relation_inference_data_CLASS
-@e rule_CLASS
-@e rulebook_CLASS
-@e rulebook_outcome_CLASS
 @e short_name_notice_CLASS
 @e stacked_variable_CLASS
 @e stacked_variable_list_CLASS
@@ -129,12 +141,6 @@ DECLARE_CLASS(text_substitution)
 @e value_property_data_CLASS
 
 =
-DECLARE_CLASS(activity)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_list, 1000)
-DECLARE_CLASS(applicability_constraint)
-DECLARE_CLASS(booking)
-DECLARE_CLASS(booking_list)
 DECLARE_CLASS(comparative_bp_data)
 DECLARE_CLASS(condition_of_subject)
 DECLARE_CLASS(counting_data)
@@ -144,16 +150,11 @@ DECLARE_CLASS(inference_family)
 DECLARE_CLASS(inference_subject)
 DECLARE_CLASS(inference_subject_family)
 DECLARE_CLASS(measurement_definition)
-DECLARE_CLASS(named_rulebook_outcome)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(placement_affecting, 100)
 DECLARE_CLASS(property_permission)
 DECLARE_CLASS(property)
 DECLARE_CLASS(property_inference_data)
 DECLARE_CLASS(property_setting_bp_data)
 DECLARE_CLASS(relation_inference_data)
-DECLARE_CLASS(rule)
-DECLARE_CLASS(rulebook)
-DECLARE_CLASS(rulebook_outcome)
 DECLARE_CLASS(short_name_notice)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_list, 100)
@@ -169,7 +170,6 @@ DECLARE_CLASS(value_property_data)
 @e past_tense_condition_record_CLASS
 @e pcalc_prop_deferral_CLASS
 @e ph_stack_frame_box_CLASS
-@e phrase_option_CLASS
 @e pointer_allocation_CLASS
 
 =
@@ -179,7 +179,6 @@ DECLARE_CLASS(past_tense_action_record)
 DECLARE_CLASS(past_tense_condition_record)
 DECLARE_CLASS(pcalc_prop_deferral)
 DECLARE_CLASS(ph_stack_frame_box)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(phrase_option, 100)
 DECLARE_CLASS(pointer_allocation)
 
 @ //runtime// --
@@ -227,6 +226,7 @@ DECLARE_CLASS(to_phrase_request)
 
 @ //index// --
 
+@e activity_crossref_CLASS
 @e command_index_entry_CLASS
 @e connected_submap_CLASS
 @e contents_entry_CLASS
@@ -238,6 +238,7 @@ DECLARE_CLASS(to_phrase_request)
 @e rubric_holder_CLASS
 
 =
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 DECLARE_CLASS(command_index_entry)
 DECLARE_CLASS(connected_submap)
 DECLARE_CLASS(contents_entry)
@@ -251,6 +252,7 @@ DECLARE_CLASS(rubric_holder)
 @ //if// --
 
 @e action_name_CLASS
+@e actions_rcd_data_CLASS
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
 @e direction_inference_data_CLASS
@@ -273,6 +275,7 @@ DECLARE_CLASS(rubric_holder)
 @e regions_data_CLASS
 @e release_instructions_CLASS
 @e scene_CLASS
+@e scenes_rcd_data_CLASS
 @e spatial_data_CLASS
 @e timed_rules_rfd_data_CLASS
 
@@ -287,6 +290,7 @@ DECLARE_CLASS(rubric_holder)
 
 =
 DECLARE_CLASS(action_name)
+DECLARE_CLASS(actions_rcd_data)
 DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(direction_inference_data)
@@ -308,6 +312,7 @@ DECLARE_CLASS(part_of_inference_data)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(scene)
+DECLARE_CLASS(scenes_rcd_data)
 DECLARE_CLASS(spatial_data)
 DECLARE_CLASS(timed_rules_rfd_data)
 

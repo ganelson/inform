@@ -141,10 +141,10 @@ int IXRules::index_booking_list(OUTPUT_STREAM, booking_list *L, rule_context rc,
 		if (id) {
 			id_body *idb = id->body_of_defn;
 			id_runtime_context_data *phrcd = &(idb->runtime_context_data);
-			scene *during_scene = Phrases::Context::get_scene(phrcd);
+			scene *during_scene = Scenes::rcd_scene(phrcd);
 			if ((rc.scene_context) && (during_scene != rc.scene_context)) skip = TRUE;
 			if ((rc.action_context) &&
-				(Phrases::Context::within_action_context(phrcd, rc.action_context) == FALSE))
+				(ActionRules::within_action_context(phrcd, rc.action_context) == FALSE))
 				skip = TRUE;
 		}
 		#endif
@@ -491,7 +491,7 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
 
-	if ((rb) && (Rulebooks::is_empty(rb, Phrases::Context::no_rule_context())))
+	if ((rb) && (Rulebooks::is_empty(rb)))
 		text = "There are no rules in this rulebook.";
 	if (text) {
 		HTML::open_indented_p(OUT, 2, "tight");
@@ -499,7 +499,8 @@ void IXRules::index_rules_box(OUTPUT_STREAM, char *name, wording W, text_stream 
 	} else {
 		if (rb) {
 			int ignore_me = 0;
-			IXRules::index_rulebook(OUT, rb, "", Phrases::Context::no_rule_context(), &ignore_me);
+			IXRules::index_rulebook(OUT, rb, "",
+				IXRules::no_rule_context(), &ignore_me);
 		}
 		if (av) IXActivities::index_details(OUT, av);
 	}
@@ -551,8 +552,9 @@ void IXRules::index_action_rules(OUTPUT_STREAM, action_name *an, rulebook *rb,
 	int t = 0;
 	IXRules::list_suppress_indexed_links();
 	if (code >= 0) t += IXRules::index_rulebook(OUT, Rulebooks::std(code), desc,
-		Phrases::Context::action_context(an), resp_count);
-	if (rb) t += IXRules::index_rulebook(OUT, rb, desc, Phrases::Context::no_rule_context(), resp_count);
+		IXRules::action_context(an), resp_count);
+	if (rb) t += IXRules::index_rulebook(OUT, rb, desc,
+		IXRules::no_rule_context(), resp_count);
 	IXRules::list_resume_indexed_links();
 	if (t > 0) HTML_TAG("br");
 }
@@ -698,3 +700,40 @@ void IXRules::index_timed_rules(OUTPUT_STREAM) {
 			HTML_CLOSE("p");
 		}
 	}
+
+@h Rule contexts.
+These are mainly (only?) used in indexing, as a way to represent the idea of
+being the relevant scene or action for a rule.
+
+=
+typedef struct rule_context {
+	struct action_name *action_context;
+	struct scene *scene_context;
+} rule_context;
+
+rule_context IXRules::action_context(action_name *an) {
+	rule_context rc;
+	rc.action_context = an;
+	rc.scene_context = NULL;
+	return rc;
+}
+rule_context IXRules::scene_context(scene *s) {
+	rule_context rc;
+	rc.action_context = NULL;
+	rc.scene_context = s;
+	return rc;
+}
+
+rule_context IXRules::no_rule_context(void) {
+	rule_context rc;
+	rc.action_context = NULL;
+	rc.scene_context = NULL;
+	return rc;
+}
+
+int IXRules::phrase_fits_rule_context(id_body *idb, rule_context rc) {
+	if (rc.scene_context == NULL) return TRUE;
+	if (idb == NULL) return FALSE;
+	if (Scenes::rcd_scene(&(idb->runtime_context_data)) != rc.scene_context) return FALSE;
+	return TRUE;
+}

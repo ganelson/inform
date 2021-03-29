@@ -58,14 +58,25 @@ Chapter 5: Imperative Code
 	Parsing Type Data
 	Phrase Options
 	Rule Family
+	Runtime Context Data
 
-Chapter 6: Other Gadgets
+Chapter 6: Rules, Rulebooks and Activities
+"Rules are named phrases which are invoked in a particular way, and rulebooks
+a way to organise lists of them."
+	Rules
+	Rule Bookings
+	Booking Lists
+	Rulebooks
+	Focus and Outcome
+	Activities
+
+Chapter 7: Other Gadgets
 "Tables and equations do not look like sentences, but are also top-level."
 	Table Columns
 	Tables
 	Equations
 
-Chapter 7: Predicates
+Chapter 8: Predicates
 "Unary and then binary predicates for the calculus module to conjure with."
 	Kind Predicates Revisited
 	The Adjectival Predicates

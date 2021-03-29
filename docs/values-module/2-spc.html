@@ -86,7 +86,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inform7</a></li><li><a href="index.html">values</a></li><li><a href="index.html#2">Chapter 2: Specifications</a></li><li><b>Specifications</b></li></ul></div>
 <p class="purpose">To create, manage and compare specifications.</p>
 
-<ul class="toc"><li><a href="2-spc.html#SP1">&#167;1. Kinds vs specifications</a></li><li><a href="2-spc.html#SP7">&#167;7. Pretty-printing specifications</a></li><li><a href="2-spc.html#SP8">&#167;8. Sorting</a></li><li><a href="2-spc.html#SP9">&#167;9. Nothingness</a></li><li><a href="2-spc.html#SP10">&#167;10. The Unknown</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-spc.html#SP1">&#167;1. Kinds vs specifications</a></li><li><a href="2-spc.html#SP7">&#167;7. Pretty-printing specifications</a></li><li><a href="2-spc.html#SP8">&#167;8. Sorting</a></li><li><a href="2-spc.html#SP10">&#167;10. Nothingness</a></li><li><a href="2-spc.html#SP11">&#167;11. The Unknown</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Kinds vs specifications. </b>Specifications are portions of the parse tree representing data, or conditions
 on data, or ways to manipulate it. This chapter contains utility routines
@@ -133,7 +133,7 @@ for creating and using them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::is_value</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Specifications::is_value</span></span>:<br/><a href="2-spc.html#SP8_5">&#167;8.5</a><br/>Dash - <a href="2-dsh.html#SP9_1_1_3_1">&#167;9.1.1.3.1</a>, <a href="2-dsh.html#SP18_6_1">&#167;18.6.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::is_value</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Specifications::is_value</span></span>:<br/><a href="2-spc.html#SP9_5">&#167;9.5</a><br/>Dash - <a href="2-dsh.html#SP9_1_1_3_1">&#167;9.1.1.3.1</a>, <a href="2-dsh.html#SP18_6_1">&#167;18.6.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">node_type_metadata</span><span class="plain-syntax"> *</span><span class="identifier-syntax">metadata</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NodeType::get_metadata</span><span class="plain-syntax">(</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">metadata</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">metadata</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">category</span><span class="plain-syntax"> == </span><span class="identifier-syntax">LVALUE_NCAT</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">metadata</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">category</span><span class="plain-syntax"> == </span><span class="identifier-syntax">RVALUE_NCAT</span><span class="plain-syntax">)))</span>
@@ -179,7 +179,7 @@ but "12" is not.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::is_description</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Specifications::is_description</span></span>:<br/><a href="2-spc.html#SP1">&#167;1</a>, <a href="2-spc.html#SP4">&#167;4</a>, <a href="2-spc.html#SP5">&#167;5</a>, <a href="2-spc.html#SP8">&#167;8</a><br/>Conditions - <a href="2-cnd.html#SP11">&#167;11</a>, <a href="2-cnd.html#SP14">&#167;14</a><br/>Descriptions - <a href="2-dsc.html#SP1">&#167;1</a>, <a href="2-dsc.html#SP2">&#167;2</a>, <a href="2-dsc.html#SP4">&#167;4</a>, <a href="2-dsc.html#SP5">&#167;5</a>, <a href="2-dsc.html#SP6">&#167;6</a>, <a href="2-dsc.html#SP7">&#167;7</a>, <a href="2-dsc.html#SP9">&#167;9</a>, <a href="2-dsc.html#SP10">&#167;10</a><br/>Dash - <a href="2-dsh.html#SP10_9_1_1_3_1_1">&#167;10.9.1.1.3.1.1</a>, <a href="2-dsh.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>, <a href="2-dsh.html#SP18_5_3">&#167;18.5.3</a>, <a href="2-dsh.html#SP18_6_2">&#167;18.6.2</a>, <a href="2-dsh.html#SP24">&#167;24</a><br/>Constants and Descriptions - <a href="4-cad.html#SP18_5">&#167;18.5</a><br/>Verbal and Relative Clauses - <a href="4-varc.html#SP11_4_1">&#167;11.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::is_description</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Specifications::is_description</span></span>:<br/><a href="2-spc.html#SP1">&#167;1</a>, <a href="2-spc.html#SP4">&#167;4</a>, <a href="2-spc.html#SP5">&#167;5</a>, <a href="2-spc.html#SP9">&#167;9</a><br/>Conditions - <a href="2-cnd.html#SP11">&#167;11</a>, <a href="2-cnd.html#SP14">&#167;14</a><br/>Descriptions - <a href="2-dsc.html#SP1">&#167;1</a>, <a href="2-dsc.html#SP2">&#167;2</a>, <a href="2-dsc.html#SP4">&#167;4</a>, <a href="2-dsc.html#SP5">&#167;5</a>, <a href="2-dsc.html#SP6">&#167;6</a>, <a href="2-dsc.html#SP7">&#167;7</a>, <a href="2-dsc.html#SP9">&#167;9</a>, <a href="2-dsc.html#SP10">&#167;10</a><br/>Dash - <a href="2-dsh.html#SP10_9_1_1_3_1_1">&#167;10.9.1.1.3.1.1</a>, <a href="2-dsh.html#SP10_9_1_2_3">&#167;10.9.1.2.3</a>, <a href="2-dsh.html#SP18_5_3">&#167;18.5.3</a>, <a href="2-dsh.html#SP18_6_2">&#167;18.6.2</a>, <a href="2-dsh.html#SP24">&#167;24</a><br/>Constants and Descriptions - <a href="4-cad.html#SP18_5">&#167;18.5</a><br/>Verbal and Relative Clauses - <a href="4-varc.html#SP11_4_1">&#167;11.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Node::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEST_VALUE_NT</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><a href="2-rvl.html#SP21" class="function-link"><span class="function-syntax">Rvalues::is_CONSTANT_construction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">CON_description</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -219,7 +219,7 @@ is a DESCRIPTION. The following extracts the object, if any, from either case:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::object_exactly_described_if_any</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Specifications::object_exactly_described_if_any</span></span>:<br/><a href="2-spc.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::object_exactly_described_if_any</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Specifications::object_exactly_described_if_any</span></span>:<br/><a href="2-spc.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spec</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-spc.html#SP3" class="function-link"><span class="function-syntax">Specifications::is_description</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-dsc.html#SP5" class="function-link"><span class="function-syntax">Descriptions::to_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
@@ -270,14 +270,30 @@ Index; those have to be English language forms.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"something unrecognised"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Sorting. </b>Some specifications are used to describe the applicability of rules and phrases,
-and since those must be sorted in order of how specific they are, we will need
-a way of telling when one specification is more specific than another. For
-instance, "Will Parker in the vineyard" beats "Will Parker" beats
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Sorting. </b>Some specifications are used to describe the applicability of rules and
+phrases, and since those must be sorted in order of how specific they are, we
+will need a way of telling when one specification is more specific than
+another. For instance, "Will Parker in the vineyard" beats "Will Parker" beats
 "a man" beats "a person" beats "an object" beats "a value".
 </p>
 
-<p class="commentary">The following is one of Inform's standardised comparison routines, which
+<p class="commentary">A sequence of "laws" is used to decide this &mdash; or at least, that's how we
+describe the outcome to the Index of a project. We simply remember the most
+recent law applied, because then when a decision finishes, it must have been
+the decisive one:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cco</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> comparison count: used to make the debugging log vaguely searchable</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> name of the law being applied, which caused this to be called</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::law</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::law_applied</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Specifications::law_applied</span></span>:<br/><a href="2-spc.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following is one of Inform's standardised comparison routines, which
 takes a pair of objects A, B and returns 1 if A makes a more specific
 description than B, 0 if they seem equally specific, or \(-1\) if B makes a
 more specific description than A. This is transitive, and intended to be
@@ -285,38 +301,35 @@ used in sorting algorithms.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cco</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> comparison count: used to make the debugging log vaguely searchable</span>
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> name of the law being applied, which caused this to be called</span>
-
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Specifications::compare_specificity</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wont_mix</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">SPECIFICITIES</span><span class="plain-syntax">, </span><span class="string-syntax">"Law %S (test %d): comparing $P with $P\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">c_s_stage_law</span><span class="plain-syntax">, </span><span class="identifier-syntax">cco</span><span class="plain-syntax">++, </span><span class="identifier-syntax">spec1</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec2</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="2-spc.html#SP8" class="function-link"><span class="function-syntax">Specifications::law_applied</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">cco</span><span class="plain-syntax">++, </span><span class="identifier-syntax">spec1</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec2</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Existence is itself something specific</span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Existence is itself something specific</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> = </span><a href="2-spc.html#SP3" class="function-link"><span class="function-syntax">Specifications::is_description</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><a href="2-spc.html#SP3" class="function-link"><span class="function-syntax">Specifications::is_description</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I1</span><span class="plain-syntax"> = </span><a href="2-spc.html#SP5" class="function-link"><span class="function-syntax">Specifications::object_exactly_described_if_any</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> = </span><a href="2-spc.html#SP5" class="function-link"><span class="function-syntax">Specifications::object_exactly_described_if_any</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">An actual specification is more specific than a generic one</span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_2" class="named-paragraph-link"><span class="named-paragraph">An actual specification is more specific than a generic one</span><span class="named-paragraph-number">9.2</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_3" class="named-paragraph-link"><span class="named-paragraph">An exact object is more specific than a vague one</span><span class="named-paragraph-number">8.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_4" class="named-paragraph-link"><span class="named-paragraph">Enclosing regions beat enclosed ones, and regions beat rooms</span><span class="named-paragraph-number">8.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">An exact object is more specific than a vague one</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_4" class="named-paragraph-link"><span class="named-paragraph">Enclosing regions beat enclosed ones, and regions beat rooms</span><span class="named-paragraph-number">9.4</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wont_mix</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_5" class="named-paragraph-link"><span class="named-paragraph">If one matches the other, but not vice versa, it must be more specific</span><span class="named-paragraph-number">8.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wont_mix</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_5" class="named-paragraph-link"><span class="named-paragraph">If one matches the other, but not vice versa, it must be more specific</span><span class="named-paragraph-number">9.5</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">b</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">)) { </span><span class="comment-syntax"> case 1: both are descriptions</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-dsc.html#SP12" class="function-link"><span class="function-syntax">Descriptions::compare_specificity</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">b</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) { </span><span class="comment-syntax"> case 2: neither is a description</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_6" class="named-paragraph-link"><span class="named-paragraph">Table entries are more specific than other non-descriptions</span><span class="named-paragraph-number">8.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_6" class="named-paragraph-link"><span class="named-paragraph">Table entries are more specific than other non-descriptions</span><span class="named-paragraph-number">9.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="comment-syntax"> case 3: one is a description, the other isn't</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP8_7" class="named-paragraph-link"><span class="named-paragraph">When is a description more specific than a non-description?</span><span class="named-paragraph-number">8.7</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-spc.html#SP9_7" class="named-paragraph-link"><span class="named-paragraph">When is a description more specific than a non-description?</span><span class="named-paragraph-number">9.7</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b>Whether or not, as Bertrand Russell thought in 1894, existence is itself a good
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>Whether or not, as Bertrand Russell thought in 1894, existence is itself a good
 ("Great God in Boots! Э the ontological argument is sound!"), a specification
 which exists is certainly more significant than one which does not; and there
 is nothing to choose between two specifications, neither of which exists.
@@ -327,7 +340,7 @@ Russell meant the local Cambridge branch of Boots, the chemist's shop. At any
 rate he changed his mind in 1896.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Existence is itself something specific</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Existence is itself something specific</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -335,14 +348,14 @@ rate he changed his mind in 1896.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec1</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">spec2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">spec1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">spec2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b>Hard to argue with this one: "34", for instance, is more specific than
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>Hard to argue with this one: "34", for instance, is more specific than
 "a number". (We might quibble about whether or not "a number which equals
 34" is really less specific than "34" &mdash; Inform says it is; but in fact
 it doesn't much matter either way.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An actual specification is more specific than a generic one</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An actual specification is more specific than a generic one</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -353,20 +366,20 @@ it doesn't much matter either way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">aa</span><span class="plain-syntax">) &amp;&amp; (!</span><span class="identifier-syntax">ba</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((!</span><span class="identifier-syntax">aa</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ba</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3.  </b>For instance, "the open Marble Door" is more specific than "an open door"
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b>For instance, "the open Marble Door" is more specific than "an open door"
 or even just "a door", even though the latter is linguistically simpler.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An exact object is more specific than a vague one</span><span class="named-paragraph-number">8.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">An exact object is more specific than a vague one</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_4" class="paragraph-anchor"></a><b>&#167;8.4.  </b>Suppose both specifications exactly describe objects, <span class="extract"><span class="extract-syntax">I1</span></span> and <span class="extract"><span class="extract-syntax">I2</span></span>, and
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b>Suppose both specifications exactly describe objects, <span class="extract"><span class="extract-syntax">I1</span></span> and <span class="extract"><span class="extract-syntax">I2</span></span>, and
 all other considerations are equal. It's not quite true that one object is as
 good as another, because a region can be thought of as a set of rooms.
 (Without the following criterion, rules such as "After waiting in Russia"
@@ -374,7 +387,7 @@ and "After waiting in Vladivostok Railway Station Waiting Room" would have
 equal status.)
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Enclosing regions beat enclosed ones, and regions beat rooms</span><span class="named-paragraph-number">8.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Enclosing regions beat enclosed ones, and regions beat rooms</span><span class="named-paragraph-number">9.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -383,8 +396,8 @@ equal status.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pref</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PluginCalls::more_specific</span><span class="plain-syntax">(</span><span class="identifier-syntax">I1</span><span class="plain-syntax">, </span><span class="identifier-syntax">I2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pref</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pref</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_5" class="paragraph-anchor"></a><b>&#167;8.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If one matches the other, but not vice versa, it must be more specific</span><span class="named-paragraph-number">8.5</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_5" class="paragraph-anchor"></a><b>&#167;9.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If one matches the other, but not vice versa, it must be more specific</span><span class="named-paragraph-number">9.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -406,8 +419,8 @@ equal status.)
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wont_mix</span><span class="plain-syntax">) *</span><span class="identifier-syntax">wont_mix</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_6" class="paragraph-anchor"></a><b>&#167;8.6.  </b>Here neither specification is a description or an actual object.
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_6" class="paragraph-anchor"></a><b>&#167;9.6.  </b>Here neither specification is a description or an actual object.
 For the most part, then, we're left with two specifications of about equal
 merit, and we don't choose between them. But in one case we do intervene: a
 table entry reference beats anything else left, so that "Instead of taking
@@ -417,7 +430,7 @@ this is a good convention, but users reported the previous absence of such
 a convention as a bug, which is usually telling.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Table entries are more specific than other non-descriptions</span><span class="named-paragraph-number">8.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Table entries are more specific than other non-descriptions</span><span class="named-paragraph-number">9.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -426,8 +439,8 @@ a convention as a bug, which is usually telling.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">t1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">t1</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">t2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_7" class="paragraph-anchor"></a><b>&#167;8.7.  </b>To explicate the following: a description of an exact object beats any
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP9_7" class="paragraph-anchor"></a><b>&#167;9.7.  </b>To explicate the following: a description of an exact object beats any
 non-description &mdash; thus "the open Marble Door" (a description) beats "the
 Marble Door" (a constant instance). But any non-description beats a
 description which is vague about the object &mdash; thus "the Marble Door" beats
@@ -435,18 +448,18 @@ description which is vague about the object &mdash; thus "the Marble Door" beats
 but also "the tallest door in the Castle" (a phrase) beats "an open door".
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">When is a description more specific than a non-description?</span><span class="named-paragraph-number">8.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">When is a description more specific than a non-description?</span><span class="named-paragraph-number">9.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) { </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">; }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Nothingness. </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="2-spc.html#SP9">&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Nothingness. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DETECT_NOTHING_CALCULUS_CALLBACK</span><span class="plain-syntax"> </span><a href="2-rvl.html#SP8" class="function-link"><span class="function-syntax">Rvalues::is_nothing_object_constant</span></a>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK</span><span class="plain-syntax"> </span><a href="2-spc.html#SP9" class="function-link"><span class="function-syntax">Specifications::nothing</span></a>
+<span class="definition-keyword">define</span> <span class="constant-syntax">PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK</span><span class="plain-syntax"> </span><a href="2-spc.html#SP10" class="function-link"><span class="function-syntax">Specifications::nothing</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::nothing</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -454,14 +467,14 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTTemporaryVariables::nothing_pseudo_variable</span><span class="plain-syntax">());</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The Unknown. </b>We begin with s-nodes used to represent text not yet parsed, or for which no
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. The Unknown. </b>We begin with s-nodes used to represent text not yet parsed, or for which no
 meaning could be found.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="2-spc.html#SP10" class="function-link"><span class="function-syntax">Specifications::new_UNKNOWN</span></a>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">UNKNOWN_PREFORM_RESULT_SYNTAX_CALLBACK</span><span class="plain-syntax"> </span><a href="2-spc.html#SP11" class="function-link"><span class="function-syntax">Specifications::new_UNKNOWN</span></a>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::new_UNKNOWN</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Specifications::new_UNKNOWN</span></span>:<br/>Rvalues - <a href="2-rvl.html#SP19">&#167;19</a><br/>Descriptions - <a href="2-dsc.html#SP6">&#167;6</a><br/>Literal Lists - <a href="3-ll.html#SP1">&#167;1</a><br/>Enter the S-Parser - <a href="4-ets.html#SP1">&#167;1</a>, <a href="4-ets.html#SP2">&#167;2</a><br/>Constants and Descriptions - <a href="4-cad.html#SP18_5">&#167;18.5</a>, <a href="4-cad.html#SP20">&#167;20</a><br/>Type Expressions and Values - <a href="4-teav.html#SP12">&#167;12</a>, <a href="4-teav.html#SP21">&#167;21</a><br/>Verbal and Relative Clauses - <a href="4-varc.html#SP11">&#167;11</a>, <a href="4-varc.html#SP11_4_1">&#167;11.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Specifications::new_UNKNOWN</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Specifications::new_UNKNOWN</span></span>:<br/>Rvalues - <a href="2-rvl.html#SP19">&#167;19</a><br/>Descriptions - <a href="2-dsc.html#SP6">&#167;6</a><br/>Literal Lists - <a href="3-ll.html#SP1">&#167;1</a><br/>Enter the S-Parser - <a href="4-ets.html#SP1">&#167;1</a>, <a href="4-ets.html#SP2">&#167;2</a><br/>Constants and Descriptions - <a href="4-cad.html#SP18_5">&#167;18.5</a>, <a href="4-cad.html#SP20">&#167;20</a><br/>Type Expressions and Values - <a href="4-teav.html#SP12">&#167;12</a>, <a href="4-teav.html#SP21">&#167;21</a><br/>Verbal and Relative Clauses - <a href="4-varc.html#SP11">&#167;11</a>, <a href="4-varc.html#SP11_4_1">&#167;11.4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Node::new_with_words</span><span class="plain-syntax">(</span><span class="identifier-syntax">UNKNOWN_NT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>

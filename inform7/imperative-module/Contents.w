@@ -10,25 +10,7 @@ Preliminaries
 Chapter 1: Configuration and Control
 	Imperative Module
 
-Chapter 2: Rules, Rulebooks and Activities
-"Rules are named phrases which are invoked in a particular way, and rulebooks
-a way to organise lists of them."
-	Rules
-	Rule Bookings
-	Booking Lists
-	Rulebooks
-	Focus and Outcome
-	Activities
-
-Chapter 3: Phrases
-"In which rules, To... phrases (and similar explicit instructions to do
-with specific changes in the world) have their preambles parsed and their
-premisses worked out, and are then collected together into rulebooks, before
-being compiled as a great mass of Inform 6 routines and arrays."
-	Introduction to Phrases
-	Phrase Runtime Context Data
-
-Chapter 4: Compilation Context
+Chapter 2: Compilation Context
 "Preparing a context at run-time in which code can be executed."
 	Local Variables
 	Stacked Variables
@@ -36,7 +18,7 @@ Chapter 4: Compilation Context
 	Stack Frames
 	Chronology
 
-Chapter 5: Compiling Propositions
+Chapter 3: Compiling Propositions
 "Generating code to test or assert propositions from predicate calculus."
 	Compiling from Specifications
 	Emitting from Schemas
@@ -45,7 +27,7 @@ Chapter 5: Compiling Propositions
 	Cinders and Deferrals
 	Compile Deferred Propositions
 
-Chapter 6: Compiling Invocations
+Chapter 4: Compiling Invocations
 "Generating code to perform individual phrases."
 	Invocations
 	Parse Invocations

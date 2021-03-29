@@ -176,7 +176,7 @@ id_body *ImperativeDefinitions::new_body(imperative_defn *id) {
 	LOGIF(PHRASE_CREATIONS, "Creating body: <%W>\n", id->log_text);
 	id_body *body = CREATE(id_body);
 	body->head_of_defn = id;
-	body->runtime_context_data = Phrases::Context::new();
+	body->runtime_context_data = RuntimeContextData::new();
 	body->type_data = IDTypeData::new();
 	body->compilation_data = IDCompilation::new_data(id->at);
 	return body;

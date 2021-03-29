@@ -383,7 +383,7 @@ sorting.
 
 =
 int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
-	c_s_stage_law = I"III.1 - Object To Which Rule Applies";
+	Specifications::law(I"III.1 - Object To Which Rule Applies");
 	int rv = APClauses::cmp_clause(PARAMETRIC_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	int ignore_in = FALSE;
@@ -391,24 +391,24 @@ int APClauses::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
 	if (rv != 0) return rv;
 
 	if (ignore_in == FALSE) {
-		c_s_stage_law = I"III.2.2 - Action/Where/Room Where Action Takes Place";
+		Specifications::law(I"III.2.2 - Action/Where/Room Where Action Takes Place");
 		rv = APClauses::cmp_clause(IN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 	}
 
-	c_s_stage_law = I"III.2.3 - Action/Where/In The Presence Of";
+	Specifications::law(I"III.2.3 - Action/Where/In The Presence Of");
 
 	rv = APClauses::cmp_clause(IN_THE_PRESENCE_OF_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	rv = APClauses::compare_specificity_of_av_clauses(ap1, ap2);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = I"III.3.1 - Action/What/Second Thing Acted On";
+	Specifications::law(I"III.3.1 - Action/What/Second Thing Acted On");
 	rv = APClauses::cmp_clause(SECOND_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
-	c_s_stage_law = I"III.3.2 - Action/What/Thing Acted On";
+	Specifications::law(I"III.3.2 - Action/What/Thing Acted On");
 	rv = APClauses::cmp_clause(NOUN_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
-	c_s_stage_law = I"III.3.3 - Action/What/Actor Performing Action";
+	Specifications::law(I"III.3.3 - Action/What/Actor Performing Action");
 	rv = APClauses::cmp_clause(ACTOR_AP_CLAUSE, ap1, ap2); if (rv) return rv;
 
 	return 0;

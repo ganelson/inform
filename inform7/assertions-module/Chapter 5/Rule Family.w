@@ -352,6 +352,8 @@ void RuleFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	id->body_of_defn->compilation_data.compile_with_run_time_debugging = TRUE;
 	IDTypeData::set_mor(&(id->body_of_defn->type_data),
 		DECIDES_NOTHING_AND_RETURNS_MOR, NULL);
+	if (rfd->not_in_rulebook)
+		id->body_of_defn->compilation_data.permit_all_outcomes = TRUE;
 }
 
 @<Set R to a corresponding rule structure@> =
@@ -434,15 +436,13 @@ int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
 void RuleFamily::to_rcd(imperative_defn_family *self, imperative_defn *id,
 	id_runtime_context_data *rcd) {
 	rule_family_data *rfd = RETRIEVE_POINTER_rule_family_data(id->family_specific_data);
-	if (rfd->not_in_rulebook) {
-		rcd->permit_all_outcomes = TRUE;
-	} else {
+	if (rfd->not_in_rulebook == FALSE) {
 		if (Wordings::nonempty(rfd->applicability))
 			@<Parse the applicability text into the PHRCD@>;
 		if (Wordings::nonempty(rfd->whenwhile))
 			rcd->activity_context =
 				Wordings::from(rfd->whenwhile, Wordings::first_wn(rfd->whenwhile) + 1);
-		if (rfd->during_spec) rcd->during_scene = rfd->during_spec;
+		if (rfd->during_spec) Scenes::set_rcd_spec(rcd, rfd->during_spec);
 	}
 }
 
@@ -451,22 +451,22 @@ whichever way works.
 
 @<Parse the applicability text into the PHRCD@> =
 	if (Rulebooks::action_focus(rfd->owning_rulebook)) {
-		rcd->ap = ActionPatterns::parse_action_based(rfd->applicability);
-		if (rcd->ap == NULL) @<Issue a problem message for a bad action@>;
+		ActionRules::set_ap(rcd, ActionPatterns::parse_action_based(rfd->applicability));
+		if (ActionRules::get_ap(rcd) == NULL) @<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_focus_kind(rfd->owning_rulebook);
-		rcd->ap = ActionPatterns::parse_parametric(rfd->applicability, pk);
-		if (rcd->ap == NULL) {
+		ActionRules::set_ap(rcd, ActionPatterns::parse_parametric(rfd->applicability, pk));
+		if (ActionRules::get_ap(rcd) == NULL) {
 			if (Wordings::nonempty(rfd->whenwhile)) {
 				wording F = Wordings::up_to(rfd->applicability, Wordings::last_wn(rfd->whenwhile));
-				rcd->ap = ActionPatterns::parse_parametric(F, pk);
-				if (rcd->ap) {
+				ActionRules::set_ap(rcd, ActionPatterns::parse_parametric(F, pk));
+				if (ActionRules::get_ap(rcd)) {
 					rfd->applicability = F;
 					rfd->whenwhile = EMPTY_WORDING;
 				}
 			}
 		}
-		if (rcd->ap == NULL) @<Issue a problem message for a bad parameter@>;
+		if (ActionRules::get_ap(rcd) == NULL) @<Issue a problem message for a bad parameter@>;
 	}
 
 @ All that's left is to issue a "good" problem message, but this is quite a
@@ -479,7 +479,7 @@ parser, recording how it most recently failed.
 
 @<Issue a problem message for a bad action@> =
 	LOG("Bad action pattern: %W = $A\nPAP failure reason: %d\n",
-		rfd->applicability, rcd->ap, pap_failure_reason);
+		rfd->applicability, ActionRules::get_ap(rcd), pap_failure_reason);
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, rfd->applicability);
 	if (<action-problem-diagnosis>(rfd->applicability) == FALSE)

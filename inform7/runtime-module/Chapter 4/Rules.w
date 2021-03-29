@@ -621,7 +621,7 @@ than once for each rule.
 #ifdef IF_MODULE
 action_name *RTRules::br_required_action(booking *br) {
 	imperative_defn *id = Rules::get_imperative_definition(br->rule_being_booked);
-	if (id) return Phrases::Context::required_action(&(id->body_of_defn->runtime_context_data));
+	if (id) return ActionRules::required_action(&(id->body_of_defn->runtime_context_data));
 	return NULL;
 }
 #endif
@@ -986,7 +986,7 @@ int RTRules::compile_test_head(id_body *idb, rule *R) {
 	int tests = 0;
 
 	if (PluginCalls::compile_test_head(idb, R, &tests) == FALSE) {
-		if (phrcd->ap) @<Compile an action test head@>;
+		if (ActionRules::get_ap(phrcd)) @<Compile an action test head@>;
 	}
 	if (Wordings::nonempty(phrcd->activity_context))
 		@<Compile an activity or explicit condition test head@>;
@@ -1011,18 +1011,18 @@ int RTRules::compile_test_head(id_body *idb, rule *R) {
 
 int RTRules::actions_compile_test_head(id_body *idb, rule *R, int *tests) {
 	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
-	if (phrcd->during_scene) @<Compile a scene test head@>;
-	if (phrcd->ap) @<Compile possibly testing actor action test head@>
-	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test head@>;
+	if (Scenes::get_rcd_spec(phrcd)) @<Compile a scene test head@>;
+	if (ActionRules::get_ap(phrcd)) @<Compile possibly testing actor action test head@>
+	else if (ActionRules::get_always_test_actor(phrcd)) @<Compile an actor-is-player test head@>;
 	return TRUE;
 }
 
 int RTRules::actions_compile_test_tail(id_body *idb, rule *R) {
 	inter_name *identifier = IDCompilation::iname(idb);
 	id_runtime_context_data *phrcd = &(idb->runtime_context_data);
-	if (phrcd->ap) @<Compile an action test tail@>
-	else if (phrcd->always_test_actor == TRUE) @<Compile an actor-is-player test tail@>;
-	if (phrcd->during_scene) @<Compile a scene test tail@>;
+	if (ActionRules::get_ap(phrcd)) @<Compile an action test tail@>
+	else if (ActionRules::get_always_test_actor(phrcd)) @<Compile an actor-is-player test tail@>;
+	if (Scenes::get_rcd_spec(phrcd)) @<Compile a scene test tail@>;
 	return TRUE;
 }
 
@@ -1038,7 +1038,7 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 	if (Wordings::nonempty(phrcd->activity_context))
 		@<Compile an activity or explicit condition test tail@>;
 	if (PluginCalls::compile_test_tail(idb, R) == FALSE) {
-		if (phrcd->ap) @<Compile an action test tail@>;
+		if (ActionRules::get_ap(phrcd)) @<Compile an action test tail@>;
 	}
 }
 
@@ -1047,7 +1047,7 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 @<Compile a scene test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
-		RTScenes::emit_during_clause(phrcd->during_scene);
+		RTScenes::emit_during_clause(Scenes::get_rcd_spec(phrcd));
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
@@ -1062,12 +1062,12 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 @<Compile an action test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
-		RTActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
+		RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
 	tests++;
-	if (ActionPatterns::involves_actions(phrcd->ap)) {
+	if (ActionPatterns::involves_actions(ActionRules::get_ap(phrcd))) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));
@@ -1078,15 +1078,15 @@ void RTRules::compile_test_tail(id_body *idb, rule *R) {
 @<Compile possibly testing actor action test head@> =
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
-		if (phrcd->never_test_actor)
-			RTActionPatterns::emit_pattern_match(phrcd->ap, TRUE);
+		if (ActionRules::get_never_test_actor(phrcd))
+			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), TRUE);
 		else
-			RTActionPatterns::emit_pattern_match(phrcd->ap, FALSE);
+			RTActionPatterns::emit_pattern_match(ActionRules::get_ap(phrcd), FALSE);
 		Produce::code(Emit::tree());
 		Produce::down(Emit::tree());
 
 	(*tests)++;
-	if (ActionPatterns::involves_actions(phrcd->ap)) {
+	if (ActionPatterns::involves_actions(ActionRules::get_ap(phrcd))) {
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
 			Produce::down(Emit::tree());
 				Produce::ref_iname(Emit::tree(), K_object, Hierarchy::find(SELF_HL));

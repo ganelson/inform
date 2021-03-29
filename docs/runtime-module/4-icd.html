@@ -101,6 +101,7 @@ code below.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ph_iname</span><span class="plain-syntax">; </span><span class="comment-syntax"> or NULL for inline phrases</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">requests_package</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_stack_frame</span><span class="plain-syntax"> </span><span class="identifier-syntax">stack_frame</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">permit_all_outcomes</span><span class="plain-syntax">; </span><span class="comment-syntax"> waive the usual restrictions on rule outcomes</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">id_compilation_data</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure id_compilation_data is accessed in 4/rtn, 4/rls, 4/pr, 4/cls and here.</li></ul>
@@ -120,6 +121,7 @@ code below.
 <span class="plain-syntax">    </span><span class="identifier-syntax">phcd</span><span class="plain-syntax">.</span><span class="element-syntax">at_least_one_compiled_form_needed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">phcd</span><span class="plain-syntax">.</span><span class="element-syntax">compile_with_run_time_debugging</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">phcd</span><span class="plain-syntax">.</span><span class="element-syntax">stack_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Frames::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">phcd</span><span class="plain-syntax">.</span><span class="element-syntax">permit_all_outcomes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">phcd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -268,6 +270,18 @@ response to "requests". All other phrases are compiled just once.
 <span class="plain-syntax">            </span><span class="identifier-syntax">ProgressBar::update</span><span class="plain-syntax">(4, ((</span><span class="reserved-syntax">float</span><span class="plain-syntax">) (*</span><span class="identifier-syntax">i</span><span class="plain-syntax">))/((</span><span class="reserved-syntax">float</span><span class="plain-syntax">) </span><span class="identifier-syntax">max_i</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>This is to do with named outcomes of rules, whereby certain outcomes are
+normally limited to the use of rules in particular rulebooks.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">IDCompilation::outcome_restrictions_waived</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">id_body_being_compiled</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">        (</span><span class="identifier-syntax">id_body_being_compiled</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">permit_all_outcomes</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

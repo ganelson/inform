@@ -108,6 +108,9 @@ depend on conclusions to be drawn by the //knowledge// module later on.
 Similarly, though a little easier, //Implications// like "Something worn is
 usually wearable" do not immediately lead to propositions being drawn up.
 
+@h Imperative definitions.
+
+
 @h Other gadgets.
 At the top level, Inform source text consists of more than just assertion
 sentences. Rules and phrases are left to //imperative// to look after, but we

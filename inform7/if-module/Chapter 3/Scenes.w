@@ -18,6 +18,7 @@ void Scenes::start(void) {
 	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
 	PluginManager::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
 	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
+	PluginManager::plug(NEW_RCD_NOTIFY_PLUG, Scenes::new_rcd);
 }
 
 int Scenes::production_line(int stage, int debugging,
@@ -606,3 +607,59 @@ collection of them:
 			(Kinds::eq(Specifications::to_kind(spec), K_scene)))) {
 		==> { -, spec };
 	} else return FALSE;
+
+@h Rules predicated on scenes.
+Rules can be set to fire only during a certain scene, or a scene matching some
+description. This is stored in the following scenes-plugin corner of the
+//assertions: Runtime Context Data// for the rule:
+
+=
+typedef struct scenes_rcd_data {
+	struct parse_node *during_scene; /* ...happens only during a scene matching this? */
+	CLASS_DEFINITION
+} scenes_rcd_data;
+
+scenes_rcd_data *Scenes::new_rcd_data(id_runtime_context_data *idrcd) {
+	scenes_rcd_data *srd = CREATE(scenes_rcd_data);
+	srd->during_scene = NULL;
+	return srd;
+}
+
+int Scenes::new_rcd(id_runtime_context_data *idrcd) {
+	CREATE_PLUGIN_RCD_DATA(scenes, idrcd, Scenes::new_rcd_data)
+	return FALSE;
+}
+
+void Scenes::set_rcd_spec(id_runtime_context_data *idrcd, parse_node *to_match) {
+	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	if (srcd) {
+		srcd->during_scene = to_match;
+	}
+}
+
+parse_node *Scenes::get_rcd_spec(id_runtime_context_data *idrcd) {
+	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	if (srcd) return srcd->during_scene;
+	return NULL;
+}
+
+@ The reason we store a whole specification, rather than a scene constant,
+here is that we sometimes want rules which happen during "a recurring scene",
+or some other description of scenes in general. But the following function
+extracts a single specified scene if there is one:
+
+=
+scene *Scenes::rcd_scene(id_runtime_context_data *idrcd) {
+	if (idrcd == NULL) return NULL;
+	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	if (srcd) {
+		if (Rvalues::is_rvalue(srcd->during_scene)) {
+			instance *q = Rvalues::to_instance(srcd->during_scene);
+			if (q) return Scenes::from_named_constant(q);
+		}
+	}
+	return NULL;
+}
+
+
+

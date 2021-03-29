@@ -26,6 +26,7 @@ typedef struct id_compilation_data {
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
 	struct package_request *requests_package;
 	struct ph_stack_frame stack_frame;
+	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 } id_compilation_data;
 
 @
@@ -44,6 +45,7 @@ id_compilation_data IDCompilation::new_data(parse_node *p) {
 	phcd.at_least_one_compiled_form_needed = TRUE;
 	phcd.compile_with_run_time_debugging = FALSE;
 	phcd.stack_frame = Frames::new();
+	phcd.permit_all_outcomes = FALSE;
 	return phcd;
 }
 
@@ -178,4 +180,15 @@ void IDCompilation::compile(id_body *idb, int *i, int max_i,
 			ProgressBar::update(4, ((float) (*i))/((float) max_i));
 		}
 	}
+}
+
+@ This is to do with named outcomes of rules, whereby certain outcomes are
+normally limited to the use of rules in particular rulebooks.
+
+=
+int IDCompilation::outcome_restrictions_waived(void) {
+	if ((id_body_being_compiled) &&
+		(id_body_being_compiled->compilation_data.permit_all_outcomes))
+		return TRUE;
+	return FALSE;
 }

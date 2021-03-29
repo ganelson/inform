@@ -52,6 +52,7 @@ Chapter 4: Actions
 	Explicit Actions
 	Named Action Patterns
 	Going
+	Rules Predicated on Actions
 
 Chapter 5: Command Parser
 "Understand... sentences become a grammar for the command parser to use at run-time."

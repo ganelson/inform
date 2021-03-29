@@ -47,6 +47,7 @@ void ActionsPlugin::start(void) {
 	PluginManager::plug(COMPLETE_MODEL_PLUG, ActionsPlugin::complete_model);
 	PluginManager::plug(COMPILE_TEST_HEAD_PLUG, RTRules::actions_compile_test_head);
 	PluginManager::plug(COMPILE_TEST_TAIL_PLUG, RTRules::actions_compile_test_tail);
+	PluginManager::plug(NEW_RCD_NOTIFY_PLUG, ActionRules::new_rcd);
 
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"doing"), ACTION_PARTICIPLE_MC);
 	Vocabulary::set_flags(Vocabulary::entry_for_text(L"asking"), ACTION_PARTICIPLE_MC);

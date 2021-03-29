@@ -178,10 +178,7 @@ more specific than which others. For example, "taking the red fish" is more
 specific than "taking an animal" which is more specific than "taking or dropping
 a thing".
 
-This is a |strcmp|-like function for use in sorting algorithms. The global
-variable |c_s_stage_law| is slyly set to whatever is being checked, so that
-after this function returns, the value remaining in it must have been the
-decisive factor.
+This is a |strcmp|-like function for use in sorting algorithms.
 
 =
 int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {
@@ -195,23 +192,23 @@ int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2
 	int rv = APClauses::compare_specificity(ap1, ap2);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = I"III.4.1 - Action/How/What Happens";
+	Specifications::law(I"III.4.1 - Action/How/What Happens");
 
 	rv = ActionNameLists::compare_specificity(ap1->action_list, ap2->action_list);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = I"III.5.1 - Action/When/Duration";
+	Specifications::law(I"III.5.1 - Action/When/Duration");
 
 	rv = Occurrence::compare_specificity(ap1->duration, ap2->duration);
 	if (rv != 0) return rv;
 
-	c_s_stage_law = I"III.5.2 - Action/When/Circumstances";
+	Specifications::law(I"III.5.2 - Action/When/Circumstances");
 
 	rv = Conditions::compare_specificity_of_CONDITIONs(
 		APClauses::spec(ap1, WHEN_AP_CLAUSE), APClauses::spec(ap2, WHEN_AP_CLAUSE));
 	if (rv != 0) return rv;
 
-	c_s_stage_law = I"III.6.1 - Action/Name/Is This Named";
+	Specifications::law(I"III.6.1 - Action/Name/Is This Named");
 
 	if ((ActionPatterns::is_named(ap1)) && (ActionPatterns::is_named(ap2) == FALSE))
 		return 1;

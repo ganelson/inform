@@ -206,6 +206,16 @@ int PluginCalls::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd
 	PLUGINS_CALL(NEW_RULE_DEFN_NOTIFY_PLUG, id, rfd);
 }
 
+@ Called from //assertions: Runtime Context Data// to warn plugins that
+a new set of runtime context data is being made.
+
+@e NEW_RCD_NOTIFY_PLUG
+
+=
+int PluginCalls::new_rcd_notify(id_runtime_context_data *rcd) {
+	PLUGINS_CALL(NEW_RCD_NOTIFY_PLUG, rcd);
+}
+
 @h Influencing values.
 Called from //values: Rvalues// to allow plugins to help decide whether values
 of the same kind would be equal if evaluated at runtime. For example, the
@@ -433,7 +443,7 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 }
 
 @h Influencing the imperative plugin.
-Called from //imperative: Rule Bookings// to give plugins a chance to move
+Called from //assertions: Rule Bookings// to give plugins a chance to move
 automatically placed rules from one rulebook to another. The actions plugin
 uses this to break up what would otherwise be unwieldy before and after
 rulebooks into smaller ones for each action.
@@ -448,7 +458,7 @@ int PluginCalls::place_rule(rule *R, rulebook *original_owner, rulebook **new_ow
 	PLUGINS_CALL(PLACE_RULE_PLUG, R, original_owner, new_owner);
 }
 
-@ Called from //imperative: Rulebooks//. This is very similar, but runs in all cases,
+@ Called from //assertions: Rulebooks//. This is very similar, but runs in all cases,
 and not only for automatic placement.
 
 @e RULE_PLACEMENT_NOTIFY_PLUG

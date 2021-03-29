@@ -42,9 +42,9 @@ void IXActivities::index(OUTPUT_STREAM, activity *av, int indent) {
 	char *text = NULL;
 	if (av->indexing_data.activity_indexed) return;
 	av->indexing_data.activity_indexed = TRUE;
-	if (Rulebooks::is_empty(av->before_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->for_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
-	if (Rulebooks::is_empty(av->after_rules, Phrases::Context::no_rule_context()) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->before_rules) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->for_rules) == FALSE) empty = FALSE;
+	if (Rulebooks::is_empty(av->after_rules) == FALSE) empty = FALSE;
 	if (av->indexing_data.cross_references) empty = FALSE;
 	TEMPORARY_TEXT(doc_link)
 	if (Wordings::nonempty(av->indexing_data.av_documentation_symbol))
@@ -57,9 +57,12 @@ void IXActivities::index(OUTPUT_STREAM, activity *av, int indent) {
 
 void IXActivities::index_details(OUTPUT_STREAM, activity *av) {
 	int ignore_me = 0;
-	IXRules::index_rulebook(OUT, av->before_rules, "before", Phrases::Context::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->for_rules, "for", Phrases::Context::no_rule_context(), &ignore_me);
-	IXRules::index_rulebook(OUT, av->after_rules, "after", Phrases::Context::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->before_rules, "before",
+		IXRules::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->for_rules, "for",
+		IXRules::no_rule_context(), &ignore_me);
+	IXRules::index_rulebook(OUT, av->after_rules, "after",
+		IXRules::no_rule_context(), &ignore_me);
 	IXActivities::index_cross_references(OUT, av);
 }
 

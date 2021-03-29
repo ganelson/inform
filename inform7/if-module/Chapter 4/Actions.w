@@ -173,7 +173,7 @@ int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rul
 		imperative_defn *id = Rules::get_imperative_definition(R);
 		if (id) {
 			id_body *idb = id->body_of_defn;
-			action_name *an = Phrases::Context::required_action(&(idb->runtime_context_data));
+			action_name *an = ActionRules::required_action(&(idb->runtime_context_data));
 			if ((an) && (ActionSemantics::is_out_of_world(an)))
 				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_OOWinIWRulebook),
 					"this rulebook has no effect on actions which happen out of world",

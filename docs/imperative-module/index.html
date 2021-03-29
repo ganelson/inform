@@ -86,169 +86,115 @@
 				</li>
 				<li>
 					<p class="chapterentry"><a name="2"></a>
-						<span class="chaptertitle">Chapter 2: Rules, Rulebooks and Activities</span></p>
-					<p class="chapterpurpose">Rules are named phrases which are invoked in a particular way, and rulebooks a way to organise lists of them.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="2-rls.html">
-								<spon class="sectiontitle">Rules</span></a> -
-							<span class="sectionpurpose">Rules contain imperative code which is executed when certain actions, activities or other processes are being followed.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-rb.html">
-								<spon class="sectiontitle">Rule Bookings</span></a> -
-							<span class="sectionpurpose">Bookings are assignments of rules to rulebooks.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-bl.html">
-								<spon class="sectiontitle">Booking Lists</span></a> -
-							<span class="sectionpurpose">Booking lists are linked lists of rule bookings. The content of a rulebook is a booking list.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-rlb.html">
-								<spon class="sectiontitle">Rulebooks</span></a> -
-							<span class="sectionpurpose">Rulebooks collate rules and provide an organised way for them to collaborate on a larger task.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-fao.html">
-								<spon class="sectiontitle">Focus and Outcome</span></a> -
-							<span class="sectionpurpose">What a rulebook works on, and what it produces.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-act.html">
-								<spon class="sectiontitle">Activities</span></a> -
-							<span class="sectionpurpose">To create and manage activities, which are bundles of rules for carrying out tasks.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="3"></a>
-						<span class="chaptertitle">Chapter 3: Phrases</span></p>
-					<p class="chapterpurpose">In which rules, To... phrases (and similar explicit instructions to do with specific changes in the world) have their preambles parsed and their premisses worked out, and are then collected together into rulebooks, before being compiled as a great mass of Inform 6 routines and arrays.</p>
-					<ul class="sectionlist">
-						<li>
-							<p class="sectionentry"><a href="3-itp.html">
-								<spon class="sectiontitle">Introduction to Phrases</span></a> -
-							<span class="sectionpurpose">An exposition of the data structures used inside Inform to hold phrases, rules and rulebooks.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="3-prcd.html">
-								<spon class="sectiontitle">Phrase Runtime Context Data</span></a> -
-							<span class="sectionpurpose">To store the circumstances in which a rule phrase should fire.</span></p>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<p class="chapterentry"><a name="4"></a>
-						<span class="chaptertitle">Chapter 4: Compilation Context</span></p>
+						<span class="chaptertitle">Chapter 2: Compilation Context</span></p>
 					<p class="chapterpurpose">Preparing a context at run-time in which code can be executed.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="4-lv.html">
+							<p class="sectionentry"><a href="2-lv.html">
 								<spon class="sectiontitle">Local Variables</span></a> -
 							<span class="sectionpurpose">Local variables are used for call parameters, temporary values, and other ephemeral workspace.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-sv.html">
+							<p class="sectionentry"><a href="2-sv.html">
 								<spon class="sectiontitle">Stacked Variables</span></a> -
 							<span class="sectionpurpose">To permit variables to have scopes intermediate between local and global: for example, to be shared by all rules in a given rulebook.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-pb.html">
+							<p class="sectionentry"><a href="2-pb.html">
 								<spon class="sectiontitle">Phrase Blocks</span></a> -
 							<span class="sectionpurpose">Blocks of code are used to give conditionals and loops greater scope, as in more traditional programming languages.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-sf.html">
+							<p class="sectionentry"><a href="2-sf.html">
 								<spon class="sectiontitle">Stack Frames</span></a> -
 							<span class="sectionpurpose">When Inform compiles phrase invocations, or implied forms of these such as text substitutions, it does so in the context of a "stack frame". This provides for local "let" values, manages loop blocks, and in general looks after any information shared between a whole sequence of invocations.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-chr.html">
+							<p class="sectionentry"><a href="2-chr.html">
 								<spon class="sectiontitle">Chronology</span></a> -
 							<span class="sectionpurpose">To keep track of the state of things so that it will be possible in future to ask questions concerning the past.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="5"></a>
-						<span class="chaptertitle">Chapter 5: Compiling Propositions</span></p>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: Compiling Propositions</span></p>
 					<p class="chapterpurpose">Generating code to test or assert propositions from predicate calculus.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="5-cfs.html">
+							<p class="sectionentry"><a href="3-cfs.html">
 								<spon class="sectiontitle">Compiling from Specifications</span></a> -
 							<span class="sectionpurpose">To compile specifications into Inform 6 values, conditions or void expressions.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-efs.html">
+							<p class="sectionentry"><a href="3-efs.html">
 								<spon class="sectiontitle">Emitting from Schemas</span></a> -
 							<span class="sectionpurpose">Here we emit code from an I6 schema.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-ca.html">
+							<p class="sectionentry"><a href="3-ca.html">
 								<spon class="sectiontitle">Compile Atoms</span></a> -
 							<span class="sectionpurpose">In this section, given an atom of a proposition we compile I6 code as required for any of three possible outcomes: (i) to test whether it is true, (ii) to make it henceforth true, or (iii) to make it henceforth false.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-dtd.html">
+							<p class="sectionentry"><a href="3-dtd.html">
 								<spon class="sectiontitle">Deciding to Defer</span></a> -
 							<span class="sectionpurpose">To decide whether a proposition can be compiled immediately, in the body of the current routine, or whether it must be deferred to a routine of its own, which is called from the current routine.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-cad.html">
+							<p class="sectionentry"><a href="3-cad.html">
 								<spon class="sectiontitle">Cinders and Deferrals</span></a> -
 							<span class="sectionpurpose">To compile terms, having carefully preserved any constants which might have been lost in the process of deferring a proposition (such tricky constants being called "cinders").</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="5-cdp.html">
+							<p class="sectionentry"><a href="3-cdp.html">
 								<spon class="sectiontitle">Compile Deferred Propositions</span></a> -
 							<span class="sectionpurpose">To compile the I6 routines needed to perform the tests or tasks deferred as being too difficult in their original contexts.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<p class="chapterentry"><a name="6"></a>
-						<span class="chaptertitle">Chapter 6: Compiling Invocations</span></p>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Compiling Invocations</span></p>
 					<p class="chapterpurpose">Generating code to perform individual phrases.</p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="6-inv.html">
+							<p class="sectionentry"><a href="4-inv.html">
 								<spon class="sectiontitle">Invocations</span></a> -
 							<span class="sectionpurpose">Specifications which ask to use a phrase (which are "phrasal") indicate which phrase they intend by means of a list of "invocations". This list goes on to record the outcome of type-checking and provides instructions for code generation, as we see here.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-pi.html">
+							<p class="sectionentry"><a href="4-pi.html">
 								<spon class="sectiontitle">Parse Invocations</span></a> -
 							<span class="sectionpurpose">To register phrases with the excerpt parser, and to provide the excerpt parser with help in putting invocations together.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-ci.html">
+							<p class="sectionentry"><a href="4-ci.html">
 								<spon class="sectiontitle">Compile Invocations</span></a> -
 							<span class="sectionpurpose">Here we generate Inform 6 code to execute the phrase(s) called for by an invocation list.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-ciac.html">
+							<p class="sectionentry"><a href="4-ciac.html">
 								<spon class="sectiontitle">Compile Invocations As Calls</span></a> -
 							<span class="sectionpurpose">Here we generate Inform 6 code to execute the phrase(s) called for by an invocation list.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-cii.html">
+							<p class="sectionentry"><a href="4-cii.html">
 								<spon class="sectiontitle">Compile Invocations Inline</span></a> -
 							<span class="sectionpurpose">Here we generate Inform 6 code to execute the phrase(s) called for by an invocation list.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-cp.html">
+							<p class="sectionentry"><a href="4-cp.html">
 								<spon class="sectiontitle">Compile Phrases</span></a> -
 							<span class="sectionpurpose">Phrases defined with a list of invocations, rather than inline, have to be compiled to I6 routines, and this is where we organise that.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-ca.html">
+							<p class="sectionentry"><a href="4-ca.html">
 								<spon class="sectiontitle">Compile Arithmetic</span></a> -
 							<span class="sectionpurpose">To compile code performing an arithmetic operation.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-cste.html">
+							<p class="sectionentry"><a href="4-cste.html">
 								<spon class="sectiontitle">Compile Solutions to Equations</span></a> -
 							<span class="sectionpurpose">To compile code to solve an equation involving numerical quantities.</span></p>
 						</li>
