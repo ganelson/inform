@@ -5273,7 +5273,7 @@
 
 <if-parsing-phrase-tokens> internal hits 2474/41934 nti 7 constraint (none) extremes [0, 0]
 
-<k-kind-for-template> internal hits 164/328 nti 8 constraint (none) extremes [1, infinity)
+<k-kind-prototype> internal hits 164/328 nti 8 constraint (none) extremes [1, infinity)
 
 <k-kind-as-name-token> hits 24/68 nti 9 constraint DS = {9} extremes [3, infinity)
     English:
@@ -6799,7 +6799,7 @@
 
 <return-kind> hits 160/320 nti 22 constraint (none) extremes [1, infinity)
     English:
-        <k-kind-for-template> 
+        <k-kind-prototype> 
           (hits 160/160) (matched: 'relation of objects') constraint (none) extremes [1, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
@@ -6883,27 +6883,27 @@
           (hits 0/584) constraint DS = {30} extremes [3, infinity)
         {......} - a nonexisting variable 
           (hits 0/193) constraint DS = {30} extremes [5, infinity)
-        {......} - a nonexisting <k-kind-for-template> variable 
+        {......} - a nonexisting <k-kind-prototype> variable 
           (hits 0/104) constraint DS = {30} extremes [6, infinity)
-        {......} - a nonexisting <k-kind-for-template> that/which varies 
+        {......} - a nonexisting <k-kind-prototype> that/which varies 
           (hits 0/65) constraint DS = {30} extremes [7, infinity)
         {......} - nonexisting variable 
           (hits 4/359) (matched: 't - nonexisting variable') constraint DS = {30} extremes [4, infinity)
-        {......} - nonexisting <k-kind-for-template> variable 
+        {......} - nonexisting <k-kind-prototype> variable 
           (hits 4/193) (matched: 'loopvar - nonexisting k variable') constraint DS = {30} extremes [5, infinity)
-        {......} - nonexisting <k-kind-for-template> that/which varies 
+        {......} - nonexisting <k-kind-prototype> that/which varies 
           (hits 0/104) constraint DS = {30} extremes [6, infinity)
         {......} - {an existing variable} 
           (hits 0/189) constraint DS = {30} extremes [5, infinity)
-        {......} - {an existing <k-kind-for-template> variable} 
+        {......} - {an existing <k-kind-prototype> variable} 
           (hits 0/104) constraint DS = {30} extremes [6, infinity)
-        {......} - {an existing <k-kind-for-template> that/which varies} 
+        {......} - {an existing <k-kind-prototype> that/which varies} 
           (hits 0/65) constraint DS = {30} extremes [7, infinity)
         {......} - {existing variable} 
           (hits 2/351) (matched: 't - existing variable') constraint DS = {30} extremes [4, infinity)
-        {......} - {existing <k-kind-for-template> variable} 
+        {......} - {existing <k-kind-prototype> variable} 
           (hits 0/189) constraint DS = {30} extremes [5, infinity)
-        {......} - {existing <k-kind-for-template> that/which varies} 
+        {......} - {existing <k-kind-prototype> that/which varies} 
           (hits 0/104) constraint DS = {30} extremes [6, infinity)
         {......} - a condition 
           (hits 0/349) constraint DS = {30} extremes [4, infinity)
@@ -7139,8 +7139,6 @@
         <if-parsing-al-conditions> <s-condition> 
           (hits 40/40) (matched: 'an actor smelling') constraint (none) extremes [1, infinity)
 
-<if-parsing-al-conditions> internal hits 80/160 nti 6 constraint (none) extremes [0, 0]
-
 <activity-operand> hits 3/30 nti 19 constraint (none) extremes [1, infinity)
     English:
         something/anything 
@@ -7149,6 +7147,8 @@
           constraint CS = {19} extremes [2, 2]
         <s-type-expression-or-value> 
           (hits 3/15) (matched: 'smelling') constraint (none) extremes [1, infinity)
+
+<if-parsing-al-conditions> internal hits 80/160 nti 6 constraint (none) extremes [0, 0]
 
 <rule-name-formal> hits 1191/2382 nti 23 constraint DS = {23} extremes [2, infinity)
     English:

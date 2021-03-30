@@ -26,9 +26,15 @@ marks it as deallocated.
 
 A slate of locals is stored like so:
 
+@d LOOP_THROUGH_LOCALS(lvar, slate)
+	LOOP_OVER_LINKED_LIST(lvar, local_variable, slate->local_variable_allocation)
+
+@d LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
+	LOOP_OVER_LINKED_LIST(lvar, local_variable, phsf->local_value_variables.local_variable_allocation)
+
 =
 typedef struct locals_slate {
-	struct local_variable *local_variable_allocation; /* linked list of valid locals */
+	struct linked_list *local_variable_allocation; /* of |local_variable| */
 	int it_variable_exists; /* it, he, she, or they, used for adjective definitions */
 	int its_form_allowed; /* its, his, her or their, ditto */
 	struct wording it_pseudonym; /* a further variation on the same variable */
@@ -57,8 +63,6 @@ typedef struct local_variable {
 	struct kind *kind_as_declared; /* data type for the contents */
 	int protected; /* from alteration using "let"? */
 	int parsed_recently; /* name recognised since this was last wiped? */
-
-	struct local_variable *next; /* on the same slate */
 	CLASS_DEFINITION
 } local_variable;
 
@@ -95,7 +99,7 @@ are most conveniently stored as locals, not globals.
 =
 locals_slate LocalVariables::blank_slate(void) {
 	locals_slate slate;
-	slate.local_variable_allocation = NULL;
+	slate.local_variable_allocation = NEW_LINKED_LIST(local_variable);
 	slate.it_pseudonym = EMPTY_WORDING;
 	slate.it_variable_exists = FALSE; slate.its_form_allowed = FALSE;
 	return slate;
@@ -108,14 +112,12 @@ context of compilation for later use. That includes locals, so:
 =
 void LocalVariables::deep_copy_locals_slate(locals_slate *slate_to, locals_slate *slate_from) {
 	*slate_to = *slate_from;
-	slate_to->local_variable_allocation = NULL;
-	local_variable *lvar, *tail = NULL;
-	for (lvar = slate_from->local_variable_allocation; lvar; lvar=lvar->next) {
+	slate_to->local_variable_allocation = NEW_LINKED_LIST(local_variable);
+	local_variable *lvar;
+	LOOP_THROUGH_LOCALS(lvar, slate_from) {
 		local_variable *dup = CREATE(local_variable); *dup = *lvar;
 		dup->duplicated = TRUE;
-		dup->next = NULL;
-		if (tail) tail->next = dup; else slate_to->local_variable_allocation = dup;
-		tail = dup;
+		ADD_TO_LINKED_LIST(dup, local_variable, slate_to->local_variable_allocation);
 	}
 }
 
@@ -126,9 +128,7 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 	kind *K, text_stream *override_lvalue, int override_index) {
 	int ix = 0; /* the new one will be the 0th, 1st, 2nd, ... with the same purpose */
 	local_variable *lvar = NULL;
-
-	if (slate) @<Make use of an unallocated var if possible, but otherwise add a new one@>
-	else @<Make a new local variable structure@>;
+	@<Make use of an unallocated var if possible, but otherwise add a new one@>
 	if (override_index >= 0) ix = override_index;
 	@<Fill in the local variable structure, whether it's new or recycled@>;
 
@@ -138,29 +138,19 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 }
 
 @<Make use of an unallocated var if possible, but otherwise add a new one@> =
-	local_variable *find = slate->local_variable_allocation;
-	if (find == NULL) {
-		@<Make a new local variable structure@>;
-		slate->local_variable_allocation = lvar;
-	} else {
-		while (find) {
+	if (slate) {
+		local_variable *find;
+		LOOP_THROUGH_LOCALS(find, slate)
 			if (find->lv_purpose == purpose) {
 				if (find->allocated == FALSE) { lvar = find; break; }
 				ix++;
 			}
-			if (find->next == NULL) {
-				@<Make a new local variable structure@>;
-				find->next = lvar;
-				break;
-			}
-			find = find->next;
-		}
 	}
-
-@<Make a new local variable structure@> =
-	lvar = CREATE(local_variable);
-	lvar->next = NULL;
-	lvar->duplicated = FALSE;
+	if (lvar == NULL) {
+		lvar = CREATE(local_variable);
+		lvar->duplicated = FALSE;
+		if (slate) ADD_TO_LINKED_LIST(lvar, local_variable, slate->local_variable_allocation);
+	}
 
 @<Fill in the local variable structure, whether it's new or recycled@> =
 	lvar->lv_purpose = purpose;
@@ -365,7 +355,7 @@ void LocalVariables::deallocate(local_variable *lvar) {
 =
 void LocalVariables::deallocate_all(ph_stack_frame *phsf) {
 	local_variable *lvar;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((lvar->lv_purpose == LET_VALUE_LV) && (lvar->allocated))
 			LocalVariables::deallocate(lvar);
 }
@@ -377,7 +367,7 @@ int LocalVariables::count(ph_stack_frame *phsf) {
 	int ct = 0;
 	if (phsf) {
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			ct++;
 	}
 	return ct;
@@ -398,7 +388,7 @@ void LocalVariables::copy(ph_stack_frame *phsf_to, ph_stack_frame *phsf_from) {
 	locals_slate *slate_to = &(phsf_to->local_value_variables);
 
 	local_variable *lvar;
-	for (lvar = slate_from->local_variable_allocation; lvar; lvar = lvar->next) {
+	LOOP_THROUGH_LOCALS(lvar, slate_from) {
 		local_variable *copied = LocalVariables::add_to_locals_slate(slate_to,
 			lvar->lv_purpose, lvar->varname, lvar->kind_as_declared,
 			lvar->lv_lvalue, lvar->index_with_this_purpose);
@@ -418,7 +408,7 @@ One way is to search the slate for a scratch variable by its I6 name:
 =
 local_variable *LocalVariables::find_i6_var(locals_slate *slate, text_stream *name, int purpose) {
 	local_variable *lvar;
-	for (lvar = slate->local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS(lvar, slate)
 		if ((lvar->lv_purpose == purpose) &&
 			(Str::eq(lvar->lv_lvalue, name)))
 				return lvar;
@@ -427,7 +417,7 @@ local_variable *LocalVariables::find_i6_var(locals_slate *slate, text_stream *na
 
 local_variable *LocalVariables::find_any(locals_slate *slate, text_stream *name) {
 	local_variable *lvar;
-	for (lvar = slate->local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS(lvar, slate)
 		if (Str::eq(lvar->lv_lvalue, name))
 			return lvar;
 	return NULL;
@@ -460,7 +450,7 @@ local_variable *LocalVariables::find_pcalc_var(int v) {
 	if (phsf == NULL) return NULL;
 	local_variable *lvar;
 	locals_slate *slate = &(phsf->local_value_variables);
-	for (lvar = slate->local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS(lvar, slate)
 		if (Str::len(lvar->lv_lvalue) == 1)
 			if (Str::get_at(lvar->lv_lvalue, 0) == pcalc_vars[v])
 				return lvar;
@@ -474,7 +464,7 @@ local_variable *LocalVariables::find_const_var(int v) {
 	WRITE_TO(T, "const_%d", v);
 	local_variable *lvar, *found = NULL;
 	locals_slate *slate = &(phsf->local_value_variables);
-	for (lvar = slate->local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS(lvar, slate)
 		if (Str::eq(lvar->lv_lvalue, T))
 			found = lvar;
 	DISCARD_TEXT(T)
@@ -501,7 +491,7 @@ local_variable *LocalVariables::get_ith_parameter(int i) {
 	if (phsf == NULL) internal_error("no stack frame exists");
 	local_variable *lvar;
 	int c = 0;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if (lvar->lv_purpose == TOKEN_CALL_PARAMETER_LV)
 			if (c++ == i)
 				return lvar;
@@ -556,7 +546,7 @@ any need.
 @<Parse the locals directly@> =
 	int h = Lexicon::wording_hash(W);
 	local_variable *lvar;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((Wordings::nonempty(lvar->varname)) &&
 			(h == lvar->name_hash) &&
 			(lvar->allocated == TRUE) &&
@@ -568,7 +558,7 @@ int stack_selection_used_recently = FALSE;
 void LocalVariables::monitor_local_parsing(ph_stack_frame *phsf) {
 	if (phsf) {
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			lvar->parsed_recently = FALSE;
 	}
 	stack_selection_used_recently = FALSE;
@@ -581,7 +571,7 @@ void LocalVariables::used_stack_selection(void) {
 int LocalVariables::local_parsed_recently(ph_stack_frame *phsf) {
 	if (phsf) {
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			if (lvar->parsed_recently) return TRUE;
 	}
 	if (stack_selection_used_recently) return TRUE;
@@ -643,14 +633,15 @@ park the values of the locals into a little scratch array before the call...
 void LocalVariables::compile_storage(OUTPUT_STREAM, ph_stack_frame *phsf) {
 	local_variable *lvar;
 	int j=0;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		WRITE("(LocalParking-->%d=%~L),", j++, lvar);
 }
 
 int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 	int NC = 0;
 	inter_ti j = 0;
-	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
+	local_variable *lvar;
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf) {
 		NC++;
 		Produce::inv_primitive(Emit::tree(), SEQUENTIAL_BIP);
 		Produce::down(Emit::tree());
@@ -675,7 +666,8 @@ function, i.e., immediately after the call.
 void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
 	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
 	inter_ti j=0;
-	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
+	local_variable *lvar;
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf) {
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, LocalVariables::declare_this(lvar, FALSE, 1));
@@ -696,7 +688,7 @@ void LocalVariables::make_available_to_equation(equation *eqn) {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) {
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			if (lvar->allocated)
 				Equations::declare_local(eqn, lvar->varname, lvar->kind_as_declared);
 	}
@@ -950,7 +942,7 @@ void LocalVariables::end_scope(int s) {
 	if (s <= 0) internal_error("the outermost scope cannot end");
 
 	local_variable *lvar;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((lvar->lv_purpose == LET_VALUE_LV) &&
 			(lvar->allocated) && (lvar->block_scope >= s)) {
 			LOGIF(LOCAL_VARIABLES, "De-allocating $k at end of block\n", lvar);
@@ -977,7 +969,7 @@ local_variable *LocalVariables::latest_repeat_variable(void) {
 	if (phsf) {
 		int s = Frames::Blocks::current_block_level();
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			if ((lvar->lv_purpose == LET_VALUE_LV) &&
 				(lvar->allocated) && (lvar->block_scope == s))
 				return lvar;
@@ -1087,7 +1079,7 @@ void LocalVariables::compile_parameter_list(OUTPUT_STREAM, ph_stack_frame *phsf,
 	int purpose;
 	for (purpose = TOKEN_CALL_PARAMETER_LV; purpose <= OTHER_CALL_PARAMETER_LV; purpose++) {
 		local_variable *lvar;
-		for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			if (lvar->lv_purpose == purpose) {
 				if (no_vars++ > 0) WRITE(", ");
 				WRITE("%~L", lvar);
@@ -1096,24 +1088,25 @@ void LocalVariables::compile_parameter_list(OUTPUT_STREAM, ph_stack_frame *phsf,
 }
 
 void LocalVariables::emit_parameter_list(ph_stack_frame *phsf) {
-	for (int purpose = TOKEN_CALL_PARAMETER_LV; purpose <= OTHER_CALL_PARAMETER_LV; purpose++) {
-		for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	local_variable *lvar;
+	for (int purpose = TOKEN_CALL_PARAMETER_LV; purpose <= OTHER_CALL_PARAMETER_LV; purpose++)
+		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 			if (lvar->lv_purpose == purpose) {
 				inter_symbol *vs = LocalVariables::declare_this(lvar, TRUE, 3);
 				Produce::val_symbol(Emit::tree(), K_value, vs);
 			}
-	}
 }
 
 @ =
 kind *LocalVariables::deduced_function_kind(ph_stack_frame *phsf) {
 	int pc = 0;
-	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	local_variable *lvar;
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((lvar->lv_purpose == TOKEN_CALL_PARAMETER_LV) || (lvar->lv_purpose == OTHER_CALL_PARAMETER_LV))
 			pc++;
 	kind *K_array[128];
 	pc = 0;
-	for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((lvar->lv_purpose == TOKEN_CALL_PARAMETER_LV) || (lvar->lv_purpose == OTHER_CALL_PARAMETER_LV))
 			if (pc < 128) {
 				kind *OK = lvar->kind_as_declared;
@@ -1132,7 +1125,8 @@ void LocalVariables::declare(ph_stack_frame *phsf, int shell_mode) {
 	if (shell_mode) to = OTHER_CALL_PARAMETER_LV;
 	if (phsf)
 		for (purpose = from; purpose <= to; purpose++) {
-			for (local_variable *lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next)
+			local_variable *lvar;
+			LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 				if (lvar->lv_purpose == purpose) {
 					LocalVariables::declare_this(lvar, shell_mode, 4);
 				}

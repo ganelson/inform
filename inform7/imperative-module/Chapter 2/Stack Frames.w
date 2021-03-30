@@ -204,7 +204,7 @@ void Frames::log(ph_stack_frame *phsf) {
 		(phsf->local_value_variables.it_variable_exists)?"yes":"no",
 		(phsf->determines_past_conditions)?"yes":"no");
 	local_variable *lvar;
-	for (lvar = phsf->local_value_variables.local_variable_allocation; lvar; lvar = lvar->next) {
+	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf) {
 		switch (lvar->lv_purpose) {
 			case LET_VALUE_LV: LOG("Let/loop value: "); break;
 			case TOKEN_CALL_PARAMETER_LV: LOG("Call value: "); break;
