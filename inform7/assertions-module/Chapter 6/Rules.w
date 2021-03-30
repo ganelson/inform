@@ -19,7 +19,7 @@ of a phrase, and indeed inside the compiler it is stored as such, in the
 |defn_as_I7_source| field of a //rule//. But other rules are written quite
 differently:
 = (text as Inform 7)
-The can't reach inside rooms rule translates into Inter as |"CANT_REACH_INSIDE_ROOMS_R"|.
+The can't reach inside rooms rule translates into Inter as "CANT_REACH_INSIDE_ROOMS_R".
 =
 and this one is defined by a low-level Inter function, and not a phrase at all.
 In any case, rules and phrases have quite different header syntax, and have
@@ -445,48 +445,46 @@ it's possible to change the way that applicability testing is done.
 =
 void Rules::set_always_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
-		ActionRules::set_always_test_actor(phrcd);
+		id_runtime_context_data *rcd = RuntimeContextData::of(R->defn_as_I7_source);
+		ActionRules::set_always_test_actor(rcd);
 	}
 }
 
 void Rules::set_never_test_actor(rule *R) {
 	if (R->defn_as_I7_source) {
-		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
-		ActionRules::set_never_test_actor(phrcd);
+		id_runtime_context_data *rcd = RuntimeContextData::of(R->defn_as_I7_source);
+		ActionRules::set_never_test_actor(rcd);
 	}
 }
 
 void Rules::set_marked_for_anyone(rule *R, int to) {
 	if (R->defn_as_I7_source) {
-		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
-		ActionRules::set_marked_for_anyone(phrcd, to);
+		id_runtime_context_data *rcd = RuntimeContextData::of(R->defn_as_I7_source);
+		ActionRules::set_marked_for_anyone(rcd, to);
 	}
 }
 
 void Rules::suppress_action_testing(rule *R) {
 	if (R->defn_as_I7_source) {
-		id_runtime_context_data *phrcd = &(R->defn_as_I7_source->body_of_defn->runtime_context_data);
-		ActionRules::suppress_action_testing(phrcd);
+		id_runtime_context_data *rcd = RuntimeContextData::of(R->defn_as_I7_source);
+		ActionRules::suppress_action_testing(rcd);
 	}
 }
 
 void Rules::copy_actor_test_flags(rule *R_to, rule *R_from) {
 	if ((R_from == NULL) || (R_to == NULL)) internal_error("improper catf");
 
-	id_runtime_context_data *phrcd_from = NULL;
-	if (R_from->defn_as_I7_source)
-		phrcd_from = &(R_from->defn_as_I7_source->body_of_defn->runtime_context_data);
-	id_runtime_context_data *phrcd_to = NULL;
-	if (R_to->defn_as_I7_source)
-		phrcd_to = &(R_to->defn_as_I7_source->body_of_defn->runtime_context_data);
+	id_runtime_context_data *rcd_from = NULL;
+	if (R_from->defn_as_I7_source) rcd_from = RuntimeContextData::of(R_from->defn_as_I7_source);
+	id_runtime_context_data *rcd_to = NULL;
+	if (R_to->defn_as_I7_source) rcd_to = RuntimeContextData::of(R_to->defn_as_I7_source);
 
-	if (phrcd_to) {
-		if ((phrcd_from == NULL) ||
-			((ActionRules::get_marked_for_anyone(phrcd_from)) &&
-				(ActionRules::get_marked_for_anyone(phrcd_to) == FALSE))) {
-			ActionRules::clear_always_test_actor(phrcd_to);
-			ActionRules::set_never_test_actor(phrcd_to);
+	if (rcd_to) {
+		if ((rcd_from == NULL) ||
+			((ActionRules::get_marked_for_anyone(rcd_from)) &&
+				(ActionRules::get_marked_for_anyone(rcd_to) == FALSE))) {
+			ActionRules::clear_always_test_actor(rcd_to);
+			ActionRules::set_never_test_actor(rcd_to);
 		}
 	}
 }

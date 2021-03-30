@@ -109,16 +109,37 @@ Similarly, though a little easier, //Implications// like "Something worn is
 usually wearable" do not immediately lead to propositions being drawn up.
 
 @h Imperative definitions.
+At the top level, Inform source text consists of more than just assertion
+sentences: other constructions are made with different syntaxes. The most
+obvious of these are "imperative definitions", which are lists of instructions
+for what to do in different circumstances. They take the form
+= (text as Inform 7)
+a preamble text:
+    first instruction;
+    second instruction;
+    ...
+    last instruction.
+=
+The preamble is parsed into an //imperative_defn//, which falls into one of
+a small range of //Imperative Definition Families//: the most important being
+the //Rule Family//, for interactive-fiction-style rules, and //To Phrase Family//,
+for declaring new "To..." phrases. Each definition is eventually joined to an
+//id_body// representing the list of what to do, and this may be compiled to
+one or more functions in the final output.
 
+//Rules// need more infrastructure, since they must live inside //Rulebooks//
+to take effect. Rulebooks contain //Booking Lists// of //Rule Bookings// to
+hold these; it all takes some juggling because of the features Inform has to
+allow authors to move rules around or customise their applicability. Finally,
+we introduce //Activities//, which are really just triplets of related rulebooks.
 
 @h Other gadgets.
-At the top level, Inform source text consists of more than just assertion
-sentences. Rules and phrases are left to //imperative// to look after, but we
-will take care of //Tables// (and their //Table Columns//) here, along with
+And there are a few other constructions, too. Actions are left to //if: Actions Plugin//,
+but even Basic Inform has //Tables// (and their //Table Columns//), along with
 the quirkier inclusion of //Equations//.
 
 @h Making use of the calculus module.
-//Chapter 5// simply stocks up our predicate calculus system with some
+//Chapter 8// simply stocks up our predicate calculus system with some
 basic unary and binary predicates, and provides a few shorthand functions
 to make commonly-needed propositions (see //Calculus Utilities//).
 

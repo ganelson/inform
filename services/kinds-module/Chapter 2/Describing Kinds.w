@@ -49,7 +49,7 @@ token parsing mode; it's used when parsing the kind to be decided by a
 phrase (which, like phrase tokens, can involve the variables).
 
 =
-<k-kind-for-template> internal {
+<k-kind-prototype> internal {
 	int s = kind_parsing_mode;
 	kind_parsing_mode = PHRASE_TOKEN_KIND_PARSING;
 	int t = <k-kind>(W);

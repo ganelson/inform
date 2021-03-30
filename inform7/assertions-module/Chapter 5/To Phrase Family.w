@@ -68,20 +68,20 @@ must begin with "to" and contain at least one other word.
 
 =
 <to-phrase-preamble> ::=
-	{to} |                                                    ==> @<Issue PM_BareTo problem@>
-	to ... ( called ... ) |                                   ==> @<Issue PM_DontCallPhrasesWithCalled problem@>
-	{to ...} ( this is the {### function} inverse to ### ) |  ==> { 1, - }
-	{to ...} ( this is the {### function} ) |                 ==> { 2, - }
-	{to ...} ( this is ... ) |                                ==> { 3, - }
-	{to ...}                                                  ==> { 4, - }
+	{to} |                                                   ==> @<Issue PM_BareTo@>
+	to ... ( called ... ) |                                  ==> @<Issue PM_DontCallPhrasesWithCalled@>
+	{to ...} ( this is the {### function} inverse to ### ) | ==> { 1, - }
+	{to ...} ( this is the {### function} ) |                ==> { 2, - }
+	{to ...} ( this is ... ) |                               ==> { 3, - }
+	{to ...}                                                 ==> { 4, - }
 
-@<Issue PM_BareTo problem@> =
+@<Issue PM_BareTo@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BareTo),
 		"'to' what? No name is given",
 		"which means that this would not define a new phrase.");
 	==> { 4, - };
 
-@<Issue PM_DontCallPhrasesWithCalled problem@> =
+@<Issue PM_DontCallPhrasesWithCalled@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DontCallPhrasesWithCalled),
 		"phrases aren't named using 'called'",
 		"and instead use 'this is...'. For example, 'To salute (called saluting)' "
@@ -373,8 +373,10 @@ id_body *ToPhraseFamily::meaning_as_phrase(excerpt_meaning *em) {
 
 int ToPhraseFamily::sequence_count(id_body *idb) {
 	if (idb == NULL) return 0;
-	if (idb->head_of_defn->family != to_phrase_idf) internal_error("sequence count on what is not a To");
-	to_family_data *tfd = RETRIEVE_POINTER_to_family_data(idb->head_of_defn->family_specific_data);
+	if (idb->head_of_defn->family != to_phrase_idf)
+		internal_error("sequence count on what is not a To");
+	to_family_data *tfd =
+		RETRIEVE_POINTER_to_family_data(idb->head_of_defn->family_specific_data);
 	if (tfd->sequence_count == -1) {
 		ImperativeDefinitions::log_body(idb);
 		internal_error("Sequence count not ready");
@@ -386,7 +388,8 @@ int ToPhraseFamily::allows_inline(imperative_defn_family *self, imperative_defn 
 	return TRUE;
 }
 
-int ToPhraseFamily::include_in_Phrasebook_index(imperative_defn_family *self, imperative_defn *id) {
+int ToPhraseFamily::include_in_Phrasebook_index(imperative_defn_family *self,
+	imperative_defn *id) {
 	return TRUE;
 }
 

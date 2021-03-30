@@ -78,10 +78,10 @@ it a natural thing to do.
 @d ERRONEOUS_IDTC       0 /* used only in parsing, never in an IDTT */
 @d STANDARD_IDTC        1 /* e.g., |12|, |number|, |open door| */
 @d NEW_LOCAL_IDTC       2 /* e.g., |nonexisting number variable| */
-@d OLD_LOCAL_IDTC  3 /* e.g., |existing number variable| */
+@d OLD_LOCAL_IDTC       3 /* e.g., |existing number variable| */
 @d CONDITION_IDTC       4 /* e.g., |a condition| */
 @d STORAGE_IDTC         5 /* e.g., |storage| */
-@d TABLE_REF_IDTC 6 /* e.g., |table-reference| */
+@d TABLE_REF_IDTC       6 /* e.g., |table-reference| */
 @d KIND_NAME_IDTC       7 /* e.g., |name of kind| */
 @d VOID_IDTC            8 /* e.g., or in fact only, |phrase| */
 

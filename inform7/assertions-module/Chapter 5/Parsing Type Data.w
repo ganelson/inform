@@ -38,7 +38,7 @@ void ParsingIDTypeData::parse(id_type_data *idtd, wording XW) {
 		if (comma_presages_options) {
 			if (say_flag) @<Issue a problem: say phrases aren't allowed options@>;
 			OW = Wordings::from(XW, cw + 1);
-			XW = Wordings::up_to(XW, cw - 1); /* trim the preamble range to to the text before the comma */
+			XW = Wordings::up_to(XW, cw - 1); /* trim preamble range to text before the comma */
 		}
 	}
 	idtd->registration_text = XW;
@@ -77,13 +77,13 @@ language altogether, but there we are; spilt milk.
 As with C type declarations for functions, Inform phrase prototypes put their
 return kinds up at the front, not the back. So we'll parse that first.
 
-Note that <k-kind-for-template> parses <k-kind>, but in a mode which causes
+Note that <k-kind-prototype> parses <k-kind>, but in a mode which causes
 the kind variables to be read as formal prototypes and not as their values.
 This allows for tricky definitions like:
 
 >> To decide which K is (name of kind of value K) which relates to (Y - L) by (R - relation of Ks to values of kind L)
 
-where <k-kind-for-template> needs to recognise "K" even though the tokens
+where <k-kind-prototype> needs to recognise "K" even though the tokens
 haven't yet been parsed, so that we don't yet know it will be meaningful.
 
 @d DEC_RANN 1
@@ -103,7 +103,7 @@ haven't yet been parsed, so that we don't yet know it will be meaningful.
 	to ...                                           ==> { TO_RANN,  NULL }
 
 <return-kind> ::=
-	<k-kind-for-template> |                          ==> { pass 1 }
+	<k-kind-prototype> |                          ==> { pass 1 }
 	...                                              ==> @<Issue PM_UnknownValueToDecide problem@>
 
 @<Issue PM_UnknownValueToDecide problem@> =
@@ -169,21 +169,21 @@ the syntax below.)
 
 =
 <phrase-preamble> ::=
-	<phrase-preamble> ( deprecated ) |                         ==> { R[1], -, <<deprecated>> = TRUE }
-	<say-preamble>	|                                          ==> { SAY_ANN, -, <<say-ann>> = R[1] }
-	<to-preamble>                                              ==> { pass 1 }
+	<phrase-preamble> ( deprecated ) |              ==> { R[1], -, <<deprecated>> = TRUE }
+	<say-preamble>	|                               ==> { SAY_ANN, -, <<say-ann>> = R[1] }
+	<to-preamble>                                   ==> { pass 1 }
 
 <to-preamble> ::=
 	<to-preamble> ( arithmetic operation <cardinal-number> ) | ==> { R[1], -, <<operation>> = R[2] }
-	<to-preamble> ( assignment operation ) |                   ==> { R[1], -, <<assignment>> = TRUE }
-	{let ... be given by ...} |                                ==> { LET_ANN, -, <<eqn>> = TRUE }
-	{let ...} |                                                ==> { LET_ANN, -, <<eqn>> = FALSE }
-	... -- end |                                               ==> { BLOCK_ANN, - }
-	... -- end conditional |                                   ==> { CONDITIONAL_ANN, - }
-	... -- end loop |                                          ==> { LOOP_ANN, - }
-	... -- in loop |                                           ==> { IN_LOOP_ANN, - }
-	... -- in ### |                                            ==> { IN_ANN, - }
-	...                                                        ==> { NO_ANN, - }
+	<to-preamble> ( assignment operation ) |        ==> { R[1], -, <<assign>> = TRUE }
+	{let ... be given by ...} |                     ==> { LET_ANN, -, <<eqn>> = TRUE }
+	{let ...} |                                     ==> { LET_ANN, -, <<eqn>> = FALSE }
+	... -- end |                                    ==> { BLOCK_ANN, - }
+	... -- end conditional |                        ==> { CONDITIONAL_ANN, - }
+	... -- end loop |                               ==> { LOOP_ANN, - }
+	... -- in loop |                                ==> { IN_LOOP_ANN, - }
+	... -- in ### |                                 ==> { IN_ANN, - }
+	...                                             ==> { NO_ANN, - }
 
 @ Phrases whose definitions begin "To say" are usually but not necessarily text
 substitutions.
@@ -197,23 +197,23 @@ substitutions.
 
 =
 <say-preamble> ::=
-	<say-preamble> -- running on |            ==> { R[1], -, <<run-on>> = TRUE }
-	{say otherwise/else} |                    ==> { CONTROL_SANN, -, <<control>> = OTHERWISE_SAY_CS }
-	{say otherwise/else if/unless ...} |      ==> { CONTROL_SANN, -, <<control>> = OTHERWISE_IF_SAY_CS }
-	{say if/unless ...} |                     ==> { CONTROL_SANN, -, <<control>> = IF_SAY_CS }
-	{say end if/unless} |                     ==> { CONTROL_SANN, -, <<control>> = END_IF_SAY_CS }
-	{say ...} -- beginning ### |              ==> { BEGIN_SANN, - }
-	{say ...} -- continuing ### |             ==> { CONTINUE_SANN, - }
+	<say-preamble> -- running on |       ==> { R[1], -, <<run-on>> = TRUE }
+	{say otherwise/else} |               ==> { CONTROL_SANN, -, <<control>> = OTHERWISE_SAY_CS }
+	{say otherwise/else if/unless ...} | ==> { CONTROL_SANN, -, <<control>> = OTHERWISE_IF_SAY_CS }
+	{say if/unless ...} |                ==> { CONTROL_SANN, -, <<control>> = IF_SAY_CS }
+	{say end if/unless} |                ==> { CONTROL_SANN, -, <<control>> = END_IF_SAY_CS }
+	{say ...} -- beginning ### |         ==> { BEGIN_SANN, - }
+	{say ...} -- continuing ### |        ==> { CONTINUE_SANN, - }
 	{say ...} -- ending ### with marker ### | ==> { ENDM_SANN, - }
-	{say ...} -- ending ### |                 ==> { END_SANN, - }
-	{say ...}                                 ==> { NO_SANN, - }
+	{say ...} -- ending ### |            ==> { END_SANN, - }
+	{say ...}                            ==> { NO_SANN, - }
 
 @ Since doodads are notated at the back of the prototype text, the following trims
 the end off the wording given.
 
 =
 wording ParsingIDTypeData::phtd_parse_doodads(id_type_data *idtd, wording W, int *say_flag) {
-	<<operation>> = -1; <<assignment>> = FALSE; <<deprecated>> = FALSE; <<run-on>> = FALSE;
+	<<operation>> = -1; <<assign>> = FALSE; <<deprecated>> = FALSE; <<run-on>> = FALSE;
 	<phrase-preamble>(W); /* guaranteed to match any non-empty text */
 	if (<<r>> == SAY_ANN) W = GET_RW(<say-preamble>, 1);
 	else W = GET_RW(<to-preamble>, 1);
@@ -232,7 +232,7 @@ wording ParsingIDTypeData::phtd_parse_doodads(id_type_data *idtd, wording W, int
 		case LOOP_ANN:			blk = LOOP_BODY_BLOCK_FOLLOWS; break;
 		case SAY_ANN: 			@<We seem to be parsing a "say" phrase@>; break;
 	}
-	IDTypeData::make_id(&(idtd->as_inline), <<operation>>, <<assignment>>, let, blk, only_in);
+	IDTypeData::make_id(&(idtd->as_inline), <<operation>>, <<assign>>, let, blk, only_in);
 
 	@<Vet the phrase for an unfortunate prepositional collision@>;
 	return W;
@@ -277,9 +277,9 @@ but less helpful problem messages.
 
 @ =
 <phrase-vetting> ::=
-	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )  ==> @<Issue PM_MasksRelation problem@>
+	( ...... ) <copular-verb> {<copular-preposition>} ( ...... )  ==> @<Issue PM_MasksRelation@>
 
-@<Issue PM_MasksRelation problem@> =
+@<Issue PM_MasksRelation@> =
 	wording RW = GET_RW(<phrase-vetting>, 2);
 	preposition *prep = RP[2];
 	Problems::quote_source(1, current_sentence);
@@ -566,31 +566,31 @@ the hyphen, and this is sorely needed with complicated functional kinds.
 
 =
 <phrase-token-declaration> ::=
-	*** ( *** - ...... |                                             ==> @<Issue PM_TokenWithNestedBrackets@>
-	...... - a nonexisting variable |                                ==> @<New local@>
-	...... - a nonexisting <k-kind-for-template> variable |          ==> @<New local of kind@>
-	...... - a nonexisting <k-kind-for-template> that/which varies | ==> @<New local of kind@>
-	...... - nonexisting variable |                                  ==> @<New local@>
-	...... - nonexisting <k-kind-for-template> variable |            ==> @<New local of kind@>
-	...... - nonexisting <k-kind-for-template> that/which varies |   ==> @<New local of kind@>
-	...... - {an existing variable} |                                ==> @<Existing local@>
-	...... - {an existing <k-kind-for-template> variable} |          ==> @<Existing local of kind@>
-	...... - {an existing <k-kind-for-template> that/which varies} | ==> @<Existing local of kind@>
-	...... - {existing variable} |                                   ==> @<Existing local@>
-	...... - {existing <k-kind-for-template> variable} |             ==> @<Existing local of kind@>
-	...... - {existing <k-kind-for-template> that/which varies} |    ==> @<Existing local of kind@>
-	...... - a condition |                                           ==> { CONDITION_IDTC, NULL }
-	...... - condition |                                             ==> { CONDITION_IDTC, NULL }
-	...... - a phrase |                                              ==> { VOID_IDTC, NULL }
-	...... - phrase |                                                ==> { VOID_IDTC, NULL }
-	...... - storage |                                               ==> @<Storage@>
-	...... - a table-reference |                                     ==> @<Table ref@>
-	...... - table-reference |                                       ==> @<Table ref@>
-	...... - <s-phrase-token-type> |                                 ==> { STANDARD_IDTC, RP[1] }
-	...... - <s-kind-as-name-token> |                                ==> { KIND_NAME_IDTC, RP[1] }
-	...... - ...... |                                                ==> @<Issue PM_BadTypeIndication@>
-	<s-kind-as-name-token> |                                         ==> { -KIND_NAME_IDTC, RP[1] }
-	......                                                           ==> @<Issue PM_TokenMisunderstood@>
+	*** ( *** - ...... |                                ==> @<Issue PM_TokenWithNestedBrackets@>
+	...... - a nonexisting variable |                             ==> @<New local@>
+	...... - a nonexisting <k-kind-prototype> variable |          ==> @<New local of kind@>
+	...... - a nonexisting <k-kind-prototype> that/which varies | ==> @<New local of kind@>
+	...... - nonexisting variable |                               ==> @<New local@>
+	...... - nonexisting <k-kind-prototype> variable |            ==> @<New local of kind@>
+	...... - nonexisting <k-kind-prototype> that/which varies |   ==> @<New local of kind@>
+	...... - {an existing variable} |                             ==> @<Existing local@>
+	...... - {an existing <k-kind-prototype> variable} |          ==> @<Existing local of kind@>
+	...... - {an existing <k-kind-prototype> that/which varies} | ==> @<Existing local of kind@>
+	...... - {existing variable} |                                ==> @<Existing local@>
+	...... - {existing <k-kind-prototype> variable} |             ==> @<Existing local of kind@>
+	...... - {existing <k-kind-prototype> that/which varies} |    ==> @<Existing local of kind@>
+	...... - a condition |                                        ==> { CONDITION_IDTC, NULL }
+	...... - condition |                                          ==> { CONDITION_IDTC, NULL }
+	...... - a phrase |                                           ==> { VOID_IDTC, NULL }
+	...... - phrase |                                             ==> { VOID_IDTC, NULL }
+	...... - storage |                                            ==> @<Storage@>
+	...... - a table-reference |                                  ==> @<Table ref@>
+	...... - table-reference |                                    ==> @<Table ref@>
+	...... - <s-phrase-token-type> |                              ==> { STANDARD_IDTC, RP[1] }
+	...... - <s-kind-as-name-token> |                             ==> { KIND_NAME_IDTC, RP[1] }
+	...... - ...... |                                             ==> @<Issue PM_BadTypeIndication@>
+	<s-kind-as-name-token> |                                      ==> { -KIND_NAME_IDTC, RP[1] }
+	......                                                        ==> @<Issue PM_TokenMisunderstood@>
 
 @<New local@> =
 	==> { NEW_LOCAL_IDTC, Specifications::from_kind(K_value) }

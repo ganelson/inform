@@ -30,6 +30,11 @@ id_runtime_context_data RuntimeContextData::new(void) {
 	return phrcd;
 }
 
+id_runtime_context_data *RuntimeContextData::of(imperative_defn *id) {
+	if (id == NULL) return NULL;
+	return &(id->body_of_defn->runtime_context_data);
+}
+
 @ For the more interesting clauses, see //if: Scenes// and //if: Rules Predicated on Actions//,
 where the scenes and actions plugins make use of the following extensibility:
 
@@ -230,15 +235,15 @@ anyway, so we can safely just ignore the word "something".
 	^<if-parsing-al-conditions> ... |            ==> @<Make one-entry AL with unparsed text@>
 	<if-parsing-al-conditions> <s-condition>     ==> @<Make one-entry AL with condition@>
 
+<activity-operand> ::=
+	something/anything |                         ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	something/anything else |                    ==> { FALSE, Specifications::new_UNKNOWN(W) }
+	<s-type-expression-or-value>                 ==> { TRUE, RP[1] }
+
 <if-parsing-al-conditions> internal 0 {
 	if (parsing_al_conditions) return TRUE;
 	==> { fail nonterminal };
 }
-
-<activity-operand> ::=
-	something/anything |          ==> { FALSE, Specifications::new_UNKNOWN(W) }
-	something/anything else |     ==> { FALSE, Specifications::new_UNKNOWN(W) }
-	<s-type-expression-or-value>  ==> { TRUE, RP[1] }
 
 @<Flip the activity list parities@> =
 	activity_list *al = *XP;

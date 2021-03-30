@@ -175,11 +175,11 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 			switch(br->next_booking->placement) {
 				case MIDDLE_PLACEMENT:
 					br->commentary.tooltip_text =
-						I"the rule above was listed as 'first' so precedes this one, which wasn't";
+					I"the rule above was listed as 'first' so precedes this one, which wasn't";
 					break;
 				case LAST_PLACEMENT:
 					br->commentary.tooltip_text =
-						I"the rule above was listed as 'first' so precedes this one, listed as 'last'";
+					I"the rule above was listed as 'first' so precedes this one, listed as 'last'";
 					break;
 				default:
 					BookingLists::log(L);
@@ -191,7 +191,7 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 			switch(br->next_booking->placement) {
 				case LAST_PLACEMENT:
 					br->commentary.tooltip_text =
-						I"the rule below was listed as 'last' so comes after the rule above, which wasn't";
+					I"the rule below was listed as 'last' so comes after this one, which wasn't";
 					break;
 				default:
 					BookingLists::log(L);
@@ -210,21 +210,21 @@ void RuleBookings::list_judge_ordering(booking_list *L) {
 	switch(br->placement) {
 		case FIRST_PLACEMENT:
 			br->commentary.tooltip_text =
-				I"these rules were both listed as 'first', so they appear in reverse order of listing";
+			I"these rules were both listed as 'first', so they appear in reverse order of listing";
 			break;
 		case MIDDLE_PLACEMENT:
 			br->commentary.next_rule_specificity =
 				RuleBookings::cmp(br, br->next_booking, FALSE);
 			if (br->commentary.next_rule_specificity == 0) br->commentary.tooltip_text =
-				I"these rules are equally ranked";
+			I"these rules are equally ranked";
 			else {
 				br->commentary.tooltip_text =
-				I"the arrow points from a more specific rule to a more general one, as decided by Law";
+				I"the arrow points from a more specific rule to a more general, as decided by Law";
 				br->commentary.law_applied = Specifications::law_applied();
 			}
 			break;
 		case LAST_PLACEMENT:
 			br->commentary.tooltip_text =
-				I"these rules were both listed as 'last', so they appear in order of listing";
+			I"these rules were both listed as 'last', so they appear in order of listing";
 			break;
 	}

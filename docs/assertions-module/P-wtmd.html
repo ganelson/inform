@@ -214,13 +214,40 @@ Similarly, though a little easier, <a href="4-imp.html" class="internal">Implica
 usually wearable" do not immediately lead to propositions being drawn up.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Other gadgets. </b>At the top level, Inform source text consists of more than just assertion
-sentences. Rules and phrases are left to <a href="../imperative-module/index.html" class="internal">imperative</a> to look after, but we
-will take care of <a href="7-tbl.html" class="internal">Tables</a> (and their <a href="7-tc.html" class="internal">Table Columns</a>) here, along with
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Imperative definitions. </b>At the top level, Inform source text consists of more than just assertion
+sentences: other constructions are made with different syntaxes. The most
+obvious of these are "imperative definitions", which are lists of instructions
+for what to do in different circumstances. They take the form
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">preamble</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">first</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    ...</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">last</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary">The preamble is parsed into an <a href="5-id.html#SP1" class="internal">imperative_defn</a>, which falls into one of
+a small range of <a href="5-idf.html" class="internal">Imperative Definition Families</a>: the most important being
+the <a href="5-rf.html" class="internal">Rule Family</a>, for interactive-fiction-style rules, and <a href="5-tpf.html" class="internal">To Phrase Family</a>,
+for declaring new "To..." phrases. Each definition is eventually joined to an
+<a href="5-id.html#SP7" class="internal">id_body</a> representing the list of what to do, and this may be compiled to
+one or more functions in the final output.
+</p>
+
+<p class="commentary"><a href="6-rls.html" class="internal">Rules</a> need more infrastructure, since they must live inside <a href="6-rlb.html" class="internal">Rulebooks</a>
+to take effect. Rulebooks contain <a href="6-bl.html" class="internal">Booking Lists</a> of <a href="6-rb.html" class="internal">Rule Bookings</a> to
+hold these; it all takes some juggling because of the features Inform has to
+allow authors to move rules around or customise their applicability. Finally,
+we introduce <a href="6-act.html" class="internal">Activities</a>, which are really just triplets of related rulebooks.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Other gadgets. </b>And there are a few other constructions, too. Actions are left to <a href="../if-module/4-ap.html" class="internal">Actions Plugin (in if)</a>,
+but even Basic Inform has <a href="7-tbl.html" class="internal">Tables</a> (and their <a href="7-tc.html" class="internal">Table Columns</a>), along with
 the quirkier inclusion of <a href="7-eqt.html" class="internal">Equations</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making use of the calculus module. </b><a href="5-id.html" class="internal">Chapter 5: Imperative Code</a> simply stocks up our predicate calculus system with some
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Making use of the calculus module. </b><a href="8-kpr.html" class="internal">Chapter 8: Predicates</a> simply stocks up our predicate calculus system with some
 basic unary and binary predicates, and provides a few shorthand functions
 to make commonly-needed propositions (see <a href="8-cu.html" class="internal">Calculus Utilities</a>).
 </p>

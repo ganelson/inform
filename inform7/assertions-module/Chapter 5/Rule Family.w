@@ -163,13 +163,13 @@ Now we take a closer look at the rule preamble.
 
 =
 <rule-preamble-fine> ::=
-	<rule-preamble-finer> during <s-scene-description> |  ==> { R[1], RP[2] }
-	<rule-preamble-finer>                                 ==> { R[1], NULL }
+	<rule-preamble-finer> during <s-scene-description> | ==> { R[1], RP[2] }
+	<rule-preamble-finer>                                ==> { R[1], NULL }
 
 <rule-preamble-finer> ::=
-	{<rulebook-stem-embellished>} {when/while ...} |      ==> { TRUE, - }
-	{<rulebook-stem-embellished>} |                       ==> { FALSE, - }
-	...													  ==> { NOT_APPLICABLE, - }
+	{<rulebook-stem-embellished>} {when/while ...} |     ==> { TRUE, - }
+	{<rulebook-stem-embellished>} |                      ==> { FALSE, - }
+	...                                                  ==> { NOT_APPLICABLE, - }
 
 <rulebook-stem-embellished> ::=
 	<rulebook-stem> *** |
@@ -179,15 +179,15 @@ Now we take a closer look at the rule preamble.
 	rule <rulebook-stem> ***
 
 <rulebook-bud> ::=
-	of/for ... |                                          ==> { TRUE, - }
-	rule about/for/on ... |                               ==> { TRUE, - }
-	rule                                                  ==> { FALSE, - }
+	of/for ... |                                         ==> { TRUE, - }
+	rule about/for/on ... |                              ==> { TRUE, - }
+	rule                                                 ==> { FALSE, - }
 
 <unrecognised-rule-stem-diagnosis> ::=
-	when *** |                            ==> @<Issue PM_BadRulePreambleWhen problem@>
-	...                                   ==> @<Issue PM_BadRulePreamble problem@>
+	when *** |                                           ==> @<Issue PM_BadRulePreambleWhen@>
+	...                                                  ==> @<Issue PM_BadRulePreamble@>
 
-@<Issue PM_BadRulePreambleWhen problem@> =
+@<Issue PM_BadRulePreambleWhen@> =
 	Problems::quote_source(1, current_sentence);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleWhen));
 	Problems::issue_problem_segment(
@@ -202,7 +202,7 @@ Now we take a closer look at the rule preamble.
 		"is the South Pole.'");
 	Problems::issue_problem_end();
 
-@<Issue PM_BadRulePreamble problem@> =
+@<Issue PM_BadRulePreamble@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRulePreamble),
 		"the punctuation here ':' makes me think this should be a definition of a phrase "
 		"and it doesn't begin as it should",
@@ -308,8 +308,9 @@ so we have to be very careful:
 = (text)
 rule instead of taking or dropping when Miss Bianca is in the Embassy:
                 <----- appl -----> <---------- whenwhile ----------->
- ||
-\||/ 
+=
+becomes:
+= (text)
 rule instead of taking or dropping when Miss Bianca is in the Embassy:
                 <----- appl ---------------------------------------->
 =
