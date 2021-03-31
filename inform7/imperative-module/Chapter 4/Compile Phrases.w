@@ -24,7 +24,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 =
 void Routines::Compile::routine(id_body *idb,
-	stacked_variable_owner_list *legible, to_phrase_request *req,
+	stacked_variable_access_list *legible, to_phrase_request *req,
 	rule *R) {
 	parse_node *code_at = ImperativeDefinitions::body_at(idb);
 	if (Node::is(code_at->next, DEFN_CONT_NT)) code_at = code_at->next;

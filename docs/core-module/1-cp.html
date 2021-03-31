@@ -201,9 +201,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">relation_inference_data_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">short_name_notice_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_list_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_owner_list_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_set_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">stacked_variable_access_list_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">value_property_data_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -223,9 +222,8 @@ We begin with <a href="index.html" class="internal">core</a> itself.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">relation_inference_data</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">short_name_notice</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_owner</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_owner_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_set</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable_access_list</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">value_property_data</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><a href="../imperative-module/index.html" class="internal">imperative</a> &mdash;

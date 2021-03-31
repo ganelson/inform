@@ -13,7 +13,7 @@ typedef struct activity {
 	struct rulebook *for_rules;
 	struct rulebook *after_rules;
 	struct kind *activity_on_what_kind; /* or null */
-	struct stacked_variable_owner *activity_variables; /* activity variables owned here */
+	struct stacked_variable_set *activity_variables; /* activity variables owned here */
 	struct activity_indexing_data indexing_data;
 	struct activity_compilation_data compilation_data;
 	CLASS_DEFINITION
@@ -84,7 +84,7 @@ activity *Activities::new(kind *K, wording W) {
 
 	@<Make proper nouns for the activity name@>;
 
-	av->activity_variables = StackedVariables::new_owner(10000+av->allocation_id);
+	av->activity_variables = StackedVariables::new_set(10000+av->allocation_id);
 
 	av->before_rules = Activities::make_rulebook(av, 0, future_action_flag);
 	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);

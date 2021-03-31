@@ -352,7 +352,7 @@ the text "grand total" is parsed as the local.
 <s-stacked-variable> internal {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) { ==> { fail nonterminal }; }
-	stacked_variable *stv = StackedVariables::parse_from_owner_list(
+	stacked_variable *stv = StackedVariables::parse_from_access_list(
 		Frames::get_stvol(), W);
 	if (stv) {
 		parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(

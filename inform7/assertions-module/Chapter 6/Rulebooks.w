@@ -31,8 +31,8 @@ typedef struct rulebook {
 	int runs_during_activities; /* allow "while..." clauses to name these */
 	int used_by_future_action_activity; /* like "deciding the scope of something..." */
 
-	struct stacked_variable_owner *my_variables; /* rulebook variables owned here */
-	struct stacked_variable_owner_list *accessible_variables; /* and which can be named here */
+	struct stacked_variable_set *my_variables; /* rulebook variables owned here */
+	struct stacked_variable_access_list *accessible_variables; /* and which can be named here */
 
 	struct rulebook_compilation_data compilation_data;
 	struct rulebook_indexing_data indexing_data;
@@ -62,8 +62,9 @@ rulebook *Rulebooks::new(kind *create_as, wording W, package_request *R) {
 
 	@<Work out the focus and outcome@>;
 
-	B->my_variables = StackedVariables::new_owner(B->allocation_id);
-	B->accessible_variables = StackedVariables::add_owner_to_list(NULL, B->my_variables);
+	B->my_variables = StackedVariables::new_set(B->allocation_id);
+	B->accessible_variables = StackedVariables::new_access_list();
+	StackedVariables::add_set_to_access_list(B->accessible_variables, B->my_variables);
 
 	B->compilation_data =  RTRules::new_rulebook_compilation_data(B, R);
 	B->indexing_data =  IXRules::new_rulebook_indexing_data(B);
@@ -448,9 +449,8 @@ defined somewhere else -- but they still don't belong to |B|, so they do not
 go into |B->my_variables|.
 
 =
-void Rulebooks::grant_access_to_variables(rulebook *B, stacked_variable_owner *set) {
-	B->accessible_variables =
-		StackedVariables::add_owner_to_list(B->accessible_variables, set);
+void Rulebooks::grant_access_to_variables(rulebook *B, stacked_variable_set *set) {
+	StackedVariables::add_set_to_access_list(B->accessible_variables, set);
 }
 
 @h Attaching and detaching rules.

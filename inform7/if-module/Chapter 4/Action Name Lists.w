@@ -1004,10 +1004,10 @@ are divergence points:
 	if (Word::unexpectedly_upper_case(Wordings::first_wn(W)) == FALSE) {
 		action_name *chief_an = currently_exploding_entry->item.action_listed;
 		if (chief_an) {
-			stacked_variable_owner *stvo = chief_an->action_variables;
-			if (stvo)
-				for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
-					stacked_variable *stv = stvl->the_stv;
+			stacked_variable_set *stvo = chief_an->action_variables;
+			if (stvo) {
+				stacked_variable *stv;
+				LOOP_OVER_LINKED_LIST(stv, stacked_variable, stvo->list_of_stvs) {
 					wording VW = stv->match_wording_text;
 					if (Wordings::starts_with(W, VW)) {
 						wording T = Wordings::from(W, Wordings::first_wn(W) + Wordings::length(VW));
@@ -1015,6 +1015,7 @@ are divergence points:
 						ActionNameLists::detonate(potential_C, stv, T, W);
 					}
 				}
+			}
 		}
 	}
 	==> { fail nonterminal };

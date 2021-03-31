@@ -122,7 +122,7 @@ int IXActions::index(OUTPUT_STREAM, action_name *an, int pass,
 		if (CommandsIndex::index_list_with_action(OUT, an->command_parser_grammar_producing_this) == FALSE)
 			WRITE("<i>None</i>");
 		HTML_CLOSE("p");
-		if (StackedVariables::owner_empty(an->action_variables) == FALSE) {
+		if (StackedVariables::set_empty(an->action_variables) == FALSE) {
 			HTML_OPEN("p"); WRITE("<b>Named values belonging to this action</b>\n"); HTML_CLOSE("p");
 			StackedVariables::index_owner(OUT, an->action_variables);
 		}

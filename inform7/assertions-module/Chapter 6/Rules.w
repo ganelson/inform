@@ -33,7 +33,7 @@ typedef struct rule {
 	struct rulebook *kind_of_rule_set_from;
 
 	struct imperative_defn *defn_as_I7_source; /* if defined by an I7 id_body */
-	struct stacked_variable_owner_list *variables_visible_in_definition; /* if so */
+	struct stacked_variable_access_list *variables_visible_in_definition; /* if so */
 	struct text_stream *defn_as_Inter_function; /* if not */
 
 	struct booking *automatic_booking; /* how this is placed in rulebooks */
@@ -76,7 +76,7 @@ rule *Rules::obtain(wording W, int allow_responses) {
 	R->kind_of_rule_set_from = NULL;
 
 	R->defn_as_I7_source = NULL;
-	R->variables_visible_in_definition = NULL;
+	R->variables_visible_in_definition = StackedVariables::new_access_list();
 	R->defn_as_Inter_function = NULL;
 
 	R->automatic_booking = NULL;
@@ -236,9 +236,8 @@ example, if a rule is in an activity rulebook, then it will be able to see
 the variables belonging to that activity.
 
 =
-void Rules::put_variables_in_scope(rule *R, stacked_variable_owner_list *stvol) {
-	R->variables_visible_in_definition =
-		StackedVariables::append_owner_list(R->variables_visible_in_definition, stvol);
+void Rules::put_variables_in_scope(rule *R, stacked_variable_access_list *access) {
+	StackedVariables::append_access_list(R->variables_visible_in_definition, access);
 }
 
 void Rules::put_action_variables_in_scope(rule *R) {
@@ -249,13 +248,13 @@ void Rules::put_action_variables_in_scope(rule *R) {
 	#endif
 }
 
-struct stacked_variable_owner_list *all_action_processing_vars = NULL;
+struct stacked_variable_access_list *all_action_processing_vars = NULL;
 
-stacked_variable_owner_list *Rules::all_action_processing_variables(void) {
+stacked_variable_access_list *Rules::all_action_processing_variables(void) {
 	if (all_action_processing_vars == NULL) {
+		all_action_processing_vars = StackedVariables::new_access_list();
 		rulebook *B = Rulebooks::std(ACTION_PROCESSING_RB);
-		if (B) all_action_processing_vars =
-			StackedVariables::add_owner_to_list(NULL, B->my_variables);
+		if (B) StackedVariables::add_set_to_access_list(all_action_processing_vars, B->my_variables);
 	}
 	return all_action_processing_vars;
 }

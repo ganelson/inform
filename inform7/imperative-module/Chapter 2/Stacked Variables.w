@@ -16,25 +16,18 @@ typedef struct stacked_variable {
 	CLASS_DEFINITION
 } stacked_variable;
 
-typedef struct stacked_variable_list {
-	struct stacked_variable *the_stv; /* the STV */
-	struct stacked_variable_list *next; /* in linked list */
-	CLASS_DEFINITION
-} stacked_variable_list;
-
-typedef struct stacked_variable_owner {
+typedef struct stacked_variable_set {
 	int no_stvs;
 	int recognition_id;
-	struct stacked_variable_list *list_of_stvs;
-	struct inter_name *stvo_iname;
+	struct linked_list *list_of_stvs; /* of |stacked_variable| */
+	struct inter_name *creator_fn_iname;
 	CLASS_DEFINITION
-} stacked_variable_owner;
+} stacked_variable_set;
 
-typedef struct stacked_variable_owner_list {
-	struct stacked_variable_owner *stvo; /* the STO */
-	struct stacked_variable_owner_list *next; /* in linked list */
+typedef struct stacked_variable_access_list {
+	struct linked_list *sets; /* of |stacked_variable_set| */
 	CLASS_DEFINITION
-} stacked_variable_owner_list;
+} stacked_variable_access_list;
 
 @
 
@@ -68,41 +61,42 @@ wording StackedVariables::get_matching_text(stacked_variable *stv) {
 	return stv->match_wording_text;
 }
 
-stacked_variable *StackedVariables::parse_match_clause(stacked_variable_owner *stvo,
+stacked_variable *StackedVariables::parse_match_clause(stacked_variable_set *set,
 	wording W) {
-	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next)
-		if (Wordings::starts_with(W, stvl->the_stv->match_wording_text))
-			return stvl->the_stv;
+	stacked_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, stacked_variable, set->list_of_stvs)
+		if (Wordings::starts_with(W, stv->match_wording_text))
+			return stv;
 	return NULL;
 }
 
-stacked_variable_owner *StackedVariables::new_owner(int id) {
-	stacked_variable_owner *stvo = CREATE(stacked_variable_owner);
-	stvo->recognition_id = id;
-	stvo->no_stvs = 0;
-	stvo->list_of_stvs = NULL;
-	stvo->stvo_iname = NULL;
-	return stvo;
+stacked_variable_set *StackedVariables::new_set(int id) {
+	stacked_variable_set *set = CREATE(stacked_variable_set);
+	set->recognition_id = id;
+	set->no_stvs = 0;
+	set->list_of_stvs = NEW_LINKED_LIST(stacked_variable);
+	set->creator_fn_iname = NULL;
+	return set;
 }
 
-int StackedVariables::owner_empty(stacked_variable_owner *stvo) {
-	if (stvo->no_stvs == 0) return TRUE;
+int StackedVariables::set_empty(stacked_variable_set *set) {
+	if (set->no_stvs == 0) return TRUE;
 	return FALSE;
 }
 
-stacked_variable *StackedVariables::add_empty(stacked_variable_owner *stvo,
+stacked_variable *StackedVariables::add_empty(stacked_variable_set *set,
 	wording W, kind *K) {
 	stacked_variable *stv = CREATE(stacked_variable);
 	nonlocal_variable *q;
 	W = Articles::remove_the(W);
 	stv->name = W;
-	stv->owner_id = stvo->recognition_id;
-	stv->offset_in_owning_frame = stvo->no_stvs++;
+	stv->owner_id = set->recognition_id;
+	stv->offset_in_owning_frame = set->no_stvs++;
 	stv->assigned_at = current_sentence;
 	stv->match_wording_text = EMPTY_WORDING;
-	stvo->list_of_stvs = StackedVariables::add_to_list(stvo->list_of_stvs, stv);
-	if (stvo->no_stvs > max_frame_size_needed)
-		max_frame_size_needed = stvo->no_stvs;
+	ADD_TO_LINKED_LIST(stv, stacked_variable, set->list_of_stvs);
+	if (set->no_stvs > max_frame_size_needed)
+		max_frame_size_needed = set->no_stvs;
 	q = NonlocalVariables::new_with_scope(W, K, stv);
 	stv->underlying_var = q;
 	RTVariables::set_I6_identifier(q, FALSE, RTVariables::stv_rvalue(stv));
@@ -110,88 +104,64 @@ stacked_variable *StackedVariables::add_empty(stacked_variable_owner *stvo,
 	return stv;
 }
 
-stacked_variable_owner_list *StackedVariables::add_owner_to_list(stacked_variable_owner_list *stvol,
-	stacked_variable_owner *stvo) {
-	stacked_variable_owner_list *ostvol = stvol;
+stacked_variable_access_list *StackedVariables::new_access_list(void) {
+	stacked_variable_access_list *nstvol = CREATE(stacked_variable_access_list);
+	nstvol->sets = NEW_LINKED_LIST(stacked_variable_set);
+	return nstvol;
+}
 
-	while (stvol) {
-		if (stvol->stvo == stvo) return ostvol;
-		stacked_variable_owner_list *nxt = stvol->next;
-		if (nxt == NULL) break;
-		stvol = nxt;
+void StackedVariables::add_set_to_access_list(stacked_variable_access_list *access,
+	stacked_variable_set *set) {
+	if (access) {
+		stacked_variable_set *existing;
+		LOOP_OVER_LINKED_LIST(existing, stacked_variable_set, access->sets)
+			if (existing == set)
+				return;
+		ADD_TO_LINKED_LIST(set, stacked_variable_set, access->sets);
 	}
-
-	stacked_variable_owner_list *nstvol = CREATE(stacked_variable_owner_list);
-	nstvol->next = NULL;
-	nstvol->stvo = stvo;
-	if (stvol == NULL) return nstvol;
-	stvol->next = nstvol;
-	return ostvol;
 }
 
-stacked_variable_owner_list *StackedVariables::append_owner_list(stacked_variable_owner_list *stvol,
-	stacked_variable_owner_list *extras) {
-	LOGIF(RULEBOOK_COMPILATION,
-		"Appending list %08x to list %08x\n", (int) extras, (int) stvol);
-	stacked_variable_owner_list *new_head = stvol;
-	for (; extras; extras = extras->next)
-		new_head = StackedVariables::add_owner_to_list(new_head, extras->stvo);
-	return new_head;
+void StackedVariables::append_access_list(stacked_variable_access_list *access,
+	stacked_variable_access_list *extras) {
+	stacked_variable_set *set;
+	if ((extras) && (access))
+		LOOP_OVER_LINKED_LIST(set, stacked_variable_set, extras->sets)
+			StackedVariables::add_set_to_access_list(access, set);
 }
 
-int StackedVariables::list_length(stacked_variable_list *stvl) {
-	int l = 0;
-	while (stvl) {
-		l++;
-		stvl = stvl->next;
-	}
-	return l;
-}
-
-void StackedVariables::index_owner(OUTPUT_STREAM, stacked_variable_owner *stvo) {
-	stacked_variable_list *stvl;
-	for (stvl=stvo->list_of_stvs; stvl; stvl = stvl->next)
-		if ((stvl->the_stv) && (stvl->the_stv->underlying_var)) {
+void StackedVariables::index_owner(OUTPUT_STREAM, stacked_variable_set *set) {
+	stacked_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, stacked_variable, set->list_of_stvs)
+		if (stv->underlying_var) {
 			HTML::open_indented_p(OUT, 2, "tight");
-			IXVariables::index_one(OUT, stvl->the_stv->underlying_var);
+			IXVariables::index_one(OUT, stv->underlying_var);
 			HTML_CLOSE("p");
 		}
 }
 
-stacked_variable *StackedVariables::parse_from_owner_list(stacked_variable_owner_list *stvol, wording W) {
+stacked_variable *StackedVariables::parse_from_access_list(stacked_variable_access_list *access,
+	wording W) {
 	if (Wordings::empty(W)) return NULL;
 	W = Articles::remove_the(W);
-	while (stvol) {
-		stacked_variable *stv = NULL;
-		if (stvol->stvo) stv = StackedVariables::parse_from_list(stvol->stvo->list_of_stvs, W);
-		if (stv) return stv;
-		stvol = stvol->next;
-	}
+	stacked_variable_set *set;
+	if (access)
+		LOOP_OVER_LINKED_LIST(set, stacked_variable_set, access->sets) {
+			stacked_variable *stv = StackedVariables::parse_from_list(set->list_of_stvs, W);
+			if (stv) return stv;
+		}
 	return NULL;
 }
 
-stacked_variable *StackedVariables::parse_from_list(stacked_variable_list *stvl, wording W) {
-	while (stvl) {
-		if (Wordings::match(stvl->the_stv->name, W))
-			return stvl->the_stv;
-		stvl = stvl->next;
-	}
+stacked_variable *StackedVariables::parse_from_list(linked_list *stvl, wording W) {
+	stacked_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, stacked_variable, stvl)
+		if (Wordings::match(stv->name, W))
+			return stv;
 	return NULL;
 }
 
-stacked_variable_list *StackedVariables::add_to_list(stacked_variable_list *stvl,
-	stacked_variable *stv) {
-	stacked_variable_list *nstvl = CREATE(stacked_variable_list), *ostvl = stvl;
-	nstvl->the_stv = stv;
-	nstvl->next = NULL;
-	if (stvl == NULL) return nstvl;
-	while (stvl->next) stvl = stvl->next;
-	stvl->next = nstvl;
-	return ostvl;
-}
-
-int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_name *iname) {
-	if (stvo == NULL) return 0;
+int StackedVariables::compile_frame_creator(stacked_variable_set *set, inter_name *iname) {
+	if (set == NULL) return 0;
 
 	packaging_state save = Routines::begin(iname);
 	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
@@ -214,8 +184,7 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	int count = 0;
-	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) count++;
+	int count = LinkedLists::len(set->list_of_stvs);
 
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 	Produce::down(Emit::tree());
@@ -223,13 +192,14 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	Produce::up(Emit::tree());
 
 	Routines::end(save);
-	stvo->stvo_iname = iname;
+	set->creator_fn_iname = iname;
 	return count;
 }
 
 @<Compile frame creator if state is set@> =
-	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
-		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
+	stacked_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, stacked_variable, set->list_of_stvs) {
+		nonlocal_variable *q = StackedVariables::get_variable(stv);
 		kind *K = NonlocalVariables::kind(q);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
@@ -251,8 +221,9 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	}
 
 @<Compile frame creator if state is clear@> =
-	for (stacked_variable_list *stvl = stvo->list_of_stvs; stvl; stvl = stvl->next) {
-		nonlocal_variable *q = StackedVariables::get_variable(stvl->the_stv);
+	stacked_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, stacked_variable, set->list_of_stvs) {
+		nonlocal_variable *q = StackedVariables::get_variable(stv);
 		kind *K = NonlocalVariables::kind(q);
 		if (Kinds::Behaviour::uses_pointer_values(K)) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEFREE_HL));
@@ -271,6 +242,6 @@ int StackedVariables::compile_frame_creator(stacked_variable_owner *stvo, inter_
 	}
 
 @ =
-inter_name *StackedVariables::frame_creator(stacked_variable_owner *stvo) {
-	return stvo->stvo_iname;
+inter_name *StackedVariables::frame_creator(stacked_variable_set *set) {
+	return set->creator_fn_iname;
 }

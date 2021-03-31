@@ -165,15 +165,16 @@ but action variables cannot.
 variables (hence "nonempty") -- many will not, in practice:
 
 = (early code)
-stacked_variable_owner_list *all_nonempty_stacked_action_vars = NULL;
+stacked_variable_access_list *all_nonempty_stacked_action_vars = NULL;
 
 
 @ =
 void ActionVariables::new(action_name *an, kind *K, wording NW, wording MW) {
-	if (StackedVariables::owner_empty(an->action_variables))
-		all_nonempty_stacked_action_vars =
-			StackedVariables::add_owner_to_list(
-				all_nonempty_stacked_action_vars, an->action_variables);
+	if (all_nonempty_stacked_action_vars == NULL)
+		all_nonempty_stacked_action_vars = StackedVariables::new_access_list();
+	if (StackedVariables::set_empty(an->action_variables))
+		StackedVariables::add_set_to_access_list(
+			all_nonempty_stacked_action_vars, an->action_variables);
 
 	stacked_variable *stv = StackedVariables::add_empty(an->action_variables, NW, K);
 	if (Wordings::nonempty(MW))

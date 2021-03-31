@@ -14,7 +14,7 @@ if any, and the consequent return kind.
 =
 typedef struct ph_stack_frame {
 	struct locals_slate local_value_variables; /* those in scope here */
-	struct stacked_variable_owner_list *local_stvol; /* those in scope here */
+	struct stacked_variable_access_list *local_stvol; /* those in scope here */
 	struct pointer_allocation *allocated_pointers;
 	int no_formal_parameters_needed; /* usually 0, unless there are ambiguities */
 
@@ -164,11 +164,11 @@ kind **Frames::temporarily_set_kvs(kind **vars) {
 @h Stacked variables.
 
 =
-void Frames::set_stvol(ph_stack_frame *phsf, stacked_variable_owner_list *stvol) {
+void Frames::set_stvol(ph_stack_frame *phsf, stacked_variable_access_list *stvol) {
 	phsf->local_stvol = stvol;
 }
 
-stacked_variable_owner_list *Frames::get_stvol(void) {
+stacked_variable_access_list *Frames::get_stvol(void) {
 	ph_stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) return phsf->local_stvol;
 	return NULL;

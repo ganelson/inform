@@ -135,9 +135,8 @@ DECLARE_CLASS(text_substitution)
 @e relation_inference_data_CLASS
 @e short_name_notice_CLASS
 @e stacked_variable_CLASS
-@e stacked_variable_list_CLASS
-@e stacked_variable_owner_CLASS
-@e stacked_variable_owner_list_CLASS
+@e stacked_variable_set_CLASS
+@e stacked_variable_access_list_CLASS
 @e value_property_data_CLASS
 
 =
@@ -157,9 +156,8 @@ DECLARE_CLASS(property_setting_bp_data)
 DECLARE_CLASS(relation_inference_data)
 DECLARE_CLASS(short_name_notice)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_list, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_owner_list, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_set, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_access_list, 100)
 DECLARE_CLASS(value_property_data)
 
 @ //imperative// --

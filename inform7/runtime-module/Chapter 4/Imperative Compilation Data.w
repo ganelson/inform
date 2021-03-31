@@ -171,7 +171,7 @@ response to "requests". All other phrases are compiled just once.
 
 =
 void IDCompilation::compile(id_body *idb, int *i, int max_i,
-	stacked_variable_owner_list *legible, to_phrase_request *req, rule *R) {
+	stacked_variable_access_list *legible, to_phrase_request *req, rule *R) {
 	if ((req) || (idb->compilation_data.at_least_one_compiled_form_needed)) {
 		Routines::Compile::routine(idb, legible, req, R);
 		if (idb->compilation_data.at_least_one_compiled_form_needed) {

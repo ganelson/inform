@@ -92,7 +92,7 @@ void RTActions::compile_action_name_var_creators(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		if ((an->action_variables) &&
-			(StackedVariables::owner_empty(an->action_variables) == FALSE)) {
+			(StackedVariables::set_empty(an->action_variables) == FALSE)) {
 			inter_name *iname = Hierarchy::make_iname_in(ACTION_STV_CREATOR_FN_HL, an->compilation_data.an_package);
 			StackedVariables::compile_frame_creator(an->action_variables, iname);
 		}
@@ -189,7 +189,7 @@ void RTActions::ActionData(void) {
 		RTKinds::emit_strong_id(ActionSemantics::kind_of_noun(an));
 		RTKinds::emit_strong_id(ActionSemantics::kind_of_second(an));
 		if ((an->action_variables) &&
-				(StackedVariables::owner_empty(an->action_variables) == FALSE))
+				(StackedVariables::set_empty(an->action_variables) == FALSE))
 			Emit::array_iname_entry(StackedVariables::frame_creator(an->action_variables));
 		else Emit::array_numeric_entry(0);
 		Emit::array_numeric_entry((inter_ti) (20000+an->allocation_id));
