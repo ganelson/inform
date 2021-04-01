@@ -66,3 +66,13 @@ void IXVariables::index_one(OUTPUT_STREAM, nonlocal_variable *nlv) {
 	Kinds::Textual::write(OUT, nlv->nlv_kind);
 	WRITE("</i>");
 }
+
+void IXVariables::index_stv_set(OUTPUT_STREAM, shared_variable_set *set) {
+	shared_variable *stv;
+	LOOP_OVER_LINKED_LIST(stv, shared_variable, set->variables)
+		if (stv->underlying_var) {
+			HTML::open_indented_p(OUT, 2, "tight");
+			IXVariables::index_one(OUT, stv->underlying_var);
+			HTML_CLOSE("p");
+		}
+}

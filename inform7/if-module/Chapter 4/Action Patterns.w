@@ -101,7 +101,7 @@ action_pattern *ActionPatterns::parse_action_based(wording W) {
 	action_pattern *ap = NULL;
 	int saved = ParseActionPatterns::enter_mode(PERMIT_TRYING_OMISSION);
 	if (Rules::all_action_processing_variables())
-		Frames::set_stvol(
+		Frames::set_shared_variable_access_list(
 			Frames::current_stack_frame(), Rules::all_action_processing_variables());
 	if (<action-pattern>(W)) ap = <<rp>>;
 	Frames::remove_nonphrase_stack_frame();

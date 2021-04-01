@@ -93,9 +93,9 @@ If we do spot one of these five magic variables, we tie it to a clause with
 a special ID number of our choice.
 
 =
-int GoingPlugin::divert_clause_ID(stacked_variable *stv, int *id) {
-	int oid = StackedVariables::get_owner_id(stv);
-	int off = StackedVariables::get_offset(stv);
+int GoingPlugin::divert_clause_ID(shared_variable *stv, int *id) {
+	int oid = SharedVariables::get_owner_id(stv);
+	int off = SharedVariables::get_offset(stv);
 	if ((going_action) && (oid == GoingPlugin::id())) {
 		switch (off) {
 			case 0: *id = GOING_FROM_AP_CLAUSE; return TRUE;

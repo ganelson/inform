@@ -432,10 +432,10 @@ to enable Inform to set up a stack frame if there isn't one already, and so on.
 
 =
 <ap-five-condition> internal {
-	ph_stack_frame *phsf = NULL;
+	stack_frame *phsf = NULL;
 	if (Frames::current_stack_frame() == NULL) phsf = Frames::new_nonphrasal();
-	StackedVariables::append_access_list(
-		Frames::get_stvol(), all_nonempty_stacked_action_vars);
+	SharedVariables::append_access_list(
+		Frames::get_shared_variable_access_list(), all_nonempty_stacked_action_vars);
 	LOGIF(ACTION_PATTERN_PARSING, "A when clause <%W> is suspected.\n", W);
 	parse_node *when_cond = NULL;
 	int s = pap_failure_reason;

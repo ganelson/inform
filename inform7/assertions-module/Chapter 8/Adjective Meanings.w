@@ -340,13 +340,13 @@ whether it is able to do this or not.
 
 =
 INT_METHOD_TYPE(GENERATE_IN_SUPPORT_FUNCTION_ADJM_MTID, adjective_meaning_family *f,
-	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf)
+	adjective_meaning *am, int T, int emit_flag, stack_frame *phsf)
 
 @ This dual behaviour means there are two function calls invoking it:
 
 =
 int AdjectiveMeanings::generate_in_support_function(adjective_meaning *am,
-	int T, ph_stack_frame *phsf) {
+	int T, stack_frame *phsf) {
 	int rv = AdjectiveMeanings::nscg_inner(am, T, TRUE, phsf);
 	am->has_been_compiled_in_support_function = TRUE;
 	return rv;
@@ -357,7 +357,7 @@ int AdjectiveMeanings::can_generate_in_support_function(adjective_meaning *am, i
 }
 
 int AdjectiveMeanings::nscg_inner(adjective_meaning *am, int T, int emit_flag,
-	ph_stack_frame *phsf) {
+	stack_frame *phsf) {
 	AdjectiveMeanings::prepare_schemas(am, T);
 	@<Use the I6 schema instead to compile the task, if one exists@>;
 	int rv = FALSE;

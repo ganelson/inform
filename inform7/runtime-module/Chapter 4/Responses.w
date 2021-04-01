@@ -11,7 +11,7 @@ typedef struct response_message {
 	struct rule *responding_rule; /* named rule in which this response occurs */
 	int response_marker; /* 0 for A, 1 for B, and so on up */
 	struct text_substitution *original_text;
-	struct ph_stack_frame *original_stack_frame;
+	struct stack_frame *original_stack_frame;
 	struct inter_name *resp_iname;
 	struct inter_name *constant_iname;
 	struct package_request *resp_package;
@@ -60,7 +60,7 @@ but also (in most cases) a |TX_S_*| text substitution routine.
 
 =
 response_message *Strings::response_cue(value_holster *VH, rule *owner, int marker,
-	wording W, ph_stack_frame *phsf, int via_I6) {
+	wording W, stack_frame *phsf, int via_I6) {
 	response_message *resp = CREATE(response_message);
 	resp->original_stack_frame = Frames::boxed_frame(phsf);
 	resp->responding_rule = owner;
@@ -417,7 +417,7 @@ divided up by the extensions containing the rules which produce them.
 	}
 
 @ =
-ph_stack_frame *Strings::frame_for_response(response_message *resp) {
+stack_frame *Strings::frame_for_response(response_message *resp) {
 	if (resp == NULL) return NULL;
 	return resp->original_stack_frame;
 }
@@ -528,7 +528,7 @@ so the penultimate word, if it's there, is the letter.
 			"some text as a response, then it can only occur once in its rule.");
 		return;
 	}
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (Holsters::data_acceptable(VH)) {
 		int downs = LocalVariables::emit_storage(phsf);
 		response_message *resp =

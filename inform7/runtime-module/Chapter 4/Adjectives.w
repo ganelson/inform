@@ -157,7 +157,7 @@ have multiple definitions is "object", but that may change.
 
 =
 void RTAdjectives::list_compile(adjective *adj,
-	ph_stack_frame *phsf, kind *K, int T, inter_symbol *t0_s) {
+	stack_frame *phsf, kind *K, int T, inter_symbol *t0_s) {
 	adjective_meaning *am;
 	LOOP_OVER_LINKED_LIST(am, adjective_meaning, adj->adjective_meanings.in_precedence_order)
 		if ((AdjectiveMeanings::can_generate_in_support_function(am, T)) &&

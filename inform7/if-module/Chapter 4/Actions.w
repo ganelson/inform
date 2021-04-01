@@ -19,7 +19,7 @@ typedef struct action_name {
 	struct rulebook *check_rules; /* rulebooks private to this action */
 	struct rulebook *carry_out_rules;
 	struct rulebook *report_rules;
-	struct stacked_variable_set *action_variables;
+	struct shared_variable_set *action_variables;
 
 	struct cg_line *command_parser_grammar_producing_this; /* if any */
 
@@ -55,7 +55,7 @@ action_name *Actions::act_new(wording W) {
 	an->carry_out_rules =  Actions::new_rulebook(an, CARRY_OUT_RB_HL);
 	an->report_rules =     Actions::new_rulebook(an, REPORT_RB_HL);
 	an->action_variables =
-		StackedVariables::new_set(RTActions::action_variable_set_ID(an));
+		SharedVariables::new_set(RTActions::action_variable_set_ID(an));
 
 	LOGIF(ACTION_CREATIONS, "Created action: %W\n", W);
 	return an;

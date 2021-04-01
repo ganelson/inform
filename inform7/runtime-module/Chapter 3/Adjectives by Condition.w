@@ -37,7 +37,7 @@ int Phrases::Condition::claim_definition(adjective_meaning_family *f,
 }
 
 int Phrases::Condition::generate_in_support_function(adjective_meaning_family *family,
-	adjective_meaning *am, int T, int emit_flag, ph_stack_frame *phsf) {
+	adjective_meaning *am, int T, int emit_flag, stack_frame *phsf) {
 	definition *def = RETRIEVE_POINTER_definition(am->family_specific_data);
 	switch (T) {
 		case TEST_ATOM_TASK:

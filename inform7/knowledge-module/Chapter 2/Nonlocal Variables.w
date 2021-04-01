@@ -38,7 +38,7 @@ typedef struct nonlocal_variable {
 	struct wording name; /* text of the name */
 	struct kind *nlv_kind; /* what kind of value it holds */
 
-	struct stacked_variable *scope; /* where it exists, or |NULL| for everywhere */
+	struct shared_variable *scope; /* where it exists, or |NULL| for everywhere */
 
 	struct inference_subject *as_subject; /* so that assertions can discuss it... */
 	struct inference_subject *alias_subject; /* ...or perhaps the thing it aliases */
@@ -63,7 +63,7 @@ reference to how it's stored at run-time.
 
 Note that we only register the name of the variable as a proper noun if it's
 global and will live forever, because nouns are both of those things. Anyone
-creating a stacked variable will have to make their own arrangements to parse
+creating a shared variable will have to make their own arrangements to parse
 the names of them.
 
 =
@@ -91,16 +91,6 @@ nonlocal_variable *NonlocalVariables::parse_global(wording W) {
 	return NULL;
 }
 
-@ This one is unprotected, that is, can be called outside of asserting some
-proposition; that's because variables with a finite lifetime are not part
-of the model, since they do not exist at the start of play.
-
-=
-nonlocal_variable *NonlocalVariables::new_with_scope(wording W, kind *K,
-	stacked_variable *scope) {
-	return NonlocalVariables::new(W, K, scope);
-}
-
 @ We record the one most recently made:
 
 =
@@ -109,7 +99,7 @@ nonlocal_variable *NonlocalVariables::get_latest(void) {
 	return latest_nonlocal_variable;
 }
 
-nonlocal_variable *NonlocalVariables::new(wording W, kind *K, stacked_variable *scope) {
+nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *shv) {
 	if (K == NULL) internal_error("created variable without kind");
 	if (Kinds::Behaviour::definite(K) == FALSE)
 		@<Issue problem message for an indefinite variable@>;
@@ -123,7 +113,7 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, stacked_variable *
 	nlv->alias_subject = NULL;
 	nlv->constant_at_run_time = FALSE;
 	nlv->var_is_allowed_to_be_zero = FALSE;
-	nlv->scope = scope;
+	nlv->scope = shv;
 	nlv->substitution_marker = 0;
 	nlv->as_subject = VariableSubjects::new(nlv);
 	nlv->compilation_data = RTVariables::new_compilation_data();

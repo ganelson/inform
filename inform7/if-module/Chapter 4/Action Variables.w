@@ -165,20 +165,20 @@ but action variables cannot.
 variables (hence "nonempty") -- many will not, in practice:
 
 = (early code)
-stacked_variable_access_list *all_nonempty_stacked_action_vars = NULL;
+shared_variable_access_list *all_nonempty_stacked_action_vars = NULL;
 
 
 @ =
 void ActionVariables::new(action_name *an, kind *K, wording NW, wording MW) {
 	if (all_nonempty_stacked_action_vars == NULL)
-		all_nonempty_stacked_action_vars = StackedVariables::new_access_list();
-	if (StackedVariables::set_empty(an->action_variables))
-		StackedVariables::add_set_to_access_list(
+		all_nonempty_stacked_action_vars = SharedVariables::new_access_list();
+	if (SharedVariables::set_empty(an->action_variables))
+		SharedVariables::add_set_to_access_list(
 			all_nonempty_stacked_action_vars, an->action_variables);
 
-	stacked_variable *stv = StackedVariables::add_empty(an->action_variables, NW, K);
+	shared_variable *stv = SharedVariables::new(an->action_variables, NW, K);
 	if (Wordings::nonempty(MW))
-		StackedVariables::set_matching_text(stv, MW);
+		SharedVariables::set_matching_text(stv, MW);
 
 	LOGIF(ACTION_CREATIONS, "Created action variable for $l: %W (%u)\n", an, NW, K);
 	if (Wordings::nonempty(MW))
@@ -193,6 +193,6 @@ action patterns. For example, the Standard Rules define:
 and this allows "exiting from the cage", say, as an action pattern.
 
 =
-stacked_variable *ActionVariables::parse_match_clause(action_name *an, wording W) {
-	return StackedVariables::parse_match_clause(an->action_variables, W);
+shared_variable *ActionVariables::parse_match_clause(action_name *an, wording W) {
+	return SharedVariables::parse_match_clause(an->action_variables, W);
 }

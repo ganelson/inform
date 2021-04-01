@@ -97,7 +97,7 @@ checker has already done all of the work to decide what kind it has.)
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
 		Produce::down(Emit::tree());
 			Produce::ref_symbol(Emit::tree(), K_value, lvar_s);
-			Frames::emit_allocation(K);
+			Frames::emit_new_local_value(K);
 		Produce::up(Emit::tree());
 	}
 
@@ -201,7 +201,7 @@ the fixed text "phrase options" expands to the whole bitmap.
 
 =
 <name-local-to-inline-stack-frame> internal {
-	local_variable *lvar = LocalVariables::parse(&(idb_being_parsed->compilation_data.stack_frame), W);
+	local_variable *lvar = LocalVariables::parse(&(idb_being_parsed->compilation_data.id_stack_frame), W);
 	if (lvar) {
 		==> { -, lvar };
 		return TRUE;
@@ -370,7 +370,7 @@ its own when kind variables are in play.
 
 @<Inline command "new"@> =
 	kind *K = Invocations::Inline::parse_bracing_operand_as_kind(sche->operand, Node::get_kind_variable_declarations(inv));
-	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_allocation(K);
+	if (Kinds::Behaviour::uses_pointer_values(K)) Frames::emit_new_local_value(K);
 	else if (K == NULL) @<Issue an inline no-such-kind problem@>
 	else if (RTKinds::emit_default_value_as_val(K, EMPTY_WORDING, NULL) == FALSE)
 		@<Issue problem for no natural choice@>;
@@ -1567,7 +1567,7 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 		lvar = my_vars[Str::get_at(operand, 0) - '0'];
 	else {
 		wording LW = Feeds::feed_text(operand);
-		lvar = LocalVariables::parse(&(idb->compilation_data.stack_frame), LW);
+		lvar = LocalVariables::parse(&(idb->compilation_data.id_stack_frame), LW);
 		if (lvar) {
 			int tok = LocalVariables::get_parameter_number(lvar);
 			if (tok >= 0) return tokens->args[tok];

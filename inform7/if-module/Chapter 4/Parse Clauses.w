@@ -189,7 +189,7 @@ to typecheck each clause.
 					return NULL;
 				}
 			} else {
-				check = StackedVariables::get_kind(c->stv_to_match);
+				check = SharedVariables::get_kind(c->stv_to_match);
 			}
 		}
 		if (Node::is(c->evaluation, UNKNOWN_NT)) fail = TRUE;

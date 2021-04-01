@@ -39,7 +39,7 @@ void RTActionPatterns::emit_try(explicit_action *ea, int store_instead) {
 		if (store_instead) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(STORED_ACTION_TY_CURRENT_HL));
 			Produce::down(Emit::tree());
-				Frames::emit_allocation(K_stored_action);
+				Frames::emit_new_local_value(K_stored_action);
 			Produce::up(Emit::tree());
 		}
 	Produce::up(Emit::tree());
@@ -695,7 +695,7 @@ void RTActionPatterns::compile_pattern_match(value_holster *VH, action_pattern *
 			break;
 		}
 		case OPTIONAL_CLAUSE_CPMC: {
-			kind *K = StackedVariables::get_kind(apoc->stv_to_match);
+			kind *K = SharedVariables::get_kind(apoc->stv_to_match);
 			RTActionPatterns::compile_pattern_match_clause(VH,
 				RTTemporaryVariables::from_existing_variable(apoc->stv_to_match->underlying_var, K),
 				apoc->clause_spec, K, APClauses::opt(apoc, ALLOW_REGION_AS_ROOM_APCOPT));

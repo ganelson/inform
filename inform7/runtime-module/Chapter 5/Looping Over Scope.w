@@ -45,7 +45,7 @@ int LoopingOverScope::compilation_coroutine(void) {
 @<Compile an individual loop-over-scope@> =
 	packaging_state save = Routines::begin(los->los_iname);
 
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	local_variable *it_lv = LocalVariables::add_pronoun(phsf, EMPTY_WORDING, K_object);
 	inter_symbol *it_s = LocalVariables::declare_this(it_lv, FALSE, 8);
 

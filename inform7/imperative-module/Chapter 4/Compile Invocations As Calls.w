@@ -77,7 +77,7 @@ then follow, and finally the optional bitmap of phrase options.
 
 @<Emit the comma-separated list of arguments@> =
 	if (Kinds::Behaviour::uses_pointer_values(return_kind))
-		Frames::emit_allocation(return_kind);
+		Frames::emit_new_local_value(return_kind);
 	for (int k=0; k<tokens->tokens_count; k++)
 		Specifications::Compiler::emit_to_kind(tokens->args[k], tokens->kind_required[k]);
 	if (phrase_options != -1)

@@ -197,7 +197,7 @@ local_variable *LocalVariables::add_to_locals_slate(locals_slate *slate, int pur
 they compile to the I6 names |t_0|, |t_1| and |t_2|.
 
 =
-local_variable *LocalVariables::add_call_parameter(ph_stack_frame *phsf,
+local_variable *LocalVariables::add_call_parameter(stack_frame *phsf,
 	wording W, kind *K) {
 	local_variable *lvar = LocalVariables::add_to_locals_slate(&(phsf->local_value_variables),
 		TOKEN_CALL_PARAMETER_LV, W, K, NULL, -1);
@@ -205,7 +205,7 @@ local_variable *LocalVariables::add_call_parameter(ph_stack_frame *phsf,
 	return lvar;
 }
 
-inter_symbol *LocalVariables::add_call_parameter_as_symbol(ph_stack_frame *phsf,
+inter_symbol *LocalVariables::add_call_parameter_as_symbol(stack_frame *phsf,
 	wording W, kind *K) {
 	local_variable *v = LocalVariables::add_call_parameter(phsf, W, K);
 	return LocalVariables::declare_this(v, FALSE, 8);
@@ -225,7 +225,7 @@ currently being compiled:
 
 =
 local_variable *LocalVariables::new(wording W, kind *K) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) internal_error("tried to add let value without stack frame");
 	local_variable *lvar = LocalVariables::add_to_locals_slate(&(phsf->local_value_variables),
 		LET_VALUE_LV, W, K, NULL, -1);
@@ -248,7 +248,7 @@ local_variable *LocalVariables::add_internal(locals_slate *slate,
 }
 
 local_variable *LocalVariables::add_internal_local(text_stream *name) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf)
 		return LocalVariables::add_internal(&(phsf->local_value_variables), name,
 			INTERNAL_USE_LV);
@@ -267,7 +267,7 @@ inter_symbol *LocalVariables::add_internal_local_as_symbol_noting(text_stream *n
 }
 
 local_variable *LocalVariables::add_named_call(text_stream *name) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf)
 		return LocalVariables::add_internal(&(phsf->local_value_variables), name,
 			OTHER_CALL_PARAMETER_LV);
@@ -286,7 +286,7 @@ inter_symbol *LocalVariables::add_named_call_as_symbol_noting(text_stream *name,
 }
 
 local_variable *LocalVariables::add_internal_local_c(text_stream *name, char *comment) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) {
 		local_variable *lvar =
 			LocalVariables::add_internal(&(phsf->local_value_variables),
@@ -330,7 +330,7 @@ local_variable *LocalVariables::add_switch_value(kind *K) {
 passed to its I6 routine, and this occupies a pseudo-call-parameter:
 
 =
-void LocalVariables::options_parameter_is_needed(ph_stack_frame *phsf) {
+void LocalVariables::options_parameter_is_needed(stack_frame *phsf) {
 	LocalVariables::add_internal(&(phsf->local_value_variables),
 		I"phrase_options", OTHER_CALL_PARAMETER_LV);
 }
@@ -353,7 +353,7 @@ void LocalVariables::deallocate(local_variable *lvar) {
 @ More extremely:
 
 =
-void LocalVariables::deallocate_all(ph_stack_frame *phsf) {
+void LocalVariables::deallocate_all(stack_frame *phsf) {
 	local_variable *lvar;
 	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		if ((lvar->lv_purpose == LET_VALUE_LV) && (lvar->allocated))
@@ -363,7 +363,7 @@ void LocalVariables::deallocate_all(ph_stack_frame *phsf) {
 @h Extent.
 
 =
-int LocalVariables::count(ph_stack_frame *phsf) {
+int LocalVariables::count(stack_frame *phsf) {
 	int ct = 0;
 	if (phsf) {
 		local_variable *lvar;
@@ -383,7 +383,7 @@ list, because they may include variables which will be deallocated and then
 given fresh names in between now and then.
 
 =
-void LocalVariables::copy(ph_stack_frame *phsf_to, ph_stack_frame *phsf_from) {
+void LocalVariables::copy(stack_frame *phsf_to, stack_frame *phsf_from) {
 	locals_slate *slate_from = &(phsf_from->local_value_variables);
 	locals_slate *slate_to = &(phsf_to->local_value_variables);
 
@@ -399,7 +399,7 @@ void LocalVariables::copy(ph_stack_frame *phsf_to, ph_stack_frame *phsf_from) {
 	slate_to->its_form_allowed = slate_from->its_form_allowed;
 	slate_to->it_pseudonym = slate_from->it_pseudonym;
 
-	phsf_to->local_stvol = phsf_from->local_stvol;
+	phsf_to->shared_variables = phsf_from->shared_variables;
 }
 
 @h Searching.
@@ -427,26 +427,26 @@ local_variable *LocalVariables::find_any(locals_slate *slate, text_stream *name)
 
 =
 local_variable *LocalVariables::by_name(text_stream *name) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return FALSE;
 	return LocalVariables::find_i6_var(&(phsf->local_value_variables), name, INTERNAL_USE_LV);
 }
 
 local_variable *LocalVariables::by_name_any(text_stream *name) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return FALSE;
 	return LocalVariables::find_any(&(phsf->local_value_variables), name);
 }
 
 local_variable *LocalVariables::phrase_options(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return NULL;
 	return LocalVariables::find_i6_var(&(phsf->local_value_variables), I"phrase_options", OTHER_CALL_PARAMETER_LV);
 }
 
 @ =
 local_variable *LocalVariables::find_pcalc_var(int v) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return NULL;
 	local_variable *lvar;
 	locals_slate *slate = &(phsf->local_value_variables);
@@ -458,7 +458,7 @@ local_variable *LocalVariables::find_pcalc_var(int v) {
 }
 
 local_variable *LocalVariables::find_const_var(int v) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return NULL;
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "const_%d", v);
@@ -475,7 +475,7 @@ local_variable *LocalVariables::find_const_var(int v) {
 
 =
 int LocalVariables::are_we_using_table_lookup(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return FALSE;
 	if (LocalVariables::find_i6_var(&(phsf->local_value_variables), I"ct_0", INTERNAL_USE_LV)) return TRUE;
 	return FALSE;
@@ -487,7 +487,7 @@ there isn't one.
 
 =
 local_variable *LocalVariables::get_ith_parameter(int i) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) internal_error("no stack frame exists");
 	local_variable *lvar;
 	int c = 0;
@@ -510,14 +510,14 @@ function, to reuse as much earlier work as possible, and the following is
 very fast.
 
 =
-local_variable *LocalVariables::parse(ph_stack_frame *phsf, wording W) {
+local_variable *LocalVariables::parse(stack_frame *phsf, wording W) {
 	if (phsf == NULL) return NULL;
 	local_variable *lvar = LocalVariables::parse_inner(phsf, W);
 	if (lvar) lvar->parsed_recently = TRUE;
 	return lvar;
 }
 
-local_variable *LocalVariables::parse_inner(ph_stack_frame *phsf, wording W) {
+local_variable *LocalVariables::parse_inner(stack_frame *phsf, wording W) {
 	if (phsf->local_value_variables.it_variable_exists)
 		if (<agent-pronoun>(W)) {
 			pronoun_usage *pu = <<rp>>;
@@ -555,7 +555,7 @@ any need.
 
 @ =
 int stack_selection_used_recently = FALSE;
-void LocalVariables::monitor_local_parsing(ph_stack_frame *phsf) {
+void LocalVariables::monitor_local_parsing(stack_frame *phsf) {
 	if (phsf) {
 		local_variable *lvar;
 		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
@@ -568,7 +568,7 @@ void LocalVariables::used_stack_selection(void) {
 	stack_selection_used_recently = TRUE;
 }
 
-int LocalVariables::local_parsed_recently(ph_stack_frame *phsf) {
+int LocalVariables::local_parsed_recently(stack_frame *phsf) {
 	if (phsf) {
 		local_variable *lvar;
 		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
@@ -587,7 +587,7 @@ fake up a call parameter pro tem.)
 
 =
 local_variable *LocalVariables::it_variable(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) return LocalVariables::get_ith_parameter(0);
 	return LocalVariables::add_to_locals_slate(NULL, TOKEN_CALL_PARAMETER_LV,
 		EMPTY_WORDING, K_value, NULL, 0);
@@ -597,29 +597,29 @@ local_variable *LocalVariables::it_variable(void) {
 
 =
 int LocalVariables::is_possessive_form_of_it_enabled(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) return phsf->local_value_variables.its_form_allowed;
 	return FALSE;
 }
 
 void LocalVariables::enable_possessive_form_of_it(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) internal_error("no stack frame exists");
 	phsf->local_value_variables.its_form_allowed = TRUE;
 }
 
-local_variable *LocalVariables::add_pronoun(ph_stack_frame *phsf, wording W, kind *K) {
+local_variable *LocalVariables::add_pronoun(stack_frame *phsf, wording W, kind *K) {
 	phsf->local_value_variables.it_variable_exists = TRUE;
 	return LocalVariables::add_call_parameter(phsf, W, K);
 }
 
-inter_symbol *LocalVariables::add_pronoun_as_symbol(ph_stack_frame *phsf, wording W, kind *K) {
+inter_symbol *LocalVariables::add_pronoun_as_symbol(stack_frame *phsf, wording W, kind *K) {
 	phsf->local_value_variables.it_variable_exists = TRUE;
 	local_variable *v = LocalVariables::add_call_parameter(phsf, W, K);
 	return LocalVariables::declare_this(v, FALSE, 8);
 }
 
-void LocalVariables::alias_pronoun(ph_stack_frame *phsf, wording W) {
+void LocalVariables::alias_pronoun(stack_frame *phsf, wording W) {
 	phsf->local_value_variables.it_pseudonym = W;
 }
 
@@ -630,14 +630,14 @@ our current locals to be still visible from inside it. What we do is to
 park the values of the locals into a little scratch array before the call...
 
 =
-void LocalVariables::compile_storage(OUTPUT_STREAM, ph_stack_frame *phsf) {
+void LocalVariables::compile_storage(OUTPUT_STREAM, stack_frame *phsf) {
 	local_variable *lvar;
 	int j=0;
 	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
 		WRITE("(LocalParking-->%d=%~L),", j++, lvar);
 }
 
-int LocalVariables::emit_storage(ph_stack_frame *phsf) {
+int LocalVariables::emit_storage(stack_frame *phsf) {
 	int NC = 0;
 	inter_ti j = 0;
 	local_variable *lvar;
@@ -663,7 +663,7 @@ int LocalVariables::emit_storage(ph_stack_frame *phsf) {
 function, i.e., immediately after the call.
 
 =
-void LocalVariables::compile_retrieval(ph_stack_frame *phsf) {
+void LocalVariables::compile_retrieval(stack_frame *phsf) {
 	inter_name *LP = Hierarchy::find(LOCALPARKING_HL);
 	inter_ti j=0;
 	local_variable *lvar;
@@ -685,7 +685,7 @@ Another use for local variables is as the terms in an equation.
 
 =
 void LocalVariables::make_available_to_equation(equation *eqn) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) {
 		local_variable *lvar;
 		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
@@ -700,7 +700,7 @@ the text "X":
 
 =
 local_variable *LocalVariables::ensure_called_local(wording W, kind *K) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) return NULL; /* in case callings are made from parsing alone */
 	<new-called-name>(W);
 	local_variable *lvar = <<rp>>;
@@ -786,7 +786,7 @@ name or a description.
 	} else return FALSE;
 
 @<Make a new local for this calling@> =
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	==> { 0, (phsf)?(LocalVariables::new(W, K_object)):NULL };
 
 @h Permissible names.
@@ -937,7 +937,7 @@ void LocalVariables::mark_to_free_at_end_of_scope(local_variable *lvar) {
 }
 
 void LocalVariables::end_scope(int s) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) internal_error("relinquishing locals where no stack frame exists");
 	if (s <= 0) internal_error("the outermost scope cannot end");
 
@@ -965,7 +965,7 @@ right result, so don't use it for anything else.
 
 =
 local_variable *LocalVariables::latest_repeat_variable(void) {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf) {
 		int s = Frames::Blocks::current_block_level();
 		local_variable *lvar;
@@ -1075,7 +1075,7 @@ void LocalVariables::writer(OUTPUT_STREAM, char *format_string, void *vL) {
 parameters:
 
 =
-void LocalVariables::compile_parameter_list(OUTPUT_STREAM, ph_stack_frame *phsf, int no_vars) {
+void LocalVariables::compile_parameter_list(OUTPUT_STREAM, stack_frame *phsf, int no_vars) {
 	int purpose;
 	for (purpose = TOKEN_CALL_PARAMETER_LV; purpose <= OTHER_CALL_PARAMETER_LV; purpose++) {
 		local_variable *lvar;
@@ -1087,7 +1087,7 @@ void LocalVariables::compile_parameter_list(OUTPUT_STREAM, ph_stack_frame *phsf,
 	}
 }
 
-void LocalVariables::emit_parameter_list(ph_stack_frame *phsf) {
+void LocalVariables::emit_parameter_list(stack_frame *phsf) {
 	local_variable *lvar;
 	for (int purpose = TOKEN_CALL_PARAMETER_LV; purpose <= OTHER_CALL_PARAMETER_LV; purpose++)
 		LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
@@ -1098,7 +1098,7 @@ void LocalVariables::emit_parameter_list(ph_stack_frame *phsf) {
 }
 
 @ =
-kind *LocalVariables::deduced_function_kind(ph_stack_frame *phsf) {
+kind *LocalVariables::deduced_function_kind(stack_frame *phsf) {
 	int pc = 0;
 	local_variable *lvar;
 	LOOP_THROUGH_LOCALS_IN_FRAME(lvar, phsf)
@@ -1120,7 +1120,7 @@ kind *LocalVariables::deduced_function_kind(ph_stack_frame *phsf) {
 need in the compilation of any given routine:
 
 =
-void LocalVariables::declare(ph_stack_frame *phsf, int shell_mode) {
+void LocalVariables::declare(stack_frame *phsf, int shell_mode) {
 	int purpose, from = TOKEN_CALL_PARAMETER_LV, to = INTERNAL_USE_LV;
 	if (shell_mode) to = OTHER_CALL_PARAMETER_LV;
 	if (phsf)

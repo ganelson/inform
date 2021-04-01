@@ -314,7 +314,7 @@ parse_node *SPType::p_o_val(parse_node *A, parse_node *B) {
 @h Variables.
 Internally there
 are three sources of these: locals, defined by "let" or "repeat" phrases;
-stacked variables, which belong to rulebooks, actions or activities; and
+shared variables, which belong to rulebooks, actions or activities; and
 global variables. The narrower in scope take priority over the broader: so
 if there are both local and global variables called "grand total", then
 the text "grand total" is parsed as the local.
@@ -350,13 +350,13 @@ the text "grand total" is parsed as the local.
 
 =
 <s-stacked-variable> internal {
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	if (phsf == NULL) { ==> { fail nonterminal }; }
-	stacked_variable *stv = StackedVariables::parse_from_access_list(
-		Frames::get_stvol(), W);
+	shared_variable *stv = SharedVariables::parse_from_access_list(
+		Frames::get_shared_variable_access_list(), W);
 	if (stv) {
 		parse_node *spec = Lvalues::new_actual_NONLOCAL_VARIABLE(
-			StackedVariables::get_variable(stv));
+			SharedVariables::get_variable(stv));
 		==> { -, spec }; return TRUE;
 	}
 	==> { fail nonterminal };

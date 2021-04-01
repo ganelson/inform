@@ -141,9 +141,10 @@ void RTActivities::Activity_atb_rulebooks_array(void) {
 void RTActivities::activity_var_creators(void) {
 	activity *av;
 	LOOP_OVER(av, activity) {
-		if (StackedVariables::set_empty(av->activity_variables) == FALSE) {
+		if (SharedVariables::set_empty(av->activity_variables) == FALSE) {
 			inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_STV_CREATOR_FN_HL, av->compilation_data.av_package);
-			StackedVariables::compile_frame_creator(av->activity_variables, iname);
+			SharedVariables::set_frame_creator(av->activity_variables, iname);
+			RTVariables::compile_frame_creator(av->activity_variables);
 		}
 	}
 
@@ -151,8 +152,8 @@ void RTActivities::activity_var_creators(void) {
 	packaging_state save = Emit::named_array_begin(iname, K_value);
 	int c = 0;
 	LOOP_OVER(av, activity) {
-		if (StackedVariables::set_empty(av->activity_variables)) Emit::array_numeric_entry(0);
-		else Emit::array_iname_entry(StackedVariables::frame_creator(av->activity_variables));
+		if (SharedVariables::set_empty(av->activity_variables)) Emit::array_numeric_entry(0);
+		else Emit::array_iname_entry(SharedVariables::frame_creator(av->activity_variables));
 		c++;
 	}
 	Emit::array_numeric_entry(0);

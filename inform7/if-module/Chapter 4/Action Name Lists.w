@@ -343,7 +343,7 @@ typedef struct anl_clause {
 	int clause_ID;
 	struct wording clause_text;
 	struct anl_clause *next_clause;
-	struct stacked_variable *stv_to_match;
+	struct shared_variable *stv_to_match;
 	struct parse_node *evaluation;
 } anl_clause;
 
@@ -410,7 +410,7 @@ anl_entry *ActionNameLists::set_clause_wording(anl_entry *entry, int C, wording 
 
 =
 anl_entry *ActionNameLists::set_clause_wording_and_stv(anl_entry *entry, int C,
-	wording W, stacked_variable *stv) {
+	wording W, shared_variable *stv) {
 	if (entry == NULL) internal_error("no entry");
 	anl_clause *prev = NULL;
 	LOOP_THROUGH_ANL_CLAUSES(c, entry) {
@@ -1004,10 +1004,10 @@ are divergence points:
 	if (Word::unexpectedly_upper_case(Wordings::first_wn(W)) == FALSE) {
 		action_name *chief_an = currently_exploding_entry->item.action_listed;
 		if (chief_an) {
-			stacked_variable_set *stvo = chief_an->action_variables;
+			shared_variable_set *stvo = chief_an->action_variables;
 			if (stvo) {
-				stacked_variable *stv;
-				LOOP_OVER_LINKED_LIST(stv, stacked_variable, stvo->list_of_stvs) {
+				shared_variable *stv;
+				LOOP_OVER_LINKED_LIST(stv, shared_variable, stvo->variables) {
 					wording VW = stv->match_wording_text;
 					if (Wordings::starts_with(W, VW)) {
 						wording T = Wordings::from(W, Wordings::first_wn(W) + Wordings::length(VW));
@@ -1040,7 +1040,7 @@ words appear somewhere in the text. As Inform ships with only seven different
 clauses anyway, this will never be too bad.
 
 =
-void ActionNameLists::detonate(int potential_C, stacked_variable *stv, wording T, wording W) {
+void ActionNameLists::detonate(int potential_C, shared_variable *stv, wording T, wording W) {
 	if (ActionNameLists::has_clause(currently_exploding_entry, potential_C) == FALSE) {
 		anl_entry *extra = ActionNameLists::duplicate_entry(currently_exploding_entry);
 

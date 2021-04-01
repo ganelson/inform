@@ -24,7 +24,7 @@ packaging_state Routines::begin(inter_name *name) {
 we need to keep track of:
 
 =
-ph_stack_frame *currently_compiling_in_frame = NULL; /* the stack frame for this routine */
+stack_frame *currently_compiling_in_frame = NULL; /* the stack frame for this routine */
 int currently_compiling_nnp = FALSE; /* is this a nonphrasal stack frame we made ourselves? */
 inter_package *currently_compiling_inter_block = NULL; /* where Inter is being emitted to */
 inter_name *currently_compiling_iname = NULL; /* routine we end up with */
@@ -33,7 +33,7 @@ inter_name *currently_compiling_iname = NULL; /* routine we end up with */
 pre-existing stack frame:
 
 =
-packaging_state Routines::begin_framed(inter_name *iname, ph_stack_frame *phsf) {
+packaging_state Routines::begin_framed(inter_name *iname, stack_frame *phsf) {
 	if (iname == NULL) internal_error("no iname for routine");
 	currently_compiling_iname = iname;
 
@@ -71,7 +71,7 @@ void Routines::end(packaging_state save) {
 	kind *R_kind = LocalVariables::deduced_function_kind(currently_compiling_in_frame);
 
 	inter_name *kernel_name = NULL, *public_name = currently_compiling_iname;
-	if ((currently_compiling_in_frame->allocated_pointers) ||
+	if ((Frames::uses_local_block_values(currently_compiling_in_frame)) ||
 		(currently_compiling_in_frame->no_formal_parameters_needed > 0))
 		kernel_name = Produce::kernel(Emit::tree(), public_name);
 
@@ -101,7 +101,6 @@ void Routines::end(packaging_state save) {
 	inter_package *block_package = Produce::block(Emit::tree(), NULL, public_name);
 	inter_symbol *I7RBLK_symbol = NULL;
 	@<Compile I6 locals for the outer shell@>;
-	int NBV = 0;
 	@<Compile some setup code to make ready for the kernel@>;
 	@<Compile a call to the kernel@>;
 	@<Compile some teardown code now that the kernel has finished@>;
@@ -124,19 +123,7 @@ after the call parameters, and is used only as a scratch variable.
 @ We allocate memory for each pointer value used in the stack frame:
 
 @<Compile some setup code to make ready for the kernel@> =
-	Produce::push(Emit::tree(), Hierarchy::find(I7SFRAME_HL));
-
-	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {
-		if (pall->offset_past > NBV) NBV = pall->offset_past;
-	}
-	inter_name *iname = Hierarchy::find(STACKFRAMECREATE_HL);
-	Produce::inv_call_iname(Emit::tree(), iname);
-	Produce::down(Emit::tree());
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) NBV);
-	Produce::up(Emit::tree());
-
-	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame)
-		RTKinds::emit_heap_allocation(pall->allocation);
+	Frames::compile_lbv_setup(currently_compiling_in_frame);
 
 	for (int i=0; i<currently_compiling_in_frame->no_formal_parameters_needed; i++) {
 		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
@@ -171,16 +158,7 @@ after the call parameters, and is used only as a scratch variable.
 		nonlocal_variable *nlv = RTTemporaryVariables::formal_parameter(i);
 		Produce::pull(Emit::tree(), RTVariables::iname(nlv));
 	}
-
-	for (pointer_allocation *pall=currently_compiling_in_frame->allocated_pointers; pall; pall=pall->next_in_frame) {
-		inter_name *iname = Hierarchy::find(BLKVALUEFREEONSTACK_HL);
-		Produce::inv_call_iname(Emit::tree(), iname);
-		Produce::down(Emit::tree());
-		Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) pall->offset_index);
-		Produce::up(Emit::tree());
-	}
-
-	Produce::pull(Emit::tree(), Hierarchy::find(I7SFRAME_HL));
+	Frames::compile_lbv_teardown(currently_compiling_in_frame);
 
 @<Compile a return from the outer shell@> =
 	Produce::inv_primitive(Emit::tree(), RETURN_BIP);

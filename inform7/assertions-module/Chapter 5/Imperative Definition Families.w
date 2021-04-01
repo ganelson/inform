@@ -110,7 +110,7 @@ VOID_METHOD_TYPE(TO_RCD_IMP_DEFN_MTID, imperative_defn_family *f, imperative_def
 
 id_runtime_context_data ImperativeDefinitionFamilies::to_phrcd(imperative_defn *id) {
 	current_sentence = id->at;
-	Frames::make_current(&(id->body_of_defn->compilation_data.stack_frame));
+	Frames::make_current(&(id->body_of_defn->compilation_data.id_stack_frame));
 	id_runtime_context_data phrcd = RuntimeContextData::new();
 	VOID_METHOD_CALL(id->family, TO_RCD_IMP_DEFN_MTID, id, &phrcd);
 	Frames::remove_current();

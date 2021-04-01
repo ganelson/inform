@@ -34,9 +34,9 @@ rule_compilation_data RTRules::new_compilation_data(rule *R) {
 	return rcd;
 }
 
-ph_stack_frame *RTRules::stack_frame(rule *R) {
+stack_frame *RTRules::stack_frame(rule *R) {
 	if ((R == NULL) || (R->defn_as_I7_source == NULL)) return NULL;
-	return &(R->defn_as_I7_source->body_of_defn->compilation_data.stack_frame);
+	return &(R->defn_as_I7_source->body_of_defn->compilation_data.id_stack_frame);
 }
 
 void RTRules::prepare_rule(imperative_defn *id, rule *R) {
@@ -724,16 +724,18 @@ inter_name *RTRules::get_stv_creator_iname(rulebook *B) {
 void RTRules::rulebook_var_creators(void) {
 	rulebook *B;
 	LOOP_OVER(B, rulebook)
-		if (StackedVariables::set_empty(B->my_variables) == FALSE)
-			StackedVariables::compile_frame_creator(B->my_variables,
+		if (SharedVariables::set_empty(B->my_variables) == FALSE) {
+			SharedVariables::set_frame_creator(B->my_variables,
 				RTRules::get_stv_creator_iname(B));
+			RTVariables::compile_frame_creator(B->my_variables);
+		}
 
 	if (global_compilation_settings.memory_economy_in_force == FALSE) {
 		inter_name *iname = Hierarchy::find(RULEBOOK_VAR_CREATORS_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
 		LOOP_OVER(B, rulebook) {
-			if (StackedVariables::set_empty(B->my_variables)) Emit::array_numeric_entry(0);
-			else Emit::array_iname_entry(StackedVariables::frame_creator(B->my_variables));
+			if (SharedVariables::set_empty(B->my_variables)) Emit::array_numeric_entry(0);
+			else Emit::array_iname_entry(SharedVariables::frame_creator(B->my_variables));
 		}
 		Emit::array_numeric_entry(0);
 		Emit::array_end(save);
@@ -754,7 +756,7 @@ void RTRules::rulebook_var_creators(void) {
 
 		rulebook *B;
 		LOOP_OVER(B, rulebook)
-			if (StackedVariables::set_empty(B->my_variables) == FALSE) {
+			if (SharedVariables::set_empty(B->my_variables) == FALSE) {
 				Produce::inv_primitive(Emit::tree(), CASE_BIP);
 				Produce::down(Emit::tree());
 					Produce::val(Emit::tree(), K_value, LITERAL_IVAL, (inter_ti) (B->allocation_id));

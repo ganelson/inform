@@ -519,7 +519,7 @@ the going action variables.
 @e DIVERT_AP_CLAUSE_PLUG
 
 =
-int PluginCalls::divert_AP_clause_ID(stacked_variable *stv, int *id) {
+int PluginCalls::divert_AP_clause_ID(shared_variable *stv, int *id) {
 	*id = -1;
 	PLUGINS_CALL(DIVERT_AP_CLAUSE_PLUG, stv, id);
 }

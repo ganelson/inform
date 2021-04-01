@@ -644,7 +644,7 @@ void Calculus::Deferrals::emit_call_to_deferred_desc(pcalc_prop *prop,
 	Produce::val_iname(Emit::tree(), K_value, pdef->ppd_iname);
 	Calculus::Deferrals::Cinders::find_emit(prop, pdef);
 	if (K) {
-		Frames::emit_allocation(K);
+		Frames::emit_new_local_value(K);
 		RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 	}
 	Produce::up(Emit::tree());
@@ -661,7 +661,7 @@ void Calculus::Deferrals::emit_list_of_S(parse_node *spec, kind *K) {
 	if (Calculus::Deferrals::spec_is_variable_of_kind_description(spec)) {
 		Produce::inv_call_iname(Emit::tree(), Hierarchy::find(LIST_OF_TY_DESC_HL));
 		Produce::down(Emit::tree());
-			Frames::emit_allocation(K);
+			Frames::emit_new_local_value(K);
 			Specifications::Compiler::emit_as_val(K_value, spec);
 			RTKinds::emit_strong_id_as_val(Kinds::unary_construction_material(K));
 		Produce::up(Emit::tree());

@@ -633,7 +633,7 @@ the going action variables.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">DIVERT_AP_CLAUSE_PLUG</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::divert_AP_clause_ID</span><span class="plain-syntax">(</span><span class="identifier-syntax">stacked_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PluginCalls::divert_AP_clause_ID</span><span class="plain-syntax">(</span><span class="identifier-syntax">shared_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">id</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PLUGINS_CALL</span><span class="plain-syntax">(</span><span class="constant-syntax">DIVERT_AP_CLAUSE_PLUG</span><span class="plain-syntax">, </span><span class="identifier-syntax">stv</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>

@@ -370,10 +370,12 @@ text_stream *RTKinds::interpret_test_equality(kind *left, kind *right) {
 
 	if (Kinds::Constructors::uses_pointer_values(L)) {
 		if (Kinds::Constructors::allow_word_as_pointer(L, R)) {
-			pointer_allocation *pall =
-				Frames::add_allocation(Kinds::base_construction(L),
-					"*=-BlkValueCompare(*1, BlkValueCast(*##, *#2, *!2))==0");
-			return Frames::pall_get_expanded_schema(pall);
+			local_block_value *pall =
+				Frames::allocate_local_block_value(Kinds::base_construction(L));
+			text_stream *promotion = Str::new();
+			WRITE_TO(promotion, "*=-BlkValueCompare(*1, BlkValueCast(%S, *#2, *!2))==0",
+				pall->to_refer->prototype);
+			return promotion;
 		}
 	}
 
@@ -400,29 +402,6 @@ int RTKinds::cast_possible(kind *from, kind *to) {
 }
 
 @ =
-int RTKinds::cast_call(OUTPUT_STREAM, kind *from, kind *to) {
-	if (RTKinds::cast_possible(from, to)) {
-		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
-			WRITE("(");
-			return TRUE;
-		}
-		if ((Kinds::FloatingPoint::uses_floating_point(from)) &&
-			(Kinds::FloatingPoint::uses_floating_point(to))) {
-			WRITE("(");
-			return TRUE;
-		}
-		WRITE("%S_to_%S(",
-			Kinds::Behaviour::get_name_in_template_code(from),
-			Kinds::Behaviour::get_name_in_template_code(to));
-		if (Kinds::Behaviour::uses_pointer_values(to)) {
-			Frames::compile_allocation(OUT, to);
-			WRITE(",");
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
 int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 	if (RTKinds::cast_possible(from, to)) {
 		if (Str::len(Kinds::Behaviour::get_name_in_template_code(to)) == 0) {
@@ -442,7 +421,7 @@ int RTKinds::emit_cast_call(kind *from, kind *to, int *down) {
 		*down = TRUE;
 		Produce::down(Emit::tree());
 		if (Kinds::Behaviour::uses_pointer_values(to)) {
-			Frames::emit_allocation(to);
+			Frames::emit_new_local_value(to);
 		}
 		return TRUE;
 	}
@@ -1129,11 +1108,9 @@ void RTKinds::compile_instance_counts(void) {
 
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_BINARY_PREDICATE_HL), NUMBER_CREATED(binary_predicate));
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_PROPERTY_HL), NUMBER_CREATED(property));
-	#ifdef IF_MODULE
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_ACTION_NAME_HL), NUMBER_CREATED(action_name));
-	#endif
 	RTKinds::compile_nnci(Hierarchy::find(CCOUNT_QUOTATIONS_HL), TextLiterals::CCOUNT_QUOTATIONS());
-	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), max_frame_size_needed);
+	RTKinds::compile_nnci(Hierarchy::find(MAX_FRAME_SIZE_NEEDED_HL), SharedVariables::size_of_largest_set());
 	RTKinds::compile_nnci(Hierarchy::find(RNG_SEED_AT_START_OF_PLAY_HL), Task::rng_seed());
 }
 

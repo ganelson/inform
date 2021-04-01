@@ -106,7 +106,7 @@ void Specifications::Compiler::spec_compile_primitive(value_holster *VH, parse_n
 		if ((K) && (Kinds::Behaviour::uses_pointer_values(K))) {
 			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUECOPY_HL));
 			Produce::down(Emit::tree());
-				Frames::emit_allocation(K);
+				Frames::emit_new_local_value(K);
 			dereffed = TRUE;
 		}
 	}

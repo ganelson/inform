@@ -25,7 +25,7 @@ typedef struct id_compilation_data {
 	int inter_defn_converted; /* has this been tried yet? */
 	struct inter_name *ph_iname; /* or NULL for inline phrases */
 	struct package_request *requests_package;
-	struct ph_stack_frame stack_frame;
+	struct stack_frame id_stack_frame;
 	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 } id_compilation_data;
 
@@ -44,7 +44,7 @@ id_compilation_data IDCompilation::new_data(parse_node *p) {
 	phcd.requests_package = NULL;
 	phcd.at_least_one_compiled_form_needed = TRUE;
 	phcd.compile_with_run_time_debugging = FALSE;
-	phcd.stack_frame = Frames::new();
+	phcd.id_stack_frame = Frames::new();
 	phcd.permit_all_outcomes = FALSE;
 	return phcd;
 }
@@ -60,10 +60,10 @@ void IDCompilation::make_inline(id_body *idb, int inline_wn, int mor) {
 =
 void IDCompilation::prepare_stack_frame(id_body *body) {
 	IDCompilation::initialise_stack_frame_from_type_data(
-		&(body->compilation_data.stack_frame), &(body->type_data),
+		&(body->compilation_data.id_stack_frame), &(body->type_data),
 		IDTypeData::kind(&(body->type_data)), TRUE);
 	if (PhraseOptions::allows_options(body))
-		LocalVariables::options_parameter_is_needed(&(body->compilation_data.stack_frame));
+		LocalVariables::options_parameter_is_needed(&(body->compilation_data.id_stack_frame));
 }
 
 @ Suppose Inform is compiling code to represent this:
@@ -96,7 +96,7 @@ arguments, "number" and then "list of numbers", and creates local
 variables "new entry" and "L" with those kinds.
 
 =
-void IDCompilation::initialise_stack_frame_from_type_data(ph_stack_frame *phsf,
+void IDCompilation::initialise_stack_frame_from_type_data(stack_frame *phsf,
 	id_type_data *idtd, kind *kind_in_this_compilation, int first) {
 	if (Kinds::get_construct(kind_in_this_compilation) != CON_phrase)
 		internal_error("no function kind");
@@ -171,7 +171,7 @@ response to "requests". All other phrases are compiled just once.
 
 =
 void IDCompilation::compile(id_body *idb, int *i, int max_i,
-	stacked_variable_access_list *legible, to_phrase_request *req, rule *R) {
+	shared_variable_access_list *legible, to_phrase_request *req, rule *R) {
 	if ((req) || (idb->compilation_data.at_least_one_compiled_form_needed)) {
 		Routines::Compile::routine(idb, legible, req, R);
 		if (idb->compilation_data.at_least_one_compiled_form_needed) {

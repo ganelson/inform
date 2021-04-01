@@ -33,7 +33,7 @@ typedef struct rule {
 	struct rulebook *kind_of_rule_set_from;
 
 	struct imperative_defn *defn_as_I7_source; /* if defined by an I7 id_body */
-	struct stacked_variable_access_list *variables_visible_in_definition; /* if so */
+	struct shared_variable_access_list *variables_visible_in_definition; /* if so */
 	struct text_stream *defn_as_Inter_function; /* if not */
 
 	struct booking *automatic_booking; /* how this is placed in rulebooks */
@@ -76,7 +76,7 @@ rule *Rules::obtain(wording W, int allow_responses) {
 	R->kind_of_rule_set_from = NULL;
 
 	R->defn_as_I7_source = NULL;
-	R->variables_visible_in_definition = StackedVariables::new_access_list();
+	R->variables_visible_in_definition = SharedVariables::new_access_list();
 	R->defn_as_Inter_function = NULL;
 
 	R->automatic_booking = NULL;
@@ -231,13 +231,13 @@ imperative_defn *Rules::get_imperative_definition(rule *R) {
 	return R->defn_as_I7_source;
 }
 
-@ Inside such a definition, certain stacked variables may be in scope. For
+@ Inside such a definition, certain shared variables may be in scope. For
 example, if a rule is in an activity rulebook, then it will be able to see
 the variables belonging to that activity.
 
 =
-void Rules::put_variables_in_scope(rule *R, stacked_variable_access_list *access) {
-	StackedVariables::append_access_list(R->variables_visible_in_definition, access);
+void Rules::put_variables_in_scope(rule *R, shared_variable_access_list *access) {
+	SharedVariables::append_access_list(R->variables_visible_in_definition, access);
 }
 
 void Rules::put_action_variables_in_scope(rule *R) {
@@ -248,13 +248,13 @@ void Rules::put_action_variables_in_scope(rule *R) {
 	#endif
 }
 
-struct stacked_variable_access_list *all_action_processing_vars = NULL;
+struct shared_variable_access_list *all_action_processing_vars = NULL;
 
-stacked_variable_access_list *Rules::all_action_processing_variables(void) {
+shared_variable_access_list *Rules::all_action_processing_variables(void) {
 	if (all_action_processing_vars == NULL) {
-		all_action_processing_vars = StackedVariables::new_access_list();
+		all_action_processing_vars = SharedVariables::new_access_list();
 		rulebook *B = Rulebooks::std(ACTION_PROCESSING_RB);
-		if (B) StackedVariables::add_set_to_access_list(all_action_processing_vars, B->my_variables);
+		if (B) SharedVariables::add_set_to_access_list(all_action_processing_vars, B->my_variables);
 	}
 	return all_action_processing_vars;
 }

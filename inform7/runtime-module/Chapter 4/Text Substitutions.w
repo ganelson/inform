@@ -21,7 +21,7 @@ typedef struct text_substitution {
 	int responding_to_marker;
 	struct parse_node *sentence_using_this; /* where this occurs in source */
 	int local_names_existed_at_usage_time; /* remember in case of problems */
-	struct ph_stack_frame *parked_stack_frame; /* for cases where possible */
+	struct stack_frame *parked_stack_frame; /* for cases where possible */
 	struct inter_name *ts_iname; /* the I6 array for this */
 	struct inter_name *ts_routine_iname; /* the routine to implement it */
 	int ts_sb_needed; /* reference copy of small block needed as a constant? */
@@ -57,7 +57,7 @@ to the same routines to print them.
 
 =
 text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
-	ph_stack_frame *phsf, rule *R, int marker, package_request *P) {
+	stack_frame *phsf, rule *R, int marker, package_request *P) {
 	text_substitution *ts = CREATE(text_substitution);
 	if (no_further_text_subs) @<Panic, because it is really too late@>;
 	ts->unsubstituted_text = Wordings::first_word(W);
@@ -66,7 +66,7 @@ text_substitution *Strings::TextSubstitutions::new_text_substitution(wording W,
 	if (R) {
 		ts->parked_stack_frame = NULL;
 	} else {
-		ph_stack_frame new_frame = Frames::new();
+		stack_frame new_frame = Frames::new();
 		ts->parked_stack_frame = Frames::boxed_frame(&new_frame);
 		if (phsf) LocalVariables::copy(ts->parked_stack_frame, phsf);
 	}
@@ -124,7 +124,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 	if (adopted_rule_for_compilation) {
 		Rules::log(adopted_rule_for_compilation);
 	}
-	ph_stack_frame *phsf = NULL;
+	stack_frame *phsf = NULL;
 	if (adopted_rule_for_compilation) {
 		@<Write the actual cue@>;
 	} else {
@@ -136,7 +136,7 @@ void Strings::TextSubstitutions::text_substitution_cue(value_holster *VH, wordin
 				phsf = Frames::boxed_frame(phsf);
 				Produce::inv_call_iname(Emit::tree(), Hierarchy::find(TEXT_TY_EXPANDIFPERISHABLE_HL));
 				Produce::down(Emit::tree());
-					Frames::emit_allocation(K_text);
+					Frames::emit_new_local_value(K_text);
 			}
 			text_substitution *ts = Strings::TextSubstitutions::new_text_substitution(W, phsf,
 				adopted_rule_for_compilation, adopted_marker_for_compilation, Emit::current_enclosure());
@@ -262,7 +262,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 	current_ts_being_compiled = ts;
 	ts->tr_done_already = TRUE;
 	packaging_state save = Routines::begin(ts->ts_routine_iname);
-	ph_stack_frame *phsf = ts->parked_stack_frame;
+	stack_frame *phsf = ts->parked_stack_frame;
 	if ((ts->responding_to_rule) && (ts->responding_to_marker >= 0)) {
 		response_message *resp = Rules::get_response(
 			ts->responding_to_rule, ts->responding_to_marker);

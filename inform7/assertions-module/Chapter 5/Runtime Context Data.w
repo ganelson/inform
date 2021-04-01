@@ -181,10 +181,10 @@ void RuntimeContextData::ensure_avl(rule *R) {
 			parse_node *save_cs = current_sentence;
 			current_sentence = id->at;
 
-			ph_stack_frame *phsf = &(idb->compilation_data.stack_frame);
+			stack_frame *phsf = &(idb->compilation_data.id_stack_frame);
 			Frames::make_current(phsf);
 
-			Frames::set_stvol(phsf, R->variables_visible_in_definition);
+			Frames::set_shared_variable_access_list(phsf, R->variables_visible_in_definition);
 			rcd->avl = RuntimeContextData::parse_avl(rcd->activity_context);
 			current_sentence = save_cs;
 		}

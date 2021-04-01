@@ -134,9 +134,9 @@ DECLARE_CLASS(text_substitution)
 @e property_setting_bp_data_CLASS
 @e relation_inference_data_CLASS
 @e short_name_notice_CLASS
-@e stacked_variable_CLASS
-@e stacked_variable_set_CLASS
-@e stacked_variable_access_list_CLASS
+@e shared_variable_CLASS
+@e shared_variable_set_CLASS
+@e shared_variable_access_list_CLASS
 @e value_property_data_CLASS
 
 =
@@ -155,9 +155,9 @@ DECLARE_CLASS(property_inference_data)
 DECLARE_CLASS(property_setting_bp_data)
 DECLARE_CLASS(relation_inference_data)
 DECLARE_CLASS(short_name_notice)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_set, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(stacked_variable_access_list, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(shared_variable, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(shared_variable_set, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(shared_variable_access_list, 100)
 DECLARE_CLASS(value_property_data)
 
 @ //imperative// --
@@ -167,8 +167,8 @@ DECLARE_CLASS(value_property_data)
 @e past_tense_action_record_CLASS
 @e past_tense_condition_record_CLASS
 @e pcalc_prop_deferral_CLASS
-@e ph_stack_frame_box_CLASS
-@e pointer_allocation_CLASS
+@e stack_frame_box_CLASS
+@e local_block_value_CLASS
 
 =
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(invocation_options, 100)
@@ -176,8 +176,8 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(local_variable, 100)
 DECLARE_CLASS(past_tense_action_record)
 DECLARE_CLASS(past_tense_condition_record)
 DECLARE_CLASS(pcalc_prop_deferral)
-DECLARE_CLASS(ph_stack_frame_box)
-DECLARE_CLASS(pointer_allocation)
+DECLARE_CLASS(stack_frame_box)
+DECLARE_CLASS(local_block_value)
 
 @ //runtime// --
 

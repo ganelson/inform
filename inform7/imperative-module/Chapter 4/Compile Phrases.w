@@ -24,7 +24,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 =
 void Routines::Compile::routine(id_body *idb,
-	stacked_variable_access_list *legible, to_phrase_request *req,
+	shared_variable_access_list *legible, to_phrase_request *req,
 	rule *R) {
 	parse_node *code_at = ImperativeDefinitions::body_at(idb);
 	if (Node::is(code_at->next, DEFN_CONT_NT)) code_at = code_at->next;
@@ -36,7 +36,7 @@ void Routines::Compile::routine(id_body *idb,
 
 	@<Compile some commentary about the routine to follow@>;
 
-	packaging_state save = Routines::begin_framed(Routines::Compile::iname(idb, req), &(idb->compilation_data.stack_frame));
+	packaging_state save = Routines::begin_framed(Routines::Compile::iname(idb, req), &(idb->compilation_data.id_stack_frame));
 
 	@<Compile the body of the routine@>;
 
@@ -52,7 +52,7 @@ void Routines::Compile::routine(id_body *idb,
 	ImperativeDefinitions::write_comment_describing(idb->head_of_defn);
 
 @<Set up the stack frame for this compilation request@> =
-	ph_stack_frame *phsf = &(idb->compilation_data.stack_frame);
+	stack_frame *phsf = &(idb->compilation_data.id_stack_frame);
 	id_type_data *idtd = &(idb->type_data);
 	Frames::make_current(phsf);
 
@@ -65,7 +65,7 @@ void Routines::Compile::routine(id_body *idb,
 		PhraseRequests::kind_variables_for_request(req));
 	else Frames::set_kind_variables(phsf, NULL);
 
-	Frames::set_stvol(phsf, legible);
+	Frames::set_shared_variable_access_list(phsf, legible);
 
 	LocalVariables::deallocate_all(phsf); /* in case any are left from an earlier compile */
 	PreformCache::warn_of_changes(); /* that local variables may have changed */

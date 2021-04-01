@@ -26,15 +26,15 @@ action variable clauses.
 @e TAIL_AP_CLAUSE
 
 =
-int APClauses::clause_ID_for_action_variable(stacked_variable *stv) {
+int APClauses::clause_ID_for_action_variable(shared_variable *stv) {
 	int D = -1;
 	PluginCalls::divert_AP_clause_ID(stv, &D); if (D >= 0) return D;
-	int oid = StackedVariables::get_owner_id(stv);
-	int off = StackedVariables::get_offset(stv);
+	int oid = SharedVariables::get_owner_id(stv);
+	int off = SharedVariables::get_offset(stv);
 	return 1000*oid + off;
 }
 
-void APClauses::write_clause_ID(OUTPUT_STREAM, int C, stacked_variable *stv) {
+void APClauses::write_clause_ID(OUTPUT_STREAM, int C, shared_variable *stv) {
 	switch (C) {
 		case PARAMETRIC_AP_CLAUSE:         WRITE("parameter"); break;
 		case ACTOR_AP_CLAUSE:              WRITE("actor"); break;
@@ -48,7 +48,7 @@ void APClauses::write_clause_ID(OUTPUT_STREAM, int C, stacked_variable *stv) {
 	PluginCalls::write_AP_clause_ID(OUT, C);
 	if (stv) {
 		WRITE("{");
-		NonlocalVariables::write(OUT, StackedVariables::get_variable(stv));
+		NonlocalVariables::write(OUT, SharedVariables::get_variable(stv));
 		WRITE("}");
 	}
 }
@@ -59,7 +59,7 @@ A single clause is an instance of:
 =
 typedef struct ap_clause {
 	int clause_ID;
-	struct stacked_variable *stv_to_match; /* can be |NULL| for some built-in clause IDs */
+	struct shared_variable *stv_to_match; /* can be |NULL| for some built-in clause IDs */
 	struct parse_node *clause_spec; /* what the pattern says about this value */
 	int clause_options; /* a bitmap of flags: see below */
 	struct ap_clause *next; /* in the linked list of clauses for an action pattern */
@@ -246,9 +246,9 @@ The following functions deal only with clauses which are attached to action
 variables:
 
 =
-void APClauses::set_action_variable_spec(action_pattern *ap, stacked_variable *stv,
+void APClauses::set_action_variable_spec(action_pattern *ap, shared_variable *stv,
 	parse_node *spec) {
-	if (stv == NULL) internal_error("no stacked variable for apoc");
+	if (stv == NULL) internal_error("no shared variable for apoc");
 	int C = APClauses::clause_ID_for_action_variable(stv);
 	ap_clause *apoc = APClauses::ensure_clause(ap, C);
 	apoc->stv_to_match = stv;
@@ -286,8 +286,8 @@ int APClauses::compare_specificity_of_av_clauses(action_pattern *ap1, action_pat
 	ap_clause *apoc1 = APClauses::advance_to_next_av_clause(ap1->ap_clauses),
 		*apoc2 = APClauses::advance_to_next_av_clause(ap2->ap_clauses);
 	while ((apoc1) && (apoc2)) {
-		int off1 = StackedVariables::get_offset(apoc1->stv_to_match);
-		int off2 = StackedVariables::get_offset(apoc2->stv_to_match);
+		int off1 = SharedVariables::get_offset(apoc1->stv_to_match);
+		int off2 = SharedVariables::get_offset(apoc2->stv_to_match);
 		if (off1 == off2) {
 			int rv = Specifications::compare_specificity(
 				apoc1->clause_spec, apoc2->clause_spec, NULL);

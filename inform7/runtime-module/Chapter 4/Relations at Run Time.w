@@ -1749,7 +1749,7 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 
 	packaging_state save = Routines::begin(rname);
 
-	ph_stack_frame *phsf = Frames::current_stack_frame();
+	stack_frame *phsf = Frames::current_stack_frame();
 	RTRelations::add_term_as_call_parameter(phsf, par1);
 	RTRelations::add_term_as_call_parameter(phsf, par2);
 
@@ -1778,7 +1778,7 @@ its kind indications are all blank, but verifying that the value supplied
 matches the specific necessary kind of object if there is one.
 
 =
-void RTRelations::add_term_as_call_parameter(ph_stack_frame *phsf,
+void RTRelations::add_term_as_call_parameter(stack_frame *phsf,
 	bp_term_details bptd) {
 	kind *K = BPTerms::kind(&bptd);
 	kind *PK = K;

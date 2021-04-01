@@ -159,20 +159,101 @@ void RTVariables::allocate_storage(void) {
 		}
 }
 
-nonlocal_variable_emission RTVariables::stv_lvalue(stacked_variable *stv) {
-	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
+nonlocal_variable_emission RTVariables::shv_lvalue(shared_variable *shv) {
+	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_offset(shv) == 0))
 		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
-		return RTVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, FALSE);
+		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_offset(shv), FALSE);
 }
 
-nonlocal_variable_emission RTVariables::stv_rvalue(stacked_variable *stv) {
-	if ((stv->owner_id == ACTION_PROCESSING_RB) && (stv->offset_in_owning_frame == 0))
+nonlocal_variable_emission RTVariables::shv_rvalue(shared_variable *shv) {
+	if ((SharedVariables::get_owner_id(shv) == ACTION_PROCESSING_RB) && (SharedVariables::get_offset(shv) == 0))
 		return RTVariables::nve_from_iname(Hierarchy::find(ACTOR_HL));
 	else
-		return RTVariables::nve_from_mstack(stv->owner_id, stv->offset_in_owning_frame, TRUE);
+		return RTVariables::nve_from_mstack(SharedVariables::get_owner_id(shv), SharedVariables::get_offset(shv), TRUE);
 }
 
+int RTVariables::compile_frame_creator(shared_variable_set *set) {
+	if (set == NULL) return 0;
+
+	packaging_state save = Routines::begin(SharedVariables::frame_creator(set));
+	inter_symbol *pos_s = LocalVariables::add_named_call_as_symbol(I"pos");
+	inter_symbol *state_s = LocalVariables::add_named_call_as_symbol(I"state");
+
+	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
+	Produce::down(Emit::tree());
+		Produce::inv_primitive(Emit::tree(), EQ_BIP);
+		Produce::down(Emit::tree());
+			Produce::val_symbol(Emit::tree(), K_value, state_s);
+			Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			@<Compile frame creator if state is set@>;
+		Produce::up(Emit::tree());
+		Produce::code(Emit::tree());
+		Produce::down(Emit::tree());
+			@<Compile frame creator if state is clear@>;
+		Produce::up(Emit::tree());
+	Produce::up(Emit::tree());
+
+	int count = LinkedLists::len(set->variables);
+
+	Produce::inv_primitive(Emit::tree(), RETURN_BIP);
+	Produce::down(Emit::tree());
+		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) count);
+	Produce::up(Emit::tree());
+
+	Routines::end(save);
+	return count;
+}
+
+@<Compile frame creator if state is set@> =
+	shared_variable *shv;
+	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
+		nonlocal_variable *q = SharedVariables::get_variable(shv);
+		kind *K = NonlocalVariables::kind(q);
+		Produce::inv_primitive(Emit::tree(), STORE_BIP);
+		Produce::down(Emit::tree());
+			Produce::inv_primitive(Emit::tree(), LOOKUPREF_BIP);
+			Produce::down(Emit::tree());
+				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
+				Produce::val_symbol(Emit::tree(), K_value, pos_s);
+			Produce::up(Emit::tree());
+			if (Kinds::Behaviour::uses_pointer_values(K))
+				RTKinds::emit_heap_allocation(RTKinds::make_heap_allocation(K, 1, -1));
+			else
+				RTVariables::emit_initial_value_as_val(q);
+		Produce::up(Emit::tree());
+
+		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
+		Produce::up(Emit::tree());
+	}
+
+@<Compile frame creator if state is clear@> =
+	shared_variable *shv;
+	LOOP_OVER_LINKED_LIST(shv, shared_variable, set->variables) {
+		nonlocal_variable *q = SharedVariables::get_variable(shv);
+		kind *K = NonlocalVariables::kind(q);
+		if (Kinds::Behaviour::uses_pointer_values(K)) {
+			Produce::inv_call_iname(Emit::tree(), Hierarchy::find(BLKVALUEFREE_HL));
+			Produce::down(Emit::tree());
+				Produce::inv_primitive(Emit::tree(), LOOKUP_BIP);
+				Produce::down(Emit::tree());
+					Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(MSTACK_HL));
+					Produce::val_symbol(Emit::tree(), K_value, pos_s);
+				Produce::up(Emit::tree());
+			Produce::up(Emit::tree());
+		}
+		Produce::inv_primitive(Emit::tree(), POSTINCREMENT_BIP);
+		Produce::down(Emit::tree());
+			Produce::ref_symbol(Emit::tree(), K_value, pos_s);
+		Produce::up(Emit::tree());
+	}
+
+@ =
 inter_name *RTVariables::iname(nonlocal_variable *nlv) {
 	if (nlv->compilation_data.nlv_iname == NULL) {
 		package_request *R =
