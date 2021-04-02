@@ -120,7 +120,7 @@ void UnderstandValueTokens::add_parse_name_vars(gpr_kit *gprk) {
 
 void UnderstandValueTokens::number(void) {
 	inter_name *iname = Hierarchy::find(DECIMAL_TOKEN_INNER_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	gpr_kit gprk = UnderstandValueTokens::new_kit();
 	UnderstandValueTokens::add_original(&gprk);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_number);
@@ -129,13 +129,13 @@ void UnderstandValueTokens::number(void) {
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void UnderstandValueTokens::time(void) {
 	inter_name *iname = Hierarchy::find(TIME_TOKEN_INNER_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	gpr_kit gprk = UnderstandValueTokens::new_kit();
 	UnderstandValueTokens::add_original(&gprk);
 	kind *K = TimesOfDay::kind();
@@ -147,13 +147,13 @@ void UnderstandValueTokens::time(void) {
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
 void UnderstandValueTokens::truth_state(void) {
 	inter_name *iname = Hierarchy::find(TRUTH_STATE_TOKEN_INNER_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	gpr_kit gprk = UnderstandValueTokens::new_kit();
 	UnderstandValueTokens::add_original(&gprk);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_truth_state);
@@ -162,7 +162,7 @@ void UnderstandValueTokens::truth_state(void) {
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -176,7 +176,7 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 			instance *q; literal_pattern *lp;
 			if (Kinds::Behaviour::needs_I6_GPR(K) == FALSE) continue;
 			inter_name *iname = RTKinds::get_kind_GPR_iname(K);
-			packaging_state save = Routines::begin(iname);
+			packaging_state save = Functions::begin(iname);
 			int need_lf_vars = FALSE;
 			LITERAL_FORMS_LOOP(lp, K) {
 				need_lf_vars = TRUE;
@@ -187,11 +187,11 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 			UnderstandValueTokens::add_standard_set(&gprk);
 			if (need_lf_vars) UnderstandValueTokens::add_lp_vars(&gprk);
 			@<Compile body of kind GPR@>;
-			Routines::end(save);
+			Functions::end(save);
 			
 			if (Kinds::Behaviour::is_an_enumeration(K)) {
 				inter_name *iname = RTKinds::get_instance_GPR_iname(K);
-				packaging_state save = Routines::begin(iname);
+				packaging_state save = Functions::begin(iname);
 				gpr_kit gprk = UnderstandValueTokens::new_kit();
 				UnderstandValueTokens::add_instance_call(&gprk);
 				UnderstandValueTokens::add_original(&gprk);
@@ -199,7 +199,7 @@ void UnderstandValueTokens::compile_type_gprs(void) {
 				GV_IS_VALUE_instance_mode = TRUE;
 				@<Compile body of kind GPR@>;
 				GV_IS_VALUE_instance_mode = FALSE;
-				Routines::end(save);
+				Functions::end(save);
 			}
 		}
 	}

@@ -261,7 +261,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 
 	current_ts_being_compiled = ts;
 	ts->tr_done_already = TRUE;
-	packaging_state save = Routines::begin(ts->ts_routine_iname);
+	packaging_state save = Functions::begin(ts->ts_routine_iname);
 	stack_frame *phsf = ts->parked_stack_frame;
 	if ((ts->responding_to_rule) && (ts->responding_to_marker >= 0)) {
 		response_message *resp = Rules::get_response(
@@ -280,7 +280,7 @@ void Strings::TextSubstitutions::compile_single_substitution(text_substitution *
 		LocalParking::retrieve(phsf);
 		Produce::pop_code_position(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);
 
 	if (ts->ts_sb_needed) {
 		packaging_state save = Emit::named_array_begin(ts->ts_iname, K_value);

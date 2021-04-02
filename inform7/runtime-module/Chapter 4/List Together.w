@@ -63,7 +63,7 @@ int ListTogether::compilation_coroutine(void) {
 @ Again, see the DM4.
 
 @<Compile the actual LTR@> =
-	packaging_state save = Routines::begin(ltr->ltr_routine_iname);
+	packaging_state save = Functions::begin(ltr->ltr_routine_iname);
 	Produce::inv_primitive(Emit::tree(), IF_BIP);
 	Produce::down(Emit::tree());
 		Produce::inv_primitive(Emit::tree(), EQ_BIP);
@@ -100,7 +100,7 @@ int ListTogether::compilation_coroutine(void) {
 	Produce::up(Emit::tree());
 
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 	save = Emit::named_array_begin(ltr->ltr_array_iname, K_value);
 	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));

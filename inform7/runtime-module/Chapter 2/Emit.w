@@ -601,7 +601,7 @@ void Emit::code_comment(text_stream *text) {
 }
 
 
-void Emit::routine(inter_name *rname, kind *rkind, inter_package *block) {
+void Emit::function(inter_name *rname, kind *rkind, inter_package *block) {
 	if (Packaging::at(Emit::tree()) == NULL) internal_error("no inter repository");
 	inter_symbol *AB_symbol = Produce::kind_to_symbol(rkind);
 	inter_symbol *rsymb = Produce::define_symbol(rname);

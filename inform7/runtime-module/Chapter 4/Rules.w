@@ -118,14 +118,14 @@ as the definition of the rule in future.
 
 @<Compile a shell routine to apply conditions to an I6 rule@> =
 	inter_name *shell_iname = RTRules::shell_iname(R);
-	packaging_state save = Routines::begin(shell_iname);
+	packaging_state save = Functions::begin(shell_iname);
 	if (RTRules::compile_constraint(R) == FALSE) {
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 		Produce::inv_call_iname(Emit::tree(), R->compilation_data.rule_extern_iname);
 		Produce::up(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);
 
 @ The following generates code to terminate a rule early if its applicability
 conditions have not been met.
@@ -205,7 +205,7 @@ failing; so it doesn't terminate the following of its rulebook.
 =
 void RTRules::RulePrintingRule_routine(void) {
 	inter_name *iname = Hierarchy::find(RULEPRINTINGRULE_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
@@ -231,7 +231,7 @@ void RTRules::RulePrintingRule_routine(void) {
 			@<Print a rule name@>;
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -346,10 +346,10 @@ which were introduced in December 2010.
 =
 void RTRules::start_list_compilation(void) {
 	inter_name *iname = Hierarchy::find(EMPTY_RULEBOOK_INAME_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	LocalVariables::new_other_parameter(I"forbid_breaks");
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -433,7 +433,7 @@ than once for each rule.
 		case ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); break;
 		case GROUPED_ARRAY_RBF: save_array = Emit::named_array_begin(identifier, K_value); Emit::array_numeric_entry((inter_ti) -2); break;
 		case ROUTINE_RBF: {
-			save_array = Routines::begin(identifier);
+			save_array = Functions::begin(identifier);
 			forbid_breaks_s = LocalVariables::new_other_as_symbol(I"forbid_breaks");
 			rv_s = LocalVariables::new_internal_commented_as_symbol(I"rv", I"return value");
 			if (countup > 1)
@@ -597,7 +597,7 @@ than once for each rule.
 			Produce::down(Emit::tree());
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 			Produce::up(Emit::tree());
-			Routines::end(save_array);
+			Functions::end(save_array);
 			break;
 	}
 
@@ -746,7 +746,7 @@ void RTRules::rulebook_var_creators(void) {
 
 @<Make slow lookup routine@> =
 	inter_name *iname = Hierarchy::find(SLOW_LOOKUP_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *rb_s = LocalVariables::new_other_as_symbol(I"rb");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
@@ -778,7 +778,7 @@ void RTRules::rulebook_var_creators(void) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @
 
@@ -931,7 +931,7 @@ void RTRules::RulebookOutcomePrintingRule(void) {
 	}
 
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_rulebook_outcome);
-	packaging_state save = Routines::begin(printing_rule_name);
+	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *rbnov_s = LocalVariables::new_other_as_symbol(I"rbno");
 	Produce::inv_primitive(Emit::tree(), IFELSE_BIP);
 	Produce::down(Emit::tree());
@@ -956,7 +956,7 @@ void RTRules::RulebookOutcomePrintingRule(void) {
 			Produce::rfalse(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 }
 
 @h Compiling the firing test.

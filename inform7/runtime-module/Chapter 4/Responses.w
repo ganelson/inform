@@ -105,7 +105,7 @@ a call to an activity based on that value:
 	package_request *R = resp->resp_package;
 	inter_name *launcher = Hierarchy::make_iname_in(LAUNCHER_HL, R);
 
-	packaging_state save = Routines::begin(launcher);
+	packaging_state save = Functions::begin(launcher);
 
 	inter_name *iname = Strings::response_constant_iname(
 		resp->responding_rule, resp->response_marker);
@@ -116,7 +116,7 @@ a call to an activity based on that value:
 	Produce::val_iname(Emit::tree(), K_value, iname);
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 	save = Emit::named_array_begin(resp->resp_iname, K_value);
 	Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
@@ -143,7 +143,7 @@ essence here.
 
 @<If the response is via I6, compile the necessary routine for this rule@> =
 	inter_name *responder_iname = RTRules::get_handler_definition(resp->responding_rule);
-	packaging_state save = Routines::begin(responder_iname);
+	packaging_state save = Functions::begin(responder_iname);
 	inter_symbol *code_s = LocalVariables::new_other_as_symbol(I"code");
 	inter_symbol *val_s = LocalVariables::new_other_as_symbol(I"val");
 	inter_symbol *val2_s = LocalVariables::new_other_as_symbol(I"val2");
@@ -285,7 +285,7 @@ essence here.
 		Produce::val_symbol(Emit::tree(), K_value, str_s);
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @ So much for the launchers. We also have to compile the response values,
 and some run-time tables which will enable the I6 template code to keep
@@ -330,7 +330,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 
 @<Compile the PrintResponse routine@> =
 	inter_name *printing_rule_name = Kinds::Behaviour::get_iname(K_response);
-	packaging_state save = Routines::begin(printing_rule_name);
+	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *R_s = LocalVariables::new_other_as_symbol(I"R");
 	response_message *resp;
 	LOOP_OVER(resp, response_message) {
@@ -364,7 +364,7 @@ say |R_14_RESP_B|, we print its current text, say response (B) for |R_14|.
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);
 
 @ The following array is used only by the testing command RESPONSES, and
 enables the I6 template to print out all known responses at run-time,

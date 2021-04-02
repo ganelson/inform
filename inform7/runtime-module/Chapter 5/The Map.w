@@ -139,7 +139,7 @@ parse_node *RTMap::found_in_for_2_sided(instance *I, instance *R1, instance *R2)
 void RTMap::write_door_dir_routines(void) {
 	door_dir_notice *notice;
 	LOOP_OVER(notice, door_dir_notice) {
-		packaging_state save = Routines::begin(notice->ddn_iname);
+		packaging_state save = Functions::begin(notice->ddn_iname);
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -188,14 +188,14 @@ void RTMap::write_door_dir_routines(void) {
 				RTInstances::iname(Map::get_value_of_opposite_property(notice->D2)));
 		Produce::up(Emit::tree());
 
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 
 void RTMap::write_door_to_routines(void) {
 	door_to_notice *notice;
 	LOOP_OVER(notice, door_to_notice) {
-		packaging_state save = Routines::begin(notice->dtn_iname);
+		packaging_state save = Functions::begin(notice->dtn_iname);
 		local_variable *loc = LocalVariables::new_internal_commented(I"loc", I"room of actor");
 		inter_symbol *loc_s = LocalVariables::declare(loc);
 		Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -242,7 +242,7 @@ void RTMap::write_door_to_routines(void) {
 			Produce::val_iname(Emit::tree(), K_value, RTInstances::iname(notice->R1));
 		Produce::up(Emit::tree());
 
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 

@@ -43,7 +43,7 @@ void RTNaming::compile_small_names(void) {
 	short_name_notice *notice;
 	LOOP_OVER(notice, short_name_notice) {
 		instance *owner = Naming::object_this_is_named_after(notice->namee);
-		packaging_state save = Routines::begin(notice->routine_iname);
+		packaging_state save = Functions::begin(notice->routine_iname);
 		wording NA = Assertions::Assemblies::get_named_after_text(notice->after_subject);
 		if (notice->capped) {
 			inter_name *porname = Hierarchy::find(PRINTORRUN_HL);
@@ -96,7 +96,7 @@ void RTNaming::compile_small_names(void) {
 		DISCARD_TEXT(SNAMES)
 
 		Produce::rtrue(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 
 		save = Emit::named_array_begin(notice->snn_iname, NULL);
 		Emit::array_iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));

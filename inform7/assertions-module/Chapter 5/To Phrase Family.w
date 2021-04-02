@@ -191,7 +191,7 @@ imperative_defn *first_in_logical_order = NULL;
 
 void ToPhraseFamily::given_body(imperative_defn_family *self, imperative_defn *id) {
 	id_body *body = id->body_of_defn;
-	Routines::prepare_for_requests(body);
+	PhraseRequests::prepare_for_requests(body);
 
 	ParsingIDTypeData::parse(&(id->body_of_defn->type_data),
 		ToPhraseFamily::get_prototype_text(id));

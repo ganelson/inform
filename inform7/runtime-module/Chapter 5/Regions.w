@@ -16,7 +16,7 @@ void RTRegions::write_found_in_functions(void) {
 	LOOP_OVER_INSTANCES(I, K_object)
 		if (Instances::of_kind(I, K_region)) {
 			inter_name *iname = RTRegions::found_in_iname(I);
-			packaging_state save = Routines::begin(iname);
+			packaging_state save = Functions::begin(iname);
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
 					Produce::inv_call_iname(Emit::tree(),
@@ -31,7 +31,7 @@ void RTRegions::write_found_in_functions(void) {
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 			Produce::rfalse(Emit::tree());
-			Routines::end(save);
+			Functions::end(save);
 		}
 }
 

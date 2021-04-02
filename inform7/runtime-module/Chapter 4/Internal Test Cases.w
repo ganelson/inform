@@ -77,7 +77,7 @@ void InternalTests::InternalTestCases_routine(void) {
 	}
 
 	inter_name *iname = Hierarchy::find(INTERNALTESTCASES_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	internal_test_case *itc; int n = 0;
 	LOOP_OVER(itc, internal_test_case) {
 		n++;
@@ -200,7 +200,7 @@ void InternalTests::InternalTestCases_routine(void) {
 		if (internal_test_output_file) WRITE_TO(OUTFILE, "%S", OUT);
 		DISCARD_TEXT(OUT)
 	}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 	if (internal_test_output_file) STREAM_CLOSE(OUTFILE);
 }

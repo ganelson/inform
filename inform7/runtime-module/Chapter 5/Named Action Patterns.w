@@ -21,7 +21,7 @@ inter_name *RTNamedActionPatterns::identifier(named_action_pattern *nap) {
 void RTNamedActionPatterns::compile(void) {
 	named_action_pattern *nap;
 	LOOP_OVER(nap, named_action_pattern) {
-		packaging_state save = Routines::begin(nap->compilation_data.nap_iname);
+		packaging_state save = Functions::begin(nap->compilation_data.nap_iname);
 		named_action_pattern_entry *nape;
 		LOOP_OVER_LINKED_LIST(nape, named_action_pattern_entry, nap->patterns) {
 			action_pattern *ap = nape->behaviour;
@@ -36,6 +36,6 @@ void RTNamedActionPatterns::compile(void) {
 			Produce::up(Emit::tree());
 		}
 		Produce::rfalse(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 	}
 }

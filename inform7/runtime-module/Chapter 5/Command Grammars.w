@@ -267,7 +267,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 		case CG_IS_TOKEN: {
 			gpr_kit gprk = UnderstandValueTokens::new_kit();
 			if (cg->compilation_data.cg_token_iname == NULL) internal_error("cg token not ready");
-			packaging_state save = Routines::begin(cg->compilation_data.cg_token_iname);
+			packaging_state save = Functions::begin(cg->compilation_data.cg_token_iname);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -285,13 +285,13 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 			Produce::up(Emit::tree());
-			Routines::end(save);
+			Functions::end(save);
 			break;
 		}
 		case CG_IS_CONSULT: {
 			gpr_kit gprk = UnderstandValueTokens::new_kit();
 			inter_name *iname = UnderstandGeneralTokens::consult_iname(cg);
-			packaging_state save = Routines::begin(iname);
+			packaging_state save = Functions::begin(iname);
 			UnderstandValueTokens::add_range_calls(&gprk);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
@@ -315,7 +315,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 			Produce::up(Emit::tree());
-			Routines::end(save);
+			Functions::end(save);
 			break;
 		}
 		case CG_IS_SUBJECT: {
@@ -324,7 +324,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk, cg->subj_understood, cg, NULL)) {
 				RTCommandGrammars::cg_compile_parse_name_lines(&gprk, cg);
 				UnderstandGeneralTokens::compile_parse_name_tail(&gprk);
-				Routines::end(save);
+				Functions::end(save);
 			}
 			break;
 		}
@@ -334,7 +334,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 		case CG_IS_PROPERTY_NAME: {
 			gpr_kit gprk = UnderstandValueTokens::new_kit();
 			if (cg->compilation_data.cg_prn_iname == NULL) internal_error("PRN PN not ready");
-			packaging_state save = Routines::begin(cg->compilation_data.cg_prn_iname);
+			packaging_state save = Functions::begin(cg->compilation_data.cg_prn_iname);
 			UnderstandValueTokens::add_original(&gprk);
 			UnderstandValueTokens::add_standard_set(&gprk);
 			Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -352,7 +352,7 @@ void RTCommandGrammars::compile(command_grammar *cg) {
 			Produce::down(Emit::tree());
 				Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 			Produce::up(Emit::tree());
-			Routines::end(save);
+			Functions::end(save);
 			break;
 		}
 	}

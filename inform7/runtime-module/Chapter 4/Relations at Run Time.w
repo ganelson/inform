@@ -155,7 +155,7 @@ void RTRelations::compile_relation_records(void) {
 		}
 	}
 	inter_name *iname = Hierarchy::find(CREATEDYNAMICRELATIONS_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	LocalVariables::new_internal_commented_as_symbol(I"i", I"loop counter");
 	LocalVariables::new_internal_commented_as_symbol(I"rel", I"new relation");
 	LOOP_OVER(bp, binary_predicate) {
@@ -232,7 +232,7 @@ void RTRelations::compile_relation_records(void) {
 			Produce::up(Emit::tree());
 		}
 	}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -357,7 +357,7 @@ void RTRelations::compile_relation_records(void) {
 	if (bp->right_way_round == FALSE) { X = I"Y"; Y = I"X"; dbp = bp->reversal; }
 
 	handler = RTRelations::handler_iname(bp);
-	packaging_state save = Routines::begin(handler);
+	packaging_state save = Functions::begin(handler);
 	inter_symbol *rr_s = LocalVariables::new_other_as_symbol(I"rr");
 	inter_symbol *task_s = LocalVariables::new_other_as_symbol(I"task");
 	local_variable *X_lv = LocalVariables::new_other_parameter(I"X");
@@ -525,7 +525,7 @@ void RTRelations::compile_relation_records(void) {
 	Produce::up(Emit::tree());
 
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @<The default case for minimal relations only@> =
 	Produce::inv_call_iname(Emit::tree(), Hierarchy::find(RUNTIMEPROBLEM_HL));
@@ -1007,7 +1007,7 @@ void RTRelations::compile_blank_relation(kind *K) {
 =
 void RTRelations::IterateRelations(void) {
 	inter_name *iname = Hierarchy::find(ITERATERELATIONS_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *callback_s = LocalVariables::new_other_as_symbol(I"callback");
 	binary_predicate *bp;
 	LOOP_OVER(bp, binary_predicate)
@@ -1018,7 +1018,7 @@ void RTRelations::IterateRelations(void) {
 				Produce::val_iname(Emit::tree(), K_value, RTRelations::iname(bp));
 			Produce::up(Emit::tree());
 		}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -1486,7 +1486,7 @@ void RTRelations::compile_defined_relations(void) {
 }
 
 @<Compile RProperty routine@> =
-	packaging_state save = Routines::begin(Hierarchy::find(RPROPERTY_HL));
+	packaging_state save = Functions::begin(Hierarchy::find(RPROPERTY_HL));
 	inter_symbol *obj_s = LocalVariables::new_other_as_symbol(I"obj");
 	inter_symbol *cl_s = LocalVariables::new_other_as_symbol(I"cl");
 	inter_symbol *pr_s = LocalVariables::new_other_as_symbol(I"pr");
@@ -1514,11 +1514,11 @@ void RTRelations::compile_defined_relations(void) {
 	Produce::down(Emit::tree());
 		Produce::val_nothing(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @<Compile RGuard f0 routine@> =
 	if (rg->guard_f0_iname) {
-		packaging_state save = Routines::begin(rg->guard_f0_iname);
+		packaging_state save = Functions::begin(rg->guard_f0_iname);
 		local_variable *X_lv =
 			LocalVariables::new_internal_commented(I"X", I"which is related to at most one object");
 		inter_symbol *X_s = LocalVariables::declare(X_lv);
@@ -1552,12 +1552,12 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_nothing(Emit::tree());
 			Produce::up(Emit::tree());
 		}
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @<Compile RGuard f1 routine@> =
 	if (rg->guard_f1_iname) {
-		packaging_state save = Routines::begin(rg->guard_f1_iname);
+		packaging_state save = Functions::begin(rg->guard_f1_iname);
 		local_variable *X_lv =
 			LocalVariables::new_internal_commented(I"X", I"which is related to at most one object");
 		inter_symbol *X_s = LocalVariables::declare(X_lv);
@@ -1591,12 +1591,12 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_nothing(Emit::tree());
 			Produce::up(Emit::tree());
 		}
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @<Compile RGuard T routine@> =
 	if (rg->guard_test_iname) {
-		packaging_state save = Routines::begin(rg->guard_test_iname);
+		packaging_state save = Functions::begin(rg->guard_test_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
 		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
 		inter_symbol *L_s = LocalVariables::declare(L_lv);
@@ -1637,12 +1637,12 @@ void RTRelations::compile_defined_relations(void) {
 
 		}
 		Produce::rfalse(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @<Compile RGuard MT routine@> =
 	if (rg->guard_make_true_iname) {
-		packaging_state save = Routines::begin(rg->guard_make_true_iname);
+		packaging_state save = Functions::begin(rg->guard_make_true_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
 		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
 		inter_symbol *L_s = LocalVariables::declare(L_lv);
@@ -1693,12 +1693,12 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
 			Produce::up(Emit::tree());
 		}
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @<Compile RGuard MF routine@> =
 	if (rg->guard_make_false_iname) {
-		packaging_state save = Routines::begin(rg->guard_make_false_iname);
+		packaging_state save = Functions::begin(rg->guard_make_false_iname);
 		local_variable *L_lv = LocalVariables::new_internal_commented(I"L", I"left member of pair");
 		local_variable *R_lv = LocalVariables::new_internal_commented(I"R", I"right member of pair");
 		inter_symbol *L_s = LocalVariables::declare(L_lv);
@@ -1749,14 +1749,14 @@ void RTRelations::compile_defined_relations(void) {
 				Produce::val_iname(Emit::tree(), K_value, rg->guarding->imp->bp_iname);
 			Produce::up(Emit::tree());
 		}
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @ =
 void RTRelations::compile_routine_to_decide(inter_name *rname,
 	wording W, bp_term_details par1, bp_term_details par2) {
 
-	packaging_state save = Routines::begin(rname);
+	packaging_state save = Functions::begin(rname);
 
 	stack_frame *phsf = Frames::current_stack_frame();
 	RTRelations::add_term_as_call_parameter(phsf, par1);
@@ -1778,7 +1778,7 @@ void RTRelations::compile_routine_to_decide(inter_name *rname,
 		Produce::up(Emit::tree());
 	}
 
-	Routines::end(save);
+	Functions::end(save);
 }
 
 @ The following routine adds the given BP term as a call parameter to the
@@ -1873,7 +1873,7 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 	binary_predicate *bp = RelationSubjects::to_bp(infs);
 	if (bp->right_way_round) {
 		if (Relations::Explicit::stored_dynamically(bp)) {
-			packaging_state save = Routines::begin(RTRelations::initialiser_iname(bp));
+			packaging_state save = Functions::begin(RTRelations::initialiser_iname(bp));
 			inference *i;
 			inter_name *rtiname = Hierarchy::find(RELATIONTEST_HL);
 			POSITIVE_KNOWLEDGE_LOOP(i, RelationSubjects::from_bp(bp), relation_inf) {
@@ -1888,7 +1888,7 @@ void RTRelations::emit_one(inference_subject_family *f, inference_subject *infs)
 					Specifications::Compiler::emit_as_val(K_value, spec1);
 				Produce::up(Emit::tree());
 			}
-			Routines::end(save);
+			Functions::end(save);
 		} else {
 			int f = Relations::Explicit::get_form_of_relation(bp);
 			if ((f == Relation_VtoV) || (f == Relation_Sym_VtoV))

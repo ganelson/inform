@@ -93,7 +93,7 @@ domains of each meaning have long since been established. But performing a
 		W, K, T);
 
 	inter_name *iname = RTAdjectives::iname(adj, T, RTKinds::weak_id(K));
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	@<Add an it-variable to represent the value or object in the domain@>;
 
 	TEMPORARY_TEXT(C)
@@ -111,7 +111,7 @@ domains of each meaning have long since been established. But performing a
 	}
 	Produce::rfalse(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @ The stack frame has just one call parameter: the value $x$ which might, or
 might not, be such that adjective($x$) is true. We allow this to be called
@@ -196,7 +196,7 @@ void RTAdjectives::agreements(void) {
 		wording PW = Clusters::get_form_general(adj->adjective_names, Projects::get_language_of_play(Task::project()), 1, -1);
 		if (Wordings::empty(PW)) continue;
 
-		packaging_state save = Routines::begin(adj->adjective_compilation.aph_iname);
+		packaging_state save = Functions::begin(adj->adjective_compilation.aph_iname);
 		inter_symbol *o_s = LocalVariables::new_other_as_symbol(I"o");
 		inter_symbol *force_plural_s = LocalVariables::new_other_as_symbol(I"force_plural");
 		inter_symbol *gna_s = LocalVariables::new_internal_as_symbol(I"gna");
@@ -307,7 +307,7 @@ void RTAdjectives::agreements(void) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 

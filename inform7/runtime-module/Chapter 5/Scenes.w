@@ -48,7 +48,7 @@ There is no significance to the return value.
 =
 void RTScenes::DetectSceneChange_routine(void) {
 	inter_name *iname = Hierarchy::find(DETECTSCENECHANGE_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *chs_s =
 		LocalVariables::new_internal_commented_as_symbol(I"chs", I"count of changes made");
 	inter_symbol *ch_s =
@@ -61,7 +61,7 @@ void RTScenes::DetectSceneChange_routine(void) {
 	Produce::place_label(Emit::tree(), CScene_l);
 	@<Add the scene-change tail@>;
 
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -464,7 +464,7 @@ what handles this.
 =
 void RTScenes::ShowSceneStatus_routine(void) {
 	inter_name *iname = Hierarchy::find(SHOWSCENESTATUS_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
 	Produce::down(Emit::tree());
 		Produce::code(Emit::tree());
@@ -496,7 +496,7 @@ void RTScenes::ShowSceneStatus_routine(void) {
 			}
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

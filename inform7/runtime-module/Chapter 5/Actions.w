@@ -152,7 +152,7 @@ void RTActions::compile_action_routines(void) {
 	action_name *an;
 	LOOP_OVER(an, action_name) {
 		inter_name *iname = RTActions::Sub(an);
-		packaging_state save = Routines::begin(iname);
+		packaging_state save = Functions::begin(iname);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			inter_name *generic_iname = Hierarchy::find(GENERICVERBSUB_HL);
@@ -163,7 +163,7 @@ void RTActions::compile_action_routines(void) {
 				Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) an->report_rules->allocation_id);
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 
@@ -204,7 +204,7 @@ void RTActions::ActionData(void) {
 	Hierarchy::make_available(Emit::tree(), ad_iname);
 
 	inter_name *DB_Action_Details_iname = Hierarchy::find(DB_ACTION_DETAILS_HL);
-	save = Routines::begin(DB_Action_Details_iname);
+	save = Functions::begin(DB_Action_Details_iname);
 	inter_symbol *act_s = LocalVariables::new_other_as_symbol(I"act");
 	inter_symbol *n_s = LocalVariables::new_other_as_symbol(I"n");
 	inter_symbol *s_s = LocalVariables::new_other_as_symbol(I"s");
@@ -295,7 +295,7 @@ void RTActions::ActionData(void) {
 
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), DB_Action_Details_iname);
 }
 

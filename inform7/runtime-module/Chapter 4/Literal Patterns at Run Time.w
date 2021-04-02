@@ -1046,7 +1046,7 @@ void RTLiteralPatterns::gpr(gpr_kit *gprk, literal_pattern *lp) {
 
 =
 void RTLiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_list) {
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 
 	literal_pattern_name *lpn;
 	literal_pattern *lp;
@@ -1097,7 +1097,7 @@ void RTLiteralPatterns::printing_routine(inter_name *iname, literal_pattern *lp_
 		@<Print according to this particular literal pattern@>;
 		Produce::rtrue(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);
 }
 
 @ This was at one time a more complicated criterion, which masked bugs in

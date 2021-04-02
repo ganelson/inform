@@ -102,7 +102,7 @@ made above.
 @ And here is the function that refers to:
 
 @<Compile the default routine@> =
-	packaging_state save = Routines::begin(rname);
+	packaging_state save = Functions::begin(rname);
 	LocalVariables::new_other_parameter(I"a");
 	LocalVariables::new_other_parameter(I"b");
 	LocalVariables::new_other_parameter(I"c");
@@ -130,4 +130,4 @@ made above.
 
 		Produce::up(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);

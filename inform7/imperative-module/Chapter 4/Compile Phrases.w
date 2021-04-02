@@ -36,11 +36,11 @@ void Routines::Compile::routine(id_body *idb,
 
 	@<Compile some commentary about the routine to follow@>;
 
-	packaging_state save = Routines::begin_framed(Routines::Compile::iname(idb, req), &(idb->compilation_data.id_stack_frame));
+	packaging_state save = Functions::begin_framed(Routines::Compile::iname(idb, req), &(idb->compilation_data.id_stack_frame));
 
 	@<Compile the body of the routine@>;
 
-	Routines::end(save);
+	Functions::end(save);
 
 	id_body_being_compiled = NULL;
 	current_sentence = NULL;

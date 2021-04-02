@@ -101,7 +101,7 @@ quantifiers, either.
 	LOGIF(PREDICATE_CALCULUS, "Compiling deferred proposition: %d: reason %d: $D\n",
 		pdef->allocation_id, pdef->reason, proposition);
 
-	packaging_state save = Routines::begin(pdef->ppd_iname);
+	packaging_state save = Functions::begin(pdef->ppd_iname);
 
 	BEGIN_COMPILATION_MODE;
 	COMPILATION_MODE_EXIT(DEREFERENCE_POINTERS_CMODE);
@@ -111,7 +111,7 @@ quantifiers, either.
 	@<Issue a problem message if a negated quantifier was needed@>;
 	END_COMPILATION_MODE;
 
-	Routines::end(save);
+	Functions::end(save);
 
 	if (pdef->rtp_iname) @<Compile the constant origin text for run-time problem use@>;
 	current_pdef = save_current_pdef;

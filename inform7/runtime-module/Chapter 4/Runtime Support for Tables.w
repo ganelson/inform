@@ -20,7 +20,7 @@ kind as a strong kind ID.
 =
 void RTTables::column_introspection_routine(void) {
 	inter_name *iname = Hierarchy::find(TC_KOV_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *tcv_s = LocalVariables::new_other_as_symbol(I"tc");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -49,7 +49,7 @@ void RTTables::column_introspection_routine(void) {
 	Produce::down(Emit::tree());
 		Produce::val_iname(Emit::tree(), K_value, Kinds::Constructors::UNKNOWN_iname());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 
@@ -332,7 +332,7 @@ table values and prints the (title-cased) name of the one which matches.
 void RTTables::compile_print_table_names(void) {
 	table *t;
 	inter_name *iname = Kinds::Behaviour::get_iname(K_table);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *T_s = LocalVariables::new_other_as_symbol(I"T");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -384,7 +384,7 @@ void RTTables::compile_print_table_names(void) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 }
 
 @ The issue here is whether the value |IMPROBABLE_VALUE| can, despite its

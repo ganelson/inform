@@ -15,7 +15,7 @@ void RTUseOptions::TestUseOption_routine(void) {
 }
 
 @<Compile the TestUseOption routine@> =
-	packaging_state save = Routines::begin(Hierarchy::find(TESTUSEOPTION_HL));
+	packaging_state save = Functions::begin(Hierarchy::find(TESTUSEOPTION_HL));
 	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
 	use_option *uo;
 	LOOP_OVER(uo, use_option)
@@ -35,11 +35,11 @@ void RTUseOptions::TestUseOption_routine(void) {
 			Produce::up(Emit::tree());
 		}
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @<Compile the PrintUseOption routine@> =
 	inter_name *iname = Kinds::Behaviour::get_iname(K_use_option);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *UO_s = LocalVariables::new_other_as_symbol(I"UO");
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -68,7 +68,7 @@ void RTUseOptions::TestUseOption_routine(void) {
 			}
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @ And we also compile constants. The aim of all of this is to enable Inter
 kits for the model world to operate without conditional compilation, which

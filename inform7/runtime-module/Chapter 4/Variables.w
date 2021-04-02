@@ -199,7 +199,7 @@ nonlocal_variable_emission RTVariables::shv_rvalue(shared_variable *shv) {
 int RTVariables::compile_frame_creator(shared_variable_set *set) {
 	if (set == NULL) return 0;
 
-	packaging_state save = Routines::begin(RTVariables::get_shared_variables_creator(set));
+	packaging_state save = Functions::begin(RTVariables::get_shared_variables_creator(set));
 	inter_symbol *pos_s = LocalVariables::new_other_as_symbol(I"pos");
 	inter_symbol *state_s = LocalVariables::new_other_as_symbol(I"state");
 
@@ -227,7 +227,7 @@ int RTVariables::compile_frame_creator(shared_variable_set *set) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, (inter_ti) count);
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 	return count;
 }
 
@@ -378,12 +378,12 @@ command prompt variable; see //CommandParserKit: Parser//.
 	if (nlv == command_prompt_VAR) {
 		inter_name *iname = RTVariables::iname(nlv);
 		inter_name *cpt_iname = Hierarchy::find(COMMANDPROMPTTEXT_HL);
-		packaging_state save = Routines::begin(cpt_iname);
+		packaging_state save = Functions::begin(cpt_iname);
 		Produce::inv_primitive(Emit::tree(), RETURN_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_text, iname);
 		Produce::up(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 		Hierarchy::make_available(Emit::tree(), cpt_iname);
 	}
 

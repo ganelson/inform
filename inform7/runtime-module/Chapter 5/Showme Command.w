@@ -33,7 +33,7 @@ properties.
 =
 void RTShowmeCommand::compile_SHOWME_details(void) {
 	inter_name *iname = Hierarchy::find(SHOWMEDETAILS_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *t_0_s = LocalVariables::new_other_as_symbol(I"t_0");
 	inter_symbol *na_s = LocalVariables::new_other_as_symbol(I"na");
 	Produce::inv_primitive(Emit::tree(), IFDEBUG_BIP);
@@ -44,7 +44,7 @@ void RTShowmeCommand::compile_SHOWME_details(void) {
 			RTShowmeCommand::compile_SHOWME_type(TRUE, t_0_s, na_s);
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

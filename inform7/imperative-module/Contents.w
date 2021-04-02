@@ -17,7 +17,7 @@ Chapter 2: Compilation Context
 	Local Variables
 	Local Parking
 	Phrase Blocks
-	Chronology
+	Functions
 
 Chapter 3: Compiling Propositions
 "Generating code to test or assert propositions from predicate calculus."

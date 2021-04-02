@@ -144,15 +144,15 @@ void TestCommand::write_text(void) {
 void TestCommand::TestScriptSub_stub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 }
 
 void TestCommand::TestScriptSub_routine(void) {
 	inter_name *iname = Hierarchy::find(TESTSCRIPTSUB_HL);
 	Hierarchy::make_available(Emit::tree(), iname);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	if (NUMBER_CREATED(test_scenario) == 0) {
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
@@ -216,5 +216,5 @@ void TestCommand::TestScriptSub_routine(void) {
 		Produce::up(Emit::tree());
 	}
 
-	Routines::end(save);
+	Functions::end(save);
 }

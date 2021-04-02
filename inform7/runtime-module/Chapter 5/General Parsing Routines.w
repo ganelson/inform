@@ -98,7 +98,7 @@ void UnderstandGeneralTokens::write_parse_name_routines(void) {
 		if (UnderstandGeneralTokens::compile_parse_name_head(&save, &gprk,
 			notice->parse_subject, NULL, notice->pnn_iname)) {
 			UnderstandGeneralTokens::compile_parse_name_tail(&gprk);
-			Routines::end(save);
+			Functions::end(save);
 		}
 	}
 }
@@ -171,7 +171,7 @@ int UnderstandGeneralTokens::compile_parse_name_head(packaging_state *save,
 	if (compile_to == NULL) compile_to = N;
 	if (compile_to == NULL) internal_error("no parse name routine name given");
 
-	*save = Routines::begin(compile_to);
+	*save = Functions::begin(compile_to);
 
 	UnderstandValueTokens::add_parse_name_vars(gprk);
 

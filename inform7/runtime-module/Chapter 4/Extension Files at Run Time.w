@@ -23,7 +23,7 @@ feelings of modesty.
 =
 void RTExtensions::ShowExtensionVersions_routine(void) {
 	inter_name *iname = Hierarchy::find(SHOWEXTENSIONVERSIONS_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension) {
 		TEMPORARY_TEXT(the_author_name)
@@ -45,11 +45,11 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 			}
 		DISCARD_TEXT(the_author_name)
 	}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 
 	iname = Hierarchy::find(SHOWFULLEXTENSIONVERSIONS_HL);
-	save = Routines::begin(iname);
+	save = Functions::begin(iname);
 	LOOP_OVER(E, inform_extension) {
 		TEMPORARY_TEXT(C)
 		RTExtensions::credit_ef(C, E, TRUE);
@@ -59,11 +59,11 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 		Produce::up(Emit::tree());
 		DISCARD_TEXT(C)
 	}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 	
 	iname = Hierarchy::find(SHOWONEEXTENSION_HL);
-	save = Routines::begin(iname);
+	save = Functions::begin(iname);
 	inter_symbol *id_s = LocalVariables::new_other_as_symbol(I"id");
 	LOOP_OVER(E, inform_extension) {
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
@@ -85,7 +85,7 @@ void RTExtensions::ShowExtensionVersions_routine(void) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

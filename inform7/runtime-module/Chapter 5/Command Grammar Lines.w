@@ -49,7 +49,7 @@ void RTCommandGrammarLines::set_mistake(cg_line *cgl, wording MW) {
 
 void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 	if (cgl->mistaken) {
-		packaging_state save = Routines::begin(cgl->compilation_data.mistake_iname);
+		packaging_state save = Functions::begin(cgl->compilation_data.mistake_iname);
 
 		Produce::inv_primitive(Emit::tree(), IF_BIP);
 		Produce::down(Emit::tree());
@@ -78,7 +78,7 @@ void RTCommandGrammarLines::cgl_compile_mistake_token_as_needed(cg_line *cgl) {
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Produce::up(Emit::tree());
 
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 
@@ -105,7 +105,7 @@ int RTCommandGrammarLines::cgl_compile_result_of_mistake(gpr_kit *gprk, cg_line 
 
 void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 	package_request *MAP = Hierarchy::synoptic_package(SACTIONS_HAP);
-	packaging_state save = Routines::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
+	packaging_state save = Functions::begin(Hierarchy::make_iname_in(MISTAKEACTIONSUB_HL, MAP));
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
 	Produce::down(Emit::tree());
@@ -154,7 +154,7 @@ void RTCommandGrammarLines::MistakeActionSub_routine(void) {
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 1);
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 	
 	MistakeAction_iname = Hierarchy::make_iname_in(MISTAKEACTION_HL, MAP);
 	Emit::named_pseudo_numeric_constant(MistakeAction_iname, K_action_name, 10000);
@@ -169,7 +169,7 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 		package_request *PR = Hierarchy::local_package(COND_TOKENS_HAP);
 		cgl->compilation_data.cond_token_iname = Hierarchy::make_iname_in(CONDITIONAL_TOKEN_FN_HL, PR);
 
-		packaging_state save = Routines::begin(cgl->compilation_data.cond_token_iname);
+		packaging_state save = Functions::begin(cgl->compilation_data.cond_token_iname);
 
 		parse_node *spec = CGLines::get_understand_cond(cgl);
 		pcalc_prop *prop = cgl->understand_when_prop;
@@ -200,7 +200,7 @@ void RTCommandGrammarLines::cgl_compile_condition_token_as_needed(cg_line *cgl) 
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_FAIL_HL));
 		Produce::up(Emit::tree());
 
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 
@@ -619,7 +619,7 @@ void RTCommandGrammarLines::compile_token_line(gpr_kit *gprk, int code_mode, cg_
 void RTCommandGrammarLines::compile_slash_gprs(void) {
 	slash_gpr *sgpr;
 	LOOP_OVER(sgpr, slash_gpr) {
-		packaging_state save = Routines::begin(sgpr->sgpr_iname);
+		packaging_state save = Functions::begin(sgpr->sgpr_iname);
 		gpr_kit gprk = UnderstandValueTokens::new_kit();
 		UnderstandValueTokens::add_original(&gprk);
 		UnderstandValueTokens::add_standard_set(&gprk);
@@ -629,7 +629,7 @@ void RTCommandGrammarLines::compile_slash_gprs(void) {
 		Produce::down(Emit::tree());
 			Produce::val_iname(Emit::tree(), K_value, Hierarchy::find(GPR_PREPOSITION_HL));
 		Produce::up(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 	}
 }
 

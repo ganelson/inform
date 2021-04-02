@@ -312,7 +312,7 @@ void Chronology::past_actions_i6_routines(void) {
 		past_tense_action_record *pta;
 		LOOP_OVER(pta, past_tense_action_record) {
 			current_sentence = pta->where_pta_tested; /* ensure problems reported correctly */
-			packaging_state save = Routines::begin(pta->pta_iname);
+			packaging_state save = Functions::begin(pta->pta_iname);
 
 			Produce::inv_primitive(Emit::tree(), IF_BIP);
 			Produce::down(Emit::tree());
@@ -336,7 +336,7 @@ void Chronology::past_actions_i6_routines(void) {
 					"this one? And so on.");
 			}
 
-			Routines::end(save);
+			Functions::end(save);
 		}
 		inter_name *iname = Hierarchy::find(PASTACTIONSI6ROUTINES_HL);
 		packaging_state save = Emit::named_array_begin(iname, K_value);
@@ -359,7 +359,7 @@ void Chronology::past_tenses_i6_escape(void) {
 			NUMBER_CREATED(past_tense_condition_record));
 
 	inter_name *iname = Hierarchy::find(TESTSINGLEPASTSTATE_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *past_flag_s = LocalVariables::new_other_as_symbol(I"past_flag");
 	inter_symbol *pt_s = LocalVariables::new_other_as_symbol(I"pt");
 	inter_symbol *turn_end_s = LocalVariables::new_other_as_symbol(I"turn_end");
@@ -387,7 +387,7 @@ void Chronology::past_tenses_i6_escape(void) {
 
 	@<Answer the question posed@>;
 
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 	LOGIF(TIME_PERIODS, "Creation of past tense conditions complete\n");
 }

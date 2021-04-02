@@ -15,6 +15,13 @@ typedef struct to_phrase_request {
 	CLASS_DEFINITION
 } to_phrase_request;
 
+@ To... phrases live here:
+
+=
+void PhraseRequests::prepare_for_requests(id_body *idb) {
+	idb->compilation_data.requests_package = Hierarchy::package(idb->compilation_data.owning_module, PHRASES_HAP);
+}
+
 @h Logical priority of To phrases.
 
 @h Compilation requests.
@@ -235,7 +242,7 @@ int PhraseRequests::compilation_coroutine(int *i, int max_i) {
 void PhraseRequests::invoke_to_begin(void) {
 	if (Task::begin_execution_af_to_begin()) {
 		inter_name *iname = Hierarchy::find(SUBMAIN_HL);
-		packaging_state save = Routines::begin(iname);
+		packaging_state save = Functions::begin(iname);
 		imperative_defn *beginner = ToPhraseFamily::to_begin();
 		if (beginner) {
 			kind *void_kind = Kinds::function_kind(0, NULL, K_nil);
@@ -244,7 +251,7 @@ void PhraseRequests::invoke_to_begin(void) {
 					void_kind, NULL, EMPTY_WORDING));
 			Produce::inv_call_iname(Emit::tree(), IS);
 		}
-		Routines::end(save);
+		Functions::end(save);
 		Hierarchy::make_available(Emit::tree(), iname);
 	}
 }

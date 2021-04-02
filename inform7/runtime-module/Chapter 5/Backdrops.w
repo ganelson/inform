@@ -32,7 +32,7 @@ void RTBackdrops::write_found_in_routines(void) {
 }
 
 @<The object is found in many rooms or in whole regions@> =
-	packaging_state save = Routines::begin(notice->found_in_routine_iname);
+	packaging_state save = Functions::begin(notice->found_in_routine_iname);
 	inference *inf;
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf) {
 		instance *loc = Backdrops::get_inferred_location(inf);
@@ -60,9 +60,9 @@ void RTBackdrops::write_found_in_routines(void) {
 		Produce::rfalse(Emit::tree());
 		break;
 	}
-	Routines::end(save);
+	Functions::end(save);
 
 @<The object is found nowhere@> =
-	packaging_state save = Routines::begin(notice->found_in_routine_iname);
+	packaging_state save = Functions::begin(notice->found_in_routine_iname);
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);

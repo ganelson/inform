@@ -292,7 +292,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 
 	Emit::named_iname_constant(lt->lt_sba_iname, K_value, iname);
 
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	Produce::inv_primitive(Emit::tree(), BOX_BIP);
 	Produce::down(Emit::tree());
 		TEMPORARY_TEXT(T)
@@ -300,7 +300,7 @@ void TextLiterals::traverse_lts(literal_text *lt) {
 		Produce::val_text(Emit::tree(), T);
 		DISCARD_TEXT(T)
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @ =
 literal_text *TextLiterals::compile_literal_sb(value_holster *VH, wording W) {

@@ -142,7 +142,7 @@ void RTVerbs::ConjugateVerb(void) {
 }
 
 @<Compile ConjugateVerb routine@> =
-	packaging_state save = Routines::begin(Conjugation::conj_iname(vc));
+	packaging_state save = Functions::begin(Conjugation::conj_iname(vc));
 	inter_symbol *fn_s = LocalVariables::new_other_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::new_other_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::new_other_as_symbol(I"t");
@@ -233,11 +233,11 @@ void RTVerbs::ConjugateVerb(void) {
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @<Compile ConjugateVerbForm routine@> =
 	verb_conjugation *vc = vf->underlying_verb->conjugation;
-	packaging_state save = Routines::begin(RTVerbs::form_iname(vf));
+	packaging_state save = Functions::begin(RTVerbs::form_iname(vf));
 	inter_symbol *fn_s = LocalVariables::new_other_as_symbol(I"fn");
 	inter_symbol *vp_s = LocalVariables::new_other_as_symbol(I"vp");
 	inter_symbol *t_s = LocalVariables::new_other_as_symbol(I"t");
@@ -310,7 +310,7 @@ void RTVerbs::ConjugateVerb(void) {
 		DISCARD_TEXT(T)
 	}
 
-	Routines::end(save);
+	Functions::end(save);
 
 @<Check for modality@> =
 	for (int sense=0; sense<NO_KNOWN_SENSES; sense++)

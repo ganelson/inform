@@ -758,7 +758,7 @@ void RTKinds::compile_structures(void) {
 
 @<Compile the default value finder@> =
 	inter_name *iname = Hierarchy::find(DEFAULTVALUEFINDER_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	runtime_kind_structure *rks;
 	LOOP_OVER(rks, runtime_kind_structure) {
@@ -785,7 +785,7 @@ void RTKinds::compile_structures(void) {
 	Produce::down(Emit::tree());
 		Produce::val(Emit::tree(), K_number, LITERAL_IVAL, 0);
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 
 @h The heap.
@@ -1150,7 +1150,7 @@ appear at run-time; but we need the printing routine to exist to avoid
 compilation errors.
 
 @<Compile I6 printing routine for a vacant but named kind@> =
-	packaging_state save = Routines::begin(printing_rule_name);
+	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "! weak kind ID: %d\n", RTKinds::weak_id(K));
@@ -1160,7 +1160,7 @@ compilation errors.
 	Produce::down(Emit::tree());
 		Produce::val_symbol(Emit::tree(), K_value, value_s);
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 
 @ A unit is printed back with its earliest-defined literal pattern used as
 notation. If it had no literal patterns, it would come out as decimal numbers,
@@ -1171,17 +1171,17 @@ but at present this can't happen.
 		RTLiteralPatterns::printing_routine(printing_rule_name,
 			LiteralPatterns::list_of_literal_forms(K));
 	else {
-		packaging_state save = Routines::begin(printing_rule_name);
+		packaging_state save = Functions::begin(printing_rule_name);
 		inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 		Produce::inv_primitive(Emit::tree(), PRINT_BIP);
 		Produce::down(Emit::tree());
 			Produce::val_symbol(Emit::tree(), K_value, value_s);
 		Produce::up(Emit::tree());
-		Routines::end(save);
+		Functions::end(save);
 	}
 
 @<Compile I6 printing routine for an enumerated kind@> =
-	packaging_state save = Routines::begin(printing_rule_name);
+	packaging_state save = Functions::begin(printing_rule_name);
 	inter_symbol *value_s = LocalVariables::new_other_as_symbol(I"value");
 
 	Produce::inv_primitive(Emit::tree(), SWITCH_BIP);
@@ -1230,7 +1230,7 @@ but at present this can't happen.
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @ The suite of standard routines provided for enumerative types is a little
 like the one in Ada (|T'Succ|, |T'Pred|, and so on).
@@ -1249,14 +1249,14 @@ to |A_T1_colour(v)|.
 	LOOP_OVER_INSTANCES(I, K) instance_count++;
 
 	inter_name *iname_i = Kinds::Behaviour::get_inc_iname(K);
-	packaging_state save = Routines::begin(iname_i);
+	packaging_state save = Functions::begin(iname_i);
 	@<Implement the A routine@>;
-	Routines::end(save);
+	Functions::end(save);
 
 	inter_name *iname_d = Kinds::Behaviour::get_dec_iname(K);
-	save = Routines::begin(iname_d);
+	save = Functions::begin(iname_d);
 	@<Implement the B routine@>;
-	Routines::end(save);
+	Functions::end(save);
 
 @ There should be a blue historical plaque on the wall here: this was the
 first function ever implemented by emitting Inter code, on 12 November 2017.
@@ -1346,7 +1346,7 @@ and |b| inclusive.
 
 @<Compile random-ranger routine for this kind@> =
 	inter_name *iname_r = Kinds::Behaviour::get_ranger_iname(K);
-	packaging_state save = Routines::begin(iname_r);
+	packaging_state save = Functions::begin(iname_r);
 	inter_symbol *a_s = LocalVariables::new_other_as_symbol(I"a");
 	inter_symbol *b_s = LocalVariables::new_other_as_symbol(I"b");
 
@@ -1421,7 +1421,7 @@ and |b| inclusive.
 		@<Formula for range@>;
 	Produce::up(Emit::tree());
 
-	Routines::end(save);
+	Functions::end(save);
 
 @<Formula for range@> =
 	Produce::inv_primitive(Emit::tree(), PLUS_BIP);
@@ -1463,7 +1463,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 
 @<Compile PrintKindValuePair@> =
 	inter_name *pkvp_iname = Hierarchy::find(PRINTKINDVALUEPAIR_HL);
-	packaging_state save = Routines::begin(pkvp_iname);
+	packaging_state save = Functions::begin(pkvp_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	inter_symbol *v_s = LocalVariables::new_other_as_symbol(I"v");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -1511,7 +1511,7 @@ deduced from its value alone, |K| must explicitly be supplied.)
 
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), pkvp_iname);
 
 @ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
@@ -1520,7 +1520,7 @@ which have to be given some type-safe value to start out at.
 
 @<Compile DefaultValueOfKOV@> =
 	inter_name *dvok_iname = Hierarchy::find(DEFAULTVALUEOFKOV_HL);
-	packaging_state save = Routines::begin(dvok_iname);
+	packaging_state save = Functions::begin(dvok_iname);
 	inter_symbol *sk_s = LocalVariables::new_other_as_symbol(I"sk");
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
@@ -1578,7 +1578,7 @@ which have to be given some type-safe value to start out at.
 
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), dvok_iname);
 
 @ |KOVComparisonFunction(K)| returns either the address of a function to
@@ -1591,7 +1591,7 @@ unless the two values are genuinely equal.
 
 @<Compile KOVComparisonFunction@> =
 	inter_name *kcf_iname = Hierarchy::find(KOVCOMPARISONFUNCTION_HL);
-	packaging_state save = Routines::begin(kcf_iname);
+	packaging_state save = Functions::begin(kcf_iname);
 	LocalVariables::new_other_parameter(I"k");
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
@@ -1643,12 +1643,12 @@ unless the two values are genuinely equal.
 
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kcf_iname);
 
 @<Compile KOVDomainSize@> =
 	inter_name *kds_iname = Hierarchy::find(KOVDOMAINSIZE_HL);
-	packaging_state save = Routines::begin(kds_iname);
+	packaging_state save = Functions::begin(kds_iname);
 	local_variable *k = LocalVariables::new_internal_commented(I"k", I"weak kind ID");
 	inter_symbol *k_s = LocalVariables::declare(k);
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
@@ -1698,7 +1698,7 @@ unless the two values are genuinely equal.
 
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kds_iname);
 
 @ |KOVIsBlockValue(K)| is true if and only if |K| is the I6 ID of a kind
@@ -1706,7 +1706,7 @@ storing pointers to blocks on the heap.
 
 @<Compile KOVIsBlockValue@> =
 	inter_name *kibv_iname = Hierarchy::find(KOVISBLOCKVALUE_HL);
-	packaging_state save = Routines::begin(kibv_iname);
+	packaging_state save = Functions::begin(kibv_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	Produce::inv_primitive(Emit::tree(), STORE_BIP);
 	Produce::down(Emit::tree());
@@ -1739,7 +1739,7 @@ storing pointers to blocks on the heap.
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), kibv_iname);
 
 @ |KOVSupportFunction(K)| returns the address of the specific support function
@@ -1748,7 +1748,7 @@ such a function does, see "BlockValues.i6t".
 
 @<Compile KOVSupportFunction@> =
 	inter_name *ksf_iname = Hierarchy::find(KOVSUPPORTFUNCTION_HL);
-	packaging_state save = Routines::begin(ksf_iname);
+	packaging_state save = Functions::begin(ksf_iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	inter_symbol *fail_s = LocalVariables::new_other_as_symbol(I"fail");
 
@@ -1800,7 +1800,7 @@ such a function does, see "BlockValues.i6t".
 	Produce::up(Emit::tree());
 
 	Produce::rfalse(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), ksf_iname);
 
 @ Code for printing names of kinds at run-time. This needn't run quickly, and
@@ -1810,7 +1810,7 @@ Z-machine array space.
 =
 void RTKinds::I7_Kind_Name_routine(void) {
 	inter_name *iname = Hierarchy::find(I7_KIND_NAME_HL);
-	packaging_state save = Routines::begin(iname);
+	packaging_state save = Functions::begin(iname);
 	inter_symbol *k_s = LocalVariables::new_other_as_symbol(I"k");
 	kind *K;
 	LOOP_OVER_BASE_KINDS(K)
@@ -1834,7 +1834,7 @@ void RTKinds::I7_Kind_Name_routine(void) {
 				Produce::up(Emit::tree());
 			Produce::up(Emit::tree());
 		}
-	Routines::end(save);
+	Functions::end(save);
 	Hierarchy::make_available(Emit::tree(), iname);
 }
 

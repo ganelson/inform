@@ -43,7 +43,7 @@ int LoopingOverScope::compilation_coroutine(void) {
 }
 
 @<Compile an individual loop-over-scope@> =
-	packaging_state save = Routines::begin(los->los_iname);
+	packaging_state save = Functions::begin(los->los_iname);
 
 	stack_frame *phsf = Frames::current_stack_frame();
 	local_variable *it_lv = Frames::enable_it(phsf, EMPTY_WORDING, K_object);
@@ -69,4 +69,4 @@ int LoopingOverScope::compilation_coroutine(void) {
 			Produce::up(Emit::tree());
 		Produce::up(Emit::tree());
 	Produce::up(Emit::tree());
-	Routines::end(save);
+	Functions::end(save);

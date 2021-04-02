@@ -37,7 +37,6 @@ Chapter 4: Compilation Utilities
 	Responses
 	Compiled Text
 	Constant Lists
-	Routines
 	Rules
 	Activities
 	Equations Support
@@ -63,6 +62,7 @@ Chapter 4: Compilation Utilities
 	Imperative Compilation Data
 	Phrase Requests
 	Closures
+	Chronology
 
 Chapter 5: Plugin Support
 	Naming
